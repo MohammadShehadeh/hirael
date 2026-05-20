@@ -1,7 +1,10 @@
 import * as React from "react"
 
+import ComboboxDemo from "@/registry/sabk/combobox/combobox.demo"
 import MultiSelectDemo from "@/registry/sabk/multi-select/multi-select.demo"
 import NumberRangeDemo from "@/registry/sabk/number-range/number-range.demo"
+import PasswordInputDemo from "@/registry/sabk/password-input/password-input.demo"
+import TagInputDemo from "@/registry/sabk/tag-input/tag-input.demo"
 import YearPickerDemo from "@/registry/sabk/year-picker/year-picker.demo"
 
 export type ComponentCategory = "inputs" | "pickers" | "files"
@@ -59,6 +62,42 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "tag-input",
+    title: "Tag Input",
+    description:
+      "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
+    category: "inputs",
+    status: "stable",
+    Demo: TagInputDemo,
+    sourceFiles: ["registry/sabk/tag-input/tag-input.tsx"],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "combobox",
+    title: "Combobox",
+    description:
+      "Searchable single-select with debounced async loader, group headings and clearable selection.",
+    category: "inputs",
+    status: "stable",
+    Demo: ComboboxDemo,
+    sourceFiles: ["registry/sabk/combobox/combobox.tsx"],
+    registryDependencies: ["button", "popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
+  },
+  {
+    name: "password-input",
+    title: "Password Input",
+    description:
+      "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
+    category: "inputs",
+    status: "stable",
+    Demo: PasswordInputDemo,
+    sourceFiles: ["registry/sabk/password-input/password-input.tsx"],
+    registryDependencies: ["input"],
+    dependencies: ["lucide-react"],
+  },
   // Phase 1 stubs — declared in registry.json, implementation pending.
   {
     name: "month-picker",
@@ -72,27 +111,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: "Time Picker",
     description: "Hour / minute / second wheels, 12 or 24h, step intervals.",
     category: "pickers",
-    status: "planned",
-  },
-  {
-    name: "tag-input",
-    title: "Tag Input",
-    description: "Chip input with paste-to-split, dedupe, validation, max tags.",
-    category: "inputs",
-    status: "planned",
-  },
-  {
-    name: "combobox",
-    title: "Combobox (async)",
-    description: "Searchable single-select with debounced loader.",
-    category: "inputs",
-    status: "planned",
-  },
-  {
-    name: "password-input",
-    title: "Password Input",
-    description: "Show/hide toggle, optional zxcvbn-pluggable strength meter.",
-    category: "inputs",
     status: "planned",
   },
   {

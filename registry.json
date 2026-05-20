@@ -75,31 +75,49 @@
       "name": "tag-input",
       "type": "registry:ui",
       "title": "Tag Input",
-      "description": "Chip input with paste-to-split, dedupe, validation hook, max tags.",
+      "description": "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "input"],
-      "files": []
+      "registryDependencies": ["badge"],
+      "files": [
+        {
+          "path": "registry/sabk/tag-input/tag-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tag-input.tsx"
+        }
+      ]
     },
     {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable single-select with debounced async loader, empty/loading/error states.",
+      "description": "Searchable single-select with debounced async loader, group headings and clearable selection.",
       "categories": ["inputs"],
       "dependencies": ["cmdk", "lucide-react"],
       "registryDependencies": ["button", "popover", "command"],
-      "files": []
+      "files": [
+        {
+          "path": "registry/sabk/combobox/combobox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/combobox.tsx"
+        }
+      ]
     },
     {
       "name": "password-input",
       "type": "registry:ui",
       "title": "Password Input",
-      "description": "Show/hide toggle and optional pluggable strength meter.",
+      "description": "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "button"],
-      "files": []
+      "registryDependencies": ["input"],
+      "files": [
+        {
+          "path": "registry/sabk/password-input/password-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/password-input.tsx"
+        }
+      ]
     },
     {
       "name": "phone-input",

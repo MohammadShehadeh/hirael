@@ -14,13 +14,13 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
-    <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r-2 border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
-      <Link href="/" className="block border-b-2 border-sidebar-border px-5 py-4">
+    <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
+      <Link href="/" className="block border-b border-sidebar-border px-5 py-4">
         <div className="flex items-baseline gap-2">
           <span className="text-lg font-semibold tracking-[-0.04em]">
             sabk
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ forge
           </span>
         </div>
@@ -46,11 +46,11 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
                 )}
               >
                 <span className="inline-flex items-center gap-2 truncate">
-                  <Sparkles className="size-3.5 text-forge" />
+                  <Sparkles className="size-3.5 text-foreground" />
                   Theme playground
                 </span>
                 {active === "theme" && (
-                  <span className="size-1.5 rounded-full bg-forge" />
+                  <span className="size-1.5 rounded-full bg-foreground" />
                 )}
               </Link>
             </li>
@@ -65,7 +65,7 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
                 )}
               >
                 <span className="inline-flex items-center gap-2 truncate">
-                  <LayoutTemplate className="size-3.5 text-forge" />
+                  <LayoutTemplate className="size-3.5 text-foreground" />
                   Blocks
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
@@ -105,7 +105,7 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
                           </span>
                         )}
                         {isActive && (
-                          <span className="size-1.5 rounded-full bg-forge" />
+                          <span className="size-1.5 rounded-full bg-foreground" />
                         )}
                       </Link>
                     </li>
@@ -117,7 +117,7 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
         })}
       </nav>
 
-      <div className="flex items-center justify-between gap-2 border-t-2 border-sidebar-border px-3 py-3">
+      <div className="flex items-center justify-between gap-2 border-t border-sidebar-border px-3 py-3">
         <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           v0.1 · peer of shadcn
         </span>

@@ -42,7 +42,7 @@ function useTagInput() {
   const ctx = React.useContext(TagInputContext)
   if (!ctx) {
     throw new Error(
-      "TagInput compound parts must be used inside <TagInput.Root>"
+      "TagInput compound parts must be used inside <TagInput>"
     )
   }
   return ctx
@@ -52,7 +52,7 @@ function useTagInput() {
  * Root
  * ========================================================================== */
 
-export type TagInputRootProps = {
+export type TagInputProps = {
   value?: string[]
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
@@ -70,7 +70,7 @@ export type TagInputRootProps = {
   children?: React.ReactNode
 }
 
-function TagInputRoot({
+function TagInput({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -83,7 +83,7 @@ function TagInputRoot({
   commitKeys = ["Enter", ","],
   splitOn = /[,\n\t]+/,
   children,
-}: TagInputRootProps) {
+}: TagInputProps) {
   const [internalValue, setInternalValue] = React.useState<string[]>(
     defaultValue ?? []
   )
@@ -207,7 +207,7 @@ function TagInputContainer({
   const ctx = useTagInput()
   return (
     <div
-      data-slot="tag-input"
+      data-slot="tag-input-container"
       data-disabled={ctx.disabled || undefined}
       data-readonly={ctx.readOnly || undefined}
       onMouseDown={(e) => {
@@ -219,7 +219,7 @@ function TagInputContainer({
         }
       }}
       className={cn(
-        "flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border-2 border-input bg-transparent px-1.5 py-1 text-sm outline-none transition-colors",
+        "flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-transparent px-1.5 py-1 text-sm outline-none transition-colors",
         "focus-within:border-ring",
         ctx.error && "border-destructive focus-within:border-destructive",
         (ctx.disabled || ctx.readOnly) && "opacity-60 cursor-not-allowed",
@@ -248,7 +248,8 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
   if (tag === undefined) return null
   return (
     <Badge
-      variant="forge"
+      variant="default"
+      data-slot="tag-input-tag"
       className={cn("gap-1 pr-1 font-normal", className)}
       {...props}
     >
@@ -259,12 +260,27 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
           tabIndex={-1}
           aria-label={`Remove ${tag}`}
           onClick={() => ctx.remove(index)}
-          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-forge/70 transition-colors hover:bg-forge/20 hover:text-forge"
+          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 transition-colors hover:bg-foreground/20 hover:text-foreground"
         >
           <X className="size-2.5" />
         </button>
       )}
     </Badge>
+  )
+}
+
+/* ============================================================================
+ * Tags (renders all current tags from context)
+ * ========================================================================== */
+
+function TagInputTags() {
+  const ctx = useTagInput()
+  return (
+    <>
+      {ctx.value.map((_, i) => (
+        <TagInputTag key={`${ctx.value[i]}-${i}`} index={i} />
+      ))}
+    </>
   )
 }
 
@@ -360,6 +376,7 @@ function TagInputError({
   return (
     <p
       role="alert"
+      data-slot="tag-input-error"
       className={cn("text-[11px] text-destructive", className)}
       {...props}
     >
@@ -368,71 +385,11 @@ function TagInputError({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type TagInputProps = Omit<TagInputRootProps, "children"> & {
-  placeholder?: string
-  onChange?: (value: string[]) => void
-  className?: string
-  showError?: boolean
-}
-
-function TagInput({
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  placeholder,
-  className,
-  showError = true,
-  ...rest
-}: TagInputProps) {
-  return (
-    <TagInputRoot
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange ?? onChange}
-      {...rest}
-    >
-      <TagInputContainer className={className}>
-        <TagsRenderer />
-        <TagInputField placeholder={placeholder} />
-      </TagInputContainer>
-      {showError && <TagInputError className="mt-1" />}
-    </TagInputRoot>
-  )
-}
-
-function TagsRenderer() {
-  const ctx = useTagInput()
-  return (
-    <>
-      {ctx.value.map((_, i) => (
-        <TagInputTag key={`${ctx.value[i]}-${i}`} index={i} />
-      ))}
-    </>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-const TagInputNamespace = Object.assign(TagInput, {
-  Root: TagInputRoot,
-  Container: TagInputContainer,
-  Tag: TagInputTag,
-  Field: TagInputField,
-  Error: TagInputError,
-})
-
 export {
-  TagInputNamespace as TagInput,
-  TagInputRoot,
+  TagInput,
   TagInputContainer,
   TagInputTag,
+  TagInputTags,
   TagInputField,
   TagInputError,
 }

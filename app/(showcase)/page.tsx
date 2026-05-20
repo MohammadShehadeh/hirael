@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, LayoutTemplate } from "lucide-react"
+import { ArrowRight, Layers, Palette } from "lucide-react"
 
 import { InlineCodeBlock } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
@@ -7,32 +7,43 @@ import { highlightCode } from "@/lib/highlight"
 import {
   BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
+  BLOCKS_BY_KIND,
   CATEGORY_LABELS,
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
 } from "@/registry/sabk/registry-meta"
 
-const ORDER: ComponentCategory[] = ["inputs", "pickers", "files"]
+const CATEGORY_ORDER: ComponentCategory[] = [
+  "inputs",
+  "pickers",
+  "files",
+  "data",
+]
 
-const DUAL_API_SNIPPET = `// Compound
-<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
-  <MultiSelect.Trigger placeholder="Pick…" />
-  <MultiSelect.Content searchPlaceholder="Filter…" />
-</MultiSelect.Root>
+const COMPOSE_SNIPPET = `import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectTrigger,
+} from "@/components/ui/multi-select"
 
-// Single-prop
-<MultiSelect options={options} value={value} onChange={setValue} />`
+<MultiSelect value={value} onValueChange={setValue} options={options}>
+  <MultiSelectTrigger placeholder="Pick…" />
+  <MultiSelectContent searchPlaceholder="Filter…" />
+</MultiSelect>`
 
 export default async function ShowcaseHome() {
-  const stableCount = REGISTRY.filter((r) => r.status === "stable").length
-  const dualApiHtml = await highlightCode(DUAL_API_SNIPPET, "tsx")
+  const components = REGISTRY.filter((r) => r.category !== "blocks")
+  const blocks = REGISTRY_BY_CATEGORY.blocks
+  const stableComponents = components.filter((r) => r.status === "stable")
+  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-8 sm:pb-10">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
+      {/* Hero / Above the fold */}
+      <header className="flex flex-col gap-5 border-b border-border pb-10">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ sabk · v0.1
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -43,34 +54,47 @@ export default async function ShowcaseHome() {
           shadcn&apos;s missing pieces.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          A registry of the components every real product needs but shadcn
-          doesn&apos;t ship. Multi-select, number range, year picker, tag
-          input — copied straight into your repo via the shadcn CLI.
-          No runtime dependency. Same registry schema.
+          Production-grade components shadcn doesn&apos;t ship — multi-select,
+          combobox, tag input, currency input, file dropzone — plus 17
+          section blocks across 10 categories. Distributed via the shadcn
+          CLI: source lands in your repo, no Sabk runtime, no breaking
+          version bumps.
         </p>
         <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {stableCount} of {REGISTRY.length} Phase&nbsp;1 components shipping ·
-          every component ships in two API shapes
-        </p>
+        <CountersStrip
+          components={components.length}
+          stableComponents={stableComponents.length}
+          blocks={blocks.length}
+          blockKinds={BLOCK_KIND_ORDER.length}
+        />
       </header>
 
-      <section className="grid gap-10">
-        {ORDER.map((cat) => {
+      {/* Components — every category, every item */}
+      <section className="flex flex-col gap-8">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
+            Components
+          </h2>
+          <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+            {stableComponents.length} / {components.length} stable
+          </span>
+        </div>
+
+        {CATEGORY_ORDER.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
+          const stable = items.filter((i) => i.status === "stable").length
           return (
-            <div key={cat}>
-              <div className="mb-4 flex items-baseline justify-between">
-                <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
+            <div key={cat} className="flex flex-col gap-3">
+              <div className="flex items-baseline justify-between">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
                   {CATEGORY_LABELS[cat]}
-                </h2>
-                <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-                  {items.filter((i) => i.status === "stable").length} /{" "}
-                  {items.length} ready
+                </h3>
+                <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                  {stable} / {items.length}
                 </span>
               </div>
-              <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border-2 border-border bg-border sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2">
                 {items.map((entry) => (
                   <li key={entry.name}>
                     <Link
@@ -79,22 +103,25 @@ export default async function ShowcaseHome() {
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2">
-                          <h3 className="text-base font-medium tracking-[-0.01em]">
+                          <h4 className="text-base font-medium tracking-[-0.01em]">
                             {entry.title}
-                          </h3>
+                          </h4>
                           {entry.status === "planned" ? (
-                            <span className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
+                            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                               soon
                             </span>
                           ) : (
-                            <span className="size-1.5 rounded-full bg-forge" />
+                            <span
+                              aria-hidden
+                              className="size-1.5 rounded-full bg-foreground"
+                            />
                           )}
                         </div>
                         <p className="mt-1.5 text-xs text-muted-foreground">
                           {entry.description}
                         </p>
                       </div>
-                      <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-forge">
+                      <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
                         /{entry.name} →
                       </div>
                     </Link>
@@ -106,63 +133,157 @@ export default async function ShowcaseHome() {
         })}
       </section>
 
-      <section className="grid gap-4 border-t-2 border-border pt-8">
+      {/* Blocks — every kind, every item, inline */}
+      <section className="flex flex-col gap-8 border-t border-border pt-10">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
-            Blocks
+          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
+            Section blocks
           </h2>
           <Link
             href="/blocks"
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-forge"
+            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
           >
-            view all
+            {blocks.length} blocks · view all
             <ArrowRight className="size-3" />
           </Link>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Section-level compositions built on top of the registry —
-          heroes, CTAs, FAQs and auth screens, in the same forge
-          aesthetic. Copy a block into your repo in one command.
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          Drop-in section compositions — heroes, features, pricing,
+          testimonials, CTAs, FAQs, auth, navigation, errors. Each block
+          shares the same registry pipeline; copy a block in one command.
         </p>
+        <div className="flex flex-col gap-px overflow-hidden rounded-md border border-border bg-border">
+          {BLOCK_KIND_ORDER.map((kind) => {
+            const items = BLOCKS_BY_KIND[kind]
+            if (!items.length) return null
+            return (
+              <div
+                key={kind}
+                className="flex flex-col gap-3 bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="flex items-baseline gap-3">
+                  <h3 className="font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                    {BLOCK_KIND_LABELS[kind]}
+                  </h3>
+                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                    {items.length}
+                  </span>
+                </div>
+                <ul className="flex flex-wrap gap-2">
+                  {items.map((entry) => (
+                    <li key={entry.name}>
+                      <Link
+                        href={`/blocks/${entry.name}`}
+                        className="group inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2 py-1 font-mono text-[11px] tracking-tight transition-colors hover:border-foreground/40 hover:bg-accent"
+                        title={entry.title}
+                      >
+                        <span className="text-foreground">{entry.name}</span>
+                        <ArrowRight className="size-3 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="flex flex-col gap-5 border-t border-border pt-10">
+        <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
+          Composition (the shadcn way)
+        </h2>
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          Every compound component ships as flat top-level exports — no
+          namespacing, no convenience wrappers. The bare name is the root
+          primitive and holds state; every rendered piece carries a
+          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground">
+            data-slot
+          </code>
+          attribute for downstream styling.
+        </p>
+        <InlineCodeBlock code={COMPOSE_SNIPPET} html={composeHtml} />
+      </section>
+
+      {/* Footer — adjacent surfaces */}
+      <section className="grid gap-3 border-t border-border pt-10 sm:grid-cols-2">
         <Link
-          href="/blocks"
-          className="group flex items-center justify-between gap-4 rounded-sm border-2 border-border bg-card p-4 transition-colors hover:border-forge"
+          href="/theme"
+          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
         >
-          <div className="flex items-center gap-4">
-            <span className="inline-flex size-10 items-center justify-center rounded-sm border-2 border-border bg-background">
-              <LayoutTemplate className="size-4 text-forge" />
+          <div className="flex items-center gap-3">
+            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
+              <Palette className="size-4 text-foreground" />
             </span>
             <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">
-                {REGISTRY_BY_CATEGORY.blocks.length} top-tier blocks ·{" "}
-                {BLOCK_KIND_ORDER.length} categories
-              </span>
+              <span className="text-sm font-medium">Theme playground</span>
               <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                {BLOCK_KIND_ORDER.map(
-                  (k) => `${BLOCK_KIND_LABELS[k].toLowerCase()}`
-                ).join(" · ")}
+                preset switcher · token swatches
               </span>
             </div>
           </div>
-          <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors group-hover:text-forge">
-            /blocks
-            <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
-          </span>
+          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
+        </Link>
+        <Link
+          href="/blocks"
+          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
+        >
+          <div className="flex items-center gap-3">
+            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
+              <Layers className="size-4 text-foreground" />
+            </span>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-medium">
+                All {blocks.length} blocks
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                {BLOCK_KIND_ORDER.length} categories · preview + install
+              </span>
+            </div>
+          </div>
+          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
         </Link>
       </section>
-
-      <section className="grid gap-3 border-t-2 border-border pt-8">
-        <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
-          Dual-API contract
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Every Sabk component ships with two surface areas in the same file.
-          Compound is canonical — reach for it when you need control over
-          composition, layout, or rendering. Single-prop is the convenience
-          wrapper; ninety percent of usage looks like this.
-        </p>
-        <InlineCodeBlock code={DUAL_API_SNIPPET} html={dualApiHtml} />
-      </section>
     </div>
+  )
+}
+
+function CountersStrip({
+  components,
+  stableComponents,
+  blocks,
+  blockKinds,
+}: {
+  components: number
+  stableComponents: number
+  blocks: number
+  blockKinds: number
+}) {
+  const items: { label: string; value: string }[] = [
+    {
+      label: "components",
+      value: `${stableComponents} / ${components}`,
+    },
+    { label: "blocks", value: `${blocks}` },
+    { label: "block categories", value: `${blockKinds}` },
+    { label: "runtime deps", value: "0" },
+  ]
+  return (
+    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="flex flex-col gap-1 bg-card px-3 py-2.5"
+        >
+          <dt className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+            {item.label}
+          </dt>
+          <dd className="font-mono text-sm tabular-nums text-foreground">
+            {item.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
   )
 }

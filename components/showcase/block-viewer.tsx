@@ -41,13 +41,13 @@ export function BlockViewer({
   return (
     <div
       data-slot="block-viewer"
-      className="overflow-hidden rounded-sm border-2 border-border bg-background"
+      className="overflow-hidden rounded-sm border border-border bg-background"
     >
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-border bg-card/50 px-3 py-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/50 px-3 py-2">
         <div
           role="tablist"
           aria-label="Preview viewport"
-          className="flex items-center gap-0.5 rounded-sm border-2 border-border bg-background p-0.5"
+          className="flex items-center gap-0.5 rounded-sm border border-border bg-background p-0.5"
         >
           {ORDER.map((v) => {
             const Icon = ICONS[v]
@@ -108,7 +108,7 @@ export function BlockViewer({
           src={`/embed/blocks/${name}`}
           title={`${title} preview`}
           loading="lazy"
-          className="block border-0 bg-background transition-[width,max-width] duration-300 ease-[var(--ease-forge)]"
+          className="block border-0 bg-background transition-[width,max-width] duration-300 ease-out"
           style={{ ...sizing, height: minHeight }}
         />
       </div>

@@ -16,51 +16,56 @@ npx shadcn@latest add https://sabk.dev/r/multi-select.json
   just like shadcn's own composed blocks do.
 - **Distributed via the shadcn registry schema.** No runtime dependency
   on a Sabk package — source is copied straight into your repo.
-- **Forge aesthetic.** Mechanical precision: 2px borders, ≤4px radii,
-  monospace for labels and counts, motion 120–180ms ease-out, dark as
-  primary canvas, one warm-metallic accent. Reject gradients,
-  glassmorphism, generic polish.
+- **Efferd-aligned aesthetic.** Modern shadcn polish: 1px soft borders,
+  0.65rem radius scale (sm/md/lg/xl derived from `--radius`), zinc
+  neutrals, dark as primary canvas, no chromatic accent — primary draws
+  the eye. Geist Sans for body, Geist Mono reserved for code and
+  identifiers.
 
-## Dual-API contract
+## Composition (shadcn-style)
 
-Every component ships in two shapes from the same file:
+Every compound component ships as flat top-level exports — no
+namespacing, no convenience wrappers. Compose the way shadcn ships
+their primitives:
 
 ```tsx
-// Compound (canonical) — for control.
-<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
-  <MultiSelect.Trigger placeholder="Pick…" />
-  <MultiSelect.Content searchPlaceholder="Filter…" />
-</MultiSelect.Root>
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectTrigger,
+} from "@/components/ui/multi-select"
 
-// Single-prop (convenience) — for speed.
-<MultiSelect options={options} value={value} onChange={setValue} />
+<MultiSelect value={value} onValueChange={setValue} options={options}>
+  <MultiSelectTrigger placeholder="Pick…" />
+  <MultiSelectContent searchPlaceholder="Filter…" />
+</MultiSelect>
 ```
 
-The single-prop form is a thin wrapper over the compound form. Document
-compound as canonical; reach for single-prop when ninety percent of
-usage fits.
+The bare component name is the root primitive (it holds the state).
+Each part renders with a `data-slot="…"` attribute so downstream
+styling and slot-targeting works out of the box.
 
 ## Phase 1 — Form inputs
 
-| Component        | Status   | Registry dep                           |
+| Component        | Status   | Registry deps                          |
 | ---------------- | -------- | -------------------------------------- |
-| MultiSelect      | shipped  | `button`, `popover`, `command`, `badge`|
-| NumberRange      | shipped  | `slider`, `input`, `label`             |
-| YearPicker       | shipped  | `button`, `popover`                    |
+| MultiSelect      | stable   | `button`, `popover`, `command`, `badge`|
+| NumberRange      | stable   | `slider`, `input`, `label`             |
+| YearPicker       | stable   | `button`, `popover`                    |
+| TagInput         | stable   | `badge`                                |
+| Combobox         | stable   | `button`, `popover`, `command`         |
+| PasswordInput    | stable   | `input`                                |
+| CurrencyInput    | stable   | `input`                                |
+| PhoneInput       | stable   | `input`, `popover`, `command`          |
+| FileDropzone     | stable   | `button`                               |
+| StatCard         | stable   | —                                      |
 | MonthPicker      | planned  | `button`, `popover`                    |
 | TimePicker       | planned  | `button`, `popover`, `input`           |
-| TagInput         | planned  | `badge`, `input`                       |
-| Combobox (async) | planned  | `button`, `popover`, `command`         |
-| PasswordInput    | planned  | `input`, `button`                      |
-| PhoneInput       | planned  | `input`, `popover`, `command`          |
-| CurrencyInput    | planned  | `input`                                |
-| FileDropzone     | planned  | `button`, `badge`                      |
 | ColorPicker      | planned  | `button`, `popover`, `input`           |
 
 Phase 2 (Data display) — DataTable, TreeView, Timeline, Stepper,
-KanbanBoard, Calendar, RatingInput, AvatarStack, StatCard, EmptyState,
-CopyButton, JsonViewer, DiffViewer, Breadcrumb, CommandPalette — not in
-this cut.
+KanbanBoard, Calendar, RatingInput, AvatarStack, EmptyState, CopyButton,
+JsonViewer, DiffViewer, Breadcrumb, CommandPalette — not in this cut.
 
 ## Repository layout
 
@@ -72,14 +77,14 @@ sabk/
       layout.tsx               # sidebar + main column
       page.tsx                 # landing
     layout.tsx
-    globals.css                # design tokens (forge palette)
+    globals.css                # design tokens (zinc, 0.65rem radius)
   components/
     showcase/                  # shell-only chrome, not part of the registry
   registry/
     sabk/
       ui/                      # shadcn primitives Sabk imports from
       multi-select/
-        multi-select.tsx       # component (both APIs in one file)
+        multi-select.tsx         # component, flat compound exports
         multi-select.demo.tsx
         index.ts
       number-range/
@@ -121,10 +126,13 @@ to resolve registry dependencies).
 
 For each new component:
 
-- [ ] Source file at `registry/sabk/<name>/<name>.tsx` exporting both
-      the compound namespace (`Name.Root`, `Name.Trigger`, …) and the
-      single-prop wrapper from the same file.
-- [ ] `Name.demo.tsx` showing both API shapes side by side.
+- [ ] Source file at `registry/sabk/<name>/<name>.tsx` exporting the
+      compound parts as flat top-level named exports (`Name`, `NameTrigger`,
+      `NameContent`, …). No namespacing, no convenience wrappers. The
+      bare `Name` is the root primitive and holds state.
+- [ ] Every rendered slot carries `data-slot="<kebab>"` so downstream
+      styling and slot-targeting just works.
+- [ ] `Name.demo.tsx` showing a basic compose + a customized compose.
 - [ ] `index.ts` re-export.
 - [ ] Entry in `registry.json` with `type: "registry:ui"`, `dependencies`,
       `registryDependencies`, `files[].target = "components/ui/<name>.tsx"`.
@@ -132,15 +140,17 @@ For each new component:
       and source file list.
 - [ ] All imports for shadcn primitives go through `@/registry/sabk/ui/*`
       (alias is rewritten on install).
-- [ ] Tokens reuse `--background / --foreground / --border / --forge`
+- [ ] Tokens reuse `--background / --foreground / --border / --primary / --accent`
       and friends — never hard-code colors.
 - [ ] `pnpm registry:build && pnpm typecheck && pnpm build` clean.
 
 ## Design tokens
 
-Dark is the primary canvas. Light is a faithful inverse. The forge
-accent (`--forge`, warm copper/brass) is the single color allowed to
-shout — selection state, slider fill, focus underline, ◆ marks.
-Borders are 2px. Radii cap at 4px on most surfaces, 6px on overlays.
-Monospace (`--font-mono`) is reserved for labels, counts, codes, and
-status. Motion is 120–180ms with `--ease-forge`. No springs.
+Dark is the primary canvas. Light is a faithful inverse. The palette is
+pure zinc (achromatic OKLch) with no warm accent — `--primary` carries
+emphasis. Borders are 1px and soft (10% white in dark, oklch(0.922) in
+light). Radii follow shadcn's standard scale derived from
+`--radius: 0.65rem` (sm = radius − 4px, md = radius − 2px, lg = radius,
+xl = radius + 4px). Geist Sans is the default body face; Geist Mono is
+reserved for code, install commands, and identifiers. Motion stays
+short (120–180ms, ease-out).

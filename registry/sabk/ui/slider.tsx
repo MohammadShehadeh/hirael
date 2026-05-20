@@ -42,14 +42,14 @@ function Slider({
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className="absolute h-full bg-forge"
+          className="absolute h-full bg-primary"
         />
       </SliderPrimitive.Track>
       {_values.map((_, i) => (
         <SliderPrimitive.Thumb
           key={i}
           data-slot="slider-thumb"
-          className="block size-4 rounded-[2px] border-2 border-forge bg-background shadow-[0_0_0_1px_var(--background)] outline-none transition-[transform,box-shadow] duration-100 hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none"
+          className="block size-4 rounded-[2px] border border-primary bg-background shadow-[0_0_0_1px_var(--background)] outline-none transition-[transform,box-shadow] duration-100 hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none"
         />
       ))}
     </SliderPrimitive.Root>

@@ -6,7 +6,10 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/registry/sabk/ui/button"
 import { Input } from "@/registry/sabk/ui/input"
 import { Label } from "@/registry/sabk/ui/label"
-import { PasswordInput } from "@/registry/sabk/password-input/password-input"
+import {
+  PasswordInput,
+  PasswordInputField,
+} from "@/registry/sabk/password-input/password-input"
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -49,17 +52,17 @@ export default function Login01() {
 
       <div className="mx-auto w-full max-w-md px-6">
         <div
-          className="rounded-sm border-2 border-border bg-card"
+          className="rounded-sm border border-border bg-card"
           style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
         >
-          <div className="flex flex-col items-center gap-4 border-b-2 border-border px-8 pb-6 pt-8">
-            <div className="relative flex size-10 items-center justify-center rounded-sm border-2 border-border bg-background">
-              <span className="text-lg font-semibold tracking-[-0.04em] text-forge">
+          <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
+            <div className="relative flex size-10 items-center justify-center rounded-sm border border-border bg-background">
+              <span className="text-lg font-semibold tracking-[-0.04em] text-foreground">
                 ◆
               </span>
               <span
                 aria-hidden
-                className="absolute -bottom-1 -right-1 size-1.5 rounded-full bg-forge"
+                className="absolute -bottom-1 -right-1 size-1.5 rounded-full bg-foreground"
               />
             </div>
             <div className="flex flex-col items-center gap-1 text-center">
@@ -103,7 +106,7 @@ export default function Login01() {
                 </Label>
                 <a
                   href="#"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-forge"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Forgot?
                 </a>
@@ -111,9 +114,10 @@ export default function Login01() {
               <PasswordInput
                 id="login01-password"
                 value={password}
-                onChange={setPassword}
-                placeholder="••••••••"
-              />
+                onValueChange={setPassword}
+              >
+                <PasswordInputField placeholder="••••••••" />
+              </PasswordInput>
             </div>
 
             <label className="inline-flex cursor-pointer select-none items-center gap-2 text-xs text-muted-foreground">
@@ -128,14 +132,14 @@ export default function Login01() {
                     setRemember(!remember)
                   }
                 }}
-                className="relative inline-flex size-4 items-center justify-center rounded-[2px] border-2 border-border bg-transparent transition-colors data-[checked=true]:border-forge data-[checked=true]:bg-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                className="relative inline-flex size-4 items-center justify-center rounded-[2px] border border-border bg-transparent transition-colors data-[checked=true]:border-primary data-[checked=true]:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 data-checked={remember}
               >
                 {remember && (
                   <svg
                     viewBox="0 0 12 12"
                     aria-hidden
-                    className="size-2.5 text-forge-foreground"
+                    className="size-2.5 text-primary-foreground"
                   >
                     <path
                       d="M2 6.5 5 9.5 10 3.5"
@@ -151,14 +155,14 @@ export default function Login01() {
               Keep me signed in
             </label>
 
-            <Button type="submit" variant="forge" size="lg" className="group">
+            <Button type="submit" variant="default" size="lg" className="group">
               Sign in
-              <ArrowRight className="size-4 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
             </Button>
 
             <div className="relative my-1">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t-2 border-border" />
+                <span className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center">
                 <span className="bg-card px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
@@ -179,12 +183,12 @@ export default function Login01() {
             </div>
           </form>
 
-          <div className="border-t-2 border-border px-8 py-4 text-center">
+          <div className="border-t border-border px-8 py-4 text-center">
             <p className="text-xs text-muted-foreground">
               No account yet?{" "}
               <a
                 href="#"
-                className="font-medium text-foreground underline-offset-4 hover:text-forge hover:underline"
+                className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
                 Create one
               </a>

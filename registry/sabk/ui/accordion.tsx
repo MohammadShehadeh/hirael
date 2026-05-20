@@ -27,7 +27,7 @@ function AccordionItem({
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        "border-b-2 border-border last:border-b-0 data-[state=open]:border-b-2",
+        "border-b border-border last:border-b-0 data-[state=open]:border-b",
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ function AccordionTrigger({
         data-slot="accordion-trigger"
         className={cn(
           "group flex w-full flex-1 items-center justify-between gap-4 py-5 text-left text-base font-medium tracking-[-0.01em] outline-none transition-colors",
-          "hover:text-forge focus-visible:text-forge",
+          "hover:text-foreground focus-visible:text-foreground",
           "data-[state=open]:text-foreground",
           className
         )}
@@ -55,7 +55,7 @@ function AccordionTrigger({
         {children}
         <Plus
           aria-hidden
-          className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-forge)] group-data-[state=open]:rotate-45 group-data-[state=open]:text-forge"
+          className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-out group-data-[state=open]:rotate-45 group-data-[state=open]:text-foreground"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

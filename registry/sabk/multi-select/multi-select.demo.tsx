@@ -3,7 +3,11 @@
 import * as React from "react"
 
 import { Label } from "@/registry/sabk/ui/label"
-import { MultiSelect } from "@/registry/sabk/multi-select/multi-select"
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectTrigger,
+} from "@/registry/sabk/multi-select/multi-select"
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },
@@ -18,40 +22,44 @@ const FRAMEWORKS = [
 ]
 
 export default function MultiSelectDemo() {
-  const [single, setSingle] = React.useState<string[]>(["next", "astro"])
-  const [compound, setCompound] = React.useState<string[]>([])
+  const [basic, setBasic] = React.useState<string[]>(["next", "astro"])
+  const [composed, setComposed] = React.useState<string[]>([])
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label htmlFor="ms-single">Single-prop API</Label>
+        <Label htmlFor="ms-basic">Basic</Label>
         <MultiSelect
           options={FRAMEWORKS}
-          value={single}
-          onChange={setSingle}
-          placeholder="Pick frameworks"
+          value={basic}
+          onValueChange={setBasic}
           maxCount={5}
-        />
+        >
+          <MultiSelectTrigger placeholder="Pick frameworks" />
+          <MultiSelectContent />
+        </MultiSelect>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {single.length} of {FRAMEWORKS.length} selected
+          {basic.length} of {FRAMEWORKS.length} selected
         </p>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label htmlFor="ms-compound">Compound API</Label>
-        <MultiSelect.Root
+        <Label htmlFor="ms-composed">Composed</Label>
+        <MultiSelect
           options={FRAMEWORKS}
-          value={compound}
-          onValueChange={setCompound}
+          value={composed}
+          onValueChange={setComposed}
         >
-          <MultiSelect.Trigger placeholder="Compose your own" />
-          <MultiSelect.Content
+          <MultiSelectTrigger placeholder="Compose your own" />
+          <MultiSelectContent
             searchPlaceholder="Filter frameworks…"
             emptyMessage="No matches."
           />
-        </MultiSelect.Root>
+        </MultiSelect>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          value = [{compound.map((v) => `"${v}"`).join(", ")}]
+          value = [{composed.map((v) => `"${v}"`).join(", ")}]
         </p>
       </div>
     </div>

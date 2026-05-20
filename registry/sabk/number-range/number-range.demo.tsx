@@ -3,7 +3,11 @@
 import * as React from "react"
 
 import { Label } from "@/registry/sabk/ui/label"
-import { NumberRange } from "@/registry/sabk/number-range/number-range"
+import {
+  NumberRange,
+  NumberRangeInputs,
+  NumberRangeSlider,
+} from "@/registry/sabk/number-range/number-range"
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)
@@ -15,6 +19,7 @@ export default function NumberRangeDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
           <Label>Price (USD)</Label>
@@ -27,21 +32,25 @@ export default function NumberRangeDemo() {
           max={5000}
           step={50}
           value={price}
-          onChange={setPrice}
+          onValueChange={setPrice}
           prefix="$"
           format={usd}
           parse={parseNum}
-        />
+        >
+          <NumberRangeSlider />
+          <NumberRangeInputs />
+        </NumberRange>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
-          <Label>Age (compound)</Label>
+          <Label>Age</Label>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             {age[0]}–{age[1]} yrs
           </span>
         </div>
-        <NumberRange.Root
+        <NumberRange
           min={0}
           max={100}
           step={1}
@@ -49,9 +58,9 @@ export default function NumberRangeDemo() {
           onValueChange={setAge}
           suffix="yrs"
         >
-          <NumberRange.Slider />
-          <NumberRange.Inputs separator="→" />
-        </NumberRange.Root>
+          <NumberRangeSlider />
+          <NumberRangeInputs separator="→" />
+        </NumberRange>
       </div>
     </div>
   )

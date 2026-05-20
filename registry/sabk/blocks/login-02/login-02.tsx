@@ -6,7 +6,11 @@ import { ArrowRight, Quote } from "lucide-react"
 import { Button } from "@/registry/sabk/ui/button"
 import { Input } from "@/registry/sabk/ui/input"
 import { Label } from "@/registry/sabk/ui/label"
-import { PasswordInput } from "@/registry/sabk/password-input/password-input"
+import {
+  PasswordInput,
+  PasswordInputField,
+  PasswordInputStrength,
+} from "@/registry/sabk/password-input/password-input"
 
 export default function Login02() {
   const [email, setEmail] = React.useState("")
@@ -17,19 +21,16 @@ export default function Login02() {
       <div className="flex items-center justify-center px-6 py-16 md:px-10 lg:px-12">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center gap-2">
-            <span className="inline-flex size-7 items-center justify-center rounded-sm border-2 border-border bg-card text-base font-semibold text-forge">
+            <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card text-base font-semibold text-foreground">
               ◆
             </span>
             <span className="text-base font-semibold tracking-[-0.025em]">
               sabk
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              · forge
-            </span>
           </div>
 
           <div className="mb-8 flex flex-col gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-forge">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
               ◆ sign in
             </span>
             <h1 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
@@ -72,7 +73,7 @@ export default function Login02() {
                 </Label>
                 <a
                   href="#"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-forge"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Reset
                 </a>
@@ -80,22 +81,23 @@ export default function Login02() {
               <PasswordInput
                 id="login02-password"
                 value={password}
-                onChange={setPassword}
-                showStrength
-                placeholder="••••••••"
-              />
+                onValueChange={setPassword}
+              >
+                <PasswordInputField placeholder="••••••••" />
+                <PasswordInputStrength />
+              </PasswordInput>
             </div>
 
-            <Button type="submit" variant="forge" size="lg" className="group mt-2">
+            <Button type="submit" variant="default" size="lg" className="group mt-2">
               Continue
-              <ArrowRight className="size-4 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
             </Button>
 
             <p className="mt-2 text-center text-xs text-muted-foreground">
               No account yet?{" "}
               <a
                 href="#"
-                className="font-medium text-foreground underline-offset-4 hover:text-forge hover:underline"
+                className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
                 Start a workspace
               </a>
@@ -104,7 +106,7 @@ export default function Login02() {
         </div>
       </div>
 
-      <div className="relative isolate hidden overflow-hidden border-l-2 border-border bg-card md:flex md:items-center md:justify-center">
+      <div className="relative isolate hidden overflow-hidden border-l border-border bg-card md:flex md:items-center md:justify-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-30"
@@ -117,20 +119,20 @@ export default function Login02() {
         <div
           aria-hidden
           className="pointer-events-none absolute -bottom-32 -right-24 -z-10 size-[420px] rounded-full opacity-[0.18] blur-3xl"
-          style={{ background: "var(--forge)" }}
+          style={{ background: "var(--primary)" }}
         />
 
         <div className="flex w-full max-w-md flex-col gap-8 px-8 py-12 md:gap-10 md:px-10 lg:px-12 lg:py-16">
-          <Quote className="size-7 text-forge md:size-8" strokeWidth={1.5} />
+          <Quote className="size-7 text-foreground md:size-8" strokeWidth={1.5} />
 
           <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
             Sabk gave us back the week we were going to spend rebuilding
-            a <span className="text-forge">multi-select</span> for the
+            a <span className="text-foreground">multi-select</span> for the
             fourth time.
           </blockquote>
 
-          <div className="flex items-center gap-4 border-t-2 border-border pt-6">
-            <div className="flex size-10 items-center justify-center rounded-sm border-2 border-border bg-background font-mono text-sm font-medium text-forge">
+          <div className="flex items-center gap-4 border-t border-border pt-6">
+            <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-background font-mono text-sm font-medium text-foreground">
               MR
             </div>
             <div className="flex flex-col">
@@ -141,7 +143,7 @@ export default function Login02() {
             </div>
           </div>
 
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border-2 border-border bg-border">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-border bg-border">
             {[
               ["12", "components"],
               ["0", "runtime deps"],

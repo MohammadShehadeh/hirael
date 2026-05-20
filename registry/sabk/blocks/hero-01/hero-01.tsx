@@ -36,19 +36,19 @@ export default function Hero01() {
       <div
         aria-hidden
         className="pointer-events-none absolute -right-32 -top-32 -z-10 size-[420px] rounded-full opacity-[0.15] blur-3xl"
-        style={{ background: "var(--forge)" }}
+        style={{ background: "var(--primary)" }}
       />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 py-20 md:px-10 lg:grid-cols-12 lg:gap-16 lg:py-28">
         <div className="flex flex-col gap-8 lg:col-span-7">
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border-2 border-border bg-card px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <Sparkles className="size-3 text-forge" />
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border border-border bg-card px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em]">
+            <Sparkles className="size-3 text-foreground" />
             v0.1 · production-ready
           </span>
 
           <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
             Ship the parts shadcn{" "}
-            <span className="text-forge">doesn&apos;t</span>{" "}
+            <span className="text-foreground">doesn&apos;t</span>{" "}
             include.
           </h1>
 
@@ -60,16 +60,16 @@ export default function Hero01() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="forge" size="lg" className="group">
+            <Button variant="default" size="lg" className="group">
               Get started
-              <ArrowRight className="size-4 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
             </Button>
             <Button variant="outline" size="lg">
               Browse the registry
             </Button>
           </div>
 
-          <dl className="mt-4 grid grid-cols-3 divide-x-2 divide-border border-y-2 border-border">
+          <dl className="mt-4 grid grid-cols-3 divide-x divide-border border-y border-border">
             {STATS.map((s, i) => (
               <div key={s.label} className={i === 0 ? "py-4 pr-4" : "p-4"}>
                 <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -85,10 +85,10 @@ export default function Hero01() {
 
         <div className="flex items-start lg:col-span-5">
           <div
-            className="relative w-full rounded-sm border-2 border-border bg-card"
+            className="relative w-full rounded-sm border border-border bg-card"
             style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
           >
-            <div className="flex items-center justify-between border-b-2 border-border px-4 py-2.5">
+            <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 <Terminal className="size-3" />
                 sabk/install.sh
@@ -96,7 +96,7 @@ export default function Hero01() {
               <div className="flex items-center gap-1">
                 <span className="size-1.5 rounded-full bg-border" />
                 <span className="size-1.5 rounded-full bg-border" />
-                <span className="size-1.5 rounded-full bg-forge" />
+                <span className="size-1.5 rounded-full bg-foreground" />
               </div>
             </div>
 
@@ -106,7 +106,7 @@ export default function Hero01() {
                   <span key={i} className="block">
                     {line.kind === "cmd" && (
                       <>
-                        <span className="text-forge">$</span>{" "}
+                        <span className="text-foreground">$</span>{" "}
                         <span className="text-foreground">{line.text.slice(2)}</span>
                       </>
                     )}
@@ -125,7 +125,7 @@ export default function Hero01() {
               </code>
             </pre>
 
-            <div className="border-t-2 border-border bg-background/60 px-4 py-2.5">
+            <div className="border-t border-border bg-background/60 px-4 py-2.5">
               <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.1em]">
                 <span className="text-muted-foreground">added</span>
                 <span className="text-foreground">multi-select.tsx</span>

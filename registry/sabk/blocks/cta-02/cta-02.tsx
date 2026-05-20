@@ -29,12 +29,12 @@ export default function Cta02() {
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5]"
         style={{
           backgroundImage:
-            "radial-gradient(ellipse 80% 50% at 50% 50%, color-mix(in oklch, var(--forge) 12%, transparent), transparent 70%)",
+            "radial-gradient(ellipse 80% 50% at 50% 50%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 70%)",
         }}
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-forge">
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
           ◆ one-line install
         </span>
 
@@ -45,7 +45,7 @@ export default function Cta02() {
             <span
               aria-hidden
               className="absolute inset-x-0 bottom-1 -z-0 h-3"
-              style={{ background: "color-mix(in oklch, var(--forge) 35%, transparent)" }}
+              style={{ background: "color-mix(in oklch, var(--primary) 35%, transparent)" }}
             />
           </span>
         </h2>
@@ -57,20 +57,20 @@ export default function Cta02() {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Button variant="forge" size="lg" className="group">
+          <Button variant="default" size="lg" className="group">
             Browse the registry
-            <ArrowRight className="size-4 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+            <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
           </Button>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             or{" "}
-            <a className="underline-offset-4 hover:text-forge hover:underline" href="#">
+            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
               read the dual-API contract
             </a>
           </span>
         </div>
 
-        <div className="mt-2 flex max-w-full items-center gap-3 overflow-x-auto rounded-sm border-2 border-border bg-card px-3 py-2 font-mono text-xs">
-          <span className="shrink-0 text-forge">$</span>
+        <div className="mt-2 flex max-w-full items-center gap-3 overflow-x-auto rounded-sm border border-border bg-card px-3 py-2 font-mono text-xs">
+          <span className="shrink-0 text-foreground">$</span>
           <code className="whitespace-nowrap text-foreground">
             npx shadcn add{" "}
             <span className="text-muted-foreground">

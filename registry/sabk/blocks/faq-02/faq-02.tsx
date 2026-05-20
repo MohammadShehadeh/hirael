@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: "Is it compatible with shadcn themes?",
-    a: "Yes. Same CSS variables, plus a forge accent token. Any shadcn theme works out of the box.",
+    a: "Yes. Same CSS variables. Any shadcn theme works out of the box.",
   },
   {
     q: "What about accessibility?",
@@ -41,7 +41,7 @@ export default function Faq02() {
     <section className="bg-background py-20 md:py-28">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-12 px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             ◆ frequently asked
           </span>
           <h2 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
@@ -59,7 +59,7 @@ export default function Faq02() {
               key={ci}
               type="multiple"
               defaultValue={ci === 0 ? ["item-0-0"] : []}
-              className="border-y-2 border-border lg:border-y-2"
+              className="border-y border-border lg:border-y"
             >
               {col.map((f, i) => (
                 <AccordionItem

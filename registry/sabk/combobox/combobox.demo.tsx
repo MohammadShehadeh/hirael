@@ -5,6 +5,8 @@ import * as React from "react"
 import { Label } from "@/registry/sabk/ui/label"
 import {
   Combobox,
+  ComboboxContent,
+  ComboboxTrigger,
   useAsyncComboboxOptions,
 } from "@/registry/sabk/combobox/combobox"
 
@@ -55,19 +57,23 @@ export default function ComboboxDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label>Single-prop API · static options</Label>
+        <Label>Static options</Label>
         <Combobox
           options={FRAMEWORKS}
           value={staticValue}
-          onChange={setStaticValue}
-          placeholder="Pick a framework"
-        />
+          onValueChange={setStaticValue}
+        >
+          <ComboboxTrigger placeholder="Pick a framework" />
+          <ComboboxContent />
+        </Combobox>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label>Compound API · async loader (250ms simulated)</Label>
-        <Combobox.Root
+        <Label>Async loader (250ms simulated)</Label>
+        <Combobox
           value={asyncValue}
           onValueChange={setAsyncValue}
           options={options}
@@ -75,12 +81,12 @@ export default function ComboboxDemo() {
           onSearchChange={setQuery}
           externalFilter
         >
-          <Combobox.Trigger placeholder="Search npm packages…" />
-          <Combobox.Content
+          <ComboboxTrigger placeholder="Search npm packages…" />
+          <ComboboxContent
             searchPlaceholder="Type to query…"
             emptyMessage="No packages match."
           />
-        </Combobox.Root>
+        </Combobox>
         <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           value = {asyncValue ? `"${asyncValue}"` : "—"}
         </p>

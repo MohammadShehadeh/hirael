@@ -3,32 +3,43 @@
 import * as React from "react"
 
 import { Label } from "@/registry/sabk/ui/label"
-import { TagInput } from "@/registry/sabk/tag-input/tag-input"
+import {
+  TagInput,
+  TagInputContainer,
+  TagInputError,
+  TagInputField,
+  TagInputTag,
+} from "@/registry/sabk/tag-input/tag-input"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function TagInputDemo() {
-  const [single, setSingle] = React.useState<string[]>(["typescript", "react"])
+  const [basic, setBasic] = React.useState<string[]>(["typescript", "react"])
   const [emails, setEmails] = React.useState<string[]>(["jane@sabk.dev"])
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label>Single-prop API · max 6 tags</Label>
-        <TagInput
-          value={single}
-          onChange={setSingle}
-          maxTags={6}
-          placeholder="Enter, comma, or paste to split"
-        />
+        <Label>Tags · max 6</Label>
+        <TagInput value={basic} onValueChange={setBasic} maxTags={6}>
+          <TagInputContainer>
+            {basic.map((_, i) => (
+              <TagInputTag key={i} index={i} />
+            ))}
+            <TagInputField placeholder="Enter, comma, or paste to split" />
+          </TagInputContainer>
+          <TagInputError className="mt-1" />
+        </TagInput>
         <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          {single.length} / 6 · paste &ldquo;a, b, c&rdquo; to split
+          {basic.length} / 6 · paste &ldquo;a, b, c&rdquo; to split
         </p>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label>Compound API · validates emails</Label>
-        <TagInput.Root
+        <Label>Email tags · validated</Label>
+        <TagInput
           value={emails}
           onValueChange={setEmails}
           validate={(tag) =>
@@ -36,14 +47,14 @@ export default function TagInputDemo() {
           }
           maxTags={5}
         >
-          <TagInput.Container>
+          <TagInputContainer>
             {emails.map((_, i) => (
-              <TagInput.Tag key={i} index={i} />
+              <TagInputTag key={i} index={i} />
             ))}
-            <TagInput.Field placeholder="you@example.com" />
-          </TagInput.Container>
-          <TagInput.Error className="mt-1" />
-        </TagInput.Root>
+            <TagInputField placeholder="you@example.com" />
+          </TagInputContainer>
+          <TagInputError className="mt-1" />
+        </TagInput>
       </div>
     </div>
   )

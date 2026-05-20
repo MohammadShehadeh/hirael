@@ -123,31 +123,65 @@
       "name": "phone-input",
       "type": "registry:ui",
       "title": "Phone Input",
-      "description": "Country dial-code dropdown with E.164 formatting.",
+      "description": "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["input", "popover", "command"],
-      "files": []
+      "files": [
+        {
+          "path": "registry/sabk/phone-input/phone-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/phone-input.tsx"
+        }
+      ]
     },
     {
       "name": "currency-input",
       "type": "registry:ui",
       "title": "Currency Input",
-      "description": "Locale-aware grouping, currency-symbol prefix, decimal precision control.",
+      "description": "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
       "categories": ["inputs"],
       "dependencies": [],
       "registryDependencies": ["input"],
-      "files": []
+      "files": [
+        {
+          "path": "registry/sabk/currency-input/currency-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/currency-input.tsx"
+        }
+      ]
     },
     {
       "name": "file-dropzone",
       "type": "registry:ui",
       "title": "File Dropzone",
-      "description": "Drag-drop + click dropzone with previews, progress, accept and max-size validation.",
+      "description": "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
       "categories": ["files"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "badge"],
-      "files": []
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/file-dropzone/file-dropzone.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/file-dropzone.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "title": "Stat Card",
+      "description": "Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.",
+      "categories": ["data"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/stat-card/stat-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/stat-card.tsx"
+        }
+      ]
     },
     {
       "name": "color-picker",
@@ -211,7 +245,7 @@
       "name": "cta-01",
       "type": "registry:block",
       "title": "CTA · framed band",
-      "description": "Framed CTA card with forge corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
+      "description": "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
       "categories": ["blocks", "cta"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["button"],
@@ -275,7 +309,7 @@
       "name": "login-01",
       "type": "registry:block",
       "title": "Login · centered card",
-      "description": "Centered login card with forge monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
+      "description": "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
       "categories": ["blocks", "login"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["button", "input", "label", "password-input"],
@@ -300,6 +334,150 @@
           "path": "registry/sabk/blocks/login-02/login-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/login-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "feature-01",
+      "type": "registry:block",
+      "title": "Feature · alternating rows",
+      "description": "Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).",
+      "categories": ["blocks", "feature"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/feature-01/feature-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/feature-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "feature-02",
+      "type": "registry:block",
+      "title": "Feature · 3-up icon grid",
+      "description": "Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.",
+      "categories": ["blocks", "feature"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/feature-02/feature-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/feature-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-01",
+      "type": "registry:block",
+      "title": "Pricing · three-tier cards",
+      "description": "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
+      "categories": ["blocks", "pricing"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/pricing-01/pricing-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/pricing-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-02",
+      "type": "registry:block",
+      "title": "Pricing · feature comparison table",
+      "description": "Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.",
+      "categories": ["blocks", "pricing"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/pricing-02/pricing-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/pricing-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "testimonial-01",
+      "type": "registry:block",
+      "title": "Testimonial · single big quote",
+      "description": "Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.",
+      "categories": ["blocks", "testimonial"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/testimonial-01/testimonial-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/testimonial-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "testimonial-02",
+      "type": "registry:block",
+      "title": "Testimonial · masonry grid",
+      "description": "Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.",
+      "categories": ["blocks", "testimonial"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/testimonial-02/testimonial-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/testimonial-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "header-01",
+      "type": "registry:block",
+      "title": "Header · sticky nav",
+      "description": "Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.",
+      "categories": ["blocks", "header"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/header-01/header-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/header-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "footer-01",
+      "type": "registry:block",
+      "title": "Footer · four columns",
+      "description": "Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.",
+      "categories": ["blocks", "footer"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/footer-01/footer-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/footer-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "not-found-01",
+      "type": "registry:block",
+      "title": "Not Found · centered 404",
+      "description": "Centered 404 with mono eyebrow, display headline, paired CTAs and a 'try one of these' suggested-routes list.",
+      "categories": ["blocks", "not-found"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/not-found-01/not-found-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/not-found-01.tsx"
         }
       ]
     }

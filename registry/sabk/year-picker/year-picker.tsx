@@ -1,0 +1,498 @@
+"use client"
+
+import * as React from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/registry/sabk/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/registry/sabk/ui/popover"
+
+/* ============================================================================
+ * Types
+ * ========================================================================== */
+
+export type YearRange = { from: number; to?: number }
+export type YearPickerMode = "single" | "range"
+
+type YearPickerContextValue =
+  | {
+      mode: "single"
+      value: number | undefined
+      setValue: (year: number) => void
+      minYear: number
+      maxYear: number
+      decadeStart: number
+      setDecadeStart: (n: number) => void
+      open: boolean
+      setOpen: (open: boolean) => void
+      disabled?: boolean
+    }
+  | {
+      mode: "range"
+      value: YearRange | undefined
+      setValue: (year: number) => void
+      minYear: number
+      maxYear: number
+      decadeStart: number
+      setDecadeStart: (n: number) => void
+      open: boolean
+      setOpen: (open: boolean) => void
+      disabled?: boolean
+    }
+
+const YearPickerContext = React.createContext<YearPickerContextValue | null>(
+  null
+)
+
+function useYearPicker() {
+  const ctx = React.useContext(YearPickerContext)
+  if (!ctx) {
+    throw new Error(
+      "YearPicker compound components must be used inside <YearPicker.Root>"
+    )
+  }
+  return ctx
+}
+
+/* ============================================================================
+ * Root
+ * ========================================================================== */
+
+const DECADE = 12 // 4x3 grid: anchor decade + 1 before + 1 after
+
+function decadeStartFor(year: number) {
+  // Anchor a decade as the 12-year block beginning at year - (year % 10) - 1.
+  // This way the current year sits in the visible row, with one buffer year.
+  const base = year - (year % 10)
+  return base - 1
+}
+
+export type YearPickerRootProps =
+  | {
+      mode?: "single"
+      value?: number
+      defaultValue?: number
+      onValueChange?: (year: number) => void
+      minYear?: number
+      maxYear?: number
+      disabled?: boolean
+      open?: boolean
+      defaultOpen?: boolean
+      onOpenChange?: (open: boolean) => void
+      children?: React.ReactNode
+    }
+  | {
+      mode: "range"
+      value?: YearRange
+      defaultValue?: YearRange
+      onValueChange?: (range: YearRange) => void
+      minYear?: number
+      maxYear?: number
+      disabled?: boolean
+      open?: boolean
+      defaultOpen?: boolean
+      onOpenChange?: (open: boolean) => void
+      children?: React.ReactNode
+    }
+
+function YearPickerRoot(props: YearPickerRootProps) {
+  const {
+    minYear = 1900,
+    maxYear = 2100,
+    disabled,
+    open: openProp,
+    defaultOpen = false,
+    onOpenChange,
+    children,
+  } = props
+  const mode = props.mode ?? "single"
+
+  const [openInternal, setOpenInternal] = React.useState(defaultOpen)
+  const open = openProp ?? openInternal
+  const setOpen = React.useCallback(
+    (next: boolean) => {
+      if (openProp === undefined) setOpenInternal(next)
+      onOpenChange?.(next)
+    },
+    [openProp, onOpenChange]
+  )
+
+  // Single mode state
+  const [singleInternal, setSingleInternal] = React.useState<
+    number | undefined
+  >(mode === "single" ? (props as Extract<YearPickerRootProps, { mode?: "single" }>).defaultValue : undefined)
+  // Range mode state
+  const [rangeInternal, setRangeInternal] = React.useState<
+    YearRange | undefined
+  >(mode === "range" ? (props as Extract<YearPickerRootProps, { mode: "range" }>).defaultValue : undefined)
+
+  const singleValue =
+    mode === "single"
+      ? ((props as Extract<YearPickerRootProps, { mode?: "single" }>).value ??
+        singleInternal)
+      : undefined
+  const rangeValue =
+    mode === "range"
+      ? ((props as Extract<YearPickerRootProps, { mode: "range" }>).value ??
+        rangeInternal)
+      : undefined
+
+  const anchorYear =
+    (mode === "single" ? singleValue : rangeValue?.from) ??
+    new Date().getFullYear()
+  const [decadeStart, setDecadeStart] = React.useState<number>(
+    decadeStartFor(anchorYear)
+  )
+
+  const setValueSingle = React.useCallback(
+    (year: number) => {
+      const p = props as Extract<YearPickerRootProps, { mode?: "single" }>
+      if (p.value === undefined) setSingleInternal(year)
+      p.onValueChange?.(year)
+      setOpen(false)
+    },
+    [props, setOpen]
+  )
+
+  const setValueRange = React.useCallback(
+    (year: number) => {
+      const p = props as Extract<YearPickerRootProps, { mode: "range" }>
+      const current = p.value ?? rangeInternal
+      let next: YearRange
+      if (!current || (current.from && current.to)) {
+        next = { from: year }
+      } else if (year < current.from) {
+        next = { from: year, to: current.from }
+      } else {
+        next = { from: current.from, to: year }
+      }
+      if (p.value === undefined) setRangeInternal(next)
+      p.onValueChange?.(next)
+      if (next.to !== undefined) setOpen(false)
+    },
+    [props, rangeInternal, setOpen]
+  )
+
+  const ctx = React.useMemo<YearPickerContextValue>(() => {
+    if (mode === "single") {
+      return {
+        mode: "single",
+        value: singleValue,
+        setValue: setValueSingle,
+        minYear,
+        maxYear,
+        decadeStart,
+        setDecadeStart,
+        open,
+        setOpen,
+        disabled,
+      }
+    }
+    return {
+      mode: "range",
+      value: rangeValue,
+      setValue: setValueRange,
+      minYear,
+      maxYear,
+      decadeStart,
+      setDecadeStart,
+      open,
+      setOpen,
+      disabled,
+    }
+  }, [
+    mode,
+    singleValue,
+    rangeValue,
+    setValueSingle,
+    setValueRange,
+    minYear,
+    maxYear,
+    decadeStart,
+    open,
+    setOpen,
+    disabled,
+  ])
+
+  return (
+    <YearPickerContext.Provider value={ctx}>
+      <Popover open={open} onOpenChange={setOpen}>
+        {children}
+      </Popover>
+    </YearPickerContext.Provider>
+  )
+}
+
+/* ============================================================================
+ * Trigger
+ * ========================================================================== */
+
+function formatYearValue(ctx: YearPickerContextValue, placeholder: string) {
+  if (ctx.mode === "single") return ctx.value ? String(ctx.value) : placeholder
+  if (!ctx.value) return placeholder
+  if (ctx.value.to === undefined) return `${ctx.value.from} – …`
+  return `${ctx.value.from} – ${ctx.value.to}`
+}
+
+function YearPickerTrigger({
+  placeholder = "Pick a year",
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<"button">, "children"> & {
+  placeholder?: string
+  children?: React.ReactNode
+}) {
+  const ctx = useYearPicker()
+  const empty =
+    ctx.mode === "single" ? ctx.value === undefined : ctx.value === undefined
+  return (
+    <PopoverTrigger asChild>
+      <button
+        type="button"
+        disabled={ctx.disabled}
+        data-state={ctx.open ? "open" : "closed"}
+        className={cn(
+          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border-2 border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
+          "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
+          empty && "text-muted-foreground font-sans",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        {...props}
+      >
+        {children ?? formatYearValue(ctx, placeholder)}
+      </button>
+    </PopoverTrigger>
+  )
+}
+
+/* ============================================================================
+ * Content (decade grid)
+ * ========================================================================== */
+
+function isInRange(year: number, range: YearRange | undefined) {
+  if (!range || range.to === undefined) return false
+  return year > range.from && year < range.to
+}
+
+function isEndpoint(year: number, range: YearRange | undefined) {
+  if (!range) return false
+  return year === range.from || year === range.to
+}
+
+function YearPickerContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof PopoverContent>) {
+  const ctx = useYearPicker()
+  const years = Array.from(
+    { length: DECADE },
+    (_, i) => ctx.decadeStart + i
+  )
+  const today = new Date().getFullYear()
+
+  const canPrev = ctx.decadeStart - DECADE >= ctx.minYear - 1
+  const canNext = ctx.decadeStart + DECADE <= ctx.maxYear + 1
+
+  const gridRef = React.useRef<HTMLDivElement>(null)
+  const focusYear = (year: number) => {
+    const el = gridRef.current?.querySelector<HTMLButtonElement>(
+      `[data-year="${year}"]`
+    )
+    el?.focus()
+  }
+
+  const handleKey = (e: React.KeyboardEvent, year: number) => {
+    let next = year
+    switch (e.key) {
+      case "ArrowLeft":
+        next = year - 1
+        break
+      case "ArrowRight":
+        next = year + 1
+        break
+      case "ArrowUp":
+        next = year - 4
+        break
+      case "ArrowDown":
+        next = year + 4
+        break
+      case "PageUp":
+        ctx.setDecadeStart(ctx.decadeStart - DECADE)
+        return
+      case "PageDown":
+        ctx.setDecadeStart(ctx.decadeStart + DECADE)
+        return
+      default:
+        return
+    }
+    e.preventDefault()
+    next = Math.max(ctx.minYear, Math.min(ctx.maxYear, next))
+    if (next < ctx.decadeStart || next >= ctx.decadeStart + DECADE) {
+      ctx.setDecadeStart(decadeStartFor(next))
+      requestAnimationFrame(() => focusYear(next))
+    } else {
+      focusYear(next)
+    }
+  }
+
+  return (
+    <PopoverContent
+      align="start"
+      className={cn("w-64 p-3", className)}
+      {...props}
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label="Previous decade"
+          disabled={!canPrev}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart - DECADE)}
+          className="size-7"
+        >
+          <ChevronLeft className="size-3.5" />
+        </Button>
+        <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+          {years[0]} – {years[years.length - 1]}
+        </span>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label="Next decade"
+          disabled={!canNext}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart + DECADE)}
+          className="size-7"
+        >
+          <ChevronRight className="size-3.5" />
+        </Button>
+      </div>
+      <div
+        ref={gridRef}
+        role="grid"
+        aria-label="Years"
+        className="grid grid-cols-4 gap-1"
+      >
+        {years.map((year) => {
+          const out = year < ctx.minYear || year > ctx.maxYear
+          const selected =
+            ctx.mode === "single"
+              ? ctx.value === year
+              : isEndpoint(year, ctx.value)
+          const inRange =
+            ctx.mode === "range" ? isInRange(year, ctx.value) : false
+          const isToday = year === today
+          return (
+            <button
+              key={year}
+              type="button"
+              role="gridcell"
+              data-year={year}
+              disabled={out}
+              aria-selected={selected || inRange}
+              onClick={() => ctx.setValue(year)}
+              onKeyDown={(e) => handleKey(e, year)}
+              tabIndex={selected || (year === today && !selected) ? 0 : -1}
+              className={cn(
+                "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
+                "hover:bg-accent hover:text-accent-foreground",
+                "focus-visible:ring-2 focus-visible:ring-ring",
+                "disabled:opacity-30 disabled:hover:bg-transparent",
+                inRange && "bg-forge/15 text-forge",
+                selected && "bg-forge text-forge-foreground hover:bg-forge",
+                !selected &&
+                  isToday &&
+                  "ring-1 ring-inset ring-forge/60"
+              )}
+            >
+              {year}
+            </button>
+          )
+        })}
+      </div>
+    </PopoverContent>
+  )
+}
+
+/* ============================================================================
+ * Single-prop convenience wrapper
+ * ========================================================================== */
+
+export type YearPickerProps = {
+  mode?: YearPickerMode
+  value?: number | YearRange
+  defaultValue?: number | YearRange
+  onValueChange?: (value: number | YearRange) => void
+  onChange?: (value: number | YearRange) => void
+  minYear?: number
+  maxYear?: number
+  disabled?: boolean
+  placeholder?: string
+  className?: string
+}
+
+function YearPicker({
+  mode = "single",
+  value,
+  defaultValue,
+  onValueChange,
+  onChange,
+  placeholder,
+  className,
+  ...rest
+}: YearPickerProps) {
+  const handler = onValueChange ?? onChange
+  if (mode === "range") {
+    return (
+      <YearPickerRoot
+        mode="range"
+        value={value as YearRange | undefined}
+        defaultValue={defaultValue as YearRange | undefined}
+        onValueChange={handler as ((r: YearRange) => void) | undefined}
+        {...rest}
+      >
+        <YearPickerTrigger
+          placeholder={placeholder}
+          className={className}
+        />
+        <YearPickerContent />
+      </YearPickerRoot>
+    )
+  }
+  return (
+    <YearPickerRoot
+      mode="single"
+      value={value as number | undefined}
+      defaultValue={defaultValue as number | undefined}
+      onValueChange={handler as ((y: number) => void) | undefined}
+      {...rest}
+    >
+      <YearPickerTrigger placeholder={placeholder} className={className} />
+      <YearPickerContent />
+    </YearPickerRoot>
+  )
+}
+
+/* ============================================================================
+ * Exports
+ * ========================================================================== */
+
+const YearPickerNamespace = Object.assign(YearPicker, {
+  Root: YearPickerRoot,
+  Trigger: YearPickerTrigger,
+  Content: YearPickerContent,
+})
+
+export {
+  YearPickerNamespace as YearPicker,
+  YearPickerRoot,
+  YearPickerTrigger,
+  YearPickerContent,
+}

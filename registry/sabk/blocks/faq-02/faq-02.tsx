@@ -44,7 +44,7 @@ export default function Faq02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-forge">
             ◆ frequently asked
           </span>
-          <h2 className="max-w-2xl text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">
+          <h2 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
             Everything you&apos;d ask in the first ten minutes.
           </h2>
           <p className="max-w-xl text-balance text-sm text-muted-foreground">

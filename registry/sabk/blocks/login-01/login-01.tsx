@@ -116,7 +116,7 @@ export default function Login01() {
               />
             </div>
 
-            <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground select-none">
+            <label className="inline-flex cursor-pointer select-none items-center gap-2 text-xs text-muted-foreground">
               <span
                 role="checkbox"
                 aria-checked={remember}
@@ -128,7 +128,7 @@ export default function Login01() {
                     setRemember(!remember)
                   }
                 }}
-                className="relative inline-flex size-4 items-center justify-center rounded-[2px] border-2 border-border bg-transparent transition-colors data-[checked=true]:border-forge data-[checked=true]:bg-forge"
+                className="relative inline-flex size-4 items-center justify-center rounded-[2px] border-2 border-border bg-transparent transition-colors data-[checked=true]:border-forge data-[checked=true]:bg-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 data-checked={remember}
               >
                 {remember && (

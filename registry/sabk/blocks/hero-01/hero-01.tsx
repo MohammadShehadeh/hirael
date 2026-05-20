@@ -46,7 +46,7 @@ export default function Hero01() {
             v0.1 · production-ready
           </span>
 
-          <h1 className="text-5xl font-semibold tracking-[-0.04em] sm:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
             Ship the parts shadcn{" "}
             <span className="text-forge">doesn&apos;t</span>{" "}
             include.

@@ -36,7 +36,7 @@ export default function Cta01() {
                 <span className="size-1 rounded-full bg-forge" />
                 Ready to ship?
               </span>
-              <h2 className="text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-5xl">
+              <h2 className="text-balance text-2xl font-semibold leading-[1.1] tracking-[-0.03em] sm:text-3xl md:text-4xl lg:text-5xl">
                 Stop rebuilding the components{" "}
                 <span className="text-forge">every project</span> needs.
               </h2>

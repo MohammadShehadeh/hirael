@@ -1,3 +1,4 @@
+import { MobileTopBar } from "@/components/showcase/mobile-nav"
 import { ShowcaseSidebar } from "@/components/showcase/sidebar"
 
 export default function ShowcaseLayout({
@@ -8,7 +9,10 @@ export default function ShowcaseLayout({
   return (
     <div className="flex min-h-svh">
       <ShowcaseSidebar />
-      <main className="flex-1 min-w-0">{children}</main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <MobileTopBar />
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   )
 }

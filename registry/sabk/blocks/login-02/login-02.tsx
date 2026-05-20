@@ -13,8 +13,8 @@ export default function Login02() {
   const [password, setPassword] = React.useState("")
 
   return (
-    <section className="grid min-h-[640px] grid-cols-1 bg-background lg:grid-cols-2">
-      <div className="flex items-center justify-center px-6 py-16 md:px-12">
+    <section className="grid min-h-[640px] grid-cols-1 bg-background md:grid-cols-2">
+      <div className="flex items-center justify-center px-6 py-16 md:px-10 lg:px-12">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center gap-2">
             <span className="inline-flex size-7 items-center justify-center rounded-sm border-2 border-border bg-card text-base font-semibold text-forge">
@@ -104,7 +104,7 @@ export default function Login02() {
         </div>
       </div>
 
-      <div className="relative isolate hidden overflow-hidden border-l-2 border-border bg-card lg:flex lg:items-center lg:justify-center">
+      <div className="relative isolate hidden overflow-hidden border-l-2 border-border bg-card md:flex md:items-center md:justify-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-30"
@@ -120,10 +120,10 @@ export default function Login02() {
           style={{ background: "var(--forge)" }}
         />
 
-        <div className="flex w-full max-w-md flex-col gap-10 px-12 py-16">
-          <Quote className="size-8 text-forge" strokeWidth={1.5} />
+        <div className="flex w-full max-w-md flex-col gap-8 px-8 py-12 md:gap-10 md:px-10 lg:px-12 lg:py-16">
+          <Quote className="size-7 text-forge md:size-8" strokeWidth={1.5} />
 
-          <blockquote className="text-2xl font-medium leading-[1.3] tracking-[-0.02em] sm:text-3xl">
+          <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
             Sabk gave us back the week we were going to spend rebuilding
             a <span className="text-forge">multi-select</span> for the
             fourth time.

@@ -52,7 +52,7 @@ export default function Hero02() {
           <span className="text-muted-foreground">2026.05</span>
         </span>
 
-        <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+        <h1 className="max-w-4xl text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-7xl">
           The component registry for{" "}
           <span className="relative whitespace-nowrap text-forge">
             serious

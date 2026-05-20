@@ -38,7 +38,7 @@ export default function Cta02() {
           ◆ one-line install
         </span>
 
-        <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+        <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl md:text-5xl lg:text-6xl">
           Make your component layer{" "}
           <span className="relative inline-block">
             <span className="relative z-10">do its job.</span>
@@ -69,9 +69,9 @@ export default function Cta02() {
           </span>
         </div>
 
-        <div className="mt-2 inline-flex items-center gap-3 rounded-sm border-2 border-border bg-card px-3 py-2 font-mono text-xs">
-          <span className="text-forge">$</span>
-          <code className="text-foreground">
+        <div className="mt-2 flex max-w-full items-center gap-3 overflow-x-auto rounded-sm border-2 border-border bg-card px-3 py-2 font-mono text-xs">
+          <span className="shrink-0 text-forge">$</span>
+          <code className="whitespace-nowrap text-foreground">
             npx shadcn add{" "}
             <span className="text-muted-foreground">
               https://sabk.dev/r/multi-select

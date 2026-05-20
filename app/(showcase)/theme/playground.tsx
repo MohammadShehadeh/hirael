@@ -17,9 +17,9 @@ export function ThemePlayground() {
   const stable = REGISTRY.filter((r) => r.status === "stable")
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 md:px-10 md:py-14">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
       <header className="flex flex-col gap-5 border-b-2 border-border pb-8">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
             ◆ playground
           </span>
@@ -27,7 +27,7 @@ export function ThemePlayground() {
             live theme preview
           </span>
         </div>
-        <h1 className="text-4xl font-semibold tracking-[-0.035em] md:text-5xl">
+        <h1 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
           Your theme, every component.
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">

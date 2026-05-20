@@ -48,7 +48,7 @@ export default function Faq01() {
               <span className="size-1 rounded-full bg-forge" />
               FAQ · the short answers
             </span>
-            <h2 className="text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">
+            <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
               Frequently{" "}
               <span className="text-forge">unobvious</span> questions.
             </h2>

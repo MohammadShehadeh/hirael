@@ -2,6 +2,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { ArrowRight } from "lucide-react"
 
+import { BlockPreview } from "@/components/showcase/block-preview"
 import {
   BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
@@ -19,8 +20,8 @@ export default function BlocksIndex() {
   const blockCount = REGISTRY.filter((r) => r.category === "blocks").length
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-10">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
+      <header className="flex flex-col gap-5 border-b-2 border-border pb-8 sm:pb-10">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
             ◆ blocks
@@ -29,7 +30,7 @@ export default function BlocksIndex() {
             section-level compositions
           </span>
         </div>
-        <h1 className="text-5xl font-semibold tracking-[-0.04em] md:text-6xl">
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl">
           Blocks that compose, not decorate.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
@@ -80,54 +81,37 @@ export default function BlocksIndex() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                {items.map((entry) => {
-                  const Demo = entry.Demo
-                  return (
-                    <Link
-                      key={entry.name}
-                      href={`/blocks/${entry.name}`}
-                      className="group flex flex-col overflow-hidden rounded-sm border-2 border-border bg-background transition-colors hover:border-forge"
-                    >
-                      <div className="relative h-64 overflow-hidden border-b-2 border-border bg-card/40">
-                        {Demo && (
-                          <div
-                            className="pointer-events-none origin-top-left"
-                            style={{
-                              width: "200%",
-                              transform: "scale(0.5)",
-                            }}
-                          >
-                            <Demo />
-                          </div>
-                        )}
-                        <span
-                          aria-hidden
-                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                        />
-                      </div>
+              <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+                {items.map((entry) => (
+                  <Link
+                    key={entry.name}
+                    href={`/blocks/${entry.name}`}
+                    className="group flex flex-col overflow-hidden rounded-sm border-2 border-border bg-background transition-colors hover:border-forge focus-visible:border-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <BlockPreview name={entry.name} title={entry.title} />
 
-                      <div className="flex flex-col gap-2 p-5">
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="text-base font-medium tracking-[-0.015em]">
-                            {entry.title}
-                          </h3>
-                          <span className="size-1.5 rounded-full bg-forge" />
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {entry.blockTagline ?? entry.description}
-                        </p>
-                        <div className="mt-2 flex items-center justify-between border-t-2 border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                          <span>/blocks/{entry.name}</span>
-                          <span className="inline-flex items-center gap-1 text-muted-foreground transition-colors group-hover:text-forge">
-                            view
-                            <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
-                          </span>
-                        </div>
+                    <div className="flex flex-col gap-2 p-4 sm:p-5">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-base font-medium tracking-[-0.015em]">
+                          {entry.title}
+                        </h3>
+                        <span className="size-1.5 shrink-0 rounded-full bg-forge" />
                       </div>
-                    </Link>
-                  )
-                })}
+                      <p className="text-xs text-muted-foreground">
+                        {entry.blockTagline ?? entry.description}
+                      </p>
+                      <div className="mt-2 flex items-center justify-between gap-2 border-t-2 border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                        <span className="truncate">
+                          /blocks/{entry.name}
+                        </span>
+                        <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-forge">
+                          view
+                          <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </section>
           )

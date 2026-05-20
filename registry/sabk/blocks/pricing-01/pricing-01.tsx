@@ -122,11 +122,12 @@ export default function Pricing01() {
 
               <div className="mt-auto pt-2">
                 <Button
+                  asChild
                   variant={tier.ctaVariant}
                   size="lg"
                   className="w-full"
                 >
-                  {tier.cta}
+                  <a href="#">{tier.cta}</a>
                 </Button>
               </div>
             </div>

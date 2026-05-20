@@ -433,7 +433,7 @@ function MultiSelectItem({
       className={cn("justify-between", className)}
       {...props}
     >
-      <span className="truncate">{children ?? option.label}</span>
+      <span className="min-w-0 truncate">{children ?? option.label}</span>
       <span
         aria-hidden
         className={cn(

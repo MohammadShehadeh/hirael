@@ -309,9 +309,11 @@ function PhoneInputCountrySelect({
                   }}
                   className="justify-between"
                 >
-                  <span className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-medium">{c.iso2}</span>
-                    <span className="truncate">{c.name}</span>
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span className="shrink-0 font-mono text-xs font-medium">
+                      {c.iso2}
+                    </span>
+                    <span className="min-w-0 truncate">{c.name}</span>
                   </span>
                   <span className="font-mono text-xs text-muted-foreground">
                     {c.dialCode}

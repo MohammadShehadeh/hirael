@@ -49,25 +49,31 @@ export default function Cta01() {
 
             <div className="flex flex-col gap-3 lg:col-span-5 lg:items-end">
               <Button
+                asChild
                 variant="default"
                 size="lg"
                 className="group w-full justify-between lg:w-auto"
               >
-                Install via shadcn CLI
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                <a href="#">
+                  Install via shadcn CLI
+                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                </a>
               </Button>
               <Button
+                asChild
                 variant="outline"
                 size="lg"
                 className="w-full justify-between lg:w-auto"
               >
-                <span className="inline-flex items-center gap-2">
-                  <Github className="size-4" />
-                  Star on GitHub
-                </span>
-                <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                  1.2k
-                </span>
+                <a href="#">
+                  <span className="inline-flex items-center gap-2">
+                    <Github className="size-4" />
+                    Star on GitHub
+                  </span>
+                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                    1.2k
+                  </span>
+                </a>
               </Button>
               <p className="text-right font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 MIT · no runtime dependency

@@ -105,11 +105,12 @@ export default function Pricing02() {
                         </span>
                       </div>
                       <Button
+                        asChild
                         variant={t.ctaVariant}
                         size="sm"
                         className="w-full"
                       >
-                        {t.cta}
+                        <a href="#">{t.cta}</a>
                       </Button>
                     </div>
                   </th>

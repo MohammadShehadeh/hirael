@@ -51,11 +51,11 @@ export default function Header01() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button variant="ghost" size="sm">
-              Sign in
+            <Button asChild variant="ghost" size="sm">
+              <a href="#">Sign in</a>
             </Button>
-            <Button variant="default" size="sm">
-              Get started
+            <Button asChild variant="default" size="sm">
+              <a href="#">Get started</a>
             </Button>
           </div>
 
@@ -88,11 +88,25 @@ export default function Header01() {
               ))}
             </ul>
             <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
-              <Button variant="ghost" size="sm" className="w-full justify-center">
-                Sign in
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-center"
+              >
+                <a href="#" onClick={() => setOpen(false)}>
+                  Sign in
+                </a>
               </Button>
-              <Button variant="default" size="sm" className="w-full justify-center">
-                Get started
+              <Button
+                asChild
+                variant="default"
+                size="sm"
+                className="w-full justify-center"
+              >
+                <a href="#" onClick={() => setOpen(false)}>
+                  Get started
+                </a>
               </Button>
             </div>
           </div>

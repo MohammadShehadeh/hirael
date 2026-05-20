@@ -57,9 +57,11 @@ export default function Cta02() {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Button variant="default" size="lg" className="group">
-            Browse the registry
-            <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+          <Button asChild variant="default" size="lg" className="group">
+            <a href="#">
+              Browse the registry
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+            </a>
           </Button>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             or{" "}

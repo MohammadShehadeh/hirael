@@ -14,7 +14,9 @@ export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const stable = REGISTRY.filter((r) => r.status === "stable")
+  const stable = REGISTRY.filter(
+    (r) => r.status === "stable" && r.category !== "blocks"
+  )
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">

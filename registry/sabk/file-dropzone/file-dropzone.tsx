@@ -283,7 +283,7 @@ function FileDropzoneZone({
         if (dropped && dropped.length > 0) ctx.addFiles(dropped)
       }}
       className={cn(
-        "flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none",
+        "flex min-w-0 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none",
         "hover:border-foreground/30 hover:bg-accent/50",
         "focus-visible:ring-2 focus-visible:ring-ring",
         isDragging && "border-foreground/30 bg-accent/50",
@@ -339,7 +339,7 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
   return (
     <ul
       data-slot="file-dropzone-list"
-      className={cn("mt-3 flex flex-col gap-1.5", className)}
+      className={cn("mt-3 flex min-w-0 flex-col gap-1.5", className)}
       {...props}
     >
       {ctx.files.map((file, index) => {
@@ -386,7 +386,7 @@ function FileDropzoneErrors({ className, ...props }: FileDropzoneErrorsProps) {
     <ul
       role="alert"
       data-slot="file-dropzone-errors"
-      className={cn("mt-2 flex flex-col gap-1", className)}
+      className={cn("mt-2 flex min-w-0 flex-col gap-1", className)}
       {...props}
     >
       {ctx.errors.map((err, i) => (

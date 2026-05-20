@@ -1,80 +1,145 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
-  "homepage": "https://acme.com",
+  "name": "sabk",
+  "homepage": "https://sabk.dev",
   "items": [
     {
-      "name": "hello-world",
-      "type": "registry:component",
-      "title": "Hello World",
-      "description": "A simple hello world component",
-      "registryDependencies": ["button"],
+      "name": "multi-select",
+      "type": "registry:ui",
+      "title": "Multi Select",
+      "description": "Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.",
+      "categories": ["inputs"],
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["button", "popover", "command", "badge"],
       "files": [
         {
-          "path": "registry/new-york/blocks/hello-world/hello-world.tsx",
-          "type": "registry:component"
+          "path": "registry/sabk/multi-select/multi-select.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/multi-select.tsx"
         }
       ]
     },
     {
-      "name": "example-form",
-      "type": "registry:component",
-      "title": "Example Form",
-      "description": "A contact form with Zod validation.",
-      "dependencies": ["zod"],
-      "registryDependencies": ["button", "input", "label", "textarea", "card"],
+      "name": "number-range",
+      "type": "registry:ui",
+      "title": "Number Range",
+      "description": "Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.",
+      "categories": ["inputs"],
+      "dependencies": ["@radix-ui/react-slider"],
+      "registryDependencies": ["slider", "input", "label"],
       "files": [
         {
-          "path": "registry/new-york/blocks/example-form/example-form.tsx",
-          "type": "registry:component"
+          "path": "registry/sabk/number-range/number-range.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/number-range.tsx"
         }
       ]
     },
     {
-      "name": "complex-component",
-      "type": "registry:component",
-      "title": "Complex Component",
-      "description": "A complex component showing hooks, libs and components.",
-      "registryDependencies": ["card"],
+      "name": "year-picker",
+      "type": "registry:ui",
+      "title": "Year Picker",
+      "description": "Decade-grid year picker with keyboard nav, min/max bounds, single or range mode.",
+      "categories": ["pickers"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/new-york/blocks/complex-component/page.tsx",
-          "type": "registry:page",
-          "target": "app/pokemon/page.tsx"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-image.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/lib/pokemon.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/hooks/use-pokemon.ts",
-          "type": "registry:hook"
+          "path": "registry/sabk/year-picker/year-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/year-picker.tsx"
         }
       ]
     },
     {
-      "name": "example-with-css",
-      "type": "registry:component",
-      "title": "Example with CSS",
-      "description": "A login form with a CSS file.",
-      "files": [
-        {
-          "path": "registry/new-york/blocks/example-with-css/example-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/new-york/blocks/example-with-css/example-card.css",
-          "type": "registry:component"
-        }
-      ]
+      "name": "month-picker",
+      "type": "registry:ui",
+      "title": "Month Picker",
+      "description": "12-cell month grid with year stepper. Single or range mode.",
+      "categories": ["pickers"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "popover"],
+      "files": []
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "title": "Time Picker",
+      "description": "Hour, minute, second wheels with 12/24h modes and step intervals.",
+      "categories": ["pickers"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "popover", "input"],
+      "files": []
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "Tag Input",
+      "description": "Chip input with paste-to-split, dedupe, validation hook, max tags.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "input"],
+      "files": []
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable single-select with debounced async loader, empty/loading/error states.",
+      "categories": ["inputs"],
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["button", "popover", "command"],
+      "files": []
+    },
+    {
+      "name": "password-input",
+      "type": "registry:ui",
+      "title": "Password Input",
+      "description": "Show/hide toggle and optional pluggable strength meter.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input", "button"],
+      "files": []
+    },
+    {
+      "name": "phone-input",
+      "type": "registry:ui",
+      "title": "Phone Input",
+      "description": "Country dial-code dropdown with E.164 formatting.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input", "popover", "command"],
+      "files": []
+    },
+    {
+      "name": "currency-input",
+      "type": "registry:ui",
+      "title": "Currency Input",
+      "description": "Locale-aware grouping, currency-symbol prefix, decimal precision control.",
+      "categories": ["inputs"],
+      "dependencies": [],
+      "registryDependencies": ["input"],
+      "files": []
+    },
+    {
+      "name": "file-dropzone",
+      "type": "registry:ui",
+      "title": "File Dropzone",
+      "description": "Drag-drop + click dropzone with previews, progress, accept and max-size validation.",
+      "categories": ["files"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "badge"],
+      "files": []
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "title": "Color Picker",
+      "description": "HSL / HEX / RGB tabs, eyedropper where supported, recent swatches.",
+      "categories": ["pickers"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "popover", "input"],
+      "files": []
     }
   ]
 }

@@ -75,31 +75,49 @@
       "name": "tag-input",
       "type": "registry:ui",
       "title": "Tag Input",
-      "description": "Chip input with paste-to-split, dedupe, validation hook, max tags.",
+      "description": "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "input"],
-      "files": []
+      "registryDependencies": ["badge"],
+      "files": [
+        {
+          "path": "registry/sabk/tag-input/tag-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tag-input.tsx"
+        }
+      ]
     },
     {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable single-select with debounced async loader, empty/loading/error states.",
+      "description": "Searchable single-select with debounced async loader, group headings and clearable selection.",
       "categories": ["inputs"],
       "dependencies": ["cmdk", "lucide-react"],
       "registryDependencies": ["button", "popover", "command"],
-      "files": []
+      "files": [
+        {
+          "path": "registry/sabk/combobox/combobox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/combobox.tsx"
+        }
+      ]
     },
     {
       "name": "password-input",
       "type": "registry:ui",
       "title": "Password Input",
-      "description": "Show/hide toggle and optional pluggable strength meter.",
+      "description": "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "button"],
-      "files": []
+      "registryDependencies": ["input"],
+      "files": [
+        {
+          "path": "registry/sabk/password-input/password-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/password-input.tsx"
+        }
+      ]
     },
     {
       "name": "phone-input",
@@ -140,6 +158,150 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["button", "popover", "input"],
       "files": []
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Radix-powered accordion primitive used by the FAQ blocks. Plus icon rotates to an X on open.",
+      "categories": ["primitives"],
+      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/ui/accordion.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-01",
+      "type": "registry:block",
+      "title": "Hero · stat strip + install card",
+      "description": "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
+      "categories": ["blocks", "hero"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/hero-01/hero-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-02",
+      "type": "registry:block",
+      "title": "Hero · centered editorial",
+      "description": "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
+      "categories": ["blocks", "hero"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/hero-02/hero-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cta-01",
+      "type": "registry:block",
+      "title": "CTA · framed band",
+      "description": "Framed CTA card with forge corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
+      "categories": ["blocks", "cta"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/cta-01/cta-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cta-02",
+      "type": "registry:block",
+      "title": "CTA · centered announce",
+      "description": "Full-bleed centered CTA with framing rules, highlight underlay on the key word, and an inline install command.",
+      "categories": ["blocks", "cta"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/cta-02/cta-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "faq-01",
+      "type": "registry:block",
+      "title": "FAQ · sticky split",
+      "description": "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
+      "categories": ["blocks", "faq"],
+      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "registryDependencies": ["button", "accordion"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/faq-01/faq-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "faq-02",
+      "type": "registry:block",
+      "title": "FAQ · centered grid",
+      "description": "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
+      "categories": ["blocks", "faq"],
+      "dependencies": ["@radix-ui/react-accordion"],
+      "registryDependencies": ["accordion"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/faq-02/faq-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "login-01",
+      "type": "registry:block",
+      "title": "Login · centered card",
+      "description": "Centered login card with forge monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
+      "categories": ["blocks", "login"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input", "label", "password-input"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/login-01/login-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/login-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "login-02",
+      "type": "registry:block",
+      "title": "Login · split testimonial",
+      "description": "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
+      "categories": ["blocks", "login"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input", "label", "password-input"],
+      "files": [
+        {
+          "path": "registry/sabk/blocks/login-02/login-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/login-02.tsx"
+        }
+      ]
     }
   ]
 }

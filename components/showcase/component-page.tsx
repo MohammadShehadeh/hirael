@@ -3,40 +3,73 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { BlockViewer } from "@/components/showcase/block-viewer"
+import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
 import type { RegistryEntryMeta } from "@/registry/sabk/registry-meta"
 
 type Tab = "preview" | "code" | "install"
+
+export type SourceFile = {
+  code: string
+  html: string
+  lang: string
+}
 
 export function ComponentPage({
   entry,
   source,
 }: {
   entry: RegistryEntryMeta
-  /** Pre-loaded file contents (path → string) for the Code tab. */
-  source: Record<string, string>
+  /** Pre-highlighted source files keyed by repo-relative path. */
+  source: Record<string, SourceFile>
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
-  const [activeFile, setActiveFile] = React.useState<string | undefined>(
-    entry.sourceFiles?.[0]
+
+  const codeTabs: CodeBlockTab[] = React.useMemo(
+    () =>
+      (entry.sourceFiles ?? [])
+        .map((f) => {
+          const file = source[f]
+          if (!file) return null
+          return { label: f, code: file.code, html: file.html }
+        })
+        .filter((t): t is CodeBlockTab => t !== null),
+    [entry.sourceFiles, source]
   )
 
   const Demo = entry.Demo
+  const isBlock = entry.category === "blocks"
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-6 py-10 md:px-10">
+    <div
+      className={cn(
+        "mx-auto flex w-full flex-col gap-6 px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 md:px-10",
+        isBlock ? "max-w-6xl" : "max-w-4xl"
+      )}
+    >
       <header className="flex flex-col gap-3 border-b-2 border-border pb-6">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             {entry.category}
           </span>
+          {entry.blockKind && (
+            <>
+              <span className="font-mono text-[10px] text-muted-foreground">
+                ·
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+                {entry.blockKind}
+              </span>
+            </>
+          )}
           {entry.status === "planned" && (
             <span className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
               planned
             </span>
           )}
         </div>
-        <h1 className="text-4xl font-semibold tracking-[-0.035em]">
+        <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
           {entry.title}
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
@@ -58,7 +91,11 @@ export function ComponentPage({
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-1 border-b-2 border-border">
+          <div
+            role="tablist"
+            aria-label="View"
+            className="-mx-4 flex items-center gap-0 overflow-x-auto border-b-2 border-border px-4 sm:mx-0 sm:px-0"
+          >
             {(
               [
                 ["preview", "Preview"],
@@ -69,9 +106,11 @@ export function ComponentPage({
               <button
                 key={k}
                 type="button"
+                role="tab"
+                aria-selected={tab === k}
                 onClick={() => setTab(k)}
                 className={cn(
-                  "relative -mb-[2px] px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] transition-colors",
+                  "relative -mb-[2px] shrink-0 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] transition-colors focus-visible:outline-none focus-visible:text-foreground",
                   tab === k
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -85,37 +124,18 @@ export function ComponentPage({
             ))}
           </div>
 
-          {tab === "preview" && Demo && (
-            <div className="flex min-h-[420px] items-center justify-center rounded-sm border-2 border-border bg-card/40 p-10">
-              <Demo />
-            </div>
-          )}
-
-          {tab === "code" && entry.sourceFiles && (
-            <div className="overflow-hidden rounded-sm border-2 border-border">
-              <div className="flex items-center gap-2 border-b-2 border-border bg-card px-3 py-1.5">
-                {entry.sourceFiles.map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setActiveFile(f)}
-                    className={cn(
-                      "rounded-sm px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
-                      activeFile === f
-                        ? "bg-accent text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {f.split("/").slice(-1)[0]}
-                  </button>
-                ))}
+          {tab === "preview" &&
+            Demo &&
+            (isBlock ? (
+              <BlockViewer name={entry.name} title={entry.title} />
+            ) : (
+              <div className="flex min-h-[360px] items-center justify-center rounded-sm border-2 border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
+                <Demo />
               </div>
-              <pre className="max-h-[640px] overflow-auto bg-card p-4 text-xs leading-relaxed">
-                <code className="font-mono">
-                  {activeFile ? (source[activeFile] ?? "// (missing)") : ""}
-                </code>
-              </pre>
-            </div>
+            ))}
+
+          {tab === "code" && codeTabs.length > 0 && (
+            <CodeBlock tabs={codeTabs} />
           )}
 
           {tab === "install" && (

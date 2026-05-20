@@ -11,21 +11,21 @@ import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/sabk/registry-meta"
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return REGISTRY.filter((entry) => entry.category !== "blocks").map(
-    (entry) => ({ component: entry.name })
+  return REGISTRY.filter((entry) => entry.category === "blocks").map(
+    (entry) => ({ block: entry.name })
   )
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ component: string }>
+  params: Promise<{ block: string }>
 }): Promise<Metadata> {
-  const { component } = await params
-  const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks") return {}
+  const { block } = await params
+  const entry = REGISTRY_BY_NAME[block]
+  if (!entry || entry.category !== "blocks") return {}
   return {
-    title: `${entry.title} — Sabk`,
+    title: `${entry.title} — Sabk blocks`,
     description: entry.description,
   }
 }
@@ -51,14 +51,14 @@ async function loadSource(
   return out
 }
 
-export default async function ComponentRoute({
+export default async function BlockRoute({
   params,
 }: {
-  params: Promise<{ component: string }>
+  params: Promise<{ block: string }>
 }) {
-  const { component } = await params
-  const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks") notFound()
+  const { block } = await params
+  const entry = REGISTRY_BY_NAME[block]
+  if (!entry || entry.category !== "blocks") notFound()
   const source = await loadSource(entry.sourceFiles)
   return <ComponentPage entry={entry} source={source} />
 }

@@ -23,7 +23,8 @@ export function InstallBlock({
     }
   }, [])
 
-  const command = `npx shadcn@latest add ${origin || "https://sabk.dev"}/r/${name}.json`
+  const base = origin || "https://sabk.dev"
+  const command = `npx shadcn@latest add ${base}/r/${name}.json`
 
   const onCopy = async () => {
     await navigator.clipboard.writeText(command)
@@ -42,7 +43,10 @@ export function InstallBlock({
         $
       </span>
       <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground">
-        {command}
+        <span className="text-muted-foreground">npx</span>{" "}
+        <span className="text-foreground">shadcn@latest</span>{" "}
+        <span className="text-muted-foreground">add</span>{" "}
+        <span className="text-forge">{base}/r/{name}.json</span>
       </code>
       <button
         type="button"

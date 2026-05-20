@@ -1,7 +1,12 @@
 import Link from "next/link"
+import { ArrowRight, LayoutTemplate } from "lucide-react"
 
+import { InlineCodeBlock } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
+import { highlightCode } from "@/lib/highlight"
 import {
+  BLOCK_KIND_LABELS,
+  BLOCK_KIND_ORDER,
   CATEGORY_LABELS,
   REGISTRY,
   REGISTRY_BY_CATEGORY,
@@ -10,13 +15,23 @@ import {
 
 const ORDER: ComponentCategory[] = ["inputs", "pickers", "files"]
 
-export default function ShowcaseHome() {
+const DUAL_API_SNIPPET = `// Compound
+<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
+  <MultiSelect.Trigger placeholder="Pick…" />
+  <MultiSelect.Content searchPlaceholder="Filter…" />
+</MultiSelect.Root>
+
+// Single-prop
+<MultiSelect options={options} value={value} onChange={setValue} />`
+
+export default async function ShowcaseHome() {
   const stableCount = REGISTRY.filter((r) => r.status === "stable").length
+  const dualApiHtml = await highlightCode(DUAL_API_SNIPPET, "tsx")
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-6 py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-10">
-        <div className="flex items-center gap-2">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
+      <header className="flex flex-col gap-5 border-b-2 border-border pb-8 sm:pb-10">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
             ◆ sabk · v0.1
           </span>
@@ -24,7 +39,7 @@ export default function ShowcaseHome() {
             peer of shadcn, not a replacement
           </span>
         </div>
-        <h1 className="text-5xl font-semibold tracking-[-0.04em] md:text-6xl">
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl">
           shadcn&apos;s missing pieces.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
@@ -91,6 +106,51 @@ export default function ShowcaseHome() {
         })}
       </section>
 
+      <section className="grid gap-4 border-t-2 border-border pt-8">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
+            Blocks
+          </h2>
+          <Link
+            href="/blocks"
+            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-forge"
+          >
+            view all
+            <ArrowRight className="size-3" />
+          </Link>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Section-level compositions built on top of the registry —
+          heroes, CTAs, FAQs and auth screens, in the same forge
+          aesthetic. Copy a block into your repo in one command.
+        </p>
+        <Link
+          href="/blocks"
+          className="group flex items-center justify-between gap-4 rounded-sm border-2 border-border bg-card p-4 transition-colors hover:border-forge"
+        >
+          <div className="flex items-center gap-4">
+            <span className="inline-flex size-10 items-center justify-center rounded-sm border-2 border-border bg-background">
+              <LayoutTemplate className="size-4 text-forge" />
+            </span>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-medium">
+                {REGISTRY_BY_CATEGORY.blocks.length} top-tier blocks ·{" "}
+                {BLOCK_KIND_ORDER.length} categories
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                {BLOCK_KIND_ORDER.map(
+                  (k) => `${BLOCK_KIND_LABELS[k].toLowerCase()}`
+                ).join(" · ")}
+              </span>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors group-hover:text-forge">
+            /blocks
+            <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+          </span>
+        </Link>
+      </section>
+
       <section className="grid gap-3 border-t-2 border-border pt-8">
         <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
           Dual-API contract
@@ -101,16 +161,7 @@ export default function ShowcaseHome() {
           composition, layout, or rendering. Single-prop is the convenience
           wrapper; ninety percent of usage looks like this.
         </p>
-        <pre className="overflow-x-auto rounded-sm border-2 border-border bg-card p-4 font-mono text-xs leading-relaxed">
-{`// Compound
-<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
-  <MultiSelect.Trigger placeholder="Pick…" />
-  <MultiSelect.Content searchPlaceholder="Filter…" />
-</MultiSelect.Root>
-
-// Single-prop
-<MultiSelect options={options} value={value} onChange={setValue} />`}
-        </pre>
+        <InlineCodeBlock code={DUAL_API_SNIPPET} html={dualApiHtml} />
       </section>
     </div>
   )

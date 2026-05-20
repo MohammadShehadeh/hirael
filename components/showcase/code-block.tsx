@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Check, Copy } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { CopyButton } from "@/components/showcase/copy-button"
 
 export type CodeBlockTab = {
   /** Tab label (e.g. filename). */
@@ -36,29 +36,41 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-sm border border-border",
+        "overflow-hidden rounded-md border border-border bg-card",
         className
       )}
     >
-      <div className="flex items-center justify-between gap-2 border-b border-border bg-card px-2 py-1.5">
-        <div className="flex items-center gap-1 overflow-x-auto">
-          {tabs.map((t) => (
-            <button
-              key={t.label}
-              type="button"
-              onClick={() => setActive(t.label)}
-              className={cn(
-                "rounded-sm px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
-                active === t.label
-                  ? "bg-accent text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {t.label.split("/").slice(-1)[0]}
-            </button>
-          ))}
+      <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
+        <div
+          role="tablist"
+          aria-label="Source files"
+          className="flex min-w-0 items-center gap-0.5 overflow-x-auto"
+        >
+          {tabs.map((t) => {
+            const isActive = active === t.label
+            const filename = t.label.split("/").slice(-1)[0]
+            return (
+              <button
+                key={t.label}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                title={t.label}
+                onClick={() => setActive(t.label)}
+                className={cn(
+                  "shrink-0 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  isActive
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {filename}
+              </button>
+            )
+          })}
         </div>
-        <CopyButton text={current.code} />
+        <CopyButton text={current.code} label="Copy code" className="mr-0.5" />
       </div>
       <div
         className={cn("shiki-scroll overflow-auto", maxHeight)}
@@ -82,53 +94,19 @@ export function InlineCodeBlock({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-sm border border-border",
+        "group relative overflow-hidden rounded-md border border-border bg-card",
         className
       )}
     >
       <CopyButton
         text={code}
-        className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100"
+        label="Copy code"
+        className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
       />
       <div
         className={cn("shiki-scroll overflow-auto", maxHeight)}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
-  )
-}
-
-function CopyButton({
-  text,
-  className,
-}: {
-  text: string
-  className?: string
-}) {
-  const [copied, setCopied] = React.useState(false)
-  return (
-    <button
-      type="button"
-      aria-label="Copy code"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(text)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 1400)
-        } catch {
-          // ignore
-        }
-      }}
-      className={cn(
-        "inline-flex size-7 shrink-0 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:text-foreground",
-        className
-      )}
-    >
-      {copied ? (
-        <Check className="size-3.5 text-foreground" />
-      ) : (
-        <Copy className="size-3.5" />
-      )}
-    </button>
   )
 }

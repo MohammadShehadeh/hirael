@@ -212,7 +212,7 @@ function ComboboxTrigger({
           <>
             <span
               className={cn(
-                "flex-1 truncate",
+                "min-w-0 flex-1 truncate",
                 !selected && "text-muted-foreground"
               )}
             >

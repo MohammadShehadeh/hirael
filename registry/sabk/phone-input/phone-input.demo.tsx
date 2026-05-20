@@ -7,44 +7,45 @@ import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
-  PhoneInputGroup,
-  PhoneInputRoot,
 } from "@/registry/sabk/phone-input/phone-input"
 
 export default function PhoneInputDemo() {
-  const [single, setSingle] = React.useState("")
-  const [compound, setCompound] = React.useState("+442071838750")
+  const [basic, setBasic] = React.useState("")
+  const [composed, setComposed] = React.useState("+442071838750")
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label htmlFor="ph-single">Single-prop API · default US</Label>
+        <Label htmlFor="ph-basic">Phone · default US</Label>
         <PhoneInput
-          id="ph-single"
-          value={single}
-          onValueChange={setSingle}
+          id="ph-basic"
+          value={basic}
+          onValueChange={setBasic}
           defaultCountry="US"
-        />
+        >
+          <PhoneInputCountrySelect />
+          <PhoneInputField />
+        </PhoneInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          E.164: {single || "—"}
+          E.164: {basic || "—"}
         </p>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label htmlFor="ph-compound">Compound API · pre-filled UK number</Label>
-        <PhoneInputRoot
-          id="ph-compound"
-          value={compound}
-          onValueChange={setCompound}
+        <Label htmlFor="ph-composed">Phone · pre-filled UK number</Label>
+        <PhoneInput
+          id="ph-composed"
+          value={composed}
+          onValueChange={setComposed}
           defaultCountry="GB"
         >
-          <PhoneInputGroup>
-            <PhoneInputCountrySelect />
-            <PhoneInputField />
-          </PhoneInputGroup>
-        </PhoneInputRoot>
+          <PhoneInputCountrySelect />
+          <PhoneInputField placeholder="20 7183 8750" />
+        </PhoneInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          E.164: {compound || "—"}
+          E.164: {composed || "—"}
         </p>
       </div>
     </div>

@@ -4,7 +4,6 @@ import * as React from "react"
 import { Check, ChevronDown, X, Loader2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/registry/sabk/ui/button"
 import { Badge } from "@/registry/sabk/ui/badge"
 import {
   Popover,
@@ -57,7 +56,7 @@ function useMultiSelect() {
   const ctx = React.useContext(MultiSelectContext)
   if (!ctx) {
     throw new Error(
-      "MultiSelect compound components must be used inside <MultiSelect.Root>"
+      "MultiSelect compound components must be used inside <MultiSelect>"
     )
   }
   return ctx
@@ -67,7 +66,7 @@ function useMultiSelect() {
  * Root
  * ========================================================================== */
 
-export type MultiSelectRootProps = {
+export type MultiSelectProps = {
   value?: string[]
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
@@ -81,7 +80,7 @@ export type MultiSelectRootProps = {
   children?: React.ReactNode
 }
 
-function MultiSelectRoot({
+function MultiSelect({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -93,7 +92,7 @@ function MultiSelectRoot({
   defaultOpen = false,
   onOpenChange,
   children,
-}: MultiSelectRootProps) {
+}: MultiSelectProps) {
   const [internalValue, setInternalValue] = React.useState<string[]>(
     defaultValue ?? []
   )
@@ -331,6 +330,7 @@ function MultiSelectContent({
     <PopoverContent
       align="start"
       sideOffset={6}
+      data-slot="multi-select-content"
       className={cn(
         "w-(--radix-popover-trigger-width) min-w-[14rem] p-0",
         className
@@ -429,6 +429,7 @@ function MultiSelectItem({
       value={`${option.label} ${option.value}`}
       disabled={option.disabled || atCap}
       onSelect={() => ctx.toggle(option.value)}
+      data-slot="multi-select-item"
       className={cn("justify-between", className)}
       {...props}
     >
@@ -443,63 +444,6 @@ function MultiSelectItem({
         {selected && <Check className="size-2.5" strokeWidth={3} />}
       </span>
     </CommandItem>
-  )
-}
-
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type MultiSelectProps = Omit<MultiSelectRootProps, "children"> & {
-  placeholder?: string
-  searchPlaceholder?: string
-  emptyMessage?: string
-  showSelectAll?: boolean
-  showClear?: boolean
-  className?: string
-  /** Convenience alias for onValueChange. */
-  onChange?: (value: string[]) => void
-}
-
-function MultiSelect({
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  placeholder,
-  searchPlaceholder,
-  emptyMessage,
-  showSelectAll,
-  showClear,
-  maxCount,
-  disabled,
-  loading,
-  className,
-  ...rest
-}: MultiSelectProps) {
-  return (
-    <MultiSelectRoot
-      options={options}
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange ?? onChange}
-      maxCount={maxCount}
-      disabled={disabled}
-      loading={loading}
-      {...rest}
-    >
-      <MultiSelectTrigger
-        placeholder={placeholder}
-        className={className}
-      />
-      <MultiSelectContent
-        searchPlaceholder={searchPlaceholder}
-        emptyMessage={emptyMessage}
-        showSelectAll={showSelectAll}
-        showClear={showClear}
-      />
-    </MultiSelectRoot>
   )
 }
 
@@ -538,22 +482,8 @@ export function useAsyncOptions<T>(
   return { query, setQuery, options, loading, error }
 }
 
-/* ============================================================================
- * Exports
- *
- * Two API shapes ship from the same file:
- *   - Compound (canonical): <MultiSelect.Root>, <MultiSelect.Trigger>, …
- *   - Single-prop (convenience): <MultiSelect options value onChange />
- * ========================================================================== */
-
-MultiSelect.Root = MultiSelectRoot
-MultiSelect.Trigger = MultiSelectTrigger
-MultiSelect.Content = MultiSelectContent
-MultiSelect.Item = MultiSelectItem
-
 export {
   MultiSelect,
-  MultiSelectRoot,
   MultiSelectTrigger,
   MultiSelectContent,
   MultiSelectItem,

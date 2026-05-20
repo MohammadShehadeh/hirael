@@ -36,7 +36,7 @@ function useNumberRange() {
   const ctx = React.useContext(NumberRangeContext)
   if (!ctx) {
     throw new Error(
-      "NumberRange compound components must be used inside <NumberRange.Root>"
+      "NumberRange compound components must be used inside <NumberRange>"
     )
   }
   return ctx
@@ -71,7 +71,7 @@ const defaultParse: NumberParser = (s) => {
  * Root
  * ========================================================================== */
 
-export type NumberRangeRootProps = {
+export type NumberRangeProps = {
   value?: NumberRangeValue
   defaultValue?: NumberRangeValue
   onValueChange?: (value: NumberRangeValue) => void
@@ -87,7 +87,7 @@ export type NumberRangeRootProps = {
   children?: React.ReactNode
 }
 
-function NumberRangeRoot({
+function NumberRange({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -101,7 +101,7 @@ function NumberRangeRoot({
   suffix,
   className,
   children,
-}: NumberRangeRootProps) {
+}: NumberRangeProps) {
   const [internal, setInternal] = React.useState<NumberRangeValue>(
     defaultValue ?? [min, max]
   )
@@ -163,6 +163,7 @@ function NumberRangeSlider({
       value={ctx.value as number[]}
       disabled={ctx.disabled}
       onValueChange={(v) => ctx.setValue([v[0], v[1]] as NumberRangeValue)}
+      data-slot="number-range-slider"
       className={className}
       {...props}
     />
@@ -204,7 +205,7 @@ function NumberRangeInput({
   }
 
   return (
-    <div className="relative">
+    <div data-slot="number-range-input" className="relative">
       {ctx.prefix && (
         <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
           {ctx.prefix}
@@ -264,6 +265,7 @@ function NumberRangeInputs({
 }) {
   return (
     <div
+      data-slot="number-range-inputs"
       className={cn(
         "grid grid-cols-[1fr_auto_1fr] items-center gap-2",
         className
@@ -278,44 +280,8 @@ function NumberRangeInputs({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type NumberRangeProps = Omit<NumberRangeRootProps, "children"> & {
-  separator?: React.ReactNode
-  onChange?: (value: NumberRangeValue) => void
-}
-
-function NumberRange({
-  onValueChange,
-  onChange,
-  separator,
-  ...rest
-}: NumberRangeProps) {
-  return (
-    <NumberRangeRoot
-      onValueChange={onValueChange ?? onChange}
-      {...rest}
-    >
-      <NumberRangeSlider />
-      <NumberRangeInputs separator={separator} />
-    </NumberRangeRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-NumberRange.Root = NumberRangeRoot
-NumberRange.Slider = NumberRangeSlider
-NumberRange.Input = NumberRangeInput
-NumberRange.Inputs = NumberRangeInputs
-
 export {
   NumberRange,
-  NumberRangeRoot,
   NumberRangeSlider,
   NumberRangeInput,
   NumberRangeInputs,

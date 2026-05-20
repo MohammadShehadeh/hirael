@@ -50,7 +50,7 @@ function useCombobox() {
   const ctx = React.useContext(ComboboxContext)
   if (!ctx) {
     throw new Error(
-      "Combobox compound parts must be used inside <Combobox.Root>"
+      "Combobox compound parts must be used inside <Combobox>"
     )
   }
   return ctx
@@ -60,7 +60,7 @@ function useCombobox() {
  * Root
  * ========================================================================== */
 
-export type ComboboxRootProps = {
+export type ComboboxProps = {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string | undefined) => void
@@ -79,7 +79,7 @@ export type ComboboxRootProps = {
   children?: React.ReactNode
 }
 
-function ComboboxRoot({
+function Combobox({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -93,7 +93,7 @@ function ComboboxRoot({
   disabled,
   clearable = true,
   children,
-}: ComboboxRootProps) {
+}: ComboboxProps) {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(
     defaultValue
   )
@@ -283,6 +283,7 @@ function ComboboxContent({
     <PopoverContent
       align="start"
       sideOffset={6}
+      data-slot="combobox-content"
       className={cn(
         "w-(--radix-popover-trigger-width) min-w-[14rem] p-0",
         className
@@ -350,6 +351,7 @@ function ComboboxItem({
         ctx.setValue(selected ? undefined : option.value)
         ctx.setOpen(false)
       }}
+      data-slot="combobox-item"
       className={cn("justify-between", className)}
       {...props}
     >
@@ -394,72 +396,8 @@ export function useAsyncComboboxOptions<T>(
   return { query, setQuery, options, loading, error }
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type ComboboxProps = Omit<ComboboxRootProps, "children"> & {
-  placeholder?: string
-  searchPlaceholder?: string
-  emptyMessage?: string
-  loadingMessage?: string
-  className?: string
-  onChange?: (value: string | undefined) => void
-}
-
-function Combobox({
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  onSearchChange,
-  externalFilter,
-  loading,
-  disabled,
-  clearable,
-  placeholder,
-  searchPlaceholder,
-  emptyMessage,
-  loadingMessage,
-  className,
-  ...rest
-}: ComboboxProps) {
-  return (
-    <ComboboxRoot
-      options={options}
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange ?? onChange}
-      onSearchChange={onSearchChange}
-      externalFilter={externalFilter}
-      loading={loading}
-      disabled={disabled}
-      clearable={clearable}
-      {...rest}
-    >
-      <ComboboxTrigger placeholder={placeholder} className={className} />
-      <ComboboxContent
-        searchPlaceholder={searchPlaceholder}
-        emptyMessage={emptyMessage}
-        loadingMessage={loadingMessage}
-      />
-    </ComboboxRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-Combobox.Root = ComboboxRoot
-Combobox.Trigger = ComboboxTrigger
-Combobox.Content = ComboboxContent
-Combobox.Item = ComboboxItem
-
 export {
   Combobox,
-  ComboboxRoot,
   ComboboxTrigger,
   ComboboxContent,
   ComboboxItem,

@@ -6,7 +6,11 @@ import { ArrowRight, Quote } from "lucide-react"
 import { Button } from "@/registry/sabk/ui/button"
 import { Input } from "@/registry/sabk/ui/input"
 import { Label } from "@/registry/sabk/ui/label"
-import { PasswordInput } from "@/registry/sabk/password-input/password-input"
+import {
+  PasswordInput,
+  PasswordInputField,
+  PasswordInputStrength,
+} from "@/registry/sabk/password-input/password-input"
 
 export default function Login02() {
   const [email, setEmail] = React.useState("")
@@ -77,10 +81,11 @@ export default function Login02() {
               <PasswordInput
                 id="login02-password"
                 value={password}
-                onChange={setPassword}
-                showStrength
-                placeholder="••••••••"
-              />
+                onValueChange={setPassword}
+              >
+                <PasswordInputField placeholder="••••••••" />
+                <PasswordInputStrength />
+              </PasswordInput>
             </div>
 
             <Button type="submit" variant="default" size="lg" className="group mt-2">

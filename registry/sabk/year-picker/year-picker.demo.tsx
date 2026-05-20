@@ -5,6 +5,8 @@ import * as React from "react"
 import { Label } from "@/registry/sabk/ui/label"
 import {
   YearPicker,
+  YearPickerContent,
+  YearPickerTrigger,
   type YearRange,
 } from "@/registry/sabk/year-picker/year-picker"
 
@@ -17,32 +19,36 @@ export default function YearPickerDemo() {
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
+      {/* Basic */}
       <div className="grid gap-2">
         <Label>Founded</Label>
         <YearPicker
           value={year}
-          onChange={(v) => setYear(v as number)}
+          onValueChange={setYear}
           minYear={1970}
           maxYear={2035}
-          placeholder="Year"
-        />
+        >
+          <YearPickerTrigger placeholder="Year" />
+          <YearPickerContent />
+        </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           value = {year ?? "—"}
         </p>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label>Range (compound)</Label>
-        <YearPicker.Root
+        <Label>Range</Label>
+        <YearPicker
           mode="range"
           value={range}
           onValueChange={setRange}
           minYear={2000}
           maxYear={2030}
         >
-          <YearPicker.Trigger placeholder="Pick a range" />
-          <YearPicker.Content />
-        </YearPicker.Root>
+          <YearPickerTrigger placeholder="Pick a range" />
+          <YearPickerContent />
+        </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           {range?.from ?? "—"} → {range?.to ?? "…"}
         </p>

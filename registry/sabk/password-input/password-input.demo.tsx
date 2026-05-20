@@ -3,41 +3,44 @@
 import * as React from "react"
 
 import { Label } from "@/registry/sabk/ui/label"
-import { PasswordInput } from "@/registry/sabk/password-input/password-input"
+import {
+  PasswordInput,
+  PasswordInputField,
+  PasswordInputStrength,
+} from "@/registry/sabk/password-input/password-input"
 
 export default function PasswordInputDemo() {
-  const [single, setSingle] = React.useState("")
-  const [compound, setCompound] = React.useState("hunter2")
+  const [basic, setBasic] = React.useState("")
+  const [composed, setComposed] = React.useState("hunter2")
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label htmlFor="pw-single">Single-prop API · with strength meter</Label>
-        <PasswordInput
-          id="pw-single"
-          value={single}
-          onChange={setSingle}
-          showStrength
-          placeholder="Pick a strong one"
-        />
+        <Label htmlFor="pw-basic">Password · with strength meter</Label>
+        <PasswordInput id="pw-basic" value={basic} onValueChange={setBasic}>
+          <PasswordInputField placeholder="Pick a strong one" />
+          <PasswordInputStrength />
+        </PasswordInput>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label htmlFor="pw-compound">Compound API · custom strength hint</Label>
-        <PasswordInput.Root
-          id="pw-compound"
-          value={compound}
-          onValueChange={setCompound}
+        <Label htmlFor="pw-composed">Password · custom strength hint</Label>
+        <PasswordInput
+          id="pw-composed"
+          value={composed}
+          onValueChange={setComposed}
         >
-          <PasswordInput.Field placeholder="Type to see strength" />
-          <PasswordInput.Strength
+          <PasswordInputField placeholder="Type to see strength" />
+          <PasswordInputStrength
             renderMeta={(s) => (
               <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
                 score {s.score} / 4 · {s.label}
               </p>
             )}
           />
-        </PasswordInput.Root>
+        </PasswordInput>
       </div>
     </div>
   )

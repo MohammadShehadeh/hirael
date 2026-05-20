@@ -6,7 +6,10 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/registry/sabk/ui/button"
 import { Input } from "@/registry/sabk/ui/input"
 import { Label } from "@/registry/sabk/ui/label"
-import { PasswordInput } from "@/registry/sabk/password-input/password-input"
+import {
+  PasswordInput,
+  PasswordInputField,
+} from "@/registry/sabk/password-input/password-input"
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -111,9 +114,10 @@ export default function Login01() {
               <PasswordInput
                 id="login01-password"
                 value={password}
-                onChange={setPassword}
-                placeholder="••••••••"
-              />
+                onValueChange={setPassword}
+              >
+                <PasswordInputField placeholder="••••••••" />
+              </PasswordInput>
             </div>
 
             <label className="inline-flex cursor-pointer select-none items-center gap-2 text-xs text-muted-foreground">

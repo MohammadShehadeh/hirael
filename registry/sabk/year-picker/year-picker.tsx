@@ -52,7 +52,7 @@ function useYearPicker() {
   const ctx = React.useContext(YearPickerContext)
   if (!ctx) {
     throw new Error(
-      "YearPicker compound components must be used inside <YearPicker.Root>"
+      "YearPicker compound components must be used inside <YearPicker>"
     )
   }
   return ctx
@@ -71,7 +71,7 @@ function decadeStartFor(year: number) {
   return base - 1
 }
 
-export type YearPickerRootProps =
+export type YearPickerProps =
   | {
       mode?: "single"
       value?: number
@@ -99,7 +99,7 @@ export type YearPickerRootProps =
       children?: React.ReactNode
     }
 
-function YearPickerRoot(props: YearPickerRootProps) {
+function YearPicker(props: YearPickerProps) {
   const {
     minYear = 1900,
     maxYear = 2100,
@@ -124,20 +124,20 @@ function YearPickerRoot(props: YearPickerRootProps) {
   // Single mode state
   const [singleInternal, setSingleInternal] = React.useState<
     number | undefined
-  >(mode === "single" ? (props as Extract<YearPickerRootProps, { mode?: "single" }>).defaultValue : undefined)
+  >(mode === "single" ? (props as Extract<YearPickerProps, { mode?: "single" }>).defaultValue : undefined)
   // Range mode state
   const [rangeInternal, setRangeInternal] = React.useState<
     YearRange | undefined
-  >(mode === "range" ? (props as Extract<YearPickerRootProps, { mode: "range" }>).defaultValue : undefined)
+  >(mode === "range" ? (props as Extract<YearPickerProps, { mode: "range" }>).defaultValue : undefined)
 
   const singleValue =
     mode === "single"
-      ? ((props as Extract<YearPickerRootProps, { mode?: "single" }>).value ??
+      ? ((props as Extract<YearPickerProps, { mode?: "single" }>).value ??
         singleInternal)
       : undefined
   const rangeValue =
     mode === "range"
-      ? ((props as Extract<YearPickerRootProps, { mode: "range" }>).value ??
+      ? ((props as Extract<YearPickerProps, { mode: "range" }>).value ??
         rangeInternal)
       : undefined
 
@@ -150,7 +150,7 @@ function YearPickerRoot(props: YearPickerRootProps) {
 
   const setValueSingle = React.useCallback(
     (year: number) => {
-      const p = props as Extract<YearPickerRootProps, { mode?: "single" }>
+      const p = props as Extract<YearPickerProps, { mode?: "single" }>
       if (p.value === undefined) setSingleInternal(year)
       p.onValueChange?.(year)
       setOpen(false)
@@ -160,7 +160,7 @@ function YearPickerRoot(props: YearPickerRootProps) {
 
   const setValueRange = React.useCallback(
     (year: number) => {
-      const p = props as Extract<YearPickerRootProps, { mode: "range" }>
+      const p = props as Extract<YearPickerProps, { mode: "range" }>
       const current = p.value ?? rangeInternal
       let next: YearRange
       if (!current || (current.from && current.to)) {
@@ -255,6 +255,7 @@ function YearPickerTrigger({
       <button
         type="button"
         disabled={ctx.disabled}
+        data-slot="year-picker-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
           "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
@@ -344,6 +345,7 @@ function YearPickerContent({
   return (
     <PopoverContent
       align="start"
+      data-slot="year-picker-content"
       className={cn("w-64 p-3", className)}
       {...props}
     >
@@ -421,76 +423,8 @@ function YearPickerContent({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type YearPickerProps = {
-  mode?: YearPickerMode
-  value?: number | YearRange
-  defaultValue?: number | YearRange
-  onValueChange?: (value: number | YearRange) => void
-  onChange?: (value: number | YearRange) => void
-  minYear?: number
-  maxYear?: number
-  disabled?: boolean
-  placeholder?: string
-  className?: string
-}
-
-function YearPicker({
-  mode = "single",
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  placeholder,
-  className,
-  ...rest
-}: YearPickerProps) {
-  const handler = onValueChange ?? onChange
-  if (mode === "range") {
-    return (
-      <YearPickerRoot
-        mode="range"
-        value={value as YearRange | undefined}
-        defaultValue={defaultValue as YearRange | undefined}
-        onValueChange={handler as ((r: YearRange) => void) | undefined}
-        {...rest}
-      >
-        <YearPickerTrigger
-          placeholder={placeholder}
-          className={className}
-        />
-        <YearPickerContent />
-      </YearPickerRoot>
-    )
-  }
-  return (
-    <YearPickerRoot
-      mode="single"
-      value={value as number | undefined}
-      defaultValue={defaultValue as number | undefined}
-      onValueChange={handler as ((y: number) => void) | undefined}
-      {...rest}
-    >
-      <YearPickerTrigger placeholder={placeholder} className={className} />
-      <YearPickerContent />
-    </YearPickerRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-YearPicker.Root = YearPickerRoot
-YearPicker.Trigger = YearPickerTrigger
-YearPicker.Content = YearPickerContent
-
 export {
   YearPicker,
-  YearPickerRoot,
   YearPickerTrigger,
   YearPickerContent,
 }

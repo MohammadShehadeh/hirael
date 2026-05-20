@@ -67,7 +67,7 @@ function usePasswordContext() {
   const ctx = React.useContext(PasswordContext)
   if (!ctx) {
     throw new Error(
-      "PasswordInput compound parts must be used inside <PasswordInput.Root>"
+      "PasswordInput compound parts must be used inside <PasswordInput>"
     )
   }
   return ctx
@@ -77,7 +77,7 @@ function usePasswordContext() {
  * Root
  * ========================================================================== */
 
-export type PasswordInputRootProps = {
+export type PasswordInputProps = {
   id?: string
   value?: string
   defaultValue?: string
@@ -87,7 +87,7 @@ export type PasswordInputRootProps = {
   children: React.ReactNode
 }
 
-function PasswordInputRoot({
+function PasswordInput({
   id,
   value: valueProp,
   defaultValue = "",
@@ -95,7 +95,7 @@ function PasswordInputRoot({
   disabled,
   scorer = defaultPasswordScorer,
   children,
-}: PasswordInputRootProps) {
+}: PasswordInputProps) {
   const reactId = React.useId()
   const fieldId = id ?? reactId
 
@@ -153,7 +153,7 @@ function PasswordInputField({
 }: PasswordInputFieldProps) {
   const ctx = usePasswordContext()
   return (
-    <div className="relative">
+    <div data-slot="password-input-field" className="relative">
       <Input
         id={ctx.id}
         type={ctx.visible ? "text" : "password"}
@@ -162,7 +162,6 @@ function PasswordInputField({
         disabled={ctx.disabled}
         autoComplete="current-password"
         className={cn(showToggle && "pr-10", className)}
-        data-slot="password-input"
         {...props}
       />
       {showToggle && (
@@ -215,7 +214,7 @@ function PasswordInputStrength({
   const bar = STRENGTH_COLORS[s.score] ?? STRENGTH_COLORS[0]
   return (
     <div
-      data-slot="password-strength"
+      data-slot="password-input-strength"
       className={cn("flex flex-col gap-1.5", className)}
       {...props}
     >
@@ -249,66 +248,8 @@ function PasswordInputStrength({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type PasswordInputProps = Omit<
-  React.ComponentProps<"input">,
-  "type" | "value" | "defaultValue" | "onChange"
-> & {
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string) => void
-  onChange?: (value: string) => void
-  showToggle?: boolean
-  showStrength?: boolean
-  scorer?: PasswordScorer
-}
-
-function PasswordInput({
-  id,
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  disabled,
-  showToggle,
-  showStrength = false,
-  scorer,
-  className,
-  ...rest
-}: PasswordInputProps) {
-  return (
-    <PasswordInputRoot
-      id={id}
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange ?? onChange}
-      disabled={disabled}
-      scorer={scorer}
-    >
-      <PasswordInputField
-        showToggle={showToggle}
-        className={className}
-        {...rest}
-      />
-      {showStrength && <PasswordInputStrength />}
-    </PasswordInputRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-PasswordInput.Root = PasswordInputRoot
-PasswordInput.Field = PasswordInputField
-PasswordInput.Strength = PasswordInputStrength
-
 export {
   PasswordInput,
-  PasswordInputRoot,
   PasswordInputField,
   PasswordInputStrength,
 }

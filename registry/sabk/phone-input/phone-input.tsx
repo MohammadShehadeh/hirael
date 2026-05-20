@@ -108,7 +108,7 @@ function usePhoneInput() {
   const ctx = React.useContext(PhoneInputContext)
   if (!ctx) {
     throw new Error(
-      "PhoneInput compound parts must be used inside <PhoneInput.Root>"
+      "PhoneInput compound parts must be used inside <PhoneInput>"
     )
   }
   return ctx
@@ -116,9 +116,15 @@ function usePhoneInput() {
 
 /* ============================================================================
  * Root
+ *
+ * The root renders the pill-style container itself; compose `<PhoneInputCountrySelect />`
+ * and `<PhoneInputField />` as children.
  * ========================================================================== */
 
-export type PhoneInputRootProps = {
+export type PhoneInputProps = Omit<
+  React.ComponentProps<"div">,
+  "children"
+> & {
   id?: string
   value?: string
   defaultValue?: string
@@ -128,15 +134,17 @@ export type PhoneInputRootProps = {
   children?: React.ReactNode
 }
 
-function PhoneInputRoot({
+function PhoneInput({
   id,
   value: valueProp,
   defaultValue,
   onValueChange,
   defaultCountry = "US",
   disabled,
+  className,
   children,
-}: PhoneInputRootProps) {
+  ...props
+}: PhoneInputProps) {
   const reactId = React.useId()
   const fieldId = id ?? reactId
 
@@ -212,37 +220,20 @@ function PhoneInputRoot({
 
   return (
     <PhoneInputContext.Provider value={ctx}>
-      {children}
+      <div
+        data-slot="phone-input"
+        data-disabled={disabled || undefined}
+        className={cn(
+          "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
+          "focus-within:border-ring",
+          disabled && "opacity-60",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
     </PhoneInputContext.Provider>
-  )
-}
-
-/* ============================================================================
- * Group
- * ========================================================================== */
-
-type PhoneInputGroupProps = React.ComponentProps<"div">
-
-function PhoneInputGroup({
-  className,
-  children,
-  ...props
-}: PhoneInputGroupProps) {
-  const ctx = usePhoneInput()
-  return (
-    <div
-      data-slot="phone-input"
-      data-disabled={ctx.disabled || undefined}
-      className={cn(
-        "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
-        "focus-within:border-ring",
-        ctx.disabled && "opacity-60",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
   )
 }
 
@@ -271,7 +262,7 @@ function PhoneInputCountrySelect({
           aria-haspopup="listbox"
           aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
           disabled={ctx.disabled}
-          data-slot="phone-input-country"
+          data-slot="phone-input-country-select"
           data-state={ctx.open ? "open" : "closed"}
           className={cn(
             "flex items-center gap-1.5 border-r border-border bg-muted/50 px-3 transition-colors outline-none",
@@ -384,65 +375,8 @@ function PhoneInputField({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type PhoneInputProps = Omit<
-  React.ComponentProps<"input">,
-  "type" | "value" | "defaultValue" | "onChange" | "id"
-> & {
-  id?: string
-  value?: string
-  defaultValue?: string
-  onValueChange?: (e164: string) => void
-  defaultCountry?: string
-  disabled?: boolean
-  className?: string
-  fieldClassName?: string
-}
-
-function PhoneInput({
-  id,
-  value,
-  defaultValue,
-  onValueChange,
-  defaultCountry,
-  disabled,
-  className,
-  fieldClassName,
-  ...rest
-}: PhoneInputProps) {
-  return (
-    <PhoneInputRoot
-      id={id}
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange}
-      defaultCountry={defaultCountry}
-      disabled={disabled}
-    >
-      <PhoneInputGroup className={className}>
-        <PhoneInputCountrySelect />
-        <PhoneInputField className={fieldClassName} {...rest} />
-      </PhoneInputGroup>
-    </PhoneInputRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-PhoneInput.Root = PhoneInputRoot
-PhoneInput.Group = PhoneInputGroup
-PhoneInput.CountrySelect = PhoneInputCountrySelect
-PhoneInput.Field = PhoneInputField
-
 export {
   PhoneInput,
-  PhoneInputRoot,
-  PhoneInputGroup,
   PhoneInputCountrySelect,
   PhoneInputField,
 }

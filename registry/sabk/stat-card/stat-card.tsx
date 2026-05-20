@@ -11,18 +11,13 @@ import { cn } from "@/lib/utils"
 
 export type StatCardTrend = "up" | "down" | "flat"
 
-export type StatCardDeltaInput = {
-  value: React.ReactNode
-  trend: StatCardTrend
-}
-
 /* ============================================================================
  * Root
  * ========================================================================== */
 
-type StatCardRootProps = React.ComponentProps<"div">
+type StatCardProps = React.ComponentProps<"div">
 
-function StatCardRoot({ className, ...props }: StatCardRootProps) {
+function StatCard({ className, ...props }: StatCardProps) {
   return (
     <div
       data-slot="stat-card"
@@ -108,51 +103,8 @@ function StatCardDelta({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type StatCardProps = Omit<React.ComponentProps<"div">, "children"> & {
-  label: React.ReactNode
-  value: React.ReactNode
-  delta?: StatCardDeltaInput
-  hint?: React.ReactNode
-}
-
-function StatCard({
-  label,
-  value,
-  delta,
-  hint,
-  className,
-  ...props
-}: StatCardProps) {
-  return (
-    <StatCardRoot className={className} {...props}>
-      <StatCardLabel>{label}</StatCardLabel>
-      <StatCardValue>{value}</StatCardValue>
-      <div className="flex items-center gap-2">
-        {delta && <StatCardDelta trend={delta.trend}>{delta.value}</StatCardDelta>}
-        {hint && (
-          <span className="text-[11px] text-muted-foreground">{hint}</span>
-        )}
-      </div>
-    </StatCardRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-StatCard.Root = StatCardRoot
-StatCard.Label = StatCardLabel
-StatCard.Value = StatCardValue
-StatCard.Delta = StatCardDelta
-
 export {
   StatCard,
-  StatCardRoot,
   StatCardLabel,
   StatCardValue,
   StatCardDelta,

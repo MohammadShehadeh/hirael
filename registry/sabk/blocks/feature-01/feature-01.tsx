@@ -26,13 +26,13 @@ const ROWS: readonly FeatureRow[] = [
     media: "registry",
   },
   {
-    eyebrow: "· dual API",
-    headline: "Two surfaces, one source file.",
-    body: "Every component ships both a compound API for full layout control and a single-prop shape for the 90% case. They share state — pick the one that fits the screen you're building.",
+    eyebrow: "· composition",
+    headline: "Composition, the shadcn way.",
+    body: "Every compound component ships as flat top-level exports — no namespacing, no convenience wrappers. The bare name is the root and holds state; every rendered piece carries a data-slot for downstream styling.",
     bullets: [
-      "Compound: Root + named parts",
-      "Single-prop: options-as-prop, one component",
-      "Identical state machine under both",
+      "Flat named exports — compose at the call site",
+      "data-slot on every rendered piece",
+      "Same state machine you'd write by hand",
     ],
     media: "branches",
   },
@@ -96,32 +96,30 @@ function MediaBranches() {
     >
       <div className="mb-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
         <GitBranch className="size-3" />
-        api shapes
+        composition
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         <div className="rounded-sm border border-border bg-background p-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            compound
+            call site
           </span>
           <pre className="mt-2 font-mono text-[11px] leading-[1.55]">
             <code>
-              {"<Select.Root>\n"}
-              {"  <Select.Trigger />\n"}
-              {"  <Select.List />\n"}
-              {"</Select.Root>"}
+              {"<MultiSelect value={v} onValueChange={set}>\n"}
+              {"  <MultiSelectTrigger />\n"}
+              {"  <MultiSelectContent />\n"}
+              {"</MultiSelect>"}
             </code>
           </pre>
         </div>
         <div className="rounded-sm border border-border bg-background p-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            single-prop
+            rendered DOM
           </span>
-          <pre className="mt-2 font-mono text-[11px] leading-[1.55]">
+          <pre className="mt-2 font-mono text-[11px] leading-[1.55] text-muted-foreground">
             <code>
-              {'<Select\n'}
-              {'  options={...}\n'}
-              {'  onChange={set}\n'}
-              {'/>'}
+              {'<button data-slot="multi-select-trigger" />\n'}
+              {'<div   data-slot="multi-select-content" />'}
             </code>
           </pre>
         </div>

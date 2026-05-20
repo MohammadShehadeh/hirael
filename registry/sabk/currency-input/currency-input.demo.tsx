@@ -6,49 +6,50 @@ import { Label } from "@/registry/sabk/ui/label"
 import {
   CurrencyInput,
   CurrencyInputField,
-  CurrencyInputGroup,
   CurrencyInputPrefix,
-  CurrencyInputRoot,
 } from "@/registry/sabk/currency-input/currency-input"
 
 export default function CurrencyInputDemo() {
-  const [single, setSingle] = React.useState<number | null>(1499.5)
-  const [compound, setCompound] = React.useState<number | null>(12480)
+  const [basic, setBasic] = React.useState<number | null>(1499.5)
+  const [composed, setComposed] = React.useState<number | null>(12480)
 
   return (
     <div className="grid w-full max-w-md gap-8">
+      {/* Basic */}
       <div className="grid gap-2">
-        <Label htmlFor="cur-single">Single-prop API · USD</Label>
+        <Label htmlFor="cur-basic">USD</Label>
         <CurrencyInput
-          id="cur-single"
-          value={single}
-          onValueChange={setSingle}
+          id="cur-basic"
+          value={basic}
+          onValueChange={setBasic}
           currency="USD"
           locale="en-US"
           decimals={2}
-        />
+        >
+          <CurrencyInputPrefix />
+          <CurrencyInputField />
+        </CurrencyInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          parsed: {single === null ? "null" : single}
+          parsed: {basic === null ? "null" : basic}
         </p>
       </div>
 
+      {/* Composed */}
       <div className="grid gap-2">
-        <Label htmlFor="cur-compound">Compound API · EUR (de-DE)</Label>
-        <CurrencyInputRoot
-          id="cur-compound"
-          value={compound}
-          onValueChange={setCompound}
+        <Label htmlFor="cur-composed">EUR (de-DE)</Label>
+        <CurrencyInput
+          id="cur-composed"
+          value={composed}
+          onValueChange={setComposed}
           currency="EUR"
           locale="de-DE"
           decimals={2}
         >
-          <CurrencyInputGroup>
-            <CurrencyInputPrefix />
-            <CurrencyInputField placeholder="0,00" />
-          </CurrencyInputGroup>
-        </CurrencyInputRoot>
+          <CurrencyInputPrefix />
+          <CurrencyInputField placeholder="0,00" />
+        </CurrencyInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          parsed: {compound === null ? "null" : compound}
+          parsed: {composed === null ? "null" : composed}
         </p>
       </div>
     </div>

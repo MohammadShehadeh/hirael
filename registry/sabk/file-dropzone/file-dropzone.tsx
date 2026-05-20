@@ -75,7 +75,7 @@ function useFileDropzone() {
   const ctx = React.useContext(FileDropzoneContext)
   if (!ctx) {
     throw new Error(
-      "FileDropzone compound parts must be used inside <FileDropzone.Root>"
+      "FileDropzone compound parts must be used inside <FileDropzone>"
     )
   }
   return ctx
@@ -85,7 +85,7 @@ function useFileDropzone() {
  * Root
  * ========================================================================== */
 
-export type FileDropzoneRootProps = {
+export type FileDropzoneProps = {
   value?: File[]
   defaultValue?: File[]
   onValueChange?: (files: File[]) => void
@@ -96,7 +96,7 @@ export type FileDropzoneRootProps = {
   children?: React.ReactNode
 }
 
-function FileDropzoneRoot({
+function FileDropzone({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -105,7 +105,7 @@ function FileDropzoneRoot({
   multiple = false,
   disabled,
   children,
-}: FileDropzoneRootProps) {
+}: FileDropzoneProps) {
   const [internalFiles, setInternalFiles] = React.useState<File[]>(
     defaultValue ?? []
   )
@@ -399,61 +399,8 @@ function FileDropzoneErrors({ className, ...props }: FileDropzoneErrorsProps) {
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type FileDropzoneProps = Omit<FileDropzoneRootProps, "children"> & {
-  className?: string
-  headline?: string
-  subline?: React.ReactNode
-}
-
-function FileDropzone({
-  value,
-  defaultValue,
-  onValueChange,
-  accept,
-  maxSize,
-  multiple,
-  disabled,
-  className,
-  headline,
-  subline,
-}: FileDropzoneProps) {
-  return (
-    <FileDropzoneRoot
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange}
-      accept={accept}
-      maxSize={maxSize}
-      multiple={multiple}
-      disabled={disabled}
-    >
-      <FileDropzoneZone
-        className={className}
-        headline={headline}
-        subline={subline}
-      />
-      <FileDropzoneList />
-      <FileDropzoneErrors />
-    </FileDropzoneRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-FileDropzone.Root = FileDropzoneRoot
-FileDropzone.Zone = FileDropzoneZone
-FileDropzone.List = FileDropzoneList
-FileDropzone.Errors = FileDropzoneErrors
-
 export {
   FileDropzone,
-  FileDropzoneRoot,
   FileDropzoneZone,
   FileDropzoneList,
   FileDropzoneErrors,

@@ -87,7 +87,7 @@ function useCurrencyInput() {
   const ctx = React.useContext(CurrencyInputContext)
   if (!ctx) {
     throw new Error(
-      "CurrencyInput compound parts must be used inside <CurrencyInput.Root>"
+      "CurrencyInput compound parts must be used inside <CurrencyInput>"
     )
   }
   return ctx
@@ -95,9 +95,15 @@ function useCurrencyInput() {
 
 /* ============================================================================
  * Root
+ *
+ * The root renders the pill-style container. Compose `<CurrencyInputPrefix />`
+ * and `<CurrencyInputField />` (or any other content) as children.
  * ========================================================================== */
 
-export type CurrencyInputRootProps = {
+export type CurrencyInputProps = Omit<
+  React.ComponentProps<"div">,
+  "children" | "value" | "defaultValue" | "onChange"
+> & {
   id?: string
   value?: number | null
   defaultValue?: number | null
@@ -109,7 +115,7 @@ export type CurrencyInputRootProps = {
   children?: React.ReactNode
 }
 
-function CurrencyInputRoot({
+function CurrencyInput({
   id,
   value: valueProp,
   defaultValue = null,
@@ -118,8 +124,10 @@ function CurrencyInputRoot({
   locale = "en-US",
   decimals = 2,
   disabled,
+  className,
   children,
-}: CurrencyInputRootProps) {
+  ...props
+}: CurrencyInputProps) {
   const reactId = React.useId()
   const fieldId = id ?? reactId
 
@@ -176,37 +184,20 @@ function CurrencyInputRoot({
 
   return (
     <CurrencyInputContext.Provider value={ctx}>
-      {children}
+      <div
+        data-slot="currency-input"
+        data-disabled={disabled || undefined}
+        className={cn(
+          "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
+          "focus-within:border-ring",
+          disabled && "opacity-60",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
     </CurrencyInputContext.Provider>
-  )
-}
-
-/* ============================================================================
- * Group (the visual pill container)
- * ========================================================================== */
-
-type CurrencyInputGroupProps = React.ComponentProps<"div">
-
-function CurrencyInputGroup({
-  className,
-  children,
-  ...props
-}: CurrencyInputGroupProps) {
-  const ctx = useCurrencyInput()
-  return (
-    <div
-      data-slot="currency-input"
-      data-disabled={ctx.disabled || undefined}
-      className={cn(
-        "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
-        "focus-within:border-ring",
-        ctx.disabled && "opacity-60",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
   )
 }
 
@@ -305,71 +296,8 @@ function CurrencyInputField({
   )
 }
 
-/* ============================================================================
- * Single-prop convenience wrapper
- * ========================================================================== */
-
-export type CurrencyInputProps = Omit<
-  React.ComponentProps<"input">,
-  "type" | "value" | "defaultValue" | "onChange" | "id" | "prefix"
-> & {
-  id?: string
-  value?: number | null
-  defaultValue?: number | null
-  onValueChange?: (value: number | null) => void
-  currency?: string
-  locale?: string
-  decimals?: number
-  disabled?: boolean
-  className?: string
-  fieldClassName?: string
-}
-
-function CurrencyInput({
-  id,
-  value,
-  defaultValue,
-  onValueChange,
-  currency,
-  locale,
-  decimals,
-  disabled,
-  className,
-  fieldClassName,
-  ...rest
-}: CurrencyInputProps) {
-  return (
-    <CurrencyInputRoot
-      id={id}
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange}
-      currency={currency}
-      locale={locale}
-      decimals={decimals}
-      disabled={disabled}
-    >
-      <CurrencyInputGroup className={className}>
-        <CurrencyInputPrefix />
-        <CurrencyInputField className={fieldClassName} {...rest} />
-      </CurrencyInputGroup>
-    </CurrencyInputRoot>
-  )
-}
-
-/* ============================================================================
- * Exports
- * ========================================================================== */
-
-CurrencyInput.Root = CurrencyInputRoot
-CurrencyInput.Group = CurrencyInputGroup
-CurrencyInput.Prefix = CurrencyInputPrefix
-CurrencyInput.Field = CurrencyInputField
-
 export {
   CurrencyInput,
-  CurrencyInputRoot,
-  CurrencyInputGroup,
   CurrencyInputPrefix,
   CurrencyInputField,
 }

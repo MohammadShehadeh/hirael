@@ -484,14 +484,12 @@ function YearPicker({
  * Exports
  * ========================================================================== */
 
-const YearPickerNamespace = Object.assign(YearPicker, {
-  Root: YearPickerRoot,
-  Trigger: YearPickerTrigger,
-  Content: YearPickerContent,
-})
+YearPicker.Root = YearPickerRoot
+YearPicker.Trigger = YearPickerTrigger
+YearPicker.Content = YearPickerContent
 
 export {
-  YearPickerNamespace as YearPicker,
+  YearPicker,
   YearPickerRoot,
   YearPickerTrigger,
   YearPickerContent,

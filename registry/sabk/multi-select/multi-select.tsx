@@ -546,15 +546,13 @@ export function useAsyncOptions<T>(
  *   - Single-prop (convenience): <MultiSelect options value onChange />
  * ========================================================================== */
 
-const MultiSelectNamespace = Object.assign(MultiSelect, {
-  Root: MultiSelectRoot,
-  Trigger: MultiSelectTrigger,
-  Content: MultiSelectContent,
-  Item: MultiSelectItem,
-})
+MultiSelect.Root = MultiSelectRoot
+MultiSelect.Trigger = MultiSelectTrigger
+MultiSelect.Content = MultiSelectContent
+MultiSelect.Item = MultiSelectItem
 
 export {
-  MultiSelectNamespace as MultiSelect,
+  MultiSelect,
   MultiSelectRoot,
   MultiSelectTrigger,
   MultiSelectContent,

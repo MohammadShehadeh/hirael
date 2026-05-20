@@ -452,15 +452,13 @@ function Combobox({
  * Exports
  * ========================================================================== */
 
-const ComboboxNamespace = Object.assign(Combobox, {
-  Root: ComboboxRoot,
-  Trigger: ComboboxTrigger,
-  Content: ComboboxContent,
-  Item: ComboboxItem,
-})
+Combobox.Root = ComboboxRoot
+Combobox.Trigger = ComboboxTrigger
+Combobox.Content = ComboboxContent
+Combobox.Item = ComboboxItem
 
 export {
-  ComboboxNamespace as Combobox,
+  Combobox,
   ComboboxRoot,
   ComboboxTrigger,
   ComboboxContent,

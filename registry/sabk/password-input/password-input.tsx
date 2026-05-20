@@ -302,14 +302,12 @@ function PasswordInput({
  * Exports
  * ========================================================================== */
 
-const PasswordInputNamespace = Object.assign(PasswordInput, {
-  Root: PasswordInputRoot,
-  Field: PasswordInputField,
-  Strength: PasswordInputStrength,
-})
+PasswordInput.Root = PasswordInputRoot
+PasswordInput.Field = PasswordInputField
+PasswordInput.Strength = PasswordInputStrength
 
 export {
-  PasswordInputNamespace as PasswordInput,
+  PasswordInput,
   PasswordInputRoot,
   PasswordInputField,
   PasswordInputStrength,

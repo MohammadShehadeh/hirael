@@ -420,16 +420,14 @@ function TagsRenderer() {
  * Exports
  * ========================================================================== */
 
-const TagInputNamespace = Object.assign(TagInput, {
-  Root: TagInputRoot,
-  Container: TagInputContainer,
-  Tag: TagInputTag,
-  Field: TagInputField,
-  Error: TagInputError,
-})
+TagInput.Root = TagInputRoot
+TagInput.Container = TagInputContainer
+TagInput.Tag = TagInputTag
+TagInput.Field = TagInputField
+TagInput.Error = TagInputError
 
 export {
-  TagInputNamespace as TagInput,
+  TagInput,
   TagInputRoot,
   TagInputContainer,
   TagInputTag,

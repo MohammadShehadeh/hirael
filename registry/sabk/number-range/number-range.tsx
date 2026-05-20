@@ -308,15 +308,13 @@ function NumberRange({
  * Exports
  * ========================================================================== */
 
-const NumberRangeNamespace = Object.assign(NumberRange, {
-  Root: NumberRangeRoot,
-  Slider: NumberRangeSlider,
-  Input: NumberRangeInput,
-  Inputs: NumberRangeInputs,
-})
+NumberRange.Root = NumberRangeRoot
+NumberRange.Slider = NumberRangeSlider
+NumberRange.Input = NumberRangeInput
+NumberRange.Inputs = NumberRangeInputs
 
 export {
-  NumberRangeNamespace as NumberRange,
+  NumberRange,
   NumberRangeRoot,
   NumberRangeSlider,
   NumberRangeInput,

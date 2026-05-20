@@ -4,6 +4,8 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
 import { ComponentPage } from "@/components/showcase/component-page"
+import type { SourceFile } from "@/components/showcase/component-page"
+import { highlightCode, langFromPath } from "@/lib/highlight"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/sabk/registry-meta"
 
 export const dynamicParams = false
@@ -26,16 +28,22 @@ export async function generateMetadata({
   }
 }
 
-async function loadSource(files: string[] | undefined) {
-  const out: Record<string, string> = {}
+async function loadSource(
+  files: string[] | undefined
+): Promise<Record<string, SourceFile>> {
+  const out: Record<string, SourceFile> = {}
   if (!files) return out
   await Promise.all(
     files.map(async (f) => {
+      let code: string
       try {
-        out[f] = await fs.readFile(path.join(process.cwd(), f), "utf8")
+        code = await fs.readFile(path.join(process.cwd(), f), "utf8")
       } catch {
-        out[f] = "// (unable to read source)"
+        code = "// (unable to read source)"
       }
+      const lang = langFromPath(f)
+      const html = await highlightCode(code, lang)
+      out[f] = { code, html, lang }
     })
   )
   return out

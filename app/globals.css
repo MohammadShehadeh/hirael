@@ -122,6 +122,37 @@
   --sidebar-accent-foreground: oklch(0.20 0.006 60);
 }
 
+/* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
+   values; --shiki-light + --shiki-light-bg are CSS vars. Override them in
+   .light to swap. */
+.shiki {
+  background-color: var(--card) !important;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  padding: 14px 16px;
+  tab-size: 2;
+}
+.shiki code {
+  display: block;
+  background: transparent !important;
+  counter-reset: line;
+}
+.shiki .line {
+  display: block;
+  min-height: 1lh;
+}
+html.light .shiki {
+  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light) !important;
+}
+html.light .shiki span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style, inherit) !important;
+  font-weight: var(--shiki-light-font-weight, inherit) !important;
+  text-decoration: var(--shiki-light-text-decoration, inherit) !important;
+}
+
 @layer base {
   * {
     border-color: var(--border);

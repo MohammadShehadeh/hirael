@@ -1,6 +1,8 @@
 import Link from "next/link"
+import { Sparkles } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
@@ -27,6 +29,33 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
       </Link>
 
       <nav className="flex-1 overflow-y-auto px-2 py-4">
+        <div className="mb-5">
+          <div className="px-3 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            Workspace
+          </div>
+          <ul className="flex flex-col">
+            <li>
+              <Link
+                href="/theme"
+                className={cn(
+                  "group flex items-center justify-between rounded-sm px-3 py-1.5 text-sm transition-colors",
+                  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  active === "theme" &&
+                    "bg-sidebar-accent text-sidebar-accent-foreground"
+                )}
+              >
+                <span className="inline-flex items-center gap-2 truncate">
+                  <Sparkles className="size-3.5 text-forge" />
+                  Theme playground
+                </span>
+                {active === "theme" && (
+                  <span className="size-1.5 rounded-full bg-forge" />
+                )}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
         {order.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
@@ -68,8 +97,11 @@ export function ShowcaseSidebar({ active }: { active?: string }) {
         })}
       </nav>
 
-      <div className="border-t-2 border-sidebar-border px-5 py-3 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-        v0.1 · peer of shadcn
+      <div className="flex items-center justify-between gap-2 border-t-2 border-sidebar-border px-3 py-3">
+        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+          v0.1 · peer of shadcn
+        </span>
+        <ThemeSheetTrigger />
       </div>
     </aside>
   )

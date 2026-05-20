@@ -1,6 +1,8 @@
 import Link from "next/link"
 
+import { InlineCodeBlock } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
+import { highlightCode } from "@/lib/highlight"
 import {
   CATEGORY_LABELS,
   REGISTRY,
@@ -10,8 +12,18 @@ import {
 
 const ORDER: ComponentCategory[] = ["inputs", "pickers", "files"]
 
-export default function ShowcaseHome() {
+const DUAL_API_SNIPPET = `// Compound
+<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
+  <MultiSelect.Trigger placeholder="Pick…" />
+  <MultiSelect.Content searchPlaceholder="Filter…" />
+</MultiSelect.Root>
+
+// Single-prop
+<MultiSelect options={options} value={value} onChange={setValue} />`
+
+export default async function ShowcaseHome() {
   const stableCount = REGISTRY.filter((r) => r.status === "stable").length
+  const dualApiHtml = await highlightCode(DUAL_API_SNIPPET, "tsx")
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-6 py-12 md:px-10 md:py-16">
@@ -101,16 +113,7 @@ export default function ShowcaseHome() {
           composition, layout, or rendering. Single-prop is the convenience
           wrapper; ninety percent of usage looks like this.
         </p>
-        <pre className="overflow-x-auto rounded-sm border-2 border-border bg-card p-4 font-mono text-xs leading-relaxed">
-{`// Compound
-<MultiSelect.Root value={value} onValueChange={setValue} options={options}>
-  <MultiSelect.Trigger placeholder="Pick…" />
-  <MultiSelect.Content searchPlaceholder="Filter…" />
-</MultiSelect.Root>
-
-// Single-prop
-<MultiSelect options={options} value={value} onChange={setValue} />`}
-        </pre>
+        <InlineCodeBlock code={DUAL_API_SNIPPET} html={dualApiHtml} />
       </section>
     </div>
   )

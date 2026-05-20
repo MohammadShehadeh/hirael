@@ -3,22 +3,38 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
 import type { RegistryEntryMeta } from "@/registry/sabk/registry-meta"
 
 type Tab = "preview" | "code" | "install"
+
+export type SourceFile = {
+  code: string
+  html: string
+  lang: string
+}
 
 export function ComponentPage({
   entry,
   source,
 }: {
   entry: RegistryEntryMeta
-  /** Pre-loaded file contents (path → string) for the Code tab. */
-  source: Record<string, string>
+  /** Pre-highlighted source files keyed by repo-relative path. */
+  source: Record<string, SourceFile>
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
-  const [activeFile, setActiveFile] = React.useState<string | undefined>(
-    entry.sourceFiles?.[0]
+
+  const codeTabs: CodeBlockTab[] = React.useMemo(
+    () =>
+      (entry.sourceFiles ?? [])
+        .map((f) => {
+          const file = source[f]
+          if (!file) return null
+          return { label: f, code: file.code, html: file.html }
+        })
+        .filter((t): t is CodeBlockTab => t !== null),
+    [entry.sourceFiles, source]
   )
 
   const Demo = entry.Demo
@@ -91,31 +107,8 @@ export function ComponentPage({
             </div>
           )}
 
-          {tab === "code" && entry.sourceFiles && (
-            <div className="overflow-hidden rounded-sm border-2 border-border">
-              <div className="flex items-center gap-2 border-b-2 border-border bg-card px-3 py-1.5">
-                {entry.sourceFiles.map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setActiveFile(f)}
-                    className={cn(
-                      "rounded-sm px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
-                      activeFile === f
-                        ? "bg-accent text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {f.split("/").slice(-1)[0]}
-                  </button>
-                ))}
-              </div>
-              <pre className="max-h-[640px] overflow-auto bg-card p-4 text-xs leading-relaxed">
-                <code className="font-mono">
-                  {activeFile ? (source[activeFile] ?? "// (missing)") : ""}
-                </code>
-              </pre>
-            </div>
+          {tab === "code" && codeTabs.length > 0 && (
+            <CodeBlock tabs={codeTabs} />
           )}
 
           {tab === "install" && (

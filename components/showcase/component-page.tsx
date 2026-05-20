@@ -38,9 +38,15 @@ export function ComponentPage({
   )
 
   const Demo = entry.Demo
+  const isBlock = entry.category === "blocks"
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-6 py-10 md:px-10">
+    <div
+      className={cn(
+        "mx-auto flex w-full flex-col gap-8 px-6 py-10 md:px-10",
+        isBlock ? "max-w-6xl" : "max-w-4xl"
+      )}
+    >
       <header className="flex flex-col gap-3 border-b-2 border-border pb-6">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -102,9 +108,26 @@ export function ComponentPage({
           </div>
 
           {tab === "preview" && Demo && (
-            <div className="flex min-h-[420px] items-center justify-center rounded-sm border-2 border-border bg-card/40 p-10">
-              <Demo />
-            </div>
+            isBlock ? (
+              <div className="overflow-hidden rounded-sm border-2 border-border bg-background">
+                <div className="flex items-center justify-between gap-3 border-b-2 border-border bg-card/50 px-4 py-2">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    full-width preview
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="size-1.5 rounded-full bg-forge" />
+                    rendered in-page
+                  </span>
+                </div>
+                <div className="relative">
+                  <Demo />
+                </div>
+              </div>
+            ) : (
+              <div className="flex min-h-[420px] items-center justify-center rounded-sm border-2 border-border bg-card/40 p-10">
+                <Demo />
+              </div>
+            )
           )}
 
           {tab === "code" && codeTabs.length > 0 && (

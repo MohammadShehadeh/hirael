@@ -7,7 +7,18 @@ import PasswordInputDemo from "@/registry/sabk/password-input/password-input.dem
 import TagInputDemo from "@/registry/sabk/tag-input/tag-input.demo"
 import YearPickerDemo from "@/registry/sabk/year-picker/year-picker.demo"
 
-export type ComponentCategory = "inputs" | "pickers" | "files"
+import Cta01 from "@/registry/sabk/blocks/cta-01/cta-01"
+import Cta02 from "@/registry/sabk/blocks/cta-02/cta-02"
+import Faq01 from "@/registry/sabk/blocks/faq-01/faq-01"
+import Faq02 from "@/registry/sabk/blocks/faq-02/faq-02"
+import Hero01 from "@/registry/sabk/blocks/hero-01/hero-01"
+import Hero02 from "@/registry/sabk/blocks/hero-02/hero-02"
+import Login01 from "@/registry/sabk/blocks/login-01/login-01"
+import Login02 from "@/registry/sabk/blocks/login-02/login-02"
+
+export type ComponentCategory = "inputs" | "pickers" | "files" | "blocks"
+
+export type BlockKind = "hero" | "cta" | "faq" | "login"
 
 export type RegistryEntryMeta = {
   name: string
@@ -23,6 +34,10 @@ export type RegistryEntryMeta = {
   installSlug?: string
   registryDependencies?: string[]
   dependencies?: string[]
+  /** Block-only: the kind of section this block is, used for /blocks grouping. */
+  blockKind?: BlockKind
+  /** Block-only: short tagline shown on the /blocks index cards. */
+  blockTagline?: string
 }
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -98,7 +113,120 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["input"],
     dependencies: ["lucide-react"],
   },
-  // Phase 1 stubs — declared in registry.json, implementation pending.
+  // ===== Blocks =====
+  {
+    name: "hero-01",
+    title: "Hero · stat strip + install card",
+    description:
+      "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
+    blockTagline: "Split layout · stat strip · mock install card",
+    category: "blocks",
+    blockKind: "hero",
+    status: "stable",
+    Demo: Hero01,
+    sourceFiles: ["registry/sabk/blocks/hero-01/hero-01.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "hero-02",
+    title: "Hero · centered editorial",
+    description:
+      "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
+    blockTagline: "Centered · live pill · wordmark strip",
+    category: "blocks",
+    blockKind: "hero",
+    status: "stable",
+    Demo: Hero02,
+    sourceFiles: ["registry/sabk/blocks/hero-02/hero-02.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "cta-01",
+    title: "CTA · framed band",
+    description:
+      "Framed CTA card with forge corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
+    blockTagline: "Framed · split layout · corner marks",
+    category: "blocks",
+    blockKind: "cta",
+    status: "stable",
+    Demo: Cta01,
+    sourceFiles: ["registry/sabk/blocks/cta-01/cta-01.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "cta-02",
+    title: "CTA · centered announce",
+    description:
+      "Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an inline install command.",
+    blockTagline: "Centered · highlight underlay · install command",
+    category: "blocks",
+    blockKind: "cta",
+    status: "stable",
+    Demo: Cta02,
+    sourceFiles: ["registry/sabk/blocks/cta-02/cta-02.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "faq-01",
+    title: "FAQ · sticky split",
+    description:
+      "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
+    blockTagline: "Sticky split · numbered · contact card",
+    category: "blocks",
+    blockKind: "faq",
+    status: "stable",
+    Demo: Faq01,
+    sourceFiles: ["registry/sabk/blocks/faq-01/faq-01.tsx"],
+    registryDependencies: ["button", "accordion"],
+    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+  },
+  {
+    name: "faq-02",
+    title: "FAQ · centered grid",
+    description:
+      "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
+    blockTagline: "Centered · two-column grid · Qn-indexed",
+    category: "blocks",
+    blockKind: "faq",
+    status: "stable",
+    Demo: Faq02,
+    sourceFiles: ["registry/sabk/blocks/faq-02/faq-02.tsx"],
+    registryDependencies: ["accordion"],
+    dependencies: ["@radix-ui/react-accordion"],
+  },
+  {
+    name: "login-01",
+    title: "Login · centered card",
+    description:
+      "Centered login card with forge monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
+    blockTagline: "Centered card · providers · password-input",
+    category: "blocks",
+    blockKind: "login",
+    status: "stable",
+    Demo: Login01,
+    sourceFiles: ["registry/sabk/blocks/login-01/login-01.tsx"],
+    registryDependencies: ["button", "input", "label", "password-input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "login-02",
+    title: "Login · split testimonial",
+    description:
+      "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
+    blockTagline: "Split · testimonial pane · strength meter",
+    category: "blocks",
+    blockKind: "login",
+    status: "stable",
+    Demo: Login02,
+    sourceFiles: ["registry/sabk/blocks/login-02/login-02.tsx"],
+    registryDependencies: ["button", "input", "label", "password-input"],
+    dependencies: ["lucide-react"],
+  },
+  // ===== Phase 1 stubs — declared in registry.json, implementation pending =====
   {
     name: "month-picker",
     title: "Month Picker",
@@ -151,6 +279,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   inputs: "Inputs",
   pickers: "Pickers",
   files: "Files",
+  blocks: "Blocks",
 }
 
 export const REGISTRY_BY_CATEGORY = (() => {
@@ -158,7 +287,32 @@ export const REGISTRY_BY_CATEGORY = (() => {
     inputs: [],
     pickers: [],
     files: [],
+    blocks: [],
   }
   for (const entry of REGISTRY) groups[entry.category].push(entry)
   return groups
 })()
+
+export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
+  hero: "Hero sections",
+  cta: "Call-to-action",
+  faq: "FAQ",
+  login: "Auth · login",
+}
+
+export const BLOCKS_BY_KIND = (() => {
+  const groups: Record<BlockKind, RegistryEntryMeta[]> = {
+    hero: [],
+    cta: [],
+    faq: [],
+    login: [],
+  }
+  for (const entry of REGISTRY) {
+    if (entry.category === "blocks" && entry.blockKind) {
+      groups[entry.blockKind].push(entry)
+    }
+  }
+  return groups
+})()
+
+export const BLOCK_KIND_ORDER: BlockKind[] = ["hero", "cta", "faq", "login"]

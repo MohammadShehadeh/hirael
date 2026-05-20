@@ -18,9 +18,9 @@ export function ThemePlayground() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-8">
+      <header className="flex flex-col gap-5 border-b border-border pb-8">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ playground
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -55,7 +55,7 @@ export function ThemePlayground() {
         title="Backgrounds & cards"
         description="The three surface layers components stack on — background, card, popover. Borders read against each."
       >
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border-2 border-border bg-border sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
           <Surface label="background" className="bg-background text-foreground" />
           <Surface label="card" className="bg-card text-card-foreground" />
           <Surface label="popover" className="bg-popover text-popover-foreground" />
@@ -67,10 +67,9 @@ export function ThemePlayground() {
         title="Buttons, badges, inputs"
         description="The base shadcn primitives Sabk components compose on top of."
       >
-        <div className="grid gap-6 rounded-sm border-2 border-border bg-card/40 p-6">
+        <div className="grid gap-6 rounded-sm border border-border bg-card/40 p-6">
           <div className="flex flex-wrap items-center gap-2">
             <Button>Default</Button>
-            <Button variant="forge">Forge</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="outline">Outline</Button>
             <Button variant="ghost">Ghost</Button>
@@ -79,7 +78,6 @@ export function ThemePlayground() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge>Default</Badge>
-            <Badge variant="forge">Forge</Badge>
             <Badge variant="outline">Outline</Badge>
             <Badge variant="destructive">Destructive</Badge>
           </div>
@@ -102,7 +100,7 @@ export function ThemePlayground() {
         title="Sabk components"
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border-2 border-border bg-border lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
           {stable.map((entry) => {
             const Demo = entry.Demo
             if (!Demo) return null
@@ -119,7 +117,7 @@ export function ThemePlayground() {
                     /{entry.name}
                   </span>
                 </div>
-                <div className="flex min-h-[160px] items-center justify-center rounded-sm border-2 border-dashed border-border bg-background/60 p-4">
+                <div className="flex min-h-[160px] items-center justify-center rounded-sm border border-dashed border-border bg-background/60 p-4">
                   <Demo />
                 </div>
               </article>
@@ -130,14 +128,14 @@ export function ThemePlayground() {
 
       <Section
         eyebrow="Accent"
-        title="Forge, ring, destructive"
+        title="Primary, ring, destructive"
         description="The accents that should only ever appear when something is important. They borrow the ring color for focus states."
       >
-        <div className="flex flex-wrap items-center gap-3 rounded-sm border-2 border-border bg-card/40 p-6">
-          <Swatch label="forge" varName="--forge" />
+        <div className="flex flex-wrap items-center gap-3 rounded-sm border border-border bg-card/40 p-6">
+          <Swatch label="primary" varName="--primary" />
           <Swatch label="ring" varName="--ring" />
           <Swatch label="destructive" varName="--destructive" />
-          <Swatch label="primary" varName="--primary" />
+          <Swatch label="accent" varName="--accent" />
           <Swatch label="muted" varName="--muted" />
           <Swatch label="border" varName="--border" />
         </div>
@@ -185,10 +183,10 @@ function Surface({ label, className }: { label: string; className: string }) {
 
 function Swatch({ label, varName }: { label: string; varName: string }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-sm border-2 border-border bg-background px-2.5 py-1.5">
+    <div className="inline-flex items-center gap-2 rounded-sm border border-border bg-background px-2.5 py-1.5">
       <span
         aria-hidden
-        className="size-4 rounded-sm border-2 border-border"
+        className="size-4 rounded-sm border border-border"
         style={{ background: `var(${varName})` }}
       />
       <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">

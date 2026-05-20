@@ -196,7 +196,7 @@ function ComboboxTrigger({
         data-slot="combobox-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "group flex h-9 w-full items-center justify-between gap-2 rounded-sm border-2 border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
+          "group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -354,7 +354,7 @@ function ComboboxItem({
       {...props}
     >
       <span className="truncate">{children ?? option.label}</span>
-      {selected && <Check className="size-3.5 text-forge" strokeWidth={3} />}
+      {selected && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
     </CommandItem>
   )
 }

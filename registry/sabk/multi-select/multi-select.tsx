@@ -221,7 +221,7 @@ function MultiSelectTrigger({
         data-slot="multi-select-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border-2 border-input bg-transparent px-2 py-1 text-left text-sm outline-none transition-colors",
+          "group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-left text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -244,7 +244,7 @@ function MultiSelectTrigger({
                 selected.map((opt) => (
                   <Badge
                     key={opt.value}
-                    variant="forge"
+                    variant="default"
                     className="gap-1 pr-1"
                   >
                     {opt.label}
@@ -257,7 +257,7 @@ function MultiSelectTrigger({
                         e.stopPropagation()
                         ctx.remove(opt.value)
                       }}
-                      className="ml-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-forge/70 hover:bg-forge/20 hover:text-forge"
+                      className="ml-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 hover:bg-foreground/20 hover:text-foreground"
                     >
                       <X className="size-2.5" />
                     </span>
@@ -436,8 +436,8 @@ function MultiSelectItem({
       <span
         aria-hidden
         className={cn(
-          "flex size-4 items-center justify-center rounded-[2px] border-2 border-border transition-colors",
-          selected && "border-forge bg-forge text-forge-foreground"
+          "flex size-4 items-center justify-center rounded-[2px] border border-border transition-colors",
+          selected && "border-primary bg-primary text-primary-foreground"
         )}
       >
         {selected && <Check className="size-2.5" strokeWidth={3} />}

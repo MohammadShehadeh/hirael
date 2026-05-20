@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Blocks — Sabk",
   description:
-    "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the Sabk forge aesthetic.",
+    "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the Sabk aesthetic.",
 }
 
 export default function BlocksIndex() {
@@ -21,9 +21,9 @@ export default function BlocksIndex() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-8 sm:pb-10">
+      <header className="flex flex-col gap-5 border-b border-border pb-8 sm:pb-10">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ blocks
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -35,7 +35,7 @@ export default function BlocksIndex() {
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
           Heroes, CTAs, FAQs and auth screens — built on top of the Sabk
-          component registry and the forge aesthetic. Copy a block in one
+          component registry and the Sabk aesthetic. Copy a block in one
           command, then shape it like any other source file in your repo.
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
@@ -43,16 +43,16 @@ export default function BlocksIndex() {
         </p>
       </header>
 
-      <nav className="flex flex-wrap gap-2 border-b-2 border-border pb-5">
+      <nav className="flex flex-wrap gap-2 border-b border-border pb-5">
         {BLOCK_KIND_ORDER.map((kind) => {
           const items = BLOCKS_BY_KIND[kind]
           return (
             <a
               key={kind}
               href={`#${kind}`}
-              className="inline-flex items-center gap-2 rounded-sm border-2 border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-forge hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-sm border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
             >
-              <span className="size-1 rounded-full bg-forge" />
+              <span className="size-1 rounded-full bg-foreground" />
               {BLOCK_KIND_LABELS[kind]}
               <span className="tabular-nums text-muted-foreground">
                 {items.length}
@@ -86,7 +86,7 @@ export default function BlocksIndex() {
                   <Link
                     key={entry.name}
                     href={`/blocks/${entry.name}`}
-                    className="group flex flex-col overflow-hidden rounded-sm border-2 border-border bg-background transition-colors hover:border-forge focus-visible:border-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors hover:border-foreground focus-visible:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <BlockPreview name={entry.name} title={entry.title} />
 
@@ -95,18 +95,18 @@ export default function BlocksIndex() {
                         <h3 className="text-base font-medium tracking-[-0.015em]">
                           {entry.title}
                         </h3>
-                        <span className="size-1.5 shrink-0 rounded-full bg-forge" />
+                        <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {entry.blockTagline ?? entry.description}
                       </p>
-                      <div className="mt-2 flex items-center justify-between gap-2 border-t-2 border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                         <span className="truncate">
                           /blocks/{entry.name}
                         </span>
-                        <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-forge">
+                        <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-foreground">
                           view
-                          <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+                          <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
                         </span>
                       </div>
                     </div>

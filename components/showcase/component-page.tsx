@@ -48,7 +48,7 @@ export function ComponentPage({
         isBlock ? "max-w-6xl" : "max-w-4xl"
       )}
     >
-      <header className="flex flex-col gap-3 border-b-2 border-border pb-6">
+      <header className="flex flex-col gap-3 border-b border-border pb-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             {entry.category}
@@ -58,13 +58,13 @@ export function ComponentPage({
               <span className="font-mono text-[10px] text-muted-foreground">
                 ·
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
                 {entry.blockKind}
               </span>
             </>
           )}
           {entry.status === "planned" && (
-            <span className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
               planned
             </span>
           )}
@@ -79,7 +79,7 @@ export function ComponentPage({
       </header>
 
       {entry.status === "planned" ? (
-        <div className="rounded-sm border-2 border-dashed border-border bg-card/40 px-6 py-12 text-center">
+        <div className="rounded-sm border border-dashed border-border bg-card/40 px-6 py-12 text-center">
           <p className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
             Declared in <code>registry.json</code> · implementation pending
           </p>
@@ -94,7 +94,7 @@ export function ComponentPage({
           <div
             role="tablist"
             aria-label="View"
-            className="-mx-4 flex items-center gap-0 overflow-x-auto border-b-2 border-border px-4 sm:mx-0 sm:px-0"
+            className="-mx-4 flex items-center gap-0 overflow-x-auto border-b border-border px-4 sm:mx-0 sm:px-0"
           >
             {(
               [
@@ -118,7 +118,7 @@ export function ComponentPage({
               >
                 {label}
                 {tab === k && (
-                  <span className="absolute inset-x-0 -bottom-[2px] h-[2px] bg-forge" />
+                  <span className="absolute inset-x-0 -bottom-[2px] h-[2px] bg-foreground" />
                 )}
               </button>
             ))}
@@ -129,7 +129,7 @@ export function ComponentPage({
             (isBlock ? (
               <BlockViewer name={entry.name} title={entry.title} />
             ) : (
-              <div className="flex min-h-[360px] items-center justify-center rounded-sm border-2 border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
+              <div className="flex min-h-[360px] items-center justify-center rounded-sm border border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
                 <Demo />
               </div>
             ))}
@@ -141,7 +141,7 @@ export function ComponentPage({
           {tab === "install" && (
             <div className="grid gap-4">
               <InstallBlock name={entry.name} />
-              <div className="rounded-sm border-2 border-border bg-card p-4">
+              <div className="rounded-sm border border-border bg-card p-4">
                 <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                   shadcn dependencies
                 </h3>
@@ -149,7 +149,7 @@ export function ComponentPage({
                   {(entry.registryDependencies ?? []).map((d) => (
                     <span
                       key={d}
-                      className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
+                      className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
                     >
                       {d}
                     </span>
@@ -157,7 +157,7 @@ export function ComponentPage({
                 </div>
               </div>
               {entry.dependencies?.length ? (
-                <div className="rounded-sm border-2 border-border bg-card p-4">
+                <div className="rounded-sm border border-border bg-card p-4">
                   <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                     npm dependencies
                   </h3>
@@ -165,7 +165,7 @@ export function ComponentPage({
                     {entry.dependencies.map((d) => (
                       <span
                         key={d}
-                        className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
+                        className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
                       >
                         {d}
                       </span>

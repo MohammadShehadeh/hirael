@@ -16,10 +16,11 @@ npx shadcn@latest add https://sabk.dev/r/multi-select.json
   just like shadcn's own composed blocks do.
 - **Distributed via the shadcn registry schema.** No runtime dependency
   on a Sabk package — source is copied straight into your repo.
-- **Forge aesthetic.** Mechanical precision: 2px borders, ≤4px radii,
-  monospace for labels and counts, motion 120–180ms ease-out, dark as
-  primary canvas, one warm-metallic accent. Reject gradients,
-  glassmorphism, generic polish.
+- **Efferd-aligned aesthetic.** Modern shadcn polish: 1px soft borders,
+  0.65rem radius scale (sm/md/lg/xl derived from `--radius`), zinc
+  neutrals, dark as primary canvas, no chromatic accent — primary draws
+  the eye. Geist Sans for body, Geist Mono reserved for code and
+  identifiers.
 
 ## Dual-API contract
 
@@ -72,7 +73,7 @@ sabk/
       layout.tsx               # sidebar + main column
       page.tsx                 # landing
     layout.tsx
-    globals.css                # design tokens (forge palette)
+    globals.css                # design tokens (zinc, 0.65rem radius)
   components/
     showcase/                  # shell-only chrome, not part of the registry
   registry/
@@ -132,15 +133,17 @@ For each new component:
       and source file list.
 - [ ] All imports for shadcn primitives go through `@/registry/sabk/ui/*`
       (alias is rewritten on install).
-- [ ] Tokens reuse `--background / --foreground / --border / --forge`
+- [ ] Tokens reuse `--background / --foreground / --border / --primary / --accent`
       and friends — never hard-code colors.
 - [ ] `pnpm registry:build && pnpm typecheck && pnpm build` clean.
 
 ## Design tokens
 
-Dark is the primary canvas. Light is a faithful inverse. The forge
-accent (`--forge`, warm copper/brass) is the single color allowed to
-shout — selection state, slider fill, focus underline, ◆ marks.
-Borders are 2px. Radii cap at 4px on most surfaces, 6px on overlays.
-Monospace (`--font-mono`) is reserved for labels, counts, codes, and
-status. Motion is 120–180ms with `--ease-forge`. No springs.
+Dark is the primary canvas. Light is a faithful inverse. The palette is
+pure zinc (achromatic OKLch) with no warm accent — `--primary` carries
+emphasis. Borders are 1px and soft (10% white in dark, oklch(0.922) in
+light). Radii follow shadcn's standard scale derived from
+`--radius: 0.65rem` (sm = radius − 4px, md = radius − 2px, lg = radius,
+xl = radius + 4px). Geist Sans is the default body face; Geist Mono is
+reserved for code, install commands, and identifiers. Motion stays
+short (120–180ms, ease-out).

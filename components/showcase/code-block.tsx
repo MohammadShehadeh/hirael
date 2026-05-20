@@ -36,11 +36,11 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-sm border-2 border-border",
+        "overflow-hidden rounded-sm border border-border",
         className
       )}
     >
-      <div className="flex items-center justify-between gap-2 border-b-2 border-border bg-card px-2 py-1.5">
+      <div className="flex items-center justify-between gap-2 border-b border-border bg-card px-2 py-1.5">
         <div className="flex items-center gap-1 overflow-x-auto">
           {tabs.map((t) => (
             <button
@@ -82,7 +82,7 @@ export function InlineCodeBlock({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-sm border-2 border-border",
+        "group relative overflow-hidden rounded-sm border border-border",
         className
       )}
     >
@@ -120,12 +120,12 @@ function CopyButton({
         }
       }}
       className={cn(
-        "inline-flex size-7 shrink-0 items-center justify-center rounded-sm border-2 border-transparent text-muted-foreground transition-colors hover:border-border hover:text-foreground",
+        "inline-flex size-7 shrink-0 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:text-foreground",
         className
       )}
     >
       {copied ? (
-        <Check className="size-3.5 text-forge" />
+        <Check className="size-3.5 text-foreground" />
       ) : (
         <Copy className="size-3.5" />
       )}

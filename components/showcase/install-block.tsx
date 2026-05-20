@@ -35,27 +35,27 @@ export function InstallBlock({
   return (
     <div
       className={cn(
-        "group relative flex items-center gap-3 rounded-sm border-2 border-border bg-card px-3 py-2",
+        "group relative flex items-center gap-3 rounded-sm border border-border bg-card px-3 py-2",
         className
       )}
     >
-      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge shrink-0">
+      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground shrink-0">
         $
       </span>
       <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground">
         <span className="text-muted-foreground">npx</span>{" "}
         <span className="text-foreground">shadcn@latest</span>{" "}
         <span className="text-muted-foreground">add</span>{" "}
-        <span className="text-forge">{base}/r/{name}.json</span>
+        <span className="text-foreground">{base}/r/{name}.json</span>
       </code>
       <button
         type="button"
         onClick={onCopy}
         aria-label="Copy install command"
-        className="inline-flex size-7 shrink-0 items-center justify-center rounded-sm border-2 border-transparent text-muted-foreground transition-colors hover:border-border hover:text-foreground"
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:text-foreground"
       >
         {copied ? (
-          <Check className="size-3.5 text-forge" />
+          <Check className="size-3.5 text-foreground" />
         ) : (
           <Copy className="size-3.5" />
         )}

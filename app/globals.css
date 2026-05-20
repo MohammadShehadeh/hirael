@@ -4,6 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -22,112 +25,101 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-forge: var(--forge);
-  --color-forge-foreground: var(--forge-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
-
-  --ease-forge: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /* Dark is the primary canvas. */
 :root {
-  --radius: 3px;
+  --radius: 0.65rem;
 
-  --background: oklch(0.16 0.005 60);
-  --foreground: oklch(0.96 0.005 80);
-
-  --card: oklch(0.20 0.006 60);
-  --card-foreground: oklch(0.96 0.005 80);
-
-  --popover: oklch(0.205 0.008 60);
-  --popover-foreground: oklch(0.97 0.005 80);
-
-  --primary: oklch(0.96 0.005 80);
-  --primary-foreground: oklch(0.16 0.005 60);
-
-  --secondary: oklch(0.26 0.008 60);
-  --secondary-foreground: oklch(0.96 0.005 80);
-
-  --muted: oklch(0.235 0.006 60);
-  --muted-foreground: oklch(0.66 0.012 70);
-
-  --accent: oklch(0.28 0.012 60);
-  --accent-foreground: oklch(0.97 0.005 80);
-
-  --destructive: oklch(0.62 0.22 25);
-
-  --border: oklch(0.32 0.008 60);
-  --input: oklch(0.32 0.008 60);
-  --ring: oklch(0.68 0.14 55);
-
-  /* Forge: warm metallic copper/brass accent — singular, used sparingly. */
-  --forge: oklch(0.72 0.14 55);
-  --forge-foreground: oklch(0.14 0.01 55);
-
-  --sidebar: oklch(0.135 0.005 60);
-  --sidebar-foreground: oklch(0.86 0.008 70);
-  --sidebar-border: oklch(0.28 0.008 60);
-  --sidebar-accent: oklch(0.22 0.008 60);
-  --sidebar-accent-foreground: oklch(0.97 0.005 80);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* Light: faithful inverse, same accent. */
+/* Light: faithful inverse, zinc neutral. */
 .light {
-  --background: oklch(0.985 0.003 80);
-  --foreground: oklch(0.18 0.005 60);
-
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.005 60);
-
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.005 60);
-
-  --primary: oklch(0.20 0.006 60);
-  --primary-foreground: oklch(0.985 0.003 80);
-
-  --secondary: oklch(0.95 0.005 80);
-  --secondary-foreground: oklch(0.20 0.006 60);
-
-  --muted: oklch(0.96 0.004 80);
-  --muted-foreground: oklch(0.46 0.01 70);
-
-  --accent: oklch(0.94 0.006 80);
-  --accent-foreground: oklch(0.20 0.006 60);
-
-  --destructive: oklch(0.55 0.22 25);
-
-  --border: oklch(0.88 0.006 80);
-  --input: oklch(0.88 0.006 80);
-  --ring: oklch(0.62 0.14 55);
-
-  --forge: oklch(0.56 0.14 55);
-  --forge-foreground: oklch(0.98 0.005 80);
-
-  --sidebar: oklch(0.97 0.004 80);
-  --sidebar-foreground: oklch(0.24 0.005 60);
-  --sidebar-border: oklch(0.88 0.006 80);
-  --sidebar-accent: oklch(0.93 0.006 80);
-  --sidebar-accent-foreground: oklch(0.20 0.006 60);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 /* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
    values; --shiki-light + --shiki-light-bg are CSS vars we swap to in
-   light mode. The block uses --card so it picks up the page theme in
-   both modes (vitesse-light's #ffffff bg is too bright against our warm
-   neutrals). Line spans stay inline so the natural \n inside <pre>
-   produces line breaks — display:block here doubles every row. */
+   light mode. */
 .shiki {
   background-color: var(--card) !important;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
@@ -156,6 +148,7 @@ html.light .shiki span {
   }
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
   html.light {
     color-scheme: light;
@@ -163,11 +156,58 @@ html.light .shiki span {
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-feature-settings: "ss01", "cv11";
-    letter-spacing: -0.005em;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklch, var(--muted-foreground) 60%, transparent);
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-color: color-mix(in oklch, var(--muted-foreground) 80%, transparent);
+  }
+
   ::selection {
-    background-color: color-mix(in oklch, var(--forge) 40%, transparent);
+    background-color: color-mix(in oklch, var(--primary) 30%, transparent);
     color: var(--foreground);
   }
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .container {
+    @apply mx-auto w-full max-w-7xl;
+  }
+  .cpx {
+    @apply px-4 lg:px-6;
+  }
+}
+</content>
+</invoke>

@@ -38,7 +38,7 @@ export function BlockPreview({
   return (
     <div
       ref={ref}
-      className="relative w-full overflow-hidden border-b-2 border-border bg-card/30"
+      className="relative w-full overflow-hidden border-b border-border bg-card/30"
       style={{ aspectRatio: `${simWidth} / ${simHeight}` }}
     >
       <iframe

@@ -146,7 +146,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "cta-01",
     title: "CTA · framed band",
     description:
-      "Framed CTA card with forge corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
+      "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
     blockTagline: "Framed · split layout · corner marks",
     category: "blocks",
     blockKind: "cta",
@@ -202,7 +202,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "login-01",
     title: "Login · centered card",
     description:
-      "Centered login card with forge monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
+      "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
     blockTagline: "Centered card · providers · password-input",
     category: "blocks",
     blockKind: "login",

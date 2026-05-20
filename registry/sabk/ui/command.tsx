@@ -29,7 +29,7 @@ function CommandInput({
   return (
     <div
       data-slot="command-input-wrapper"
-      className="flex items-center gap-2 border-b-2 border-border px-3"
+      className="flex items-center gap-2 border-b border-border px-3"
       cmdk-input-wrapper=""
     >
       <Search className="size-3.5 shrink-0 text-muted-foreground" />

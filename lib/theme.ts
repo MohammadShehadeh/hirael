@@ -36,8 +36,6 @@ export const THEME_TOKEN_KEYS = [
   "border",
   "input",
   "ring",
-  "forge",
-  "forge-foreground",
   "sidebar",
   "sidebar-foreground",
   "sidebar-border",
@@ -159,8 +157,8 @@ function formatBlock(selector: string, tokens: ThemeTokens): string {
 }
 
 /**
- * Curated presets. Each only overrides the accent hue + ring, so the rest of
- * the neutral palette stays consistent with the default forge look.
+ * Curated presets. Each only overrides the primary hue + ring, so the rest of
+ * the neutral palette stays consistent with the default zinc look.
  */
 export type ThemePreset = {
   id: string
@@ -171,19 +169,19 @@ export type ThemePreset = {
 
 export const THEME_PRESETS: ThemePreset[] = [
   {
-    id: "forge",
-    label: "Forge",
-    swatch: "oklch(0.72 0.14 55)",
+    id: "zinc",
+    label: "Zinc",
+    swatch: "oklch(0.985 0 0)",
     overrides: {
       dark: {
-        forge: "oklch(0.72 0.14 55)",
-        "forge-foreground": "oklch(0.14 0.01 55)",
-        ring: "oklch(0.68 0.14 55)",
+        primary: "oklch(0.985 0 0)",
+        "primary-foreground": "oklch(0.205 0 0)",
+        ring: "oklch(0.708 0 0)",
       },
       light: {
-        forge: "oklch(0.56 0.14 55)",
-        "forge-foreground": "oklch(0.98 0.005 80)",
-        ring: "oklch(0.62 0.14 55)",
+        primary: "oklch(0.205 0 0)",
+        "primary-foreground": "oklch(0.985 0 0)",
+        ring: "oklch(0.708 0 0)",
       },
     },
   },
@@ -193,13 +191,13 @@ export const THEME_PRESETS: ThemePreset[] = [
     swatch: "oklch(0.72 0.16 155)",
     overrides: {
       dark: {
-        forge: "oklch(0.72 0.16 155)",
-        "forge-foreground": "oklch(0.14 0.02 155)",
+        primary: "oklch(0.72 0.16 155)",
+        "primary-foreground": "oklch(0.14 0.02 155)",
         ring: "oklch(0.68 0.16 155)",
       },
       light: {
-        forge: "oklch(0.52 0.14 155)",
-        "forge-foreground": "oklch(0.98 0.01 155)",
+        primary: "oklch(0.52 0.14 155)",
+        "primary-foreground": "oklch(0.98 0.01 155)",
         ring: "oklch(0.58 0.14 155)",
       },
     },
@@ -210,13 +208,13 @@ export const THEME_PRESETS: ThemePreset[] = [
     swatch: "oklch(0.68 0.18 270)",
     overrides: {
       dark: {
-        forge: "oklch(0.68 0.18 270)",
-        "forge-foreground": "oklch(0.14 0.02 270)",
+        primary: "oklch(0.68 0.18 270)",
+        "primary-foreground": "oklch(0.14 0.02 270)",
         ring: "oklch(0.64 0.18 270)",
       },
       light: {
-        forge: "oklch(0.52 0.18 270)",
-        "forge-foreground": "oklch(0.98 0.01 270)",
+        primary: "oklch(0.52 0.18 270)",
+        "primary-foreground": "oklch(0.98 0.01 270)",
         ring: "oklch(0.58 0.18 270)",
       },
     },
@@ -227,13 +225,13 @@ export const THEME_PRESETS: ThemePreset[] = [
     swatch: "oklch(0.7 0.18 15)",
     overrides: {
       dark: {
-        forge: "oklch(0.7 0.18 15)",
-        "forge-foreground": "oklch(0.14 0.02 15)",
+        primary: "oklch(0.7 0.18 15)",
+        "primary-foreground": "oklch(0.14 0.02 15)",
         ring: "oklch(0.66 0.18 15)",
       },
       light: {
-        forge: "oklch(0.56 0.18 15)",
-        "forge-foreground": "oklch(0.98 0.01 15)",
+        primary: "oklch(0.56 0.18 15)",
+        "primary-foreground": "oklch(0.98 0.01 15)",
         ring: "oklch(0.6 0.18 15)",
       },
     },

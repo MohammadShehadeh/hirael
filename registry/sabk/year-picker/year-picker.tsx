@@ -257,7 +257,7 @@ function YearPickerTrigger({
         disabled={ctx.disabled}
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border-2 border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
+          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           empty && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -405,11 +405,11 @@ function YearPickerContent({
                 "hover:bg-accent hover:text-accent-foreground",
                 "focus-visible:ring-2 focus-visible:ring-ring",
                 "disabled:opacity-30 disabled:hover:bg-transparent",
-                inRange && "bg-forge/15 text-forge",
-                selected && "bg-forge text-forge-foreground hover:bg-forge",
+                inRange && "bg-primary/15 text-foreground",
+                selected && "bg-primary text-primary-foreground hover:bg-primary",
                 !selected &&
                   isToday &&
-                  "ring-1 ring-inset ring-forge/60"
+                  "ring-1 ring-inset ring-primary/60"
               )}
             >
               {year}

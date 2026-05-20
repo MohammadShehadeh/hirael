@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: "Can I theme it?",
-    a: "Yes. Sabk reads the same CSS variables as shadcn/ui plus a forge accent token. The /theme playground lets you tune the accent live; every component re-skins in place. Drop-in compatible with any shadcn theme.",
+    a: "Yes. Sabk reads the same CSS variables as shadcn/ui. The /theme playground lets you tune the accent live; every component re-skins in place. Drop-in compatible with any shadcn theme.",
   },
   {
     q: "Does it work with React Server Components?",
@@ -44,13 +44,13 @@ export default function Faq01() {
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 md:px-10 lg:grid-cols-12 lg:gap-16">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <div className="sticky top-12 flex flex-col gap-6">
-            <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-forge">
-              <span className="size-1 rounded-full bg-forge" />
+            <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+              <span className="size-1 rounded-full bg-foreground" />
               FAQ · the short answers
             </span>
             <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
               Frequently{" "}
-              <span className="text-forge">unobvious</span> questions.
+              <span className="text-foreground">unobvious</span> questions.
             </h2>
             <p className="text-sm text-muted-foreground">
               The questions teams ask in their first ten minutes with Sabk —
@@ -58,9 +58,9 @@ export default function Faq01() {
               isn&apos;t here, the issue tracker is open.
             </p>
 
-            <div className="mt-2 flex flex-col gap-3 rounded-sm border-2 border-border bg-card p-5">
+            <div className="mt-2 flex flex-col gap-3 rounded-sm border border-border bg-card p-5">
               <div className="inline-flex items-center gap-2">
-                <MessageCircleQuestion className="size-4 text-forge" />
+                <MessageCircleQuestion className="size-4 text-foreground" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   still stuck?
                 </span>
@@ -77,7 +77,7 @@ export default function Faq01() {
         </div>
 
         <div className="lg:col-span-7">
-          <Accordion type="single" collapsible defaultValue="item-0" className="border-y-2 border-border">
+          <Accordion type="single" collapsible defaultValue="item-0" className="border-y border-border">
             {FAQS.map((f, i) => (
               <AccordionItem key={f.q} value={`item-${i}`} className="px-1">
                 <AccordionTrigger>

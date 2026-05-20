@@ -219,7 +219,7 @@ function TagInputContainer({
         }
       }}
       className={cn(
-        "flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border-2 border-input bg-transparent px-1.5 py-1 text-sm outline-none transition-colors",
+        "flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-transparent px-1.5 py-1 text-sm outline-none transition-colors",
         "focus-within:border-ring",
         ctx.error && "border-destructive focus-within:border-destructive",
         (ctx.disabled || ctx.readOnly) && "opacity-60 cursor-not-allowed",
@@ -248,7 +248,7 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
   if (tag === undefined) return null
   return (
     <Badge
-      variant="forge"
+      variant="default"
       className={cn("gap-1 pr-1 font-normal", className)}
       {...props}
     >
@@ -259,7 +259,7 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
           tabIndex={-1}
           aria-label={`Remove ${tag}`}
           onClick={() => ctx.remove(index)}
-          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-forge/70 transition-colors hover:bg-forge/20 hover:text-forge"
+          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 transition-colors hover:bg-foreground/20 hover:text-foreground"
         >
           <X className="size-2.5" />
         </button>

@@ -29,12 +29,12 @@ export function MobileTopBar() {
   }, [pathname])
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b-2 border-border bg-background/90 px-4 backdrop-blur-md md:hidden">
+    <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b border-border bg-background/90 px-4 backdrop-blur-md md:hidden">
       <Link href="/" className="flex items-baseline gap-2">
         <span className="text-base font-semibold tracking-[-0.04em]">
           sabk
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
           ◆ forge
         </span>
       </Link>
@@ -46,7 +46,7 @@ export function MobileTopBar() {
             <button
               type="button"
               aria-label="Open navigation"
-              className="inline-flex size-9 items-center justify-center rounded-sm border-2 border-border bg-card text-foreground transition-colors hover:border-forge hover:text-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-card text-foreground transition-colors hover:border-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Menu className="size-4" />
             </button>
@@ -67,12 +67,12 @@ function MobileNavBody() {
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
-      <div className="border-b-2 border-sidebar-border px-5 py-4">
+      <div className="border-b border-sidebar-border px-5 py-4">
         <div className="flex items-baseline gap-2">
           <span className="text-lg font-semibold tracking-[-0.04em]">
             sabk
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ forge
           </span>
         </div>
@@ -96,7 +96,7 @@ function MobileNavBody() {
                 )}
               >
                 <span className="inline-flex items-center gap-2 truncate">
-                  <Sparkles className="size-3.5 text-forge" />
+                  <Sparkles className="size-3.5 text-foreground" />
                   Theme playground
                 </span>
               </Link>
@@ -110,7 +110,7 @@ function MobileNavBody() {
                 )}
               >
                 <span className="inline-flex items-center gap-2 truncate">
-                  <LayoutTemplate className="size-3.5 text-forge" />
+                  <LayoutTemplate className="size-3.5 text-foreground" />
                   Blocks
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
@@ -151,7 +151,7 @@ function MobileNavBody() {
         })}
       </nav>
 
-      <div className="border-t-2 border-sidebar-border px-5 py-3">
+      <div className="border-t border-sidebar-border px-5 py-3">
         <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           v0.1 · peer of shadcn
         </span>

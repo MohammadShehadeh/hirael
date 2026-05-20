@@ -32,7 +32,7 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
           type="button"
           aria-label="Open theme settings"
           className={cn(
-            "inline-flex items-center gap-2 rounded-sm border-2 border-sidebar-border bg-sidebar px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-sidebar-foreground transition-colors hover:border-forge hover:text-forge",
+            "inline-flex items-center gap-2 rounded-sm border border-sidebar-border bg-sidebar px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-sidebar-foreground transition-colors hover:border-foreground hover:text-foreground",
             className
           )}
         >
@@ -109,7 +109,7 @@ function ThemeSheetBody() {
     <>
       <SheetHeader>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ theme
           </span>
         </div>
@@ -145,11 +145,11 @@ function ThemeSheetBody() {
                 key={p.id}
                 type="button"
                 onClick={() => applyPreset(p.id)}
-                className="group flex items-center gap-2 rounded-sm border-2 border-border bg-card px-3 py-2 text-left transition-colors hover:border-forge"
+                className="group flex items-center gap-2 rounded-sm border border-border bg-card px-3 py-2 text-left transition-colors hover:border-foreground"
               >
                 <span
                   aria-hidden
-                  className="size-3.5 shrink-0 rounded-full border-2 border-border"
+                  className="size-3.5 shrink-0 rounded-full border border-border"
                   style={{ background: p.swatch }}
                 />
                 <span className="text-sm">{p.label}</span>
@@ -170,7 +170,7 @@ function ThemeSheetBody() {
             onChange={(e) => setPaste(e.target.value)}
             placeholder={`:root {\n  --background: oklch(...);\n  --foreground: oklch(...);\n  --primary: oklch(...);\n  ...\n}\n\n.dark {\n  ...\n}`}
             spellCheck={false}
-            className="h-44 w-full resize-y rounded-sm border-2 border-border bg-card px-3 py-2 font-mono text-[11px] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus-visible:border-ring"
+            className="h-44 w-full resize-y rounded-sm border border-border bg-card px-3 py-2 font-mono text-[11px] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus-visible:border-ring"
           />
           <div className="mt-2 flex items-center justify-between gap-3">
             <p
@@ -179,7 +179,7 @@ function ThemeSheetBody() {
                 parseStatus.kind === "warn"
                   ? "text-destructive"
                   : parseStatus.kind === "ok"
-                    ? "text-forge"
+                    ? "text-foreground"
                     : "text-muted-foreground"
               )}
             >
@@ -190,7 +190,7 @@ function ThemeSheetBody() {
             <Button
               type="button"
               size="sm"
-              variant="forge"
+              variant="default"
               onClick={applyPaste}
               disabled={!paste.trim()}
             >
@@ -203,7 +203,7 @@ function ThemeSheetBody() {
           title="Export"
           hint={`${overrideCount} override${overrideCount === 1 ? "" : "s"} active`}
         >
-          <pre className="max-h-40 overflow-auto rounded-sm border-2 border-border bg-card p-3 font-mono text-[11px] leading-relaxed">
+          <pre className="max-h-40 overflow-auto rounded-sm border border-border bg-card p-3 font-mono text-[11px] leading-relaxed">
             <code>{exportCss}</code>
           </pre>
           <div className="mt-2 flex items-center justify-end">
@@ -287,15 +287,15 @@ function ModeButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "flex items-center justify-center gap-2 rounded-sm border-2 px-3 py-2 text-sm transition-colors",
+        "flex items-center justify-center gap-2 rounded-sm border px-3 py-2 text-sm transition-colors",
         active
-          ? "border-forge bg-accent text-foreground"
+          ? "border-foreground bg-accent text-foreground"
           : "border-border bg-card text-muted-foreground hover:text-foreground"
       )}
     >
       {icon}
       {label}
-      {active && <span className="ml-1 size-1.5 rounded-full bg-forge" />}
+      {active && <span className="ml-1 size-1.5 rounded-full bg-foreground" />}
     </button>
   )
 }

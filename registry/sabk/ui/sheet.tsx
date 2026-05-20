@@ -38,7 +38,7 @@ function SheetOverlay({
       className={cn(
         "fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        "duration-200 ease-[var(--ease-forge)]",
+        "duration-200 ease-out",
         className
       )}
       {...props}
@@ -63,11 +63,11 @@ function SheetContent({
         data-slot="sheet-content"
         className={cn(
           "fixed z-50 flex h-svh w-full max-w-md flex-col gap-0 border-border bg-background text-foreground shadow-2xl outline-none",
-          "data-[state=open]:animate-in data-[state=closed]:animate-out duration-250 ease-[var(--ease-forge)]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out duration-250 ease-out",
           side === "right" &&
-            "right-0 top-0 border-l-2 data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
+            "right-0 top-0 border-l data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
           side === "left" &&
-            "left-0 top-0 border-r-2 data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left",
+            "left-0 top-0 border-r data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left",
           className
         )}
         {...props}
@@ -92,7 +92,7 @@ function SheetHeader({
     <div
       data-slot="sheet-header"
       className={cn(
-        "flex flex-col gap-1 border-b-2 border-border px-6 py-4",
+        "flex flex-col gap-1 border-b border-border px-6 py-4",
         className
       )}
       {...props}
@@ -150,7 +150,7 @@ function SheetFooter({
     <div
       data-slot="sheet-footer"
       className={cn(
-        "flex items-center justify-between gap-2 border-t-2 border-border px-6 py-3",
+        "flex items-center justify-between gap-2 border-t border-border px-6 py-3",
         className
       )}
       {...props}

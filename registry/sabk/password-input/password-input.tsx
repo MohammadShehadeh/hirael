@@ -194,7 +194,7 @@ const STRENGTH_COLORS = [
   "bg-destructive",
   "bg-destructive",
   "bg-amber-500",
-  "bg-forge",
+  "bg-primary",
   "bg-emerald-500",
 ] as const
 
@@ -224,7 +224,7 @@ function PasswordInputStrength({
           <span
             key={tier}
             className={cn(
-              "h-1 rounded-sm bg-border transition-colors duration-200 ease-[var(--ease-forge)]",
+              "h-1 rounded-sm bg-border transition-colors duration-200 ease-out",
               s.score >= tier && bar
             )}
           />

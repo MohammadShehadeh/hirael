@@ -30,9 +30,9 @@ export default async function ShowcaseHome() {
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b-2 border-border pb-8 sm:pb-10">
+      <header className="flex flex-col gap-5 border-b border-border pb-8 sm:pb-10">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-forge">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
             ◆ sabk · v0.1
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -70,7 +70,7 @@ export default async function ShowcaseHome() {
                   {items.length} ready
                 </span>
               </div>
-              <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border-2 border-border bg-border sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2">
                 {items.map((entry) => (
                   <li key={entry.name}>
                     <Link
@@ -83,18 +83,18 @@ export default async function ShowcaseHome() {
                             {entry.title}
                           </h3>
                           {entry.status === "planned" ? (
-                            <span className="rounded-sm border-2 border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
+                            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                               soon
                             </span>
                           ) : (
-                            <span className="size-1.5 rounded-full bg-forge" />
+                            <span className="size-1.5 rounded-full bg-foreground" />
                           )}
                         </div>
                         <p className="mt-1.5 text-xs text-muted-foreground">
                           {entry.description}
                         </p>
                       </div>
-                      <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-forge">
+                      <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
                         /{entry.name} →
                       </div>
                     </Link>
@@ -106,14 +106,14 @@ export default async function ShowcaseHome() {
         })}
       </section>
 
-      <section className="grid gap-4 border-t-2 border-border pt-8">
+      <section className="grid gap-4 border-t border-border pt-8">
         <div className="flex items-baseline justify-between">
           <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
             Blocks
           </h2>
           <Link
             href="/blocks"
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-forge"
+            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
           >
             view all
             <ArrowRight className="size-3" />
@@ -121,16 +121,16 @@ export default async function ShowcaseHome() {
         </div>
         <p className="text-sm text-muted-foreground">
           Section-level compositions built on top of the registry —
-          heroes, CTAs, FAQs and auth screens, in the same forge
+          heroes, CTAs, FAQs and auth screens, in the same Sabk
           aesthetic. Copy a block into your repo in one command.
         </p>
         <Link
           href="/blocks"
-          className="group flex items-center justify-between gap-4 rounded-sm border-2 border-border bg-card p-4 transition-colors hover:border-forge"
+          className="group flex items-center justify-between gap-4 rounded-sm border border-border bg-card p-4 transition-colors hover:border-foreground"
         >
           <div className="flex items-center gap-4">
-            <span className="inline-flex size-10 items-center justify-center rounded-sm border-2 border-border bg-background">
-              <LayoutTemplate className="size-4 text-forge" />
+            <span className="inline-flex size-10 items-center justify-center rounded-sm border border-border bg-background">
+              <LayoutTemplate className="size-4 text-foreground" />
             </span>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">
@@ -144,14 +144,14 @@ export default async function ShowcaseHome() {
               </span>
             </div>
           </div>
-          <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors group-hover:text-forge">
+          <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors group-hover:text-foreground">
             /blocks
-            <ArrowRight className="size-3 transition-transform duration-150 ease-[var(--ease-forge)] group-hover:translate-x-0.5" />
+            <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
           </span>
         </Link>
       </section>
 
-      <section className="grid gap-3 border-t-2 border-border pt-8">
+      <section className="grid gap-3 border-t border-border pt-8">
         <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
           Dual-API contract
         </h2>

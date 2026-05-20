@@ -123,8 +123,11 @@
 }
 
 /* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
-   values; --shiki-light + --shiki-light-bg are CSS vars. Override them in
-   .light to swap. */
+   values; --shiki-light + --shiki-light-bg are CSS vars we swap to in
+   light mode. The block uses --card so it picks up the page theme in
+   both modes (vitesse-light's #ffffff bg is too bright against our warm
+   neutrals). Line spans stay inline so the natural \n inside <pre>
+   produces line breaks — display:block here doubles every row. */
 .shiki {
   background-color: var(--card) !important;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
@@ -134,16 +137,9 @@
   tab-size: 2;
 }
 .shiki code {
-  display: block;
   background: transparent !important;
-  counter-reset: line;
-}
-.shiki .line {
-  display: block;
-  min-height: 1lh;
 }
 html.light .shiki {
-  background-color: var(--shiki-light-bg) !important;
   color: var(--shiki-light) !important;
 }
 html.light .shiki span {

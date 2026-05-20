@@ -14,9 +14,7 @@ export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const stable = REGISTRY.filter(
-    (r) => r.status === "stable" && r.category !== "blocks"
-  )
+  const components = REGISTRY.filter((r) => r.category !== "blocks")
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
@@ -103,9 +101,9 @@ export function ThemePlayground() {
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
-          {stable.map((entry) => {
+          {components.map((entry) => {
             const Demo = entry.Demo
-            if (!Demo) return null
+            const isPlanned = entry.status === "planned"
             return (
               <article
                 key={entry.name}
@@ -116,11 +114,17 @@ export function ThemePlayground() {
                     {entry.title}
                   </h3>
                   <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                    /{entry.name}
+                    {isPlanned ? "soon" : `/${entry.name}`}
                   </span>
                 </div>
                 <div className="flex min-h-[160px] items-center justify-center rounded-sm border border-dashed border-border bg-background/60 p-4">
-                  <Demo />
+                  {Demo ? (
+                    <Demo />
+                  ) : (
+                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                      planned · coming soon
+                    </span>
+                  )}
                 </div>
               </article>
             )

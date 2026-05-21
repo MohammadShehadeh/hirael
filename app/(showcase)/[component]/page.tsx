@@ -57,6 +57,29 @@ async function loadSource(
   return out
 }
 
+/**
+ * Convention: each component ships `<name>.tsx` alongside `<name>.demo.tsx`
+ * in the same directory. The demo source powers the "Usage" tab.
+ * Returns null when the demo file isn't present so the tab can be hidden.
+ */
+async function loadDemoSource(
+  entry: { sourceFiles?: string[] }
+): Promise<SourceFile | null> {
+  const primary = entry.sourceFiles?.[0]
+  if (!primary) return null
+  const relPath = primary.replace(/\.tsx$/, ".demo.tsx")
+  const abs = path.join(process.cwd(), relPath)
+  let code: string
+  try {
+    code = await fs.readFile(abs, "utf8")
+  } catch {
+    return null
+  }
+  const lang = langFromPath(relPath)
+  const html = await highlightCode(code, lang)
+  return { code, html, lang }
+}
+
 export default async function ComponentRoute({
   params,
 }: {
@@ -65,6 +88,11 @@ export default async function ComponentRoute({
   const { component } = await params
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") notFound()
-  const source = await loadSource(entry.sourceFiles)
-  return <ComponentPage entry={entry} source={source} />
+  const [source, demoSource] = await Promise.all([
+    loadSource(entry.sourceFiles),
+    loadDemoSource(entry),
+  ])
+  return (
+    <ComponentPage entry={entry} source={source} demoSource={demoSource} />
+  )
 }

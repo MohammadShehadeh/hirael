@@ -81,12 +81,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-
-  /* Decorative glow token used by .bg-aurora / .card-glow and the hero orbs.
-     Dark mode: a warm amber tint that reads as a soft glow on the near-black
-     canvas without breaking the achromatic palette of the components. */
-  --glow: oklch(0.78 0.13 70);
-  --glow-strong: oklch(0.86 0.16 70);
 }
 
 /* Light: faithful inverse, zinc neutral. */
@@ -122,11 +116,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
-  /* Light-mode decorative glow: a very pale warm tint so radial glows read
-     as a soft cream wash on white, not a dark splotch. */
-  --glow: oklch(0.92 0.06 70);
-  --glow-strong: oklch(0.86 0.1 70);
 }
 
 /* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
@@ -221,133 +210,14 @@ html.light .shiki span {
     @apply px-4 lg:px-6;
   }
 
-  /* Subtle aurora glow used behind the hero. Reads as warm amber in dark,
-     pale cream wash in light — both via the --glow token. */
-  .bg-aurora {
-    background-image:
-      radial-gradient(
-        ellipse 80% 50% at 50% -10%,
-        color-mix(in oklch, var(--glow) 30%, transparent),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 60% 40% at 80% 10%,
-        color-mix(in oklch, var(--glow) 20%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 60% 40% at 20% 10%,
-        color-mix(in oklch, var(--glow) 20%, transparent),
-        transparent 70%
-      );
-  }
-
-  /* Animated horizontal sweep used on the top of the hero (premium feel). */
-  .bg-sheen-top {
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      color-mix(in oklch, var(--glow-strong) 70%, transparent) 50%,
-      transparent 100%
+  /* Faint dot grid used as a subtle background texture on the hero —
+     reads as monochrome zinc dots in both themes. */
+  .bg-dot-grid {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      var(--border) 1px,
+      transparent 0
     );
-  }
-
-  /* Spinning conic-gradient orb. */
-  .bg-glow-orb {
-    background: conic-gradient(
-      from 90deg,
-      color-mix(in oklch, var(--glow) 50%, transparent),
-      transparent 30%,
-      color-mix(in oklch, var(--glow) 32%, transparent) 60%,
-      transparent 80%
-    );
-  }
-
-  /* Subtle inner glow + lift on cards during hover. Light mode uses a
-     softer neutral shadow so it never looks like a heavy drop shadow. */
-  .card-glow {
-    transition:
-      border-color 180ms ease-out,
-      box-shadow 180ms ease-out,
-      transform 180ms ease-out;
-  }
-  .card-glow:hover {
-    box-shadow:
-      0 0 0 1px color-mix(in oklch, var(--glow) 18%, transparent) inset,
-      0 12px 32px -16px color-mix(in oklch, var(--glow) 36%, transparent);
-  }
-  html.light .card-glow:hover {
-    box-shadow:
-      0 0 0 1px color-mix(in oklch, var(--glow-strong) 22%, transparent) inset,
-      0 14px 28px -18px oklch(0.4 0 0 / 14%);
-  }
-
-  /* Primary-button glow ring + warm hover halo. */
-  .btn-glow-ring {
-    box-shadow:
-      0 0 0 1px color-mix(in oklch, var(--primary) 50%, transparent);
-  }
-  .btn-glow-ring:hover {
-    box-shadow:
-      0 0 0 1px color-mix(in oklch, var(--primary) 50%, transparent),
-      0 0 32px -8px color-mix(in oklch, var(--glow) 60%, transparent);
-  }
-  html.light .btn-glow-ring:hover {
-    box-shadow:
-      0 0 0 1px color-mix(in oklch, var(--primary) 60%, transparent),
-      0 8px 28px -14px oklch(0.3 0 0 / 22%);
-  }
-
-  /* Faint gradient text used for one accent word in the hero. Dark mode:
-     foreground → glow tint. Light mode: foreground → muted-foreground
-     (subtle and clean). */
-  .text-gradient-primary {
-    background: linear-gradient(
-      180deg,
-      var(--foreground) 0%,
-      color-mix(in oklch, var(--foreground) 60%, var(--glow-strong)) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  html.light .text-gradient-primary {
-    background: linear-gradient(
-      180deg,
-      var(--foreground) 0%,
-      color-mix(in oklch, var(--foreground) 55%, var(--muted-foreground)) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* Pulsing ring used around the live-status dot. */
-  @keyframes ping-soft {
-    0% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-    75%,
-    100% {
-      transform: scale(2.2);
-      opacity: 0;
-    }
-  }
-  .animate-ping-soft {
-    animation: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  /* Slow rotation used for the hero ambient orb. */
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .animate-spin-slow {
-    animation: spin-slow 30s linear infinite;
+    background-size: 22px 22px;
   }
 }

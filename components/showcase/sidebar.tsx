@@ -49,12 +49,12 @@ export function ShowcaseSidebar() {
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-2.5 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
+          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMark className="size-9 shrink-0" />
+          <LogoMark className="h-6 shrink-0 group-data-[collapsible=icon]:h-3" />
           <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-lg font-semibold tracking-[-0.02em] text-muted-foreground">
+            <span className="text-base font-semibold tracking-[-0.02em] text-muted-foreground">
               ui
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">

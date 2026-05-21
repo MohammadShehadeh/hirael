@@ -37,17 +37,17 @@ export function SiteHeader({
         className
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
         {withSidebarTrigger}
 
         <Link
           href="/"
           aria-label={`${SITE.name} — home`}
-          className="group flex items-center gap-2 rounded-sm py-1 pr-1 transition-colors"
+          className="group flex items-center gap-2 rounded-sm py-1 transition-colors"
         >
           <BrandLockup
-            logoClassName="size-10"
-            textClassName="hidden text-xl sm:inline"
+            logoClassName="h-7"
+            textClassName="text-lg sm:text-xl"
           />
           <span
             aria-hidden

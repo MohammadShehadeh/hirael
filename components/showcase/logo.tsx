@@ -1,32 +1,54 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 /**
- * msh ui brand mark, inlined as SVG so it inherits the current text color
- * via `currentColor`. To swap in the canonical mark from
- * mohammadshehadeh.com/images/logo.svg, replace the contents of <LogoSvg>
- * with the path data from that file — keep `fill="currentColor"` on every
- * path so it continues to follow the active text color in both themes.
+ * MSH wordmark, inlined as SVG. The base "MSH" text renders in
+ * currentColor (so it follows the active theme) while the "M" letter is
+ * clipped to reveal the Palestinian flag (black/white/green/red triangle)
+ * underneath.
  */
 function LogoSvg({ className }: { className?: string }) {
+  const rawId = React.useId()
+  const id = rawId.replace(/:/g, "")
+  const mId = `msh-m-${id}`
+  const allId = `msh-all-${id}`
+  const clipId = `msh-m-clip-${id}`
+
+  const textStyle: React.CSSProperties = {
+    fontFamily: "var(--font-fraunces), ui-serif, Georgia, serif",
+    fontSize: "280px",
+    fontWeight: 600,
+  }
+
   return (
     <svg
-      viewBox="0 0 40 40"
       xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-hidden
+      viewBox="0 0 820 280"
+      aria-hidden="true"
       className={className}
     >
-      {/* Bold geometric "M" letterform — stroke-based so it scales cleanly */}
-      <path
-        d="M6 32 L6 8 L20 24 L34 8 L34 32"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <title>MSH</title>
+      <defs>
+        <text id={mId} style={textStyle} x="10" y="245">
+          M
+        </text>
+        <text id={allId} style={textStyle} x="10" y="245">
+          MSH
+        </text>
+        <clipPath id={clipId}>
+          <use href={`#${mId}`} />
+        </clipPath>
+      </defs>
+      <use href={`#${allId}`} fill="currentColor" />
+      <g clipPath={`url(#${clipId})`}>
+        <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
+        <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
+        <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
+        <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
+      </g>
     </svg>
   )
 }
@@ -42,18 +64,16 @@ export function Logo({
     <span
       role="img"
       aria-label={title}
-      className={cn(
-        "inline-flex shrink-0 items-center justify-center text-foreground",
-        className
-      )}
+      className={cn("inline-flex shrink-0 text-foreground", className)}
     >
-      <LogoSvg className="size-full" />
+      <LogoSvg className="h-full w-auto" />
     </span>
   )
 }
 
+/** Wordmark logo sized by height — width is intrinsic to the 820×280 viewBox. */
 export function LogoMark({ className }: { className?: string }) {
-  return <Logo className={cn("size-10", className)} />
+  return <Logo className={cn("h-8", className)} />
 }
 
 export function BrandLockup({

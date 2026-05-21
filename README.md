@@ -5,23 +5,185 @@
 Multi-select, number range, year picker, tag input, phone input,
 file dropzone, the lot.
 
+[![Next.js](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![shadcn registry](https://img.shields.io/badge/shadcn-registry-000)](https://ui.shadcn.com/docs/registry)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+
 ```bash
 npx shadcn@latest add https://forgecn.dev/r/multi-select.json
 ```
 
-## Positioning
+## Why forgecn
 
 - **Peer of shadcn.** You must have shadcn installed first. forgecn
   components import from `@/components/ui/*` (Button, Input, Popover,
   Command, …) just like shadcn's own composed blocks do.
 - **Distributed via the shadcn registry schema.** No runtime dependency
-  on an forgecn package — source is copied straight into your repo.
+  on a forgecn package — source is copied straight into your repo.
 - **Modern shadcn polish.** 1px soft borders, 0.65rem radius scale
   (sm/md/lg/xl derived from `--radius`), zinc neutrals, dark as primary
   canvas, no chromatic accent — primary draws the eye. Geist Sans for
   body, Geist Mono reserved for code and identifiers.
 
-## Composition (shadcn-style)
+## Features
+
+- **Form inputs** — MultiSelect, NumberRange, TagInput, Combobox,
+  PasswordInput, CurrencyInput, PhoneInput, Rating.
+- **Pickers** — YearPicker (MonthPicker, TimePicker, ColorPicker
+  planned).
+- **Files** — FileDropzone with previews and validation.
+- **Data display** — StatCard, Timeline.
+- **Display utilities** — Kbd, Callout, ScrollProgress.
+- **Marketing blocks** — Hero, Feature, Pricing, Testimonial, CTA,
+  FAQ, Login, Header, Footer, Not-Found variants.
+- **Flat compound APIs** — same composition style shadcn ships, with a
+  `data-slot="…"` attribute on every rendered slot for downstream
+  styling.
+- **Design-token driven** — tokens reuse `--background / --foreground /
+  --border / --primary / --accent` and friends, never hard-coded colors.
+
+## Tech stack
+
+- [Next.js 15](https://nextjs.org) (App Router, Turbopack)
+- [React 19](https://react.dev)
+- [TypeScript 5](https://www.typescriptlang.org) — strict mode
+- [Tailwind CSS 4](https://tailwindcss.com) via `@tailwindcss/postcss`
+- [shadcn CLI](https://ui.shadcn.com) — registry build + install
+- [Radix UI](https://www.radix-ui.com) primitives
+- [cmdk](https://cmdk.paco.me) for command palettes
+- [Shiki](https://shiki.style) for syntax highlighting
+- [Lucide](https://lucide.dev) icons
+- [Geist Sans / Geist Mono / Fraunces](https://vercel.com/font) via
+  `next/font`
+- [Zod](https://zod.dev) for schemas
+- pnpm (workspace lockfile committed)
+
+## Components
+
+| Component        | Category | Status   | Registry deps                          |
+| ---------------- | -------- | -------- | -------------------------------------- |
+| MultiSelect      | inputs   | stable   | `button`, `popover`, `command`, `badge`|
+| NumberRange      | inputs   | stable   | `slider`, `input`, `label`             |
+| TagInput         | inputs   | stable   | `badge`                                |
+| Combobox         | inputs   | stable   | `button`, `popover`, `command`         |
+| PasswordInput    | inputs   | stable   | `input`                                |
+| CurrencyInput    | inputs   | stable   | `input`                                |
+| PhoneInput       | inputs   | stable   | `input`, `popover`, `command`          |
+| Rating           | inputs   | stable   | —                                      |
+| YearPicker       | pickers  | stable   | `button`, `popover`                    |
+| MonthPicker      | pickers  | planned  | `button`, `popover`                    |
+| TimePicker       | pickers  | planned  | `button`, `popover`, `input`           |
+| ColorPicker      | pickers  | planned  | `button`, `popover`, `input`           |
+| FileDropzone     | files    | stable   | `button`                               |
+| StatCard         | data     | stable   | —                                      |
+| Timeline         | data     | stable   | —                                      |
+| Kbd              | display  | stable   | —                                      |
+| Callout          | display  | stable   | —                                      |
+| ScrollProgress   | display  | stable   | —                                      |
+
+Marketing blocks (Hero, Feature, Pricing, Testimonial, CTA, FAQ,
+Login, Header, Footer, NotFound) live under `registry/sabk/blocks/`
+and are listed in `registry.json`. Browse them at
+[forgecn.dev/blocks](https://forgecn.dev/blocks).
+
+## Project structure
+
+```
+forgecn/
+├── app/                          # Next.js App Router
+│   ├── (showcase)/               # sidebar + main column
+│   │   ├── components/page.tsx   # component index
+│   │   ├── blocks/[block]/       # per-block preview
+│   │   └── theme/playground.tsx  # theme playground
+│   ├── embed/blocks/             # framed block previews
+│   ├── layout.tsx
+│   ├── globals.css               # design tokens (zinc, 0.65rem radius)
+│   └── page.tsx                  # landing
+├── components/showcase/          # site chrome (not part of the registry)
+├── registry/
+│   └── sabk/                     # canonical source for every registry item
+│       ├── ui/                   # shadcn primitives the registry imports from
+│       ├── <component>/          # *.tsx, *.demo.tsx, index.ts
+│       ├── blocks/<block>/       # marketing blocks
+│       └── registry-meta.ts      # showcase metadata for sidebar / pages
+├── hooks/                        # shared client hooks
+├── lib/                          # site config, theme, package-manager helpers
+├── scripts/strip-comments.mjs    # strip comments from registry source
+├── public/r/                     # generated by `pnpm registry:build` (gitignored)
+├── registry.json                 # canonical declaration of every item
+└── components.json               # shadcn config; `ui` alias → registry/sabk/ui
+```
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org) **20+**
+- [pnpm](https://pnpm.io) **8+** (lockfile is `pnpm-lock.yaml`)
+
+## Installation
+
+```bash
+git clone https://github.com/MohammadShehadeh/forgecn.git
+cd forgecn
+pnpm install
+```
+
+## Local development
+
+```bash
+pnpm dev              # start the showcase site at http://localhost:3000
+pnpm registry:build   # emit /public/r/<name>.json from registry.json
+```
+
+To validate a registry item end-to-end against a real consumer
+project:
+
+```bash
+# in a separate consumer app (must have shadcn installed)
+npx shadcn@latest add http://localhost:3000/r/<name>.json
+```
+
+Resolving `registryDependencies` reaches out to `ui.shadcn.com`, so the
+machine must have network access to that host.
+
+### Consuming from a published deployment
+
+```bash
+npx shadcn@latest add https://forgecn.dev/r/multi-select.json
+```
+
+The shadcn CLI fetches each `registryDependency` from the upstream
+shadcn registry, installs the listed npm dependencies, and copies the
+source file into your project — rewriting alias-prefixed imports to
+match your `components.json`.
+
+## Available scripts
+
+| Script                 | What it does                                              |
+| ---------------------- | --------------------------------------------------------- |
+| `pnpm dev`             | Next.js dev server with Turbopack on port 3000            |
+| `pnpm build`           | `registry:build` then `next build`                        |
+| `pnpm start`           | Serve the production build                                |
+| `pnpm lint`            | ESLint via `next lint` (`next/core-web-vitals` + TS)      |
+| `pnpm typecheck`       | `tsc --noEmit`                                            |
+| `pnpm registry:build`  | `shadcn build` — generates `/public/r/<name>.json`        |
+
+## Configuration
+
+Environment variables are optional and read at runtime in the
+showcase site.
+
+| Variable               | Used in                            | Default                                | Notes                                                                                              |
+| ---------------------- | ---------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_BASE_URL` | `components/showcase/install-block.tsx` | `window.location.origin` at runtime    | Override the public origin used when generating `npx shadcn add <origin>/r/<name>.json` snippets.  |
+
+`registry.json` (`homepage`) and `lib/site.ts` (`SITE.registry.origin`)
+hold the canonical published origin — update both if the project moves
+to a new domain.
+
+## Usage examples
 
 Every compound component ships as flat top-level exports — no
 namespacing, no convenience wrappers. Compose the way shadcn ships
@@ -44,105 +206,19 @@ The bare component name is the root primitive (it holds the state).
 Each part renders with a `data-slot="…"` attribute so downstream
 styling and slot-targeting works out of the box.
 
-## Phase 1 — Form inputs
-
-| Component        | Status   | Registry deps                          |
-| ---------------- | -------- | -------------------------------------- |
-| MultiSelect      | stable   | `button`, `popover`, `command`, `badge`|
-| NumberRange      | stable   | `slider`, `input`, `label`             |
-| YearPicker       | stable   | `button`, `popover`                    |
-| TagInput         | stable   | `badge`                                |
-| Combobox         | stable   | `button`, `popover`, `command`         |
-| PasswordInput    | stable   | `input`                                |
-| CurrencyInput    | stable   | `input`                                |
-| PhoneInput       | stable   | `input`, `popover`, `command`          |
-| FileDropzone     | stable   | `button`                               |
-| StatCard         | stable   | —                                      |
-| MonthPicker      | planned  | `button`, `popover`                    |
-| TimePicker       | planned  | `button`, `popover`, `input`           |
-| ColorPicker      | planned  | `button`, `popover`, `input`           |
-
-Phase 2 (Data display) — DataTable, TreeView, Timeline, Stepper,
-KanbanBoard, Calendar, RatingInput, AvatarStack, EmptyState, CopyButton,
-JsonViewer, DiffViewer, Breadcrumb, CommandPalette — not in this cut.
-
-## Repository layout
-
-```
-forgecn/
-  app/
-    page.tsx                   # landing
-    (showcase)/
-      components/page.tsx      # full component index
-      [component]/page.tsx     # per-component page: preview · code · install
-      layout.tsx               # sidebar + main column
-    layout.tsx
-    globals.css                # design tokens (zinc, 0.65rem radius)
-  components/
-    showcase/                  # shell-only chrome, not part of the registry
-  registry/
-    sabk/
-      ui/                      # shadcn primitives forgecn imports from
-      multi-select/
-        multi-select.tsx         # component, flat compound exports
-        multi-select.demo.tsx
-        index.ts
-      number-range/
-      year-picker/
-      registry-meta.ts         # showcase metadata for sidebar / pages
-  public/r/                    # generated; gitignored
-  registry.json                # canonical declaration of every item
-  components.json              # shadcn config; `ui` alias → registry/sabk/ui
-```
-
-## Scripts
-
-```bash
-pnpm dev               # showcase site, http://localhost:3000
-pnpm registry:build    # emit /public/r/<name>.json from registry.json
-pnpm build             # registry:build && next build
-pnpm typecheck
-```
-
-## How install works
+### How install works
 
 1. `registry.json` declares each item: name, dependencies (npm packages),
-   registryDependencies (shadcn primitives), and source file paths.
+   `registryDependencies` (shadcn primitives), and source file paths.
 2. `pnpm registry:build` (the `shadcn build` CLI) reads `registry.json`,
    inlines source file contents into `/public/r/<name>.json`, and writes
    `target: components/ui/<name>.tsx` so the consumer's shadcn CLI knows
    where to drop the file.
-3. A consumer runs `npx shadcn add https://forgecn.dev/r/<name>.json`. The
-   shadcn CLI fetches each registryDependency from the upstream shadcn
-   registry, installs the listed npm dependencies, and copies the source
-   file — rewriting alias-prefixed imports to match the consumer's
+3. A consumer runs `npx shadcn add https://forgecn.dev/r/<name>.json`.
+   The shadcn CLI fetches each `registryDependency` from the upstream
+   shadcn registry, installs the listed npm dependencies, and copies the
+   source file — rewriting alias-prefixed imports to match the consumer's
    `components.json`.
-
-Local install can be validated with `npx shadcn add http://localhost:3000/r/<name>.json`
-from a separate consumer project (requires reachable `ui.shadcn.com`
-to resolve registry dependencies).
-
-## Contribution checklist
-
-For each new component:
-
-- [ ] Source file at `registry/sabk/<name>/<name>.tsx` exporting the
-      compound parts as flat top-level named exports (`Name`, `NameTrigger`,
-      `NameContent`, …). No namespacing, no convenience wrappers. The
-      bare `Name` is the root primitive and holds state.
-- [ ] Every rendered slot carries `data-slot="<kebab>"` so downstream
-      styling and slot-targeting just works.
-- [ ] `Name.demo.tsx` showing a basic compose + a customized compose.
-- [ ] `index.ts` re-export.
-- [ ] Entry in `registry.json` with `type: "registry:ui"`, `dependencies`,
-      `registryDependencies`, `files[].target = "components/ui/<name>.tsx"`.
-- [ ] Entry in `registry/sabk/registry-meta.ts` with category, demo,
-      and source file list.
-- [ ] All imports for shadcn primitives go through `@/registry/sabk/ui/*`
-      (alias is rewritten on install).
-- [ ] Tokens reuse `--background / --foreground / --border / --primary / --accent`
-      and friends — never hard-code colors.
-- [ ] `pnpm registry:build && pnpm typecheck && pnpm build` clean.
 
 ## Design tokens
 
@@ -155,6 +231,38 @@ xl = radius + 4px). Geist Sans is the default body face; Geist Mono is
 reserved for code, install commands, and identifiers. Motion stays
 short (120–180ms, ease-out).
 
+## Deployment
+
+The showcase site is a standard Next.js 15 App Router app. `pnpm build`
+runs `registry:build` first so the generated `/public/r/*.json` files
+travel with the build, then runs `next build`. `pnpm start` serves the
+production output.
+
+The canonical deployment runs at [forgecn.dev](https://forgecn.dev).
+`.vercel` is gitignored, so Vercel-style deployment is supported out of
+the box; any host that runs a Next.js production server will work.
+
+> **TODO** — document hosting-specific build, env, and domain
+> configuration once the production deployment pipeline is finalized.
+
+## Contributing
+
+Contributions are welcome — please read
+**[CONTRIBUTING.md](./CONTRIBUTING.md)** before opening a PR. It covers
+the development workflow, commit conventions, the component
+contribution checklist, and the PR review process.
+
+## Security
+
+If you discover a security issue, please follow the disclosure process
+in **[SECURITY.md](./SECURITY.md)** rather than opening a public issue.
+
+> **TODO** — `SECURITY.md` is not yet committed; add it before the
+> first public release.
+
 ## License
 
 MIT — © Mohammad Shehadeh
+
+> **TODO** — add a top-level `LICENSE` file containing the full MIT
+> license text.

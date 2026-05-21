@@ -3,7 +3,7 @@ import { Github } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { SITE } from "@/lib/site"
-import { LogoMark } from "@/components/showcase/logo"
+import { BrandLockup } from "@/components/showcase/logo"
 
 const FOOTER_LINKS: {
   label: string
@@ -63,12 +63,9 @@ export function SiteFooter({ className }: { className?: string }) {
             <Link
               href="/"
               aria-label={`${SITE.name} — home`}
-              className="inline-flex items-center gap-2"
+              className="inline-flex items-center"
             >
-              <LogoMark className="size-6" />
-              <span className="text-[15px] font-semibold tracking-[-0.02em]">
-                msh <span className="text-muted-foreground">ui</span>
-              </span>
+              <BrandLockup logoClassName="size-12" textClassName="text-2xl" />
             </Link>
             <p className="max-w-xs text-xs text-muted-foreground">
               {SITE.longDescription}

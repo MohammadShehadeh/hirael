@@ -208,4 +208,90 @@ html.light .shiki span {
   .cpx {
     @apply px-4 lg:px-6;
   }
+
+  /* Subtle aurora glow used behind the hero. Reads as warm amber in dark,
+     pale yellow in light. Stacks two color stops for a soft falloff. */
+  .bg-aurora {
+    background-image:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        color-mix(in oklch, var(--primary) 22%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 80% 10%,
+        color-mix(in oklch, var(--primary) 14%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 20% 10%,
+        color-mix(in oklch, var(--primary) 14%, transparent),
+        transparent 70%
+      );
+  }
+
+  /* Animated horizontal sweep used on the top of the hero (premium feel). */
+  .bg-sheen-top {
+    background:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        color-mix(in oklch, var(--primary) 60%, transparent) 50%,
+        transparent 100%
+      );
+  }
+
+  /* Subtle inner glow + lift on cards during hover. */
+  .card-glow {
+    transition:
+      border-color 180ms ease-out,
+      box-shadow 180ms ease-out,
+      transform 180ms ease-out;
+  }
+  .card-glow:hover {
+    box-shadow:
+      0 0 0 1px color-mix(in oklch, var(--primary) 14%, transparent) inset,
+      0 12px 32px -16px color-mix(in oklch, var(--primary) 28%, transparent);
+  }
+
+  /* Faint gradient text used for one accent word in the hero. */
+  .text-gradient-primary {
+    background: linear-gradient(
+      180deg,
+      var(--foreground) 0%,
+      color-mix(in oklch, var(--foreground) 55%, var(--muted-foreground)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Pulsing ring used around the live-status dot. */
+  @keyframes ping-soft {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    75%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+  .animate-ping-soft {
+    animation: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Slow rotation used for the hero ambient orb. */
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-spin-slow {
+    animation: spin-slow 30s linear infinite;
+  }
 }

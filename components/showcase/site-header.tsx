@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, SITE } from "@/lib/site"
 import { GitHubStars } from "@/components/showcase/github-stars"
-import { LogoMark } from "@/components/showcase/logo"
+import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
 
 export function SiteHeader({
@@ -33,11 +33,11 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60",
+        "sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50",
         className
       )}
     >
-      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
         {withSidebarTrigger}
 
         <Link
@@ -45,10 +45,10 @@ export function SiteHeader({
           aria-label={`${SITE.name} — home`}
           className="group flex items-center gap-2 rounded-sm py-1 pr-1 transition-colors"
         >
-          <LogoMark className="size-6" />
-          <span className="hidden text-[15px] font-semibold tracking-[-0.02em] sm:inline">
-            msh <span className="text-muted-foreground">ui</span>
-          </span>
+          <BrandLockup
+            logoClassName="size-10"
+            textClassName="hidden text-xl sm:inline"
+          />
           <span
             aria-hidden
             className="ml-1 hidden rounded-sm border border-border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:inline"

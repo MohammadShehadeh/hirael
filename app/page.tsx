@@ -99,72 +99,109 @@ function Hero({
   kindsCount: number
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-border">
+    <section className="relative isolate overflow-hidden border-b border-border bg-aurora">
+      {/* Top sheen — a 1px gradient line for premium feel */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-sheen-top"
+      />
+
       {/* Background grid + radial fade */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-[0.4] dark:opacity-[0.8]"
         style={{
           backgroundImage:
             "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
+          backgroundSize: "56px 56px",
           maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 80%)",
+            "radial-gradient(ellipse 70% 60% at 50% 0%, black 20%, transparent 75%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 80%)",
+            "radial-gradient(ellipse 70% 60% at 50% 0%, black 20%, transparent 75%)",
         }}
       />
-      <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-8 px-4 pb-16 pt-16 text-center sm:gap-10 sm:px-6 sm:pb-20 sm:pt-20 md:pb-28 md:pt-24 lg:px-8">
+
+      {/* Ambient orb behind hero */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 -z-10 size-[640px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-40 blur-3xl animate-spin-slow"
+        style={{
+          background:
+            "conic-gradient(from 90deg, color-mix(in oklch, var(--primary) 40%, transparent), transparent 30%, color-mix(in oklch, var(--primary) 24%, transparent) 60%, transparent 80%)",
+        }}
+      />
+
+      <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-9 px-4 pb-20 pt-20 text-center sm:gap-11 sm:px-6 sm:pb-28 sm:pt-28 md:pb-36 md:pt-32 lg:px-8">
         <a
           href={SITE.githubUrl}
           target="_blank"
           rel="noreferrer noopener"
-          className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground"
+          className="group inline-flex items-center gap-2.5 rounded-full border border-border bg-card/80 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground"
         >
-          <span className="size-1.5 rounded-full bg-foreground" />
+          <span className="relative flex size-1.5">
+            <span
+              className="absolute inline-flex size-full animate-ping-soft rounded-full opacity-80"
+              style={{ background: "var(--primary)" }}
+            />
+            <span
+              className="relative inline-flex size-1.5 rounded-full"
+              style={{ background: "var(--primary)" }}
+            />
+          </span>
           v{SITE.version} now live
-          <span className="text-foreground">·</span>
-          star on GitHub
+          <span className="text-border">·</span>
+          <span className="text-foreground">star on GitHub</span>
           <ArrowRight className="size-3 transition-transform duration-150 group-hover:translate-x-0.5" />
         </a>
 
-        <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[88px]">
-          shadcn&apos;s
+        <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[96px]">
+          <span className="text-gradient-primary">shadcn&apos;s</span>
           <br />
-          <span className="text-muted-foreground/80">missing pieces.</span>
+          <span className="text-muted-foreground/70">missing pieces.</span>
         </h1>
 
-        <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg">
+        <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg md:text-xl">
           A peer registry of the components every real product needs but shadcn
           doesn&apos;t ship — multi-select, combobox, tag input, currency
           input, file dropzone — plus {blocksCount} section blocks across{" "}
           {kindsCount} categories.
         </p>
 
-        <div className="flex w-full max-w-xl flex-col gap-3">
-          <InstallBlock name="multi-select" />
-          <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            One command. Source lands in <span className="text-foreground">@/components/ui</span>.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/components"
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_0_0_1px_color-mix(in_oklch,var(--primary)_50%,transparent)] transition-all hover:bg-primary/95 hover:shadow-[0_0_36px_-8px_color-mix(in_oklch,var(--primary)_50%,transparent)]"
           >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary-foreground/15 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+            />
             Browse components
-            <ArrowRight className="size-3.5" />
+            <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5" />
           </Link>
           <Link
             href="/blocks"
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-card/80 px-5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-foreground/40 hover:bg-accent"
           >
-            <Layers className="size-3.5" />
+            <Layers className="size-4" />
             See blocks
           </Link>
         </div>
+
+        <div className="flex w-full max-w-2xl flex-col gap-3 pt-2">
+          <InstallBlock name="multi-select" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            One command. Source lands in{" "}
+            <span className="text-foreground">@/components/ui</span>.
+          </p>
+        </div>
       </div>
+
+      {/* Bottom fade for smoother transition */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent"
+      />
     </section>
   )
 }
@@ -208,20 +245,36 @@ const FEATURES = [
 
 function Features() {
   return (
-    <section className="border-b border-border">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mb-10 flex flex-col gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            ◆ what you get
+    <section className="relative border-b border-border">
+      <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+        <div className="mb-12 flex flex-col items-center gap-4 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+            <span
+              aria-hidden
+              className="size-1 rounded-full"
+              style={{ background: "var(--primary)" }}
+            />
+            What you get
           </span>
-          <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-            Production-grade primitives, distributed the shadcn way.
+          <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl">
+            Production-grade primitives, <br className="hidden md:inline" />
+            <span className="text-muted-foreground/70">
+              distributed the shadcn way.
+            </span>
           </h2>
         </div>
-        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature) => (
-            <li key={feature.title} className="flex flex-col gap-3 bg-card p-6">
-              <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
+            <li
+              key={feature.title}
+              className="card-glow group relative flex flex-col gap-3 border border-transparent bg-card p-6"
+            >
+              <span className="relative inline-flex size-10 items-center justify-center rounded-md border border-border bg-background">
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 -z-10 rounded-md opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-60"
+                  style={{ background: "var(--primary)" }}
+                />
                 <feature.icon className="size-4 text-foreground" />
               </span>
               <h3 className="text-base font-medium tracking-[-0.01em]">
@@ -261,17 +314,17 @@ function CountersStrip({
   ]
   return (
     <section className="border-b border-border">
-      <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
+      <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4">
           {items.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col gap-1 bg-card px-4 py-4"
+              className="card-glow group flex flex-col gap-1.5 border border-transparent bg-card px-5 py-5"
             >
               <dt className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                 {item.label}
               </dt>
-              <dd className="font-mono text-xl tabular-nums tracking-[-0.01em] text-foreground">
+              <dd className="font-mono text-2xl tabular-nums tracking-[-0.01em] text-foreground">
                 {item.value}
               </dd>
             </div>
@@ -293,24 +346,27 @@ function ComponentsPreview() {
 
   return (
     <section className="border-b border-border">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mb-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
-          <div className="flex flex-col gap-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              <Boxes className="-mt-0.5 mr-1 inline size-3" />
+      <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+        <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+          <div className="flex flex-col gap-4">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              <Boxes className="size-3" />
               components
             </span>
-            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-              {totalStable} components shadcn doesn&apos;t ship.
+            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl">
+              {totalStable} components{" "}
+              <span className="text-muted-foreground/70">
+                shadcn doesn&apos;t ship.
+              </span>
             </h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">
+            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
               Tap any to preview, copy the install command, or browse the
               source.
             </p>
           </div>
           <Link
             href="/components"
-            className="group inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
             See all
             <ArrowRight className="size-3 transition-transform duration-150 group-hover:translate-x-0.5" />
@@ -331,12 +387,12 @@ function ComponentsPreview() {
                     {REGISTRY_BY_CATEGORY[cat].length} total
                   </span>
                 </div>
-                <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((entry) => (
                     <li key={entry.name}>
                       <Link
                         href={`/${entry.name}`}
-                        className="group flex h-full flex-col justify-between gap-3 bg-card p-4 transition-colors hover:bg-accent"
+                        className="card-glow group flex h-full flex-col justify-between gap-3 border border-transparent bg-card p-4"
                       >
                         <div className="flex flex-col gap-1.5">
                           <div className="flex items-center justify-between gap-2">
@@ -350,7 +406,7 @@ function ComponentsPreview() {
                             ) : (
                               <Check
                                 aria-hidden
-                                className="size-3 text-muted-foreground"
+                                className="size-3 text-muted-foreground transition-colors group-hover:text-foreground"
                               />
                             )}
                           </div>
@@ -358,7 +414,7 @@ function ComponentsPreview() {
                             {entry.description}
                           </p>
                         </div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground transition-colors group-hover:text-foreground">
                           /{entry.name} →
                         </div>
                       </Link>
@@ -380,16 +436,18 @@ function ComponentsPreview() {
 
 function Composition({ html, code }: { html: string; code: string }) {
   return (
-    <section className="border-b border-border">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-2 lg:px-8">
-        <div className="flex flex-col gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            ◆ composition
+    <section className="relative border-b border-border">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-2 lg:px-8">
+        <div className="flex flex-col gap-4">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+            <Code className="size-3" />
+            composition
           </span>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-            Composed the shadcn way.
+          <h2 className="text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl">
+            Composed{" "}
+            <span className="text-muted-foreground/70">the shadcn way.</span>
           </h2>
-          <p className="max-w-md text-sm text-muted-foreground">
+          <p className="max-w-md text-sm text-muted-foreground sm:text-base">
             Every compound component ships as flat top-level exports — no
             namespacing, no convenience wrappers. The bare name is the root
             primitive and holds state; every rendered piece carries a{" "}
@@ -398,7 +456,7 @@ function Composition({ html, code }: { html: string; code: string }) {
             </code>{" "}
             attribute for downstream styling.
           </p>
-          <ul className="mt-2 flex flex-col gap-2">
+          <ul className="mt-2 flex flex-col gap-2.5">
             {[
               "Flat compound exports, no namespacing",
               "data-slot attribute on every rendered part",
@@ -406,15 +464,29 @@ function Composition({ html, code }: { html: string; code: string }) {
             ].map((bullet) => (
               <li
                 key={bullet}
-                className="flex items-start gap-2 text-xs text-muted-foreground"
+                className="flex items-start gap-2.5 text-xs text-muted-foreground sm:text-sm"
               >
-                <Check className="mt-0.5 size-3.5 shrink-0 text-foreground" />
+                <span
+                  aria-hidden
+                  className="mt-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-border bg-card"
+                >
+                  <Check className="size-2.5 text-foreground" />
+                </span>
                 <span>{bullet}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="min-w-0">
+        <div className="relative min-w-0">
+          {/* Glow behind code block */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-4 -z-10 rounded-2xl opacity-50 blur-2xl"
+            style={{
+              background:
+                "radial-gradient(ellipse 60% 80% at 50% 50%, color-mix(in oklch, var(--primary) 18%, transparent), transparent 70%)",
+            }}
+          />
           <InlineCodeBlock code={code} html={html} />
         </div>
       </div>
@@ -433,17 +505,20 @@ function BlocksPreview() {
 
   return (
     <section className="border-b border-border">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mb-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
-          <div className="flex flex-col gap-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              <Layers className="-mt-0.5 mr-1 inline size-3" />
+      <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+        <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+          <div className="flex flex-col gap-4">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              <Layers className="size-3" />
               section blocks
             </span>
-            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-              Drop-in compositions for whole sections.
+            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl md:text-5xl">
+              Drop-in compositions{" "}
+              <span className="text-muted-foreground/70">
+                for whole sections.
+              </span>
             </h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">
+            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
               Heroes, features, pricing, testimonials, CTAs, FAQs, auth,
               navigation, errors. Copy a block in one command, then shape it
               like any other source file in your repo.
@@ -451,26 +526,26 @@ function BlocksPreview() {
           </div>
           <Link
             href="/blocks"
-            className="group inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
             See all blocks
             <ArrowRight className="size-3 transition-transform duration-150 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((entry) => (
             <li key={entry.name}>
               <Link
                 href={`/blocks/${entry.name}`}
-                className="group flex h-full flex-col justify-between gap-3 bg-card p-4 transition-colors hover:bg-accent"
+                className="card-glow group flex h-full flex-col justify-between gap-3 border border-transparent bg-card p-5"
               >
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="text-sm font-medium tracking-[-0.01em]">
                       {entry.title}
                     </h3>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
+                    <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                       {entry.blockKind}
                     </span>
                   </div>
@@ -480,7 +555,7 @@ function BlocksPreview() {
                     </p>
                   )}
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
+                <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground transition-colors group-hover:text-foreground">
                   /blocks/{entry.name} →
                 </div>
               </Link>
@@ -499,43 +574,73 @@ function BlocksPreview() {
 function BottomCta({ blocksCount }: { blocksCount: number }) {
   return (
     <section>
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="relative overflow-hidden rounded-lg border border-border bg-card">
+      <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card bg-aurora">
+          {/* Top sheen */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.4]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-sheen-top"
+          />
+
+          {/* Grid bg */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.5]"
             style={{
               backgroundImage:
                 "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
               backgroundSize: "32px 32px",
               maskImage:
-                "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%)",
+                "radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 75%)",
               WebkitMaskImage:
-                "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%)",
+                "radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 75%)",
             }}
           />
-          <div className="relative flex flex-col items-center gap-5 px-6 py-12 text-center sm:px-12 sm:py-16">
-            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-              Ready to ship the components you keep building from scratch?
+
+          {/* Spinning orb */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 -z-0 size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-3xl animate-spin-slow"
+            style={{
+              background:
+                "conic-gradient(from 0deg, color-mix(in oklch, var(--primary) 40%, transparent), transparent 50%, color-mix(in oklch, var(--primary) 30%, transparent))",
+            }}
+          />
+
+          <div className="relative flex flex-col items-center gap-6 px-6 py-16 text-center sm:px-12 sm:py-24">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm">
+              <Sparkles className="size-3" />
+              ready when you are
+            </span>
+            <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-5xl md:text-6xl">
+              <span className="text-gradient-primary">Stop rebuilding</span>{" "}
+              <br className="hidden sm:inline" />
+              <span className="text-muted-foreground/70">
+                the same components.
+              </span>
             </h2>
-            <p className="max-w-xl text-balance text-sm text-muted-foreground">
+            <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
               {blocksCount} blocks, dozens of components, zero runtime
               dependencies. Distributed via the shadcn CLI — copy what you
               need, leave the rest.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
                 href="/components"
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_0_0_1px_color-mix(in_oklch,var(--primary)_50%,transparent)] transition-all hover:bg-primary/95 hover:shadow-[0_0_36px_-8px_color-mix(in_oklch,var(--primary)_50%,transparent)]"
               >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary-foreground/15 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+                />
                 Browse components
-                <ArrowRight className="size-3.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5" />
               </Link>
               <a
                 href={SITE.githubUrl}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/80 px-5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-foreground/40 hover:bg-accent"
               >
                 Star on GitHub
               </a>

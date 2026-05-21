@@ -20,7 +20,7 @@ export function Logo({
       <span
         aria-hidden
         className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-sm bg-foreground font-mono text-[10px] font-semibold text-background",
+          "inline-flex shrink-0 items-center justify-center rounded-sm bg-foreground font-mono text-xs font-semibold text-background",
           className
         )}
       >
@@ -34,8 +34,8 @@ export function Logo({
     <img
       src={LOGO_URL}
       alt={alt}
-      width={28}
-      height={28}
+      width={40}
+      height={40}
       onError={() => setErrored(true)}
       className={cn("shrink-0 select-none dark:invert", className)}
       draggable={false}
@@ -44,29 +44,29 @@ export function Logo({
 }
 
 export function LogoMark({ className }: { className?: string }) {
-  return <Logo className={cn("size-6", className)} />
+  return <Logo className={cn("size-10", className)} />
 }
 
-export function LogoLockup({
+export function BrandLockup({
   className,
-  showTagline = true,
+  logoClassName,
+  textClassName,
 }: {
   className?: string
-  showTagline?: boolean
+  logoClassName?: string
+  textClassName?: string
 }) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <LogoMark />
-      <div className="flex min-w-0 flex-col leading-tight">
-        <span className="text-sm font-semibold tracking-[-0.02em]">
-          msh <span className="text-muted-foreground">ui</span>
-        </span>
-        {showTagline && (
-          <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-            shadcn&apos;s missing pieces
-          </span>
+      <LogoMark className={logoClassName} />
+      <span
+        className={cn(
+          "text-xl font-semibold tracking-[-0.02em] text-muted-foreground",
+          textClassName
         )}
-      </div>
+      >
+        ui
+      </span>
     </div>
   )
 }

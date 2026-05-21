@@ -238,8 +238,8 @@ export const THEME_PRESETS: ThemePreset[] = [
   },
 ]
 
-export const STORAGE_KEY = "sabk.theme.v1"
-export const MODE_STORAGE_KEY = "sabk.theme.mode.v1"
+export const STORAGE_KEY = "msh-ui.theme.v1"
+export const MODE_STORAGE_KEY = "msh-ui.theme.mode.v1"
 
 /**
  * Inline script (stringified) that runs before hydration to apply persisted

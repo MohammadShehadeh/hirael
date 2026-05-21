@@ -25,7 +25,7 @@ export async function generateMetadata({
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") return {}
   return {
-    title: `${entry.title} — Sabk`,
+    title: entry.title,
     description: entry.description,
   }
 }

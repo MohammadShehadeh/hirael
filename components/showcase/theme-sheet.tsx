@@ -115,8 +115,8 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview Sabk components against your own theme. Paste a CSS variable
-          block, pick a preset, or copy the active theme back out.
+          Preview msh ui components against your own theme. Paste a CSS
+          variable block, pick a preset, or copy the active theme back out.
         </SheetDescription>
       </SheetHeader>
 

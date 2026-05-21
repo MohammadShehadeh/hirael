@@ -1,4 +1,4 @@
-# Sabk
+# msh ui
 
 **shadcn's missing pieces.** A peer registry — not a replacement — for the
 30-ish components every real product needs but shadcn doesn't ship.
@@ -6,21 +6,20 @@ Multi-select, number range, year picker, tag input, phone input,
 file dropzone, the lot.
 
 ```bash
-npx shadcn@latest add https://sabk.dev/r/multi-select.json
+npx shadcn@latest add https://forgecn.dev/r/multi-select.json
 ```
 
 ## Positioning
 
-- **Peer of shadcn.** You must have shadcn installed first. Sabk components
-  import from `@/components/ui/*` (Button, Input, Popover, Command, …)
-  just like shadcn's own composed blocks do.
+- **Peer of shadcn.** You must have shadcn installed first. msh ui
+  components import from `@/components/ui/*` (Button, Input, Popover,
+  Command, …) just like shadcn's own composed blocks do.
 - **Distributed via the shadcn registry schema.** No runtime dependency
-  on a Sabk package — source is copied straight into your repo.
-- **Efferd-aligned aesthetic.** Modern shadcn polish: 1px soft borders,
-  0.65rem radius scale (sm/md/lg/xl derived from `--radius`), zinc
-  neutrals, dark as primary canvas, no chromatic accent — primary draws
-  the eye. Geist Sans for body, Geist Mono reserved for code and
-  identifiers.
+  on an msh ui package — source is copied straight into your repo.
+- **Modern shadcn polish.** 1px soft borders, 0.65rem radius scale
+  (sm/md/lg/xl derived from `--radius`), zinc neutrals, dark as primary
+  canvas, no chromatic accent — primary draws the eye. Geist Sans for
+  body, Geist Mono reserved for code and identifiers.
 
 ## Composition (shadcn-style)
 
@@ -70,19 +69,20 @@ JsonViewer, DiffViewer, Breadcrumb, CommandPalette — not in this cut.
 ## Repository layout
 
 ```
-sabk/
+msh-ui/
   app/
+    page.tsx                   # landing
     (showcase)/
+      components/page.tsx      # full component index
       [component]/page.tsx     # per-component page: preview · code · install
       layout.tsx               # sidebar + main column
-      page.tsx                 # landing
     layout.tsx
     globals.css                # design tokens (zinc, 0.65rem radius)
   components/
     showcase/                  # shell-only chrome, not part of the registry
   registry/
     sabk/
-      ui/                      # shadcn primitives Sabk imports from
+      ui/                      # shadcn primitives msh ui imports from
       multi-select/
         multi-select.tsx         # component, flat compound exports
         multi-select.demo.tsx
@@ -112,7 +112,7 @@ pnpm typecheck
    inlines source file contents into `/public/r/<name>.json`, and writes
    `target: components/ui/<name>.tsx` so the consumer's shadcn CLI knows
    where to drop the file.
-3. A consumer runs `npx shadcn add https://sabk.dev/r/<name>.json`. The
+3. A consumer runs `npx shadcn add https://forgecn.dev/r/<name>.json`. The
    shadcn CLI fetches each registryDependency from the upstream shadcn
    registry, installs the listed npm dependencies, and copies the source
    file — rewriting alias-prefixed imports to match the consumer's
@@ -154,3 +154,7 @@ light). Radii follow shadcn's standard scale derived from
 xl = radius + 4px). Geist Sans is the default body face; Geist Mono is
 reserved for code, install commands, and identifiers. Motion stays
 short (120–180ms, ease-out).
+
+## License
+
+MIT — © Mohammad Shehadeh

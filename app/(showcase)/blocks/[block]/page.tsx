@@ -25,7 +25,7 @@ export async function generateMetadata({
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") return {}
   return {
-    title: `${entry.title} — Sabk blocks`,
+    title: `${entry.title} block`,
     description: entry.description,
   }
 }

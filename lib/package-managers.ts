@@ -11,8 +11,8 @@ export const PACKAGE_MANAGERS: readonly PackageManager[] = [
   "bun",
 ] as const
 
-const STORAGE_KEY = "sabk:pm"
-const CHANGE_EVENT = "sabk:pm-change"
+const STORAGE_KEY = "msh-ui:pm"
+const CHANGE_EVENT = "msh-ui:pm-change"
 
 export function getShadcnAddCommand(pm: PackageManager, url: string): string {
   switch (pm) {

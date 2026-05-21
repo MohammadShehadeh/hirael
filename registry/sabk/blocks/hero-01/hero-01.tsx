@@ -13,7 +13,7 @@ const STATS = [
 
 const REGISTRY_LINES = [
   { kind: "cmd", text: "npx shadcn add" },
-  { kind: "arg", text: "  https://sabk.dev/r/multi-select" },
+  { kind: "arg", text: "  https://forgecn.dev/r/multi-select" },
   { kind: "out", text: "✓ resolved registry" },
   { kind: "out", text: "✓ checked dependencies" },
   { kind: "out", text: "✓ created multi-select.tsx" },

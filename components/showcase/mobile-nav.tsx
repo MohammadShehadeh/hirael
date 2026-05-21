@@ -18,7 +18,13 @@ import {
   type ComponentCategory,
 } from "@/registry/sabk/registry-meta"
 
-const ORDER: ComponentCategory[] = ["inputs", "pickers", "files"]
+const ORDER: ComponentCategory[] = [
+  "inputs",
+  "pickers",
+  "files",
+  "data",
+  "display",
+]
 
 export function MobileTopBar() {
   const [open, setOpen] = React.useState(false)

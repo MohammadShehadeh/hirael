@@ -10,7 +10,13 @@ import {
 } from "@/registry/sabk/registry-meta"
 
 export function ShowcaseSidebar({ active }: { active?: string }) {
-  const order: ComponentCategory[] = ["inputs", "pickers", "files"]
+  const order: ComponentCategory[] = [
+    "inputs",
+    "pickers",
+    "files",
+    "data",
+    "display",
+  ]
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
   return (

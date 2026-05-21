@@ -14,7 +14,9 @@ export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const components = REGISTRY.filter((r) => r.category !== "blocks")
+  const components = REGISTRY.filter(
+    (r) => r.category !== "blocks" && r.status === "stable"
+  )
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
@@ -103,7 +105,7 @@ export function ThemePlayground() {
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
           {components.map((entry) => {
             const Demo = entry.Demo
-            const isPlanned = entry.status === "planned"
+            if (!Demo) return null
             return (
               <article
                 key={entry.name}
@@ -114,17 +116,11 @@ export function ThemePlayground() {
                     {entry.title}
                   </h3>
                   <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                    {isPlanned ? "soon" : `/${entry.name}`}
+                    /{entry.name}
                   </span>
                 </div>
                 <div className="flex min-h-[160px] items-center justify-center rounded-sm border border-dashed border-border bg-background/60 p-4">
-                  {Demo ? (
-                    <Demo />
-                  ) : (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                      planned · coming soon
-                    </span>
-                  )}
+                  <Demo />
                 </div>
               </article>
             )

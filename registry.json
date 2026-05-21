@@ -184,6 +184,86 @@
       ]
     },
     {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "3D tactile keycap with hover lift and pressed states. Compound API with KbdGroup for chords and KbdDisplay for inline keys.",
+      "categories": ["display"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/kbd/kbd.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kbd.tsx"
+        }
+      ]
+    },
+    {
+      "name": "callout",
+      "type": "registry:ui",
+      "title": "Callout",
+      "description": "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override.",
+      "categories": ["display"],
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/callout/callout.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/callout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-progress",
+      "type": "registry:ui",
+      "title": "Scroll Progress",
+      "description": "Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.",
+      "categories": ["display"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/scroll-progress/scroll-progress.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scroll-progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/rating/rating.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/rating.tsx"
+        }
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.",
+      "categories": ["data"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/sabk/timeline/timeline.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/timeline.tsx"
+        }
+      ]
+    },
+    {
       "name": "color-picker",
       "type": "registry:ui",
       "title": "Color Picker",

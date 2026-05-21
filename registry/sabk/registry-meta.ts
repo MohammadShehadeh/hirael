@@ -1,14 +1,19 @@
 import * as React from "react"
 
+import CalloutDemo from "@/registry/sabk/callout/callout.demo"
 import ComboboxDemo from "@/registry/sabk/combobox/combobox.demo"
 import CurrencyInputDemo from "@/registry/sabk/currency-input/currency-input.demo"
 import FileDropzoneDemo from "@/registry/sabk/file-dropzone/file-dropzone.demo"
+import KbdDemo from "@/registry/sabk/kbd/kbd.demo"
 import MultiSelectDemo from "@/registry/sabk/multi-select/multi-select.demo"
 import NumberRangeDemo from "@/registry/sabk/number-range/number-range.demo"
 import PasswordInputDemo from "@/registry/sabk/password-input/password-input.demo"
 import PhoneInputDemo from "@/registry/sabk/phone-input/phone-input.demo"
+import RatingDemo from "@/registry/sabk/rating/rating.demo"
+import ScrollProgressDemo from "@/registry/sabk/scroll-progress/scroll-progress.demo"
 import StatCardDemo from "@/registry/sabk/stat-card/stat-card.demo"
 import TagInputDemo from "@/registry/sabk/tag-input/tag-input.demo"
+import TimelineDemo from "@/registry/sabk/timeline/timeline.demo"
 import YearPickerDemo from "@/registry/sabk/year-picker/year-picker.demo"
 
 import Cta01 from "@/registry/sabk/blocks/cta-01/cta-01"
@@ -34,6 +39,7 @@ export type ComponentCategory =
   | "pickers"
   | "files"
   | "data"
+  | "display"
   | "blocks"
 
 export type BlockKind =
@@ -188,6 +194,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
     sourceFiles: ["registry/sabk/stat-card/stat-card.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "rating",
+    title: "Rating",
+    description:
+      "Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.",
+    category: "inputs",
+    status: "stable",
+    Demo: RatingDemo,
+    sourceFiles: ["registry/sabk/rating/rating.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "timeline",
+    title: "Timeline",
+    description:
+      "Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.",
+    category: "data",
+    status: "stable",
+    Demo: TimelineDemo,
+    sourceFiles: ["registry/sabk/timeline/timeline.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "kbd",
+    title: "Kbd",
+    description:
+      "3D tactile keycap with hover lift and pressed states. Compound API with KbdGroup for chords and KbdDisplay for inline keys.",
+    category: "display",
+    status: "stable",
+    Demo: KbdDemo,
+    sourceFiles: ["registry/sabk/kbd/kbd.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "callout",
+    title: "Callout",
+    description:
+      "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override.",
+    category: "display",
+    status: "stable",
+    Demo: CalloutDemo,
+    sourceFiles: ["registry/sabk/callout/callout.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react", "class-variance-authority"],
+  },
+  {
+    name: "scroll-progress",
+    title: "Scroll Progress",
+    description:
+      "Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.",
+    category: "display",
+    status: "stable",
+    Demo: ScrollProgressDemo,
+    sourceFiles: ["registry/sabk/scroll-progress/scroll-progress.tsx"],
+    registryDependencies: [],
+    dependencies: [],
   },
   // ===== Blocks =====
   {
@@ -461,6 +527,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   pickers: "Pickers",
   files: "Files",
   data: "Data display",
+  display: "Display",
   blocks: "Blocks",
 }
 
@@ -470,6 +537,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     pickers: [],
     files: [],
     data: [],
+    display: [],
     blocks: [],
   }
   for (const entry of REGISTRY) groups[entry.category].push(entry)

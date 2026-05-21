@@ -19,6 +19,7 @@ const CATEGORY_ORDER: ComponentCategory[] = [
   "pickers",
   "files",
   "data",
+  "display",
 ]
 
 const COMPOSE_SNIPPET = `import {

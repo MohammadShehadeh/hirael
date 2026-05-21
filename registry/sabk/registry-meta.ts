@@ -60,17 +60,12 @@ export type RegistryEntryMeta = {
   description: string
   category: ComponentCategory
   status: "stable" | "planned"
-  /** Demo component, when status === "stable". */
   Demo?: React.ComponentType
-  /** Repo-relative paths of source files to surface in the Code tab. */
   sourceFiles?: string[]
-  /** Public install URL slug (defaults to `${name}`). */
   installSlug?: string
   registryDependencies?: string[]
   dependencies?: string[]
-  /** Block-only: the kind of section this block is, used for /blocks grouping. */
   blockKind?: BlockKind
-  /** Block-only: short tagline shown on the /blocks index cards. */
   blockTagline?: string
 }
 
@@ -255,7 +250,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: [],
   },
-  // ===== Blocks =====
   {
     name: "hero-01",
     title: "Hero · stat strip + install card",
@@ -494,7 +488,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
-  // ===== Phase 1 stubs — declared in registry.json, implementation pending =====
   {
     name: "month-picker",
     title: "Month Picker",

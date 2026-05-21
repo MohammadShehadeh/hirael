@@ -5,15 +5,7 @@ import { Minus, TrendingDown, TrendingUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type StatCardTrend = "up" | "down" | "flat"
-
-/* ============================================================================
- * Root
- * ========================================================================== */
 
 type StatCardProps = React.ComponentProps<"div">
 
@@ -30,10 +22,6 @@ function StatCard({ className, ...props }: StatCardProps) {
   )
 }
 
-/* ============================================================================
- * Label
- * ========================================================================== */
-
 type StatCardLabelProps = React.ComponentProps<"p">
 
 function StatCardLabel({ className, ...props }: StatCardLabelProps) {
@@ -49,10 +37,6 @@ function StatCardLabel({ className, ...props }: StatCardLabelProps) {
   )
 }
 
-/* ============================================================================
- * Value
- * ========================================================================== */
-
 type StatCardValueProps = React.ComponentProps<"p">
 
 function StatCardValue({ className, ...props }: StatCardValueProps) {
@@ -67,10 +51,6 @@ function StatCardValue({ className, ...props }: StatCardValueProps) {
     />
   )
 }
-
-/* ============================================================================
- * Delta
- * ========================================================================== */
 
 type StatCardDeltaProps = Omit<React.ComponentProps<"span">, "children"> & {
   trend: StatCardTrend

@@ -6,10 +6,6 @@ import { cn } from "@/lib/utils"
 import { Input } from "@/registry/sabk/ui/input"
 import { Slider } from "@/registry/sabk/ui/slider"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type NumberRangeValue = [number, number]
 
 export type NumberFormatter = (n: number) => string
@@ -42,10 +38,6 @@ function useNumberRange() {
   return ctx
 }
 
-/* ============================================================================
- * Helpers
- * ========================================================================== */
-
 function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, n))
 }
@@ -66,10 +58,6 @@ const defaultParse: NumberParser = (s) => {
   const n = Number(cleaned)
   return Number.isFinite(n) ? n : 0
 }
-
-/* ============================================================================
- * Root
- * ========================================================================== */
 
 export type NumberRangeProps = {
   value?: NumberRangeValue
@@ -143,10 +131,6 @@ function NumberRange({
   )
 }
 
-/* ============================================================================
- * Slider
- * ========================================================================== */
-
 function NumberRangeSlider({
   className,
   ...props
@@ -169,10 +153,6 @@ function NumberRangeSlider({
     />
   )
 }
-
-/* ============================================================================
- * Inputs
- * ========================================================================== */
 
 type NumberRangeInputProps = Omit<
   React.ComponentProps<typeof Input>,
@@ -251,10 +231,6 @@ function NumberRangeInput({
     </div>
   )
 }
-
-/* ============================================================================
- * Inputs pair (convenience for the common two-input row)
- * ========================================================================== */
 
 function NumberRangeInputs({
   className,

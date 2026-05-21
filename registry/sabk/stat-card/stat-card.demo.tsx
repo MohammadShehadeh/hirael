@@ -10,7 +10,7 @@ import {
 export default function StatCardDemo() {
   return (
     <div className="grid w-full max-w-3xl gap-8">
-      {/* Basic */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           3-up grid
@@ -39,7 +39,7 @@ export default function StatCardDemo() {
         </div>
       </div>
 
-      {/* Composed */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Custom layout

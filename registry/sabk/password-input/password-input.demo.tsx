@@ -15,7 +15,7 @@ export default function PasswordInputDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {/* Basic */}
+      {}
       <div className="grid gap-2">
         <Label htmlFor="pw-basic">Password · with strength meter</Label>
         <PasswordInput id="pw-basic" value={basic} onValueChange={setBasic}>
@@ -24,7 +24,7 @@ export default function PasswordInputDemo() {
         </PasswordInput>
       </div>
 
-      {/* Composed */}
+      {}
       <div className="grid gap-2">
         <Label htmlFor="pw-composed">Password · custom strength hint</Label>
         <PasswordInput

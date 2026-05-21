@@ -18,10 +18,6 @@ import {
   CommandList,
 } from "@/registry/sabk/ui/command"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type ComboboxOption = {
   value: string
   label: string
@@ -40,7 +36,6 @@ type Ctx = {
   loading?: boolean
   disabled?: boolean
   clearable: boolean
-  /** When true, the consumer is filtering externally (async); cmdk should not filter again. */
   externalFilter: boolean
 }
 
@@ -56,10 +51,6 @@ function useCombobox() {
   return ctx
 }
 
-/* ============================================================================
- * Root
- * ========================================================================== */
-
 export type ComboboxProps = {
   value?: string
   defaultValue?: string
@@ -68,13 +59,10 @@ export type ComboboxProps = {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
-  /** Forwards search input changes (use for async loaders). */
   onSearchChange?: (search: string) => void
-  /** When set, cmdk's internal filtering is disabled — useful for async. */
   externalFilter?: boolean
   loading?: boolean
   disabled?: boolean
-  /** Allow clearing the selection via the trigger's clear button. Default: true. */
   clearable?: boolean
   children?: React.ReactNode
 }
@@ -163,10 +151,6 @@ function Combobox({
   )
 }
 
-/* ============================================================================
- * Trigger
- * ========================================================================== */
-
 type ComboboxTriggerProps = Omit<
   React.ComponentProps<"button">,
   "children"
@@ -248,10 +232,6 @@ function ComboboxTrigger({
   )
 }
 
-/* ============================================================================
- * Content (the dropdown)
- * ========================================================================== */
-
 type ComboboxContentProps = React.ComponentProps<typeof PopoverContent> & {
   searchPlaceholder?: string
   emptyMessage?: string
@@ -322,10 +302,6 @@ function ComboboxContent({
   )
 }
 
-/* ============================================================================
- * Item
- * ========================================================================== */
-
 type ComboboxItemProps = Omit<
   React.ComponentProps<typeof CommandItem>,
   "value" | "onSelect" | "children"
@@ -360,10 +336,6 @@ function ComboboxItem({
     </CommandItem>
   )
 }
-
-/* ============================================================================
- * Async loader hook
- * ========================================================================== */
 
 export function useAsyncComboboxOptions<T>(
   loader: (query: string) => Promise<T[]>,

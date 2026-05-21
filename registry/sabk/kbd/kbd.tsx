@@ -2,10 +2,6 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Kbd · pressable 3D keycap
- * ========================================================================== */
-
 type KbdProps = React.ComponentProps<"button">
 
 function Kbd({ className, type = "button", ...props }: KbdProps) {
@@ -38,10 +34,6 @@ function Kbd({ className, type = "button", ...props }: KbdProps) {
   )
 }
 
-/* ============================================================================
- * KbdDisplay · static inline keycap (e.g. inside tooltips, menus)
- * ========================================================================== */
-
 type KbdDisplayProps = React.ComponentProps<"kbd">
 
 function KbdDisplay({ className, ...props }: KbdDisplayProps) {
@@ -57,10 +49,6 @@ function KbdDisplay({ className, ...props }: KbdDisplayProps) {
     />
   )
 }
-
-/* ============================================================================
- * KbdGroup · row layout for chords like ⌘ + K
- * ========================================================================== */
 
 type KbdGroupProps = React.ComponentProps<"div">
 

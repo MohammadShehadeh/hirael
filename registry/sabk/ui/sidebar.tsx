@@ -200,7 +200,7 @@ function Sidebar({
       data-side={side}
       data-slot="sidebar"
     >
-      {/* gap on the sidebar side of the layout */}
+      {}
       <div
         data-slot="sidebar-gap"
         className={cn(

@@ -4,19 +4,8 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * ScrollProgress · fixed reading progress bar
- *
- * Pixel pipeline: scroll events drive a single rAF per frame that writes
- * `transform: scaleX(...)` straight to the DOM via ref — no React render
- * on scroll, no CSS transition fighting the compositor. The bar is
- * promoted to its own layer via `will-change: transform`.
- * ========================================================================== */
-
 export type ScrollProgressProps = React.ComponentProps<"div"> & {
-  /** Element to track. Defaults to document scroll. */
   target?: React.RefObject<HTMLElement | null>
-  /** Position. Defaults to "top". */
   position?: "top" | "bottom"
 }
 
@@ -48,7 +37,6 @@ function ScrollProgress({
         const max = doc.scrollHeight - doc.clientHeight
         progress = max > 0 ? doc.scrollTop / max : 0
       }
-      // Skip the write when the bar wouldn't visibly move (~sub-pixel).
       if (Math.abs(progress - lastProgress) < 0.001) return
       lastProgress = progress
       bar.style.transform = `scaleX(${progress})`

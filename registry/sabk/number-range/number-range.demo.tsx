@@ -19,7 +19,7 @@ export default function NumberRangeDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {/* Basic */}
+      {}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
           <Label>Price (USD)</Label>
@@ -42,7 +42,7 @@ export default function NumberRangeDemo() {
         </NumberRange>
       </div>
 
-      {/* Composed */}
+      {}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
           <Label>Age</Label>

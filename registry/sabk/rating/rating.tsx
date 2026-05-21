@@ -5,10 +5,6 @@ import { Star } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Rating · star rating with hover, half-step and readOnly modes
- * ========================================================================== */
-
 export type RatingProps = Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
@@ -17,13 +13,11 @@ export type RatingProps = Omit<
   defaultValue?: number
   onValueChange?: (value: number) => void
   max?: number
-  /** Use 0.5 for half-star precision, 1 (default) for whole stars. */
   step?: 0.5 | 1
   readOnly?: boolean
   disabled?: boolean
   size?: "sm" | "md" | "lg"
   name?: string
-  /** Accessible label, e.g. "Rating". */
   "aria-label"?: string
 }
 
@@ -91,7 +85,7 @@ function Rating({
               interactive && "cursor-pointer"
             )}
           >
-            {/* base (empty) */}
+            {}
             <Star
               className={cn(
                 iconSize,
@@ -99,7 +93,7 @@ function Rating({
               )}
               aria-hidden
             />
-            {/* fill overlay */}
+            {}
             {(filled || half) && (
               <Star
                 className={cn(
@@ -111,7 +105,7 @@ function Rating({
               />
             )}
 
-            {/* hit targets */}
+            {}
             {interactive && step === 0.5 && (
               <>
                 <button

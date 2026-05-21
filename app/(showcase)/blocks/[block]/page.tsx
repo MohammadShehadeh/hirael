@@ -37,11 +37,14 @@ async function loadSource(
   if (!files) return out
   await Promise.all(
     files.map(async (f) => {
+      const abs = path.join(process.cwd(), f)
       let code: string
       try {
-        code = await fs.readFile(path.join(process.cwd(), f), "utf8")
-      } catch {
-        code = "// (unable to read source)"
+        code = await fs.readFile(abs, "utf8")
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        console.error(`[loadSource] could not read ${abs}: ${msg}`)
+        code = `// (unable to read source: ${msg})`
       }
       const lang = langFromPath(f)
       const html = await highlightCode(code, lang)

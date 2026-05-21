@@ -1,134 +1,145 @@
-import Link from "next/link"
-import { Sparkles, LayoutTemplate } from "lucide-react"
+"use client"
 
-import { cn } from "@/lib/utils"
+import * as React from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { LayoutTemplate, Sparkles } from "lucide-react"
+
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
 } from "@/registry/sabk/registry-meta"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/registry/sabk/ui/sidebar"
 
-export function ShowcaseSidebar({ active }: { active?: string }) {
-  const order: ComponentCategory[] = [
-    "inputs",
-    "pickers",
-    "files",
-    "data",
-    "display",
-  ]
+const CATEGORY_ORDER: ComponentCategory[] = [
+  "inputs",
+  "pickers",
+  "files",
+  "data",
+  "display",
+]
+
+export function ShowcaseSidebar() {
+  const pathname = usePathname()
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
+
   return (
-    <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
-      <Link href="/" className="block border-b border-sidebar-border px-5 py-4">
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-semibold tracking-[-0.04em]">
-            sabk
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+      <SidebarHeader>
+        <Link
+          href="/"
+          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
+        >
+          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm bg-sidebar-primary font-mono text-[11px] font-semibold text-sidebar-primary-foreground">
+            ◆
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ forge
-          </span>
-        </div>
-        <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          shadcn&apos;s missing pieces
-        </p>
-      </Link>
-
-      <nav className="flex-1 overflow-y-auto px-2 py-4">
-        <div className="mb-5">
-          <div className="px-3 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            Workspace
+          <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
+            <span className="text-sm font-semibold tracking-[-0.02em]">
+              sabk
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+              shadcn&apos;s missing pieces
+            </span>
           </div>
-          <ul className="flex flex-col">
-            <li>
-              <Link
-                href="/theme"
-                className={cn(
-                  "group flex items-center justify-between rounded-sm px-3 py-1.5 text-sm transition-colors",
-                  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  active === "theme" &&
-                    "bg-sidebar-accent text-sidebar-accent-foreground"
-                )}
-              >
-                <span className="inline-flex min-w-0 items-center gap-2 truncate">
-                  <Sparkles className="size-3.5 text-foreground" />
-                  Theme playground
-                </span>
-                {active === "theme" && (
-                  <span className="size-1.5 rounded-full bg-foreground" />
-                )}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/blocks"
-                className={cn(
-                  "group flex items-center justify-between rounded-sm px-3 py-1.5 text-sm transition-colors",
-                  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  active === "blocks" &&
-                    "bg-sidebar-accent text-sidebar-accent-foreground"
-                )}
-              >
-                <span className="inline-flex min-w-0 items-center gap-2 truncate">
-                  <LayoutTemplate className="size-3.5 text-foreground" />
-                  Blocks
-                </span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                  {blockCount}
-                </span>
-              </Link>
-            </li>
-          </ul>
-        </div>
+        </Link>
+      </SidebarHeader>
 
-        {order.map((cat) => {
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/theme")}
+                  tooltip="Theme playground"
+                >
+                  <Link href="/theme">
+                    <Sparkles />
+                    <span>Theme playground</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/blocks")}
+                  tooltip="Blocks"
+                >
+                  <Link href="/blocks">
+                    <LayoutTemplate />
+                    <span>Blocks</span>
+                  </Link>
+                </SidebarMenuButton>
+                <SidebarMenuBadge>{blockCount}</SidebarMenuBadge>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {CATEGORY_ORDER.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
           return (
-            <div key={cat} className="mb-5">
-              <div className="px-3 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                {CATEGORY_LABELS[cat]}
-              </div>
-              <ul className="flex flex-col">
-                {items.map((entry) => {
-                  const isActive = entry.name === active
-                  return (
-                    <li key={entry.name}>
-                      <Link
-                        href={`/${entry.name}`}
-                        className={cn(
-                          "group flex items-center justify-between rounded-sm px-3 py-1.5 text-sm transition-colors",
-                          "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                          isActive &&
-                            "bg-sidebar-accent text-sidebar-accent-foreground"
-                        )}
-                      >
-                        <span className="min-w-0 truncate">{entry.title}</span>
+            <SidebarGroup key={cat}>
+              <SidebarGroupLabel>{CATEGORY_LABELS[cat]}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {items.map((entry) => {
+                    const href = `/${entry.name}`
+                    const active = isActive(href)
+                    return (
+                      <SidebarMenuItem key={entry.name}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={active}
+                          tooltip={entry.title}
+                        >
+                          <Link href={href}>
+                            <span>{entry.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
                         {entry.status === "planned" && (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                            soon
-                          </span>
+                          <SidebarMenuBadge>soon</SidebarMenuBadge>
                         )}
-                        {isActive && (
-                          <span className="size-1.5 rounded-full bg-foreground" />
-                        )}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
+                      </SidebarMenuItem>
+                    )
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
           )
         })}
-      </nav>
+      </SidebarContent>
 
-      <div className="flex items-center justify-between gap-2 border-t border-sidebar-border px-3 py-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          v0.1 · peer of shadcn
-        </span>
-        <ThemeSheetTrigger />
-      </div>
-    </aside>
+      <SidebarFooter>
+        <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
+          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
+            v0.1 · peer of shadcn
+          </span>
+          <ThemeSheetTrigger />
+        </div>
+      </SidebarFooter>
+    </Sidebar>
   )
 }

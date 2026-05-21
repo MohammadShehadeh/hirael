@@ -1,4 +1,4 @@
-# msh ui
+# forgecn
 
 **shadcn's missing pieces.** A peer registry — not a replacement — for the
 30-ish components every real product needs but shadcn doesn't ship.
@@ -11,11 +11,11 @@ npx shadcn@latest add https://forgecn.dev/r/multi-select.json
 
 ## Positioning
 
-- **Peer of shadcn.** You must have shadcn installed first. msh ui
+- **Peer of shadcn.** You must have shadcn installed first. forgecn
   components import from `@/components/ui/*` (Button, Input, Popover,
   Command, …) just like shadcn's own composed blocks do.
 - **Distributed via the shadcn registry schema.** No runtime dependency
-  on an msh ui package — source is copied straight into your repo.
+  on an forgecn package — source is copied straight into your repo.
 - **Modern shadcn polish.** 1px soft borders, 0.65rem radius scale
   (sm/md/lg/xl derived from `--radius`), zinc neutrals, dark as primary
   canvas, no chromatic accent — primary draws the eye. Geist Sans for
@@ -69,7 +69,7 @@ JsonViewer, DiffViewer, Breadcrumb, CommandPalette — not in this cut.
 ## Repository layout
 
 ```
-msh-ui/
+forgecn/
   app/
     page.tsx                   # landing
     (showcase)/
@@ -82,7 +82,7 @@ msh-ui/
     showcase/                  # shell-only chrome, not part of the registry
   registry/
     sabk/
-      ui/                      # shadcn primitives msh ui imports from
+      ui/                      # shadcn primitives forgecn imports from
       multi-select/
         multi-select.tsx         # component, flat compound exports
         multi-select.demo.tsx

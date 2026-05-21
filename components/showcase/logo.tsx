@@ -1,61 +1,33 @@
-"use client"
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 /**
- * MSH wordmark, inlined as SVG. The base "MSH" text renders in
- * currentColor (so it follows the active theme) while the "M" letter is
- * clipped to reveal the Palestinian flag (black/white/green/red triangle)
- * underneath.
+ * forgecn brand mark — a bold geometric "F" rendered as three rounded
+ * rectangles in currentColor, so it follows the active text color in
+ * both themes.
  */
 function LogoSvg({ className }: { className?: string }) {
-  const rawId = React.useId()
-  const id = rawId.replace(/:/g, "")
-  const mId = `msh-m-${id}`
-  const allId = `msh-all-${id}`
-  const clipId = `msh-m-clip-${id}`
-
-  const textStyle: React.CSSProperties = {
-    fontFamily: "var(--font-fraunces), ui-serif, Georgia, serif",
-    fontSize: "280px",
-    fontWeight: 600,
-  }
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 820 280"
-      aria-hidden="true"
+      viewBox="0 0 24 24"
+      role="img"
+      aria-hidden
       className={className}
+      fill="currentColor"
     >
-      <title>MSH</title>
-      <defs>
-        <text id={mId} style={textStyle} x="10" y="245">
-          M
-        </text>
-        <text id={allId} style={textStyle} x="10" y="245">
-          MSH
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <use href={`#${allId}`} fill="currentColor" />
-      <g clipPath={`url(#${clipId})`}>
-        <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
-        <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
-        <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
-        <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
-      </g>
+      <title>forgecn</title>
+      <rect x="4" y="4" width="16" height="3.5" rx="1" />
+      <rect x="4" y="4" width="3.5" height="16" rx="1" />
+      <rect x="4" y="10.25" width="10" height="3.5" rx="1" />
     </svg>
   )
 }
 
 export function Logo({
   className,
-  title = "msh ui",
+  title = "forgecn",
 }: {
   className?: string
   title?: string
@@ -66,36 +38,39 @@ export function Logo({
       aria-label={title}
       className={cn("inline-flex shrink-0 text-foreground", className)}
     >
-      <LogoSvg className="h-full w-auto" />
+      <LogoSvg className="size-full" />
     </span>
   )
 }
 
-/** Wordmark logo sized by height — width is intrinsic to the 820×280 viewBox. */
 export function LogoMark({ className }: { className?: string }) {
-  return <Logo className={cn("h-8", className)} />
+  return <Logo className={cn("size-6", className)} />
 }
 
 export function BrandLockup({
   className,
   logoClassName,
   textClassName,
+  showText = true,
 }: {
   className?: string
   logoClassName?: string
   textClassName?: string
+  showText?: boolean
 }) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <LogoMark className={logoClassName} />
-      <span
-        className={cn(
-          "text-xl font-semibold tracking-[-0.02em] text-muted-foreground",
-          textClassName
-        )}
-      >
-        ui
-      </span>
+      {showText && (
+        <span
+          className={cn(
+            "text-base font-semibold tracking-[-0.02em] text-foreground",
+            textClassName
+          )}
+        >
+          forgecn
+        </span>
+      )}
     </div>
   )
 }

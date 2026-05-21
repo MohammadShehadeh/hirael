@@ -52,10 +52,10 @@ export function ShowcaseSidebar() {
           className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMark className="h-6 shrink-0 group-data-[collapsible=icon]:h-3" />
+          <LogoMark className="size-6 shrink-0" />
           <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-base font-semibold tracking-[-0.02em] text-muted-foreground">
-              ui
+            <span className="text-base font-semibold tracking-[-0.02em] text-foreground">
+              forgecn
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
               shadcn&apos;s missing pieces

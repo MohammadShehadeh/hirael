@@ -70,7 +70,7 @@ export default function Login01() {
                 Welcome back
               </h1>
               <p className="text-xs text-muted-foreground">
-                Sign in to your msh ui workspace to continue.
+                Sign in to your forgecn workspace to continue.
               </p>
             </div>
           </div>

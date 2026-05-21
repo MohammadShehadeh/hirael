@@ -26,9 +26,9 @@ export function ShowcaseTopbar() {
       <Link
         href="/"
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
-        aria-label="msh ui — home"
+        aria-label="forgecn — home"
       >
-        <BrandLockup logoClassName="h-6" textClassName="text-base" />
+        <BrandLockup logoClassName="size-5" textClassName="text-sm" />
       </Link>
 
       <nav className="hidden flex-1 items-center gap-0.5 md:flex">

@@ -17,11 +17,11 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· registry",
     headline: "One CLI command, source in your repo.",
-    body: "msh ui distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX — no package pin, no version drift.",
+    body: "forgecn distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX — no package pin, no version drift.",
     bullets: [
       "Resolved against your existing tsconfig paths",
       "Drops into components/ui/* by default",
-      "Zero runtime dependency on msh ui",
+      "Zero runtime dependency on forgecn",
     ],
     media: "registry",
   },

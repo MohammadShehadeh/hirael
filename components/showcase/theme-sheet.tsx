@@ -115,7 +115,7 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview msh ui components against your own theme. Paste a CSS
+          Preview forgecn components against your own theme. Paste a CSS
           variable block, pick a preset, or copy the active theme back out.
         </SheetDescription>
       </SheetHeader>

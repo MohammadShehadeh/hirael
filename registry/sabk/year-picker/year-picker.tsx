@@ -111,6 +111,31 @@ function YearPicker(props: YearPickerProps) {
   } = props
   const mode = props.mode ?? "single"
 
+  const singleValueProp =
+    mode === "single"
+      ? (props as Extract<YearPickerProps, { mode?: "single" }>).value
+      : undefined
+  const singleDefaultValue =
+    mode === "single"
+      ? (props as Extract<YearPickerProps, { mode?: "single" }>).defaultValue
+      : undefined
+  const singleOnValueChange =
+    mode === "single"
+      ? (props as Extract<YearPickerProps, { mode?: "single" }>).onValueChange
+      : undefined
+  const rangeValueProp =
+    mode === "range"
+      ? (props as Extract<YearPickerProps, { mode: "range" }>).value
+      : undefined
+  const rangeDefaultValue =
+    mode === "range"
+      ? (props as Extract<YearPickerProps, { mode: "range" }>).defaultValue
+      : undefined
+  const rangeOnValueChange =
+    mode === "range"
+      ? (props as Extract<YearPickerProps, { mode: "range" }>).onValueChange
+      : undefined
+
   const [openInternal, setOpenInternal] = React.useState(defaultOpen)
   const open = openProp ?? openInternal
   const setOpen = React.useCallback(
@@ -121,25 +146,17 @@ function YearPicker(props: YearPickerProps) {
     [openProp, onOpenChange]
   )
 
-  // Single mode state
   const [singleInternal, setSingleInternal] = React.useState<
     number | undefined
-  >(mode === "single" ? (props as Extract<YearPickerProps, { mode?: "single" }>).defaultValue : undefined)
-  // Range mode state
+  >(singleDefaultValue)
   const [rangeInternal, setRangeInternal] = React.useState<
     YearRange | undefined
-  >(mode === "range" ? (props as Extract<YearPickerProps, { mode: "range" }>).defaultValue : undefined)
+  >(rangeDefaultValue)
 
   const singleValue =
-    mode === "single"
-      ? ((props as Extract<YearPickerProps, { mode?: "single" }>).value ??
-        singleInternal)
-      : undefined
+    mode === "single" ? (singleValueProp ?? singleInternal) : undefined
   const rangeValue =
-    mode === "range"
-      ? ((props as Extract<YearPickerProps, { mode: "range" }>).value ??
-        rangeInternal)
-      : undefined
+    mode === "range" ? (rangeValueProp ?? rangeInternal) : undefined
 
   const anchorYear =
     (mode === "single" ? singleValue : rangeValue?.from) ??
@@ -150,18 +167,16 @@ function YearPicker(props: YearPickerProps) {
 
   const setValueSingle = React.useCallback(
     (year: number) => {
-      const p = props as Extract<YearPickerProps, { mode?: "single" }>
-      if (p.value === undefined) setSingleInternal(year)
-      p.onValueChange?.(year)
+      if (singleValueProp === undefined) setSingleInternal(year)
+      singleOnValueChange?.(year)
       setOpen(false)
     },
-    [props, setOpen]
+    [singleValueProp, singleOnValueChange, setOpen]
   )
 
   const setValueRange = React.useCallback(
     (year: number) => {
-      const p = props as Extract<YearPickerProps, { mode: "range" }>
-      const current = p.value ?? rangeInternal
+      const current = rangeValueProp ?? rangeInternal
       let next: YearRange
       if (!current || (current.from && current.to)) {
         next = { from: year }
@@ -170,11 +185,11 @@ function YearPicker(props: YearPickerProps) {
       } else {
         next = { from: current.from, to: year }
       }
-      if (p.value === undefined) setRangeInternal(next)
-      p.onValueChange?.(next)
+      if (rangeValueProp === undefined) setRangeInternal(next)
+      rangeOnValueChange?.(next)
       if (next.to !== undefined) setOpen(false)
     },
-    [props, rangeInternal, setOpen]
+    [rangeValueProp, rangeOnValueChange, rangeInternal, setOpen]
   )
 
   const ctx = React.useMemo<YearPickerContextValue>(() => {

@@ -60,12 +60,14 @@ export default function Hero01() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="default" size="lg" className="group">
-              Get started
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+            <Button asChild variant="default" size="lg" className="group">
+              <a href="#">
+                Get started
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              </a>
             </Button>
-            <Button variant="outline" size="lg">
-              Browse the registry
+            <Button asChild variant="outline" size="lg">
+              <a href="#">Browse the registry</a>
             </Button>
           </div>
 

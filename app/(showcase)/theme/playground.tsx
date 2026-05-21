@@ -14,7 +14,9 @@ export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const stable = REGISTRY.filter((r) => r.status === "stable")
+  const components = REGISTRY.filter(
+    (r) => r.category !== "blocks" && r.status === "stable"
+  )
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
@@ -101,7 +103,7 @@ export function ThemePlayground() {
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
-          {stable.map((entry) => {
+          {components.map((entry) => {
             const Demo = entry.Demo
             if (!Demo) return null
             return (

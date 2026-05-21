@@ -68,9 +68,11 @@ export default function Faq01() {
               <p className="text-sm">
                 Drop a question in the repo. Responses usually within a day.
               </p>
-              <Button variant="outline" size="sm" className="w-fit">
-                Open an issue
-                <ArrowUpRight className="size-3.5" />
+              <Button asChild variant="outline" size="sm" className="w-fit">
+                <a href="#">
+                  Open an issue
+                  <ArrowUpRight className="size-3.5" />
+                </a>
               </Button>
             </div>
           </div>

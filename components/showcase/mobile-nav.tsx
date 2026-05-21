@@ -95,7 +95,7 @@ function MobileNavBody() {
                   "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 )}
               >
-                <span className="inline-flex items-center gap-2 truncate">
+                <span className="inline-flex min-w-0 items-center gap-2 truncate">
                   <Sparkles className="size-3.5 text-foreground" />
                   Theme playground
                 </span>
@@ -109,7 +109,7 @@ function MobileNavBody() {
                   "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 )}
               >
-                <span className="inline-flex items-center gap-2 truncate">
+                <span className="inline-flex min-w-0 items-center gap-2 truncate">
                   <LayoutTemplate className="size-3.5 text-foreground" />
                   Blocks
                 </span>
@@ -136,7 +136,7 @@ function MobileNavBody() {
                       href={`/${entry.name}`}
                       className="group flex items-center justify-between rounded-sm px-3 py-2 text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                     >
-                      <span className="truncate">{entry.title}</span>
+                      <span className="min-w-0 truncate">{entry.title}</span>
                       {entry.status === "planned" && (
                         <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
                           soon

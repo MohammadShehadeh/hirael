@@ -283,7 +283,7 @@ function FileDropzoneZone({
         if (dropped && dropped.length > 0) ctx.addFiles(dropped)
       }}
       className={cn(
-        "flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none",
+        "flex min-w-0 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none",
         "hover:border-foreground/30 hover:bg-accent/50",
         "focus-visible:ring-2 focus-visible:ring-ring",
         isDragging && "border-foreground/30 bg-accent/50",
@@ -339,7 +339,7 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
   return (
     <ul
       data-slot="file-dropzone-list"
-      className={cn("mt-3 flex flex-col gap-1.5", className)}
+      className={cn("mt-3 flex min-w-0 flex-col gap-1.5", className)}
       {...props}
     >
       {ctx.files.map((file, index) => {
@@ -347,11 +347,13 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
         return (
           <li
             key={`${file.name}-${file.lastModified}-${index}`}
-            className="flex items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1.5 text-sm"
+            className="flex min-w-0 items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1.5 text-sm"
           >
             <Icon className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
-            <span className="flex-1 truncate">{file.name}</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+            <span className="min-w-0 flex-1 truncate" title={file.name}>
+              {file.name}
+            </span>
+            <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
               {formatBytes(file.size)}
             </span>
             {!ctx.disabled && (
@@ -359,7 +361,7 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
                 type="button"
                 aria-label={`Remove ${file.name}`}
                 onClick={() => ctx.removeAt(index)}
-                className="inline-flex size-5 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <X className="size-3" />
               </button>
@@ -384,13 +386,13 @@ function FileDropzoneErrors({ className, ...props }: FileDropzoneErrorsProps) {
     <ul
       role="alert"
       data-slot="file-dropzone-errors"
-      className={cn("mt-2 flex flex-col gap-1", className)}
+      className={cn("mt-2 flex min-w-0 flex-col gap-1", className)}
       {...props}
     >
       {ctx.errors.map((err, i) => (
         <li
           key={`${err.file.name}-${i}`}
-          className="text-[11px] text-destructive"
+          className="break-words text-[11px] text-destructive"
         >
           {err.message}
         </li>

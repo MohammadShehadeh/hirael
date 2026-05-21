@@ -32,11 +32,11 @@ export default function NotFound01() {
             may have moved, or it may have never existed.
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="default" size="lg">
-              Go home
+            <Button asChild variant="default" size="lg">
+              <a href="#">Go home</a>
             </Button>
-            <Button variant="outline" size="lg">
-              Browse docs
+            <Button asChild variant="outline" size="lg">
+              <a href="#">Browse docs</a>
             </Button>
           </div>
 

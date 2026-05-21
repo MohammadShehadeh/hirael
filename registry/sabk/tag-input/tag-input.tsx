@@ -253,7 +253,7 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
       className={cn("gap-1 pr-1 font-normal", className)}
       {...props}
     >
-      <span className="truncate">{children ?? tag}</span>
+      <span className="min-w-0 truncate">{children ?? tag}</span>
       {!(ctx.disabled || ctx.readOnly) && (
         <button
           type="button"

@@ -212,7 +212,7 @@ function ComboboxTrigger({
           <>
             <span
               className={cn(
-                "flex-1 truncate",
+                "min-w-0 flex-1 truncate",
                 !selected && "text-muted-foreground"
               )}
             >
@@ -355,7 +355,7 @@ function ComboboxItem({
       className={cn("justify-between", className)}
       {...props}
     >
-      <span className="truncate">{children ?? option.label}</span>
+      <span className="min-w-0 truncate">{children ?? option.label}</span>
       {selected && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
     </CommandItem>
   )

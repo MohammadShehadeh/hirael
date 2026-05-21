@@ -124,11 +124,7 @@ function Hero({
       {/* Ambient orb behind hero */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 -z-10 size-[640px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-40 blur-3xl animate-spin-slow"
-        style={{
-          background:
-            "conic-gradient(from 90deg, color-mix(in oklch, var(--primary) 40%, transparent), transparent 30%, color-mix(in oklch, var(--primary) 24%, transparent) 60%, transparent 80%)",
-        }}
+        className="bg-glow-orb pointer-events-none absolute left-1/2 top-0 -z-10 size-[640px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-50 blur-3xl animate-spin-slow light:opacity-30"
       />
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-9 px-4 pb-20 pt-20 text-center sm:gap-11 sm:px-6 sm:pb-28 sm:pt-28 md:pb-36 md:pt-32 lg:px-8">
@@ -170,7 +166,7 @@ function Hero({
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/components"
-            className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_0_0_1px_color-mix(in_oklch,var(--primary)_50%,transparent)] transition-all hover:bg-primary/95 hover:shadow-[0_0_36px_-8px_color-mix(in_oklch,var(--primary)_50%,transparent)]"
+            className="btn-glow-ring group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/95"
           >
             <span
               aria-hidden
@@ -272,8 +268,8 @@ function Features() {
               <span className="relative inline-flex size-10 items-center justify-center rounded-md border border-border bg-background">
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 -z-10 rounded-md opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-60"
-                  style={{ background: "var(--primary)" }}
+                  className="pointer-events-none absolute inset-0 -z-10 rounded-md opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-60 light:group-hover:opacity-40"
+                  style={{ background: "var(--glow)" }}
                 />
                 <feature.icon className="size-4 text-foreground" />
               </span>
@@ -478,13 +474,14 @@ function Composition({ html, code }: { html: string; code: string }) {
           </ul>
         </div>
         <div className="relative min-w-0">
-          {/* Glow behind code block */}
+          {/* Glow behind code block — uses --glow so light mode reads as a
+              soft cream wash rather than a dark splotch. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-4 -z-10 rounded-2xl opacity-50 blur-2xl"
+            className="pointer-events-none absolute -inset-4 -z-10 rounded-2xl opacity-50 blur-2xl light:opacity-40"
             style={{
               background:
-                "radial-gradient(ellipse 60% 80% at 50% 50%, color-mix(in oklch, var(--primary) 18%, transparent), transparent 70%)",
+                "radial-gradient(ellipse 60% 80% at 50% 50%, color-mix(in oklch, var(--glow) 22%, transparent), transparent 70%)",
             }}
           />
           <InlineCodeBlock code={code} html={html} />
@@ -597,14 +594,11 @@ function BottomCta({ blocksCount }: { blocksCount: number }) {
             }}
           />
 
-          {/* Spinning orb */}
+          {/* Spinning orb — theme-aware via .bg-glow-orb (cream wash in
+              light, warm amber in dark). */}
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-0 size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-3xl animate-spin-slow"
-            style={{
-              background:
-                "conic-gradient(from 0deg, color-mix(in oklch, var(--primary) 40%, transparent), transparent 50%, color-mix(in oklch, var(--primary) 30%, transparent))",
-            }}
+            className="bg-glow-orb pointer-events-none absolute left-1/2 top-1/2 -z-0 size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl animate-spin-slow light:opacity-25"
           />
 
           <div className="relative flex flex-col items-center gap-6 px-6 py-16 text-center sm:px-12 sm:py-24">
@@ -627,7 +621,7 @@ function BottomCta({ blocksCount }: { blocksCount: number }) {
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
                 href="/components"
-                className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_0_0_1px_color-mix(in_oklch,var(--primary)_50%,transparent)] transition-all hover:bg-primary/95 hover:shadow-[0_0_36px_-8px_color-mix(in_oklch,var(--primary)_50%,transparent)]"
+                className="btn-glow-ring group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/95"
               >
                 <span
                   aria-hidden

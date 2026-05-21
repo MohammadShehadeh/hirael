@@ -1,45 +1,54 @@
-"use client"
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-export const LOGO_URL = "https://mohammadshehadeh.com/images/logo.svg"
+/**
+ * msh ui brand mark, inlined as SVG so it inherits the current text color
+ * via `currentColor`. To swap in the canonical mark from
+ * mohammadshehadeh.com/images/logo.svg, replace the contents of <LogoSvg>
+ * with the path data from that file — keep `fill="currentColor"` on every
+ * path so it continues to follow the active text color in both themes.
+ */
+function LogoSvg({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-hidden
+      className={className}
+    >
+      {/* Bold geometric "M" letterform — stroke-based so it scales cleanly */}
+      <path
+        d="M6 32 L6 8 L20 24 L34 8 L34 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
 
 export function Logo({
   className,
-  alt = "msh ui",
+  title = "msh ui",
 }: {
   className?: string
-  alt?: string
+  title?: string
 }) {
-  const [errored, setErrored] = React.useState(false)
-
-  if (errored) {
-    return (
-      <span
-        aria-hidden
-        className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-sm bg-foreground font-mono text-xs font-semibold text-background",
-          className
-        )}
-      >
-        msh
-      </span>
-    )
-  }
-
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={LOGO_URL}
-      alt={alt}
-      width={40}
-      height={40}
-      onError={() => setErrored(true)}
-      className={cn("shrink-0 select-none dark:invert", className)}
-      draggable={false}
-    />
+    <span
+      role="img"
+      aria-label={title}
+      className={cn(
+        "inline-flex shrink-0 items-center justify-center text-foreground",
+        className
+      )}
+    >
+      <LogoSvg className="size-full" />
+    </span>
   )
 }
 

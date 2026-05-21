@@ -6,7 +6,11 @@ import { cn } from "@/lib/utils"
 
 /* ============================================================================
  * ScrollProgress · fixed reading progress bar
- * Tracks document scroll (default) or a scoped container element via `target`.
+ *
+ * Pixel pipeline: scroll events drive a single rAF per frame that writes
+ * `transform: scaleX(...)` straight to the DOM via ref — no React render
+ * on scroll, no CSS transition fighting the compositor. The bar is
+ * promoted to its own layer via `will-change: transform`.
  * ========================================================================== */
 
 export type ScrollProgressProps = React.ComponentProps<"div"> & {
@@ -23,33 +27,52 @@ function ScrollProgress({
   position = "top",
   ...props
 }: ScrollProgressProps) {
-  const [progress, setProgress] = React.useState(0)
+  const barRef = React.useRef<HTMLDivElement | null>(null)
 
   React.useEffect(() => {
-    const update = () => {
+    const bar = barRef.current
+    if (!bar) return
+
+    let frame = 0
+    let lastProgress = -1
+
+    const apply = () => {
+      frame = 0
+      let progress: number
       if (target?.current) {
         const el = target.current
         const max = el.scrollHeight - el.clientHeight
-        setProgress(max > 0 ? el.scrollTop / max : 0)
-        return
+        progress = max > 0 ? el.scrollTop / max : 0
+      } else {
+        const doc = document.documentElement
+        const max = doc.scrollHeight - doc.clientHeight
+        progress = max > 0 ? doc.scrollTop / max : 0
       }
-      const doc = document.documentElement
-      const max = doc.scrollHeight - doc.clientHeight
-      setProgress(max > 0 ? doc.scrollTop / max : 0)
+      // Skip the write when the bar wouldn't visibly move (~sub-pixel).
+      if (Math.abs(progress - lastProgress) < 0.001) return
+      lastProgress = progress
+      bar.style.transform = `scaleX(${progress})`
+    }
+
+    const schedule = () => {
+      if (frame) return
+      frame = requestAnimationFrame(apply)
     }
 
     const source: HTMLElement | Window = target?.current ?? window
-    update()
-    source.addEventListener("scroll", update, { passive: true })
-    window.addEventListener("resize", update, { passive: true })
+    apply()
+    source.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule, { passive: true })
     return () => {
-      source.removeEventListener("scroll", update)
-      window.removeEventListener("resize", update)
+      if (frame) cancelAnimationFrame(frame)
+      source.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
     }
   }, [target])
 
   return (
     <div
+      ref={barRef}
       data-slot="scroll-progress"
       aria-hidden
       className={cn(
@@ -58,8 +81,8 @@ function ScrollProgress({
         className
       )}
       style={{
-        transform: `scaleX(${progress})`,
-        transition: "transform 80ms linear",
+        transform: "scaleX(0)",
+        willChange: "transform",
         ...style,
       }}
       {...props}

@@ -18,10 +18,6 @@ import {
   CommandList,
 } from "@/registry/sabk/ui/command"
 
-/* ============================================================================
- * Country data
- * ========================================================================== */
-
 export type Country = {
   iso2: string
   name: string
@@ -64,7 +60,6 @@ function digitsOnly(input: string): string {
   return input.replace(/\D/g, "")
 }
 
-/** Parse an incoming E.164-ish string into country + national digits. */
 function parseE164(
   value: string | undefined,
   fallback: Country
@@ -74,7 +69,6 @@ function parseE164(
   if (!trimmed.startsWith("+")) {
     return { country: fallback, national: digitsOnly(trimmed) }
   }
-  // Try the longest dial-code prefix first.
   const sorted = [...COUNTRIES].sort(
     (a, b) => b.dialCode.length - a.dialCode.length
   )
@@ -85,10 +79,6 @@ function parseE164(
   }
   return { country: fallback, national: digitsOnly(trimmed) }
 }
-
-/* ============================================================================
- * Context
- * ========================================================================== */
 
 type Ctx = {
   id: string
@@ -113,13 +103,6 @@ function usePhoneInput() {
   }
   return ctx
 }
-
-/* ============================================================================
- * Root
- *
- * The root renders the pill-style container itself; compose `<PhoneInputCountrySelect />`
- * and `<PhoneInputField />` as children.
- * ========================================================================== */
 
 export type PhoneInputProps = Omit<
   React.ComponentProps<"div">,
@@ -155,8 +138,6 @@ function PhoneInput({
 
   const initial = React.useMemo(
     () => parseE164(valueProp ?? defaultValue, fallback),
-    // Run once for defaults; controlled sync happens in effect below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
@@ -166,7 +147,6 @@ function PhoneInput({
 
   const isControlled = valueProp !== undefined
 
-  // Sync from controlled value when it changes externally.
   const lastSeen = React.useRef<string | undefined>(valueProp)
   React.useEffect(() => {
     if (!isControlled) return
@@ -237,10 +217,6 @@ function PhoneInput({
   )
 }
 
-/* ============================================================================
- * Country select
- * ========================================================================== */
-
 type PhoneInputCountrySelectProps = Omit<
   React.ComponentProps<"button">,
   "children" | "type"
@@ -290,7 +266,6 @@ function PhoneInputCountrySelect({
         sideOffset={6}
         className="w-64 p-0"
         onOpenAutoFocus={(e) => {
-          // Let cmdk autofocus its input.
           e.preventDefault()
         }}
       >
@@ -328,10 +303,6 @@ function PhoneInputCountrySelect({
   )
 }
 
-/* ============================================================================
- * Field
- * ========================================================================== */
-
 type PhoneInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
@@ -356,13 +327,11 @@ function PhoneInputField({
       disabled={ctx.disabled}
       data-slot="phone-input-field"
       onChange={(e) => {
-        // Allow digits and spaces while typing; strip everything else.
         const cleaned = e.target.value.replace(/[^\d\s]/g, "")
         ctx.setNational(cleaned)
       }}
       onBlur={(e) => {
         onBlur?.(e)
-        // Normalize on blur: collapse whitespace.
         const normalized = ctx.national.replace(/\s+/g, " ").trim()
         if (normalized !== ctx.national) ctx.setNational(normalized)
       }}

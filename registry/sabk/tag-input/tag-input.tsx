@@ -6,10 +6,6 @@ import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/registry/sabk/ui/badge"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type TagValidator = (
   candidate: string,
   current: string[]
@@ -29,9 +25,7 @@ type Ctx = {
   maxTags?: number
   caseSensitive: boolean
   validate?: TagValidator
-  /** Keys that commit the draft. */
   commitKeys: string[]
-  /** Characters that split a paste into multiple tags. */
   splitOn: RegExp
   inputRef: React.RefObject<HTMLInputElement | null>
 }
@@ -48,10 +42,6 @@ function useTagInput() {
   return ctx
 }
 
-/* ============================================================================
- * Root
- * ========================================================================== */
-
 export type TagInputProps = {
   value?: string[]
   defaultValue?: string[]
@@ -59,13 +49,10 @@ export type TagInputProps = {
   disabled?: boolean
   readOnly?: boolean
   maxTags?: number
-  /** Trim whitespace and dedupe inputs. Default: true. */
   unique?: boolean
   caseSensitive?: boolean
-  /** Returns true (accept) or an error message (reject). */
   validate?: TagValidator
   commitKeys?: string[]
-  /** Regex used to split pasted text into multiple tags. */
   splitOn?: RegExp
   children?: React.ReactNode
 }
@@ -192,10 +179,6 @@ function TagInput({
   )
 }
 
-/* ============================================================================
- * Container (the bordered chip area)
- * ========================================================================== */
-
 type TagInputContainerProps = React.ComponentProps<"div">
 
 function TagInputContainer({
@@ -232,12 +215,7 @@ function TagInputContainer({
   )
 }
 
-/* ============================================================================
- * Tag (chip)
- * ========================================================================== */
-
 type TagInputTagProps = Omit<React.ComponentProps<"span">, "children"> & {
-  /** Index of the tag in the value array. */
   index: number
   children?: React.ReactNode
 }
@@ -269,10 +247,6 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
   )
 }
 
-/* ============================================================================
- * Tags (renders all current tags from context)
- * ========================================================================== */
-
 function TagInputTags() {
   const ctx = useTagInput()
   return (
@@ -283,10 +257,6 @@ function TagInputTags() {
     </>
   )
 }
-
-/* ============================================================================
- * Field (the inline input)
- * ========================================================================== */
 
 type TagInputFieldProps = Omit<
   React.ComponentProps<"input">,
@@ -362,10 +332,6 @@ function TagInputField({
     />
   )
 }
-
-/* ============================================================================
- * Error message
- * ========================================================================== */
 
 function TagInputError({
   className,

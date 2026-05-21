@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Fraunces, Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 
 import { ThemeProvider } from "@/components/showcase/theme-provider"
+import { SITE } from "@/lib/site"
 import { themePrehydrationScript } from "@/lib/theme"
 
 const geistSans = Geist({
@@ -15,10 +16,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["600"],
+})
+
 export const metadata: Metadata = {
-  title: "Sabk — shadcn's missing pieces",
-  description:
-    "A shadcn-compatible registry of the components shadcn doesn't ship. Multi-select, number range, year picker, tag input, and the other components every real product needs.",
+  title: {
+    default: `${SITE.name} — ${SITE.description}`,
+    template: `%s — ${SITE.name}`,
+  },
+  description: SITE.longDescription,
+  authors: [{ name: SITE.author, url: SITE.authorUrl }],
+  creator: SITE.author,
+  openGraph: {
+    type: "website",
+    title: `${SITE.name} — ${SITE.description}`,
+    description: SITE.longDescription,
+    siteName: SITE.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.description}`,
+    description: SITE.longDescription,
+  },
 }
 
 export default function RootLayout({
@@ -34,7 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

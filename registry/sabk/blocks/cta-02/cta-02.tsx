@@ -51,7 +51,7 @@ export default function Cta02() {
         </h2>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground">
-          Sabk fills the obvious gaps in shadcn — the components your team
+          forgecn fills the obvious gaps in shadcn — the components your team
           quietly rebuilds project after project — so you can spend that
           time on the work only you can do.
         </p>
@@ -76,7 +76,7 @@ export default function Cta02() {
           <code className="whitespace-nowrap text-foreground">
             npx shadcn add{" "}
             <span className="text-muted-foreground">
-              https://sabk.dev/r/multi-select
+              https://forgecn.dev/r/multi-select
             </span>
           </code>
         </div>

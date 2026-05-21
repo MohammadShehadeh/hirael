@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
@@ -207,5 +208,42 @@ html.light .shiki span {
   }
   .cpx {
     @apply px-4 lg:px-6;
+  }
+
+  /* Faint dot grid used as a subtle background texture on the hero —
+     reads as monochrome zinc dots in both themes. */
+  .bg-dot-grid {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      var(--border) 1px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+  }
+
+  /* Small cross marker used at section corners (blueprint feel). The
+     ::before / ::after pseudo-elements draw the two strokes of a + glyph
+     so we can position it inside any container that has overflow visible. */
+  .corner-mark {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    color: var(--muted-foreground);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .corner-mark::before,
+  .corner-mark::after {
+    content: "";
+    position: absolute;
+    background-color: currentColor;
+  }
+  .corner-mark::before {
+    inset: 5px 0;
+    height: 1px;
+  }
+  .corner-mark::after {
+    inset: 0 5px;
+    width: 1px;
   }
 }

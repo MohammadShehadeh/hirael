@@ -62,7 +62,7 @@ export default function Feature02() {
             Everything a real product needs, none of the rest.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            Six decisions baked into every Sabk component, so you can stop
+            Six decisions baked into every forgecn component, so you can stop
             making them yourself in every new repo.
           </p>
         </div>

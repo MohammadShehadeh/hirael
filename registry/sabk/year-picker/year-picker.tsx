@@ -11,10 +11,6 @@ import {
   PopoverTrigger,
 } from "@/registry/sabk/ui/popover"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type YearRange = { from: number; to?: number }
 export type YearPickerMode = "single" | "range"
 
@@ -58,15 +54,9 @@ function useYearPicker() {
   return ctx
 }
 
-/* ============================================================================
- * Root
- * ========================================================================== */
-
-const DECADE = 12 // 4x3 grid: anchor decade + 1 before + 1 after
+const DECADE = 12
 
 function decadeStartFor(year: number) {
-  // Anchor a decade as the 12-year block beginning at year - (year % 10) - 1.
-  // This way the current year sits in the visible row, with one buffer year.
   const base = year - (year % 10)
   return base - 1
 }
@@ -242,10 +232,6 @@ function YearPicker(props: YearPickerProps) {
   )
 }
 
-/* ============================================================================
- * Trigger
- * ========================================================================== */
-
 function formatYearValue(ctx: YearPickerContextValue, placeholder: string) {
   if (ctx.mode === "single") return ctx.value ? String(ctx.value) : placeholder
   if (!ctx.value) return placeholder
@@ -286,10 +272,6 @@ function YearPickerTrigger({
     </PopoverTrigger>
   )
 }
-
-/* ============================================================================
- * Content (decade grid)
- * ========================================================================== */
 
 function isInRange(year: number, range: YearRange | undefined) {
   if (!range || range.to === undefined) return false

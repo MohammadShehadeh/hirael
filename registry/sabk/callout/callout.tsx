@@ -4,10 +4,6 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Variants
- * ========================================================================== */
-
 const calloutVariants = cva(
   "my-4 flex flex-col gap-2 overflow-hidden rounded-md border-l-4 p-4 text-sm",
   {
@@ -38,10 +34,6 @@ const variantIcons: Record<CalloutVariant, React.ElementType> = {
   error: Ban,
   neutral: AlertCircle,
 }
-
-/* ============================================================================
- * Root · single-prop API
- * ========================================================================== */
 
 export type CalloutProps = Omit<React.ComponentProps<"div">, "title"> &
   VariantProps<typeof calloutVariants> & {

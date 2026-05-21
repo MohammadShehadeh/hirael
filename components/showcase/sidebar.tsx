@@ -3,9 +3,11 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutTemplate, Sparkles } from "lucide-react"
+import { Boxes, LayoutTemplate, Sparkles } from "lucide-react"
 
+import { LogoMark } from "@/components/showcase/logo"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
+import { SITE } from "@/lib/site"
 import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
@@ -48,13 +50,12 @@ export function ShowcaseSidebar() {
         <Link
           href="/"
           className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
+          aria-label={`${SITE.name} — home`}
         >
-          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm bg-sidebar-primary font-mono text-[11px] font-semibold text-sidebar-primary-foreground">
-            ◆
-          </span>
+          <LogoMark className="size-6 shrink-0" />
           <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-semibold tracking-[-0.02em]">
-              sabk
+            <span className="text-base font-semibold tracking-[-0.02em] text-foreground">
+              forgecn
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
               shadcn&apos;s missing pieces
@@ -71,12 +72,12 @@ export function ShowcaseSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/theme")}
-                  tooltip="Theme playground"
+                  isActive={isActive("/components")}
+                  tooltip="All components"
                 >
-                  <Link href="/theme">
-                    <Sparkles />
-                    <span>Theme playground</span>
+                  <Link href="/components">
+                    <Boxes />
+                    <span>All components</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -92,6 +93,18 @@ export function ShowcaseSidebar() {
                   </Link>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>{blockCount}</SidebarMenuBadge>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/theme")}
+                  tooltip="Theme playground"
+                >
+                  <Link href="/theme">
+                    <Sparkles />
+                    <span>Theme playground</span>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
@@ -135,7 +148,7 @@ export function ShowcaseSidebar() {
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
           <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
-            v0.1 · peer of shadcn
+            v{SITE.version} · peer of shadcn
           </span>
           <ThemeSheetTrigger />
         </div>

@@ -9,6 +9,7 @@ import {
   getShadcnAddCommand,
   usePackageManager,
 } from "@/lib/package-managers"
+import { SITE } from "@/lib/site"
 
 export function InstallBlock({
   name,
@@ -24,7 +25,7 @@ export function InstallBlock({
     setOrigin(process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin)
   }, [])
 
-  const url = `${origin || "https://sabk.dev"}/r/${name}.json`
+  const url = `${origin || SITE.registry.origin}/r/${name}.json`
   const command = getShadcnAddCommand(pm, url)
 
   return (

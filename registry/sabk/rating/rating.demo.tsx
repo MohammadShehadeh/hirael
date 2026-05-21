@@ -9,7 +9,7 @@ export default function RatingDemo() {
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
-      {/* Whole-star interactive */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Interactive · whole stars
@@ -17,7 +17,7 @@ export default function RatingDemo() {
         <Rating defaultValue={4} aria-label="Overall rating" />
       </div>
 
-      {/* Half-star controlled */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Controlled · half steps
@@ -35,7 +35,7 @@ export default function RatingDemo() {
         </div>
       </div>
 
-      {/* Read-only with half star */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Read-only display
@@ -48,7 +48,7 @@ export default function RatingDemo() {
         </div>
       </div>
 
-      {/* Sizes */}
+      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Sizes

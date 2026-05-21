@@ -20,10 +20,6 @@ import {
   CommandSeparator,
 } from "@/registry/sabk/ui/command"
 
-/* ============================================================================
- * Types
- * ========================================================================== */
-
 export type MultiSelectOption = {
   value: string
   label: string
@@ -61,10 +57,6 @@ function useMultiSelect() {
   }
   return ctx
 }
-
-/* ============================================================================
- * Root
- * ========================================================================== */
 
 export type MultiSelectProps = {
   value?: string[]
@@ -185,10 +177,6 @@ function MultiSelect({
   )
 }
 
-/* ============================================================================
- * Trigger
- * ========================================================================== */
-
 type MultiSelectTriggerProps = Omit<
   React.ComponentProps<"button">,
   "children"
@@ -284,10 +272,6 @@ function MultiSelectTrigger({
     </PopoverTrigger>
   )
 }
-
-/* ============================================================================
- * Content (the dropdown)
- * ========================================================================== */
 
 type MultiSelectContentProps = React.ComponentProps<typeof PopoverContent> & {
   searchPlaceholder?: string
@@ -401,10 +385,6 @@ function MultiSelectContent({
   )
 }
 
-/* ============================================================================
- * Item (re-exported for custom rendering)
- * ========================================================================== */
-
 type MultiSelectItemProps = Omit<
   React.ComponentProps<typeof CommandItem>,
   "value" | "onSelect" | "children"
@@ -446,10 +426,6 @@ function MultiSelectItem({
     </CommandItem>
   )
 }
-
-/* ============================================================================
- * Async loader hook
- * ========================================================================== */
 
 export function useAsyncOptions<T>(
   loader: (query: string) => Promise<T[]>,

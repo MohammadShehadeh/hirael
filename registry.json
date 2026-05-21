@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "sabk",
-  "homepage": "https://sabk.dev",
+  "name": "forgecn",
+  "homepage": "https://forgecn.dev",
   "items": [
     {
       "name": "multi-select",

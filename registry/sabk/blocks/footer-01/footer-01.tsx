@@ -83,7 +83,7 @@ export default function Footer01() {
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            © 2026 Sabk Labs · All rights reserved
+            © 2026 forgecn Labs · All rights reserved
           </p>
           <div className="flex items-center gap-1">
             <a

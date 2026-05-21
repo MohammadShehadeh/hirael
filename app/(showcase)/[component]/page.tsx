@@ -25,7 +25,7 @@ export async function generateMetadata({
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") return {}
   return {
-    title: `${entry.title} — Sabk`,
+    title: entry.title,
     description: entry.description,
   }
 }
@@ -37,11 +37,17 @@ async function loadSource(
   if (!files) return out
   await Promise.all(
     files.map(async (f) => {
+      const abs = path.join(process.cwd(), f)
       let code: string
       try {
-        code = await fs.readFile(path.join(process.cwd(), f), "utf8")
-      } catch {
-        code = "// (unable to read source)"
+        code = await fs.readFile(abs, "utf8")
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        // Surface the real reason — silently rendering the stub made it
+        // very hard to tell whether the path was wrong, the file was
+        // missing, or the deploy bundle didn't include it.
+        console.error(`[loadSource] could not read ${abs}: ${msg}`)
+        code = `// (unable to read source: ${msg})`
       }
       const lang = langFromPath(f)
       const html = await highlightCode(code, lang)

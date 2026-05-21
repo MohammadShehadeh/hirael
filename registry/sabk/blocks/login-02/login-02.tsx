@@ -126,7 +126,7 @@ export default function Login02() {
           <Quote className="size-7 text-foreground md:size-8" strokeWidth={1.5} />
 
           <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
-            Sabk gave us back the week we were going to spend rebuilding
+            forgecn gave us back the week we were going to spend rebuilding
             a <span className="text-foreground">multi-select</span> for the
             fourth time.
           </blockquote>

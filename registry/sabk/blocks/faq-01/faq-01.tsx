@@ -13,20 +13,20 @@ import { Button } from "@/registry/sabk/ui/button"
 
 const FAQS = [
   {
-    q: "How is Sabk different from shadcn/ui?",
-    a: "Sabk is a peer, not a replacement. shadcn/ui covers the canonical primitives — Button, Dialog, Select. Sabk ships the dense, real-world components every product still has to build: multi-select, tag input, year picker, combobox with async loading, password strength. Both registries use the same CLI and the same install URL pattern, so you can mix and match.",
+    q: "How is forgecn different from shadcn/ui?",
+    a: "forgecn is a peer, not a replacement. shadcn/ui covers the canonical primitives — Button, Dialog, Select. forgecn ships the dense, real-world components every product still has to build: multi-select, tag input, year picker, combobox with async loading, password strength. Both registries use the same CLI and the same install URL pattern, so you can mix and match.",
   },
   {
-    q: "Is Sabk a dependency I install?",
-    a: "No. Sabk is a registry, not a package. `npx shadcn add` copies the component source straight into your repo at components/ui/*. You own the code, you can edit it, and there is zero runtime dependency on Sabk.",
+    q: "Is forgecn a dependency I install?",
+    a: "No. forgecn is a registry, not a package. `npx shadcn add` copies the component source straight into your repo at components/ui/*. You own the code, you can edit it, and there is zero runtime dependency on forgecn.",
   },
   {
     q: "What is the dual-API contract?",
-    a: "Every Sabk component ships two surface areas in the same file: a compound API (Root + named parts, for full layout control) and a single-prop API (one component, options-as-prop, for the 90% case). They share state — you can drop in either depending on the use case.",
+    a: "Every forgecn component ships two surface areas in the same file: a compound API (Root + named parts, for full layout control) and a single-prop API (one component, options-as-prop, for the 90% case). They share state — you can drop in either depending on the use case.",
   },
   {
     q: "Can I theme it?",
-    a: "Yes. Sabk reads the same CSS variables as shadcn/ui. The /theme playground lets you tune the accent live; every component re-skins in place. Drop-in compatible with any shadcn theme.",
+    a: "Yes. forgecn reads the same CSS variables as shadcn/ui. The /theme playground lets you tune the accent live; every component re-skins in place. Drop-in compatible with any shadcn theme.",
   },
   {
     q: "Does it work with React Server Components?",
@@ -53,7 +53,7 @@ export default function Faq01() {
               <span className="text-foreground">unobvious</span> questions.
             </h2>
             <p className="text-sm text-muted-foreground">
-              The questions teams ask in their first ten minutes with Sabk —
+              The questions teams ask in their first ten minutes with forgecn —
               answered the way we&apos;d want them answered. If something
               isn&apos;t here, the issue tracker is open.
             </p>

@@ -5,10 +5,6 @@ import { File as FileIcon, FileText, UploadCloud, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Helpers
- * ========================================================================== */
-
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes < 0) return "0 B"
   const units = ["B", "KB", "MB", "GB", "TB"] as const
@@ -22,7 +18,6 @@ function formatBytes(bytes: number): string {
   return `${fixed} ${units[i]}`
 }
 
-/** Match a file against an accept string ("image/*,.pdf,application/json"). */
 function matchesAccept(file: File, accept?: string): boolean {
   if (!accept) return true
   const tokens = accept
@@ -51,10 +46,6 @@ export type FileDropzoneError = {
   message: string
 }
 
-/* ============================================================================
- * Context
- * ========================================================================== */
-
 type Ctx = {
   files: File[]
   setFiles: (next: File[]) => void
@@ -80,10 +71,6 @@ function useFileDropzone() {
   }
   return ctx
 }
-
-/* ============================================================================
- * Root
- * ========================================================================== */
 
 export type FileDropzoneProps = {
   value?: File[]
@@ -197,10 +184,6 @@ function FileDropzone({
     </FileDropzoneContext.Provider>
   )
 }
-
-/* ============================================================================
- * Zone
- * ========================================================================== */
 
 type FileDropzoneZoneProps = Omit<
   React.ComponentProps<"div">,
@@ -320,10 +303,6 @@ function FileDropzoneZone({
   )
 }
 
-/* ============================================================================
- * List
- * ========================================================================== */
-
 function iconForFile(file: File) {
   if (file.type.startsWith("text/") || /\.(md|txt|csv|json)$/i.test(file.name)) {
     return FileText
@@ -372,10 +351,6 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
     </ul>
   )
 }
-
-/* ============================================================================
- * Errors
- * ========================================================================== */
 
 type FileDropzoneErrorsProps = React.ComponentProps<"ul">
 

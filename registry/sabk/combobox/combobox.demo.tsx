@@ -20,7 +20,6 @@ const FRAMEWORKS = [
   { value: "tanstack-start", label: "TanStack Start", group: "React" },
 ]
 
-/** Simulates an async API: filters the static list with a small delay. */
 type Pkg = { name: string; description: string }
 async function fakeSearchPackages(q: string): Promise<Pkg[]> {
   await new Promise((r) => setTimeout(r, 250))
@@ -57,7 +56,7 @@ export default function ComboboxDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {/* Basic */}
+      {}
       <div className="grid gap-2">
         <Label>Static options</Label>
         <Combobox
@@ -70,7 +69,7 @@ export default function ComboboxDemo() {
         </Combobox>
       </div>
 
-      {/* Composed */}
+      {}
       <div className="grid gap-2">
         <Label>Async loader (250ms simulated)</Label>
         <Combobox

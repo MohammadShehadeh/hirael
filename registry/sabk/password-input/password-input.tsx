@@ -6,22 +6,14 @@ import { Eye, EyeOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/registry/sabk/ui/input"
 
-/* ============================================================================
- * Types & default scorer
- * ========================================================================== */
-
 export type PasswordStrength = {
-  /** Integer 0-4. */
   score: number
-  /** Short label (e.g. "weak"). */
   label: string
-  /** Optional hint shown next to the meter. */
   hint?: string
 }
 
 export type PasswordScorer = (value: string) => PasswordStrength
 
-/** Default scorer: counts length and character classes; produces a 0-4 score. */
 export const defaultPasswordScorer: PasswordScorer = (value) => {
   if (!value) return { score: 0, label: "empty" }
   let score = 0
@@ -46,10 +38,6 @@ export const defaultPasswordScorer: PasswordScorer = (value) => {
   return { score, label: labels[score], hint: hints[score] }
 }
 
-/* ============================================================================
- * Context
- * ========================================================================== */
-
 type Ctx = {
   id: string
   value: string
@@ -72,10 +60,6 @@ function usePasswordContext() {
   }
   return ctx
 }
-
-/* ============================================================================
- * Root
- * ========================================================================== */
 
 export type PasswordInputProps = {
   id?: string
@@ -132,10 +116,6 @@ function PasswordInput({
   )
 }
 
-/* ============================================================================
- * Field (the input + toggle)
- * ========================================================================== */
-
 type PasswordInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
@@ -185,10 +165,6 @@ function PasswordInputField({
   )
 }
 
-/* ============================================================================
- * Strength meter
- * ========================================================================== */
-
 const STRENGTH_COLORS = [
   "bg-destructive",
   "bg-destructive",
@@ -199,7 +175,6 @@ const STRENGTH_COLORS = [
 
 type PasswordInputStrengthProps = React.ComponentProps<"div"> & {
   showLabel?: boolean
-  /** Render a custom label/hint pair given the strength. */
   renderMeta?: (strength: PasswordStrength) => React.ReactNode
 }
 

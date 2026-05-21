@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { ArrowRight, Layers, Palette } from "lucide-react"
 
 import { InlineCodeBlock } from "@/components/showcase/code-block"
@@ -33,7 +34,13 @@ const COMPOSE_SNIPPET = `import {
   <MultiSelectContent searchPlaceholder="Filter…" />
 </MultiSelect>`
 
-export default async function ShowcaseHome() {
+export const metadata: Metadata = {
+  title: "Components — forgecn",
+  description:
+    "Browse the full forgecn component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship.",
+}
+
+export default async function ComponentsIndex() {
   const components = REGISTRY.filter((r) => r.category !== "blocks")
   const blocks = REGISTRY_BY_CATEGORY.blocks
   const stableComponents = components.filter((r) => r.status === "stable")
@@ -41,24 +48,23 @@ export default async function ShowcaseHome() {
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      {/* Hero / Above the fold */}
       <header className="flex flex-col gap-5 border-b border-border pb-10">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ sabk · v0.1
+            ◆ components
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             peer of shadcn, not a replacement
           </span>
         </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl">
-          shadcn&apos;s missing pieces.
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
+          The registry, in full.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
           Production-grade components shadcn doesn&apos;t ship — multi-select,
-          combobox, tag input, currency input, file dropzone — plus 17
-          section blocks across 10 categories. Distributed via the shadcn
-          CLI: source lands in your repo, no Sabk runtime, no breaking
+          combobox, tag input, currency input, file dropzone — plus {blocks.length} section
+          blocks across {BLOCK_KIND_ORDER.length} categories. Distributed via the shadcn
+          CLI: source lands in your repo, no forgecn runtime, no breaking
           version bumps.
         </p>
         <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
@@ -70,7 +76,6 @@ export default async function ShowcaseHome() {
         />
       </header>
 
-      {/* Components — every category, every item */}
       <section className="flex flex-col gap-8">
         <div className="flex items-baseline justify-between">
           <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
@@ -134,7 +139,6 @@ export default async function ShowcaseHome() {
         })}
       </section>
 
-      {/* Blocks — every kind, every item, inline */}
       <section className="flex flex-col gap-8 border-t border-border pt-10">
         <div className="flex items-baseline justify-between">
           <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
@@ -190,7 +194,6 @@ export default async function ShowcaseHome() {
         </div>
       </section>
 
-      {/* How it works */}
       <section className="flex flex-col gap-5 border-t border-border pt-10">
         <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
           Composition (the shadcn way)
@@ -207,7 +210,6 @@ export default async function ShowcaseHome() {
         <InlineCodeBlock code={COMPOSE_SNIPPET} html={composeHtml} />
       </section>
 
-      {/* Footer — adjacent surfaces */}
       <section className="grid gap-3 border-t border-border pt-10 sm:grid-cols-2">
         <Link
           href="/theme"

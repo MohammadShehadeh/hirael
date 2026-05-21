@@ -4,10 +4,6 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Helpers
- * ========================================================================== */
-
 function resolveCurrencySymbol(currency: string, locale: string): string {
   try {
     const parts = new Intl.NumberFormat(locale, {
@@ -37,13 +33,11 @@ function formatNumber(
   }
 }
 
-/** Strip everything except digits, one decimal point, and an optional leading minus. */
 function sanitizeInput(raw: string, decimals: number): string {
   if (!raw) return ""
   let str = raw.replace(/[^\d.\-]/g, "")
   const negative = str.startsWith("-")
   str = str.replace(/-/g, "")
-  // Keep only first decimal point.
   const firstDot = str.indexOf(".")
   if (firstDot !== -1) {
     str =
@@ -63,10 +57,6 @@ function parseToNumber(view: string): number | null {
   const n = Number(view)
   return Number.isFinite(n) ? n : null
 }
-
-/* ============================================================================
- * Context
- * ========================================================================== */
 
 type Ctx = {
   id: string
@@ -92,13 +82,6 @@ function useCurrencyInput() {
   }
   return ctx
 }
-
-/* ============================================================================
- * Root
- *
- * The root renders the pill-style container. Compose `<CurrencyInputPrefix />`
- * and `<CurrencyInputField />` (or any other content) as children.
- * ========================================================================== */
 
 export type CurrencyInputProps = Omit<
   React.ComponentProps<"div">,
@@ -149,7 +132,6 @@ function CurrencyInput({
       : formatNumber(value, locale, decimals)
   )
 
-  // Sync view when the controlled value changes from outside.
   const lastSeenValue = React.useRef<number | null | undefined>(value)
   React.useEffect(() => {
     if (lastSeenValue.current === value) return
@@ -201,10 +183,6 @@ function CurrencyInput({
   )
 }
 
-/* ============================================================================
- * Prefix
- * ========================================================================== */
-
 type CurrencyInputPrefixProps = Omit<React.ComponentProps<"span">, "children"> & {
   children?: React.ReactNode
 }
@@ -229,10 +207,6 @@ function CurrencyInputPrefix({
     </span>
   )
 }
-
-/* ============================================================================
- * Field
- * ========================================================================== */
 
 type CurrencyInputFieldProps = Omit<
   React.ComponentProps<"input">,
@@ -267,7 +241,6 @@ function CurrencyInputField({
       onFocus={(e) => {
         onFocus?.(e)
         if (ctx.value === null || ctx.value === undefined) return
-        // Show raw editable digits on focus.
         const raw =
           ctx.decimals > 0
             ? ctx.value.toFixed(ctx.decimals)

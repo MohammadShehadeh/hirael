@@ -1,0 +1,280 @@
+import Link from "next/link"
+import type { Metadata } from "next"
+import { ArrowRight, ArrowUpRight, Github } from "lucide-react"
+
+import { InstallBlock } from "@/components/showcase/install-block"
+import { SiteFooter } from "@/components/showcase/site-footer"
+import { SiteHeader } from "@/components/showcase/site-header"
+import { SITE } from "@/lib/site"
+import {
+  BLOCK_KIND_LABELS,
+  BLOCKS_BY_KIND,
+  CATEGORY_LABELS,
+  REGISTRY,
+  REGISTRY_BY_CATEGORY,
+  type BlockKind,
+  type ComponentCategory,
+} from "@/registry/sabk/registry-meta"
+
+export const metadata: Metadata = {
+  title: `${SITE.name} — ${SITE.description}`,
+  description: SITE.longDescription,
+  openGraph: {
+    title: `${SITE.name} — ${SITE.description}`,
+    description: SITE.longDescription,
+    type: "website",
+  },
+}
+
+export default function LandingPage() {
+  return (
+    <div className="flex min-h-svh flex-col">
+      <SiteHeader />
+      <main className="flex-1">
+        <Hero />
+        <CategoryGrid />
+      </main>
+      <SiteFooter />
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hero                                                                       */
+/* -------------------------------------------------------------------------- */
+
+function CornerMarks() {
+  return (
+    <>
+      <span aria-hidden className="corner-mark -left-1.5 -top-1.5" />
+      <span aria-hidden className="corner-mark -right-1.5 -top-1.5" />
+      <span aria-hidden className="corner-mark -bottom-1.5 -left-1.5" />
+      <span aria-hidden className="corner-mark -bottom-1.5 -right-1.5" />
+    </>
+  )
+}
+
+function Hero() {
+  const components = REGISTRY.filter((r) => r.category !== "blocks")
+  const stable = components.filter((r) => r.status === "stable").length
+  const blocks = REGISTRY_BY_CATEGORY.blocks.length
+
+  return (
+    <section className="relative">
+      <div
+        aria-hidden
+        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          maskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
+        }}
+      />
+
+      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+        <div className="relative mx-auto flex flex-col items-center gap-6 border border-border bg-background/30 px-6 py-14 text-center sm:gap-7 sm:py-20 md:py-24">
+          <CornerMarks />
+
+          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 font-mono text-[10px] uppercase tracking-[0.12em]">
+            <span className="rounded-full bg-foreground px-2.5 py-0.5 text-background">
+              v{SITE.version}
+            </span>
+            <a
+              href={`${SITE.githubUrl}/releases`}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              View changelog
+              <ArrowUpRight className="size-2.5" />
+            </a>
+          </div>
+
+          <h1
+            className="text-balance text-3xl leading-[1.05] tracking-[-0.025em] sm:text-4xl md:text-5xl lg:text-6xl"
+            style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
+          >
+            <span className="font-normal text-muted-foreground">
+              Production-grade
+            </span>{" "}
+            <span className="font-semibold">shadcn pieces</span>
+            <br />
+            <span className="font-normal text-muted-foreground">for</span>{" "}
+            <span className="font-semibold">real</span>{" "}
+            <span className="font-normal text-muted-foreground">&amp;</span>{" "}
+            <span className="font-semibold">shipped</span>{" "}
+            <span className="font-normal text-muted-foreground">products.</span>
+          </h1>
+
+          <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
+            The {stable} components shadcn doesn&apos;t ship plus {blocks}{" "}
+            section blocks — distributed via the shadcn CLI, copied straight
+            into your repo. Zero runtime dependency.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Link
+              href="/components"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+            >
+              Explore
+            </Link>
+            <a
+              href={SITE.githubUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              <Github className="size-3.5" />
+              Star on GitHub
+            </a>
+          </div>
+
+          <div className="w-full max-w-md pt-2">
+            <InstallBlock name="multi-select" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/* Catalog — just names                                                       */
+/* -------------------------------------------------------------------------- */
+
+const COMPONENT_CATEGORY_ORDER: ComponentCategory[] = [
+  "inputs",
+  "pickers",
+  "files",
+  "data",
+  "display",
+]
+
+const BLOCK_ORDER: BlockKind[] = [
+  "hero",
+  "feature",
+  "pricing",
+  "testimonial",
+  "cta",
+  "faq",
+  "login",
+  "header",
+  "footer",
+  "not-found",
+]
+
+type CatalogItem = {
+  key: string
+  href: string
+  title: string
+  count: number
+}
+
+function CategoryGrid() {
+  const componentTotal = COMPONENT_CATEGORY_ORDER.reduce(
+    (sum, c) => sum + REGISTRY_BY_CATEGORY[c].length,
+    0
+  )
+  const blocksTotal = BLOCK_ORDER.reduce(
+    (sum, k) => sum + BLOCKS_BY_KIND[k].length,
+    0
+  )
+
+  return (
+    <section className="border-t border-border">
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <header className="mb-8 flex flex-col gap-2 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              ◆ Catalog
+            </span>
+            <h2
+              className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
+              style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
+            >
+              <span className="font-semibold">Everything</span>{" "}
+              <span className="font-normal text-muted-foreground">
+                we ship.
+              </span>
+            </h2>
+          </div>
+          <Link
+            href="/components"
+            className="inline-flex items-center gap-1 self-start font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground sm:self-auto"
+          >
+            See everything
+            <ArrowRight className="size-3" />
+          </Link>
+        </header>
+
+        <div className="flex flex-col gap-8">
+          <CatalogGroup
+            label="Components"
+            count={componentTotal}
+            items={COMPONENT_CATEGORY_ORDER.map((cat) => ({
+              key: `c-${cat}`,
+              href: "/components",
+              title: CATEGORY_LABELS[cat],
+              count: REGISTRY_BY_CATEGORY[cat].length,
+            }))}
+          />
+          <CatalogGroup
+            label="Section blocks"
+            count={blocksTotal}
+            items={BLOCK_ORDER.map((kind) => ({
+              key: `b-${kind}`,
+              href: `/blocks#${kind}`,
+              title: BLOCK_KIND_LABELS[kind],
+              count: BLOCKS_BY_KIND[kind].length,
+            }))}
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CatalogGroup({
+  label,
+  count,
+  items,
+}: {
+  label: string
+  count: number
+  items: CatalogItem[]
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-baseline justify-between">
+        <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-foreground">
+          {label}
+        </h3>
+        <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+          {count} total
+        </span>
+      </div>
+      <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-5">
+        {items.map((item) => (
+          <li key={item.key}>
+            <Link
+              href={item.href}
+              className="group flex h-full items-center justify-between gap-3 bg-card px-4 py-3 transition-colors hover:bg-accent"
+            >
+              <div className="flex flex-col gap-0.5 leading-tight">
+                <span className="text-sm font-medium tracking-[-0.01em] text-foreground">
+                  {item.title}
+                </span>
+                <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+                  {item.count}
+                </span>
+              </div>
+              <ArrowRight className="size-3.5 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-foreground" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

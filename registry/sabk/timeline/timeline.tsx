@@ -2,21 +2,6 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/* ============================================================================
- * Timeline · vertical event timeline (compound)
- *
- *   <Timeline>
- *     <TimelineItem>
- *       <TimelineDot />
- *       <TimelineContent>
- *         <TimelineTitle>Shipped v1.4</TimelineTitle>
- *         <TimelineTime>Today · 14:02</TimelineTime>
- *         <TimelineDescription>...</TimelineDescription>
- *       </TimelineContent>
- *     </TimelineItem>
- *   </Timeline>
- * ========================================================================== */
-
 type TimelineProps = React.ComponentProps<"ol">
 
 function Timeline({ className, ...props }: TimelineProps) {
@@ -29,10 +14,6 @@ function Timeline({ className, ...props }: TimelineProps) {
   )
 }
 
-/* ============================================================================
- * Item · draws the connecting line via a pseudo-element on the dot column.
- * ========================================================================== */
-
 type TimelineItemProps = React.ComponentProps<"li">
 
 function TimelineItem({ className, ...props }: TimelineItemProps) {
@@ -41,7 +22,6 @@ function TimelineItem({ className, ...props }: TimelineItemProps) {
       data-slot="timeline-item"
       className={cn(
         "group relative flex gap-4 pb-6 last:pb-0",
-        // vertical rule, anchored under the dot
         "before:absolute before:left-[7px] before:top-4 before:bottom-0 before:w-px before:bg-border",
         "last:before:hidden",
         className
@@ -50,10 +30,6 @@ function TimelineItem({ className, ...props }: TimelineItemProps) {
     />
   )
 }
-
-/* ============================================================================
- * Dot · default marker. Pass children to render a custom icon.
- * ========================================================================== */
 
 type TimelineDotProps = Omit<React.ComponentProps<"span">, "children"> & {
   tone?: "default" | "muted" | "success" | "warning" | "danger"
@@ -102,10 +78,6 @@ function TimelineDot({
     />
   )
 }
-
-/* ============================================================================
- * Content · text column to the right of the dot.
- * ========================================================================== */
 
 type TimelineContentProps = React.ComponentProps<"div">
 

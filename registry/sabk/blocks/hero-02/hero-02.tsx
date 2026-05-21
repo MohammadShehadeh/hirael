@@ -9,7 +9,7 @@ const WORDMARKS = [
   "ACME / Co.",
   "Helix",
   "Northwind",
-  "Sabk ◆ Labs",
+  "forgecn ◆ Labs",
   "Vanta",
   "Quartz",
 ] as const
@@ -75,7 +75,7 @@ export default function Hero02() {
         </h1>
 
         <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg">
-          Sabk ships the dense, real-world components every product hits a
+          forgecn ships the dense, real-world components every product hits a
           wall on — tag input, multi-select, combobox, year picker — wired
           with the dual-API contract and an aesthetic that earns
           its place in your codebase.

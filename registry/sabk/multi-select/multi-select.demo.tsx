@@ -27,7 +27,6 @@ export default function MultiSelectDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label htmlFor="ms-basic">Basic</Label>
         <MultiSelect
@@ -44,7 +43,6 @@ export default function MultiSelectDemo() {
         </p>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label htmlFor="ms-composed">Composed</Label>
         <MultiSelect

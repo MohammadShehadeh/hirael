@@ -19,7 +19,6 @@ export default function NumberRangeDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
           <Label>Price (USD)</Label>
@@ -42,7 +41,6 @@ export default function NumberRangeDemo() {
         </NumberRange>
       </div>
 
-      {}
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
           <Label>Age</Label>

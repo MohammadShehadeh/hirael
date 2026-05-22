@@ -8,7 +8,7 @@ import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
 import type { RegistryEntryMeta } from "@/registry/sabk/registry-meta"
 
-type Tab = "preview" | "code" | "install"
+type Tab = "preview" | "usage" | "code" | "install"
 
 export type SourceFile = {
   code: string
@@ -19,10 +19,13 @@ export type SourceFile = {
 export function ComponentPage({
   entry,
   source,
+  demoSource,
 }: {
   entry: RegistryEntryMeta
   /** Pre-highlighted source files keyed by repo-relative path. */
   source: Record<string, SourceFile>
+  /** Pre-highlighted demo source — shows how to use the component. */
+  demoSource?: SourceFile | null
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
 
@@ -40,6 +43,14 @@ export function ComponentPage({
 
   const Demo = entry.Demo
   const isBlock = entry.category === "blocks"
+  const showUsageTab = !isBlock && !!demoSource
+
+  const tabs = React.useMemo<Array<[Tab, string]>>(() => {
+    const list: Array<[Tab, string]> = [["preview", "Preview"]]
+    if (showUsageTab) list.push(["usage", "Usage"])
+    list.push(["code", "Code"], ["install", "Install"])
+    return list
+  }, [showUsageTab])
 
   return (
     <div
@@ -96,13 +107,7 @@ export function ComponentPage({
             aria-label="View"
             className="-mx-4 flex items-center gap-0 overflow-x-auto border-b border-border px-4 sm:mx-0 sm:px-0"
           >
-            {(
-              [
-                ["preview", "Preview"],
-                ["code", "Code"],
-                ["install", "Install"],
-              ] as const
-            ).map(([k, label]) => (
+            {tabs.map(([k, label]) => (
               <button
                 key={k}
                 type="button"
@@ -133,6 +138,18 @@ export function ComponentPage({
                 <Demo />
               </div>
             ))}
+
+          {tab === "usage" && demoSource && (
+            <CodeBlock
+              tabs={[
+                {
+                  label: `${entry.name}.demo.tsx`,
+                  code: demoSource.code,
+                  html: demoSource.html,
+                },
+              ]}
+            />
+          )}
 
           {tab === "code" && codeTabs.length > 0 && (
             <CodeBlock tabs={codeTabs} />

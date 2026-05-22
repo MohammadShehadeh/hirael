@@ -15,7 +15,6 @@ export default function PhoneInputDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label htmlFor="ph-basic">Phone · default US</Label>
         <PhoneInput
@@ -32,7 +31,6 @@ export default function PhoneInputDemo() {
         </p>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label htmlFor="ph-composed">Phone · pre-filled UK number</Label>
         <PhoneInput

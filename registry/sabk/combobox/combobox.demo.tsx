@@ -56,7 +56,6 @@ export default function ComboboxDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label>Static options</Label>
         <Combobox
@@ -69,7 +68,6 @@ export default function ComboboxDemo() {
         </Combobox>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label>Async loader (250ms simulated)</Label>
         <Combobox

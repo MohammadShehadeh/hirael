@@ -19,7 +19,6 @@ export default function TagInputDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label>Tags · max 6</Label>
         <TagInput value={basic} onValueChange={setBasic} maxTags={6}>
@@ -36,7 +35,6 @@ export default function TagInputDemo() {
         </p>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label>Email tags · validated</Label>
         <TagInput

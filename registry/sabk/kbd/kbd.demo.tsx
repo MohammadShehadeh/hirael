@@ -7,7 +7,6 @@ import { Kbd, KbdDisplay, KbdGroup } from "@/registry/sabk/kbd/kbd"
 export default function KbdDemo() {
   return (
     <div className="grid w-full max-w-3xl gap-8">
-      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Pressable
@@ -23,7 +22,6 @@ export default function KbdDemo() {
         </div>
       </div>
 
-      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Chords
@@ -48,7 +46,6 @@ export default function KbdDemo() {
         </div>
       </div>
 
-      {}
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Inline display

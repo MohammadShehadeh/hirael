@@ -19,7 +19,6 @@ export default function YearPickerDemo() {
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
-      {}
       <div className="grid gap-2">
         <Label>Founded</Label>
         <YearPicker
@@ -36,7 +35,6 @@ export default function YearPickerDemo() {
         </p>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label>Range</Label>
         <YearPicker

@@ -15,7 +15,6 @@ import {
 export default function TimelineDemo() {
   return (
     <div className="grid w-full max-w-2xl gap-8">
-      {}
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Activity feed
@@ -64,7 +63,6 @@ export default function TimelineDemo() {
         </Timeline>
       </div>
 
-      {}
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           With icons

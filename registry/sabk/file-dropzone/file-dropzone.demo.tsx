@@ -16,7 +16,6 @@ export default function FileDropzoneDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label>Images & PDFs · up to 5 MB</Label>
         <FileDropzone
@@ -32,7 +31,6 @@ export default function FileDropzoneDemo() {
         </FileDropzone>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label>Data files · custom layout</Label>
         <FileDropzone

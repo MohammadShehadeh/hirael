@@ -15,7 +15,6 @@ export default function CurrencyInputDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-8">
-      {}
       <div className="grid gap-2">
         <Label htmlFor="cur-basic">USD</Label>
         <CurrencyInput
@@ -34,7 +33,6 @@ export default function CurrencyInputDemo() {
         </p>
       </div>
 
-      {}
       <div className="grid gap-2">
         <Label htmlFor="cur-composed">EUR (de-DE)</Label>
         <CurrencyInput

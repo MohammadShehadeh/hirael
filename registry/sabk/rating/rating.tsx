@@ -85,7 +85,6 @@ function Rating({
               interactive && "cursor-pointer"
             )}
           >
-            {}
             <Star
               className={cn(
                 iconSize,
@@ -93,7 +92,6 @@ function Rating({
               )}
               aria-hidden
             />
-            {}
             {(filled || half) && (
               <Star
                 className={cn(
@@ -105,7 +103,6 @@ function Rating({
               />
             )}
 
-            {}
             {interactive && step === 0.5 && (
               <>
                 <button

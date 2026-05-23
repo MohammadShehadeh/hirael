@@ -139,18 +139,23 @@ export function BrandLockup({
   showText?: boolean
 }) {
   return (
-    <div className={cn("flex items-baseline gap-1.5", className)}>
-      <Logo className={cn("h-6", logoClassName)} />
+    <span
+      className={cn(
+        "inline-block whitespace-nowrap text-foreground",
+        className
+      )}
+    >
+      <Logo className={cn("inline-block h-6 align-middle", logoClassName)} />
       {showText && (
-        <span
+        <sub
           className={cn(
-            "text-base font-semibold tracking-[-0.02em] text-foreground",
+            "ml-0.5 align-sub text-xs font-semibold uppercase tracking-[0.06em]",
             textClassName
           )}
         >
           UI
-        </span>
+        </sub>
       )}
-    </div>
+    </span>
   )
 }

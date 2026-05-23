@@ -47,7 +47,7 @@ export function SiteHeader({
         >
           <BrandLockup
             logoClassName="h-6"
-            textClassName="text-base sm:text-lg"
+            textClassName="text-xs sm:text-sm"
           />
           <span
             aria-hidden

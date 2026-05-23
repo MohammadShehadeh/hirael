@@ -106,7 +106,7 @@ function LogoMarkMSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 30 250 250"
+      viewBox="-10 25 290 290"
       role="img"
       aria-hidden
       className={className}

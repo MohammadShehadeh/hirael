@@ -49,12 +49,6 @@ export function SiteHeader({
             logoClassName="h-6"
             textClassName="text-xs sm:text-sm"
           />
-          <span
-            aria-hidden
-            className="ml-1 hidden rounded-sm border border-border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:inline"
-          >
-            v{SITE.version}
-          </span>
         </Link>
 
         <nav className="hidden flex-1 items-center gap-1 px-2 md:flex">

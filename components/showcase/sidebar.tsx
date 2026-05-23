@@ -148,7 +148,7 @@ export function ShowcaseSidebar() {
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
           <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
-            v{SITE.version} · peer of shadcn
+            peer of shadcn
           </span>
           <ThemeSheetTrigger />
         </div>

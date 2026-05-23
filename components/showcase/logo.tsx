@@ -37,7 +37,7 @@ function LogoWordmarkSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 820 280"
+      viewBox="0 0 656 280"
       role="img"
       aria-hidden
       className={className}
@@ -149,7 +149,7 @@ export function BrandLockup({
       {showText && (
         <sub
           className={cn(
-            "ml-0.5 align-sub text-xs font-semibold uppercase tracking-[0.06em]",
+            "align-sub text-xs font-semibold uppercase tracking-[0.06em]",
             textClassName
           )}
         >

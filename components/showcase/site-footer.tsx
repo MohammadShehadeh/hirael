@@ -120,7 +120,7 @@ export function SiteFooter({ className }: { className?: string }) {
             © {year} {SITE.author} · MIT licensed · built on shadcn
           </p>
           <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            v{SITE.version} · zero runtime deps
+            zero runtime deps
           </p>
         </div>
       </div>

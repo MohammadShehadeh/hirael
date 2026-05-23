@@ -43,7 +43,7 @@ export default function Hero01() {
         <div className="flex flex-col gap-8 lg:col-span-7">
           <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border border-border bg-card px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em]">
             <Sparkles className="size-3 text-foreground" />
-            v0.1 · production-ready
+            production-ready
           </span>
 
           <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">

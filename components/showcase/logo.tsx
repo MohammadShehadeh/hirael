@@ -94,6 +94,39 @@ function LogoMarkSvg({ className }: { className?: string }) {
   )
 }
 
+/**
+ * Roomier "M"-only mark — same letterform, but with a viewBox sized to
+ * fully contain the Fraunces bold M's serifs so it doesn't clip when
+ * scaled down into tight icon contexts (like the sidebar header).
+ */
+function LogoMarkMSvg({ className }: { className?: string }) {
+  const uid = React.useId().replace(/:/g, "")
+  const mId = `mshmarkm-m-${uid}`
+  const clipId = `mshmarkm-clip-${uid}`
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="-10 25 290 290"
+      role="img"
+      aria-hidden
+      className={className}
+    >
+      <title>MSH UI</title>
+      <defs>
+        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
+          M
+        </text>
+        <clipPath id={clipId}>
+          <use href={`#${mId}`} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipId})`}>
+        <PalestineFlagFill />
+      </g>
+    </svg>
+  )
+}
+
 export function Logo({
   className,
   title = "MSH UI",
@@ -123,6 +156,21 @@ export function LogoMark({ className }: { className?: string }) {
       )}
     >
       <LogoMarkSvg className="size-full" />
+    </span>
+  )
+}
+
+export function LogoMarkM({ className }: { className?: string }) {
+  return (
+    <span
+      role="img"
+      aria-label="MSH UI"
+      className={cn(
+        "inline-flex size-6 shrink-0 text-foreground",
+        className
+      )}
+    >
+      <LogoMarkMSvg className="size-full" />
     </span>
   )
 }

@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Github } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { SITE } from "@/lib/site"
@@ -25,23 +24,12 @@ const FOOTER_LINKS: {
         label: "shadcn/ui",
         external: true,
       },
-      {
-        href: `${SITE.githubUrl}#readme`,
-        label: "README",
-        external: true,
-      },
-      {
-        href: `${SITE.githubUrl}/issues`,
-        label: "Issues",
-        external: true,
-      },
     ],
   },
   {
     label: "Author",
     links: [
       { href: SITE.authorUrl, label: "Portfolio", external: true },
-      { href: SITE.githubUrl, label: "GitHub", external: true },
       { href: SITE.twitterUrl, label: "Twitter / X", external: true },
     ],
   },
@@ -70,17 +58,6 @@ export function SiteFooter({ className }: { className?: string }) {
             <p className="max-w-xs text-xs text-muted-foreground">
               {SITE.longDescription}
             </p>
-            <div className="mt-1 flex items-center gap-2">
-              <a
-                href={SITE.githubUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="GitHub"
-                className="inline-flex size-8 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground"
-              >
-                <Github className="size-3.5" />
-              </a>
-            </div>
           </div>
 
           {FOOTER_LINKS.map((group) => (

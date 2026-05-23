@@ -11,9 +11,6 @@ export const SITE = {
   version: "0.1",
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
-  githubOwner: "MohammadShehadeh",
-  githubRepo: "msh-ui",
-  githubUrl: "https://github.com/MohammadShehadeh/msh-ui",
   twitterUrl: "https://x.com/mohammadshhadeh",
   registry: {
     name: "msh-ui",

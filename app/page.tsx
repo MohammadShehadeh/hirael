@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { ArrowRight, ArrowUpRight, Github } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { InstallBlock } from "@/components/showcase/install-block"
 import { SiteFooter } from "@/components/showcase/site-footer"
@@ -76,18 +76,6 @@ function Hero() {
         <div className="relative mx-auto flex flex-col items-center gap-6 border border-border bg-background/30 px-6 py-14 text-center sm:gap-7 sm:py-20 md:py-24">
           <CornerMarks />
 
-          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <a
-              href={`${SITE.githubUrl}/releases`}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 text-muted-foreground transition-colors hover:text-foreground"
-            >
-              View changelog
-              <ArrowUpRight className="size-2.5" />
-            </a>
-          </div>
-
           <h1
             className="text-balance text-3xl leading-[1.05] tracking-[-0.025em] sm:text-4xl md:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
@@ -117,15 +105,6 @@ function Hero() {
             >
               Explore
             </Link>
-            <a
-              href={SITE.githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              <Github className="size-3.5" />
-              Star on GitHub
-            </a>
           </div>
 
           <div className="w-full max-w-md pt-2">

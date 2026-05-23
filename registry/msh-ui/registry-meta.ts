@@ -1,10 +1,12 @@
 import * as React from "react"
 
 import CalloutDemo from "@/registry/msh-ui/callout/callout.demo"
+import ColorPickerDemo from "@/registry/msh-ui/color-picker/color-picker.demo"
 import ComboboxDemo from "@/registry/msh-ui/combobox/combobox.demo"
 import CurrencyInputDemo from "@/registry/msh-ui/currency-input/currency-input.demo"
 import FileDropzoneDemo from "@/registry/msh-ui/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/msh-ui/kbd/kbd.demo"
+import MonthPickerDemo from "@/registry/msh-ui/month-picker/month-picker.demo"
 import MultiSelectDemo from "@/registry/msh-ui/multi-select/multi-select.demo"
 import NumberRangeDemo from "@/registry/msh-ui/number-range/number-range.demo"
 import PasswordInputDemo from "@/registry/msh-ui/password-input/password-input.demo"
@@ -14,6 +16,7 @@ import ScrollProgressDemo from "@/registry/msh-ui/scroll-progress/scroll-progres
 import StatCardDemo from "@/registry/msh-ui/stat-card/stat-card.demo"
 import TagInputDemo from "@/registry/msh-ui/tag-input/tag-input.demo"
 import TimelineDemo from "@/registry/msh-ui/timeline/timeline.demo"
+import TimePickerDemo from "@/registry/msh-ui/time-picker/time-picker.demo"
 import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
 import Cta01 from "@/registry/msh-ui/blocks/cta-01/cta-01"
@@ -491,23 +494,38 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: "month-picker",
     title: "Month Picker",
-    description: "12-cell month grid with year stepper, single or range.",
+    description:
+      "4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.",
     category: "pickers",
-    status: "planned",
+    status: "stable",
+    Demo: MonthPickerDemo,
+    sourceFiles: ["registry/msh-ui/month-picker/month-picker.tsx"],
+    registryDependencies: ["button", "popover"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "time-picker",
     title: "Time Picker",
-    description: "Hour / minute / second wheels, 12 or 24h, step intervals.",
+    description:
+      "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
     category: "pickers",
-    status: "planned",
+    status: "stable",
+    Demo: TimePickerDemo,
+    sourceFiles: ["registry/msh-ui/time-picker/time-picker.tsx"],
+    registryDependencies: ["popover"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "color-picker",
     title: "Color Picker",
-    description: "HSL / HEX / RGB tabs, eyedropper, recent swatches.",
+    description:
+      "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
     category: "pickers",
-    status: "planned",
+    status: "stable",
+    Demo: ColorPickerDemo,
+    sourceFiles: ["registry/msh-ui/color-picker/color-picker.tsx"],
+    registryDependencies: ["popover", "input"],
+    dependencies: ["lucide-react"],
   },
 ]
 

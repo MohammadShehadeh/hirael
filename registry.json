@@ -55,21 +55,33 @@
       "name": "month-picker",
       "type": "registry:ui",
       "title": "Month Picker",
-      "description": "12-cell month grid with year stepper. Single or range mode.",
+      "description": "4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["button", "popover"],
-      "files": []
+      "files": [
+        {
+          "path": "registry/msh-ui/month-picker/month-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/month-picker.tsx"
+        }
+      ]
     },
     {
       "name": "time-picker",
       "type": "registry:ui",
       "title": "Time Picker",
-      "description": "Hour, minute, second wheels with 12/24h modes and step intervals.",
+      "description": "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover", "input"],
-      "files": []
+      "registryDependencies": ["popover"],
+      "files": [
+        {
+          "path": "registry/msh-ui/time-picker/time-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/time-picker.tsx"
+        }
+      ]
     },
     {
       "name": "tag-input",
@@ -267,11 +279,17 @@
       "name": "color-picker",
       "type": "registry:ui",
       "title": "Color Picker",
-      "description": "HSL / HEX / RGB tabs, eyedropper where supported, recent swatches.",
+      "description": "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover", "input"],
-      "files": []
+      "registryDependencies": ["popover", "input"],
+      "files": [
+        {
+          "path": "registry/msh-ui/color-picker/color-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/color-picker.tsx"
+        }
+      ]
     },
     {
       "name": "accordion",

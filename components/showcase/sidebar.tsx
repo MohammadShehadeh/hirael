@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Boxes, LayoutTemplate, Sparkles } from "lucide-react"
 
-import { LogoMark } from "@/components/showcase/logo"
+import { LogoMarkM } from "@/components/showcase/logo"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { SITE } from "@/lib/site"
 import {
@@ -52,7 +52,7 @@ export function ShowcaseSidebar() {
           className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2!"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMark className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
+          <LogoMarkM className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
           <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
               MSH UI

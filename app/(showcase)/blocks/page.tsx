@@ -8,12 +8,12 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   REGISTRY,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 
 export const metadata: Metadata = {
   title: "Blocks",
   description:
-    "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the forgecn aesthetic.",
+    "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the MSH UI aesthetic.",
 }
 
 export default function BlocksIndex() {
@@ -34,7 +34,7 @@ export default function BlocksIndex() {
           Blocks that compose, not decorate.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Heroes, CTAs, FAQs and auth screens — built on top of the forgecn
+          Heroes, CTAs, FAQs and auth screens — built on top of the MSH UI
           component registry and aesthetic. Copy a block in one command, then
           shape it like any other source file in your repo.
         </p>

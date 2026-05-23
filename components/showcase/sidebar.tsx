@@ -12,7 +12,7 @@ import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +25,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/registry/sabk/ui/sidebar"
+} from "@/registry/msh-ui/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",
@@ -49,15 +49,15 @@ export function ShowcaseSidebar() {
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
+          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2!"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMark className="size-6 shrink-0" />
-          <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-base font-semibold tracking-[-0.02em] text-foreground">
-              forgecn
+          <LogoMark className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
+          <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
+            <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
+              MSH UI
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="truncate whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
               shadcn&apos;s missing pieces
             </span>
           </div>
@@ -148,7 +148,7 @@ export function ShowcaseSidebar() {
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
           <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
-            v{SITE.version} · peer of shadcn
+            peer of shadcn
           </span>
           <ThemeSheetTrigger />
         </div>

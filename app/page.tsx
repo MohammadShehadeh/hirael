@@ -14,7 +14,7 @@ import {
   REGISTRY_BY_CATEGORY,
   type BlockKind,
   type ComponentCategory,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,
@@ -77,9 +77,6 @@ function Hero() {
           <CornerMarks />
 
           <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <span className="rounded-full bg-foreground px-2.5 py-0.5 text-background">
-              v{SITE.version}
-            </span>
             <a
               href={`${SITE.githubUrl}/releases`}
               target="_blank"

@@ -6,7 +6,7 @@ import { Github, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SITE } from "@/lib/site"
 
-const STAR_CACHE_KEY = "forgecn:gh-stars:v1"
+const STAR_CACHE_KEY = "msh-ui:gh-stars:v1"
 const STAR_CACHE_TTL = 1000 * 60 * 30 // 30 minutes
 
 function readCachedStars(): { value: number; cachedAt: number } | null {

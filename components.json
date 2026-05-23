@@ -13,7 +13,7 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
-    "ui": "@/registry/sabk/ui",
+    "ui": "@/registry/msh-ui/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

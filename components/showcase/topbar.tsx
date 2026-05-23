@@ -8,8 +8,8 @@ import { NAV_LINKS } from "@/lib/site"
 import { GitHubStars } from "@/components/showcase/github-stars"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
-import { Separator } from "@/registry/sabk/ui/separator"
-import { SidebarTrigger } from "@/registry/sabk/ui/sidebar"
+import { Separator } from "@/registry/msh-ui/ui/separator"
+import { SidebarTrigger } from "@/registry/msh-ui/ui/sidebar"
 
 export function ShowcaseTopbar() {
   const pathname = usePathname()
@@ -26,9 +26,9 @@ export function ShowcaseTopbar() {
       <Link
         href="/"
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
-        aria-label="forgecn — home"
+        aria-label="MSH UI — home"
       >
-        <BrandLockup logoClassName="size-5" textClassName="text-sm" />
+        <BrandLockup logoClassName="h-5" textClassName="text-[10px]" />
       </Link>
 
       <nav className="hidden flex-1 items-center gap-0.5 md:flex">

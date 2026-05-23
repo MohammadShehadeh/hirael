@@ -11,7 +11,7 @@ import {
   type ThemeMode,
 } from "@/lib/theme"
 import { useTheme } from "@/components/showcase/theme-provider"
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 import {
   Sheet,
   SheetBody,
@@ -21,7 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/registry/sabk/ui/sheet"
+} from "@/registry/msh-ui/ui/sheet"
 
 export function ThemeSheetTrigger({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(false)
@@ -115,7 +115,7 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview forgecn components against your own theme. Paste a CSS
+          Preview MSH UI components against your own theme. Paste a CSS
           variable block, pick a preset, or copy the active theme back out.
         </SheetDescription>
       </SheetHeader>

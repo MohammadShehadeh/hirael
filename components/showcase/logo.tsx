@@ -2,25 +2,94 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+const FRAUNCES_TEXT_STYLE: React.CSSProperties = {
+  fontFamily: "var(--font-fraunces), ui-serif, serif",
+  fontWeight: 700,
+  fontSize: "280px",
+}
+
 /**
- * MSH UI brand mark — a stylized geometric "M" rendered as three rounded
- * rectangles (two full-height side bars + a shorter center descender) in
- * currentColor, so it follows the active text color in both themes.
+ * The Palestinian flag bands + leading triangle, clipped to the M
+ * letterform. The bands extend past the M's width so the clip mask is
+ * what defines the shape, not the rectangles.
  */
-function LogoSvg({ className }: { className?: string }) {
+function PalestineFlagFill() {
+  return (
+    <>
+      <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
+      <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
+      <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
+      <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
+    </>
+  )
+}
+
+/**
+ * Full "MSH" wordmark — Fraunces bold, with the M filled by the
+ * Palestinian flag and the S + H tracking currentColor. Use this where
+ * there's horizontal room (hero header, OG cards, etc.).
+ */
+function LogoWordmarkSvg({ className }: { className?: string }) {
+  const uid = React.useId().replace(/:/g, "")
+  const mId = `msh-m-${uid}`
+  const allId = `msh-all-${uid}`
+  const clipId = `msh-clip-${uid}`
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+      viewBox="0 0 820 280"
       role="img"
       aria-hidden
       className={className}
-      fill="currentColor"
     >
       <title>MSH UI</title>
-      <rect x="4" y="4" width="3.5" height="16" rx="1" />
-      <rect x="16.5" y="4" width="3.5" height="16" rx="1" />
-      <rect x="10.25" y="4" width="3.5" height="9" rx="1" />
+      <defs>
+        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
+          M
+        </text>
+        <text id={allId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
+          MSH
+        </text>
+        <clipPath id={clipId}>
+          <use href={`#${mId}`} />
+        </clipPath>
+      </defs>
+      <use href={`#${allId}`} fill="currentColor" />
+      <g clipPath={`url(#${clipId})`}>
+        <PalestineFlagFill />
+      </g>
+    </svg>
+  )
+}
+
+/**
+ * Square "M"-only mark, derived from the same letterform as the
+ * wordmark. Used in icon contexts (sidebar header, lockups, favicons).
+ */
+function LogoMarkSvg({ className }: { className?: string }) {
+  const uid = React.useId().replace(/:/g, "")
+  const mId = `mshmark-m-${uid}`
+  const clipId = `mshmark-clip-${uid}`
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="20 50 220 200"
+      role="img"
+      aria-hidden
+      className={className}
+    >
+      <title>MSH UI</title>
+      <defs>
+        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
+          M
+        </text>
+        <clipPath id={clipId}>
+          <use href={`#${mId}`} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipId})`}>
+        <PalestineFlagFill />
+      </g>
     </svg>
   )
 }
@@ -38,13 +107,24 @@ export function Logo({
       aria-label={title}
       className={cn("inline-flex shrink-0 text-foreground", className)}
     >
-      <LogoSvg className="size-full" />
+      <LogoWordmarkSvg className="h-full w-auto" />
     </span>
   )
 }
 
 export function LogoMark({ className }: { className?: string }) {
-  return <Logo className={cn("size-6", className)} />
+  return (
+    <span
+      role="img"
+      aria-label="MSH UI"
+      className={cn(
+        "inline-flex size-6 shrink-0 text-foreground",
+        className
+      )}
+    >
+      <LogoMarkSvg className="size-full" />
+    </span>
+  )
 }
 
 export function BrandLockup({
@@ -59,8 +139,8 @@ export function BrandLockup({
   showText?: boolean
 }) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <LogoMark className={logoClassName} />
+    <div className={cn("flex items-baseline gap-1.5", className)}>
+      <Logo className={cn("h-6", logoClassName)} />
       {showText && (
         <span
           className={cn(
@@ -68,7 +148,7 @@ export function BrandLockup({
             textClassName
           )}
         >
-          MSH UI
+          UI
         </span>
       )}
     </div>

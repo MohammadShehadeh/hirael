@@ -46,7 +46,7 @@ export function SiteHeader({
           className="group flex items-center gap-2 rounded-sm py-1 transition-colors"
         >
           <BrandLockup
-            logoClassName="size-6"
+            logoClassName="h-6"
             textClassName="text-base sm:text-lg"
           />
           <span

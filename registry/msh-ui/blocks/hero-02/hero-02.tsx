@@ -3,13 +3,13 @@
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 
 const WORDMARKS = [
   "ACME / Co.",
   "Helix",
   "Northwind",
-  "forgecn ◆ Labs",
+  "MSH UI ◆ Labs",
   "Vanta",
   "Quartz",
 ] as const
@@ -75,7 +75,7 @@ export default function Hero02() {
         </h1>
 
         <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg">
-          forgecn ships the dense, real-world components every product hits a
+          MSH UI ships the dense, real-world components every product hits a
           wall on — tag input, multi-select, combobox, year picker — wired
           with the dual-API contract and an aesthetic that earns
           its place in your codebase.

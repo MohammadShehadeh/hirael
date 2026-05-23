@@ -2,13 +2,13 @@
 
 import * as React from "react"
 
-import { Button } from "@/registry/sabk/ui/button"
-import { Badge } from "@/registry/sabk/ui/badge"
-import { Input } from "@/registry/sabk/ui/input"
-import { Label } from "@/registry/sabk/ui/label"
+import { Button } from "@/registry/msh-ui/ui/button"
+import { Badge } from "@/registry/msh-ui/ui/badge"
+import { Input } from "@/registry/msh-ui/ui/input"
+import { Label } from "@/registry/msh-ui/ui/label"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { useTheme } from "@/components/showcase/theme-provider"
-import { REGISTRY } from "@/registry/sabk/registry-meta"
+import { REGISTRY } from "@/registry/msh-ui/registry-meta"
 
 export function ThemePlayground() {
   const { mode, theme } = useTheme()
@@ -34,7 +34,7 @@ export function ThemePlayground() {
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Paste a CSS variable block from your own app — or any shadcn theme
-          generator — and watch the entire forgecn registry re-skin. The active
+          generator — and watch the entire MSH UI registry re-skin. The active
           theme is persisted in your browser; reset any time.
         </p>
 
@@ -67,7 +67,7 @@ export function ThemePlayground() {
       <Section
         eyebrow="Primitives"
         title="Buttons, badges, inputs"
-        description="The base shadcn primitives forgecn components compose on top of."
+        description="The base shadcn primitives MSH UI components compose on top of."
       >
         <div className="grid gap-6 rounded-sm border border-border bg-card/40 p-6">
           <div className="flex flex-wrap items-center gap-2">
@@ -88,7 +88,7 @@ export function ThemePlayground() {
             <Input
               id="theme-preview-input"
               placeholder="you@example.com"
-              defaultValue="hello@forgecn.dev"
+              defaultValue="hello@msh-ui.dev"
             />
             <p className="text-xs text-muted-foreground">
               Muted foreground reads against background.
@@ -99,7 +99,7 @@ export function ThemePlayground() {
 
       <Section
         eyebrow="Registry"
-        title="forgecn components"
+        title="MSH UI components"
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">

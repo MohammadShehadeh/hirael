@@ -14,7 +14,7 @@ import {
   REGISTRY_BY_CATEGORY,
   type BlockKind,
   type ComponentCategory,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,

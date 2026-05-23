@@ -2,12 +2,12 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
-} from "@/registry/sabk/phone-input/phone-input"
+} from "@/registry/msh-ui/phone-input/phone-input"
 
 export default function PhoneInputDemo() {
   const [basic, setBasic] = React.useState("")

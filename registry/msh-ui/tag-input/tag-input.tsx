@@ -4,7 +4,7 @@ import * as React from "react"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Badge } from "@/registry/sabk/ui/badge"
+import { Badge } from "@/registry/msh-ui/ui/badge"
 
 export type TagValidator = (
   candidate: string,

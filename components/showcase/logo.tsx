@@ -3,9 +3,9 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * forgecn brand mark — a bold geometric "F" rendered as three rounded
- * rectangles in currentColor, so it follows the active text color in
- * both themes.
+ * MSH UI brand mark — a stylized geometric "M" rendered as three rounded
+ * rectangles (two full-height side bars + a shorter center descender) in
+ * currentColor, so it follows the active text color in both themes.
  */
 function LogoSvg({ className }: { className?: string }) {
   return (
@@ -17,17 +17,17 @@ function LogoSvg({ className }: { className?: string }) {
       className={className}
       fill="currentColor"
     >
-      <title>forgecn</title>
-      <rect x="4" y="4" width="16" height="3.5" rx="1" />
+      <title>MSH UI</title>
       <rect x="4" y="4" width="3.5" height="16" rx="1" />
-      <rect x="4" y="10.25" width="10" height="3.5" rx="1" />
+      <rect x="16.5" y="4" width="3.5" height="16" rx="1" />
+      <rect x="10.25" y="4" width="3.5" height="9" rx="1" />
     </svg>
   )
 }
 
 export function Logo({
   className,
-  title = "forgecn",
+  title = "MSH UI",
 }: {
   className?: string
   title?: string
@@ -68,7 +68,7 @@ export function BrandLockup({
             textClassName
           )}
         >
-          forgecn
+          MSH UI
         </span>
       )}
     </div>

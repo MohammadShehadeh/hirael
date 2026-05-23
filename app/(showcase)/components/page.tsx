@@ -13,7 +13,7 @@ import {
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",
@@ -35,9 +35,9 @@ const COMPOSE_SNIPPET = `import {
 </MultiSelect>`
 
 export const metadata: Metadata = {
-  title: "Components — forgecn",
+  title: "Components — MSH UI",
   description:
-    "Browse the full forgecn component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship.",
+    "Browse the full MSH UI component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship.",
 }
 
 export default async function ComponentsIndex() {
@@ -64,7 +64,7 @@ export default async function ComponentsIndex() {
           Production-grade components shadcn doesn&apos;t ship — multi-select,
           combobox, tag input, currency input, file dropzone — plus {blocks.length} section
           blocks across {BLOCK_KIND_ORDER.length} categories. Distributed via the shadcn
-          CLI: source lands in your repo, no forgecn runtime, no breaking
+          CLI: source lands in your repo, no MSH UI runtime, no breaking
           version bumps.
         </p>
         <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />

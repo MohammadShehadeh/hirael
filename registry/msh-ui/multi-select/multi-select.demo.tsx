@@ -2,12 +2,12 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/registry/sabk/multi-select/multi-select"
+} from "@/registry/msh-ui/multi-select/multi-select"
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },

@@ -11,7 +11,7 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "We swapped three hand-rolled multi-selects for the forgecn one in an afternoon. The compound API let us keep our existing layout, and the keyboard nav was finally not embarrassing in front of users.",
+    body: "We swapped three hand-rolled multi-selects for the MSH UI one in an afternoon. The compound API let us keep our existing layout, and the keyboard nav was finally not embarrassing in front of users.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
@@ -35,7 +35,7 @@ const QUOTES: readonly Quote[] = [
     role: "Frontend lead · Verbit",
   },
   {
-    body: "We're a tiny team. Stuff that used to be a 'we'll do it right in v2' is now done correctly in v1. forgecn is the reason.",
+    body: "We're a tiny team. Stuff that used to be a 'we'll do it right in v2' is now done correctly in v1. MSH UI is the reason.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",

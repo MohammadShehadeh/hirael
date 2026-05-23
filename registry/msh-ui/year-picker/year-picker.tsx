@@ -4,12 +4,12 @@ import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/sabk/ui/popover"
+} from "@/registry/msh-ui/ui/popover"
 
 export type YearRange = { from: number; to?: number }
 export type YearPickerMode = "single" | "range"

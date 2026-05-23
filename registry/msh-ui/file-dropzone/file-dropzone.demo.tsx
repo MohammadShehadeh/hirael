@@ -2,13 +2,13 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   FileDropzone,
   FileDropzoneErrors,
   FileDropzoneList,
   FileDropzoneZone,
-} from "@/registry/sabk/file-dropzone/file-dropzone"
+} from "@/registry/msh-ui/file-dropzone/file-dropzone"
 
 export default function FileDropzoneDemo() {
   const [basic, setBasic] = React.useState<File[]>([])

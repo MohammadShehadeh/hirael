@@ -17,11 +17,11 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· registry",
     headline: "One CLI command, source in your repo.",
-    body: "forgecn distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX — no package pin, no version drift.",
+    body: "MSH UI distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX — no package pin, no version drift.",
     bullets: [
       "Resolved against your existing tsconfig paths",
       "Drops into components/ui/* by default",
-      "Zero runtime dependency on forgecn",
+      "Zero runtime dependency on MSH UI",
     ],
     media: "registry",
   },
@@ -73,7 +73,7 @@ function MediaRegistry() {
             <span className="text-foreground">npx shadcn add</span>
           </span>
           <span className="block text-muted-foreground">
-            {"  "}https://forgecn.dev/r/combobox
+            {"  "}https://msh-ui.dev/r/combobox
           </span>
           <span className="block">&nbsp;</span>
           <span className="block text-muted-foreground">

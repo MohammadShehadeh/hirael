@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "forgecn",
-  "homepage": "https://forgecn.dev",
+  "name": "msh-ui",
+  "homepage": "https://msh-ui.dev",
   "items": [
     {
       "name": "multi-select",
@@ -13,7 +13,7 @@
       "registryDependencies": ["button", "popover", "command", "badge"],
       "files": [
         {
-          "path": "registry/sabk/multi-select/multi-select.tsx",
+          "path": "registry/msh-ui/multi-select/multi-select.tsx",
           "type": "registry:ui",
           "target": "components/ui/multi-select.tsx"
         }
@@ -29,7 +29,7 @@
       "registryDependencies": ["slider", "input", "label"],
       "files": [
         {
-          "path": "registry/sabk/number-range/number-range.tsx",
+          "path": "registry/msh-ui/number-range/number-range.tsx",
           "type": "registry:ui",
           "target": "components/ui/number-range.tsx"
         }
@@ -45,7 +45,7 @@
       "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/sabk/year-picker/year-picker.tsx",
+          "path": "registry/msh-ui/year-picker/year-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/year-picker.tsx"
         }
@@ -81,7 +81,7 @@
       "registryDependencies": ["badge"],
       "files": [
         {
-          "path": "registry/sabk/tag-input/tag-input.tsx",
+          "path": "registry/msh-ui/tag-input/tag-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/tag-input.tsx"
         }
@@ -97,7 +97,7 @@
       "registryDependencies": ["button", "popover", "command"],
       "files": [
         {
-          "path": "registry/sabk/combobox/combobox.tsx",
+          "path": "registry/msh-ui/combobox/combobox.tsx",
           "type": "registry:ui",
           "target": "components/ui/combobox.tsx"
         }
@@ -113,7 +113,7 @@
       "registryDependencies": ["input"],
       "files": [
         {
-          "path": "registry/sabk/password-input/password-input.tsx",
+          "path": "registry/msh-ui/password-input/password-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/password-input.tsx"
         }
@@ -129,7 +129,7 @@
       "registryDependencies": ["input", "popover", "command"],
       "files": [
         {
-          "path": "registry/sabk/phone-input/phone-input.tsx",
+          "path": "registry/msh-ui/phone-input/phone-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/phone-input.tsx"
         }
@@ -145,7 +145,7 @@
       "registryDependencies": ["input"],
       "files": [
         {
-          "path": "registry/sabk/currency-input/currency-input.tsx",
+          "path": "registry/msh-ui/currency-input/currency-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/currency-input.tsx"
         }
@@ -161,7 +161,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/file-dropzone/file-dropzone.tsx",
+          "path": "registry/msh-ui/file-dropzone/file-dropzone.tsx",
           "type": "registry:ui",
           "target": "components/ui/file-dropzone.tsx"
         }
@@ -177,7 +177,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/stat-card/stat-card.tsx",
+          "path": "registry/msh-ui/stat-card/stat-card.tsx",
           "type": "registry:ui",
           "target": "components/ui/stat-card.tsx"
         }
@@ -193,7 +193,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/kbd/kbd.tsx",
+          "path": "registry/msh-ui/kbd/kbd.tsx",
           "type": "registry:ui",
           "target": "components/ui/kbd.tsx"
         }
@@ -209,7 +209,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/callout/callout.tsx",
+          "path": "registry/msh-ui/callout/callout.tsx",
           "type": "registry:ui",
           "target": "components/ui/callout.tsx"
         }
@@ -225,7 +225,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/scroll-progress/scroll-progress.tsx",
+          "path": "registry/msh-ui/scroll-progress/scroll-progress.tsx",
           "type": "registry:ui",
           "target": "components/ui/scroll-progress.tsx"
         }
@@ -241,7 +241,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/rating/rating.tsx",
+          "path": "registry/msh-ui/rating/rating.tsx",
           "type": "registry:ui",
           "target": "components/ui/rating.tsx"
         }
@@ -257,7 +257,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/timeline/timeline.tsx",
+          "path": "registry/msh-ui/timeline/timeline.tsx",
           "type": "registry:ui",
           "target": "components/ui/timeline.tsx"
         }
@@ -283,7 +283,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/ui/accordion.tsx",
+          "path": "registry/msh-ui/ui/accordion.tsx",
           "type": "registry:ui",
           "target": "components/ui/accordion.tsx"
         }
@@ -299,7 +299,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/hero-01/hero-01.tsx",
+          "path": "registry/msh-ui/blocks/hero-01/hero-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/hero-01.tsx"
         }
@@ -315,7 +315,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/hero-02/hero-02.tsx",
+          "path": "registry/msh-ui/blocks/hero-02/hero-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/hero-02.tsx"
         }
@@ -331,7 +331,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/cta-01/cta-01.tsx",
+          "path": "registry/msh-ui/blocks/cta-01/cta-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/cta-01.tsx"
         }
@@ -347,7 +347,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/cta-02/cta-02.tsx",
+          "path": "registry/msh-ui/blocks/cta-02/cta-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/cta-02.tsx"
         }
@@ -363,7 +363,7 @@
       "registryDependencies": ["button", "accordion"],
       "files": [
         {
-          "path": "registry/sabk/blocks/faq-01/faq-01.tsx",
+          "path": "registry/msh-ui/blocks/faq-01/faq-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/faq-01.tsx"
         }
@@ -379,7 +379,7 @@
       "registryDependencies": ["accordion"],
       "files": [
         {
-          "path": "registry/sabk/blocks/faq-02/faq-02.tsx",
+          "path": "registry/msh-ui/blocks/faq-02/faq-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/faq-02.tsx"
         }
@@ -395,7 +395,7 @@
       "registryDependencies": ["button", "input", "label", "password-input"],
       "files": [
         {
-          "path": "registry/sabk/blocks/login-01/login-01.tsx",
+          "path": "registry/msh-ui/blocks/login-01/login-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/login-01.tsx"
         }
@@ -411,7 +411,7 @@
       "registryDependencies": ["button", "input", "label", "password-input"],
       "files": [
         {
-          "path": "registry/sabk/blocks/login-02/login-02.tsx",
+          "path": "registry/msh-ui/blocks/login-02/login-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/login-02.tsx"
         }
@@ -427,7 +427,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/feature-01/feature-01.tsx",
+          "path": "registry/msh-ui/blocks/feature-01/feature-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/feature-01.tsx"
         }
@@ -443,7 +443,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/blocks/feature-02/feature-02.tsx",
+          "path": "registry/msh-ui/blocks/feature-02/feature-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/feature-02.tsx"
         }
@@ -459,7 +459,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/pricing-01/pricing-01.tsx",
+          "path": "registry/msh-ui/blocks/pricing-01/pricing-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/pricing-01.tsx"
         }
@@ -475,7 +475,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/pricing-02/pricing-02.tsx",
+          "path": "registry/msh-ui/blocks/pricing-02/pricing-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/pricing-02.tsx"
         }
@@ -491,7 +491,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/blocks/testimonial-01/testimonial-01.tsx",
+          "path": "registry/msh-ui/blocks/testimonial-01/testimonial-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/testimonial-01.tsx"
         }
@@ -507,7 +507,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/blocks/testimonial-02/testimonial-02.tsx",
+          "path": "registry/msh-ui/blocks/testimonial-02/testimonial-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/testimonial-02.tsx"
         }
@@ -523,7 +523,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/header-01/header-01.tsx",
+          "path": "registry/msh-ui/blocks/header-01/header-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/header-01.tsx"
         }
@@ -539,7 +539,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/sabk/blocks/footer-01/footer-01.tsx",
+          "path": "registry/msh-ui/blocks/footer-01/footer-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/footer-01.tsx"
         }
@@ -555,7 +555,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/sabk/blocks/not-found-01/not-found-01.tsx",
+          "path": "registry/msh-ui/blocks/not-found-01/not-found-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/not-found-01.tsx"
         }

@@ -3,13 +3,13 @@
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
-import { Input } from "@/registry/sabk/ui/input"
-import { Label } from "@/registry/sabk/ui/label"
+import { Button } from "@/registry/msh-ui/ui/button"
+import { Input } from "@/registry/msh-ui/ui/input"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PasswordInput,
   PasswordInputField,
-} from "@/registry/sabk/password-input/password-input"
+} from "@/registry/msh-ui/password-input/password-input"
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -70,7 +70,7 @@ export default function Login01() {
                 Welcome back
               </h1>
               <p className="text-xs text-muted-foreground">
-                Sign in to your forgecn workspace to continue.
+                Sign in to your MSH UI workspace to continue.
               </p>
             </div>
           </div>

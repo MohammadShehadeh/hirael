@@ -3,8 +3,8 @@
  */
 
 export const SITE = {
-  name: "forgecn",
-  fullName: "forgecn",
+  name: "MSH UI",
+  fullName: "MSH UI",
   description: "shadcn's missing pieces",
   longDescription:
     "A peer registry for the components every real product needs but shadcn doesn't ship — multi-select, combobox, tag input, currency input, file dropzone, and more.",
@@ -12,13 +12,13 @@ export const SITE = {
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
   githubOwner: "MohammadShehadeh",
-  githubRepo: "forgecn",
-  githubUrl: "https://github.com/MohammadShehadeh/forgecn",
+  githubRepo: "msh-ui",
+  githubUrl: "https://github.com/MohammadShehadeh/msh-ui",
   twitterUrl: "https://x.com/mohammadshhadeh",
   registry: {
-    name: "forgecn",
+    name: "msh-ui",
     /** Public origin used when generating install URLs server-side. */
-    origin: "https://forgecn.dev",
+    origin: "https://msh-ui.dev",
   },
 } as const
 

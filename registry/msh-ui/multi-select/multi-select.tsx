@@ -4,12 +4,12 @@ import * as React from "react"
 import { Check, ChevronDown, X, Loader2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Badge } from "@/registry/sabk/ui/badge"
+import { Badge } from "@/registry/msh-ui/ui/badge"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/sabk/ui/popover"
+} from "@/registry/msh-ui/ui/popover"
 import {
   Command,
   CommandEmpty,
@@ -18,7 +18,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/registry/sabk/ui/command"
+} from "@/registry/msh-ui/ui/command"
 
 export type MultiSelectOption = {
   value: string

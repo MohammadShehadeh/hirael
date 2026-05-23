@@ -2,12 +2,12 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/sabk/password-input/password-input"
+} from "@/registry/msh-ui/password-input/password-input"
 
 export default function PasswordInputDemo() {
   const [basic, setBasic] = React.useState("")

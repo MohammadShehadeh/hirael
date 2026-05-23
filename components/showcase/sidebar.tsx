@@ -12,7 +12,7 @@ import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/sabk/registry-meta"
+} from "@/registry/msh-ui/registry-meta"
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +25,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/registry/sabk/ui/sidebar"
+} from "@/registry/msh-ui/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",
@@ -55,7 +55,7 @@ export function ShowcaseSidebar() {
           <LogoMark className="size-6 shrink-0" />
           <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
             <span className="text-base font-semibold tracking-[-0.02em] text-foreground">
-              forgecn
+              MSH UI
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
               shadcn&apos;s missing pieces

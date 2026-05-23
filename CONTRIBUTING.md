@@ -1,6 +1,6 @@
-# Contributing to forgecn
+# Contributing to MSH UI
 
-Thanks for taking the time to contribute — forgecn is small, opinionated,
+Thanks for taking the time to contribute — MSH UI is small, opinionated,
 and benefits from every well-scoped PR. This guide covers the dev
 workflow, the conventions we follow, and the checklist for shipping a
 new component or block.
@@ -32,8 +32,8 @@ By participating you agree to abide by the project's Code of Conduct.
 ### First-time setup
 
 ```bash
-git clone https://github.com/MohammadShehadeh/forgecn.git
-cd forgecn
+git clone https://github.com/MohammadShehadeh/msh-ui.git
+cd msh-ui
 pnpm install
 pnpm dev          # showcase site at http://localhost:3000
 ```
@@ -57,7 +57,7 @@ host.
 ## Project layout
 
 ```
-registry/sabk/
+registry/msh-ui/
   <component>/
     <component>.tsx          # source (flat compound exports)
     <component>.demo.tsx     # showcase demo
@@ -158,7 +158,7 @@ pnpm typecheck   # tsc --noEmit
 
 The repo does not enforce a separate formatter. Match the surrounding
 code (2-space indent, double-quoted strings, no semicolons at the end
-of statements is the prevailing style in `registry/sabk/`). If your
+of statements is the prevailing style in `registry/msh-ui/`). If your
 editor disagrees, reset its formatter on this repo rather than
 reformatting committed files.
 
@@ -169,7 +169,7 @@ reformatting committed files.
   primitive and holds the state.
 - **`data-slot`.** Every rendered slot carries `data-slot="<kebab>"`
   so downstream styling and slot-targeting just works.
-- **Imports for shadcn primitives** go through `@/registry/sabk/ui/*`.
+- **Imports for shadcn primitives** go through `@/registry/msh-ui/ui/*`.
   The alias is rewritten on install based on the consumer's
   `components.json`.
 - **Tokens.** Use `--background / --foreground / --border / --primary /
@@ -186,7 +186,7 @@ reformatting committed files.
 
 For each new component:
 
-- [ ] Source file at `registry/sabk/<name>/<name>.tsx` exporting the
+- [ ] Source file at `registry/msh-ui/<name>/<name>.tsx` exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
@@ -197,22 +197,22 @@ For each new component:
 - [ ] Entry in `registry.json` with `type: "registry:ui"`,
       `dependencies`, `registryDependencies`,
       `files[].target = "components/ui/<name>.tsx"`.
-- [ ] Entry in `registry/sabk/registry-meta.ts` with category, demo,
+- [ ] Entry in `registry/msh-ui/registry-meta.ts` with category, demo,
       and source file list.
 - [ ] All imports for shadcn primitives go through
-      `@/registry/sabk/ui/*` (alias is rewritten on install).
+      `@/registry/msh-ui/ui/*` (alias is rewritten on install).
 - [ ] Tokens reuse `--background / --foreground / --border /
       --primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
 Marketing blocks follow the same shape but live under
-`registry/sabk/blocks/<block>/` and have a `blockKind` plus
+`registry/msh-ui/blocks/<block>/` and have a `blockKind` plus
 `blockTagline` in `registry-meta.ts`.
 
 ## Testing requirements
 
-forgecn does not ship a unit-test suite today — the gating signal is
+MSH UI does not ship a unit-test suite today — the gating signal is
 the build pipeline:
 
 ```bash
@@ -296,5 +296,5 @@ vulnerabilities. Follow the private disclosure process documented in
 
 ---
 
-Thanks again for contributing — every well-scoped PR makes forgecn
+Thanks again for contributing — every well-scoped PR makes MSH UI
 sharper.

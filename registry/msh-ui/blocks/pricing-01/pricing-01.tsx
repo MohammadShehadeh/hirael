@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Check } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 import { cn } from "@/lib/utils"
 
 type Tier = {

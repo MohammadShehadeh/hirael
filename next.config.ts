@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
   // "// (unable to read source)" stub. Explicitly tracing the registry
   // source ensures the files travel with the build.
   outputFileTracingIncludes: {
-    "/[component]": ["./registry/sabk/**/*.{ts,tsx}"],
-    "/blocks/[block]": ["./registry/sabk/**/*.{ts,tsx}"],
+    "/[component]": ["./registry/msh-ui/**/*.{ts,tsx}"],
+    "/blocks/[block]": ["./registry/msh-ui/**/*.{ts,tsx}"],
   },
 }
 

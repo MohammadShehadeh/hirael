@@ -3,14 +3,14 @@
 import * as React from "react"
 import { ArrowRight, Quote } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
-import { Input } from "@/registry/sabk/ui/input"
-import { Label } from "@/registry/sabk/ui/label"
+import { Button } from "@/registry/msh-ui/ui/button"
+import { Input } from "@/registry/msh-ui/ui/input"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/sabk/password-input/password-input"
+} from "@/registry/msh-ui/password-input/password-input"
 
 export default function Login02() {
   const [email, setEmail] = React.useState("")
@@ -25,7 +25,7 @@ export default function Login02() {
               ◆
             </span>
             <span className="text-base font-semibold tracking-[-0.025em]">
-              sabk
+              MSH UI
             </span>
           </div>
 
@@ -126,7 +126,7 @@ export default function Login02() {
           <Quote className="size-7 text-foreground md:size-8" strokeWidth={1.5} />
 
           <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
-            forgecn gave us back the week we were going to spend rebuilding
+            MSH UI gave us back the week we were going to spend rebuilding
             a <span className="text-foreground">multi-select</span> for the
             fourth time.
           </blockquote>

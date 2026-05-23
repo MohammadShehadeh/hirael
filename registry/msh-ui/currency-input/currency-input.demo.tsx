@@ -2,12 +2,12 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   CurrencyInput,
   CurrencyInputField,
   CurrencyInputPrefix,
-} from "@/registry/sabk/currency-input/currency-input"
+} from "@/registry/msh-ui/currency-input/currency-input"
 
 export default function CurrencyInputDemo() {
   const [basic, setBasic] = React.useState<number | null>(1499.5)

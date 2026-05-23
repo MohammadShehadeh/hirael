@@ -2,20 +2,20 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   TagInput,
   TagInputContainer,
   TagInputError,
   TagInputField,
   TagInputTag,
-} from "@/registry/sabk/tag-input/tag-input"
+} from "@/registry/msh-ui/tag-input/tag-input"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function TagInputDemo() {
   const [basic, setBasic] = React.useState<string[]>(["typescript", "react"])
-  const [emails, setEmails] = React.useState<string[]>(["jane@forgecn.dev"])
+  const [emails, setEmails] = React.useState<string[]>(["jane@msh-ui.dev"])
 
   return (
     <div className="grid w-full max-w-md gap-8">

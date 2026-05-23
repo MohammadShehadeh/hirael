@@ -2,13 +2,13 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   YearPicker,
   YearPickerContent,
   YearPickerTrigger,
   type YearRange,
-} from "@/registry/sabk/year-picker/year-picker"
+} from "@/registry/msh-ui/year-picker/year-picker"
 
 export default function YearPickerDemo() {
   const [year, setYear] = React.useState<number | undefined>(2026)

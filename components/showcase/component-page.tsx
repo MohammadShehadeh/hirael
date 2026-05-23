@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { BlockViewer } from "@/components/showcase/block-viewer"
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
-import type { RegistryEntryMeta } from "@/registry/sabk/registry-meta"
+import type { RegistryEntryMeta } from "@/registry/msh-ui/registry-meta"
 
 type Tab = "preview" | "usage" | "code" | "install"
 

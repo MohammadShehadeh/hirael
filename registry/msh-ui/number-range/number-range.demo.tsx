@@ -2,12 +2,12 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   NumberRange,
   NumberRangeInputs,
   NumberRangeSlider,
-} from "@/registry/sabk/number-range/number-range"
+} from "@/registry/msh-ui/number-range/number-range"
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)

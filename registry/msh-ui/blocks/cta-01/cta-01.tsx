@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ArrowRight, Github } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 
 export default function Cta01() {
   return (

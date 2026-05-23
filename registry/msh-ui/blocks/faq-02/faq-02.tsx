@@ -7,12 +7,12 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/registry/sabk/ui/accordion"
+} from "@/registry/msh-ui/ui/accordion"
 
 const FAQS = [
   {
     q: "Do I need to install a package?",
-    a: "No. forgecn is a registry — components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
+    a: "No. MSH UI is a registry — components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
   },
   {
     q: "Will updates break my code?",

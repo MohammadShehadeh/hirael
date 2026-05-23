@@ -4,7 +4,7 @@ import * as React from "react"
 import { Eye, EyeOff } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Input } from "@/registry/sabk/ui/input"
+import { Input } from "@/registry/msh-ui/ui/input"
 
 export type PasswordStrength = {
   score: number

@@ -2,13 +2,13 @@
 
 import * as React from "react"
 
-import { Label } from "@/registry/sabk/ui/label"
+import { Label } from "@/registry/msh-ui/ui/label"
 import {
   Combobox,
   ComboboxContent,
   ComboboxTrigger,
   useAsyncComboboxOptions,
-} from "@/registry/sabk/combobox/combobox"
+} from "@/registry/msh-ui/combobox/combobox"
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },

@@ -1,38 +1,38 @@
 import * as React from "react"
 
-import CalloutDemo from "@/registry/sabk/callout/callout.demo"
-import ComboboxDemo from "@/registry/sabk/combobox/combobox.demo"
-import CurrencyInputDemo from "@/registry/sabk/currency-input/currency-input.demo"
-import FileDropzoneDemo from "@/registry/sabk/file-dropzone/file-dropzone.demo"
-import KbdDemo from "@/registry/sabk/kbd/kbd.demo"
-import MultiSelectDemo from "@/registry/sabk/multi-select/multi-select.demo"
-import NumberRangeDemo from "@/registry/sabk/number-range/number-range.demo"
-import PasswordInputDemo from "@/registry/sabk/password-input/password-input.demo"
-import PhoneInputDemo from "@/registry/sabk/phone-input/phone-input.demo"
-import RatingDemo from "@/registry/sabk/rating/rating.demo"
-import ScrollProgressDemo from "@/registry/sabk/scroll-progress/scroll-progress.demo"
-import StatCardDemo from "@/registry/sabk/stat-card/stat-card.demo"
-import TagInputDemo from "@/registry/sabk/tag-input/tag-input.demo"
-import TimelineDemo from "@/registry/sabk/timeline/timeline.demo"
-import YearPickerDemo from "@/registry/sabk/year-picker/year-picker.demo"
+import CalloutDemo from "@/registry/msh-ui/callout/callout.demo"
+import ComboboxDemo from "@/registry/msh-ui/combobox/combobox.demo"
+import CurrencyInputDemo from "@/registry/msh-ui/currency-input/currency-input.demo"
+import FileDropzoneDemo from "@/registry/msh-ui/file-dropzone/file-dropzone.demo"
+import KbdDemo from "@/registry/msh-ui/kbd/kbd.demo"
+import MultiSelectDemo from "@/registry/msh-ui/multi-select/multi-select.demo"
+import NumberRangeDemo from "@/registry/msh-ui/number-range/number-range.demo"
+import PasswordInputDemo from "@/registry/msh-ui/password-input/password-input.demo"
+import PhoneInputDemo from "@/registry/msh-ui/phone-input/phone-input.demo"
+import RatingDemo from "@/registry/msh-ui/rating/rating.demo"
+import ScrollProgressDemo from "@/registry/msh-ui/scroll-progress/scroll-progress.demo"
+import StatCardDemo from "@/registry/msh-ui/stat-card/stat-card.demo"
+import TagInputDemo from "@/registry/msh-ui/tag-input/tag-input.demo"
+import TimelineDemo from "@/registry/msh-ui/timeline/timeline.demo"
+import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
-import Cta01 from "@/registry/sabk/blocks/cta-01/cta-01"
-import Cta02 from "@/registry/sabk/blocks/cta-02/cta-02"
-import Faq01 from "@/registry/sabk/blocks/faq-01/faq-01"
-import Faq02 from "@/registry/sabk/blocks/faq-02/faq-02"
-import Feature01 from "@/registry/sabk/blocks/feature-01/feature-01"
-import Feature02 from "@/registry/sabk/blocks/feature-02/feature-02"
-import Footer01 from "@/registry/sabk/blocks/footer-01/footer-01"
-import Header01 from "@/registry/sabk/blocks/header-01/header-01"
-import Hero01 from "@/registry/sabk/blocks/hero-01/hero-01"
-import Hero02 from "@/registry/sabk/blocks/hero-02/hero-02"
-import Login01 from "@/registry/sabk/blocks/login-01/login-01"
-import Login02 from "@/registry/sabk/blocks/login-02/login-02"
-import NotFound01 from "@/registry/sabk/blocks/not-found-01/not-found-01"
-import Pricing01 from "@/registry/sabk/blocks/pricing-01/pricing-01"
-import Pricing02 from "@/registry/sabk/blocks/pricing-02/pricing-02"
-import Testimonial01 from "@/registry/sabk/blocks/testimonial-01/testimonial-01"
-import Testimonial02 from "@/registry/sabk/blocks/testimonial-02/testimonial-02"
+import Cta01 from "@/registry/msh-ui/blocks/cta-01/cta-01"
+import Cta02 from "@/registry/msh-ui/blocks/cta-02/cta-02"
+import Faq01 from "@/registry/msh-ui/blocks/faq-01/faq-01"
+import Faq02 from "@/registry/msh-ui/blocks/faq-02/faq-02"
+import Feature01 from "@/registry/msh-ui/blocks/feature-01/feature-01"
+import Feature02 from "@/registry/msh-ui/blocks/feature-02/feature-02"
+import Footer01 from "@/registry/msh-ui/blocks/footer-01/footer-01"
+import Header01 from "@/registry/msh-ui/blocks/header-01/header-01"
+import Hero01 from "@/registry/msh-ui/blocks/hero-01/hero-01"
+import Hero02 from "@/registry/msh-ui/blocks/hero-02/hero-02"
+import Login01 from "@/registry/msh-ui/blocks/login-01/login-01"
+import Login02 from "@/registry/msh-ui/blocks/login-02/login-02"
+import NotFound01 from "@/registry/msh-ui/blocks/not-found-01/not-found-01"
+import Pricing01 from "@/registry/msh-ui/blocks/pricing-01/pricing-01"
+import Pricing02 from "@/registry/msh-ui/blocks/pricing-02/pricing-02"
+import Testimonial01 from "@/registry/msh-ui/blocks/testimonial-01/testimonial-01"
+import Testimonial02 from "@/registry/msh-ui/blocks/testimonial-02/testimonial-02"
 
 export type ComponentCategory =
   | "inputs"
@@ -78,7 +78,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: MultiSelectDemo,
-    sourceFiles: ["registry/sabk/multi-select/multi-select.tsx"],
+    sourceFiles: ["registry/msh-ui/multi-select/multi-select.tsx"],
     registryDependencies: ["button", "popover", "command", "badge"],
     dependencies: ["cmdk", "lucide-react"],
   },
@@ -90,7 +90,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: NumberRangeDemo,
-    sourceFiles: ["registry/sabk/number-range/number-range.tsx"],
+    sourceFiles: ["registry/msh-ui/number-range/number-range.tsx"],
     registryDependencies: ["slider", "input", "label"],
     dependencies: ["@radix-ui/react-slider"],
   },
@@ -102,7 +102,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "pickers",
     status: "stable",
     Demo: YearPickerDemo,
-    sourceFiles: ["registry/sabk/year-picker/year-picker.tsx"],
+    sourceFiles: ["registry/msh-ui/year-picker/year-picker.tsx"],
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
   },
@@ -114,7 +114,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: TagInputDemo,
-    sourceFiles: ["registry/sabk/tag-input/tag-input.tsx"],
+    sourceFiles: ["registry/msh-ui/tag-input/tag-input.tsx"],
     registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
   },
@@ -126,7 +126,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: ComboboxDemo,
-    sourceFiles: ["registry/sabk/combobox/combobox.tsx"],
+    sourceFiles: ["registry/msh-ui/combobox/combobox.tsx"],
     registryDependencies: ["button", "popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
@@ -138,7 +138,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: PasswordInputDemo,
-    sourceFiles: ["registry/sabk/password-input/password-input.tsx"],
+    sourceFiles: ["registry/msh-ui/password-input/password-input.tsx"],
     registryDependencies: ["input"],
     dependencies: ["lucide-react"],
   },
@@ -150,7 +150,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: CurrencyInputDemo,
-    sourceFiles: ["registry/sabk/currency-input/currency-input.tsx"],
+    sourceFiles: ["registry/msh-ui/currency-input/currency-input.tsx"],
     registryDependencies: ["input"],
     dependencies: [],
   },
@@ -162,7 +162,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: PhoneInputDemo,
-    sourceFiles: ["registry/sabk/phone-input/phone-input.tsx"],
+    sourceFiles: ["registry/msh-ui/phone-input/phone-input.tsx"],
     registryDependencies: ["input", "popover", "command"],
     dependencies: ["lucide-react"],
   },
@@ -174,7 +174,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "files",
     status: "stable",
     Demo: FileDropzoneDemo,
-    sourceFiles: ["registry/sabk/file-dropzone/file-dropzone.tsx"],
+    sourceFiles: ["registry/msh-ui/file-dropzone/file-dropzone.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -186,7 +186,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "data",
     status: "stable",
     Demo: StatCardDemo,
-    sourceFiles: ["registry/sabk/stat-card/stat-card.tsx"],
+    sourceFiles: ["registry/msh-ui/stat-card/stat-card.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -198,7 +198,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     status: "stable",
     Demo: RatingDemo,
-    sourceFiles: ["registry/sabk/rating/rating.tsx"],
+    sourceFiles: ["registry/msh-ui/rating/rating.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -210,7 +210,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "data",
     status: "stable",
     Demo: TimelineDemo,
-    sourceFiles: ["registry/sabk/timeline/timeline.tsx"],
+    sourceFiles: ["registry/msh-ui/timeline/timeline.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -222,7 +222,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     status: "stable",
     Demo: KbdDemo,
-    sourceFiles: ["registry/sabk/kbd/kbd.tsx"],
+    sourceFiles: ["registry/msh-ui/kbd/kbd.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -234,7 +234,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     status: "stable",
     Demo: CalloutDemo,
-    sourceFiles: ["registry/sabk/callout/callout.tsx"],
+    sourceFiles: ["registry/msh-ui/callout/callout.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
@@ -246,7 +246,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     status: "stable",
     Demo: ScrollProgressDemo,
-    sourceFiles: ["registry/sabk/scroll-progress/scroll-progress.tsx"],
+    sourceFiles: ["registry/msh-ui/scroll-progress/scroll-progress.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -260,7 +260,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "hero",
     status: "stable",
     Demo: Hero01,
-    sourceFiles: ["registry/sabk/blocks/hero-01/hero-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/hero-01/hero-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -274,7 +274,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "hero",
     status: "stable",
     Demo: Hero02,
-    sourceFiles: ["registry/sabk/blocks/hero-02/hero-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/hero-02/hero-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -288,7 +288,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "feature",
     status: "stable",
     Demo: Feature01,
-    sourceFiles: ["registry/sabk/blocks/feature-01/feature-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/feature-01/feature-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -302,7 +302,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "feature",
     status: "stable",
     Demo: Feature02,
-    sourceFiles: ["registry/sabk/blocks/feature-02/feature-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/feature-02/feature-02.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -316,7 +316,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "pricing",
     status: "stable",
     Demo: Pricing01,
-    sourceFiles: ["registry/sabk/blocks/pricing-01/pricing-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/pricing-01/pricing-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -330,7 +330,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "pricing",
     status: "stable",
     Demo: Pricing02,
-    sourceFiles: ["registry/sabk/blocks/pricing-02/pricing-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/pricing-02/pricing-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -344,7 +344,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "testimonial",
     status: "stable",
     Demo: Testimonial01,
-    sourceFiles: ["registry/sabk/blocks/testimonial-01/testimonial-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/testimonial-01/testimonial-01.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -358,7 +358,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "testimonial",
     status: "stable",
     Demo: Testimonial02,
-    sourceFiles: ["registry/sabk/blocks/testimonial-02/testimonial-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/testimonial-02/testimonial-02.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -372,7 +372,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "cta",
     status: "stable",
     Demo: Cta01,
-    sourceFiles: ["registry/sabk/blocks/cta-01/cta-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/cta-01/cta-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -386,7 +386,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "cta",
     status: "stable",
     Demo: Cta02,
-    sourceFiles: ["registry/sabk/blocks/cta-02/cta-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/cta-02/cta-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -400,7 +400,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "faq",
     status: "stable",
     Demo: Faq01,
-    sourceFiles: ["registry/sabk/blocks/faq-01/faq-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/faq-01/faq-01.tsx"],
     registryDependencies: ["button", "accordion"],
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
@@ -414,7 +414,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "faq",
     status: "stable",
     Demo: Faq02,
-    sourceFiles: ["registry/sabk/blocks/faq-02/faq-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/faq-02/faq-02.tsx"],
     registryDependencies: ["accordion"],
     dependencies: ["@radix-ui/react-accordion"],
   },
@@ -428,7 +428,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "login",
     status: "stable",
     Demo: Login01,
-    sourceFiles: ["registry/sabk/blocks/login-01/login-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/login-01/login-01.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -442,7 +442,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "login",
     status: "stable",
     Demo: Login02,
-    sourceFiles: ["registry/sabk/blocks/login-02/login-02.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/login-02/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -456,7 +456,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "header",
     status: "stable",
     Demo: Header01,
-    sourceFiles: ["registry/sabk/blocks/header-01/header-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/header-01/header-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -470,7 +470,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "footer",
     status: "stable",
     Demo: Footer01,
-    sourceFiles: ["registry/sabk/blocks/footer-01/footer-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/footer-01/footer-01.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -484,7 +484,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "not-found",
     status: "stable",
     Demo: NotFound01,
-    sourceFiles: ["registry/sabk/blocks/not-found-01/not-found-01.tsx"],
+    sourceFiles: ["registry/msh-ui/blocks/not-found-01/not-found-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },

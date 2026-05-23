@@ -8,7 +8,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/sabk/ui/popover"
+} from "@/registry/msh-ui/ui/popover"
 import {
   Command,
   CommandEmpty,
@@ -16,7 +16,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/sabk/ui/command"
+} from "@/registry/msh-ui/ui/command"
 
 export type ComboboxOption = {
   value: string

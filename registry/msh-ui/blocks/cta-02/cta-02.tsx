@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 
 export default function Cta02() {
   return (
@@ -51,7 +51,7 @@ export default function Cta02() {
         </h2>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground">
-          forgecn fills the obvious gaps in shadcn — the components your team
+          MSH UI fills the obvious gaps in shadcn — the components your team
           quietly rebuilds project after project — so you can spend that
           time on the work only you can do.
         </p>
@@ -76,7 +76,7 @@ export default function Cta02() {
           <code className="whitespace-nowrap text-foreground">
             npx shadcn add{" "}
             <span className="text-muted-foreground">
-              https://forgecn.dev/r/multi-select
+              https://msh-ui.dev/r/multi-select
             </span>
           </code>
         </div>

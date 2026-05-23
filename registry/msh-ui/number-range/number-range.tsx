@@ -3,8 +3,8 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Input } from "@/registry/sabk/ui/input"
-import { Slider } from "@/registry/sabk/ui/slider"
+import { Input } from "@/registry/msh-ui/ui/input"
+import { Slider } from "@/registry/msh-ui/ui/slider"
 
 export type NumberRangeValue = [number, number]
 

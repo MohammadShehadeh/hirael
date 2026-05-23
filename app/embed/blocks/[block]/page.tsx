@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/sabk/registry-meta"
+import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/msh-ui/registry-meta"
 
 export const dynamicParams = false
 

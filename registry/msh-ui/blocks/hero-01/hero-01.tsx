@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ArrowRight, Sparkles, Terminal } from "lucide-react"
 
-import { Button } from "@/registry/sabk/ui/button"
+import { Button } from "@/registry/msh-ui/ui/button"
 
 const STATS = [
   { value: "12", label: "components" },
@@ -13,7 +13,7 @@ const STATS = [
 
 const REGISTRY_LINES = [
   { kind: "cmd", text: "npx shadcn add" },
-  { kind: "arg", text: "  https://forgecn.dev/r/multi-select" },
+  { kind: "arg", text: "  https://msh-ui.dev/r/multi-select" },
   { kind: "out", text: "✓ resolved registry" },
   { kind: "out", text: "✓ checked dependencies" },
   { kind: "out", text: "✓ created multi-select.tsx" },
@@ -93,7 +93,7 @@ export default function Hero01() {
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 <Terminal className="size-3" />
-                sabk/install.sh
+                msh-ui/install.sh
               </span>
               <div className="flex items-center gap-1">
                 <span className="size-1.5 rounded-full bg-border" />

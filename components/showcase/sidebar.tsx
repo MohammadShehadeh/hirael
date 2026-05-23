@@ -49,15 +49,15 @@ export function ShowcaseSidebar() {
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent"
+          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-colors hover:bg-sidebar-accent group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMark className="size-6 shrink-0" />
-          <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-base font-semibold tracking-[-0.02em] text-foreground">
+          <LogoMark className="size-6 shrink-0 group-data-[collapsible=icon]:size-4" />
+          <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
+            <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
               MSH UI
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="truncate whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
               shadcn&apos;s missing pieces
             </span>
           </div>

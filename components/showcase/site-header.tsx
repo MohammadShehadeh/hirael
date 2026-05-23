@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, SITE } from "@/lib/site"
-import { GitHubStars } from "@/components/showcase/github-stars"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
 
@@ -72,7 +71,6 @@ export function SiteHeader({
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
-          <GitHubStars />
           <ThemeToggle />
           <button
             type="button"
@@ -114,14 +112,6 @@ export function SiteHeader({
                 </Link>
               )
             })}
-            <a
-              href={SITE.githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            >
-              GitHub
-            </a>
           </nav>
         </div>
       )}

@@ -2,12 +2,12 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { ArrowRight } from "lucide-react"
 
+import { BlockCategories } from "@/components/showcase/block-categories"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { SiteFooter } from "@/components/showcase/site-footer"
 import { SiteHeader } from "@/components/showcase/site-header"
 import { SITE } from "@/lib/site"
 import {
-  BLOCK_KIND_LABELS,
   BLOCKS_BY_KIND,
   CATEGORY_LABELS,
   REGISTRY,
@@ -185,7 +185,7 @@ function CategoryGrid() {
           </Link>
         </header>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-10">
           <CatalogGroup
             label="Components"
             count={componentTotal}
@@ -196,16 +196,18 @@ function CategoryGrid() {
               count: REGISTRY_BY_CATEGORY[cat].length,
             }))}
           />
-          <CatalogGroup
-            label="Section blocks"
-            count={blocksTotal}
-            items={BLOCK_ORDER.map((kind) => ({
-              key: `b-${kind}`,
-              href: `/blocks#${kind}`,
-              title: BLOCK_KIND_LABELS[kind],
-              count: BLOCKS_BY_KIND[kind].length,
-            }))}
-          />
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-baseline justify-between">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-foreground">
+                Section blocks
+              </h3>
+              <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+                {blocksTotal} shipped · {BLOCK_ORDER.length} / 17 categories
+              </span>
+            </div>
+            <BlockCategories variant="indexed" hrefPrefix="/blocks" />
+          </div>
         </div>
       </div>
     </section>

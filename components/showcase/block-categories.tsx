@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 
 import {
   BLOCKS_BY_KIND,
@@ -485,43 +486,148 @@ const ANCHORABLE_KINDS: Record<string, BlockKind> = {
   testimonial: "testimonial",
 }
 
-export function BlockCategories() {
+type Variant = "plain" | "indexed"
+
+export function BlockCategories({
+  variant = "plain",
+  hrefPrefix = "",
+}: {
+  variant?: Variant
+  /** Prefix prepended to in-page anchor hrefs (e.g. "/blocks" when used off /blocks). */
+  hrefPrefix?: string
+} = {}) {
+  const total = CATEGORIES.length
+  const totalStr = String(total).padStart(2, "0")
+
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-      {CATEGORIES.map((cat) => {
+      {CATEGORIES.map((cat, i) => {
         const label = countLabel(cat.count, cat.freeCount)
         const anchor = ANCHORABLE_KINDS[cat.slug]
         const inner = cat.render({ title: cat.title, countLabel: label })
+        const index = String(i + 1).padStart(2, "0")
+        const cardClass = anchor ? cardShell : `${cardShell} opacity-80`
 
-        if (anchor) {
+        if (variant === "indexed") {
           return (
-            <Link
+            <IndexedFrame
               key={cat.slug}
-              href={`#${anchor}`}
-              className={cardShell}
-              aria-label={`Jump to ${cat.title}`}
+              index={index}
+              total={totalStr}
+              slug={cat.slug}
+              comingSoon={cat.comingSoon}
             >
-              {inner}
-            </Link>
+              {anchor ? (
+                <Link
+                  href={`${hrefPrefix}#${anchor}`}
+                  className={cardClass}
+                  aria-label={`Jump to ${cat.title}`}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div
+                  aria-disabled={cat.comingSoon}
+                  className={cardClass}
+                >
+                  {inner}
+                </div>
+              )}
+            </IndexedFrame>
           )
         }
 
-        return (
+        return anchor ? (
+          <Link
+            key={cat.slug}
+            href={`${hrefPrefix}#${anchor}`}
+            className={cardClass}
+            aria-label={`Jump to ${cat.title}`}
+          >
+            {inner}
+          </Link>
+        ) : (
           <div
             key={cat.slug}
             aria-disabled={cat.comingSoon}
-            className={`${cardShell} opacity-80`}
+            className={cardClass}
           >
             {inner}
           </div>
         )
       })}
-      <div
-        aria-disabled
-        className={`${cardShell} flex flex-col items-center justify-center opacity-80`}
+
+      {variant === "indexed" ? (
+        <IndexedFrame index="+" total={totalStr} slug="more" comingSoon>
+          <div
+            aria-disabled
+            className={`${cardShell} flex flex-col items-center justify-center opacity-80`}
+          >
+            <h3 className={headingClass}>More</h3>
+            <p className={subClass}>Coming Soon…</p>
+          </div>
+        </IndexedFrame>
+      ) : (
+        <div
+          aria-disabled
+          className={`${cardShell} flex flex-col items-center justify-center opacity-80`}
+        >
+          <h3 className={headingClass}>More</h3>
+          <p className={subClass}>Coming Soon…</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/* Indexed frame — adds the project's signature corner marks, a mono index    */
+/* counter, and a hover-reveal slug pill. This is what differentiates the     */
+/* card grid here from the original inspiration it was adapted from.          */
+/* -------------------------------------------------------------------------- */
+
+function IndexedFrame({
+  index,
+  total,
+  slug,
+  comingSoon,
+  children,
+}: {
+  index: string
+  total: string
+  slug: string
+  comingSoon?: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <div className="group/frame relative">
+      <span aria-hidden className="corner-mark -left-1 -top-1" />
+      <span aria-hidden className="corner-mark -right-1 -top-1" />
+      <span aria-hidden className="corner-mark -bottom-1 -left-1" />
+      <span aria-hidden className="corner-mark -bottom-1 -right-1" />
+
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-2 top-2 z-20 font-mono text-[9px] tabular-nums uppercase tracking-[0.12em] text-muted-foreground/70"
       >
-        <h3 className={headingClass}>More</h3>
-        <p className={subClass}>Coming Soon…</p>
+        {index}
+        <span className="opacity-40"> / {total}</span>
+      </span>
+
+      {children}
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-2 bottom-2 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-150 group-hover/frame:opacity-100"
+      >
+        <span className="inline-flex items-center gap-1 rounded-sm border border-border bg-background/90 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground backdrop-blur-sm">
+          {comingSoon ? "soon" : `/blocks/${slug}`}
+        </span>
+        {!comingSoon && (
+          <span className="inline-flex size-4 items-center justify-center rounded-sm border border-border bg-background/90 text-muted-foreground backdrop-blur-sm">
+            <ArrowUpRight className="size-2.5" />
+          </span>
+        )}
       </div>
     </div>
   )

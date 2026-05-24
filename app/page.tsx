@@ -2,18 +2,16 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { ArrowRight } from "lucide-react"
 
+import { BlockCategories } from "@/components/showcase/block-categories"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { SiteFooter } from "@/components/showcase/site-footer"
 import { SiteHeader } from "@/components/showcase/site-header"
 import { SITE } from "@/lib/site"
 import {
-  BLOCK_KIND_LABELS,
   BLOCKS_BY_KIND,
-  CATEGORY_LABELS,
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type BlockKind,
-  type ComponentCategory,
 } from "@/registry/msh-ui/registry-meta"
 
 export const metadata: Metadata = {
@@ -117,16 +115,8 @@ function Hero() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Catalog — just names                                                       */
+/* Section blocks grid                                                        */
 /* -------------------------------------------------------------------------- */
-
-const COMPONENT_CATEGORY_ORDER: ComponentCategory[] = [
-  "inputs",
-  "pickers",
-  "files",
-  "data",
-  "display",
-]
 
 const BLOCK_ORDER: BlockKind[] = [
   "hero",
@@ -141,18 +131,7 @@ const BLOCK_ORDER: BlockKind[] = [
   "not-found",
 ]
 
-type CatalogItem = {
-  key: string
-  href: string
-  title: string
-  count: number
-}
-
 function CategoryGrid() {
-  const componentTotal = COMPONENT_CATEGORY_ORDER.reduce(
-    (sum, c) => sum + REGISTRY_BY_CATEGORY[c].length,
-    0
-  )
   const blocksTotal = BLOCK_ORDER.reduce(
     (sum, k) => sum + BLOCKS_BY_KIND[k].length,
     0
@@ -161,96 +140,37 @@ function CategoryGrid() {
   return (
     <section className="border-t border-border">
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <header className="mb-8 flex flex-col gap-2 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+        <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
             <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              ◆ Catalog
+              ◆ Section blocks
             </span>
             <h2
               className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
               style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
             >
-              <span className="font-semibold">Everything</span>{" "}
+              <span className="font-semibold">Compose</span>{" "}
               <span className="font-normal text-muted-foreground">
-                we ship.
+                full pages, faster.
               </span>
             </h2>
           </div>
-          <Link
-            href="/components"
-            className="inline-flex items-center gap-1 self-start font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground sm:self-auto"
-          >
-            See everything
-            <ArrowRight className="size-3" />
-          </Link>
+          <div className="flex items-center gap-4 self-start sm:self-auto">
+            <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+              {blocksTotal} shipped · {BLOCK_ORDER.length} / 17 categories
+            </span>
+            <Link
+              href="/blocks"
+              className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              See all
+              <ArrowRight className="size-3" />
+            </Link>
+          </div>
         </header>
 
-        <div className="flex flex-col gap-8">
-          <CatalogGroup
-            label="Components"
-            count={componentTotal}
-            items={COMPONENT_CATEGORY_ORDER.map((cat) => ({
-              key: `c-${cat}`,
-              href: "/components",
-              title: CATEGORY_LABELS[cat],
-              count: REGISTRY_BY_CATEGORY[cat].length,
-            }))}
-          />
-          <CatalogGroup
-            label="Section blocks"
-            count={blocksTotal}
-            items={BLOCK_ORDER.map((kind) => ({
-              key: `b-${kind}`,
-              href: `/blocks#${kind}`,
-              title: BLOCK_KIND_LABELS[kind],
-              count: BLOCKS_BY_KIND[kind].length,
-            }))}
-          />
-        </div>
+        <BlockCategories variant="indexed" />
       </div>
     </section>
-  )
-}
-
-function CatalogGroup({
-  label,
-  count,
-  items,
-}: {
-  label: string
-  count: number
-  items: CatalogItem[]
-}) {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-baseline justify-between">
-        <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-foreground">
-          {label}
-        </h3>
-        <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-          {count} total
-        </span>
-      </div>
-      <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-5">
-        {items.map((item) => (
-          <li key={item.key}>
-            <Link
-              href={item.href}
-              className="group flex h-full items-center justify-between gap-3 bg-card px-4 py-3 transition-colors hover:bg-accent"
-            >
-              <div className="flex flex-col gap-0.5 leading-tight">
-                <span className="text-sm font-medium tracking-[-0.01em] text-foreground">
-                  {item.title}
-                </span>
-                <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-                  {item.count}
-                </span>
-              </div>
-              <ArrowRight className="size-3.5 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-foreground" />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   )
 }

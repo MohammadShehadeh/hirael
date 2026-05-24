@@ -36,7 +36,7 @@ export function SiteHeader({
         className
       )}
     >
-      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6 lg:px-8">
         {withSidebarTrigger}
 
         <Link
@@ -94,7 +94,7 @@ export function SiteHeader({
           id="site-mobile-nav"
           className="border-t border-border bg-background/95 backdrop-blur-md md:hidden"
         >
-          <nav className="mx-auto flex w-full max-w-7xl flex-col gap-0.5 px-4 py-3 sm:px-6">
+          <nav className="mx-auto flex w-full max-w-6xl flex-col gap-0.5 px-4 py-3 sm:px-6">
             {NAV_LINKS.map((link) => {
               const active = isActive(link.href)
               return (

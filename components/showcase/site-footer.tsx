@@ -45,7 +45,7 @@ export function SiteFooter({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-5">
           <div className="col-span-2 flex flex-col gap-3">
             <Link

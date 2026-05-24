@@ -2,6 +2,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { ArrowRight } from "lucide-react"
 
+import { BlockCategories } from "@/components/showcase/block-categories"
 import { BlockPreview } from "@/components/showcase/block-preview"
 import {
   BLOCK_KIND_LABELS,
@@ -42,6 +43,18 @@ export default function BlocksIndex() {
           {blockCount} blocks · {BLOCK_KIND_ORDER.length} categories · MIT
         </p>
       </header>
+
+      <section className="flex flex-col gap-4">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+            Browse by category
+          </h2>
+          <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+            17 categories
+          </span>
+        </div>
+        <BlockCategories />
+      </section>
 
       <nav className="flex flex-wrap gap-2 border-b border-border pb-5">
         {BLOCK_KIND_ORDER.map((kind) => {

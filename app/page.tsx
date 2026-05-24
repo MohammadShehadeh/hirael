@@ -76,24 +76,22 @@ function Hero() {
 
           <h1
             className="text-balance text-3xl leading-[1.05] tracking-[-0.025em] sm:text-4xl md:text-5xl lg:text-6xl"
-            style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
+            style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
           >
-            <span className="font-normal text-muted-foreground">
-              Production-grade
-            </span>{" "}
-            <span className="font-semibold">shadcn pieces</span>
-            <br />
+            <span className="font-semibold">Tools</span>{" "}
             <span className="font-normal text-muted-foreground">for</span>{" "}
-            <span className="font-semibold">real</span>{" "}
-            <span className="font-normal text-muted-foreground">&amp;</span>{" "}
-            <span className="font-semibold">shipped</span>{" "}
-            <span className="font-normal text-muted-foreground">products.</span>
+            <span className="font-semibold">builders</span>
+            <br />
+            <span className="font-normal text-muted-foreground">
+              who think in
+            </span>{" "}
+            <span className="font-semibold">systems.</span>
           </h1>
 
           <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
-            The {stable} components shadcn doesn&apos;t ship plus {blocks}{" "}
-            section blocks — distributed via the shadcn CLI, copied straight
-            into your repo. Zero runtime dependency.
+            A component registry for the pieces every real product needs —{" "}
+            {stable} components and {blocks} section blocks, distributed via
+            the shadcn CLI. Minimal. Thoughtful. Built to last.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2">
@@ -147,7 +145,7 @@ function CategoryGrid() {
             </span>
             <h2
               className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
-              style={{ fontFamily: "var(--font-fraunces), ui-serif, serif" }}
+              style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
             >
               <span className="font-semibold">Compose</span>{" "}
               <span className="font-normal text-muted-foreground">

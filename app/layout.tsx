@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
-import { Fraunces, Geist, Geist_Mono } from "next/font/google"
+import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
 
 import { ThemeProvider } from "@/components/showcase/theme-provider"
 import { SITE } from "@/lib/site"
 import { themePrehydrationScript } from "@/lib/theme"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 })
 
@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

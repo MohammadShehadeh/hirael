@@ -2,134 +2,87 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-const FRAUNCES_TEXT_STYLE: React.CSSProperties = {
-  fontFamily: "var(--font-fraunces), ui-serif, serif",
-  fontWeight: 700,
-  fontSize: "280px",
+const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
+  fontFamily: "var(--font-cormorant), ui-serif, serif",
+  fontWeight: 500,
+  letterSpacing: "0.16em",
 }
 
 /**
- * The Palestinian flag bands + leading triangle, clipped to the M
- * letterform. The bands extend past the M's width so the clip mask is
- * what defines the shape, not the rectangles.
+ * Arch-and-star mark — slim doorway with a 4-point star inside and three
+ * reflection strokes below the base. Drawn with stroke=currentColor so it
+ * tracks the surrounding text color. The mark reads at favicon size.
  */
-function PalestineFlagFill() {
-  return (
-    <>
-      <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
-      <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
-      <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
-      <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
-    </>
-  )
-}
-
-/**
- * Full "MSH" wordmark — Fraunces bold, with the M filled by the
- * Palestinian flag and the S + H tracking currentColor. Use this where
- * there's horizontal room (hero header, OG cards, etc.).
- */
-function LogoWordmarkSvg({ className }: { className?: string }) {
-  const uid = React.useId().replace(/:/g, "")
-  const mId = `msh-m-${uid}`
-  const allId = `msh-all-${uid}`
-  const clipId = `msh-clip-${uid}`
+function ArchMarkSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 720 280"
+      viewBox="0 0 80 100"
       role="img"
       aria-hidden
       className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <title>MSH UI</title>
-      <defs>
-        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
-          M
-        </text>
-        <text id={allId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
-          MSH
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <use href={`#${allId}`} fill="currentColor" />
-      <g clipPath={`url(#${clipId})`}>
-        <PalestineFlagFill />
-      </g>
+      <title>Hirael</title>
+      {/* Archway: vertical sides + semicircular top, open at the base. */}
+      <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
+      {/* 4-point star, centered inside the arch. */}
+      <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
+      {/* Three short reflection strokes below the arch base. */}
+      <path d="M22 86 H58" opacity="0.7" />
+      <path d="M28 92 H52" opacity="0.45" />
+      <path d="M34 96 H46" opacity="0.25" />
     </svg>
   )
 }
 
 /**
- * Square "M"-only mark, derived from the same letterform as the
- * wordmark. Used in icon contexts (sidebar header, lockups, favicons).
+ * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
+ * the arch mark on its left. Used wherever there's horizontal room.
  */
-function LogoMarkSvg({ className }: { className?: string }) {
-  const uid = React.useId().replace(/:/g, "")
-  const mId = `mshmark-m-${uid}`
-  const clipId = `mshmark-clip-${uid}`
+function HiraelWordmarkSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="10 45 220 220"
+      viewBox="0 0 360 100"
       role="img"
       aria-hidden
       className={className}
     >
-      <title>MSH UI</title>
-      <defs>
-        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
-          M
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        <PalestineFlagFill />
+      <title>Hirael</title>
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
+        <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
+        <path d="M22 86 H58" opacity="0.7" />
+        <path d="M28 92 H52" opacity="0.45" />
+        <path d="M34 96 H46" opacity="0.25" />
       </g>
-    </svg>
-  )
-}
-
-/**
- * Roomier "M"-only mark — same letterform, but with a viewBox sized to
- * fully contain the Fraunces bold M's serifs so it doesn't clip when
- * scaled down into tight icon contexts (like the sidebar header).
- */
-function LogoMarkMSvg({ className }: { className?: string }) {
-  const uid = React.useId().replace(/:/g, "")
-  const mId = `mshmarkm-m-${uid}`
-  const clipId = `mshmarkm-clip-${uid}`
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="-10 25 290 290"
-      role="img"
-      aria-hidden
-      className={className}
-    >
-      <title>MSH UI</title>
-      <defs>
-        <text id={mId} x="10" y="245" style={FRAUNCES_TEXT_STYLE}>
-          M
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        <PalestineFlagFill />
-      </g>
+      <text
+        x="100"
+        y="68"
+        fill="currentColor"
+        fontSize="44"
+        style={CORMORANT_WORDMARK_STYLE}
+      >
+        HIRAEL
+      </text>
     </svg>
   )
 }
 
 export function Logo({
   className,
-  title = "MSH UI",
+  title = "Hirael",
 }: {
   className?: string
   title?: string
@@ -140,7 +93,7 @@ export function Logo({
       aria-label={title}
       className={cn("inline-flex shrink-0 text-foreground", className)}
     >
-      <LogoWordmarkSvg className="h-full w-auto" />
+      <HiraelWordmarkSvg className="h-full w-auto" />
     </span>
   )
 }
@@ -149,37 +102,31 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <span
       role="img"
-      aria-label="MSH UI"
+      aria-label="Hirael"
       className={cn(
         "inline-flex size-6 shrink-0 text-foreground",
         className
       )}
     >
-      <LogoMarkSvg className="size-full" />
+      <ArchMarkSvg className="size-full" />
     </span>
   )
 }
 
+/**
+ * Kept as an alias of LogoMark — older call sites used a roomier viewBox
+ * variant for the Fraunces M. The arch mark already has even padding so
+ * both names render the same shape now.
+ */
 export function LogoMarkM({ className }: { className?: string }) {
-  return (
-    <span
-      role="img"
-      aria-label="MSH UI"
-      className={cn(
-        "inline-flex size-6 shrink-0 text-foreground",
-        className
-      )}
-    >
-      <LogoMarkMSvg className="size-full" />
-    </span>
-  )
+  return <LogoMark className={className} />
 }
 
 export function BrandLockup({
   className,
   logoClassName,
-  textClassName,
-  showText = true,
+  textClassName: _textClassName,
+  showText: _showText = true,
 }: {
   className?: string
   logoClassName?: string
@@ -194,16 +141,6 @@ export function BrandLockup({
       )}
     >
       <Logo className={cn("inline-block h-6 align-middle", logoClassName)} />
-      {showText && (
-        <sub
-          className={cn(
-            "ml-1 align-sub text-xs font-semibold uppercase tracking-[0.06em]",
-            textClassName
-          )}
-        >
-          UI
-        </sub>
-      )}
     </span>
   )
 }

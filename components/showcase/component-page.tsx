@@ -29,20 +29,22 @@ export function ComponentPage({
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
 
+  const isBlock = entry.category === "blocks"
+
   const codeTabs: CodeBlockTab[] = React.useMemo(
     () =>
       (entry.sourceFiles ?? [])
-        .map((f) => {
+        .map((f, i) => {
           const file = source[f]
           if (!file) return null
-          return { label: f, code: file.code, html: file.html }
+          const label = isBlock ? entry.installTargets?.[i] ?? f : f
+          return { label, code: file.code, html: file.html }
         })
         .filter((t): t is CodeBlockTab => t !== null),
-    [entry.sourceFiles, source]
+    [entry.sourceFiles, entry.installTargets, source, isBlock]
   )
 
   const Demo = entry.Demo
-  const isBlock = entry.category === "blocks"
   const showUsageTab = !isBlock && !!demoSource
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
@@ -147,7 +149,10 @@ export function ComponentPage({
           )}
 
           {tab === "code" && codeTabs.length > 0 && (
-            <CodeBlock tabs={codeTabs} />
+            <CodeBlock
+              tabs={codeTabs}
+              layout={isBlock ? "tree" : "tabs"}
+            />
           )}
 
           {tab === "install" && (

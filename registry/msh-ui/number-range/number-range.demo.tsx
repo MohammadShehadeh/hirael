@@ -7,7 +7,7 @@ import {
   NumberRange,
   NumberRangeInputs,
   NumberRangeSlider,
-} from "@/registry/msh-ui/number-range/number-range"
+} from "@/registry/msh-ui/ui/number-range"
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)

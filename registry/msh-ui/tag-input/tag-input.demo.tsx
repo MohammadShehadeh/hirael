@@ -9,7 +9,7 @@ import {
   TagInputError,
   TagInputField,
   TagInputTag,
-} from "@/registry/msh-ui/tag-input/tag-input"
+} from "@/registry/msh-ui/ui/tag-input"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

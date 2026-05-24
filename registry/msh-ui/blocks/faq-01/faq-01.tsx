@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/registry/msh-ui/ui/accordion"
 import { Button } from "@/registry/msh-ui/ui/button"
+import { Card, CardContent } from "@/registry/msh-ui/ui/card"
 
 const FAQS = [
   {
@@ -58,23 +59,25 @@ export default function Faq01() {
               isn&apos;t here, the issue tracker is open.
             </p>
 
-            <div className="mt-2 flex flex-col gap-3 rounded-sm border border-border bg-card p-5">
-              <div className="inline-flex items-center gap-2">
-                <MessageCircleQuestion className="size-4 text-foreground" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  still stuck?
-                </span>
-              </div>
-              <p className="text-sm">
-                Drop a question in the repo. Responses usually within a day.
-              </p>
-              <Button asChild variant="outline" size="sm" className="w-fit">
-                <a href="#">
-                  Open an issue
-                  <ArrowUpRight className="size-3.5" />
-                </a>
-              </Button>
-            </div>
+            <Card className="mt-2 gap-3 py-5">
+              <CardContent className="flex flex-col gap-3">
+                <div className="inline-flex items-center gap-2">
+                  <MessageCircleQuestion className="size-4 text-foreground" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    still stuck?
+                  </span>
+                </div>
+                <p className="text-sm">
+                  Drop a question in the repo. Responses usually within a day.
+                </p>
+                <Button asChild variant="outline" size="sm" className="w-fit">
+                  <a href="#">
+                    Open an issue
+                    <ArrowUpRight className="size-3.5" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
 

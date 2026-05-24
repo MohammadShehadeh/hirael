@@ -1,6 +1,6 @@
 "use client"
 
-import { Callout } from "@/registry/msh-ui/callout/callout"
+import { Callout } from "@/registry/msh-ui/ui/callout"
 
 export default function CalloutDemo() {
   return (

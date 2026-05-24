@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Rating } from "@/registry/msh-ui/rating/rating"
+import { Rating } from "@/registry/msh-ui/ui/rating"
 
 export default function RatingDemo() {
   const [value, setValue] = React.useState(3.5)

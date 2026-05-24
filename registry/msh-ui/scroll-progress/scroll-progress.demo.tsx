@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { ScrollProgress } from "@/registry/msh-ui/scroll-progress/scroll-progress"
+import { ScrollProgress } from "@/registry/msh-ui/ui/scroll-progress"
 
 export default function ScrollProgressDemo() {
   const containerRef = React.useRef<HTMLDivElement>(null)

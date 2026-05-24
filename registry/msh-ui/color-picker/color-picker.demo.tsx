@@ -7,7 +7,7 @@ import {
   ColorPicker,
   ColorPickerContent,
   ColorPickerTrigger,
-} from "@/registry/msh-ui/color-picker/color-picker"
+} from "@/registry/msh-ui/ui/color-picker"
 
 export default function ColorPickerDemo() {
   const [accent, setAccent] = React.useState<string>("#0ea5e9")

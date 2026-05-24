@@ -5,7 +5,7 @@ import {
   StatCardDelta,
   StatCardLabel,
   StatCardValue,
-} from "@/registry/msh-ui/stat-card/stat-card"
+} from "@/registry/msh-ui/ui/stat-card"
 
 export default function StatCardDemo() {
   return (

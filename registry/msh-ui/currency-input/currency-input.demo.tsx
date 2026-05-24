@@ -7,7 +7,7 @@ import {
   CurrencyInput,
   CurrencyInputField,
   CurrencyInputPrefix,
-} from "@/registry/msh-ui/currency-input/currency-input"
+} from "@/registry/msh-ui/ui/currency-input"
 
 export default function CurrencyInputDemo() {
   const [basic, setBasic] = React.useState<number | null>(1499.5)

@@ -13,7 +13,7 @@
       "registryDependencies": ["button", "popover", "command", "badge"],
       "files": [
         {
-          "path": "registry/msh-ui/multi-select/multi-select.tsx",
+          "path": "registry/msh-ui/ui/multi-select.tsx",
           "type": "registry:ui",
           "target": "components/ui/multi-select.tsx"
         }
@@ -29,7 +29,7 @@
       "registryDependencies": ["slider", "input", "label"],
       "files": [
         {
-          "path": "registry/msh-ui/number-range/number-range.tsx",
+          "path": "registry/msh-ui/ui/number-range.tsx",
           "type": "registry:ui",
           "target": "components/ui/number-range.tsx"
         }
@@ -45,7 +45,7 @@
       "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/msh-ui/year-picker/year-picker.tsx",
+          "path": "registry/msh-ui/ui/year-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/year-picker.tsx"
         }
@@ -61,7 +61,7 @@
       "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/msh-ui/month-picker/month-picker.tsx",
+          "path": "registry/msh-ui/ui/month-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/month-picker.tsx"
         }
@@ -74,10 +74,10 @@
       "description": "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover"],
+      "registryDependencies": ["popover", "tabs"],
       "files": [
         {
-          "path": "registry/msh-ui/time-picker/time-picker.tsx",
+          "path": "registry/msh-ui/ui/time-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/time-picker.tsx"
         }
@@ -93,7 +93,7 @@
       "registryDependencies": ["badge"],
       "files": [
         {
-          "path": "registry/msh-ui/tag-input/tag-input.tsx",
+          "path": "registry/msh-ui/ui/tag-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/tag-input.tsx"
         }
@@ -109,7 +109,7 @@
       "registryDependencies": ["button", "popover", "command"],
       "files": [
         {
-          "path": "registry/msh-ui/combobox/combobox.tsx",
+          "path": "registry/msh-ui/ui/combobox.tsx",
           "type": "registry:ui",
           "target": "components/ui/combobox.tsx"
         }
@@ -122,10 +122,10 @@
       "description": "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input"],
+      "registryDependencies": ["input", "input-group"],
       "files": [
         {
-          "path": "registry/msh-ui/password-input/password-input.tsx",
+          "path": "registry/msh-ui/ui/password-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/password-input.tsx"
         }
@@ -138,10 +138,10 @@
       "description": "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "popover", "command"],
+      "registryDependencies": ["input", "input-group", "popover", "command"],
       "files": [
         {
-          "path": "registry/msh-ui/phone-input/phone-input.tsx",
+          "path": "registry/msh-ui/ui/phone-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/phone-input.tsx"
         }
@@ -154,10 +154,10 @@
       "description": "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
       "categories": ["inputs"],
       "dependencies": [],
-      "registryDependencies": ["input"],
+      "registryDependencies": ["input", "input-group"],
       "files": [
         {
-          "path": "registry/msh-ui/currency-input/currency-input.tsx",
+          "path": "registry/msh-ui/ui/currency-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/currency-input.tsx"
         }
@@ -173,7 +173,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/msh-ui/file-dropzone/file-dropzone.tsx",
+          "path": "registry/msh-ui/ui/file-dropzone.tsx",
           "type": "registry:ui",
           "target": "components/ui/file-dropzone.tsx"
         }
@@ -189,7 +189,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/stat-card/stat-card.tsx",
+          "path": "registry/msh-ui/ui/stat-card.tsx",
           "type": "registry:ui",
           "target": "components/ui/stat-card.tsx"
         }
@@ -205,7 +205,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/kbd/kbd.tsx",
+          "path": "registry/msh-ui/ui/kbd.tsx",
           "type": "registry:ui",
           "target": "components/ui/kbd.tsx"
         }
@@ -221,7 +221,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/callout/callout.tsx",
+          "path": "registry/msh-ui/ui/callout.tsx",
           "type": "registry:ui",
           "target": "components/ui/callout.tsx"
         }
@@ -237,7 +237,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/scroll-progress/scroll-progress.tsx",
+          "path": "registry/msh-ui/ui/scroll-progress.tsx",
           "type": "registry:ui",
           "target": "components/ui/scroll-progress.tsx"
         }
@@ -253,7 +253,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/rating/rating.tsx",
+          "path": "registry/msh-ui/ui/rating.tsx",
           "type": "registry:ui",
           "target": "components/ui/rating.tsx"
         }
@@ -269,7 +269,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/timeline/timeline.tsx",
+          "path": "registry/msh-ui/ui/timeline.tsx",
           "type": "registry:ui",
           "target": "components/ui/timeline.tsx"
         }
@@ -282,10 +282,10 @@
       "description": "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover", "input"],
+      "registryDependencies": ["popover", "input", "tabs"],
       "files": [
         {
-          "path": "registry/msh-ui/color-picker/color-picker.tsx",
+          "path": "registry/msh-ui/ui/color-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/color-picker.tsx"
         }
@@ -378,7 +378,7 @@
       "description": "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
       "categories": ["blocks", "faq"],
       "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
-      "registryDependencies": ["button", "accordion"],
+      "registryDependencies": ["button", "accordion", "card"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/faq-01/faq-01.tsx",
@@ -410,7 +410,7 @@
       "description": "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
       "categories": ["blocks", "login"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input", "label", "password-input"],
+      "registryDependencies": ["button", "checkbox", "field", "input", "label", "password-input"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/login-01/login-01.tsx",
@@ -474,7 +474,7 @@
       "description": "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
       "categories": ["blocks", "pricing"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "registryDependencies": ["button", "card", "separator"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/pricing-01/pricing-01.tsx",

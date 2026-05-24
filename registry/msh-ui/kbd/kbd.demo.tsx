@@ -2,7 +2,7 @@
 
 import { ArrowUp, Command, Option } from "lucide-react"
 
-import { Kbd, KbdDisplay, KbdGroup } from "@/registry/msh-ui/kbd/kbd"
+import { Kbd, KbdDisplay, KbdGroup } from "@/registry/msh-ui/ui/kbd"
 
 export default function KbdDemo() {
   return (

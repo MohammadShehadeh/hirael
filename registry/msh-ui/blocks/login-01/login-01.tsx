@@ -4,12 +4,14 @@ import * as React from "react"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
+import { Checkbox } from "@/registry/msh-ui/ui/checkbox"
+import { FieldSeparator } from "@/registry/msh-ui/ui/field"
 import { Input } from "@/registry/msh-ui/ui/input"
 import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PasswordInput,
   PasswordInputField,
-} from "@/registry/msh-ui/password-input/password-input"
+} from "@/registry/msh-ui/ui/password-input"
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -120,56 +122,24 @@ export default function Login01() {
               </PasswordInput>
             </div>
 
-            <label className="inline-flex cursor-pointer select-none items-center gap-2 text-xs text-muted-foreground">
-              <span
-                role="checkbox"
-                aria-checked={remember}
-                tabIndex={0}
-                onClick={() => setRemember(!remember)}
-                onKeyDown={(e) => {
-                  if (e.key === " " || e.key === "Enter") {
-                    e.preventDefault()
-                    setRemember(!remember)
-                  }
-                }}
-                className="relative inline-flex size-4 items-center justify-center rounded-[2px] border border-border bg-transparent transition-colors data-[checked=true]:border-primary data-[checked=true]:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                data-checked={remember}
-              >
-                {remember && (
-                  <svg
-                    viewBox="0 0 12 12"
-                    aria-hidden
-                    className="size-2.5 text-primary-foreground"
-                  >
-                    <path
-                      d="M2 6.5 5 9.5 10 3.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </span>
+            <Label
+              htmlFor="login01-remember"
+              className="inline-flex cursor-pointer select-none items-center gap-2 text-xs font-normal text-muted-foreground"
+            >
+              <Checkbox
+                id="login01-remember"
+                checked={remember}
+                onCheckedChange={(v) => setRemember(v === true)}
+              />
               Keep me signed in
-            </label>
+            </Label>
 
             <Button type="submit" variant="default" size="lg" className="group">
               Sign in
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
             </Button>
 
-            <div className="relative my-1">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-card px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  or continue with
-                </span>
-              </div>
-            </div>
+            <FieldSeparator>or continue with</FieldSeparator>
 
             <div className="grid grid-cols-2 gap-3">
               <Button type="button" variant="outline">

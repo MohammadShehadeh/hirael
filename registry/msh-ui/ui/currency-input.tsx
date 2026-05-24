@@ -3,6 +3,12 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@/registry/msh-ui/ui/input-group"
 
 function resolveCurrencySymbol(currency: string, locale: string): string {
   try {
@@ -166,24 +172,22 @@ function CurrencyInput({
 
   return (
     <CurrencyInputContext.Provider value={ctx}>
-      <div
+      <InputGroup
         data-slot="currency-input"
         data-disabled={disabled || undefined}
-        className={cn(
-          "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
-          "focus-within:border-ring",
-          disabled && "opacity-60",
-          className
-        )}
+        className={cn(disabled && "opacity-60", className)}
         {...props}
       >
         {children}
-      </div>
+      </InputGroup>
     </CurrencyInputContext.Provider>
   )
 }
 
-type CurrencyInputPrefixProps = Omit<React.ComponentProps<"span">, "children"> & {
+type CurrencyInputPrefixProps = Omit<
+  React.ComponentProps<typeof InputGroupAddon>,
+  "align" | "children"
+> & {
   children?: React.ReactNode
 }
 
@@ -194,17 +198,16 @@ function CurrencyInputPrefix({
 }: CurrencyInputPrefixProps) {
   const ctx = useCurrencyInput()
   return (
-    <span
+    <InputGroupAddon
       data-slot="currency-input-prefix"
-      aria-hidden
-      className={cn(
-        "flex items-center border-r border-border bg-muted/50 px-3 font-mono text-sm text-muted-foreground",
-        className
-      )}
+      align="inline-start"
+      className={className}
       {...props}
     >
-      {children ?? ctx.symbol}
-    </span>
+      <InputGroupText className="font-mono">
+        {children ?? ctx.symbol}
+      </InputGroupText>
+    </InputGroupAddon>
   )
 }
 
@@ -214,7 +217,6 @@ type CurrencyInputFieldProps = Omit<
 >
 
 function CurrencyInputField({
-  className,
   placeholder = "0",
   onBlur,
   onFocus,
@@ -224,7 +226,7 @@ function CurrencyInputField({
   const ctx = useCurrencyInput()
 
   return (
-    <input
+    <InputGroupInput
       id={ctx.id}
       type="text"
       inputMode={inputMode}
@@ -258,12 +260,6 @@ function CurrencyInputField({
         ctx.setView(formatNumber(parsed, ctx.locale, ctx.decimals))
         ctx.setValue(parsed)
       }}
-      className={cn(
-        "flex h-9 w-full min-w-0 flex-1 bg-transparent px-3 py-1 text-sm outline-none",
-        "placeholder:text-muted-foreground",
-        "disabled:cursor-not-allowed",
-        className
-      )}
       {...props}
     />
   )

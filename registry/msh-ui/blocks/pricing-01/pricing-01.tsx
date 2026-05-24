@@ -4,6 +4,13 @@ import * as React from "react"
 import { Check } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/registry/msh-ui/ui/card"
+import { Separator } from "@/registry/msh-ui/ui/separator"
 import { cn } from "@/lib/utils"
 
 type Tier = {
@@ -78,10 +85,10 @@ export default function Pricing01() {
 
         <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
           {TIERS.map((tier) => (
-            <div
+            <Card
               key={tier.name}
               className={cn(
-                "relative flex flex-col gap-6 rounded-md border border-border bg-card p-6",
+                "relative gap-6 rounded-md p-6",
                 tier.featured && "ring-1 ring-foreground/20",
               )}
             >
@@ -91,7 +98,7 @@ export default function Pricing01() {
                 </span>
               )}
 
-              <div className="flex flex-col gap-2">
+              <CardHeader className="flex flex-col gap-2 px-0">
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   {tier.name}
                 </span>
@@ -104,23 +111,25 @@ export default function Pricing01() {
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">{tier.blurb}</p>
-              </div>
+              </CardHeader>
 
-              <div className="border-t border-dashed border-border" />
+              <Separator className="border-dashed" />
 
-              <ul className="flex flex-col gap-2.5">
-                {tier.features.map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-start gap-2.5 text-sm text-foreground"
-                  >
-                    <Check className="mt-0.5 size-4 shrink-0 text-foreground" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              <CardContent className="px-0">
+                <ul className="flex flex-col gap-2.5">
+                  {tier.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2.5 text-sm text-foreground"
+                    >
+                      <Check className="mt-0.5 size-4 shrink-0 text-foreground" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
 
-              <div className="mt-auto pt-2">
+              <CardFooter className="mt-auto px-0 pt-2">
                 <Button
                   asChild
                   variant={tier.ctaVariant}
@@ -129,8 +138,8 @@ export default function Pricing01() {
                 >
                   <a href="#">{tier.cta}</a>
                 </Button>
-              </div>
-            </div>
+              </CardFooter>
+            </Card>
           ))}
         </div>
       </div>

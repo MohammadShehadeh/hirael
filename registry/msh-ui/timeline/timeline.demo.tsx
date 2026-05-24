@@ -10,7 +10,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@/registry/msh-ui/timeline/timeline"
+} from "@/registry/msh-ui/ui/timeline"
 
 export default function TimelineDemo() {
   return (

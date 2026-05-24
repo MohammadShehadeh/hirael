@@ -7,7 +7,7 @@ import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/registry/msh-ui/multi-select/multi-select"
+} from "@/registry/msh-ui/ui/multi-select"
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },

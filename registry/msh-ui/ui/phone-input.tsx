@@ -17,6 +17,12 @@ import {
   CommandItem,
   CommandList,
 } from "@/registry/msh-ui/ui/command"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/registry/msh-ui/ui/input-group"
 
 export type Country = {
   iso2: string
@@ -200,19 +206,14 @@ function PhoneInput({
 
   return (
     <PhoneInputContext.Provider value={ctx}>
-      <div
+      <InputGroup
         data-slot="phone-input"
         data-disabled={disabled || undefined}
-        className={cn(
-          "flex items-stretch overflow-hidden rounded-md border border-input bg-background text-sm transition-colors",
-          "focus-within:border-ring",
-          disabled && "opacity-60",
-          className
-        )}
+        className={cn(disabled && "opacity-60", className)}
         {...props}
       >
         {children}
-      </div>
+      </InputGroup>
     </PhoneInputContext.Provider>
   )
 }
@@ -229,77 +230,75 @@ function PhoneInputCountrySelect({
   const ctx = usePhoneInput()
 
   return (
-    <Popover open={ctx.open} onOpenChange={ctx.setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          role="combobox"
-          aria-expanded={ctx.open}
-          aria-haspopup="listbox"
-          aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
-          disabled={ctx.disabled}
-          data-slot="phone-input-country-select"
-          data-state={ctx.open ? "open" : "closed"}
-          className={cn(
-            "flex items-center gap-1.5 border-r border-border bg-muted/50 px-3 transition-colors outline-none",
-            "hover:bg-accent/60",
-            "focus-visible:bg-accent/60",
-            "disabled:cursor-not-allowed",
-            className
-          )}
-          {...props}
+    <InputGroupAddon
+      align="inline-start"
+      data-slot="phone-input-country-select"
+      className="cursor-pointer"
+    >
+      <Popover open={ctx.open} onOpenChange={ctx.setOpen}>
+        <PopoverTrigger asChild>
+          <InputGroupButton
+            type="button"
+            size="sm"
+            role="combobox"
+            aria-expanded={ctx.open}
+            aria-haspopup="listbox"
+            aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
+            disabled={ctx.disabled}
+            data-state={ctx.open ? "open" : "closed"}
+            className={cn("gap-1.5 font-mono text-xs", className)}
+            {...props}
+          >
+            <span className="font-medium text-foreground">{ctx.country.iso2}</span>
+            <span className="text-muted-foreground">{ctx.country.dialCode}</span>
+            <ChevronDown
+              className={cn(
+                "size-3 text-muted-foreground transition-transform duration-150",
+                ctx.open && "rotate-180"
+              )}
+            />
+          </InputGroupButton>
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          sideOffset={6}
+          className="w-64 p-0"
+          onOpenAutoFocus={(e) => {
+            e.preventDefault()
+          }}
         >
-          <span className="font-mono text-xs font-medium">{ctx.country.iso2}</span>
-          <span className="font-mono text-xs text-muted-foreground">
-            {ctx.country.dialCode}
-          </span>
-          <ChevronDown
-            className={cn(
-              "size-3 text-muted-foreground transition-transform duration-150",
-              ctx.open && "rotate-180"
-            )}
-          />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="start"
-        sideOffset={6}
-        className="w-64 p-0"
-        onOpenAutoFocus={(e) => {
-          e.preventDefault()
-        }}
-      >
-        <Command loop>
-          <CommandInput placeholder="Search countries…" />
-          <CommandList>
-            <CommandEmpty>No country found.</CommandEmpty>
-            <CommandGroup>
-              {COUNTRIES.map((c) => (
-                <CommandItem
-                  key={c.iso2}
-                  value={`${c.name} ${c.iso2} ${c.dialCode}`}
-                  onSelect={() => {
-                    ctx.setCountry(c)
-                    ctx.setOpen(false)
-                  }}
-                  className="justify-between"
-                >
-                  <span className="flex min-w-0 items-center gap-2">
-                    <span className="shrink-0 font-mono text-xs font-medium">
-                      {c.iso2}
+          <Command loop>
+            <CommandInput placeholder="Search countries…" />
+            <CommandList>
+              <CommandEmpty>No country found.</CommandEmpty>
+              <CommandGroup>
+                {COUNTRIES.map((c) => (
+                  <CommandItem
+                    key={c.iso2}
+                    value={`${c.name} ${c.iso2} ${c.dialCode}`}
+                    onSelect={() => {
+                      ctx.setCountry(c)
+                      ctx.setOpen(false)
+                    }}
+                    className="justify-between"
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="shrink-0 font-mono text-xs font-medium">
+                        {c.iso2}
+                      </span>
+                      <span className="min-w-0 truncate">{c.name}</span>
                     </span>
-                    <span className="min-w-0 truncate">{c.name}</span>
-                  </span>
-                  <span className="font-mono text-xs text-muted-foreground">
-                    {c.dialCode}
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {c.dialCode}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </InputGroupAddon>
   )
 }
 
@@ -309,7 +308,6 @@ type PhoneInputFieldProps = Omit<
 >
 
 function PhoneInputField({
-  className,
   placeholder = "Phone number",
   onBlur,
   inputMode = "tel",
@@ -317,7 +315,7 @@ function PhoneInputField({
 }: PhoneInputFieldProps) {
   const ctx = usePhoneInput()
   return (
-    <input
+    <InputGroupInput
       id={ctx.id}
       type="tel"
       inputMode={inputMode}
@@ -335,12 +333,6 @@ function PhoneInputField({
         const normalized = ctx.national.replace(/\s+/g, " ").trim()
         if (normalized !== ctx.national) ctx.setNational(normalized)
       }}
-      className={cn(
-        "flex h-9 w-full min-w-0 flex-1 bg-transparent px-3 py-1 text-sm outline-none",
-        "placeholder:text-muted-foreground",
-        "disabled:cursor-not-allowed",
-        className
-      )}
       {...props}
     />
   )

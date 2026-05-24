@@ -9,7 +9,7 @@ import {
   MonthPickerTrigger,
   type MonthRange,
   type MonthValue,
-} from "@/registry/msh-ui/month-picker/month-picker"
+} from "@/registry/msh-ui/ui/month-picker"
 
 export default function MonthPickerDemo() {
   const [month, setMonth] = React.useState<MonthValue | undefined>({

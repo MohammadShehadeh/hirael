@@ -9,6 +9,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/registry/msh-ui/ui/popover"
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from "@/registry/msh-ui/ui/tabs"
 
 export type TimeValue = {
   hour: number
@@ -339,34 +344,26 @@ function TimePickerContent({
         )}
       </div>
       {ctx.format === "12h" && (
-        <div className="mt-3 inline-flex w-full rounded-sm border border-input p-0.5">
-          <button
-            type="button"
-            onClick={() => setMeridiem("AM")}
-            aria-pressed={isAM}
-            className={cn(
-              "flex-1 rounded-[3px] py-1 font-mono text-xs uppercase tracking-[0.1em] transition-colors",
-              isAM
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent"
-            )}
-          >
-            AM
-          </button>
-          <button
-            type="button"
-            onClick={() => setMeridiem("PM")}
-            aria-pressed={!isAM}
-            className={cn(
-              "flex-1 rounded-[3px] py-1 font-mono text-xs uppercase tracking-[0.1em] transition-colors",
-              !isAM
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent"
-            )}
-          >
-            PM
-          </button>
-        </div>
+        <Tabs
+          value={isAM ? "AM" : "PM"}
+          onValueChange={(v) => setMeridiem(v as "AM" | "PM")}
+          className="mt-3"
+        >
+          <TabsList className="w-full">
+            <TabsTrigger
+              value="AM"
+              className="font-mono text-xs uppercase tracking-[0.1em]"
+            >
+              AM
+            </TabsTrigger>
+            <TabsTrigger
+              value="PM"
+              className="font-mono text-xs uppercase tracking-[0.1em]"
+            >
+              PM
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       )}
     </PopoverContent>
   )

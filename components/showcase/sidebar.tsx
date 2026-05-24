@@ -49,16 +49,23 @@ export function ShowcaseSidebar() {
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2!"
+          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2!"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMarkM className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
-          <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
-              Hirael
+          <LogoMarkM className="size-7 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-5" />
+          <div className="flex min-w-0 flex-col gap-1 overflow-hidden group-data-[collapsible=icon]:hidden">
+            <span
+              className="truncate whitespace-nowrap text-lg leading-none text-foreground"
+              style={{
+                fontFamily: "var(--font-cormorant), ui-serif, serif",
+                fontWeight: 500,
+                letterSpacing: "0.22em",
+              }}
+            >
+              HIRAEL
             </span>
-            <span className="truncate whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              longing · memory · light
+            <span className="truncate whitespace-nowrap font-mono text-[8px] uppercase leading-none tracking-[0.22em] text-muted-foreground/80">
+              Longing · Memory · Light
             </span>
           </div>
         </Link>

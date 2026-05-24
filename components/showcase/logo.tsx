@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-cormorant), ui-serif, serif",
   fontWeight: 500,
-  letterSpacing: "0.16em",
+  letterSpacing: "0.18em",
 }
 
 /**
@@ -42,13 +42,14 @@ function ArchMarkSvg({ className }: { className?: string }) {
 
 /**
  * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
- * the arch mark on its left. Used wherever there's horizontal room.
+ * the arch mark on its left. ViewBox is tightened so the type fills the
+ * vertical room; callers can size with a single h-* utility.
  */
 function HiraelWordmarkSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 360 100"
+      viewBox="0 0 280 60"
       role="img"
       aria-hidden
       className={className}
@@ -57,21 +58,21 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
       <g
         fill="none"
         stroke="currentColor"
-        strokeWidth="2.2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
-        <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
-        <path d="M22 86 H58" opacity="0.7" />
-        <path d="M28 92 H52" opacity="0.45" />
-        <path d="M34 96 H46" opacity="0.25" />
+        <path d="M10 48 V22 a16 16 0 0 1 32 0 V48" />
+        <path d="M26 26 L28.4 32 L34 34 L28.4 36 L26 42 L23.6 36 L18 34 L23.6 32 Z" />
+        <path d="M14 53 H38" opacity="0.7" />
+        <path d="M18 56.5 H34" opacity="0.45" />
+        <path d="M22 59 H30" opacity="0.25" />
       </g>
       <text
-        x="100"
-        y="68"
+        x="56"
+        y="44"
         fill="currentColor"
-        fontSize="44"
+        fontSize="42"
         style={CORMORANT_WORDMARK_STYLE}
       >
         HIRAEL

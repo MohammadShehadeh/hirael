@@ -27,7 +27,7 @@ export function ShowcaseTopbar() {
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
         aria-label="Hirael — home"
       >
-        <BrandLockup logoClassName="h-5" />
+        <BrandLockup logoClassName="h-7" />
       </Link>
 
       <nav className="hidden flex-1 items-center gap-0.5 md:flex">

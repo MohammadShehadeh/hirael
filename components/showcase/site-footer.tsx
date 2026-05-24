@@ -53,7 +53,7 @@ export function SiteFooter({ className }: { className?: string }) {
               aria-label={`${SITE.name} — home`}
               className="inline-flex items-center"
             >
-              <BrandLockup logoClassName="h-8" />
+              <BrandLockup logoClassName="h-10" />
             </Link>
             <p className="max-w-xs text-xs text-muted-foreground">
               {SITE.longDescription}

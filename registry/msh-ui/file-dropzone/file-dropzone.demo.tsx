@@ -8,7 +8,7 @@ import {
   FileDropzoneErrors,
   FileDropzoneList,
   FileDropzoneZone,
-} from "@/registry/msh-ui/file-dropzone/file-dropzone"
+} from "@/registry/msh-ui/ui/file-dropzone"
 
 export default function FileDropzoneDemo() {
   const [basic, setBasic] = React.useState<File[]>([])

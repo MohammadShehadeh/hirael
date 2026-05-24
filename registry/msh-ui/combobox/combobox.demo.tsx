@@ -8,7 +8,7 @@ import {
   ComboboxContent,
   ComboboxTrigger,
   useAsyncComboboxOptions,
-} from "@/registry/msh-ui/combobox/combobox"
+} from "@/registry/msh-ui/ui/combobox"
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },

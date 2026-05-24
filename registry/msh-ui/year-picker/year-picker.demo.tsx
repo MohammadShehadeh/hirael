@@ -8,7 +8,7 @@ import {
   YearPickerContent,
   YearPickerTrigger,
   type YearRange,
-} from "@/registry/msh-ui/year-picker/year-picker"
+} from "@/registry/msh-ui/ui/year-picker"
 
 export default function YearPickerDemo() {
   const [year, setYear] = React.useState<number | undefined>(2026)

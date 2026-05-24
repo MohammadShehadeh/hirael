@@ -7,7 +7,7 @@ import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
-} from "@/registry/msh-ui/phone-input/phone-input"
+} from "@/registry/msh-ui/ui/phone-input"
 
 export default function PhoneInputDemo() {
   const [basic, setBasic] = React.useState("")

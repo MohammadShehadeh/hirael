@@ -13,7 +13,7 @@
       "registryDependencies": ["button", "popover", "command", "badge"],
       "files": [
         {
-          "path": "registry/msh-ui/multi-select/multi-select.tsx",
+          "path": "registry/msh-ui/ui/multi-select.tsx",
           "type": "registry:ui",
           "target": "components/ui/multi-select.tsx"
         }
@@ -29,7 +29,7 @@
       "registryDependencies": ["slider", "input", "label"],
       "files": [
         {
-          "path": "registry/msh-ui/number-range/number-range.tsx",
+          "path": "registry/msh-ui/ui/number-range.tsx",
           "type": "registry:ui",
           "target": "components/ui/number-range.tsx"
         }
@@ -45,7 +45,7 @@
       "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/msh-ui/year-picker/year-picker.tsx",
+          "path": "registry/msh-ui/ui/year-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/year-picker.tsx"
         }
@@ -61,7 +61,7 @@
       "registryDependencies": ["button", "popover"],
       "files": [
         {
-          "path": "registry/msh-ui/month-picker/month-picker.tsx",
+          "path": "registry/msh-ui/ui/month-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/month-picker.tsx"
         }
@@ -77,7 +77,7 @@
       "registryDependencies": ["popover", "tabs"],
       "files": [
         {
-          "path": "registry/msh-ui/time-picker/time-picker.tsx",
+          "path": "registry/msh-ui/ui/time-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/time-picker.tsx"
         }
@@ -93,7 +93,7 @@
       "registryDependencies": ["badge"],
       "files": [
         {
-          "path": "registry/msh-ui/tag-input/tag-input.tsx",
+          "path": "registry/msh-ui/ui/tag-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/tag-input.tsx"
         }
@@ -109,7 +109,7 @@
       "registryDependencies": ["button", "popover", "command"],
       "files": [
         {
-          "path": "registry/msh-ui/combobox/combobox.tsx",
+          "path": "registry/msh-ui/ui/combobox.tsx",
           "type": "registry:ui",
           "target": "components/ui/combobox.tsx"
         }
@@ -125,7 +125,7 @@
       "registryDependencies": ["input", "input-group"],
       "files": [
         {
-          "path": "registry/msh-ui/password-input/password-input.tsx",
+          "path": "registry/msh-ui/ui/password-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/password-input.tsx"
         }
@@ -141,7 +141,7 @@
       "registryDependencies": ["input", "input-group", "popover", "command"],
       "files": [
         {
-          "path": "registry/msh-ui/phone-input/phone-input.tsx",
+          "path": "registry/msh-ui/ui/phone-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/phone-input.tsx"
         }
@@ -157,7 +157,7 @@
       "registryDependencies": ["input", "input-group"],
       "files": [
         {
-          "path": "registry/msh-ui/currency-input/currency-input.tsx",
+          "path": "registry/msh-ui/ui/currency-input.tsx",
           "type": "registry:ui",
           "target": "components/ui/currency-input.tsx"
         }
@@ -173,7 +173,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/msh-ui/file-dropzone/file-dropzone.tsx",
+          "path": "registry/msh-ui/ui/file-dropzone.tsx",
           "type": "registry:ui",
           "target": "components/ui/file-dropzone.tsx"
         }
@@ -189,7 +189,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/stat-card/stat-card.tsx",
+          "path": "registry/msh-ui/ui/stat-card.tsx",
           "type": "registry:ui",
           "target": "components/ui/stat-card.tsx"
         }
@@ -205,7 +205,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/kbd/kbd.tsx",
+          "path": "registry/msh-ui/ui/kbd.tsx",
           "type": "registry:ui",
           "target": "components/ui/kbd.tsx"
         }
@@ -221,7 +221,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/callout/callout.tsx",
+          "path": "registry/msh-ui/ui/callout.tsx",
           "type": "registry:ui",
           "target": "components/ui/callout.tsx"
         }
@@ -237,7 +237,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/scroll-progress/scroll-progress.tsx",
+          "path": "registry/msh-ui/ui/scroll-progress.tsx",
           "type": "registry:ui",
           "target": "components/ui/scroll-progress.tsx"
         }
@@ -253,7 +253,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/rating/rating.tsx",
+          "path": "registry/msh-ui/ui/rating.tsx",
           "type": "registry:ui",
           "target": "components/ui/rating.tsx"
         }
@@ -269,7 +269,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/msh-ui/timeline/timeline.tsx",
+          "path": "registry/msh-ui/ui/timeline.tsx",
           "type": "registry:ui",
           "target": "components/ui/timeline.tsx"
         }
@@ -285,7 +285,7 @@
       "registryDependencies": ["popover", "input", "tabs"],
       "files": [
         {
-          "path": "registry/msh-ui/color-picker/color-picker.tsx",
+          "path": "registry/msh-ui/ui/color-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/color-picker.tsx"
         }

@@ -8,7 +8,7 @@ import {
   TimePickerContent,
   TimePickerTrigger,
   type TimeValue,
-} from "@/registry/msh-ui/time-picker/time-picker"
+} from "@/registry/msh-ui/ui/time-picker"
 
 export default function TimePickerDemo() {
   const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 })

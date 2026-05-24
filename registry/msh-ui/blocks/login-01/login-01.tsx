@@ -11,7 +11,7 @@ import { Label } from "@/registry/msh-ui/ui/label"
 import {
   PasswordInput,
   PasswordInputField,
-} from "@/registry/msh-ui/password-input/password-input"
+} from "@/registry/msh-ui/ui/password-input"
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (

@@ -10,7 +10,7 @@ import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/msh-ui/password-input/password-input"
+} from "@/registry/msh-ui/ui/password-input"
 
 export default function Login02() {
   const [email, setEmail] = React.useState("")

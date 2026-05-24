@@ -53,21 +53,16 @@ export function ShowcaseSidebar() {
           aria-label={`${SITE.name} — home`}
         >
           <LogoMarkM className="size-7 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-5" />
-          <div className="flex min-w-0 flex-col gap-1 overflow-hidden group-data-[collapsible=icon]:hidden">
-            <span
-              className="truncate whitespace-nowrap text-lg leading-none text-foreground"
-              style={{
-                fontFamily: "var(--font-cormorant), ui-serif, serif",
-                fontWeight: 500,
-                letterSpacing: "0.22em",
-              }}
-            >
-              HIRAEL
-            </span>
-            <span className="truncate whitespace-nowrap font-mono text-[8px] uppercase leading-none tracking-[0.22em] text-muted-foreground/80">
-              Longing · Memory · Light
-            </span>
-          </div>
+          <span
+            className="truncate whitespace-nowrap text-lg leading-none text-foreground group-data-[collapsible=icon]:hidden"
+            style={{
+              fontFamily: "var(--font-cormorant), ui-serif, serif",
+              fontWeight: 500,
+              letterSpacing: "0.22em",
+            }}
+          >
+            HIRAEL
+          </span>
         </Link>
       </SidebarHeader>
 

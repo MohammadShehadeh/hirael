@@ -125,13 +125,9 @@ export function LogoMarkM({ className }: { className?: string }) {
 export function BrandLockup({
   className,
   logoClassName,
-  textClassName: _textClassName,
-  showText: _showText = true,
 }: {
   className?: string
   logoClassName?: string
-  textClassName?: string
-  showText?: boolean
 }) {
   return (
     <span

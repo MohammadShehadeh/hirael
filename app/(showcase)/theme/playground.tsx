@@ -2,13 +2,13 @@
 
 import * as React from "react"
 
-import { Button } from "@/registry/msh-ui/ui/button"
-import { Badge } from "@/registry/msh-ui/ui/badge"
-import { Input } from "@/registry/msh-ui/ui/input"
-import { Label } from "@/registry/msh-ui/ui/label"
+import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge"
+import { Input } from "@/registry/hirael/ui/input"
+import { Label } from "@/registry/hirael/ui/label"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { useTheme } from "@/components/showcase/theme-provider"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export function ThemePlayground() {
   const { mode, theme } = useTheme()

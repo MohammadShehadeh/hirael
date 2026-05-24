@@ -12,7 +12,7 @@ import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +25,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/registry/msh-ui/ui/sidebar"
+} from "@/registry/hirael/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",

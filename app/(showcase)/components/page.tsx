@@ -13,7 +13,7 @@ import {
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",

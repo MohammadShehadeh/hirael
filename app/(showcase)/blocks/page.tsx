@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export const metadata: Metadata = {
   title: "Blocks",

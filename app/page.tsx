@@ -12,7 +12,7 @@ import {
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type BlockKind,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,

@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 import { NAV_LINKS } from "@/lib/site"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
-import { Separator } from "@/registry/msh-ui/ui/separator"
-import { SidebarTrigger } from "@/registry/msh-ui/ui/sidebar"
+import { Separator } from "@/registry/hirael/ui/separator"
+import { SidebarTrigger } from "@/registry/hirael/ui/sidebar"
 
 export function ShowcaseTopbar() {
   const pathname = usePathname()
@@ -27,7 +27,7 @@ export function ShowcaseTopbar() {
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
         aria-label="Hirael — home"
       >
-        <BrandLockup logoClassName="h-5" textClassName="text-[10px]" />
+        <BrandLockup logoClassName="h-5" />
       </Link>
 
       <nav className="hidden flex-1 items-center gap-0.5 md:flex">

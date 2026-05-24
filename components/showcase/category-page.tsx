@@ -6,7 +6,7 @@ import { BlockPreview } from "@/components/showcase/block-preview"
 import {
   BLOCKS_BY_KIND,
   type RegistryEntryMeta,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 export function CategoryPage({ category }: { category: CategoryMeta }) {
   const blocks: RegistryEntryMeta[] = category.blockKind

@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/showcase/site-footer"
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/registry/msh-ui/ui/sidebar"
+} from "@/registry/hirael/ui/sidebar"
 
 export default async function ShowcaseLayout({
   children,

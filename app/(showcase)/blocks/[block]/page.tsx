@@ -11,7 +11,7 @@ import {
 import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 
 export const dynamicParams = false
 

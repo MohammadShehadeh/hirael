@@ -65,6 +65,11 @@ export type RegistryEntryMeta = {
   status: "stable" | "planned"
   Demo?: React.ComponentType
   sourceFiles?: string[]
+  /**
+   * Install-target paths, parallel to `sourceFiles`. Shown in the code view
+   * as a file hierarchy so users see where each file lands in their project.
+   */
+  installTargets?: string[]
   installSlug?: string
   registryDependencies?: string[]
   dependencies?: string[]
@@ -264,6 +269,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Hero01,
     sourceFiles: ["registry/msh-ui/blocks/hero-01/hero-01.tsx"],
+    installTargets: ["components/blocks/hero-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -278,6 +284,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Hero02,
     sourceFiles: ["registry/msh-ui/blocks/hero-02/hero-02.tsx"],
+    installTargets: ["components/blocks/hero-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -292,6 +299,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Feature01,
     sourceFiles: ["registry/msh-ui/blocks/feature-01/feature-01.tsx"],
+    installTargets: ["components/blocks/feature-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -306,6 +314,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Feature02,
     sourceFiles: ["registry/msh-ui/blocks/feature-02/feature-02.tsx"],
+    installTargets: ["components/blocks/feature-02.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -320,6 +329,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Pricing01,
     sourceFiles: ["registry/msh-ui/blocks/pricing-01/pricing-01.tsx"],
+    installTargets: ["components/blocks/pricing-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -334,6 +344,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Pricing02,
     sourceFiles: ["registry/msh-ui/blocks/pricing-02/pricing-02.tsx"],
+    installTargets: ["components/blocks/pricing-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -348,6 +359,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Testimonial01,
     sourceFiles: ["registry/msh-ui/blocks/testimonial-01/testimonial-01.tsx"],
+    installTargets: ["components/blocks/testimonial-01.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -362,6 +374,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Testimonial02,
     sourceFiles: ["registry/msh-ui/blocks/testimonial-02/testimonial-02.tsx"],
+    installTargets: ["components/blocks/testimonial-02.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -376,6 +389,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Cta01,
     sourceFiles: ["registry/msh-ui/blocks/cta-01/cta-01.tsx"],
+    installTargets: ["components/blocks/cta-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -390,6 +404,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Cta02,
     sourceFiles: ["registry/msh-ui/blocks/cta-02/cta-02.tsx"],
+    installTargets: ["components/blocks/cta-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -404,6 +419,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Faq01,
     sourceFiles: ["registry/msh-ui/blocks/faq-01/faq-01.tsx"],
+    installTargets: ["components/blocks/faq-01.tsx"],
     registryDependencies: ["button", "accordion"],
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
@@ -418,6 +434,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Faq02,
     sourceFiles: ["registry/msh-ui/blocks/faq-02/faq-02.tsx"],
+    installTargets: ["components/blocks/faq-02.tsx"],
     registryDependencies: ["accordion"],
     dependencies: ["@radix-ui/react-accordion"],
   },
@@ -432,6 +449,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Login01,
     sourceFiles: ["registry/msh-ui/blocks/login-01/login-01.tsx"],
+    installTargets: ["components/blocks/login-01.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -446,6 +464,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Login02,
     sourceFiles: ["registry/msh-ui/blocks/login-02/login-02.tsx"],
+    installTargets: ["components/blocks/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -460,6 +479,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Header01,
     sourceFiles: ["registry/msh-ui/blocks/header-01/header-01.tsx"],
+    installTargets: ["components/blocks/header-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -474,6 +494,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Footer01,
     sourceFiles: ["registry/msh-ui/blocks/footer-01/footer-01.tsx"],
+    installTargets: ["components/blocks/footer-01.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -488,6 +509,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: NotFound01,
     sourceFiles: ["registry/msh-ui/blocks/not-found-01/not-found-01.tsx"],
+    installTargets: ["components/blocks/not-found-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },

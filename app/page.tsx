@@ -169,7 +169,7 @@ function CategoryGrid() {
           </div>
         </header>
 
-        <BlockCategories variant="indexed" hrefPrefix="/blocks" />
+        <BlockCategories variant="indexed" />
       </div>
     </section>
   )

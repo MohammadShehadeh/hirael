@@ -10,24 +10,7 @@ import {
 /* Design system                                                              */
 /* -------------------------------------------------------------------------- */
 
-type CategorySlug =
-  | BlockKind
-  | "blog"
-  | "contact"
-  | "image-gallery"
-  | "integrations"
-  | "logo-cloud"
-  | "app-shell"
-  | "dashboard"
-
-type CategoryDef = {
-  slug: CategorySlug
-  title: string
-  count: number
-  freeCount?: number
-  comingSoon?: boolean
-  illustration: React.ComponentType
-}
+// (Category types are declared below alongside CATEGORY_REGISTRY.)
 
 /* Illustration primitives — every tile composes from this small palette so
    the grid reads as one design system instead of seventeen sketches. */
@@ -333,43 +316,171 @@ const IllDashboard = () => (
 /* Category registry                                                          */
 /* -------------------------------------------------------------------------- */
 
-const CATEGORIES: CategoryDef[] = [
-  { slug: "hero", title: "Hero Sections", count: BLOCKS_BY_KIND.hero.length, illustration: IllHero },
-  { slug: "feature", title: "Features", count: BLOCKS_BY_KIND.feature.length, illustration: IllFeatures },
-  { slug: "pricing", title: "Pricing", count: BLOCKS_BY_KIND.pricing.length, illustration: IllPricing },
-  { slug: "testimonial", title: "Testimonials", count: BLOCKS_BY_KIND.testimonial.length, illustration: IllTestimonial },
-  { slug: "cta", title: "Call to Action", count: BLOCKS_BY_KIND.cta.length, illustration: IllCta },
-  { slug: "faq", title: "FAQs", count: BLOCKS_BY_KIND.faq.length, illustration: IllFaq },
-  { slug: "login", title: "Auth", count: BLOCKS_BY_KIND.login.length, illustration: IllAuth },
-  { slug: "header", title: "Header", count: BLOCKS_BY_KIND.header.length, illustration: IllHeader },
-  { slug: "footer", title: "Footer", count: BLOCKS_BY_KIND.footer.length, illustration: IllFooter },
-  { slug: "not-found", title: "Not Found", count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
-  { slug: "blog", title: "Blog Sections", count: 0, comingSoon: true, illustration: IllBlog },
-  { slug: "contact", title: "Contact", count: 0, comingSoon: true, illustration: IllContact },
-  { slug: "image-gallery", title: "Image Gallery", count: 0, comingSoon: true, illustration: IllGallery },
-  { slug: "integrations", title: "Integrations", count: 0, comingSoon: true, illustration: IllIntegrations },
-  { slug: "logo-cloud", title: "Logo Cloud", count: 0, comingSoon: true, illustration: IllLogoCloud },
-  { slug: "app-shell", title: "App Shell", count: 0, comingSoon: true, illustration: IllAppShell },
-  { slug: "dashboard", title: "Dashboard", count: 0, comingSoon: true, illustration: IllDashboard },
+export type CategoryMeta = {
+  slug: string
+  title: string
+  /** Internal BlockKind — present only for categories that have shipped blocks. */
+  blockKind?: BlockKind
+  comingSoon?: boolean
+  description: string
+}
+
+type CategoryDefWithIllustration = CategoryMeta & {
+  count: number
+  freeCount?: number
+  illustration: React.ComponentType
+}
+
+export const CATEGORY_REGISTRY: CategoryMeta[] = [
+  {
+    slug: "hero",
+    title: "Hero Sections",
+    blockKind: "hero",
+    description:
+      "Above-the-fold openers — split layouts, centered editorials, stat strips, wordmark trust rows.",
+  },
+  {
+    slug: "features",
+    title: "Features",
+    blockKind: "feature",
+    description:
+      "Alternating rows, three-up icon grids, and bordered feature cards.",
+  },
+  {
+    slug: "pricing",
+    title: "Pricing",
+    blockKind: "pricing",
+    description:
+      "Three-tier card layouts and feature-comparison tables, each with per-tier CTAs.",
+  },
+  {
+    slug: "testimonials",
+    title: "Testimonials",
+    blockKind: "testimonial",
+    description:
+      "Single-quote spotlights and masonry quote grids with author rows.",
+  },
+  {
+    slug: "cta",
+    title: "Call to Action",
+    blockKind: "cta",
+    description:
+      "Framed bands and centered announce blocks with inline install hints.",
+  },
+  {
+    slug: "faqs",
+    title: "FAQs",
+    blockKind: "faq",
+    description:
+      "Sticky split layouts and centered accordion grids with numbered indices.",
+  },
+  {
+    slug: "auth",
+    title: "Auth",
+    blockKind: "login",
+    description:
+      "Centered login cards and split testimonial panes with OAuth providers and strength meters.",
+  },
+  {
+    slug: "header",
+    title: "Header",
+    blockKind: "header",
+    description:
+      "Sticky navs with backdrop blur, mobile menus, and dual-CTA layouts.",
+  },
+  {
+    slug: "footer",
+    title: "Footer",
+    blockKind: "footer",
+    description:
+      "Multi-column link layouts with brand block, social row, and copyright rule.",
+  },
+  {
+    slug: "not-found",
+    title: "Not Found",
+    blockKind: "not-found",
+    description:
+      "Centered 404s with paired CTAs and suggested-route lists.",
+  },
+  {
+    slug: "blog",
+    title: "Blog Sections",
+    comingSoon: true,
+    description:
+      "Article grids, featured-post heroes, and editorial card layouts.",
+  },
+  {
+    slug: "contact",
+    title: "Contact",
+    comingSoon: true,
+    description:
+      "Split form-and-info layouts, map embeds, and inline support panels.",
+  },
+  {
+    slug: "image-gallery",
+    title: "Image Gallery",
+    comingSoon: true,
+    description:
+      "Masonry, grid, and carousel gallery layouts with optional lightbox.",
+  },
+  {
+    slug: "integrations",
+    title: "Integrations",
+    comingSoon: true,
+    description:
+      "Hub-and-spoke diagrams, integration cards, and connector showcases.",
+  },
+  {
+    slug: "logo-cloud",
+    title: "Logo Cloud",
+    comingSoon: true,
+    description:
+      "Trusted-by wordmark rows, marquee strips, and bordered logo grids.",
+  },
+  {
+    slug: "app-shell",
+    title: "App Shell",
+    comingSoon: true,
+    description:
+      "Sidebar + topbar layouts with command-palette and breadcrumb chrome.",
+  },
+  {
+    slug: "dashboard",
+    title: "Dashboard",
+    comingSoon: true,
+    description:
+      "Stat cards, charts, and table-driven views composed into full dashboards.",
+  },
 ]
 
-const ANCHORABLE: Partial<Record<CategorySlug, BlockKind>> = {
-  hero: "hero",
-  feature: "feature",
-  pricing: "pricing",
-  testimonial: "testimonial",
-  cta: "cta",
-  faq: "faq",
-  login: "login",
-  header: "header",
-  footer: "footer",
-  "not-found": "not-found",
-}
+export const CATEGORY_BY_SLUG = Object.fromEntries(
+  CATEGORY_REGISTRY.map((c) => [c.slug, c])
+) as Record<string, CategoryMeta>
+
+const CATEGORIES: CategoryDefWithIllustration[] = [
+  { ...CATEGORY_BY_SLUG["hero"], count: BLOCKS_BY_KIND.hero.length, illustration: IllHero },
+  { ...CATEGORY_BY_SLUG["features"], count: BLOCKS_BY_KIND.feature.length, illustration: IllFeatures },
+  { ...CATEGORY_BY_SLUG["pricing"], count: BLOCKS_BY_KIND.pricing.length, illustration: IllPricing },
+  { ...CATEGORY_BY_SLUG["testimonials"], count: BLOCKS_BY_KIND.testimonial.length, illustration: IllTestimonial },
+  { ...CATEGORY_BY_SLUG["cta"], count: BLOCKS_BY_KIND.cta.length, illustration: IllCta },
+  { ...CATEGORY_BY_SLUG["faqs"], count: BLOCKS_BY_KIND.faq.length, illustration: IllFaq },
+  { ...CATEGORY_BY_SLUG["auth"], count: BLOCKS_BY_KIND.login.length, illustration: IllAuth },
+  { ...CATEGORY_BY_SLUG["header"], count: BLOCKS_BY_KIND.header.length, illustration: IllHeader },
+  { ...CATEGORY_BY_SLUG["footer"], count: BLOCKS_BY_KIND.footer.length, illustration: IllFooter },
+  { ...CATEGORY_BY_SLUG["not-found"], count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
+  { ...CATEGORY_BY_SLUG["blog"], count: 0, illustration: IllBlog },
+  { ...CATEGORY_BY_SLUG["contact"], count: 0, illustration: IllContact },
+  { ...CATEGORY_BY_SLUG["image-gallery"], count: 0, illustration: IllGallery },
+  { ...CATEGORY_BY_SLUG["integrations"], count: 0, illustration: IllIntegrations },
+  { ...CATEGORY_BY_SLUG["logo-cloud"], count: 0, illustration: IllLogoCloud },
+  { ...CATEGORY_BY_SLUG["app-shell"], count: 0, illustration: IllAppShell },
+  { ...CATEGORY_BY_SLUG["dashboard"], count: 0, illustration: IllDashboard },
+]
 
 function countLabel(count: number, free?: number) {
   if (free && !count) return `${free} free`
   if (free) return `${count} blocks · ${free} free`
-  if (count === 0) return "Soon"
+  if (count === 0) return "Roadmap"
   return `${count} block${count === 1 ? "" : "s"}`
 }
 
@@ -384,10 +495,8 @@ type Variant = "plain" | "indexed"
 
 export function BlockCategories({
   variant = "plain",
-  hrefPrefix = "",
 }: {
   variant?: Variant
-  hrefPrefix?: string
 } = {}) {
   const total = CATEGORIES.length
 
@@ -395,8 +504,6 @@ export function BlockCategories({
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
       {CATEGORIES.map((cat, i) => {
         const Illustration = cat.illustration
-        const anchor = ANCHORABLE[cat.slug]
-        const href = anchor ? `${hrefPrefix}#${anchor}` : undefined
         const indexLabel =
           variant === "indexed" ? String(i + 1).padStart(2, "0") : undefined
 
@@ -407,7 +514,7 @@ export function BlockCategories({
             count={countLabel(cat.count, cat.freeCount)}
             indexLabel={indexLabel}
             total={total}
-            href={href}
+            href={`/blocks/${cat.slug}`}
             comingSoon={cat.comingSoon}
           >
             <Illustration />
@@ -482,7 +589,9 @@ function Tile({
       <Link
         href={href}
         className={tileShell}
-        aria-label={`Browse ${title} blocks`}
+        aria-label={
+          comingSoon ? `${title} (roadmap)` : `Browse ${title} blocks`
+        }
       >
         {inner}
       </Link>

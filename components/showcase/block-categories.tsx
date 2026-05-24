@@ -498,9 +498,13 @@ export function BlockCategories({
 } = {}) {
   const total = CATEGORIES.length
   const totalStr = String(total).padStart(2, "0")
+  const gridClass =
+    variant === "indexed"
+      ? "grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-8 lg:grid-cols-4"
+      : "grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4"
 
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+    <div className={gridClass}>
       {CATEGORIES.map((cat, i) => {
         const label = countLabel(cat.count, cat.freeCount)
         const anchor = ANCHORABLE_KINDS[cat.slug]

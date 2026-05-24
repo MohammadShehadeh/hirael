@@ -58,16 +58,16 @@ async function loadSource(
 }
 
 /**
- * Convention: each component ships `<name>.tsx` alongside `<name>.demo.tsx`
- * in the same directory. The demo source powers the "Usage" tab.
- * Returns null when the demo file isn't present so the tab can be hidden.
+ * Convention: each component ships its install source at
+ * `registry/hirael/ui/<name>.tsx` (what shadcn distributes) and a
+ * sibling demo at `registry/hirael/<name>/<name>.demo.tsx` that powers
+ * the Usage tab. Returns null when the demo file isn't present.
  */
 async function loadDemoSource(
-  entry: { sourceFiles?: string[] }
+  entry: { name: string; sourceFiles?: string[] }
 ): Promise<SourceFile | null> {
-  const primary = entry.sourceFiles?.[0]
-  if (!primary) return null
-  const relPath = primary.replace(/\.tsx$/, ".demo.tsx")
+  if (!entry.sourceFiles?.length) return null
+  const relPath = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`
   const abs = path.join(process.cwd(), relPath)
   let code: string
   try {

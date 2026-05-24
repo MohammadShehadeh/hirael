@@ -101,7 +101,13 @@ function Hero() {
               href="/components"
               className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
             >
-              Explore
+              Components
+            </Link>
+            <Link
+              href="/blocks"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+            >
+              Blocks
             </Link>
           </div>
 

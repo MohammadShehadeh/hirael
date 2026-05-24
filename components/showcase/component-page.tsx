@@ -100,28 +100,28 @@ export function ComponentPage({
           <div
             role="tablist"
             aria-label="View"
-            className="-mx-4 flex items-center gap-0 border-b border-border px-4 sm:mx-0 sm:px-0"
+            className="inline-flex w-fit items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-1 backdrop-blur-md"
           >
-            {tabs.map(([k, label]) => (
-              <button
-                key={k}
-                type="button"
-                role="tab"
-                aria-selected={tab === k}
-                onClick={() => setTab(k)}
-                className={cn(
-                  "relative -mb-[2px] shrink-0 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] transition-colors focus-visible:outline-none focus-visible:text-foreground",
-                  tab === k
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {label}
-                {tab === k && (
-                  <span className="absolute inset-x-0 -bottom-[2px] h-[2px] bg-foreground" />
-                )}
-              </button>
-            ))}
+            {tabs.map(([k, label]) => {
+              const active = tab === k
+              return (
+                <button
+                  key={k}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTab(k)}
+                  className={cn(
+                    "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cool",
+                    active
+                      ? "bg-background text-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklch,var(--foreground)_10%,transparent),0_1px_0_0_color-mix(in_oklch,var(--background)_60%,transparent)]"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {label}
+                </button>
+              )
+            })}
           </div>
 
           {tab === "preview" &&

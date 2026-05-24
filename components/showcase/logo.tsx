@@ -113,11 +113,6 @@ export function LogoMark({ className }: { className?: string }) {
   )
 }
 
-/**
- * Kept as an alias of LogoMark — older call sites used a roomier viewBox
- * variant for the Fraunces M. The arch mark already has even padding so
- * both names render the same shape now.
- */
 export function LogoMarkM({ className }: { className?: string }) {
   return <LogoMark className={className} />
 }

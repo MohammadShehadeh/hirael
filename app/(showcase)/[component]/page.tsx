@@ -58,16 +58,15 @@ async function loadSource(
 }
 
 /**
- * Convention: each component ships `<name>.tsx` alongside `<name>.demo.tsx`
- * in the same directory. The demo source powers the "Usage" tab.
- * Returns null when the demo file isn't present so the tab can be hidden.
+ * Convention: each component ships its `.demo.tsx` under
+ * `registry/msh-ui/<name>/<name>.demo.tsx`. The demo source powers the
+ * "Usage" tab. Returns null when the demo file isn't present so the tab
+ * can be hidden.
  */
 async function loadDemoSource(
-  entry: { sourceFiles?: string[] }
+  entry: { name: string }
 ): Promise<SourceFile | null> {
-  const primary = entry.sourceFiles?.[0]
-  if (!primary) return null
-  const relPath = primary.replace(/\.tsx$/, ".demo.tsx")
+  const relPath = `registry/msh-ui/${entry.name}/${entry.name}.demo.tsx`
   const abs = path.join(process.cwd(), relPath)
   let code: string
   try {

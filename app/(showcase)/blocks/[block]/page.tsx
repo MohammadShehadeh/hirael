@@ -3,6 +3,11 @@ import * as path from "node:path"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
+import { CategoryPage } from "@/components/showcase/category-page"
+import {
+  CATEGORY_BY_SLUG,
+  CATEGORY_REGISTRY,
+} from "@/components/showcase/block-categories"
 import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
@@ -11,9 +16,11 @@ import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/msh-ui/registry-meta"
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return REGISTRY.filter((entry) => entry.category === "blocks").map(
-    (entry) => ({ block: entry.name })
-  )
+  const blockParams = REGISTRY.filter(
+    (entry) => entry.category === "blocks"
+  ).map((entry) => ({ block: entry.name }))
+  const categoryParams = CATEGORY_REGISTRY.map((c) => ({ block: c.slug }))
+  return [...categoryParams, ...blockParams]
 }
 
 export async function generateMetadata({
@@ -22,6 +29,13 @@ export async function generateMetadata({
   params: Promise<{ block: string }>
 }): Promise<Metadata> {
   const { block } = await params
+  const category = CATEGORY_BY_SLUG[block]
+  if (category) {
+    return {
+      title: `${category.title} blocks`,
+      description: category.description,
+    }
+  }
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") return {}
   return {
@@ -60,6 +74,12 @@ export default async function BlockRoute({
   params: Promise<{ block: string }>
 }) {
   const { block } = await params
+
+  const category = CATEGORY_BY_SLUG[block]
+  if (category) {
+    return <CategoryPage category={category} />
+  }
+
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") notFound()
   const source = await loadSource(entry.sourceFiles)

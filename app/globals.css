@@ -204,7 +204,7 @@ html.light .shiki span {
     scrollbar-width: none;
   }
   .container {
-    @apply mx-auto w-full max-w-7xl;
+    @apply mx-auto w-full max-w-6xl;
   }
   .cpx {
     @apply px-4 lg:px-6;

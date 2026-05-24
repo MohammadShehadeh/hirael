@@ -99,7 +99,7 @@ function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Link
               href="/components"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-foreground bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
             >
               Components
             </Link>

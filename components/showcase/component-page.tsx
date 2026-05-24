@@ -100,7 +100,7 @@ export function ComponentPage({
           <div
             role="tablist"
             aria-label="View"
-            className="-mx-4 flex items-center gap-0 overflow-x-auto border-b border-border px-4 sm:mx-0 sm:px-0"
+            className="-mx-4 flex items-center gap-0 overflow-x-auto overflow-y-hidden border-b border-border px-4 sm:mx-0 sm:px-0"
           >
             {tabs.map(([k, label]) => (
               <button

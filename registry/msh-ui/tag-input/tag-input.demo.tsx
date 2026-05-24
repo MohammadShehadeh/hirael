@@ -15,7 +15,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function TagInputDemo() {
   const [basic, setBasic] = React.useState<string[]>(["typescript", "react"])
-  const [emails, setEmails] = React.useState<string[]>(["jane@msh-ui.dev"])
+  const [emails, setEmails] = React.useState<string[]>(["jane@hirael.com"])
 
   return (
     <div className="grid w-full max-w-md gap-8">

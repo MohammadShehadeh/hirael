@@ -12,7 +12,7 @@ import {
 const FAQS = [
   {
     q: "Do I need to install a package?",
-    a: "No. MSH UI is a registry — components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
+    a: "No. Hirael is a registry — components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
   },
   {
     q: "Will updates break my code?",

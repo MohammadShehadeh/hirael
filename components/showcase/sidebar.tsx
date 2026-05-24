@@ -55,10 +55,10 @@ export function ShowcaseSidebar() {
           <LogoMarkM className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
           <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
-              MSH UI
+              Hirael
             </span>
             <span className="truncate whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              shadcn&apos;s missing pieces
+              longing · memory · light
             </span>
           </div>
         </Link>

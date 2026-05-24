@@ -24,7 +24,7 @@ export default function Header01() {
             className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span aria-hidden className="mr-1.5">◆</span>
-            MSH UI
+            Hirael
           </a>
 
           <nav className="hidden md:block">

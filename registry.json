@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "msh-ui",
-  "homepage": "https://msh-ui.dev",
+  "name": "hirael",
+  "homepage": "https://hirael.com",
   "items": [
     {
       "name": "multi-select",

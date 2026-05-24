@@ -34,7 +34,7 @@ export function ThemePlayground() {
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Paste a CSS variable block from your own app — or any shadcn theme
-          generator — and watch the entire MSH UI registry re-skin. The active
+          generator — and watch the entire Hirael registry re-skin. The active
           theme is persisted in your browser; reset any time.
         </p>
 
@@ -67,7 +67,7 @@ export function ThemePlayground() {
       <Section
         eyebrow="Primitives"
         title="Buttons, badges, inputs"
-        description="The base shadcn primitives MSH UI components compose on top of."
+        description="The base shadcn primitives Hirael components compose on top of."
       >
         <div className="grid gap-6 rounded-sm border border-border bg-card/40 p-6">
           <div className="flex flex-wrap items-center gap-2">
@@ -88,7 +88,7 @@ export function ThemePlayground() {
             <Input
               id="theme-preview-input"
               placeholder="you@example.com"
-              defaultValue="hello@msh-ui.dev"
+              defaultValue="hello@hirael.com"
             />
             <p className="text-xs text-muted-foreground">
               Muted foreground reads against background.
@@ -99,7 +99,7 @@ export function ThemePlayground() {
 
       <Section
         eyebrow="Registry"
-        title="MSH UI components"
+        title="Hirael components"
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">

@@ -51,7 +51,7 @@ export default function Cta02() {
         </h2>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground">
-          MSH UI fills the obvious gaps in shadcn — the components your team
+          Hirael fills the obvious gaps in shadcn — the components your team
           quietly rebuilds project after project — so you can spend that
           time on the work only you can do.
         </p>
@@ -76,7 +76,7 @@ export default function Cta02() {
           <code className="whitespace-nowrap text-foreground">
             npx shadcn add{" "}
             <span className="text-muted-foreground">
-              https://msh-ui.dev/r/multi-select
+              https://hirael.com/r/multi-select
             </span>
           </code>
         </div>

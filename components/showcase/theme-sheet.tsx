@@ -115,7 +115,7 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview MSH UI components against your own theme. Paste a CSS
+          Preview Hirael components against your own theme. Paste a CSS
           variable block, pick a preset, or copy the active theme back out.
         </SheetDescription>
       </SheetHeader>

@@ -25,7 +25,7 @@ export default function Login02() {
               ◆
             </span>
             <span className="text-base font-semibold tracking-[-0.025em]">
-              MSH UI
+              Hirael
             </span>
           </div>
 
@@ -126,7 +126,7 @@ export default function Login02() {
           <Quote className="size-7 text-foreground md:size-8" strokeWidth={1.5} />
 
           <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
-            MSH UI gave us back the week we were going to spend rebuilding
+            Hirael gave us back the week we were going to spend rebuilding
             a <span className="text-foreground">multi-select</span> for the
             fourth time.
           </blockquote>

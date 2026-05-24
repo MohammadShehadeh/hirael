@@ -498,13 +498,8 @@ export function BlockCategories({
 } = {}) {
   const total = CATEGORIES.length
   const totalStr = String(total).padStart(2, "0")
-  const gridClass =
-    variant === "indexed"
-      ? "grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-8 lg:grid-cols-4"
-      : "grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4"
-
   return (
-    <div className={gridClass}>
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
       {CATEGORIES.map((cat, i) => {
         const label = countLabel(cat.count, cat.freeCount)
         const anchor = ANCHORABLE_KINDS[cat.slug]
@@ -585,9 +580,9 @@ export function BlockCategories({
 }
 
 /* -------------------------------------------------------------------------- */
-/* Indexed frame — adds the project's signature corner marks, a mono index    */
-/* counter, and a hover-reveal slug pill. This is what differentiates the     */
-/* card grid here from the original inspiration it was adapted from.          */
+/* Indexed frame — adds a mono NN/total index counter and a hover-reveal      */
+/* slug pill. Differentiates the card grid here from the original             */
+/* inspiration it was adapted from.                                           */
 /* -------------------------------------------------------------------------- */
 
 function IndexedFrame({
@@ -605,11 +600,6 @@ function IndexedFrame({
 }) {
   return (
     <div className="group/frame relative">
-      <span aria-hidden className="corner-mark -left-1 -top-1" />
-      <span aria-hidden className="corner-mark -right-1 -top-1" />
-      <span aria-hidden className="corner-mark -bottom-1 -left-1" />
-      <span aria-hidden className="corner-mark -bottom-1 -right-1" />
-
       <span
         aria-hidden
         className="pointer-events-none absolute right-2 top-2 z-20 font-mono text-[9px] tabular-nums uppercase tracking-[0.12em] text-muted-foreground/70"

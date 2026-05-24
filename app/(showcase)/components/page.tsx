@@ -47,7 +47,7 @@ export default async function ComponentsIndex() {
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
       <header className="flex flex-col gap-5 border-b border-border pb-10">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">

@@ -74,7 +74,7 @@
       "description": "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover"],
+      "registryDependencies": ["popover", "tabs"],
       "files": [
         {
           "path": "registry/msh-ui/time-picker/time-picker.tsx",
@@ -122,7 +122,7 @@
       "description": "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input"],
+      "registryDependencies": ["input", "input-group"],
       "files": [
         {
           "path": "registry/msh-ui/password-input/password-input.tsx",
@@ -138,7 +138,7 @@
       "description": "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
       "categories": ["inputs"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "popover", "command"],
+      "registryDependencies": ["input", "input-group", "popover", "command"],
       "files": [
         {
           "path": "registry/msh-ui/phone-input/phone-input.tsx",
@@ -154,7 +154,7 @@
       "description": "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
       "categories": ["inputs"],
       "dependencies": [],
-      "registryDependencies": ["input"],
+      "registryDependencies": ["input", "input-group"],
       "files": [
         {
           "path": "registry/msh-ui/currency-input/currency-input.tsx",
@@ -282,7 +282,7 @@
       "description": "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
       "categories": ["pickers"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover", "input"],
+      "registryDependencies": ["popover", "input", "tabs"],
       "files": [
         {
           "path": "registry/msh-ui/color-picker/color-picker.tsx",
@@ -378,7 +378,7 @@
       "description": "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
       "categories": ["blocks", "faq"],
       "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
-      "registryDependencies": ["button", "accordion"],
+      "registryDependencies": ["button", "accordion", "card"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/faq-01/faq-01.tsx",
@@ -410,7 +410,7 @@
       "description": "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
       "categories": ["blocks", "login"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input", "label", "password-input"],
+      "registryDependencies": ["button", "checkbox", "field", "input", "label", "password-input"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/login-01/login-01.tsx",
@@ -474,7 +474,7 @@
       "description": "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
       "categories": ["blocks", "pricing"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "registryDependencies": ["button", "card", "separator"],
       "files": [
         {
           "path": "registry/msh-ui/blocks/pricing-01/pricing-01.tsx",

@@ -10,6 +10,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/registry/msh-ui/ui/popover"
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from "@/registry/msh-ui/ui/tabs"
 
 export type ColorFormat = "hex" | "rgb" | "hsl"
 
@@ -481,27 +486,22 @@ function FormatTabs() {
   const ctx = useColorPicker()
   const formats: ColorFormat[] = ["hex", "rgb", "hsl"]
   return (
-    <div className="inline-flex w-full rounded-sm border border-input p-0.5">
-      {formats.map((f) => {
-        const active = ctx.format === f
-        return (
-          <button
+    <Tabs
+      value={ctx.format}
+      onValueChange={(v) => ctx.setFormat(v as ColorFormat)}
+    >
+      <TabsList className="w-full">
+        {formats.map((f) => (
+          <TabsTrigger
             key={f}
-            type="button"
-            aria-pressed={active}
-            onClick={() => ctx.setFormat(f)}
-            className={cn(
-              "flex-1 rounded-[3px] py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors",
-              active
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent"
-            )}
+            value={f}
+            className="font-mono text-[10px] uppercase tracking-[0.12em]"
           >
             {f}
-          </button>
-        )
-      })}
-    </div>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   )
 }
 

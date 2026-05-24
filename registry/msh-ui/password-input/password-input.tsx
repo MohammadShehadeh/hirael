@@ -4,7 +4,12 @@ import * as React from "react"
 import { Eye, EyeOff } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Input } from "@/registry/msh-ui/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/registry/msh-ui/ui/input-group"
 
 export type PasswordStrength = {
   score: number
@@ -133,35 +138,36 @@ function PasswordInputField({
 }: PasswordInputFieldProps) {
   const ctx = usePasswordContext()
   return (
-    <div data-slot="password-input-field" className="relative">
-      <Input
+    <InputGroup
+      data-slot="password-input-field"
+      data-disabled={ctx.disabled || undefined}
+      className={cn(ctx.disabled && "opacity-60", className)}
+    >
+      <InputGroupInput
         id={ctx.id}
         type={ctx.visible ? "text" : "password"}
         value={ctx.value}
         onChange={(e) => ctx.setValue(e.target.value)}
         disabled={ctx.disabled}
         autoComplete="current-password"
-        className={cn(showToggle && "pr-10", className)}
         {...props}
       />
       {showToggle && (
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label={ctx.visible ? toggleLabel.hide : toggleLabel.show}
-          aria-pressed={ctx.visible}
-          onClick={() => ctx.setVisible(!ctx.visible)}
-          disabled={ctx.disabled}
-          className="absolute right-1 top-1/2 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-        >
-          {ctx.visible ? (
-            <EyeOff className="size-3.5" />
-          ) : (
-            <Eye className="size-3.5" />
-          )}
-        </button>
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            type="button"
+            size="icon-sm"
+            tabIndex={-1}
+            aria-label={ctx.visible ? toggleLabel.hide : toggleLabel.show}
+            aria-pressed={ctx.visible}
+            disabled={ctx.disabled}
+            onClick={() => ctx.setVisible(!ctx.visible)}
+          >
+            {ctx.visible ? <EyeOff /> : <Eye />}
+          </InputGroupButton>
+        </InputGroupAddon>
       )}
-    </div>
+    </InputGroup>
   )
 }
 

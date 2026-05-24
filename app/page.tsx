@@ -58,10 +58,11 @@ function Hero() {
   const blocks = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
-    <section className="relative">
+    <section className="relative overflow-hidden">
+      <span aria-hidden className="ambient-halo" />
       <div
         aria-hidden
-        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40"
+        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-25"
         style={{
           maskImage:
             "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
@@ -70,22 +71,50 @@ function Hero() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+      <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         <div className="relative mx-auto flex flex-col items-center gap-6 border border-border bg-background/30 px-6 py-14 text-center sm:gap-7 sm:py-20 md:py-24">
           <CornerMarks />
 
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md">
+            <span className="state-dot" />
+            <span>Live · Registry nominal</span>
+          </span>
+
           <h1
-            className="text-balance text-3xl leading-[1.05] tracking-[-0.025em] sm:text-4xl md:text-5xl lg:text-6xl"
+            className="text-balance text-4xl leading-[1.02] sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
           >
-            <span className="font-semibold">Tools</span>{" "}
-            <span className="font-normal text-muted-foreground">for</span>{" "}
-            <span className="font-semibold">builders</span>
+            <span
+              className="font-semibold"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              Tools
+            </span>{" "}
+            <span
+              className="font-normal text-muted-foreground"
+              style={{ letterSpacing: "0.005em" }}
+            >
+              for
+            </span>{" "}
+            <span
+              className="font-semibold"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              builders
+            </span>
             <br />
-            <span className="font-normal text-muted-foreground">
+            <span
+              className="font-normal text-muted-foreground"
+              style={{ letterSpacing: "0.005em" }}
+            >
               who think in
             </span>{" "}
-            <span className="font-semibold">systems.</span>
+            <span
+              className="font-semibold"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              systems.
+            </span>
           </h1>
 
           <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
@@ -97,14 +126,17 @@ function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Link
               href="/components"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Explore
             </Link>
           </div>
 
           <div className="w-full max-w-md pt-2">
-            <InstallBlock name="multi-select" />
+            <InstallBlock
+              name="multi-select"
+              className="glass-panel border-0"
+            />
           </div>
         </div>
       </div>
@@ -136,12 +168,15 @@ function CategoryGrid() {
   )
 
   return (
-    <section className="border-t border-border">
+    <section className="relative">
+      <hr className="rule-gradient" />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              ◆ Section blocks
+            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="text-foreground/90">/01</span>
+              <span className="h-px w-4 bg-border" />
+              Section blocks
             </span>
             <h2
               className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"

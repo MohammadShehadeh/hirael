@@ -33,6 +33,7 @@ export function SiteHeader({
     <header
       className={cn(
         "sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50",
+        "after:pointer-events-none after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent-cool/30 after:to-transparent",
         className
       )}
     >

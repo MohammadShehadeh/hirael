@@ -32,6 +32,8 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-accent-cool: var(--accent-cool);
+  --color-accent-cool-glow: var(--accent-cool-glow);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -89,6 +91,15 @@
   --sidebar-accent-foreground: oklch(0.910 0.008 85);
   --sidebar-border: oklch(0.910 0.008 85 / 10%);
   --sidebar-ring: oklch(0.710 0.013 80);
+
+  /* Cool emotional accent — used only to tag live/active system state
+   * against the warm canvas. Restraint is the whole point. */
+  --accent-cool: oklch(0.68 0.13 250);
+  --accent-cool-glow: oklch(0.68 0.13 250 / 30%);
+  /* Ambient halo washes behind the hero. Warm-near + cool-far gives
+   * the layered atmosphere; the drift keyframe orbits them slowly. */
+  --halo-cool: oklch(0.55 0.10 240 / 14%);
+  --halo-warm: oklch(0.71 0.04 80 / 8%);
 }
 
 /* Light: warm off-white canvas, deep slate ink. */
@@ -124,6 +135,11 @@
   --sidebar-accent-foreground: oklch(0.225 0.018 254);
   --sidebar-border: oklch(0.155 0.013 250 / 14%);
   --sidebar-ring: oklch(0.430 0.015 260);
+
+  --accent-cool: oklch(0.50 0.14 250);
+  --accent-cool-glow: oklch(0.50 0.14 250 / 22%);
+  --halo-cool: oklch(0.55 0.08 240 / 7%);
+  --halo-warm: oklch(0.71 0.04 80 / 6%);
 }
 
 /* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
@@ -170,6 +186,24 @@ html.light .shiki span {
       "calt" 1;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+    position: relative;
+  }
+  /* Site-wide noise grain — kills the flat-canvas feel without
+   * announcing itself. ~2% opacity, tiled SVG turbulence. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+  }
+  html.light body::before {
+    opacity: 0.018;
+    mix-blend-mode: multiply;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -204,6 +238,68 @@ html.light .shiki span {
 }
 
 @layer utilities {
+  /* Ambient halo — large soft radial glows behind the hero. Warm-near
+   * + cool-far creates depth; the slow drift keeps it alive without
+   * being noticeable as motion. */
+  .ambient-halo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 55% 45% at 50% 0%,
+        var(--halo-cool),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 75% 50% at 50% 35%,
+        var(--halo-warm),
+        transparent 75%
+      );
+    animation: ambient-drift 42s ease-in-out infinite;
+  }
+
+  /* Hybrid glass + hairline. Used only on focal containers so the rest
+   * of the doc-grade structure (plain hairline borders) stays clear.
+   * Doubled selector raises specificity so this beats Tailwind's
+   * bg-card on shared targets. */
+  .glass-panel.glass-panel {
+    background-color: color-mix(in oklch, var(--card) 55%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border);
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 8%, transparent),
+      0 1px 24px -8px color-mix(in oklch, var(--accent-cool) 12%, transparent);
+  }
+
+  /* Hairline gradient rule — fades out at the edges. Replaces solid
+   * border-t between sections for editorial polish. */
+  .rule-gradient {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--border) 12%,
+      var(--border) 88%,
+      transparent
+    );
+    border: 0;
+  }
+
+  /* Cool state indicator. Pulses on a 3s cycle — system-feedback
+   * pacing, not UI animation. */
+  .state-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: var(--accent-cool);
+    box-shadow: 0 0 10px 1px var(--accent-cool-glow);
+    animation: state-pulse 3s ease-in-out infinite;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -254,4 +350,57 @@ html.light .shiki span {
     inset: 0 5px;
     width: 1px;
   }
+}
+
+@keyframes ambient-drift {
+  0%,
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      6% -4%,
+      -8% 5%;
+  }
+}
+
+@keyframes state-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    box-shadow: 0 0 10px 1px var(--accent-cool-glow);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 18px 3px var(--accent-cool-glow);
+  }
+}
+
+/* Site chrome should sit above the noise overlay so it isn't tinted. */
+header,
+main,
+footer,
+[data-sidebar] {
+  position: relative;
+  z-index: 2;
+}
+
+/* Active sidebar item gets a thin cool-accent rail on the left edge.
+ * Only this one place uses --accent-cool in the chrome — it's the
+ * "you are here" system signal against the warm canvas. */
+[data-sidebar="menu-button"][data-active="true"] {
+  position: relative;
+}
+[data-sidebar="menu-button"][data-active="true"]::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--accent-cool);
+  box-shadow: 0 0 8px 0 var(--accent-cool-glow);
 }

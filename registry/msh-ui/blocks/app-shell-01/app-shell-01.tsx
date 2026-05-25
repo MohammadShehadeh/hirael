@@ -26,27 +26,45 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/registry/msh-ui/ui/input-group"
-import { KbdDisplay, KbdGroup } from "@/registry/msh-ui/ui/kbd"
+import { KbdDisplay } from "@/registry/msh-ui/ui/kbd"
 import { Separator } from "@/registry/msh-ui/ui/separator"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarSeparator,
+  SidebarTrigger,
+} from "@/registry/msh-ui/ui/sidebar"
 
 type NavLink = {
   label: string
   icon: LucideIcon
+  href: string
   active?: boolean
   badge?: string
 }
 
 const PRIMARY: readonly NavLink[] = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Inbox", icon: Inbox, badge: "3" },
-  { label: "Customers", icon: Users },
-  { label: "Billing", icon: CreditCard },
-  { label: "Explore", icon: Compass },
+  { label: "Dashboard", icon: LayoutDashboard, href: "#", active: true },
+  { label: "Inbox", icon: Inbox, href: "#", badge: "3" },
+  { label: "Customers", icon: Users, href: "#" },
+  { label: "Billing", icon: CreditCard, href: "#" },
+  { label: "Explore", icon: Compass, href: "#" },
 ]
 
 const SECONDARY: readonly NavLink[] = [
-  { label: "Settings", icon: Settings },
-  { label: "Support", icon: LifeBuoy },
+  { label: "Settings", icon: Settings, href: "#" },
+  { label: "Support", icon: LifeBuoy, href: "#" },
 ]
 
 type Account = {
@@ -72,24 +90,16 @@ const METRICS = [
   { l: "NPS", v: "62", d: "+2" },
 ] as const
 
-function planBadge(plan: Account["plan"]) {
-  const tone =
-    plan === "Hobby"
-      ? "outline"
-      : plan === "Pro"
-        ? "default"
-        : "default"
-  return (
-    <Badge variant={tone as "outline" | "default"} className="font-mono">
-      {plan}
-    </Badge>
-  )
+function statusDot(status: Account["status"]) {
+  if (status === "Active") return "bg-emerald-500"
+  if (status === "Trial") return "bg-yellow-500"
+  return "bg-red-500"
 }
 
-function statusTone(status: Account["status"]) {
-  if (status === "Active") return "text-emerald-500 bg-emerald-500"
-  if (status === "Trial") return "text-yellow-500 bg-yellow-500"
-  return "text-red-500 bg-red-500"
+function statusText(status: Account["status"]) {
+  if (status === "Active") return "text-emerald-500"
+  if (status === "Trial") return "text-yellow-500"
+  return "text-red-500"
 }
 
 export default function AppShell01() {
@@ -106,93 +116,84 @@ export default function AppShell01() {
   }, [query])
 
   return (
-    <section className="bg-muted/40 py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <div className="flex flex-col items-start gap-3 pb-10">
-          <Badge variant="outline">· app shell</Badge>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-            Sidebar, topbar, content — wired and searchable.
-          </h2>
-          <p className="max-w-xl text-base text-muted-foreground">
-            A complete admin shell with breadcrumb chrome, command-palette
-            shortcut, and a live-filtering accounts table. Drop into any Next
-            App Router project.
-          </p>
-        </div>
-
-        <Card
-          className="overflow-hidden rounded-md p-0"
-          style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
-        >
-          <div className="flex items-center gap-3 border-b border-border bg-card px-3 py-2">
-            <div className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-border" />
-              <span className="size-2.5 rounded-full bg-border" />
-              <span className="size-2.5 rounded-full bg-border" />
-            </div>
-            <div className="ml-2 hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex">
-              <span className="text-muted-foreground/60">~</span>
-              app.msh-ui.dev / dashboard
-            </div>
-            <KbdGroup className="ml-auto">
-              <KbdDisplay>
-                <Command className="size-3" />
-              </KbdDisplay>
-              <KbdDisplay>K</KbdDisplay>
-            </KbdGroup>
+    <SidebarProvider>
+      <Sidebar collapsible="icon">
+        <SidebarHeader>
+          <div className="flex items-center gap-2 px-1 py-1">
+            <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-sidebar-border bg-sidebar-accent font-mono text-[10px] font-semibold text-sidebar-accent-foreground">
+              ◆
+            </span>
+            <span className="truncate text-sm font-semibold tracking-[-0.01em] group-data-[collapsible=icon]:hidden">
+              MSH UI
+            </span>
+            <Badge
+              variant="outline"
+              className="ml-auto group-data-[collapsible=icon]:hidden"
+            >
+              Pro
+            </Badge>
           </div>
+        </SidebarHeader>
 
-          <div className="grid grid-cols-1 md:grid-cols-[220px_1fr]">
-            <aside className="hidden border-r border-border bg-card/40 p-3 md:flex md:flex-col">
-              <div className="flex items-center gap-2 px-2 py-1.5">
-                <span className="inline-flex size-6 items-center justify-center rounded-sm border border-border bg-background font-mono text-[10px] font-semibold">
-                  ◆
-                </span>
-                <span className="text-sm font-semibold tracking-[-0.01em]">
-                  MSH UI
-                </span>
-              </div>
-
-              <InputGroup className="mt-3 h-8">
-                <InputGroupAddon align="inline-start">
-                  <Search className="size-3.5" />
-                </InputGroupAddon>
-                <InputGroupInput
-                  placeholder="Search…"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  aria-label="Search accounts"
-                />
-                <InputGroupAddon align="inline-end">
-                  <KbdDisplay>⌘K</KbdDisplay>
-                </InputGroupAddon>
-              </InputGroup>
-
-              <span className="mt-5 px-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Workspace
-              </span>
-              <ul className="mt-2 flex flex-col gap-0.5">
-                {PRIMARY.map((n) => (
-                  <NavRow key={n.label} item={n} />
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {PRIMARY.map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={item.active}
+                      tooltip={item.label}
+                    >
+                      <a href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </a>
+                    </SidebarMenuButton>
+                    {item.badge && (
+                      <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
+                    )}
+                  </SidebarMenuItem>
                 ))}
-              </ul>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
 
-              <Separator className="my-4" />
+          <SidebarSeparator />
 
-              <span className="px-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Account
-              </span>
-              <ul className="mt-2 flex flex-col gap-0.5">
-                {SECONDARY.map((n) => (
-                  <NavRow key={n.label} item={n} />
+          <SidebarGroup>
+            <SidebarGroupLabel>Account</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {SECONDARY.map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton asChild tooltip={item.label}>
+                      <a href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 ))}
-              </ul>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-              <div className="mt-auto flex items-center gap-2 rounded-sm border border-border bg-background p-2">
-                <span className="inline-flex size-7 items-center justify-center rounded-full bg-foreground font-mono text-[10px] font-medium text-background">
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                size="lg"
+                tooltip="Mohammad Shehadeh"
+                className="group-data-[collapsible=icon]:p-1.5!"
+              >
+                <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-sidebar-primary font-mono text-[10px] font-medium text-sidebar-primary-foreground">
                   MS
                 </span>
-                <div className="flex min-w-0 flex-col leading-tight">
+                <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
                   <span className="truncate text-xs font-medium">
                     Mohammad Shehadeh
                   </span>
@@ -200,180 +201,189 @@ export default function AppShell01() {
                     admin · plinth labs
                   </span>
                 </div>
-              </div>
-            </aside>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
 
-            <div className="flex min-h-[560px] flex-col bg-background">
-              <div className="flex items-center gap-3 border-b border-border px-4 py-2.5">
-                <nav
-                  aria-label="Breadcrumb"
-                  className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
-                  <span>Workspace</span>
-                  <ChevronRight className="size-3" aria-hidden />
-                  <span className="text-foreground">Dashboard</span>
-                </nav>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    aria-label="Notifications"
-                    className="relative size-8"
-                  >
-                    <Bell className="size-3.5" />
-                    <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
-                  </Button>
-                  <Button size="sm">
-                    <Plus className="size-3" />
-                    New customer
-                  </Button>
-                </div>
-              </div>
+      <SidebarInset className="min-w-0">
+        <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-3 backdrop-blur sm:px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+          <nav
+            aria-label="Breadcrumb"
+            className="hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex"
+          >
+            <span>Workspace</span>
+            <ChevronRight className="size-3" aria-hidden />
+            <span className="text-foreground">Dashboard</span>
+          </nav>
 
-              <div className="flex flex-col gap-5 p-5">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {METRICS.map((m) => (
-                    <Card key={m.l} className="gap-1 p-3">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-                        {m.l}
-                      </span>
-                      <span className="text-lg font-semibold tabular-nums">
-                        {m.v}
-                      </span>
-                      <span className="font-mono text-[10px] tabular-nums text-emerald-500">
-                        {m.d}
-                      </span>
-                    </Card>
-                  ))}
-                </div>
+          <InputGroup className="ml-auto h-8 max-w-xs">
+            <InputGroupAddon align="inline-start">
+              <Search className="size-3.5" />
+            </InputGroupAddon>
+            <InputGroupInput
+              placeholder="Search accounts…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search accounts"
+            />
+            <InputGroupAddon align="inline-end" className="hidden sm:flex">
+              <KbdDisplay>
+                <Command className="size-3" />
+              </KbdDisplay>
+              <KbdDisplay>K</KbdDisplay>
+            </InputGroupAddon>
+          </InputGroup>
 
-                <Card className="gap-0 overflow-hidden p-0">
-                  <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                      · recent accounts
-                      {query && (
-                        <span className="ml-2 text-foreground">
-                          ({filteredRows.length} of {ROWS.length})
-                        </span>
-                      )}
-                    </span>
-                    <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                      <a href="#">View all</a>
-                    </Button>
-                  </div>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Notifications"
+            className="relative size-8"
+          >
+            <Bell className="size-3.5" />
+            <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
+          </Button>
+          <Button size="sm" className="hidden sm:inline-flex">
+            <Plus className="size-3" />
+            New customer
+          </Button>
+          <Button size="icon" className="size-8 sm:hidden" aria-label="New customer">
+            <Plus className="size-3.5" />
+          </Button>
+        </header>
 
-                  {filteredRows.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-                      <p className="text-sm font-medium">No matches</p>
-                      <p className="text-xs text-muted-foreground">
-                        Nothing matched{" "}
-                        <span className="font-mono text-foreground">
-                          &ldquo;{query}&rdquo;
-                        </span>
-                        . Clear the search to see all accounts.
-                      </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-2"
-                        onClick={() => setQuery("")}
-                      >
-                        Clear search
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="text-left font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                            <th className="px-4 py-2 font-normal">Account</th>
-                            <th className="px-4 py-2 font-normal">Plan</th>
-                            <th className="hidden px-4 py-2 font-normal sm:table-cell">
-                              MRR
-                            </th>
-                            <th className="px-4 py-2 font-normal">Status</th>
-                            <th className="px-4 py-2 text-right font-normal">
-                              <span className="sr-only">Actions</span>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredRows.map((r) => (
-                            <tr
-                              key={r.name}
-                              className="border-t border-border text-sm transition-colors hover:bg-accent/30"
-                            >
-                              <td className="px-4 py-2.5">
-                                <span className="inline-flex items-center gap-2">
-                                  <span className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium text-foreground">
-                                    {r.initials}
-                                  </span>
-                                  <span className="font-medium">{r.name}</span>
-                                </span>
-                              </td>
-                              <td className="px-4 py-2.5">{planBadge(r.plan)}</td>
-                              <td className="hidden px-4 py-2.5 font-mono tabular-nums text-foreground sm:table-cell">
-                                {r.mrr}
-                              </td>
-                              <td className="px-4 py-2.5">
-                                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
-                                  <span
-                                    className={`size-1.5 rounded-full ${statusTone(r.status).split(" ")[1]}`}
-                                  />
-                                  <span
-                                    className={statusTone(r.status).split(" ")[0]}
-                                  >
-                                    {r.status}
-                                  </span>
-                                </span>
-                              </td>
-                              <td className="px-4 py-2.5 text-right">
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="size-7"
-                                  aria-label={`Actions for ${r.name}`}
-                                >
-                                  <MoreHorizontal className="size-3.5" />
-                                </Button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </Card>
-              </div>
-            </div>
+        <div className="flex flex-1 flex-col gap-5 p-4 sm:p-6">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-semibold tracking-[-0.02em]">
+              Dashboard
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              An overview of customers, revenue, and recent activity.
+            </p>
           </div>
-        </Card>
-      </div>
-    </section>
-  )
-}
 
-function NavRow({ item }: { item: NavLink }) {
-  const Icon = item.icon
-  return (
-    <li>
-      <a
-        href="#"
-        aria-current={item.active ? "page" : undefined}
-        className={`group flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors ${
-          item.active
-            ? "bg-accent text-foreground"
-            : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
-        }`}
-      >
-        <Icon className="size-3.5 shrink-0" />
-        <span className="truncate">{item.label}</span>
-        {item.badge && (
-          <Badge variant="outline" className="ml-auto font-mono tabular-nums">
-            {item.badge}
-          </Badge>
-        )}
-      </a>
-    </li>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {METRICS.map((m) => (
+              <Card key={m.l} className="gap-1 p-3">
+                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {m.l}
+                </span>
+                <span className="text-lg font-semibold tabular-nums">
+                  {m.v}
+                </span>
+                <span className="font-mono text-[10px] tabular-nums text-emerald-500">
+                  {m.d}
+                </span>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="gap-0 overflow-hidden p-0">
+            <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                · recent accounts
+                {query && (
+                  <span className="ml-2 text-foreground">
+                    ({filteredRows.length} of {ROWS.length})
+                  </span>
+                )}
+              </span>
+              <Button variant="link" size="sm" className="h-auto p-0" asChild>
+                <a href="#">View all</a>
+              </Button>
+            </div>
+
+            {filteredRows.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+                <p className="text-sm font-medium">No matches</p>
+                <p className="text-xs text-muted-foreground">
+                  Nothing matched{" "}
+                  <span className="font-mono text-foreground">
+                    &ldquo;{query}&rdquo;
+                  </span>
+                  . Clear the search to see all accounts.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => setQuery("")}
+                >
+                  Clear search
+                </Button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="text-left font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      <th className="px-4 py-2 font-normal">Account</th>
+                      <th className="px-4 py-2 font-normal">Plan</th>
+                      <th className="hidden px-4 py-2 font-normal sm:table-cell">
+                        MRR
+                      </th>
+                      <th className="px-4 py-2 font-normal">Status</th>
+                      <th className="px-4 py-2 text-right font-normal">
+                        <span className="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRows.map((r) => (
+                      <tr
+                        key={r.name}
+                        className="border-t border-border text-sm transition-colors hover:bg-accent/30"
+                      >
+                        <td className="px-4 py-2.5">
+                          <span className="inline-flex items-center gap-2">
+                            <span className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium text-foreground">
+                              {r.initials}
+                            </span>
+                            <span className="font-medium">{r.name}</span>
+                          </span>
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <Badge
+                            variant={r.plan === "Hobby" ? "outline" : "default"}
+                            className="font-mono"
+                          >
+                            {r.plan}
+                          </Badge>
+                        </td>
+                        <td className="hidden px-4 py-2.5 font-mono tabular-nums text-foreground sm:table-cell">
+                          {r.mrr}
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
+                            <span className={`size-1.5 rounded-full ${statusDot(r.status)}`} />
+                            <span className={statusText(r.status)}>
+                              {r.status}
+                            </span>
+                          </span>
+                        </td>
+                        <td className="px-4 py-2.5 text-right">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="size-7"
+                            aria-label={`Actions for ${r.name}`}
+                          >
+                            <MoreHorizontal className="size-3.5" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Card>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

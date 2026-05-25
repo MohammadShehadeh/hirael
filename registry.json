@@ -737,7 +737,7 @@
       "name": "app-shell-01",
       "type": "registry:block",
       "title": "App Shell · sidebar + topbar",
-      "description": "Framed app-shell with browser chrome, sidebar nav, breadcrumb topbar, search InputGroup wired to a live-filtering accounts table, 4-up metric strip and an empty-search state.",
+      "description": "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
       "categories": ["blocks", "app-shell"],
       "dependencies": ["lucide-react"],
       "registryDependencies": [
@@ -746,7 +746,8 @@
         "card",
         "input-group",
         "kbd",
-        "separator"
+        "separator",
+        "sidebar"
       ],
       "files": [
         {

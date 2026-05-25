@@ -710,8 +710,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "app-shell-01",
     title: "App Shell · sidebar + topbar",
     description:
-      "Framed app-shell with browser chrome, sidebar nav, breadcrumb topbar, search InputGroup wired to a live-filtering accounts table, 4-up metric strip and an empty-search state.",
-    blockTagline: "Searchable table · Kbd · sidebar nav",
+      "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
+    blockTagline: "Collapsible Sidebar · sticky topbar · live table",
     category: "blocks",
     blockKind: "app-shell",
     status: "stable",
@@ -725,6 +725,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "input-group",
       "kbd",
       "separator",
+      "sidebar",
     ],
     dependencies: ["lucide-react"],
   },

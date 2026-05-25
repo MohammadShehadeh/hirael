@@ -1,0 +1,72 @@
+import type { MetadataRoute } from "next"
+
+import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories"
+import { SITE } from "@/lib/site"
+import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+
+export const dynamic = "force-static"
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date()
+
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE.url}/`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${SITE.url}/components`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE.url}/blocks`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE.url}/theme`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+  ]
+
+  const componentRoutes: MetadataRoute.Sitemap = REGISTRY.filter(
+    (entry) => entry.category !== "blocks" && entry.status === "stable"
+  ).map((entry) => ({
+    url: `${SITE.url}/${entry.name}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }))
+
+  const blockRoutes: MetadataRoute.Sitemap = REGISTRY.filter(
+    (entry) => entry.category === "blocks"
+  ).map((entry) => ({
+    url: `${SITE.url}/blocks/${entry.name}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
+  const blockCategoryRoutes: MetadataRoute.Sitemap = CATEGORY_REGISTRY.filter(
+    (category) => !category.comingSoon
+  ).map((category) => ({
+    url: `${SITE.url}/blocks/${category.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
+  return [
+    ...staticRoutes,
+    ...componentRoutes,
+    ...blockRoutes,
+    ...blockCategoryRoutes,
+  ]
+}

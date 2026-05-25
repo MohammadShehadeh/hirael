@@ -5,6 +5,7 @@ import { ArrowRight, Layers, Palette } from "lucide-react"
 import { InlineCodeBlock } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { highlightCode } from "@/lib/highlight"
+import { SITE } from "@/lib/site"
 import {
   BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
@@ -34,10 +35,38 @@ const COMPOSE_SNIPPET = `import {
   <MultiSelectContent searchPlaceholder="Filter…" />
 </MultiSelect>`
 
+const COMPONENTS_DESCRIPTION =
+  "Browse the full MSH UI component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship."
+
 export const metadata: Metadata = {
-  title: "Components — MSH UI",
-  description:
-    "Browse the full MSH UI component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship.",
+  title: "Components",
+  description: COMPONENTS_DESCRIPTION,
+  alternates: {
+    canonical: "/components",
+  },
+  openGraph: {
+    type: "website",
+    url: `${SITE.url}/components`,
+    siteName: SITE.name,
+    title: `Components — ${SITE.name}`,
+    description: COMPONENTS_DESCRIPTION,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `Components — ${SITE.name}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Components — ${SITE.name}`,
+    description: COMPONENTS_DESCRIPTION,
+    creator: SITE.twitterHandle,
+    site: SITE.twitterHandle,
+    images: ["/opengraph-image"],
+  },
 }
 
 export default async function ComponentsIndex() {

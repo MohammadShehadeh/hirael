@@ -11,6 +11,7 @@ import {
 import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
+import { SITE } from "@/lib/site"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/msh-ui/registry-meta"
 
 export const dynamicParams = false
@@ -31,16 +32,72 @@ export async function generateMetadata({
   const { block } = await params
   const category = CATEGORY_BY_SLUG[block]
   if (category) {
+    const title = `${category.title} blocks — ${SITE.name}`
+    const url = `${SITE.url}/blocks/${category.slug}`
     return {
       title: `${category.title} blocks`,
       description: category.description,
+      alternates: {
+        canonical: `/blocks/${category.slug}`,
+      },
+      openGraph: {
+        type: "website",
+        url,
+        siteName: SITE.name,
+        title,
+        description: category.description,
+        images: [
+          {
+            url: "/opengraph-image",
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description: category.description,
+        creator: SITE.twitterHandle,
+        site: SITE.twitterHandle,
+        images: ["/opengraph-image"],
+      },
     }
   }
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") return {}
+  const url = `${SITE.url}/blocks/${entry.name}`
+  const title = `${entry.title} block — ${SITE.name}`
   return {
     title: `${entry.title} block`,
     description: entry.description,
+    alternates: {
+      canonical: `/blocks/${entry.name}`,
+    },
+    openGraph: {
+      type: "article",
+      url,
+      siteName: SITE.name,
+      title,
+      description: entry.description,
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: entry.description,
+      creator: SITE.twitterHandle,
+      site: SITE.twitterHandle,
+      images: ["/opengraph-image"],
+    },
   }
 }
 

@@ -17,10 +17,31 @@ import {
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,
   description: SITE.longDescription,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
+    type: "website",
+    url: SITE.url,
+    siteName: SITE.name,
     title: `${SITE.name} — ${SITE.description}`,
     description: SITE.longDescription,
-    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} — ${SITE.description}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.description}`,
+    description: SITE.longDescription,
+    creator: SITE.twitterHandle,
+    site: SITE.twitterHandle,
+    images: ["/opengraph-image"],
   },
 }
 

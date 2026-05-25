@@ -1,12 +1,41 @@
 import type { Metadata } from "next"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
+import { SITE } from "@/lib/site"
 import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+
+const BLOCKS_DESCRIPTION =
+  "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the MSH UI aesthetic."
 
 export const metadata: Metadata = {
   title: "Blocks",
-  description:
-    "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the MSH UI aesthetic.",
+  description: BLOCKS_DESCRIPTION,
+  alternates: {
+    canonical: "/blocks",
+  },
+  openGraph: {
+    type: "website",
+    url: `${SITE.url}/blocks`,
+    siteName: SITE.name,
+    title: `Blocks — ${SITE.name}`,
+    description: BLOCKS_DESCRIPTION,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `Blocks — ${SITE.name}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Blocks — ${SITE.name}`,
+    description: BLOCKS_DESCRIPTION,
+    creator: SITE.twitterHandle,
+    site: SITE.twitterHandle,
+    images: ["/opengraph-image"],
+  },
 }
 
 export default function BlocksIndex() {

@@ -1,9 +1,12 @@
 import * as React from "react"
 
+import AnnouncementBarDemo from "@/registry/msh-ui/announcement-bar/announcement-bar.demo"
+import AvatarStackDemo from "@/registry/msh-ui/avatar-stack/avatar-stack.demo"
 import CalloutDemo from "@/registry/msh-ui/callout/callout.demo"
 import ColorPickerDemo from "@/registry/msh-ui/color-picker/color-picker.demo"
 import ComboboxDemo from "@/registry/msh-ui/combobox/combobox.demo"
 import CurrencyInputDemo from "@/registry/msh-ui/currency-input/currency-input.demo"
+import EmptyStateDemo from "@/registry/msh-ui/empty-state/empty-state.demo"
 import FileDropzoneDemo from "@/registry/msh-ui/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/msh-ui/kbd/kbd.demo"
 import MonthPickerDemo from "@/registry/msh-ui/month-picker/month-picker.demo"
@@ -19,8 +22,11 @@ import TimelineDemo from "@/registry/msh-ui/timeline/timeline.demo"
 import TimePickerDemo from "@/registry/msh-ui/time-picker/time-picker.demo"
 import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
+import Blog01 from "@/registry/msh-ui/blocks/blog-01/blog-01"
+import Contact01 from "@/registry/msh-ui/blocks/contact-01/contact-01"
 import Cta01 from "@/registry/msh-ui/blocks/cta-01/cta-01"
 import Cta02 from "@/registry/msh-ui/blocks/cta-02/cta-02"
+import Dashboard01 from "@/registry/msh-ui/blocks/dashboard-01/dashboard-01"
 import Faq01 from "@/registry/msh-ui/blocks/faq-01/faq-01"
 import Faq02 from "@/registry/msh-ui/blocks/faq-02/faq-02"
 import Feature01 from "@/registry/msh-ui/blocks/feature-01/feature-01"
@@ -29,6 +35,7 @@ import Footer01 from "@/registry/msh-ui/blocks/footer-01/footer-01"
 import Header01 from "@/registry/msh-ui/blocks/header-01/header-01"
 import Hero01 from "@/registry/msh-ui/blocks/hero-01/hero-01"
 import Hero02 from "@/registry/msh-ui/blocks/hero-02/hero-02"
+import LogoCloud01 from "@/registry/msh-ui/blocks/logo-cloud-01/logo-cloud-01"
 import Login01 from "@/registry/msh-ui/blocks/login-01/login-01"
 import Login02 from "@/registry/msh-ui/blocks/login-02/login-02"
 import NotFound01 from "@/registry/msh-ui/blocks/not-found-01/not-found-01"
@@ -56,6 +63,10 @@ export type BlockKind =
   | "header"
   | "footer"
   | "not-found"
+  | "logo-cloud"
+  | "contact"
+  | "blog"
+  | "dashboard"
 
 export type RegistryEntryMeta = {
   name: string
@@ -549,6 +560,102 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["popover", "input"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "avatar-stack",
+    title: "Avatar Stack",
+    description:
+      "Overlapping avatar group with size and spacing variants, plus a numeric overflow chip for hidden members.",
+    category: "data",
+    status: "stable",
+    Demo: AvatarStackDemo,
+    sourceFiles: ["registry/msh-ui/ui/avatar-stack.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "announcement-bar",
+    title: "Announcement Bar",
+    description:
+      "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
+    category: "display",
+    status: "stable",
+    Demo: AnnouncementBarDemo,
+    sourceFiles: ["registry/msh-ui/ui/announcement-bar.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "empty-state",
+    title: "Empty State",
+    description:
+      "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
+    category: "display",
+    status: "stable",
+    Demo: EmptyStateDemo,
+    sourceFiles: ["registry/msh-ui/ui/empty-state.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "logo-cloud-01",
+    title: "Logo Cloud · bordered grid",
+    description:
+      "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
+    blockTagline: "Bordered grid · 10 wordmarks · stat strip",
+    category: "blocks",
+    blockKind: "logo-cloud",
+    status: "stable",
+    Demo: LogoCloud01,
+    sourceFiles: ["registry/msh-ui/blocks/logo-cloud-01/logo-cloud-01.tsx"],
+    installTargets: ["components/blocks/logo-cloud-01.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "contact-01",
+    title: "Contact · split form",
+    description:
+      "Two-column contact: name / email / company / message form on the left, channel list + remote-location card on the right.",
+    blockTagline: "Split form · 4 fields · channel list",
+    category: "blocks",
+    blockKind: "contact",
+    status: "stable",
+    Demo: Contact01,
+    sourceFiles: ["registry/msh-ui/blocks/contact-01/contact-01.tsx"],
+    installTargets: ["components/blocks/contact-01.tsx"],
+    registryDependencies: ["button", "input", "label", "textarea"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "blog-01",
+    title: "Blog · featured + grid",
+    description:
+      "Editorial blog index with a featured post on top and a 4-column grid of bordered post cards underneath.",
+    blockTagline: "Featured post · 4-up grid · editorial",
+    category: "blocks",
+    blockKind: "blog",
+    status: "stable",
+    Demo: Blog01,
+    sourceFiles: ["registry/msh-ui/blocks/blog-01/blog-01.tsx"],
+    installTargets: ["components/blocks/blog-01.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "dashboard-01",
+    title: "Dashboard · metrics + chart",
+    description:
+      "Operations dashboard with a 4-up metric strip, weekly bar chart and a recent-activity feed in a side card.",
+    blockTagline: "4 metrics · bar chart · activity feed",
+    category: "blocks",
+    blockKind: "dashboard",
+    status: "stable",
+    Demo: Dashboard01,
+    sourceFiles: ["registry/msh-ui/blocks/dashboard-01/dashboard-01.tsx"],
+    installTargets: ["components/blocks/dashboard-01.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 export const REGISTRY_BY_NAME = Object.fromEntries(
@@ -588,6 +695,10 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   header: "Headers",
   footer: "Footers",
   "not-found": "404",
+  "logo-cloud": "Logo cloud",
+  contact: "Contact",
+  blog: "Blog",
+  dashboard: "Dashboard",
 }
 
 export const BLOCKS_BY_KIND = (() => {
@@ -602,6 +713,10 @@ export const BLOCKS_BY_KIND = (() => {
     header: [],
     footer: [],
     "not-found": [],
+    "logo-cloud": [],
+    contact: [],
+    blog: [],
+    dashboard: [],
   }
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -622,4 +737,8 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "header",
   "footer",
   "not-found",
+  "logo-cloud",
+  "contact",
+  "blog",
+  "dashboard",
 ]

@@ -405,14 +405,14 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "blog",
     title: "Blog Sections",
-    comingSoon: true,
+    blockKind: "blog",
     description:
       "Article grids, featured-post heroes, and editorial card layouts.",
   },
   {
     slug: "contact",
     title: "Contact",
-    comingSoon: true,
+    blockKind: "contact",
     description:
       "Split form-and-info layouts, map embeds, and inline support panels.",
   },
@@ -433,7 +433,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "logo-cloud",
     title: "Logo Cloud",
-    comingSoon: true,
+    blockKind: "logo-cloud",
     description:
       "Trusted-by wordmark rows, marquee strips, and bordered logo grids.",
   },
@@ -447,7 +447,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "dashboard",
     title: "Dashboard",
-    comingSoon: true,
+    blockKind: "dashboard",
     description:
       "Stat cards, charts, and table-driven views composed into full dashboards.",
   },
@@ -468,13 +468,13 @@ const CATEGORIES: CategoryDefWithIllustration[] = [
   { ...CATEGORY_BY_SLUG["header"], count: BLOCKS_BY_KIND.header.length, illustration: IllHeader },
   { ...CATEGORY_BY_SLUG["footer"], count: BLOCKS_BY_KIND.footer.length, illustration: IllFooter },
   { ...CATEGORY_BY_SLUG["not-found"], count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
-  { ...CATEGORY_BY_SLUG["blog"], count: 0, illustration: IllBlog },
-  { ...CATEGORY_BY_SLUG["contact"], count: 0, illustration: IllContact },
+  { ...CATEGORY_BY_SLUG["blog"], count: BLOCKS_BY_KIND.blog.length, illustration: IllBlog },
+  { ...CATEGORY_BY_SLUG["contact"], count: BLOCKS_BY_KIND.contact.length, illustration: IllContact },
   { ...CATEGORY_BY_SLUG["image-gallery"], count: 0, illustration: IllGallery },
   { ...CATEGORY_BY_SLUG["integrations"], count: 0, illustration: IllIntegrations },
-  { ...CATEGORY_BY_SLUG["logo-cloud"], count: 0, illustration: IllLogoCloud },
+  { ...CATEGORY_BY_SLUG["logo-cloud"], count: BLOCKS_BY_KIND["logo-cloud"].length, illustration: IllLogoCloud },
   { ...CATEGORY_BY_SLUG["app-shell"], count: 0, illustration: IllAppShell },
-  { ...CATEGORY_BY_SLUG["dashboard"], count: 0, illustration: IllDashboard },
+  { ...CATEGORY_BY_SLUG["dashboard"], count: BLOCKS_BY_KIND.dashboard.length, illustration: IllDashboard },
 ]
 
 function countLabel(count: number, free?: number) {

@@ -156,6 +156,10 @@ const BLOCK_ORDER: BlockKind[] = [
   "header",
   "footer",
   "not-found",
+  "logo-cloud",
+  "contact",
+  "blog",
+  "dashboard",
 ]
 
 function CategoryGrid() {

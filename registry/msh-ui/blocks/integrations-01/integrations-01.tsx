@@ -14,10 +14,14 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
+import { Badge } from "@/registry/msh-ui/ui/badge"
+import { Button } from "@/registry/msh-ui/ui/button"
+import { Card } from "@/registry/msh-ui/ui/card"
+
 type Spoke = {
   name: string
   icon: LucideIcon
-  /** Position on the orbit ring, in degrees clockwise from top (0 = 12 o&apos;clock). */
+  /** Position on the orbit ring, in degrees clockwise from top (0 = 12 o'clock). */
   angle: number
   category: string
 }
@@ -34,7 +38,10 @@ const SPOKES: readonly Spoke[] = [
 
 export default function Integrations01() {
   return (
-    <section className="relative isolate overflow-hidden bg-background py-20 sm:py-28">
+    <section
+      className="relative isolate overflow-hidden bg-background py-20 sm:py-28"
+      aria-labelledby="integrations-01-heading"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
@@ -48,10 +55,13 @@ export default function Integrations01() {
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="flex flex-col gap-5 lg:col-span-5">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            <Badge variant="outline" className="w-fit">
               · integrations
-            </span>
-            <h2 className="text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl md:text-5xl">
+            </Badge>
+            <h2
+              id="integrations-01-heading"
+              className="text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl md:text-5xl"
+            >
               Plays well with the rest of your stack.
             </h2>
             <p className="text-base text-muted-foreground sm:text-lg">
@@ -70,20 +80,19 @@ export default function Integrations01() {
                     <s.icon className="size-3" />
                   </span>
                   <span className="font-medium">{s.name}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    · {s.category}
-                  </span>
+                  <Badge variant="outline" className="ml-auto sm:ml-0">
+                    {s.category}
+                  </Badge>
                 </li>
               ))}
             </ul>
 
-            <a
-              href="#"
-              className="group mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground"
-            >
-              Browse all 40+ integrations
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-            </a>
+            <Button asChild variant="link" className="group mt-4 h-auto w-fit p-0">
+              <a href="#">
+                Browse all 40+ integrations
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              </a>
+            </Button>
           </div>
 
           <div className="relative flex items-center justify-center lg:col-span-7">
@@ -155,8 +164,8 @@ function Hub() {
         style={{ background: "var(--primary)" }}
       />
 
-      <div
-        className="absolute left-1/2 top-1/2 flex aspect-square -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border border-border bg-card shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)]"
+      <Card
+        className="absolute left-1/2 top-1/2 flex aspect-square -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-0 rounded-2xl p-0 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)]"
         style={{ width: "22%" }}
       >
         <div className="flex flex-col items-center gap-1.5">
@@ -169,7 +178,7 @@ function Hub() {
           aria-hidden
           className="absolute -inset-2 -z-10 rounded-2xl border border-dashed border-border opacity-70"
         />
-      </div>
+      </Card>
 
       {SPOKES.map((s) => {
         const rad = ((s.angle - 90) * Math.PI) / 180
@@ -198,7 +207,6 @@ function Hub() {
           </div>
         )
       })}
-
     </div>
   )
 }

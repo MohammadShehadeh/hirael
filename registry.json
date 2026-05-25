@@ -690,6 +690,54 @@
           "target": "components/blocks/dashboard-01.tsx"
         }
       ]
+    },
+    {
+      "name": "integrations-01",
+      "type": "registry:block",
+      "title": "Integrations · hub & spoke",
+      "description": "Two-column integrations section with copy and feature list on the left, animated orbit diagram (central hub + 7 logo spokes) on the right.",
+      "categories": ["blocks", "integrations"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/integrations-01/integrations-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/integrations-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "image-gallery-01",
+      "type": "registry:block",
+      "title": "Image Gallery · masonry + filter",
+      "description": "Studio-style masonry gallery with chip filters, gradient placeholder tiles, varied aspect ratios and a hover arrow.",
+      "categories": ["blocks", "image-gallery"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/image-gallery-01/image-gallery-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/image-gallery-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-01",
+      "type": "registry:block",
+      "title": "App Shell · sidebar + topbar",
+      "description": "Framed app-shell preview with browser chrome, sidebar nav, breadcrumb topbar, 4-up metric strip and an accounts table.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/app-shell-01/app-shell-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-01.tsx"
+        }
+      ]
     }
   ]
 }

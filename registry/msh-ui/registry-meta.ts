@@ -22,6 +22,7 @@ import TimelineDemo from "@/registry/msh-ui/timeline/timeline.demo"
 import TimePickerDemo from "@/registry/msh-ui/time-picker/time-picker.demo"
 import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
+import AppShell01 from "@/registry/msh-ui/blocks/app-shell-01/app-shell-01"
 import Blog01 from "@/registry/msh-ui/blocks/blog-01/blog-01"
 import Contact01 from "@/registry/msh-ui/blocks/contact-01/contact-01"
 import Cta01 from "@/registry/msh-ui/blocks/cta-01/cta-01"
@@ -35,6 +36,8 @@ import Footer01 from "@/registry/msh-ui/blocks/footer-01/footer-01"
 import Header01 from "@/registry/msh-ui/blocks/header-01/header-01"
 import Hero01 from "@/registry/msh-ui/blocks/hero-01/hero-01"
 import Hero02 from "@/registry/msh-ui/blocks/hero-02/hero-02"
+import ImageGallery01 from "@/registry/msh-ui/blocks/image-gallery-01/image-gallery-01"
+import Integrations01 from "@/registry/msh-ui/blocks/integrations-01/integrations-01"
 import LogoCloud01 from "@/registry/msh-ui/blocks/logo-cloud-01/logo-cloud-01"
 import Login01 from "@/registry/msh-ui/blocks/login-01/login-01"
 import Login02 from "@/registry/msh-ui/blocks/login-02/login-02"
@@ -67,6 +70,9 @@ export type BlockKind =
   | "contact"
   | "blog"
   | "dashboard"
+  | "integrations"
+  | "image-gallery"
+  | "app-shell"
 
 export type RegistryEntryMeta = {
   name: string
@@ -656,6 +662,55 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "integrations-01",
+    title: "Integrations · hub & spoke",
+    description:
+      "Two-column integrations section with copy and feature list on the left, animated orbit diagram (central hub + 7 logo spokes) on the right.",
+    blockTagline: "Hub & spoke · 7 spokes · orbit ring",
+    category: "blocks",
+    blockKind: "integrations",
+    status: "stable",
+    Demo: Integrations01,
+    sourceFiles: [
+      "registry/msh-ui/blocks/integrations-01/integrations-01.tsx",
+    ],
+    installTargets: ["components/blocks/integrations-01.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "image-gallery-01",
+    title: "Image Gallery · masonry + filter",
+    description:
+      "Studio-style masonry gallery with chip filters, gradient placeholder tiles, varied aspect ratios and a hover arrow.",
+    blockTagline: "Masonry · chip filter · gradient tiles",
+    category: "blocks",
+    blockKind: "image-gallery",
+    status: "stable",
+    Demo: ImageGallery01,
+    sourceFiles: [
+      "registry/msh-ui/blocks/image-gallery-01/image-gallery-01.tsx",
+    ],
+    installTargets: ["components/blocks/image-gallery-01.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "app-shell-01",
+    title: "App Shell · sidebar + topbar",
+    description:
+      "Framed app-shell preview with browser chrome, sidebar nav, breadcrumb topbar, 4-up metric strip and an accounts table.",
+    blockTagline: "Sidebar · topbar · table · chrome frame",
+    category: "blocks",
+    blockKind: "app-shell",
+    status: "stable",
+    Demo: AppShell01,
+    sourceFiles: ["registry/msh-ui/blocks/app-shell-01/app-shell-01.tsx"],
+    installTargets: ["components/blocks/app-shell-01.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 export const REGISTRY_BY_NAME = Object.fromEntries(
@@ -699,6 +754,9 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   contact: "Contact",
   blog: "Blog",
   dashboard: "Dashboard",
+  integrations: "Integrations",
+  "image-gallery": "Image gallery",
+  "app-shell": "App shell",
 }
 
 export const BLOCKS_BY_KIND = (() => {
@@ -717,6 +775,9 @@ export const BLOCKS_BY_KIND = (() => {
     contact: [],
     blog: [],
     dashboard: [],
+    integrations: [],
+    "image-gallery": [],
+    "app-shell": [],
   }
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -741,4 +802,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "contact",
   "blog",
   "dashboard",
+  "integrations",
+  "image-gallery",
+  "app-shell",
 ]

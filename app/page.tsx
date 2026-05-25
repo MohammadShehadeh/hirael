@@ -160,6 +160,9 @@ const BLOCK_ORDER: BlockKind[] = [
   "contact",
   "blog",
   "dashboard",
+  "integrations",
+  "image-gallery",
+  "app-shell",
 ]
 
 function CategoryGrid() {

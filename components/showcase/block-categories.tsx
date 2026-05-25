@@ -419,14 +419,14 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "image-gallery",
     title: "Image Gallery",
-    comingSoon: true,
+    blockKind: "image-gallery",
     description:
       "Masonry, grid, and carousel gallery layouts with optional lightbox.",
   },
   {
     slug: "integrations",
     title: "Integrations",
-    comingSoon: true,
+    blockKind: "integrations",
     description:
       "Hub-and-spoke diagrams, integration cards, and connector showcases.",
   },
@@ -440,7 +440,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "app-shell",
     title: "App Shell",
-    comingSoon: true,
+    blockKind: "app-shell",
     description:
       "Sidebar + topbar layouts with command-palette and breadcrumb chrome.",
   },
@@ -470,10 +470,10 @@ const CATEGORIES: CategoryDefWithIllustration[] = [
   { ...CATEGORY_BY_SLUG["not-found"], count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
   { ...CATEGORY_BY_SLUG["blog"], count: BLOCKS_BY_KIND.blog.length, illustration: IllBlog },
   { ...CATEGORY_BY_SLUG["contact"], count: BLOCKS_BY_KIND.contact.length, illustration: IllContact },
-  { ...CATEGORY_BY_SLUG["image-gallery"], count: 0, illustration: IllGallery },
-  { ...CATEGORY_BY_SLUG["integrations"], count: 0, illustration: IllIntegrations },
+  { ...CATEGORY_BY_SLUG["image-gallery"], count: BLOCKS_BY_KIND["image-gallery"].length, illustration: IllGallery },
+  { ...CATEGORY_BY_SLUG["integrations"], count: BLOCKS_BY_KIND.integrations.length, illustration: IllIntegrations },
   { ...CATEGORY_BY_SLUG["logo-cloud"], count: BLOCKS_BY_KIND["logo-cloud"].length, illustration: IllLogoCloud },
-  { ...CATEGORY_BY_SLUG["app-shell"], count: 0, illustration: IllAppShell },
+  { ...CATEGORY_BY_SLUG["app-shell"], count: BLOCKS_BY_KIND["app-shell"].length, illustration: IllAppShell },
   { ...CATEGORY_BY_SLUG["dashboard"], count: BLOCKS_BY_KIND.dashboard.length, illustration: IllDashboard },
 ]
 

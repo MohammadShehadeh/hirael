@@ -578,6 +578,184 @@
           "target": "components/blocks/not-found-01.tsx"
         }
       ]
+    },
+    {
+      "name": "avatar-stack",
+      "type": "registry:ui",
+      "title": "Avatar Stack",
+      "description": "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
+      "categories": ["data"],
+      "dependencies": ["@radix-ui/react-slot"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/ui/avatar-stack.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/avatar-stack.tsx"
+        }
+      ]
+    },
+    {
+      "name": "announcement-bar",
+      "type": "registry:ui",
+      "title": "Announcement Bar",
+      "description": "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
+      "categories": ["display"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/ui/announcement-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/announcement-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
+      "categories": ["display"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/msh-ui/ui/empty-state.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/empty-state.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-cloud-01",
+      "type": "registry:block",
+      "title": "Logo Cloud · bordered grid",
+      "description": "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
+      "categories": ["blocks", "logo-cloud"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/logo-cloud-01/logo-cloud-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/logo-cloud-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "contact-01",
+      "type": "registry:block",
+      "title": "Contact · split form",
+      "description": "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
+      "categories": ["blocks", "contact"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "checkbox",
+        "field",
+        "input",
+        "select",
+        "separator",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/contact-01/contact-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/contact-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "blog-01",
+      "type": "registry:block",
+      "title": "Blog · featured + grid",
+      "description": "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
+      "categories": ["blocks", "blog"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card", "separator"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/blog-01/blog-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/blog-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-01",
+      "type": "registry:block",
+      "title": "Dashboard · metrics + chart",
+      "description": "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card", "separator", "tabs"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/dashboard-01/dashboard-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "integrations-01",
+      "type": "registry:block",
+      "title": "Integrations · hub & spoke",
+      "description": "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
+      "categories": ["blocks", "integrations"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/integrations-01/integrations-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/integrations-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "image-gallery-01",
+      "type": "registry:block",
+      "title": "Image Gallery · masonry + filter",
+      "description": "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+      "categories": ["blocks", "image-gallery"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "empty-state", "tabs"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/image-gallery-01/image-gallery-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/image-gallery-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-01",
+      "type": "registry:block",
+      "title": "App Shell · sidebar + topbar",
+      "description": "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "input-group",
+        "kbd",
+        "separator",
+        "sidebar"
+      ],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/app-shell-01/app-shell-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-01.tsx"
+        }
+      ]
     }
   ]
 }

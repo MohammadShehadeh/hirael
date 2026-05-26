@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ExternalLink, Maximize2, Monitor, Smartphone, Tablet } from "lucide-react"
+import { ExternalLink, Monitor, RefreshCw, Smartphone, Tablet } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -88,7 +88,7 @@ export function BlockViewer({
             aria-label="Refresh preview"
             className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Maximize2 className="size-3.5 -rotate-45" />
+            <RefreshCw className="size-3.5" />
           </button>
           <a
             href={`/embed/blocks/${name}`}

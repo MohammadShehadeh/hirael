@@ -7,7 +7,7 @@ import {
   Download,
   Filter,
   Minus,
-  RefreshCcw,
+  RefreshCw,
 } from "lucide-react"
 
 import { Badge } from "@/registry/msh-ui/ui/badge"
@@ -214,7 +214,7 @@ export default function Dashboard01() {
               disabled={refreshing}
               aria-label="Refresh data"
             >
-              <RefreshCcw
+              <RefreshCw
                 className={`size-3.5 ${refreshing ? "animate-spin" : ""}`}
               />
               <span className="hidden sm:inline">Refresh</span>

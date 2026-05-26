@@ -24,16 +24,17 @@ type Spoke = {
   /** Position on the orbit ring, in degrees clockwise from top (0 = 12 o'clock). */
   angle: number
   category: string
+  href: string
 }
 
 const SPOKES: readonly Spoke[] = [
-  { name: "GitHub", icon: Github, angle: 0, category: "Source" },
-  { name: "Postgres", icon: Database, angle: 51, category: "Storage" },
-  { name: "Resend", icon: Mail, angle: 103, category: "Email" },
-  { name: "Discord", icon: MessageCircle, angle: 154, category: "Comms" },
-  { name: "S3", icon: Cloud, angle: 206, category: "Storage" },
-  { name: "Vault", icon: Lock, angle: 257, category: "Secrets" },
-  { name: "npm", icon: Package, angle: 309, category: "Registry" },
+  { name: "GitHub", icon: Github, angle: 0, category: "Source", href: "#" },
+  { name: "Postgres", icon: Database, angle: 51, category: "Storage", href: "#" },
+  { name: "Resend", icon: Mail, angle: 103, category: "Email", href: "#" },
+  { name: "Discord", icon: MessageCircle, angle: 154, category: "Comms", href: "#" },
+  { name: "S3", icon: Cloud, angle: 206, category: "Storage", href: "#" },
+  { name: "Vault", icon: Lock, angle: 257, category: "Secrets", href: "#" },
+  { name: "npm", icon: Package, angle: 309, category: "Registry", href: "#" },
 ] as const
 
 export default function Integrations01() {
@@ -70,19 +71,24 @@ export default function Integrations01() {
               in, and we don&apos;t bring our own server.
             </p>
 
-            <ul className="mt-2 grid grid-cols-2 gap-x-6 gap-y-3 sm:max-w-md">
+            <ul
+              aria-label="Supported integrations"
+              className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 sm:max-w-md"
+            >
               {SPOKES.map((s) => (
-                <li
-                  key={s.name}
-                  className="flex items-center gap-2 text-sm text-foreground"
-                >
-                  <span className="inline-flex size-6 items-center justify-center rounded-sm border border-border bg-card">
-                    <s.icon className="size-3" />
-                  </span>
-                  <span className="font-medium">{s.name}</span>
-                  <Badge variant="outline" className="ml-auto sm:ml-0">
-                    {s.category}
-                  </Badge>
+                <li key={s.name}>
+                  <a
+                    href={s.href}
+                    className="flex items-center gap-2 rounded-sm px-1 py-1.5 text-sm text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <span className="inline-flex size-6 items-center justify-center rounded-sm border border-border bg-card">
+                      <s.icon className="size-3" />
+                    </span>
+                    <span className="font-medium">{s.name}</span>
+                    <Badge variant="outline" className="ml-auto sm:ml-0">
+                      {s.category}
+                    </Badge>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -185,9 +191,11 @@ function Hub() {
         const x = 50 + orbit * Math.cos(rad)
         const y = 50 + orbit * Math.sin(rad)
         return (
-          <div
+          <a
             key={s.name}
-            className="group absolute"
+            href={s.href}
+            aria-label={`${s.name} integration · ${s.category}`}
+            className="group absolute rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             style={{
               left: `${x}%`,
               top: `${y}%`,
@@ -195,16 +203,16 @@ function Hub() {
             }}
           >
             <span className="absolute -inset-2 -z-10 rounded-full bg-background" />
-            <div className="relative inline-flex size-12 items-center justify-center rounded-xl border border-border bg-card text-foreground shadow-sm transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-foreground/40">
+            <span className="relative inline-flex size-12 items-center justify-center rounded-xl border border-border bg-card text-foreground shadow-sm transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-foreground/40">
               <s.icon className="size-5" aria-hidden />
-            </div>
+            </span>
             <span
               className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover:text-foreground"
               style={{ width: "max-content" }}
             >
               {s.name}
             </span>
-          </div>
+          </a>
         )
       })}
     </div>

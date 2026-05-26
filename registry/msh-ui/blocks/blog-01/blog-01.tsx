@@ -23,6 +23,8 @@ type Post = {
   date: string
   readMin: number
   href: string
+  /** Optional cover image URL. If absent, a stylized placeholder renders. */
+  cover?: string
 }
 
 const FEATURED: Post = {
@@ -79,6 +81,63 @@ const POSTS: readonly Post[] = [
   },
 ]
 
+function PostCover({
+  cover,
+  alt,
+  category,
+  featured,
+}: {
+  cover?: string
+  alt: string
+  category: string
+  featured?: boolean
+}) {
+  if (cover) {
+    return (
+      <div className="relative size-full overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={cover}
+          alt={alt}
+          loading="lazy"
+          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+        />
+        <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
+          {featured && <Badge>Featured</Badge>}
+          <Badge variant="outline" className="border-white/30 text-white">
+            {category}
+          </Badge>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative size-full overflow-hidden bg-card">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full opacity-[0.18] blur-3xl"
+        style={{ background: "var(--primary)" }}
+      />
+      <div className="absolute inset-0 flex items-end p-4">
+        <div className="flex items-center gap-2">
+          {featured && <Badge>Featured</Badge>}
+          <Badge variant="outline">{category}</Badge>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Blog01() {
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -104,117 +163,133 @@ export default function Blog01() {
           </Button>
         </div>
 
-        <article className="mt-10 grid grid-cols-1 gap-8 border-b border-border pb-10 lg:grid-cols-12">
-          <a
-            href={FEATURED.href}
-            className="group relative col-span-1 block aspect-[16/10] overflow-hidden rounded-md border border-border bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:col-span-7"
+        <Card className="group mt-10 gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30">
+          <article
             aria-labelledby="blog-01-featured-title"
+            className="relative grid grid-cols-1 lg:grid-cols-12"
           >
-            <div
+            <a
+              href={FEATURED.href}
               aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-                backgroundSize: "24px 24px",
-              }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full opacity-[0.18] blur-3xl"
-              style={{ background: "var(--primary)" }}
-            />
-            <div className="absolute inset-0 flex items-end p-6">
-              <div className="flex flex-col items-start gap-2">
-                <Badge>Featured</Badge>
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {FEATURED.category}
+              tabIndex={-1}
+              className="block aspect-[16/10] lg:col-span-7 lg:aspect-auto"
+            >
+              <PostCover
+                cover={FEATURED.cover}
+                alt={FEATURED.title}
+                category={FEATURED.category}
+                featured
+              />
+            </a>
+
+            <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                {FEATURED.date} · {FEATURED.readMin} min read
+              </span>
+              <h3
+                id="blog-01-featured-title"
+                className="text-balance text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
+              >
+                <a
+                  href={FEATURED.href}
+                  className="after:absolute after:inset-0 focus-visible:outline-none"
+                >
+                  {FEATURED.title}
+                </a>
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {FEATURED.excerpt}
+              </p>
+              <div className="mt-2 flex items-center gap-3">
+                <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-muted font-mono text-xs font-medium text-foreground">
+                  {FEATURED.author.initials}
+                </span>
+                <span className="text-sm text-foreground">
+                  {FEATURED.author.name}
                 </span>
               </div>
-            </div>
-          </a>
-
-          <div className="flex flex-col gap-4 lg:col-span-5">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              {FEATURED.date} · {FEATURED.readMin} min read
-            </span>
-            <h3
-              id="blog-01-featured-title"
-              className="text-balance text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
-            >
-              <a
-                href={FEATURED.href}
-                className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              <Button
+                asChild
+                variant="default"
+                className="group/cta relative z-10 mt-2 w-fit"
               >
-                {FEATURED.title}
-              </a>
-            </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {FEATURED.excerpt}
-            </p>
-            <div className="mt-2 flex items-center gap-3">
-              <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-muted font-mono text-xs font-medium text-foreground">
-                {FEATURED.author.initials}
-              </span>
-              <span className="text-sm text-foreground">
-                {FEATURED.author.name}
-              </span>
+                <a href={FEATURED.href}>
+                  Read the post
+                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5" />
+                </a>
+              </Button>
             </div>
-            <Button asChild variant="default" className="group mt-2 w-fit">
-              <a href={FEATURED.href}>
-                Read the post
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-              </a>
-            </Button>
-          </div>
-        </article>
+          </article>
+        </Card>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {POSTS.map((p) => (
-            <Card
-              key={p.title}
-              className="group gap-4 py-5 transition-colors hover:border-foreground/30 focus-within:border-foreground/30"
-            >
-              <CardHeader className="px-5">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline">{p.category}</Badge>
-                  <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    <Clock className="size-2.5" />
-                    {p.readMin}m
-                  </span>
-                </div>
-                <CardTitle className="mt-2 text-balance text-base leading-snug tracking-[-0.01em]">
-                  <a
-                    href={p.href}
-                    className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    {p.title}
-                  </a>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-5">
-                <CardDescription className="line-clamp-3">
-                  {p.excerpt}
-                </CardDescription>
-              </CardContent>
-              <Separator />
-              <CardFooter className="px-5">
-                <div className="flex w-full items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex size-6 items-center justify-center rounded-full border border-border bg-muted font-mono text-[10px] font-medium text-foreground">
-                      {p.author.initials}
-                    </span>
-                    <span className="truncate text-xs text-foreground">
-                      {p.author.name}
-                    </span>
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    {p.date}
-                  </span>
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
+          {POSTS.map((p) => {
+            const titleId = `blog-01-post-${p.title.replace(/\s+/g, "-").slice(0, 24)}`
+            return (
+              <Card
+                key={p.title}
+                className="group relative gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30"
+              >
+                <article aria-labelledby={titleId} className="contents">
+                  {p.cover && (
+                    <a
+                      href={p.href}
+                      aria-hidden
+                      tabIndex={-1}
+                      className="block aspect-[16/10] overflow-hidden"
+                    >
+                      <PostCover cover={p.cover} alt={p.title} category={p.category} />
+                    </a>
+                  )}
+                  <CardHeader className="px-5 pt-5">
+                    <div className="flex items-center justify-between">
+                      {!p.cover ? (
+                        <Badge variant="outline">{p.category}</Badge>
+                      ) : (
+                        <span aria-hidden />
+                      )}
+                      <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                        <Clock className="size-2.5" />
+                        {p.readMin}m
+                      </span>
+                    </div>
+                    <CardTitle
+                      id={titleId}
+                      className="mt-2 text-balance text-base leading-snug tracking-[-0.01em]"
+                    >
+                      <a
+                        href={p.href}
+                        className="after:absolute after:inset-0 focus-visible:outline-none"
+                      >
+                        {p.title}
+                      </a>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-5 py-4">
+                    <CardDescription className="line-clamp-3">
+                      {p.excerpt}
+                    </CardDescription>
+                  </CardContent>
+                  <Separator />
+                  <CardFooter className="px-5 py-4">
+                    <div className="flex w-full items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex size-6 items-center justify-center rounded-full border border-border bg-muted font-mono text-[10px] font-medium text-foreground">
+                          {p.author.initials}
+                        </span>
+                        <span className="truncate text-xs text-foreground">
+                          {p.author.name}
+                        </span>
+                      </div>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                        {p.date}
+                      </span>
+                    </div>
+                  </CardFooter>
+                </article>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -8,12 +8,14 @@ import { Button } from "@/registry/msh-ui/ui/button"
 
 type Logo = {
   name: string
+  href: string
   mark: React.ReactNode
 }
 
 const LOGOS: readonly Logo[] = [
   {
     name: "Acme",
+    href: "#",
     mark: (
       <span className="font-mono text-sm font-semibold tracking-[-0.02em]">
         <span aria-hidden className="mr-1 text-primary">◆</span>
@@ -23,6 +25,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Helix",
+    href: "#",
     mark: (
       <span className="text-sm font-semibold tracking-[-0.02em]">
         <span aria-hidden className="mr-1">⌬</span>
@@ -32,6 +35,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Northwind",
+    href: "#",
     mark: (
       <span className="text-sm font-medium uppercase tracking-[0.04em]">
         Northwind
@@ -40,6 +44,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Vanta",
+    href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
         <span aria-hidden className="mr-1">▲</span>
@@ -49,6 +54,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Quartz",
+    href: "#",
     mark: (
       <span className="text-sm font-semibold tracking-[-0.04em]">
         Quartz<span className="text-primary">.</span>
@@ -57,6 +63,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Lattice",
+    href: "#",
     mark: (
       <span className="text-sm font-medium tracking-[-0.01em]">
         <span aria-hidden className="mr-1">⬢</span>
@@ -66,6 +73,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Plinth",
+    href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
         plinth<span className="text-muted-foreground">·labs</span>
@@ -74,6 +82,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Brella",
+    href: "#",
     mark: (
       <span className="text-sm font-semibold italic tracking-[-0.02em]">
         Brella
@@ -82,6 +91,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Verbit",
+    href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
         <span aria-hidden className="mr-1">◇</span>
@@ -91,6 +101,7 @@ const LOGOS: readonly Logo[] = [
   },
   {
     name: "Mercado",
+    href: "#",
     mark: (
       <span className="text-sm font-medium uppercase tracking-[0.08em]">
         Mercado
@@ -134,14 +145,16 @@ export default function LogoCloud01() {
           className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-5"
         >
           {LOGOS.map((logo) => (
-            <li
-              key={logo.name}
-              className="group flex h-20 items-center justify-center bg-background px-4 transition-colors hover:bg-card"
-              aria-label={logo.name}
-            >
-              <div className="text-muted-foreground transition-colors group-hover:text-foreground">
-                {logo.mark}
-              </div>
+            <li key={logo.name} className="bg-background">
+              <a
+                href={logo.href}
+                aria-label={`Read ${logo.name}'s case study`}
+                className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:outline-none focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              >
+                <span className="text-muted-foreground transition-colors group-hover:text-foreground">
+                  {logo.mark}
+                </span>
+              </a>
             </li>
           ))}
         </ul>

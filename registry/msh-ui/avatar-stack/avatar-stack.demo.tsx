@@ -78,6 +78,34 @@ export default function AvatarStackDemo() {
           </p>
         </div>
       </div>
+
+      <div className="grid gap-2">
+        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          Clickable · asChild
+        </p>
+        <AvatarStack>
+          <AvatarStackItem asChild>
+            <a href="#" aria-label="Maya Renner">
+              MR
+            </a>
+          </AvatarStackItem>
+          <AvatarStackItem asChild>
+            <a href="#" aria-label="Soren Kim">
+              SK
+            </a>
+          </AvatarStackItem>
+          <AvatarStackItem asChild>
+            <a href="#" aria-label="Jules Tanaka">
+              JT
+            </a>
+          </AvatarStackItem>
+          <AvatarStackOverflow asChild count={6}>
+            <a href="#" aria-label="View 6 more collaborators">
+              +6
+            </a>
+          </AvatarStackOverflow>
+        </AvatarStack>
+      </div>
     </div>
   )
 }

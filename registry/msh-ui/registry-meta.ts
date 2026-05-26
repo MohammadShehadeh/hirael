@@ -570,13 +570,13 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "avatar-stack",
     title: "Avatar Stack",
     description:
-      "Overlapping avatar group with size and spacing variants, plus a numeric overflow chip for hidden members.",
+      "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
     category: "data",
     status: "stable",
     Demo: AvatarStackDemo,
     sourceFiles: ["registry/msh-ui/ui/avatar-stack.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["@radix-ui/react-slot"],
   },
   {
     name: "announcement-bar",

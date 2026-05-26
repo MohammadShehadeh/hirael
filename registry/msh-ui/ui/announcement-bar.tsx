@@ -8,7 +8,11 @@ import { cn } from "@/lib/utils"
 type AnnouncementBarProps = React.ComponentProps<"div"> & {
   tone?: "default" | "primary" | "muted"
   dismissible?: boolean
+  /** Controlled-open. If provided, internal state is bypassed. */
+  open?: boolean
+  /** Fires when the user dismisses via the close button. */
   onDismiss?: () => void
+  /** localStorage key. When set, the dismissed state is persisted across reloads. */
   storageKey?: string
 }
 
@@ -18,31 +22,57 @@ const toneClasses: Record<NonNullable<AnnouncementBarProps["tone"]>, string> = {
   muted: "border-border bg-muted text-foreground",
 }
 
+const noopUnsubscribe = () => () => {}
+
+// Server render returns false (visible by default) so the SSR HTML and the
+// hydration pass agree without warnings. Once hydration is committed, the
+// real storage value is read — returning users see the bar hide.
+function useStoredDismiss(storageKey?: string) {
+  const subscribe = React.useCallback(
+    (cb: () => void) => {
+      if (!storageKey || typeof window === "undefined") return noopUnsubscribe()
+      const handler = (e: StorageEvent) => {
+        if (e.key === storageKey) cb()
+      }
+      window.addEventListener("storage", handler)
+      return () => window.removeEventListener("storage", handler)
+    },
+    [storageKey]
+  )
+  const getSnapshot = React.useCallback(() => {
+    if (!storageKey || typeof window === "undefined") return false
+    try {
+      return window.localStorage.getItem(storageKey) === "1"
+    } catch {
+      return false
+    }
+  }, [storageKey])
+  const getServerSnapshot = React.useCallback(() => false, [])
+  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+}
+
 function AnnouncementBar({
   className,
   tone = "default",
   dismissible = false,
+  open,
   onDismiss,
   storageKey,
   children,
   ...props
 }: AnnouncementBarProps) {
-  const [dismissed, setDismissed] = React.useState(false)
+  const storedDismissed = useStoredDismiss(storageKey)
+  const [localDismissed, setLocalDismissed] = React.useState(false)
 
-  React.useEffect(() => {
-    if (storageKey && typeof window !== "undefined") {
-      try {
-        if (window.localStorage.getItem(storageKey) === "1") {
-          setDismissed(true)
-        }
-      } catch {}
-    }
-  }, [storageKey])
+  const isControlled = open !== undefined
+  const dismissed = isControlled
+    ? !open
+    : storedDismissed || localDismissed
 
   if (dismissed) return null
 
   const handleDismiss = () => {
-    setDismissed(true)
+    if (!isControlled) setLocalDismissed(true)
     if (storageKey && typeof window !== "undefined") {
       try {
         window.localStorage.setItem(storageKey, "1")
@@ -55,6 +85,8 @@ function AnnouncementBar({
 
   return (
     <div
+      role="region"
+      aria-label="Site announcement"
       data-slot="announcement-bar"
       data-tone={tone}
       className={cn(

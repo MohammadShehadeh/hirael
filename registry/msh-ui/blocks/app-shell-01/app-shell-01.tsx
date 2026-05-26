@@ -119,23 +119,26 @@ export default function AppShell01() {
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarHeader>
-          <div className="flex items-center gap-2 px-1 py-1">
-            <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-sidebar-border bg-sidebar-accent font-mono text-[10px] font-semibold text-sidebar-accent-foreground">
-              ◆
-            </span>
-            <span className="truncate text-sm font-semibold tracking-[-0.01em] group-data-[collapsible=icon]:hidden">
-              MSH UI
-            </span>
-            <Badge
-              variant="outline"
-              className="ml-auto group-data-[collapsible=icon]:hidden"
-            >
-              Pro
-            </Badge>
-          </div>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" tooltip="MSH UI">
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
+                  ◆
+                </span>
+                <div className="grid flex-1 text-left leading-tight">
+                  <span className="truncate text-sm font-semibold tracking-[-0.01em]">
+                    MSH UI
+                  </span>
+                  <span className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    plinth labs · pro
+                  </span>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="overflow-hidden">
           <SidebarGroup>
             <SidebarGroupLabel>Workspace</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -185,15 +188,11 @@ export default function AppShell01() {
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                size="lg"
-                tooltip="Mohammad Shehadeh"
-                className="group-data-[collapsible=icon]:p-1.5!"
-              >
-                <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-sidebar-primary font-mono text-[10px] font-medium text-sidebar-primary-foreground">
+              <SidebarMenuButton size="lg" tooltip="Mohammad Shehadeh">
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-[10px] font-medium text-sidebar-primary-foreground">
                   MS
                 </span>
-                <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
+                <div className="grid flex-1 text-left leading-tight">
                   <span className="truncate text-xs font-medium">
                     Mohammad Shehadeh
                   </span>

@@ -1,9 +1,12 @@
 import * as React from "react"
 
+import AnnouncementBarDemo from "@/registry/hirael/announcement-bar/announcement-bar.demo"
+import AvatarStackDemo from "@/registry/hirael/avatar-stack/avatar-stack.demo"
 import CalloutDemo from "@/registry/hirael/callout/callout.demo"
 import ColorPickerDemo from "@/registry/hirael/color-picker/color-picker.demo"
 import ComboboxDemo from "@/registry/hirael/combobox/combobox.demo"
 import CurrencyInputDemo from "@/registry/hirael/currency-input/currency-input.demo"
+import EmptyStateDemo from "@/registry/hirael/empty-state/empty-state.demo"
 import FileDropzoneDemo from "@/registry/hirael/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/hirael/kbd/kbd.demo"
 import MonthPickerDemo from "@/registry/hirael/month-picker/month-picker.demo"
@@ -19,8 +22,12 @@ import TimelineDemo from "@/registry/hirael/timeline/timeline.demo"
 import TimePickerDemo from "@/registry/hirael/time-picker/time-picker.demo"
 import YearPickerDemo from "@/registry/hirael/year-picker/year-picker.demo"
 
+import AppShell01 from "@/registry/hirael/blocks/app-shell-01/app-shell-01"
+import Blog01 from "@/registry/hirael/blocks/blog-01/blog-01"
+import Contact01 from "@/registry/hirael/blocks/contact-01/contact-01"
 import Cta01 from "@/registry/hirael/blocks/cta-01/cta-01"
 import Cta02 from "@/registry/hirael/blocks/cta-02/cta-02"
+import Dashboard01 from "@/registry/hirael/blocks/dashboard-01/dashboard-01"
 import Faq01 from "@/registry/hirael/blocks/faq-01/faq-01"
 import Faq02 from "@/registry/hirael/blocks/faq-02/faq-02"
 import Feature01 from "@/registry/hirael/blocks/feature-01/feature-01"
@@ -29,6 +36,9 @@ import Footer01 from "@/registry/hirael/blocks/footer-01/footer-01"
 import Header01 from "@/registry/hirael/blocks/header-01/header-01"
 import Hero01 from "@/registry/hirael/blocks/hero-01/hero-01"
 import Hero02 from "@/registry/hirael/blocks/hero-02/hero-02"
+import ImageGallery01 from "@/registry/hirael/blocks/image-gallery-01/image-gallery-01"
+import Integrations01 from "@/registry/hirael/blocks/integrations-01/integrations-01"
+import LogoCloud01 from "@/registry/hirael/blocks/logo-cloud-01/logo-cloud-01"
 import Login01 from "@/registry/hirael/blocks/login-01/login-01"
 import Login02 from "@/registry/hirael/blocks/login-02/login-02"
 import NotFound01 from "@/registry/hirael/blocks/not-found-01/not-found-01"
@@ -56,6 +66,13 @@ export type BlockKind =
   | "header"
   | "footer"
   | "not-found"
+  | "logo-cloud"
+  | "contact"
+  | "blog"
+  | "dashboard"
+  | "integrations"
+  | "image-gallery"
+  | "app-shell"
 
 export type RegistryEntryMeta = {
   name: string
@@ -65,6 +82,11 @@ export type RegistryEntryMeta = {
   status: "stable" | "planned"
   Demo?: React.ComponentType
   sourceFiles?: string[]
+  /**
+   * Install-target paths, parallel to `sourceFiles`. Shown in the code view
+   * as a file hierarchy so users see where each file lands in their project.
+   */
+  installTargets?: string[]
   installSlug?: string
   registryDependencies?: string[]
   dependencies?: string[]
@@ -264,6 +286,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Hero01,
     sourceFiles: ["registry/hirael/blocks/hero-01/hero-01.tsx"],
+    installTargets: ["components/blocks/hero-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -278,6 +301,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Hero02,
     sourceFiles: ["registry/hirael/blocks/hero-02/hero-02.tsx"],
+    installTargets: ["components/blocks/hero-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -292,6 +316,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Feature01,
     sourceFiles: ["registry/hirael/blocks/feature-01/feature-01.tsx"],
+    installTargets: ["components/blocks/feature-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -306,6 +331,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Feature02,
     sourceFiles: ["registry/hirael/blocks/feature-02/feature-02.tsx"],
+    installTargets: ["components/blocks/feature-02.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -320,6 +346,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Pricing01,
     sourceFiles: ["registry/hirael/blocks/pricing-01/pricing-01.tsx"],
+    installTargets: ["components/blocks/pricing-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -334,6 +361,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Pricing02,
     sourceFiles: ["registry/hirael/blocks/pricing-02/pricing-02.tsx"],
+    installTargets: ["components/blocks/pricing-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -348,6 +376,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Testimonial01,
     sourceFiles: ["registry/hirael/blocks/testimonial-01/testimonial-01.tsx"],
+    installTargets: ["components/blocks/testimonial-01.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -362,6 +391,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Testimonial02,
     sourceFiles: ["registry/hirael/blocks/testimonial-02/testimonial-02.tsx"],
+    installTargets: ["components/blocks/testimonial-02.tsx"],
     registryDependencies: [],
     dependencies: [],
   },
@@ -376,6 +406,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Cta01,
     sourceFiles: ["registry/hirael/blocks/cta-01/cta-01.tsx"],
+    installTargets: ["components/blocks/cta-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -390,6 +421,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Cta02,
     sourceFiles: ["registry/hirael/blocks/cta-02/cta-02.tsx"],
+    installTargets: ["components/blocks/cta-02.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -404,6 +436,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Faq01,
     sourceFiles: ["registry/hirael/blocks/faq-01/faq-01.tsx"],
+    installTargets: ["components/blocks/faq-01.tsx"],
     registryDependencies: ["button", "accordion"],
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
@@ -418,6 +451,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Faq02,
     sourceFiles: ["registry/hirael/blocks/faq-02/faq-02.tsx"],
+    installTargets: ["components/blocks/faq-02.tsx"],
     registryDependencies: ["accordion"],
     dependencies: ["@radix-ui/react-accordion"],
   },
@@ -432,6 +466,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Login01,
     sourceFiles: ["registry/hirael/blocks/login-01/login-01.tsx"],
+    installTargets: ["components/blocks/login-01.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -446,6 +481,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Login02,
     sourceFiles: ["registry/hirael/blocks/login-02/login-02.tsx"],
+    installTargets: ["components/blocks/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
     dependencies: ["lucide-react"],
   },
@@ -460,6 +496,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Header01,
     sourceFiles: ["registry/hirael/blocks/header-01/header-01.tsx"],
+    installTargets: ["components/blocks/header-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -474,6 +511,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: Footer01,
     sourceFiles: ["registry/hirael/blocks/footer-01/footer-01.tsx"],
+    installTargets: ["components/blocks/footer-01.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -488,6 +526,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     status: "stable",
     Demo: NotFound01,
     sourceFiles: ["registry/hirael/blocks/not-found-01/not-found-01.tsx"],
+    installTargets: ["components/blocks/not-found-01.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -525,6 +564,169 @@ export const REGISTRY: RegistryEntryMeta[] = [
     Demo: ColorPickerDemo,
     sourceFiles: ["registry/hirael/ui/color-picker.tsx"],
     registryDependencies: ["popover", "input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "avatar-stack",
+    title: "Avatar Stack",
+    description:
+      "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
+    category: "data",
+    status: "stable",
+    Demo: AvatarStackDemo,
+    sourceFiles: ["registry/hirael/ui/avatar-stack.tsx"],
+    registryDependencies: [],
+    dependencies: ["@radix-ui/react-slot"],
+  },
+  {
+    name: "announcement-bar",
+    title: "Announcement Bar",
+    description:
+      "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
+    category: "display",
+    status: "stable",
+    Demo: AnnouncementBarDemo,
+    sourceFiles: ["registry/hirael/ui/announcement-bar.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "empty-state",
+    title: "Empty State",
+    description:
+      "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
+    category: "display",
+    status: "stable",
+    Demo: EmptyStateDemo,
+    sourceFiles: ["registry/hirael/ui/empty-state.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "logo-cloud-01",
+    title: "Logo Cloud · bordered grid",
+    description:
+      "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
+    blockTagline: "Bordered grid · 10 wordmarks · stat strip",
+    category: "blocks",
+    blockKind: "logo-cloud",
+    status: "stable",
+    Demo: LogoCloud01,
+    sourceFiles: ["registry/hirael/blocks/logo-cloud-01/logo-cloud-01.tsx"],
+    installTargets: ["components/blocks/logo-cloud-01.tsx"],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "contact-01",
+    title: "Contact · split form",
+    description:
+      "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
+    blockTagline: "Validated form · pending · sent state",
+    category: "blocks",
+    blockKind: "contact",
+    status: "stable",
+    Demo: Contact01,
+    sourceFiles: ["registry/hirael/blocks/contact-01/contact-01.tsx"],
+    installTargets: ["components/blocks/contact-01.tsx"],
+    registryDependencies: [
+      "badge",
+      "button",
+      "card",
+      "checkbox",
+      "field",
+      "input",
+      "select",
+      "separator",
+      "textarea",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "blog-01",
+    title: "Blog · featured + grid",
+    description:
+      "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
+    blockTagline: "Featured post · 4-up Card grid",
+    category: "blocks",
+    blockKind: "blog",
+    status: "stable",
+    Demo: Blog01,
+    sourceFiles: ["registry/hirael/blocks/blog-01/blog-01.tsx"],
+    installTargets: ["components/blocks/blog-01.tsx"],
+    registryDependencies: ["badge", "button", "card", "separator"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "dashboard-01",
+    title: "Dashboard · metrics + chart",
+    description:
+      "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
+    blockTagline: "Tabs range · 4 metrics · live data",
+    category: "blocks",
+    blockKind: "dashboard",
+    status: "stable",
+    Demo: Dashboard01,
+    sourceFiles: ["registry/hirael/blocks/dashboard-01/dashboard-01.tsx"],
+    installTargets: ["components/blocks/dashboard-01.tsx"],
+    registryDependencies: ["badge", "button", "card", "separator", "tabs"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "integrations-01",
+    title: "Integrations · hub & spoke",
+    description:
+      "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
+    blockTagline: "Hub & spoke · 7 spokes · orbit ring",
+    category: "blocks",
+    blockKind: "integrations",
+    status: "stable",
+    Demo: Integrations01,
+    sourceFiles: [
+      "registry/hirael/blocks/integrations-01/integrations-01.tsx",
+    ],
+    installTargets: ["components/blocks/integrations-01.tsx"],
+    registryDependencies: ["badge", "button", "card"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "image-gallery-01",
+    title: "Image Gallery · masonry + filter",
+    description:
+      "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+    blockTagline: "Tabs filter · masonry · empty state",
+    category: "blocks",
+    blockKind: "image-gallery",
+    status: "stable",
+    Demo: ImageGallery01,
+    sourceFiles: [
+      "registry/hirael/blocks/image-gallery-01/image-gallery-01.tsx",
+    ],
+    installTargets: ["components/blocks/image-gallery-01.tsx"],
+    registryDependencies: ["badge", "button", "empty-state", "tabs"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "app-shell-01",
+    title: "App Shell · sidebar + topbar",
+    description:
+      "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
+    blockTagline: "Collapsible Sidebar · sticky topbar · live table",
+    category: "blocks",
+    blockKind: "app-shell",
+    status: "stable",
+    Demo: AppShell01,
+    sourceFiles: ["registry/hirael/blocks/app-shell-01/app-shell-01.tsx"],
+    installTargets: ["components/blocks/app-shell-01.tsx"],
+    registryDependencies: [
+      "badge",
+      "button",
+      "card",
+      "input-group",
+      "kbd",
+      "separator",
+      "sidebar",
+    ],
     dependencies: ["lucide-react"],
   },
 ]
@@ -566,6 +768,13 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   header: "Headers",
   footer: "Footers",
   "not-found": "404",
+  "logo-cloud": "Logo cloud",
+  contact: "Contact",
+  blog: "Blog",
+  dashboard: "Dashboard",
+  integrations: "Integrations",
+  "image-gallery": "Image gallery",
+  "app-shell": "App shell",
 }
 
 export const BLOCKS_BY_KIND = (() => {
@@ -580,6 +789,13 @@ export const BLOCKS_BY_KIND = (() => {
     header: [],
     footer: [],
     "not-found": [],
+    "logo-cloud": [],
+    contact: [],
+    blog: [],
+    dashboard: [],
+    integrations: [],
+    "image-gallery": [],
+    "app-shell": [],
   }
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -600,4 +816,11 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "header",
   "footer",
   "not-found",
+  "logo-cloud",
+  "contact",
+  "blog",
+  "dashboard",
+  "integrations",
+  "image-gallery",
+  "app-shell",
 ]

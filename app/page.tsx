@@ -17,10 +17,31 @@ import {
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,
   description: SITE.longDescription,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
+    type: "website",
+    url: SITE.url,
+    siteName: SITE.name,
     title: `${SITE.name} — ${SITE.description}`,
     description: SITE.longDescription,
-    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} — ${SITE.description}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.description}`,
+    description: SITE.longDescription,
+    creator: SITE.twitterHandle,
+    site: SITE.twitterHandle,
+    images: ["/opengraph-image"],
   },
 }
 
@@ -126,9 +147,15 @@ function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Link
               href="/components"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-foreground bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              Explore
+              Components
+            </Link>
+            <Link
+              href="/blocks"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+            >
+              Blocks
             </Link>
           </div>
 
@@ -159,6 +186,13 @@ const BLOCK_ORDER: BlockKind[] = [
   "header",
   "footer",
   "not-found",
+  "logo-cloud",
+  "contact",
+  "blog",
+  "dashboard",
+  "integrations",
+  "image-gallery",
+  "app-shell",
 ]
 
 function CategoryGrid() {

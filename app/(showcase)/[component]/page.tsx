@@ -6,6 +6,7 @@ import type { Metadata } from "next"
 import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
+import { SITE } from "@/lib/site"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 
 export const dynamicParams = false
@@ -24,9 +25,37 @@ export async function generateMetadata({
   const { component } = await params
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") return {}
+  const url = `${SITE.url}/${entry.name}`
+  const title = `${entry.title} — ${SITE.name}`
   return {
     title: entry.title,
     description: entry.description,
+    alternates: {
+      canonical: `/${entry.name}`,
+    },
+    openGraph: {
+      type: "article",
+      url,
+      siteName: SITE.name,
+      title,
+      description: entry.description,
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: entry.description,
+      creator: SITE.twitterHandle,
+      site: SITE.twitterHandle,
+      images: ["/opengraph-image"],
+    },
   }
 }
 
@@ -64,9 +93,8 @@ async function loadSource(
  * the Usage tab. Returns null when the demo file isn't present.
  */
 async function loadDemoSource(
-  entry: { name: string; sourceFiles?: string[] }
+  entry: { name: string }
 ): Promise<SourceFile | null> {
-  if (!entry.sourceFiles?.length) return null
   const relPath = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`
   const abs = path.join(process.cwd(), relPath)
   let code: string

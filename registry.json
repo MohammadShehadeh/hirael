@@ -721,7 +721,7 @@
       "name": "image-gallery-01",
       "type": "registry:block",
       "title": "Image Gallery · masonry + filter",
-      "description": "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+      "description": "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
       "categories": ["blocks", "image-gallery"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["badge", "button", "empty-state", "tabs"],

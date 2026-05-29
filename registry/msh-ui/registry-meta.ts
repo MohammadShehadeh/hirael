@@ -700,7 +700,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "image-gallery-01",
     title: "Image Gallery · masonry + filter",
     description:
-      "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+      "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
     blockTagline: "Tabs filter · masonry · empty state",
     category: "blocks",
     blockKind: "image-gallery",

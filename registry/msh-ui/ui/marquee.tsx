@@ -67,7 +67,7 @@ function Marquee({
         } as React.CSSProperties
       }
       className={cn(
-        "group flex overflow-hidden",
+        "group flex w-full max-w-full min-w-0 overflow-hidden",
         vertical ? "flex-col" : "flex-row",
         className
       )}

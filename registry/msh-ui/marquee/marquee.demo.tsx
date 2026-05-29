@@ -23,12 +23,12 @@ function Chip({ children }: { children: React.ReactNode }) {
 
 export default function MarqueeDemo() {
   return (
-    <div className="grid w-full max-w-2xl gap-8">
-      <div className="grid gap-2">
+    <div className="grid w-full min-w-0 max-w-2xl gap-8">
+      <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Pause on hover · edge fade
         </p>
-        <div className="relative">
+        <div className="relative w-full min-w-0 overflow-hidden">
           <Marquee pauseOnHover duration={28} className="py-1">
             {brands.map((b) => (
               <Chip key={b}>{b}</Chip>
@@ -39,11 +39,11 @@ export default function MarqueeDemo() {
         </div>
       </div>
 
-      <div className="grid gap-2">
+      <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Reverse direction
         </p>
-        <div className="relative">
+        <div className="relative w-full min-w-0 overflow-hidden">
           <Marquee reverse pauseOnHover duration={28} className="py-1">
             {brands.map((b) => (
               <Chip key={b}>{b}</Chip>

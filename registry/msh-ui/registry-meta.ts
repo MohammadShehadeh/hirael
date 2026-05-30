@@ -1,14 +1,17 @@
 import * as React from "react"
 
+import AnimatedNumberDemo from "@/registry/msh-ui/animated-number/animated-number.demo"
 import AnnouncementBarDemo from "@/registry/msh-ui/announcement-bar/announcement-bar.demo"
 import AvatarStackDemo from "@/registry/msh-ui/avatar-stack/avatar-stack.demo"
 import CalloutDemo from "@/registry/msh-ui/callout/callout.demo"
 import ColorPickerDemo from "@/registry/msh-ui/color-picker/color-picker.demo"
 import ComboboxDemo from "@/registry/msh-ui/combobox/combobox.demo"
+import CopyButtonDemo from "@/registry/msh-ui/copy-button/copy-button.demo"
 import CurrencyInputDemo from "@/registry/msh-ui/currency-input/currency-input.demo"
 import EmptyStateDemo from "@/registry/msh-ui/empty-state/empty-state.demo"
 import FileDropzoneDemo from "@/registry/msh-ui/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/msh-ui/kbd/kbd.demo"
+import MarqueeDemo from "@/registry/msh-ui/marquee/marquee.demo"
 import MonthPickerDemo from "@/registry/msh-ui/month-picker/month-picker.demo"
 import MultiSelectDemo from "@/registry/msh-ui/multi-select/multi-select.demo"
 import NumberRangeDemo from "@/registry/msh-ui/number-range/number-range.demo"
@@ -16,10 +19,13 @@ import PasswordInputDemo from "@/registry/msh-ui/password-input/password-input.d
 import PhoneInputDemo from "@/registry/msh-ui/phone-input/phone-input.demo"
 import RatingDemo from "@/registry/msh-ui/rating/rating.demo"
 import ScrollProgressDemo from "@/registry/msh-ui/scroll-progress/scroll-progress.demo"
+import SpinnerDemo from "@/registry/msh-ui/spinner/spinner.demo"
 import StatCardDemo from "@/registry/msh-ui/stat-card/stat-card.demo"
+import StepperDemo from "@/registry/msh-ui/stepper/stepper.demo"
 import TagInputDemo from "@/registry/msh-ui/tag-input/tag-input.demo"
 import TimelineDemo from "@/registry/msh-ui/timeline/timeline.demo"
 import TimePickerDemo from "@/registry/msh-ui/time-picker/time-picker.demo"
+import TreeViewDemo from "@/registry/msh-ui/tree-view/tree-view.demo"
 import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
 import AppShell01 from "@/registry/msh-ui/blocks/app-shell-01/app-shell-01"
@@ -53,6 +59,7 @@ export type ComponentCategory =
   | "files"
   | "data"
   | "display"
+  | "navigation"
   | "blocks"
 
 export type BlockKind =
@@ -693,7 +700,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "image-gallery-01",
     title: "Image Gallery · masonry + filter",
     description:
-      "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+      "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
     blockTagline: "Tabs filter · masonry · empty state",
     category: "blocks",
     blockKind: "image-gallery",
@@ -729,6 +736,78 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "spinner",
+    title: "Spinner",
+    description:
+      "Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits the current text color and ships an accessible status label.",
+    category: "display",
+    status: "stable",
+    Demo: SpinnerDemo,
+    sourceFiles: ["registry/msh-ui/ui/spinner.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "copy-button",
+    title: "Copy Button",
+    description:
+      "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
+    category: "display",
+    status: "stable",
+    Demo: CopyButtonDemo,
+    sourceFiles: ["registry/msh-ui/ui/copy-button.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "marquee",
+    title: "Marquee",
+    description:
+      "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline — zero config.",
+    category: "display",
+    status: "stable",
+    Demo: MarqueeDemo,
+    sourceFiles: ["registry/msh-ui/ui/marquee.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "tree-view",
+    title: "Tree View",
+    description:
+      "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
+    category: "data",
+    status: "stable",
+    Demo: TreeViewDemo,
+    sourceFiles: ["registry/msh-ui/ui/tree-view.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "animated-number",
+    title: "Animated Number",
+    description:
+      "Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.",
+    category: "data",
+    status: "stable",
+    Demo: AnimatedNumberDemo,
+    sourceFiles: ["registry/msh-ui/ui/animated-number.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "stepper",
+    title: "Stepper",
+    description:
+      "Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.",
+    category: "navigation",
+    status: "stable",
+    Demo: StepperDemo,
+    sourceFiles: ["registry/msh-ui/ui/stepper.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 export const REGISTRY_BY_NAME = Object.fromEntries(
@@ -741,6 +820,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   files: "Files",
   data: "Data display",
   display: "Display",
+  navigation: "Navigation",
   blocks: "Blocks",
 }
 
@@ -751,6 +831,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     files: [],
     data: [],
     display: [],
+    navigation: [],
     blocks: [],
   }
   for (const entry of REGISTRY) groups[entry.category].push(entry)

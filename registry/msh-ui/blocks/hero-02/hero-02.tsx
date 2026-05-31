@@ -9,7 +9,7 @@ const WORDMARKS = [
   "ACME / Co.",
   "Helix",
   "Northwind",
-  "MSH UI ◆ Labs",
+  "MSH UI · Labs",
   "Vanta",
   "Quartz",
 ] as const

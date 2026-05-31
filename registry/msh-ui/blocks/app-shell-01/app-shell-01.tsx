@@ -102,6 +102,45 @@ function statusText(status: Account["status"]) {
   return "text-red-500"
 }
 
+function BrandMark({ className }: { className?: string }) {
+  const uid = React.useId().replace(/:/g, "")
+  const mId = `mshm-${uid}`
+  const clipId = `mshc-${uid}`
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="-10 25 290 290"
+      role="img"
+      aria-label="MSH UI"
+      className={className}
+    >
+      <defs>
+        <text
+          id={mId}
+          x="10"
+          y="245"
+          style={{
+            fontFamily: "var(--font-fraunces), ui-serif, serif",
+            fontWeight: 700,
+            fontSize: "280px",
+          }}
+        >
+          M
+        </text>
+        <clipPath id={clipId}>
+          <use href={`#${mId}`} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipId})`}>
+        <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
+        <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
+        <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
+        <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
+      </g>
+    </svg>
+  )
+}
+
 export default function AppShell01() {
   const [query, setQuery] = React.useState("")
   const filteredRows = React.useMemo(() => {
@@ -122,9 +161,7 @@ export default function AppShell01() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip="MSH UI">
-                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
-                  ◆
-                </span>
+                <BrandMark className="size-8 shrink-0" />
                 <div className="grid flex-1 text-left leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">
                     MSH UI

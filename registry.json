@@ -340,6 +340,22 @@
       ]
     },
     {
+      "name": "hero-03",
+      "type": "registry:block",
+      "title": "Hero · email capture + social proof",
+      "description": "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
+      "categories": ["blocks", "hero"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input"],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/hero-03/hero-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-03.tsx"
+        }
+      ]
+    },
+    {
       "name": "cta-01",
       "type": "registry:block",
       "title": "CTA · framed band",
@@ -754,6 +770,28 @@
           "path": "registry/msh-ui/blocks/app-shell-01/app-shell-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/app-shell-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-02",
+      "type": "registry:block",
+      "title": "App Shell · top nav + settings",
+      "description": "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "input-group",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/msh-ui/blocks/app-shell-02/app-shell-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-02.tsx"
         }
       ]
     },

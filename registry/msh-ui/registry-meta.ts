@@ -29,6 +29,7 @@ import TreeViewDemo from "@/registry/msh-ui/tree-view/tree-view.demo"
 import YearPickerDemo from "@/registry/msh-ui/year-picker/year-picker.demo"
 
 import AppShell01 from "@/registry/msh-ui/blocks/app-shell-01/app-shell-01"
+import AppShell02 from "@/registry/msh-ui/blocks/app-shell-02/app-shell-02"
 import Blog01 from "@/registry/msh-ui/blocks/blog-01/blog-01"
 import Contact01 from "@/registry/msh-ui/blocks/contact-01/contact-01"
 import Cta01 from "@/registry/msh-ui/blocks/cta-01/cta-01"
@@ -42,6 +43,7 @@ import Footer01 from "@/registry/msh-ui/blocks/footer-01/footer-01"
 import Header01 from "@/registry/msh-ui/blocks/header-01/header-01"
 import Hero01 from "@/registry/msh-ui/blocks/hero-01/hero-01"
 import Hero02 from "@/registry/msh-ui/blocks/hero-02/hero-02"
+import Hero03 from "@/registry/msh-ui/blocks/hero-03/hero-03"
 import ImageGallery01 from "@/registry/msh-ui/blocks/image-gallery-01/image-gallery-01"
 import Integrations01 from "@/registry/msh-ui/blocks/integrations-01/integrations-01"
 import LogoCloud01 from "@/registry/msh-ui/blocks/logo-cloud-01/logo-cloud-01"
@@ -310,6 +312,21 @@ export const REGISTRY: RegistryEntryMeta[] = [
     sourceFiles: ["registry/msh-ui/blocks/hero-02/hero-02.tsx"],
     installTargets: ["components/blocks/hero-02.tsx"],
     registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "hero-03",
+    title: "Hero · email capture + social proof",
+    description:
+      "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
+    blockTagline: "Centered · email capture · social proof",
+    category: "blocks",
+    blockKind: "hero",
+    status: "stable",
+    Demo: Hero03,
+    sourceFiles: ["registry/msh-ui/blocks/hero-03/hero-03.tsx"],
+    installTargets: ["components/blocks/hero-03.tsx"],
+    registryDependencies: ["button", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -733,6 +750,27 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "kbd",
       "separator",
       "sidebar",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "app-shell-02",
+    title: "App Shell · top nav + settings",
+    description:
+      "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
+    blockTagline: "Top nav · in-page settings nav · detail card",
+    category: "blocks",
+    blockKind: "app-shell",
+    status: "stable",
+    Demo: AppShell02,
+    sourceFiles: ["registry/msh-ui/blocks/app-shell-02/app-shell-02.tsx"],
+    installTargets: ["components/blocks/app-shell-02.tsx"],
+    registryDependencies: [
+      "badge",
+      "button",
+      "card",
+      "input-group",
+      "separator",
     ],
     dependencies: ["lucide-react"],
   },

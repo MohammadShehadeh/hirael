@@ -162,14 +162,6 @@ export default function AppShell01() {
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip="MSH UI">
                 <BrandMark className="size-8 shrink-0" />
-                <div className="grid flex-1 text-left leading-tight">
-                  <span className="truncate text-sm font-semibold tracking-[-0.01em]">
-                    MSH UI
-                  </span>
-                  <span className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    plinth labs · pro
-                  </span>
-                </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

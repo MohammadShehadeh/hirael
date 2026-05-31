@@ -58,9 +58,8 @@ export default function Hero03() {
         </h1>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-          Get early access to new MSH UI components, blocks and templates the
-          moment they ship. One email — every dense, real-world piece your
-          product hits a wall on.
+          Get new MSH UI components, blocks, and templates the moment they
+          ship. One email, no noise.
         </p>
 
         <form

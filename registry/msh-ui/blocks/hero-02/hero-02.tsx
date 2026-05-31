@@ -75,10 +75,10 @@ export default function Hero02() {
         </h1>
 
         <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg">
-          MSH UI ships the dense, real-world components every product hits a
-          wall on — tag input, multi-select, combobox, year picker — wired
-          with the dual-API contract and an aesthetic that earns
-          its place in your codebase.
+          MSH UI ships the dense, real-world components most teams end up
+          building by hand — tag input, multi-select, combobox, year picker —
+          each with the dual-API contract and a design that matches your
+          system.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">

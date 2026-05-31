@@ -117,12 +117,7 @@ export default function AppShell02() {
     <div className="flex min-h-[640px] flex-col bg-background">
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6">
-          <span className="inline-flex items-center gap-2">
-            <BrandMark className="size-7" />
-            <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
-              MSH UI
-            </span>
-          </span>
+          <BrandMark className="size-7 shrink-0" />
 
           <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
 

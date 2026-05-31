@@ -98,9 +98,7 @@ export default function Login01() {
         >
           <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
             <div className="relative flex size-10 items-center justify-center rounded-sm border border-border bg-background">
-              <span className="text-lg font-semibold tracking-[-0.04em] text-foreground">
-                ◆
-              </span>
+              <BrandMark className="size-7" />
               <span
                 aria-hidden
                 className="absolute -bottom-1 -right-1 size-1.5 rounded-full bg-foreground"

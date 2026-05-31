@@ -87,8 +87,8 @@ export default function Footer01() {
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-5 lg:gap-16">
           <div className="col-span-2">
             <div className="flex flex-col gap-4">
-              <span className="font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
-                <span aria-hidden className="mr-1.5">◆</span>
+              <span className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
+                <BrandMark className="mr-1.5 size-4" />
                 MSH UI
               </span>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

@@ -62,7 +62,7 @@ export default function Header01() {
             href="#"
             className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <span aria-hidden className="mr-1.5">◆</span>
+            <BrandMark className="mr-1.5 size-4" />
             MSH UI
           </a>
 

@@ -5,45 +5,6 @@ import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
 
-function BrandMark({ className }: { className?: string }) {
-  const uid = React.useId().replace(/:/g, "")
-  const mId = `mshm-${uid}`
-  const clipId = `mshc-${uid}`
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="-10 25 290 290"
-      role="img"
-      aria-label="MSH UI"
-      className={className}
-    >
-      <defs>
-        <text
-          id={mId}
-          x="10"
-          y="245"
-          style={{
-            fontFamily: "var(--font-fraunces), ui-serif, serif",
-            fontWeight: 700,
-            fontSize: "280px",
-          }}
-        >
-          M
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
-        <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
-        <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
-        <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
-      </g>
-    </svg>
-  )
-}
-
 export default function Cta02() {
   return (
     <section className="relative isolate overflow-hidden bg-background py-24 md:py-32">
@@ -74,7 +35,7 @@ export default function Cta02() {
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-          ◆ one-line install
+          · one-line install
         </span>
 
         <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-4xl md:text-5xl lg:text-6xl">

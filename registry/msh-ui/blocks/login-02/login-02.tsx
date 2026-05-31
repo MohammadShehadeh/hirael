@@ -60,8 +60,8 @@ export default function Login02() {
       <div className="flex items-center justify-center px-6 py-16 md:px-10 lg:px-12">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center gap-2">
-            <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card text-base font-semibold text-foreground">
-              ◆
+            <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card p-1">
+              <BrandMark className="size-full" />
             </span>
             <span className="text-base font-semibold tracking-[-0.025em]">
               MSH UI
@@ -70,7 +70,7 @@ export default function Login02() {
 
           <div className="mb-8 flex flex-col gap-2">
             <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
-              ◆ sign in
+              · sign in
             </span>
             <h1 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
               Welcome back.

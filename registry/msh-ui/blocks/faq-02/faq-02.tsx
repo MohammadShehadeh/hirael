@@ -36,52 +36,13 @@ const FAQS = [
   },
 ] as const
 
-function BrandMark({ className }: { className?: string }) {
-  const uid = React.useId().replace(/:/g, "")
-  const mId = `mshm-${uid}`
-  const clipId = `mshc-${uid}`
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="-10 25 290 290"
-      role="img"
-      aria-label="MSH UI"
-      className={className}
-    >
-      <defs>
-        <text
-          id={mId}
-          x="10"
-          y="245"
-          style={{
-            fontFamily: "var(--font-fraunces), ui-serif, serif",
-            fontWeight: 700,
-            fontSize: "280px",
-          }}
-        >
-          M
-        </text>
-        <clipPath id={clipId}>
-          <use href={`#${mId}`} />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        <rect x="-10" y="-20" width="380" height="120" fill="#000000" />
-        <rect x="-10" y="100" width="380" height="72" fill="#FFFFFF" />
-        <rect x="-10" y="172" width="380" height="128" fill="#007A3D" />
-        <polygon points="-10,-20 -10,300 170,138" fill="#CE1126" />
-      </g>
-    </svg>
-  )
-}
-
 export default function Faq02() {
   return (
     <section className="bg-background py-20 md:py-28">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-12 px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-            ◆ frequently asked
+            · frequently asked
           </span>
           <h2 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
             Everything you&apos;d ask in the first ten minutes.

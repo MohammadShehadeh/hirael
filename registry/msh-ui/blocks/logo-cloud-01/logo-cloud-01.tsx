@@ -18,7 +18,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm font-semibold tracking-[-0.02em]">
-        <span aria-hidden className="mr-1 text-primary">◆</span>
+        <span aria-hidden className="mr-1 text-primary">◈</span>
         ACME / Co.
       </span>
     ),

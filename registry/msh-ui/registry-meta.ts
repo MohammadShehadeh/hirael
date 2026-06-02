@@ -11,6 +11,7 @@ import CurrencyInputDemo from "@/registry/msh-ui/currency-input/currency-input.d
 import EmptyStateDemo from "@/registry/msh-ui/empty-state/empty-state.demo"
 import FileDropzoneDemo from "@/registry/msh-ui/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/msh-ui/kbd/kbd.demo"
+import LazySelectDemo from "@/registry/msh-ui/lazy-select/lazy-select.demo"
 import MarqueeDemo from "@/registry/msh-ui/marquee/marquee.demo"
 import MonthPickerDemo from "@/registry/msh-ui/month-picker/month-picker.demo"
 import MultiSelectDemo from "@/registry/msh-ui/multi-select/multi-select.demo"
@@ -162,6 +163,18 @@ export const REGISTRY: RegistryEntryMeta[] = [
     Demo: ComboboxDemo,
     sourceFiles: ["registry/msh-ui/ui/combobox.tsx"],
     registryDependencies: ["button", "popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
+  },
+  {
+    name: "lazy-select",
+    title: "Lazy Select",
+    description:
+      "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
+    category: "inputs",
+    status: "stable",
+    Demo: LazySelectDemo,
+    sourceFiles: ["registry/msh-ui/ui/lazy-select.tsx"],
+    registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
   {

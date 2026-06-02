@@ -116,6 +116,22 @@
       ]
     },
     {
+      "name": "lazy-select",
+      "type": "registry:ui",
+      "title": "Lazy Select",
+      "description": "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
+      "categories": ["inputs"],
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["popover", "command"],
+      "files": [
+        {
+          "path": "registry/msh-ui/ui/lazy-select.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/lazy-select.tsx"
+        }
+      ]
+    },
+    {
       "name": "password-input",
       "type": "registry:ui",
       "title": "Password Input",

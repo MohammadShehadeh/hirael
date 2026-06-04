@@ -57,14 +57,14 @@ host.
 ## Project layout
 
 ```
-registry/msh-ui/
-  <component>/
-    <component>.tsx          # source (flat compound exports)
-    <component>.demo.tsx     # showcase demo
-    index.ts                 # re-export
-  ui/                        # shadcn primitives the registry imports from
+registry/new-york/
+  ui/                        # primitives + components (flat compound exports)
+  examples/<name>-demo.tsx   # showcase demos (power the Usage tab)
   blocks/<block>/            # marketing blocks
-  registry-meta.ts           # showcase metadata for sidebar / pages
+  registry-ui.ts             # UI_REGISTRY component metadata
+  registry-blocks.ts         # BLOCK_REGISTRY block metadata
+  registry-types.ts          # shared registry item types
+  registry-meta.ts           # combiner + derived helpers (sidebar / pages)
 registry.json                # canonical declaration of every item
 ```
 
@@ -158,7 +158,7 @@ pnpm typecheck   # tsc --noEmit
 
 The repo does not enforce a separate formatter. Match the surrounding
 code (2-space indent, double-quoted strings, no semicolons at the end
-of statements is the prevailing style in `registry/msh-ui/`). If your
+of statements is the prevailing style in `registry/new-york/`). If your
 editor disagrees, reset its formatter on this repo rather than
 reformatting committed files.
 
@@ -169,7 +169,7 @@ reformatting committed files.
   primitive and holds the state.
 - **`data-slot`.** Every rendered slot carries `data-slot="<kebab>"`
   so downstream styling and slot-targeting just works.
-- **Imports for shadcn primitives** go through `@/registry/msh-ui/ui/*`.
+- **Imports for shadcn primitives** go through `@/registry/new-york/ui/*`.
   The alias is rewritten on install based on the consumer's
   `components.json`.
 - **Tokens.** Use `--background / --foreground / --border / --primary /
@@ -186,29 +186,28 @@ reformatting committed files.
 
 For each new component:
 
-- [ ] Source file at `registry/msh-ui/<name>/<name>.tsx` exporting the
+- [ ] Source file at `registry/new-york/ui/<name>.tsx` exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `<name>.demo.tsx` showing a basic compose **and** a customized
-      compose.
-- [ ] `index.ts` re-export.
+- [ ] `registry/new-york/examples/<name>-demo.tsx` showing a basic compose
+      **and** a customized compose.
 - [ ] Entry in `registry.json` with `type: "registry:ui"`,
       `dependencies`, `registryDependencies`,
       `files[].target = "components/ui/<name>.tsx"`.
-- [ ] Entry in `registry/msh-ui/registry-meta.ts` with category, demo,
-      and source file list.
+- [ ] Entry in `registry/new-york/registry-ui.ts` (`UI_REGISTRY`) with
+      category, demo, and source file list.
 - [ ] All imports for shadcn primitives go through
-      `@/registry/msh-ui/ui/*` (alias is rewritten on install).
+      `@/registry/new-york/ui/*` (alias is rewritten on install).
 - [ ] Tokens reuse `--background / --foreground / --border /
       --primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
 Marketing blocks follow the same shape but live under
-`registry/msh-ui/blocks/<block>/` and have a `blockKind` plus
-`blockTagline` in `registry-meta.ts`.
+`registry/new-york/blocks/<block>/` and have a `blockKind` plus
+`blockTagline` in `registry-blocks.ts`.
 
 ## Testing requirements
 

@@ -268,7 +268,7 @@ function FileDropzoneZone({
       className={cn(
         "flex min-w-0 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none",
         "hover:border-foreground/30 hover:bg-accent/50",
-        "focus-visible:ring-2 focus-visible:ring-ring",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         isDragging && "border-foreground/30 bg-accent/50",
         ctx.disabled && "cursor-not-allowed opacity-60",
         className
@@ -340,7 +340,7 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
                 type="button"
                 aria-label={`Remove ${file.name}`}
                 onClick={() => ctx.removeAt(index)}
-                className="inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
               >
                 <X className="size-3" />
               </button>

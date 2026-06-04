@@ -49,7 +49,7 @@ export default function NotFound01() {
                 <li key={s.route}>
                   <a
                     href={s.route}
-                    className="group flex items-center justify-between gap-4 border-b border-border py-3 transition-colors last:border-b-0 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group flex items-center justify-between gap-4 border-b border-border py-3 transition-colors last:border-b-0 hover:bg-card focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                   >
                     <div className="flex items-baseline gap-4">
                       <span className="font-mono text-sm text-foreground">

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
@@ -59,7 +59,7 @@ function AvatarStackItem({
   children,
   ...props
 }: AvatarStackItemProps) {
-  const Comp = asChild ? Slot : "span"
+  const Comp = asChild ? Slot.Root : "span"
   const content = src ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -78,7 +78,7 @@ function AvatarStackItem({
       className={cn(
         "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted font-mono font-medium text-foreground ring-2 ring-background",
         asChild &&
-          "transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-ring",
+          "transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         className
       )}
       {...props}
@@ -103,7 +103,7 @@ function AvatarStackOverflow({
   children,
   ...props
 }: AvatarStackOverflowProps) {
-  const Comp = asChild ? Slot : "span"
+  const Comp = asChild ? Slot.Root : "span"
   return (
     <Comp
       data-slot="avatar-stack-item"
@@ -111,7 +111,7 @@ function AvatarStackOverflow({
       className={cn(
         "relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-mono font-medium tabular-nums text-muted-foreground ring-2 ring-background",
         asChild &&
-          "transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         className
       )}
       {...props}

@@ -152,7 +152,7 @@ export default function ImageGallery01() {
               <a
                 key={t.title}
                 href="#"
-                className="group block break-inside-avoid rounded-md border border-border bg-card transition-colors hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="group block break-inside-avoid rounded-md border border-border bg-card transition-colors hover:border-foreground/40 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                 aria-label={t.title}
               >
                 <div

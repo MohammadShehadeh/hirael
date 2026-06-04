@@ -123,7 +123,7 @@ function TreeItem({
         style={{ paddingInlineStart: depth * 14 + 8 }}
         className={cn(
           "flex h-7 w-full items-center gap-1.5 rounded-sm pr-2 text-left outline-none transition-colors",
-          "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
+          "hover:bg-accent focus-visible:bg-accent focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
           "disabled:cursor-not-allowed disabled:opacity-50",
           isSelected
             ? "bg-accent font-medium text-foreground"

@@ -149,7 +149,7 @@ export default function LogoCloud01() {
               <a
                 href={logo.href}
                 aria-label={`Read ${logo.name}'s case study`}
-                className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:outline-none focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:outline-none focus-visible:bg-card focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-ring/50"
               >
                 <span className="text-muted-foreground transition-colors group-hover:text-foreground">
                   {logo.mark}

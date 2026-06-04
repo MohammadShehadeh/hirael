@@ -151,7 +151,7 @@ function StepperTrigger({
       onClick={() => setValue(step)}
       className={cn(
         "flex items-center gap-3 rounded-md text-left outline-none transition-opacity",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}

@@ -69,7 +69,7 @@ function CopyButton({
       onClick={handleCopy}
       className={cn(
         "inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium outline-none transition-colors",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         variant === "ghost" &&
           "text-muted-foreground hover:bg-accent hover:text-foreground",
         variant === "outline" &&

@@ -105,7 +105,7 @@ function AnnouncementBar({
           onClick={handleDismiss}
           aria-label="Dismiss announcement"
           className={cn(
-            "absolute right-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "absolute right-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
             isPrimary
               ? "text-background/70 hover:bg-background/10 hover:text-background"
               : "text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -140,7 +140,7 @@ function AnnouncementBarLink({ className, ...props }: AnnouncementBarLinkProps) 
     <a
       data-slot="announcement-bar-link"
       className={cn(
-        "inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         className
       )}
       {...props}

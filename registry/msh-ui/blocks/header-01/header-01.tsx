@@ -60,7 +60,7 @@ export default function Header01() {
         <div className="flex h-14 items-center justify-between">
           <a
             href="#"
-            className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
           >
             <BrandMark className="mr-1.5 size-4" />
             MSH UI
@@ -72,7 +72,7 @@ export default function Header01() {
                 <li key={n.label} className="flex items-center gap-1">
                   <a
                     href={n.href}
-                    className="rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                   >
                     {n.label}
                   </a>
@@ -103,7 +103,7 @@ export default function Header01() {
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-card text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+            className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-card text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:hidden"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -119,7 +119,7 @@ export default function Header01() {
                   <a
                     href={n.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                   >
                     {n.label}
                   </a>

@@ -79,7 +79,7 @@ export default function Integrations01() {
                 <li key={s.name}>
                   <a
                     href={s.href}
-                    className="flex items-center gap-2 rounded-sm px-1 py-1.5 text-sm text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="flex items-center gap-2 rounded-sm px-1 py-1.5 text-sm text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                   >
                     <span className="inline-flex size-6 items-center justify-center rounded-sm border border-border bg-card">
                       <s.icon className="size-3" />
@@ -195,7 +195,7 @@ function Hub() {
             key={s.name}
             href={s.href}
             aria-label={`${s.name} integration · ${s.category}`}
-            className="group absolute rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="group absolute rounded-xl focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
             style={{
               left: `${x}%`,
               top: `${y}%`,

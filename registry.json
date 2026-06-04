@@ -25,7 +25,7 @@
       "title": "Number Range",
       "description": "Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.",
       "categories": ["inputs"],
-      "dependencies": ["@radix-ui/react-slider"],
+      "dependencies": ["radix-ui"],
       "registryDependencies": ["slider", "input", "label"],
       "files": [
         {
@@ -313,7 +313,7 @@
       "title": "Accordion",
       "description": "Radix-powered accordion primitive used by the FAQ blocks. Plus icon rotates to an X on open.",
       "categories": ["primitives"],
-      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "dependencies": ["radix-ui", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -409,7 +409,7 @@
       "title": "FAQ · Sticky split",
       "description": "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
       "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "dependencies": ["radix-ui", "lucide-react"],
       "registryDependencies": ["button", "accordion", "card"],
       "files": [
         {
@@ -425,7 +425,7 @@
       "title": "FAQ · Centered grid",
       "description": "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
       "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion"],
+      "dependencies": ["radix-ui"],
       "registryDependencies": ["accordion"],
       "files": [
         {
@@ -617,7 +617,7 @@
       "title": "Avatar Stack",
       "description": "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
       "categories": ["data"],
-      "dependencies": ["@radix-ui/react-slot"],
+      "dependencies": ["radix-ui"],
       "registryDependencies": [],
       "files": [
         {

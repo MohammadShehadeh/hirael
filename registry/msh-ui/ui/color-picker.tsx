@@ -392,7 +392,7 @@ function SaturationValueArea() {
         e.preventDefault()
         ctx.setHsv({ h: ctx.hsv.h, s: clamp(s, 0, 100), v: clamp(v, 0, 100) })
       }}
-      className="relative h-40 w-full cursor-crosshair touch-none rounded-sm border border-border outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="relative h-40 w-full cursor-crosshair touch-none rounded-sm border border-border outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
       style={{
         background: `
           linear-gradient(to top, #000, transparent),
@@ -467,7 +467,7 @@ function HueSlider() {
         if (h > 360) h -= 360
         ctx.setHsv({ h, s: ctx.hsv.s, v: ctx.hsv.v })
       }}
-      className="relative h-3 w-full cursor-pointer touch-none rounded-full border border-border outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="relative h-3 w-full cursor-pointer touch-none rounded-full border border-border outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
       style={{
         background:
           "linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)",

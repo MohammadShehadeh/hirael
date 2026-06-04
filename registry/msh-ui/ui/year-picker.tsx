@@ -402,7 +402,7 @@ function YearPickerContent({
               className={cn(
                 "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
                 "hover:bg-accent hover:text-accent-foreground",
-                "focus-visible:ring-2 focus-visible:ring-ring",
+                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                 "disabled:opacity-30 disabled:hover:bg-transparent",
                 inRange && "bg-primary/15 text-foreground",
                 selected && "bg-primary text-primary-foreground hover:bg-primary",

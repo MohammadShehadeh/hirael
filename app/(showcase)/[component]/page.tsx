@@ -87,15 +87,15 @@ async function loadSource(
 }
 
 /**
- * Convention: each component ships its `.demo.tsx` under
- * `registry/new-york/<name>/<name>.demo.tsx`. The demo source powers the
+ * Convention: each component ships its demo under
+ * `registry/new-york/examples/<name>-demo.tsx`. The demo source powers the
  * "Usage" tab. Returns null when the demo file isn't present so the tab
  * can be hidden.
  */
 async function loadDemoSource(
   entry: { name: string }
 ): Promise<SourceFile | null> {
-  const relPath = `registry/new-york/${entry.name}/${entry.name}.demo.tsx`
+  const relPath = `registry/new-york/examples/${entry.name}-demo.tsx`
   const abs = path.join(process.cwd(), relPath)
   let code: string
   try {

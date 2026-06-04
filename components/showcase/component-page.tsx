@@ -140,7 +140,7 @@ export function ComponentPage({
             <CodeBlock
               tabs={[
                 {
-                  label: `${entry.name}.demo.tsx`,
+                  label: `${entry.name}-demo.tsx`,
                   code: demoSource.code,
                   html: demoSource.html,
                 },

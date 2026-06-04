@@ -1,10 +1,11 @@
 /**
  * Theme token model + CSS parsing / formatting for the live theme settings sheet.
  *
- * The showcase's globals.css uses `:root` for dark (default) and `.light`
- * for the light variant. The live editor lets users paste CSS that follows
- * either convention — this module reconciles both into a {light, dark}
- * record that the provider applies via inline CSS custom properties.
+ * The showcase's globals.css follows the shadcn convention: `:root` for
+ * light (default) and `.dark` for the dark variant. The live editor lets
+ * users paste CSS that follows either convention — this module reconciles
+ * both into a {light, dark} record that the provider applies via inline
+ * CSS custom properties.
  */
 
 export type ThemeMode = "light" | "dark"
@@ -52,14 +53,14 @@ const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS)
  * Parse one or more CSS blocks into {light, dark} token maps.
  *
  * Accepts:
- *   - `:root { ... }` + `.dark { ... }`   (shadcn convention — :root is light)
- *   - `:root { ... }` + `.light { ... }`  (this repo's convention — :root is dark)
+ *   - `:root { ... }` + `.dark { ... }`   (shadcn / this repo — :root is light)
+ *   - `:root { ... }` + `.light { ... }`  (legacy dark-first — :root is dark)
  *   - A single `:root { ... }` block      (applied to currentMode)
  *   - Bare `--token: value;` lines        (applied to currentMode)
  */
 export function parseThemeCss(
   css: string,
-  currentMode: ThemeMode = "dark"
+  currentMode: ThemeMode = "light"
 ): { theme: Partial<Theme>; warnings: string[] } {
   const warnings: string[] = []
   const blocks = extractBlocks(css)
@@ -80,8 +81,8 @@ export function parseThemeCss(
   const hasLight = blocks.some((b) => b.selector === ".light")
 
   // Disambiguate :root.
-  // shadcn outputs `:root` (light) + `.dark` → :root is LIGHT.
-  // This repo writes `:root` (dark) + `.light` → :root is DARK.
+  // shadcn (and this repo) output `:root` (light) + `.dark` → :root is LIGHT.
+  // Legacy dark-first CSS writes `:root` (dark) + `.light` → :root is DARK.
   const rootIsLight = hasDark && !hasLight
   const rootIsDark = hasLight && !hasDark
   // Ambiguous (just :root, or all three): default to currentMode.
@@ -144,9 +145,9 @@ function extractDeclarations(body: string): ThemeTokens {
 
 /** Serialize a {light, dark} theme back into a paste-able CSS string. */
 export function formatThemeCss(theme: Theme): string {
-  const dark = formatBlock(":root", theme.dark)
-  const light = formatBlock(".light", theme.light)
-  return [dark, light].filter(Boolean).join("\n\n")
+  const light = formatBlock(":root", theme.light)
+  const dark = formatBlock(".dark", theme.dark)
+  return [light, dark].filter(Boolean).join("\n\n")
 }
 
 function formatBlock(selector: string, tokens: ThemeTokens): string {
@@ -251,7 +252,7 @@ export function themePrehydrationScript(): string {
     var themeKey=${JSON.stringify(STORAGE_KEY)};
     var mode=localStorage.getItem(modeKey);
     var html=document.documentElement;
-    if(mode==='light'){html.classList.add('light');}
+    if(mode==='dark'){html.classList.add('dark');}
     var raw=localStorage.getItem(themeKey);
     if(!raw)return;
     var t=JSON.parse(raw);

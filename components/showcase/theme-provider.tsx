@@ -26,7 +26,7 @@ const ThemeContext = React.createContext<ThemeContextValue | null>(null)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Mode is read synchronously after mount; the pre-hydration script handles
   // the first paint, so this just brings React state in sync.
-  const [mode, setModeState] = React.useState<ThemeMode>("dark")
+  const [mode, setModeState] = React.useState<ThemeMode>("light")
   const [theme, setTheme] = React.useState<Theme>(EMPTY_THEME)
 
   // Sync from storage once on mount.
@@ -35,8 +35,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const storedMode = localStorage.getItem(MODE_STORAGE_KEY)
       if (storedMode === "light" || storedMode === "dark") {
         setModeState(storedMode)
-      } else if (document.documentElement.classList.contains("light")) {
-        setModeState("light")
+      } else if (document.documentElement.classList.contains("dark")) {
+        setModeState("dark")
       }
       const stored = localStorage.getItem(STORAGE_KEY)
       if (stored) {
@@ -54,8 +54,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Apply mode class.
   React.useEffect(() => {
     const html = document.documentElement
-    if (mode === "light") html.classList.add("light")
-    else html.classList.remove("light")
+    if (mode === "dark") html.classList.add("dark")
+    else html.classList.remove("dark")
     try {
       localStorage.setItem(MODE_STORAGE_KEY, mode)
     } catch {

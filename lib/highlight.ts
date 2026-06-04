@@ -4,7 +4,7 @@
  * The highlighter is created once per server process (cached as a module-level
  * promise) and reused across requests. Output uses dual themes — CSS variables
  * carry both the light and dark token colors, and a small block in
- * globals.css picks the right one based on the `.light` mode class.
+ * globals.css picks the right one based on the `.dark` mode class.
  */
 
 import type { BundledLanguage, Highlighter } from "shiki"
@@ -51,7 +51,7 @@ export async function highlightCode(
   return hl.codeToHtml(code, {
     lang: safeLang,
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
-    defaultColor: "dark",
+    defaultColor: "light",
   })
 }
 

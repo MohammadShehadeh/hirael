@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories"
 import { SITE } from "@/lib/site"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY } from "@/registry/new-york/registry-meta"
 
 export const dynamic = "force-static"
 

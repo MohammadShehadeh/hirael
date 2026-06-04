@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
 import { SITE } from "@/lib/site"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY } from "@/registry/new-york/registry-meta"
 
 const BLOCKS_DESCRIPTION =
   "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the MSH UI aesthetic."

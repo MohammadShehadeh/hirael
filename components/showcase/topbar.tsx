@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 import { NAV_LINKS } from "@/lib/site"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
-import { Separator } from "@/registry/msh-ui/ui/separator"
-import { SidebarTrigger } from "@/registry/msh-ui/ui/sidebar"
+import { Separator } from "@/registry/new-york/ui/separator"
+import { SidebarTrigger } from "@/registry/new-york/ui/sidebar"
 
 export function ShowcaseTopbar() {
   const pathname = usePathname()

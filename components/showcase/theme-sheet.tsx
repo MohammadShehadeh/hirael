@@ -11,7 +11,7 @@ import {
   type ThemeMode,
 } from "@/lib/theme"
 import { useTheme } from "@/components/showcase/theme-provider"
-import { Button } from "@/registry/msh-ui/ui/button"
+import { Button } from "@/registry/new-york/ui/button"
 import {
   Sheet,
   SheetBody,
@@ -21,7 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/registry/msh-ui/ui/sheet"
+} from "@/registry/new-york/ui/sheet"
 
 export function ThemeSheetTrigger({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(false)

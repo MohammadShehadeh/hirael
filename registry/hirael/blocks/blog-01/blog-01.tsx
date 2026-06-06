@@ -151,8 +151,8 @@ export default function Blog01() {
               Writing from the workshop.
             </h2>
             <p className="text-base text-muted-foreground">
-              Patterns, release notes, and field reports from teams putting MSH
-              UI to work — no launch tweets, no growth posts.
+              Patterns, release notes, and field reports from teams putting
+              Hirael to work — no launch tweets, no growth posts.
             </p>
           </div>
           <Button variant="link" className="group h-auto p-0" asChild>

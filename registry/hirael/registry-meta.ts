@@ -1,14 +1,18 @@
 import * as React from "react"
 
+import AnimatedNumberDemo from "@/registry/hirael/animated-number/animated-number.demo"
 import AnnouncementBarDemo from "@/registry/hirael/announcement-bar/announcement-bar.demo"
 import AvatarStackDemo from "@/registry/hirael/avatar-stack/avatar-stack.demo"
 import CalloutDemo from "@/registry/hirael/callout/callout.demo"
 import ColorPickerDemo from "@/registry/hirael/color-picker/color-picker.demo"
 import ComboboxDemo from "@/registry/hirael/combobox/combobox.demo"
+import CopyButtonDemo from "@/registry/hirael/copy-button/copy-button.demo"
 import CurrencyInputDemo from "@/registry/hirael/currency-input/currency-input.demo"
 import EmptyStateDemo from "@/registry/hirael/empty-state/empty-state.demo"
 import FileDropzoneDemo from "@/registry/hirael/file-dropzone/file-dropzone.demo"
 import KbdDemo from "@/registry/hirael/kbd/kbd.demo"
+import LazySelectDemo from "@/registry/hirael/lazy-select/lazy-select.demo"
+import MarqueeDemo from "@/registry/hirael/marquee/marquee.demo"
 import MonthPickerDemo from "@/registry/hirael/month-picker/month-picker.demo"
 import MultiSelectDemo from "@/registry/hirael/multi-select/multi-select.demo"
 import NumberRangeDemo from "@/registry/hirael/number-range/number-range.demo"
@@ -16,13 +20,17 @@ import PasswordInputDemo from "@/registry/hirael/password-input/password-input.d
 import PhoneInputDemo from "@/registry/hirael/phone-input/phone-input.demo"
 import RatingDemo from "@/registry/hirael/rating/rating.demo"
 import ScrollProgressDemo from "@/registry/hirael/scroll-progress/scroll-progress.demo"
+import SpinnerDemo from "@/registry/hirael/spinner/spinner.demo"
 import StatCardDemo from "@/registry/hirael/stat-card/stat-card.demo"
+import StepperDemo from "@/registry/hirael/stepper/stepper.demo"
 import TagInputDemo from "@/registry/hirael/tag-input/tag-input.demo"
 import TimelineDemo from "@/registry/hirael/timeline/timeline.demo"
 import TimePickerDemo from "@/registry/hirael/time-picker/time-picker.demo"
+import TreeViewDemo from "@/registry/hirael/tree-view/tree-view.demo"
 import YearPickerDemo from "@/registry/hirael/year-picker/year-picker.demo"
 
 import AppShell01 from "@/registry/hirael/blocks/app-shell-01/app-shell-01"
+import AppShell02 from "@/registry/hirael/blocks/app-shell-02/app-shell-02"
 import Blog01 from "@/registry/hirael/blocks/blog-01/blog-01"
 import Contact01 from "@/registry/hirael/blocks/contact-01/contact-01"
 import Cta01 from "@/registry/hirael/blocks/cta-01/cta-01"
@@ -36,6 +44,7 @@ import Footer01 from "@/registry/hirael/blocks/footer-01/footer-01"
 import Header01 from "@/registry/hirael/blocks/header-01/header-01"
 import Hero01 from "@/registry/hirael/blocks/hero-01/hero-01"
 import Hero02 from "@/registry/hirael/blocks/hero-02/hero-02"
+import Hero03 from "@/registry/hirael/blocks/hero-03/hero-03"
 import ImageGallery01 from "@/registry/hirael/blocks/image-gallery-01/image-gallery-01"
 import Integrations01 from "@/registry/hirael/blocks/integrations-01/integrations-01"
 import LogoCloud01 from "@/registry/hirael/blocks/logo-cloud-01/logo-cloud-01"
@@ -53,6 +62,7 @@ export type ComponentCategory =
   | "files"
   | "data"
   | "display"
+  | "navigation"
   | "blocks"
 
 export type BlockKind =
@@ -153,6 +163,18 @@ export const REGISTRY: RegistryEntryMeta[] = [
     Demo: ComboboxDemo,
     sourceFiles: ["registry/hirael/ui/combobox.tsx"],
     registryDependencies: ["button", "popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
+  },
+  {
+    name: "lazy-select",
+    title: "Lazy Select",
+    description:
+      "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
+    category: "inputs",
+    status: "stable",
+    Demo: LazySelectDemo,
+    sourceFiles: ["registry/hirael/ui/lazy-select.tsx"],
+    registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
   {
@@ -277,7 +299,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "hero-01",
-    title: "Hero · stat strip + install card",
+    title: "Hero · Split with install card",
     description:
       "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
     blockTagline: "Split layout · stat strip · mock install card",
@@ -292,7 +314,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "hero-02",
-    title: "Hero · centered editorial",
+    title: "Hero · Centered editorial",
     description:
       "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
     blockTagline: "Centered · live pill · wordmark strip",
@@ -306,8 +328,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "hero-03",
+    title: "Hero · Email capture",
+    description:
+      "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
+    blockTagline: "Centered · email capture · social proof",
+    category: "blocks",
+    blockKind: "hero",
+    status: "stable",
+    Demo: Hero03,
+    sourceFiles: ["registry/hirael/blocks/hero-03/hero-03.tsx"],
+    installTargets: ["components/blocks/hero-03.tsx"],
+    registryDependencies: ["button", "input"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "feature-01",
-    title: "Feature · alternating rows",
+    title: "Feature · Alternating rows",
     description:
       "Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).",
     blockTagline: "Alternating rows · mock UIs · checklist",
@@ -322,7 +359,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "feature-02",
-    title: "Feature · 3-up icon grid",
+    title: "Feature · Icon grid",
     description:
       "Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.",
     blockTagline: "Icon grid · 6 cards · concise blurbs",
@@ -337,7 +374,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "pricing-01",
-    title: "Pricing · three-tier cards",
+    title: "Pricing · Three tiers",
     description:
       "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
     blockTagline: "3 tiers · featured plan · checklist",
@@ -352,7 +389,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "pricing-02",
-    title: "Pricing · feature comparison table",
+    title: "Pricing · Comparison table",
     description:
       "Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.",
     blockTagline: "Comparison table · sticky header · per-tier CTA",
@@ -367,7 +404,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "testimonial-01",
-    title: "Testimonial · single big quote",
+    title: "Testimonial · Single quote",
     description:
       "Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.",
     blockTagline: "Single quote · author block · wordmark row",
@@ -382,7 +419,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "testimonial-02",
-    title: "Testimonial · masonry grid",
+    title: "Testimonial · Masonry grid",
     description:
       "Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.",
     blockTagline: "Masonry grid · 6 quotes · varied length",
@@ -397,7 +434,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "cta-01",
-    title: "CTA · framed band",
+    title: "CTA · Framed band",
     description:
       "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
     blockTagline: "Framed · split layout · corner marks",
@@ -412,7 +449,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "cta-02",
-    title: "CTA · centered announce",
+    title: "CTA · Centered announcement",
     description:
       "Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an inline install command.",
     blockTagline: "Centered · highlight underlay · install command",
@@ -427,7 +464,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "faq-01",
-    title: "FAQ · sticky split",
+    title: "FAQ · Sticky split",
     description:
       "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
     blockTagline: "Sticky split · numbered · contact card",
@@ -442,7 +479,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "faq-02",
-    title: "FAQ · centered grid",
+    title: "FAQ · Centered grid",
     description:
       "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
     blockTagline: "Centered · two-column grid · Qn-indexed",
@@ -457,7 +494,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "login-01",
-    title: "Login · centered card",
+    title: "Login · Centered card",
     description:
       "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
     blockTagline: "Centered card · providers · password-input",
@@ -472,7 +509,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "login-02",
-    title: "Login · split testimonial",
+    title: "Login · Split with testimonial",
     description:
       "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
     blockTagline: "Split · testimonial pane · strength meter",
@@ -487,7 +524,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "header-01",
-    title: "Header · sticky nav",
+    title: "Header · Sticky nav",
     description:
       "Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.",
     blockTagline: "Sticky · backdrop blur · mobile menu",
@@ -502,7 +539,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "footer-01",
-    title: "Footer · four columns",
+    title: "Footer · Four columns",
     description:
       "Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.",
     blockTagline: "4 columns · social row · copyright",
@@ -604,7 +641,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "logo-cloud-01",
-    title: "Logo Cloud · bordered grid",
+    title: "Logo Cloud · Bordered grid",
     description:
       "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
     blockTagline: "Bordered grid · 10 wordmarks · stat strip",
@@ -619,7 +656,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "contact-01",
-    title: "Contact · split form",
+    title: "Contact · Split form",
     description:
       "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
     blockTagline: "Validated form · pending · sent state",
@@ -644,7 +681,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "blog-01",
-    title: "Blog · featured + grid",
+    title: "Blog · Featured post and grid",
     description:
       "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
     blockTagline: "Featured post · 4-up Card grid",
@@ -659,7 +696,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "dashboard-01",
-    title: "Dashboard · metrics + chart",
+    title: "Dashboard · Metrics and chart",
     description:
       "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
     blockTagline: "Tabs range · 4 metrics · live data",
@@ -674,7 +711,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "integrations-01",
-    title: "Integrations · hub & spoke",
+    title: "Integrations · Hub and spoke",
     description:
       "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
     blockTagline: "Hub & spoke · 7 spokes · orbit ring",
@@ -691,9 +728,9 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "image-gallery-01",
-    title: "Image Gallery · masonry + filter",
+    title: "Image Gallery · Filterable masonry",
     description:
-      "Studio-style masonry gallery with Tabs-driven category filter, gradient placeholder tiles, varied aspect ratios, hover arrow chip and an EmptyState fallback for empty filters.",
+      "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
     blockTagline: "Tabs filter · masonry · empty state",
     category: "blocks",
     blockKind: "image-gallery",
@@ -708,7 +745,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "app-shell-01",
-    title: "App Shell · sidebar + topbar",
+    title: "App Shell · Sidebar and topbar",
     description:
       "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
     blockTagline: "Collapsible Sidebar · sticky topbar · live table",
@@ -729,6 +766,99 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "app-shell-02",
+    title: "App Shell · Top nav and settings",
+    description:
+      "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
+    blockTagline: "Top nav · in-page settings nav · detail card",
+    category: "blocks",
+    blockKind: "app-shell",
+    status: "stable",
+    Demo: AppShell02,
+    sourceFiles: ["registry/hirael/blocks/app-shell-02/app-shell-02.tsx"],
+    installTargets: ["components/blocks/app-shell-02.tsx"],
+    registryDependencies: [
+      "badge",
+      "button",
+      "card",
+      "input-group",
+      "separator",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "spinner",
+    title: "Spinner",
+    description:
+      "Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits the current text color and ships an accessible status label.",
+    category: "display",
+    status: "stable",
+    Demo: SpinnerDemo,
+    sourceFiles: ["registry/hirael/ui/spinner.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "copy-button",
+    title: "Copy Button",
+    description:
+      "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
+    category: "display",
+    status: "stable",
+    Demo: CopyButtonDemo,
+    sourceFiles: ["registry/hirael/ui/copy-button.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "marquee",
+    title: "Marquee",
+    description:
+      "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline — zero config.",
+    category: "display",
+    status: "stable",
+    Demo: MarqueeDemo,
+    sourceFiles: ["registry/hirael/ui/marquee.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "tree-view",
+    title: "Tree View",
+    description:
+      "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
+    category: "data",
+    status: "stable",
+    Demo: TreeViewDemo,
+    sourceFiles: ["registry/hirael/ui/tree-view.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "animated-number",
+    title: "Animated Number",
+    description:
+      "Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.",
+    category: "data",
+    status: "stable",
+    Demo: AnimatedNumberDemo,
+    sourceFiles: ["registry/hirael/ui/animated-number.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "stepper",
+    title: "Stepper",
+    description:
+      "Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.",
+    category: "navigation",
+    status: "stable",
+    Demo: StepperDemo,
+    sourceFiles: ["registry/hirael/ui/stepper.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 export const REGISTRY_BY_NAME = Object.fromEntries(
@@ -741,6 +871,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   files: "Files",
   data: "Data display",
   display: "Display",
+  navigation: "Navigation",
   blocks: "Blocks",
 }
 
@@ -751,6 +882,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     files: [],
     data: [],
     display: [],
+    navigation: [],
     blocks: [],
   }
   for (const entry of REGISTRY) groups[entry.category].push(entry)

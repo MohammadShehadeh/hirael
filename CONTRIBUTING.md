@@ -32,8 +32,8 @@ By participating you agree to abide by the project's Code of Conduct.
 ### First-time setup
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.git
-cd hirael
+git clone https://github.com/MohammadShehadeh/forgecn.git
+cd forgecn
 pnpm install
 pnpm dev          # showcase site at http://localhost:3000
 ```

@@ -92,7 +92,7 @@ and are listed in `registry.json`. Browse them at
 ## Project structure
 
 ```
-hirael/
+forgecn/
 ├── app/                          # Next.js App Router
 │   ├── (showcase)/               # sidebar + main column
 │   │   ├── components/page.tsx   # component index
@@ -125,8 +125,8 @@ hirael/
 ## Installation
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.git
-cd hirael
+git clone https://github.com/MohammadShehadeh/forgecn.git
+cd forgecn
 pnpm install
 ```
 

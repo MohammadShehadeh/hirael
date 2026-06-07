@@ -11,7 +11,7 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "We swapped three hand-rolled multi-selects for the Hirael one in an afternoon. The compound API let us keep our existing layout, and the keyboard nav was finally not embarrassing in front of users.",
+    body: "We replaced three hand-rolled multi-selects with the Hirael one in an afternoon. The compound API kept our existing layout, and the keyboard navigation finally worked the way users expect.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
@@ -35,13 +35,13 @@ const QUOTES: readonly Quote[] = [
     role: "Frontend lead · Verbit",
   },
   {
-    body: "We're a tiny team. Stuff that used to be a 'we'll do it right in v2' is now done correctly in v1. Hirael is the reason.",
+    body: "We're a small team. Work that used to slip to 'we'll fix it in v2' now ships correctly in v1.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",
   },
   {
-    body: "Pulled the tag input in, edited two lines, shipped to prod the same day. The fact that I own the source removed the whole 'will this be maintained' anxiety.",
+    body: "Pulled the tag input in, edited two lines, shipped the same day. Owning the source settles any question of long-term maintenance.",
     initials: "DL",
     name: "Diego Larrea",
     role: "Engineer · Mercado",

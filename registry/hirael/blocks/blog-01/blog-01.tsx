@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { ArrowRight, Clock } from "lucide-react"
 
 import { Badge } from "@/registry/hirael/ui/badge"
@@ -27,6 +28,14 @@ type Post = {
   cover?: string
 }
 
+// Free-to-use photos from Unsplash. Swap for your own assets — and remember
+// to add the image host to `images.remotePatterns` in next.config.
+const IMG = {
+  a: "https://images.unsplash.com/photo-1778601473900-9b68b33ff35e?q=80&w=1200&auto=format&fit=crop",
+  b: "https://images.unsplash.com/photo-1779995734326-3d3790120164?q=80&w=1200&auto=format&fit=crop",
+  c: "https://images.unsplash.com/photo-1779890306846-ad651833f050?q=80&w=1200&auto=format&fit=crop",
+} as const
+
 const FEATURED: Post = {
   category: "Engineering",
   title: "Why we shipped the same component twice — and why you should too.",
@@ -36,6 +45,7 @@ const FEATURED: Post = {
   date: "May 22 · 2026",
   readMin: 9,
   href: "#",
+  cover: IMG.a,
 }
 
 const POSTS: readonly Post[] = [
@@ -48,6 +58,7 @@ const POSTS: readonly Post[] = [
     date: "May 14",
     readMin: 5,
     href: "#",
+    cover: IMG.b,
   },
   {
     category: "Design",
@@ -58,6 +69,7 @@ const POSTS: readonly Post[] = [
     date: "May 06",
     readMin: 4,
     href: "#",
+    cover: IMG.c,
   },
   {
     category: "Release",
@@ -68,6 +80,7 @@ const POSTS: readonly Post[] = [
     date: "Apr 29",
     readMin: 3,
     href: "#",
+    cover: IMG.a,
   },
   {
     category: "Field notes",
@@ -78,6 +91,7 @@ const POSTS: readonly Post[] = [
     date: "Apr 18",
     readMin: 7,
     href: "#",
+    cover: IMG.b,
   },
 ]
 
@@ -95,12 +109,12 @@ function PostCover({
   if (cover) {
     return (
       <div className="relative size-full overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={cover}
           alt={alt}
-          loading="lazy"
-          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          fill
+          sizes="(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
         <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
           {featured && <Badge>Featured</Badge>}

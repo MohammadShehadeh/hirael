@@ -34,7 +34,7 @@ export default function Cta01() {
             <div className="flex flex-col gap-5 lg:col-span-7">
               <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
                 <span className="size-1 rounded-full bg-foreground" />
-                Ready to ship?
+                Get started
               </span>
               <h2 className="text-balance text-2xl font-semibold leading-[1.1] tracking-[-0.03em] sm:text-3xl md:text-4xl lg:text-5xl">
                 Stop rebuilding the components{" "}

@@ -39,7 +39,7 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· performance",
     headline: "Built for dense product surfaces.",
-    body: "Virtualized lists, debounced async, and stable keys are wired in by default. The components hold up when the data set isn't a marketing demo.",
+    body: "Virtualized lists, debounced async, and stable keys are wired in by default — built to hold up under real production data, not just a demo.",
     bullets: [
       "Stable keyboard nav past 10k rows",
       "Async loading with cancellation",

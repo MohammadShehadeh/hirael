@@ -33,13 +33,16 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 
 - **Form inputs** — MultiSelect, NumberRange, TagInput, Combobox,
   PasswordInput, CurrencyInput, PhoneInput, Rating.
-- **Pickers** — YearPicker (MonthPicker, TimePicker, ColorPicker
-  planned).
+- **Pickers** — YearPicker, MonthPicker, TimePicker, ColorPicker.
 - **Files** — FileDropzone with previews and validation.
-- **Data display** — StatCard, Timeline.
-- **Display utilities** — Kbd, Callout, ScrollProgress.
-- **Marketing blocks** — Hero, Feature, Pricing, Testimonial, CTA,
-  FAQ, Login, Header, Footer, Not-Found variants.
+- **Data display** — StatCard, Timeline, AvatarStack, TreeView,
+  AnimatedNumber.
+- **Display & feedback** — Spinner, CopyButton, Marquee, Kbd, Callout,
+  ScrollProgress, AnnouncementBar, EmptyState.
+- **Navigation** — Stepper (horizontal & vertical orientation).
+- **Marketing blocks** — Hero, Feature, Pricing, Testimonial, CTA, FAQ,
+  Login, Header, Footer, Not-Found, Logo Cloud, Contact, Blog,
+  Dashboard, Integrations, Image Gallery, App Shell.
 - **Flat compound APIs** — same composition style shadcn ships, with a
   `data-slot="…"` attribute on every rendered slot for downstream
   styling.
@@ -63,31 +66,41 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 
 ## Components
 
-| Component        | Category | Status   | Registry deps                          |
-| ---------------- | -------- | -------- | -------------------------------------- |
-| MultiSelect      | inputs   | stable   | `button`, `popover`, `command`, `badge`|
-| NumberRange      | inputs   | stable   | `slider`, `input`, `label`             |
-| TagInput         | inputs   | stable   | `badge`                                |
-| Combobox         | inputs   | stable   | `button`, `popover`, `command`         |
-| PasswordInput    | inputs   | stable   | `input`                                |
-| CurrencyInput    | inputs   | stable   | `input`                                |
-| PhoneInput       | inputs   | stable   | `input`, `popover`, `command`          |
-| Rating           | inputs   | stable   | —                                      |
-| YearPicker       | pickers  | stable   | `button`, `popover`                    |
-| MonthPicker      | pickers  | planned  | `button`, `popover`                    |
-| TimePicker       | pickers  | planned  | `button`, `popover`, `input`           |
-| ColorPicker      | pickers  | planned  | `button`, `popover`, `input`           |
-| FileDropzone     | files    | stable   | `button`                               |
-| StatCard         | data     | stable   | —                                      |
-| Timeline         | data     | stable   | —                                      |
-| Kbd              | display  | stable   | —                                      |
-| Callout          | display  | stable   | —                                      |
-| ScrollProgress   | display  | stable   | —                                      |
+| Component       | Category   | Status | Registry deps                            |
+| --------------- | ---------- | ------ | ---------------------------------------- |
+| MultiSelect     | inputs     | stable | `button`, `popover`, `command`, `badge`  |
+| NumberRange     | inputs     | stable | `slider`, `input`, `label`               |
+| TagInput        | inputs     | stable | `badge`                                  |
+| Combobox        | inputs     | stable | `button`, `popover`, `command`           |
+| PasswordInput   | inputs     | stable | `input`, `input-group`                   |
+| CurrencyInput   | inputs     | stable | `input`, `input-group`                   |
+| PhoneInput      | inputs     | stable | `input`, `input-group`, `popover`, `command` |
+| Rating          | inputs     | stable | —                                        |
+| YearPicker      | pickers    | stable | `button`, `popover`                      |
+| MonthPicker     | pickers    | stable | `button`, `popover`                      |
+| TimePicker      | pickers    | stable | `popover`, `tabs`                        |
+| ColorPicker     | pickers    | stable | `popover`, `input`, `tabs`               |
+| FileDropzone    | files      | stable | `button`                                 |
+| StatCard        | data       | stable | —                                        |
+| Timeline        | data       | stable | —                                        |
+| AvatarStack     | data       | stable | —                                        |
+| TreeView        | data       | stable | —                                        |
+| AnimatedNumber  | data       | stable | —                                        |
+| Spinner         | display    | stable | —                                        |
+| CopyButton      | display    | stable | —                                        |
+| Marquee         | display    | stable | —                                        |
+| Kbd             | display    | stable | —                                        |
+| Callout         | display    | stable | —                                        |
+| ScrollProgress  | display    | stable | —                                        |
+| AnnouncementBar | display    | stable | —                                        |
+| EmptyState      | display    | stable | —                                        |
+| Stepper         | navigation | stable | —                                        |
 
-Marketing blocks (Hero, Feature, Pricing, Testimonial, CTA, FAQ,
-Login, Header, Footer, NotFound) live under `registry/hirael/blocks/`
-and are listed in `registry.json`. Browse them at
-[hirael.com/blocks](https://hirael.com/blocks).
+Marketing blocks (Hero, Feature, Pricing, Testimonial, CTA, FAQ, Login,
+Header, Footer, Not-Found, Logo Cloud, Contact, Blog, Dashboard,
+Integrations, Image Gallery, App Shell) live under
+`registry/hirael/blocks/` and are listed in `registry.json`. Browse them
+at [hirael.com/blocks](https://hirael.com/blocks).
 
 ## Project structure
 

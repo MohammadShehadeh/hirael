@@ -1,6 +1,11 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
+  },
   // The component/block routes read their source TSX off disk at build time
   // via fs.readFile(path.join(process.cwd(), ...)). Those files aren't
   // imported by the route, so Next's tracer doesn't include them in the

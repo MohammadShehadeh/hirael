@@ -8,10 +8,10 @@ import { SiteFooter } from "@/components/showcase/site-footer"
 import { SiteHeader } from "@/components/showcase/site-header"
 import { SITE } from "@/lib/site"
 import {
+  BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   REGISTRY,
   REGISTRY_BY_CATEGORY,
-  type BlockKind,
 } from "@/registry/hirael/registry-meta"
 
 export const metadata: Metadata = {
@@ -98,7 +98,7 @@ function Hero() {
 
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md">
             <span className="state-dot" />
-            <span>Live · Registry nominal</span>
+            <span>Live · v{SITE.version}</span>
           </span>
 
           <h1
@@ -153,7 +153,7 @@ function Hero() {
             </Link>
             <Link
               href="/blocks"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Blocks
             </Link>
@@ -175,28 +175,8 @@ function Hero() {
 /* Section blocks grid                                                        */
 /* -------------------------------------------------------------------------- */
 
-const BLOCK_ORDER: BlockKind[] = [
-  "hero",
-  "feature",
-  "pricing",
-  "testimonial",
-  "cta",
-  "faq",
-  "login",
-  "header",
-  "footer",
-  "not-found",
-  "logo-cloud",
-  "contact",
-  "blog",
-  "dashboard",
-  "integrations",
-  "image-gallery",
-  "app-shell",
-]
-
 function CategoryGrid() {
-  const blocksTotal = BLOCK_ORDER.reduce(
+  const blocksTotal = BLOCK_KIND_ORDER.reduce(
     (sum, k) => sum + BLOCKS_BY_KIND[k].length,
     0
   )
@@ -224,7 +204,7 @@ function CategoryGrid() {
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">
             <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-              {blocksTotal} shipped · {BLOCK_ORDER.length} / 17 categories
+              {blocksTotal} blocks · {BLOCK_KIND_ORDER.length} categories
             </span>
             <Link
               href="/blocks"

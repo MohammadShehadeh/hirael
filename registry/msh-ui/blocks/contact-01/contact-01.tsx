@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   ArrowRight,
   CheckCircle2,
@@ -334,12 +335,12 @@ export default function Contact01() {
                       <div className="flex flex-1 flex-col gap-1">
                         <FieldLabel htmlFor="contact-consent">
                           I&apos;ve read the{" "}
-                          <a
+                          <Link
                             href="#"
                             className="underline underline-offset-4 hover:text-primary"
                           >
                             privacy notice
-                          </a>
+                          </Link>
                           .
                         </FieldLabel>
                         <FieldError id="contact-consent-error">

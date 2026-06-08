@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -58,16 +59,16 @@ export default function Cta02() {
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Button asChild variant="default" size="lg" className="group">
-            <a href="#">
+            <Link href="#">
               Browse the registry
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </Button>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             or{" "}
-            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
+            <Link className="underline-offset-4 hover:text-foreground hover:underline" href="#">
               read the dual-API contract
-            </a>
+            </Link>
           </span>
         </div>
 

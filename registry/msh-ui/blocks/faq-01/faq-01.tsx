@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowUpRight, MessageCircleQuestion } from "lucide-react"
 
 import {
@@ -71,10 +72,10 @@ export default function Faq01() {
                   Drop a question in the repo. Responses usually within a day.
                 </p>
                 <Button asChild variant="outline" size="sm" className="w-fit">
-                  <a href="#">
+                  <Link href="#">
                     Open an issue
                     <ArrowUpRight className="size-3.5" />
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>

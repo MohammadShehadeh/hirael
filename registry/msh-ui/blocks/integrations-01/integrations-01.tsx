@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   ArrowRight,
   Boxes,
@@ -77,7 +78,7 @@ export default function Integrations01() {
             >
               {SPOKES.map((s) => (
                 <li key={s.name}>
-                  <a
+                  <Link
                     href={s.href}
                     className="flex items-center gap-2 rounded-sm px-1 py-1.5 text-sm text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
@@ -88,16 +89,16 @@ export default function Integrations01() {
                     <Badge variant="outline" className="ml-auto sm:ml-0">
                       {s.category}
                     </Badge>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
 
             <Button asChild variant="link" className="group mt-4 h-auto w-fit p-0">
-              <a href="#">
+              <Link href="#">
                 Browse all 40+ integrations
                 <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -191,7 +192,7 @@ function Hub() {
         const x = 50 + orbit * Math.cos(rad)
         const y = 50 + orbit * Math.sin(rad)
         return (
-          <a
+          <Link
             key={s.name}
             href={s.href}
             aria-label={`${s.name} integration · ${s.category}`}
@@ -212,7 +213,7 @@ function Hub() {
             >
               {s.name}
             </span>
-          </a>
+          </Link>
         )
       })}
     </div>

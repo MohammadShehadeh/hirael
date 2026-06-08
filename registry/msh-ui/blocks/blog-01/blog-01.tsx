@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Clock } from "lucide-react"
 
@@ -170,10 +171,10 @@ export default function Blog01() {
             </p>
           </div>
           <Button variant="link" className="group h-auto p-0" asChild>
-            <a href="#">
+            <Link href="#">
               All posts
               <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </Button>
         </div>
 
@@ -182,7 +183,7 @@ export default function Blog01() {
             aria-labelledby="blog-01-featured-title"
             className="relative grid grid-cols-1 lg:grid-cols-12"
           >
-            <a
+            <Link
               href={FEATURED.href}
               aria-hidden
               tabIndex={-1}
@@ -194,7 +195,7 @@ export default function Blog01() {
                 category={FEATURED.category}
                 featured
               />
-            </a>
+            </Link>
 
             <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -204,12 +205,12 @@ export default function Blog01() {
                 id="blog-01-featured-title"
                 className="text-balance text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
               >
-                <a
+                <Link
                   href={FEATURED.href}
                   className="after:absolute after:inset-0 focus-visible:outline-none"
                 >
                   {FEATURED.title}
-                </a>
+                </Link>
               </h3>
               <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
                 {FEATURED.excerpt}
@@ -227,10 +228,10 @@ export default function Blog01() {
                 variant="default"
                 className="group/cta relative z-10 mt-2 w-fit"
               >
-                <a href={FEATURED.href}>
+                <Link href={FEATURED.href}>
                   Read the post
                   <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5" />
-                </a>
+                </Link>
               </Button>
             </div>
           </article>
@@ -246,14 +247,14 @@ export default function Blog01() {
               >
                 <article aria-labelledby={titleId} className="contents">
                   {p.cover && (
-                    <a
+                    <Link
                       href={p.href}
                       aria-hidden
                       tabIndex={-1}
                       className="block aspect-[16/10] overflow-hidden"
                     >
                       <PostCover cover={p.cover} alt={p.title} category={p.category} />
-                    </a>
+                    </Link>
                   )}
                   <CardHeader className="px-5 pt-5">
                     <div className="flex items-center justify-between">
@@ -271,12 +272,12 @@ export default function Blog01() {
                       id={titleId}
                       className="mt-2 text-balance text-base leading-snug tracking-[-0.01em]"
                     >
-                      <a
+                      <Link
                         href={p.href}
                         className="after:absolute after:inset-0 focus-visible:outline-none"
                       >
                         {p.title}
-                      </a>
+                      </Link>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="px-5 py-4">

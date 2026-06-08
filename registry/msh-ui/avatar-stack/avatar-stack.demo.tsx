@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link"
 
 import {
   AvatarStack,
@@ -85,24 +86,24 @@ export default function AvatarStackDemo() {
         </p>
         <AvatarStack>
           <AvatarStackItem asChild>
-            <a href="#" aria-label="Maya Renner">
+            <Link href="#" aria-label="Maya Renner">
               MR
-            </a>
+            </Link>
           </AvatarStackItem>
           <AvatarStackItem asChild>
-            <a href="#" aria-label="Soren Kim">
+            <Link href="#" aria-label="Soren Kim">
               SK
-            </a>
+            </Link>
           </AvatarStackItem>
           <AvatarStackItem asChild>
-            <a href="#" aria-label="Jules Tanaka">
+            <Link href="#" aria-label="Jules Tanaka">
               JT
-            </a>
+            </Link>
           </AvatarStackItem>
           <AvatarStackOverflow asChild count={6}>
-            <a href="#" aria-label="View 6 more collaborators">
+            <Link href="#" aria-label="View 6 more collaborators">
               +6
-            </a>
+            </Link>
           </AvatarStackOverflow>
         </AvatarStack>
       </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight, Github } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -54,10 +55,10 @@ export default function Cta01() {
                 size="lg"
                 className="group w-full justify-between lg:w-auto"
               >
-                <a href="#">
+                <Link href="#">
                   Install via shadcn CLI
                   <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-                </a>
+                </Link>
               </Button>
               <Button
                 asChild
@@ -65,7 +66,7 @@ export default function Cta01() {
                 size="lg"
                 className="w-full justify-between lg:w-auto"
               >
-                <a href="#">
+                <Link href="#">
                   <span className="inline-flex items-center gap-2">
                     <Github className="size-4" />
                     Star on GitHub
@@ -73,7 +74,7 @@ export default function Cta01() {
                   <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
                     1.2k
                   </span>
-                </a>
+                </Link>
               </Button>
               <p className="text-right font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 MIT · no runtime dependency

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   Bell,
   CreditCard,
@@ -126,14 +127,14 @@ export default function AppShell02() {
             className="hidden items-center gap-1 md:flex"
           >
             {NAV.map((item) => (
-              <a
+              <Link
                 key={item}
                 href="#"
                 aria-current={item === "Settings" ? "page" : undefined}
                 className="rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:text-foreground"
               >
                 {item}
-              </a>
+              </Link>
             ))}
           </nav>
 

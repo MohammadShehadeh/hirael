@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Github, Twitter, MessageCircle } from "lucide-react"
 
 type LinkColumn = {
@@ -107,12 +108,12 @@ export default function Footer01() {
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <a
+                    <Link
                       href={l.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {l.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -125,27 +126,27 @@ export default function Footer01() {
             © 2026 MSH UI Labs · All rights reserved
           </p>
           <div className="flex items-center gap-1">
-            <a
+            <Link
               href="#"
               aria-label="GitHub"
               className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Github className="size-4" />
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               aria-label="Twitter"
               className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Twitter className="size-4" />
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               aria-label="Discord"
               className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <MessageCircle className="size-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

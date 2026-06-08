@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -33,10 +34,10 @@ export default function NotFound01() {
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Button asChild variant="default" size="lg">
-              <a href="#">Go home</a>
+              <Link href="#">Go home</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <a href="#">Browse docs</a>
+              <Link href="#">Browse docs</Link>
             </Button>
           </div>
 
@@ -47,7 +48,7 @@ export default function NotFound01() {
             <ul className="mt-3 flex flex-col">
               {SUGGESTIONS.map((s) => (
                 <li key={s.route}>
-                  <a
+                  <Link
                     href={s.route}
                     className="group flex items-center justify-between gap-4 border-b border-border py-3 transition-colors last:border-b-0 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
@@ -60,7 +61,7 @@ export default function NotFound01() {
                       </span>
                     </div>
                     <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:opacity-100" />
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

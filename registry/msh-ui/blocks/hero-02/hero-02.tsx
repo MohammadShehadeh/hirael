@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -83,13 +84,13 @@ export default function Hero02() {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild variant="default" size="lg" className="group">
-            <a href="#">
+            <Link href="#">
               Get started
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </Button>
           <Button asChild variant="ghost" size="lg" className="text-foreground">
-            <a href="#">View on GitHub →</a>
+            <Link href="#">View on GitHub →</Link>
           </Button>
         </div>
 

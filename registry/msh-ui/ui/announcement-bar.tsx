@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -133,11 +134,11 @@ function AnnouncementBarBadge({ className, ...props }: AnnouncementBarBadgeProps
   )
 }
 
-type AnnouncementBarLinkProps = React.ComponentProps<"a">
+type AnnouncementBarLinkProps = React.ComponentProps<typeof Link>
 
 function AnnouncementBarLink({ className, ...props }: AnnouncementBarLinkProps) {
   return (
-    <a
+    <Link
       data-slot="announcement-bar-link"
       className={cn(
         "inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

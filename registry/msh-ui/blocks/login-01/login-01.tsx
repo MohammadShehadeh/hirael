@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -143,12 +144,12 @@ export default function Login01() {
                 >
                   Password
                 </Label>
-                <a
+                <Link
                   href="#"
                   className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Forgot?
-                </a>
+                </Link>
               </div>
               <PasswordInput
                 id="login01-password"
@@ -193,12 +194,12 @@ export default function Login01() {
           <div className="border-t border-border px-8 py-4 text-center">
             <p className="text-xs text-muted-foreground">
               No account yet?{" "}
-              <a
+              <Link
                 href="#"
                 className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
                 Create one
-              </a>
+              </Link>
             </p>
           </div>
         </div>

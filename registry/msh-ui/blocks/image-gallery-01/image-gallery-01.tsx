@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 
@@ -149,7 +150,7 @@ export default function ImageGallery01() {
         ) : (
           <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
             {visible.map((t) => (
-              <a
+              <Link
                 key={t.title}
                 href="#"
                 className="group block break-inside-avoid rounded-md border border-border bg-card transition-colors hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -190,7 +191,7 @@ export default function ImageGallery01() {
                     {t.meta}
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         )}

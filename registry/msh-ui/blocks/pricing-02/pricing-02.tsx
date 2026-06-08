@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Check, Minus } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -110,7 +111,7 @@ export default function Pricing02() {
                         size="sm"
                         className="w-full"
                       >
-                        <a href="#">{t.cta}</a>
+                        <Link href="#">{t.cta}</Link>
                       </Button>
                     </div>
                   </th>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   Bell,
   ChevronRight,
@@ -179,10 +180,10 @@ export default function AppShell01() {
                       isActive={item.active}
                       tooltip={item.label}
                     >
-                      <a href={item.href}>
+                      <Link href={item.href}>
                         <item.icon />
                         <span>{item.label}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                     {item.badge && (
                       <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
@@ -202,10 +203,10 @@ export default function AppShell01() {
                 {SECONDARY.map((item) => (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild tooltip={item.label}>
-                      <a href={item.href}>
+                      <Link href={item.href}>
                         <item.icon />
                         <span>{item.label}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -321,7 +322,7 @@ export default function AppShell01() {
                 )}
               </span>
               <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                <a href="#">View all</a>
+                <Link href="#">View all</Link>
               </Button>
             </div>
 

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Menu, X } from "lucide-react"
 
 import { Button } from "@/registry/msh-ui/ui/button"
@@ -58,24 +59,24 @@ export default function Header01() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
         <div className="flex h-14 items-center justify-between">
-          <a
+          <Link
             href="#"
             className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <BrandMark className="mr-1.5 size-4" />
             MSH UI
-          </a>
+          </Link>
 
           <nav className="hidden md:block">
             <ul className="flex items-center gap-1">
               {NAV.map((n, i) => (
                 <li key={n.label} className="flex items-center gap-1">
-                  <a
+                  <Link
                     href={n.href}
                     className="rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {n.label}
-                  </a>
+                  </Link>
                   {i < NAV.length - 1 && (
                     <span
                       aria-hidden
@@ -91,10 +92,10 @@ export default function Header01() {
 
           <div className="hidden items-center gap-2 md:flex">
             <Button asChild variant="ghost" size="sm">
-              <a href="#">Sign in</a>
+              <Link href="#">Sign in</Link>
             </Button>
             <Button asChild variant="default" size="sm">
-              <a href="#">Get started</a>
+              <Link href="#">Get started</Link>
             </Button>
           </div>
 
@@ -116,13 +117,13 @@ export default function Header01() {
             <ul className="flex flex-col gap-1">
               {NAV.map((n) => (
                 <li key={n.label}>
-                  <a
+                  <Link
                     href={n.href}
                     onClick={() => setOpen(false)}
                     className="block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {n.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -133,9 +134,9 @@ export default function Header01() {
                 size="sm"
                 className="w-full justify-center"
               >
-                <a href="#" onClick={() => setOpen(false)}>
+                <Link href="#" onClick={() => setOpen(false)}>
                   Sign in
-                </a>
+                </Link>
               </Button>
               <Button
                 asChild
@@ -143,9 +144,9 @@ export default function Header01() {
                 size="sm"
                 className="w-full justify-center"
               >
-                <a href="#" onClick={() => setOpen(false)}>
+                <Link href="#" onClick={() => setOpen(false)}>
                   Get started
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

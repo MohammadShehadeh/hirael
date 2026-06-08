@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -323,7 +324,7 @@ export default function Dashboard01() {
                   · recent activity
                 </CardDescription>
                 <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                  <a href="#">View all</a>
+                  <Link href="#">View all</Link>
                 </Button>
               </div>
               <CardTitle className="sr-only">Recent activity</CardTitle>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Badge } from "@/registry/msh-ui/ui/badge"
@@ -146,7 +147,7 @@ export default function LogoCloud01() {
         >
           {LOGOS.map((logo) => (
             <li key={logo.name} className="bg-background">
-              <a
+              <Link
                 href={logo.href}
                 aria-label={`Read ${logo.name}'s case study`}
                 className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:outline-none focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
@@ -154,7 +155,7 @@ export default function LogoCloud01() {
                 <span className="text-muted-foreground transition-colors group-hover:text-foreground">
                   {logo.mark}
                 </span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -179,10 +180,10 @@ export default function LogoCloud01() {
             ))}
           </dl>
           <Button variant="link" className="group h-auto p-0" asChild>
-            <a href="#">
+            <Link href="#">
               See the case studies
               <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

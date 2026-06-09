@@ -37,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const componentRoutes: MetadataRoute.Sitemap = REGISTRY.filter(
-    (entry) => entry.category !== "blocks" && entry.status === "stable"
+    (entry) => entry.category !== "blocks"
   ).map((entry) => ({
     url: `${SITE.url}/${entry.name}`,
     lastModified: now,

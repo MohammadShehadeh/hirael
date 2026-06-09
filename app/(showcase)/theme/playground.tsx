@@ -16,7 +16,7 @@ export function ThemePlayground() {
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
   const components = REGISTRY.filter(
-    (r) => r.category !== "blocks" && r.status === "stable"
+    (r) => r.category !== "blocks"
   )
 
   return (

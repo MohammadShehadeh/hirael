@@ -71,11 +71,6 @@ export function ComponentPage({
               </span>
             </>
           )}
-          {entry.status === "planned" && (
-            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-              planned
-            </span>
-          )}
         </div>
         <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
           {entry.title}
@@ -86,18 +81,6 @@ export function ComponentPage({
         <InstallBlock name={entry.name} className="mt-1" />
       </header>
 
-      {entry.status === "planned" ? (
-        <div className="rounded-sm border border-dashed border-border bg-card/40 px-6 py-12 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
-            Declared in <code>registry.json</code> · implementation pending
-          </p>
-          <p className="mt-3 text-sm text-foreground">
-            This component is part of Phase&nbsp;1 and will land soon.
-            The registry entry, dependency list, and install URL are
-            already wired up.
-          </p>
-        </div>
-      ) : (
         <>
           <div
             role="tablist"
@@ -221,7 +204,6 @@ export function ComponentPage({
             )}
           </div>
         </>
-      )}
     </div>
   )
 }

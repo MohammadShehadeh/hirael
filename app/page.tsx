@@ -66,8 +66,7 @@ export default function LandingPage() {
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
-  const components = REGISTRY.filter((r) => r.category !== "blocks")
-  const stable = components.filter((r) => r.status === "stable").length
+  const componentCount = REGISTRY.filter((r) => r.category !== "blocks").length
   const blocks = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
@@ -79,7 +78,7 @@ function Hero() {
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-28 lg:py-36">
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground">
           <span className="state-dot" />
-          {stable} components · {blocks} blocks
+          {componentCount} components · {blocks} blocks
         </span>
 
         <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
@@ -129,8 +128,8 @@ const LIVE_DEMOS = [
 ] as const
 
 function LiveRegistry() {
-  const stableCount = REGISTRY.filter(
-    (r) => r.category !== "blocks" && r.status === "stable"
+  const componentCount = REGISTRY.filter(
+    (r) => r.category !== "blocks"
   ).length
 
   return (
@@ -150,7 +149,7 @@ function LiveRegistry() {
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">
             <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-              {LIVE_DEMOS.length} of {stableCount} · the exact source the CLI
+              {LIVE_DEMOS.length} of {componentCount} · the exact source the CLI
               installs
             </span>
             <Link

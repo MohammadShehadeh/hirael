@@ -21,8 +21,7 @@ export default async function BlockEmbedRoute({
 }) {
   const { block } = await params
   const entry = REGISTRY_BY_NAME[block]
-  if (!entry || entry.category !== "blocks" || entry.status !== "stable")
-    notFound()
+  if (!entry || entry.category !== "blocks") notFound()
   return (
     <div className="min-h-svh bg-background">
       <RegistryDemo name={entry.name} />

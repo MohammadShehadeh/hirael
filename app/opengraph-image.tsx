@@ -9,7 +9,7 @@ export const alt = `${SITE.name} — ${SITE.description}`
 
 export default function OpenGraphImage() {
   const components = REGISTRY.filter(
-    (r) => r.category !== "blocks" && r.status === "stable"
+    (r) => r.category !== "blocks"
   ).length
   const blocks = REGISTRY.filter((r) => r.category === "blocks").length
 

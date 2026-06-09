@@ -22,7 +22,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/registry/hirael/ui/sidebar"
@@ -137,9 +136,6 @@ export function ShowcaseSidebar() {
                             <span>{entry.title}</span>
                           </Link>
                         </SidebarMenuButton>
-                        {entry.status === "planned" && (
-                          <SidebarMenuBadge>soon</SidebarMenuBadge>
-                        )}
                       </SidebarMenuItem>
                     )
                   })}

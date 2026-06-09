@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { NAV_LINKS } from "@/lib/site"
+import { CommandMenu } from "@/components/showcase/command-menu"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
 import { Separator } from "@/registry/hirael/ui/separator"
@@ -51,6 +52,7 @@ export function ShowcaseTopbar() {
       </nav>
 
       <div className="ml-auto flex items-center gap-1.5">
+        <CommandMenu />
         <ThemeToggle />
       </div>
     </header>

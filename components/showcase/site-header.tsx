@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, SITE } from "@/lib/site"
+import { CommandMenu } from "@/components/showcase/command-menu"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
 
@@ -69,6 +70,7 @@ export function SiteHeader({
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
+          <CommandMenu />
           <ThemeToggle />
           <button
             type="button"

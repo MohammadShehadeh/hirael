@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, ArrowUpRight, ChevronLeft } from "lucide-react"
+import { ArrowRight, ChevronLeft } from "lucide-react"
 
 import type { CategoryMeta } from "@/components/showcase/block-categories"
 import { BlockPreview } from "@/components/showcase/block-preview"
@@ -145,15 +145,6 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
               <ChevronLeft className="size-3" />
               All categories
             </Link>
-            <a
-              href="https://github.com/MohammadShehadeh/forgecn/issues"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-1.5 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-            >
-              Request variant
-              <ArrowUpRight className="size-3" />
-            </a>
           </div>
         </div>
       </div>

@@ -77,16 +77,10 @@ function Hero() {
         className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)]"
       />
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-28 lg:py-36">
-        <a
-          href={SITE.githubUrl}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-        >
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground">
           <span className="state-dot" />
-          Open source · {stable} components · {blocks} blocks
-          <ArrowRight className="size-3" />
-        </a>
+          {stable} components · {blocks} blocks
+        </span>
 
         <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
           The components shadcn doesn&apos;t ship.

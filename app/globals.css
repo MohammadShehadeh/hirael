@@ -370,13 +370,17 @@ html.light .shiki span {
   }
 }
 
-/* Site chrome should sit above the noise overlay so it isn't tinted. */
-header,
-main,
-footer,
-[data-sidebar] {
-  position: relative;
-  z-index: 2;
+/* Site chrome should sit above the noise overlay so it isn't tinted. Kept in
+ * @layer base so positioning utilities (e.g. `sticky` on the header) still
+ * win over this rule — unlayered CSS would otherwise override them. */
+@layer base {
+  header,
+  main,
+  footer,
+  [data-sidebar] {
+    position: relative;
+    z-index: 2;
+  }
 }
 
 /* Active sidebar item gets a thin cool-accent rail on the left edge.

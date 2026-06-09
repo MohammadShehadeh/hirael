@@ -127,7 +127,7 @@ export default function RootLayout({
                 name: SITE.author,
                 url: SITE.authorUrl,
               },
-              sameAs: [SITE.twitterUrl, SITE.githubUrl],
+              sameAs: [SITE.twitterUrl],
             }),
           }}
         />

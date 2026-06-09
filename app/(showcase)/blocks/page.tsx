@@ -52,10 +52,7 @@ export default function BlocksIndex() {
             section-level compositions
           </span>
         </div>
-        <h1
-          className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.02em] sm:text-5xl md:text-6xl"
-          style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
-        >
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
           Blocks that compose, not decorate.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">

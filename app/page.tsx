@@ -15,7 +15,6 @@ import {
   REGISTRY_BY_CATEGORY,
   REGISTRY_BY_NAME,
 } from "@/registry/hirael/registry-meta"
-import { Marquee } from "@/registry/hirael/ui/marquee"
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,
@@ -66,127 +65,58 @@ export default function LandingPage() {
 /* Hero                                                                       */
 /* -------------------------------------------------------------------------- */
 
-function CornerMarks() {
-  return (
-    <>
-      <span aria-hidden className="corner-mark -left-1.5 -top-1.5" />
-      <span aria-hidden className="corner-mark -right-1.5 -top-1.5" />
-      <span aria-hidden className="corner-mark -bottom-1.5 -left-1.5" />
-      <span aria-hidden className="corner-mark -bottom-1.5 -right-1.5" />
-    </>
-  )
-}
-
 function Hero() {
   const components = REGISTRY.filter((r) => r.category !== "blocks")
   const stable = components.filter((r) => r.status === "stable").length
   const blocks = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
-    <section className="relative flex min-h-[calc(100svh-3.5rem)] items-center overflow-hidden">
-      <span aria-hidden className="ambient-halo" />
+    <section className="relative overflow-hidden">
       <div
         aria-hidden
-        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
-        }}
+        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)]"
       />
+      <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-28 lg:py-36">
+        <a
+          href={SITE.githubUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        >
+          <span className="state-dot" />
+          Open source · {stable} components · {blocks} blocks
+          <ArrowRight className="size-3" />
+        </a>
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-        <div className="relative mx-auto flex flex-col items-center gap-6 border border-border bg-background/30 px-6 py-14 text-center sm:gap-7 sm:py-20 md:py-24">
-          <CornerMarks />
+        <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
+          The components shadcn doesn&apos;t ship.
+        </h1>
 
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md">
-            <span className="state-dot" />
-            <span>Live</span>
-          </span>
+        <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
+          Production-grade React components and section blocks — multi-select,
+          combobox, tag input, file dropzone, and more. Installed with the
+          shadcn CLI, so the source lands in your repo with no runtime
+          dependency.
+        </p>
 
-          <h1
-            className="text-balance text-4xl leading-[1.02] sm:text-5xl md:text-6xl lg:text-7xl"
-            style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <Link
+            href="/components"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span
-              className="font-semibold"
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              Tools
-            </span>{" "}
-            <span
-              className="font-normal text-muted-foreground"
-              style={{ letterSpacing: "0.005em" }}
-            >
-              for
-            </span>{" "}
-            <span
-              className="font-semibold"
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              builders
-            </span>
-            <br />
-            <span
-              className="font-normal text-muted-foreground"
-              style={{ letterSpacing: "0.005em" }}
-            >
-              who think in
-            </span>{" "}
-            <span
-              className="font-semibold"
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              systems.
-            </span>
-          </h1>
-
-          <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
-            A component registry for the pieces every real product needs —{" "}
-            {stable} components and {blocks} section blocks, distributed via
-            the shadcn CLI. Minimal. Thoughtful. Built to last.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <Link
-              href="/components"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-foreground bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              Components
-            </Link>
-            <Link
-              href="/blocks"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cool focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              Blocks
-            </Link>
-          </div>
-
-          <div className="w-full max-w-md pt-2">
-            <InstallBlock
-              name="multi-select"
-              className="glass-panel border-0"
-            />
-          </div>
-
-          <div
-            aria-hidden
-            className="w-full max-w-2xl pt-4 [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]"
+            Browse components
+            <ArrowRight className="size-4" />
+          </Link>
+          <Link
+            href="/blocks"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-card px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <Marquee pauseOnHover duration={45} gap="2.5rem">
-              {components
-                .filter((c) => c.status === "stable")
-                .map((c) => (
-                  <span
-                    key={c.name}
-                    className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
-                  >
-                    /{c.name}
-                  </span>
-                ))}
-            </Marquee>
-          </div>
+            Browse blocks
+          </Link>
+        </div>
+
+        <div className="w-full max-w-md pt-4">
+          <InstallBlock name="multi-select" />
         </div>
       </div>
     </section>
@@ -220,14 +150,8 @@ function LiveRegistry() {
               <span className="h-px w-4 bg-border" />
               Live registry
             </span>
-            <h2
-              className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
-              style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
-            >
-              <span className="font-semibold">Real components,</span>{" "}
-              <span className="font-normal text-muted-foreground">
-                running live.
-              </span>
+            <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+              Real components, running live.
             </h2>
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">
@@ -305,14 +229,8 @@ function CategoryGrid() {
               <span className="h-px w-4 bg-border" />
               Section blocks
             </span>
-            <h2
-              className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
-              style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
-            >
-              <span className="font-semibold">Compose</span>{" "}
-              <span className="font-normal text-muted-foreground">
-                full pages, faster.
-              </span>
+            <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+              Compose full pages, faster.
             </h2>
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">

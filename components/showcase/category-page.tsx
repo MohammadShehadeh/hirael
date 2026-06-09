@@ -28,10 +28,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
             </span>
           )}
         </div>
-        <h1
-          className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.02em] sm:text-5xl"
-          style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
-        >
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {category.title}.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">

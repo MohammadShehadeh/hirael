@@ -23,8 +23,8 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0D1117",
-          color: "#E7E4DE",
+          background: "#09090b",
+          color: "#fafafa",
           fontFamily: "serif",
           padding: 80,
         }}
@@ -34,7 +34,7 @@ export default function OpenGraphImage() {
           height="200"
           viewBox="0 0 80 100"
           fill="none"
-          stroke="#E7E4DE"
+          stroke="#fafafa"
           strokeWidth="2.2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -65,7 +65,7 @@ export default function OpenGraphImage() {
             fontSize: 28,
             letterSpacing: 6,
             paddingLeft: 6,
-            color: "#ADA69A",
+            color: "#a1a1aa",
             textTransform: "uppercase",
           }}
         >
@@ -75,7 +75,7 @@ export default function OpenGraphImage() {
           style={{
             marginTop: 72,
             fontSize: 24,
-            color: "#ADA69A",
+            color: "#a1a1aa",
             fontFamily: "sans-serif",
             letterSpacing: 0.5,
           }}
@@ -86,7 +86,7 @@ export default function OpenGraphImage() {
           style={{
             marginTop: 20,
             fontSize: 20,
-            color: "#E7E4DE",
+            color: "#fafafa",
             fontFamily: "monospace",
             letterSpacing: 3,
             textTransform: "uppercase",

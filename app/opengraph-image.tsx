@@ -1,12 +1,18 @@
 import { ImageResponse } from "next/og"
 
 import { SITE } from "@/lib/site"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 export const alt = `${SITE.name} — ${SITE.description}`
 
 export default function OpenGraphImage() {
+  const components = REGISTRY.filter(
+    (r) => r.category !== "blocks" && r.status === "stable"
+  ).length
+  const blocks = REGISTRY.filter((r) => r.category === "blocks").length
+
   return new ImageResponse(
     (
       <div
@@ -42,8 +48,12 @@ export default function OpenGraphImage() {
         </svg>
         <div
           style={{
+            display: "flex",
+            alignItems: "center",
+            height: 170,
             fontSize: 128,
             letterSpacing: 24,
+            paddingLeft: 24,
             fontWeight: 500,
           }}
         >
@@ -51,9 +61,10 @@ export default function OpenGraphImage() {
         </div>
         <div
           style={{
-            marginTop: 24,
+            marginTop: 12,
             fontSize: 28,
             letterSpacing: 6,
+            paddingLeft: 6,
             color: "#ADA69A",
             textTransform: "uppercase",
           }}
@@ -62,7 +73,7 @@ export default function OpenGraphImage() {
         </div>
         <div
           style={{
-            marginTop: 80,
+            marginTop: 72,
             fontSize: 24,
             color: "#ADA69A",
             fontFamily: "sans-serif",
@@ -70,6 +81,18 @@ export default function OpenGraphImage() {
           }}
         >
           {SITE.description}
+        </div>
+        <div
+          style={{
+            marginTop: 20,
+            fontSize: 20,
+            color: "#E7E4DE",
+            fontFamily: "monospace",
+            letterSpacing: 3,
+            textTransform: "uppercase",
+          }}
+        >
+          {`${components} components · ${blocks} blocks · shadcn registry · MIT`}
         </div>
       </div>
     ),

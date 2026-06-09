@@ -1,18 +1,21 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { SiteFooter } from "@/components/showcase/site-footer"
 import { SiteHeader } from "@/components/showcase/site-header"
 import { SITE } from "@/lib/site"
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   REGISTRY,
   REGISTRY_BY_CATEGORY,
+  REGISTRY_BY_NAME,
 } from "@/registry/hirael/registry-meta"
+import { Marquee } from "@/registry/hirael/ui/marquee"
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.description}`,
@@ -51,6 +54,7 @@ export default function LandingPage() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
+        <LiveRegistry />
         <CategoryGrid />
       </main>
       <SiteFooter />
@@ -165,7 +169,116 @@ function Hero() {
               className="glass-panel border-0"
             />
           </div>
+
+          <div
+            aria-hidden
+            className="w-full max-w-2xl pt-4 [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]"
+          >
+            <Marquee pauseOnHover duration={45} gap="2.5rem">
+              {components
+                .filter((c) => c.status === "stable")
+                .map((c) => (
+                  <span
+                    key={c.name}
+                    className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+                  >
+                    /{c.name}
+                  </span>
+                ))}
+            </Marquee>
+          </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/* Live registry — real demos, rendered on the landing page                   */
+/* -------------------------------------------------------------------------- */
+
+const LIVE_DEMOS = [
+  "multi-select",
+  "rating",
+  "animated-number",
+  "copy-button",
+] as const
+
+function LiveRegistry() {
+  const stableCount = REGISTRY.filter(
+    (r) => r.category !== "blocks" && r.status === "stable"
+  ).length
+
+  return (
+    <section className="relative">
+      <hr className="rule-gradient" />
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-2">
+            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="text-foreground/90">/01</span>
+              <span className="h-px w-4 bg-border" />
+              Live registry
+            </span>
+            <h2
+              className="text-balance text-2xl tracking-[-0.02em] sm:text-3xl"
+              style={{ fontFamily: "var(--font-cormorant), ui-serif, serif" }}
+            >
+              <span className="font-semibold">Real components,</span>{" "}
+              <span className="font-normal text-muted-foreground">
+                running live.
+              </span>
+            </h2>
+          </div>
+          <div className="flex items-center gap-4 self-start sm:self-auto">
+            <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+              {LIVE_DEMOS.length} of {stableCount} · the exact source the CLI
+              installs
+            </span>
+            <Link
+              href="/components"
+              className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              See all
+              <ArrowRight className="size-3" />
+            </Link>
+          </div>
+        </header>
+
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-2">
+          {LIVE_DEMOS.map((name) => {
+            const entry = REGISTRY_BY_NAME[name]
+            if (!entry) return null
+            return (
+              <article key={name} className="flex flex-col bg-card">
+                <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5 sm:px-5">
+                  <div className="flex items-baseline gap-3">
+                    <h3 className="text-sm font-medium tracking-[-0.01em]">
+                      {entry.title}
+                    </h3>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                      /{entry.name}
+                    </span>
+                  </div>
+                  <Link
+                    href={`/${entry.name}`}
+                    aria-label={`Open ${entry.title} docs`}
+                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <ArrowUpRight className="size-3" />
+                  </Link>
+                </div>
+                <div className="flex min-h-[280px] flex-1 items-center justify-center p-6 sm:p-8">
+                  <RegistryDemo name={entry.name} />
+                </div>
+              </article>
+            )
+          })}
+        </div>
+
+        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          Not screenshots — click around. Every demo is the shipped source.
+        </p>
       </div>
     </section>
   )
@@ -188,7 +301,7 @@ function CategoryGrid() {
         <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
             <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span className="text-foreground/90">/01</span>
+              <span className="text-foreground/90">/02</span>
               <span className="h-px w-4 bg-border" />
               Section blocks
             </span>

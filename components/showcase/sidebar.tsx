@@ -25,7 +25,6 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/registry/hirael/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
@@ -39,7 +38,6 @@ const CATEGORY_ORDER: ComponentCategory[] = [
 
 export function ShowcaseSidebar() {
   const pathname = usePathname()
-  const { isMobile } = useSidebar()
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
   const isActive = (href: string) => {
@@ -48,10 +46,7 @@ export function ShowcaseSidebar() {
   }
 
   return (
-    <Sidebar
-      collapsible={isMobile ? "offcanvas" : "none"}
-      className="sticky top-0 h-svh border-r border-sidebar-border"
-    >
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarHeader>
         <Link
           href="/"

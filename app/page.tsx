@@ -79,7 +79,7 @@ function Hero() {
   const blocks = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative flex min-h-[calc(100svh-3.5rem)] items-center overflow-hidden">
       <span aria-hidden className="ambient-halo" />
       <div
         aria-hidden

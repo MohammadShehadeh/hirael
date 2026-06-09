@@ -45,7 +45,7 @@ export function SiteHeader({
           aria-label={`${SITE.name} — home`}
           className="group flex items-center gap-2 rounded-sm py-1 transition-colors"
         >
-          <BrandLockup logoClassName="h-8" />
+          <BrandLockup logoClassName="h-9" />
         </Link>
 
         <nav className="hidden flex-1 items-center gap-1 px-2 md:flex">

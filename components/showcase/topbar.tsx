@@ -20,14 +20,14 @@ export function ShowcaseTopbar() {
 
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/85 px-3 backdrop-blur-md sm:px-4">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="mx-1 h-5" />
+      <SidebarTrigger className="-ml-1 md:hidden" />
+      <Separator orientation="vertical" className="mx-1 h-5 md:hidden" />
       <Link
         href="/"
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
         aria-label="Hirael — home"
       >
-        <BrandLockup logoClassName="h-7" />
+        <BrandLockup logoClassName="h-8" />
       </Link>
 
       <nav className="hidden flex-1 items-center gap-0.5 md:flex">

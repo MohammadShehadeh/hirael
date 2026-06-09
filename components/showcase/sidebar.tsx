@@ -25,6 +25,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/registry/hirael/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
@@ -38,6 +39,7 @@ const CATEGORY_ORDER: ComponentCategory[] = [
 
 export function ShowcaseSidebar() {
   const pathname = usePathname()
+  const { isMobile } = useSidebar()
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
   const isActive = (href: string) => {
@@ -46,16 +48,19 @@ export function ShowcaseSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+    <Sidebar
+      collapsible={isMobile ? "offcanvas" : "none"}
+      className="sticky top-0 h-svh border-r border-sidebar-border"
+    >
       <SidebarHeader>
         <Link
           href="/"
           className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2!"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMarkM className="size-7 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-5" />
+          <LogoMarkM className="size-8 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-6" />
           <span
-            className="truncate whitespace-nowrap text-lg leading-none text-foreground group-data-[collapsible=icon]:hidden"
+            className="truncate whitespace-nowrap text-xl leading-none text-foreground group-data-[collapsible=icon]:hidden"
             style={{
               fontFamily: "var(--font-cormorant), ui-serif, serif",
               fontWeight: 500,
@@ -93,9 +98,11 @@ export function ShowcaseSidebar() {
                   <Link href="/blocks">
                     <LayoutTemplate />
                     <span>Blocks</span>
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground group-data-[collapsible=icon]:hidden">
+                      {blockCount}
+                    </span>
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuBadge>{blockCount}</SidebarMenuBadge>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton

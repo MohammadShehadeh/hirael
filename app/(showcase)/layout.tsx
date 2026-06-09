@@ -1,3 +1,5 @@
+import { cookies } from "next/headers"
+
 import { ShowcaseSidebar } from "@/components/showcase/sidebar"
 import { ShowcaseTopbar } from "@/components/showcase/topbar"
 import { SiteFooter } from "@/components/showcase/site-footer"
@@ -6,16 +8,16 @@ import {
   SidebarProvider,
 } from "@/registry/hirael/ui/sidebar"
 
-export default function ShowcaseLayout({
+export default async function ShowcaseLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // The sidebar is permanently open on desktop and only toggleable on mobile
-  // (via the Sheet). Forcing `open` locks the desktop state so neither the
-  // (hidden) trigger nor the keyboard shortcut can collapse it.
+  const cookieStore = await cookies()
+  const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false"
+
   return (
-    <SidebarProvider open>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <ShowcaseSidebar />
       <SidebarInset className="min-w-0">
         <ShowcaseTopbar />

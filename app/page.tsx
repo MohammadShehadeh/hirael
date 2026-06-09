@@ -98,7 +98,7 @@ function Hero() {
 
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md">
             <span className="state-dot" />
-            <span>Live · v{SITE.version}</span>
+            <span>Live</span>
           </span>
 
           <h1

@@ -37,7 +37,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {category.comingSoon
             ? "Planned · not yet shipped"
-            : `${blocks.length} block${blocks.length === 1 ? "" : "s"} · MIT`}
+            : `${blocks.length} block${blocks.length === 1 ? "" : "s"}`}
         </p>
       </header>
 

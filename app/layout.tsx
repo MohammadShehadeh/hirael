@@ -110,7 +110,6 @@ export default function RootLayout({
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Any",
               softwareVersion: SITE.version,
-              license: "https://opensource.org/licenses/MIT",
               isAccessibleForFree: true,
               offers: {
                 "@type": "Offer",

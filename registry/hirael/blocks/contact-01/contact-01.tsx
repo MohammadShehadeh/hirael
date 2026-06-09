@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   ArrowRight,
   CheckCircle2,
-  Github,
   Loader2,
   Mail,
   MapPin,
@@ -87,12 +86,6 @@ const CHANNELS: readonly Channel[] = [
     icon: MessageCircle,
     label: "Discord",
     value: "hirael · #help",
-    href: "#",
-  },
-  {
-    icon: Github,
-    label: "Issues",
-    value: "MohammadShehadeh/forgecn",
     href: "#",
   },
 ]

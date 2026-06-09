@@ -64,7 +64,7 @@ const PANELS: Record<string, FieldDef[]> = {
     { label: "Billing email", value: "ap@plinth.dev" },
   ],
   integrations: [
-    { label: "GitHub", value: "Connected", hint: "plinth-labs" },
+    { label: "Vercel", value: "Connected", hint: "plinth-labs" },
     { label: "Slack", value: "Connected", hint: "#product" },
     { label: "Linear", value: "Not connected" },
   ],

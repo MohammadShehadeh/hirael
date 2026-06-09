@@ -32,7 +32,7 @@ const TIERS: readonly Tier[] = [
       "Full registry access",
       "Up to 3 themes",
       "Community support",
-      "MIT license",
+      "Full source access",
     ],
     cta: "Start free",
     ctaVariant: "outline",

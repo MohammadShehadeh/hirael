@@ -89,7 +89,7 @@ export default function Hero02() {
             </a>
           </Button>
           <Button asChild variant="ghost" size="lg" className="text-foreground">
-            <a href="#">View on GitHub →</a>
+            <a href="#">Browse components →</a>
           </Button>
         </div>
 

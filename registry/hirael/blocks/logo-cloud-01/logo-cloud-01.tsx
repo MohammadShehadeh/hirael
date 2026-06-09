@@ -112,8 +112,8 @@ const LOGOS: readonly Logo[] = [
 
 const STATS = [
   { value: "40k", label: "weekly installs" },
-  { value: "1.2k", label: "github stars" },
-  { value: "MIT", label: "license" },
+  { value: "12k", label: "developers" },
+  { value: "0", label: "runtime deps" },
 ] as const
 
 export default function LogoCloud01() {

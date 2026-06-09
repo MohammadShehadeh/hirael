@@ -92,7 +92,7 @@ export default function OpenGraphImage() {
             textTransform: "uppercase",
           }}
         >
-          {`${components} components · ${blocks} blocks · shadcn registry · MIT`}
+          {`${components} components · ${blocks} blocks · shadcn registry`}
         </div>
       </div>
     ),

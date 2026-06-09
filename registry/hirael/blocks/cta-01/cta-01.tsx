@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ArrowRight, Github } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/registry/hirael/ui/button"
 
@@ -63,20 +63,12 @@ export default function Cta01() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="w-full justify-between lg:w-auto"
+                className="w-full lg:w-auto"
               >
-                <a href="#">
-                  <span className="inline-flex items-center gap-2">
-                    <Github className="size-4" />
-                    Star on GitHub
-                  </span>
-                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                    1.2k
-                  </span>
-                </a>
+                <a href="#">Browse blocks</a>
               </Button>
               <p className="text-right font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                MIT · no runtime dependency
+                No runtime dependency
               </p>
             </div>
           </div>

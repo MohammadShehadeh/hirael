@@ -61,7 +61,7 @@ export default function BlocksIndex() {
           shape it like any other source file in your repo.
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {blockCount} blocks · {BLOCK_KIND_ORDER.length} categories · MIT
+          {blockCount} blocks · {BLOCK_KIND_ORDER.length} categories
         </p>
       </header>
 

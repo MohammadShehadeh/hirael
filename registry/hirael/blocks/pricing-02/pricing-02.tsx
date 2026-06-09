@@ -38,7 +38,7 @@ const ROWS: readonly Row[] = [
   { feature: "SSO & audit log", hobby: false, pro: false, team: true },
   { feature: "Priority response", hobby: false, pro: true, team: true },
   { feature: "SLA support", hobby: false, pro: false, team: true },
-  { feature: "MIT source license", hobby: true, pro: true, team: true },
+  { feature: "Full source ownership", hobby: true, pro: true, team: true },
 ]
 
 function CellContent({ value }: { value: Cell }) {

@@ -31,8 +31,8 @@ const FAQS = [
     a: "Yes. Components are React-first and framework-agnostic — App Router, Pages Router, Remix, anywhere React runs.",
   },
   {
-    q: "Is it really free?",
-    a: "MIT-licensed and free, forever. The source is on GitHub. No paywall, no telemetry.",
+    q: "Do I own the code?",
+    a: "Yes. Installing pulls the source straight into your repo — yours to keep, edit, and ship. No telemetry, no lock-in.",
   },
 ] as const
 

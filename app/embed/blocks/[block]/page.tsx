@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 
 export const dynamicParams = false
@@ -20,11 +21,11 @@ export default async function BlockEmbedRoute({
 }) {
   const { block } = await params
   const entry = REGISTRY_BY_NAME[block]
-  if (!entry || entry.category !== "blocks" || !entry.Demo) notFound()
-  const Demo = entry.Demo
+  if (!entry || entry.category !== "blocks" || entry.status !== "stable")
+    notFound()
   return (
     <div className="min-h-svh bg-background">
-      <Demo />
+      <RegistryDemo name={entry.name} />
     </div>
   )
 }

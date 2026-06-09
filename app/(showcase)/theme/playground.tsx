@@ -8,6 +8,7 @@ import { Input } from "@/registry/hirael/ui/input"
 import { Label } from "@/registry/hirael/ui/label"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { useTheme } from "@/components/showcase/theme-provider"
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export function ThemePlayground() {
@@ -104,8 +105,6 @@ export function ThemePlayground() {
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
           {components.map((entry) => {
-            const Demo = entry.Demo
-            if (!Demo) return null
             return (
               <article
                 key={entry.name}
@@ -120,7 +119,7 @@ export function ThemePlayground() {
                   </span>
                 </div>
                 <div className="flex min-h-[160px] items-center justify-center rounded-sm border border-dashed border-border bg-background/60 p-4">
-                  <Demo />
+                  <RegistryDemo name={entry.name} />
                 </div>
               </article>
             )

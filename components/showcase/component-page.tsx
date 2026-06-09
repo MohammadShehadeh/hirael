@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { BlockViewer } from "@/components/showcase/block-viewer"
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import type { RegistryEntryMeta } from "@/registry/hirael/registry-meta"
 
 type Tab = "preview" | "usage" | "code" | "install"
@@ -44,7 +45,6 @@ export function ComponentPage({
     [entry.sourceFiles, entry.installTargets, source, isBlock]
   )
 
-  const Demo = entry.Demo
   const showUsageTab = !isBlock && !!demoSource
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
@@ -158,12 +158,11 @@ export function ComponentPage({
             className="focus-visible:outline-none"
           >
             {tab === "preview" &&
-              Demo &&
               (isBlock ? (
                 <BlockViewer name={entry.name} title={entry.title} />
               ) : (
                 <div className="flex min-h-[360px] items-center justify-center rounded-sm border border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
-                  <Demo />
+                  <RegistryDemo name={entry.name} />
                 </div>
               ))}
 

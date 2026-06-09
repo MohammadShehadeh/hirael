@@ -1,61 +1,3 @@
-import * as React from "react"
-
-import AnimatedNumberDemo from "@/registry/hirael/animated-number/animated-number.demo"
-import AnnouncementBarDemo from "@/registry/hirael/announcement-bar/announcement-bar.demo"
-import AvatarStackDemo from "@/registry/hirael/avatar-stack/avatar-stack.demo"
-import CalloutDemo from "@/registry/hirael/callout/callout.demo"
-import ColorPickerDemo from "@/registry/hirael/color-picker/color-picker.demo"
-import ComboboxDemo from "@/registry/hirael/combobox/combobox.demo"
-import CopyButtonDemo from "@/registry/hirael/copy-button/copy-button.demo"
-import CurrencyInputDemo from "@/registry/hirael/currency-input/currency-input.demo"
-import EmptyStateDemo from "@/registry/hirael/empty-state/empty-state.demo"
-import FileDropzoneDemo from "@/registry/hirael/file-dropzone/file-dropzone.demo"
-import KbdDemo from "@/registry/hirael/kbd/kbd.demo"
-import LazySelectDemo from "@/registry/hirael/lazy-select/lazy-select.demo"
-import MarqueeDemo from "@/registry/hirael/marquee/marquee.demo"
-import MonthPickerDemo from "@/registry/hirael/month-picker/month-picker.demo"
-import MultiSelectDemo from "@/registry/hirael/multi-select/multi-select.demo"
-import NumberRangeDemo from "@/registry/hirael/number-range/number-range.demo"
-import PasswordInputDemo from "@/registry/hirael/password-input/password-input.demo"
-import PhoneInputDemo from "@/registry/hirael/phone-input/phone-input.demo"
-import RatingDemo from "@/registry/hirael/rating/rating.demo"
-import ScrollProgressDemo from "@/registry/hirael/scroll-progress/scroll-progress.demo"
-import SpinnerDemo from "@/registry/hirael/spinner/spinner.demo"
-import StatCardDemo from "@/registry/hirael/stat-card/stat-card.demo"
-import StepperDemo from "@/registry/hirael/stepper/stepper.demo"
-import TagInputDemo from "@/registry/hirael/tag-input/tag-input.demo"
-import TimelineDemo from "@/registry/hirael/timeline/timeline.demo"
-import TimePickerDemo from "@/registry/hirael/time-picker/time-picker.demo"
-import TreeViewDemo from "@/registry/hirael/tree-view/tree-view.demo"
-import YearPickerDemo from "@/registry/hirael/year-picker/year-picker.demo"
-
-import AppShell01 from "@/registry/hirael/blocks/app-shell-01/app-shell-01"
-import AppShell02 from "@/registry/hirael/blocks/app-shell-02/app-shell-02"
-import Blog01 from "@/registry/hirael/blocks/blog-01/blog-01"
-import Contact01 from "@/registry/hirael/blocks/contact-01/contact-01"
-import Cta01 from "@/registry/hirael/blocks/cta-01/cta-01"
-import Cta02 from "@/registry/hirael/blocks/cta-02/cta-02"
-import Dashboard01 from "@/registry/hirael/blocks/dashboard-01/dashboard-01"
-import Faq01 from "@/registry/hirael/blocks/faq-01/faq-01"
-import Faq02 from "@/registry/hirael/blocks/faq-02/faq-02"
-import Feature01 from "@/registry/hirael/blocks/feature-01/feature-01"
-import Feature02 from "@/registry/hirael/blocks/feature-02/feature-02"
-import Footer01 from "@/registry/hirael/blocks/footer-01/footer-01"
-import Header01 from "@/registry/hirael/blocks/header-01/header-01"
-import Hero01 from "@/registry/hirael/blocks/hero-01/hero-01"
-import Hero02 from "@/registry/hirael/blocks/hero-02/hero-02"
-import Hero03 from "@/registry/hirael/blocks/hero-03/hero-03"
-import ImageGallery01 from "@/registry/hirael/blocks/image-gallery-01/image-gallery-01"
-import Integrations01 from "@/registry/hirael/blocks/integrations-01/integrations-01"
-import LogoCloud01 from "@/registry/hirael/blocks/logo-cloud-01/logo-cloud-01"
-import Login01 from "@/registry/hirael/blocks/login-01/login-01"
-import Login02 from "@/registry/hirael/blocks/login-02/login-02"
-import NotFound01 from "@/registry/hirael/blocks/not-found-01/not-found-01"
-import Pricing01 from "@/registry/hirael/blocks/pricing-01/pricing-01"
-import Pricing02 from "@/registry/hirael/blocks/pricing-02/pricing-02"
-import Testimonial01 from "@/registry/hirael/blocks/testimonial-01/testimonial-01"
-import Testimonial02 from "@/registry/hirael/blocks/testimonial-02/testimonial-02"
-
 export type ComponentCategory =
   | "inputs"
   | "pickers"
@@ -90,7 +32,6 @@ export type RegistryEntryMeta = {
   description: string
   category: ComponentCategory
   status: "stable" | "planned"
-  Demo?: React.ComponentType
   sourceFiles?: string[]
   /**
    * Install-target paths, parallel to `sourceFiles`. Shown in the code view
@@ -112,7 +53,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Chip-based multi-select with command-palette dropdown, search, select-all and async loader.",
     category: "inputs",
     status: "stable",
-    Demo: MultiSelectDemo,
     sourceFiles: ["registry/hirael/ui/multi-select.tsx"],
     registryDependencies: ["button", "popover", "command", "badge"],
     dependencies: ["cmdk", "lucide-react"],
@@ -124,7 +64,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Two-thumb slider paired with synced number inputs, locale-aware formatting.",
     category: "inputs",
     status: "stable",
-    Demo: NumberRangeDemo,
     sourceFiles: ["registry/hirael/ui/number-range.tsx"],
     registryDependencies: ["slider", "input", "label"],
     dependencies: ["@radix-ui/react-slider"],
@@ -136,7 +75,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Decade-grid year picker with keyboard nav, min/max bounds, single or range mode.",
     category: "pickers",
     status: "stable",
-    Demo: YearPickerDemo,
     sourceFiles: ["registry/hirael/ui/year-picker.tsx"],
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
@@ -148,7 +86,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
     category: "inputs",
     status: "stable",
-    Demo: TagInputDemo,
     sourceFiles: ["registry/hirael/ui/tag-input.tsx"],
     registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
@@ -160,7 +97,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Searchable single-select with debounced async loader, group headings and clearable selection.",
     category: "inputs",
     status: "stable",
-    Demo: ComboboxDemo,
     sourceFiles: ["registry/hirael/ui/combobox.tsx"],
     registryDependencies: ["button", "popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
@@ -172,7 +108,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
     category: "inputs",
     status: "stable",
-    Demo: LazySelectDemo,
     sourceFiles: ["registry/hirael/ui/lazy-select.tsx"],
     registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
@@ -184,7 +119,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
     category: "inputs",
     status: "stable",
-    Demo: PasswordInputDemo,
     sourceFiles: ["registry/hirael/ui/password-input.tsx"],
     registryDependencies: ["input"],
     dependencies: ["lucide-react"],
@@ -196,7 +130,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
     category: "inputs",
     status: "stable",
-    Demo: CurrencyInputDemo,
     sourceFiles: ["registry/hirael/ui/currency-input.tsx"],
     registryDependencies: ["input"],
     dependencies: [],
@@ -208,7 +141,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
     category: "inputs",
     status: "stable",
-    Demo: PhoneInputDemo,
     sourceFiles: ["registry/hirael/ui/phone-input.tsx"],
     registryDependencies: ["input", "popover", "command"],
     dependencies: ["lucide-react"],
@@ -220,7 +152,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
     category: "files",
     status: "stable",
-    Demo: FileDropzoneDemo,
     sourceFiles: ["registry/hirael/ui/file-dropzone.tsx"],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
@@ -232,7 +163,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Compact metric card with label, value, and an up/down/flat trend chip.",
     category: "data",
     status: "stable",
-    Demo: StatCardDemo,
     sourceFiles: ["registry/hirael/ui/stat-card.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
@@ -244,7 +174,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.",
     category: "inputs",
     status: "stable",
-    Demo: RatingDemo,
     sourceFiles: ["registry/hirael/ui/rating.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
@@ -256,7 +185,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.",
     category: "data",
     status: "stable",
-    Demo: TimelineDemo,
     sourceFiles: ["registry/hirael/ui/timeline.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -268,7 +196,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "3D tactile keycap with hover lift and pressed states. Compound API with KbdGroup for chords and KbdDisplay for inline keys.",
     category: "display",
     status: "stable",
-    Demo: KbdDemo,
     sourceFiles: ["registry/hirael/ui/kbd.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -280,7 +207,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override.",
     category: "display",
     status: "stable",
-    Demo: CalloutDemo,
     sourceFiles: ["registry/hirael/ui/callout.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react", "class-variance-authority"],
@@ -292,7 +218,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.",
     category: "display",
     status: "stable",
-    Demo: ScrollProgressDemo,
     sourceFiles: ["registry/hirael/ui/scroll-progress.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -306,7 +231,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "hero",
     status: "stable",
-    Demo: Hero01,
     sourceFiles: ["registry/hirael/blocks/hero-01/hero-01.tsx"],
     installTargets: ["components/blocks/hero-01.tsx"],
     registryDependencies: ["button"],
@@ -321,7 +245,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "hero",
     status: "stable",
-    Demo: Hero02,
     sourceFiles: ["registry/hirael/blocks/hero-02/hero-02.tsx"],
     installTargets: ["components/blocks/hero-02.tsx"],
     registryDependencies: ["button"],
@@ -336,7 +259,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "hero",
     status: "stable",
-    Demo: Hero03,
     sourceFiles: ["registry/hirael/blocks/hero-03/hero-03.tsx"],
     installTargets: ["components/blocks/hero-03.tsx"],
     registryDependencies: ["button", "input"],
@@ -351,7 +273,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "feature",
     status: "stable",
-    Demo: Feature01,
     sourceFiles: ["registry/hirael/blocks/feature-01/feature-01.tsx"],
     installTargets: ["components/blocks/feature-01.tsx"],
     registryDependencies: ["button"],
@@ -366,7 +287,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "feature",
     status: "stable",
-    Demo: Feature02,
     sourceFiles: ["registry/hirael/blocks/feature-02/feature-02.tsx"],
     installTargets: ["components/blocks/feature-02.tsx"],
     registryDependencies: [],
@@ -381,7 +301,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "pricing",
     status: "stable",
-    Demo: Pricing01,
     sourceFiles: ["registry/hirael/blocks/pricing-01/pricing-01.tsx"],
     installTargets: ["components/blocks/pricing-01.tsx"],
     registryDependencies: ["button"],
@@ -396,7 +315,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "pricing",
     status: "stable",
-    Demo: Pricing02,
     sourceFiles: ["registry/hirael/blocks/pricing-02/pricing-02.tsx"],
     installTargets: ["components/blocks/pricing-02.tsx"],
     registryDependencies: ["button"],
@@ -411,7 +329,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "testimonial",
     status: "stable",
-    Demo: Testimonial01,
     sourceFiles: ["registry/hirael/blocks/testimonial-01/testimonial-01.tsx"],
     installTargets: ["components/blocks/testimonial-01.tsx"],
     registryDependencies: [],
@@ -426,7 +343,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "testimonial",
     status: "stable",
-    Demo: Testimonial02,
     sourceFiles: ["registry/hirael/blocks/testimonial-02/testimonial-02.tsx"],
     installTargets: ["components/blocks/testimonial-02.tsx"],
     registryDependencies: [],
@@ -441,7 +357,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "cta",
     status: "stable",
-    Demo: Cta01,
     sourceFiles: ["registry/hirael/blocks/cta-01/cta-01.tsx"],
     installTargets: ["components/blocks/cta-01.tsx"],
     registryDependencies: ["button"],
@@ -456,7 +371,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "cta",
     status: "stable",
-    Demo: Cta02,
     sourceFiles: ["registry/hirael/blocks/cta-02/cta-02.tsx"],
     installTargets: ["components/blocks/cta-02.tsx"],
     registryDependencies: ["button"],
@@ -471,7 +385,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "faq",
     status: "stable",
-    Demo: Faq01,
     sourceFiles: ["registry/hirael/blocks/faq-01/faq-01.tsx"],
     installTargets: ["components/blocks/faq-01.tsx"],
     registryDependencies: ["button", "accordion"],
@@ -486,7 +399,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "faq",
     status: "stable",
-    Demo: Faq02,
     sourceFiles: ["registry/hirael/blocks/faq-02/faq-02.tsx"],
     installTargets: ["components/blocks/faq-02.tsx"],
     registryDependencies: ["accordion"],
@@ -501,7 +413,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "login",
     status: "stable",
-    Demo: Login01,
     sourceFiles: ["registry/hirael/blocks/login-01/login-01.tsx"],
     installTargets: ["components/blocks/login-01.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
@@ -516,7 +427,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "login",
     status: "stable",
-    Demo: Login02,
     sourceFiles: ["registry/hirael/blocks/login-02/login-02.tsx"],
     installTargets: ["components/blocks/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
@@ -531,7 +441,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "header",
     status: "stable",
-    Demo: Header01,
     sourceFiles: ["registry/hirael/blocks/header-01/header-01.tsx"],
     installTargets: ["components/blocks/header-01.tsx"],
     registryDependencies: ["button"],
@@ -546,7 +455,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "footer",
     status: "stable",
-    Demo: Footer01,
     sourceFiles: ["registry/hirael/blocks/footer-01/footer-01.tsx"],
     installTargets: ["components/blocks/footer-01.tsx"],
     registryDependencies: [],
@@ -561,7 +469,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "not-found",
     status: "stable",
-    Demo: NotFound01,
     sourceFiles: ["registry/hirael/blocks/not-found-01/not-found-01.tsx"],
     installTargets: ["components/blocks/not-found-01.tsx"],
     registryDependencies: ["button"],
@@ -574,7 +481,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.",
     category: "pickers",
     status: "stable",
-    Demo: MonthPickerDemo,
     sourceFiles: ["registry/hirael/ui/month-picker.tsx"],
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
@@ -586,7 +492,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
     category: "pickers",
     status: "stable",
-    Demo: TimePickerDemo,
     sourceFiles: ["registry/hirael/ui/time-picker.tsx"],
     registryDependencies: ["popover"],
     dependencies: ["lucide-react"],
@@ -598,7 +503,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
     category: "pickers",
     status: "stable",
-    Demo: ColorPickerDemo,
     sourceFiles: ["registry/hirael/ui/color-picker.tsx"],
     registryDependencies: ["popover", "input"],
     dependencies: ["lucide-react"],
@@ -610,7 +514,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
     category: "data",
     status: "stable",
-    Demo: AvatarStackDemo,
     sourceFiles: ["registry/hirael/ui/avatar-stack.tsx"],
     registryDependencies: [],
     dependencies: ["@radix-ui/react-slot"],
@@ -622,7 +525,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
     category: "display",
     status: "stable",
-    Demo: AnnouncementBarDemo,
     sourceFiles: ["registry/hirael/ui/announcement-bar.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
@@ -634,7 +536,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
     category: "display",
     status: "stable",
-    Demo: EmptyStateDemo,
     sourceFiles: ["registry/hirael/ui/empty-state.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -648,7 +549,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "logo-cloud",
     status: "stable",
-    Demo: LogoCloud01,
     sourceFiles: ["registry/hirael/blocks/logo-cloud-01/logo-cloud-01.tsx"],
     installTargets: ["components/blocks/logo-cloud-01.tsx"],
     registryDependencies: ["badge", "button"],
@@ -663,7 +563,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "contact",
     status: "stable",
-    Demo: Contact01,
     sourceFiles: ["registry/hirael/blocks/contact-01/contact-01.tsx"],
     installTargets: ["components/blocks/contact-01.tsx"],
     registryDependencies: [
@@ -688,7 +587,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "blog",
     status: "stable",
-    Demo: Blog01,
     sourceFiles: ["registry/hirael/blocks/blog-01/blog-01.tsx"],
     installTargets: ["components/blocks/blog-01.tsx"],
     registryDependencies: ["badge", "button", "card", "separator"],
@@ -703,7 +601,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "dashboard",
     status: "stable",
-    Demo: Dashboard01,
     sourceFiles: ["registry/hirael/blocks/dashboard-01/dashboard-01.tsx"],
     installTargets: ["components/blocks/dashboard-01.tsx"],
     registryDependencies: ["badge", "button", "card", "separator", "tabs"],
@@ -718,7 +615,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "integrations",
     status: "stable",
-    Demo: Integrations01,
     sourceFiles: [
       "registry/hirael/blocks/integrations-01/integrations-01.tsx",
     ],
@@ -735,7 +631,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "image-gallery",
     status: "stable",
-    Demo: ImageGallery01,
     sourceFiles: [
       "registry/hirael/blocks/image-gallery-01/image-gallery-01.tsx",
     ],
@@ -752,7 +647,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "app-shell",
     status: "stable",
-    Demo: AppShell01,
     sourceFiles: ["registry/hirael/blocks/app-shell-01/app-shell-01.tsx"],
     installTargets: ["components/blocks/app-shell-01.tsx"],
     registryDependencies: [
@@ -775,7 +669,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "blocks",
     blockKind: "app-shell",
     status: "stable",
-    Demo: AppShell02,
     sourceFiles: ["registry/hirael/blocks/app-shell-02/app-shell-02.tsx"],
     installTargets: ["components/blocks/app-shell-02.tsx"],
     registryDependencies: [
@@ -794,7 +687,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits the current text color and ships an accessible status label.",
     category: "display",
     status: "stable",
-    Demo: SpinnerDemo,
     sourceFiles: ["registry/hirael/ui/spinner.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -806,7 +698,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
     category: "display",
     status: "stable",
-    Demo: CopyButtonDemo,
     sourceFiles: ["registry/hirael/ui/copy-button.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
@@ -818,7 +709,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline — zero config.",
     category: "display",
     status: "stable",
-    Demo: MarqueeDemo,
     sourceFiles: ["registry/hirael/ui/marquee.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -830,7 +720,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
     category: "data",
     status: "stable",
-    Demo: TreeViewDemo,
     sourceFiles: ["registry/hirael/ui/tree-view.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
@@ -842,7 +731,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.",
     category: "data",
     status: "stable",
-    Demo: AnimatedNumberDemo,
     sourceFiles: ["registry/hirael/ui/animated-number.tsx"],
     registryDependencies: [],
     dependencies: [],
@@ -854,7 +742,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.",
     category: "navigation",
     status: "stable",
-    Demo: StepperDemo,
     sourceFiles: ["registry/hirael/ui/stepper.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],

@@ -287,6 +287,24 @@ const IllAppShell = () => (
   </div>
 )
 
+const IllEcommerce = () => (
+  <div className="grid w-full max-w-[80%] grid-cols-3 gap-2">
+    {[0, 1, 2].map((i) => (
+      <div
+        key={i}
+        className="flex flex-col gap-1 rounded-sm border border-border p-1.5"
+      >
+        <Box className="aspect-square w-full" />
+        <Bar w="w-3/4" />
+        <div className="flex items-center justify-between gap-1">
+          <AccentBar w="w-1/2" className="h-1" />
+          <span className="block size-2 rounded-sm bg-muted-foreground/20" />
+        </div>
+      </div>
+    ))}
+  </div>
+)
+
 const IllDashboard = () => (
   <div className="flex h-[70%] w-full max-w-[80%] flex-col gap-1.5">
     <div className="grid grid-cols-3 gap-1.5">
@@ -417,6 +435,13 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
       "Split form-and-info layouts, map embeds, and inline support panels.",
   },
   {
+    slug: "ecommerce",
+    title: "E-commerce",
+    blockKind: "ecommerce",
+    description:
+      "Product grids, carts, and checkout-ready layouts with wishlists, promo codes, and live totals.",
+  },
+  {
     slug: "image-gallery",
     title: "Image Gallery",
     blockKind: "image-gallery",
@@ -470,6 +495,7 @@ const CATEGORIES: CategoryDefWithIllustration[] = [
   { ...CATEGORY_BY_SLUG["not-found"], count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
   { ...CATEGORY_BY_SLUG["blog"], count: BLOCKS_BY_KIND.blog.length, illustration: IllBlog },
   { ...CATEGORY_BY_SLUG["contact"], count: BLOCKS_BY_KIND.contact.length, illustration: IllContact },
+  { ...CATEGORY_BY_SLUG["ecommerce"], count: BLOCKS_BY_KIND.ecommerce.length, illustration: IllEcommerce },
   { ...CATEGORY_BY_SLUG["image-gallery"], count: BLOCKS_BY_KIND["image-gallery"].length, illustration: IllGallery },
   { ...CATEGORY_BY_SLUG["integrations"], count: BLOCKS_BY_KIND.integrations.length, illustration: IllIntegrations },
   { ...CATEGORY_BY_SLUG["logo-cloud"], count: BLOCKS_BY_KIND["logo-cloud"].length, illustration: IllLogoCloud },

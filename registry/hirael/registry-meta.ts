@@ -21,6 +21,7 @@ export type BlockKind =
   | "logo-cloud"
   | "contact"
   | "blog"
+  | "ecommerce"
   | "dashboard"
   | "integrations"
   | "image-gallery"
@@ -207,7 +208,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "hero-01",
-    title: "Hero · Split with install card",
+    title: "Hero 1",
     description:
       "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
     blockTagline: "Split layout · stat strip · mock install card",
@@ -220,7 +221,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "hero-02",
-    title: "Hero · Centered editorial",
+    title: "Hero 2",
     description:
       "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
     blockTagline: "Centered · live pill · wordmark strip",
@@ -233,7 +234,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "hero-03",
-    title: "Hero · Email capture",
+    title: "Hero 3",
     description:
       "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
     blockTagline: "Centered · email capture · social proof",
@@ -246,7 +247,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "feature-01",
-    title: "Feature · Alternating rows",
+    title: "Feature 1",
     description:
       "Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).",
     blockTagline: "Alternating rows · mock UIs · checklist",
@@ -259,7 +260,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "feature-02",
-    title: "Feature · Icon grid",
+    title: "Feature 2",
     description:
       "Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.",
     blockTagline: "Icon grid · 6 cards · concise blurbs",
@@ -272,7 +273,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "pricing-01",
-    title: "Pricing · Three tiers",
+    title: "Pricing 1",
     description:
       "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
     blockTagline: "3 tiers · featured plan · checklist",
@@ -285,7 +286,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "pricing-02",
-    title: "Pricing · Comparison table",
+    title: "Pricing 2",
     description:
       "Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.",
     blockTagline: "Comparison table · sticky header · per-tier CTA",
@@ -298,7 +299,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "testimonial-01",
-    title: "Testimonial · Single quote",
+    title: "Testimonial 1",
     description:
       "Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.",
     blockTagline: "Single quote · author block · wordmark row",
@@ -311,7 +312,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "testimonial-02",
-    title: "Testimonial · Masonry grid",
+    title: "Testimonial 2",
     description:
       "Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.",
     blockTagline: "Masonry grid · 6 quotes · varied length",
@@ -324,7 +325,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "cta-01",
-    title: "CTA · Framed band",
+    title: "CTA 1",
     description:
       "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
     blockTagline: "Framed · split layout · corner marks",
@@ -337,7 +338,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "cta-02",
-    title: "CTA · Centered announcement",
+    title: "CTA 2",
     description:
       "Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an inline install command.",
     blockTagline: "Centered · highlight underlay · install command",
@@ -350,7 +351,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "faq-01",
-    title: "FAQ · Sticky split",
+    title: "FAQ 1",
     description:
       "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
     blockTagline: "Sticky split · numbered · contact card",
@@ -363,7 +364,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "faq-02",
-    title: "FAQ · Centered grid",
+    title: "FAQ 2",
     description:
       "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
     blockTagline: "Centered · two-column grid · Qn-indexed",
@@ -375,8 +376,27 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["@radix-ui/react-accordion"],
   },
   {
+    name: "faq-03",
+    title: "FAQ 3",
+    description:
+      "Searchable FAQ with category tabs, a live-filtered accordion, an empty state for missed queries and a support CTA strip.",
+    blockTagline: "Search · category tabs · empty state",
+    category: "blocks",
+    blockKind: "faq",
+    sourceFiles: ["registry/hirael/blocks/faq-03/faq-03.tsx"],
+    installTargets: ["components/blocks/faq-03.tsx"],
+    registryDependencies: [
+      "accordion",
+      "button",
+      "empty-state",
+      "input-group",
+      "tabs",
+    ],
+    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+  },
+  {
     name: "login-01",
-    title: "Login · Centered card",
+    title: "Login 1",
     description:
       "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
     blockTagline: "Centered card · providers · password-input",
@@ -389,7 +409,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "login-02",
-    title: "Login · Split with testimonial",
+    title: "Login 2",
     description:
       "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
     blockTagline: "Split · testimonial pane · strength meter",
@@ -402,7 +422,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "header-01",
-    title: "Header · Sticky nav",
+    title: "Header 1",
     description:
       "Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.",
     blockTagline: "Sticky · backdrop blur · mobile menu",
@@ -415,7 +435,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "footer-01",
-    title: "Footer · Four columns",
+    title: "Footer 1",
     description:
       "Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.",
     blockTagline: "4 columns · social row · copyright",
@@ -428,7 +448,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "not-found-01",
-    title: "Not Found · centered 404",
+    title: "Not Found 1",
     description:
       "Centered 404 with mono eyebrow, display headline, paired CTAs and a 'try one of these' suggested-routes list.",
     blockTagline: "Centered · paired CTAs · route suggestions",
@@ -501,7 +521,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "logo-cloud-01",
-    title: "Logo Cloud · Bordered grid",
+    title: "Logo Cloud 1",
     description:
       "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
     blockTagline: "Bordered grid · 10 wordmarks · stat strip",
@@ -514,7 +534,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "contact-01",
-    title: "Contact · Split form",
+    title: "Contact 1",
     description:
       "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
     blockTagline: "Validated form · pending · sent state",
@@ -537,7 +557,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "blog-01",
-    title: "Blog · Featured post and grid",
+    title: "Blog 1",
     description:
       "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
     blockTagline: "Featured post · 4-up Card grid",
@@ -549,8 +569,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "ecommerce-01",
+    title: "E-commerce 1",
+    description:
+      "Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and per-card add buttons.",
+    blockTagline: "Product grid · filter pills · wishlist",
+    category: "blocks",
+    blockKind: "ecommerce",
+    sourceFiles: ["registry/hirael/blocks/ecommerce-01/ecommerce-01.tsx"],
+    installTargets: ["components/blocks/ecommerce-01.tsx"],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "ecommerce-02",
+    title: "E-commerce 2",
+    description:
+      "Shopping cart with quantity steppers, removable line items, promo-code validation, a free-shipping threshold, live totals and an empty-cart state.",
+    blockTagline: "Cart rows · promo code · live totals",
+    category: "blocks",
+    blockKind: "ecommerce",
+    sourceFiles: ["registry/hirael/blocks/ecommerce-02/ecommerce-02.tsx"],
+    installTargets: ["components/blocks/ecommerce-02.tsx"],
+    registryDependencies: [
+      "button",
+      "card",
+      "empty-state",
+      "input-group",
+      "separator",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "dashboard-01",
-    title: "Dashboard · Metrics and chart",
+    title: "Dashboard 1",
     description:
       "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
     blockTagline: "Tabs range · 4 metrics · live data",
@@ -562,8 +614,34 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "dashboard-02",
+    title: "Dashboard 2",
+    description:
+      "Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart, and top-pages and channel-share side cards.",
+    blockTagline: "Area chart · sparkline KPIs · top pages",
+    category: "blocks",
+    blockKind: "dashboard",
+    sourceFiles: ["registry/hirael/blocks/dashboard-02/dashboard-02.tsx"],
+    installTargets: ["components/blocks/dashboard-02.tsx"],
+    registryDependencies: ["badge", "button", "card", "select", "separator"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "dashboard-03",
+    title: "Dashboard 3",
+    description:
+      "Revenue dashboard with a month stepper, plan-mix donut and legend, invoice status list and a transactions table with status dots and a pagination footer.",
+    blockTagline: "Donut plan mix · transactions · month stepper",
+    category: "blocks",
+    blockKind: "dashboard",
+    sourceFiles: ["registry/hirael/blocks/dashboard-03/dashboard-03.tsx"],
+    installTargets: ["components/blocks/dashboard-03.tsx"],
+    registryDependencies: ["badge", "button", "card", "separator"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "integrations-01",
-    title: "Integrations · Hub and spoke",
+    title: "Integrations 1",
     description:
       "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
     blockTagline: "Hub & spoke · 7 spokes · orbit ring",
@@ -578,7 +656,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "image-gallery-01",
-    title: "Image Gallery · Filterable masonry",
+    title: "Image Gallery 1",
     description:
       "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
     blockTagline: "Tabs filter · masonry · empty state",
@@ -593,7 +671,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "app-shell-01",
-    title: "App Shell · Sidebar and topbar",
+    title: "App Shell 1",
     description:
       "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
     blockTagline: "Collapsible Sidebar · sticky topbar · live table",
@@ -614,7 +692,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: "app-shell-02",
-    title: "App Shell · Top nav and settings",
+    title: "App Shell 2",
     description:
       "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
     blockTagline: "Top nav · in-page settings nav · detail card",
@@ -735,6 +813,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   "logo-cloud": "Logo cloud",
   contact: "Contact",
   blog: "Blog",
+  ecommerce: "E-commerce",
   dashboard: "Dashboard",
   integrations: "Integrations",
   "image-gallery": "Image gallery",
@@ -756,6 +835,7 @@ export const BLOCKS_BY_KIND = (() => {
     "logo-cloud": [],
     contact: [],
     blog: [],
+    ecommerce: [],
     dashboard: [],
     integrations: [],
     "image-gallery": [],
@@ -783,6 +863,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "logo-cloud",
   "contact",
   "blog",
+  "ecommerce",
   "dashboard",
   "integrations",
   "image-gallery",

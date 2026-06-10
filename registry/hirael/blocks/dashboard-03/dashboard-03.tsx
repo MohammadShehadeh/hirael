@@ -299,14 +299,15 @@ export default function Dashboard03() {
                           </span>
                         </div>
                       </div>
-                      <span className="hidden items-center gap-1.5 sm:inline-flex">
+                      <Badge
+                        variant="outline"
+                        className="hidden w-fit gap-1.5 font-normal text-muted-foreground sm:inline-flex"
+                      >
                         <span
                           className={`size-1.5 rounded-full ${status.dot}`}
                         />
-                        <span className="text-xs text-muted-foreground">
-                          {status.label}
-                        </span>
-                      </span>
+                        {status.label}
+                      </Badge>
                       <span className="hidden font-mono text-xs tabular-nums text-muted-foreground sm:inline">
                         {t.date}
                       </span>

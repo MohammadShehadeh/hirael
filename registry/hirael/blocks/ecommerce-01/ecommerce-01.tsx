@@ -2,10 +2,11 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { Heart, Plus, Star } from "lucide-react"
+import { Heart, Plus } from "lucide-react"
 
 import { Badge } from "@/registry/hirael/ui/badge"
 import { Button } from "@/registry/hirael/ui/button"
+import { Rating } from "@/registry/hirael/ui/rating"
 
 type Category = "audio" | "wearables" | "travel" | "everyday"
 
@@ -23,7 +24,7 @@ type Product = {
   category: Category
   price: string
   compareAt?: string
-  rating: string
+  rating: number
   reviews: string
   badge?: string
   image: string
@@ -35,7 +36,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Atlas Over-Ear Headphones",
     category: "audio",
     price: "$249",
-    rating: "4.8",
+    rating: 4.8,
     reviews: "1,204",
     badge: "Bestseller",
     image:
@@ -47,7 +48,7 @@ const PRODUCTS: readonly Product[] = [
     category: "wearables",
     price: "$389",
     compareAt: "$460",
-    rating: "4.9",
+    rating: 4.9,
     reviews: "318",
     badge: "−15%",
     image:
@@ -58,7 +59,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Volt Runner Sneakers",
     category: "everyday",
     price: "$129",
-    rating: "4.6",
+    rating: 4.6,
     reviews: "942",
     badge: "New",
     image:
@@ -69,7 +70,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Carryall Day Pack",
     category: "travel",
     price: "$96",
-    rating: "4.7",
+    rating: 4.7,
     reviews: "566",
     image:
       "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop",
@@ -80,7 +81,7 @@ const PRODUCTS: readonly Product[] = [
     category: "everyday",
     price: "$74",
     compareAt: "$92",
-    rating: "4.5",
+    rating: 4.5,
     reviews: "211",
     badge: "−20%",
     image:
@@ -91,7 +92,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Hydra Steel Bottle",
     category: "everyday",
     price: "$32",
-    rating: "4.4",
+    rating: 4.4,
     reviews: "1,870",
     image:
       "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=800&auto=format&fit=crop",
@@ -101,7 +102,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Field Cap",
     category: "everyday",
     price: "$28",
-    rating: "4.3",
+    rating: 4.3,
     reviews: "404",
     image:
       "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800&auto=format&fit=crop",
@@ -111,7 +112,7 @@ const PRODUCTS: readonly Product[] = [
     name: "Pioneer Instant Camera",
     category: "travel",
     price: "$179",
-    rating: "4.7",
+    rating: 4.7,
     reviews: "689",
     badge: "New",
     image:
@@ -222,11 +223,14 @@ export default function Ecommerce01() {
                   <h3 className="text-sm font-medium tracking-[-0.01em]">
                     {p.name}
                   </h3>
-                  <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                    <Star className="size-3 fill-current text-foreground" />
-                    <span className="font-mono tabular-nums text-foreground">
-                      {p.rating}
-                    </span>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Rating
+                      value={p.rating}
+                      step={0.5}
+                      readOnly
+                      size="sm"
+                      aria-label={`Rated ${p.rating} out of 5`}
+                    />
                     <span className="font-mono tabular-nums">
                       ({p.reviews})
                     </span>

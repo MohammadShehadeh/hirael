@@ -138,7 +138,10 @@ function DeltaChip({ delta, up, good }: { delta: string; up: boolean; good: bool
 function StatusDot({ status }: { status: Deploy["status"] }) {
   const meta = STATUS_META[status]
   return (
-    <span className="inline-flex items-center gap-1.5">
+    <Badge
+      variant="outline"
+      className="w-fit gap-1.5 font-normal text-muted-foreground"
+    >
       <span className="relative flex size-2">
         {meta.ping && (
           <span
@@ -147,8 +150,8 @@ function StatusDot({ status }: { status: Deploy["status"] }) {
         )}
         <span className={`relative inline-flex size-2 rounded-full ${meta.dot}`} />
       </span>
-      <span className="text-xs text-muted-foreground">{meta.label}</span>
-    </span>
+      {meta.label}
+    </Badge>
   )
 }
 

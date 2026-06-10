@@ -6,17 +6,17 @@ import {
   CalendarRange,
   ChartNoAxesColumn,
   ChevronsUpDown,
+  LayoutDashboard,
   LifeBuoy,
   Megaphone,
-  PanelLeft,
   Plug,
   Search,
   Settings,
-  LayoutDashboard,
   Users,
   type LucideIcon,
 } from "lucide-react"
 
+import { Badge } from "@/registry/hirael/ui/badge"
 import { Button } from "@/registry/hirael/ui/button"
 import {
   InputGroup,
@@ -25,10 +25,24 @@ import {
 } from "@/registry/hirael/ui/input-group"
 import { KbdDisplay, KbdGroup } from "@/registry/hirael/ui/kbd"
 import { Separator } from "@/registry/hirael/ui/separator"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/registry/hirael/ui/sidebar"
 import { cn } from "@/lib/utils"
 
-const NAV: { icon: LucideIcon; label: string; current?: boolean }[] = [
-  { icon: LayoutDashboard, label: "Overview", current: true },
+const NAV: { icon: LucideIcon; label: string; active?: boolean }[] = [
+  { icon: LayoutDashboard, label: "Overview", active: true },
   { icon: CalendarRange, label: "Planner" },
   { icon: Megaphone, label: "Campaigns" },
   { icon: ChartNoAxesColumn, label: "Reports" },
@@ -41,13 +55,7 @@ const FOOTER_NAV: { icon: LucideIcon; label: string }[] = [
   { icon: Settings, label: "Settings" },
 ]
 
-function Slot({
-  label,
-  className,
-}: {
-  label: string
-  className?: string
-}) {
+function Slot({ label, className }: { label: string; className?: string }) {
   return (
     <div
       className={cn(
@@ -63,193 +71,155 @@ function Slot({
 }
 
 export default function AppShell04() {
-  const [collapsed, setCollapsed] = React.useState(false)
-
   return (
-    <div className="flex min-h-[640px] flex-col bg-background">
-      <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-background/80 px-4 backdrop-blur">
-        <div className="flex min-w-0 items-center gap-3">
-          <a href="#" className="flex items-center gap-2.5" aria-label="Hirael — home">
-            <span
-              role="img"
-              aria-hidden
-              className="flex size-7 items-center justify-center rounded-md bg-foreground font-mono text-sm font-semibold text-background"
-            >
-              ◆
-            </span>
-            <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
-              Hirael
-            </span>
-          </a>
-
-          <Separator orientation="vertical" className="h-4" />
-
-          <button
-            type="button"
-            aria-label="Switch workspace"
-            className="flex min-w-0 items-center gap-2 rounded-md px-1.5 py-1 transition-colors hover:bg-accent"
-          >
-            <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-sm bg-muted font-mono text-[10px] font-medium">
-              PL
-            </span>
-            <span className="truncate text-sm">Plinth Labs</span>
-            <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" />
-          </button>
-        </div>
-
-        <div className="flex shrink-0 items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative size-8"
-            aria-label="Notifications · 3 unread"
-          >
-            <Bell className="size-4" />
-            <span className="absolute right-1 top-1 flex min-w-3.5 items-center justify-center rounded-full bg-foreground px-0.5 font-mono text-[9px] leading-[14px] text-background">
-              3
-            </span>
-          </Button>
-          <Separator orientation="vertical" className="h-4" />
-          <button
-            type="button"
-            aria-label="Account menu"
-            className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card font-mono text-[11px] font-medium transition-colors hover:border-foreground"
-          >
-            MS
-          </button>
-        </div>
-      </header>
-
-      <div className="flex min-h-0 flex-1">
-        <aside
-          aria-label="Primary"
-          className={cn(
-            "hidden shrink-0 flex-col border-r border-border transition-all md:flex",
-            collapsed ? "w-14" : "w-60"
-          )}
-        >
-          <div className="p-3">
-            {collapsed ? (
-              <Button
-                variant="outline"
-                size="icon"
-                className="size-8 w-full"
-                aria-label="Search"
-              >
-                <Search className="size-3.5" />
-              </Button>
-            ) : (
-              <InputGroup className="h-8">
-                <InputGroupAddon align="inline-start">
-                  <Search className="size-3.5" />
-                </InputGroupAddon>
-                <InputGroupInput
-                  placeholder="Search…"
-                  aria-label="Search"
-                  className="text-sm"
-                />
-                <InputGroupAddon align="inline-end">
-                  <KbdGroup>
-                    <KbdDisplay>⌘</KbdDisplay>
-                    <KbdDisplay>K</KbdDisplay>
-                  </KbdGroup>
-                </InputGroupAddon>
-              </InputGroup>
-            )}
-          </div>
-
-          <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-3">
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href="#"
-                aria-current={item.current ? "page" : undefined}
-                title={collapsed ? item.label : undefined}
-                className={cn(
-                  "flex h-9 items-center gap-2.5 rounded-md px-2.5 text-sm transition-colors",
-                  collapsed && "justify-center px-0",
-                  item.current
-                    ? "bg-accent font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                )}
-              >
-                <item.icon className="size-4 shrink-0" />
-                {!collapsed && <span className="truncate">{item.label}</span>}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex flex-col gap-0.5 border-t border-border p-3">
-            {FOOTER_NAV.map((item) => (
-              <a
-                key={item.label}
-                href="#"
-                title={collapsed ? item.label : undefined}
-                className={cn(
-                  "flex h-8 items-center gap-2.5 rounded-md px-2.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground",
-                  collapsed && "justify-center px-0"
-                )}
-              >
-                <item.icon className="size-3.5 shrink-0" />
-                {!collapsed && <span>{item.label}</span>}
-              </a>
-            ))}
-            <div
-              className={cn(
-                "mt-1 flex items-center",
-                collapsed ? "justify-center" : "justify-between pl-2.5"
-              )}
-            >
-              {!collapsed && (
-                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                  © Plinth Labs
+    <SidebarProvider>
+      <Sidebar variant="inset" collapsible="icon">
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" tooltip="Plinth Labs">
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
+                  ◆
                 </span>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                onClick={() => setCollapsed((c) => !c)}
-                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                aria-pressed={collapsed}
-              >
-                <PanelLeft className="size-3.5" />
-              </Button>
-            </div>
-          </div>
-        </aside>
+                <div className="grid flex-1 text-left leading-tight">
+                  <span className="truncate text-sm font-semibold tracking-[-0.01em]">
+                    Plinth Labs
+                  </span>
+                  <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                    Pro workspace
+                  </span>
+                </div>
+                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+          <InputGroup className="h-8 group-data-[collapsible=icon]:hidden">
+            <InputGroupAddon align="inline-start">
+              <Search className="size-3.5" />
+            </InputGroupAddon>
+            <InputGroupInput
+              placeholder="Search…"
+              aria-label="Search"
+              className="text-sm"
+            />
+            <InputGroupAddon align="inline-end">
+              <KbdGroup>
+                <KbdDisplay>⌘</KbdDisplay>
+                <KbdDisplay>K</KbdDisplay>
+              </KbdGroup>
+            </InputGroupAddon>
+          </InputGroup>
+        </SidebarHeader>
 
-        <main className="min-w-0 flex-1 p-3 sm:p-4">
-          <div className="flex h-full flex-col gap-6 rounded-md border border-border bg-card/40 p-5 sm:p-6">
-            <div className="flex flex-col gap-1">
-              <h1 className="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
-                Good morning, Maya.
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Your workspace is ready — drop content into the slots below.
-              </p>
-            </div>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {NAV.map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={item.active}
+                      tooltip={item.label}
+                    >
+                      <a href="#">
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-            <div className="grid flex-1 grid-cols-2 gap-4 md:grid-cols-4">
-              {["slot · 01", "slot · 02", "slot · 03", "slot · 04"].map(
-                (label) => (
-                  <Slot key={label} label={label} className="min-h-28" />
-                )
-              )}
-              <Slot
-                label="slot · 05"
-                className="col-span-2 min-h-56 md:col-span-3"
-              />
-              <Slot label="slot · 06" className="col-span-2 min-h-56 md:col-span-1" />
-              <Slot label="slot · 07" className="col-span-2 min-h-56 md:col-span-1" />
-              <Slot
-                label="slot · 08"
-                className="col-span-2 min-h-56 md:col-span-3"
-              />
-            </div>
+        <SidebarFooter>
+          <SidebarMenu>
+            {FOOTER_NAV.map((item) => (
+              <SidebarMenuItem key={item.label}>
+                <SidebarMenuButton asChild tooltip={item.label} className="h-7">
+                  <a href="#">
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+          <span className="px-2 pb-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
+            © Plinth Labs
+          </span>
+        </SidebarFooter>
+      </Sidebar>
+
+      <SidebarInset className="min-h-[640px]">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <SidebarTrigger />
+            <Separator orientation="vertical" className="h-4" />
+            <span className="truncate text-sm font-medium tracking-[-0.01em]">
+              Overview
+            </span>
           </div>
-        </main>
-      </div>
-    </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative size-8"
+              aria-label="Notifications · 3 unread"
+            >
+              <Bell className="size-4" />
+              <Badge className="absolute -right-1 -top-1 size-4 justify-center rounded-full p-0 font-mono text-[9px]">
+                3
+              </Badge>
+            </Button>
+            <Separator orientation="vertical" className="h-4" />
+            <button
+              type="button"
+              aria-label="Account menu"
+              className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card font-mono text-[11px] font-medium transition-colors hover:border-foreground"
+            >
+              MS
+            </button>
+          </div>
+        </header>
+
+        <div className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+              Good morning, Maya.
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Your workspace is ready — drop content into the slots below.
+            </p>
+          </div>
+
+          <div className="grid flex-1 grid-cols-2 gap-4 md:grid-cols-4">
+            {["slot · 01", "slot · 02", "slot · 03", "slot · 04"].map(
+              (label) => (
+                <Slot key={label} label={label} className="min-h-28" />
+              )
+            )}
+            <Slot
+              label="slot · 05"
+              className="col-span-2 min-h-56 md:col-span-3"
+            />
+            <Slot
+              label="slot · 06"
+              className="col-span-2 min-h-56 md:col-span-1"
+            />
+            <Slot
+              label="slot · 07"
+              className="col-span-2 min-h-56 md:col-span-1"
+            />
+            <Slot
+              label="slot · 08"
+              className="col-span-2 min-h-56 md:col-span-3"
+            />
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

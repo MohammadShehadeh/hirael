@@ -18,12 +18,20 @@ import {
 import { Badge } from "@/registry/hirael/ui/badge"
 import { Button } from "@/registry/hirael/ui/button"
 import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/registry/hirael/ui/card"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/registry/hirael/ui/select"
+import { cn } from "@/lib/utils"
 
 type Stat = {
   icon: LucideIcon
@@ -123,7 +131,7 @@ function PanelCard({
   icon: Icon,
   label,
   children,
-  className = "",
+  className,
 }: {
   icon: LucideIcon
   label: string
@@ -131,27 +139,29 @@ function PanelCard({
   className?: string
 }) {
   return (
-    <div
-      className={`flex flex-col gap-2.5 rounded-md border border-border bg-card p-2.5 ${className}`}
-    >
-      <div className="flex items-center justify-between gap-2 px-1">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+    <Card className={cn("gap-2 rounded-md py-2.5", className)}>
+      <CardHeader className="px-3.5">
+        <CardTitle className="flex items-center gap-1.5 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground">
           <Icon className="size-3.5" />
           {label}
-        </span>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-6 text-muted-foreground"
-          aria-label={`${label} options`}
-        >
-          <MoreHorizontal className="size-3.5" />
-        </Button>
-      </div>
-      <div className="flex flex-1 flex-col rounded-sm border border-border bg-background p-4">
-        {children}
-      </div>
-    </div>
+        </CardTitle>
+        <CardAction>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="-my-1 size-6 text-muted-foreground"
+            aria-label={`${label} options`}
+          >
+            <MoreHorizontal className="size-3.5" />
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="flex flex-1 flex-col px-2.5 pb-0">
+        <div className="flex flex-1 flex-col rounded-sm border border-border bg-background p-4">
+          {children}
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

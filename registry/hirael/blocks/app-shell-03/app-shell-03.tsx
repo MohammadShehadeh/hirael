@@ -21,7 +21,13 @@ import {
   InputGroupInput,
 } from "@/registry/hirael/ui/input-group"
 import { Separator } from "@/registry/hirael/ui/separator"
+import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs"
 import { Textarea } from "@/registry/hirael/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/registry/hirael/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 type Message = { from: string; initials: string; time: string; body: string }
@@ -251,32 +257,41 @@ export default function AppShell03() {
           ◆
         </span>
         {RAIL.map((item) => (
-          <button
-            key={item.label}
-            type="button"
-            aria-label={item.label}
-            aria-current={item.current ? "page" : undefined}
-            className={cn(
-              "relative inline-flex size-9 items-center justify-center rounded-md transition-colors",
-              item.current
-                ? "bg-accent text-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground"
-            )}
-          >
-            <item.icon className="size-4" />
-            {item.current && unreadCount > 0 && (
-              <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
-            )}
-          </button>
+          <Tooltip key={item.label}>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                aria-label={item.label}
+                aria-current={item.current ? "page" : undefined}
+                className={cn(
+                  "relative inline-flex size-9 items-center justify-center rounded-md transition-colors",
+                  item.current
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+              >
+                <item.icon className="size-4" />
+                {item.current && unreadCount > 0 && (
+                  <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">{item.label}</TooltipContent>
+          </Tooltip>
         ))}
         <div className="mt-auto flex flex-col items-center gap-1">
-          <button
-            type="button"
-            aria-label="Settings"
-            className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            <Settings className="size-4" />
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                aria-label="Settings"
+                className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                <Settings className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">Settings</TooltipContent>
+          </Tooltip>
           <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card font-mono text-[11px] font-medium">
             MS
           </span>
@@ -307,20 +322,28 @@ export default function AppShell03() {
               className="text-sm"
             />
           </InputGroup>
-          <div className="flex items-center gap-1.5">
-            {(["all", "unread"] as const).map((f) => (
-              <Button
-                key={f}
-                variant={filter === f ? "secondary" : "ghost"}
-                size="sm"
-                className="h-6 px-2 font-mono text-[10px] uppercase tracking-[0.08em]"
-                onClick={() => setFilter(f)}
-                aria-pressed={filter === f}
-              >
-                {f}
-              </Button>
-            ))}
-            <span className="ml-auto font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+          <div className="flex items-center justify-between gap-2">
+            <Tabs
+              value={filter}
+              onValueChange={(v) => setFilter(v as "all" | "unread")}
+              className="w-fit"
+            >
+              <TabsList className="h-7">
+                <TabsTrigger
+                  value="all"
+                  className="px-2 font-mono text-[10px] uppercase tracking-[0.08em]"
+                >
+                  All
+                </TabsTrigger>
+                <TabsTrigger
+                  value="unread"
+                  className="px-2 font-mono text-[10px] uppercase tracking-[0.08em]"
+                >
+                  Unread
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
               {visible.length} of {CONVERSATIONS.length}
             </span>
           </div>

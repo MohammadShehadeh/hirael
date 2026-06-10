@@ -810,7 +810,7 @@
       "description": "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
       "categories": ["blocks", "dashboard"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "select"],
+      "registryDependencies": ["badge", "button", "card", "select"],
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-04/dashboard-04.tsx",
@@ -842,7 +842,7 @@
       "description": "Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and per-card add buttons.",
       "categories": ["blocks", "ecommerce"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button"],
+      "registryDependencies": ["badge", "button", "rating"],
       "files": [
         {
           "path": "registry/hirael/blocks/ecommerce-01/ecommerce-01.tsx",
@@ -963,7 +963,9 @@
         "button",
         "input-group",
         "separator",
-        "textarea"
+        "tabs",
+        "textarea",
+        "tooltip"
       ],
       "files": [
         {
@@ -977,10 +979,10 @@
       "name": "app-shell-04",
       "type": "registry:block",
       "title": "App Shell 4",
-      "description": "Header-first starter shell: sticky top bar with workspace switcher, notification count and avatar, a collapsible sidebar below it with search + ⌘K hint and primary nav, and a rounded inset main area holding a welcome heading over dashed placeholder slots ready for content.",
+      "description": "Starter shell on the shadcn Sidebar primitive (inset variant): workspace switcher and ⌘K search in the rail, icon-collapsible nav with tooltips, an inset header with trigger, notification count and avatar, and a welcome heading over dashed placeholder slots.",
       "categories": ["blocks", "app-shell"],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input-group", "kbd", "separator"],
+      "registryDependencies": ["badge", "button", "input-group", "kbd", "separator", "sidebar"],
       "files": [
         {
           "path": "registry/hirael/blocks/app-shell-04/app-shell-04.tsx",

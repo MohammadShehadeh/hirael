@@ -12,7 +12,7 @@ import {
   CATEGORY_LABELS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 import {
   Sidebar,
   SidebarContent,
@@ -22,10 +22,9 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/registry/msh-ui/ui/sidebar"
+} from "@/registry/hirael/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",
@@ -50,18 +49,20 @@ export function ShowcaseSidebar() {
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-2 rounded-sm px-2 py-1.5 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2!"
+          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2!"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMarkM className="size-6 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-4" />
-          <div className="flex min-w-0 flex-col overflow-hidden leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="truncate whitespace-nowrap text-base font-semibold tracking-[-0.02em] text-foreground">
-              MSH UI
-            </span>
-            <span className="truncate whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              shadcn&apos;s missing pieces
-            </span>
-          </div>
+          <LogoMarkM className="size-8 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-6" />
+          <span
+            className="truncate whitespace-nowrap text-xl leading-none text-foreground group-data-[collapsible=icon]:hidden"
+            style={{
+              fontFamily: "var(--font-cormorant), ui-serif, serif",
+              fontWeight: 500,
+              letterSpacing: "0.22em",
+            }}
+          >
+            HIRAEL
+          </span>
         </Link>
       </SidebarHeader>
 
@@ -91,9 +92,11 @@ export function ShowcaseSidebar() {
                   <Link href="/blocks">
                     <LayoutTemplate />
                     <span>Blocks</span>
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground group-data-[collapsible=icon]:hidden">
+                      {blockCount}
+                    </span>
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuBadge>{blockCount}</SidebarMenuBadge>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
@@ -133,9 +136,6 @@ export function ShowcaseSidebar() {
                             <span>{entry.title}</span>
                           </Link>
                         </SidebarMenuButton>
-                        {entry.status === "planned" && (
-                          <SidebarMenuBadge>soon</SidebarMenuBadge>
-                        )}
                       </SidebarMenuItem>
                     )
                   })}

@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { ArrowRight, ArrowUpRight, ChevronLeft } from "lucide-react"
+import { ArrowRight, ChevronLeft } from "lucide-react"
 
 import type { CategoryMeta } from "@/components/showcase/block-categories"
 import { BlockPreview } from "@/components/showcase/block-preview"
 import {
   BLOCKS_BY_KIND,
   type RegistryEntryMeta,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 export function CategoryPage({ category }: { category: CategoryMeta }) {
   const blocks: RegistryEntryMeta[] = category.blockKind
@@ -28,7 +28,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
             </span>
           )}
         </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {category.title}.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
@@ -37,7 +37,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {category.comingSoon
             ? "Planned · not yet shipped"
-            : `${blocks.length} block${blocks.length === 1 ? "" : "s"} · MIT`}
+            : `${blocks.length} block${blocks.length === 1 ? "" : "s"}`}
         </p>
       </header>
 
@@ -145,15 +145,6 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
               <ChevronLeft className="size-3" />
               All categories
             </Link>
-            <a
-              href="https://github.com/MohammadShehadeh/forgecn/issues"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-1.5 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-            >
-              Request variant
-              <ArrowUpRight className="size-3" />
-            </a>
           </div>
         </div>
       </div>

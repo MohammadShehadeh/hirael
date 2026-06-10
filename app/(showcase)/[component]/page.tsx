@@ -7,7 +7,7 @@ import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
 import { SITE } from "@/lib/site"
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 
 export const dynamicParams = false
 
@@ -87,15 +87,15 @@ async function loadSource(
 }
 
 /**
- * Convention: each component ships its `.demo.tsx` under
- * `registry/msh-ui/<name>/<name>.demo.tsx`. The demo source powers the
- * "Usage" tab. Returns null when the demo file isn't present so the tab
- * can be hidden.
+ * Convention: each component ships its install source at
+ * `registry/hirael/ui/<name>.tsx` (what shadcn distributes) and a
+ * sibling demo at `registry/hirael/<name>/<name>.demo.tsx` that powers
+ * the Usage tab. Returns null when the demo file isn't present.
  */
 async function loadDemoSource(
   entry: { name: string }
 ): Promise<SourceFile | null> {
-  const relPath = `registry/msh-ui/${entry.name}/${entry.name}.demo.tsx`
+  const relPath = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`
   const abs = path.join(process.cwd(), relPath)
   let code: string
   try {

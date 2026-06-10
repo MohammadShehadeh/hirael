@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories"
 import { SITE } from "@/lib/site"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export const dynamic = "force-static"
 
@@ -37,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const componentRoutes: MetadataRoute.Sitemap = REGISTRY.filter(
-    (entry) => entry.category !== "blocks" && entry.status === "stable"
+    (entry) => entry.category !== "blocks"
   ).map((entry) => ({
     url: `${SITE.url}/${entry.name}`,
     lastModified: now,

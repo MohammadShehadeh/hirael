@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site"
 import { ThemePlayground } from "./playground"
 
 const THEME_DESCRIPTION =
-  "Preview every MSH UI component against your own theme. Paste CSS variables, pick a preset, and see the registry render live."
+  "Preview every Hirael component against your own theme. Paste CSS variables, pick a preset, and see the registry render live."
 
 export const metadata: Metadata = {
   title: "Theme playground",

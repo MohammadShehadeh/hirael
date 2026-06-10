@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Fraunces, Geist, Geist_Mono } from "next/font/google"
+import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 
@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/components/showcase/theme-provider"
 import { SITE } from "@/lib/site"
 import { themePrehydrationScript } from "@/lib/theme"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 })
 
@@ -17,10 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
   ],
   colorScheme: "light dark",
 }
@@ -97,20 +97,19 @@ export default function RootLayout({
         />
 
         <Script
-          id="msh-ui-jsonld"
+          id="hirael-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
               name: SITE.name,
-              alternateName: ["MSH UI", "msh-ui", "shadcn registry"],
+              alternateName: ["Hirael", "shadcn registry"],
               description: SITE.longDescription,
               url: SITE.url,
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Any",
               softwareVersion: SITE.version,
-              license: "https://opensource.org/licenses/MIT",
               isAccessibleForFree: true,
               offers: {
                 "@type": "Offer",
@@ -127,13 +126,13 @@ export default function RootLayout({
                 name: SITE.author,
                 url: SITE.authorUrl,
               },
-              sameAs: [SITE.twitterUrl, SITE.githubUrl],
+              sameAs: [SITE.twitterUrl],
             }),
           }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

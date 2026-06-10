@@ -114,7 +114,7 @@ async function walk(dir, acc = []) {
   return acc
 }
 
-const root = process.argv[2] ?? "registry/msh-ui"
+const root = process.argv[2] ?? "registry/hirael"
 const files = await walk(root)
 let changed = 0
 for (const f of files) {

@@ -53,7 +53,7 @@ export function SiteFooter({ className }: { className?: string }) {
               aria-label={`${SITE.name} — home`}
               className="inline-flex items-center"
             >
-              <BrandLockup logoClassName="h-8" textClassName="text-sm" />
+              <BrandLockup logoClassName="h-11" />
             </Link>
             <p className="max-w-xs text-xs text-muted-foreground">
               {SITE.longDescription}
@@ -94,7 +94,7 @@ export function SiteFooter({ className }: { className?: string }) {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            © {year} {SITE.author} · MIT licensed · built on shadcn
+            © {year} {SITE.author} · built on shadcn
           </p>
           <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
             zero runtime deps

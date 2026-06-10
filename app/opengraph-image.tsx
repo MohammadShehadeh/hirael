@@ -1,12 +1,18 @@
 import { ImageResponse } from "next/og"
 
 import { SITE } from "@/lib/site"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
-export const alt = `${SITE.name} — ${SITE.description}`
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
+export const alt = `${SITE.name} — ${SITE.description}`
 
-export default async function OpengraphImage() {
+export default function OpenGraphImage() {
+  const components = REGISTRY.filter(
+    (r) => r.category !== "blocks"
+  ).length
+  const blocks = REGISTRY.filter((r) => r.category === "blocks").length
+
   return new ImageResponse(
     (
       <div
@@ -15,196 +21,81 @@ export default async function OpengraphImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          backgroundColor: "#0a0a0a",
-          backgroundImage:
-            "radial-gradient(ellipse 60% 50% at 50% 30%, rgba(255,255,255,0.06), transparent 70%)",
-          color: "#f5f5f5",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#09090b",
+          color: "#fafafa",
           fontFamily: "serif",
-          padding: 64,
-          position: "relative",
+          padding: 80,
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            top: 56,
-            left: 56,
-            width: 24,
-            height: 24,
-            borderTop: "2px solid #f5f5f5",
-            borderLeft: "2px solid #f5f5f5",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 56,
-            right: 56,
-            width: 24,
-            height: 24,
-            borderTop: "2px solid #f5f5f5",
-            borderRight: "2px solid #f5f5f5",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 56,
-            left: 56,
-            width: 24,
-            height: 24,
-            borderBottom: "2px solid #f5f5f5",
-            borderLeft: "2px solid #f5f5f5",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 56,
-            right: 56,
-            width: 24,
-            height: 24,
-            borderBottom: "2px solid #f5f5f5",
-            borderRight: "2px solid #f5f5f5",
-          }}
-        />
-
+        <svg
+          width="160"
+          height="200"
+          viewBox="0 0 80 100"
+          fill="none"
+          stroke="#fafafa"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ marginBottom: 36 }}
+        >
+          <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
+          <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
+          <path d="M22 86 H58" opacity="0.7" />
+          <path d="M28 92 H52" opacity="0.45" />
+          <path d="M34 96 H46" opacity="0.25" />
+        </svg>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 12,
-            fontFamily: "monospace",
-            fontSize: 18,
+            height: 170,
+            fontSize: 128,
+            letterSpacing: 24,
+            paddingLeft: 24,
+            fontWeight: 500,
+          }}
+        >
+          HIRAEL
+        </div>
+        <div
+          style={{
+            marginTop: 12,
+            fontSize: 28,
+            letterSpacing: 6,
+            paddingLeft: 6,
+            color: "#a1a1aa",
             textTransform: "uppercase",
-            letterSpacing: "0.2em",
-            color: "rgba(245,245,245,0.6)",
           }}
         >
-          <span>{SITE.registry.name}</span>
-          <span style={{ color: "rgba(245,245,245,0.3)" }}>/</span>
-          <span>v{SITE.version}</span>
+          Longing · Memory · Light
         </div>
-
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            flex: 1,
-            gap: 32,
-            position: "relative",
+            marginTop: 72,
+            fontSize: 24,
+            color: "#a1a1aa",
+            fontFamily: "sans-serif",
+            letterSpacing: 0.5,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 32,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 200,
-                height: 200,
-                fontSize: 260,
-                fontWeight: 700,
-                lineHeight: 1,
-                color: "transparent",
-                backgroundImage:
-                  "linear-gradient(to bottom, #000000 0%, #000000 36%, #FFFFFF 36%, #FFFFFF 58%, #007A3D 58%, #007A3D 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-              }}
-            >
-              M
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 128,
-                  fontWeight: 700,
-                  letterSpacing: "-0.04em",
-                  lineHeight: 0.95,
-                  color: "#f5f5f5",
-                }}
-              >
-                MSH UI
-              </div>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: 16,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.2em",
-                  color: "rgba(245,245,245,0.5)",
-                }}
-              >
-                peer registry · shadcn cli
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              fontSize: 40,
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-              maxWidth: 1000,
-              color: "#f5f5f5",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 10,
-            }}
-          >
-            <span style={{ color: "rgba(245,245,245,0.55)" }}>
-              The components shadcn doesn&apos;t ship —
-            </span>
-            <span style={{ fontWeight: 600 }}>
-              multi-select, combobox, tag input, file dropzone
-            </span>
-            <span style={{ color: "rgba(245,245,245,0.55)" }}>
-              and the rest.
-            </span>
-          </div>
+          {SITE.description}
         </div>
-
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            marginTop: 20,
+            fontSize: 20,
+            color: "#fafafa",
             fontFamily: "monospace",
-            fontSize: 18,
-            color: "rgba(245,245,245,0.55)",
+            letterSpacing: 3,
+            textTransform: "uppercase",
           }}
         >
-          <span>{SITE.url.replace(/^https?:\/\//, "")}</span>
-          <span>{SITE.author}</span>
+          {`${components} components · ${blocks} blocks · shadcn registry`}
         </div>
       </div>
     ),
-    {
-      ...size,
-    }
+    { ...size }
   )
 }

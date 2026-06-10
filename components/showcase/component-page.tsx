@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils"
 import { BlockViewer } from "@/components/showcase/block-viewer"
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { InstallBlock } from "@/components/showcase/install-block"
-import type { RegistryEntryMeta } from "@/registry/msh-ui/registry-meta"
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
+import type { RegistryEntryMeta } from "@/registry/hirael/registry-meta"
 
 type Tab = "preview" | "usage" | "code" | "install"
 
@@ -44,7 +45,6 @@ export function ComponentPage({
     [entry.sourceFiles, entry.installTargets, source, isBlock]
   )
 
-  const Demo = entry.Demo
   const showUsageTab = !isBlock && !!demoSource
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
@@ -71,11 +71,6 @@ export function ComponentPage({
               </span>
             </>
           )}
-          {entry.status === "planned" && (
-            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-              planned
-            </span>
-          )}
         </div>
         <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
           {entry.title}
@@ -86,100 +81,99 @@ export function ComponentPage({
         <InstallBlock name={entry.name} className="mt-1" />
       </header>
 
-      {entry.status === "planned" ? (
-        <div className="rounded-sm border border-dashed border-border bg-card/40 px-6 py-12 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
-            Declared in <code>registry.json</code> · implementation pending
-          </p>
-          <p className="mt-3 text-sm text-foreground">
-            This component is part of Phase&nbsp;1 and will land soon.
-            The registry entry, dependency list, and install URL are
-            already wired up.
-          </p>
-        </div>
-      ) : (
         <>
           <div
             role="tablist"
             aria-label="View"
-            className="-mx-4 flex items-center gap-0 overflow-x-auto overflow-y-hidden border-b border-border px-4 sm:mx-0 sm:px-0"
+            className="inline-flex w-fit items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-1 backdrop-blur-md"
+            onKeyDown={(e) => {
+              if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key))
+                return
+              e.preventDefault()
+              const order = tabs.map(([k]) => k)
+              const i = order.indexOf(tab)
+              const next =
+                e.key === "Home"
+                  ? order[0]
+                  : e.key === "End"
+                    ? order[order.length - 1]
+                    : order[
+                        (i + (e.key === "ArrowRight" ? 1 : -1) + order.length) %
+                          order.length
+                      ]
+              setTab(next)
+              e.currentTarget
+                .querySelector<HTMLButtonElement>(`[data-tab="${next}"]`)
+                ?.focus()
+            }}
           >
-            {tabs.map(([k, label]) => (
-              <button
-                key={k}
-                type="button"
-                role="tab"
-                aria-selected={tab === k}
-                onClick={() => setTab(k)}
-                className={cn(
-                  "relative -mb-[2px] shrink-0 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] transition-colors focus-visible:outline-none focus-visible:text-foreground",
-                  tab === k
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {label}
-                {tab === k && (
-                  <span className="absolute inset-x-0 -bottom-[2px] h-[2px] bg-foreground" />
-                )}
-              </button>
-            ))}
+            {tabs.map(([k, label]) => {
+              const active = tab === k
+              return (
+                <button
+                  key={k}
+                  type="button"
+                  role="tab"
+                  id={`cmp-tab-${k}`}
+                  aria-selected={active}
+                  aria-controls="cmp-tabpanel"
+                  tabIndex={active ? 0 : -1}
+                  data-tab={k}
+                  onClick={() => setTab(k)}
+                  className={cn(
+                    "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cool",
+                    active
+                      ? "bg-background text-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklch,var(--foreground)_10%,transparent),0_1px_0_0_color-mix(in_oklch,var(--background)_60%,transparent)]"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {label}
+                </button>
+              )
+            })}
           </div>
 
-          {tab === "preview" &&
-            Demo &&
-            (isBlock ? (
-              <BlockViewer name={entry.name} title={entry.title} />
-            ) : (
-              <div className="flex min-h-[360px] items-center justify-center rounded-sm border border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
-                <Demo />
-              </div>
-            ))}
-
-          {tab === "usage" && demoSource && (
-            <CodeBlock
-              tabs={[
-                {
-                  label: `${entry.name}.demo.tsx`,
-                  code: demoSource.code,
-                  html: demoSource.html,
-                },
-              ]}
-            />
-          )}
-
-          {tab === "code" && codeTabs.length > 0 && (
-            <CodeBlock
-              tabs={codeTabs}
-              layout={isBlock ? "tree" : "tabs"}
-            />
-          )}
-
-          {tab === "install" && (
-            <div className="grid gap-4">
-              <InstallBlock name={entry.name} />
-              <div className="rounded-sm border border-border bg-card p-4">
-                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  shadcn dependencies
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {(entry.registryDependencies ?? []).map((d) => (
-                    <span
-                      key={d}
-                      className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
-                    >
-                      {d}
-                    </span>
-                  ))}
+          <div
+            role="tabpanel"
+            id="cmp-tabpanel"
+            aria-labelledby={`cmp-tab-${tab}`}
+            tabIndex={0}
+            className="focus-visible:outline-none"
+          >
+            {tab === "preview" &&
+              (isBlock ? (
+                <BlockViewer name={entry.name} title={entry.title} />
+              ) : (
+                <div className="flex min-h-[360px] items-center justify-center rounded-sm border border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
+                  <RegistryDemo name={entry.name} />
                 </div>
-              </div>
-              {entry.dependencies?.length ? (
+              ))}
+
+            {tab === "usage" && demoSource && (
+              <CodeBlock
+                tabs={[
+                  {
+                    label: `${entry.name}.demo.tsx`,
+                    code: demoSource.code,
+                    html: demoSource.html,
+                  },
+                ]}
+              />
+            )}
+
+            {tab === "code" && codeTabs.length > 0 && (
+              <CodeBlock tabs={codeTabs} layout={isBlock ? "tree" : "tabs"} />
+            )}
+
+            {tab === "install" && (
+              <div className="grid gap-4">
+                <InstallBlock name={entry.name} />
                 <div className="rounded-sm border border-border bg-card p-4">
                   <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    npm dependencies
+                    shadcn dependencies
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
-                    {entry.dependencies.map((d) => (
+                    {(entry.registryDependencies ?? []).map((d) => (
                       <span
                         key={d}
                         className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
@@ -189,11 +183,27 @@ export function ComponentPage({
                     ))}
                   </div>
                 </div>
-              ) : null}
-            </div>
-          )}
+                {entry.dependencies?.length ? (
+                  <div className="rounded-sm border border-border bg-card p-4">
+                    <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      npm dependencies
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {entry.dependencies.map((d) => (
+                        <span
+                          key={d}
+                          className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
+                        >
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
         </>
-      )}
     </div>
   )
 }

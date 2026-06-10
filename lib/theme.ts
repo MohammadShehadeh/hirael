@@ -158,7 +158,7 @@ function formatBlock(selector: string, tokens: ThemeTokens): string {
 
 /**
  * Curated presets. Each only overrides the primary hue + ring, so the rest of
- * the neutral palette stays consistent with the default zinc look.
+ * the neutral palette stays consistent with the default Hirael look.
  */
 export type ThemePreset = {
   id: string
@@ -169,19 +169,19 @@ export type ThemePreset = {
 
 export const THEME_PRESETS: ThemePreset[] = [
   {
-    id: "zinc",
-    label: "Zinc",
-    swatch: "oklch(0.985 0 0)",
+    id: "hirael",
+    label: "Hirael",
+    swatch: "oklch(0.910 0.008 85)",
     overrides: {
       dark: {
-        primary: "oklch(0.985 0 0)",
-        "primary-foreground": "oklch(0.205 0 0)",
-        ring: "oklch(0.708 0 0)",
+        primary: "oklch(0.910 0.008 85)",
+        "primary-foreground": "oklch(0.155 0.013 250)",
+        ring: "oklch(0.710 0.013 80)",
       },
       light: {
-        primary: "oklch(0.205 0 0)",
-        "primary-foreground": "oklch(0.985 0 0)",
-        ring: "oklch(0.708 0 0)",
+        primary: "oklch(0.225 0.018 254)",
+        "primary-foreground": "oklch(0.910 0.008 85)",
+        ring: "oklch(0.430 0.015 260)",
       },
     },
   },
@@ -238,8 +238,8 @@ export const THEME_PRESETS: ThemePreset[] = [
   },
 ]
 
-export const STORAGE_KEY = "msh-ui.theme.v1"
-export const MODE_STORAGE_KEY = "msh-ui.theme.mode.v1"
+export const STORAGE_KEY = "hirael.theme.v1"
+export const MODE_STORAGE_KEY = "hirael.theme.mode.v1"
 
 /**
  * Inline script (stringified) that runs before hydration to apply persisted

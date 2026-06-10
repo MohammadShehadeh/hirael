@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { NAV_LINKS, SITE } from "@/lib/site"
+import { CommandMenu } from "@/components/showcase/command-menu"
 import { BrandLockup } from "@/components/showcase/logo"
 import { ThemeToggle } from "@/components/showcase/theme-toggle"
 
@@ -33,6 +34,7 @@ export function SiteHeader({
     <header
       className={cn(
         "sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50",
+        "after:pointer-events-none after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent-cool/30 after:to-transparent",
         className
       )}
     >
@@ -44,10 +46,7 @@ export function SiteHeader({
           aria-label={`${SITE.name} — home`}
           className="group flex items-center gap-2 rounded-sm py-1 transition-colors"
         >
-          <BrandLockup
-            logoClassName="h-6"
-            textClassName="text-xs sm:text-sm"
-          />
+          <BrandLockup logoClassName="h-9" />
         </Link>
 
         <nav className="hidden flex-1 items-center gap-1 px-2 md:flex">
@@ -71,6 +70,7 @@ export function SiteHeader({
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
+          <CommandMenu />
           <ThemeToggle />
           <button
             type="button"

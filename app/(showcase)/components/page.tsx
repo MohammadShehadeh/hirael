@@ -14,7 +14,7 @@ import {
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "inputs",
@@ -37,7 +37,7 @@ const COMPOSE_SNIPPET = `import {
 </MultiSelect>`
 
 const COMPONENTS_DESCRIPTION =
-  "Browse the full MSH UI component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship."
+  "Browse the full Hirael component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship."
 
 export const metadata: Metadata = {
   title: "Components",
@@ -73,7 +73,6 @@ export const metadata: Metadata = {
 export default async function ComponentsIndex() {
   const components = REGISTRY.filter((r) => r.category !== "blocks")
   const blocks = REGISTRY_BY_CATEGORY.blocks
-  const stableComponents = components.filter((r) => r.status === "stable")
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
 
   return (
@@ -87,20 +86,19 @@ export default async function ComponentsIndex() {
             peer of shadcn, not a replacement
           </span>
         </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
+        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           The registry, in full.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
           Production-grade components shadcn doesn&apos;t ship — multi-select,
           combobox, tag input, currency input, file dropzone — plus {blocks.length} section
           blocks across {BLOCK_KIND_ORDER.length} categories. Distributed via the shadcn
-          CLI: source lands in your repo, no MSH UI runtime, no breaking
+          CLI: source lands in your repo, no Hirael runtime, no breaking
           version bumps.
         </p>
         <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
         <CountersStrip
           components={components.length}
-          stableComponents={stableComponents.length}
           blocks={blocks.length}
           blockKinds={BLOCK_KIND_ORDER.length}
         />
@@ -112,14 +110,13 @@ export default async function ComponentsIndex() {
             Components
           </h2>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-            {stableComponents.length} / {components.length} stable
+            {components.length} total
           </span>
         </div>
 
         {CATEGORY_ORDER.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
-          const stable = items.filter((i) => i.status === "stable").length
           return (
             <div key={cat} className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between">
@@ -127,7 +124,7 @@ export default async function ComponentsIndex() {
                   {CATEGORY_LABELS[cat]}
                 </h3>
                 <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                  {stable} / {items.length}
+                  {items.length}
                 </span>
               </div>
               <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2">
@@ -142,16 +139,10 @@ export default async function ComponentsIndex() {
                           <h4 className="text-base font-medium tracking-[-0.01em]">
                             {entry.title}
                           </h4>
-                          {entry.status === "planned" ? (
-                            <span className="rounded-sm border border-border px-1.5 py-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
-                              soon
-                            </span>
-                          ) : (
-                            <span
-                              aria-hidden
-                              className="size-1.5 rounded-full bg-foreground"
-                            />
-                          )}
+                          <span
+                            aria-hidden
+                            className="size-1.5 rounded-full bg-foreground"
+                          />
                         </div>
                         <p className="mt-1.5 text-xs text-muted-foreground">
                           {entry.description}
@@ -284,19 +275,17 @@ export default async function ComponentsIndex() {
 
 function CountersStrip({
   components,
-  stableComponents,
   blocks,
   blockKinds,
 }: {
   components: number
-  stableComponents: number
   blocks: number
   blockKinds: number
 }) {
   const items: { label: string; value: string }[] = [
     {
       label: "components",
-      value: `${stableComponents} / ${components}`,
+      value: `${components}`,
     },
     { label: "blocks", value: `${blocks}` },
     { label: "block categories", value: `${blockKinds}` },

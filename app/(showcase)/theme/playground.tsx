@@ -2,20 +2,21 @@
 
 import * as React from "react"
 
-import { Button } from "@/registry/msh-ui/ui/button"
-import { Badge } from "@/registry/msh-ui/ui/badge"
-import { Input } from "@/registry/msh-ui/ui/input"
-import { Label } from "@/registry/msh-ui/ui/label"
+import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge"
+import { Input } from "@/registry/hirael/ui/input"
+import { Label } from "@/registry/hirael/ui/label"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { useTheme } from "@/components/showcase/theme-provider"
-import { REGISTRY } from "@/registry/msh-ui/registry-meta"
+import { RegistryDemo } from "@/registry/hirael/registry-demos"
+import { REGISTRY } from "@/registry/hirael/registry-meta"
 
 export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
   const components = REGISTRY.filter(
-    (r) => r.category !== "blocks" && r.status === "stable"
+    (r) => r.category !== "blocks"
   )
 
   return (
@@ -34,7 +35,7 @@ export function ThemePlayground() {
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Paste a CSS variable block from your own app — or any shadcn theme
-          generator — and watch the entire MSH UI registry re-skin. The active
+          generator — and watch the entire Hirael registry re-skin. The active
           theme is persisted in your browser; reset any time.
         </p>
 
@@ -67,7 +68,7 @@ export function ThemePlayground() {
       <Section
         eyebrow="Primitives"
         title="Buttons, badges, inputs"
-        description="The base shadcn primitives MSH UI components compose on top of."
+        description="The base shadcn primitives Hirael components compose on top of."
       >
         <div className="grid gap-6 rounded-sm border border-border bg-card/40 p-6">
           <div className="flex flex-wrap items-center gap-2">
@@ -88,7 +89,7 @@ export function ThemePlayground() {
             <Input
               id="theme-preview-input"
               placeholder="you@example.com"
-              defaultValue="hello@msh-ui.dev"
+              defaultValue="hello@hirael.com"
             />
             <p className="text-xs text-muted-foreground">
               Muted foreground reads against background.
@@ -99,13 +100,11 @@ export function ThemePlayground() {
 
       <Section
         eyebrow="Registry"
-        title="MSH UI components"
+        title="Hirael components"
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
           {components.map((entry) => {
-            const Demo = entry.Demo
-            if (!Demo) return null
             return (
               <article
                 key={entry.name}
@@ -120,7 +119,7 @@ export function ThemePlayground() {
                   </span>
                 </div>
                 <div className="flex min-h-[160px] items-center justify-center rounded-sm border border-dashed border-border bg-background/60 p-4">
-                  <Demo />
+                  <RegistryDemo name={entry.name} />
                 </div>
               </article>
             )

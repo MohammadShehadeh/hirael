@@ -3,18 +3,17 @@
  */
 
 export const SITE = {
-  name: "MSH UI",
-  fullName: "MSH UI — shadcn's missing pieces",
-  description: "shadcn's missing pieces",
+  name: "Hirael",
+  fullName: "Hirael",
+  description: "Tools for builders who think in systems.",
   longDescription:
-    "A peer registry for the components every real product needs but shadcn doesn't ship — multi-select, combobox, tag input, currency input, file dropzone, and more.",
-  url: "https://msh-ui.dev",
+    "A component registry for the pieces every real product needs. Minimal. Thoughtful. Built to last.",
+  url: "https://hirael.com",
   version: "0.1",
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
   twitterHandle: "@mohammadshhadeh",
   twitterUrl: "https://x.com/mohammadshhadeh",
-  githubUrl: "https://github.com/mohammadshehadeh/forgecn",
   keywords: [
     "shadcn",
     "shadcn ui",
@@ -28,14 +27,13 @@ export const SITE = {
     "currency input",
     "file dropzone",
     "next.js components",
-    "msh ui",
-    "msh-ui",
+    "hirael",
     "react 19",
   ],
   registry: {
-    name: "msh-ui",
+    name: "hirael",
     /** Public origin used when generating install URLs server-side. */
-    origin: "https://msh-ui.dev",
+    origin: "https://hirael.com",
   },
 } as const
 

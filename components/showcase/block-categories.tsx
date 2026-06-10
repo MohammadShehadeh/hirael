@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 import {
   BLOCKS_BY_KIND,
   type BlockKind,
-} from "@/registry/msh-ui/registry-meta"
+} from "@/registry/hirael/registry-meta"
 
 /* -------------------------------------------------------------------------- */
 /* Design system                                                              */

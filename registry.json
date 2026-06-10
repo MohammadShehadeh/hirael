@@ -458,6 +458,22 @@
       ]
     },
     {
+      "name": "faq-04",
+      "type": "registry:block",
+      "title": "FAQ 4",
+      "description": "Framed single-column FAQ with side rules, a centered display header, five topic groups each pairing a heading with its own accordion, and a support footer line.",
+      "categories": ["blocks", "faq"],
+      "dependencies": ["@radix-ui/react-accordion"],
+      "registryDependencies": ["accordion"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/faq-04/faq-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-04.tsx"
+        }
+      ]
+    },
+    {
       "name": "login-01",
       "type": "registry:block",
       "title": "Login 1",
@@ -788,6 +804,38 @@
       ]
     },
     {
+      "name": "dashboard-04",
+      "type": "registry:block",
+      "title": "Dashboard 4",
+      "description": "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "select"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-04/dashboard-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-04.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-05",
+      "type": "registry:block",
+      "title": "Dashboard 5",
+      "description": "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution and an active-deployments list with ping-dot statuses.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "select"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-05/dashboard-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-05.tsx"
+        }
+      ]
+    },
+    {
       "name": "ecommerce-01",
       "type": "registry:block",
       "title": "E-commerce 1",
@@ -922,6 +970,22 @@
           "path": "registry/hirael/blocks/app-shell-03/app-shell-03.tsx",
           "type": "registry:block",
           "target": "components/blocks/app-shell-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-04",
+      "type": "registry:block",
+      "title": "App Shell 4",
+      "description": "Header-first starter shell: sticky top bar with workspace switcher, notification count and avatar, a collapsible sidebar below it with search + ⌘K hint and primary nav, and a rounded inset main area holding a welcome heading over dashed placeholder slots ready for content.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input-group", "kbd", "separator"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/app-shell-04/app-shell-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-04.tsx"
         }
       ]
     },

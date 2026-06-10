@@ -395,6 +395,19 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
   {
+    name: "faq-04",
+    title: "FAQ 4",
+    description:
+      "Framed single-column FAQ with side rules, a centered display header, five topic groups each pairing a heading with its own accordion, and a support footer line.",
+    blockTagline: "Framed column · topic groups · support line",
+    category: "blocks",
+    blockKind: "faq",
+    sourceFiles: ["registry/hirael/blocks/faq-04/faq-04.tsx"],
+    installTargets: ["components/blocks/faq-04.tsx"],
+    registryDependencies: ["accordion"],
+    dependencies: ["@radix-ui/react-accordion"],
+  },
+  {
     name: "login-01",
     title: "Login 1",
     description:
@@ -640,6 +653,32 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "dashboard-04",
+    title: "Dashboard 4",
+    description:
+      "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
+    blockTagline: "Inset stat tiles · today band · week band",
+    category: "blocks",
+    blockKind: "dashboard",
+    sourceFiles: ["registry/hirael/blocks/dashboard-04/dashboard-04.tsx"],
+    installTargets: ["components/blocks/dashboard-04.tsx"],
+    registryDependencies: ["badge", "button", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "dashboard-05",
+    title: "Dashboard 5",
+    description:
+      "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution and an active-deployments list with ping-dot statuses.",
+    blockTagline: "Bordered lattice · sparkline KPIs · deployments",
+    category: "blocks",
+    blockKind: "dashboard",
+    sourceFiles: ["registry/hirael/blocks/dashboard-05/dashboard-05.tsx"],
+    installTargets: ["components/blocks/dashboard-05.tsx"],
+    registryDependencies: ["badge", "button", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "integrations-01",
     title: "Integrations 1",
     description:
@@ -726,6 +765,19 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "separator",
       "textarea",
     ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "app-shell-04",
+    title: "App Shell 4",
+    description:
+      "Header-first starter shell: sticky top bar with workspace switcher, notification count and avatar, a collapsible sidebar below it with search + ⌘K hint and primary nav, and a rounded inset main area holding a welcome heading over dashed placeholder slots ready for content.",
+    blockTagline: "Header-first · collapsible rail · slot grid",
+    category: "blocks",
+    blockKind: "app-shell",
+    sourceFiles: ["registry/hirael/blocks/app-shell-04/app-shell-04.tsx"],
+    installTargets: ["components/blocks/app-shell-04.tsx"],
+    registryDependencies: ["button", "input-group", "kbd", "separator"],
     dependencies: ["lucide-react"],
   },
   {

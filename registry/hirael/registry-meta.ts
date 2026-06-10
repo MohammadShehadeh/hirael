@@ -710,6 +710,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "app-shell-03",
+    title: "App Shell 3",
+    description:
+      "Split-pane inbox shell: icon rail with unread indicator, searchable conversation list with an unread filter, and a reading pane with star toggle and a reply composer that appends to the thread.",
+    blockTagline: "Icon rail · inbox list · reading pane",
+    category: "blocks",
+    blockKind: "app-shell",
+    sourceFiles: ["registry/hirael/blocks/app-shell-03/app-shell-03.tsx"],
+    installTargets: ["components/blocks/app-shell-03.tsx"],
+    registryDependencies: [
+      "badge",
+      "button",
+      "input-group",
+      "separator",
+      "textarea",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "spinner",
     title: "Spinner",
     description:

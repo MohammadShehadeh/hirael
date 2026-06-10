@@ -904,6 +904,28 @@
       ]
     },
     {
+      "name": "app-shell-03",
+      "type": "registry:block",
+      "title": "App Shell 3",
+      "description": "Split-pane inbox shell: icon rail with unread indicator, searchable conversation list with an unread filter, and a reading pane with star toggle and a reply composer that appends to the thread.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input-group",
+        "separator",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/app-shell-03/app-shell-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-03.tsx"
+        }
+      ]
+    },
+    {
       "name": "spinner",
       "type": "registry:ui",
       "title": "Spinner",

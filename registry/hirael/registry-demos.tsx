@@ -67,6 +67,7 @@ const DEMO_LOADERS: Record<
   "image-gallery-01": () => import("@/registry/hirael/blocks/image-gallery-01/image-gallery-01"),
   "app-shell-01": () => import("@/registry/hirael/blocks/app-shell-01/app-shell-01"),
   "app-shell-02": () => import("@/registry/hirael/blocks/app-shell-02/app-shell-02"),
+  "app-shell-03": () => import("@/registry/hirael/blocks/app-shell-03/app-shell-03"),
   "spinner": () => import("@/registry/hirael/spinner/spinner.demo"),
   "copy-button": () => import("@/registry/hirael/copy-button/copy-button.demo"),
   "marquee": () => import("@/registry/hirael/marquee/marquee.demo"),

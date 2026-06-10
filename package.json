@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "node scripts/check-registry.mjs && pnpm registry:build && next build",
-    "start": "next start",
+    "start": "npx serve out",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "registry:build": "shadcn build",

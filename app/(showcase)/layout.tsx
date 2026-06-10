@@ -1,5 +1,3 @@
-import { cookies } from "next/headers"
-
 import { ShowcaseSidebar } from "@/components/showcase/sidebar"
 import { ShowcaseTopbar } from "@/components/showcase/topbar"
 import { SiteFooter } from "@/components/showcase/site-footer"
@@ -8,16 +6,13 @@ import {
   SidebarProvider,
 } from "@/registry/hirael/ui/sidebar"
 
-export default async function ShowcaseLayout({
+export default function ShowcaseLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const cookieStore = await cookies()
-  const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false"
-
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider>
       <ShowcaseSidebar />
       <SidebarInset className="min-w-0">
         <ShowcaseTopbar />

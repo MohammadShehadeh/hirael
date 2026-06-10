@@ -3,6 +3,8 @@ import { ImageResponse } from "next/og"
 import { SITE } from "@/lib/site"
 import { REGISTRY } from "@/registry/hirael/registry-meta"
 
+export const dynamic = "force-static"
+
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 export const alt = `${SITE.name} — ${SITE.description}`

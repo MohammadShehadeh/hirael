@@ -45,16 +45,16 @@ export function ShowcaseSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+    <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
       <SidebarHeader>
         <Link
           href="/"
-          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-[width,height,padding,background-color] duration-200 ease-linear hover:bg-sidebar-accent group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2!"
+          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
           aria-label={`${SITE.name} — home`}
         >
-          <LogoMarkM className="size-8 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-6" />
+          <LogoMarkM className="size-8 shrink-0" />
           <span
-            className="truncate whitespace-nowrap text-xl leading-none text-foreground group-data-[collapsible=icon]:hidden"
+            className="truncate whitespace-nowrap text-xl leading-none text-foreground"
             style={{
               fontFamily: "var(--font-cormorant), ui-serif, serif",
               fontWeight: 500,
@@ -72,11 +72,7 @@ export function ShowcaseSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive("/components")}
-                  tooltip="All components"
-                >
+                <SidebarMenuButton asChild isActive={isActive("/components")}>
                   <Link href="/components">
                     <Boxes />
                     <span>All components</span>
@@ -84,26 +80,18 @@ export function ShowcaseSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive("/blocks")}
-                  tooltip="Blocks"
-                >
+                <SidebarMenuButton asChild isActive={isActive("/blocks")}>
                   <Link href="/blocks">
                     <LayoutTemplate />
                     <span>Blocks</span>
-                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground group-data-[collapsible=icon]:hidden">
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
                       {blockCount}
                     </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive("/theme")}
-                  tooltip="Theme playground"
-                >
+                <SidebarMenuButton asChild isActive={isActive("/theme")}>
                   <Link href="/theme">
                     <Sparkles />
                     <span>Theme playground</span>
@@ -127,11 +115,7 @@ export function ShowcaseSidebar() {
                     const active = isActive(href)
                     return (
                       <SidebarMenuItem key={entry.name}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={active}
-                          tooltip={entry.title}
-                        >
+                        <SidebarMenuButton asChild isActive={active}>
                           <Link href={href}>
                             <span>{entry.title}</span>
                           </Link>
@@ -147,8 +131,8 @@ export function ShowcaseSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
+        <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
             peer of shadcn
           </span>
           <ThemeSheetTrigger />

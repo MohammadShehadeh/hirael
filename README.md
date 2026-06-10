@@ -177,8 +177,8 @@ match your `components.json`.
 | Script                 | What it does                                              |
 | ---------------------- | --------------------------------------------------------- |
 | `pnpm dev`             | Next.js dev server with Turbopack on port 3000            |
-| `pnpm build`           | `registry:build` then `next build`                        |
-| `pnpm start`           | Serve the production build                                |
+| `pnpm build`           | `registry:build` then `next build` (static export → `out/`) |
+| `pnpm start`           | Serve the static export in `out/` locally                 |
 | `pnpm lint`            | ESLint via `next lint` (`next/core-web-vitals` + TS)      |
 | `pnpm typecheck`       | `tsc --noEmit`                                            |
 | `pnpm registry:build`  | `shadcn build` — generates `/public/r/<name>.json`        |
@@ -249,14 +249,16 @@ identifiers. Motion stays short (120–180ms, ease-out).
 
 ## Deployment
 
-The showcase site is a standard Next.js 15 App Router app. `pnpm build`
-runs `registry:build` first so the generated `/public/r/*.json` files
-travel with the build, then runs `next build`. `pnpm start` serves the
-production output.
+The showcase site is a Next.js 15 App Router app built as a fully
+static export (`output: "export"`). `pnpm build` runs `registry:build`
+first so the generated `/public/r/*.json` files travel with the build,
+then runs `next build`, which pre-renders every route to plain
+HTML/CSS/JS in `out/`. `pnpm start` serves that directory locally.
 
 The canonical deployment runs at [hirael.com](https://hirael.com).
 `.vercel` is gitignored, so Vercel-style deployment is supported out of
-the box; any host that runs a Next.js production server will work.
+the box; because the output is fully static, any static host or CDN
+can serve it — no Node server required.
 
 > **TODO** — document hosting-specific build, env, and domain
 > configuration once the production deployment pipeline is finalized.

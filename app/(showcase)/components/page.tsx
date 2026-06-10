@@ -37,7 +37,7 @@ const COMPOSE_SNIPPET = `import {
 </MultiSelect>`
 
 const COMPONENTS_DESCRIPTION =
-  "Browse the full Hirael component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn doesn't ship."
+  "Browse the full Hirael component registry — multi-select, combobox, tag input, currency input, file dropzone, and the rest of the components shadcn/ui doesn't ship."
 
 export const metadata: Metadata = {
   title: "Components",
@@ -90,7 +90,7 @@ export default async function ComponentsIndex() {
           The registry, in full.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Production-grade components shadcn doesn&apos;t ship — multi-select,
+          Production-grade components shadcn/ui doesn&apos;t ship — multi-select,
           combobox, tag input, currency input, file dropzone — plus {blocks.length} section
           blocks across {BLOCK_KIND_ORDER.length} categories. Distributed via the shadcn
           CLI: source lands in your repo, no Hirael runtime, no breaking

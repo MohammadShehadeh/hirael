@@ -1,21 +1,16 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
+  // Fully static site: every route is pre-rendered to plain HTML at build
+  // time (`out/`), so any static host can serve it and client navigation
+  // never waits on a server render. The component/block routes read their
+  // source TSX off disk via fs.readFile, which is fine here because with
+  // `output: "export"` those reads only ever happen during the build.
+  output: "export",
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-    ],
-  },
-  // The component/block routes read their source TSX off disk at build time
-  // via fs.readFile(path.join(process.cwd(), ...)). Those files aren't
-  // imported by the route, so Next's tracer doesn't include them in the
-  // server bundle by default — which makes `fs.readFile` miss on hosts that
-  // re-evaluate the route at runtime, and the page falls back to the
-  // "// (unable to read source)" stub. Explicitly tracing the registry
-  // source ensures the files travel with the build.
-  outputFileTracingIncludes: {
-    "/[component]": ["./registry/hirael/**/*.{ts,tsx}"],
-    "/blocks/[block]": ["./registry/hirael/**/*.{ts,tsx}"],
+    // The image optimization endpoint needs a server, which a static
+    // export doesn't have — serve image sources as-is.
+    unoptimized: true,
   },
 }
 

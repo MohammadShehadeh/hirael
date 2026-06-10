@@ -82,7 +82,7 @@ function Hero() {
         </span>
 
         <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-          The components shadcn doesn&apos;t ship.
+          The components shadcn/ui doesn&apos;t ship.
         </h1>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">

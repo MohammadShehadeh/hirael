@@ -1086,6 +1086,246 @@
           "target": "components/ui/marquee.tsx"
         }
       ]
+    },
+    {
+      "name": "sortable",
+      "type": "registry:ui",
+      "title": "Sortable",
+      "description": "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements — no dnd-kit.",
+      "categories": ["data"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/sortable.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sortable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:ui",
+      "title": "Date Range Picker",
+      "description": "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar — no date library.",
+      "categories": ["pickers"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "popover", "separator"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/date-range-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/date-range-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mention-input",
+      "type": "registry:ui",
+      "title": "Mention Input",
+      "description": "@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.",
+      "categories": ["inputs"],
+      "dependencies": [],
+      "registryDependencies": ["spinner"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/mention-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/mention-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "inline-edit",
+      "type": "registry:ui",
+      "title": "Inline Edit",
+      "description": "Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input", "spinner", "textarea"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/inline-edit.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/inline-edit.tsx"
+        }
+      ]
+    },
+    {
+      "name": "signature-pad",
+      "type": "registry:ui",
+      "title": "Signature Pad",
+      "description": "Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.",
+      "categories": ["inputs"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/signature-pad.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/signature-pad.tsx"
+        }
+      ]
+    },
+    {
+      "name": "image-cropper",
+      "type": "registry:ui",
+      "title": "Image Cropper",
+      "description": "Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.",
+      "categories": ["files"],
+      "dependencies": [],
+      "registryDependencies": ["slider"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/image-cropper.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/image-cropper.tsx"
+        }
+      ]
+    },
+    {
+      "name": "image-compare",
+      "type": "registry:ui",
+      "title": "Image Compare",
+      "description": "Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.",
+      "categories": ["display"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/image-compare.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/image-compare.tsx"
+        }
+      ]
+    },
+    {
+      "name": "lightbox",
+      "type": "registry:ui",
+      "title": "Lightbox",
+      "description": "Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.",
+      "categories": ["display"],
+      "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/lightbox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/lightbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "countdown-timer",
+      "type": "registry:ui",
+      "title": "Countdown Timer",
+      "description": "Count-down-to-date timer with boxed / inline / minimal variants, a useCountdown hook, digit animation and completion content.",
+      "categories": ["data"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/countdown-timer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/countdown-timer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "qr-code",
+      "type": "registry:ui",
+      "title": "QR Code",
+      "description": "Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and currentColor theming.",
+      "categories": ["display"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/qr-code.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/qr-code.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar-heatmap",
+      "type": "registry:ui",
+      "title": "Calendar Heatmap",
+      "description": "GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.",
+      "categories": ["data"],
+      "dependencies": [],
+      "registryDependencies": ["tooltip"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/calendar-heatmap.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/calendar-heatmap.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code Block",
+      "description": "Structured code display with line numbers, line highlights, diff gutters, copy button and collapsible max-height. No tokenizer, no deps.",
+      "categories": ["display"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "copy-button"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/code-block.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/code-block.tsx"
+        }
+      ]
+    },
+    {
+      "name": "masonry",
+      "type": "registry:ui",
+      "title": "Masonry",
+      "description": "True masonry layout that balances children into the shortest column by measured height — order-preserving, responsive, dependency-free.",
+      "categories": ["display"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/masonry.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/masonry.tsx"
+        }
+      ]
+    },
+    {
+      "name": "audio-player",
+      "type": "registry:ui",
+      "title": "Audio Player",
+      "description": "Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.",
+      "categories": ["display"],
+      "dependencies": ["@radix-ui/react-slider", "lucide-react"],
+      "registryDependencies": ["button", "slider"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/audio-player.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/audio-player.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tour",
+      "type": "registry:ui",
+      "title": "Tour",
+      "description": "Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.",
+      "categories": ["navigation"],
+      "dependencies": [],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/tour.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tour.tsx"
+        }
+      ]
     }
   ]
 }

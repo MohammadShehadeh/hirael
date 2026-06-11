@@ -326,7 +326,7 @@
     {
       "name": "hero-01",
       "type": "registry:block",
-      "title": "Hero · Split with install card",
+      "title": "Hero 1",
       "description": "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
       "categories": ["blocks", "hero"],
       "dependencies": ["lucide-react"],
@@ -342,7 +342,7 @@
     {
       "name": "hero-02",
       "type": "registry:block",
-      "title": "Hero · Centered editorial",
+      "title": "Hero 2",
       "description": "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
       "categories": ["blocks", "hero"],
       "dependencies": ["lucide-react"],
@@ -358,7 +358,7 @@
     {
       "name": "hero-03",
       "type": "registry:block",
-      "title": "Hero · Email capture",
+      "title": "Hero 3",
       "description": "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
       "categories": ["blocks", "hero"],
       "dependencies": ["lucide-react"],
@@ -374,7 +374,7 @@
     {
       "name": "cta-01",
       "type": "registry:block",
-      "title": "CTA · Framed band",
+      "title": "CTA 1",
       "description": "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
       "categories": ["blocks", "cta"],
       "dependencies": ["lucide-react"],
@@ -390,7 +390,7 @@
     {
       "name": "cta-02",
       "type": "registry:block",
-      "title": "CTA · Centered announcement",
+      "title": "CTA 2",
       "description": "Full-bleed centered CTA with framing rules, highlight underlay on the key word, and an inline install command.",
       "categories": ["blocks", "cta"],
       "dependencies": ["lucide-react"],
@@ -406,7 +406,7 @@
     {
       "name": "faq-01",
       "type": "registry:block",
-      "title": "FAQ · Sticky split",
+      "title": "FAQ 1",
       "description": "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
       "categories": ["blocks", "faq"],
       "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
@@ -422,7 +422,7 @@
     {
       "name": "faq-02",
       "type": "registry:block",
-      "title": "FAQ · Centered grid",
+      "title": "FAQ 2",
       "description": "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
       "categories": ["blocks", "faq"],
       "dependencies": ["@radix-ui/react-accordion"],
@@ -436,9 +436,47 @@
       ]
     },
     {
+      "name": "faq-03",
+      "type": "registry:block",
+      "title": "FAQ 3",
+      "description": "Searchable FAQ with category tabs, a live-filtered accordion, an empty state for missed queries and a support CTA strip.",
+      "categories": ["blocks", "faq"],
+      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "registryDependencies": [
+        "accordion",
+        "button",
+        "empty-state",
+        "input-group",
+        "tabs"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/faq-03/faq-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "faq-04",
+      "type": "registry:block",
+      "title": "FAQ 4",
+      "description": "Framed single-column FAQ with side rules, a centered display header, five topic groups each pairing a heading with its own accordion, and a support footer line.",
+      "categories": ["blocks", "faq"],
+      "dependencies": ["@radix-ui/react-accordion"],
+      "registryDependencies": ["accordion"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/faq-04/faq-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-04.tsx"
+        }
+      ]
+    },
+    {
       "name": "login-01",
       "type": "registry:block",
-      "title": "Login · Centered card",
+      "title": "Login 1",
       "description": "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
       "categories": ["blocks", "login"],
       "dependencies": ["lucide-react"],
@@ -454,7 +492,7 @@
     {
       "name": "login-02",
       "type": "registry:block",
-      "title": "Login · Split with testimonial",
+      "title": "Login 2",
       "description": "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
       "categories": ["blocks", "login"],
       "dependencies": ["lucide-react"],
@@ -470,7 +508,7 @@
     {
       "name": "feature-01",
       "type": "registry:block",
-      "title": "Feature · Alternating rows",
+      "title": "Feature 1",
       "description": "Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).",
       "categories": ["blocks", "feature"],
       "dependencies": ["lucide-react"],
@@ -486,7 +524,7 @@
     {
       "name": "feature-02",
       "type": "registry:block",
-      "title": "Feature · Icon grid",
+      "title": "Feature 2",
       "description": "Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.",
       "categories": ["blocks", "feature"],
       "dependencies": ["lucide-react"],
@@ -502,7 +540,7 @@
     {
       "name": "pricing-01",
       "type": "registry:block",
-      "title": "Pricing · Three tiers",
+      "title": "Pricing 1",
       "description": "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
       "categories": ["blocks", "pricing"],
       "dependencies": ["lucide-react"],
@@ -518,7 +556,7 @@
     {
       "name": "pricing-02",
       "type": "registry:block",
-      "title": "Pricing · Comparison table",
+      "title": "Pricing 2",
       "description": "Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.",
       "categories": ["blocks", "pricing"],
       "dependencies": ["lucide-react"],
@@ -534,7 +572,7 @@
     {
       "name": "testimonial-01",
       "type": "registry:block",
-      "title": "Testimonial · Single quote",
+      "title": "Testimonial 1",
       "description": "Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.",
       "categories": ["blocks", "testimonial"],
       "dependencies": [],
@@ -550,7 +588,7 @@
     {
       "name": "testimonial-02",
       "type": "registry:block",
-      "title": "Testimonial · Masonry grid",
+      "title": "Testimonial 2",
       "description": "Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.",
       "categories": ["blocks", "testimonial"],
       "dependencies": [],
@@ -566,7 +604,7 @@
     {
       "name": "header-01",
       "type": "registry:block",
-      "title": "Header · Sticky nav",
+      "title": "Header 1",
       "description": "Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.",
       "categories": ["blocks", "header"],
       "dependencies": ["lucide-react"],
@@ -582,7 +620,7 @@
     {
       "name": "footer-01",
       "type": "registry:block",
-      "title": "Footer · Four columns",
+      "title": "Footer 1",
       "description": "Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.",
       "categories": ["blocks", "footer"],
       "dependencies": ["lucide-react"],
@@ -598,7 +636,7 @@
     {
       "name": "not-found-01",
       "type": "registry:block",
-      "title": "Not Found · centered 404",
+      "title": "Not Found 1",
       "description": "Centered 404 with mono eyebrow, display headline, paired CTAs and a 'try one of these' suggested-routes list.",
       "categories": ["blocks", "not-found"],
       "dependencies": ["lucide-react"],
@@ -662,7 +700,7 @@
     {
       "name": "logo-cloud-01",
       "type": "registry:block",
-      "title": "Logo Cloud · Bordered grid",
+      "title": "Logo Cloud 1",
       "description": "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
       "categories": ["blocks", "logo-cloud"],
       "dependencies": ["lucide-react"],
@@ -678,7 +716,7 @@
     {
       "name": "contact-01",
       "type": "registry:block",
-      "title": "Contact · Split form",
+      "title": "Contact 1",
       "description": "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
       "categories": ["blocks", "contact"],
       "dependencies": ["lucide-react"],
@@ -704,7 +742,7 @@
     {
       "name": "blog-01",
       "type": "registry:block",
-      "title": "Blog · Featured post and grid",
+      "title": "Blog 1",
       "description": "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
       "categories": ["blocks", "blog"],
       "dependencies": ["lucide-react"],
@@ -720,7 +758,7 @@
     {
       "name": "dashboard-01",
       "type": "registry:block",
-      "title": "Dashboard · Metrics and chart",
+      "title": "Dashboard 1",
       "description": "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
       "categories": ["blocks", "dashboard"],
       "dependencies": ["lucide-react"],
@@ -734,9 +772,111 @@
       ]
     },
     {
+      "name": "dashboard-02",
+      "type": "registry:block",
+      "title": "Dashboard 2",
+      "description": "Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart, and top-pages and channel-share side cards.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card", "select", "separator"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-02/dashboard-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-03",
+      "type": "registry:block",
+      "title": "Dashboard 3",
+      "description": "Revenue dashboard with a month stepper, plan-mix donut and legend, invoice status list and a transactions table with status dots and a pagination footer.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card", "separator"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-03/dashboard-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-04",
+      "type": "registry:block",
+      "title": "Dashboard 4",
+      "description": "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "card", "select"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-04/dashboard-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-04.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-05",
+      "type": "registry:block",
+      "title": "Dashboard 5",
+      "description": "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution and an active-deployments list with ping-dot statuses.",
+      "categories": ["blocks", "dashboard"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "select"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-05/dashboard-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-05.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ecommerce-01",
+      "type": "registry:block",
+      "title": "E-commerce 1",
+      "description": "Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and per-card add buttons.",
+      "categories": ["blocks", "ecommerce"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "rating"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/ecommerce-01/ecommerce-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ecommerce-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ecommerce-02",
+      "type": "registry:block",
+      "title": "E-commerce 2",
+      "description": "Shopping cart with quantity steppers, removable line items, promo-code validation, a free-shipping threshold, live totals and an empty-cart state.",
+      "categories": ["blocks", "ecommerce"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "button",
+        "card",
+        "empty-state",
+        "input-group",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/ecommerce-02/ecommerce-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ecommerce-02.tsx"
+        }
+      ]
+    },
+    {
       "name": "integrations-01",
       "type": "registry:block",
-      "title": "Integrations · Hub and spoke",
+      "title": "Integrations 1",
       "description": "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
       "categories": ["blocks", "integrations"],
       "dependencies": ["lucide-react"],
@@ -752,7 +892,7 @@
     {
       "name": "image-gallery-01",
       "type": "registry:block",
-      "title": "Image Gallery · Filterable masonry",
+      "title": "Image Gallery 1",
       "description": "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
       "categories": ["blocks", "image-gallery"],
       "dependencies": ["lucide-react"],
@@ -768,7 +908,7 @@
     {
       "name": "app-shell-01",
       "type": "registry:block",
-      "title": "App Shell · Sidebar and topbar",
+      "title": "App Shell 1",
       "description": "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
       "categories": ["blocks", "app-shell"],
       "dependencies": ["lucide-react"],
@@ -792,7 +932,7 @@
     {
       "name": "app-shell-02",
       "type": "registry:block",
-      "title": "App Shell · Top nav and settings",
+      "title": "App Shell 2",
       "description": "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
       "categories": ["blocks", "app-shell"],
       "dependencies": ["lucide-react"],
@@ -808,6 +948,46 @@
           "path": "registry/hirael/blocks/app-shell-02/app-shell-02.tsx",
           "type": "registry:block",
           "target": "components/blocks/app-shell-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-03",
+      "type": "registry:block",
+      "title": "App Shell 3",
+      "description": "Split-pane inbox shell: icon rail with unread indicator, searchable conversation list with an unread filter, and a reading pane with star toggle and a reply composer that appends to the thread.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input-group",
+        "separator",
+        "tabs",
+        "textarea",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/app-shell-03/app-shell-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-04",
+      "type": "registry:block",
+      "title": "App Shell 4",
+      "description": "Starter shell on the shadcn Sidebar primitive (inset variant): workspace switcher and ⌘K search in the rail, icon-collapsible nav with tooltips, an inset header with trigger, notification count and avatar, and a welcome heading over dashed placeholder slots.",
+      "categories": ["blocks", "app-shell"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["badge", "button", "input-group", "kbd", "separator", "sidebar"],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/app-shell-04/app-shell-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-04.tsx"
         }
       ]
     },

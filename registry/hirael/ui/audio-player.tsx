@@ -49,7 +49,7 @@ export type AudioPlayerProps = Omit<
   React.ComponentProps<"div">,
   "onPlay" | "onPause" | "onEnded"
 > & {
-  src: string
+  src?: string
   crossOrigin?: "" | "anonymous" | "use-credentials"
   onPlay?: () => void
   onPause?: () => void
@@ -77,10 +77,17 @@ function AudioPlayer({
 
   const toggle = React.useCallback(() => {
     const audio = audioRef.current
-    if (!audio) return
-    if (audio.paused) void audio.play()
+    if (!audio || !audio.getAttribute("src")) return
+    if (audio.paused) void audio.play().catch(() => undefined)
     else audio.pause()
   }, [])
+
+  React.useEffect(() => {
+    setPlaying(false)
+    setDuration(Number.NaN)
+    setCurrentTime(0)
+    setBuffered(0)
+  }, [src])
 
   const seek = React.useCallback((time: number) => {
     const audio = audioRef.current

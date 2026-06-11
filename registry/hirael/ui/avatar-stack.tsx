@@ -15,9 +15,9 @@ const sizeClasses: Record<NonNullable<AvatarStackProps["size"]>, string> = {
 }
 
 const spacingClasses: Record<NonNullable<AvatarStackProps["spacing"]>, string> = {
-  tight: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ml-3",
-  normal: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ml-2",
-  loose: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ml-1",
+  tight: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-3",
+  normal: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-2",
+  loose: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-1",
 }
 
 function AvatarStack({

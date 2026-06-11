@@ -247,7 +247,7 @@ export default function AppShell03() {
     <div className="flex min-h-[640px] bg-background">
       <aside
         aria-label="Mailboxes"
-        className="flex w-14 shrink-0 flex-col items-center gap-1 border-r border-border py-3"
+        className="flex w-14 shrink-0 flex-col items-center gap-1 border-e border-border py-3"
       >
         <span
           role="img"
@@ -272,7 +272,7 @@ export default function AppShell03() {
               >
                 <item.icon className="size-4" />
                 {item.current && unreadCount > 0 && (
-                  <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
+                  <span className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
                 )}
               </button>
             </TooltipTrigger>
@@ -300,7 +300,7 @@ export default function AppShell03() {
 
       <section
         aria-label="Conversations"
-        className="hidden w-80 shrink-0 flex-col border-r border-border md:flex"
+        className="hidden w-80 shrink-0 flex-col border-e border-border md:flex"
       >
         <div className="flex h-14 shrink-0 items-center justify-between gap-2 px-4">
           <h2 className="text-sm font-medium tracking-[-0.01em]">Inbox</h2>
@@ -360,7 +360,7 @@ export default function AppShell03() {
                   onClick={() => openConversation(c.id)}
                   aria-current={active ? "true" : undefined}
                   className={cn(
-                    "flex w-full flex-col gap-0.5 border-b border-border px-4 py-3 text-left transition-colors",
+                    "flex w-full flex-col gap-0.5 border-b border-border px-4 py-3 text-start transition-colors",
                     active ? "bg-accent/70" : "hover:bg-accent/40"
                   )}
                 >
@@ -379,7 +379,7 @@ export default function AppShell03() {
                     >
                       {c.sender}
                     </span>
-                    <span className="ml-auto shrink-0 font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+                    <span className="ms-auto shrink-0 font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
                       {c.time}
                     </span>
                   </span>
@@ -464,7 +464,7 @@ export default function AppShell03() {
                   {m.initials}
                 </span>
                 <span className="text-xs font-medium">{m.from}</span>
-                <span className="ml-auto font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+                <span className="ms-auto font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
                   {m.time}
                 </span>
               </div>

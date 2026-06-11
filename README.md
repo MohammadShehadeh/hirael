@@ -46,6 +46,10 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 - **Flat compound APIs** — same composition style shadcn ships, with a
   `data-slot="…"` attribute on every rendered slot for downstream
   styling.
+- **RTL support** — components and blocks use CSS logical properties
+  (`ms-*`, `pe-*`, `start-*`, `text-start`, …), mirror directional
+  icons and arrow-key navigation, and work under `dir="rtl"` with no
+  extra configuration. Every preview on the site has an RTL toggle.
 - **Design-token driven** — tokens reuse `--background / --foreground /
   --border / --primary / --accent` and friends, never hard-coded colors.
 

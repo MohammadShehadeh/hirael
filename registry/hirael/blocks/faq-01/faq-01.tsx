@@ -94,7 +94,7 @@ export default function Faq01() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="ml-10 max-w-2xl">{f.a}</div>
+                  <div className="ms-10 max-w-2xl">{f.a}</div>
                 </AccordionContent>
               </AccordionItem>
             ))}

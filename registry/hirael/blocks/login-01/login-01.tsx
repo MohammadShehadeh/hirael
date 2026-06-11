@@ -64,7 +64,7 @@ export default function Login01() {
               </span>
               <span
                 aria-hidden
-                className="absolute -bottom-1 -right-1 size-1.5 rounded-full bg-foreground"
+                className="absolute -bottom-1 -end-1 size-1.5 rounded-full bg-foreground"
               />
             </div>
             <div className="flex flex-col items-center gap-1 text-center">

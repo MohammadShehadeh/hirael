@@ -105,7 +105,7 @@ function AnnouncementBar({
           onClick={handleDismiss}
           aria-label="Dismiss announcement"
           className={cn(
-            "absolute right-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "absolute end-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             isPrimary
               ? "text-background/70 hover:bg-background/10 hover:text-background"
               : "text-muted-foreground hover:bg-accent hover:text-foreground"

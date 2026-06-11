@@ -326,7 +326,7 @@ export default function Dashboard05() {
                       style={{ width: `${row.pct}%` }}
                     />
                   </div>
-                  <span className="w-14 shrink-0 text-right font-mono text-xs tabular-nums">
+                  <span className="w-14 shrink-0 text-end font-mono text-xs tabular-nums">
                     {row.value}
                   </span>
                 </div>

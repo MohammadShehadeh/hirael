@@ -187,7 +187,7 @@ function NumberRangeInput({
   return (
     <div data-slot="number-range-input" className="relative">
       {ctx.prefix && (
-        <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
+        <span className="pointer-events-none absolute start-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
           {ctx.prefix}
         </span>
       )}
@@ -217,14 +217,14 @@ function NumberRangeInput({
         }}
         className={cn(
           "font-mono tabular-nums",
-          ctx.prefix && "pl-6",
-          ctx.suffix && "pr-8",
+          ctx.prefix && "ps-6",
+          ctx.suffix && "pe-8",
           className
         )}
         {...props}
       />
       {ctx.suffix && (
-        <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
+        <span className="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
           {ctx.suffix}
         </span>
       )}

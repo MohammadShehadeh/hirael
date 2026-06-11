@@ -150,7 +150,7 @@ function StepperTrigger({
       disabled={disabled}
       onClick={() => setValue(step)}
       className={cn(
-        "flex items-center gap-3 rounded-md text-left outline-none transition-opacity",
+        "flex items-center gap-3 rounded-md text-start outline-none transition-opacity",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className
@@ -202,7 +202,7 @@ function StepperSeparator({
       className={cn(
         "bg-border transition-colors group-data-[state=completed]/step:bg-primary",
         "group-data-[orientation=horizontal]/stepper:mx-2 group-data-[orientation=horizontal]/stepper:h-0.5 group-data-[orientation=horizontal]/stepper:flex-1",
-        "group-data-[orientation=vertical]/stepper:absolute group-data-[orientation=vertical]/stepper:bottom-1 group-data-[orientation=vertical]/stepper:left-4 group-data-[orientation=vertical]/stepper:top-9 group-data-[orientation=vertical]/stepper:w-0.5 group-data-[orientation=vertical]/stepper:-translate-x-1/2",
+        "group-data-[orientation=vertical]/stepper:absolute group-data-[orientation=vertical]/stepper:bottom-1 group-data-[orientation=vertical]/stepper:start-4 group-data-[orientation=vertical]/stepper:top-9 group-data-[orientation=vertical]/stepper:w-0.5 group-data-[orientation=vertical]/stepper:-translate-x-1/2 rtl:group-data-[orientation=vertical]/stepper:translate-x-1/2",
         className
       )}
       {...props}

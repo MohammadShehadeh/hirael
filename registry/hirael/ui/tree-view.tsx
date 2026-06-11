@@ -122,7 +122,7 @@ function TreeItem({
         }}
         style={{ paddingInlineStart: depth * 14 + 8 }}
         className={cn(
-          "flex h-7 w-full items-center gap-1.5 rounded-sm pr-2 text-left outline-none transition-colors",
+          "flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start outline-none transition-colors",
           "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
           isSelected
@@ -136,7 +136,7 @@ function TreeItem({
           className={cn(
             "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
             !hasChildren && "invisible",
-            expanded && "rotate-90"
+            expanded ? "rotate-90" : "rtl:rotate-180"
           )}
         />
         {leadingIcon != null && (

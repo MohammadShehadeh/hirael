@@ -45,7 +45,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group flex w-full flex-1 items-center justify-between gap-4 py-5 text-left text-base font-medium tracking-[-0.01em] outline-none transition-colors",
+          "group flex w-full flex-1 items-center justify-between gap-4 py-5 text-start text-base font-medium tracking-[-0.01em] outline-none transition-colors",
           "hover:text-foreground focus-visible:text-foreground",
           "data-[state=open]:text-foreground",
           className
@@ -76,7 +76,7 @@ function AccordionContent({
       )}
       {...props}
     >
-      <div className={cn("pb-5 pr-8", className)}>{children}</div>
+      <div className={cn("pb-5 pe-8", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )
 }

@@ -177,6 +177,16 @@ reformatting committed files.
   color. Light is a faithful inverse of dark; both must work.
 - **`cn` helper.** Compose class names with `cn(...)` from
   `@/lib/utils`. Don't ad-hoc-concatenate `className` strings.
+- **RTL.** Use logical utilities instead of physical ones — `ms-*`/`me-*`
+  over `ml-*`/`mr-*`, `ps-*`/`pe-*` over `pl-*`/`pr-*`, `start-*`/`end-*`
+  over `left-*`/`right-*`, `text-start`/`text-end`, `border-s`/`border-e`,
+  `rounded-s-*`/`rounded-e-*`. Flip directional icons with
+  `rtl:rotate-180` (e.g. prev/next chevrons) and mirror horizontal
+  arrow-key handlers when they move focus through a visual grid.
+  Physical positioning is fine where the geometry genuinely is
+  physical: Radix `data-[side=…]` animations, canvas-like surfaces
+  (color picker), and `side="left|right"` props on Sheet/Sidebar.
+  Verify with the RTL toggle on the component's preview.
 - **Comments.** Comments in registry source are stripped by
   `scripts/strip-comments.mjs` before publishing. Keep helpful
   reasoning in commit messages, PR descriptions, or design docs —

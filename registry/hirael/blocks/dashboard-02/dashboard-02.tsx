@@ -366,7 +366,7 @@ export default function Dashboard02() {
                         style={{ width: `${c.share}%` }}
                       />
                     </div>
-                    <span className="w-9 shrink-0 text-right font-mono text-xs tabular-nums text-muted-foreground">
+                    <span className="w-9 shrink-0 text-end font-mono text-xs tabular-nums text-muted-foreground">
                       {c.share}%
                     </span>
                   </div>

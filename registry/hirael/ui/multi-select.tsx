@@ -208,7 +208,7 @@ function MultiSelectTrigger({
         data-slot="multi-select-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-left text-sm outline-none transition-colors",
+          "group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -232,7 +232,7 @@ function MultiSelectTrigger({
                   <Badge
                     key={opt.value}
                     variant="default"
-                    className="gap-1 pr-1"
+                    className="gap-1 pe-1"
                   >
                     {opt.label}
                     <span
@@ -244,7 +244,7 @@ function MultiSelectTrigger({
                         e.stopPropagation()
                         ctx.remove(opt.value)
                       }}
-                      className="ml-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 hover:bg-foreground/20 hover:text-foreground"
+                      className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 hover:bg-foreground/20 hover:text-foreground"
                     >
                       <X className="size-2.5" />
                     </span>

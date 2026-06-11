@@ -78,7 +78,7 @@ export default function Pricing02() {
         </div>
 
         <div className="mt-12 overflow-x-auto rounded-md border border-border bg-card">
-          <table className="w-full border-collapse text-left">
+          <table className="w-full border-collapse text-start">
             <thead className="sticky top-0 z-10 bg-card">
               <tr className="border-b border-border">
                 <th className="w-2/5 px-5 py-5 align-bottom">

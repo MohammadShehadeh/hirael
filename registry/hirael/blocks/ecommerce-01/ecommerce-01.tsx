@@ -194,7 +194,7 @@ export default function Ecommerce01() {
                   {p.badge && (
                     <Badge
                       variant="outline"
-                      className="absolute left-2.5 top-2.5 bg-background/85 font-mono text-[10px] uppercase tracking-[0.08em] backdrop-blur"
+                      className="absolute start-2.5 top-2.5 bg-background/85 font-mono text-[10px] uppercase tracking-[0.08em] backdrop-blur"
                     >
                       {p.badge}
                     </Badge>
@@ -208,7 +208,7 @@ export default function Ecommerce01() {
                         ? `Remove ${p.name} from wishlist`
                         : `Add ${p.name} to wishlist`
                     }
-                    className="absolute right-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-full border border-border bg-background/85 text-foreground backdrop-blur transition-colors hover:border-foreground"
+                    className="absolute end-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-full border border-border bg-background/85 text-foreground backdrop-blur transition-colors hover:border-foreground"
                   >
                     <Heart
                       className={`size-3.5 ${isSaved ? "fill-current" : ""}`}

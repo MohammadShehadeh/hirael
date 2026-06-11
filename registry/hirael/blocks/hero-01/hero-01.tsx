@@ -73,7 +73,7 @@ export default function Hero01() {
 
           <dl className="mt-4 grid grid-cols-3 divide-x divide-border border-y border-border">
             {STATS.map((s, i) => (
-              <div key={s.label} className={i === 0 ? "py-4 pr-4" : "p-4"}>
+              <div key={s.label} className={i === 0 ? "py-4 pe-4" : "p-4"}>
                 <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   {s.label}
                 </dt>

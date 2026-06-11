@@ -224,7 +224,7 @@ function LazySelectTrigger({
         data-slot="lazy-select-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
+          "group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",

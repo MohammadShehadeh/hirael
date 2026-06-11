@@ -22,7 +22,7 @@ function TimelineItem({ className, ...props }: TimelineItemProps) {
       data-slot="timeline-item"
       className={cn(
         "group relative flex gap-4 pb-6 last:pb-0",
-        "before:absolute before:left-[7px] before:top-4 before:bottom-0 before:w-px before:bg-border",
+        "before:absolute before:start-[7px] before:top-4 before:bottom-0 before:w-px before:bg-border",
         "last:before:hidden",
         className
       )}
@@ -56,7 +56,7 @@ function TimelineDot({
         data-slot="timeline-dot"
         data-tone={tone}
         className={cn(
-          "relative z-10 mt-0.5 inline-flex size-6 -translate-x-[5px] items-center justify-center rounded-full bg-background ring-1 ring-border [&_svg]:size-3",
+          "relative z-10 mt-0.5 inline-flex size-6 -translate-x-[5px] rtl:translate-x-[5px] items-center justify-center rounded-full bg-background ring-1 ring-border [&_svg]:size-3",
           className
         )}
         {...props}

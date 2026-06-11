@@ -312,7 +312,7 @@ export default function Dashboard04() {
                       ${BUDGET.spent.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-0.5 text-right">
+                  <div className="flex flex-col gap-0.5 text-end">
                     <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       Daily cap
                     </span>

@@ -85,7 +85,7 @@ export default function Integrations01() {
                       <s.icon className="size-3" />
                     </span>
                     <span className="font-medium">{s.name}</span>
-                    <Badge variant="outline" className="ml-auto sm:ml-0">
+                    <Badge variant="outline" className="ms-auto sm:ms-0">
                       {s.category}
                     </Badge>
                   </a>

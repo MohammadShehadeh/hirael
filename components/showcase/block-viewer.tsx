@@ -4,6 +4,7 @@ import * as React from "react"
 import { ExternalLink, Monitor, RefreshCw, Smartphone, Tablet } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { DirectionToggle } from "@/components/showcase/direction-toggle"
 
 type Viewport = "mobile" | "tablet" | "desktop"
 
@@ -32,6 +33,9 @@ export function BlockViewer({
 }) {
   const [viewport, setViewport] = React.useState<Viewport>("desktop")
   const [key, setKey] = React.useState(0)
+  const [rtl, setRtl] = React.useState(false)
+
+  const src = `/embed/blocks/${name}${rtl ? "?dir=rtl" : ""}`
 
   const sizing =
     viewport === "desktop"
@@ -82,6 +86,7 @@ export function BlockViewer({
         </div>
 
         <div className="flex items-center gap-1">
+          <DirectionToggle rtl={rtl} onToggle={setRtl} className="me-1" />
           <button
             type="button"
             onClick={() => setKey((k) => k + 1)}
@@ -91,7 +96,7 @@ export function BlockViewer({
             <RefreshCw className="size-3.5" />
           </button>
           <a
-            href={`/embed/blocks/${name}`}
+            href={src}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open preview in new tab"
@@ -105,7 +110,7 @@ export function BlockViewer({
       <div className="flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
         <iframe
           key={key}
-          src={`/embed/blocks/${name}`}
+          src={src}
           title={`${title} preview`}
           loading="lazy"
           className="block border-0 bg-background transition-[width,max-width] duration-300 ease-out"

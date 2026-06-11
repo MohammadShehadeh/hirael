@@ -259,7 +259,7 @@ function YearPickerTrigger({
         data-slot="year-picker-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
+          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           empty && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -306,13 +306,15 @@ function YearPickerContent({
   }
 
   const handleKey = (e: React.KeyboardEvent, year: number) => {
+    const forward =
+      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1
     let next = year
     switch (e.key) {
       case "ArrowLeft":
-        next = year - 1
+        next = year - forward
         break
       case "ArrowRight":
-        next = year + 1
+        next = year + forward
         break
       case "ArrowUp":
         next = year - 4
@@ -356,7 +358,7 @@ function YearPickerContent({
           onClick={() => ctx.setDecadeStart(ctx.decadeStart - DECADE)}
           className="size-7"
         >
-          <ChevronLeft className="size-3.5" />
+          <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
         <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
           {years[0]} – {years[years.length - 1]}
@@ -370,7 +372,7 @@ function YearPickerContent({
           onClick={() => ctx.setDecadeStart(ctx.decadeStart + DECADE)}
           className="size-7"
         >
-          <ChevronRight className="size-3.5" />
+          <ChevronRight className="size-3.5 rtl:rotate-180" />
         </Button>
       </div>
       <div

@@ -114,7 +114,7 @@ export default function AppShell02() {
             ))}
           </nav>
 
-          <InputGroup className="ml-auto h-8 max-w-[200px]">
+          <InputGroup className="ms-auto h-8 max-w-[200px]">
             <InputGroupAddon align="inline-start">
               <Search className="size-3.5" />
             </InputGroupAddon>
@@ -128,7 +128,7 @@ export default function AppShell02() {
             className="relative size-8"
           >
             <Bell className="size-3.5" />
-            <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
+            <span className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
           </Button>
           <span className="inline-flex size-8 items-center justify-center rounded-full bg-foreground font-mono text-[10px] font-medium text-background">
             MS
@@ -158,7 +158,7 @@ export default function AppShell02() {
                       type="button"
                       onClick={() => setActive(t.id)}
                       aria-current={isActive ? "page" : undefined}
-                      className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-medium"
+                      className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-start text-sm transition-colors hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-medium"
                     >
                       <t.icon className="size-4 shrink-0 text-muted-foreground" />
                       <span className="whitespace-nowrap">{t.label}</span>

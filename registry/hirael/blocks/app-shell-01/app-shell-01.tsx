@@ -125,7 +125,7 @@ export default function AppShell01() {
                 <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
                   ◆
                 </span>
-                <div className="grid flex-1 text-left leading-tight">
+                <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">
                     Hirael
                   </span>
@@ -192,7 +192,7 @@ export default function AppShell01() {
                 <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-[10px] font-medium text-sidebar-primary-foreground">
                   MS
                 </span>
-                <div className="grid flex-1 text-left leading-tight">
+                <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-xs font-medium">
                     Mohammad Shehadeh
                   </span>
@@ -208,7 +208,7 @@ export default function AppShell01() {
 
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-3 backdrop-blur sm:px-4">
-          <SidebarTrigger className="-ml-1" />
+          <SidebarTrigger className="-ms-1" />
           <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
           <nav
             aria-label="Breadcrumb"
@@ -219,7 +219,7 @@ export default function AppShell01() {
             <span className="text-foreground">Dashboard</span>
           </nav>
 
-          <InputGroup className="ml-auto h-8 max-w-xs">
+          <InputGroup className="ms-auto h-8 max-w-xs">
             <InputGroupAddon align="inline-start">
               <Search className="size-3.5" />
             </InputGroupAddon>
@@ -244,7 +244,7 @@ export default function AppShell01() {
             className="relative size-8"
           >
             <Bell className="size-3.5" />
-            <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
+            <span className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
           </Button>
           <Button size="sm" className="hidden sm:inline-flex">
             <Plus className="size-3" />
@@ -286,7 +286,7 @@ export default function AppShell01() {
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 · recent accounts
                 {query && (
-                  <span className="ml-2 text-foreground">
+                  <span className="ms-2 text-foreground">
                     ({filteredRows.length} of {ROWS.length})
                   </span>
                 )}
@@ -319,14 +319,14 @@ export default function AppShell01() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="text-left font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                    <tr className="text-start font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       <th className="px-4 py-2 font-normal">Account</th>
                       <th className="px-4 py-2 font-normal">Plan</th>
                       <th className="hidden px-4 py-2 font-normal sm:table-cell">
                         MRR
                       </th>
                       <th className="px-4 py-2 font-normal">Status</th>
-                      <th className="px-4 py-2 text-right font-normal">
+                      <th className="px-4 py-2 text-end font-normal">
                         <span className="sr-only">Actions</span>
                       </th>
                     </tr>
@@ -364,7 +364,7 @@ export default function AppShell01() {
                             </span>
                           </span>
                         </td>
-                        <td className="px-4 py-2.5 text-right">
+                        <td className="px-4 py-2.5 text-end">
                           <Button
                             variant="ghost"
                             size="icon"

@@ -305,7 +305,7 @@ function MonthPickerTrigger({
         data-slot="month-picker-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
+          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           empty && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
@@ -351,14 +351,16 @@ function MonthPickerContent({
   }
 
   const handleKey = (e: React.KeyboardEvent, year: number, month: number) => {
+    const forward =
+      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1
     let nextYear = year
     let nextMonth = month
     switch (e.key) {
       case "ArrowLeft":
-        nextMonth = month - 1
+        nextMonth = month - forward
         break
       case "ArrowRight":
-        nextMonth = month + 1
+        nextMonth = month + forward
         break
       case "ArrowUp":
         nextMonth = month - 4
@@ -410,7 +412,7 @@ function MonthPickerContent({
           onClick={() => ctx.setDisplayYear(ctx.displayYear - 1)}
           className="size-7"
         >
-          <ChevronLeft className="size-3.5" />
+          <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
         <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
           {ctx.displayYear}
@@ -424,7 +426,7 @@ function MonthPickerContent({
           onClick={() => ctx.setDisplayYear(ctx.displayYear + 1)}
           className="size-7"
         >
-          <ChevronRight className="size-3.5" />
+          <ChevronRight className="size-3.5 rtl:rotate-180" />
         </Button>
       </div>
       <div

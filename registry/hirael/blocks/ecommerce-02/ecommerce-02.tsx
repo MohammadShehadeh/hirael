@@ -172,7 +172,7 @@ export default function Ecommerce02() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="size-7 rounded-r-none"
+                        className="size-7 rounded-e-none"
                         onClick={() => setQty(item.id, item.qty - 1)}
                         disabled={item.qty <= 1}
                         aria-label={`Decrease quantity of ${item.name}`}
@@ -185,7 +185,7 @@ export default function Ecommerce02() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="size-7 rounded-l-none"
+                        className="size-7 rounded-s-none"
                         onClick={() => setQty(item.id, item.qty + 1)}
                         aria-label={`Increase quantity of ${item.name}`}
                       >

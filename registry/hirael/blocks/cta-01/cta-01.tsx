@@ -67,7 +67,7 @@ export default function Cta01() {
               >
                 <a href="#">Browse blocks</a>
               </Button>
-              <p className="text-right font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <p className="text-end font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 No runtime dependency
               </p>
             </div>

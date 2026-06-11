@@ -320,6 +320,7 @@ function PhoneInputField({
       type="tel"
       inputMode={inputMode}
       autoComplete="tel-national"
+      dir="ltr"
       value={ctx.national}
       placeholder={placeholder}
       disabled={ctx.disabled}

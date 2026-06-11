@@ -22,6 +22,10 @@ function useTreeView() {
 
 const TreeDepthContext = React.createContext(0)
 
+/** Horizontal inset per nesting level, plus the base inset, in px. */
+const TREE_INDENT_PER_LEVEL = 14
+const TREE_INDENT_BASE = 8
+
 export type TreeViewProps = Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
@@ -120,7 +124,9 @@ function TreeItem({
           if (hasChildren) setExpanded((o) => !o)
           else setSelected(value)
         }}
-        style={{ paddingInlineStart: depth * 14 + 8 }}
+        style={{
+          paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
+        }}
         className={cn(
           "flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start outline-none transition-colors",
           "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring",

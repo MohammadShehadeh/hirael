@@ -963,7 +963,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "code-block",
     title: "Code Block",
     description:
-      "Structured code display with line numbers, line highlights, diff gutters, copy button and collapsible max-height. No tokenizer, no deps.",
+      "Code display with built-in dependency-free syntax highlighting via theme tokens, line numbers, line highlights, diff gutters, copy button and collapsible max-height.",
     category: "display",
     sourceFiles: ["registry/hirael/ui/code-block.tsx"],
     registryDependencies: ["badge", "button", "copy-button"],

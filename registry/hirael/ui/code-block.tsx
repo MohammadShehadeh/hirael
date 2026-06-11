@@ -8,10 +8,160 @@ import { Badge } from "@/registry/hirael/ui/badge"
 import { Button } from "@/registry/hirael/ui/button"
 import { CopyButton } from "@/registry/hirael/ui/copy-button"
 
+type TokenType =
+  | "comment"
+  | "string"
+  | "keyword"
+  | "literal"
+  | "number"
+  | "type"
+  | "function"
+  | "property"
+  | "tag"
+  | "punctuation"
+  | "plain"
+
+type Token = { type: TokenType; content: string }
+
+type Rule = { type: TokenType; re: string }
+
+const TOKEN_CLASSES: Record<TokenType, string | undefined> = {
+  comment: "italic text-muted-foreground",
+  string: "text-chart-2",
+  keyword: "text-chart-1",
+  literal: "text-chart-3",
+  number: "text-chart-3",
+  type: "text-chart-4",
+  function: "text-chart-5",
+  property: "text-chart-1",
+  tag: "text-chart-1",
+  punctuation: "text-muted-foreground",
+  plain: undefined,
+}
+
+const JS_RULES: Rule[] = [
+  { type: "comment", re: String.raw`\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$)` },
+  {
+    type: "string",
+    re: String.raw`'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|\`(?:[^\`\\]|\\[\s\S])*\`` ,
+  },
+  {
+    type: "keyword",
+    re: String.raw`\b(?:import|export|from|default|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|implements|interface|type|enum|public|private|protected|readonly|static|async|await|yield|try|catch|finally|throw|typeof|instanceof|in|of|as|satisfies|keyof|infer|declare|namespace|abstract|this|super|void|delete|get|set)\b`,
+  },
+  { type: "literal", re: String.raw`\b(?:true|false|null|undefined|NaN|Infinity)\b` },
+  {
+    type: "number",
+    re: String.raw`\b0[xXbBoO]\w+\b|\b\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?n?\b`,
+  },
+  { type: "function", re: String.raw`\b[a-z_$][\w$]*(?=\s*\()` },
+  { type: "type", re: String.raw`\b[A-Z][\w$]*\b` },
+  { type: "punctuation", re: String.raw`[{}()[\]<>,;.:?!=+\-*/%&|^~]+` },
+]
+
+const JSON_RULES: Rule[] = [
+  { type: "property", re: String.raw`"(?:[^"\\]|\\.)*"(?=\s*:)` },
+  { type: "string", re: String.raw`"(?:[^"\\]|\\.)*"` },
+  { type: "literal", re: String.raw`\b(?:true|false|null)\b` },
+  { type: "number", re: String.raw`-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b` },
+  { type: "punctuation", re: String.raw`[{}[\],:]+` },
+]
+
+const BASH_RULES: Rule[] = [
+  { type: "comment", re: String.raw`#[^\n]*` },
+  { type: "string", re: String.raw`'[^']*'|"(?:[^"\\\n]|\\.)*"` },
+  { type: "type", re: String.raw`\$\{[^}]*\}|\$\w+` },
+  {
+    type: "keyword",
+    re: String.raw`\b(?:if|then|else|elif|fi|for|in|do|done|while|until|case|esac|function|return|exit|export|local|readonly|set|source|alias|echo|cd|sudo)\b`,
+  },
+  { type: "property", re: String.raw`(?<=\s)--?[\w-]+\b` },
+  { type: "number", re: String.raw`\b\d+\b` },
+  { type: "punctuation", re: String.raw`[|&;<>(){}[\]=]+` },
+]
+
+const CSS_RULES: Rule[] = [
+  { type: "comment", re: String.raw`\/\*[\s\S]*?(?:\*\/|$)` },
+  { type: "string", re: String.raw`'[^']*'|"[^"]*"` },
+  { type: "keyword", re: String.raw`@[\w-]+|!important\b` },
+  { type: "number", re: String.raw`#[0-9a-fA-F]{3,8}\b` },
+  { type: "type", re: String.raw`[.#][\w-]+` },
+  { type: "property", re: String.raw`[\w-]+(?=\s*:)` },
+  {
+    type: "number",
+    re: String.raw`-?\d[\d.]*(?:px|rem|em|vh|vw|vmin|vmax|fr|deg|ch|ex|s|ms|%)?`,
+  },
+  { type: "function", re: String.raw`\b[\w-]+(?=\()` },
+  { type: "punctuation", re: String.raw`[{}();:,>~+*]+` },
+]
+
+const HTML_RULES: Rule[] = [
+  { type: "comment", re: String.raw`<!--[\s\S]*?(?:-->|$)` },
+  { type: "keyword", re: String.raw`<!DOCTYPE[^>]*>` },
+  { type: "tag", re: String.raw`<\/?[a-zA-Z][\w:-]*` },
+  { type: "property", re: String.raw`[\w-]+(?==)` },
+  { type: "string", re: String.raw`"[^"]*"|'[^']*'` },
+  { type: "literal", re: String.raw`&\w+;` },
+  { type: "punctuation", re: String.raw`\/?>|=` },
+]
+
+const GRAMMARS: Record<string, Rule[]> = {
+  js: JS_RULES,
+  jsx: JS_RULES,
+  ts: JS_RULES,
+  tsx: JS_RULES,
+  javascript: JS_RULES,
+  typescript: JS_RULES,
+  json: JSON_RULES,
+  jsonc: JSON_RULES,
+  bash: BASH_RULES,
+  sh: BASH_RULES,
+  shell: BASH_RULES,
+  zsh: BASH_RULES,
+  css: CSS_RULES,
+  scss: CSS_RULES,
+  less: CSS_RULES,
+  html: HTML_RULES,
+  xml: HTML_RULES,
+  svg: HTML_RULES,
+}
+
+function tokenize(code: string, language?: string): Token[][] | null {
+  const rules = language ? GRAMMARS[language.toLowerCase()] : undefined
+  if (!rules) return null
+
+  const master = new RegExp(rules.map((rule) => `(${rule.re})`).join("|"), "g")
+  const tokens: Token[] = []
+  let last = 0
+  for (const match of code.matchAll(master)) {
+    const index = match.index ?? 0
+    if (index > last) {
+      tokens.push({ type: "plain", content: code.slice(last, index) })
+    }
+    const groupIndex = match.slice(1).findIndex((group) => group !== undefined)
+    tokens.push({ type: rules[groupIndex].type, content: match[0] })
+    last = index + match[0].length
+  }
+  if (last < code.length) {
+    tokens.push({ type: "plain", content: code.slice(last) })
+  }
+
+  const lines: Token[][] = [[]]
+  for (const token of tokens) {
+    const parts = token.content.split("\n")
+    parts.forEach((part, partIndex) => {
+      if (partIndex > 0) lines.push([])
+      if (part) lines[lines.length - 1].push({ type: token.type, content: part })
+    })
+  }
+  return lines
+}
+
 type CodeBlockContextValue = {
   code: string
   language?: string
   filename?: string
+  highlight: boolean
   showLineNumbers: boolean
   highlightLines: number[]
   addedLines: number[]
@@ -38,6 +188,8 @@ export type CodeBlockProps = React.ComponentProps<"div"> & {
   code?: string
   language?: string
   filename?: string
+  /** Tokenize and color the code when the language has a built-in grammar. */
+  highlight?: boolean
   showLineNumbers?: boolean
   highlightLines?: number[]
   addedLines?: number[]
@@ -51,6 +203,7 @@ function CodeBlock({
   code,
   language,
   filename,
+  highlight = true,
   showLineNumbers = true,
   highlightLines = [],
   addedLines = [],
@@ -75,6 +228,7 @@ function CodeBlock({
       code: rawCode,
       language,
       filename,
+      highlight,
       showLineNumbers,
       highlightLines,
       addedLines,
@@ -89,6 +243,7 @@ function CodeBlock({
       rawCode,
       language,
       filename,
+      highlight,
       showLineNumbers,
       highlightLines,
       addedLines,
@@ -170,6 +325,8 @@ function CodeBlockContent({
 }: React.ComponentProps<"div">) {
   const {
     code,
+    language,
+    highlight,
     showLineNumbers,
     highlightLines,
     addedLines,
@@ -183,6 +340,10 @@ function CodeBlockContent({
   const [overflowing, setOverflowing] = React.useState(false)
 
   const lines = code.split("\n")
+  const tokenLines = React.useMemo(
+    () => (highlight ? tokenize(code, language) : null),
+    [highlight, code, language]
+  )
   const hasDiff = addedLines.length > 0 || removedLines.length > 0
   const collapsible = maxHeight != null
   const collapsed = collapsible && !expanded
@@ -255,7 +416,21 @@ function CodeBlockContent({
                     />
                   )}
                   <span className="flex-1">
-                    {line.length > 0 ? line : "​"}
+                    {line.length === 0
+                      ? "​"
+                      : (tokenLines?.[index]?.map((token, tokenIndex) =>
+                          token.type === "plain" ? (
+                            token.content
+                          ) : (
+                            <span
+                              key={tokenIndex}
+                              data-token={token.type}
+                              className={TOKEN_CLASSES[token.type]}
+                            >
+                              {token.content}
+                            </span>
+                          )
+                        ) ?? line)}
                   </span>
                 </span>
               )

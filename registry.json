@@ -1267,7 +1267,7 @@
       "name": "code-block",
       "type": "registry:ui",
       "title": "Code Block",
-      "description": "Structured code display with line numbers, line highlights, diff gutters, copy button and collapsible max-height. No tokenizer, no deps.",
+      "description": "Code display with built-in dependency-free syntax highlighting via theme tokens, line numbers, line highlights, diff gutters, copy button and collapsible max-height.",
       "categories": ["display"],
       "dependencies": ["lucide-react"],
       "registryDependencies": ["badge", "button", "copy-button"],

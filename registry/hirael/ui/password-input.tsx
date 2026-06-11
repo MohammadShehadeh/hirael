@@ -130,6 +130,10 @@ type PasswordInputFieldProps = Omit<
   className?: string
 }
 
+/**
+ * Defaults to `autoComplete="current-password"`; pass
+ * `autoComplete="new-password"` for signup / change-password forms.
+ */
 function PasswordInputField({
   showToggle = true,
   toggleLabel = { show: "Show password", hide: "Hide password" },

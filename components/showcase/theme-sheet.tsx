@@ -170,10 +170,13 @@ function ThemeSheetBody() {
             onChange={(e) => setPaste(e.target.value)}
             placeholder={`:root {\n  --background: oklch(...);\n  --foreground: oklch(...);\n  --primary: oklch(...);\n  ...\n}\n\n.dark {\n  ...\n}`}
             spellCheck={false}
+            maxLength={10000}
             className="h-44 w-full resize-y rounded-sm border border-border bg-card px-3 py-2 font-mono text-[11px] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus-visible:border-ring"
           />
           <div className="mt-2 flex items-center justify-between gap-3">
             <p
+              role="status"
+              aria-live="polite"
               className={cn(
                 "text-[11px]",
                 parseStatus.kind === "warn"

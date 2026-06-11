@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Music, Upload } from "lucide-react"
 
-import { Button } from "@/registry/hirael/ui/button"
 import {
   AudioPlayer,
   AudioPlayerPlay,
@@ -14,6 +13,13 @@ import {
   AudioPlayerVolume,
   useAudioPlayer,
 } from "@/registry/hirael/ui/audio-player"
+import {
+  MediaInput,
+  MediaInputContent,
+  MediaInputEmpty,
+  MediaInputFile,
+  MediaInputTrigger,
+} from "@/registry/hirael/ui/media-input"
 
 function PlaybackStatus() {
   const { playing, rate } = useAudioPlayer()
@@ -26,62 +32,30 @@ function PlaybackStatus() {
 }
 
 export default function AudioPlayerDemo() {
-  const inputRef = React.useRef<HTMLInputElement>(null)
   const [src, setSrc] = React.useState<string>()
-  const [fileName, setFileName] = React.useState<string>()
-
-  React.useEffect(
-    () => () => {
-      if (src) URL.revokeObjectURL(src)
-    },
-    [src]
-  )
-
-  const handleFile = (file: File | undefined) => {
-    if (!file) return
-    setSrc(URL.createObjectURL(file))
-    setFileName(file.name)
-  }
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
-      <input
-        ref={inputRef}
-        type="file"
+      <MediaInput
         accept="audio/*"
-        className="sr-only"
-        onChange={(event) => {
-          handleFile(event.target.files?.[0])
-          event.target.value = ""
-        }}
-      />
-
-      {!src ? (
-        <div className="grid justify-items-center gap-3 rounded-md border border-dashed border-border px-6 py-10 text-center">
+        onValueChange={(value) => setSrc(value?.url)}
+      >
+        <MediaInputEmpty>
           <Music aria-hidden className="size-6 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
             Pick a local audio file to preview the player. It plays from your
             browser only — nothing is uploaded.
           </p>
-          <Button variant="outline" onClick={() => inputRef.current?.click()}>
+          <MediaInputTrigger>
             <Upload aria-hidden />
             Choose audio file
-          </Button>
-        </div>
-      ) : (
-        <div className="flex items-center justify-between gap-3">
-          <p className="min-w-0 truncate font-mono text-xs text-muted-foreground">
-            {fileName}
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => inputRef.current?.click()}
-          >
-            Replace audio
-          </Button>
-        </div>
-      )}
+          </MediaInputTrigger>
+        </MediaInputEmpty>
+        <MediaInputContent className="flex items-center justify-between gap-3">
+          <MediaInputFile />
+          <MediaInputTrigger size="sm">Replace audio</MediaInputTrigger>
+        </MediaInputContent>
+      </MediaInput>
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">

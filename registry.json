@@ -1312,6 +1312,22 @@
       ]
     },
     {
+      "name": "media-input",
+      "type": "registry:ui",
+      "title": "Media Input",
+      "description": "Local media file picker that previews via an object URL — empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
+      "categories": ["files"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/hirael/ui/media-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/media-input.tsx"
+        }
+      ]
+    },
+    {
       "name": "tour",
       "type": "registry:ui",
       "title": "Tour",

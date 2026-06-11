@@ -92,6 +92,7 @@ const DEMO_LOADERS: Record<
   "code-block": () => import("@/registry/hirael/code-block/code-block.demo"),
   "masonry": () => import("@/registry/hirael/masonry/masonry.demo"),
   "audio-player": () => import("@/registry/hirael/audio-player/audio-player.demo"),
+  "media-input": () => import("@/registry/hirael/media-input/media-input.demo"),
   "tour": () => import("@/registry/hirael/tour/tour.demo"),
 }
 

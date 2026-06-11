@@ -990,6 +990,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["@radix-ui/react-slider", "lucide-react"],
   },
   {
+    name: "media-input",
+    title: "Media Input",
+    description:
+      "Local media file picker that previews via an object URL — empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
+    category: "files",
+    sourceFiles: ["registry/hirael/ui/media-input.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "tour",
     title: "Tour",
     description:

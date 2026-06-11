@@ -171,13 +171,13 @@ export default function ImageGallery01() {
                   />
                   <Badge
                     variant="outline"
-                    className="absolute left-3 top-3 border-white/30 bg-black/20 text-white backdrop-blur-sm"
+                    className="absolute start-3 top-3 border-white/30 bg-black/20 text-white backdrop-blur-sm"
                   >
                     {t.tag}
                   </Badge>
                   <span
                     aria-hidden
-                    className="absolute right-3 top-3 inline-flex size-7 items-center justify-center rounded-sm border border-white/30 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100"
+                    className="absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-sm border border-white/30 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 group-hover:opacity-100"
                   >
                     <ArrowUpRight className="size-3.5" />
                   </span>

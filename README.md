@@ -1,9 +1,10 @@
 # Hirael
 
-**Tools for builders who think in systems.** A component registry for the
-pieces every real product needs — multi-select, number range, year
-picker, tag input, phone input, file dropzone, the lot. A peer of shadcn,
-not a replacement. Minimal. Thoughtful. Built to last.
+The components shadcn/ui doesn't ship: multi-select, number range, year
+picker, tag input, phone input, file dropzone, and a few dozen more,
+plus full section blocks. Hirael is a shadcn-compatible registry, so it
+works alongside shadcn rather than replacing it. The CLI copies the
+source into your repo and there's no package to depend on.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
@@ -46,6 +47,10 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 - **Flat compound APIs** — same composition style shadcn ships, with a
   `data-slot="…"` attribute on every rendered slot for downstream
   styling.
+- **RTL support** — components and blocks use CSS logical properties
+  (`ms-*`, `pe-*`, `start-*`, `text-start`, …), mirror directional
+  icons and arrow-key navigation, and work under `dir="rtl"` with no
+  extra configuration. Every preview on the site has an RTL toggle.
 - **Design-token driven** — tokens reuse `--background / --foreground /
   --border / --primary / --accent` and friends, never hard-coded colors.
 

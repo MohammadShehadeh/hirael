@@ -5,6 +5,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { BlockViewer } from "@/components/showcase/block-viewer"
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
+import { DirectionToggle } from "@/components/showcase/direction-toggle"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import type { RegistryEntryMeta } from "@/registry/hirael/registry-meta"
@@ -29,6 +30,7 @@ export function ComponentPage({
   demoSource?: SourceFile | null
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
+  const [rtl, setRtl] = React.useState(false)
 
   const isBlock = entry.category === "blocks"
 
@@ -144,8 +146,18 @@ export function ComponentPage({
               (isBlock ? (
                 <BlockViewer name={entry.name} title={entry.title} />
               ) : (
-                <div className="flex min-h-[360px] items-center justify-center rounded-sm border border-border bg-card/40 p-6 sm:min-h-[420px] sm:p-8 md:p-10">
-                  <RegistryDemo name={entry.name} />
+                <div className="relative rounded-sm border border-border bg-card/40">
+                  <DirectionToggle
+                    rtl={rtl}
+                    onToggle={setRtl}
+                    className="absolute right-3 top-3 z-10"
+                  />
+                  <div
+                    dir={rtl ? "rtl" : undefined}
+                    className="flex min-h-[360px] items-center justify-center p-6 sm:min-h-[420px] sm:p-8 md:p-10"
+                  >
+                    <RegistryDemo name={entry.name} />
+                  </div>
                 </div>
               ))}
 

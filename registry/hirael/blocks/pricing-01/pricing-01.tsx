@@ -93,7 +93,7 @@ export default function Pricing01() {
               )}
             >
               {tier.featured && (
-                <span className="absolute -top-2.5 right-6 inline-flex items-center rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
                   Most popular
                 </span>
               )}

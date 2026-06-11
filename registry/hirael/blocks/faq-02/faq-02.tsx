@@ -76,7 +76,7 @@ export default function Faq02() {
                     </span>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="ml-8">{f.a}</div>
+                    <div className="ms-8">{f.a}</div>
                   </AccordionContent>
                 </AccordionItem>
               ))}

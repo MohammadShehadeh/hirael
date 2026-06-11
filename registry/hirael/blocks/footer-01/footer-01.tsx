@@ -49,7 +49,7 @@ export default function Footer01() {
           <div className="col-span-2">
             <div className="flex flex-col gap-4">
               <span className="font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
-                <span aria-hidden className="mr-1.5">◆</span>
+                <span aria-hidden className="me-1.5">◆</span>
                 Hirael
               </span>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

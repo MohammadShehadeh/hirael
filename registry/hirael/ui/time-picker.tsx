@@ -165,7 +165,7 @@ function TimePickerTrigger({
         data-slot="time-picker-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-left text-sm font-mono tabular-nums outline-none transition-colors",
+          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
           className

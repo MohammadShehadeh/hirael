@@ -5,9 +5,9 @@
 export const SITE = {
   name: "Hirael",
   fullName: "Hirael",
-  description: "Tools for builders who think in systems.",
+  description: "The components shadcn/ui doesn't ship.",
   longDescription:
-    "A component registry for the pieces every real product needs. Minimal. Thoughtful. Built to last.",
+    "A shadcn-compatible registry of the inputs and section blocks most products end up needing. The CLI copies the source into your repo, so there's no package to depend on.",
   url: "https://hirael.com",
   version: "0.1",
   author: "Mohammad Shehadeh",

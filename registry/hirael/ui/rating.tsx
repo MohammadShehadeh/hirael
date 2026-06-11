@@ -96,9 +96,9 @@ function Rating({
               <Star
                 className={cn(
                   iconSize,
-                  "absolute inset-0 fill-yellow-400 text-yellow-400 transition-[clip-path]"
+                  "absolute inset-0 fill-yellow-400 text-yellow-400 transition-[clip-path]",
+                  half && "[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]"
                 )}
-                style={half ? { clipPath: "inset(0 50% 0 0)" } : undefined}
                 aria-hidden
               />
             )}
@@ -110,7 +110,7 @@ function Rating({
                   role="radio"
                   aria-checked={value === halfValue}
                   aria-label={`${halfValue} of ${max}`}
-                  className="absolute inset-y-0 left-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="absolute inset-y-0 start-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   onMouseEnter={() => setHover(halfValue)}
                   onClick={() => commit(value === halfValue ? 0 : halfValue)}
                 />
@@ -119,7 +119,7 @@ function Rating({
                   role="radio"
                   aria-checked={value === fullValue}
                   aria-label={`${fullValue} of ${max}`}
-                  className="absolute inset-y-0 right-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="absolute inset-y-0 end-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   onMouseEnter={() => setHover(fullValue)}
                   onClick={() => commit(value === fullValue ? 0 : fullValue)}
                 />

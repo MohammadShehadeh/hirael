@@ -60,7 +60,7 @@ export default function Hero02() {
               aria-hidden
               viewBox="0 0 200 12"
               preserveAspectRatio="none"
-              className="absolute -bottom-1 left-0 h-2 w-full text-foreground/70"
+              className="absolute -bottom-1 start-0 h-2 w-full text-foreground/70"
             >
               <path
                 d="M2 8 Q 50 2, 100 7 T 198 6"

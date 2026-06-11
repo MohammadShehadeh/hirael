@@ -16,7 +16,7 @@ export default function Testimonial01() {
           <blockquote className="relative">
             <span
               aria-hidden
-              className="absolute -left-2 -top-6 font-serif text-6xl leading-none text-muted-foreground/40 sm:-left-4 sm:-top-8 sm:text-7xl"
+              className="absolute -start-2 -top-6 font-serif text-6xl leading-none text-muted-foreground/40 sm:-start-4 sm:-top-8 sm:text-7xl"
             >
               &ldquo;
             </span>

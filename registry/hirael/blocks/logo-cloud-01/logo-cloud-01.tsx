@@ -18,7 +18,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm font-semibold tracking-[-0.02em]">
-        <span aria-hidden className="mr-1 text-primary">◈</span>
+        <span aria-hidden className="me-1 text-primary">◈</span>
         ACME / Co.
       </span>
     ),
@@ -28,7 +28,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="text-sm font-semibold tracking-[-0.02em]">
-        <span aria-hidden className="mr-1">⌬</span>
+        <span aria-hidden className="me-1">⌬</span>
         Helix
       </span>
     ),
@@ -47,7 +47,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
-        <span aria-hidden className="mr-1">▲</span>
+        <span aria-hidden className="me-1">▲</span>
         vanta
       </span>
     ),
@@ -66,7 +66,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="text-sm font-medium tracking-[-0.01em]">
-        <span aria-hidden className="mr-1">⬢</span>
+        <span aria-hidden className="me-1">⬢</span>
         Lattice
       </span>
     ),
@@ -94,7 +94,7 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
-        <span aria-hidden className="mr-1">◇</span>
+        <span aria-hidden className="me-1">◇</span>
         verbit
       </span>
     ),

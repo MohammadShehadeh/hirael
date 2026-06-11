@@ -254,7 +254,7 @@ export default function Dashboard01() {
                   </CardTitle>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="text-right">
+                  <div className="text-end">
                     <span className="block font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       Conversion
                     </span>

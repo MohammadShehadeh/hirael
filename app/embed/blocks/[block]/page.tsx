@@ -4,6 +4,8 @@ import type { Metadata } from "next"
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 
+import { BlockEmbedShell } from "./embed-shell"
+
 export const dynamicParams = false
 
 export function generateStaticParams() {
@@ -23,8 +25,8 @@ export default async function BlockEmbedRoute({
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") notFound()
   return (
-    <div className="min-h-svh bg-background">
+    <BlockEmbedShell>
       <RegistryDemo name={entry.name} />
-    </div>
+    </BlockEmbedShell>
   )
 }

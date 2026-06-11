@@ -106,7 +106,7 @@ export default function Login02() {
         </div>
       </div>
 
-      <div className="relative isolate hidden overflow-hidden border-l border-border bg-card md:flex md:items-center md:justify-center">
+      <div className="relative isolate hidden overflow-hidden border-s border-border bg-card md:flex md:items-center md:justify-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-30"

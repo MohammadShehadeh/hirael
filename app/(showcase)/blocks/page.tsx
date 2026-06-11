@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site"
 import { BLOCK_KIND_ORDER, REGISTRY } from "@/registry/hirael/registry-meta"
 
 const BLOCKS_DESCRIPTION =
-  "Top-tier, copy-into-your-repo section blocks — heroes, FAQs, CTAs and login screens that share the Hirael aesthetic."
+  "Section blocks for heroes, FAQs, pricing, login screens and dashboards, all in the Hirael style. Copy them into your repo with the shadcn CLI."
 
 export const metadata: Metadata = {
   title: "Blocks",
@@ -53,12 +53,12 @@ export default function BlocksIndex() {
           </span>
         </div>
         <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
-          Blocks that compose, not decorate.
+          Page sections, ready to copy.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Heroes, CTAs, FAQs and auth screens — built on top of the Hirael
-          component registry and aesthetic. Copy a block in one command, then
-          shape it like any other source file in your repo.
+          Heroes, CTAs, FAQs, auth screens and dashboards, all built from
+          the same Hirael components. Copy one in with a single command and
+          edit it like any other file in your repo.
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {blockCount} blocks · {BLOCK_KIND_ORDER.length} categories

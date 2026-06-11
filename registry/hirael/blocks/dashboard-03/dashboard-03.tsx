@@ -156,7 +156,7 @@ export default function Dashboard03() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-8 rounded-r-none"
+                className="size-8 rounded-e-none"
                 onClick={() => setMonthIndex((i) => Math.max(0, i - 1))}
                 disabled={monthIndex === 0}
                 aria-label="Previous month"
@@ -169,7 +169,7 @@ export default function Dashboard03() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-8 rounded-l-none"
+                className="size-8 rounded-s-none"
                 onClick={() =>
                   setMonthIndex((i) => Math.min(MONTHS.length - 1, i + 1))
                 }
@@ -214,10 +214,10 @@ export default function Dashboard03() {
                         className={`size-2 rounded-xs ${p.dot}`}
                       />
                       <span className="text-xs text-foreground">{p.label}</span>
-                      <span className="ml-auto font-mono text-xs tabular-nums text-muted-foreground">
+                      <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {p.share}%
                       </span>
-                      <span className="w-16 text-right font-mono text-xs tabular-nums">
+                      <span className="w-16 text-end font-mono text-xs tabular-nums">
                         {p.mrr}
                       </span>
                     </div>
@@ -240,10 +240,10 @@ export default function Dashboard03() {
                     <div className="flex items-center gap-2.5">
                       <span className={`size-1.5 rounded-full ${inv.dot}`} />
                       <span className="text-xs text-foreground">{inv.label}</span>
-                      <span className="ml-auto font-mono text-xs tabular-nums text-muted-foreground">
+                      <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {inv.count}
                       </span>
-                      <span className="w-20 text-right font-mono text-xs tabular-nums">
+                      <span className="w-20 text-end font-mono text-xs tabular-nums">
                         {inv.amount}
                       </span>
                     </div>
@@ -272,7 +272,7 @@ export default function Dashboard03() {
                 <span>Customer</span>
                 <span>Status</span>
                 <span>Date</span>
-                <span className="text-right">Amount</span>
+                <span className="text-end">Amount</span>
               </div>
               <ul className="flex flex-col">
                 {TRANSACTIONS.map((t, i) => {
@@ -312,7 +312,7 @@ export default function Dashboard03() {
                         {t.date}
                       </span>
                       <span
-                        className={`text-right font-mono text-sm tabular-nums ${
+                        className={`text-end font-mono text-sm tabular-nums ${
                           t.status === "refunded"
                             ? "text-red-500"
                             : t.status === "open"

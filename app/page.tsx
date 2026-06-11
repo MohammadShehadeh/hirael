@@ -86,10 +86,9 @@ function Hero() {
         </h1>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-          Production-grade React components and section blocks — multi-select,
-          combobox, tag input, file dropzone, and more. Installed with the
-          shadcn CLI, so the source lands in your repo with no runtime
-          dependency.
+          Multi-select, combobox, tag input, file dropzone, plus full
+          section blocks. Install them with the shadcn CLI and the source
+          lands in your repo. No package to update, no runtime dependency.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
@@ -144,13 +143,12 @@ function LiveRegistry() {
               Live registry
             </span>
             <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
-              Real components, running live.
+              Working demos, not screenshots.
             </h2>
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">
             <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-              {LIVE_DEMOS.length} of {componentCount} · the exact source the CLI
-              installs
+              {LIVE_DEMOS.length} of {componentCount} components
             </span>
             <Link
               href="/components"
@@ -194,7 +192,7 @@ function LiveRegistry() {
         </div>
 
         <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Not screenshots — click around. Every demo is the shipped source.
+          Click around. Each demo runs the same source the CLI installs.
         </p>
       </div>
     </section>
@@ -223,7 +221,7 @@ function CategoryGrid() {
               Section blocks
             </span>
             <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
-              Compose full pages, faster.
+              Blocks for whole sections of a page.
             </h2>
           </div>
           <div className="flex items-center gap-4 self-start sm:self-auto">

@@ -81,7 +81,7 @@ export default function AppShell04() {
                 <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
                   ◆
                 </span>
-                <div className="grid flex-1 text-left leading-tight">
+                <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">
                     Plinth Labs
                   </span>
@@ -170,7 +170,7 @@ export default function AppShell04() {
               aria-label="Notifications · 3 unread"
             >
               <Bell className="size-4" />
-              <Badge className="absolute -right-1 -top-1 size-4 justify-center rounded-full p-0 font-mono text-[9px]">
+              <Badge className="absolute -end-1 -top-1 size-4 justify-center rounded-full p-0 font-mono text-[9px]">
                 3
               </Badge>
             </Button>

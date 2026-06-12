@@ -1,12 +1,10 @@
 "use client"
 
-import * as React from "react"
 import {
   ArrowRight,
   Boxes,
   Cloud,
   Database,
-  Github,
   Lock,
   Mail,
   MessageCircle,
@@ -28,7 +26,6 @@ type Spoke = {
 }
 
 const SPOKES: readonly Spoke[] = [
-  { name: "GitHub", icon: Github, angle: 0, category: "Source", href: "#" },
   { name: "Postgres", icon: Database, angle: 51, category: "Storage", href: "#" },
   { name: "Resend", icon: Mail, angle: 103, category: "Email", href: "#" },
   { name: "Discord", icon: MessageCircle, angle: 154, category: "Comms", href: "#" },

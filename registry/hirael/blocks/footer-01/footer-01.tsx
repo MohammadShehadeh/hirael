@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Twitter, MessageCircle } from "lucide-react"
+import { MessageCircle } from "lucide-react"
 
 type LinkColumn = {
   title: string
@@ -86,13 +86,6 @@ export default function Footer01() {
             © 2026 Hirael Labs · All rights reserved
           </p>
           <div className="flex items-center gap-1">
-            <a
-              href="#"
-              aria-label="Twitter"
-              className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Twitter className="size-4" />
-            </a>
             <a
               href="#"
               aria-label="Discord"

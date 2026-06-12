@@ -69,8 +69,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE.name} — ${SITE.description}`,
     description: SITE.longDescription,
-    creator: SITE.twitterHandle,
-    site: SITE.twitterHandle,
     images: ["/opengraph-image"],
   },
   category: "technology",
@@ -126,7 +124,7 @@ export default function RootLayout({
                 name: SITE.author,
                 url: SITE.authorUrl,
               },
-              sameAs: [SITE.twitterUrl],
+              sameAs: [SITE.githubUrl],
             }),
           }}
         />

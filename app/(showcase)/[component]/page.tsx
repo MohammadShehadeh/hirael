@@ -52,8 +52,6 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description: entry.description,
-      creator: SITE.twitterHandle,
-      site: SITE.twitterHandle,
       images: ["/opengraph-image"],
     },
   }

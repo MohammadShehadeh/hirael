@@ -31,8 +31,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `Theme playground — ${SITE.name}`,
     description: THEME_DESCRIPTION,
-    creator: SITE.twitterHandle,
-    site: SITE.twitterHandle,
     images: ["/opengraph-image"],
   },
 }

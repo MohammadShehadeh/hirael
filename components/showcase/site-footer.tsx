@@ -30,7 +30,7 @@ const FOOTER_LINKS: {
     label: "Author",
     links: [
       { href: SITE.authorUrl, label: "Portfolio", external: true },
-      { href: SITE.twitterUrl, label: "Twitter / X", external: true },
+      { href: SITE.githubUrl, label: "GitHub", external: true },
     ],
   },
 ]

@@ -64,8 +64,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `Components — ${SITE.name}`,
     description: COMPONENTS_DESCRIPTION,
-    creator: SITE.twitterHandle,
-    site: SITE.twitterHandle,
     images: ["/opengraph-image"],
   },
 }

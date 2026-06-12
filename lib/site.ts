@@ -12,8 +12,8 @@ export const SITE = {
   version: "0.1",
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
-  twitterHandle: "@mohammadshhadeh",
-  twitterUrl: "https://x.com/mohammadshhadeh",
+  githubHandle: "mohammadshehadeh",
+  githubUrl: "https://github.com/mohammadshehadeh/",
   keywords: [
     "shadcn",
     "shadcn ui",

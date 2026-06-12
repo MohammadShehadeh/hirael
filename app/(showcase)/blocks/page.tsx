@@ -32,8 +32,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `Blocks — ${SITE.name}`,
     description: BLOCKS_DESCRIPTION,
-    creator: SITE.twitterHandle,
-    site: SITE.twitterHandle,
     images: ["/opengraph-image"],
   },
 }

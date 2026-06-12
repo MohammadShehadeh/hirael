@@ -849,6 +849,166 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "sortable",
+    title: "Sortable",
+    description:
+      "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements — no dnd-kit.",
+    category: "data",
+    sourceFiles: ["registry/hirael/ui/sortable.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "date-range-picker",
+    title: "Date Range Picker",
+    description:
+      "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar — no date library.",
+    category: "pickers",
+    sourceFiles: ["registry/hirael/ui/date-range-picker.tsx"],
+    registryDependencies: ["button", "popover", "separator"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "mention-input",
+    title: "Mention Input",
+    description:
+      "@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.",
+    category: "inputs",
+    sourceFiles: ["registry/hirael/ui/mention-input.tsx"],
+    registryDependencies: ["spinner"],
+    dependencies: [],
+  },
+  {
+    name: "inline-edit",
+    title: "Inline Edit",
+    description:
+      "Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.",
+    category: "inputs",
+    sourceFiles: ["registry/hirael/ui/inline-edit.tsx"],
+    registryDependencies: ["button", "input", "spinner", "textarea"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "signature-pad",
+    title: "Signature Pad",
+    description:
+      "Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.",
+    category: "inputs",
+    sourceFiles: ["registry/hirael/ui/signature-pad.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "image-cropper",
+    title: "Image Cropper",
+    description:
+      "Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.",
+    category: "files",
+    sourceFiles: ["registry/hirael/ui/image-cropper.tsx"],
+    registryDependencies: ["slider"],
+    dependencies: [],
+  },
+  {
+    name: "image-compare",
+    title: "Image Compare",
+    description:
+      "Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/image-compare.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "lightbox",
+    title: "Lightbox",
+    description:
+      "Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/lightbox.tsx"],
+    registryDependencies: [],
+    dependencies: ["@radix-ui/react-dialog", "lucide-react"],
+  },
+  {
+    name: "countdown-timer",
+    title: "Countdown Timer",
+    description:
+      "Count-down-to-date timer with boxed / inline / minimal variants, a useCountdown hook, digit animation and completion content.",
+    category: "data",
+    sourceFiles: ["registry/hirael/ui/countdown-timer.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "qr-code",
+    title: "QR Code",
+    description:
+      "Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and currentColor theming.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/qr-code.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "calendar-heatmap",
+    title: "Calendar Heatmap",
+    description:
+      "GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.",
+    category: "data",
+    sourceFiles: ["registry/hirael/ui/calendar-heatmap.tsx"],
+    registryDependencies: ["tooltip"],
+    dependencies: [],
+  },
+  {
+    name: "code-block",
+    title: "Code Block",
+    description:
+      "Code display with built-in dependency-free syntax highlighting via theme tokens, line numbers, line highlights, diff gutters, copy button and collapsible max-height.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/code-block.tsx"],
+    registryDependencies: ["badge", "button", "copy-button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "masonry",
+    title: "Masonry",
+    description:
+      "True masonry layout that balances children into the shortest column by measured height — order-preserving, responsive, dependency-free.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/masonry.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "audio-player",
+    title: "Audio Player",
+    description:
+      "Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.",
+    category: "display",
+    sourceFiles: ["registry/hirael/ui/audio-player.tsx"],
+    registryDependencies: ["button", "slider"],
+    dependencies: ["@radix-ui/react-slider", "lucide-react"],
+  },
+  {
+    name: "media-input",
+    title: "Media Input",
+    description:
+      "Local media file picker that previews via an object URL — empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
+    category: "files",
+    sourceFiles: ["registry/hirael/ui/media-input.tsx"],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "tour",
+    title: "Tour",
+    description:
+      "Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/tour.tsx"],
+    registryDependencies: ["button"],
+    dependencies: [],
+  },
 ]
 
 export const REGISTRY_BY_NAME = Object.fromEntries(

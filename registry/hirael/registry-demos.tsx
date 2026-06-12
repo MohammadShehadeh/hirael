@@ -78,6 +78,22 @@ const DEMO_LOADERS: Record<
   "tree-view": () => import("@/registry/hirael/tree-view/tree-view.demo"),
   "animated-number": () => import("@/registry/hirael/animated-number/animated-number.demo"),
   "stepper": () => import("@/registry/hirael/stepper/stepper.demo"),
+  "sortable": () => import("@/registry/hirael/sortable/sortable.demo"),
+  "date-range-picker": () => import("@/registry/hirael/date-range-picker/date-range-picker.demo"),
+  "mention-input": () => import("@/registry/hirael/mention-input/mention-input.demo"),
+  "inline-edit": () => import("@/registry/hirael/inline-edit/inline-edit.demo"),
+  "signature-pad": () => import("@/registry/hirael/signature-pad/signature-pad.demo"),
+  "image-cropper": () => import("@/registry/hirael/image-cropper/image-cropper.demo"),
+  "image-compare": () => import("@/registry/hirael/image-compare/image-compare.demo"),
+  "lightbox": () => import("@/registry/hirael/lightbox/lightbox.demo"),
+  "countdown-timer": () => import("@/registry/hirael/countdown-timer/countdown-timer.demo"),
+  "qr-code": () => import("@/registry/hirael/qr-code/qr-code.demo"),
+  "calendar-heatmap": () => import("@/registry/hirael/calendar-heatmap/calendar-heatmap.demo"),
+  "code-block": () => import("@/registry/hirael/code-block/code-block.demo"),
+  "masonry": () => import("@/registry/hirael/masonry/masonry.demo"),
+  "audio-player": () => import("@/registry/hirael/audio-player/audio-player.demo"),
+  "media-input": () => import("@/registry/hirael/media-input/media-input.demo"),
+  "tour": () => import("@/registry/hirael/tour/tour.demo"),
 }
 
 const cache = new Map<string, React.LazyExoticComponent<React.ComponentType>>()

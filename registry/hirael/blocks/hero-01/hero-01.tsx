@@ -53,7 +53,7 @@ export default function Hero01() {
           </h1>
 
           <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-            Multi-select, year picker, tag input, combobox — every component
+            Multi-select, year picker, tag input, combobox: every component
             real products need but shadcn doesn&apos;t ship. Copied straight
             into your repo via the CLI. Two APIs per component. No runtime
             dependency.

@@ -32,7 +32,7 @@ export async function generateMetadata({
   const { block } = await params
   const category = CATEGORY_BY_SLUG[block]
   if (category) {
-    const title = `${category.title} blocks — ${SITE.name}`
+    const title = `${category.title} blocks | ${SITE.name}`
     const url = `${SITE.url}/blocks/${category.slug}`
     return {
       title: `${category.title} blocks`,
@@ -66,7 +66,7 @@ export async function generateMetadata({
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") return {}
   const url = `${SITE.url}/blocks/${entry.name}`
-  const title = `${entry.title} block — ${SITE.name}`
+  const title = `${entry.title} block | ${SITE.name}`
   return {
     title: `${entry.title} block`,
     description: entry.description,

@@ -353,7 +353,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "faq-01",
     title: "FAQ 1",
     description:
-      "Two-column FAQ — sticky heading + contact card on the left, numbered accordion on the right.",
+      "Two-column FAQ: sticky heading + contact card on the left, numbered accordion on the right.",
     blockTagline: "Sticky split · numbered · contact card",
     category: "blocks",
     blockKind: "faq",
@@ -813,7 +813,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "marquee",
     title: "Marquee",
     description:
-      "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline — zero config.",
+      "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline, zero config.",
     category: "display",
     sourceFiles: ["registry/hirael/ui/marquee.tsx"],
     registryDependencies: [],
@@ -853,7 +853,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "sortable",
     title: "Sortable",
     description:
-      "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements — no dnd-kit.",
+      "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/sortable.tsx"],
     registryDependencies: [],
@@ -863,7 +863,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "date-range-picker",
     title: "Date Range Picker",
     description:
-      "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar — no date library.",
+      "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar, no date library.",
     category: "pickers",
     sourceFiles: ["registry/hirael/ui/date-range-picker.tsx"],
     registryDependencies: ["button", "popover", "separator"],
@@ -973,7 +973,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "masonry",
     title: "Masonry",
     description:
-      "True masonry layout that balances children into the shortest column by measured height — order-preserving, responsive, dependency-free.",
+      "True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.",
     category: "display",
     sourceFiles: ["registry/hirael/ui/masonry.tsx"],
     registryDependencies: [],
@@ -993,7 +993,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "media-input",
     title: "Media Input",
     description:
-      "Local media file picker that previews via an object URL — empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
+      "Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
     category: "files",
     sourceFiles: ["registry/hirael/ui/media-input.tsx"],
     registryDependencies: ["button"],

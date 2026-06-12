@@ -70,7 +70,7 @@ export default function EmptyStateDemo() {
           </EmptyStateMedia>
           <EmptyStateTitle>Drop files here</EmptyStateTitle>
           <EmptyStateDescription>
-            Drag-and-drop a CSV or paste a URL — we&apos;ll parse the columns
+            Drag-and-drop a CSV or paste a URL; we&apos;ll parse the columns
             and let you map them.
           </EmptyStateDescription>
         </EmptyState>

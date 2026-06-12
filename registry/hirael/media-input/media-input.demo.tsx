@@ -51,8 +51,8 @@ export default function MediaInputDemo() {
           <MediaInputEmpty>
             <Music aria-hidden className="size-6 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
-              Pick a local audio file. It plays from your browser only —
-              nothing is uploaded.
+              Pick a local audio file. It plays from your browser only.
+              Nothing is uploaded.
             </p>
             <MediaInputTrigger>
               <Upload aria-hidden />

@@ -85,7 +85,7 @@ export default function LazySelectDemo() {
         />
       </LazySelect>
       <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-        value = {value ? `"${value}"` : "—"} · loaded = {options.length}
+        value = {value ? `"${value}"` : "-"} · loaded = {options.length}
       </p>
     </div>
   )

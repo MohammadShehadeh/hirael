@@ -42,7 +42,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
 const FAQS: readonly { q: string; a: string; category: Category }[] = [
   {
     q: "How do I install my first block?",
-    a: "Run the shadcn CLI with the block's registry URL — the source lands in components/blocks/ and is yours to edit. No package to add, nothing to configure.",
+    a: "Run the shadcn CLI with the block's registry URL; the source lands in components/blocks/ and is yours to edit. No package to add, nothing to configure.",
     category: "getting-started",
   },
   {
@@ -52,7 +52,7 @@ const FAQS: readonly { q: string; a: string; category: Category }[] = [
   },
   {
     q: "Which frameworks are supported?",
-    a: "Anywhere React runs — Next.js App or Pages Router, Remix, Vite. Blocks avoid framework-specific APIs unless the block page says otherwise.",
+    a: "Anywhere React runs: Next.js App or Pages Router, Remix, Vite. Blocks avoid framework-specific APIs unless the block page says otherwise.",
     category: "getting-started",
   },
   {
@@ -62,7 +62,7 @@ const FAQS: readonly { q: string; a: string; category: Category }[] = [
   },
   {
     q: "Do you offer team invoicing?",
-    a: "There's nothing to invoice today — installs are free and unmetered. For procurement paperwork, contact us and we'll sort something out.",
+    a: "There's nothing to invoice today; installs are free and unmetered. For procurement paperwork, contact us and we'll sort something out.",
     category: "billing",
   },
   {

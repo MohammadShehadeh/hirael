@@ -12,7 +12,7 @@ import {
 const FAQS = [
   {
     q: "Do I need to install a package?",
-    a: "No. Hirael is a registry — components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
+    a: "No. Hirael is a registry; components copy straight into your repo via the shadcn CLI. Zero runtime dependency.",
   },
   {
     q: "Will updates break my code?",
@@ -28,11 +28,11 @@ const FAQS = [
   },
   {
     q: "Can I use it with Pages Router?",
-    a: "Yes. Components are React-first and framework-agnostic — App Router, Pages Router, Remix, anywhere React runs.",
+    a: "Yes. Components are React-first and framework-agnostic: App Router, Pages Router, Remix, anywhere React runs.",
   },
   {
     q: "Do I own the code?",
-    a: "Yes. Installing pulls the source straight into your repo — yours to keep, edit, and ship. No telemetry, no lock-in.",
+    a: "Yes. Installing pulls the source straight into your repo; yours to keep, edit, and ship. No telemetry, no lock-in.",
   },
 ] as const
 

@@ -49,20 +49,20 @@ export const metadata: Metadata = {
     type: "website",
     url: `${SITE.url}/components`,
     siteName: SITE.name,
-    title: `Components — ${SITE.name}`,
+    title: `Components | ${SITE.name}`,
     description: COMPONENTS_DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `Components — ${SITE.name}`,
+        alt: `Components | ${SITE.name}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Components — ${SITE.name}`,
+    title: `Components | ${SITE.name}`,
     description: COMPONENTS_DESCRIPTION,
     images: ["/opengraph-image"],
   },
@@ -172,7 +172,7 @@ export default async function ComponentsIndex() {
           </Link>
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Drop-in section compositions — heroes, features, pricing,
+          Drop-in section compositions: heroes, features, pricing,
           testimonials, CTAs, FAQs, auth, navigation, errors. Each block
           shares the same registry pipeline; copy a block in one command.
         </p>
@@ -218,7 +218,7 @@ export default async function ComponentsIndex() {
           Composition (the shadcn way)
         </h2>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Every compound component ships as flat top-level exports — no
+          Every compound component ships as flat top-level exports, no
           namespacing, no convenience wrappers. The bare name is the root
           primitive and holds state; every rendered piece carries a
           <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground">

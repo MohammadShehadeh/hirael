@@ -67,7 +67,7 @@ export default function Integrations01() {
             </h2>
             <p className="text-base text-muted-foreground sm:text-lg">
               Hirael is the surface. Your backend, your storage, your CI, your
-              secrets — pick whatever you already use. We don&apos;t lock you
+              secrets; pick whatever you already use. We don&apos;t lock you
               in, and we don&apos;t bring our own server.
             </p>
 

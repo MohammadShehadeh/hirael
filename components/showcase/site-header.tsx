@@ -43,7 +43,7 @@ export function SiteHeader({
 
         <Link
           href="/"
-          aria-label={`${SITE.name} — home`}
+          aria-label={`${SITE.name} | home`}
           className="group flex items-center gap-2 rounded-sm py-1 transition-colors"
         >
           <BrandLockup logoClassName="h-9" />

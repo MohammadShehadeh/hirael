@@ -27,7 +27,7 @@ export default function PhoneInputDemo() {
           <PhoneInputField />
         </PhoneInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          E.164: {basic || "—"}
+          E.164: {basic || "-"}
         </p>
       </div>
 
@@ -43,7 +43,7 @@ export default function PhoneInputDemo() {
           <PhoneInputField placeholder="20 7183 8750" />
         </PhoneInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          E.164: {composed || "—"}
+          E.164: {composed || "-"}
         </p>
       </div>
     </div>

@@ -50,7 +50,7 @@ export function SiteFooter({ className }: { className?: string }) {
           <div className="col-span-2 flex flex-col gap-3">
             <Link
               href="/"
-              aria-label={`${SITE.name} — home`}
+              aria-label={`${SITE.name} | home`}
               className="inline-flex items-center"
             >
               <BrandLockup logoClassName="h-11" />

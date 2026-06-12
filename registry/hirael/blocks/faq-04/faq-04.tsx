@@ -20,7 +20,7 @@ const GROUPS: readonly Group[] = [
     faqs: [
       {
         q: "What exactly is Hirael?",
-        a: "A registry of components and section blocks. Nothing ships as a package — the shadcn CLI copies source files straight into your repo, where they're yours to edit.",
+        a: "A registry of components and section blocks. Nothing ships as a package; the shadcn CLI copies source files straight into your repo, where they're yours to edit.",
       },
       {
         q: "How long does the first install take?",
@@ -28,7 +28,7 @@ const GROUPS: readonly Group[] = [
       },
       {
         q: "Do I need a particular framework?",
-        a: "Anywhere React runs. Blocks avoid framework-specific APIs unless a block page says otherwise — Next.js, Remix and Vite all work.",
+        a: "Anywhere React runs. Blocks avoid framework-specific APIs unless a block page says otherwise: Next.js, Remix and Vite all work.",
       },
     ],
   },
@@ -37,7 +37,7 @@ const GROUPS: readonly Group[] = [
     faqs: [
       {
         q: "Can I mix blocks with my own components?",
-        a: "That's the intended use. Blocks are plain source files in your tree — import your components into them, or lift pieces out of them into yours.",
+        a: "That's the intended use. Blocks are plain source files in your tree; import your components into them, or lift pieces out of them into yours.",
       },
       {
         q: "How do updates reach my project?",
@@ -45,7 +45,7 @@ const GROUPS: readonly Group[] = [
       },
       {
         q: "What if two blocks need different versions of a primitive?",
-        a: "They can't conflict — each block declares its primitives and the CLI installs one shared copy into components/ui/ that both use.",
+        a: "They can't conflict; each block declares its primitives and the CLI installs one shared copy into components/ui/ that both use.",
       },
     ],
   },
@@ -54,7 +54,7 @@ const GROUPS: readonly Group[] = [
     faqs: [
       {
         q: "Will blocks match my existing shadcn theme?",
-        a: "Yes. Everything is built on the same CSS variables — change the tokens and every installed block follows.",
+        a: "Yes. Everything is built on the same CSS variables; change the tokens and every installed block follows.",
       },
       {
         q: "Is dark mode handled?",
@@ -71,7 +71,7 @@ const GROUPS: readonly Group[] = [
     faqs: [
       {
         q: "Can I use blocks in commercial projects?",
-        a: "Yes — client work, products, internal tools. Installed copies belong to the codebase they land in, with no per-seat tracking.",
+        a: "Yes: client work, products, internal tools. Installed copies belong to the codebase they land in, with no per-seat tracking.",
       },
       {
         q: "Is attribution required?",
@@ -92,7 +92,7 @@ const GROUPS: readonly Group[] = [
       },
       {
         q: "Do you take block requests?",
-        a: "Yes — request the section you're missing and we'll weigh it against the roadmap. Popular requests ship first.",
+        a: "Yes; request the section you're missing and we'll weigh it against the roadmap. Popular requests ship first.",
       },
       {
         q: "Is there a changelog?",

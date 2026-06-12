@@ -16,20 +16,20 @@ export const metadata: Metadata = {
     type: "website",
     url: `${SITE.url}/theme`,
     siteName: SITE.name,
-    title: `Theme playground — ${SITE.name}`,
+    title: `Theme playground | ${SITE.name}`,
     description: THEME_DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `Theme playground — ${SITE.name}`,
+        alt: `Theme playground | ${SITE.name}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Theme playground — ${SITE.name}`,
+    title: `Theme playground | ${SITE.name}`,
     description: THEME_DESCRIPTION,
     images: ["/opengraph-image"],
   },

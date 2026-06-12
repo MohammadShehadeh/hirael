@@ -157,7 +157,7 @@ function ThemeSheetBody() {
             ))}
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground">
-            Presets only override the accent and ring — neutrals stay intact.
+            Presets only override the accent and ring; neutrals stay intact.
           </p>
         </Section>
 

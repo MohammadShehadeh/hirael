@@ -42,7 +42,7 @@ export default function Cta01() {
               </h2>
               <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
                 Pull a real multi-select, year picker, or tag input into your
-                repo in one command. No package, no version pin — just the
+                repo in one command. No package, no version pin. Just the
                 source, in your codebase, yours to shape.
               </p>
             </div>

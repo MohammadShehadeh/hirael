@@ -42,8 +42,7 @@ export default function GlobalError() {
               This page failed to load.
             </h1>
             <p className="max-w-sm text-balance text-sm text-muted-foreground">
-              A new version may have just shipped. Refreshing the page usually
-              clears it up.
+              An unexpected error occurred. Try refreshing the page or come back in a moment.
             </p>
           </div>
 

@@ -76,7 +76,7 @@ export default function Hero02() {
 
         <p className="max-w-2xl text-balance text-base text-muted-foreground sm:text-lg">
           Hirael ships the dense, real-world components most teams end up
-          building by hand — tag input, multi-select, combobox, year picker —
+          building by hand: tag input, multi-select, combobox, year picker,
           each with the dual-API contract and a design that matches your
           system.
         </p>

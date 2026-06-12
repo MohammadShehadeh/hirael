@@ -55,7 +55,7 @@ function searchDirectory(query: string): Promise<MentionItem[]> {
 
 export default function MentionInputDemo() {
   const [comment, setComment] = React.useState(
-    "Looks great — @jane.doe can you take a final pass?"
+    "Looks great @jane.doe can you take a final pass?"
   )
   const mentions = getMentions(comment)
 

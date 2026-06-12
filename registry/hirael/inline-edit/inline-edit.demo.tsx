@@ -64,7 +64,7 @@ export default function InlineEditDemo() {
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           asChild · heading
         </p>
-        <InlineEdit defaultValue="Release notes — v2.4" required>
+        <InlineEdit defaultValue="Release notes v2.4" required>
           <div className="flex items-center gap-2">
             <InlineEditPreview asChild>
               <h3 className="text-lg font-semibold tracking-tight" />

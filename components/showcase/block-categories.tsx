@@ -51,7 +51,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: "Hero Sections",
     blockKind: "hero",
     description:
-      "Above-the-fold openers — split layouts, centered editorials, stat strips, wordmark trust rows.",
+      "Above-the-fold openers: split layouts, centered editorials, stat strips, wordmark trust rows.",
   },
   {
     slug: "features",

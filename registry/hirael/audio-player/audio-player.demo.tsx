@@ -44,7 +44,7 @@ export default function AudioPlayerDemo() {
           <Music aria-hidden className="size-6 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
             Pick a local audio file to preview the player. It plays from your
-            browser only — nothing is uploaded.
+            browser only. Nothing is uploaded.
           </p>
           <MediaInputTrigger>
             <Upload aria-hidden />

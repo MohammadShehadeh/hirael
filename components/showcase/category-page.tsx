@@ -133,7 +133,7 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
             {category.title} blocks are on the roadmap.
           </h3>
           <p className="max-w-xl text-sm text-muted-foreground">
-            {category.description} We&apos;re drafting variants now — the
+            {category.description} We&apos;re drafting variants now,
             first one ships when it&apos;s good enough that we&apos;d copy it
             into our own products.
           </p>

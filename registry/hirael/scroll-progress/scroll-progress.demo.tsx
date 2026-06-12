@@ -35,7 +35,7 @@ export default function ScrollProgressDemo() {
 
       <p className="text-xs text-muted-foreground">
         Tip: omit <code className="font-mono">target</code> to track the whole
-        document scroll — useful on long blog posts.
+        document scroll, useful on long blog posts.
       </p>
     </div>
   )

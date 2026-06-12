@@ -17,7 +17,7 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· registry",
     headline: "One CLI command, source in your repo.",
-    body: "Hirael distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX — no package pin, no version drift.",
+    body: "Hirael distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX, no package pin, no version drift.",
     bullets: [
       "Resolved against your existing tsconfig paths",
       "Drops into components/ui/* by default",
@@ -28,9 +28,9 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· composition",
     headline: "Composition, the shadcn way.",
-    body: "Every compound component ships as flat top-level exports — no namespacing, no convenience wrappers. The bare name is the root and holds state; every rendered piece carries a data-slot for downstream styling.",
+    body: "Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare name is the root and holds state; every rendered piece carries a data-slot for downstream styling.",
     bullets: [
-      "Flat named exports — compose at the call site",
+      "Flat named exports, compose at the call site",
       "data-slot on every rendered piece",
       "Same state machine you'd write by hand",
     ],
@@ -39,7 +39,7 @@ const ROWS: readonly FeatureRow[] = [
   {
     eyebrow: "· performance",
     headline: "Built for dense product surfaces.",
-    body: "Virtualized lists, debounced async, and stable keys are wired in by default — built to hold up under real production data, not just a demo.",
+    body: "Virtualized lists, debounced async, and stable keys are wired in by default, built to hold up under real production data, not just a demo.",
     bullets: [
       "Stable keyboard nav past 10k rows",
       "Async loading with cancellation",

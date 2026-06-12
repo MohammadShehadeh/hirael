@@ -43,7 +43,7 @@ export default function CountdownTimerDemo() {
             target={launchTarget}
             className="align-baseline font-medium text-foreground"
           />{" "}
-          — lock in your seat now.
+          Lock in your seat now.
         </div>
       </div>
 

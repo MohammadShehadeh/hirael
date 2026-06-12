@@ -153,7 +153,7 @@ export default function Contact01() {
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
             Drop a note and we&apos;ll route it to the right person.
-            Engineering questions, sales, partnerships — all the same form.
+            Engineering questions, sales, partnerships: all the same form.
           </p>
         </div>
 

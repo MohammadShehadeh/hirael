@@ -26,8 +26,8 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.description}`,
-    template: `%s — ${SITE.name}`,
+    default: `${SITE.name} | ${SITE.description}`,
+    template: `%s | ${SITE.name}`,
   },
   description: SITE.longDescription,
   applicationName: SITE.name,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE.url,
-    title: `${SITE.name} — ${SITE.description}`,
+    title: `${SITE.name} | ${SITE.description}`,
     description: SITE.longDescription,
     siteName: SITE.name,
     images: [
@@ -61,13 +61,13 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE.name} — ${SITE.description}`,
+        alt: `${SITE.name} | ${SITE.description}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.description}`,
+    title: `${SITE.name} | ${SITE.description}`,
     description: SITE.longDescription,
     images: ["/opengraph-image"],
   },

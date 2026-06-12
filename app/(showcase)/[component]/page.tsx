@@ -26,7 +26,7 @@ export async function generateMetadata({
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") return {}
   const url = `${SITE.url}/${entry.name}`
-  const title = `${entry.title} — ${SITE.name}`
+  const title = `${entry.title} | ${SITE.name}`
   return {
     title: entry.title,
     description: entry.description,

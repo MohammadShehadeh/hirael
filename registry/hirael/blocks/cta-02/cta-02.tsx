@@ -51,8 +51,8 @@ export default function Cta02() {
         </h2>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground">
-          Hirael fills the obvious gaps in shadcn — the components your team
-          quietly rebuilds project after project — so you can spend that
+          Hirael fills the obvious gaps in shadcn: the components your team
+          quietly rebuilds project after project, so you can spend that
           time on the work only you can do.
         </p>
 

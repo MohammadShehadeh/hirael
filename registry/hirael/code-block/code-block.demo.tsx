@@ -59,7 +59,7 @@ export default function CodeBlockDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Diff — config change
+          Diff: config change
         </p>
         <CodeBlock
           code={diffSnippet}
@@ -84,7 +84,7 @@ export default function CodeBlockDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Bare — no header, no numbers
+          Bare, no header, no numbers
         </p>
         <CodeBlock showLineNumbers={false} copyable={false}>
           npx shadcn@latest add code-block

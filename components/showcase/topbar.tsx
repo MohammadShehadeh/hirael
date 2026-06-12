@@ -26,7 +26,7 @@ export function ShowcaseTopbar() {
       <Link
         href="/"
         className="flex items-center gap-2 rounded-sm py-1 transition-colors md:hidden"
-        aria-label="Hirael — home"
+        aria-label="Hirael | home"
       >
         <BrandLockup logoClassName="h-8" />
       </Link>

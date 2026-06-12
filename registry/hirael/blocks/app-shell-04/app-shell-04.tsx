@@ -191,7 +191,7 @@ export default function AppShell04() {
               Good morning, Maya.
             </h1>
             <p className="text-sm text-muted-foreground">
-              Your workspace is ready — drop content into the slots below.
+              Your workspace is ready. Drop content into the slots below.
             </p>
           </div>
 

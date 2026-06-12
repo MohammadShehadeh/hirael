@@ -101,7 +101,7 @@ export default function ImageGallery01() {
         <div className="flex flex-col gap-5 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-10">
           <div className="flex max-w-xl flex-col gap-4">
             <Badge variant="outline" className="w-fit">
-              · selected work · 2025 — 2026
+              · selected work · 2025-2026
             </Badge>
             <h2
               id="image-gallery-01-heading"
@@ -110,7 +110,7 @@ export default function ImageGallery01() {
               A studio archive, gridded.
             </h2>
             <p className="text-base text-muted-foreground">
-              Eight pieces from the last 14 months — websites, identity work,
+              Eight pieces from the last 14 months: websites, identity work,
               an annual report, and a motion reel. More in the full archive.
             </p>
           </div>

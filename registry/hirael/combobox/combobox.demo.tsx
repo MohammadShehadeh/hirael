@@ -85,7 +85,7 @@ export default function ComboboxDemo() {
           />
         </Combobox>
         <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          value = {asyncValue ? `"${asyncValue}"` : "—"}
+          value = {asyncValue ? `"${asyncValue}"` : "-"}
         </p>
       </div>
     </div>

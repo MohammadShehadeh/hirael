@@ -20,7 +20,7 @@ export default function DateRangePickerDemo() {
   const print = (r: DateRange | undefined) =>
     r?.from
       ? `${fmt.format(r.from)} → ${r.to ? fmt.format(r.to) : "…"}`
-      : "—"
+      : "-"
 
   return (
     <div className="grid w-full max-w-2xl gap-8">

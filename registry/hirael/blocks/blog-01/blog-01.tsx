@@ -38,7 +38,7 @@ const IMG = {
 
 const FEATURED: Post = {
   category: "Engineering",
-  title: "Why we shipped the same component twice — and why you should too.",
+  title: "Why we shipped the same component twice, and why you should too.",
   excerpt:
     "Every Hirael primitive exposes a compound surface and a single-prop surface in the same file. Here's the design contract behind it, and the four bugs it quietly prevented in production.",
   author: { name: "Mohammad Shehadeh", initials: "MS" },
@@ -64,7 +64,7 @@ const POSTS: readonly Post[] = [
     category: "Design",
     title: "The 1px border, and other invisible decisions.",
     excerpt:
-      "How a single token decision propagates through every surface in the registry — and why we picked 0.65rem.",
+      "How a single token decision propagates through every surface in the registry, and why we picked 0.65rem.",
     author: { name: "Jules Tanaka", initials: "JT" },
     date: "May 06",
     readMin: 4,
@@ -166,7 +166,7 @@ export default function Blog01() {
             </h2>
             <p className="text-base text-muted-foreground">
               Patterns, release notes, and field reports from teams putting
-              Hirael to work — no launch tweets, no growth posts.
+              Hirael to work. No launch tweets, no growth posts.
             </p>
           </div>
           <Button variant="link" className="group h-auto p-0" asChild>

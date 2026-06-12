@@ -26,7 +26,7 @@ const FEATURES: readonly Feature[] = [
   {
     icon: Zap,
     title: "Built for dense data",
-    body: "Virtualization, async loading, and stable keyboard navigation are wired in — not bolted on after launch.",
+    body: "Virtualization, async loading, and stable keyboard navigation are wired in, not bolted on after launch.",
   },
   {
     icon: Shield,
@@ -41,7 +41,7 @@ const FEATURES: readonly Feature[] = [
   {
     icon: Layers,
     title: "Source you own",
-    body: "Installed via CLI as plain TSX. No package pin, no upgrade path — edit it like it's yours, because it is.",
+    body: "Installed via CLI as plain TSX. No package pin, no upgrade path. Edit it like it's yours, because it is.",
   },
   {
     icon: Cpu,

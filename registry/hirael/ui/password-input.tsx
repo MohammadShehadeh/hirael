@@ -37,7 +37,7 @@ export const defaultPasswordScorer: PasswordScorer = (value) => {
     "8+ chars, mix character types",
     "Try a longer passphrase",
     "Add a number or symbol",
-    "Nearly there — make it longer",
+    "Nearly there, make it longer",
     "Strong",
   ] as const
   return { score, label: labels[score], hint: hints[score] }

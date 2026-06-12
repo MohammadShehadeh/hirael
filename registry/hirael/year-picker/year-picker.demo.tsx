@@ -31,7 +31,7 @@ export default function YearPickerDemo() {
           <YearPickerContent />
         </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          value = {year ?? "—"}
+          value = {year ?? "-"}
         </p>
       </div>
 
@@ -48,7 +48,7 @@ export default function YearPickerDemo() {
           <YearPickerContent />
         </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {range?.from ?? "—"} → {range?.to ?? "…"}
+          {range?.from ?? "-"} → {range?.to ?? "…"}
         </p>
       </div>
     </div>

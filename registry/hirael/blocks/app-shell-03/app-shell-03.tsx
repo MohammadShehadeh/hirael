@@ -51,7 +51,7 @@ const CONVERSATIONS: readonly Conversation[] = [
     initials: "MR",
     email: "maya@plinth.dev",
     subject: "Design review · pricing page",
-    preview: "Left comments on the tier cards — the middle one still",
+    preview: "Left comments on the tier cards, the middle one still",
     time: "9:41",
     unread: true,
     thread: [
@@ -59,7 +59,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         from: "Maya Renner",
         initials: "MR",
         time: "Today · 9:41",
-        body: "Left comments on the tier cards — the middle one still reads as selected even when it isn't. Can we tone the border down a step?",
+        body: "Left comments on the tier cards. The middle one still reads as selected even when it isn't. Can we tone the border down a step?",
       },
       {
         from: "Maya Renner",
@@ -92,7 +92,7 @@ const CONVERSATIONS: readonly Conversation[] = [
     sender: "Jules Tanaka",
     initials: "JT",
     email: "jules@quantfold.com",
-    subject: "Launch checklist — two items left",
+    subject: "Launch checklist: two items left",
     preview: "Status page and the rollback runbook. Everything else",
     time: "Yesterday",
     thread: [
@@ -100,7 +100,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         from: "Jules Tanaka",
         initials: "JT",
         time: "Yesterday · 17:02",
-        body: "Status page and the rollback runbook. Everything else on the checklist is green — staging soak finished clean overnight.",
+        body: "Status page and the rollback runbook. Everything else on the checklist is green; staging soak finished clean overnight.",
       },
       {
         from: "You",
@@ -116,14 +116,14 @@ const CONVERSATIONS: readonly Conversation[] = [
     initials: "AO",
     email: "adaeze@stackline.co",
     subject: "Re: CSV export drops timezone",
-    preview: "Confirmed on our side — exports created after the fix",
+    preview: "Confirmed on our side; exports created after the fix",
     time: "Yesterday",
     thread: [
       {
         from: "Adaeze Okafor",
         initials: "AO",
         time: "Yesterday · 14:33",
-        body: "Confirmed on our side — exports created after the fix carry the offset correctly. Thanks for turning that around quickly.",
+        body: "Confirmed on our side; exports created after the fix carry the offset correctly. Thanks for turning that around quickly.",
       },
     ],
   },
@@ -150,7 +150,7 @@ const CONVERSATIONS: readonly Conversation[] = [
     sender: "Lena Voss",
     initials: "LV",
     email: "lena@helioslab.dev",
-    subject: "Offsite dates — last call",
+    subject: "Offsite dates: last call",
     preview: "Locking the venue Friday. If the second week of June",
     time: "Mon",
     thread: [

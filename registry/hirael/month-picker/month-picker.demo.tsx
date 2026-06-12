@@ -35,7 +35,7 @@ export default function MonthPickerDemo() {
           <MonthPickerContent />
         </MonthPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {month ? `${month.month + 1}/${month.year}` : "—"}
+          {month ? `${month.month + 1}/${month.year}` : "-"}
         </p>
       </div>
 
@@ -56,7 +56,7 @@ export default function MonthPickerDemo() {
             ? `${range.from.month + 1}/${range.from.year} → ${
                 range.to ? `${range.to.month + 1}/${range.to.year}` : "…"
               }`
-            : "—"}
+            : "-"}
         </p>
       </div>
     </div>

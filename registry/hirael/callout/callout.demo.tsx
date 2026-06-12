@@ -29,7 +29,7 @@ export default function CalloutDemo() {
       </Callout>
 
       <Callout variant="info" icon={false}>
-        Title-less callouts also work — pass <code className="font-mono">icon={`{false}`}</code>{" "}
+        Title-less callouts also work. Pass <code className="font-mono">icon={`{false}`}</code>{" "}
         to drop the leading icon.
       </Callout>
     </div>

@@ -34,8 +34,8 @@ export function ThemePlayground() {
           Your theme, every component.
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Paste a CSS variable block from your own app — or any shadcn theme
-          generator — and watch the entire Hirael registry re-skin. The active
+          Paste a CSS variable block from your own app or any shadcn theme
+          generator and watch the entire Hirael registry re-skin. The active
           theme is persisted in your browser; reset any time.
         </p>
 
@@ -56,7 +56,7 @@ export function ThemePlayground() {
       <Section
         eyebrow="Surfaces"
         title="Backgrounds & cards"
-        description="The three surface layers components stack on — background, card, popover. Borders read against each."
+        description="The three surface layers components stack on: background, card, popover. Borders read against each."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
           <Surface label="background" className="bg-background text-foreground" />

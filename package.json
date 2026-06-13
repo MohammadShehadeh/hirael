@@ -8,7 +8,8 @@
     "start": "npx serve out",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "registry:gen": "node scripts/build-registry.mjs",
+    "registry:gen": "node scripts/build-registry.mjs && node scripts/build-redirects.mjs",
+    "redirects:gen": "node scripts/build-redirects.mjs",
     "registry:props": "node scripts/extract-props.mjs",
     "registry:build": "shadcn build",
     "check:registry": "node scripts/check-registry.mjs"

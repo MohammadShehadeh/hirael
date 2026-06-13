@@ -8,222 +8,757 @@
   "redirects": [
     {
       "source": "/animated-number",
-      "destination": "/components/animated-number",
+      "destination": "/components/data/animated-number",
       "permanent": true
     },
     {
       "source": "/announcement-bar",
-      "destination": "/components/announcement-bar",
+      "destination": "/components/display/announcement-bar",
       "permanent": true
     },
     {
       "source": "/audio-player",
-      "destination": "/components/audio-player",
+      "destination": "/components/display/audio-player",
       "permanent": true
     },
     {
       "source": "/avatar-stack",
-      "destination": "/components/avatar-stack",
+      "destination": "/components/data/avatar-stack",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/app-shell-01",
+      "destination": "/blocks/app-shell/app-shell-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/app-shell-02",
+      "destination": "/blocks/app-shell/app-shell-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/app-shell-03",
+      "destination": "/blocks/app-shell/app-shell-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/app-shell-04",
+      "destination": "/blocks/app-shell/app-shell-04",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/blog-01",
+      "destination": "/blocks/blog/blog-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/contact-01",
+      "destination": "/blocks/contact/contact-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cta-01",
+      "destination": "/blocks/cta/cta-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cta-02",
+      "destination": "/blocks/cta/cta-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-01",
+      "destination": "/blocks/dashboard/dashboard-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-02",
+      "destination": "/blocks/dashboard/dashboard-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-03",
+      "destination": "/blocks/dashboard/dashboard-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-04",
+      "destination": "/blocks/dashboard/dashboard-04",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-05",
+      "destination": "/blocks/dashboard/dashboard-05",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/ecommerce-01",
+      "destination": "/blocks/ecommerce/ecommerce-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/ecommerce-02",
+      "destination": "/blocks/ecommerce/ecommerce-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/faq-01",
+      "destination": "/blocks/faqs/faq-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/faq-02",
+      "destination": "/blocks/faqs/faq-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/faq-03",
+      "destination": "/blocks/faqs/faq-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/faq-04",
+      "destination": "/blocks/faqs/faq-04",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/feature-01",
+      "destination": "/blocks/features/feature-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/feature-02",
+      "destination": "/blocks/features/feature-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/footer-01",
+      "destination": "/blocks/footer/footer-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/forgot-password-01",
+      "destination": "/blocks/auth/forgot-password-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/header-01",
+      "destination": "/blocks/header/header-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/hero-01",
+      "destination": "/blocks/hero/hero-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/hero-02",
+      "destination": "/blocks/hero/hero-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/hero-03",
+      "destination": "/blocks/hero/hero-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/image-gallery-01",
+      "destination": "/blocks/image-gallery/image-gallery-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/integrations-01",
+      "destination": "/blocks/integrations/integrations-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/login-01",
+      "destination": "/blocks/auth/login-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/login-02",
+      "destination": "/blocks/auth/login-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/logo-cloud-01",
+      "destination": "/blocks/logo-cloud/logo-cloud-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/not-found-01",
+      "destination": "/blocks/not-found/not-found-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/otp-verify-01",
+      "destination": "/blocks/auth/otp-verify-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/pricing-01",
+      "destination": "/blocks/pricing/pricing-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/pricing-02",
+      "destination": "/blocks/pricing/pricing-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/signup-01",
+      "destination": "/blocks/auth/signup-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/testimonial-01",
+      "destination": "/blocks/testimonials/testimonial-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/testimonial-02",
+      "destination": "/blocks/testimonials/testimonial-02",
       "permanent": true
     },
     {
       "source": "/calendar-heatmap",
-      "destination": "/components/calendar-heatmap",
+      "destination": "/components/data/calendar-heatmap",
       "permanent": true
     },
     {
       "source": "/callout",
-      "destination": "/components/callout",
+      "destination": "/components/display/callout",
       "permanent": true
     },
     {
       "source": "/code-block",
-      "destination": "/components/code-block",
+      "destination": "/components/display/code-block",
       "permanent": true
     },
     {
       "source": "/color-picker",
-      "destination": "/components/color-picker",
+      "destination": "/components/pickers/color-picker",
       "permanent": true
     },
     {
       "source": "/combobox",
-      "destination": "/components/combobox",
+      "destination": "/components/inputs/combobox",
+      "permanent": true
+    },
+    {
+      "source": "/components/activity-feed",
+      "destination": "/components/data/activity-feed",
+      "permanent": true
+    },
+    {
+      "source": "/components/animated-number",
+      "destination": "/components/data/animated-number",
+      "permanent": true
+    },
+    {
+      "source": "/components/announcement-bar",
+      "destination": "/components/display/announcement-bar",
+      "permanent": true
+    },
+    {
+      "source": "/components/api-keys",
+      "destination": "/components/saas/api-keys",
+      "permanent": true
+    },
+    {
+      "source": "/components/audio-player",
+      "destination": "/components/display/audio-player",
+      "permanent": true
+    },
+    {
+      "source": "/components/audit-log",
+      "destination": "/components/data/audit-log",
+      "permanent": true
+    },
+    {
+      "source": "/components/avatar-stack",
+      "destination": "/components/data/avatar-stack",
+      "permanent": true
+    },
+    {
+      "source": "/components/billing-card",
+      "destination": "/components/saas/billing-card",
+      "permanent": true
+    },
+    {
+      "source": "/components/blur-reveal",
+      "destination": "/components/animation/blur-reveal",
+      "permanent": true
+    },
+    {
+      "source": "/components/calendar-heatmap",
+      "destination": "/components/data/calendar-heatmap",
+      "permanent": true
+    },
+    {
+      "source": "/components/callout",
+      "destination": "/components/display/callout",
+      "permanent": true
+    },
+    {
+      "source": "/components/code-block",
+      "destination": "/components/display/code-block",
+      "permanent": true
+    },
+    {
+      "source": "/components/color-picker",
+      "destination": "/components/pickers/color-picker",
+      "permanent": true
+    },
+    {
+      "source": "/components/combobox",
+      "destination": "/components/inputs/combobox",
+      "permanent": true
+    },
+    {
+      "source": "/components/copy-button",
+      "destination": "/components/display/copy-button",
+      "permanent": true
+    },
+    {
+      "source": "/components/countdown-timer",
+      "destination": "/components/data/countdown-timer",
+      "permanent": true
+    },
+    {
+      "source": "/components/currency-input",
+      "destination": "/components/inputs/currency-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/cursor-glow",
+      "destination": "/components/animation/cursor-glow",
+      "permanent": true
+    },
+    {
+      "source": "/components/date-picker",
+      "destination": "/components/pickers/date-picker",
+      "permanent": true
+    },
+    {
+      "source": "/components/date-range-picker",
+      "destination": "/components/pickers/date-range-picker",
+      "permanent": true
+    },
+    {
+      "source": "/components/dock",
+      "destination": "/components/navigation/dock",
+      "permanent": true
+    },
+    {
+      "source": "/components/empty-state",
+      "destination": "/components/display/empty-state",
+      "permanent": true
+    },
+    {
+      "source": "/components/file-dropzone",
+      "destination": "/components/files/file-dropzone",
+      "permanent": true
+    },
+    {
+      "source": "/components/floating-action-button",
+      "destination": "/components/navigation/floating-action-button",
+      "permanent": true
+    },
+    {
+      "source": "/components/floating-toolbar",
+      "destination": "/components/navigation/floating-toolbar",
+      "permanent": true
+    },
+    {
+      "source": "/components/image-compare",
+      "destination": "/components/display/image-compare",
+      "permanent": true
+    },
+    {
+      "source": "/components/image-cropper",
+      "destination": "/components/files/image-cropper",
+      "permanent": true
+    },
+    {
+      "source": "/components/inline-edit",
+      "destination": "/components/inputs/inline-edit",
+      "permanent": true
+    },
+    {
+      "source": "/components/inspector-panel",
+      "destination": "/components/navigation/inspector-panel",
+      "permanent": true
+    },
+    {
+      "source": "/components/kbd",
+      "destination": "/components/display/kbd",
+      "permanent": true
+    },
+    {
+      "source": "/components/kpi-grid",
+      "destination": "/components/widgets/kpi-grid",
+      "permanent": true
+    },
+    {
+      "source": "/components/lazy-select",
+      "destination": "/components/inputs/lazy-select",
+      "permanent": true
+    },
+    {
+      "source": "/components/lightbox",
+      "destination": "/components/display/lightbox",
+      "permanent": true
+    },
+    {
+      "source": "/components/magnetic-button",
+      "destination": "/components/animation/magnetic-button",
+      "permanent": true
+    },
+    {
+      "source": "/components/marquee",
+      "destination": "/components/display/marquee",
+      "permanent": true
+    },
+    {
+      "source": "/components/masonry",
+      "destination": "/components/display/masonry",
+      "permanent": true
+    },
+    {
+      "source": "/components/media-input",
+      "destination": "/components/files/media-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/mention-input",
+      "destination": "/components/inputs/mention-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/month-picker",
+      "destination": "/components/pickers/month-picker",
+      "permanent": true
+    },
+    {
+      "source": "/components/morphing-dialog",
+      "destination": "/components/animation/morphing-dialog",
+      "permanent": true
+    },
+    {
+      "source": "/components/multi-select",
+      "destination": "/components/inputs/multi-select",
+      "permanent": true
+    },
+    {
+      "source": "/components/notifications",
+      "destination": "/components/widgets/notifications",
+      "permanent": true
+    },
+    {
+      "source": "/components/number-range",
+      "destination": "/components/inputs/number-range",
+      "permanent": true
+    },
+    {
+      "source": "/components/password-input",
+      "destination": "/components/inputs/password-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/phone-input",
+      "destination": "/components/inputs/phone-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/qr-code",
+      "destination": "/components/display/qr-code",
+      "permanent": true
+    },
+    {
+      "source": "/components/quick-actions",
+      "destination": "/components/widgets/quick-actions",
+      "permanent": true
+    },
+    {
+      "source": "/components/rating",
+      "destination": "/components/inputs/rating",
+      "permanent": true
+    },
+    {
+      "source": "/components/resizable-panels",
+      "destination": "/components/navigation/resizable-panels",
+      "permanent": true
+    },
+    {
+      "source": "/components/scroll-progress",
+      "destination": "/components/display/scroll-progress",
+      "permanent": true
+    },
+    {
+      "source": "/components/scroll-reveal",
+      "destination": "/components/animation/scroll-reveal",
+      "permanent": true
+    },
+    {
+      "source": "/components/signature-pad",
+      "destination": "/components/inputs/signature-pad",
+      "permanent": true
+    },
+    {
+      "source": "/components/sortable",
+      "destination": "/components/data/sortable",
+      "permanent": true
+    },
+    {
+      "source": "/components/spinner",
+      "destination": "/components/display/spinner",
+      "permanent": true
+    },
+    {
+      "source": "/components/split-view",
+      "destination": "/components/navigation/split-view",
+      "permanent": true
+    },
+    {
+      "source": "/components/spotlight-card",
+      "destination": "/components/animation/spotlight-card",
+      "permanent": true
+    },
+    {
+      "source": "/components/stat-card",
+      "destination": "/components/data/stat-card",
+      "permanent": true
+    },
+    {
+      "source": "/components/stepper",
+      "destination": "/components/navigation/stepper",
+      "permanent": true
+    },
+    {
+      "source": "/components/subscription-plans",
+      "destination": "/components/saas/subscription-plans",
+      "permanent": true
+    },
+    {
+      "source": "/components/tag-input",
+      "destination": "/components/inputs/tag-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/text-reveal",
+      "destination": "/components/animation/text-reveal",
+      "permanent": true
+    },
+    {
+      "source": "/components/tilt-card",
+      "destination": "/components/animation/tilt-card",
+      "permanent": true
+    },
+    {
+      "source": "/components/time-picker",
+      "destination": "/components/pickers/time-picker",
+      "permanent": true
+    },
+    {
+      "source": "/components/timeline",
+      "destination": "/components/data/timeline",
+      "permanent": true
+    },
+    {
+      "source": "/components/tour",
+      "destination": "/components/navigation/tour",
+      "permanent": true
+    },
+    {
+      "source": "/components/tree-view",
+      "destination": "/components/data/tree-view",
+      "permanent": true
+    },
+    {
+      "source": "/components/usage-dashboard",
+      "destination": "/components/saas/usage-dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/components/year-picker",
+      "destination": "/components/pickers/year-picker",
       "permanent": true
     },
     {
       "source": "/copy-button",
-      "destination": "/components/copy-button",
+      "destination": "/components/display/copy-button",
       "permanent": true
     },
     {
       "source": "/countdown-timer",
-      "destination": "/components/countdown-timer",
+      "destination": "/components/data/countdown-timer",
       "permanent": true
     },
     {
       "source": "/currency-input",
-      "destination": "/components/currency-input",
+      "destination": "/components/inputs/currency-input",
       "permanent": true
     },
     {
       "source": "/date-range-picker",
-      "destination": "/components/date-range-picker",
+      "destination": "/components/pickers/date-range-picker",
       "permanent": true
     },
     {
       "source": "/empty-state",
-      "destination": "/components/empty-state",
+      "destination": "/components/display/empty-state",
       "permanent": true
     },
     {
       "source": "/file-dropzone",
-      "destination": "/components/file-dropzone",
+      "destination": "/components/files/file-dropzone",
       "permanent": true
     },
     {
       "source": "/image-compare",
-      "destination": "/components/image-compare",
+      "destination": "/components/display/image-compare",
       "permanent": true
     },
     {
       "source": "/image-cropper",
-      "destination": "/components/image-cropper",
+      "destination": "/components/files/image-cropper",
       "permanent": true
     },
     {
       "source": "/inline-edit",
-      "destination": "/components/inline-edit",
+      "destination": "/components/inputs/inline-edit",
       "permanent": true
     },
     {
       "source": "/kbd",
-      "destination": "/components/kbd",
+      "destination": "/components/display/kbd",
       "permanent": true
     },
     {
       "source": "/lazy-select",
-      "destination": "/components/lazy-select",
+      "destination": "/components/inputs/lazy-select",
       "permanent": true
     },
     {
       "source": "/lightbox",
-      "destination": "/components/lightbox",
+      "destination": "/components/display/lightbox",
       "permanent": true
     },
     {
       "source": "/marquee",
-      "destination": "/components/marquee",
+      "destination": "/components/display/marquee",
       "permanent": true
     },
     {
       "source": "/masonry",
-      "destination": "/components/masonry",
+      "destination": "/components/display/masonry",
       "permanent": true
     },
     {
       "source": "/media-input",
-      "destination": "/components/media-input",
+      "destination": "/components/files/media-input",
       "permanent": true
     },
     {
       "source": "/mention-input",
-      "destination": "/components/mention-input",
+      "destination": "/components/inputs/mention-input",
       "permanent": true
     },
     {
       "source": "/month-picker",
-      "destination": "/components/month-picker",
+      "destination": "/components/pickers/month-picker",
       "permanent": true
     },
     {
       "source": "/multi-select",
-      "destination": "/components/multi-select",
+      "destination": "/components/inputs/multi-select",
       "permanent": true
     },
     {
       "source": "/number-range",
-      "destination": "/components/number-range",
+      "destination": "/components/inputs/number-range",
       "permanent": true
     },
     {
       "source": "/password-input",
-      "destination": "/components/password-input",
+      "destination": "/components/inputs/password-input",
       "permanent": true
     },
     {
       "source": "/phone-input",
-      "destination": "/components/phone-input",
+      "destination": "/components/inputs/phone-input",
       "permanent": true
     },
     {
       "source": "/qr-code",
-      "destination": "/components/qr-code",
+      "destination": "/components/display/qr-code",
       "permanent": true
     },
     {
       "source": "/rating",
-      "destination": "/components/rating",
+      "destination": "/components/inputs/rating",
       "permanent": true
     },
     {
       "source": "/scroll-progress",
-      "destination": "/components/scroll-progress",
+      "destination": "/components/display/scroll-progress",
       "permanent": true
     },
     {
       "source": "/signature-pad",
-      "destination": "/components/signature-pad",
+      "destination": "/components/inputs/signature-pad",
       "permanent": true
     },
     {
       "source": "/sortable",
-      "destination": "/components/sortable",
+      "destination": "/components/data/sortable",
       "permanent": true
     },
     {
       "source": "/spinner",
-      "destination": "/components/spinner",
+      "destination": "/components/display/spinner",
       "permanent": true
     },
     {
       "source": "/stat-card",
-      "destination": "/components/stat-card",
+      "destination": "/components/data/stat-card",
       "permanent": true
     },
     {
       "source": "/stepper",
-      "destination": "/components/stepper",
+      "destination": "/components/navigation/stepper",
       "permanent": true
     },
     {
       "source": "/tag-input",
-      "destination": "/components/tag-input",
+      "destination": "/components/inputs/tag-input",
       "permanent": true
     },
     {
       "source": "/time-picker",
-      "destination": "/components/time-picker",
+      "destination": "/components/pickers/time-picker",
       "permanent": true
     },
     {
       "source": "/timeline",
-      "destination": "/components/timeline",
+      "destination": "/components/data/timeline",
       "permanent": true
     },
     {
       "source": "/tour",
-      "destination": "/components/tour",
+      "destination": "/components/navigation/tour",
       "permanent": true
     },
     {
       "source": "/tree-view",
-      "destination": "/components/tree-view",
+      "destination": "/components/data/tree-view",
       "permanent": true
     },
     {
       "source": "/year-picker",
-      "destination": "/components/year-picker",
+      "destination": "/components/pickers/year-picker",
       "permanent": true
     }
   ]

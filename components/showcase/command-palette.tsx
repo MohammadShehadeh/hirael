@@ -18,6 +18,7 @@ import {
   COMPONENTS,
   REGISTRY,
   TEMPLATES,
+  entryHref,
   type ComponentCategory,
 } from "@/registry/hirael/registry-meta"
 
@@ -67,7 +68,7 @@ export function CommandPalette({
                   <CommandItem
                     key={c.name}
                     value={`${c.title} ${c.name}`}
-                    onSelect={() => go(`/components/${c.name}`)}
+                    onSelect={() => go(entryHref(c))}
                   >
                     <Boxes className="text-muted-foreground" />
                     <span>{c.title}</span>
@@ -82,7 +83,7 @@ export function CommandPalette({
                   <CommandItem
                     key={b.name}
                     value={`${b.title} ${b.name}`}
-                    onSelect={() => go(`/blocks/${b.name}`)}
+                    onSelect={() => go(entryHref(b))}
                   >
                     <LayoutTemplate className="text-muted-foreground" />
                     <span>{b.title}</span>
@@ -97,7 +98,7 @@ export function CommandPalette({
                   <CommandItem
                     key={t.name}
                     value={`${t.title} ${t.name}`}
-                    onSelect={() => go(`/templates/${t.name}`)}
+                    onSelect={() => go(entryHref(t))}
                   >
                     <Frame className="text-muted-foreground" />
                     <span>{t.title}</span>

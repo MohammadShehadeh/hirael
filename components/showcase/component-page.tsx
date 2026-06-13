@@ -4,11 +4,15 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { BlockViewer } from "@/components/showcase/block-viewer"
+import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs"
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
 import { DirectionToggle } from "@/components/showcase/direction-toggle"
 import { InstallBlock } from "@/components/showcase/install-block"
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
-import type { RegistryEntryMeta } from "@/registry/hirael/registry-meta"
+import {
+  entryEmbedHref,
+  type RegistryEntryMeta,
+} from "@/registry/hirael/registry-meta"
 
 type Tab = "preview" | "usage" | "api" | "code" | "install"
 
@@ -37,6 +41,7 @@ export function ComponentPage({
   source,
   demoSource,
   api,
+  breadcrumb,
 }: {
   entry: RegistryEntryMeta
   /** Pre-highlighted source files keyed by repo-relative path. */
@@ -45,14 +50,15 @@ export function ComponentPage({
   demoSource?: SourceFile | null
   /** Extracted per-part props tables (registry-props.json). */
   api?: ApiPart[] | null
+  /** Hierarchy trail shown above the header for navigation. */
+  breadcrumb?: Crumb[]
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
   const [rtl, setRtl] = React.useState(false)
 
   const isComposite =
     entry.category === "blocks" || entry.category === "templates"
-  const embedBase =
-    entry.category === "templates" ? "/embed/templates" : "/embed/blocks"
+  const embedHref = entryEmbedHref(entry)
 
   const codeTabs: CodeBlockTab[] = React.useMemo(
     () =>
@@ -81,21 +87,25 @@ export function ComponentPage({
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 md:px-10">
       <header className="flex flex-col gap-3 border-b border-border pb-6">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            {entry.category}
-          </span>
-          {entry.blockKind && (
-            <>
-              <span className="font-mono text-[10px] text-muted-foreground">
-                ·
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                {entry.blockKind}
-              </span>
-            </>
-          )}
-        </div>
+        {breadcrumb ? (
+          <Breadcrumbs items={breadcrumb} />
+        ) : (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              {entry.category}
+            </span>
+            {entry.blockKind && (
+              <>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  ·
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                  {entry.blockKind}
+                </span>
+              </>
+            )}
+          </div>
+        )}
         <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
           {entry.title}
         </h1>
@@ -165,11 +175,7 @@ export function ComponentPage({
       >
         {tab === "preview" &&
           (isComposite ? (
-            <BlockViewer
-              name={entry.name}
-              title={entry.title}
-              embedBase={embedBase}
-            />
+            <BlockViewer title={entry.title} embedHref={embedHref} />
           ) : (
             <div className="relative rounded-sm border border-border bg-card/40">
               <DirectionToggle

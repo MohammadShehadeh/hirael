@@ -112,14 +112,15 @@ at [hirael.com/blocks](https://hirael.com/blocks).
 ## Project structure
 
 ```
-forgecn/
+hirael/
 ├── app/                          # Next.js App Router
 │   ├── (showcase)/               # sidebar + main column
 │   │   ├── components/page.tsx   # component index
-│   │   ├── blocks/[block]/       # per-block preview
+│   │   ├── components/[category]/[component]/ # per-component page
+│   │   ├── blocks/[category]/[block]/         # per-block preview
 │   │   ├── templates/[template]/ # per-template preview
 │   │   └── theme/playground.tsx  # theme playground
-│   ├── embed/blocks/             # framed block previews
+│   ├── embed/blocks/[category]/[block]/ # framed block previews
 │   ├── layout.tsx
 │   ├── globals.css               # design tokens (Hirael palette, 0.65rem radius)
 │   └── page.tsx                  # landing

@@ -7,31 +7,45 @@ import { ComponentPage } from "@/components/showcase/component-page"
 import type { ApiPart, SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
 import { SITE } from "@/lib/site"
-import { COMPONENTS, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import {
+  CATEGORY_LABELS,
+  COMPONENTS,
+  REGISTRY_BY_NAME,
+  entryHref,
+} from "@/registry/hirael/registry-meta"
 import registryProps from "@/registry/hirael/registry-props.json"
 
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return COMPONENTS.map((entry) => ({ component: entry.name }))
+  return COMPONENTS.map((entry) => ({
+    category: entry.category,
+    component: entry.name,
+  }))
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ component: string }>
+  params: Promise<{ category: string; component: string }>
 }): Promise<Metadata> {
-  const { component } = await params
+  const { category, component } = await params
   const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks" || entry.category === "templates")
+  if (
+    !entry ||
+    entry.category === "blocks" ||
+    entry.category === "templates" ||
+    entry.category !== category
+  )
     return {}
-  const url = `${SITE.url}/components/${entry.name}`
+  const href = entryHref(entry)
+  const url = `${SITE.url}${href}`
   const title = `${entry.title} | ${SITE.name}`
   return {
     title: entry.title,
     description: entry.description,
     alternates: {
-      canonical: `/components/${entry.name}`,
+      canonical: href,
     },
     openGraph: {
       type: "article",
@@ -109,24 +123,33 @@ async function loadDemoSource(
 export default async function ComponentRoute({
   params,
 }: {
-  params: Promise<{ component: string }>
+  params: Promise<{ category: string; component: string }>
 }) {
-  const { component } = await params
+  const { category, component } = await params
   const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks" || entry.category === "templates")
+  if (
+    !entry ||
+    entry.category === "blocks" ||
+    entry.category === "templates" ||
+    entry.category !== category
+  )
     notFound()
   const [source, demoSource] = await Promise.all([
     loadSource(entry.sourceFiles),
     loadDemoSource(entry),
   ])
-  const api =
-    (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null
+  const api = (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null
   return (
     <ComponentPage
       entry={entry}
       source={source}
       demoSource={demoSource}
       api={api}
+      breadcrumb={[
+        { label: "Components", href: "/components" },
+        { label: CATEGORY_LABELS[entry.category], href: `/components/${entry.category}` },
+        { label: entry.title },
+      ]}
     />
   )
 }

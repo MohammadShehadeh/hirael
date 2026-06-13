@@ -11,22 +11,11 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   CATEGORY_LABELS,
+  COMPONENT_CATEGORY_ORDER,
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
-  type ComponentCategory,
+  entryHref,
 } from "@/registry/hirael/registry-meta"
-
-const CATEGORY_ORDER: ComponentCategory[] = [
-  "inputs",
-  "pickers",
-  "files",
-  "data",
-  "display",
-  "animation",
-  "navigation",
-  "widgets",
-  "saas",
-]
 
 const COMPOSE_SNIPPET = `import {
   MultiSelect,
@@ -115,15 +104,19 @@ export default async function ComponentsIndex() {
           </span>
         </div>
 
-        {CATEGORY_ORDER.map((cat) => {
+        {COMPONENT_CATEGORY_ORDER.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
           return (
             <div key={cat} className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between">
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                <Link
+                  href={`/components/${cat}`}
+                  className="group inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                >
                   {CATEGORY_LABELS[cat]}
-                </h3>
+                  <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                </Link>
                 <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
                   {items.length}
                 </span>
@@ -132,7 +125,7 @@ export default async function ComponentsIndex() {
                 {items.map((entry) => (
                   <li key={entry.name}>
                     <Link
-                      href={`/components/${entry.name}`}
+                      href={entryHref(entry)}
                       className="group flex h-full flex-col justify-between gap-3 bg-card p-4 transition-colors hover:bg-accent"
                     >
                       <div>
@@ -150,7 +143,7 @@ export default async function ComponentsIndex() {
                         </p>
                       </div>
                       <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
-                        /{entry.name} →
+                        {entryHref(entry)} →
                       </div>
                     </Link>
                   </li>
@@ -200,7 +193,7 @@ export default async function ComponentsIndex() {
                   {items.map((entry) => (
                     <li key={entry.name}>
                       <Link
-                        href={`/blocks/${entry.name}`}
+                        href={entryHref(entry)}
                         className="group inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2 py-1 font-mono text-[11px] tracking-tight transition-colors hover:border-foreground/40 hover:bg-accent"
                         title={entry.title}
                       >

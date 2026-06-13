@@ -10,8 +10,9 @@ import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { SITE } from "@/lib/site"
 import {
   CATEGORY_LABELS,
+  COMPONENT_CATEGORY_ORDER,
   REGISTRY_BY_CATEGORY,
-  type ComponentCategory,
+  entryHref,
 } from "@/registry/hirael/registry-meta"
 import {
   Sidebar,
@@ -26,18 +27,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/registry/hirael/ui/sidebar"
-
-const CATEGORY_ORDER: ComponentCategory[] = [
-  "inputs",
-  "pickers",
-  "files",
-  "data",
-  "display",
-  "animation",
-  "navigation",
-  "widgets",
-  "saas",
-]
 
 export function ShowcaseSidebar() {
   const pathname = usePathname()
@@ -125,16 +114,18 @@ export function ShowcaseSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {CATEGORY_ORDER.map((cat) => {
+        {COMPONENT_CATEGORY_ORDER.map((cat) => {
           const items = REGISTRY_BY_CATEGORY[cat]
           if (!items.length) return null
           return (
             <SidebarGroup key={cat}>
-              <SidebarGroupLabel>{CATEGORY_LABELS[cat]}</SidebarGroupLabel>
+              <SidebarGroupLabel asChild>
+                <Link href={`/components/${cat}`}>{CATEGORY_LABELS[cat]}</Link>
+              </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {items.map((entry) => {
-                    const href = `/components/${entry.name}`
+                    const href = entryHref(entry)
                     const active = isActive(href)
                     return (
                       <SidebarMenuItem key={entry.name}>

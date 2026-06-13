@@ -249,7 +249,7 @@ All four must pass before requesting review. For component PRs you are
 also expected to:
 
 1. Visit the showcase page at
-   `http://localhost:3000/components/<name>` and exercise the demo.
+   `http://localhost:3000/components/<category>/<name>` and exercise the demo.
 2. Confirm `npx shadcn@latest add http://localhost:3000/r/<name>.json`
    succeeds in a separate consumer app (see
    [Validating an install end-to-end](#validating-an-install-end-to-end)).

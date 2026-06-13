@@ -3,75 +3,43 @@ import * as path from "node:path"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
-import { CategoryPage } from "@/components/showcase/category-page"
-import {
-  CATEGORY_BY_SLUG,
-  CATEGORY_REGISTRY,
-} from "@/components/showcase/block-categories"
+import { CATEGORY_BY_SLUG } from "@/components/showcase/block-categories"
 import { ComponentPage } from "@/components/showcase/component-page"
 import type { SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
 import { SITE } from "@/lib/site"
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import {
+  REGISTRY,
+  REGISTRY_BY_NAME,
+  entryCategorySlug,
+  entryHref,
+} from "@/registry/hirael/registry-meta"
 
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  const blockParams = REGISTRY.filter(
-    (entry) => entry.category === "blocks"
-  ).map((entry) => ({ block: entry.name }))
-  const categoryParams = CATEGORY_REGISTRY.map((c) => ({ block: c.slug }))
-  return [...categoryParams, ...blockParams]
+  return REGISTRY.filter((entry) => entry.category === "blocks").map(
+    (entry) => ({ category: entryCategorySlug(entry), block: entry.name })
+  )
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ block: string }>
+  params: Promise<{ category: string; block: string }>
 }): Promise<Metadata> {
-  const { block } = await params
-  const category = CATEGORY_BY_SLUG[block]
-  if (category) {
-    const title = `${category.title} blocks | ${SITE.name}`
-    const url = `${SITE.url}/blocks/${category.slug}`
-    return {
-      title: `${category.title} blocks`,
-      description: category.description,
-      alternates: {
-        canonical: `/blocks/${category.slug}`,
-      },
-      openGraph: {
-        type: "website",
-        url,
-        siteName: SITE.name,
-        title,
-        description: category.description,
-        images: [
-          {
-            url: "/opengraph-image",
-            width: 1200,
-            height: 630,
-            alt: title,
-          },
-        ],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description: category.description,
-        images: ["/opengraph-image"],
-      },
-    }
-  }
+  const { category, block } = await params
   const entry = REGISTRY_BY_NAME[block]
-  if (!entry || entry.category !== "blocks") return {}
-  const url = `${SITE.url}/blocks/${entry.name}`
+  if (!entry || entry.category !== "blocks" || entryCategorySlug(entry) !== category)
+    return {}
+  const href = entryHref(entry)
+  const url = `${SITE.url}${href}`
   const title = `${entry.title} block | ${SITE.name}`
   return {
     title: `${entry.title} block`,
     description: entry.description,
     alternates: {
-      canonical: `/blocks/${entry.name}`,
+      canonical: href,
     },
     openGraph: {
       type: "article",
@@ -124,17 +92,23 @@ async function loadSource(
 export default async function BlockRoute({
   params,
 }: {
-  params: Promise<{ block: string }>
+  params: Promise<{ category: string; block: string }>
 }) {
-  const { block } = await params
-
-  const category = CATEGORY_BY_SLUG[block]
-  if (category) {
-    return <CategoryPage category={category} />
-  }
-
+  const { category, block } = await params
   const entry = REGISTRY_BY_NAME[block]
-  if (!entry || entry.category !== "blocks") notFound()
+  if (!entry || entry.category !== "blocks" || entryCategorySlug(entry) !== category)
+    notFound()
   const source = await loadSource(entry.sourceFiles)
-  return <ComponentPage entry={entry} source={source} />
+  const meta = CATEGORY_BY_SLUG[category]
+  return (
+    <ComponentPage
+      entry={entry}
+      source={source}
+      breadcrumb={[
+        { label: "Blocks", href: "/blocks" },
+        { label: meta?.title ?? category, href: `/blocks/${category}` },
+        { label: entry.title },
+      ]}
+    />
+  )
 }

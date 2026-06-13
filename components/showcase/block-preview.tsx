@@ -13,14 +13,15 @@ import * as React from "react"
  * wrong size before the first measurement lands.
  */
 export function BlockPreview({
-  name,
+  embedHref,
   title,
   /** Simulated viewport the iframe should render at. */
   simWidth = 1280,
   /** Iframe height — chosen with simWidth to fix the preview aspect ratio. */
   simHeight = 720,
 }: {
-  name: string
+  /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
+  embedHref: string
   title: string
   simWidth?: number
   simHeight?: number
@@ -48,7 +49,7 @@ export function BlockPreview({
       style={{ aspectRatio: `${simWidth} / ${simHeight}` }}
     >
       <iframe
-        src={`/embed/blocks/${name}`}
+        src={embedHref}
         title={`${title} preview`}
         loading="lazy"
         tabIndex={-1}

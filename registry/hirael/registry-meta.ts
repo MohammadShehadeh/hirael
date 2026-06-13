@@ -1503,3 +1503,95 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "image-gallery",
   "app-shell",
 ]
+
+/* -------------------------------------------------------------------------- */
+/* Routing — every browsable item lives under its category segment            */
+/* -------------------------------------------------------------------------- */
+
+/** Component categories in display order. Drives the index, sidebar, sitemap. */
+export const COMPONENT_CATEGORY_ORDER: Exclude<
+  ComponentCategory,
+  "blocks" | "templates"
+>[] = [
+  "inputs",
+  "pickers",
+  "files",
+  "data",
+  "display",
+  "animation",
+  "navigation",
+  "widgets",
+  "saas",
+]
+
+/** One-line, human blurb for each component category landing page. */
+export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
+  (typeof COMPONENT_CATEGORY_ORDER)[number],
+  string
+> = {
+  inputs:
+    "Text fields, selects, chip and tag inputs, and the form controls shadcn/ui leaves out.",
+  pickers:
+    "Date, time, month, year and color pickers with keyboard navigation and no date library.",
+  files: "Upload zones, image croppers and local media pickers.",
+  data: "Feeds, timelines, trees, heatmaps and other ways to show structured data.",
+  display:
+    "Callouts, code blocks, marquees, lightboxes and other visual helpers.",
+  animation:
+    "Scroll reveals, tilts, spotlights and pointer-driven motion. Reduced-motion aware.",
+  navigation: "Docks, steppers, toolbars, split views and resizable panels.",
+  widgets:
+    "Composite dashboard panels: KPI grids, notifications, quick actions.",
+  saas: "Billing, plans, API keys and usage panels for product settings.",
+}
+
+/**
+ * URL slug per block kind. The slug differs from the kind key wherever the
+ * plural or label reads better in a path (feature → features, login → auth).
+ * This is the source of truth the block category pages derive their slug from.
+ */
+export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
+  hero: "hero",
+  feature: "features",
+  pricing: "pricing",
+  testimonial: "testimonials",
+  cta: "cta",
+  faq: "faqs",
+  login: "auth",
+  header: "header",
+  footer: "footer",
+  "not-found": "not-found",
+  "logo-cloud": "logo-cloud",
+  contact: "contact",
+  blog: "blog",
+  ecommerce: "ecommerce",
+  dashboard: "dashboard",
+  integrations: "integrations",
+  "image-gallery": "image-gallery",
+  "app-shell": "app-shell",
+}
+
+export const BLOCK_KIND_BY_SLUG: Record<string, BlockKind> = Object.fromEntries(
+  Object.entries(BLOCK_KIND_SLUGS).map(([kind, slug]) => [slug, kind])
+) as Record<string, BlockKind>
+
+/** The category segment an entry's detail page sits under. */
+export function entryCategorySlug(entry: RegistryEntryMeta): string {
+  if (entry.category === "blocks" && entry.blockKind)
+    return BLOCK_KIND_SLUGS[entry.blockKind]
+  return entry.category
+}
+
+/** Canonical site path for an entry's detail page (category in the URL). */
+export function entryHref(entry: RegistryEntryMeta): string {
+  if (entry.category === "templates") return `/templates/${entry.name}`
+  if (entry.category === "blocks")
+    return `/blocks/${entryCategorySlug(entry)}/${entry.name}`
+  return `/components/${entry.category}/${entry.name}`
+}
+
+/** Path of an entry's framed `/embed/*` preview (category in the URL). */
+export function entryEmbedHref(entry: RegistryEntryMeta): string {
+  if (entry.category === "templates") return `/embed/templates/${entry.name}`
+  return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`
+}

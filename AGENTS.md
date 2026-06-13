@@ -165,9 +165,13 @@ secrets, plus `RELEASES_TOKEN` (a public-repo-read PAT) so the changelog
 fetch during the production build isn't rate-limited.
 
 When you ship anything user-visible, make the next release note describe it
-before the tag is pushed:
+before the tag is pushed. A release note is for visitors and consumers, so
+keep it to what they get — new components, blocks, features, and bug fixes.
+Leave out how the site is built, rendered, or deployed (static export, the
+GitHub Releases fetch, Vercel, CI, the registry pipeline) and other
+repo-internal tooling; none of that concerns the reader of a changelog.
 
-- Keep release titles short and visitor-facing, e.g. `Static export & RTL`.
+- Keep release titles short and visitor-facing, e.g. `RTL across the catalog`.
 - Put detail in the annotated tag/release body under `Highlights:` and
   `Fixes:` headings, each followed by `- ` bullets — that's exactly what the
   changelog parser groups.

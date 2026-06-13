@@ -129,7 +129,7 @@ export default async function ComponentsIndex() {
                 {items.map((entry) => (
                   <li key={entry.name}>
                     <Link
-                      href={`/${entry.name}`}
+                      href={`/components/${entry.name}`}
                       className="group flex h-full flex-col justify-between gap-3 bg-card p-4 transition-colors hover:bg-accent"
                     >
                       <div>

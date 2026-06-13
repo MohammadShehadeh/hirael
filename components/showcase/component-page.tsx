@@ -10,7 +10,7 @@ import { InstallBlock } from "@/components/showcase/install-block"
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import type { RegistryEntryMeta } from "@/registry/hirael/registry-meta"
 
-type Tab = "preview" | "usage" | "code" | "install"
+type Tab = "preview" | "usage" | "api" | "code" | "install"
 
 export type SourceFile = {
   code: string
@@ -18,16 +18,33 @@ export type SourceFile = {
   lang: string
 }
 
+export type ApiProp = {
+  name: string
+  type: string
+  required: boolean
+  default: string | null
+  description: string | null
+}
+
+export type ApiPart = {
+  name: string
+  props: ApiProp[]
+  extendsNative: boolean
+}
+
 export function ComponentPage({
   entry,
   source,
   demoSource,
+  api,
 }: {
   entry: RegistryEntryMeta
   /** Pre-highlighted source files keyed by repo-relative path. */
   source: Record<string, SourceFile>
   /** Pre-highlighted demo source — shows how to use the component. */
   demoSource?: SourceFile | null
+  /** Extracted per-part props tables (registry-props.json). */
+  api?: ApiPart[] | null
 }) {
   const [tab, setTab] = React.useState<Tab>("preview")
   const [rtl, setRtl] = React.useState(false)
@@ -48,13 +65,15 @@ export function ComponentPage({
   )
 
   const showUsageTab = !isBlock && !!demoSource
+  const showApiTab = !isBlock && !!api?.length
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
     const list: Array<[Tab, string]> = [["preview", "Preview"]]
     if (showUsageTab) list.push(["usage", "Usage"])
+    if (showApiTab) list.push(["api", "API"])
     list.push(["code", "Code"], ["install", "Install"])
     return list
-  }, [showUsageTab])
+  }, [showUsageTab, showApiTab])
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 md:px-10">
@@ -172,6 +191,8 @@ export function ComponentPage({
           />
         )}
 
+        {tab === "api" && api && <ApiPanel parts={api} />}
+
         {tab === "code" && codeTabs.length > 0 && (
           <CodeBlock tabs={codeTabs} layout={isBlock ? "tree" : "tabs"} />
         )}
@@ -214,6 +235,87 @@ export function ComponentPage({
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+const API_TH =
+  "px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground"
+
+function ApiPanel({ parts }: { parts: ApiPart[] }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {parts.map((part) => (
+        <section
+          key={part.name}
+          className="overflow-hidden rounded-sm border border-border bg-card"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
+            <h3 className="font-mono text-xs text-foreground">
+              {`<${part.name} />`}
+            </h3>
+            {part.extendsNative && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                + native element props
+              </span>
+            )}
+          </div>
+          {part.props.length ? (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className={API_TH}>Prop</th>
+                    <th className={API_TH}>Type</th>
+                    <th className={API_TH}>Default</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {part.props.map((prop) => (
+                    <tr
+                      key={prop.name}
+                      className="border-b border-border align-top last:border-b-0"
+                    >
+                      <td className="px-4 py-2.5">
+                        <code className="font-mono text-xs text-foreground">
+                          {prop.name}
+                          {prop.required && (
+                            <span
+                              className="text-destructive"
+                              title="Required"
+                            >
+                              *
+                            </span>
+                          )}
+                        </code>
+                        {prop.description && (
+                          <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">
+                            {prop.description}
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <code className="font-mono text-xs text-muted-foreground">
+                          {prop.type}
+                        </code>
+                      </td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">
+                        {prop.default ?? "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="px-4 py-3 text-xs text-muted-foreground">
+              {part.extendsNative
+                ? "No props of its own — forwards everything to the underlying element."
+                : "No configurable props."}
+            </p>
+          )}
+        </section>
+      ))}
     </div>
   )
 }

@@ -111,7 +111,7 @@ export function ShowcaseSidebar() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {items.map((entry) => {
-                    const href = `/${entry.name}`
+                    const href = `/components/${entry.name}`
                     const active = isActive(href)
                     return (
                       <SidebarMenuItem key={entry.name}>

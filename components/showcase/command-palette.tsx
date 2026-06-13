@@ -67,7 +67,7 @@ export function CommandPalette({
                   <CommandItem
                     key={c.name}
                     value={`${c.title} ${c.name}`}
-                    onSelect={() => go(`/${c.name}`)}
+                    onSelect={() => go(`/components/${c.name}`)}
                   >
                     <Boxes className="text-muted-foreground" />
                     <span>{c.title}</span>

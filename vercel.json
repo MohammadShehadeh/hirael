@@ -4,5 +4,227 @@
     "deploymentEnabled": {
       "main": false
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/animated-number",
+      "destination": "/components/animated-number",
+      "permanent": true
+    },
+    {
+      "source": "/announcement-bar",
+      "destination": "/components/announcement-bar",
+      "permanent": true
+    },
+    {
+      "source": "/audio-player",
+      "destination": "/components/audio-player",
+      "permanent": true
+    },
+    {
+      "source": "/avatar-stack",
+      "destination": "/components/avatar-stack",
+      "permanent": true
+    },
+    {
+      "source": "/calendar-heatmap",
+      "destination": "/components/calendar-heatmap",
+      "permanent": true
+    },
+    {
+      "source": "/callout",
+      "destination": "/components/callout",
+      "permanent": true
+    },
+    {
+      "source": "/code-block",
+      "destination": "/components/code-block",
+      "permanent": true
+    },
+    {
+      "source": "/color-picker",
+      "destination": "/components/color-picker",
+      "permanent": true
+    },
+    {
+      "source": "/combobox",
+      "destination": "/components/combobox",
+      "permanent": true
+    },
+    {
+      "source": "/copy-button",
+      "destination": "/components/copy-button",
+      "permanent": true
+    },
+    {
+      "source": "/countdown-timer",
+      "destination": "/components/countdown-timer",
+      "permanent": true
+    },
+    {
+      "source": "/currency-input",
+      "destination": "/components/currency-input",
+      "permanent": true
+    },
+    {
+      "source": "/date-range-picker",
+      "destination": "/components/date-range-picker",
+      "permanent": true
+    },
+    {
+      "source": "/empty-state",
+      "destination": "/components/empty-state",
+      "permanent": true
+    },
+    {
+      "source": "/file-dropzone",
+      "destination": "/components/file-dropzone",
+      "permanent": true
+    },
+    {
+      "source": "/image-compare",
+      "destination": "/components/image-compare",
+      "permanent": true
+    },
+    {
+      "source": "/image-cropper",
+      "destination": "/components/image-cropper",
+      "permanent": true
+    },
+    {
+      "source": "/inline-edit",
+      "destination": "/components/inline-edit",
+      "permanent": true
+    },
+    {
+      "source": "/kbd",
+      "destination": "/components/kbd",
+      "permanent": true
+    },
+    {
+      "source": "/lazy-select",
+      "destination": "/components/lazy-select",
+      "permanent": true
+    },
+    {
+      "source": "/lightbox",
+      "destination": "/components/lightbox",
+      "permanent": true
+    },
+    {
+      "source": "/marquee",
+      "destination": "/components/marquee",
+      "permanent": true
+    },
+    {
+      "source": "/masonry",
+      "destination": "/components/masonry",
+      "permanent": true
+    },
+    {
+      "source": "/media-input",
+      "destination": "/components/media-input",
+      "permanent": true
+    },
+    {
+      "source": "/mention-input",
+      "destination": "/components/mention-input",
+      "permanent": true
+    },
+    {
+      "source": "/month-picker",
+      "destination": "/components/month-picker",
+      "permanent": true
+    },
+    {
+      "source": "/multi-select",
+      "destination": "/components/multi-select",
+      "permanent": true
+    },
+    {
+      "source": "/number-range",
+      "destination": "/components/number-range",
+      "permanent": true
+    },
+    {
+      "source": "/password-input",
+      "destination": "/components/password-input",
+      "permanent": true
+    },
+    {
+      "source": "/phone-input",
+      "destination": "/components/phone-input",
+      "permanent": true
+    },
+    {
+      "source": "/qr-code",
+      "destination": "/components/qr-code",
+      "permanent": true
+    },
+    {
+      "source": "/rating",
+      "destination": "/components/rating",
+      "permanent": true
+    },
+    {
+      "source": "/scroll-progress",
+      "destination": "/components/scroll-progress",
+      "permanent": true
+    },
+    {
+      "source": "/signature-pad",
+      "destination": "/components/signature-pad",
+      "permanent": true
+    },
+    {
+      "source": "/sortable",
+      "destination": "/components/sortable",
+      "permanent": true
+    },
+    {
+      "source": "/spinner",
+      "destination": "/components/spinner",
+      "permanent": true
+    },
+    {
+      "source": "/stat-card",
+      "destination": "/components/stat-card",
+      "permanent": true
+    },
+    {
+      "source": "/stepper",
+      "destination": "/components/stepper",
+      "permanent": true
+    },
+    {
+      "source": "/tag-input",
+      "destination": "/components/tag-input",
+      "permanent": true
+    },
+    {
+      "source": "/time-picker",
+      "destination": "/components/time-picker",
+      "permanent": true
+    },
+    {
+      "source": "/timeline",
+      "destination": "/components/timeline",
+      "permanent": true
+    },
+    {
+      "source": "/tour",
+      "destination": "/components/tour",
+      "permanent": true
+    },
+    {
+      "source": "/tree-view",
+      "destination": "/components/tree-view",
+      "permanent": true
+    },
+    {
+      "source": "/year-picker",
+      "destination": "/components/year-picker",
+      "permanent": true
+    }
+  ]
 }

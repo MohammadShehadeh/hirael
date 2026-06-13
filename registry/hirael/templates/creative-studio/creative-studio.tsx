@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { About } from "./about"
 import { Features } from "./features"
 import { almarai, instrumentSerif } from "./fonts"
+import { Footer } from "./footer"
 import { Hero } from "./hero"
 
 export default function CreativeStudio() {
@@ -22,6 +23,7 @@ export default function CreativeStudio() {
       <Hero />
       <About />
       <Features />
+      <Footer />
     </div>
   )
 }

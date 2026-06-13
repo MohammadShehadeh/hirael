@@ -256,13 +256,15 @@ export function ScrollRevealText({
   })
   const words = text.split(" ")
   const total = text.length
-  let cursor = 0
+  const wordLengths = words.map((word) => word.length + 1)
+  const starts = words.map((_, i) =>
+    wordLengths.slice(0, i).reduce((sum, len) => sum + len, 0)
+  )
 
   return (
     <p ref={ref} aria-label={text} className={className}>
       {words.map((word, wi) => {
-        const start = cursor
-        cursor += word.length + 1
+        const start = starts[wi]
         return (
           <React.Fragment key={wi}>
             <span className="inline-block whitespace-nowrap">

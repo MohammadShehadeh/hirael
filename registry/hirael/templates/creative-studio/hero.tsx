@@ -27,8 +27,8 @@ export function Hero({
   })
 
   return (
-    <section className="h-screen w-full bg-black p-4 md:p-6">
-      <div className="relative h-full w-full overflow-hidden rounded-2xl bg-black md:rounded-[2rem]">
+    <section className="relative min-h-svh w-full bg-black p-4 md:p-6">
+      <div className="relative flex min-h-[calc(100svh-2rem)] w-full flex-col overflow-hidden rounded-2xl bg-black md:min-h-[calc(100svh-3rem)] md:rounded-[2rem]">
         {videoSrc ? (
           <video
             className="absolute inset-0 h-full w-full object-cover"
@@ -50,13 +50,16 @@ export function Hero({
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"
         />
 
-        <nav className="absolute left-1/2 top-0 z-20 -translate-x-1/2 rounded-b-2xl bg-black px-4 py-2 md:px-8 md:rounded-b-3xl">
-          <ul className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
+        <nav className="absolute left-1/2 top-0 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-b-2xl bg-black md:max-w-none md:rounded-b-3xl">
+          <ul
+            className="flex items-center gap-5 overflow-x-auto whitespace-nowrap px-5 py-2.5 sm:gap-7 md:gap-9 md:px-9 lg:gap-11 [&::-webkit-scrollbar]:hidden"
+            style={{ scrollbarWidth: "none" }}
+          >
             {NAV_ITEMS.map((item) => (
-              <li key={item}>
+              <li key={item} className="shrink-0">
                 <a
                   href="#"
-                  className="text-[10px] text-[#E1E0CC]/80 transition-colors hover:text-[#E1E0CC] sm:text-xs md:text-sm"
+                  className="text-xs text-[#E1E0CC]/80 transition-colors hover:text-[#E1E0CC] md:text-sm"
                 >
                   {item}
                 </a>
@@ -65,22 +68,22 @@ export function Hero({
           </ul>
         </nav>
 
-        <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-6 md:p-8 lg:p-10">
-          <div className="grid grid-cols-12 items-end gap-4 md:gap-6">
+        <div className="relative z-10 mt-auto p-4 sm:p-6 md:p-8 lg:p-10">
+          <div className="grid grid-cols-12 items-end gap-6 md:gap-8">
             <div className="col-span-12 lg:col-span-8">
               <h1
-                className="text-[26vw] font-medium leading-[0.85] tracking-[-0.07em] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] xl:text-[19vw] 2xl:text-[20vw]"
+                className="text-[24vw] font-medium leading-[0.85] tracking-[-0.07em] sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]"
                 style={{ color: CREAM }}
               >
                 <WordsPullUp text="Hirael" showAsterisk />
               </h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-4 lg:col-span-4 md:gap-6">
+            <div className="col-span-12 flex flex-col gap-4 md:gap-6 lg:col-span-4">
               <motion.p
                 {...fade(0.5)}
-                className="max-w-md text-xs text-[#DEDBC8]/70 sm:text-sm md:text-base"
-                style={{ lineHeight: 1.2 }}
+                className="max-w-md text-sm text-[#DEDBC8]/70 sm:text-base"
+                style={{ lineHeight: 1.3 }}
               >
                 Hirael is a worldwide network of visual artists, filmmakers and
                 storytellers bound not by place, status or labels but by passion

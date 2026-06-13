@@ -43,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const componentRoutes: MetadataRoute.Sitemap = COMPONENTS.map((entry) => ({
-    url: `${SITE.url}/${entry.name}`,
+    url: `${SITE.url}/components/${entry.name}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.8,

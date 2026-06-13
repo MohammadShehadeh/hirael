@@ -44,6 +44,16 @@ export type RegistryEntryMeta = {
   dependencies?: string[]
   blockKind?: BlockKind
   blockTagline?: string
+  /**
+   * CSS variables the item ships with (registry-item schema `cssVars`).
+   * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
+   * them into `@theme inline` for Tailwind v4 consumers.
+   */
+  cssVars?: {
+    theme?: Record<string, string>
+    light?: Record<string, string>
+    dark?: Record<string, string>
+  }
 }
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -51,20 +61,20 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "multi-select",
     title: "Multi Select",
     description:
-      "Chip-based multi-select with command-palette dropdown, search, select-all and async loader.",
+      "Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/multi-select.tsx"],
-    registryDependencies: ["button", "popover", "command", "badge"],
+    registryDependencies: ["popover", "command", "badge"],
     dependencies: ["cmdk", "lucide-react"],
   },
   {
     name: "number-range",
     title: "Number Range",
     description:
-      "Two-thumb slider paired with synced number inputs, locale-aware formatting.",
+      "Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/number-range.tsx"],
-    registryDependencies: ["slider", "input", "label"],
+    registryDependencies: ["slider", "input"],
     dependencies: ["@radix-ui/react-slider"],
   },
   {
@@ -94,7 +104,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Searchable single-select with debounced async loader, group headings and clearable selection.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/combobox.tsx"],
-    registryDependencies: ["button", "popover", "command"],
+    registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
   {
@@ -114,7 +124,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/password-input.tsx"],
-    registryDependencies: ["input"],
+    registryDependencies: ["input-group"],
     dependencies: ["lucide-react"],
   },
   {
@@ -124,7 +134,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/currency-input.tsx"],
-    registryDependencies: ["input"],
+    registryDependencies: ["input-group"],
     dependencies: [],
   },
   {
@@ -134,7 +144,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/phone-input.tsx"],
-    registryDependencies: ["input", "popover", "command"],
+    registryDependencies: ["input-group", "popover", "command"],
     dependencies: ["lucide-react"],
   },
   {
@@ -144,14 +154,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
     category: "files",
     sourceFiles: ["registry/hirael/ui/file-dropzone.tsx"],
-    registryDependencies: ["button"],
+    registryDependencies: [],
     dependencies: ["lucide-react"],
   },
   {
     name: "stat-card",
     title: "Stat Card",
     description:
-      "Compact metric card with label, value, and an up/down/flat trend chip.",
+      "Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/stat-card.tsx"],
     registryDependencies: [],
@@ -191,11 +201,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "callout",
     title: "Callout",
     description:
-      "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override.",
+      "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override. Ships --info / --success / --warning theme tokens.",
     category: "display",
     sourceFiles: ["registry/hirael/ui/callout.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react", "class-variance-authority"],
+    cssVars: {
+      light: {
+        success: "oklch(0.527 0.154 150.069)",
+        warning: "oklch(0.555 0.163 48.998)",
+        info: "oklch(0.55 0.2 260)",
+      },
+      dark: {
+        success: "oklch(0.696 0.17 162.48)",
+        warning: "oklch(0.769 0.188 70.08)",
+        info: "oklch(0.62 0.19 260)",
+      },
+    },
   },
   {
     name: "scroll-progress",
@@ -256,7 +278,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "feature",
     sourceFiles: ["registry/hirael/blocks/feature-01/feature-01.tsx"],
     installTargets: ["components/blocks/feature-01.tsx"],
-    registryDependencies: ["button"],
+    registryDependencies: [],
     dependencies: ["lucide-react"],
   },
   {
@@ -282,7 +304,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "pricing",
     sourceFiles: ["registry/hirael/blocks/pricing-01/pricing-01.tsx"],
     installTargets: ["components/blocks/pricing-01.tsx"],
-    registryDependencies: ["button"],
+    registryDependencies: ["button", "card", "separator"],
     dependencies: ["lucide-react"],
   },
   {
@@ -360,7 +382,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "faq",
     sourceFiles: ["registry/hirael/blocks/faq-01/faq-01.tsx"],
     installTargets: ["components/blocks/faq-01.tsx"],
-    registryDependencies: ["button", "accordion"],
+    registryDependencies: ["button", "accordion", "card"],
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
   {
@@ -418,7 +440,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: "login",
     sourceFiles: ["registry/hirael/blocks/login-01/login-01.tsx"],
     installTargets: ["components/blocks/login-01.tsx"],
-    registryDependencies: ["button", "input", "label", "password-input"],
+    registryDependencies: [
+      "button",
+      "checkbox",
+      "field",
+      "input",
+      "label",
+      "password-input",
+    ],
     dependencies: ["lucide-react"],
   },
   {
@@ -432,6 +461,54 @@ export const REGISTRY: RegistryEntryMeta[] = [
     sourceFiles: ["registry/hirael/blocks/login-02/login-02.tsx"],
     installTargets: ["components/blocks/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "signup-01",
+    title: "Signup 1",
+    description:
+      "Centered signup card with monogram, name + email, strength-meter password-input, terms checkbox, divider and GitHub / Google providers. Validates inline on submit.",
+    blockTagline: "Centered card · strength meter · providers",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: ["registry/hirael/blocks/signup-01/signup-01.tsx"],
+    installTargets: ["components/blocks/signup-01.tsx"],
+    registryDependencies: [
+      "button",
+      "checkbox",
+      "field",
+      "input",
+      "label",
+      "password-input",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "forgot-password-01",
+    title: "Forgot Password 1",
+    description:
+      "Centered reset-request card: email with inline validation and a pending submit, swapping to a check-your-inbox state that echoes the address with resend and back-to-sign-in links.",
+    blockTagline: "Centered card · inbox state · resend link",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: [
+      "registry/hirael/blocks/forgot-password-01/forgot-password-01.tsx",
+    ],
+    installTargets: ["components/blocks/forgot-password-01.tsx"],
+    registryDependencies: ["button", "input", "label"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "otp-verify-01",
+    title: "OTP Verify 1",
+    description:
+      "Centered verification card with a six-box code input built in the block: auto-advance, backspace, paste distribution and arrow-key focus, plus a 30s resend countdown and a pending → success verify flow.",
+    blockTagline: "Six-box code · 30s resend · success state",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: ["registry/hirael/blocks/otp-verify-01/otp-verify-01.tsx"],
+    installTargets: ["components/blocks/otp-verify-01.tsx"],
+    registryDependencies: ["button", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -490,7 +567,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
     category: "pickers",
     sourceFiles: ["registry/hirael/ui/time-picker.tsx"],
-    registryDependencies: ["popover"],
+    registryDependencies: ["popover", "tabs"],
     dependencies: ["lucide-react"],
   },
   {
@@ -500,7 +577,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
     category: "pickers",
     sourceFiles: ["registry/hirael/ui/color-picker.tsx"],
-    registryDependencies: ["popover", "input"],
+    registryDependencies: ["popover", "input", "tabs"],
     dependencies: ["lucide-react"],
   },
   {
@@ -861,6 +938,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "date-picker",
+    title: "Date Picker",
+    description:
+      "Single-date picker with month grid, keyboard nav, min/max bounds and disabled dates. Includes an inline DateCalendar, no date library.",
+    category: "pickers",
+    sourceFiles: ["registry/hirael/ui/date-picker.tsx"],
+    registryDependencies: ["button", "popover"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "date-range-picker",
     title: "Date Range Picker",
     description:
@@ -1021,6 +1108,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "registry/hirael/templates/creative-studio/hero.tsx",
       "registry/hirael/templates/creative-studio/about.tsx",
       "registry/hirael/templates/creative-studio/features.tsx",
+      "registry/hirael/templates/creative-studio/footer.tsx",
       "registry/hirael/templates/creative-studio/primitives.tsx",
       "registry/hirael/templates/creative-studio/fonts.ts",
     ],
@@ -1029,11 +1117,44 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/creative-studio/hero.tsx",
       "components/templates/creative-studio/about.tsx",
       "components/templates/creative-studio/features.tsx",
+      "components/templates/creative-studio/footer.tsx",
       "components/templates/creative-studio/primitives.tsx",
       "components/templates/creative-studio/fonts.ts",
     ],
     registryDependencies: [],
     dependencies: ["framer-motion", "lucide-react"],
+  },
+]
+
+/**
+ * Items that install through the registry but aren't showcased on the site
+ * (no demo page, no sidebar entry). registry.json is generated from
+ * REGISTRY + DISTRIBUTION_ONLY by scripts/build-registry.mjs.
+ */
+export type DistributionOnlyEntry = {
+  name: string
+  title: string
+  description: string
+  type: "registry:ui" | "registry:block"
+  /** Raw registry.json categories. */
+  categories: string[]
+  sourceFiles: string[]
+  installTargets?: string[]
+  registryDependencies?: string[]
+  dependencies?: string[]
+}
+
+export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
+  {
+    name: "accordion",
+    title: "Accordion",
+    description:
+      "Radix-powered accordion primitive used by the FAQ blocks. Plus icon rotates to an X on open.",
+    type: "registry:ui",
+    categories: ["primitives"],
+    sourceFiles: ["registry/hirael/ui/accordion.tsx"],
+    registryDependencies: [],
+    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
 ]
 
@@ -1080,7 +1201,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   testimonial: "Testimonials",
   cta: "Call-to-action",
   faq: "FAQ",
-  login: "Auth · login",
+  login: "Auth",
   header: "Headers",
   footer: "Footers",
   "not-found": "404",

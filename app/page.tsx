@@ -172,7 +172,7 @@ function LiveRegistry() {
                     </span>
                   </div>
                   <Link
-                    href={`/${entry.name}`}
+                    href={`/components/${entry.name}`}
                     aria-label={`Open ${entry.title} docs`}
                     className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >

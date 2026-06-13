@@ -123,8 +123,8 @@ export default function Faq04() {
             Asked, answered, archived.
           </h2>
           <p className="max-w-md text-balance text-sm text-muted-foreground">
-            Every question we've answered more than twice, grouped by topic so
-            you can skip to yours.
+            Every question we&apos;ve answered more than twice, grouped by
+            topic so you can skip to yours.
           </p>
         </div>
 

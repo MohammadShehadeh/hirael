@@ -1,16 +1,27 @@
 // Registry drift guard.
 //
-// Keeps the two hand-maintained sources honest and fails the build early if
-// they drift:
-//   1. every file referenced by registry.json exists on disk
-//   2. every showcased entry (registry-meta.ts) is also distributable
-//      (present in registry.json)
-//   3. every sourceFile referenced by registry-meta.ts exists
-//   4. every non-block component has a sibling demo file
+// registry-meta.ts is the single source of truth; registry.json is
+// generated from it by scripts/build-registry.mjs. This script fails the
+// build early when:
+//   1. registry.json is stale (doesn't match what build-registry generates)
+//   2. a sourceFile referenced by registry-meta.ts is missing on disk
+//   3. a non-block component is missing its sibling demo file
+//   4. an item's declared registryDependencies drift from the
+//      `@/registry/hirael/ui/*` modules its source actually imports
 //
 // Run via `node scripts/check-registry.mjs` (also chained into `build`).
 
 import { existsSync, readFileSync } from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+
+import {
+  buildRegistry,
+  loadRegistryMeta,
+  registryJsonText,
+} from "./build-registry.mjs"
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 
 let errors = 0
 const fail = (msg) => {
@@ -18,52 +29,63 @@ const fail = (msg) => {
   errors++
 }
 
-// 1. registry.json — every declared file path resolves.
-const reg = JSON.parse(readFileSync("registry.json", "utf8"))
-const regNames = new Set()
-for (const item of reg.items ?? []) {
-  regNames.add(item.name)
-  for (const f of item.files ?? []) {
-    if (!existsSync(f.path)) {
-      fail(`registry.json: "${item.name}" → missing file ${f.path}`)
-    }
-  }
+const meta = await loadRegistryMeta()
+const generated = buildRegistry(meta)
+const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY]
+
+// 1. registry.json matches the generated output byte-for-byte.
+const onDisk = readFileSync(path.join(ROOT, "registry.json"), "utf8")
+if (onDisk !== registryJsonText(generated)) {
+  fail(
+    "registry.json is stale or hand-edited — run `pnpm registry:gen` to regenerate it from registry-meta.ts"
+  )
 }
 
-// 2–4. registry-meta.ts entries (parsed from source — it's data-only).
-const meta = readFileSync("registry/hirael/registry-meta.ts", "utf8")
-const entryRe = /\{\s*\n\s*name: "([^"]+)"[\s\S]*?\n {2}\}/g
-let m
-let count = 0
-while ((m = entryRe.exec(meta)) !== null) {
-  const body = m[0]
-  const name = m[1]
-  count++
-
-  if (!regNames.has(name)) {
-    fail(`registry-meta: "${name}" is showcased but missing from registry.json`)
-  }
-
-  const sf = body.match(/sourceFiles: \[([^\]]*)\]/)
-  if (sf) {
-    for (const p of [...sf[1].matchAll(/"([^"]+)"/g)].map((x) => x[1])) {
-      if (!existsSync(p)) {
-        fail(`registry-meta: "${name}" → missing sourceFile ${p}`)
-      }
+// 2–4. Per-entry checks.
+for (const entry of entries) {
+  const sourceFiles = entry.sourceFiles ?? []
+  for (const p of sourceFiles) {
+    if (!existsSync(path.join(ROOT, p))) {
+      fail(`"${entry.name}" → missing sourceFile ${p}`)
     }
   }
 
-  const isComposite = /category: "(?:blocks|templates)"/.test(body)
-  if (!isComposite) {
-    const demo = `registry/hirael/${name}/${name}.demo.tsx`
-    if (!existsSync(demo)) {
-      fail(`registry-meta: component "${name}" → missing demo ${demo}`)
+  const isBlock =
+    entry.category === "blocks" ||
+    entry.category === "templates" ||
+    entry.type === "registry:block"
+  const showcased = meta.REGISTRY.includes(entry)
+  if (!isBlock && showcased) {
+    const demo = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`
+    if (!existsSync(path.join(ROOT, demo))) {
+      fail(`component "${entry.name}" → missing demo ${demo}`)
     }
   }
-}
 
-if (count === 0) {
-  fail("registry-meta: parsed 0 entries — the parser may have drifted")
+  // Declared registryDependencies must match the registry modules the
+  // source actually imports.
+  const imported = new Set()
+  for (const p of sourceFiles) {
+    const file = path.join(ROOT, p)
+    if (!existsSync(file)) continue
+    const src = readFileSync(file, "utf8")
+    for (const m of src.matchAll(
+      /from "@\/registry\/hirael\/ui\/([a-z0-9-]+)"/g
+    )) {
+      imported.add(m[1])
+    }
+  }
+  const declared = new Set(entry.registryDependencies ?? [])
+  for (const dep of imported) {
+    if (!declared.has(dep)) {
+      fail(`"${entry.name}" imports "${dep}" but doesn't declare it`)
+    }
+  }
+  for (const dep of declared) {
+    if (!imported.has(dep)) {
+      fail(`"${entry.name}" declares "${dep}" but never imports it`)
+    }
+  }
 }
 
 if (errors) {
@@ -71,5 +93,5 @@ if (errors) {
   process.exit(1)
 }
 console.log(
-  `✓ registry OK — ${count} showcased entries, ${reg.items.length} registry.json items, all referenced files present.`
+  `✓ registry OK — ${meta.REGISTRY.length} showcased + ${meta.DISTRIBUTION_ONLY.length} distribution-only items, registry.json in sync.`
 )

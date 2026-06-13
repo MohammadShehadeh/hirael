@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Tokens: `:root` is dark (the default canvas) and `.light` swaps the
+ * palette. Mode scripts always set a class on <html> — `.dark` in dark
+ * mode, `.light` in light mode — so `dark:` utilities follow the standard
+ * shadcn convention and registry components behave here exactly as they
+ * do in a consumer app. */
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:is(.light *));
 

@@ -58,11 +58,10 @@ host.
 
 ```
 registry/hirael/
+  ui/<component>.tsx         # source (flat compound exports), alongside
+                             # the shadcn primitives the registry imports
   <component>/
-    <component>.tsx          # source (flat compound exports)
     <component>.demo.tsx     # showcase demo
-    index.ts                 # re-export
-  ui/                        # shadcn primitives the registry imports from
   blocks/<block>/            # marketing blocks
   registry-meta.ts           # single source of truth for every item
 registry.json                # GENERATED from registry-meta.ts — do not
@@ -197,14 +196,13 @@ reformatting committed files.
 
 For each new component:
 
-- [ ] Source file at `registry/hirael/<name>/<name>.tsx` exporting the
+- [ ] Source file at `registry/hirael/ui/<name>.tsx` exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `<name>.demo.tsx` showing a basic compose **and** a customized
-      compose.
-- [ ] `index.ts` re-export.
+- [ ] `registry/hirael/<name>/<name>.demo.tsx` showing a basic compose
+      **and** a customized compose.
 - [ ] Entry in `registry/hirael/registry-meta.ts` with category,
       description, `dependencies`, `registryDependencies` and source
       file list, then `pnpm registry:gen` to regenerate `registry.json`

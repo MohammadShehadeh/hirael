@@ -79,12 +79,8 @@ export default function Login01() {
           style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
         >
           <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
-            <div className="relative flex size-10 items-center justify-center rounded-sm border border-border bg-background">
+            <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-background">
               <BrandMark className="size-6 text-foreground" />
-              <span
-                aria-hidden
-                className="absolute -bottom-1 -end-1 size-1.5 rounded-full bg-foreground"
-              />
             </div>
             <div className="flex flex-col items-center gap-1 text-center">
               <h1 className="text-2xl font-semibold tracking-[-0.025em]">

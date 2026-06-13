@@ -44,17 +44,20 @@ const COLUMNS: readonly LinkColumn[] = [
 function BrandMark({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 24 24"
+      viewBox="0 0 80 100"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="2.2"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
       className={className}
     >
-      <path d="M5 18v-8a7 7 0 0 1 14 0v8" />
-      <path d="M12 8 L12.8 10.2 L15 11 L12.8 11.8 L12 14 L11.2 11.8 L9 11 L11.2 10.2 Z" />
+      <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
+      <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
+      <path d="M22 86 H58" opacity="0.7" />
+      <path d="M28 92 H52" opacity="0.45" />
+      <path d="M34 96 H46" opacity="0.25" />
     </svg>
   )
 }
@@ -67,7 +70,7 @@ export default function Footer01() {
           <div className="col-span-2">
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
-                <BrandMark className="me-1.5 size-4" />
+                <BrandMark className="me-1.5 size-5" />
                 Hirael
               </span>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

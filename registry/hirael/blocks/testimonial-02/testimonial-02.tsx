@@ -11,37 +11,37 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "We swapped three hand-rolled multi-selects for this one in an afternoon. Same layout as before, and the keyboard nav finally works the way people expect.",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
   },
   {
-    body: "The dual API settled a long-running argument on our design system.",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     initials: "JT",
     name: "Jules Tanaka",
     role: "Design systems · Hexpoint",
   },
   {
-    body: "The year picker would have cost me a sprint to build right. This one dropped in and already matched our theme.",
+    body: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
     initials: "AO",
     name: "Adaeze Okafor",
     role: "Founding engineer · Brella",
   },
   {
-    body: "An async combobox that doesn't race itself on every keystroke. Didn't expect to find that in a registry.",
+    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
     initials: "SK",
     name: "Soren Kim",
     role: "Frontend lead · Verbit",
   },
   {
-    body: "We're a small team. Work that used to slip to 'we'll fix it in v2' now ships in v1.",
+    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",
   },
   {
-    body: "Pulled the tag input in, changed two lines, shipped the same day. The source is ours now, so there's nothing to keep in sync.",
+    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     initials: "DL",
     name: "Diego Larrea",
     role: "Engineer · Mercado",
@@ -57,11 +57,11 @@ export default function Testimonial02() {
             · what teams say
           </span>
           <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-            Quiet wins, from teams shipping real product.
+            What people are saying.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            Not launch-day hype, just notes from engineers who installed it
-            and got back to building.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </div>
 

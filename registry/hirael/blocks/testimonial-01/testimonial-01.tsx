@@ -21,9 +21,9 @@ export default function Testimonial01() {
               &ldquo;
             </span>
             <p className="text-balance text-2xl font-medium leading-[1.25] tracking-[-0.02em] sm:text-3xl">
-              We swapped three hand-rolled multi-selects for this one in an
-              afternoon. Same layout as before, and the keyboard nav finally
-              works the way people expect.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation.
             </p>
           </blockquote>
 

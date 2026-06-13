@@ -9,11 +9,11 @@ import {
 } from "@/registry/hirael/ui/mention-input"
 
 const TEAM: MentionItem[] = [
-  { id: "1", label: "jane.doe", description: "Jane Doe · Design lead" },
-  { id: "2", label: "mohammad", description: "Mohammad Shehadeh · Frontend" },
-  { id: "3", label: "sara.k", description: "Sara Khalil · Product" },
-  { id: "4", label: "omar", description: "Omar Haddad · Backend" },
-  { id: "5", label: "lina", description: "Lina Aboud · QA" },
+  { id: "1", label: "john.doe", description: "John Doe · Design lead" },
+  { id: "2", label: "mohammad.shehadeh", description: "Mohammad Shehadeh · Frontend" },
+  { id: "3", label: "jane.doe", description: "Jane Doe · Product" },
+  { id: "4", label: "richard.roe", description: "Richard Roe · Backend" },
+  { id: "5", label: "mary.major", description: "Mary Major · QA" },
 ]
 
 const CHANNELS: MentionItem[] = [

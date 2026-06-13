@@ -301,6 +301,18 @@ function InlineEditInput({
     cancel,
   } = useInlineEdit()
 
+  // Stable callback ref: focus/select run once when the input mounts. An inline
+  // ref would be re-invoked on every render, re-selecting the text mid-typing.
+  const focusOnMount = React.useCallback(
+    (node: HTMLInputElement | null) => {
+      if (node) {
+        node.focus()
+        if (selectOnFocus) node.select()
+      }
+    },
+    [selectOnFocus]
+  )
+
   if (!editing) return null
 
   return (
@@ -329,12 +341,7 @@ function InlineEditInput({
       }}
       className={cn("h-8", className)}
       {...props}
-      ref={(node) => {
-        if (node) {
-          node.focus()
-          if (selectOnFocus) node.select()
-        }
-      }}
+      ref={focusOnMount}
     />
   )
 }
@@ -359,6 +366,18 @@ function InlineEditTextarea({
     submit,
     cancel,
   } = useInlineEdit()
+
+  // Stable callback ref: focus/select run once when the textarea mounts. An
+  // inline ref would re-run every render, re-selecting the text mid-typing.
+  const focusOnMount = React.useCallback(
+    (node: HTMLTextAreaElement | null) => {
+      if (node) {
+        node.focus()
+        if (selectOnFocus) node.select()
+      }
+    },
+    [selectOnFocus]
+  )
 
   if (!editing) return null
 
@@ -388,12 +407,7 @@ function InlineEditTextarea({
       }}
       className={className}
       {...props}
-      ref={(node) => {
-        if (node) {
-          node.focus()
-          if (selectOnFocus) node.select()
-        }
-      }}
+      ref={focusOnMount}
     />
   )
 }

@@ -2344,6 +2344,118 @@
       ]
     },
     {
+      "name": "billing-card",
+      "type": "registry:ui",
+      "title": "Billing Card",
+      "description": "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/billing-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/billing-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "subscription-plans",
+      "type": "registry:ui",
+      "title": "Subscription Plans",
+      "description": "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/subscription-plans.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/subscription-plans.tsx"
+        }
+      ]
+    },
+    {
+      "name": "api-keys",
+      "type": "registry:ui",
+      "title": "API Keys",
+      "description": "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/api-keys.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/api-keys.tsx"
+        }
+      ]
+    },
+    {
+      "name": "team-members",
+      "type": "registry:ui",
+      "title": "Team Members",
+      "description": "Members list with avatars, name, email and a role tag. Compound API for team and access settings.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/team-members.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/team-members.tsx"
+        }
+      ]
+    },
+    {
+      "name": "invite-members",
+      "type": "registry:ui",
+      "title": "Invite Members",
+      "description": "Invite form with an email field, role select and send action, plus a pending-invites list. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/invite-members.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/invite-members.tsx"
+        }
+      ]
+    },
+    {
+      "name": "usage-dashboard",
+      "type": "registry:ui",
+      "title": "Usage Dashboard",
+      "description": "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/usage-dashboard.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/usage-dashboard.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

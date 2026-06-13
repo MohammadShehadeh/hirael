@@ -117,6 +117,12 @@ const DEMO_LOADERS: Record<
   "notifications": () => import("@/registry/hirael/notifications/notifications.demo"),
   "recent-orders": () => import("@/registry/hirael/recent-orders/recent-orders.demo"),
   "calendar-widget": () => import("@/registry/hirael/calendar-widget/calendar-widget.demo"),
+  "billing-card": () => import("@/registry/hirael/billing-card/billing-card.demo"),
+  "subscription-plans": () => import("@/registry/hirael/subscription-plans/subscription-plans.demo"),
+  "api-keys": () => import("@/registry/hirael/api-keys/api-keys.demo"),
+  "team-members": () => import("@/registry/hirael/team-members/team-members.demo"),
+  "invite-members": () => import("@/registry/hirael/invite-members/invite-members.demo"),
+  "usage-dashboard": () => import("@/registry/hirael/usage-dashboard/usage-dashboard.demo"),
   "creative-studio": () =>
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }

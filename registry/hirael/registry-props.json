@@ -5384,6 +5384,423 @@
       "extendsNative": true
     }
   ],
+  "billing-card": [
+    {
+      "name": "BillingCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardEyebrow",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardPlan",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardPrice",
+      "props": [
+        {
+          "name": "cycle",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardMeter",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardRow",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardFooter",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "subscription-plans": [
+    {
+      "name": "SubscriptionPlans",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlan",
+      "props": [
+        {
+          "name": "featured",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "current",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanBadge",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanName",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanPrice",
+      "props": [
+        {
+          "name": "cycle",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanFeatures",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanFeature",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanAction",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"outline\"",
+          "required": false,
+          "default": "\"outline\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "api-keys": [
+    {
+      "name": "ApiKeys",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyName",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyValue",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultRevealed",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Whether the key starts revealed."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyMeta",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "team-members": [
+    {
+      "name": "TeamMembers",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMembersHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMembersTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMembersList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberAvatar",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberInfo",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberName",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberEmail",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TeamMemberRole",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "invite-members": [
+    {
+      "name": "InviteMembers",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InviteMembersTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InviteMembersDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InviteMembersForm",
+      "props": [
+        {
+          "name": "roles",
+          "type": "string[]",
+          "required": false,
+          "default": "[\"Member\", \"Admin\", \"Viewer\"]",
+          "description": null
+        },
+        {
+          "name": "defaultRole",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onInvite",
+          "type": "((email: string, role: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InvitePendingList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InvitePendingItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InvitePendingEmail",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InvitePendingStatus",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "usage-dashboard": [
+    {
+      "name": "UsageDashboard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageDashboardHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageDashboardTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageItem",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "caption",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Short value caption, e.g. \"8.2k / 10k\"."
+        },
+        {
+          "name": "unit",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

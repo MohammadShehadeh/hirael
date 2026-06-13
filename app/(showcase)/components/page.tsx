@@ -25,6 +25,7 @@ const CATEGORY_ORDER: ComponentCategory[] = [
   "animation",
   "navigation",
   "widgets",
+  "saas",
 ]
 
 const COMPOSE_SNIPPET = `import {

@@ -133,6 +133,20 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `quick-actions` | — | Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via `asChild`, a link. |
 | `recent-orders` | — | Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. |
 
+#### SaaS (6)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `api-keys` | — | API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. |
+| `billing-card` | — | Current-plan summary with price, a usage meter, billing detail rows and footer actions. |
+| `invite-members` | — | Invite form with an email field, role select and send action, plus a pending-invites list. |
+| `subscription-plans` | — | In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. |
+| `team-members` | — | Members list with avatars, name, email and a role tag. |
+| `usage-dashboard` | — | Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. |
+
+> The SaaS "Audit Logs" view is served by the `audit-log` component (Data
+> display) rather than a near-duplicate entry.
+
 #### Primitives — distribution-only (1)
 
 | Component | Registry deps | What it is |

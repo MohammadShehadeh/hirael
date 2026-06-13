@@ -7,6 +7,7 @@ export type ComponentCategory =
   | "animation"
   | "navigation"
   | "widgets"
+  | "saas"
   | "blocks"
   | "templates"
 
@@ -1320,6 +1321,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "billing-card",
+    title: "Billing Card",
+    description:
+      "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/billing-card.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "subscription-plans",
+    title: "Subscription Plans",
+    description:
+      "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/subscription-plans.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "api-keys",
+    title: "API Keys",
+    description:
+      "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/api-keys.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "team-members",
+    title: "Team Members",
+    description:
+      "Members list with avatars, name, email and a role tag. Compound API for team and access settings.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/team-members.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "invite-members",
+    title: "Invite Members",
+    description:
+      "Invite form with an email field, role select and send action, plus a pending-invites list. Compound API.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/invite-members.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "usage-dashboard",
+    title: "Usage Dashboard",
+    description:
+      "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
+    category: "saas",
+    sourceFiles: ["registry/hirael/ui/usage-dashboard.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:
@@ -1393,6 +1454,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   animation: "Animation",
   navigation: "Navigation",
   widgets: "Widgets",
+  saas: "SaaS",
   blocks: "Blocks",
   templates: "Templates",
 }
@@ -1407,6 +1469,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     animation: [],
     navigation: [],
     widgets: [],
+    saas: [],
     blocks: [],
     templates: [],
   }

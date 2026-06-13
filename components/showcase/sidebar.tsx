@@ -24,6 +24,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/registry/hirael/ui/sidebar"
 
 const CATEGORY_ORDER: ComponentCategory[] = [
@@ -37,12 +38,19 @@ const CATEGORY_ORDER: ComponentCategory[] = [
 
 export function ShowcaseSidebar() {
   const pathname = usePathname()
+  const { setOpenMobile } = useSidebar()
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/"
     return pathname === href || pathname.startsWith(`${href}/`)
   }
+
+  // The mobile sidebar is an off-canvas sheet; close it when the route
+  // changes so a tapped link doesn't leave it covering the page.
+  React.useEffect(() => {
+    setOpenMobile(false)
+  }, [pathname, setOpenMobile])
 
   return (
     <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">

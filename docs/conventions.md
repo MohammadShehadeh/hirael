@@ -65,8 +65,13 @@ heading rather than starting a new doc.
 ## Registry items
 
 - **Edit `registry-meta.ts`, then `pnpm registry:gen`.** `registry.json` is
-  generated; `pnpm check:registry` fails the build on drift or on declared
-  `registryDependencies` that don't match a component's real imports.
+  generated; `pnpm check:registry` fails the build on drift, on declared
+  `registryDependencies` that don't match a component's real imports, or on a
+  showcased entry missing its preview loader in `registry-demos.tsx`.
+- **Register the preview loader in `registry-demos.tsx`.** Every showcased
+  item renders its preview / `/embed/*` iframe through `RegistryDemo`, keyed
+  by entry name; an unregistered name returns `null` and the preview comes up
+  blank. `check:registry` enforces it so this can't ship silently.
 - **Compound API first + `data-slot`.** Always default to a flat, shadcn-style
   compound API: the bare `Name` holds state; parts are `NameTrigger`,
   `NameContent`, … A single-prop convenience form is optional and secondary,

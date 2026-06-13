@@ -112,6 +112,11 @@ const DEMO_LOADERS: Record<
   "split-view": () => import("@/registry/hirael/split-view/split-view.demo"),
   "resizable-panels": () => import("@/registry/hirael/resizable-panels/resizable-panels.demo"),
   "inspector-panel": () => import("@/registry/hirael/inspector-panel/inspector-panel.demo"),
+  "kpi-grid": () => import("@/registry/hirael/kpi-grid/kpi-grid.demo"),
+  "quick-actions": () => import("@/registry/hirael/quick-actions/quick-actions.demo"),
+  "notifications": () => import("@/registry/hirael/notifications/notifications.demo"),
+  "recent-orders": () => import("@/registry/hirael/recent-orders/recent-orders.demo"),
+  "calendar-widget": () => import("@/registry/hirael/calendar-widget/calendar-widget.demo"),
   "creative-studio": () =>
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }

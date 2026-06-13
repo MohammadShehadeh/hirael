@@ -123,6 +123,16 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `text-reveal` | — | Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion. |
 | `tilt-card` | — | 3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion. |
 
+#### Widgets (5)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `calendar-widget` | — | Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware. |
+| `kpi-grid` | — | Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. |
+| `notifications` | — | Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. |
+| `quick-actions` | — | Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via `asChild`, a link. |
+| `recent-orders` | — | Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. |
+
 #### Primitives — distribution-only (1)
 
 | Component | Registry deps | What it is |

@@ -35,6 +35,7 @@ const CATEGORY_ORDER: ComponentCategory[] = [
   "display",
   "animation",
   "navigation",
+  "widgets",
 ]
 
 export function ShowcaseSidebar() {

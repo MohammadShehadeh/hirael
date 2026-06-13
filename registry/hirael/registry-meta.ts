@@ -6,6 +6,7 @@ export type ComponentCategory =
   | "display"
   | "animation"
   | "navigation"
+  | "widgets"
   | "blocks"
   | "templates"
 
@@ -1269,6 +1270,56 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "kpi-grid",
+    title: "KPI Grid",
+    description:
+      "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
+    category: "widgets",
+    sourceFiles: ["registry/hirael/ui/kpi-grid.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "quick-actions",
+    title: "Quick Actions",
+    description:
+      "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
+    category: "widgets",
+    sourceFiles: ["registry/hirael/ui/quick-actions.tsx"],
+    registryDependencies: [],
+    dependencies: ["@radix-ui/react-slot"],
+  },
+  {
+    name: "notifications",
+    title: "Notifications",
+    description:
+      "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
+    category: "widgets",
+    sourceFiles: ["registry/hirael/ui/notifications.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "recent-orders",
+    title: "Recent Orders",
+    description:
+      "Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. Compound API.",
+    category: "widgets",
+    sourceFiles: ["registry/hirael/ui/recent-orders.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "calendar-widget",
+    title: "Calendar Widget",
+    description:
+      "Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware.",
+    category: "widgets",
+    sourceFiles: ["registry/hirael/ui/calendar-widget.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:
@@ -1341,6 +1392,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   display: "Display",
   animation: "Animation",
   navigation: "Navigation",
+  widgets: "Widgets",
   blocks: "Blocks",
   templates: "Templates",
 }
@@ -1354,6 +1406,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     display: [],
     animation: [],
     navigation: [],
+    widgets: [],
     blocks: [],
     templates: [],
   }

@@ -2248,6 +2248,102 @@
       ]
     },
     {
+      "name": "kpi-grid",
+      "type": "registry:ui",
+      "title": "KPI Grid",
+      "description": "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/kpi-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kpi-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "quick-actions",
+      "type": "registry:ui",
+      "title": "Quick Actions",
+      "description": "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/quick-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/quick-actions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "notifications",
+      "type": "registry:ui",
+      "title": "Notifications",
+      "description": "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/notifications.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/notifications.tsx"
+        }
+      ]
+    },
+    {
+      "name": "recent-orders",
+      "type": "registry:ui",
+      "title": "Recent Orders",
+      "description": "Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/recent-orders.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/recent-orders.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar-widget",
+      "type": "registry:ui",
+      "title": "Calendar Widget",
+      "description": "Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/calendar-widget.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/calendar-widget.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

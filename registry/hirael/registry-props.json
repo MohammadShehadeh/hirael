@@ -5121,6 +5121,269 @@
       "extendsNative": true
     }
   ],
+  "kpi-grid": [
+    {
+      "name": "KpiGrid",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardValue",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardDelta",
+      "props": [
+        {
+          "name": "trend",
+          "type": "KpiTrend",
+          "required": false,
+          "default": "\"flat\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardSpark",
+      "props": [
+        {
+          "name": "points",
+          "type": "number[]",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "quick-actions": [
+    {
+      "name": "QuickActions",
+      "props": [
+        {
+          "name": "columns",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "Number of columns in the action grid."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickAction",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionIcon",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionDescription",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "notifications": [
+    {
+      "name": "Notifications",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationItem",
+      "props": [
+        {
+          "name": "unread",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationMedia",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationTime",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "recent-orders": [
+    {
+      "name": "RecentOrders",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrdersHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrdersTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrdersList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrdersItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrderId",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrderCustomer",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrderAmount",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RecentOrderStatus",
+      "props": [
+        {
+          "name": "tone",
+          "type": "OrderTone",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "calendar-widget": [
+    {
+      "name": "CalendarWidget",
+      "props": [
+        {
+          "name": "onSelect",
+          "type": "(React.ReactEventHandler<HTMLDivElement> & ((date: Date) => void))",
+          "required": false,
+          "default": null,
+          "description": "Called when a day is picked."
+        },
+        {
+          "name": "defaultMonth",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": "Month shown first. Defaults to today."
+        },
+        {
+          "name": "today",
+          "type": "Date",
+          "required": false,
+          "default": "new Date()",
+          "description": "Reference \"today\" for the highlighted cell."
+        },
+        {
+          "name": "events",
+          "type": "(string | Date)[]",
+          "required": false,
+          "default": "[]",
+          "description": "Dates that should show an event dot."
+        },
+        {
+          "name": "defaultSelected",
+          "type": "Date | null",
+          "required": false,
+          "default": "null",
+          "description": "Pre-selected date."
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": "1",
+          "description": "0 = Sunday, 1 = Monday."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

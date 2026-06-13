@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "pnpm registry:gen && node scripts/check-registry.mjs && pnpm registry:build && next build",
     "start": "npx serve out",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "registry:gen": "node scripts/build-registry.mjs",
     "registry:build": "shadcn build",
@@ -43,15 +43,15 @@
     "@types/node": "^25.9.3",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
-    "eslint": "^10.4.1",
+    "eslint": "^9.39.4",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3"
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "19.1.2",
-      "@types/react-dom": "19.1.2"
+      "@types/react": "19.2.17",
+      "@types/react-dom": "19.2.3"
     }
   }
 }

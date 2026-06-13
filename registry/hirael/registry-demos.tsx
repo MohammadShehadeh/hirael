@@ -96,18 +96,15 @@ const DEMO_LOADERS: Record<
   "tour": () => import("@/registry/hirael/tour/tour.demo"),
 }
 
-const cache = new Map<string, React.LazyExoticComponent<React.ComponentType>>()
-
-function getLazy(name: string) {
-  let c = cache.get(name)
-  if (!c) {
-    const load = DEMO_LOADERS[name]
-    if (!load) return null
-    c = React.lazy(load)
-    cache.set(name, c)
-  }
-  return c
-}
+// React.lazy defers the import until first render, so creating every demo
+// component eagerly at module scope costs nothing and keeps component
+// identities stable across renders.
+const DEMOS: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType>
+> = Object.fromEntries(
+  Object.entries(DEMO_LOADERS).map(([name, load]) => [name, React.lazy(load)])
+)
 
 export function RegistryDemo({
   name,
@@ -116,7 +113,7 @@ export function RegistryDemo({
   name: string
   fallback?: React.ReactNode
 }) {
-  const Demo = getLazy(name)
+  const Demo = DEMOS[name]
   if (!Demo) return null
   return (
     <React.Suspense fallback={fallback}>

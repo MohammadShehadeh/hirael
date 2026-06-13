@@ -33,7 +33,9 @@ jobs:
 
       - name: Create releases from .github/releases notes
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer a PAT (RELEASES_TOKEN) if present, else the built-in token.
+          # Whichever resolves must have contents:write to create releases.
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # tag:commit — oldest first so v0.7.0 ends up marked "Latest".

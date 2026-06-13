@@ -79,6 +79,7 @@ const DEMO_LOADERS: Record<
   "animated-number": () => import("@/registry/hirael/animated-number/animated-number.demo"),
   "stepper": () => import("@/registry/hirael/stepper/stepper.demo"),
   "sortable": () => import("@/registry/hirael/sortable/sortable.demo"),
+  "date-picker": () => import("@/registry/hirael/date-picker/date-picker.demo"),
   "date-range-picker": () => import("@/registry/hirael/date-range-picker/date-range-picker.demo"),
   "mention-input": () => import("@/registry/hirael/mention-input/mention-input.demo"),
   "inline-edit": () => import("@/registry/hirael/inline-edit/inline-edit.demo"),

@@ -43,6 +43,16 @@ export type RegistryEntryMeta = {
   dependencies?: string[]
   blockKind?: BlockKind
   blockTagline?: string
+  /**
+   * CSS variables the item ships with (registry-item schema `cssVars`).
+   * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
+   * them into `@theme inline` for Tailwind v4 consumers.
+   */
+  cssVars?: {
+    theme?: Record<string, string>
+    light?: Record<string, string>
+    dark?: Record<string, string>
+  }
 }
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -190,11 +200,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "callout",
     title: "Callout",
     description:
-      "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override.",
+      "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override. Ships --info / --success / --warning theme tokens.",
     category: "display",
     sourceFiles: ["registry/hirael/ui/callout.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react", "class-variance-authority"],
+    cssVars: {
+      light: {
+        success: "oklch(0.527 0.154 150.069)",
+        warning: "oklch(0.555 0.163 48.998)",
+        info: "oklch(0.55 0.2 260)",
+      },
+      dark: {
+        success: "oklch(0.696 0.17 162.48)",
+        warning: "oklch(0.769 0.188 70.08)",
+        info: "oklch(0.62 0.19 260)",
+      },
+    },
   },
   {
     name: "scroll-progress",
@@ -438,6 +460,54 @@ export const REGISTRY: RegistryEntryMeta[] = [
     sourceFiles: ["registry/hirael/blocks/login-02/login-02.tsx"],
     installTargets: ["components/blocks/login-02.tsx"],
     registryDependencies: ["button", "input", "label", "password-input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "signup-01",
+    title: "Signup 1",
+    description:
+      "Centered signup card with monogram, name + email, strength-meter password-input, terms checkbox, divider and GitHub / Google providers. Validates inline on submit.",
+    blockTagline: "Centered card · strength meter · providers",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: ["registry/hirael/blocks/signup-01/signup-01.tsx"],
+    installTargets: ["components/blocks/signup-01.tsx"],
+    registryDependencies: [
+      "button",
+      "checkbox",
+      "field",
+      "input",
+      "label",
+      "password-input",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "forgot-password-01",
+    title: "Forgot Password 1",
+    description:
+      "Centered reset-request card: email with inline validation and a pending submit, swapping to a check-your-inbox state that echoes the address with resend and back-to-sign-in links.",
+    blockTagline: "Centered card · inbox state · resend link",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: [
+      "registry/hirael/blocks/forgot-password-01/forgot-password-01.tsx",
+    ],
+    installTargets: ["components/blocks/forgot-password-01.tsx"],
+    registryDependencies: ["button", "input", "label"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "otp-verify-01",
+    title: "OTP Verify 1",
+    description:
+      "Centered verification card with a six-box code input built in the block: auto-advance, backspace, paste distribution and arrow-key focus, plus a 30s resend countdown and a pending → success verify flow.",
+    blockTagline: "Six-box code · 30s resend · success state",
+    category: "blocks",
+    blockKind: "login",
+    sourceFiles: ["registry/hirael/blocks/otp-verify-01/otp-verify-01.tsx"],
+    installTargets: ["components/blocks/otp-verify-01.tsx"],
+    registryDependencies: ["button", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -867,6 +937,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "date-picker",
+    title: "Date Picker",
+    description:
+      "Single-date picker with month grid, keyboard nav, min/max bounds and disabled dates. Includes an inline DateCalendar, no date library.",
+    category: "pickers",
+    sourceFiles: ["registry/hirael/ui/date-picker.tsx"],
+    registryDependencies: ["button", "popover"],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "date-range-picker",
     title: "Date Range Picker",
     description:
@@ -1085,7 +1165,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   testimonial: "Testimonials",
   cta: "Call-to-action",
   faq: "FAQ",
-  login: "Auth · login",
+  login: "Auth",
   header: "Headers",
   footer: "Footers",
   "not-found": "404",

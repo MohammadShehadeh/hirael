@@ -48,7 +48,7 @@ extracts the prop tables shown on component pages. See
 
 ```
 app/                              # Next.js App Router (output: "export")
-  page.tsx                        # landing — Hero, live demos, category grid
+  page.tsx                        # landing — Hero, live demos, why-Hirael grid, category grid, closing CTA
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
   (showcase)/                     # sidebar + topbar shell
     components/page.tsx           # component index (links to category pages)

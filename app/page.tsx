@@ -1,6 +1,15 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Boxes,
+  Download,
+  Languages,
+  Layers,
+  MonitorSmartphone,
+  SunMoon,
+} from "lucide-react"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
 import { InstallBlock } from "@/components/showcase/install-block"
@@ -12,7 +21,6 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   COMPONENTS,
-  REGISTRY_BY_CATEGORY,
   REGISTRY_BY_NAME,
   entryHref,
 } from "@/registry/hirael/registry-meta"
@@ -53,6 +61,7 @@ export default function LandingPage() {
       <main className="flex-1">
         <Hero />
         <LiveRegistry />
+        <WhyHirael />
         <CategoryGrid />
       </main>
       <SiteFooter />
@@ -61,53 +70,57 @@ export default function LandingPage() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero                                                                       */
+/* Hero — borderless panel with contained texture                             */
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
-  const componentCount = COMPONENTS.length
-  const blocks = REGISTRY_BY_CATEGORY.blocks.length
-
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)]"
-      />
-      <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-28 lg:py-36">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground">
-          <span className="state-dot" />
-          {componentCount} components · {blocks} blocks
-        </span>
+    <section className="relative px-4 pt-6 pb-2 sm:px-6 sm:pt-8 lg:px-8 lg:pt-10">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-xl">
+        {/* Texture lives inside the panel: soft drifting halo, then a masked dot grid. */}
+        <div aria-hidden className="ambient-halo" />
+        <div
+          aria-hidden
+          className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_55%_at_50%_0%,black,transparent_80%)]"
+        />
 
-        <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-          The components shadcn/ui doesn&apos;t ship.
-        </h1>
+        <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
+          {/* Blueprint registration marks framing the fold. */}
+          <span aria-hidden className="corner-mark end-0 top-0" />
+          <span aria-hidden className="corner-mark bottom-0 start-0" />
+          <span aria-hidden className="corner-mark bottom-0 end-0" />
 
-        <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-          Multi-select, combobox, tag input, file dropzone, plus full
-          section blocks. Install them with the shadcn CLI and the source
-          lands in your repo. No package to update, no runtime dependency.
-        </p>
+          <div className="flex flex-col items-center gap-6 text-center">
+            <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
+              The components shadcn/ui doesn&apos;t ship.
+            </h1>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-          <Link
-            href="/components"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            Browse components
-            <ArrowRight className="size-4" />
-          </Link>
-          <Link
-            href="/blocks"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-card px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            Browse blocks
-          </Link>
-        </div>
+            <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
+              Multi-select, combobox, tag input, file dropzone, plus full
+              section blocks. Install them with the shadcn CLI and the source
+              lands in your repo. No package to update, no runtime dependency.
+            </p>
 
-        <div className="w-full max-w-md pt-4">
-          <InstallBlock name="multi-select" />
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <Link
+                href="/components"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                Browse components
+                <ArrowRight className="size-4 rtl:rotate-180" />
+              </Link>
+              <Link
+                href="/blocks"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-card px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                Browse blocks
+              </Link>
+            </div>
+
+            <div className="w-full max-w-md pt-4">
+              <InstallBlock name="multi-select" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -197,6 +210,171 @@ function LiveRegistry() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Why Hirael — blueprint grid of what a source-first registry gives you       */
+/* -------------------------------------------------------------------------- */
+
+const FEATURES: {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  body: string
+  visual?: "terminal" | "stack" | "swatches"
+}[] = [
+  {
+    icon: Download,
+    title: "Copies into your repo",
+    body: "The CLI writes the source into your project. Nothing in node_modules, no version to bump.",
+    visual: "terminal",
+  },
+  {
+    icon: Layers,
+    title: "Any React stack",
+    body: "Next, Remix, Vite, Astro. Anywhere React and Tailwind already run.",
+    visual: "stack",
+  },
+  {
+    icon: Boxes,
+    title: "Built on shadcn",
+    body: "Radix primitives, shadcn conventions, your components.json. A peer, not a replacement.",
+  },
+  {
+    icon: SunMoon,
+    title: "Light and dark",
+    body: "Theme-aware through CSS variables, so every item inherits your tokens in both modes.",
+    visual: "swatches",
+  },
+  {
+    icon: Languages,
+    title: "RTL, no config",
+    body: "Logical properties throughout, so dir=rtl works with nothing extra to wire up.",
+  },
+  {
+    icon: MonitorSmartphone,
+    title: "Responsive by default",
+    body: "Built to hold their shape from small phones to ultra-wide displays.",
+  },
+]
+
+function WhyHirael() {
+  return (
+    <section className="relative">
+      <hr className="rule-gradient" />
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <header className="mb-12 flex flex-col gap-3 sm:mb-16">
+          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="text-foreground/90">/02</span>
+            <span className="h-px w-4 bg-border" />
+            Why Hirael
+          </span>
+          <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            Own the source, not a dependency.
+          </h2>
+          <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
+            Install with the shadcn CLI and the code lands in your repo, ready
+            to read and change. Built the way shadcn ships its primitives.
+          </p>
+        </header>
+
+        <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((feature) => {
+            const Icon = feature.icon
+            return (
+              <article
+                key={feature.title}
+                className="relative flex flex-col gap-5 bg-background px-5 pt-7 pb-6 sm:px-6"
+              >
+                {/* Blueprint crosshair: hairlines that overshoot the cell, a corner node, and a faint glow. */}
+                <span aria-hidden className="absolute -inset-y-4 -left-px w-px bg-border" />
+                <span aria-hidden className="absolute -inset-y-4 -right-px w-px bg-border" />
+                <span aria-hidden className="absolute -inset-x-4 -top-px h-px bg-border" />
+                <span aria-hidden className="absolute -inset-x-4 -bottom-px h-px bg-border" />
+                <span
+                  aria-hidden
+                  className="corner-mark [inset-block-start:-6px] [inset-inline-start:-6px]"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_60%_at_50%_0%,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)]"
+                />
+
+                {/* Glowing dashed medallion holding the icon. */}
+                <span className="relative flex size-11 shrink-0 items-center justify-center rounded-full border border-dashed border-border bg-background">
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 scale-[1.6] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--foreground)_14%,transparent),transparent_70%)] blur-md"
+                  />
+                  <Icon className="relative size-4 text-foreground/80" />
+                </span>
+
+                <div className="relative flex flex-col gap-1.5">
+                  <h3 className="text-sm font-medium tracking-tight">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {feature.body}
+                  </p>
+                </div>
+
+                {feature.visual && (
+                  <div className="relative mt-auto pt-1">
+                    <FeatureVisual kind={feature.visual} />
+                  </div>
+                )}
+              </article>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
+  if (kind === "terminal") {
+    return (
+      <div className="flex items-center gap-2 overflow-hidden rounded-md border border-border bg-card px-3 py-2">
+        <span aria-hidden className="font-mono text-[11px] text-muted-foreground">
+          $
+        </span>
+        <code className="truncate font-mono text-[11px] text-foreground/90">
+          npx shadcn@latest add{" "}
+          <span className="text-muted-foreground">
+            https://hirael.com/r/combobox.json
+          </span>
+        </code>
+      </div>
+    )
+  }
+
+  if (kind === "stack") {
+    return (
+      <div className="flex flex-wrap gap-1.5">
+        {["Next", "Remix", "Vite", "Astro"].map((name) => (
+          <span
+            key={name}
+            className="rounded-sm border border-border bg-card px-2 py-0.5 font-mono text-[10px] tracking-tight text-muted-foreground"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-1.5">
+      {["bg-foreground", "bg-muted-foreground", "bg-secondary", "bg-background"].map(
+        (swatch) => (
+          <span
+            key={swatch}
+            className={`size-6 rounded-md border border-border ${swatch}`}
+          />
+        )
+      )}
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
 /* Section blocks grid                                                        */
 /* -------------------------------------------------------------------------- */
 
@@ -213,7 +391,7 @@ function CategoryGrid() {
         <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
             <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span className="text-foreground/90">/02</span>
+              <span className="text-foreground/90">/03</span>
               <span className="h-px w-4 bg-border" />
               Section blocks
             </span>

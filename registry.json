@@ -2428,6 +2428,52 @@
       ]
     },
     {
+      "name": "agency-landing",
+      "type": "registry:block",
+      "title": "Agency Landing",
+      "description": "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Built on the shaders package, with a self-contained light palette.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/agency-landing/agency-landing.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/agency-landing.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/about.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/about.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/case-studies.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/case-studies.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/shader-background.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/shader-background.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

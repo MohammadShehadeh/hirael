@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "node scripts/check-registry.mjs && pnpm registry:build && next build",
+    "build": "pnpm registry:gen && node scripts/check-registry.mjs && pnpm registry:build && next build",
     "start": "npx serve out",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "registry:gen": "node scripts/build-registry.mjs",
     "registry:build": "shadcn build",
     "check:registry": "node scripts/check-registry.mjs"
   },

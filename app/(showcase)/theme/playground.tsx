@@ -9,15 +9,13 @@ import { Label } from "@/registry/hirael/ui/label"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
 import { useTheme } from "@/components/showcase/theme-provider"
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
-import { REGISTRY } from "@/registry/hirael/registry-meta"
+import { COMPONENTS } from "@/registry/hirael/registry-meta"
 
 export function ThemePlayground() {
   const { mode, theme } = useTheme()
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const components = REGISTRY.filter(
-    (r) => r.category !== "blocks"
-  )
+  const components = COMPONENTS
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">

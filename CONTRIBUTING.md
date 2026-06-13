@@ -63,6 +63,7 @@ registry/hirael/
   <component>/
     <component>.demo.tsx     # showcase demo
   blocks/<block>/            # marketing blocks
+  templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
 registry.json                # GENERATED from registry-meta.ts — do not
                              # edit by hand, run `pnpm registry:gen`
@@ -219,6 +220,12 @@ For each new component:
 Marketing blocks follow the same shape but live under
 `registry/hirael/blocks/<block>/` and have a `blockKind` plus
 `blockTagline` in `registry-meta.ts`.
+
+Templates are full-page, multi-section layouts. They live under
+`registry/hirael/templates/<template>/`, use `category: "templates"` in
+`registry-meta.ts`, and ship as a multi-file `registry:block` in
+`registry.json`. Like blocks, they are previewed full-bleed and do not
+need a `*.demo.tsx`.
 
 ## Testing requirements
 

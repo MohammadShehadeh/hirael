@@ -49,7 +49,10 @@ export function ComponentPage({
   const [tab, setTab] = React.useState<Tab>("preview")
   const [rtl, setRtl] = React.useState(false)
 
-  const isBlock = entry.category === "blocks"
+  const isComposite =
+    entry.category === "blocks" || entry.category === "templates"
+  const embedBase =
+    entry.category === "templates" ? "/embed/templates" : "/embed/blocks"
 
   const codeTabs: CodeBlockTab[] = React.useMemo(
     () =>
@@ -57,15 +60,15 @@ export function ComponentPage({
         .map((f, i) => {
           const file = source[f]
           if (!file) return null
-          const label = isBlock ? entry.installTargets?.[i] ?? f : f
+          const label = isComposite ? entry.installTargets?.[i] ?? f : f
           return { label, code: file.code, html: file.html }
         })
         .filter((t): t is CodeBlockTab => t !== null),
-    [entry.sourceFiles, entry.installTargets, source, isBlock]
+    [entry.sourceFiles, entry.installTargets, source, isComposite]
   )
 
-  const showUsageTab = !isBlock && !!demoSource
-  const showApiTab = !isBlock && !!api?.length
+  const showUsageTab = !isComposite && !!demoSource
+  const showApiTab = !isComposite && !!api?.length
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
     const list: Array<[Tab, string]> = [["preview", "Preview"]]
@@ -161,8 +164,12 @@ export function ComponentPage({
         className="focus-visible:outline-none"
       >
         {tab === "preview" &&
-          (isBlock ? (
-            <BlockViewer name={entry.name} title={entry.title} />
+          (isComposite ? (
+            <BlockViewer
+              name={entry.name}
+              title={entry.title}
+              embedBase={embedBase}
+            />
           ) : (
             <div className="relative rounded-sm border border-border bg-card/40">
               <DirectionToggle
@@ -194,7 +201,7 @@ export function ComponentPage({
         {tab === "api" && api && <ApiPanel parts={api} />}
 
         {tab === "code" && codeTabs.length > 0 && (
-          <CodeBlock tabs={codeTabs} layout={isBlock ? "tree" : "tabs"} />
+          <CodeBlock tabs={codeTabs} layout={isComposite ? "tree" : "tabs"} />
         )}
 
         {tab === "install" && (

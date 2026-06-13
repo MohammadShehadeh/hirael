@@ -50,7 +50,10 @@ for (const entry of entries) {
     }
   }
 
-  const isBlock = entry.category === "blocks" || entry.type === "registry:block"
+  const isBlock =
+    entry.category === "blocks" ||
+    entry.category === "templates" ||
+    entry.type === "registry:block"
   const showcased = meta.REGISTRY.includes(entry)
   if (!isBlock && showcased) {
     const demo = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`

@@ -1929,6 +1929,57 @@
       ]
     },
     {
+      "name": "creative-studio",
+      "type": "registry:block",
+      "title": "Creative Studio",
+      "description": "Dark, cinematic creative-studio landing page: a full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Framer Motion throughout, with a self-contained warm-cream palette.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/creative-studio/creative-studio.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/creative-studio.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/about.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/about.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/features.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/features.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/creative-studio/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/creative-studio/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

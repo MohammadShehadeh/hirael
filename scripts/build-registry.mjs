@@ -69,6 +69,7 @@ function toRegistryItem(entry) {
     categories,
     dependencies: [...(entry.dependencies ?? [])].sort(),
     registryDependencies: [...(entry.registryDependencies ?? [])].sort(),
+    ...(entry.cssVars ? { cssVars: entry.cssVars } : {}),
     files,
   }
 }

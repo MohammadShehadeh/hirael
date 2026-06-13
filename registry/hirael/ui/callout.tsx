@@ -7,16 +7,16 @@ import { cn } from "@/lib/utils"
 const calloutVariants = cva(
   "my-4 flex flex-col gap-2 overflow-hidden rounded-md border-s-4 p-4 text-sm",
   {
+    // Status colors come from the --info / --success / --warning theme
+    // tokens (shipped with this component's cssVars) so callouts follow
+    // the consumer's theme in both modes — no hard-coded palette.
     variants: {
       variant: {
-        info: "border-blue-500 bg-blue-50 text-blue-900 dark:bg-blue-950/70 dark:text-blue-400",
-        success:
-          "border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/70 dark:text-emerald-400",
-        warning:
-          "border-yellow-500 bg-yellow-50 text-yellow-900 dark:bg-yellow-950/70 dark:text-yellow-400",
-        error: "border-red-500 bg-red-50 text-red-900 dark:bg-red-950/70 dark:text-red-400",
-        neutral:
-          "border-gray-500 bg-gray-100 text-gray-900 dark:bg-gray-800/70 dark:text-gray-400",
+        info: "border-info bg-info/10 text-info",
+        success: "border-success bg-success/10 text-success",
+        warning: "border-warning bg-warning/10 text-warning",
+        error: "border-destructive bg-destructive/10 text-destructive",
+        neutral: "border-muted-foreground/50 bg-muted/50 text-foreground",
       },
     },
     defaultVariants: {

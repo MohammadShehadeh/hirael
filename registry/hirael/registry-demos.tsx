@@ -97,6 +97,13 @@ const DEMO_LOADERS: Record<
   "tour": () => import("@/registry/hirael/tour/tour.demo"),
   "activity-feed": () => import("@/registry/hirael/activity-feed/activity-feed.demo"),
   "audit-log": () => import("@/registry/hirael/audit-log/audit-log.demo"),
+  "blur-reveal": () => import("@/registry/hirael/blur-reveal/blur-reveal.demo"),
+  "text-reveal": () => import("@/registry/hirael/text-reveal/text-reveal.demo"),
+  "scroll-reveal": () => import("@/registry/hirael/scroll-reveal/scroll-reveal.demo"),
+  "spotlight-card": () => import("@/registry/hirael/spotlight-card/spotlight-card.demo"),
+  "magnetic-button": () => import("@/registry/hirael/magnetic-button/magnetic-button.demo"),
+  "cursor-glow": () => import("@/registry/hirael/cursor-glow/cursor-glow.demo"),
+  "tilt-card": () => import("@/registry/hirael/tilt-card/tilt-card.demo"),
   "creative-studio": () =>
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }

@@ -1967,6 +1967,134 @@
       ]
     },
     {
+      "name": "blur-reveal",
+      "type": "registry:ui",
+      "title": "Blur Reveal",
+      "description": "Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/blur-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/blur-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-reveal",
+      "type": "registry:ui",
+      "title": "Text Reveal",
+      "description": "Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/text-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/text-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-reveal",
+      "type": "registry:ui",
+      "title": "Scroll Reveal",
+      "description": "Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/scroll-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scroll-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/spotlight-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spotlight-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "magnetic-button",
+      "type": "registry:ui",
+      "title": "Magnetic Button",
+      "description": "Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/magnetic-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/magnetic-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cursor-glow",
+      "type": "registry:ui",
+      "title": "Cursor Glow",
+      "description": "Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/cursor-glow.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/cursor-glow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tilt-card",
+      "type": "registry:ui",
+      "title": "Tilt Card",
+      "description": "3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/tilt-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tilt-card.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

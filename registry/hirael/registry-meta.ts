@@ -4,6 +4,7 @@ export type ComponentCategory =
   | "files"
   | "data"
   | "display"
+  | "animation"
   | "navigation"
   | "blocks"
   | "templates"
@@ -1118,6 +1119,76 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "blur-reveal",
+    title: "Blur Reveal",
+    description:
+      "Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/blur-reveal.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "text-reveal",
+    title: "Text Reveal",
+    description:
+      "Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/text-reveal.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "scroll-reveal",
+    title: "Scroll Reveal",
+    description:
+      "Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/scroll-reveal.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "spotlight-card",
+    title: "Spotlight Card",
+    description:
+      "Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/spotlight-card.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "magnetic-button",
+    title: "Magnetic Button",
+    description:
+      "Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/magnetic-button.tsx"],
+    registryDependencies: [],
+    dependencies: ["@radix-ui/react-slot"],
+  },
+  {
+    name: "cursor-glow",
+    title: "Cursor Glow",
+    description:
+      "Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/cursor-glow.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "tilt-card",
+    title: "Tilt Card",
+    description:
+      "3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/tilt-card.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:
@@ -1188,6 +1259,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   files: "Files",
   data: "Data display",
   display: "Display",
+  animation: "Animation",
   navigation: "Navigation",
   blocks: "Blocks",
   templates: "Templates",
@@ -1200,6 +1272,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     files: [],
     data: [],
     display: [],
+    animation: [],
     navigation: [],
     blocks: [],
     templates: [],

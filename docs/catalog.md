@@ -103,6 +103,18 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `stepper` | — | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API. |
 | `tour` | `button` | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card. |
 
+#### Animation (7)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `blur-reveal` | — | Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion. |
+| `cursor-glow` | — | Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels. |
+| `magnetic-button` | — | Button that pulls toward the cursor and springs back on leave. Adjustable strength, `asChild` to wrap a link, respects reduced-motion. |
+| `scroll-reveal` | — | Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion. |
+| `spotlight-card` | — | Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors. |
+| `text-reveal` | — | Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion. |
+| `tilt-card` | — | 3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion. |
+
 #### Primitives — distribution-only (1)
 
 | Component | Registry deps | What it is |

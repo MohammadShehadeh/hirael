@@ -4498,6 +4498,265 @@
       "extendsNative": true
     }
   ],
+  "blur-reveal": [
+    {
+      "name": "BlurReveal",
+      "props": [
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the reveal starts, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Reveal duration, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.3",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        },
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": "Starting blur, in px."
+        },
+        {
+          "name": "y",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": "Starting vertical offset, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "text-reveal": [
+    {
+      "name": "TextReveal",
+      "props": [
+        {
+          "name": "children",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "as",
+          "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+          "required": false,
+          "default": null,
+          "description": "Element to render the text as."
+        },
+        {
+          "name": "by",
+          "type": "TextRevealBy",
+          "required": false,
+          "default": "\"word\"",
+          "description": "Split granularity for the staggered reveal."
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the first unit reveals, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Per-unit reveal duration, in ms."
+        },
+        {
+          "name": "stagger",
+          "type": "number",
+          "required": false,
+          "default": "60",
+          "description": "Delay added between units, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.5",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "scroll-reveal": [
+    {
+      "name": "ScrollReveal",
+      "props": [
+        {
+          "name": "direction",
+          "type": "ScrollRevealDirection",
+          "required": false,
+          "default": "\"up\"",
+          "description": "Direction the content travels in from."
+        },
+        {
+          "name": "distance",
+          "type": "number",
+          "required": false,
+          "default": "24",
+          "description": "Travel distance, in px."
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the reveal starts, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Reveal duration, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.3",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "spotlight-card": [
+    {
+      "name": "SpotlightCard",
+      "props": [
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "350",
+          "description": "Diameter of the spotlight, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "magnetic-button": [
+    {
+      "name": "MagneticButton",
+      "props": [
+        {
+          "name": "strength",
+          "type": "number",
+          "required": false,
+          "default": "0.4",
+          "description": "Pull strength as a fraction of the cursor's distance from center."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render the child element instead of a button (e.g. a link)."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "cursor-glow": [
+    {
+      "name": "CursorGlow",
+      "props": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "\"color-mix(in oklch, var(--foreground) 12%, transparent)\"",
+          "description": "Glow color. Defaults to a soft tint of the foreground token."
+        },
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "400",
+          "description": "Diameter of the glow, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "tilt-card": [
+    {
+      "name": "TiltCard",
+      "props": [
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": "12",
+          "description": "Maximum tilt on each axis, in degrees."
+        },
+        {
+          "name": "scale",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": "Scale applied while pointing."
+        },
+        {
+          "name": "perspective",
+          "type": "number",
+          "required": false,
+          "default": "800",
+          "description": "Perspective depth, in px."
+        },
+        {
+          "name": "glare",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render a cursor-following glare highlight."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

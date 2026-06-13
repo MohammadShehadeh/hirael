@@ -1189,6 +1189,26 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "expandable-card",
+    title: "Expandable Card",
+    description:
+      "Card that expands in place to reveal more content, with a smooth height transition and a compound disclosure API. Controlled or uncontrolled.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/expandable-card.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "morphing-dialog",
+    title: "Morphing Dialog",
+    description:
+      "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
+    category: "animation",
+    sourceFiles: ["registry/hirael/ui/morphing-dialog.tsx"],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "lucide-react"],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:

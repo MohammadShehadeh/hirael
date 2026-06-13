@@ -104,6 +104,8 @@ const DEMO_LOADERS: Record<
   "magnetic-button": () => import("@/registry/hirael/magnetic-button/magnetic-button.demo"),
   "cursor-glow": () => import("@/registry/hirael/cursor-glow/cursor-glow.demo"),
   "tilt-card": () => import("@/registry/hirael/tilt-card/tilt-card.demo"),
+  "expandable-card": () => import("@/registry/hirael/expandable-card/expandable-card.demo"),
+  "morphing-dialog": () => import("@/registry/hirael/morphing-dialog/morphing-dialog.demo"),
   "creative-studio": () =>
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }

@@ -2095,6 +2095,47 @@
       ]
     },
     {
+      "name": "expandable-card",
+      "type": "registry:ui",
+      "title": "Expandable Card",
+      "description": "Card that expands in place to reveal more content, with a smooth height transition and a compound disclosure API. Controlled or uncontrolled.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/expandable-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/expandable-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "morphing-dialog",
+      "type": "registry:ui",
+      "title": "Morphing Dialog",
+      "description": "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/morphing-dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/morphing-dialog.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

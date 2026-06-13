@@ -4757,6 +4757,106 @@
       "extendsNative": true
     }
   ],
+  "expandable-card": [
+    {
+      "name": "ExpandableCard",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ExpandableCardTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ExpandableCardContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "morphing-dialog": [
+    {
+      "name": "MorphingDialog",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "MorphingDialogTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogClose",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

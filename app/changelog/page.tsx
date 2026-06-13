@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site"
 
 export const metadata: Metadata = {
   title: "Changelog",
-  description: `Release notes for ${SITE.name} — new components, blocks, fixes, and polish.`,
+  description: `Release notes for ${SITE.name}: new components, blocks, fixes, and polish.`,
   alternates: { canonical: "/changelog" },
 }
 

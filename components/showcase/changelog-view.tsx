@@ -20,8 +20,8 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
             Release notes
           </h1>
           <p className="mt-4 max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-            Every shipped version of Hirael — new components, blocks, fixes,
-            and polish. Rendered from GitHub Releases.
+            Every shipped version of Hirael: new components, blocks, fixes,
+            and polish.
           </p>
 
           {releases.length === 0 ? (

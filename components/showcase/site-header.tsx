@@ -41,11 +41,12 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full px-4 pt-3 sm:px-6 lg:px-8",
+        "sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50",
+        "after:pointer-events-none after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-gradient-to-r after:from-transparent after:via-accent-cool/30 after:to-transparent",
         className
       )}
     >
-      <div className="mx-auto flex h-12 w-full max-w-6xl items-center gap-3 rounded-xl border border-border/80 bg-card/70 px-3 shadow-lg ring-1 ring-inset ring-foreground/[0.06] backdrop-blur-xl supports-[backdrop-filter]:bg-card/55 sm:px-4">
+      <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6 lg:px-8">
         {withSidebarTrigger}
 
         <Link

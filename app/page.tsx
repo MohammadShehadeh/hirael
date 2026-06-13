@@ -9,7 +9,6 @@ import {
   Layers,
   MonitorSmartphone,
   SunMoon,
-  Terminal,
 } from "lucide-react"
 
 import { BlockCategories } from "@/components/showcase/block-categories"
@@ -22,7 +21,6 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   COMPONENTS,
-  REGISTRY_BY_CATEGORY,
   REGISTRY_BY_NAME,
   entryHref,
 } from "@/registry/hirael/registry-meta"
@@ -65,7 +63,6 @@ export default function LandingPage() {
         <LiveRegistry />
         <WhyHirael />
         <CategoryGrid />
-        <ClosingCta />
       </main>
       <SiteFooter />
     </div>
@@ -73,17 +70,14 @@ export default function LandingPage() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero — framed panel with contained texture                                 */
+/* Hero — borderless panel with contained texture                             */
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
-  const componentCount = COMPONENTS.length
-  const blocks = REGISTRY_BY_CATEGORY.blocks.length
-
   return (
     <section className="relative px-4 pt-6 pb-2 sm:px-6 sm:pt-8 lg:px-8 lg:pt-10">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-xl border border-border ring-1 ring-inset ring-foreground/[0.04]">
-        {/* Texture lives inside the frame: soft drifting halo, then a masked dot grid. */}
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-xl">
+        {/* Texture lives inside the panel: soft drifting halo, then a masked dot grid. */}
         <div aria-hidden className="ambient-halo" />
         <div
           aria-hidden
@@ -92,17 +86,11 @@ function Hero() {
 
         <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
           {/* Blueprint registration marks framing the fold. */}
-          <span aria-hidden className="corner-mark start-0 top-0" />
           <span aria-hidden className="corner-mark end-0 top-0" />
           <span aria-hidden className="corner-mark bottom-0 start-0" />
           <span aria-hidden className="corner-mark bottom-0 end-0" />
 
           <div className="flex flex-col items-center gap-6 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground">
-              <span className="state-dot" />
-              {componentCount} components · {blocks} blocks
-            </span>
-
             <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
               The components shadcn/ui doesn&apos;t ship.
             </h1>
@@ -348,8 +336,10 @@ function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
           $
         </span>
         <code className="truncate font-mono text-[11px] text-foreground/90">
-          npx shadcn add{" "}
-          <span className="text-muted-foreground">hirael.com/r/combobox</span>
+          npx shadcn@latest add{" "}
+          <span className="text-muted-foreground">
+            https://hirael.com/r/combobox.json
+          </span>
         </code>
       </div>
     )
@@ -424,57 +414,6 @@ function CategoryGrid() {
         </header>
 
         <BlockCategories variant="indexed" />
-      </div>
-    </section>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
-/* Closing CTA                                                                */
-/* -------------------------------------------------------------------------- */
-
-function ClosingCta() {
-  return (
-    <section className="relative">
-      <hr className="rule-gradient" />
-      <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="glass-panel relative overflow-hidden rounded-xl px-6 py-12 text-center sm:px-12 sm:py-16">
-          <div aria-hidden className="ambient-halo" />
-          <div className="relative mx-auto flex max-w-xl flex-col items-center gap-5">
-            <span className="relative mb-1 flex size-16 items-center justify-center rounded-full border border-dashed border-border">
-              <span
-                aria-hidden
-                className="absolute inset-0 scale-150 rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--foreground)_16%,transparent),transparent_70%)] blur-xl"
-              />
-              <Terminal className="relative size-6 text-foreground/80" />
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Get started
-            </span>
-            <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
-              Stop rebuilding the same components.
-            </h2>
-            <p className="text-balance text-sm text-muted-foreground sm:text-base">
-              Pick what you need, run one command, and the source is yours to
-              edit.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-              <Link
-                href="/components"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                Browse components
-                <ArrowRight className="size-4 rtl:rotate-180" />
-              </Link>
-              <Link
-                href="/templates"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-card px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                View templates
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -11,37 +11,37 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "We replaced three hand-rolled multi-selects with the Hirael one in an afternoon. The compound API kept our existing layout, and the keyboard navigation finally worked the way users expect.",
+    body: "We swapped three hand-rolled multi-selects for this one in an afternoon. Same layout as before, and the keyboard nav finally works the way people expect.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
   },
   {
-    body: "Dual-API ended a months-long debate on our design system PR.",
+    body: "The dual API settled a long-running argument on our design system.",
     initials: "JT",
     name: "Jules Tanaka",
     role: "Design systems · Hexpoint",
   },
   {
-    body: "The year picker alone would have cost me a sprint to build correctly. Drops in, theme already matches, ships.",
+    body: "The year picker would have cost me a sprint to build right. This one dropped in and already matched our theme.",
     initials: "AO",
     name: "Adaeze Okafor",
     role: "Founding engineer · Brella",
   },
   {
-    body: "Async combobox that doesn't race itself on every keystroke. I didn't think that was a registry option.",
+    body: "An async combobox that doesn't race itself on every keystroke. Didn't expect to find that in a registry.",
     initials: "SK",
     name: "Soren Kim",
     role: "Frontend lead · Verbit",
   },
   {
-    body: "We're a small team. Work that used to slip to 'we'll fix it in v2' now ships correctly in v1.",
+    body: "We're a small team. Work that used to slip to 'we'll fix it in v2' now ships in v1.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",
   },
   {
-    body: "Pulled the tag input in, edited two lines, shipped the same day. Owning the source settles any question of long-term maintenance.",
+    body: "Pulled the tag input in, changed two lines, shipped the same day. The source is ours now, so there's nothing to keep in sync.",
     initials: "DL",
     name: "Diego Larrea",
     role: "Engineer · Mercado",
@@ -60,8 +60,8 @@ export default function Testimonial02() {
             Quiet wins, from teams shipping real product.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            No launch tweet quotes. Just notes from engineers who pulled the
-            registry into their repo and went back to building.
+            Not launch-day hype, just notes from engineers who installed it
+            and got back to building.
           </p>
         </div>
 

@@ -76,11 +76,23 @@ function BrandMark({ className }: { className?: string }) {
       role="img"
       aria-label="Hirael"
       className={cn(
-        "flex aspect-square items-center justify-center rounded-md bg-foreground font-mono text-sm font-semibold text-background",
+        "flex aspect-square items-center justify-center rounded-md bg-foreground text-background",
         className,
       )}
     >
-      ◆
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+        className="size-[60%]"
+      >
+        <path d="M5 18v-8a7 7 0 0 1 14 0v8" />
+        <path d="M12 8 L12.8 10.2 L15 11 L12.8 11.8 L12 14 L11.2 11.8 L9 11 L11.2 10.2 Z" />
+      </svg>
     </span>
   )
 }

@@ -94,6 +94,13 @@ positioning is fine where geometry genuinely is physical (Radix
 `data-[side]` animations, the color-picker canvas, `side="left|right"` on
 Sheet/Sidebar). Every preview has an RTL toggle — verify with it.
 
+The framed `/embed/*` previews carry direction as a `?dir=rtl` query
+param. It's applied to `<html dir>` by a pre-paint inline script
+(`lib/embed.ts`, rendered from each embed `page.tsx`), the same trick the
+theme uses — so an RTL preview comes up correct on the first frame instead
+of flipping after hydration. The embed shells are plain background wrappers;
+don't reintroduce direction state there.
+
 ## Changelog fetch
 
 [lib/changelog.ts](../lib/changelog.ts) fetches GitHub Releases with

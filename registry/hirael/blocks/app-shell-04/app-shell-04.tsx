@@ -55,6 +55,24 @@ const FOOTER_NAV: { icon: LucideIcon; label: string }[] = [
   { icon: Settings, label: "Settings" },
 ]
 
+function BrandMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+    >
+      <path d="M5 18v-8a7 7 0 0 1 14 0v8" />
+      <path d="M12 8 L12.8 10.2 L15 11 L12.8 11.8 L12 14 L11.2 11.8 L9 11 L11.2 10.2 Z" />
+    </svg>
+  )
+}
+
 function Slot({ label, className }: { label: string; className?: string }) {
   return (
     <div
@@ -78,8 +96,8 @@ export default function AppShell04() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip="Plinth Labs">
-                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-mono text-sm font-semibold text-sidebar-primary-foreground">
-                  ◆
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+                  <BrandMark className="size-4" />
                 </span>
                 <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">

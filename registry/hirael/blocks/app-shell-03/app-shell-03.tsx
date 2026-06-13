@@ -188,6 +188,24 @@ const RAIL: { icon: LucideIcon; label: string; current?: boolean }[] = [
   { icon: Trash2, label: "Trash" },
 ]
 
+function BrandMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+    >
+      <path d="M5 18v-8a7 7 0 0 1 14 0v8" />
+      <path d="M12 8 L12.8 10.2 L15 11 L12.8 11.8 L12 14 L11.2 11.8 L9 11 L11.2 10.2 Z" />
+    </svg>
+  )
+}
+
 export default function AppShell03() {
   const [selectedId, setSelectedId] = React.useState(CONVERSATIONS[0].id)
   const [readIds, setReadIds] = React.useState<readonly string[]>([])
@@ -252,9 +270,9 @@ export default function AppShell03() {
         <span
           role="img"
           aria-label="Hirael"
-          className="mb-2 flex size-8 items-center justify-center rounded-md bg-foreground font-mono text-sm font-semibold text-background"
+          className="mb-2 flex size-8 items-center justify-center rounded-md bg-foreground text-background"
         >
-          ◆
+          <BrandMark className="size-4" />
         </span>
         {RAIL.map((item) => (
           <Tooltip key={item.label}>

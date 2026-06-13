@@ -11,6 +11,24 @@ const CODE_LENGTH = 6
 const RESEND_SECONDS = 30
 const MASKED_EMAIL = "a•••@studio.com"
 
+function BrandMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+    >
+      <path d="M5 18v-8a7 7 0 0 1 14 0v8" />
+      <path d="M12 8 L12.8 10.2 L15 11 L12.8 11.8 L12 14 L11.2 11.8 L9 11 L11.2 10.2 Z" />
+    </svg>
+  )
+}
+
 export default function OtpVerify01() {
   const [code, setCode] = React.useState<string[]>(
     Array.from({ length: CODE_LENGTH }, () => "")
@@ -151,9 +169,7 @@ export default function OtpVerify01() {
             <>
               <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
                 <div className="relative flex size-10 items-center justify-center rounded-sm border border-border bg-background">
-                  <span className="text-lg font-semibold tracking-[-0.04em] text-foreground">
-                    ◆
-                  </span>
+                  <BrandMark className="size-5 text-foreground" />
                   <span
                     aria-hidden
                     className="absolute -bottom-1 -end-1 size-1.5 rounded-full bg-foreground"

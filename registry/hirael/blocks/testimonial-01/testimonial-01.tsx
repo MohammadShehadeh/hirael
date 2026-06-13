@@ -21,9 +21,9 @@ export default function Testimonial01() {
               &ldquo;
             </span>
             <p className="text-balance text-2xl font-medium leading-[1.25] tracking-[-0.02em] sm:text-3xl">
-              We replaced three hand-rolled multi-selects with the Hirael one in
-              an afternoon. The compound API kept our existing layout, and the
-              keyboard navigation finally worked the way users expect.
+              We swapped three hand-rolled multi-selects for this one in an
+              afternoon. Same layout as before, and the keyboard nav finally
+              works the way people expect.
             </p>
           </blockquote>
 

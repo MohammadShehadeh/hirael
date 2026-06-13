@@ -17,6 +17,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # v0.1.0–v0.7.0 are the one-time historical backfill (see
+    # .github/workflows/seed-releases.yml). They were published all at once to
+    # populate the /changelog and must NOT redeploy production through old
+    # builds. Every other release — and any manual dispatch — deploys normally.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      !contains(
+        ' v0.1.0 v0.2.0 v0.3.0 v0.4.0 v0.5.0 v0.6.0 v0.7.0 ',
+        format(' {0} ', github.event.release.tag_name)
+      )
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}

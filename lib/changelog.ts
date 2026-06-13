@@ -40,6 +40,12 @@ type GitHubRelease = {
   created_at: string
 }
 
+// Optional `<!-- date: YYYY-MM-DD -->` marker in a release body. Lets a
+// backfilled/historical release report its real ship date instead of the day
+// it was published on GitHub. Invisible in GitHub's rendered notes (HTML
+// comment) and skipped by the section parser below.
+const DATE_OVERRIDE = /<!--\s*date:\s*(\d{4}-\d{2}-\d{2})\s*-->/
+
 async function fetchReleases(): Promise<GitHubRelease[]> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -78,6 +84,7 @@ function parseSections(body: string | null | undefined): ChangelogSection[] {
 
   for (const line of lines) {
     if (!line) continue
+    if (/^<!--[\s\S]*-->$/.test(line)) continue
 
     const headingMatch = line.match(/^(.+):$/)
     if (headingMatch) {
@@ -108,7 +115,10 @@ function releaseToChangelog(release: GitHubRelease): ChangelogRelease | null {
   if (release.draft) return null
   if (!/^v?\d+\.\d+\.\d+/.test(release.tag_name)) return null
 
-  const dateString = release.published_at ?? release.created_at
+  const dateString =
+    release.body?.match(DATE_OVERRIDE)?.[1] ??
+    release.published_at ??
+    release.created_at
   const isoDate = dateString ? new Date(dateString).toISOString() : null
 
   return {

@@ -94,6 +94,10 @@ Defined in `globals.css`, reuse rather than re-rolling:
   section divider; preferred over a solid `border-t` between sections).
 - `.state-dot` — pulsing cool dot for live/active indicators.
 - `.bg-dot-grid` — faint monochrome dot-grid texture (hero background).
+- `.ambient-halo` — large soft radial glows (warm-near, cool-far) that drift
+  slowly; depth behind the hero and focal bands.
+- `.glass-panel` — translucent blurred panel with a hairline border and a
+  faint cool shadow; focal containers only, never whole sections.
 - `.corner-mark` — small `+` blueprint marker for section corners.
 - `.container` (`mx-auto w-full max-w-6xl`) / `.cpx` (`px-4 lg:px-6`) —
   page width + horizontal padding.

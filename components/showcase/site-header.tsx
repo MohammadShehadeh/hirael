@@ -81,7 +81,7 @@ export function SiteHeader({
           <CommandMenu />
           <ThemeToggle />
           <Drawer
-            direction="left"
+            direction="bottom"
             open={mobileOpen}
             onOpenChange={setMobileOpen}
           >
@@ -94,8 +94,8 @@ export function SiteHeader({
                 <Menu className="size-3.5" />
               </button>
             </DrawerTrigger>
-            <DrawerContent className="w-[min(20rem,80vw)]">
-              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border">
+            <DrawerContent>
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
                 <DrawerTitle className="flex items-center">
                   <BrandLockup logoClassName="h-8" />
                   <span className="sr-only">Navigation</span>
@@ -110,7 +110,7 @@ export function SiteHeader({
                   </button>
                 </DrawerClose>
               </DrawerHeader>
-              <nav className="flex flex-col gap-0.5 p-3">
+              <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                 {NAV_LINKS.map((link) => {
                   const active = isActive(link.href)
                   return (
@@ -119,7 +119,7 @@ export function SiteHeader({
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "rounded-sm px-3 py-2 text-sm transition-colors",
+                        "rounded-sm px-3 py-2.5 text-sm transition-colors",
                         active
                           ? "bg-accent text-foreground"
                           : "text-muted-foreground hover:bg-accent hover:text-foreground"

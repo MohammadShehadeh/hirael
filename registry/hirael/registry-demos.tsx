@@ -47,6 +47,10 @@ const DEMO_LOADERS: Record<
   "faq-04": () => import("@/registry/hirael/blocks/faq-04/faq-04"),
   "login-01": () => import("@/registry/hirael/blocks/login-01/login-01"),
   "login-02": () => import("@/registry/hirael/blocks/login-02/login-02"),
+  "signup-01": () => import("@/registry/hirael/blocks/signup-01/signup-01"),
+  "forgot-password-01": () =>
+    import("@/registry/hirael/blocks/forgot-password-01/forgot-password-01"),
+  "otp-verify-01": () => import("@/registry/hirael/blocks/otp-verify-01/otp-verify-01"),
   "header-01": () => import("@/registry/hirael/blocks/header-01/header-01"),
   "footer-01": () => import("@/registry/hirael/blocks/footer-01/footer-01"),
   "not-found-01": () => import("@/registry/hirael/blocks/not-found-01/not-found-01"),

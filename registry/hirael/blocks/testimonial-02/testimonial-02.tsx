@@ -11,37 +11,37 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "We replaced three hand-rolled multi-selects with the Hirael one in an afternoon. The compound API kept our existing layout, and the keyboard navigation finally worked the way users expect.",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
   },
   {
-    body: "Dual-API ended a months-long debate on our design system PR.",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     initials: "JT",
     name: "Jules Tanaka",
     role: "Design systems · Hexpoint",
   },
   {
-    body: "The year picker alone would have cost me a sprint to build correctly. Drops in, theme already matches, ships.",
+    body: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
     initials: "AO",
     name: "Adaeze Okafor",
     role: "Founding engineer · Brella",
   },
   {
-    body: "Async combobox that doesn't race itself on every keystroke. I didn't think that was a registry option.",
+    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
     initials: "SK",
     name: "Soren Kim",
     role: "Frontend lead · Verbit",
   },
   {
-    body: "We're a small team. Work that used to slip to 'we'll fix it in v2' now ships correctly in v1.",
+    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",
   },
   {
-    body: "Pulled the tag input in, edited two lines, shipped the same day. Owning the source settles any question of long-term maintenance.",
+    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     initials: "DL",
     name: "Diego Larrea",
     role: "Engineer · Mercado",
@@ -57,11 +57,11 @@ export default function Testimonial02() {
             · what teams say
           </span>
           <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-            Quiet wins, from teams shipping real product.
+            What people are saying.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            No launch tweet quotes. Just notes from engineers who pulled the
-            registry into their repo and went back to building.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </div>
 

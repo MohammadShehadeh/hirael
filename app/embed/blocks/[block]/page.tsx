@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import { embedDirScript } from "@/lib/embed"
 
 import { BlockEmbedShell } from "./embed-shell"
 
@@ -25,8 +26,11 @@ export default async function BlockEmbedRoute({
   const entry = REGISTRY_BY_NAME[block]
   if (!entry || entry.category !== "blocks") notFound()
   return (
-    <BlockEmbedShell>
-      <RegistryDemo name={entry.name} />
-    </BlockEmbedShell>
+    <>
+      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
+      <BlockEmbedShell>
+        <RegistryDemo name={entry.name} />
+      </BlockEmbedShell>
+    </>
   )
 }

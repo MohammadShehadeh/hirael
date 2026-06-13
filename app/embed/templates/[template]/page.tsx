@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 
 import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import { embedDirScript } from "@/lib/embed"
 
 import { TemplateEmbedShell } from "./embed-shell"
 
@@ -25,8 +26,11 @@ export default async function TemplateEmbedRoute({
   const entry = REGISTRY_BY_NAME[template]
   if (!entry || entry.category !== "templates") notFound()
   return (
-    <TemplateEmbedShell>
-      <RegistryDemo name={entry.name} />
-    </TemplateEmbedShell>
+    <>
+      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
+      <TemplateEmbedShell>
+        <RegistryDemo name={entry.name} />
+      </TemplateEmbedShell>
+    </>
   )
 }

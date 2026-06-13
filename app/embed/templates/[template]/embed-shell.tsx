@@ -1,26 +1,11 @@
-"use client"
-
-import * as React from "react"
+import type { ReactNode } from "react"
 
 /**
- * Client wrapper for statically exported template embeds. Reads the `dir`
- * query param at runtime so the viewer can preview templates in RTL.
+ * Background wrapper for statically exported template embeds. Reading
+ * direction is set on `<html>` before paint by the inline script in
+ * `page.tsx` (see `lib/embed.ts`), so this stays a plain server wrapper
+ * with no direction state to flip after mount.
  */
-export function TemplateEmbedShell({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [dir, setDir] = React.useState<"ltr" | "rtl">("ltr")
-
-  React.useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get("dir")
-    if (param === "rtl") setDir("rtl")
-  }, [])
-
-  return (
-    <div dir={dir} className="min-h-svh bg-black">
-      {children}
-    </div>
-  )
+export function TemplateEmbedShell({ children }: { children: ReactNode }) {
+  return <div className="min-h-svh bg-black">{children}</div>
 }

@@ -4346,6 +4346,158 @@
       "extendsNative": true
     }
   ],
+  "activity-feed": [
+    {
+      "name": "ActivityFeed",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedAvatar",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedActor",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedAction",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedTime",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedBody",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedDivider",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "audit-log": [
+    {
+      "name": "AuditLog",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogItem",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogActor",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogAction",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogTime",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogStatus",
+      "props": [
+        {
+          "name": "tone",
+          "type": "AuditLogStatusTone",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogDetail",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogField",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

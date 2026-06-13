@@ -1929,6 +1929,44 @@
       ]
     },
     {
+      "name": "activity-feed",
+      "type": "registry:ui",
+      "title": "Activity Feed",
+      "description": "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/activity-feed.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/activity-feed.tsx"
+        }
+      ]
+    },
+    {
+      "name": "audit-log",
+      "type": "registry:ui",
+      "title": "Audit Log",
+      "description": "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/audit-log.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/audit-log.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

@@ -1098,6 +1098,26 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "activity-feed",
+    title: "Activity Feed",
+    description:
+      "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
+    category: "data",
+    sourceFiles: ["registry/hirael/ui/activity-feed.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "audit-log",
+    title: "Audit Log",
+    description:
+      "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
+    category: "data",
+    sourceFiles: ["registry/hirael/ui/audit-log.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:

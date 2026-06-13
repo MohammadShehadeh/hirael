@@ -62,11 +62,13 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `image-cropper` | `slider` | Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref. |
 | `media-input` | `button` | Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser. |
 
-#### Data display (8)
+#### Data display (10)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
+| `activity-feed` | — | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API. |
 | `animated-number` | — | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support. |
+| `audit-log` | — | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API. |
 | `avatar-stack` | — | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button. |
 | `calendar-heatmap` | `tooltip` | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend. |
 | `countdown-timer` | — | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content. |

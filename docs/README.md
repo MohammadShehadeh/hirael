@@ -8,8 +8,9 @@ at the repo root.
 ## What this is
 
 **Hirael is a shadcn-compatible component registry** — "the components
-shadcn/ui doesn't ship." It distributes ~45 React components and ~40 section
-blocks through the shadcn registry schema, so a consumer runs
+shadcn/ui doesn't ship." It distributes ~45 React components, ~40 section
+blocks, and full-page templates through the shadcn registry schema, so a
+consumer runs
 `npx shadcn add https://hirael.com/r/<name>.json` and the **source is copied
 into their repo**. There is no Hirael npm package and no runtime dependency;
 Hirael is a *peer* of shadcn (its components import shadcn primitives from
@@ -54,8 +55,11 @@ app/                              # Next.js App Router (output: "export")
     components/[component]/       # per-component page (demo, usage, props, install)
     blocks/page.tsx               # block index
     blocks/[block]/               # per-block preview
+    templates/page.tsx            # template index
+    templates/[template]/         # per-template preview
     theme/playground.tsx          # theme playground
   embed/blocks/[block]/           # isolated framed block previews
+  embed/templates/[template]/     # isolated framed template previews
   global-error.tsx, not-found.tsx # error + 404 surfaces
   globals.css                     # design tokens (zinc palette, 0.65rem radius)
   layout.tsx, manifest.ts, sitemap.ts, robots.ts, opengraph-image.tsx, icon.tsx …
@@ -68,6 +72,7 @@ registry/hirael/                  # canonical source for every registry item
   ui/<primitive>.tsx              # shadcn primitives the registry imports from
   <component>/<component>.demo.tsx# showcase demo per component
   blocks/<block>/                 # marketing / app blocks
+  templates/<template>/           # full-page templates (multi-file)
   registry-meta.ts                # SINGLE SOURCE OF TRUTH
   registry-demos.tsx              # demo registry used by the landing/live previews
 hooks/                            # shared client hooks
@@ -84,8 +89,9 @@ vercel.json                       # main auto-deploy disabled + legacy /name →
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 46 registry UI items (45 components + the distribution-only
-  `accordion`) and 39 blocks. Full list in [catalog.md](./catalog.md).
-- **Showcase** — landing with live demos, component/block indexes,
+  `accordion`), 39 blocks, and 1 full-page template (Creative Studio). Full
+  list in [catalog.md](./catalog.md).
+- **Showcase** — landing with live demos, component/block/template indexes,
   per-item pages (demo + usage source + prop table + install), theme
   playground, command menu, light/dark toggle.
 - **RTL** — every component and block works under `dir="rtl"`; previews have

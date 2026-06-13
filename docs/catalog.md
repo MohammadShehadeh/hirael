@@ -1,4 +1,4 @@
-# Catalog — components & blocks
+# Catalog — components, blocks & templates
 
 The canonical source for every item is
 [registry/hirael/registry-meta.ts](../registry/hirael/registry-meta.ts);
@@ -6,10 +6,13 @@ The canonical source for every item is
 human-readable index — when you add or rename an item, update the matching
 table here in the same change.
 
-As of the last update: **46 registry UI items** (45 standalone components +
-1 distribution-only primitive) and **39 section blocks**. Counts come from
-`registry.json`; the landing page derives its "N components · M blocks" badge
-from `registry-meta.ts`, so treat that file as the truth if these drift.
+The catalog spans three tiers: **components** (single UI primitives),
+**blocks** (marketing / app sections), and **templates** (full, multi-section
+pages). As of the last update: **46 registry UI items** (45 standalone
+components + 1 distribution-only primitive), **39 section blocks**, and
+**1 template**. Counts come from `registry.json`; the landing page derives
+its counts from `registry-meta.ts`, so treat that file as the truth if these
+drift.
 
 Each component installs with:
 
@@ -135,3 +138,20 @@ them by kind. Browse at [hirael.com/blocks](https://hirael.com/blocks).
 > Block previews render in two places: inline on the block index and
 > framed inside `app/embed/blocks/[block]/` (an isolated route so a block's
 > own layout can't leak the showcase chrome into the preview).
+
+## Templates
+
+Full, multi-section pages built in the Hirael style — complete layouts you
+copy into your repo with the shadcn CLI and edit like any other file. They
+live under [registry/hirael/templates/](../registry/hirael/templates/),
+browse at [hirael.com/templates](https://hirael.com/templates), and preview
+framed inside `app/embed/templates/[template]/`.
+
+| Template | Dependencies | What it is |
+| --- | --- | --- |
+| `creative-studio` | `framer-motion`, `lucide-react` | Dark, cinematic creative-studio landing page: full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Self-contained warm-cream palette. |
+
+A template is one `registry-meta.ts` entry (`category: "templates"`) whose
+`sourceFiles` list every file in its folder, so the CLI installs the whole
+page set under `components/templates/<name>/`. Templates may ship their own
+fonts and a self-contained palette rather than the site's design tokens.

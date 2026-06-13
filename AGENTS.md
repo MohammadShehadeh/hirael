@@ -1,9 +1,10 @@
 # Hirael — a shadcn-compatible component registry
 
-Hirael ships "the components shadcn/ui doesn't ship": ~45 React components
-and ~40 section blocks, distributed through the **shadcn registry schema**
-so consumers install them with `npx shadcn add https://hirael.com/r/<name>.json`
-and the source lands in their repo. There is no runtime package. The
+Hirael ships "the components shadcn/ui doesn't ship": ~45 React components,
+~40 section blocks, and full-page templates, distributed through the
+**shadcn registry schema** so consumers install them with
+`npx shadcn add https://hirael.com/r/<name>.json` and the source lands in
+their repo. There is no runtime package. The
 showcase site in this repo is a fully static Next.js 16 export that
 previews every item and serves the generated `/r/*.json` registry files.
 
@@ -44,21 +45,23 @@ declares every item: name, title, description, category, `sourceFiles`,
 
 So the workflow for any catalog change is: edit `registry-meta.ts`, then
 `pnpm registry:gen`, then commit both. The sidebar, landing counts,
-component/block index pages, and sitemap all derive from this file — there
-is no separate "is it published" flag, the entry's presence is the source
-of truth.
+component/block/template index pages, and sitemap all derive from this file
+— there is no separate "is it published" flag, the entry's presence is the
+source of truth.
 
 ## Every registry item follows the same shape
 
-When you add or touch a component or block, keep it consistent with the
-rest of the catalog (the full checklist is in
+When you add or touch a component, block, or template, keep it consistent
+with the rest of the catalog (the full checklist is in
 [CONTRIBUTING.md](./CONTRIBUTING.md), the conventions in
 [docs/conventions.md](./docs/conventions.md)):
 
-- **Flat compound exports.** Compose the way shadcn ships primitives — no
-  namespacing, no convenience wrappers. The bare `Name` is the root
-  primitive and holds the state; `NameTrigger`, `NameContent`, … are the
-  parts.
+- **Compound API first — always.** Build every component the way shadcn
+  ships primitives: a flat set of composable parts, no namespacing, no
+  convenience wrappers. The bare `Name` is the root primitive and holds the
+  state; `NameTrigger`, `NameContent`, … are the parts. A single-prop
+  "convenience" form is optional and strictly secondary — never the only
+  API, and never a reason to skip the compound parts.
 - **`data-slot` on every rendered slot** (`data-slot="<kebab>"`) so
   downstream styling and slot-targeting works in a consumer app.
 - **Import shadcn primitives from `@/registry/hirael/ui/*`** — the alias is
@@ -72,6 +75,16 @@ rest of the catalog (the full checklist is in
 - **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
 - **A `*.demo.tsx`** under `registry/hirael/<name>/` showing a basic compose
   and a customized compose.
+
+## Copy reads like a human
+
+Every word a visitor or consumer reads — registry `description`s, demo
+content, block and template copy, empty states, prop docs, and showcase site
+text — should sound like a person wrote it: concise, plain, specific. Short
+labels, short sentences. No filler, no hype, no marketing voice (prefer "Pick
+a date" over "Effortlessly select your desired date"; "No results" over "It
+looks like there's nothing here yet"). When in doubt, cut words. Match the
+register of the existing catalog descriptions and the landing copy.
 
 ## RTL is not optional
 
@@ -105,14 +118,14 @@ NOT to undo. The four files in [docs/](./docs/) are:
 - `README.md` — entry point, file map, done vs pending, deliberate decisions
 - `conventions.md` — Next 16 / React 19 / Tailwind v4 / registry gotchas
 - `design.md` — palette tokens, typography, radius/motion scale
-- `catalog.md` — the full component + block catalog and categories
+- `catalog.md` — the full component, block, and template catalog and categories
 
 These are for the next agent (and for you next session). If your change
 makes a doc statement wrong, fix the doc in the same change — they are
 load-bearing, not a changelog. Don't add a new `docs/` file per task; extend
 the existing four.
 
-Specifically: adding/renaming a component or block → update `catalog.md`;
+Specifically: adding/renaming a component, block, or template → update `catalog.md`;
 changing palette tokens, typography, or the radius/motion scale →
 `design.md`; hitting a new framework/lint/hydration gotcha → `conventions.md`;
 moving or removing a route/section → `README.md`'s file map. The top-level

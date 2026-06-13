@@ -67,9 +67,10 @@ heading rather than starting a new doc.
 - **Edit `registry-meta.ts`, then `pnpm registry:gen`.** `registry.json` is
   generated; `pnpm check:registry` fails the build on drift or on declared
   `registryDependencies` that don't match a component's real imports.
-- **Flat compound exports + `data-slot`.** The bare `Name` holds state;
-  parts are `NameTrigger`, `NameContent`, … Every rendered slot carries
-  `data-slot="<kebab>"`.
+- **Compound API first + `data-slot`.** Always default to a flat, shadcn-style
+  compound API: the bare `Name` holds state; parts are `NameTrigger`,
+  `NameContent`, … A single-prop convenience form is optional and secondary,
+  never the only API. Every rendered slot carries `data-slot="<kebab>"`.
 - **Import shadcn primitives from `@/registry/hirael/ui/*`** (the `ui` alias).
   The alias is rewritten to the consumer's `components.json` on install — a
   relative import would break that rewrite.
@@ -84,7 +85,8 @@ heading rather than starting a new doc.
 
 ## RTL
 
-Components and blocks must work under `dir="rtl"` with no extra config. Use
+Components, blocks, and templates must work under `dir="rtl"` with no extra
+config. Use
 **logical** utilities (`ms/me`, `ps/pe`, `start/end`, `text-start/end`,
 `border-s/e`, `rounded-s/e`) over physical ones; flip directional icons with
 `rtl:rotate-180`; mirror horizontal arrow-key focus movement. Physical
@@ -114,6 +116,10 @@ into sections.
   files.
 - Use the `@/` path alias, not `../../` chains.
 - Compose class names with `cn(...)` from `@/lib/utils`.
+- **Copy reads like a human** — concise, plain, specific; short labels and
+  sentences; no filler or marketing voice. Applies to registry
+  `description`s, demo / block / template copy, empty states, and showcase
+  text. Prefer "Pick a date" over "Effortlessly select your desired date."
 - **No em dashes in user-facing copy** — a deliberate site-wide decision.
 
 ## Gating signal

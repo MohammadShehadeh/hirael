@@ -19,6 +19,7 @@ const FOOTER_LINKS: {
   {
     label: "Resources",
     links: [
+      { href: "/changelog", label: "Changelog" },
       {
         href: "https://ui.shadcn.com",
         label: "shadcn/ui",

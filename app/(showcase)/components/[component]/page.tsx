@@ -4,10 +4,11 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
 import { ComponentPage } from "@/components/showcase/component-page"
-import type { SourceFile } from "@/components/showcase/component-page"
+import type { ApiPart, SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
 import { SITE } from "@/lib/site"
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import registryProps from "@/registry/hirael/registry-props.json"
 
 export const dynamicParams = false
 
@@ -25,13 +26,13 @@ export async function generateMetadata({
   const { component } = await params
   const entry = REGISTRY_BY_NAME[component]
   if (!entry || entry.category === "blocks") return {}
-  const url = `${SITE.url}/${entry.name}`
+  const url = `${SITE.url}/components/${entry.name}`
   const title = `${entry.title} | ${SITE.name}`
   return {
     title: entry.title,
     description: entry.description,
     alternates: {
-      canonical: `/${entry.name}`,
+      canonical: `/components/${entry.name}`,
     },
     openGraph: {
       type: "article",
@@ -118,7 +119,14 @@ export default async function ComponentRoute({
     loadSource(entry.sourceFiles),
     loadDemoSource(entry),
   ])
+  const api =
+    (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null
   return (
-    <ComponentPage entry={entry} source={source} demoSource={demoSource} />
+    <ComponentPage
+      entry={entry}
+      source={source}
+      demoSource={demoSource}
+      api={api}
+    />
   )
 }

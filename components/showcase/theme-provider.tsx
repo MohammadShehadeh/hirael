@@ -51,11 +51,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Apply mode class.
+  // Apply mode classes. `.light` switches this site's token overrides;
+  // `.dark` mirrors the standard shadcn convention so registry components
+  // authored with `dark:` variants resolve the same way they do in a
+  // consumer app.
   React.useEffect(() => {
     const html = document.documentElement
-    if (mode === "light") html.classList.add("light")
-    else html.classList.remove("light")
+    html.classList.toggle("light", mode === "light")
+    html.classList.toggle("dark", mode === "dark")
     try {
       localStorage.setItem(MODE_STORAGE_KEY, mode)
     } catch {

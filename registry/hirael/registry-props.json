@@ -1,0 +1,4349 @@
+{
+  "multi-select": [
+    {
+      "name": "MultiSelect",
+      "props": [
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "options",
+          "type": "MultiSelectOption[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "maxCount",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "MultiSelectTrigger",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select…\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((ctx: MultiSelectContextValue) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MultiSelectContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Nothing found.\"",
+          "description": null
+        },
+        {
+          "name": "showSelectAll",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "showClear",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "selectAllLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Select all\"",
+          "description": null
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Clear\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MultiSelectItem",
+      "props": [
+        {
+          "name": "option",
+          "type": "MultiSelectOption",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "number-range": [
+    {
+      "name": "NumberRange",
+      "props": [
+        {
+          "name": "value",
+          "type": "NumberRangeValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumberRangeValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: NumberRangeValue) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": "100",
+          "description": null
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "format",
+          "type": "NumberFormatter",
+          "required": false,
+          "default": "defaultFormat",
+          "description": null
+        },
+        {
+          "name": "parse",
+          "type": "NumberParser",
+          "required": false,
+          "default": "defaultParse",
+          "description": null
+        },
+        {
+          "name": "prefix",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "NumberRangeSlider",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NumberRangeInput",
+      "props": [
+        {
+          "name": "bound",
+          "type": "\"min\" | \"max\"",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NumberRangeInputs",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "separator",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"–\"",
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
+  ],
+  "year-picker": [
+    {
+      "name": "YearPicker",
+      "props": [
+        {
+          "name": "mode",
+          "type": "\"range\" | \"single\"",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "number | YearRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "number | YearRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((year: number) => void) | ((range: YearRange) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "minYear",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxYear",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | ((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "YearPickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a year\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "YearPickerContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "tag-input": [
+    {
+      "name": "TagInput",
+      "props": [
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxTags",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "unique",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "caseSensitive",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "validate",
+          "type": "TagValidator",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "commitKeys",
+          "type": "string[]",
+          "required": false,
+          "default": "[\"Enter\", \",\"]",
+          "description": null
+        },
+        {
+          "name": "splitOn",
+          "type": "RegExp",
+          "required": false,
+          "default": "/[,\\n\\t]+/",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TagInputContainer",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TagInputTag",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TagInputTags",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "TagInputField",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TagInputError",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "combobox": [
+    {
+      "name": "Combobox",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "options",
+          "type": "ComboboxOption[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSearchChange",
+          "type": "((search: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "externalFilter",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ComboboxTrigger",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select…\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Nothing found.\"",
+          "description": null
+        },
+        {
+          "name": "loadingMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Loading…\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxItem",
+      "props": [
+        {
+          "name": "option",
+          "type": "ComboboxOption",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "lazy-select": [
+    {
+      "name": "LazySelect",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "options",
+          "type": "LazySelectOption[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSearchChange",
+          "type": "((search: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onLoadMore",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the list is scrolled near the bottom and more pages exist."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Initial / search page is loading."
+        },
+        {
+          "name": "loadingMore",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "A subsequent page is being appended."
+        },
+        {
+          "name": "hasMore",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Whether another page is available to lazy-load."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "LazySelectTrigger",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select…\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LazySelectContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Nothing found.\"",
+          "description": null
+        },
+        {
+          "name": "loadingMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Loading…\"",
+          "description": null
+        },
+        {
+          "name": "loadingMoreMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"Loading more…\"",
+          "description": null
+        },
+        {
+          "name": "endMessage",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LazySelectItem",
+      "props": [
+        {
+          "name": "option",
+          "type": "LazySelectOption",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "password-input": [
+    {
+      "name": "PasswordInput",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "scorer",
+          "type": "PasswordScorer",
+          "required": false,
+          "default": "defaultPasswordScorer",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "PasswordInputField",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showToggle",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "toggleLabel",
+          "type": "{ show: string; hide: string; }",
+          "required": false,
+          "default": "{ show: \"Show password\", hide: \"Hide password\" }",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PasswordInputStrength",
+      "props": [
+        {
+          "name": "showLabel",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "renderMeta",
+          "type": "((strength: PasswordStrength) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "currency-input": [
+    {
+      "name": "CurrencyInput",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "number | null",
+          "required": false,
+          "default": "null",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: number | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": false,
+          "default": "\"USD\"",
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "\"en-US\"",
+          "description": null
+        },
+        {
+          "name": "decimals",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CurrencyInputPrefix",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CurrencyInputField",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "phone-input": [
+    {
+      "name": "PhoneInput",
+      "props": [
+        {
+          "name": "defaultValue",
+          "type": "string | (readonly string[] & string)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((e164: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultCountry",
+          "type": "string",
+          "required": false,
+          "default": "\"US\"",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PhoneInputCountrySelect",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "PhoneInputField",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "file-dropzone": [
+    {
+      "name": "FileDropzone",
+      "props": [
+        {
+          "name": "value",
+          "type": "File[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "File[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((files: File[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "FileDropzoneZone",
+      "props": [
+        {
+          "name": "headline",
+          "type": "string",
+          "required": false,
+          "default": "\"Drop files here, or click to browse\"",
+          "description": null
+        },
+        {
+          "name": "subline",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FileDropzoneList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FileDropzoneErrors",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "stat-card": [
+    {
+      "name": "StatCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StatCardLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StatCardValue",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StatCardDelta",
+      "props": [
+        {
+          "name": "trend",
+          "type": "StatCardTrend",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "rating": [
+    {
+      "name": "Rating",
+      "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Defines a string value that labels the current element."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": "5",
+          "description": null
+        },
+        {
+          "name": "step",
+          "type": "1 | 0.5",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "timeline": [
+    {
+      "name": "Timeline",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineDot",
+      "props": [
+        {
+          "name": "tone",
+          "type": "\"default\" | \"muted\" | \"success\" | \"warning\" | \"danger\"",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineTime",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TimelineDescription",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "kbd": [
+    {
+      "name": "Kbd",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KbdDisplay",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KbdGroup",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "callout": [
+    {
+      "name": "Callout",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"success\" | \"warning\" | \"info\" | \"error\" | \"neutral\" | null",
+          "required": false,
+          "default": "\"info\"",
+          "description": null
+        },
+        {
+          "name": "title",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "icon",
+          "type": "false | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "scroll-progress": [
+    {
+      "name": "ScrollProgress",
+      "props": [
+        {
+          "name": "target",
+          "type": "React.RefObject<HTMLElement | null>",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "position",
+          "type": "\"top\" | \"bottom\"",
+          "required": false,
+          "default": "\"top\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "month-picker": [
+    {
+      "name": "MonthPicker",
+      "props": [
+        {
+          "name": "mode",
+          "type": "\"range\" | \"single\"",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "MonthValue | MonthRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "MonthValue | MonthRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((v: MonthValue) => void) | ((range: MonthRange) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "minYear",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxYear",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | ((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "MonthPickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a month\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MonthPickerContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "time-picker": [
+    {
+      "name": "TimePicker",
+      "props": [
+        {
+          "name": "value",
+          "type": "TimeValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "TimeValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((v: TimeValue) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "format",
+          "type": "TimeFormat",
+          "required": false,
+          "default": "\"24h\"",
+          "description": null
+        },
+        {
+          "name": "showSeconds",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "minuteStep",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "secondStep",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TimePickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a time\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showIcon",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TimePickerContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "color-picker": [
+    {
+      "name": "ColorPicker",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"#0ea5e9\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((hex: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "format",
+          "type": "ColorFormat",
+          "required": false,
+          "default": "\"hex\"",
+          "description": null
+        },
+        {
+          "name": "swatches",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "recentLimit",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ColorPickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a color\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "avatar-stack": [
+    {
+      "name": "AvatarStack",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "spacing",
+          "type": "\"tight\" | \"normal\" | \"loose\"",
+          "required": false,
+          "default": "\"normal\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarStackItem",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "fallback",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "When true, renders as the child element (e.g. an anchor or button) via Radix Slot."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarStackOverflow",
+      "props": [
+        {
+          "name": "prefix",
+          "type": "string",
+          "required": false,
+          "default": "\"+\"",
+          "description": null
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "announcement-bar": [
+    {
+      "name": "AnnouncementBar",
+      "props": [
+        {
+          "name": "tone",
+          "type": "\"default\" | \"muted\" | \"primary\"",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Controlled-open. If provided, internal state is bypassed."
+        },
+        {
+          "name": "onDismiss",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": "Fires when the user dismisses via the close button."
+        },
+        {
+          "name": "storageKey",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "localStorage key. When set, the dismissed state is persisted across reloads."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AnnouncementBarBadge",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AnnouncementBarLink",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "empty-state": [
+    {
+      "name": "EmptyState",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmptyStateMedia",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmptyStateTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmptyStateDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmptyStateActions",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "spinner": [
+    {
+      "name": "Spinner",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"circle\" | \"dots\" | \"bars\"",
+          "required": false,
+          "default": "\"circle\"",
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Loading\"",
+          "description": "Accessible label announced to assistive tech. Defaults to \"Loading\"."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "copy-button": [
+    {
+      "name": "CopyButton",
+      "props": [
+        {
+          "name": "onCopy",
+          "type": "(React.ClipboardEventHandler<HTMLButtonElement> & ((value: string) => void))",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Text written to the clipboard on click."
+        },
+        {
+          "name": "variant",
+          "type": "\"ghost\" | \"outline\"",
+          "required": false,
+          "default": "\"ghost\"",
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "timeout",
+          "type": "number",
+          "required": false,
+          "default": "1500",
+          "description": "How long the copied state stays, in ms."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "marquee": [
+    {
+      "name": "Marquee",
+      "props": [
+        {
+          "name": "reverse",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Scroll the opposite direction."
+        },
+        {
+          "name": "pauseOnHover",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Pause while the pointer is over the track."
+        },
+        {
+          "name": "vertical",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Scroll top-to-bottom instead of left-to-right."
+        },
+        {
+          "name": "repeat",
+          "type": "number",
+          "required": false,
+          "default": "4",
+          "description": "How many times the children are duplicated to fill the loop."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "40",
+          "description": "Seconds for one full loop. Lower is faster."
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "required": false,
+          "default": "\"1rem\"",
+          "description": "Gap between items, any CSS length."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "tree-view": [
+    {
+      "name": "TreeView",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Id of the selected leaf."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TreeItem",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique id used for selection."
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Override the leading icon. Pass `null` to hide it entirely."
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "animated-number": [
+    {
+      "name": "AnimatedNumber",
+      "props": [
+        {
+          "name": "prefix",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Target value to animate toward."
+        },
+        {
+          "name": "startValue",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Value the first animation starts from. Defaults to 0."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "700",
+          "description": "Tween length in milliseconds."
+        },
+        {
+          "name": "decimals",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Fixed number of decimal places."
+        },
+        {
+          "name": "format",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "default": null,
+          "description": "Extra `Intl.NumberFormat` options (currency, notation, …)."
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "stepper": [
+    {
+      "name": "Stepper",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "The active step, 1-based."
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((step: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "orientation",
+          "type": "Orientation",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperItem",
+      "props": [
+        {
+          "name": "step",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "This item's position, 1-based."
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Force the completed state regardless of the active step."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperIndicator",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperSeparator",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "StepperDescription",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "sortable": [
+    {
+      "name": "Sortable",
+      "props": [
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "Ordered item ids."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "orientation",
+          "type": "Orientation",
+          "required": false,
+          "default": "\"vertical\"",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SortableItem",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique id matching an entry in the root `value`."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SortableHandle",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "date-picker": [
+    {
+      "name": "DatePicker",
+      "props": [
+        {
+          "name": "value",
+          "type": "Date | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "Date | null",
+          "required": false,
+          "default": "null",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((date: Date | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DatePickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a date\"",
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DatePickerContent",
+      "props": [
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DateCalendar",
+      "props": [
+        {
+          "name": "value",
+          "type": "Date | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "Date | null",
+          "required": false,
+          "default": "null",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((date: Date | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
+  ],
+  "date-range-picker": [
+    {
+      "name": "DateRangePicker",
+      "props": [
+        {
+          "name": "value",
+          "type": "DateRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "DateRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((range: DateRange | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "numberOfMonths",
+          "type": "1 | 2",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "presets",
+          "type": "DateRangePreset[]",
+          "required": false,
+          "default": "DEFAULT_PRESETS",
+          "description": null
+        },
+        {
+          "name": "showPresets",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a date range\"",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "align",
+          "type": "\"center\" | \"start\" | \"end\"",
+          "required": false,
+          "default": "\"start\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DateRangeCalendar",
+      "props": [
+        {
+          "name": "value",
+          "type": "DateRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "DateRange",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((range: DateRange | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "numberOfMonths",
+          "type": "1 | 2",
+          "required": false,
+          "default": "2",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
+  ],
+  "mention-input": [
+    {
+      "name": "MentionInput",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "items",
+          "type": "MentionItem[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "onSearch",
+          "type": "((query: string, trigger: string) => Promise<MentionItem[]>)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "trigger",
+          "type": "string | string[]",
+          "required": false,
+          "default": "\"@\"",
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxRows",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onMention",
+          "type": "((item: MentionItem) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"No results.\"",
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "inline-edit": [
+    {
+      "name": "InlineEdit",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSubmit",
+          "type": "((value: string) => void | Promise<void>)",
+          "required": false,
+          "default": null,
+          "description": "Called with the draft when a submit passes validation. Return a promise to show a pending state."
+        },
+        {
+          "name": "onCancel",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "editing",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultEditing",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onEditingChange",
+          "type": "((editing: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "submitOnBlur",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "selectOnFocus",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "validate",
+          "type": "((value: string) => string | null)",
+          "required": false,
+          "default": null,
+          "description": "Return an error message to block the submit, or null to allow it."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InlineEditPreview",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InlineEditInput",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InlineEditTextarea",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InlineEditControls",
+      "props": [
+        {
+          "name": "submitLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Save\"",
+          "description": null
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Cancel\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "signature-pad": [
+    {
+      "name": "SignaturePad",
+      "props": [
+        {
+          "name": "penColor",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "minStrokeWidth",
+          "type": "number",
+          "required": false,
+          "default": "1.5",
+          "description": null
+        },
+        {
+          "name": "maxStrokeWidth",
+          "type": "number",
+          "required": false,
+          "default": "3.5",
+          "description": null
+        },
+        {
+          "name": "onChange",
+          "type": "((isEmpty: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onStrokeEnd",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "ref",
+          "type": "React.Ref<SignaturePadRef>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SignaturePadClear",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SignaturePadUndo",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "image-cropper": [
+    {
+      "name": "ImageCropper",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "aspect",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "shape",
+          "type": "\"rect\" | \"round\"",
+          "required": false,
+          "default": "\"rect\"",
+          "description": null
+        },
+        {
+          "name": "zoom",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultZoom",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        },
+        {
+          "name": "onZoomChange",
+          "type": "((zoom: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxZoom",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": null
+        },
+        {
+          "name": "crop",
+          "type": "ImageCropperCrop",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultCrop",
+          "type": "ImageCropperCrop",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onCropChange",
+          "type": "((crop: ImageCropperCrop) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "grid",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "crossOrigin",
+          "type": "\"\" | \"anonymous\" | \"use-credentials\"",
+          "required": false,
+          "default": "\"anonymous\"",
+          "description": null
+        },
+        {
+          "name": "ref",
+          "type": "React.Ref<ImageCropperRef>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ImageCropperZoom",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "image-compare": [
+    {
+      "name": "ImageCompare",
+      "props": [
+        {
+          "name": "position",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Controlled position of the boundary, 0–100 from the reading start."
+        },
+        {
+          "name": "defaultPosition",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": null
+        },
+        {
+          "name": "onPositionChange",
+          "type": "((position: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        },
+        {
+          "name": "followPointer",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Follow the hovering pointer instead of requiring a drag."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ImageCompareBefore",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ImageCompareAfter",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ImageCompareHandle",
+      "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Defines a string value that labels the current element."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ImageCompareLabel",
+      "props": [
+        {
+          "name": "side",
+          "type": "\"before\" | \"after\"",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "lightbox": [
+    {
+      "name": "Lightbox",
+      "props": [
+        {
+          "name": "items",
+          "type": "LightboxItem[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultIndex",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "onIndexChange",
+          "type": "((index: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "LightboxTrigger",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LightboxClose",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LightboxPortal",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LightboxOverlay",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LightboxContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LightboxThumbnails",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "countdown-timer": [
+    {
+      "name": "CountdownTimer",
+      "props": [
+        {
+          "name": "target",
+          "type": "string | number | Date",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"boxed\" | \"inline\" | \"minimal\"",
+          "required": false,
+          "default": "\"boxed\"",
+          "description": null
+        },
+        {
+          "name": "hideZeroDays",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "labels",
+          "type": "Partial<Record<CountdownUnit, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onComplete",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "completeContent",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "((state: CountdownState) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CountdownTimerUnit",
+      "props": [
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "qr-code": [
+    {
+      "name": "QRCode",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Text encoded into the QR symbol."
+        },
+        {
+          "name": "level",
+          "type": "QRCodeLevel",
+          "required": false,
+          "default": "\"M\"",
+          "description": "Error correction level."
+        },
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "128",
+          "description": "Rendered size in pixels."
+        },
+        {
+          "name": "margin",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "Quiet zone width, in modules."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Accessible title announced by screen readers."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "calendar-heatmap": [
+    {
+      "name": "CalendarHeatmap",
+      "props": [
+        {
+          "name": "data",
+          "type": "CalendarHeatmapDatum[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "endDate",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "startDate",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "months",
+          "type": "number",
+          "required": false,
+          "default": "12",
+          "description": null
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "levels",
+          "type": "number",
+          "required": false,
+          "default": "5",
+          "description": null
+        },
+        {
+          "name": "thresholds",
+          "type": "number[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "classForLevel",
+          "type": "((level: number) => string)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "cellSize",
+          "type": "number | \"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showMonthLabels",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "showWeekdayLabels",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "tooltipFormatter",
+          "type": "((date: Date, value: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSelectDay",
+          "type": "((date: Date, value: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CalendarHeatmapLegend",
+      "props": [
+        {
+          "name": "levels",
+          "type": "number",
+          "required": false,
+          "default": "5",
+          "description": null
+        },
+        {
+          "name": "classForLevel",
+          "type": "((level: number) => string)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "cellSize",
+          "type": "number | \"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": null
+        },
+        {
+          "name": "lessLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Less\"",
+          "description": null
+        },
+        {
+          "name": "moreLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"More\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "code-block": [
+    {
+      "name": "CodeBlock",
+      "props": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Raw code to display. A string child is accepted as an alternative."
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "highlight",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Tokenize and color the code when the language has a built-in grammar."
+        },
+        {
+          "name": "showLineNumbers",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "highlightLines",
+          "type": "number[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "addedLines",
+          "type": "number[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "removedLines",
+          "type": "number[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "maxHeight",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "copyable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CodeBlockHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CodeBlockContent",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "masonry": [
+    {
+      "name": "Masonry",
+      "props": [
+        {
+          "name": "columns",
+          "type": "number | MasonryColumns",
+          "required": false,
+          "default": "{ base: 1, sm: 2, lg: 3 }",
+          "description": "Column count, fixed or responsive per Tailwind breakpoint."
+        },
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "default": "16",
+          "description": "Gap in pixels, applied on both axes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MasonryItem",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "audio-player": [
+    {
+      "name": "AudioPlayer",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "crossOrigin",
+          "type": "\"\" | \"anonymous\" | \"use-credentials\"",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onPlay",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onPause",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onEnded",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerPlay",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerSeek",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerTime",
+      "props": [
+        {
+          "name": "mode",
+          "type": "\"elapsed\" | \"remaining\" | \"duration\"",
+          "required": false,
+          "default": "\"elapsed\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerVolume",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerRate",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rates",
+          "type": "number[]",
+          "required": false,
+          "default": "[1, 1.25, 1.5, 2]",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AudioPlayerSkip",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "seconds",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "media-input": [
+    {
+      "name": "MediaInput",
+      "props": [
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Native accept filter, e.g. \"audio/*\" or \"image/png,image/webp\"."
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Maximum file size in bytes. Larger picks are rejected with an error."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: MediaInputValue | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onError",
+          "type": "((message: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MediaInputEmpty",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MediaInputContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MediaInputTrigger",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": "\"outline\"",
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MediaInputFile",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MediaInputClear",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "tour": [
+    {
+      "name": "Tour",
+      "props": [
+        {
+          "name": "steps",
+          "type": "TourStep[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultStep",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "onStepChange",
+          "type": "((step: number) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onFinish",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "scrollIntoView",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "spotlightPadding",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": null
+        },
+        {
+          "name": "labels",
+          "type": "TourLabels",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TourTrigger",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "at",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Step index to start at, 0-based."
+        }
+      ],
+      "extendsNative": true
+    }
+  ]
+}

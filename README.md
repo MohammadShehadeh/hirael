@@ -6,7 +6,7 @@ plus full section blocks. Hirael is a shadcn-compatible registry, so it
 works alongside shadcn rather than replacing it. The CLI copies the
 source into your repo and there's no package to depend on.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
@@ -25,10 +25,10 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 - **Distributed via the shadcn registry schema.** No runtime dependency
   on a Hirael package — source is copied straight into your repo.
 - **Considered design tokens.** 1px soft borders, 0.65rem radius scale
-  (sm/md/lg/xl derived from `--radius`), warm-neutral Hirael palette
-  (`0D1117`, `1A1F29`, `2E3440`, `ADA69A`, `E7E4DE`), dark as the primary
-  canvas. Inter for body, Cormorant Garamond for display, Geist Mono for
-  code and identifiers.
+  (sm/md/lg/xl derived from `--radius`), a near-monochrome zinc palette
+  in OKLch with dark as the primary canvas and a single cool blue
+  (`--accent-cool`) reserved for live/active state. Inter for body,
+  Geist Mono for code and identifiers.
 
 ## Features
 
@@ -56,7 +56,7 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 
 ## Tech stack
 
-- [Next.js 15](https://nextjs.org) (App Router, Turbopack)
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack)
 - [React 19](https://react.dev)
 - [TypeScript 5](https://www.typescriptlang.org) — strict mode
 - [Tailwind CSS 4](https://tailwindcss.com) via `@tailwindcss/postcss`
@@ -240,25 +240,30 @@ styling and slot-targeting works out of the box.
 
 ## Design tokens
 
-Dark is the primary canvas. Light is a warm-neutral inverse on
-`#E7E4DE`. The palette anchors on five Hirael hex values converted to
-OKLch — `#0D1117` (background), `#1A1F29` (card / popover), `#2E3440`
-(raised surface, muted, border), `#ADA69A` (warm taupe accent, used for
-muted-foreground and ring), `#E7E4DE` (warm off-white foreground).
-`--primary` carries emphasis. Borders are 1px and soft. Radii follow
-shadcn's standard scale derived from `--radius: 0.65rem` (sm = radius −
-4px, md = radius − 2px, lg = radius, xl = radius + 4px). Inter is the
-default body face; Cormorant Garamond is reserved for display
-headlines; Geist Mono is reserved for code, install commands, and
-identifiers. Motion stays short (120–180ms, ease-out).
+Dark is the primary canvas (`:root`); light is a white-canvas inverse
+behind a `.light` class, with the standard shadcn `.dark` class
+mirrored onto `<html>` in dark mode so `dark:` variants resolve the
+same way they do in a consumer app. The palette is near-monochrome
+zinc in OKLch — clean grays with the faintest cool cast — plus a
+single non-neutral, a cool blue (`--accent-cool`), reserved for
+live/active state. `--primary` carries emphasis. Borders are 1px and
+soft. Radii follow shadcn's standard scale derived from
+`--radius: 0.65rem` (sm = radius − 4px, md = radius − 2px, lg =
+radius, xl = radius + 4px). Inter is the default body face; Geist
+Mono is reserved for code, install commands, and identifiers;
+Cormorant Garamond is loaded for serif accents (e.g. testimonial
+quote marks). Motion stays short (120–180ms, ease-out).
 
 ## Deployment
 
-The showcase site is a Next.js 15 App Router app built as a fully
-static export (`output: "export"`). `pnpm build` runs `registry:build`
-first so the generated `/public/r/*.json` files travel with the build,
-then runs `next build`, which pre-renders every route to plain
-HTML/CSS/JS in `out/`. `pnpm start` serves that directory locally.
+The showcase site is a Next.js 16 App Router app built as a fully
+static export (`output: "export"`). `pnpm build` first regenerates
+`registry.json` from `registry/hirael/registry-meta.ts`
+(`registry:gen`), verifies it (`check:registry`), and runs
+`registry:build` so the generated `/public/r/*.json` files travel with
+the build, then runs `next build`, which pre-renders every route to
+plain HTML/CSS/JS in `out/`. `pnpm start` serves that directory
+locally.
 
 The canonical deployment runs at [hirael.com](https://hirael.com).
 `.vercel` is gitignored, so Vercel-style deployment is supported out of

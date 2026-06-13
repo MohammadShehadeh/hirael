@@ -58,14 +58,14 @@ host.
 
 ```
 registry/hirael/
+  ui/<component>.tsx         # source (flat compound exports), alongside
+                             # the shadcn primitives the registry imports
   <component>/
-    <component>.tsx          # source (flat compound exports)
     <component>.demo.tsx     # showcase demo
-    index.ts                 # re-export
-  ui/                        # shadcn primitives the registry imports from
   blocks/<block>/            # marketing blocks
-  registry-meta.ts           # showcase metadata for sidebar / pages
-registry.json                # canonical declaration of every item
+  registry-meta.ts           # single source of truth for every item
+registry.json                # GENERATED from registry-meta.ts — do not
+                             # edit by hand, run `pnpm registry:gen`
 ```
 
 See the top-level **[README.md](./README.md)** for a full directory
@@ -196,19 +196,19 @@ reformatting committed files.
 
 For each new component:
 
-- [ ] Source file at `registry/hirael/<name>/<name>.tsx` exporting the
+- [ ] Source file at `registry/hirael/ui/<name>.tsx` exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `<name>.demo.tsx` showing a basic compose **and** a customized
-      compose.
-- [ ] `index.ts` re-export.
-- [ ] Entry in `registry.json` with `type: "registry:ui"`,
-      `dependencies`, `registryDependencies`,
-      `files[].target = "components/ui/<name>.tsx"`.
-- [ ] Entry in `registry/hirael/registry-meta.ts` with category, demo,
-      and source file list.
+- [ ] `registry/hirael/<name>/<name>.demo.tsx` showing a basic compose
+      **and** a customized compose.
+- [ ] Entry in `registry/hirael/registry-meta.ts` with category,
+      description, `dependencies`, `registryDependencies` and source
+      file list, then `pnpm registry:gen` to regenerate `registry.json`
+      (never edit it by hand — `pnpm check:registry` fails if it
+      drifts or if declared `registryDependencies` don't match the
+      component's actual imports).
 - [ ] All imports for shadcn primitives go through
       `@/registry/hirael/ui/*` (alias is rewritten on install).
 - [ ] Tokens reuse `--background / --foreground / --border /

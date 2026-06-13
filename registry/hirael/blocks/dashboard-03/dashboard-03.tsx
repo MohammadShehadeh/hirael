@@ -103,7 +103,6 @@ const STATUS_META: Record<Txn["status"], { label: string; dot: string }> = {
 }
 
 function Donut({ plans }: { plans: readonly PlanSlice[] }) {
-  let offset = 25
   return (
     <svg viewBox="0 0 42 42" aria-hidden className="size-44">
       <circle
@@ -114,8 +113,12 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
         strokeWidth="4"
         className="stroke-accent"
       />
-      {plans.map((p) => {
-        const el = (
+      {plans.map((p, i) => {
+        // Each slice starts where the previous ones ended; 25 rotates the
+        // first slice to 12 o'clock.
+        const offset =
+          25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0)
+        return (
           <circle
             key={p.label}
             cx="21"
@@ -128,8 +131,6 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
             className={p.tone}
           />
         )
-        offset -= p.share
-        return el
       })}
     </svg>
   )

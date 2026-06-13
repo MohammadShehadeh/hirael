@@ -165,11 +165,17 @@ reformatting committed files.
 
 ### Component conventions
 
-- **Flat compound exports.** Compose like shadcn — no namespacing,
-  no convenience wrappers. The bare component name is the root
-  primitive and holds the state.
+- **Compound API first.** Always build the way shadcn ships primitives:
+  a flat set of composable parts, no namespacing, no convenience
+  wrappers. The bare component name is the root primitive and holds the
+  state. A single-prop convenience form is optional and secondary —
+  never the only API, and never a reason to skip the compound parts.
 - **`data-slot`.** Every rendered slot carries `data-slot="<kebab>"`
   so downstream styling and slot-targeting just works.
+- **Copy reads like a human.** Descriptions, demo content, and any
+  user-facing text are concise, plain, and specific — short labels and
+  sentences, no filler or marketing voice. Prefer "Pick a date" over
+  "Effortlessly select your desired date."
 - **Imports for shadcn primitives** go through `@/registry/hirael/ui/*`.
   The alias is rewritten on install based on the consumer's
   `components.json`.

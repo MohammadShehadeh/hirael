@@ -38,4 +38,9 @@ jobs:
         run: pnpm typecheck
 
       - name: Build
+        # The /changelog page fetches GitHub Releases at build time; pass the
+        # Actions token through so the fetch is authenticated and never hits the
+        # unauthenticated rate limit. Falls back to anonymous if unset.
+        env:
+          GITHUB_TOKEN_HIRAEL: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm build

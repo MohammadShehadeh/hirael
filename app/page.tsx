@@ -14,6 +14,7 @@ import {
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
   REGISTRY_BY_NAME,
+  entryHref,
 } from "@/registry/hirael/registry-meta"
 
 export const metadata: Metadata = {
@@ -172,7 +173,7 @@ function LiveRegistry() {
                     </span>
                   </div>
                   <Link
-                    href={`/components/${entry.name}`}
+                    href={entryHref(entry)}
                     aria-label={`Open ${entry.title} docs`}
                     className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >

@@ -3,8 +3,11 @@ import { ArrowRight, ChevronLeft } from "lucide-react"
 
 import type { CategoryMeta } from "@/components/showcase/block-categories"
 import { BlockPreview } from "@/components/showcase/block-preview"
+import { Breadcrumbs } from "@/components/showcase/breadcrumbs"
 import {
   BLOCKS_BY_KIND,
+  entryEmbedHref,
+  entryHref,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta"
 
@@ -15,7 +18,12 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <Breadcrumb title={category.title} />
+      <Breadcrumbs
+        items={[
+          { label: "Blocks", href: "/blocks" },
+          { label: category.title },
+        ]}
+      />
 
       <header className="flex flex-col gap-5 border-b border-border pb-8 sm:pb-10">
         <div className="flex flex-wrap items-center gap-2">
@@ -50,22 +58,6 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
   )
 }
 
-function Breadcrumb({ title }: { title: string }) {
-  return (
-    <nav className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-      <Link
-        href="/blocks"
-        className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
-      >
-        <ChevronLeft className="size-3" />
-        Blocks
-      </Link>
-      <span className="text-muted-foreground/50">/</span>
-      <span className="text-foreground">{title}</span>
-    </nav>
-  )
-}
-
 function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
   return (
     <section className="flex flex-col gap-6">
@@ -82,10 +74,10 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
         {blocks.map((entry) => (
           <Link
             key={entry.name}
-            href={`/blocks/${entry.name}`}
+            href={entryHref(entry)}
             className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors hover:border-foreground focus-visible:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <BlockPreview name={entry.name} title={entry.title} />
+            <BlockPreview embedHref={entryEmbedHref(entry)} title={entry.title} />
 
             <div className="flex flex-col gap-2 p-4 sm:p-5">
               <div className="flex items-center justify-between gap-2">
@@ -98,7 +90,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
                 {entry.blockTagline ?? entry.description}
               </p>
               <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                <span className="truncate">/blocks/{entry.name}</span>
+                <span className="truncate">{entryHref(entry)}</span>
                 <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-foreground">
                   view
                   <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />

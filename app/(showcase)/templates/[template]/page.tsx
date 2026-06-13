@@ -90,5 +90,14 @@ export default async function TemplateRoute({
   const entry = REGISTRY_BY_NAME[template]
   if (!entry || entry.category !== "templates") notFound()
   const source = await loadSource(entry.sourceFiles)
-  return <ComponentPage entry={entry} source={source} />
+  return (
+    <ComponentPage
+      entry={entry}
+      source={source}
+      breadcrumb={[
+        { label: "Templates", href: "/templates" },
+        { label: entry.title },
+      ]}
+    />
+  )
 }

@@ -23,21 +23,20 @@ const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
 const ORDER: Viewport[] = ["mobile", "tablet", "desktop"]
 
 export function BlockViewer({
-  name,
   title,
   minHeight = 800,
-  embedBase = "/embed/blocks",
+  embedHref,
 }: {
-  name: string
   title: string
   minHeight?: number
-  embedBase?: string
+  /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
+  embedHref: string
 }) {
   const [viewport, setViewport] = React.useState<Viewport>("desktop")
   const [key, setKey] = React.useState(0)
   const [rtl, setRtl] = React.useState(false)
 
-  const src = `${embedBase}/${name}${rtl ? "?dir=rtl" : ""}`
+  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`
 
   const sizing =
     viewport === "desktop"

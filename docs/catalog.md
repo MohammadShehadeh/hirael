@@ -24,6 +24,13 @@ The `Registry deps` column lists the upstream shadcn primitives an item
 pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 `dependencies` are declared separately in `registry-meta.ts`.
 
+Every item is browsed under its category segment: components at
+`/components/<category>/<name>`, blocks at `/blocks/<category>/<name>`, each
+with a category listing page (`/components/<category>`, `/blocks/<category>`)
+and a breadcrumb trail. Build links with `entryHref(entry)` from
+`registry-meta.ts`; the old flat URLs 301 to the nested ones. See
+[conventions.md → Routing & URLs](./conventions.md#routing--urls).
+
 ## Components
 
 #### Inputs (12)
@@ -153,7 +160,11 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 Marketing and app section blocks live under
 [registry/hirael/blocks/](../registry/hirael/blocks/). Each declares a
 `blockKind` and `blockTagline` in `registry-meta.ts`; the block index groups
-them by kind. Browse at [hirael.com/blocks](https://hirael.com/blocks).
+them by kind. Browse at [hirael.com/blocks](https://hirael.com/blocks); each
+kind has a category page at `/blocks/<category>` and its blocks at
+`/blocks/<category>/<name>`. The URL slug can differ from the kind key
+(`feature` → `features`, `login` → `auth`, `faq` → `faqs`) — see
+`BLOCK_KIND_SLUGS`.
 
 | Kind | Blocks | What it covers |
 | --- | --- | --- |
@@ -176,9 +187,9 @@ them by kind. Browse at [hirael.com/blocks](https://hirael.com/blocks).
 | Image gallery | `image-gallery-01` | Responsive image gallery. |
 | App shell | `app-shell-01`, `app-shell-02`, `app-shell-03`, `app-shell-04` | Sidebar + topbar application shells. |
 
-> Block previews render in two places: inline on the block index and
-> framed inside `app/embed/blocks/[block]/` (an isolated route so a block's
-> own layout can't leak the showcase chrome into the preview).
+> Block previews render in two places: inline on the block category page and
+> framed inside `app/embed/blocks/[category]/[block]/` (an isolated route so a
+> block's own layout can't leak the showcase chrome into the preview).
 
 ## Templates
 

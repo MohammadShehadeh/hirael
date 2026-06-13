@@ -51,14 +51,16 @@ app/                              # Next.js App Router (output: "export")
   page.tsx                        # landing — Hero, live demos, category grid
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
   (showcase)/                     # sidebar + topbar shell
-    components/page.tsx           # component index
-    components/[component]/       # per-component page (demo, usage, props, install)
-    blocks/page.tsx               # block index
-    blocks/[block]/               # per-block preview
+    components/page.tsx           # component index (links to category pages)
+    components/[category]/        # per-category component listing
+    components/[category]/[component]/ # per-component page (demo, usage, props, install)
+    blocks/page.tsx               # block index (category tiles)
+    blocks/[category]/            # per-category block listing
+    blocks/[category]/[block]/    # per-block preview
     templates/page.tsx            # template index
     templates/[template]/         # per-template preview
     theme/playground.tsx          # theme playground
-  embed/blocks/[block]/           # isolated framed block previews
+  embed/blocks/[category]/[block]/ # isolated framed block previews
   embed/templates/[template]/     # isolated framed template previews
   global-error.tsx, not-found.tsx # error + 404 surfaces
   globals.css                     # design tokens (zinc palette, 0.65rem radius)
@@ -80,7 +82,7 @@ lib/                              # site.ts, theme.ts, embed.ts, changelog.ts, h
 scripts/                          # build-registry, extract-props, check-registry, strip-comments
 registry.json                    # GENERATED — do not hand-edit
 components.json                   # shadcn config; ui alias → registry/hirael/ui
-vercel.json                       # main auto-deploy disabled + legacy /name → /components/name redirects
+vercel.json                       # GENERATED redirects (old flat URLs → category-nested) + main auto-deploy disabled
 ```
 
 ## What's done
@@ -92,8 +94,12 @@ vercel.json                       # main auto-deploy disabled + legacy /name →
   `accordion`), 39 blocks, and 1 full-page template (Creative Studio). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
-  per-item pages (demo + usage source + prop table + install), theme
-  playground, command menu, light/dark toggle.
+  per-category listing pages, per-item pages (demo + usage source + prop table
+  + install) with a breadcrumb trail, theme playground, command menu, light/dark
+  toggle. Every browsable item sits under its category segment
+  (`/components/<category>/<name>`, `/blocks/<category>/<name>`); build
+  `entryHref(entry)` rather than hand-writing paths, and old flat URLs 301 to
+  the nested ones via generated `vercel.json` redirects.
 - **RTL** — every component and block works under `dir="rtl"`; previews have
   an RTL toggle.
 - **Fully static export** — `output: "export"`, image optimization off,

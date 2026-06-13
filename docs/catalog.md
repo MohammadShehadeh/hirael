@@ -10,7 +10,7 @@ The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **69 registry UI items** (68 standalone
 components + 1 distribution-only primitive), **39 section blocks**, and
-**1 template**. Counts come from `registry.json`; the landing page derives
+**2 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 
@@ -191,6 +191,7 @@ framed inside `app/embed/templates/[template]/`.
 | Template | Dependencies | What it is |
 | --- | --- | --- |
 | `creative-studio` | `framer-motion`, `lucide-react` | Dark, cinematic creative-studio landing page: full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Self-contained warm-cream palette. |
+| `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Self-contained light palette, Hirael branding. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `sourceFiles` list every file in its folder, so the CLI installs the whole

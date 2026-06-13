@@ -50,7 +50,6 @@ extracts the prop tables shown on component pages. See
 app/                              # Next.js App Router (output: "export")
   page.tsx                        # landing — Hero, live demos, category grid
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
-  axion/                          # /axion — standalone Axion Studio demo landing (shaders WebGL hero); not a registry item
   (showcase)/                     # sidebar + topbar shell
     components/page.tsx           # component index
     components/[component]/       # per-component page (demo, usage, props, install)
@@ -90,7 +89,8 @@ vercel.json                       # main auto-deploy disabled + legacy /name →
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 69 registry UI items (68 components + the distribution-only
-  `accordion`), 39 blocks, and 1 full-page template (Creative Studio). Full
+  `accordion`), 39 blocks, and 2 full-page templates (Creative Studio,
+  Agency Landing). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
   per-item pages (demo + usage source + prop table + install), theme

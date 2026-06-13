@@ -5704,5 +5704,99 @@
       ],
       "extendsNative": false
     }
+  ],
+  "agency-landing": [
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "About",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "CaseStudies",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "HiraelMark",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "RollText",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "OrangeButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "LinkIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "PartnerIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ShaderBackground",
+      "props": [],
+      "extendsNative": false
+    }
   ]
 }

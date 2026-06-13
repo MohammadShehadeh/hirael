@@ -4857,6 +4857,270 @@
       "extendsNative": true
     }
   ],
+  "dock": [
+    {
+      "name": "Dock",
+      "props": [
+        {
+          "name": "baseSize",
+          "type": "number",
+          "required": false,
+          "default": "44",
+          "description": "Resting icon size, in px."
+        },
+        {
+          "name": "magnification",
+          "type": "number",
+          "required": false,
+          "default": "72",
+          "description": "Peak icon size at the cursor, in px."
+        },
+        {
+          "name": "distance",
+          "type": "number",
+          "required": false,
+          "default": "140",
+          "description": "Falloff radius of the magnification, in px."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DockItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DockLabel",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "floating-action-button": [
+    {
+      "name": "FloatingActionButton",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "side",
+          "type": "FabSide",
+          "required": false,
+          "default": "\"top\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonItem",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Stagger order; later items reveal slightly after earlier ones."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "floating-toolbar": [
+    {
+      "name": "FloatingToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarButton",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarSeparator",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarLabel",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "split-view": [
+    {
+      "name": "SplitView",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "SplitOrientation",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        },
+        {
+          "name": "defaultSize",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": "Size of the first panel, as a percentage."
+        },
+        {
+          "name": "minSize",
+          "type": "number",
+          "required": false,
+          "default": "15",
+          "description": "Minimum size of the first panel, as a percentage."
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "default": "85",
+          "description": "Maximum size of the first panel, as a percentage."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SplitViewPanel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SplitViewResizer",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "resizable-panels": [
+    {
+      "name": "ResizablePanelGroup",
+      "props": [
+        {
+          "name": "direction",
+          "type": "ResizableDirection",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ResizablePanel",
+      "props": [
+        {
+          "name": "defaultSize",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": "Initial size as a proportion shared across sibling panels."
+        },
+        {
+          "name": "minSize",
+          "type": "number",
+          "required": false,
+          "default": "10",
+          "description": "Minimum size as a percentage of the group."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ResizableHandle",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "inspector-panel": [
+    {
+      "name": "InspectorPanel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelSection",
+      "props": [
+        {
+          "name": "title",
+          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>) | undefined",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelRow",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

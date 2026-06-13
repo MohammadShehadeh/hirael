@@ -1209,6 +1209,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["framer-motion", "lucide-react"],
   },
   {
+    name: "dock",
+    title: "Dock",
+    description:
+      "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/dock.tsx"],
+    registryDependencies: [],
+    dependencies: ["framer-motion"],
+  },
+  {
+    name: "floating-action-button",
+    title: "Floating Action Button",
+    description:
+      "Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/floating-action-button.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "floating-toolbar",
+    title: "Floating Toolbar",
+    description:
+      "Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels. Position it anywhere.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/floating-toolbar.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "split-view",
+    title: "Split View",
+    description:
+      "Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. RTL-aware.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/split-view.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "resizable-panels",
+    title: "Resizable Panels",
+    description:
+      "Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. RTL-aware.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/resizable-panels.tsx"],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "inspector-panel",
+    title: "Inspector Panel",
+    description:
+      "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/inspector-panel.tsx"],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
     name: "creative-studio",
     title: "Creative Studio",
     description:

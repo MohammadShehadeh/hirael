@@ -106,6 +106,12 @@ const DEMO_LOADERS: Record<
   "tilt-card": () => import("@/registry/hirael/tilt-card/tilt-card.demo"),
   "expandable-card": () => import("@/registry/hirael/expandable-card/expandable-card.demo"),
   "morphing-dialog": () => import("@/registry/hirael/morphing-dialog/morphing-dialog.demo"),
+  "dock": () => import("@/registry/hirael/dock/dock.demo"),
+  "floating-action-button": () => import("@/registry/hirael/floating-action-button/floating-action-button.demo"),
+  "floating-toolbar": () => import("@/registry/hirael/floating-toolbar/floating-toolbar.demo"),
+  "split-view": () => import("@/registry/hirael/split-view/split-view.demo"),
+  "resizable-panels": () => import("@/registry/hirael/resizable-panels/resizable-panels.demo"),
+  "inspector-panel": () => import("@/registry/hirael/inspector-panel/inspector-panel.demo"),
   "creative-studio": () =>
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }

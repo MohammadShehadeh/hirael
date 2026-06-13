@@ -1,20 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-      mq.addEventListener("change", onChange)
-      return () => mq.removeEventListener("change", onChange)
-    },
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false
-  )
-}
 
 type TextRevealBy = "word" | "char" | "line"
 
@@ -48,34 +37,12 @@ function TextReveal({
   className,
   ...props
 }: TextRevealProps) {
-  const reduced = usePrefersReducedMotion()
-  const ref = React.useRef<HTMLElement>(null)
-  const [shown, setShown] = React.useState(false)
+  const reduced = useReducedMotion()
   const Tag = (as ?? "p") as React.ElementType
-
-  React.useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShown(true)
-            if (once) io.disconnect()
-          } else if (!once) {
-            setShown(false)
-          }
-        }
-      },
-      { threshold: amount }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [once, amount])
 
   if (reduced) {
     return (
-      <Tag ref={ref} data-slot="text-reveal" className={className} {...props}>
+      <Tag data-slot="text-reveal" className={className} {...props}>
         {children}
       </Tag>
     )
@@ -90,9 +57,7 @@ function TextReveal({
 
   return (
     <Tag
-      ref={ref}
       data-slot="text-reveal"
-      data-state={shown ? "shown" : "hidden"}
       className={cn(by === "line" && "flex flex-col", className)}
       {...props}
     >
@@ -105,19 +70,19 @@ function TextReveal({
               by === "line" ? "flex" : "inline-flex align-bottom"
             )}
           >
-            <span
+            <motion.span
               className="inline-block"
-              style={{
-                transitionProperty: "transform, opacity",
-                transitionDuration: `${duration}ms`,
-                transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-                transitionDelay: `${delay + i * stagger}ms`,
-                transform: shown ? "translateY(0)" : "translateY(120%)",
-                opacity: shown ? 1 : 0,
+              initial={{ y: "120%", opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once, amount }}
+              transition={{
+                duration: duration / 1000,
+                delay: (delay + i * stagger) / 1000,
+                ease: [0.22, 1, 0.36, 1],
               }}
             >
-              {unit === "" ? " " : unit}
-            </span>
+              {unit === "" ? " " : unit}
+            </motion.span>
           </span>
           {by === "word" && i < units.length - 1 ? " " : null}
         </React.Fragment>

@@ -8,7 +8,7 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **74 registry UI items** (73 standalone
+pages). As of the last update: **69 registry UI items** (68 standalone
 components + 1 distribution-only primitive), **39 section blocks**, and
 **1 template**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -109,13 +109,12 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `stepper` | — | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API. |
 | `tour` | `button` | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card. |
 
-#### Animation (9)
+#### Animation (8)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
 | `blur-reveal` | — | Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion. |
 | `cursor-glow` | — | Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels. |
-| `expandable-card` | — | Card that expands in place to reveal more content, with a smooth height transition and a compound disclosure API. |
 | `magnetic-button` | — | Button that pulls toward the cursor and springs back on leave. Adjustable strength, `asChild` to wrap a link, respects reduced-motion. |
 | `morphing-dialog` | — | A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock and Esc to close. |
 | `scroll-reveal` | — | Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion. |
@@ -123,25 +122,21 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `text-reveal` | — | Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion. |
 | `tilt-card` | — | 3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion. |
 
-#### Widgets (5)
+#### Widgets (3)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
-| `calendar-widget` | — | Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware. |
 | `kpi-grid` | — | Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. |
 | `notifications` | — | Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. |
 | `quick-actions` | — | Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via `asChild`, a link. |
-| `recent-orders` | — | Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. |
 
-#### SaaS (6)
+#### SaaS (4)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
 | `api-keys` | — | API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. |
 | `billing-card` | — | Current-plan summary with price, a usage meter, billing detail rows and footer actions. |
-| `invite-members` | — | Invite form with an email field, role select and send action, plus a pending-invites list. |
 | `subscription-plans` | — | In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. |
-| `team-members` | — | Members list with avatars, name, email and a role tag. |
 | `usage-dashboard` | — | Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. |
 
 > The SaaS "Audit Logs" view is served by the `audit-log` component (Data

@@ -1974,7 +1974,9 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1992,7 +1994,9 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2010,7 +2014,9 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2028,7 +2034,9 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2047,7 +2055,8 @@
         "animation"
       ],
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@radix-ui/react-slot",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2066,7 +2075,9 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2084,33 +2095,15 @@
       "categories": [
         "animation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
           "path": "registry/hirael/ui/tilt-card.tsx",
           "type": "registry:ui",
           "target": "components/ui/tilt-card.tsx"
-        }
-      ]
-    },
-    {
-      "name": "expandable-card",
-      "type": "registry:ui",
-      "title": "Expandable Card",
-      "description": "Card that expands in place to reveal more content, with a smooth height transition and a compound disclosure API. Controlled or uncontrolled.",
-      "categories": [
-        "animation"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/expandable-card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/expandable-card.tsx"
         }
       ]
     },
@@ -2123,8 +2116,8 @@
         "animation"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2144,7 +2137,7 @@
         "navigation"
       ],
       "dependencies": [
-        "framer-motion"
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2163,7 +2156,9 @@
       "categories": [
         "navigation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2306,44 +2301,6 @@
       ]
     },
     {
-      "name": "recent-orders",
-      "type": "registry:ui",
-      "title": "Recent Orders",
-      "description": "Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. Compound API.",
-      "categories": [
-        "widgets"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/recent-orders.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/recent-orders.tsx"
-        }
-      ]
-    },
-    {
-      "name": "calendar-widget",
-      "type": "registry:ui",
-      "title": "Calendar Widget",
-      "description": "Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware.",
-      "categories": [
-        "widgets"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/calendar-widget.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/calendar-widget.tsx"
-        }
-      ]
-    },
-    {
       "name": "billing-card",
       "type": "registry:ui",
       "title": "Billing Card",
@@ -2398,42 +2355,6 @@
           "path": "registry/hirael/ui/api-keys.tsx",
           "type": "registry:ui",
           "target": "components/ui/api-keys.tsx"
-        }
-      ]
-    },
-    {
-      "name": "team-members",
-      "type": "registry:ui",
-      "title": "Team Members",
-      "description": "Members list with avatars, name, email and a role tag. Compound API for team and access settings.",
-      "categories": [
-        "saas"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/team-members.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/team-members.tsx"
-        }
-      ]
-    },
-    {
-      "name": "invite-members",
-      "type": "registry:ui",
-      "title": "Invite Members",
-      "description": "Invite form with an email field, role select and send action, plus a pending-invites list. Compound API.",
-      "categories": [
-        "saas"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/invite-members.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/invite-members.tsx"
         }
       ]
     },

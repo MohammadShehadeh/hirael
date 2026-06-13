@@ -14,13 +14,13 @@ export default function FloatingActionButtonDemo() {
     <div className="flex h-60 w-full max-w-xl items-end justify-center">
       <FloatingActionButton>
         <FloatingActionButtonList>
-          <FloatingActionButtonItem index={2} aria-label="Add text">
+          <FloatingActionButtonItem aria-label="Add text">
             <Type />
           </FloatingActionButtonItem>
-          <FloatingActionButtonItem index={1} aria-label="Add image">
+          <FloatingActionButtonItem aria-label="Add image">
             <ImageIcon />
           </FloatingActionButtonItem>
-          <FloatingActionButtonItem index={0} aria-label="Add link">
+          <FloatingActionButtonItem aria-label="Add link">
             <Link2 />
           </FloatingActionButtonItem>
         </FloatingActionButtonList>

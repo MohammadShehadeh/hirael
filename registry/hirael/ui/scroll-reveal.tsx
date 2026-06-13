@@ -1,22 +1,11 @@
 "use client"
 
 import * as React from "react"
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-      mq.addEventListener("change", onChange)
-      return () => mq.removeEventListener("change", onChange)
-    },
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false
-  )
-}
+import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react"
 
 type ScrollRevealDirection = "up" | "down" | "left" | "right"
 
-type ScrollRevealProps = React.ComponentProps<"div"> & {
+type ScrollRevealProps = HTMLMotionProps<"div"> & {
   /** Direction the content travels in from. */
   direction?: ScrollRevealDirection
   /** Travel distance, in px. */
@@ -34,19 +23,17 @@ type ScrollRevealProps = React.ComponentProps<"div"> & {
 function offsetFor(direction: ScrollRevealDirection, distance: number) {
   switch (direction) {
     case "up":
-      return `translateY(${distance}px)`
+      return { y: distance }
     case "down":
-      return `translateY(${-distance}px)`
+      return { y: -distance }
     case "left":
-      return `translateX(${distance}px)`
+      return { x: distance }
     case "right":
-      return `translateX(${-distance}px)`
+      return { x: -distance }
   }
 }
 
 function ScrollReveal({
-  className,
-  style,
   direction = "up",
   distance = 24,
   delay = 0,
@@ -55,46 +42,22 @@ function ScrollReveal({
   amount = 0.3,
   ...props
 }: ScrollRevealProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const reduced = usePrefersReducedMotion()
-  const [shown, setShown] = React.useState(false)
+  const reduced = useReducedMotion()
 
-  React.useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShown(true)
-            if (once) io.disconnect()
-          } else if (!once) {
-            setShown(false)
-          }
-        }
-      },
-      { threshold: amount }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [once, amount])
-
-  const visible = shown || reduced
+  if (reduced) {
+    return <motion.div data-slot="scroll-reveal" {...props} />
+  }
 
   return (
-    <div
-      ref={ref}
+    <motion.div
       data-slot="scroll-reveal"
-      data-state={visible ? "shown" : "hidden"}
-      className={className}
-      style={{
-        transitionProperty: "opacity, transform",
-        transitionDuration: reduced ? "0ms" : `${duration}ms`,
-        transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-        transitionDelay: reduced ? "0ms" : `${delay}ms`,
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : offsetFor(direction, distance),
-        ...style,
+      initial={{ opacity: 0, ...offsetFor(direction, distance) }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once, amount }}
+      transition={{
+        duration: duration / 1000,
+        delay: delay / 1000,
+        ease: [0.22, 1, 0.36, 1],
       }}
       {...props}
     />

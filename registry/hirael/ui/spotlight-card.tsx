@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { motion, useMotionTemplate, useMotionValue } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -12,40 +13,34 @@ type SpotlightCardProps = React.ComponentProps<"div"> & {
 function SpotlightCard({
   className,
   children,
-  style,
   size = 350,
   ...props
 }: SpotlightCardProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, color-mix(in oklch, var(--foreground) 10%, transparent), transparent 70%)`
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    el.style.setProperty("--spotlight-x", `${event.clientX - rect.left}px`)
-    el.style.setProperty("--spotlight-y", `${event.clientY - rect.top}px`)
+    const rect = event.currentTarget.getBoundingClientRect()
+    x.set(event.clientX - rect.left)
+    y.set(event.clientY - rect.top)
   }
 
   return (
     <div
-      ref={ref}
       data-slot="spotlight-card"
       onPointerMove={onPointerMove}
       className={cn(
         "group relative overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
         className
       )}
-      style={{ ["--spotlight-size" as string]: `${size}px`, ...style }}
       {...props}
     >
-      <div
+      <motion.div
         aria-hidden
         data-slot="spotlight-card-glow"
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(var(--spotlight-size) circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), color-mix(in oklch, var(--foreground) 10%, transparent), transparent 70%)",
-        }}
+        style={{ background }}
       />
       <div data-slot="spotlight-card-content" className="relative">
         {children}

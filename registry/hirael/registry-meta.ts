@@ -1128,7 +1128,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/blur-reveal.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "text-reveal",
@@ -1138,7 +1138,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/text-reveal.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "scroll-reveal",
@@ -1148,7 +1148,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/scroll-reveal.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "spotlight-card",
@@ -1158,7 +1158,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/spotlight-card.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "magnetic-button",
@@ -1168,7 +1168,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/magnetic-button.tsx"],
     registryDependencies: [],
-    dependencies: ["@radix-ui/react-slot"],
+    dependencies: ["@radix-ui/react-slot", "motion"],
   },
   {
     name: "cursor-glow",
@@ -1178,7 +1178,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/cursor-glow.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "tilt-card",
@@ -1188,17 +1188,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/tilt-card.tsx"],
     registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: "expandable-card",
-    title: "Expandable Card",
-    description:
-      "Card that expands in place to reveal more content, with a smooth height transition and a compound disclosure API. Controlled or uncontrolled.",
-    category: "animation",
-    sourceFiles: ["registry/hirael/ui/expandable-card.tsx"],
-    registryDependencies: [],
-    dependencies: ["lucide-react"],
+    dependencies: ["motion"],
   },
   {
     name: "morphing-dialog",
@@ -1208,7 +1198,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "animation",
     sourceFiles: ["registry/hirael/ui/morphing-dialog.tsx"],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["lucide-react", "motion"],
   },
   {
     name: "dock",
@@ -1218,7 +1208,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "navigation",
     sourceFiles: ["registry/hirael/ui/dock.tsx"],
     registryDependencies: [],
-    dependencies: ["framer-motion"],
+    dependencies: ["motion"],
   },
   {
     name: "floating-action-button",
@@ -1228,7 +1218,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "navigation",
     sourceFiles: ["registry/hirael/ui/floating-action-button.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["motion"],
   },
   {
     name: "floating-toolbar",
@@ -1301,26 +1291,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
-    name: "recent-orders",
-    title: "Recent Orders",
-    description:
-      "Recent-orders panel with header and rows of order id, customer, amount and a toned status chip. Compound API.",
-    category: "widgets",
-    sourceFiles: ["registry/hirael/ui/recent-orders.tsx"],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: "calendar-widget",
-    title: "Calendar Widget",
-    description:
-      "Compact month calendar with today highlight, event dots, day selection and month navigation. Dependency-free date math, RTL-aware.",
-    category: "widgets",
-    sourceFiles: ["registry/hirael/ui/calendar-widget.tsx"],
-    registryDependencies: [],
-    dependencies: ["lucide-react"],
-  },
-  {
     name: "billing-card",
     title: "Billing Card",
     description:
@@ -1349,26 +1319,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     sourceFiles: ["registry/hirael/ui/api-keys.tsx"],
     registryDependencies: [],
     dependencies: ["lucide-react"],
-  },
-  {
-    name: "team-members",
-    title: "Team Members",
-    description:
-      "Members list with avatars, name, email and a role tag. Compound API for team and access settings.",
-    category: "saas",
-    sourceFiles: ["registry/hirael/ui/team-members.tsx"],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: "invite-members",
-    title: "Invite Members",
-    description:
-      "Invite form with an email field, role select and send action, plus a pending-invites list. Compound API.",
-    category: "saas",
-    sourceFiles: ["registry/hirael/ui/invite-members.tsx"],
-    registryDependencies: [],
-    dependencies: [],
   },
   {
     name: "usage-dashboard",

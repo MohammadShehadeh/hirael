@@ -1,20 +1,15 @@
 "use client"
 
 import * as React from "react"
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "motion/react"
 
 import { cn } from "@/lib/utils"
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-      mq.addEventListener("change", onChange)
-      return () => mq.removeEventListener("change", onChange)
-    },
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false
-  )
-}
 
 type TiltCardProps = React.ComponentProps<"div"> & {
   /** Maximum tilt on each axis, in degrees. */
@@ -27,6 +22,8 @@ type TiltCardProps = React.ComponentProps<"div"> & {
   glare?: boolean
 }
 
+const SPRING = { stiffness: 200, damping: 18, mass: 0.3 }
+
 function TiltCard({
   className,
   children,
@@ -37,30 +34,27 @@ function TiltCard({
   glare = false,
   ...props
 }: TiltCardProps) {
-  const reduced = usePrefersReducedMotion()
-  const innerRef = React.useRef<HTMLDivElement>(null)
-  const glareRef = React.useRef<HTMLDivElement>(null)
+  const reduced = useReducedMotion()
+  const rotateX = useSpring(0, SPRING)
+  const rotateY = useSpring(0, SPRING)
+  const glareX = useMotionValue(50)
+  const glareY = useMotionValue(50)
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (reduced) return
     const rect = event.currentTarget.getBoundingClientRect()
     const px = (event.clientX - rect.left) / rect.width
     const py = (event.clientY - rect.top) / rect.height
-    const rotateX = (0.5 - py) * max * 2
-    const rotateY = (px - 0.5) * max * 2
-    if (innerRef.current) {
-      innerRef.current.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`
-    }
-    if (glareRef.current) {
-      glareRef.current.style.setProperty("--tilt-glare-x", `${px * 100}%`)
-      glareRef.current.style.setProperty("--tilt-glare-y", `${py * 100}%`)
-    }
+    rotateX.set((0.5 - py) * max * 2)
+    rotateY.set((px - 0.5) * max * 2)
+    glareX.set(px * 100)
+    glareY.set(py * 100)
   }
 
   const reset = () => {
-    if (innerRef.current) {
-      innerRef.current.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)"
-    }
+    rotateX.set(0)
+    rotateY.set(0)
   }
 
   return (
@@ -72,26 +66,22 @@ function TiltCard({
       style={{ perspective: `${perspective}px`, ...style }}
       {...props}
     >
-      <div
-        ref={innerRef}
+      <motion.div
         data-slot="tilt-card-inner"
-        className="relative size-full rounded-lg border border-border bg-card text-card-foreground [transform-style:preserve-3d]"
-        style={{ transition: "transform 220ms cubic-bezier(0.22, 1, 0.36, 1)" }}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        whileHover={reduced ? undefined : { scale }}
+        className="relative size-full rounded-lg border border-border bg-card text-card-foreground"
       >
         {children}
         {glare ? (
-          <div
-            ref={glareRef}
+          <motion.div
             aria-hidden
             data-slot="tilt-card-glare"
             className="pointer-events-none absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background:
-                "radial-gradient(circle at var(--tilt-glare-x, 50%) var(--tilt-glare-y, 50%), color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)",
-            }}
+            style={{ background: glareBackground }}
           />
         ) : null}
-      </div>
+      </motion.div>
     </div>
   )
 }

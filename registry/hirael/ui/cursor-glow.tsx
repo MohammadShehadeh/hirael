@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { motion, useMotionTemplate, useMotionValue } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -14,42 +15,32 @@ type CursorGlowProps = React.ComponentProps<"div"> & {
 function CursorGlow({
   className,
   children,
-  style,
   size = 400,
   color = "color-mix(in oklch, var(--foreground) 12%, transparent)",
   ...props
 }: CursorGlowProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    el.style.setProperty("--cursor-glow-x", `${event.clientX - rect.left}px`)
-    el.style.setProperty("--cursor-glow-y", `${event.clientY - rect.top}px`)
+    const rect = event.currentTarget.getBoundingClientRect()
+    x.set(event.clientX - rect.left)
+    y.set(event.clientY - rect.top)
   }
 
   return (
     <div
-      ref={ref}
       data-slot="cursor-glow"
       onPointerMove={onPointerMove}
       className={cn("group relative overflow-hidden", className)}
-      style={{
-        ["--cursor-glow-size" as string]: `${size}px`,
-        ["--cursor-glow-color" as string]: color,
-        ...style,
-      }}
       {...props}
     >
-      <div
+      <motion.div
         aria-hidden
         data-slot="cursor-glow-layer"
         className="pointer-events-none absolute inset-0 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(var(--cursor-glow-size) circle at var(--cursor-glow-x, 50%) var(--cursor-glow-y, 50%), var(--cursor-glow-color), transparent 70%)",
-        }}
+        style={{ background }}
       />
       <div data-slot="cursor-glow-content" className="relative">
         {children}

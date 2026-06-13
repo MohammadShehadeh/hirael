@@ -88,7 +88,7 @@ vercel.json                       # main auto-deploy disabled + legacy /name →
 - **Registry pipeline** — `registry-meta.ts` as the single source of truth,
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
-- **Catalog** — 74 registry UI items (73 components + the distribution-only
+- **Catalog** — 69 registry UI items (68 components + the distribution-only
   `accordion`), 39 blocks, and 1 full-page template (Creative Studio). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,

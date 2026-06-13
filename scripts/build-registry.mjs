@@ -40,11 +40,17 @@ export async function loadRegistryMeta() {
 function toRegistryItem(entry) {
   const isBlock =
     entry.type === "registry:block" || entry.category === "blocks"
-  const type = entry.type ?? (isBlock ? "registry:block" : "registry:ui")
+  const isTemplate = entry.category === "templates"
+  const isComposite = isBlock || isTemplate
+  const type = entry.type ?? (isComposite ? "registry:block" : "registry:ui")
 
   const categories =
     entry.categories ??
-    (isBlock ? ["blocks", entry.blockKind] : [entry.category])
+    (isBlock
+      ? ["blocks", entry.blockKind]
+      : isTemplate
+        ? ["templates"]
+        : [entry.category])
   if (categories.some((c) => !c)) {
     throw new Error(`"${entry.name}": could not derive categories`)
   }
@@ -52,7 +58,7 @@ function toRegistryItem(entry) {
   const files = (entry.sourceFiles ?? []).map((sourcePath, i) => ({
     path: sourcePath,
     type,
-    target: isBlock
+    target: isComposite
       ? entry.installTargets?.[i]
       : `components/ui/${path.basename(sourcePath)}`,
   }))

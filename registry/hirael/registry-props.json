@@ -4345,5 +4345,192 @@
       ],
       "extendsNative": true
     }
+  ],
+  "creative-studio": [
+    {
+      "name": "Hero",
+      "props": [
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "posterSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "About",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Features",
+      "props": [
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "NoiseOverlay",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"overlay\" | \"bg\"",
+          "required": false,
+          "default": "\"overlay\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "CinematicBackground",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"hero\" | \"card\"",
+          "required": false,
+          "default": "\"hero\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "WordsPullUp",
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "wordClassName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showAsterisk",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "startDelay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "stagger",
+          "type": "number",
+          "required": false,
+          "default": "0.08",
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "WordsPullUpMultiStyle",
+      "props": [
+        {
+          "name": "segments",
+          "type": "StyledSegment[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "startDelay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "stagger",
+          "type": "number",
+          "required": false,
+          "default": "0.08",
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ScrollRevealText",
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
   ]
 }

@@ -95,6 +95,8 @@ const DEMO_LOADERS: Record<
   "audio-player": () => import("@/registry/hirael/audio-player/audio-player.demo"),
   "media-input": () => import("@/registry/hirael/media-input/media-input.demo"),
   "tour": () => import("@/registry/hirael/tour/tour.demo"),
+  "creative-studio": () =>
+    import("@/registry/hirael/templates/creative-studio/creative-studio"),
 }
 
 // React.lazy defers the import until first render, so creating every demo

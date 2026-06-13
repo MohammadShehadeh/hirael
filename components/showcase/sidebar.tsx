@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Boxes, LayoutTemplate, Sparkles } from "lucide-react"
+import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react"
 
 import { LogoMarkM } from "@/components/showcase/logo"
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
@@ -40,6 +40,7 @@ export function ShowcaseSidebar() {
   const pathname = usePathname()
   const { setOpenMobile } = useSidebar()
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length
+  const templateCount = REGISTRY_BY_CATEGORY.templates.length
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/"
@@ -94,6 +95,17 @@ export function ShowcaseSidebar() {
                     <span>Blocks</span>
                     <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
                       {blockCount}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/templates")}>
+                  <Link href="/templates">
+                    <Frame />
+                    <span>Templates</span>
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
+                      {templateCount}
                     </span>
                   </Link>
                 </SidebarMenuButton>

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Boxes, LayoutTemplate } from "lucide-react"
+import { Boxes, Frame, LayoutTemplate } from "lucide-react"
 
 import {
   Command,
@@ -15,7 +15,9 @@ import {
 } from "@/registry/hirael/ui/command"
 import {
   CATEGORY_LABELS,
+  COMPONENTS,
   REGISTRY,
+  TEMPLATES,
   type ComponentCategory,
 } from "@/registry/hirael/registry-meta"
 
@@ -41,8 +43,9 @@ export function CommandPalette({
     [router, onOpenChange]
   )
 
-  const components = REGISTRY.filter((r) => r.category !== "blocks")
+  const components = COMPONENTS
   const blocks = REGISTRY.filter((r) => r.category === "blocks")
+  const templates = TEMPLATES
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
@@ -85,6 +88,21 @@ export function CommandPalette({
                     <span>{b.title}</span>
                     <span className="ml-auto font-mono text-[10px] text-muted-foreground">
                       /{b.name}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+              <CommandGroup heading="Templates">
+                {templates.map((t) => (
+                  <CommandItem
+                    key={t.name}
+                    value={`${t.title} ${t.name}`}
+                    onSelect={() => go(`/templates/${t.name}`)}
+                  >
+                    <Frame className="text-muted-foreground" />
+                    <span>{t.title}</span>
+                    <span className="ml-auto font-mono text-[10px] text-muted-foreground">
+                      /{t.name}
                     </span>
                   </CommandItem>
                 ))}

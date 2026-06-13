@@ -6,6 +6,7 @@ export type ComponentCategory =
   | "display"
   | "navigation"
   | "blocks"
+  | "templates"
 
 export type BlockKind =
   | "hero"
@@ -1096,6 +1097,33 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["button"],
     dependencies: [],
   },
+  {
+    name: "creative-studio",
+    title: "Creative Studio",
+    description:
+      "Dark, cinematic creative-studio landing page: a full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Framer Motion throughout, with a self-contained warm-cream palette.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/creative-studio/creative-studio.tsx",
+      "registry/hirael/templates/creative-studio/hero.tsx",
+      "registry/hirael/templates/creative-studio/about.tsx",
+      "registry/hirael/templates/creative-studio/features.tsx",
+      "registry/hirael/templates/creative-studio/footer.tsx",
+      "registry/hirael/templates/creative-studio/primitives.tsx",
+      "registry/hirael/templates/creative-studio/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/creative-studio/creative-studio.tsx",
+      "components/templates/creative-studio/hero.tsx",
+      "components/templates/creative-studio/about.tsx",
+      "components/templates/creative-studio/features.tsx",
+      "components/templates/creative-studio/footer.tsx",
+      "components/templates/creative-studio/primitives.tsx",
+      "components/templates/creative-studio/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "lucide-react"],
+  },
 ]
 
 /**
@@ -1142,6 +1170,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   display: "Display",
   navigation: "Navigation",
   blocks: "Blocks",
+  templates: "Templates",
 }
 
 export const REGISTRY_BY_CATEGORY = (() => {
@@ -1153,10 +1182,17 @@ export const REGISTRY_BY_CATEGORY = (() => {
     display: [],
     navigation: [],
     blocks: [],
+    templates: [],
   }
   for (const entry of REGISTRY) groups[entry.category].push(entry)
   return groups
 })()
+
+export const TEMPLATES = REGISTRY_BY_CATEGORY.templates
+
+export const COMPONENTS = REGISTRY.filter(
+  (entry) => entry.category !== "blocks" && entry.category !== "templates"
+)
 
 export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   hero: "Hero sections",

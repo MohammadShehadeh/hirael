@@ -7,15 +7,13 @@ import { ComponentPage } from "@/components/showcase/component-page"
 import type { ApiPart, SourceFile } from "@/components/showcase/component-page"
 import { highlightCode, langFromPath } from "@/lib/highlight"
 import { SITE } from "@/lib/site"
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
+import { COMPONENTS, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta"
 import registryProps from "@/registry/hirael/registry-props.json"
 
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return REGISTRY.filter((entry) => entry.category !== "blocks").map(
-    (entry) => ({ component: entry.name })
-  )
+  return COMPONENTS.map((entry) => ({ component: entry.name }))
 }
 
 export async function generateMetadata({
@@ -25,7 +23,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { component } = await params
   const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks") return {}
+  if (!entry || entry.category === "blocks" || entry.category === "templates")
+    return {}
   const url = `${SITE.url}/components/${entry.name}`
   const title = `${entry.title} | ${SITE.name}`
   return {
@@ -114,7 +113,8 @@ export default async function ComponentRoute({
 }) {
   const { component } = await params
   const entry = REGISTRY_BY_NAME[component]
-  if (!entry || entry.category === "blocks") notFound()
+  if (!entry || entry.category === "blocks" || entry.category === "templates")
+    notFound()
   const [source, demoSource] = await Promise.all([
     loadSource(entry.sourceFiles),
     loadDemoSource(entry),

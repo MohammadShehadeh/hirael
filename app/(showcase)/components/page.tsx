@@ -11,7 +11,7 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   CATEGORY_LABELS,
-  REGISTRY,
+  COMPONENTS,
   REGISTRY_BY_CATEGORY,
   type ComponentCategory,
 } from "@/registry/hirael/registry-meta"
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ComponentsIndex() {
-  const components = REGISTRY.filter((r) => r.category !== "blocks")
+  const components = COMPONENTS
   const blocks = REGISTRY_BY_CATEGORY.blocks
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
 

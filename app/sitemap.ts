@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories"
 import { SITE } from "@/lib/site"
-import { REGISTRY } from "@/registry/hirael/registry-meta"
+import { COMPONENTS, REGISTRY, TEMPLATES } from "@/registry/hirael/registry-meta"
 
 export const dynamic = "force-static"
 
@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${SITE.url}/templates`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${SITE.url}/theme`,
       lastModified: now,
       changeFrequency: "monthly",
@@ -36,9 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const componentRoutes: MetadataRoute.Sitemap = REGISTRY.filter(
-    (entry) => entry.category !== "blocks"
-  ).map((entry) => ({
+  const componentRoutes: MetadataRoute.Sitemap = COMPONENTS.map((entry) => ({
     url: `${SITE.url}/components/${entry.name}`,
     lastModified: now,
     changeFrequency: "monthly",
@@ -63,10 +67,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
+  const templateRoutes: MetadataRoute.Sitemap = TEMPLATES.map((entry) => ({
+    url: `${SITE.url}/templates/${entry.name}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
   return [
     ...staticRoutes,
     ...componentRoutes,
     ...blockRoutes,
     ...blockCategoryRoutes,
+    ...templateRoutes,
   ]
 }

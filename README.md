@@ -44,6 +44,8 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 - **Marketing blocks** — Hero, Feature, Pricing, Testimonial, CTA, FAQ,
   Login, Header, Footer, Not-Found, Logo Cloud, Contact, Blog,
   Dashboard, Integrations, Image Gallery, App Shell.
+- **Templates** — full-page, multi-section layouts (e.g. Creative
+  Studio) that compose blocks and components into a finished page.
 - **Flat compound APIs** — same composition style shadcn ships, with a
   `data-slot="…"` attribute on every rendered slot for downstream
   styling.
@@ -115,6 +117,7 @@ forgecn/
 │   ├── (showcase)/               # sidebar + main column
 │   │   ├── components/page.tsx   # component index
 │   │   ├── blocks/[block]/       # per-block preview
+│   │   ├── templates/[template]/ # per-template preview
 │   │   └── theme/playground.tsx  # theme playground
 │   ├── embed/blocks/             # framed block previews
 │   ├── layout.tsx
@@ -126,6 +129,7 @@ forgecn/
 │       ├── ui/                   # shadcn primitives the registry imports from
 │       ├── <component>/          # *.tsx, *.demo.tsx, index.ts
 │       ├── blocks/<block>/       # marketing blocks
+│       ├── templates/<template>/ # full-page templates
 │       └── registry-meta.ts      # showcase metadata for sidebar / pages
 ├── hooks/                        # shared client hooks
 ├── lib/                          # site config, theme, package-manager helpers

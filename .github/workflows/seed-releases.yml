@@ -45,6 +45,7 @@ jobs:
           v0.5.0:9bd0e059b73e0cd286c67b92a3e73c86e322aef6
           v0.6.0:f0edc507f5442fe996d5d00a29fa5c0cc520718b
           v0.7.0:33103aba430de1bc5537c4c4b77e48f3fbde9cc4
+          v0.8.0:bdfab5db98d2c579bce8467cb90d0e7bd469a0c5
           "
           for ENTRY in $RELEASES; do
             TAG=${ENTRY%%:*}

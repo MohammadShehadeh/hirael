@@ -50,6 +50,7 @@ extracts the prop tables shown on component pages. See
 app/                              # Next.js App Router (output: "export")
   page.tsx                        # landing — Hero, live demos, category grid
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
+  axion/                          # /axion — standalone Axion Studio demo landing (shaders WebGL hero); not a registry item
   (showcase)/                     # sidebar + topbar shell
     components/page.tsx           # component index
     components/[component]/       # per-component page (demo, usage, props, install)

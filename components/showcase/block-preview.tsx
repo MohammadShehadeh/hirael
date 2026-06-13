@@ -7,6 +7,10 @@ import * as React from "react"
  * then scale-transforms it to fit the parent card. A ResizeObserver
  * keeps the scale in sync with the container so the preview reads as
  * a faithful, in-card miniature of the desktop layout.
+ *
+ * Scale is measured in a layout effect (before paint) and the iframe
+ * stays hidden until it's known, so the preview never flashes at the
+ * wrong size before the first measurement lands.
  */
 export function BlockPreview({
   name,
@@ -22,15 +26,17 @@ export function BlockPreview({
   simHeight?: number
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
-  const [scale, setScale] = React.useState(0.5)
+  const [scale, setScale] = React.useState<number | null>(null)
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
-    const ro = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width ?? 0
+    const measure = () => {
+      const w = el.clientWidth
       if (w > 0) setScale(w / simWidth)
-    })
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
   }, [simWidth])
@@ -51,7 +57,8 @@ export function BlockPreview({
         style={{
           width: `${simWidth}px`,
           height: `${simHeight}px`,
-          transform: `scale(${scale})`,
+          transform: scale === null ? undefined : `scale(${scale})`,
+          visibility: scale === null ? "hidden" : "visible",
         }}
       />
     </div>

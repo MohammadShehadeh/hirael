@@ -65,8 +65,13 @@ heading rather than starting a new doc.
 ## Registry items
 
 - **Edit `registry-meta.ts`, then `pnpm registry:gen`.** `registry.json` is
-  generated; `pnpm check:registry` fails the build on drift or on declared
-  `registryDependencies` that don't match a component's real imports.
+  generated; `pnpm check:registry` fails the build on drift, on declared
+  `registryDependencies` that don't match a component's real imports, or on a
+  showcased entry missing its preview loader in `registry-demos.tsx`.
+- **Register the preview loader in `registry-demos.tsx`.** Every showcased
+  item renders its preview / `/embed/*` iframe through `RegistryDemo`, keyed
+  by entry name; an unregistered name returns `null` and the preview comes up
+  blank. `check:registry` enforces it so this can't ship silently.
 - **Compound API first + `data-slot`.** Always default to a flat, shadcn-style
   compound API: the bare `Name` holds state; parts are `NameTrigger`,
   `NameContent`, … A single-prop convenience form is optional and secondary,
@@ -93,6 +98,13 @@ config. Use
 positioning is fine where geometry genuinely is physical (Radix
 `data-[side]` animations, the color-picker canvas, `side="left|right"` on
 Sheet/Sidebar). Every preview has an RTL toggle — verify with it.
+
+The framed `/embed/*` previews carry direction as a `?dir=rtl` query
+param. It's applied to `<html dir>` by a pre-paint inline script
+(`lib/embed.ts`, rendered from each embed `page.tsx`), the same trick the
+theme uses — so an RTL preview comes up correct on the first frame instead
+of flipping after hydration. The embed shells are plain background wrappers;
+don't reintroduce direction state there.
 
 ## Changelog fetch
 

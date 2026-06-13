@@ -40,11 +40,14 @@ declares every item: name, title, description, category, `sourceFiles`,
   not edit it by hand.
 - `pnpm registry:props` extracts the prop tables shown on component pages.
 - `pnpm check:registry` (run in CI and by `pnpm build`) fails if
-  `registry.json` has drifted from `registry-meta.ts`, or if a declared
-  `registryDependencies` list doesn't match the component's actual imports.
+  `registry.json` has drifted from `registry-meta.ts`, if a declared
+  `registryDependencies` list doesn't match the component's actual imports,
+  or if a showcased entry has no preview loader in
+  [registry-demos.tsx](./registry/hirael/registry-demos.tsx).
 
-So the workflow for any catalog change is: edit `registry-meta.ts`, then
-`pnpm registry:gen`, then commit both. The sidebar, landing counts,
+So the workflow for any catalog change is: edit `registry-meta.ts`,
+register the item's preview loader in `registry-demos.tsx`, run
+`pnpm registry:gen`, then commit. The sidebar, landing counts,
 component/block/template index pages, and sitemap all derive from this file
 — there is no separate "is it published" flag, the entry's presence is the
 source of truth.
@@ -75,6 +78,13 @@ with the rest of the catalog (the full checklist is in
 - **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
 - **A `*.demo.tsx`** under `registry/hirael/<name>/` showing a basic compose
   and a customized compose.
+- **A preview loader in
+  [registry-demos.tsx](./registry/hirael/registry-demos.tsx)** keyed by the
+  entry name — the showcase and `/embed/*` previews render every item
+  through `RegistryDemo`, which returns nothing if the name is unregistered,
+  so the preview iframe silently comes up blank. (Blocks/templates point at
+  the block file; components point at the `*.demo.tsx`.) `pnpm
+  check:registry` fails when a showcased entry is missing here.
 
 ## Copy reads like a human
 

@@ -64,6 +64,7 @@ registry/hirael/
     index.ts                 # re-export
   ui/                        # shadcn primitives the registry imports from
   blocks/<block>/            # marketing blocks
+  templates/<template>/      # full-page templates
   registry-meta.ts           # showcase metadata for sidebar / pages
 registry.json                # canonical declaration of every item
 ```
@@ -219,6 +220,12 @@ For each new component:
 Marketing blocks follow the same shape but live under
 `registry/hirael/blocks/<block>/` and have a `blockKind` plus
 `blockTagline` in `registry-meta.ts`.
+
+Templates are full-page, multi-section layouts. They live under
+`registry/hirael/templates/<template>/`, use `category: "templates"` in
+`registry-meta.ts`, and ship as a multi-file `registry:block` in
+`registry.json`. Like blocks, they are previewed full-bleed and do not
+need a `*.demo.tsx`.
 
 ## Testing requirements
 

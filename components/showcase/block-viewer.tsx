@@ -26,16 +26,18 @@ export function BlockViewer({
   name,
   title,
   minHeight = 800,
+  embedBase = "/embed/blocks",
 }: {
   name: string
   title: string
   minHeight?: number
+  embedBase?: string
 }) {
   const [viewport, setViewport] = React.useState<Viewport>("desktop")
   const [key, setKey] = React.useState(0)
   const [rtl, setRtl] = React.useState(false)
 
-  const src = `/embed/blocks/${name}${rtl ? "?dir=rtl" : ""}`
+  const src = `${embedBase}/${name}${rtl ? "?dir=rtl" : ""}`
 
   const sizing =
     viewport === "desktop"

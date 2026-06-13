@@ -53,8 +53,8 @@ while ((m = entryRe.exec(meta)) !== null) {
     }
   }
 
-  const isBlock = /category: "blocks"/.test(body)
-  if (!isBlock) {
+  const isComposite = /category: "(?:blocks|templates)"/.test(body)
+  if (!isComposite) {
     const demo = `registry/hirael/${name}/${name}.demo.tsx`
     if (!existsSync(demo)) {
       fail(`registry-meta: component "${name}" → missing demo ${demo}`)

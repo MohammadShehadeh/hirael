@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og"
 
 import { SITE } from "@/lib/site"
-import { REGISTRY } from "@/registry/hirael/registry-meta"
+import { COMPONENTS, REGISTRY } from "@/registry/hirael/registry-meta"
 
 export const dynamic = "force-static"
 
@@ -10,9 +10,7 @@ export const contentType = "image/png"
 export const alt = `${SITE.name} | ${SITE.description}`
 
 export default function OpenGraphImage() {
-  const components = REGISTRY.filter(
-    (r) => r.category !== "blocks"
-  ).length
+  const components = COMPONENTS.length
   const blocks = REGISTRY.filter((r) => r.category === "blocks").length
 
   return new ImageResponse(

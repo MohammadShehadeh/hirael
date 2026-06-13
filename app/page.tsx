@@ -11,7 +11,7 @@ import { RegistryDemo } from "@/registry/hirael/registry-demos"
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
-  REGISTRY,
+  COMPONENTS,
   REGISTRY_BY_CATEGORY,
   REGISTRY_BY_NAME,
 } from "@/registry/hirael/registry-meta"
@@ -64,7 +64,7 @@ export default function LandingPage() {
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
-  const componentCount = REGISTRY.filter((r) => r.category !== "blocks").length
+  const componentCount = COMPONENTS.length
   const blocks = REGISTRY_BY_CATEGORY.blocks.length
 
   return (
@@ -125,9 +125,7 @@ const LIVE_DEMOS = [
 ] as const
 
 function LiveRegistry() {
-  const componentCount = REGISTRY.filter(
-    (r) => r.category !== "blocks"
-  ).length
+  const componentCount = COMPONENTS.length
 
   return (
     <section className="relative">

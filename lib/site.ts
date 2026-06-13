@@ -41,5 +41,6 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
   [
     { href: "/components", label: "Components" },
     { href: "/blocks", label: "Blocks" },
+    { href: "/templates", label: "Templates" },
     { href: "/theme", label: "Theme" },
   ]

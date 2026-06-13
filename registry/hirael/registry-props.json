@@ -4346,6 +4346,1178 @@
       "extendsNative": true
     }
   ],
+  "activity-feed": [
+    {
+      "name": "ActivityFeed",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedAvatar",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedActor",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedAction",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedTime",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedBody",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ActivityFeedDivider",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "audit-log": [
+    {
+      "name": "AuditLog",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogItem",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogActor",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogAction",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogTime",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogStatus",
+      "props": [
+        {
+          "name": "tone",
+          "type": "AuditLogStatusTone",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogDetail",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuditLogField",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "blur-reveal": [
+    {
+      "name": "BlurReveal",
+      "props": [
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the reveal starts, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Reveal duration, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.3",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        },
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": "Starting blur, in px."
+        },
+        {
+          "name": "y",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": "Starting vertical offset, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "text-reveal": [
+    {
+      "name": "TextReveal",
+      "props": [
+        {
+          "name": "children",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "as",
+          "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+          "required": false,
+          "default": null,
+          "description": "Element to render the text as."
+        },
+        {
+          "name": "by",
+          "type": "TextRevealBy",
+          "required": false,
+          "default": "\"word\"",
+          "description": "Split granularity for the staggered reveal."
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the first unit reveals, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Per-unit reveal duration, in ms."
+        },
+        {
+          "name": "stagger",
+          "type": "number",
+          "required": false,
+          "default": "60",
+          "description": "Delay added between units, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.5",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "scroll-reveal": [
+    {
+      "name": "ScrollReveal",
+      "props": [
+        {
+          "name": "direction",
+          "type": "ScrollRevealDirection",
+          "required": false,
+          "default": "\"up\"",
+          "description": "Direction the content travels in from."
+        },
+        {
+          "name": "distance",
+          "type": "number",
+          "required": false,
+          "default": "24",
+          "description": "Travel distance, in px."
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Delay before the reveal starts, in ms."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "600",
+          "description": "Reveal duration, in ms."
+        },
+        {
+          "name": "once",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Reveal once and stay, or replay every time it re-enters the viewport."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": false,
+          "default": "0.3",
+          "description": "Visible fraction (0–1) that triggers the reveal."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "spotlight-card": [
+    {
+      "name": "SpotlightCard",
+      "props": [
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "350",
+          "description": "Diameter of the spotlight, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "magnetic-button": [
+    {
+      "name": "MagneticButton",
+      "props": [
+        {
+          "name": "strength",
+          "type": "number",
+          "required": false,
+          "default": "0.4",
+          "description": "Pull strength as a fraction of the cursor's distance from center."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render the child element instead of a button (e.g. a link)."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "cursor-glow": [
+    {
+      "name": "CursorGlow",
+      "props": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "\"color-mix(in oklch, var(--foreground) 12%, transparent)\"",
+          "description": "Glow color. Defaults to a soft tint of the foreground token."
+        },
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "400",
+          "description": "Diameter of the glow, in px."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "tilt-card": [
+    {
+      "name": "TiltCard",
+      "props": [
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": "12",
+          "description": "Maximum tilt on each axis, in degrees."
+        },
+        {
+          "name": "scale",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": "Scale applied while pointing."
+        },
+        {
+          "name": "perspective",
+          "type": "number",
+          "required": false,
+          "default": "800",
+          "description": "Perspective depth, in px."
+        },
+        {
+          "name": "glare",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render a cursor-following glare highlight."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "morphing-dialog": [
+    {
+      "name": "MorphingDialog",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "MorphingDialogTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MorphingDialogClose",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "dock": [
+    {
+      "name": "Dock",
+      "props": [
+        {
+          "name": "baseSize",
+          "type": "number",
+          "required": false,
+          "default": "44",
+          "description": "Resting icon size, in px."
+        },
+        {
+          "name": "magnification",
+          "type": "number",
+          "required": false,
+          "default": "72",
+          "description": "Peak icon size at the cursor, in px."
+        },
+        {
+          "name": "distance",
+          "type": "number",
+          "required": false,
+          "default": "140",
+          "description": "Falloff radius of the magnification, in px."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DockItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DockLabel",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "floating-action-button": [
+    {
+      "name": "FloatingActionButton",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "side",
+          "type": "FabSide",
+          "required": false,
+          "default": "\"top\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingActionButtonItem",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "floating-toolbar": [
+    {
+      "name": "FloatingToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarButton",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarSeparator",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FloatingToolbarLabel",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "split-view": [
+    {
+      "name": "SplitView",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "SplitOrientation",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        },
+        {
+          "name": "defaultSize",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": "Size of the first panel, as a percentage."
+        },
+        {
+          "name": "minSize",
+          "type": "number",
+          "required": false,
+          "default": "15",
+          "description": "Minimum size of the first panel, as a percentage."
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "default": "85",
+          "description": "Maximum size of the first panel, as a percentage."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SplitViewPanel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SplitViewResizer",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "resizable-panels": [
+    {
+      "name": "ResizablePanelGroup",
+      "props": [
+        {
+          "name": "direction",
+          "type": "ResizableDirection",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ResizablePanel",
+      "props": [
+        {
+          "name": "defaultSize",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": "Initial size as a proportion shared across sibling panels."
+        },
+        {
+          "name": "minSize",
+          "type": "number",
+          "required": false,
+          "default": "10",
+          "description": "Minimum size as a percentage of the group."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ResizableHandle",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "inspector-panel": [
+    {
+      "name": "InspectorPanel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelSection",
+      "props": [
+        {
+          "name": "title",
+          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>) | undefined",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InspectorPanelRow",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "kpi-grid": [
+    {
+      "name": "KpiGrid",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardValue",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardDelta",
+      "props": [
+        {
+          "name": "trend",
+          "type": "KpiTrend",
+          "required": false,
+          "default": "\"flat\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KpiCardSpark",
+      "props": [
+        {
+          "name": "points",
+          "type": "number[]",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "quick-actions": [
+    {
+      "name": "QuickActions",
+      "props": [
+        {
+          "name": "columns",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "Number of columns in the action grid."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickAction",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionIcon",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "QuickActionDescription",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "notifications": [
+    {
+      "name": "Notifications",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationsList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationItem",
+      "props": [
+        {
+          "name": "unread",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationMedia",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "NotificationTime",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "billing-card": [
+    {
+      "name": "BillingCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardEyebrow",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardPlan",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardPrice",
+      "props": [
+        {
+          "name": "cycle",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardMeter",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardRow",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BillingCardFooter",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "subscription-plans": [
+    {
+      "name": "SubscriptionPlans",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlan",
+      "props": [
+        {
+          "name": "featured",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "current",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanBadge",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanName",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanPrice",
+      "props": [
+        {
+          "name": "cycle",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanFeatures",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanFeature",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SubscriptionPlanAction",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"outline\"",
+          "required": false,
+          "default": "\"outline\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "api-keys": [
+    {
+      "name": "ApiKeys",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeysList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyItem",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyName",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyValue",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultRevealed",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Whether the key starts revealed."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApiKeyMeta",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "usage-dashboard": [
+    {
+      "name": "UsageDashboard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageDashboardHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageDashboardTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "UsageItem",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "caption",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Short value caption, e.g. \"8.2k / 10k\"."
+        },
+        {
+          "name": "unit",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "creative-studio": [
     {
       "name": "Hero",

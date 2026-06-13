@@ -8,7 +8,7 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **46 registry UI items** (45 standalone
+pages). As of the last update: **69 registry UI items** (68 standalone
 components + 1 distribution-only primitive), **39 section blocks**, and
 **1 template**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -62,11 +62,13 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `image-cropper` | `slider` | Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref. |
 | `media-input` | `button` | Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser. |
 
-#### Data display (8)
+#### Data display (10)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
+| `activity-feed` | — | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API. |
 | `animated-number` | — | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support. |
+| `audit-log` | — | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API. |
 | `avatar-stack` | — | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button. |
 | `calendar-heatmap` | `tooltip` | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend. |
 | `countdown-timer` | — | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content. |
@@ -94,12 +96,51 @@ pulls in (resolved from `ui.shadcn.com` at install time) — its npm
 | `scroll-progress` | — | Fixed reading progress bar. Tracks document scroll by default or a scoped container ref. |
 | `spinner` | — | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label. |
 
-#### Navigation (2)
+#### Navigation (8)
 
 | Component | Registry deps | What it is |
 | --- | --- | --- |
+| `dock` | — | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion. |
+| `floating-action-button` | — | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API. |
+| `floating-toolbar` | — | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels. |
+| `inspector-panel` | — | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars. |
+| `resizable-panels` | — | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. |
+| `split-view` | — | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. |
 | `stepper` | — | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API. |
 | `tour` | `button` | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card. |
+
+#### Animation (8)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `blur-reveal` | — | Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion. |
+| `cursor-glow` | — | Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels. |
+| `magnetic-button` | — | Button that pulls toward the cursor and springs back on leave. Adjustable strength, `asChild` to wrap a link, respects reduced-motion. |
+| `morphing-dialog` | — | A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock and Esc to close. |
+| `scroll-reveal` | — | Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion. |
+| `spotlight-card` | — | Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors. |
+| `text-reveal` | — | Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion. |
+| `tilt-card` | — | 3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion. |
+
+#### Widgets (3)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `kpi-grid` | — | Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. |
+| `notifications` | — | Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. |
+| `quick-actions` | — | Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via `asChild`, a link. |
+
+#### SaaS (4)
+
+| Component | Registry deps | What it is |
+| --- | --- | --- |
+| `api-keys` | — | API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. |
+| `billing-card` | — | Current-plan summary with price, a usage meter, billing detail rows and footer actions. |
+| `subscription-plans` | — | In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. |
+| `usage-dashboard` | — | Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. |
+
+> The SaaS "Audit Logs" view is served by the `audit-log` component (Data
+> display) rather than a near-duplicate entry.
 
 #### Primitives — distribution-only (1)
 

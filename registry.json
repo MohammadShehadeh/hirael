@@ -1929,6 +1929,454 @@
       ]
     },
     {
+      "name": "activity-feed",
+      "type": "registry:ui",
+      "title": "Activity Feed",
+      "description": "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/activity-feed.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/activity-feed.tsx"
+        }
+      ]
+    },
+    {
+      "name": "audit-log",
+      "type": "registry:ui",
+      "title": "Audit Log",
+      "description": "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/audit-log.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/audit-log.tsx"
+        }
+      ]
+    },
+    {
+      "name": "blur-reveal",
+      "type": "registry:ui",
+      "title": "Blur Reveal",
+      "description": "Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/blur-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/blur-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-reveal",
+      "type": "registry:ui",
+      "title": "Text Reveal",
+      "description": "Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/text-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/text-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-reveal",
+      "type": "registry:ui",
+      "title": "Scroll Reveal",
+      "description": "Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/scroll-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scroll-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/spotlight-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spotlight-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "magnetic-button",
+      "type": "registry:ui",
+      "title": "Magnetic Button",
+      "description": "Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/magnetic-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/magnetic-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cursor-glow",
+      "type": "registry:ui",
+      "title": "Cursor Glow",
+      "description": "Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/cursor-glow.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/cursor-glow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tilt-card",
+      "type": "registry:ui",
+      "title": "Tilt Card",
+      "description": "3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/tilt-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tilt-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "morphing-dialog",
+      "type": "registry:ui",
+      "title": "Morphing Dialog",
+      "description": "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/morphing-dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/morphing-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dock",
+      "type": "registry:ui",
+      "title": "Dock",
+      "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/dock.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "floating-action-button",
+      "type": "registry:ui",
+      "title": "Floating Action Button",
+      "description": "Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/floating-action-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/floating-action-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "floating-toolbar",
+      "type": "registry:ui",
+      "title": "Floating Toolbar",
+      "description": "Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels. Position it anywhere.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/floating-toolbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/floating-toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "split-view",
+      "type": "registry:ui",
+      "title": "Split View",
+      "description": "Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. RTL-aware.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/split-view.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/split-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resizable-panels",
+      "type": "registry:ui",
+      "title": "Resizable Panels",
+      "description": "Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. RTL-aware.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/resizable-panels.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/resizable-panels.tsx"
+        }
+      ]
+    },
+    {
+      "name": "inspector-panel",
+      "type": "registry:ui",
+      "title": "Inspector Panel",
+      "description": "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/inspector-panel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/inspector-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kpi-grid",
+      "type": "registry:ui",
+      "title": "KPI Grid",
+      "description": "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/kpi-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kpi-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "quick-actions",
+      "type": "registry:ui",
+      "title": "Quick Actions",
+      "description": "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/quick-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/quick-actions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "notifications",
+      "type": "registry:ui",
+      "title": "Notifications",
+      "description": "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/notifications.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/notifications.tsx"
+        }
+      ]
+    },
+    {
+      "name": "billing-card",
+      "type": "registry:ui",
+      "title": "Billing Card",
+      "description": "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/billing-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/billing-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "subscription-plans",
+      "type": "registry:ui",
+      "title": "Subscription Plans",
+      "description": "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/subscription-plans.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/subscription-plans.tsx"
+        }
+      ]
+    },
+    {
+      "name": "api-keys",
+      "type": "registry:ui",
+      "title": "API Keys",
+      "description": "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/api-keys.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/api-keys.tsx"
+        }
+      ]
+    },
+    {
+      "name": "usage-dashboard",
+      "type": "registry:ui",
+      "title": "Usage Dashboard",
+      "description": "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/usage-dashboard.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/usage-dashboard.tsx"
+        }
+      ]
+    },
+    {
       "name": "creative-studio",
       "type": "registry:block",
       "title": "Creative Studio",

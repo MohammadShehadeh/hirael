@@ -8,7 +8,7 @@ at the repo root.
 ## What this is
 
 **Hirael is a shadcn-compatible component registry** — "the components
-shadcn/ui doesn't ship." It distributes ~45 React components, ~40 section
+shadcn/ui doesn't ship." It distributes ~70 React components, ~40 section
 blocks, and full-page templates through the shadcn registry schema, so a
 consumer runs
 `npx shadcn add https://hirael.com/r/<name>.json` and the **source is copied
@@ -88,7 +88,7 @@ vercel.json                       # main auto-deploy disabled + legacy /name →
 - **Registry pipeline** — `registry-meta.ts` as the single source of truth,
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
-- **Catalog** — 46 registry UI items (45 components + the distribution-only
+- **Catalog** — 69 registry UI items (68 components + the distribution-only
   `accordion`), 39 blocks, and 1 full-page template (Creative Studio). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,

@@ -33,7 +33,10 @@ const CATEGORY_ORDER: ComponentCategory[] = [
   "files",
   "data",
   "display",
+  "animation",
   "navigation",
+  "widgets",
+  "saas",
 ]
 
 export function ShowcaseSidebar() {

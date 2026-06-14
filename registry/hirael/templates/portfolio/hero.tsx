@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { label: "Work", href: "#work", id: "work" },
   { label: "Resume", href: "#stats", id: "stats" },
 ]
-const ROLES = ["Creative", "Fullstack", "Founder", "Scholar"]
+const ROLES = ["Creative", "Developer", "Founder", "Scholar"]
 const ROLE_INTERVAL = 2000
 
 function Logo() {
@@ -104,7 +104,7 @@ function Navbar() {
           innerClassName="bg-[hsl(var(--surface))] px-3 py-1.5 text-xs text-[hsl(var(--text))] backdrop-blur-md sm:px-4 sm:py-2 sm:text-sm"
         >
           Say hi
-          <ArrowUpRight className="size-3" />
+          <ArrowUpRight className="size-3 rtl:-scale-x-100" />
         </RingLink>
       </div>
     </nav>
@@ -162,7 +162,7 @@ export function Hero({ start = true }: { start?: boolean }) {
     <section
       ref={rootRef}
       id="home"
-      className="relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden"
     >
       <Navbar />
 

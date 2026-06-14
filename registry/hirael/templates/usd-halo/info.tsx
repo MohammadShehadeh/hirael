@@ -25,20 +25,24 @@ export function InfoSection() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            className="flex min-h-80 flex-col justify-between rounded-2xl p-7 lg:col-span-2"
+            className="relative flex min-h-80 flex-col justify-between overflow-hidden rounded-2xl p-7 lg:col-span-2"
             style={{
               backgroundImage: `url(${CARD_IMAGE})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-white/30"
+            />
             <h3
-              className="text-2xl font-medium leading-snug text-black"
+              className="relative z-10 text-2xl font-medium leading-snug text-black"
               style={{ letterSpacing: "-0.02em" }}
             >
               Savings that bloom
             </h3>
-            <p className="max-w-xs text-base text-black/70">
+            <p className="relative z-10 max-w-xs text-base text-black/70">
               Gain steady returns as your dollar tokens are routed into
               top-performing DeFi strategies.
             </p>

@@ -27,8 +27,8 @@ export function Hero({
   })
 
   return (
-    <section className="relative min-h-svh w-full bg-black p-4 md:p-6">
-      <div className="relative flex min-h-[calc(100svh-2rem)] w-full flex-col overflow-hidden rounded-2xl bg-black md:min-h-[calc(100svh-3rem)] md:rounded-[2rem]">
+    <section className="relative h-dvh w-full bg-black p-4 md:p-6">
+      <div className="relative flex h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-2xl bg-black md:h-[calc(100dvh-3rem)] md:rounded-[2rem]">
         {videoSrc ? (
           <video
             className="absolute inset-0 h-full w-full object-cover"

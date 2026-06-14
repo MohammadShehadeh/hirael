@@ -83,6 +83,9 @@ export function Marquee({
           width: max-content;
           animation: ${keyframesName} ${durationSeconds}s linear infinite;
         }
+        [dir="rtl"] .${trackClass} {
+          animation-direction: reverse;
+        }
       `}</style>
       <div className={trackClass}>
         {[...brands, ...brands].map((brand, index) => (

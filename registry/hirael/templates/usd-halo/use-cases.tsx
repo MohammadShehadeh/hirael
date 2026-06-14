@@ -31,6 +31,10 @@ export function UseCasesSection() {
             className="absolute inset-0 h-full w-full object-cover"
             src={USE_CASES_VIDEO}
           />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/15 to-transparent"
+          />
           <div className="relative z-10 p-10 md:p-12">
             <h3
               className="mb-5 text-4xl font-medium leading-tight text-black md:text-5xl"

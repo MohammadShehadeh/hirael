@@ -272,19 +272,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
-    name: "hero-04",
-    title: "Hero 4",
-    description:
-      "Full-bleed hero on a rounded card with a photographic background: a centered navbar and headline, a floating glass stats card in one corner, and a faux-cutout documentation panel carved into the opposite corner.",
-    blockTagline: "Image background · glassmorphism · corner cutout",
-    category: "blocks",
-    blockKind: "hero",
-    sourceFiles: ["registry/hirael/blocks/hero-04/hero-04.tsx"],
-    installTargets: ["components/blocks/hero-04.tsx"],
-    registryDependencies: [],
-    dependencies: ["lucide-react", "motion"],
-  },
-  {
     name: "feature-01",
     title: "Feature 1",
     description:
@@ -1518,6 +1505,41 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "rivr",
+    title: "Rivr",
+    description:
+      "DeFi staking landing page for a fluid-asset protocol: a photographic hero on a rounded card with a glass stats card and a carved documentation panel, a feature trio, a metrics band, a four-pillar ecosystem grid, a closing call to action and a dark footer. Self-contained light palette, Framer Motion throughout.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/rivr/rivr.tsx",
+      "registry/hirael/templates/rivr/navbar.tsx",
+      "registry/hirael/templates/rivr/hero.tsx",
+      "registry/hirael/templates/rivr/features.tsx",
+      "registry/hirael/templates/rivr/stats.tsx",
+      "registry/hirael/templates/rivr/ecosystem.tsx",
+      "registry/hirael/templates/rivr/cta.tsx",
+      "registry/hirael/templates/rivr/footer.tsx",
+      "registry/hirael/templates/rivr/primitives.tsx",
+      "registry/hirael/templates/rivr/styles.tsx",
+      "registry/hirael/templates/rivr/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/rivr/rivr.tsx",
+      "components/templates/rivr/navbar.tsx",
+      "components/templates/rivr/hero.tsx",
+      "components/templates/rivr/features.tsx",
+      "components/templates/rivr/stats.tsx",
+      "components/templates/rivr/ecosystem.tsx",
+      "components/templates/rivr/cta.tsx",
+      "components/templates/rivr/footer.tsx",
+      "components/templates/rivr/primitives.tsx",
+      "components/templates/rivr/styles.tsx",
+      "components/templates/rivr/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "lucide-react"],
   },
 ]
 

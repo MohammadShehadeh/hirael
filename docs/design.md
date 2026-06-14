@@ -70,13 +70,18 @@ Loaded via `next/font` in [app/layout.tsx](../app/layout.tsx):
 | --- | --- | --- |
 | **Inter** | `--font-sans` | Body and UI — the default face |
 | **Geist Mono** | `--font-mono` | Code, install commands, identifiers, eyebrow labels |
-| **Cormorant Garamond** | `--font-serif` | Serif accents only (e.g. testimonial quote marks) |
+| **Cormorant Garamond** | `--font-serif` | Display headings (`.text-display`), the brand wordmark, serif accents |
 
-Display headings use **sans-serif `font-semibold tracking-tight`** (see the
-landing hero), not serif. Eyebrow labels are the recurring
-`font-mono text-[10px]/[11px] uppercase tracking-[0.16em–0.18em]
-text-muted-foreground` pattern — reuse it for new section/eyebrow labels
-(the `/changelog` header follows it).
+Display headings (the landing hero, section titles, `/changelog`, 404 and
+error) use the serif **`.text-display`** utility — Cormorant at weight 500
+with tight tracking — for an editorial, elegant feel that ties the chrome to
+the premium templates. A serif *italic* span carries a single emphasis word
+(the landing hero italicizes "doesn't"); the italic style is loaded via
+`next/font` in `app/layout.tsx` and `app/global-error.tsx`. Body and UI stay
+**sans** (Inter). Eyebrow labels are the recurring `font-mono
+text-[10px]/[11px] uppercase tracking-[0.16em–0.18em] text-muted-foreground`
+pattern — reuse it for new section/eyebrow labels (the `/changelog` header
+follows it).
 
 ## Motion
 
@@ -98,6 +103,15 @@ Defined in `globals.css`, reuse rather than re-rolling:
   slowly; depth behind the hero and focal bands.
 - `.glass-panel` — translucent blurred panel with a hairline border and a
   faint cool shadow; focal containers only, never whole sections.
+- `.glass-panel-strong` — denser glass (≈78% card) for floating chrome (the
+  site-header pill) and the footer anchor panel, where the surface should
+  read near-solid while still passing texture through.
+- `.text-display` — serif display type (Cormorant 500, tight tracking) for
+  large headings; pair with mono eyebrows and sans body.
+- `.shadow-elevated` — token-only soft elevation (scales with `--foreground`,
+  no hard-coded color) for focal cards and the footer panel.
+- `.wordmark-watermark` — oversized, very-low-contrast serif "Hirael" used as
+  a clipped backdrop behind the footer's legal bar.
 - `.corner-mark` — small `+` blueprint marker for section corners.
 - `.container` (`mx-auto w-full max-w-6xl`) / `.cpx` (`px-4 lg:px-6`) —
   page width + horizontal padding.

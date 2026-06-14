@@ -75,8 +75,8 @@ export default function LandingPage() {
 
 function Hero() {
   return (
-    <section className="relative px-4 pt-6 pb-2 sm:px-6 sm:pt-8 lg:px-8 lg:pt-10">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-xl">
+    <section className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 lg:px-8">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-border bg-card/30 sm:rounded-[2rem]">
         {/* Texture lives inside the panel: soft drifting halo, then a masked dot grid. */}
         <div aria-hidden className="ambient-halo" />
         <div
@@ -85,14 +85,15 @@ function Hero() {
         />
 
         <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
-          {/* Blueprint registration marks framing the fold. */}
-          <span aria-hidden className="corner-mark end-0 top-0" />
-          <span aria-hidden className="corner-mark bottom-0 start-0" />
-          <span aria-hidden className="corner-mark bottom-0 end-0" />
-
           <div className="flex flex-col items-center gap-6 text-center">
-            <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-              The components shadcn/ui doesn&apos;t ship.
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
+              <span aria-hidden className="size-1 rounded-full bg-muted-foreground" />
+              shadcn-compatible registry
+            </span>
+
+            <h1 className="text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl">
+              The components shadcn/ui{" "}
+              <span className="italic text-foreground/90">doesn&apos;t</span> ship.
             </h1>
 
             <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
@@ -104,14 +105,16 @@ function Hero() {
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
               <Link
                 href="/components"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group inline-flex h-11 items-center gap-2 rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 Browse components
-                <ArrowRight className="size-4 rtl:rotate-180" />
+                <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+                  <ArrowRight className="size-4 rtl:rotate-180" />
+                </span>
               </Link>
               <Link
                 href="/blocks"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-card px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-card/60 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 Browse blocks
               </Link>
@@ -152,7 +155,7 @@ function LiveRegistry() {
               <span className="h-px w-4 bg-border" />
               Live registry
             </span>
-            <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h2 className="text-display text-balance text-3xl sm:text-4xl">
               Working demos, not screenshots.
             </h2>
           </div>
@@ -170,7 +173,7 @@ function LiveRegistry() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border shadow-elevated md:grid-cols-2">
           {LIVE_DEMOS.map((name) => {
             const entry = REGISTRY_BY_NAME[name]
             if (!entry) return null
@@ -265,7 +268,7 @@ function WhyHirael() {
             <span className="h-px w-4 bg-border" />
             Why Hirael
           </span>
-          <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="text-display text-balance text-3xl sm:text-4xl">
             Own the source, not a dependency.
           </h2>
           <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
@@ -274,26 +277,18 @@ function WhyHirael() {
           </p>
         </header>
 
-        <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {FEATURES.map((feature) => {
             const Icon = feature.icon
             return (
               <article
                 key={feature.title}
-                className="relative flex flex-col gap-5 bg-background px-5 pt-7 pb-6 sm:px-6"
+                className="group relative flex flex-col gap-5 rounded-2xl border border-border bg-card/40 px-6 pt-7 pb-6 backdrop-blur-sm transition-colors duration-200 hover:border-foreground/20 hover:bg-card/70"
               >
-                {/* Blueprint crosshair: hairlines that overshoot the cell, a corner node, and a faint glow. */}
-                <span aria-hidden className="absolute -inset-y-4 -left-px w-px bg-border" />
-                <span aria-hidden className="absolute -inset-y-4 -right-px w-px bg-border" />
-                <span aria-hidden className="absolute -inset-x-4 -top-px h-px bg-border" />
-                <span aria-hidden className="absolute -inset-x-4 -bottom-px h-px bg-border" />
+                {/* Soft glow from the top edge, contained to the card. */}
                 <span
                   aria-hidden
-                  className="corner-mark [inset-block-start:-6px] [inset-inline-start:-6px]"
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_60%_at_50%_0%,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)]"
+                  className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(70%_55%_at_50%_0%,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 />
 
                 {/* Glowing dashed medallion holding the icon. */}
@@ -395,7 +390,7 @@ function CategoryGrid() {
               <span className="h-px w-4 bg-border" />
               Section blocks
             </span>
-            <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h2 className="text-display text-balance text-3xl sm:text-4xl">
               Blocks for whole sections of a page.
             </h2>
           </div>

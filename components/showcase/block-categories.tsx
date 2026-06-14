@@ -211,7 +211,7 @@ function countLabel(count: number, free?: number) {
 /* -------------------------------------------------------------------------- */
 
 const tileShell =
-  "group relative flex aspect-[5/4] size-full flex-col overflow-hidden rounded-md border border-border bg-background transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)]"
+  "group relative flex aspect-[5/4] size-full flex-col overflow-hidden rounded-xl border border-border bg-card/40 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-card/70 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.35)]"
 
 type Variant = "plain" | "indexed"
 

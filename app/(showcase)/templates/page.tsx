@@ -49,7 +49,7 @@ export default function TemplatesIndex() {
             full-page compositions
           </span>
         </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+        <h1 className="text-display text-balance text-4xl leading-[1.05] sm:text-5xl md:text-6xl">
           Full pages, ready to copy.
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">

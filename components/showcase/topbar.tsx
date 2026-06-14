@@ -31,18 +31,19 @@ export function ShowcaseTopbar() {
         <BrandLockup logoClassName="h-8" />
       </Link>
 
-      <nav className="hidden flex-1 items-center gap-0.5 md:flex">
+      <nav className="hidden flex-1 items-center gap-1 md:flex">
         {NAV_LINKS.map((link) => {
           const active = isActive(link.href)
           return (
             <Link
               key={link.href}
               href={link.href}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "rounded-sm px-2.5 py-1 text-[13px] tracking-tight transition-colors",
+                "rounded-full px-3 py-1.5 text-[13px] tracking-tight transition-colors",
                 active
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-accent text-foreground"
+                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
               )}
             >
               {link.label}

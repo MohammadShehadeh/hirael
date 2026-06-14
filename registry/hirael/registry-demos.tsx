@@ -134,6 +134,8 @@ const DEMO_LOADERS: Record<
     import("@/registry/hirael/templates/portfolio/portfolio"),
   "usd-halo": () => import("@/registry/hirael/templates/usd-halo/usd-halo"),
   "rivr": () => import("@/registry/hirael/templates/rivr/rivr"),
+  "velorah": () => import("@/registry/hirael/templates/velorah/velorah"),
+  "nexacore": () => import("@/registry/hirael/templates/nexacore/nexacore"),
 }
 
 // React.lazy defers the import until first render, so creating every demo

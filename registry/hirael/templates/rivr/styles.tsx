@@ -1,6 +1,6 @@
 const RIVR_CSS = `
 .rivr {
-  --background: hsl(210 24% 98%);
+  --background: hsl(0 0% 94%);
   --foreground: hsl(218 48% 24%);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(218 48% 24%);
@@ -17,9 +17,11 @@ const RIVR_CSS = `
   --border: hsl(214 24% 88%);
   --input: hsl(214 24% 88%);
   --ring: hsl(218 48% 40%);
+  --hero-title: hsl(220 9% 40%);
+  font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
 }
 .rivr .font-display {
-  font-family: var(--font-rivr-display), ui-sans-serif, system-ui, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
 `

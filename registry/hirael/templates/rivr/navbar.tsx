@@ -8,7 +8,7 @@ const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
   { label: "Ecosystem" },
   { label: "Economics", hasDropdown: true },
   { label: "Developers" },
-  { label: "Governance", hasDropdown: true },
+  { label: "Governance" },
 ]
 
 export function Navbar() {

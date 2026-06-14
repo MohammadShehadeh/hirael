@@ -5798,5 +5798,77 @@
       "props": [],
       "extendsNative": false
     }
+  ],
+  "usd-halo": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Info",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Backers",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "UseCases",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "LogoIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ArrowPillButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "textClassName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
   ]
 }

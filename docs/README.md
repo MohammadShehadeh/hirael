@@ -50,7 +50,6 @@ extracts the prop tables shown on component pages. See
 app/                              # Next.js App Router (output: "export")
   page.tsx                        # landing — Hero, live demos, why-Hirael grid, category grid, closing CTA
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
-  halo/                           # /halo — standalone USD Halo fintech landing demo (not a registry item; own font + colors, scoped in halo.css)
   (showcase)/                     # sidebar + topbar shell
     components/page.tsx           # component index (links to category pages)
     components/[category]/        # per-category component listing
@@ -92,8 +91,8 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 69 registry UI items (68 components + the distribution-only
-  `accordion`), 39 blocks, and 2 full-page templates (Creative Studio,
-  Agency Landing). Full
+  `accordion`), 39 blocks, and 3 full-page templates (Creative Studio,
+  Agency Landing, USD Halo). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
   per-category listing pages, per-item pages (demo + usage source + prop table

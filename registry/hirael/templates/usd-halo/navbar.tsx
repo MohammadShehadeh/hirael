@@ -1,4 +1,4 @@
-import { LogoIcon } from "./logo-icon"
+import { LogoIcon } from "./primitives"
 
 const NAV_LINKS = ["Network", "Ecosystem", "Rewards", "Help", "News"]
 

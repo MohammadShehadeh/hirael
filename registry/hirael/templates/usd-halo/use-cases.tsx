@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react"
 const USE_CASE_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_183428_ab5e672a-f608-4dcb-b319-f3e040f02e2d.mp4"
 
-export function UseCasesSection() {
+export function UseCases() {
   return (
     <section className="bg-[#F5F5F5] px-6 py-24">
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-start gap-8 md:grid-cols-2">

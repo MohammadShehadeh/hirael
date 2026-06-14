@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react"
 
-import { LogoIcon } from "./logo-icon"
+import { LogoIcon } from "./primitives"
 
 const DARK = "#2B2644"
 
@@ -11,7 +11,7 @@ const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: "Legal", links: ["Terms", "Privacy", "Disclosures", "Cookies"] },
 ]
 
-export function HaloFooter() {
+export function Footer() {
   const year = new Date().getFullYear()
 
   return (

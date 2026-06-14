@@ -76,7 +76,7 @@ const BACKERS: { name: string; style: CSSProperties }[] = [
   },
 ]
 
-export function BackedBySection() {
+export function Backers() {
   return (
     <section className="bg-[#F5F5F5] px-6 py-16">
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-center gap-8 md:grid-cols-4">

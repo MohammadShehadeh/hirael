@@ -1382,6 +1382,37 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["shaders", "lucide-react"],
   },
+  {
+    name: "usd-halo",
+    title: "USD Halo",
+    description:
+      "Premium, fintech-style landing for a dollar-pegged stablecoin: a transparent nav over a full-viewport video hero with a looping brand marquee, an info grid of image and accent cards, a backers marquee, a use-cases panel over video, and a matching dark footer. Self-contained off-white palette with a geometric grotesk face.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/usd-halo/usd-halo.tsx",
+      "registry/hirael/templates/usd-halo/navbar.tsx",
+      "registry/hirael/templates/usd-halo/hero.tsx",
+      "registry/hirael/templates/usd-halo/info.tsx",
+      "registry/hirael/templates/usd-halo/backers.tsx",
+      "registry/hirael/templates/usd-halo/use-cases.tsx",
+      "registry/hirael/templates/usd-halo/footer.tsx",
+      "registry/hirael/templates/usd-halo/primitives.tsx",
+      "registry/hirael/templates/usd-halo/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/usd-halo/usd-halo.tsx",
+      "components/templates/usd-halo/navbar.tsx",
+      "components/templates/usd-halo/hero.tsx",
+      "components/templates/usd-halo/info.tsx",
+      "components/templates/usd-halo/backers.tsx",
+      "components/templates/usd-halo/use-cases.tsx",
+      "components/templates/usd-halo/footer.tsx",
+      "components/templates/usd-halo/primitives.tsx",
+      "components/templates/usd-halo/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 /**

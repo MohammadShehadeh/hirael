@@ -1,12 +1,10 @@
 import type { CSSProperties } from "react"
 
-import { ArrowPillButton } from "./arrow-pill-button"
+import { ArrowPillButton } from "./primitives"
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_161253_c72b1869-400f-45ed-ac0c-52f68c2ed5bd.mp4"
 
-/* Each wordmark fakes a brand by leaning on a distinct system face, so the
- * marquee reads as a row of logos without shipping any logo assets. */
 const HERO_BRANDS: { name: string; style: CSSProperties }[] = [
   {
     name: "Stripe",
@@ -76,7 +74,7 @@ const HERO_BRANDS: { name: string; style: CSSProperties }[] = [
   },
 ]
 
-export function HeroSection() {
+export function Hero() {
   return (
     <section className="flex flex-1 items-end px-6 pb-6 pt-20">
       <div

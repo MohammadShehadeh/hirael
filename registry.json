@@ -2474,6 +2474,66 @@
       ]
     },
     {
+      "name": "usd-halo",
+      "type": "registry:block",
+      "title": "USD Halo",
+      "description": "Premium, fintech-style landing for a dollar-pegged stablecoin: a transparent nav over a full-viewport video hero with a looping brand marquee, an info grid of image and accent cards, a backers marquee, a use-cases panel over video, and a matching dark footer. Self-contained off-white palette with a geometric grotesk face.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/usd-halo/usd-halo.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/usd-halo.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/info.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/info.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/backers.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/backers.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/use-cases.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/use-cases.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

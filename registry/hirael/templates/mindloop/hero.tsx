@@ -30,7 +30,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-background to-transparent"
       />
 
-      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 pt-28 text-center md:pt-32">
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center px-6 pt-28 text-center md:pt-32">
         <motion.div
           {...fade(0)}
           className="flex flex-col items-center gap-3 sm:flex-row"
@@ -43,14 +43,14 @@ export function Hero() {
 
         <motion.h1
           {...fade(0.1)}
-          className="mt-6 text-5xl font-medium tracking-[-2px] md:text-7xl lg:text-8xl"
+          className="mt-6 w-full text-5xl font-medium tracking-[-2px] md:text-7xl lg:text-8xl"
         >
           Get <Serif>Inspired</Serif> with Us
         </motion.h1>
 
         <motion.p
           {...fade(0.2)}
-          className="mt-6 max-w-xl text-lg"
+          className="mt-6 w-full max-w-xl text-lg"
           style={{ color: "hsl(var(--hero-subtitle))" }}
         >
           Join our feed for meaningful updates, news around technology and a

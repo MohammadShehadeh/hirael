@@ -72,11 +72,11 @@ export function Cta() {
       >
         <Logo size="lg" />
 
-        <h2 className="mt-8 text-4xl tracking-[-1px] md:text-6xl">
+        <h2 className="mt-8 w-full text-4xl tracking-[-1px] md:text-6xl">
           Start Your <Serif>Journey</Serif>
         </h2>
 
-        <p className="mt-6 max-w-lg text-lg text-muted-foreground">
+        <p className="mt-6 w-full max-w-lg text-lg text-muted-foreground">
           Read what matters, write what lasts, and find the people who care
           about the same things you do.
         </p>

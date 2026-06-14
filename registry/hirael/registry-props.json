@@ -6588,5 +6588,80 @@
       "props": [],
       "extendsNative": false
     }
+  ],
+  "velorah": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Tagline",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Feature",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Statement",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Cta",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "HlsVideo",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Wordmark",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "VelorahStyles",
+      "props": [],
+      "extendsNative": false
+    }
   ]
 }

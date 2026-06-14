@@ -2848,6 +2848,81 @@
       ]
     },
     {
+      "name": "velorah",
+      "type": "registry:block",
+      "title": "Velorah",
+      "description": "Dark, premium landing page for an electric RV brand: a full-screen video hero with liquid-glass navigation, a centered tagline, a split feature card with switchable tabs, an HLS streaming statement with a stats row, a video preorder call to action and a multi-column footer. Self-contained pure-black palette, Inter + Instrument Serif type.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/velorah/velorah.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/velorah.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/tagline.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/tagline.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/feature.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/feature.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/statement.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/statement.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/cta.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/cta.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/hls-video.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/hls-video.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/velorah/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/velorah/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/velorah/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

@@ -137,7 +137,7 @@ export default function LogoCloud01() {
           <Badge variant="outline">· trusted by teams shipping at scale</Badge>
           <h2
             id="logo-cloud-01-heading"
-            className="text-balance text-2xl font-semibold tracking-[-0.035em] sm:text-3xl"
+            className="text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl"
           >
             10,000+ engineers reach for Hirael
             <br className="hidden sm:inline" />

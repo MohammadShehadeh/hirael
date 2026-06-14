@@ -54,7 +54,7 @@ export default function Login02() {
             <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
               · sign in
             </span>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
+            <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Welcome back.
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -154,10 +154,10 @@ export default function Login02() {
             strokeWidth={1.5}
           />
 
-          <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
+          <blockquote className="text-balance font-serif text-2xl leading-[1.3] tracking-tight md:text-3xl lg:text-4xl">
             Lorem ipsum dolor sit amet, consectetur{" "}
-            <span className="text-foreground">adipiscing elit</span>, sed do
-            eiusmod tempor incididunt ut labore.
+            <span className="italic text-foreground">adipiscing elit</span>, sed
+            do eiusmod tempor incididunt ut labore.
           </blockquote>
 
           <div className="flex items-center gap-4 border-t border-border pt-6">

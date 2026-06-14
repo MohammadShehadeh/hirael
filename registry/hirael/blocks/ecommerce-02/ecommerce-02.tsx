@@ -114,7 +114,7 @@ export default function Ecommerce02() {
             <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
               · cart
             </span>
-            <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
+            <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
               Almost yours.
             </h2>
           </div>

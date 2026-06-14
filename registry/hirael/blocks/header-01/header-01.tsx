@@ -69,10 +69,15 @@ export default function Header01() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button asChild variant="ghost" size="sm">
+            <Button asChild variant="ghost" size="sm" className="rounded-full">
               <a href="#">Sign in</a>
             </Button>
-            <Button asChild variant="default" size="sm">
+            <Button
+              asChild
+              variant="default"
+              size="sm"
+              className="rounded-full"
+            >
               <a href="#">Get started</a>
             </Button>
           </div>
@@ -110,7 +115,7 @@ export default function Header01() {
                 asChild
                 variant="ghost"
                 size="sm"
-                className="w-full justify-center"
+                className="w-full justify-center rounded-full"
               >
                 <a href="#" onClick={() => setOpen(false)}>
                   Sign in
@@ -120,7 +125,7 @@ export default function Header01() {
                 asChild
                 variant="default"
                 size="sm"
-                className="w-full justify-center"
+                className="w-full justify-center rounded-full"
               >
                 <a href="#" onClick={() => setOpen(false)}>
                   Get started

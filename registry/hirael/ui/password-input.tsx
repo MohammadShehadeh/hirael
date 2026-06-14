@@ -178,9 +178,9 @@ function PasswordInputField({
 const STRENGTH_COLORS = [
   "bg-destructive",
   "bg-destructive",
-  "bg-amber-500",
+  "bg-warning",
   "bg-primary",
-  "bg-emerald-500",
+  "bg-success",
 ] as const;
 
 type PasswordInputStrengthProps = React.ComponentProps<"div"> & {

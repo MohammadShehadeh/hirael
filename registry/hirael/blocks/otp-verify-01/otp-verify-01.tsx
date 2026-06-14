@@ -159,7 +159,7 @@ export default function OtpVerify01() {
                 <CheckCircle2 className="size-5" />
               </span>
               <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-semibold tracking-[-0.025em]">
+                <h1 className="font-serif text-3xl font-medium tracking-tight">
                   You&apos;re verified
                 </h1>
                 <p className="text-xs text-muted-foreground">
@@ -180,7 +180,7 @@ export default function OtpVerify01() {
                   <BrandMark className="size-6 text-foreground" />
                 </div>
                 <div className="flex flex-col items-center gap-1 text-center">
-                  <h1 className="text-2xl font-semibold tracking-[-0.025em]">
+                  <h1 className="font-serif text-3xl font-medium tracking-tight">
                     Check your email
                   </h1>
                   <p className="text-xs text-muted-foreground">

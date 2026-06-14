@@ -83,7 +83,7 @@ function UsageItem({
 }: UsageItemProps) {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   const tone =
-    pct >= 100 ? "bg-red-500" : pct >= 90 ? "bg-amber-500" : "bg-foreground";
+    pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-foreground";
   return (
     <div
       data-slot="usage-item"

@@ -39,9 +39,9 @@ type TimelineDotProps = Omit<React.ComponentProps<"span">, "children"> & {
 const toneClasses: Record<NonNullable<TimelineDotProps["tone"]>, string> = {
   default: "bg-foreground",
   muted: "bg-muted-foreground",
-  success: "bg-emerald-500",
-  warning: "bg-yellow-500",
-  danger: "bg-red-500",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-destructive",
 };
 
 function TimelineDot({

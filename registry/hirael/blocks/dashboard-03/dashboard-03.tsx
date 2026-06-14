@@ -264,7 +264,7 @@ export default function Dashboard03() {
             <Badge variant="outline" className="w-fit">
               · revenue
             </Badge>
-            <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+            <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Where the money lands.
             </h2>
           </div>

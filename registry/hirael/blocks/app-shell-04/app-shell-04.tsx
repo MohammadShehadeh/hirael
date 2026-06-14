@@ -208,7 +208,7 @@ export default function AppShell04() {
 
         <div className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
           <div className="flex flex-col gap-1">
-            <h1 className="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+            <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">
               Good morning, Maya.
             </h1>
             <p className="text-sm text-muted-foreground">

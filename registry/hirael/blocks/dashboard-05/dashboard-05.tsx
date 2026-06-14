@@ -321,7 +321,7 @@ export default function Dashboard05() {
                 <MoonStar className="size-3.5" />
                 good evening
               </span>
-              <h2 className="text-2xl font-semibold tracking-[-0.03em]">
+              <h2 className="font-serif text-3xl font-medium tracking-tight">
                 All systems steady.
               </h2>
             </div>

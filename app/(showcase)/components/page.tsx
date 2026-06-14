@@ -74,11 +74,6 @@ export default async function ComponentsIndex() {
         blurb={`The components shadcn/ui doesn't ship: multi-select, combobox, tag input, currency input, file dropzone, plus ${blocks.length} section blocks across ${BLOCK_KIND_ORDER.length} categories. Everything installs through the shadcn CLI, so the source ends up in your repo and stays yours to edit.`}
       >
         <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
-        <CountersStrip
-          components={components.length}
-          blocks={blocks.length}
-          blockKinds={BLOCK_KIND_ORDER.length}
-        />
       </PageHeader>
 
       <section className="flex flex-col gap-8">
@@ -251,42 +246,5 @@ export default async function ComponentsIndex() {
         </Link>
       </section>
     </div>
-  );
-}
-
-function CountersStrip({
-  components,
-  blocks,
-  blockKinds,
-}: {
-  components: number;
-  blocks: number;
-  blockKinds: number;
-}) {
-  const items: { label: string; value: string }[] = [
-    {
-      label: "components",
-      value: `${components}`,
-    },
-    { label: "blocks", value: `${blocks}` },
-    { label: "block categories", value: `${blockKinds}` },
-    { label: "runtime deps", value: "0" },
-  ];
-  return (
-    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
-      {items.map((item) => (
-        <div
-          key={item.label}
-          className="flex flex-col gap-1 bg-card px-3 py-2.5"
-        >
-          <dt className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-            {item.label}
-          </dt>
-          <dd className="font-mono text-sm tabular-nums text-foreground">
-            {item.value}
-          </dd>
-        </div>
-      ))}
-    </dl>
   );
 }

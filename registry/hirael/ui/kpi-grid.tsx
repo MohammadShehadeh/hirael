@@ -71,8 +71,8 @@ const trendIcon: Record<KpiTrend, typeof TrendingUp> = {
 };
 
 const trendTone: Record<KpiTrend, string> = {
-  up: "text-emerald-600 dark:text-emerald-400",
-  down: "text-red-600 dark:text-red-400",
+  up: "text-success",
+  down: "text-destructive",
   flat: "text-muted-foreground",
 };
 

@@ -53,11 +53,13 @@ export default function Testimonial02() {
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="flex max-w-2xl flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · what teams say
+          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+            <span className="size-1 rounded-full bg-foreground" />
+            What teams say
           </span>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-            What people are saying.
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+            What people are{" "}
+            <span className="italic text-foreground">actually</span> saying.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

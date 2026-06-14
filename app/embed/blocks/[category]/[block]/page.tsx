@@ -34,6 +34,7 @@ export default async function BlockEmbedRoute({
     entryCategorySlug(entry) !== category
   )
     notFound();
+
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />

@@ -148,7 +148,7 @@ export default function Contact01() {
             <span className="size-1 rounded-full bg-foreground" />
             Talk to us
           </Badge>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Have a question we haven&apos;t answered yet?
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">

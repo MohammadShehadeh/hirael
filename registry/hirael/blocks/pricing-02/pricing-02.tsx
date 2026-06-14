@@ -92,7 +92,7 @@ export default function Pricing02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             · compare plans
           </span>
-          <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+          <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Every feature, side by side.
           </h2>
           <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">

@@ -161,7 +161,7 @@ export default function Blog01() {
             <Badge variant="outline" className="w-fit">
               · journal
             </Badge>
-            <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+            <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
               Writing from the workshop.
             </h2>
             <p className="text-base text-muted-foreground">

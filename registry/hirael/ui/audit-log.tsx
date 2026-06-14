@@ -169,9 +169,9 @@ type AuditLogStatusProps = React.ComponentProps<"span"> & {
 
 const statusToneClasses: Record<AuditLogStatusTone, string> = {
   default: "border-border text-muted-foreground",
-  success: "border-emerald-500/30 text-emerald-600 dark:text-emerald-400",
-  warning: "border-amber-500/30 text-amber-600 dark:text-amber-400",
-  danger: "border-red-500/30 text-red-600 dark:text-red-400",
+  success: "border-success/30 text-success",
+  warning: "border-warning/30 text-warning",
+  danger: "border-destructive/30 text-destructive",
 };
 
 function AuditLogStatus({

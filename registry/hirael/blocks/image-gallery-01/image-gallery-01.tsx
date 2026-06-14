@@ -109,7 +109,7 @@ export default function ImageGallery01() {
             </Badge>
             <h2
               id="image-gallery-01-heading"
-              className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl"
+              className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl"
             >
               A studio archive, gridded.
             </h2>

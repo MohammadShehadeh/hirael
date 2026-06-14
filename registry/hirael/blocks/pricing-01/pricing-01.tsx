@@ -71,11 +71,13 @@ export default function Pricing01() {
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · pricing
+          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+            <span className="size-1 rounded-full bg-foreground" />
+            Pricing
           </span>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-            Pay for the parts you actually use.
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+            Pay for the parts you{" "}
+            <span className="italic text-foreground">actually</span> use.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
             Source code stays free. Pay only when you need private mirrors,
@@ -87,13 +89,23 @@ export default function Pricing01() {
           {TIERS.map((tier) => (
             <Card
               key={tier.name}
+              style={
+                tier.featured
+                  ? {
+                      backgroundImage:
+                        "radial-gradient(120% 90% at 50% 0%, color-mix(in oklch, var(--primary) 9%, transparent), transparent 60%)",
+                    }
+                  : undefined
+              }
               className={cn(
-                "relative gap-6 rounded-md p-6",
-                tier.featured && "ring-1 ring-foreground/20",
+                "relative gap-6 rounded-xl p-6 transition-all duration-200 hover:-translate-y-1",
+                tier.featured
+                  ? "ring-1 ring-foreground/25"
+                  : "hover:border-foreground/20",
               )}
             >
               {tier.featured && (
-                <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
                   Most popular
                 </span>
               )}
@@ -134,7 +146,7 @@ export default function Pricing01() {
                   asChild
                   variant={tier.ctaVariant}
                   size="lg"
-                  className="w-full"
+                  className="w-full rounded-full"
                 >
                   <a href="#">{tier.cta}</a>
                 </Button>

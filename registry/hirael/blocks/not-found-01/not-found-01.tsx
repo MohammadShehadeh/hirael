@@ -24,7 +24,7 @@ export default function NotFound01() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             · 404
           </span>
-          <h1 className="text-balance text-5xl font-semibold leading-[1.02] tracking-[-0.04em] sm:text-6xl">
+          <h1 className="text-balance font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl">
             Page not found.
           </h1>
           <p className="max-w-md text-base text-muted-foreground sm:text-lg">
@@ -49,7 +49,7 @@ export default function NotFound01() {
                 <li key={s.route}>
                   <a
                     href={s.route}
-                    className="group flex items-center justify-between gap-4 border-b border-border py-3 transition-colors last:border-b-0 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group flex items-center justify-between gap-4 border-b border-border p-3 transition-colors last:border-b-0 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <div className="flex items-baseline gap-4">
                       <span className="font-mono text-sm text-foreground">

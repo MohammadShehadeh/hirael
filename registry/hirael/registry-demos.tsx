@@ -33,6 +33,8 @@ const DEMO_LOADERS: Record<
   "hero-01": () => import("@/registry/hirael/blocks/hero-01/hero-01"),
   "hero-02": () => import("@/registry/hirael/blocks/hero-02/hero-02"),
   "hero-03": () => import("@/registry/hirael/blocks/hero-03/hero-03"),
+  "hero-04": () => import("@/registry/hirael/blocks/hero-04/hero-04"),
+  "hero-05": () => import("@/registry/hirael/blocks/hero-05/hero-05"),
   "feature-01": () => import("@/registry/hirael/blocks/feature-01/feature-01"),
   "feature-02": () => import("@/registry/hirael/blocks/feature-02/feature-02"),
   "pricing-01": () => import("@/registry/hirael/blocks/pricing-01/pricing-01"),

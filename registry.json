@@ -361,13 +361,14 @@
       "name": "hero-01",
       "type": "registry:block",
       "title": "Hero 1",
-      "description": "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
+      "description": "Full-bleed hero card over an animated light-beam shader, with a glass pill nav, a trust badge, a serif headline, dual CTA and a three-stat footer.",
       "categories": [
         "blocks",
         "hero"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "shaders"
       ],
       "registryDependencies": [
         "button"
@@ -377,6 +378,11 @@
           "path": "registry/hirael/blocks/hero-01/hero-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/hero-01.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-01/hero-01-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-01-backdrop.tsx"
         }
       ]
     },
@@ -384,7 +390,36 @@
       "name": "hero-02",
       "type": "registry:block",
       "title": "Hero 2",
-      "description": "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
+      "description": "Centered hero over animated grayscale gradient bars, with a live pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-02/hero-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-02.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-02/hero-02-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-02-backdrop.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-03",
+      "type": "registry:block",
+      "title": "Hero 3",
+      "description": "Editorial centered hero on a faded grid, with a serif headline, sub-copy, dual CTA and a logo cloud of customer wordmarks.",
       "categories": [
         "blocks",
         "hero"
@@ -397,17 +432,17 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/blocks/hero-02/hero-02.tsx",
+          "path": "registry/hirael/blocks/hero-03/hero-03.tsx",
           "type": "registry:block",
-          "target": "components/blocks/hero-02.tsx"
+          "target": "components/blocks/hero-03.tsx"
         }
       ]
     },
     {
-      "name": "hero-03",
+      "name": "hero-04",
       "type": "registry:block",
-      "title": "Hero 3",
-      "description": "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
+      "title": "Hero 4",
+      "description": "Full-bleed image-banner hero with a dark scrim, a slim nav, a serif headline and dual CTA aligned to the bottom.",
       "categories": [
         "blocks",
         "hero"
@@ -416,14 +451,42 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "input"
+        "button"
       ],
       "files": [
         {
-          "path": "registry/hirael/blocks/hero-03/hero-03.tsx",
+          "path": "registry/hirael/blocks/hero-04/hero-04.tsx",
           "type": "registry:block",
-          "target": "components/blocks/hero-03.tsx"
+          "target": "components/blocks/hero-04.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-05",
+      "type": "registry:block",
+      "title": "Hero 5",
+      "description": "Full-bleed hero card over an animated aurora shader, with a glass pill nav, a glass content panel, a serif headline, dual CTA and an avatar social-proof row.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-05/hero-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-05.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-05/hero-05-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-05-backdrop.tsx"
         }
       ]
     },

@@ -2,8 +2,6 @@ import { ArrowRight } from "lucide-react"
 
 import { LogoIcon } from "./primitives"
 
-const DARK = "#2B2644"
-
 const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: "Product", links: ["Wallet", "Rewards", "Network", "Security"] },
   { heading: "Developers", links: ["Docs", "API", "Status", "GitHub"] },
@@ -11,19 +9,21 @@ const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: "Legal", links: ["Terms", "Privacy", "Disclosures", "Cookies"] },
 ]
 
-export function Footer() {
+/**
+ * Dark anchor footer. The off-white page resolves onto a #2B2644 card that
+ * echoes the hero and info cards: brand lockup and an inverted Open Wallet
+ * pill up top, four link columns, then a legal bar.
+ */
+export function FooterSection() {
   const year = new Date().getFullYear()
 
   return (
     <footer className="bg-[#F5F5F5] px-6 pb-6">
       <div className="mx-auto max-w-[88rem]">
-        <div
-          className="rounded-2xl p-10 md:p-14"
-          style={{ backgroundColor: DARK }}
-        >
+        <div className="rounded-2xl bg-[#2B2644] p-10 md:p-14">
           <div className="flex flex-col justify-between gap-10 border-b border-white/10 pb-12 md:flex-row md:items-end">
             <div className="max-w-sm">
-              <div className="mb-5 flex items-center gap-2">
+              <div className="mb-5 flex items-center gap-2.5">
                 <LogoIcon className="h-7 w-7 text-white" />
                 <span className="text-2xl font-medium tracking-tight text-white">
                   Halo
@@ -37,14 +37,11 @@ export function Footer() {
 
             <button
               type="button"
-              className="group inline-flex items-center gap-3 self-start rounded-full bg-white py-2 pl-8 pr-2 text-base font-medium text-[#2B2644] transition-colors duration-200 hover:bg-white/90 md:self-auto"
+              className="group inline-flex items-center gap-3 self-start rounded-full bg-white py-2 ps-8 pe-2 text-base font-medium text-[#2B2644] transition-colors duration-200 hover:bg-white/90 md:self-auto"
             >
-              Open Wallet
-              <span
-                className="rounded-full p-2"
-                style={{ backgroundColor: DARK }}
-              >
-                <ArrowRight className="h-5 w-5 text-white" />
+              <span>Open Wallet</span>
+              <span className="rounded-full bg-[#2B2644] p-2">
+                <ArrowRight className="h-5 w-5 text-white rtl:rotate-180" />
               </span>
             </button>
           </div>
@@ -59,7 +56,7 @@ export function Footer() {
                   {column.links.map((link) => (
                     <li key={link}>
                       <a
-                        href={`#${link.toLowerCase()}`}
+                        href="#"
                         className="text-sm text-white/55 transition-colors duration-200 hover:text-white"
                       >
                         {link}

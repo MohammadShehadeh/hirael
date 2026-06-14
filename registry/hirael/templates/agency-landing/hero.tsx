@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-import { ArrowRight, Clock, Menu, X } from "lucide-react"
+import { ArrowRight, Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -18,21 +18,6 @@ const NAV_LINKS = ["Projects", "Studio", "Journal", "Connect"]
 
 export function Hero() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [time, setTime] = useState("")
-
-  // Live London clock — mounted-gated so server and first client render match.
-  useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/London",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(new Date())
-    setTime(format())
-    const id = setInterval(() => setTime(format()), 1000)
-    return () => clearInterval(id)
-  }, [])
 
   // Lock body scroll behind the mobile sheet.
   useEffect(() => {
@@ -41,8 +26,6 @@ export function Hero() {
       document.body.style.overflow = ""
     }
   }, [menuOpen])
-
-  const clock = `${time || "--:--"} in London`
 
   return (
     <>
@@ -79,10 +62,6 @@ export function Hero() {
             <div className="hidden items-center gap-4 md:flex">
               <span className="hidden text-[13px] text-gray-600 lg:block">
                 Taking on projects for Q1 2026
-              </span>
-              <span className="flex items-center gap-1.5 text-[13px] text-gray-600">
-                <Clock size={14} />
-                {clock}
               </span>
               <button
                 type="button"
@@ -161,11 +140,7 @@ export function Hero() {
             menuOpen ? "translate-y-0" : "translate-y-full"
           )}
         >
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-[13px] text-gray-600">
-            <Clock size={14} />
-            {clock}
-          </span>
-          <div className="mt-6 flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             {NAV_LINKS.map((link) => (
               <a
                 key={link}

@@ -1,15 +1,13 @@
-import type { CSSProperties } from "react"
+import { Marquee, type MarqueeBrand, PillButton } from "./primitives"
 
-import { ArrowPillButton } from "./primitives"
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1500043357865-c6b8827edf10?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
-const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_161253_c72b1869-400f-45ed-ac0c-52f68c2ed5bd.mp4"
-
-const HERO_BRANDS: { name: string; style: CSSProperties }[] = [
+const HERO_BRANDS: MarqueeBrand[] = [
   {
     name: "Stripe",
     style: {
-      fontFamily: "Georgia, serif",
+      fontFamily: "Georgia, 'Times New Roman', serif",
       fontWeight: 700,
       letterSpacing: "-0.02em",
       fontSize: "15px",
@@ -18,7 +16,7 @@ const HERO_BRANDS: { name: string; style: CSSProperties }[] = [
   {
     name: "Coinbase",
     style: {
-      fontFamily: "Arial, sans-serif",
+      fontFamily: "Arial, Helvetica, sans-serif",
       fontWeight: 900,
       letterSpacing: "0.08em",
       fontSize: "13px",
@@ -74,21 +72,20 @@ const HERO_BRANDS: { name: string; style: CSSProperties }[] = [
   },
 ]
 
-export function Hero() {
+export function HeroSection() {
   return (
     <section className="flex flex-1 items-end px-6 pb-6 pt-20">
       <div
-        className="relative w-full overflow-hidden rounded-2xl"
+        className="relative mx-auto w-full max-w-[88rem] overflow-hidden rounded-2xl"
         style={{ height: "calc(100vh - 96px)" }}
       >
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-          src={HERO_VIDEO}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${HERO_IMAGE})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">
@@ -104,27 +101,24 @@ export function Hero() {
           <p
             className="mb-8 max-w-md text-base leading-relaxed text-black/70 md:text-lg"
             style={{
-              fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif",
+              fontFamily:
+                "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
             }}
           >
             An automated, reward-powered digital dollar built for native passive
             earnings and effortless connection into DeFi.
           </p>
 
-          <ArrowPillButton label="Join us" textClassName="text-base md:text-lg" />
+          <PillButton label="Join us" large />
 
           <div className="mt-24 w-full max-w-md overflow-hidden">
-            <div className="marquee-track">
-              {[...HERO_BRANDS, ...HERO_BRANDS].map((brand, index) => (
-                <span
-                  key={`${brand.name}-${index}`}
-                  className="mx-7 shrink-0 whitespace-nowrap text-black/60"
-                  style={brand.style}
-                >
-                  {brand.name}
-                </span>
-              ))}
-            </div>
+            <Marquee
+              brands={HERO_BRANDS}
+              trackClass="marquee-track"
+              keyframesName="marquee"
+              durationSeconds={22}
+              itemClass="mx-7 shrink-0 whitespace-nowrap text-black/60"
+            />
           </div>
         </div>
       </div>

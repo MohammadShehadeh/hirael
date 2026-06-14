@@ -5722,6 +5722,11 @@
       "extendsNative": false
     },
     {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
       "name": "HiraelMark",
       "props": [
         {
@@ -5806,27 +5811,27 @@
       "extendsNative": false
     },
     {
-      "name": "Hero",
+      "name": "HeroSection",
       "props": [],
       "extendsNative": false
     },
     {
-      "name": "Info",
+      "name": "InfoSection",
       "props": [],
       "extendsNative": false
     },
     {
-      "name": "Backers",
+      "name": "BackedBySection",
       "props": [],
       "extendsNative": false
     },
     {
-      "name": "UseCases",
+      "name": "UseCasesSection",
       "props": [],
       "extendsNative": false
     },
     {
-      "name": "Footer",
+      "name": "FooterSection",
       "props": [],
       "extendsNative": false
     },
@@ -5844,7 +5849,7 @@
       "extendsNative": false
     },
     {
-      "name": "ArrowPillButton",
+      "name": "PillButton",
       "props": [
         {
           "name": "label",
@@ -5854,16 +5859,50 @@
           "description": null
         },
         {
-          "name": "textClassName",
-          "type": "string",
+          "name": "large",
+          "type": "boolean",
           "required": false,
+          "default": "false",
+          "description": "Bumps the label to text-lg on md+ (used by the hero \"Join us\")."
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Marquee",
+      "props": [
+        {
+          "name": "brands",
+          "type": "MarqueeBrand[]",
+          "required": true,
           "default": null,
           "description": null
         },
         {
-          "name": "className",
+          "name": "trackClass",
           "type": "string",
-          "required": false,
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "keyframesName",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "durationSeconds",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "itemClass",
+          "type": "string",
+          "required": true,
           "default": null,
           "description": null
         }

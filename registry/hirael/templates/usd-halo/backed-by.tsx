@@ -1,6 +1,6 @@
-import type { CSSProperties } from "react"
+import { Marquee, type MarqueeBrand } from "./primitives"
 
-const BACKERS: { name: string; style: CSSProperties }[] = [
+const BACKERS: MarqueeBrand[] = [
   {
     name: "Fundamental Labs",
     style: {
@@ -13,7 +13,7 @@ const BACKERS: { name: string; style: CSSProperties }[] = [
   {
     name: "KUCOIN",
     style: {
-      fontFamily: "'Arial Black', sans-serif",
+      fontFamily: "'Arial Black', Arial, sans-serif",
       fontWeight: 900,
       letterSpacing: "0.08em",
       fontSize: "16px",
@@ -40,7 +40,7 @@ const BACKERS: { name: string; style: CSSProperties }[] = [
   {
     name: "Matter Labs",
     style: {
-      fontFamily: "Helvetica, sans-serif",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontWeight: 700,
       letterSpacing: "-0.01em",
       fontSize: "15px",
@@ -68,7 +68,7 @@ const BACKERS: { name: string; style: CSSProperties }[] = [
   {
     name: "Polychain",
     style: {
-      fontFamily: "Palatino, serif",
+      fontFamily: "Palatino, 'Book Antiqua', serif",
       fontWeight: 500,
       letterSpacing: "0.03em",
       fontSize: "15px",
@@ -76,28 +76,23 @@ const BACKERS: { name: string; style: CSSProperties }[] = [
   },
 ]
 
-export function Backers() {
+export function BackedBySection() {
   return (
-    <section className="bg-[#F5F5F5] px-6 py-16">
+    <section className="bg-[#F5F5F5] px-6">
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-center gap-8 md:grid-cols-4">
         <p className="text-base leading-relaxed text-black/70">
           Funded by premier partners
           <br />
           and forward-thinking leaders.
         </p>
-
         <div className="overflow-hidden md:col-span-3">
-          <div className="backers-track">
-            {[...BACKERS, ...BACKERS].map((backer, index) => (
-              <span
-                key={`${backer.name}-${index}`}
-                className="mx-10 shrink-0 whitespace-nowrap text-black/50"
-                style={backer.style}
-              >
-                {backer.name}
-              </span>
-            ))}
-          </div>
+          <Marquee
+            brands={BACKERS}
+            trackClass="backers-track"
+            keyframesName="backers-marquee"
+            durationSeconds={30}
+            itemClass="mx-10 shrink-0 whitespace-nowrap text-black/50"
+          />
         </div>
       </div>
     </section>

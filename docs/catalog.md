@@ -172,7 +172,7 @@ kind has a category page at `/blocks/<category>` and its blocks at
 | Feature | `feature-01`, `feature-02` | Feature grids and alternating feature rows. |
 | Pricing | `pricing-01`, `pricing-02` | Tiered pricing tables with feature lists and highlighted plan. |
 | Testimonial | `testimonial-01`, `testimonial-02` | Quote cards and testimonial walls. |
-| Call-to-action | `cta-01`, `cta-02` | Conversion bands with headline and action. |
+| Call-to-action | `cta-01`, `cta-02`, `cta-03` | Conversion bands with headline and action. |
 | FAQ | `faq-01`, `faq-02`, `faq-03`, `faq-04` | Accordion and two-column FAQ layouts. |
 | Auth | `login-01`, `login-02`, `signup-01`, `forgot-password-01`, `otp-verify-01` | Login, sign-up, password reset and OTP verification forms. |
 | Header | `header-01` | Site header / top navigation. |
@@ -202,8 +202,8 @@ framed inside `app/embed/templates/[template]/`.
 | Template | Dependencies | What it is |
 | --- | --- | --- |
 | `creative-studio` | `framer-motion`, `lucide-react` | Dark, cinematic creative-studio landing page: full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Self-contained warm-cream palette. |
-| `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Self-contained light palette, Hirael branding. |
-| `usd-halo` | `lucide-react` | Premium, fintech-style stablecoin landing: transparent nav over a full-viewport video hero with a looping brand marquee, an info grid of image and accent cards, a backers marquee, a use-cases panel over video, and a matching dark footer. Self-contained off-white palette, geometric grotesk face (TT Norms Pro, with a loaded Manrope fallback). |
+| `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Self-contained light palette, Hirael branding. |
+| `usd-halo` | `lucide-react` | Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette, Manrope + Inter type. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `sourceFiles` list every file in its folder, so the CLI installs the whole

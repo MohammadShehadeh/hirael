@@ -1,11 +1,9 @@
-import { ArrowPillButton } from "./primitives"
+import { PillButton } from "./primitives"
 
-const CARD_ONE_IMAGE =
-  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260423_164207_f243351d-ed59-48ec-83a0-a5e996bdbe3c.png&w=1280&q=85"
+const CARD_IMAGE =
+  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38XZzbokvIgWjottwiXH07Lwa1P%2FHF_20260423_164207_F243351D-ED59-48EC-83A0-A5E996BDBE3C.PNG&w=1280&q=85"
 
-const DARK_CARD = "#2B2644"
-
-export function Info() {
+export function InfoSection() {
   return (
     <section className="bg-[#F5F5F5] px-6 py-24">
       <div className="mx-auto max-w-[88rem]">
@@ -17,9 +15,8 @@ export function Info() {
             >
               Meet USD Halo.
             </h2>
-            <ArrowPillButton label="Discover it" textClassName="text-base" />
+            <PillButton label="Discover it" />
           </div>
-
           <p className="text-2xl leading-relaxed text-black/70 md:text-3xl">
             USD Halo is a reward-earning dollar coin that lets your savings grow
             while remaining tied to the U.S. dollar.
@@ -30,7 +27,7 @@ export function Info() {
           <div
             className="flex min-h-80 flex-col justify-between rounded-2xl p-7 lg:col-span-2"
             style={{
-              backgroundImage: `url("${CARD_ONE_IMAGE}")`,
+              backgroundImage: `url(${CARD_IMAGE})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -47,11 +44,11 @@ export function Info() {
             </p>
           </div>
 
-          <div
-            className="flex min-h-80 flex-col justify-between rounded-2xl p-7"
-            style={{ backgroundColor: DARK_CARD }}
-          >
-            <h3 className="text-2xl font-medium leading-snug text-white">
+          <div className="flex min-h-80 flex-col justify-between rounded-2xl bg-[#2B2644] p-7">
+            <h3
+              className="text-2xl font-medium leading-snug text-white"
+              style={{ letterSpacing: "-0.02em" }}
+            >
               Always fluid,
               <br />
               always pegged.
@@ -62,11 +59,11 @@ export function Info() {
             </p>
           </div>
 
-          <div
-            className="flex min-h-80 flex-col justify-between rounded-2xl p-7"
-            style={{ backgroundColor: DARK_CARD }}
-          >
-            <h3 className="text-2xl font-medium leading-snug text-white">
+          <div className="flex min-h-80 flex-col justify-between rounded-2xl bg-[#2B2644] p-7">
+            <h3
+              className="text-2xl font-medium leading-snug text-white"
+              style={{ letterSpacing: "-0.02em" }}
+            >
               Fully
               <br />
               automated

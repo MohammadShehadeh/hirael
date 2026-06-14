@@ -376,6 +376,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "cta-03",
+    title: "CTA 3",
+    description:
+      "Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.",
+    blockTagline: "Centered · dithered backdrop · serif headline",
+    category: "blocks",
+    blockKind: "cta",
+    sourceFiles: [
+      "registry/hirael/blocks/cta-03/cta-03.tsx",
+      "registry/hirael/blocks/cta-03/cta-03-backdrop.tsx",
+    ],
+    installTargets: [
+      "components/blocks/cta-03.tsx",
+      "components/blocks/cta-03-backdrop.tsx",
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["shaders", "lucide-react"],
+  },
+  {
     name: "faq-01",
     title: "FAQ 1",
     description:
@@ -1361,13 +1380,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "agency-landing",
     title: "Agency Landing",
     description:
-      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Built on the shaders package, with a self-contained light palette.",
+      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/agency-landing/agency-landing.tsx",
       "registry/hirael/templates/agency-landing/hero.tsx",
       "registry/hirael/templates/agency-landing/about.tsx",
       "registry/hirael/templates/agency-landing/case-studies.tsx",
+      "registry/hirael/templates/agency-landing/footer.tsx",
       "registry/hirael/templates/agency-landing/primitives.tsx",
       "registry/hirael/templates/agency-landing/shader-background.tsx",
     ],
@@ -1376,6 +1396,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/agency-landing/hero.tsx",
       "components/templates/agency-landing/about.tsx",
       "components/templates/agency-landing/case-studies.tsx",
+      "components/templates/agency-landing/footer.tsx",
       "components/templates/agency-landing/primitives.tsx",
       "components/templates/agency-landing/shader-background.tsx",
     ],
@@ -1386,14 +1407,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "usd-halo",
     title: "USD Halo",
     description:
-      "Premium, fintech-style landing for a dollar-pegged stablecoin: a transparent nav over a full-viewport video hero with a looping brand marquee, an info grid of image and accent cards, a backers marquee, a use-cases panel over video, and a matching dark footer. Self-contained off-white palette with a geometric grotesk face.",
+      "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/usd-halo/usd-halo.tsx",
       "registry/hirael/templates/usd-halo/navbar.tsx",
       "registry/hirael/templates/usd-halo/hero.tsx",
       "registry/hirael/templates/usd-halo/info.tsx",
-      "registry/hirael/templates/usd-halo/backers.tsx",
+      "registry/hirael/templates/usd-halo/backed-by.tsx",
       "registry/hirael/templates/usd-halo/use-cases.tsx",
       "registry/hirael/templates/usd-halo/footer.tsx",
       "registry/hirael/templates/usd-halo/primitives.tsx",
@@ -1404,7 +1425,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/usd-halo/navbar.tsx",
       "components/templates/usd-halo/hero.tsx",
       "components/templates/usd-halo/info.tsx",
-      "components/templates/usd-halo/backers.tsx",
+      "components/templates/usd-halo/backed-by.tsx",
       "components/templates/usd-halo/use-cases.tsx",
       "components/templates/usd-halo/footer.tsx",
       "components/templates/usd-halo/primitives.tsx",

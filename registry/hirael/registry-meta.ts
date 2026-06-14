@@ -1541,6 +1541,41 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["framer-motion", "lucide-react"],
   },
+  {
+    name: "nexacore",
+    title: "NexaCore",
+    description:
+      "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/nexacore/nexacore.tsx",
+      "registry/hirael/templates/nexacore/navbar.tsx",
+      "registry/hirael/templates/nexacore/hero.tsx",
+      "registry/hirael/templates/nexacore/trusted.tsx",
+      "registry/hirael/templates/nexacore/service-card.tsx",
+      "registry/hirael/templates/nexacore/freedom.tsx",
+      "registry/hirael/templates/nexacore/hls-video.tsx",
+      "registry/hirael/templates/nexacore/precision.tsx",
+      "registry/hirael/templates/nexacore/primitives.tsx",
+      "registry/hirael/templates/nexacore/styles.tsx",
+      "registry/hirael/templates/nexacore/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/nexacore/nexacore.tsx",
+      "components/templates/nexacore/navbar.tsx",
+      "components/templates/nexacore/hero.tsx",
+      "components/templates/nexacore/trusted.tsx",
+      "components/templates/nexacore/service-card.tsx",
+      "components/templates/nexacore/freedom.tsx",
+      "components/templates/nexacore/hls-video.tsx",
+      "components/templates/nexacore/precision.tsx",
+      "components/templates/nexacore/primitives.tsx",
+      "components/templates/nexacore/styles.tsx",
+      "components/templates/nexacore/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["hls.js", "lucide-react"],
+  },
 ]
 
 /**

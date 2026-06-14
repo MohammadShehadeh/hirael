@@ -74,6 +74,10 @@ export default function LandingPage() {
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
+  // Staggered entrance for the hero stack; gated by motion-reduce so it
+  // settles instantly for users who ask for less motion.
+  const rise =
+    "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 ease-out motion-reduce:animate-none"
   return (
     <section className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 lg:px-8">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-border bg-card/30 sm:rounded-[2rem]">
@@ -86,23 +90,35 @@ function Hero() {
 
         <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
           <div className="flex flex-col items-center gap-6 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
+            <span
+              style={{ animationFillMode: "both" }}
+              className={`inline-flex items-center gap-2 rounded-full border border-border bg-background/40 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm ${rise}`}
+            >
               <span aria-hidden className="size-1 rounded-full bg-muted-foreground" />
               shadcn-compatible registry
             </span>
 
-            <h1 className="text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl">
+            <h1
+              style={{ animationDelay: "80ms", animationFillMode: "both" }}
+              className={`text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl ${rise}`}
+            >
               The components shadcn/ui{" "}
               <span className="italic text-foreground/90">doesn&apos;t</span> ship.
             </h1>
 
-            <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
+            <p
+              style={{ animationDelay: "160ms", animationFillMode: "both" }}
+              className={`max-w-xl text-balance text-base text-muted-foreground sm:text-lg ${rise}`}
+            >
               Multi-select, combobox, tag input, file dropzone, plus full
               section blocks. Install them with the shadcn CLI and the source
               lands in your repo. No package to update, no runtime dependency.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+            <div
+              style={{ animationDelay: "240ms", animationFillMode: "both" }}
+              className={`flex flex-wrap items-center justify-center gap-3 pt-1 ${rise}`}
+            >
               <Link
                 href="/components"
                 className="group inline-flex h-11 items-center gap-2 rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -120,7 +136,10 @@ function Hero() {
               </Link>
             </div>
 
-            <div className="w-full max-w-md pt-4">
+            <div
+              style={{ animationDelay: "320ms", animationFillMode: "both" }}
+              className={`w-full max-w-md pt-4 ${rise}`}
+            >
               <InstallBlock name="multi-select" />
             </div>
           </div>

@@ -376,6 +376,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "cta-03",
+    title: "CTA 3",
+    description:
+      "Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.",
+    blockTagline: "Centered · dithered backdrop · serif headline",
+    category: "blocks",
+    blockKind: "cta",
+    sourceFiles: [
+      "registry/hirael/blocks/cta-03/cta-03.tsx",
+      "registry/hirael/blocks/cta-03/cta-03-backdrop.tsx",
+    ],
+    installTargets: [
+      "components/blocks/cta-03.tsx",
+      "components/blocks/cta-03-backdrop.tsx",
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["shaders", "lucide-react"],
+  },
+  {
     name: "faq-01",
     title: "FAQ 1",
     description:
@@ -1361,13 +1380,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "agency-landing",
     title: "Agency Landing",
     description:
-      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Built on the shaders package, with a self-contained light palette.",
+      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/agency-landing/agency-landing.tsx",
       "registry/hirael/templates/agency-landing/hero.tsx",
       "registry/hirael/templates/agency-landing/about.tsx",
       "registry/hirael/templates/agency-landing/case-studies.tsx",
+      "registry/hirael/templates/agency-landing/footer.tsx",
       "registry/hirael/templates/agency-landing/primitives.tsx",
       "registry/hirael/templates/agency-landing/shader-background.tsx",
     ],
@@ -1376,6 +1396,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/agency-landing/hero.tsx",
       "components/templates/agency-landing/about.tsx",
       "components/templates/agency-landing/case-studies.tsx",
+      "components/templates/agency-landing/footer.tsx",
       "components/templates/agency-landing/primitives.tsx",
       "components/templates/agency-landing/shader-background.tsx",
     ],

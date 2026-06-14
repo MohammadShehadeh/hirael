@@ -10,7 +10,7 @@ The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **69 registry UI items** (68 standalone
 components + 1 distribution-only primitive), **40 section blocks**, and
-**6 templates**. Counts come from `registry.json`; the landing page derives
+**7 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 
@@ -207,6 +207,7 @@ framed inside `app/embed/templates/[template]/`.
 | `portfolio` | `gsap`, `framer-motion`, `hls.js` | Dark, single-page personal portfolio: a counter loading screen, an HLS video hero with a floating nav and a cycling role line, a bento work grid, a journal list, a scroll-pinned parallax gallery with lightbox, count-up stats and a video contact footer. Self-contained dark palette. |
 | `usd-halo` | `lucide-react` | Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette, Manrope + Inter type. |
 | `rivr` | `framer-motion`, `lucide-react` | DeFi staking landing page for a fluid-asset protocol: a photographic hero on a rounded card with a glass stats card and a carved documentation panel, a feature trio, a metrics band, a four-pillar ecosystem grid, a closing call to action and a dark footer. Self-contained light palette, Inter + Space Grotesk type. |
+| `velorah` | `hls.js` | Dark, premium landing page for an electric RV brand: a full-screen video hero with liquid-glass navigation, a centered tagline, a split feature card with switchable tabs, an HLS streaming statement with a stats row, a video preorder call to action and a multi-column footer. Self-contained pure-black palette, Inter + Instrument Serif type. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `sourceFiles` list every file in its folder, so the CLI installs the whole

@@ -165,7 +165,6 @@ function LiveRegistry() {
 
   return (
     <section className="relative">
-      <hr className="rule-gradient" />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
@@ -279,7 +278,6 @@ const FEATURES: {
 function WhyHirael() {
   return (
     <section className="relative">
-      <hr className="rule-gradient" />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <header className="mb-12 flex flex-col gap-3 sm:mb-16">
           <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -400,7 +398,6 @@ function CategoryGrid() {
 
   return (
     <section className="relative">
-      <hr className="rule-gradient" />
       <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">

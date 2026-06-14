@@ -6344,17 +6344,12 @@
       "extendsNative": false
     },
     {
+      "name": "Metrics",
+      "props": [],
+      "extendsNative": false
+    },
+    {
       "name": "Features",
-      "props": [],
-      "extendsNative": false
-    },
-    {
-      "name": "Stats",
-      "props": [],
-      "extendsNative": false
-    },
-    {
-      "name": "Ecosystem",
       "props": [],
       "extendsNative": false
     },
@@ -6371,26 +6366,6 @@
     {
       "name": "RivrMark",
       "props": [
-        {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": false
-    },
-    {
-      "name": "Eyebrow",
-      "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        },
         {
           "name": "className",
           "type": "string",

@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { ArrowUpRight } from "lucide-react"
 import type { MotionProps } from "framer-motion"
 
@@ -22,26 +21,6 @@ export function RivrMark({ className }: { className?: string }) {
       <circle cx="12" cy="12" r="5.6" stroke="currentColor" strokeWidth="1.6" />
       <circle cx="12" cy="12" r="1.6" fill="currentColor" />
     </svg>
-  )
-}
-
-export function Eyebrow({
-  children,
-  className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <span
-      data-slot="eyebrow"
-      className={cn(
-        "inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm",
-        className
-      )}
-    >
-      {children}
-    </span>
   )
 }
 

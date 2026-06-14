@@ -20,7 +20,7 @@ export default function UsdHalo() {
         fontFamily: "var(--font-manrope), ui-sans-serif, system-ui, sans-serif",
       }}
     >
-      <div className="relative flex h-screen flex-col overflow-hidden">
+      <div className="relative flex h-svh flex-col overflow-hidden">
         <Navbar />
         <HeroSection />
       </div>

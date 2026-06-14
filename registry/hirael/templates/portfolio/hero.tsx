@@ -104,7 +104,7 @@ function Navbar() {
           innerClassName="bg-[hsl(var(--surface))] px-3 py-1.5 text-xs text-[hsl(var(--text))] backdrop-blur-md sm:px-4 sm:py-2 sm:text-sm"
         >
           Say hi
-          <ArrowUpRight className="size-3" />
+          <ArrowUpRight className="size-3 rtl:-scale-x-100" />
         </RingLink>
       </div>
     </nav>

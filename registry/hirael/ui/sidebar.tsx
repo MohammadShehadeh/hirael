@@ -511,8 +511,8 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & { showIcon?: boolean }) {
   // Intentionally impure: each skeleton row gets a random 50–90% width for
   // a natural rhythm, fixed for the component's lifetime by useMemo.
-  // eslint-disable-next-line react-hooks/purity
   const width = React.useMemo(
+    // eslint-disable-next-line react-hooks/purity
     () => `${Math.floor(Math.random() * 40) + 50}%`,
     [],
   );

@@ -45,7 +45,7 @@ const demosSrc = readFileSync(
   "utf8",
 );
 const demoLoaderNames = new Set(
-  [...demosSrc.matchAll(/"([^"]+)":\s*\(\)\s*=>/g)].map((m) => m[1]),
+  [...demosSrc.matchAll(/["']?([\w-]+)["']?:\s*\(\)\s*=>/g)].map((m) => m[1]),
 );
 
 // 1. registry.json matches the generated output byte-for-byte.

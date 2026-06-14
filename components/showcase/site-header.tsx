@@ -55,8 +55,8 @@ export function SiteHeader({
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="size-full bg-[url('/header-bg.png')] bg-cover bg-center bg-no-repeat" />
-        <div className="absolute inset-0 bg-background/40" />
+        <div className="size-full bg-[url('/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat" />
+        <div className="absolute inset-0 bg-background/70 dark:bg-background/30" />
         <div className="absolute inset-x-0 bottom-0 h-px bg-border/60" />
       </div>
       <div

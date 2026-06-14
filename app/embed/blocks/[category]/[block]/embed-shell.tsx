@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ReactNode } from "react";
 
 /**
  * Background wrapper for statically exported block embeds. Reading
@@ -7,5 +7,5 @@ import type { ReactNode } from "react"
  * with no direction state to flip after mount.
  */
 export function BlockEmbedShell({ children }: { children: ReactNode }) {
-  return <div className="min-h-svh bg-background">{children}</div>
+  return <div className="min-h-svh bg-background">{children}</div>;
 }

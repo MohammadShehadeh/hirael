@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   NumberRange,
   NumberRangeInputs,
   NumberRangeSlider,
-} from "@/registry/hirael/ui/number-range"
+} from "@/registry/hirael/ui/number-range";
 
 const usd = (n: number) =>
-  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)
-const parseNum = (s: string) => Number(s.replace(/[^\d.-]/g, "")) || 0
+  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n);
+const parseNum = (s: string) => Number(s.replace(/[^\d.-]/g, "")) || 0;
 
 export default function NumberRangeDemo() {
-  const [price, setPrice] = React.useState<[number, number]>([200, 1400])
-  const [age, setAge] = React.useState<[number, number]>([18, 65])
+  const [price, setPrice] = React.useState<[number, number]>([200, 1400]);
+  const [age, setAge] = React.useState<[number, number]>([18, 65]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -61,5 +61,5 @@ export default function NumberRangeDemo() {
         </NumberRange>
       </div>
     </div>
-  )
+  );
 }

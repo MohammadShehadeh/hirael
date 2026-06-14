@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /**
  * Tracks whether the page has scrolled past a threshold, for the navbar's
@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils"
  * in the correct state.
  */
 export function useScrolled(threshold = 20) {
-  const [scrolled, setScrolled] = React.useState(false)
+  const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > threshold)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [threshold])
-  return scrolled
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return scrolled;
 }
 
 /** Gradient-stroked ring brand mark for the navbar wordmark. */
@@ -45,9 +45,15 @@ export function Logo({ className }: { className?: string }) {
           <stop offset="1" stopColor="rgb(254, 136, 27)" />
         </linearGradient>
       </defs>
-      <circle cx="14" cy="14" r="11" stroke="url(#nexacore-logo)" strokeWidth="2.5" />
+      <circle
+        cx="14"
+        cy="14"
+        r="11"
+        stroke="url(#nexacore-logo)"
+        strokeWidth="2.5"
+      />
     </svg>
-  )
+  );
 }
 
 /** Small concentric mark used inside the delivery-pillar chips. */
@@ -55,8 +61,8 @@ export function BrandMark({
   className,
   style,
 }: {
-  className?: string
-  style?: React.CSSProperties
+  className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <svg
@@ -80,10 +86,16 @@ export function BrandMark({
           <stop offset="1" stopColor="rgb(254, 136, 27)" />
         </linearGradient>
       </defs>
-      <circle cx="12" cy="12" r="8.5" stroke="url(#nexacore-mark)" strokeWidth="1.8" />
+      <circle
+        cx="12"
+        cy="12"
+        r="8.5"
+        stroke="url(#nexacore-mark)"
+        strokeWidth="1.8"
+      />
       <circle cx="12" cy="12" r="3.2" fill="url(#nexacore-mark)" />
     </svg>
-  )
+  );
 }
 
 /** Headline highlight set in the brand sunrise gradient (Gradient B). */
@@ -92,15 +104,19 @@ export function GradientText({
   className,
   style,
 }: {
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
-    <span data-slot="gradient-text" className={cn("nexa-grad-text", className)} style={style}>
+    <span
+      data-slot="gradient-text"
+      className={cn("nexa-grad-text", className)}
+      style={style}
+    >
       {children}
     </span>
-  )
+  );
 }
 
 /**
@@ -112,9 +128,9 @@ export function ContactButton({
   href = "#",
   className,
 }: {
-  label?: string
-  href?: string
-  className?: string
+  label?: string;
+  href?: string;
+  className?: string;
 }) {
   return (
     <a
@@ -122,12 +138,12 @@ export function ContactButton({
       data-slot="contact-button"
       className={cn(
         "nexa-grad-a-bg group relative inline-flex items-center justify-center rounded-xl p-px",
-        className
+        className,
       )}
     >
       <span className="w-full rounded-[11px] bg-[var(--nexa-blue)] px-7 py-3 text-center text-base text-white transition-colors duration-300 group-hover:bg-transparent">
         {label}
       </span>
     </a>
-  )
+  );
 }

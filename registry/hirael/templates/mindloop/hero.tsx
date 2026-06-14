@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion } from "framer-motion"
+import * as React from "react";
+import { motion } from "framer-motion";
 
-import { AvatarRow, Serif, useFadeUp } from "./primitives"
+import { AvatarRow, Serif, useFadeUp } from "./primitives";
 
 const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4"
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4";
 
 export function Hero() {
-  const fade = useFadeUp()
+  const fade = useFadeUp();
 
   return (
     <section
@@ -83,5 +83,5 @@ export function Hero() {
         </motion.form>
       </div>
     </section>
-  )
+  );
 }

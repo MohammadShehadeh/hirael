@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { CreditCard, GitPullRequest, UserPlus } from "lucide-react"
+import { CreditCard, GitPullRequest, UserPlus } from "lucide-react";
 
 import {
   NotificationContent,
@@ -13,7 +13,7 @@ import {
   NotificationsHeader,
   NotificationsList,
   NotificationsTitle,
-} from "@/registry/hirael/ui/notifications"
+} from "@/registry/hirael/ui/notifications";
 
 export default function NotificationsDemo() {
   return (
@@ -71,5 +71,5 @@ export default function NotificationsDemo() {
         </NotificationItem>
       </NotificationsList>
     </Notifications>
-  )
+  );
 }

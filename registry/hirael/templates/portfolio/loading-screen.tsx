@@ -1,53 +1,53 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import * as React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-const WORDS = ["Design", "Create", "Inspire"]
-const DURATION = 2700
-const WORD_INTERVAL = 900
-const EXIT_DELAY = 400
+const WORDS = ["Design", "Create", "Inspire"];
+const DURATION = 2700;
+const WORD_INTERVAL = 900;
+const EXIT_DELAY = 400;
 
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
-  const [count, setCount] = React.useState(0)
-  const [wordIndex, setWordIndex] = React.useState(0)
-  const [exiting, setExiting] = React.useState(false)
+  const [count, setCount] = React.useState(0);
+  const [wordIndex, setWordIndex] = React.useState(0);
+  const [exiting, setExiting] = React.useState(false);
 
-  const onCompleteRef = React.useRef(onComplete)
+  const onCompleteRef = React.useRef(onComplete);
   React.useEffect(() => {
-    onCompleteRef.current = onComplete
-  })
+    onCompleteRef.current = onComplete;
+  });
 
   React.useEffect(() => {
-    let raf = 0
-    let exitTimer: ReturnType<typeof setTimeout> | undefined
-    const start = performance.now()
+    let raf = 0;
+    let exitTimer: ReturnType<typeof setTimeout> | undefined;
+    const start = performance.now();
 
     const tick = (now: number) => {
-      const progress = Math.min((now - start) / DURATION, 1)
-      setCount(Math.round(progress * 100))
+      const progress = Math.min((now - start) / DURATION, 1);
+      setCount(Math.round(progress * 100));
       if (progress < 1) {
-        raf = requestAnimationFrame(tick)
-        return
+        raf = requestAnimationFrame(tick);
+        return;
       }
-      setExiting(true)
-      exitTimer = setTimeout(() => onCompleteRef.current(), EXIT_DELAY)
-    }
+      setExiting(true);
+      exitTimer = setTimeout(() => onCompleteRef.current(), EXIT_DELAY);
+    };
 
-    raf = requestAnimationFrame(tick)
+    raf = requestAnimationFrame(tick);
     return () => {
-      cancelAnimationFrame(raf)
-      if (exitTimer) clearTimeout(exitTimer)
-    }
-  }, [])
+      cancelAnimationFrame(raf);
+      if (exitTimer) clearTimeout(exitTimer);
+    };
+  }, []);
 
   React.useEffect(() => {
     const id = setInterval(
       () => setWordIndex((i) => (i + 1) % WORDS.length),
-      WORD_INTERVAL
-    )
-    return () => clearInterval(id)
-  }, [])
+      WORD_INTERVAL,
+    );
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <motion.div
@@ -95,5 +95,5 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         />
       </div>
     </motion.div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { Inbox, Plus, Search, Upload } from "lucide-react"
+import { Inbox, Plus, Search, Upload } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   EmptyState,
   EmptyStateActions,
   EmptyStateDescription,
   EmptyStateMedia,
   EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state"
+} from "@/registry/hirael/ui/empty-state";
 
 export default function EmptyStateDemo() {
   return (
@@ -70,11 +70,11 @@ export default function EmptyStateDemo() {
           </EmptyStateMedia>
           <EmptyStateTitle>Drop files here</EmptyStateTitle>
           <EmptyStateDescription>
-            Drag-and-drop a CSV or paste a URL; we&apos;ll parse the columns
-            and let you map them.
+            Drag-and-drop a CSV or paste a URL; we&apos;ll parse the columns and
+            let you map them.
           </EmptyStateDescription>
         </EmptyState>
       </div>
     </div>
-  )
+  );
 }

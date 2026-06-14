@@ -1,4 +1,4 @@
-import { Marquee, type MarqueeBrand } from "./primitives"
+import { Marquee, type MarqueeBrand } from "./primitives";
 
 const BACKERS: MarqueeBrand[] = [
   {
@@ -74,7 +74,7 @@ const BACKERS: MarqueeBrand[] = [
       fontSize: "15px",
     },
   },
-]
+];
 
 export function BackedBySection() {
   return (
@@ -96,5 +96,5 @@ export function BackedBySection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

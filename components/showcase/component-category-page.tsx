@@ -1,31 +1,28 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/showcase/breadcrumbs"
+import { Breadcrumbs } from "@/components/showcase/breadcrumbs";
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_DESCRIPTIONS,
   REGISTRY_BY_CATEGORY,
   entryHref,
   type COMPONENT_CATEGORY_ORDER,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
-type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number]
+type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number];
 
 export function ComponentCategoryPage({
   category,
 }: {
-  category: ComponentCategory
+  category: ComponentCategory;
 }) {
-  const items = REGISTRY_BY_CATEGORY[category]
-  const label = CATEGORY_LABELS[category]
+  const items = REGISTRY_BY_CATEGORY[category];
+  const label = CATEGORY_LABELS[category];
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
       <Breadcrumbs
-        items={[
-          { label: "Components", href: "/components" },
-          { label },
-        ]}
+        items={[{ label: "Components", href: "/components" }, { label }]}
       />
 
       <header className="flex flex-col gap-5 border-b border-border pb-8 sm:pb-10">
@@ -38,7 +35,7 @@ export function ComponentCategoryPage({
         <p className="max-w-2xl text-base text-muted-foreground">
           {COMPONENT_CATEGORY_DESCRIPTIONS[category]}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           {items.length} component{items.length === 1 ? "" : "s"}
         </p>
       </header>
@@ -83,5 +80,5 @@ export function ComponentCategoryPage({
         </ul>
       </section>
     </div>
-  )
+  );
 }

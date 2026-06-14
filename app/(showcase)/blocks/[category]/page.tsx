@@ -1,29 +1,29 @@
-import { notFound } from "next/navigation"
-import type { Metadata } from "next"
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-import { CategoryPage } from "@/components/showcase/category-page"
+import { CategoryPage } from "@/components/showcase/category-page";
 import {
   CATEGORY_BY_SLUG,
   CATEGORY_REGISTRY,
-} from "@/components/showcase/block-categories"
-import { SITE } from "@/lib/site"
+} from "@/components/showcase/block-categories";
+import { SITE } from "@/lib/site";
 
-export const dynamicParams = false
+export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return CATEGORY_REGISTRY.map((c) => ({ category: c.slug }))
+  return CATEGORY_REGISTRY.map((c) => ({ category: c.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>
+  params: Promise<{ category: string }>;
 }): Promise<Metadata> {
-  const { category } = await params
-  const meta = CATEGORY_BY_SLUG[category]
-  if (!meta) return {}
-  const title = `${meta.title} blocks`
-  const url = `${SITE.url}/blocks/${meta.slug}`
+  const { category } = await params;
+  const meta = CATEGORY_BY_SLUG[category];
+  if (!meta) return {};
+  const title = `${meta.title} blocks`;
+  const url = `${SITE.url}/blocks/${meta.slug}`;
   return {
     title,
     description: meta.description,
@@ -51,16 +51,16 @@ export async function generateMetadata({
       description: meta.description,
       images: ["/opengraph-image"],
     },
-  }
+  };
 }
 
 export default async function BlockCategoryRoute({
   params,
 }: {
-  params: Promise<{ category: string }>
+  params: Promise<{ category: string }>;
 }) {
-  const { category } = await params
-  const meta = CATEGORY_BY_SLUG[category]
-  if (!meta) notFound()
-  return <CategoryPage category={meta} />
+  const { category } = await params;
+  const meta = CATEGORY_BY_SLUG[category];
+  if (!meta) notFound();
+  return <CategoryPage category={meta} />;
 }

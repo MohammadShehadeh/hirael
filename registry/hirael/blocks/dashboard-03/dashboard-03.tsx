@@ -1,34 +1,39 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight, Download } from "lucide-react"
+import * as React from "react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/card";
+import { Separator } from "@/registry/hirael/ui/separator";
 
 type PlanSlice = {
-  label: string
-  share: number
-  mrr: string
-  tone: string
-  dot: string
-}
+  label: string;
+  share: number;
+  mrr: string;
+  tone: string;
+  dot: string;
+};
 
 type MonthData = {
-  label: string
-  total: string
-  delta: string
-  plans: readonly PlanSlice[]
-  invoices: readonly { label: string; count: number; amount: string; dot: string }[]
-}
+  label: string;
+  total: string;
+  delta: string;
+  plans: readonly PlanSlice[];
+  invoices: readonly {
+    label: string;
+    count: number;
+    amount: string;
+    dot: string;
+  }[];
+};
 
 const MONTHS: readonly MonthData[] = [
   {
@@ -36,14 +41,37 @@ const MONTHS: readonly MonthData[] = [
     total: "$38,410",
     delta: "+6.1% vs Jan",
     plans: [
-      { label: "Pro", share: 48, mrr: "$18,436", tone: "stroke-foreground/85", dot: "bg-foreground/85" },
-      { label: "Team", share: 33, mrr: "$12,675", tone: "stroke-muted-foreground/50", dot: "bg-muted-foreground/50" },
-      { label: "Enterprise", share: 19, mrr: "$7,299", tone: "stroke-muted-foreground/20", dot: "bg-muted-foreground/20" },
+      {
+        label: "Pro",
+        share: 48,
+        mrr: "$18,436",
+        tone: "stroke-foreground/85",
+        dot: "bg-foreground/85",
+      },
+      {
+        label: "Team",
+        share: 33,
+        mrr: "$12,675",
+        tone: "stroke-muted-foreground/50",
+        dot: "bg-muted-foreground/50",
+      },
+      {
+        label: "Enterprise",
+        share: 19,
+        mrr: "$7,299",
+        tone: "stroke-muted-foreground/20",
+        dot: "bg-muted-foreground/20",
+      },
     ],
     invoices: [
-      { label: "Paid", count: 212, amount: "$36,180", dot: "bg-emerald-500" },
-      { label: "Open", count: 18, amount: "$1,940", dot: "bg-muted-foreground/50" },
-      { label: "Overdue", count: 4, amount: "$290", dot: "bg-red-500" },
+      { label: "Paid", count: 212, amount: "$36,180", dot: "bg-success" },
+      {
+        label: "Open",
+        count: 18,
+        amount: "$1,940",
+        dot: "bg-muted-foreground/50",
+      },
+      { label: "Overdue", count: 4, amount: "$290", dot: "bg-destructive" },
     ],
   },
   {
@@ -51,14 +79,37 @@ const MONTHS: readonly MonthData[] = [
     total: "$41,260",
     delta: "+7.4% vs Feb",
     plans: [
-      { label: "Pro", share: 46, mrr: "$18,980", tone: "stroke-foreground/85", dot: "bg-foreground/85" },
-      { label: "Team", share: 34, mrr: "$14,028", tone: "stroke-muted-foreground/50", dot: "bg-muted-foreground/50" },
-      { label: "Enterprise", share: 20, mrr: "$8,252", tone: "stroke-muted-foreground/20", dot: "bg-muted-foreground/20" },
+      {
+        label: "Pro",
+        share: 46,
+        mrr: "$18,980",
+        tone: "stroke-foreground/85",
+        dot: "bg-foreground/85",
+      },
+      {
+        label: "Team",
+        share: 34,
+        mrr: "$14,028",
+        tone: "stroke-muted-foreground/50",
+        dot: "bg-muted-foreground/50",
+      },
+      {
+        label: "Enterprise",
+        share: 20,
+        mrr: "$8,252",
+        tone: "stroke-muted-foreground/20",
+        dot: "bg-muted-foreground/20",
+      },
     ],
     invoices: [
-      { label: "Paid", count: 231, amount: "$39,410", dot: "bg-emerald-500" },
-      { label: "Open", count: 14, amount: "$1,620", dot: "bg-muted-foreground/50" },
-      { label: "Overdue", count: 3, amount: "$230", dot: "bg-red-500" },
+      { label: "Paid", count: 231, amount: "$39,410", dot: "bg-success" },
+      {
+        label: "Open",
+        count: 14,
+        amount: "$1,620",
+        dot: "bg-muted-foreground/50",
+      },
+      { label: "Overdue", count: 3, amount: "$230", dot: "bg-destructive" },
     ],
   },
   {
@@ -66,41 +117,106 @@ const MONTHS: readonly MonthData[] = [
     total: "$44,892",
     delta: "+8.8% vs Mar",
     plans: [
-      { label: "Pro", share: 44, mrr: "$19,752", tone: "stroke-foreground/85", dot: "bg-foreground/85" },
-      { label: "Team", share: 35, mrr: "$15,712", tone: "stroke-muted-foreground/50", dot: "bg-muted-foreground/50" },
-      { label: "Enterprise", share: 21, mrr: "$9,428", tone: "stroke-muted-foreground/20", dot: "bg-muted-foreground/20" },
+      {
+        label: "Pro",
+        share: 44,
+        mrr: "$19,752",
+        tone: "stroke-foreground/85",
+        dot: "bg-foreground/85",
+      },
+      {
+        label: "Team",
+        share: 35,
+        mrr: "$15,712",
+        tone: "stroke-muted-foreground/50",
+        dot: "bg-muted-foreground/50",
+      },
+      {
+        label: "Enterprise",
+        share: 21,
+        mrr: "$9,428",
+        tone: "stroke-muted-foreground/20",
+        dot: "bg-muted-foreground/20",
+      },
     ],
     invoices: [
-      { label: "Paid", count: 247, amount: "$42,950", dot: "bg-emerald-500" },
-      { label: "Open", count: 16, amount: "$1,780", dot: "bg-muted-foreground/50" },
-      { label: "Overdue", count: 2, amount: "$162", dot: "bg-red-500" },
+      { label: "Paid", count: 247, amount: "$42,950", dot: "bg-success" },
+      {
+        label: "Open",
+        count: 16,
+        amount: "$1,780",
+        dot: "bg-muted-foreground/50",
+      },
+      { label: "Overdue", count: 2, amount: "$162", dot: "bg-destructive" },
     ],
   },
-]
+];
 
 type Txn = {
-  initials: string
-  name: string
-  email: string
-  status: "paid" | "open" | "refunded"
-  date: string
-  amount: string
-}
+  initials: string;
+  name: string;
+  email: string;
+  status: "paid" | "open" | "refunded";
+  date: string;
+  amount: string;
+};
 
 const TRANSACTIONS: readonly Txn[] = [
-  { initials: "LV", name: "Lena Voss", email: "lena@northbeam.io", status: "paid", date: "Apr 28", amount: "+$249.00" },
-  { initials: "DR", name: "Dario Reyes", email: "dario@quantfold.com", status: "paid", date: "Apr 27", amount: "+$1,188.00" },
-  { initials: "PB", name: "Priya Banerjee", email: "priya@helioslab.dev", status: "open", date: "Apr 27", amount: "$96.00" },
-  { initials: "TW", name: "Tomas Weber", email: "tomas@arcadia.app", status: "refunded", date: "Apr 26", amount: "−$249.00" },
-  { initials: "AK", name: "Amara Keita", email: "amara@stackline.co", status: "paid", date: "Apr 25", amount: "+$468.00" },
-  { initials: "HS", name: "Hana Suzuki", email: "hana@driftwork.com", status: "paid", date: "Apr 24", amount: "+$96.00" },
-]
+  {
+    initials: "LV",
+    name: "Lena Voss",
+    email: "lena@northbeam.io",
+    status: "paid",
+    date: "Apr 28",
+    amount: "+$249.00",
+  },
+  {
+    initials: "DR",
+    name: "Dario Reyes",
+    email: "dario@quantfold.com",
+    status: "paid",
+    date: "Apr 27",
+    amount: "+$1,188.00",
+  },
+  {
+    initials: "PB",
+    name: "Priya Banerjee",
+    email: "priya@helioslab.dev",
+    status: "open",
+    date: "Apr 27",
+    amount: "$96.00",
+  },
+  {
+    initials: "TW",
+    name: "Tomas Weber",
+    email: "tomas@arcadia.app",
+    status: "refunded",
+    date: "Apr 26",
+    amount: "−$249.00",
+  },
+  {
+    initials: "AK",
+    name: "Amara Keita",
+    email: "amara@stackline.co",
+    status: "paid",
+    date: "Apr 25",
+    amount: "+$468.00",
+  },
+  {
+    initials: "HS",
+    name: "Hana Suzuki",
+    email: "hana@driftwork.com",
+    status: "paid",
+    date: "Apr 24",
+    amount: "+$96.00",
+  },
+];
 
 const STATUS_META: Record<Txn["status"], { label: string; dot: string }> = {
-  paid: { label: "Paid", dot: "bg-emerald-500" },
+  paid: { label: "Paid", dot: "bg-success" },
   open: { label: "Open", dot: "bg-muted-foreground/50" },
-  refunded: { label: "Refunded", dot: "bg-red-500" },
-}
+  refunded: { label: "Refunded", dot: "bg-destructive" },
+};
 
 function Donut({ plans }: { plans: readonly PlanSlice[] }) {
   return (
@@ -117,7 +233,7 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
         // Each slice starts where the previous ones ended; 25 rotates the
         // first slice to 12 o'clock.
         const offset =
-          25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0)
+          25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0);
         return (
           <circle
             key={p.label}
@@ -130,15 +246,15 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
             strokeDashoffset={offset}
             className={p.tone}
           />
-        )
+        );
       })}
     </svg>
-  )
+  );
 }
 
 export default function Dashboard03() {
-  const [monthIndex, setMonthIndex] = React.useState(MONTHS.length - 1)
-  const month = MONTHS[monthIndex]
+  const [monthIndex, setMonthIndex] = React.useState(MONTHS.length - 1);
+  const month = MONTHS[monthIndex];
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -148,7 +264,7 @@ export default function Dashboard03() {
             <Badge variant="outline" className="w-fit">
               · revenue
             </Badge>
-            <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+            <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Where the money lands.
             </h2>
           </div>
@@ -203,7 +319,7 @@ export default function Dashboard03() {
                     <span className="text-2xl font-semibold tracking-[-0.035em] tabular-nums">
                       {month.total}
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-emerald-500">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-success">
                       {month.delta}
                     </span>
                   </div>
@@ -211,9 +327,7 @@ export default function Dashboard03() {
                 <div className="flex w-full flex-col gap-2.5">
                   {month.plans.map((p) => (
                     <div key={p.label} className="flex items-center gap-2.5">
-                      <span
-                        className={`size-2 rounded-xs ${p.dot}`}
-                      />
+                      <span className={`size-2 rounded-xs ${p.dot}`} />
                       <span className="text-xs text-foreground">{p.label}</span>
                       <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {p.share}%
@@ -240,7 +354,9 @@ export default function Dashboard03() {
                     {i > 0 && <Separator />}
                     <div className="flex items-center gap-2.5">
                       <span className={`size-1.5 rounded-full ${inv.dot}`} />
-                      <span className="text-xs text-foreground">{inv.label}</span>
+                      <span className="text-xs text-foreground">
+                        {inv.label}
+                      </span>
                       <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {inv.count}
                       </span>
@@ -277,7 +393,7 @@ export default function Dashboard03() {
               </div>
               <ul className="flex flex-col">
                 {TRANSACTIONS.map((t, i) => {
-                  const status = STATUS_META[t.status]
+                  const status = STATUS_META[t.status];
                   return (
                     <li
                       key={t.email}
@@ -315,7 +431,7 @@ export default function Dashboard03() {
                       <span
                         className={`text-end font-mono text-sm tabular-nums ${
                           t.status === "refunded"
-                            ? "text-red-500"
+                            ? "text-destructive"
                             : t.status === "open"
                               ? "text-muted-foreground"
                               : "text-foreground"
@@ -324,7 +440,7 @@ export default function Dashboard03() {
                         {t.amount}
                       </span>
                     </li>
-                  )
+                  );
                 })}
               </ul>
               <Separator />
@@ -348,5 +464,5 @@ export default function Dashboard03() {
         </div>
       </div>
     </section>
-  )
+  );
 }

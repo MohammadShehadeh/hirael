@@ -13,7 +13,7 @@ blocks, and full-page templates through the shadcn registry schema, so a
 consumer runs
 `npx shadcn add https://hirael.com/r/<name>.json` and the **source is copied
 into their repo**. There is no Hirael npm package and no runtime dependency;
-Hirael is a *peer* of shadcn (its components import shadcn primitives from
+Hirael is a _peer_ of shadcn (its components import shadcn primitives from
 `@/components/ui/*`), not a replacement.
 
 The thing in this repo is the **showcase site**: a fully static Next.js 16
@@ -96,11 +96,11 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
   per-category listing pages, per-item pages (demo + usage source + prop table
-  + install) with a breadcrumb trail, theme playground, command menu, light/dark
-  toggle. Every browsable item sits under its category segment
-  (`/components/<category>/<name>`, `/blocks/<category>/<name>`); build
-  `entryHref(entry)` rather than hand-writing paths, and old flat URLs 301 to
-  the nested ones via generated `vercel.json` redirects.
+  - install) with a breadcrumb trail, theme playground, command menu, light/dark
+    toggle. Every browsable item sits under its category segment
+    (`/components/<category>/<name>`, `/blocks/<category>/<name>`); build
+    `entryHref(entry)` rather than hand-writing paths, and old flat URLs 301 to
+    the nested ones via generated `vercel.json` redirects.
 - **RTL** — every component and block works under `dir="rtl"`; previews have
   an RTL toggle.
 - **Fully static export** — `output: "export"`, image optimization off,
@@ -135,7 +135,7 @@ yet committed:
   Don't spend it on generic accents or decoration.
 - **registry.json is generated.** Don't hand-edit it; edit
   `registry-meta.ts` and run `pnpm registry:gen`.
-- **Comments are stripped from `registry/hirael/**` on publish.** Keep
+- **Comments are stripped from `registry/hirael/**` on publish.\*\* Keep
   reasoning in commits/PRs/docs, not in shipped component source.
 - **No em dashes in site copy.** They were deliberately removed across the
   site; use commas, parentheses, or "—"-free phrasing.

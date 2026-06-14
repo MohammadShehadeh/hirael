@@ -35,7 +35,7 @@ export const SITE = {
     /** Public origin used when generating install URLs server-side. */
     origin: "https://hirael.com",
   },
-} as const
+} as const;
 
 export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
   [
@@ -43,4 +43,4 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
     { href: "/blocks", label: "Blocks" },
     { href: "/templates", label: "Templates" },
     { href: "/theme", label: "Theme" },
-  ]
+  ];

@@ -1,15 +1,8 @@
-"use client"
+"use client";
 
-import {
-  Calendar,
-  Folder,
-  Home,
-  Mail,
-  Music,
-  Settings,
-} from "lucide-react"
+import { Calendar, Folder, Home, Mail, Music, Settings } from "lucide-react";
 
-import { Dock, DockItem, DockLabel } from "@/registry/hirael/ui/dock"
+import { Dock, DockItem, DockLabel } from "@/registry/hirael/ui/dock";
 
 const APPS = [
   { label: "Home", icon: Home },
@@ -18,7 +11,7 @@ const APPS = [
   { label: "Calendar", icon: Calendar },
   { label: "Music", icon: Music },
   { label: "Settings", icon: Settings },
-]
+];
 
 export default function DockDemo() {
   return (
@@ -32,5 +25,5 @@ export default function DockDemo() {
         ))}
       </Dock>
     </div>
-  )
+  );
 }

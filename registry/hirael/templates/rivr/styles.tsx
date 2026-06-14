@@ -24,8 +24,8 @@ const RIVR_CSS = `
   font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
-`
+`;
 
 export function RivrStyles() {
-  return <style dangerouslySetInnerHTML={{ __html: RIVR_CSS }} />
+  return <style dangerouslySetInnerHTML={{ __html: RIVR_CSS }} />;
 }

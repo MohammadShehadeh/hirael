@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   TimePicker,
   TimePickerContent,
   TimePickerTrigger,
   type TimeValue,
-} from "@/registry/hirael/ui/time-picker"
+} from "@/registry/hirael/ui/time-picker";
 
 export default function TimePickerDemo() {
-  const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 })
+  const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 });
   const [t12, setT12] = React.useState<TimeValue>({
     hour: 9,
     minute: 15,
     second: 0,
-  })
+  });
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
@@ -49,11 +49,13 @@ export default function TimePickerDemo() {
           <TimePickerContent />
         </TimePicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {`${t12.hour}:${t12.minute.toString().padStart(2, "0")}:${(t12.second ?? 0)
+          {`${t12.hour}:${t12.minute.toString().padStart(2, "0")}:${(
+            t12.second ?? 0
+          )
             .toString()
             .padStart(2, "0")}`}
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,78 +1,78 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronDown, Loader2, X } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronDown, Loader2, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
+} from "@/registry/hirael/ui/popover";
 import {
   Command,
   CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/hirael/ui/command"
+} from "@/registry/hirael/ui/command";
 
 export type LazySelectOption = {
-  value: string
-  label: string
-  disabled?: boolean
-}
+  value: string;
+  label: string;
+  disabled?: boolean;
+};
 
 type Ctx = {
-  value: string | undefined
-  setValue: (next: string | undefined, option?: LazySelectOption) => void
-  selectedLabel: string | undefined
-  options: LazySelectOption[]
-  open: boolean
-  setOpen: (next: boolean) => void
-  search: string
-  setSearch: (next: string) => void
-  loading?: boolean
-  loadingMore?: boolean
-  hasMore?: boolean
-  onLoadMore?: () => void
-  disabled?: boolean
-  clearable: boolean
-}
+  value: string | undefined;
+  setValue: (next: string | undefined, option?: LazySelectOption) => void;
+  selectedLabel: string | undefined;
+  options: LazySelectOption[];
+  open: boolean;
+  setOpen: (next: boolean) => void;
+  search: string;
+  setSearch: (next: string) => void;
+  loading?: boolean;
+  loadingMore?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  disabled?: boolean;
+  clearable: boolean;
+};
 
-const LazySelectContext = React.createContext<Ctx | null>(null)
+const LazySelectContext = React.createContext<Ctx | null>(null);
 
 function useLazySelect() {
-  const ctx = React.useContext(LazySelectContext)
+  const ctx = React.useContext(LazySelectContext);
   if (!ctx) {
     throw new Error(
-      "LazySelect compound parts must be used inside <LazySelect>"
-    )
+      "LazySelect compound parts must be used inside <LazySelect>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 export type LazySelectProps = {
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string | undefined) => void
-  options?: LazySelectOption[]
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  onSearchChange?: (search: string) => void
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string | undefined) => void;
+  options?: LazySelectOption[];
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onSearchChange?: (search: string) => void;
   /** Called when the list is scrolled near the bottom and more pages exist. */
-  onLoadMore?: () => void
+  onLoadMore?: () => void;
   /** Initial / search page is loading. */
-  loading?: boolean
+  loading?: boolean;
   /** A subsequent page is being appended. */
-  loadingMore?: boolean
+  loadingMore?: boolean;
   /** Whether another page is available to lazy-load. */
-  hasMore?: boolean
-  disabled?: boolean
-  clearable?: boolean
-  children?: React.ReactNode
-}
+  hasMore?: boolean;
+  disabled?: boolean;
+  clearable?: boolean;
+  children?: React.ReactNode;
+};
 
 function LazySelect({
   value: valueProp,
@@ -92,28 +92,30 @@ function LazySelect({
   children,
 }: LazySelectProps) {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(
-    defaultValue
-  )
-  const value = valueProp !== undefined ? valueProp : internalValue
+    defaultValue,
+  );
+  const value = valueProp !== undefined ? valueProp : internalValue;
 
   // The selected option may live on a page that is no longer loaded (the user
   // searched or scrolled past it), so cache labels by value to keep the
   // trigger label stable across queries.
-  const [labelCache, setLabelCache] = React.useState<Record<string, string>>({})
+  const [labelCache, setLabelCache] = React.useState<Record<string, string>>(
+    {},
+  );
   React.useEffect(() => {
-    if (options.length === 0) return
+    if (options.length === 0) return;
     setLabelCache((prev) => {
-      let changed = false
-      const next = { ...prev }
+      let changed = false;
+      const next = { ...prev };
       for (const o of options) {
         if (next[o.value] !== o.label) {
-          next[o.value] = o.label
-          changed = true
+          next[o.value] = o.label;
+          changed = true;
         }
       }
-      return changed ? next : prev
-    })
-  }, [options])
+      return changed ? next : prev;
+    });
+  }, [options]);
 
   const setValue = React.useCallback(
     (next: string | undefined, option?: LazySelectOption) => {
@@ -121,36 +123,36 @@ function LazySelect({
         setLabelCache((prev) =>
           prev[option.value] === option.label
             ? prev
-            : { ...prev, [option.value]: option.label }
-        )
+            : { ...prev, [option.value]: option.label },
+        );
       }
-      if (valueProp === undefined) setInternalValue(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
-  const open = openProp ?? internalOpen
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
     (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next)
-      onOpenChange?.(next)
+      if (openProp === undefined) setInternalOpen(next);
+      onOpenChange?.(next);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
-  const [search, setSearchState] = React.useState("")
+  const [search, setSearchState] = React.useState("");
   const setSearch = React.useCallback(
     (next: string) => {
-      setSearchState(next)
-      onSearchChange?.(next)
+      setSearchState(next);
+      onSearchChange?.(next);
     },
-    [onSearchChange]
-  )
+    [onSearchChange],
+  );
 
   const selectedLabel =
-    value !== undefined ? labelCache[value] ?? value : undefined
+    value !== undefined ? (labelCache[value] ?? value) : undefined;
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -184,8 +186,8 @@ function LazySelect({
       onLoadMore,
       disabled,
       clearable,
-    ]
-  )
+    ],
+  );
 
   return (
     <LazySelectContext.Provider value={ctx}>
@@ -193,17 +195,17 @@ function LazySelect({
         {children}
       </Popover>
     </LazySelectContext.Provider>
-  )
+  );
 }
 
 type LazySelectTriggerProps = Omit<
   React.ComponentProps<"button">,
   "children"
 > & {
-  placeholder?: string
-  className?: string
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode)
-}
+  placeholder?: string;
+  className?: string;
+  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
+};
 
 function LazySelectTrigger({
   placeholder = "Select…",
@@ -211,7 +213,7 @@ function LazySelectTrigger({
   children,
   ...props
 }: LazySelectTriggerProps) {
-  const ctx = useLazySelect()
+  const ctx = useLazySelect();
 
   return (
     <PopoverTrigger asChild>
@@ -228,7 +230,7 @@ function LazySelectTrigger({
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -241,7 +243,7 @@ function LazySelectTrigger({
             <span
               className={cn(
                 "min-w-0 flex-1 truncate",
-                ctx.selectedLabel === undefined && "text-muted-foreground"
+                ctx.selectedLabel === undefined && "text-muted-foreground",
               )}
             >
               {ctx.selectedLabel ?? placeholder}
@@ -253,9 +255,9 @@ function LazySelectTrigger({
                   tabIndex={-1}
                   aria-label="Clear selection"
                   onPointerDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    ctx.setValue(undefined)
+                    e.preventDefault();
+                    e.stopPropagation();
+                    ctx.setValue(undefined);
                   }}
                   className="inline-flex size-4 items-center justify-center rounded-[2px] hover:bg-accent hover:text-foreground"
                 >
@@ -265,7 +267,7 @@ function LazySelectTrigger({
               <ChevronDown
                 className={cn(
                   "size-3.5 transition-transform duration-150",
-                  ctx.open && "rotate-180"
+                  ctx.open && "rotate-180",
                 )}
               />
             </span>
@@ -273,17 +275,17 @@ function LazySelectTrigger({
         )}
       </button>
     </PopoverTrigger>
-  )
+  );
 }
 
 type LazySelectContentProps = React.ComponentProps<typeof PopoverContent> & {
-  searchPlaceholder?: string
-  emptyMessage?: string
-  loadingMessage?: string
-  loadingMoreMessage?: string
-  endMessage?: string
-  children?: React.ReactNode
-}
+  searchPlaceholder?: string;
+  emptyMessage?: string;
+  loadingMessage?: string;
+  loadingMoreMessage?: string;
+  endMessage?: string;
+  children?: React.ReactNode;
+};
 
 function LazySelectContent({
   className,
@@ -295,26 +297,26 @@ function LazySelectContent({
   children,
   ...props
 }: LazySelectContentProps) {
-  const ctx = useLazySelect()
-  const sentinelRef = React.useRef<HTMLDivElement>(null)
-  const onLoadMore = ctx.onLoadMore
+  const ctx = useLazySelect();
+  const sentinelRef = React.useRef<HTMLDivElement>(null);
+  const onLoadMore = ctx.onLoadMore;
 
   // Lazy-load the next page when the bottom sentinel scrolls into view. Re-run
   // when the loaded set changes so a sentinel that is still in view (list
   // shorter than the viewport) keeps paging; the loader guards against
   // overlapping requests.
   React.useEffect(() => {
-    const el = sentinelRef.current
-    if (!el || !ctx.open || !ctx.hasMore || !onLoadMore) return
-    const root = el.closest("[data-slot='command-list']")
+    const el = sentinelRef.current;
+    if (!el || !ctx.open || !ctx.hasMore || !onLoadMore) return;
+    const root = el.closest("[data-slot='command-list']");
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) onLoadMore()
+        if (entries[0]?.isIntersecting) onLoadMore();
       },
-      { root: root as Element | null, rootMargin: "80px" }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
+      { root: root as Element | null, rootMargin: "80px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [
     ctx.open,
     ctx.hasMore,
@@ -322,7 +324,7 @@ function LazySelectContent({
     ctx.loadingMore,
     ctx.options.length,
     onLoadMore,
-  ])
+  ]);
 
   return (
     <PopoverContent
@@ -331,7 +333,7 @@ function LazySelectContent({
       data-slot="lazy-select-content"
       className={cn(
         "w-(--radix-popover-trigger-width) min-w-[14rem] p-0",
-        className
+        className,
       )}
       onOpenAutoFocus={(e) => e.preventDefault()}
       {...props}
@@ -379,16 +381,16 @@ function LazySelectContent({
         </CommandList>
       </Command>
     </PopoverContent>
-  )
+  );
 }
 
 type LazySelectItemProps = Omit<
   React.ComponentProps<typeof CommandItem>,
   "value" | "onSelect" | "children"
 > & {
-  option: LazySelectOption
-  children?: React.ReactNode
-}
+  option: LazySelectOption;
+  children?: React.ReactNode;
+};
 
 function LazySelectItem({
   option,
@@ -396,16 +398,16 @@ function LazySelectItem({
   className,
   ...props
 }: LazySelectItemProps) {
-  const ctx = useLazySelect()
-  const selected = ctx.value === option.value
+  const ctx = useLazySelect();
+  const selected = ctx.value === option.value;
 
   return (
     <CommandItem
       value={option.value}
       disabled={option.disabled}
       onSelect={() => {
-        ctx.setValue(selected ? undefined : option.value, option)
-        ctx.setOpen(false)
+        ctx.setValue(selected ? undefined : option.value, option);
+        ctx.setOpen(false);
       }}
       data-slot="lazy-select-item"
       className={cn("justify-between", className)}
@@ -416,13 +418,13 @@ function LazySelectItem({
         <Check className="size-3.5 text-foreground" strokeWidth={3} />
       )}
     </CommandItem>
-  )
+  );
 }
 
 export type LazyPage<T> = {
-  items: T[]
-  hasMore: boolean
-}
+  items: T[];
+  hasMore: boolean;
+};
 
 /**
  * Drives a lazily paginated, debounced-search option source. Nothing is
@@ -436,50 +438,50 @@ export function useLazySelectOptions<T>(
   {
     debounce = 250,
     enabled = true,
-  }: { debounce?: number; enabled?: boolean } = {}
+  }: { debounce?: number; enabled?: boolean } = {},
 ) {
-  const [query, setQuery] = React.useState("")
-  const [options, setOptions] = React.useState<LazySelectOption[]>([])
-  const [loading, setLoading] = React.useState(false)
-  const [loadingMore, setLoadingMore] = React.useState(false)
-  const [hasMore, setHasMore] = React.useState(false)
-  const [error, setError] = React.useState<unknown>(null)
+  const [query, setQuery] = React.useState("");
+  const [options, setOptions] = React.useState<LazySelectOption[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [loadingMore, setLoadingMore] = React.useState(false);
+  const [hasMore, setHasMore] = React.useState(false);
+  const [error, setError] = React.useState<unknown>(null);
 
-  const reqId = React.useRef(0)
-  const pageRef = React.useRef(0)
-  const loadingRef = React.useRef(false)
-  const loadingMoreRef = React.useRef(false)
-  const hasMoreRef = React.useRef(false)
+  const reqId = React.useRef(0);
+  const pageRef = React.useRef(0);
+  const loadingRef = React.useRef(false);
+  const loadingMoreRef = React.useRef(false);
+  const hasMoreRef = React.useRef(false);
 
   const setLoadingBoth = React.useCallback((next: boolean) => {
-    loadingRef.current = next
-    setLoading(next)
-  }, [])
+    loadingRef.current = next;
+    setLoading(next);
+  }, []);
   const setHasMoreBoth = React.useCallback((next: boolean) => {
-    hasMoreRef.current = next
-    setHasMore(next)
-  }, [])
+    hasMoreRef.current = next;
+    setHasMore(next);
+  }, []);
 
   React.useEffect(() => {
-    if (!enabled) return
-    const id = ++reqId.current
+    if (!enabled) return;
+    const id = ++reqId.current;
     const t = setTimeout(async () => {
-      setLoadingBoth(true)
-      setError(null)
+      setLoadingBoth(true);
+      setError(null);
       try {
-        const res = await loader({ query, page: 0 })
-        if (id !== reqId.current) return
-        setOptions(res.items.map(map))
-        pageRef.current = 0
-        setHasMoreBoth(res.hasMore)
+        const res = await loader({ query, page: 0 });
+        if (id !== reqId.current) return;
+        setOptions(res.items.map(map));
+        pageRef.current = 0;
+        setHasMoreBoth(res.hasMore);
       } catch (e) {
-        if (id === reqId.current) setError(e)
+        if (id === reqId.current) setError(e);
       } finally {
-        if (id === reqId.current) setLoadingBoth(false)
+        if (id === reqId.current) setLoadingBoth(false);
       }
-    }, debounce)
-    return () => clearTimeout(t)
-  }, [query, enabled, loader, map, debounce, setLoadingBoth, setHasMoreBoth])
+    }, debounce);
+    return () => clearTimeout(t);
+  }, [query, enabled, loader, map, debounce, setLoadingBoth, setHasMoreBoth]);
 
   const loadMore = React.useCallback(async () => {
     if (
@@ -488,27 +490,27 @@ export function useLazySelectOptions<T>(
       loadingMoreRef.current ||
       !hasMoreRef.current
     ) {
-      return
+      return;
     }
-    const id = reqId.current
-    const nextPage = pageRef.current + 1
-    loadingMoreRef.current = true
-    setLoadingMore(true)
+    const id = reqId.current;
+    const nextPage = pageRef.current + 1;
+    loadingMoreRef.current = true;
+    setLoadingMore(true);
     try {
-      const res = await loader({ query, page: nextPage })
-      if (id !== reqId.current) return
-      setOptions((prev) => [...prev, ...res.items.map(map)])
-      pageRef.current = nextPage
-      setHasMoreBoth(res.hasMore)
+      const res = await loader({ query, page: nextPage });
+      if (id !== reqId.current) return;
+      setOptions((prev) => [...prev, ...res.items.map(map)]);
+      pageRef.current = nextPage;
+      setHasMoreBoth(res.hasMore);
     } catch (e) {
-      if (id === reqId.current) setError(e)
+      if (id === reqId.current) setError(e);
     } finally {
       if (id === reqId.current) {
-        loadingMoreRef.current = false
-        setLoadingMore(false)
+        loadingMoreRef.current = false;
+        setLoadingMore(false);
       }
     }
-  }, [enabled, query, loader, map, setHasMoreBoth])
+  }, [enabled, query, loader, map, setHasMoreBoth]);
 
   return {
     query,
@@ -519,12 +521,7 @@ export function useLazySelectOptions<T>(
     hasMore,
     error,
     loadMore,
-  }
+  };
 }
 
-export {
-  LazySelect,
-  LazySelectTrigger,
-  LazySelectContent,
-  LazySelectItem,
-}
+export { LazySelect, LazySelectTrigger, LazySelectContent, LazySelectItem };

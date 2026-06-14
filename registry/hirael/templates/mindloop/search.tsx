@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 import {
   ChatGptIcon,
@@ -8,7 +8,7 @@ import {
   PerplexityIcon,
   Serif,
   useFadeUp,
-} from "./primitives"
+} from "./primitives";
 
 const PLATFORMS = [
   {
@@ -29,10 +29,10 @@ const PLATFORMS = [
     description:
       "The answer now sits above the links. The page that earns the summary earns the reader.",
   },
-]
+];
 
 export function Search() {
-  const fade = useFadeUp()
+  const fade = useFadeUp();
 
   return (
     <section
@@ -81,5 +81,5 @@ export function Search() {
         </motion.p>
       </div>
     </section>
-  )
+  );
 }

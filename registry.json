@@ -278,7 +278,9 @@
       "categories": [
         "data"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -361,13 +363,14 @@
       "name": "hero-01",
       "type": "registry:block",
       "title": "Hero 1",
-      "description": "Split hero with eyebrow tag, display headline, dual CTA, three-stat strip and a mock install-card visual.",
+      "description": "Full-bleed hero card over an animated light-beam shader, with a glass pill nav, a trust badge, a serif headline, dual CTA and a three-stat footer.",
       "categories": [
         "blocks",
         "hero"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "shaders"
       ],
       "registryDependencies": [
         "button"
@@ -377,6 +380,11 @@
           "path": "registry/hirael/blocks/hero-01/hero-01.tsx",
           "type": "registry:block",
           "target": "components/blocks/hero-01.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-01/hero-01-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-01-backdrop.tsx"
         }
       ]
     },
@@ -384,7 +392,36 @@
       "name": "hero-02",
       "type": "registry:block",
       "title": "Hero 2",
-      "description": "Centered hero with animated live-pill, display headline with underlined accent, sub-copy and a trusted-by wordmark strip.",
+      "description": "Centered hero over animated grayscale gradient bars, with a live pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-02/hero-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-02.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-02/hero-02-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-02-backdrop.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-03",
+      "type": "registry:block",
+      "title": "Hero 3",
+      "description": "Editorial centered hero on a faded grid, with a serif headline, sub-copy, dual CTA and a logo cloud of customer wordmarks.",
       "categories": [
         "blocks",
         "hero"
@@ -397,17 +434,17 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/blocks/hero-02/hero-02.tsx",
+          "path": "registry/hirael/blocks/hero-03/hero-03.tsx",
           "type": "registry:block",
-          "target": "components/blocks/hero-02.tsx"
+          "target": "components/blocks/hero-03.tsx"
         }
       ]
     },
     {
-      "name": "hero-03",
+      "name": "hero-04",
       "type": "registry:block",
-      "title": "Hero 3",
-      "description": "Centered hero with a rating pill, display headline, sub-copy, an inline email-capture form with a success state, a feature checklist and an avatar social-proof row.",
+      "title": "Hero 4",
+      "description": "Full-bleed image-banner hero with a dark scrim, a slim nav, a serif headline and dual CTA aligned to the bottom.",
       "categories": [
         "blocks",
         "hero"
@@ -416,14 +453,42 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "input"
+        "button"
       ],
       "files": [
         {
-          "path": "registry/hirael/blocks/hero-03/hero-03.tsx",
+          "path": "registry/hirael/blocks/hero-04/hero-04.tsx",
           "type": "registry:block",
-          "target": "components/blocks/hero-03.tsx"
+          "target": "components/blocks/hero-04.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-05",
+      "type": "registry:block",
+      "title": "Hero 5",
+      "description": "Full-bleed hero card over an animated aurora shader, with a glass pill nav, a glass content panel, a serif headline, dual CTA and an avatar social-proof row.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-05/hero-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-05.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/hero-05/hero-05-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-05-backdrop.tsx"
         }
       ]
     },
@@ -1007,7 +1072,8 @@
         "data"
       ],
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@radix-ui/react-slot",
+        "class-variance-authority"
       ],
       "registryDependencies": [],
       "files": [
@@ -1027,6 +1093,7 @@
         "display"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react"
       ],
       "registryDependencies": [],
@@ -1492,7 +1559,9 @@
       "categories": [
         "display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1984,6 +2053,7 @@
         "data"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react"
       ],
       "registryDependencies": [],
@@ -2777,77 +2847,6 @@
       ]
     },
     {
-      "name": "nexacore",
-      "type": "registry:block",
-      "title": "NexaCore",
-      "description": "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "hls.js",
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/templates/nexacore/nexacore.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/nexacore.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/navbar.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/navbar.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/hero.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/hero.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/trusted.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/trusted.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/service-card.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/service-card.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/freedom.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/freedom.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/hls-video.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/hls-video.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/precision.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/precision.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/primitives.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/primitives.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/styles.tsx",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/styles.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/nexacore/fonts.ts",
-          "type": "registry:block",
-          "target": "components/templates/nexacore/fonts.ts"
-        }
-      ]
-    },
-    {
       "name": "velorah",
       "type": "registry:block",
       "title": "Velorah",
@@ -2919,6 +2918,77 @@
           "path": "registry/hirael/templates/velorah/fonts.ts",
           "type": "registry:block",
           "target": "components/templates/velorah/fonts.ts"
+        }
+      ]
+    },
+    {
+      "name": "nexacore",
+      "type": "registry:block",
+      "title": "NexaCore",
+      "description": "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/nexacore/nexacore.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/nexacore.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/trusted.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/trusted.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/service-card.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/service-card.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/freedom.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/freedom.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hls-video.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hls-video.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/precision.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/precision.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/fonts.ts"
         }
       ]
     },

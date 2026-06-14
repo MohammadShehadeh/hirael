@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   UsageDashboard,
@@ -6,7 +6,7 @@ import {
   UsageDashboardTitle,
   UsageItem,
   UsageList,
-} from "@/registry/hirael/ui/usage-dashboard"
+} from "@/registry/hirael/ui/usage-dashboard";
 
 export default function UsageDashboardDemo() {
   return (
@@ -34,5 +34,5 @@ export default function UsageDashboardDemo() {
         />
       </UsageList>
     </UsageDashboard>
-  )
+  );
 }

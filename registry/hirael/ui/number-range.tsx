@@ -1,79 +1,79 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Input } from "@/registry/hirael/ui/input"
-import { Slider } from "@/registry/hirael/ui/slider"
+import { cn } from "@/lib/utils";
+import { Input } from "@/registry/hirael/ui/input";
+import { Slider } from "@/registry/hirael/ui/slider";
 
-export type NumberRangeValue = [number, number]
+export type NumberRangeValue = [number, number];
 
-export type NumberFormatter = (n: number) => string
-export type NumberParser = (s: string) => number
+export type NumberFormatter = (n: number) => string;
+export type NumberParser = (s: string) => number;
 
 type NumberRangeContextValue = {
-  value: NumberRangeValue
-  setValue: (v: NumberRangeValue) => void
-  min: number
-  max: number
-  step: number
-  disabled?: boolean
-  format: NumberFormatter
-  parse: NumberParser
-  prefix?: string
-  suffix?: string
-}
+  value: NumberRangeValue;
+  setValue: (v: NumberRangeValue) => void;
+  min: number;
+  max: number;
+  step: number;
+  disabled?: boolean;
+  format: NumberFormatter;
+  parse: NumberParser;
+  prefix?: string;
+  suffix?: string;
+};
 
 const NumberRangeContext = React.createContext<NumberRangeContextValue | null>(
-  null
-)
+  null,
+);
 
 function useNumberRange() {
-  const ctx = React.useContext(NumberRangeContext)
+  const ctx = React.useContext(NumberRangeContext);
   if (!ctx) {
     throw new Error(
-      "NumberRange compound components must be used inside <NumberRange>"
-    )
+      "NumberRange compound components must be used inside <NumberRange>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 function clamp(n: number, lo: number, hi: number) {
-  return Math.min(hi, Math.max(lo, n))
+  return Math.min(hi, Math.max(lo, n));
 }
 
 function clampPair(
   [lo, hi]: NumberRangeValue,
   min: number,
-  max: number
+  max: number,
 ): NumberRangeValue {
-  const a = clamp(lo, min, max)
-  const b = clamp(hi, min, max)
-  return a <= b ? [a, b] : [b, a]
+  const a = clamp(lo, min, max);
+  const b = clamp(hi, min, max);
+  return a <= b ? [a, b] : [b, a];
 }
 
-const defaultFormat: NumberFormatter = (n) => String(n)
+const defaultFormat: NumberFormatter = (n) => String(n);
 const defaultParse: NumberParser = (s) => {
-  const cleaned = s.replace(/[^\d.-]/g, "")
-  const n = Number(cleaned)
-  return Number.isFinite(n) ? n : 0
-}
+  const cleaned = s.replace(/[^\d.-]/g, "");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
+};
 
 export type NumberRangeProps = {
-  value?: NumberRangeValue
-  defaultValue?: NumberRangeValue
-  onValueChange?: (value: NumberRangeValue) => void
-  min?: number
-  max?: number
-  step?: number
-  disabled?: boolean
-  format?: NumberFormatter
-  parse?: NumberParser
-  prefix?: string
-  suffix?: string
-  className?: string
-  children?: React.ReactNode
-}
+  value?: NumberRangeValue;
+  defaultValue?: NumberRangeValue;
+  onValueChange?: (value: NumberRangeValue) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  disabled?: boolean;
+  format?: NumberFormatter;
+  parse?: NumberParser;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+  children?: React.ReactNode;
+};
 
 function NumberRange({
   value: valueProp,
@@ -91,17 +91,17 @@ function NumberRange({
   children,
 }: NumberRangeProps) {
   const [internal, setInternal] = React.useState<NumberRangeValue>(
-    defaultValue ?? [min, max]
-  )
-  const value = valueProp ?? internal
+    defaultValue ?? [min, max],
+  );
+  const value = valueProp ?? internal;
   const setValue = React.useCallback(
     (next: NumberRangeValue) => {
-      const clamped = clampPair(next, min, max)
-      if (valueProp === undefined) setInternal(clamped)
-      onValueChange?.(clamped)
+      const clamped = clampPair(next, min, max);
+      if (valueProp === undefined) setInternal(clamped);
+      onValueChange?.(clamped);
     },
-    [valueProp, onValueChange, min, max]
-  )
+    [valueProp, onValueChange, min, max],
+  );
 
   const ctx = React.useMemo<NumberRangeContextValue>(
     () => ({
@@ -116,8 +116,8 @@ function NumberRange({
       prefix,
       suffix,
     }),
-    [value, setValue, min, max, step, disabled, format, parse, prefix, suffix]
-  )
+    [value, setValue, min, max, step, disabled, format, parse, prefix, suffix],
+  );
 
   return (
     <NumberRangeContext.Provider value={ctx}>
@@ -128,7 +128,7 @@ function NumberRange({
         {children}
       </div>
     </NumberRangeContext.Provider>
-  )
+  );
 }
 
 function NumberRangeSlider({
@@ -138,7 +138,7 @@ function NumberRangeSlider({
   React.ComponentProps<typeof Slider>,
   "value" | "onValueChange" | "min" | "max" | "step" | "defaultValue"
 >) {
-  const ctx = useNumberRange()
+  const ctx = useNumberRange();
   return (
     <Slider
       min={ctx.min}
@@ -151,38 +151,38 @@ function NumberRangeSlider({
       className={className}
       {...props}
     />
-  )
+  );
 }
 
 type NumberRangeInputProps = Omit<
   React.ComponentProps<typeof Input>,
   "value" | "onChange" | "type"
 > & {
-  bound: "min" | "max"
-}
+  bound: "min" | "max";
+};
 
 function NumberRangeInput({
   bound,
   className,
   ...props
 }: NumberRangeInputProps) {
-  const ctx = useNumberRange()
-  const i = bound === "min" ? 0 : 1
-  const current = ctx.value[i]
+  const ctx = useNumberRange();
+  const i = bound === "min" ? 0 : 1;
+  const current = ctx.value[i];
 
-  const [draft, setDraft] = React.useState<string>(ctx.format(current))
-  const [editing, setEditing] = React.useState(false)
+  const [draft, setDraft] = React.useState<string>(ctx.format(current));
+  const [editing, setEditing] = React.useState(false);
 
   React.useEffect(() => {
-    if (!editing) setDraft(ctx.format(current))
-  }, [current, ctx, editing])
+    if (!editing) setDraft(ctx.format(current));
+  }, [current, ctx, editing]);
 
   const commit = (raw: string) => {
-    const parsed = ctx.parse(raw)
+    const parsed = ctx.parse(raw);
     const next: NumberRangeValue =
-      bound === "min" ? [parsed, ctx.value[1]] : [ctx.value[0], parsed]
-    ctx.setValue(next)
-  }
+      bound === "min" ? [parsed, ctx.value[1]] : [ctx.value[0], parsed];
+    ctx.setValue(next);
+  };
 
   return (
     <div data-slot="number-range-input" className="relative">
@@ -198,28 +198,34 @@ function NumberRangeInput({
         onFocus={() => setEditing(true)}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={(e) => {
-          setEditing(false)
-          commit(e.target.value)
+          setEditing(false);
+          commit(e.target.value);
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            e.currentTarget.blur()
+            e.currentTarget.blur();
           } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-            e.preventDefault()
-            const delta = e.key === "ArrowUp" ? ctx.step : -ctx.step
-            const mult = e.shiftKey ? 10 : 1
+            e.preventDefault();
+            const delta = e.key === "ArrowUp" ? ctx.step : -ctx.step;
+            const mult = e.shiftKey ? 10 : 1;
             const next =
               bound === "min"
-                ? ([ctx.value[0] + delta * mult, ctx.value[1]] as NumberRangeValue)
-                : ([ctx.value[0], ctx.value[1] + delta * mult] as NumberRangeValue)
-            ctx.setValue(next)
+                ? ([
+                    ctx.value[0] + delta * mult,
+                    ctx.value[1],
+                  ] as NumberRangeValue)
+                : ([
+                    ctx.value[0],
+                    ctx.value[1] + delta * mult,
+                  ] as NumberRangeValue);
+            ctx.setValue(next);
           }
         }}
         className={cn(
           "font-mono tabular-nums",
           ctx.prefix && "ps-6",
           ctx.suffix && "pe-8",
-          className
+          className,
         )}
         {...props}
       />
@@ -229,22 +235,22 @@ function NumberRangeInput({
         </span>
       )}
     </div>
-  )
+  );
 }
 
 function NumberRangeInputs({
   className,
   separator = "–",
 }: {
-  className?: string
-  separator?: React.ReactNode
+  className?: string;
+  separator?: React.ReactNode;
 }) {
   return (
     <div
       data-slot="number-range-inputs"
       className={cn(
         "grid grid-cols-[1fr_auto_1fr] items-center gap-2",
-        className
+        className,
       )}
     >
       <NumberRangeInput bound="min" aria-label="Minimum value" />
@@ -253,12 +259,7 @@ function NumberRangeInputs({
       </span>
       <NumberRangeInput bound="max" aria-label="Maximum value" />
     </div>
-  )
+  );
 }
 
-export {
-  NumberRange,
-  NumberRangeSlider,
-  NumberRangeInput,
-  NumberRangeInputs,
-}
+export { NumberRange, NumberRangeSlider, NumberRangeInput, NumberRangeInputs };

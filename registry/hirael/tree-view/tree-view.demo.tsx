@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { TreeItem, TreeView } from "@/registry/hirael/ui/tree-view"
+import { TreeItem, TreeView } from "@/registry/hirael/ui/tree-view";
 
 export default function TreeViewDemo() {
-  const [selected, setSelected] = React.useState("page")
+  const [selected, setSelected] = React.useState("page");
 
   return (
     <div className="grid w-full max-w-md gap-2">
@@ -31,5 +31,5 @@ export default function TreeViewDemo() {
         </TreeView>
       </div>
     </div>
-  )
+  );
 }

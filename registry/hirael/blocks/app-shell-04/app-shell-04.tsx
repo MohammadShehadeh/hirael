@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Bell,
   CalendarRange,
@@ -14,17 +14,17 @@ import {
   Settings,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { KbdDisplay, KbdGroup } from "@/registry/hirael/ui/kbd"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/input-group";
+import { KbdDisplay, KbdGroup } from "@/registry/hirael/ui/kbd";
+import { Separator } from "@/registry/hirael/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -38,8 +38,8 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@/registry/hirael/ui/sidebar"
-import { cn } from "@/lib/utils"
+} from "@/registry/hirael/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 const NAV: { icon: LucideIcon; label: string; active?: boolean }[] = [
   { icon: LayoutDashboard, label: "Overview", active: true },
@@ -48,12 +48,12 @@ const NAV: { icon: LucideIcon; label: string; active?: boolean }[] = [
   { icon: ChartNoAxesColumn, label: "Reports" },
   { icon: Users, label: "Audience" },
   { icon: Plug, label: "Connections" },
-]
+];
 
 const FOOTER_NAV: { icon: LucideIcon; label: string }[] = [
   { icon: LifeBuoy, label: "Support" },
   { icon: Settings, label: "Settings" },
-]
+];
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -73,7 +73,7 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 function Slot({ label, className }: { label: string; className?: string }) {
@@ -81,14 +81,14 @@ function Slot({ label, className }: { label: string; className?: string }) {
     <div
       className={cn(
         "flex items-center justify-center rounded-md border border-dashed border-border bg-card/30",
-        className
+        className,
       )}
     >
       <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground/70">
         {label}
       </span>
     </div>
-  )
+  );
 }
 
 export default function AppShell04() {
@@ -208,7 +208,7 @@ export default function AppShell04() {
 
         <div className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
           <div className="flex flex-col gap-1">
-            <h1 className="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+            <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">
               Good morning, Maya.
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -220,7 +220,7 @@ export default function AppShell04() {
             {["slot · 01", "slot · 02", "slot · 03", "slot · 04"].map(
               (label) => (
                 <Slot key={label} label={label} className="min-h-28" />
-              )
+              ),
             )}
             <Slot
               label="slot · 05"
@@ -242,5 +242,5 @@ export default function AppShell04() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

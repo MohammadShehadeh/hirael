@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { CodeBlock } from "@/registry/hirael/ui/code-block"
+import { CodeBlock } from "@/registry/hirael/ui/code-block";
 
 const utilsSnippet = `import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}`
+}`;
 
 const diffSnippet = `const config = {
   output: "standalone",
@@ -16,7 +16,7 @@ const diffSnippet = `const config = {
   experimental: {
     typedRoutes: true,
   },
-}`
+}`;
 
 const longSnippet = `type Result<T> = { ok: true; value: T } | { ok: false; error: Error }
 
@@ -40,7 +40,7 @@ export async function loadUsers() {
   const result = await fetchJson<{ id: string; name: string }[]>("/api/users")
   if (!result.ok) throw result.error
   return result.value
-}`
+}`;
 
 export default function CodeBlockDemo() {
   return (
@@ -91,5 +91,5 @@ export default function CodeBlockDemo() {
         </CodeBlock>
       </div>
     </div>
-  )
+  );
 }

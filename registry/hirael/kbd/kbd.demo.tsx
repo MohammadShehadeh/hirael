@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ArrowUp, Command, Option } from "lucide-react"
+import { ArrowUp, Command, Option } from "lucide-react";
 
-import { Kbd, KbdDisplay, KbdGroup } from "@/registry/hirael/ui/kbd"
+import { Kbd, KbdDisplay, KbdGroup } from "@/registry/hirael/ui/kbd";
 
 export default function KbdDemo() {
   return (
@@ -56,5 +56,5 @@ export default function KbdDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

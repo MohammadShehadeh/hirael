@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronDown } from "lucide-react"
+import * as React from "react";
+import { ChevronDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
+} from "@/registry/hirael/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -16,19 +16,19 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/hirael/ui/command"
+} from "@/registry/hirael/ui/command";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
+} from "@/registry/hirael/ui/input-group";
 
 export type Country = {
-  iso2: string
-  name: string
-  dialCode: string
-}
+  iso2: string;
+  name: string;
+  dialCode: string;
+};
 
 export const COUNTRIES: readonly Country[] = [
   { iso2: "US", name: "United States", dialCode: "+1" },
@@ -56,72 +56,72 @@ export const COUNTRIES: readonly Country[] = [
   { iso2: "KR", name: "South Korea", dialCode: "+82" },
   { iso2: "AU", name: "Australia", dialCode: "+61" },
   { iso2: "NZ", name: "New Zealand", dialCode: "+64" },
-] as const
+] as const;
 
 function findCountry(iso2: string): Country | undefined {
-  return COUNTRIES.find((c) => c.iso2 === iso2.toUpperCase())
+  return COUNTRIES.find((c) => c.iso2 === iso2.toUpperCase());
 }
 
 function digitsOnly(input: string): string {
-  return input.replace(/\D/g, "")
+  return input.replace(/\D/g, "");
 }
 
 function parseE164(
   value: string | undefined,
-  fallback: Country
+  fallback: Country,
 ): { country: Country; national: string } {
-  if (!value) return { country: fallback, national: "" }
-  const trimmed = value.trim()
+  if (!value) return { country: fallback, national: "" };
+  const trimmed = value.trim();
   if (!trimmed.startsWith("+")) {
-    return { country: fallback, national: digitsOnly(trimmed) }
+    return { country: fallback, national: digitsOnly(trimmed) };
   }
   const sorted = [...COUNTRIES].sort(
-    (a, b) => b.dialCode.length - a.dialCode.length
-  )
+    (a, b) => b.dialCode.length - a.dialCode.length,
+  );
   for (const c of sorted) {
     if (trimmed.startsWith(c.dialCode)) {
-      return { country: c, national: digitsOnly(trimmed.slice(c.dialCode.length)) }
+      return {
+        country: c,
+        national: digitsOnly(trimmed.slice(c.dialCode.length)),
+      };
     }
   }
-  return { country: fallback, national: digitsOnly(trimmed) }
+  return { country: fallback, national: digitsOnly(trimmed) };
 }
 
 type Ctx = {
-  id: string
-  country: Country
-  setCountry: (next: Country) => void
-  national: string
-  setNational: (next: string) => void
-  emit: (country: Country, national: string) => void
-  disabled?: boolean
-  open: boolean
-  setOpen: (next: boolean) => void
-}
+  id: string;
+  country: Country;
+  setCountry: (next: Country) => void;
+  national: string;
+  setNational: (next: string) => void;
+  emit: (country: Country, national: string) => void;
+  disabled?: boolean;
+  open: boolean;
+  setOpen: (next: boolean) => void;
+};
 
-const PhoneInputContext = React.createContext<Ctx | null>(null)
+const PhoneInputContext = React.createContext<Ctx | null>(null);
 
 function usePhoneInput() {
-  const ctx = React.useContext(PhoneInputContext)
+  const ctx = React.useContext(PhoneInputContext);
   if (!ctx) {
     throw new Error(
-      "PhoneInput compound parts must be used inside <PhoneInput>"
-    )
+      "PhoneInput compound parts must be used inside <PhoneInput>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
-export type PhoneInputProps = Omit<
-  React.ComponentProps<"div">,
-  "children"
-> & {
-  id?: string
-  value?: string
-  defaultValue?: string
-  onValueChange?: (e164: string) => void
-  defaultCountry?: string
-  disabled?: boolean
-  children?: React.ReactNode
-}
+export type PhoneInputProps = Omit<React.ComponentProps<"div">, "children"> & {
+  id?: string;
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (e164: string) => void;
+  defaultCountry?: string;
+  disabled?: boolean;
+  children?: React.ReactNode;
+};
 
 function PhoneInput({
   id,
@@ -134,60 +134,60 @@ function PhoneInput({
   children,
   ...props
 }: PhoneInputProps) {
-  const reactId = React.useId()
-  const fieldId = id ?? reactId
+  const reactId = React.useId();
+  const fieldId = id ?? reactId;
 
   const fallback = React.useMemo<Country>(
     () => findCountry(defaultCountry) ?? COUNTRIES[0],
-    [defaultCountry]
-  )
+    [defaultCountry],
+  );
 
   const initial = React.useMemo(
     () => parseE164(valueProp ?? defaultValue, fallback),
-    []
-  )
+    [],
+  );
 
-  const [country, setCountryState] = React.useState<Country>(initial.country)
-  const [national, setNationalState] = React.useState<string>(initial.national)
-  const [open, setOpen] = React.useState(false)
+  const [country, setCountryState] = React.useState<Country>(initial.country);
+  const [national, setNationalState] = React.useState<string>(initial.national);
+  const [open, setOpen] = React.useState(false);
 
-  const isControlled = valueProp !== undefined
+  const isControlled = valueProp !== undefined;
 
-  const lastSeen = React.useRef<string | undefined>(valueProp)
+  const lastSeen = React.useRef<string | undefined>(valueProp);
   React.useEffect(() => {
-    if (!isControlled) return
-    if (lastSeen.current === valueProp) return
-    lastSeen.current = valueProp
-    const parsed = parseE164(valueProp, fallback)
-    setCountryState(parsed.country)
-    setNationalState(parsed.national)
-  }, [isControlled, valueProp, fallback])
+    if (!isControlled) return;
+    if (lastSeen.current === valueProp) return;
+    lastSeen.current = valueProp;
+    const parsed = parseE164(valueProp, fallback);
+    setCountryState(parsed.country);
+    setNationalState(parsed.national);
+  }, [isControlled, valueProp, fallback]);
 
   const emit = React.useCallback(
     (c: Country, n: string) => {
-      const digits = digitsOnly(n)
-      const e164 = digits ? `${c.dialCode}${digits}` : ""
-      lastSeen.current = e164
-      onValueChange?.(e164)
+      const digits = digitsOnly(n);
+      const e164 = digits ? `${c.dialCode}${digits}` : "";
+      lastSeen.current = e164;
+      onValueChange?.(e164);
     },
-    [onValueChange]
-  )
+    [onValueChange],
+  );
 
   const setCountry = React.useCallback(
     (next: Country) => {
-      setCountryState(next)
-      emit(next, national)
+      setCountryState(next);
+      emit(next, national);
     },
-    [emit, national]
-  )
+    [emit, national],
+  );
 
   const setNational = React.useCallback(
     (next: string) => {
-      setNationalState(next)
-      emit(country, next)
+      setNationalState(next);
+      emit(country, next);
     },
-    [emit, country]
-  )
+    [emit, country],
+  );
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -201,8 +201,8 @@ function PhoneInput({
       open,
       setOpen,
     }),
-    [fieldId, country, setCountry, national, setNational, emit, disabled, open]
-  )
+    [fieldId, country, setCountry, national, setNational, emit, disabled, open],
+  );
 
   return (
     <PhoneInputContext.Provider value={ctx}>
@@ -215,19 +215,19 @@ function PhoneInput({
         {children}
       </InputGroup>
     </PhoneInputContext.Provider>
-  )
+  );
 }
 
 type PhoneInputCountrySelectProps = Omit<
   React.ComponentProps<"button">,
   "children" | "type"
->
+>;
 
 function PhoneInputCountrySelect({
   className,
   ...props
 }: PhoneInputCountrySelectProps) {
-  const ctx = usePhoneInput()
+  const ctx = usePhoneInput();
 
   return (
     <InputGroupAddon
@@ -249,12 +249,16 @@ function PhoneInputCountrySelect({
             className={cn("gap-1.5 font-mono text-xs", className)}
             {...props}
           >
-            <span className="font-medium text-foreground">{ctx.country.iso2}</span>
-            <span className="text-muted-foreground">{ctx.country.dialCode}</span>
+            <span className="font-medium text-foreground">
+              {ctx.country.iso2}
+            </span>
+            <span className="text-muted-foreground">
+              {ctx.country.dialCode}
+            </span>
             <ChevronDown
               className={cn(
                 "size-3 text-muted-foreground transition-transform duration-150",
-                ctx.open && "rotate-180"
+                ctx.open && "rotate-180",
               )}
             />
           </InputGroupButton>
@@ -264,7 +268,7 @@ function PhoneInputCountrySelect({
           sideOffset={6}
           className="w-64 p-0"
           onOpenAutoFocus={(e) => {
-            e.preventDefault()
+            e.preventDefault();
           }}
         >
           <Command loop>
@@ -277,8 +281,8 @@ function PhoneInputCountrySelect({
                     key={c.iso2}
                     value={`${c.name} ${c.iso2} ${c.dialCode}`}
                     onSelect={() => {
-                      ctx.setCountry(c)
-                      ctx.setOpen(false)
+                      ctx.setCountry(c);
+                      ctx.setOpen(false);
                     }}
                     className="justify-between"
                   >
@@ -299,13 +303,13 @@ function PhoneInputCountrySelect({
         </PopoverContent>
       </Popover>
     </InputGroupAddon>
-  )
+  );
 }
 
 type PhoneInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
->
+>;
 
 function PhoneInputField({
   placeholder = "Phone number",
@@ -313,7 +317,7 @@ function PhoneInputField({
   inputMode = "tel",
   ...props
 }: PhoneInputFieldProps) {
-  const ctx = usePhoneInput()
+  const ctx = usePhoneInput();
   return (
     <InputGroupInput
       id={ctx.id}
@@ -326,21 +330,17 @@ function PhoneInputField({
       disabled={ctx.disabled}
       data-slot="phone-input-field"
       onChange={(e) => {
-        const cleaned = e.target.value.replace(/[^\d\s]/g, "")
-        ctx.setNational(cleaned)
+        const cleaned = e.target.value.replace(/[^\d\s]/g, "");
+        ctx.setNational(cleaned);
       }}
       onBlur={(e) => {
-        onBlur?.(e)
-        const normalized = ctx.national.replace(/\s+/g, " ").trim()
-        if (normalized !== ctx.national) ctx.setNational(normalized)
+        onBlur?.(e);
+        const normalized = ctx.national.replace(/\s+/g, " ").trim();
+        if (normalized !== ctx.national) ctx.setNational(normalized);
       }}
       {...props}
     />
-  )
+  );
 }
 
-export {
-  PhoneInput,
-  PhoneInputCountrySelect,
-  PhoneInputField,
-}
+export { PhoneInput, PhoneInputCountrySelect, PhoneInputField };

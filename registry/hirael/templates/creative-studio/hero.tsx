@@ -1,30 +1,36 @@
-"use client"
+"use client";
 
-import { ArrowRight } from "lucide-react"
-import { motion, useReducedMotion } from "framer-motion"
+import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 
-import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives"
+import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives";
 
-const NAV_ITEMS = ["Our story", "Collective", "Workshops", "Programs", "Inquiries"]
+const NAV_ITEMS = [
+  "Our story",
+  "Collective",
+  "Workshops",
+  "Programs",
+  "Inquiries",
+];
 
-const CREAM = "#E1E0CC"
+const CREAM = "#E1E0CC";
 
-const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function Hero({
   videoSrc,
   posterSrc,
 }: {
-  videoSrc?: string
-  posterSrc?: string
+  videoSrc?: string;
+  posterSrc?: string;
 }) {
-  const reduce = useReducedMotion()
+  const reduce = useReducedMotion();
 
   const fade = (delay: number) => ({
     initial: reduce ? false : { y: 20, opacity: 0 },
     animate: { y: 0, opacity: 1 },
     transition: { duration: 0.8, delay, ease: EASE_OUT_EXPO },
-  })
+  });
 
   return (
     <section className="relative h-dvh w-full bg-black p-4 md:p-6">
@@ -109,5 +115,5 @@ export function Hero({
         </div>
       </div>
     </section>
-  )
+  );
 }

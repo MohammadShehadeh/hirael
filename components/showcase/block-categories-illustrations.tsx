@@ -6,44 +6,44 @@ const Bar = ({
   tone = "bg-muted-foreground/15",
   className = "",
 }: {
-  w?: string
-  tone?: string
-  className?: string
-}) => (
-  <span className={`block h-1 rounded-full ${tone} ${w} ${className}`} />
-)
+  w?: string;
+  tone?: string;
+  className?: string;
+}) => <span className={`block h-1 rounded-full ${tone} ${w} ${className}`} />;
 
 const AccentBar = ({
   w = "w-full",
   className = "",
 }: {
-  w?: string
-  className?: string
+  w?: string;
+  className?: string;
 }) => (
   <span
     className={`block h-1.5 rounded-full bg-primary/35 ${w} ${className}`}
   />
-)
+);
 
 const Pill = ({
   w = "w-full",
   tone = "bg-muted-foreground/15",
   className = "",
 }: {
-  w?: string
-  tone?: string
-  className?: string
+  w?: string;
+  tone?: string;
+  className?: string;
 }) => (
-  <span className={`block h-3 rounded-sm border border-border ${tone} ${w} ${className}`} />
-)
+  <span
+    className={`block h-3 rounded-sm border border-border ${tone} ${w} ${className}`}
+  />
+);
 
 const Box = ({ className = "" }: { className?: string }) => (
   <span className={`block rounded-sm bg-muted-foreground/12 ${className}`} />
-)
+);
 
 const AccentBox = ({ className = "" }: { className?: string }) => (
   <span className={`block rounded-sm bg-primary/30 ${className}`} />
-)
+);
 
 /* -------------------------------------------------------------------------- */
 /* Illustrations                                                              */
@@ -59,7 +59,7 @@ export const IllAuth = () => (
     <Pill />
     <AccentBar className="mt-0.5" />
   </div>
-)
+);
 
 export const IllBlog = () => (
   <div className="grid w-full max-w-[80%] grid-cols-2 gap-2">
@@ -74,7 +74,7 @@ export const IllBlog = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllContact = () => (
   <div className="flex w-full max-w-[70%] items-end gap-2">
@@ -86,7 +86,7 @@ export const IllContact = () => (
     </div>
     <AccentBox className="size-6" />
   </div>
-)
+);
 
 export const IllCta = () => (
   <div className="flex w-full max-w-[70%] flex-col items-center gap-2">
@@ -97,7 +97,7 @@ export const IllCta = () => (
       <Pill w="w-10" tone="bg-primary/30" />
     </div>
   </div>
-)
+);
 
 export const IllFaq = () => (
   <div className="flex w-full max-w-[80%] flex-col gap-1 rounded-sm border border-border bg-card/40">
@@ -117,7 +117,7 @@ export const IllFaq = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllFeatures = () => (
   <div className="grid w-full max-w-[80%] grid-cols-3 gap-3">
@@ -129,7 +129,7 @@ export const IllFeatures = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllFooter = () => (
   <div className="grid w-full max-w-[80%] grid-cols-4 gap-2">
@@ -142,7 +142,7 @@ export const IllFooter = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllHeader = () => (
   <div className="flex w-full max-w-[80%] items-center justify-between gap-2 rounded-sm border border-border bg-card/40 px-2 py-1.5">
@@ -154,7 +154,7 @@ export const IllHeader = () => (
     </div>
     <Pill w="w-8" tone="bg-primary/25" className="h-2" />
   </div>
-)
+);
 
 export const IllHero = () => (
   <div className="flex w-full max-w-[60%] flex-col items-center gap-1.5">
@@ -166,7 +166,7 @@ export const IllHero = () => (
       <Pill w="w-8" tone="bg-muted-foreground/10" />
     </div>
   </div>
-)
+);
 
 export const IllGallery = () => (
   <div className="grid w-full max-w-[80%] grid-cols-4 gap-1">
@@ -174,7 +174,7 @@ export const IllGallery = () => (
       <Box key={i} className="aspect-square" />
     ))}
   </div>
-)
+);
 
 export const IllIntegrations = () => (
   <div className="relative h-[70%] w-[70%]">
@@ -188,24 +188,24 @@ export const IllIntegrations = () => (
     <span className="absolute left-1/2 top-0 size-2.5 -translate-x-1/2 rounded-sm bg-muted-foreground/15" />
     <span className="absolute bottom-0 left-1/2 size-2.5 -translate-x-1/2 rounded-sm bg-primary/30" />
   </div>
-)
+);
 
 export const IllLogoCloud = () => (
   <div className="flex w-full flex-col items-center gap-1.5">
-    <div className="flex w-[80%] items-center gap-2 [mask-image:linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
+    <div className="flex w-[80%] items-center gap-2 mask-[linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
     </div>
-    <div className="flex w-[60%] items-center gap-2 [mask-image:linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
+    <div className="flex w-[60%] items-center gap-2 mask-[linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
     </div>
   </div>
-)
+);
 
 export const IllNotFound = () => (
   <div className="flex flex-col items-center gap-1">
@@ -217,7 +217,7 @@ export const IllNotFound = () => (
     </span>
     <Bar w="w-12" tone="bg-muted-foreground/10" />
   </div>
-)
+);
 
 export const IllPricing = () => (
   <div className="grid w-full max-w-[80%] grid-cols-3 items-end gap-1.5">
@@ -236,7 +236,7 @@ export const IllPricing = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllTestimonial = () => (
   <div className="flex w-full max-w-[70%] flex-col gap-2">
@@ -252,7 +252,7 @@ export const IllTestimonial = () => (
       <Bar w="w-12" tone="bg-muted-foreground/25" />
     </div>
   </div>
-)
+);
 
 export const IllAppShell = () => (
   <div className="flex h-[70%] w-full max-w-[80%] gap-1.5">
@@ -271,7 +271,7 @@ export const IllAppShell = () => (
       </div>
     </div>
   </div>
-)
+);
 
 export const IllEcommerce = () => (
   <div className="grid w-full max-w-[80%] grid-cols-3 gap-2">
@@ -289,7 +289,7 @@ export const IllEcommerce = () => (
       </div>
     ))}
   </div>
-)
+);
 
 export const IllDashboard = () => (
   <div className="flex h-[70%] w-full max-w-[80%] flex-col gap-1.5">
@@ -314,4 +314,4 @@ export const IllDashboard = () => (
       ))}
     </div>
   </div>
-)
+);

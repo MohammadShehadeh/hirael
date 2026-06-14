@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react";
 
-import { PillButton, RivrMark } from "./primitives"
+import { PillButton, RivrMark } from "./primitives";
 
 const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
   { label: "Ecosystem" },
   { label: "Economics", hasDropdown: true },
   { label: "Developers" },
   { label: "Governance" },
-]
+];
 
 export function Navbar() {
   return (
@@ -42,5 +42,5 @@ export function Navbar() {
 
       <PillButton label="Book Demo" />
     </nav>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { ArrowLeftRight, FilePlus2, UserPlus, Wallet } from "lucide-react"
+import { ArrowLeftRight, FilePlus2, UserPlus, Wallet } from "lucide-react";
 
 import {
   QuickAction,
@@ -8,14 +8,14 @@ import {
   QuickActionIcon,
   QuickActionLabel,
   QuickActions,
-} from "@/registry/hirael/ui/quick-actions"
+} from "@/registry/hirael/ui/quick-actions";
 
 const ACTIONS = [
   { icon: FilePlus2, label: "New invoice", description: "Bill a customer" },
   { icon: UserPlus, label: "Invite", description: "Add a teammate" },
   { icon: Wallet, label: "Payout", description: "Move funds out" },
   { icon: ArrowLeftRight, label: "Transfer", description: "Between accounts" },
-]
+];
 
 export default function QuickActionsDemo() {
   return (
@@ -30,5 +30,5 @@ export default function QuickActionsDemo() {
         </QuickAction>
       ))}
     </QuickActions>
-  )
+  );
 }

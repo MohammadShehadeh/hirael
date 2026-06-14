@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   CurrencyInput,
   CurrencyInputField,
   CurrencyInputPrefix,
-} from "@/registry/hirael/ui/currency-input"
+} from "@/registry/hirael/ui/currency-input";
 
 export default function CurrencyInputDemo() {
-  const [basic, setBasic] = React.useState<number | null>(1499.5)
-  const [composed, setComposed] = React.useState<number | null>(12480)
+  const [basic, setBasic] = React.useState<number | null>(1499.5);
+  const [composed, setComposed] = React.useState<number | null>(12480);
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -51,5 +51,5 @@ export default function CurrencyInputDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

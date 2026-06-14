@@ -1,12 +1,12 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type Crumb = {
-  label: string
+  label: string;
   /** Omit on the final, current crumb so it renders as plain text. */
-  href?: string
-}
+  href?: string;
+};
 
 /**
  * Hierarchy trail shown above category and detail pages. Slash separators
@@ -16,19 +16,19 @@ export function Breadcrumbs({
   items,
   className,
 }: {
-  items: Crumb[]
-  className?: string
+  items: Crumb[];
+  className?: string;
 }) {
   return (
     <nav
       aria-label="Breadcrumb"
       className={cn(
         "flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground",
-        className
+        className,
       )}
     >
       {items.map((item, i) => {
-        const last = i === items.length - 1
+        const last = i === items.length - 1;
         return (
           <span key={`${item.label}-${i}`} className="flex items-center gap-2">
             {item.href && !last ? (
@@ -45,8 +45,8 @@ export function Breadcrumbs({
             )}
             {!last && <span className="text-muted-foreground/50">/</span>}
           </span>
-        )
+        );
       })}
     </nav>
-  )
+  );
 }

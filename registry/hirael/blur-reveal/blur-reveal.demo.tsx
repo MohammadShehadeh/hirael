@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { BlurReveal } from "@/registry/hirael/ui/blur-reveal"
+import { BlurReveal } from "@/registry/hirael/ui/blur-reveal";
 
 export default function BlurRevealDemo() {
   return (
@@ -23,11 +23,13 @@ export default function BlurRevealDemo() {
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 0{i + 1}
               </p>
-              <p className="mt-2 text-sm font-medium text-foreground">{label}</p>
+              <p className="mt-2 text-sm font-medium text-foreground">
+                {label}
+              </p>
             </div>
           </BlurReveal>
         ))}
       </div>
     </div>
-  )
+  );
 }

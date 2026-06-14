@@ -10,14 +10,14 @@
  * record that the provider applies via inline CSS custom properties.
  */
 
-export type ThemeMode = "light" | "dark"
+export type ThemeMode = "light" | "dark";
 
-export type ThemeTokens = Record<string, string>
+export type ThemeTokens = Record<string, string>;
 
 export type Theme = {
-  light: ThemeTokens
-  dark: ThemeTokens
-}
+  light: ThemeTokens;
+  dark: ThemeTokens;
+};
 
 /** Tokens the editor is aware of. Anything outside this list is ignored on paste. */
 export const THEME_TOKEN_KEYS = [
@@ -45,11 +45,11 @@ export const THEME_TOKEN_KEYS = [
   "sidebar-accent",
   "sidebar-accent-foreground",
   "radius",
-] as const
+] as const;
 
-export type ThemeTokenKey = (typeof THEME_TOKEN_KEYS)[number]
+export type ThemeTokenKey = (typeof THEME_TOKEN_KEYS)[number];
 
-const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS)
+const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS);
 
 /**
  * Parse one or more CSS blocks into {light, dark} token maps.
@@ -62,101 +62,101 @@ const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS)
  */
 export function parseThemeCss(
   css: string,
-  currentMode: ThemeMode = "dark"
+  currentMode: ThemeMode = "dark",
 ): { theme: Partial<Theme>; warnings: string[] } {
-  const warnings: string[] = []
-  const blocks = extractBlocks(css)
+  const warnings: string[] = [];
+  const blocks = extractBlocks(css);
 
-  const result: Partial<Theme> = {}
+  const result: Partial<Theme> = {};
 
   if (blocks.length === 0) {
-    const bare = extractDeclarations(css)
+    const bare = extractDeclarations(css);
     if (Object.keys(bare).length) {
-      result[currentMode] = bare
+      result[currentMode] = bare;
     } else {
-      warnings.push("No CSS variables found.")
+      warnings.push("No CSS variables found.");
     }
-    return { theme: result, warnings }
+    return { theme: result, warnings };
   }
 
-  const hasDark = blocks.some((b) => b.selector === ".dark")
-  const hasLight = blocks.some((b) => b.selector === ".light")
+  const hasDark = blocks.some((b) => b.selector === ".dark");
+  const hasLight = blocks.some((b) => b.selector === ".light");
 
   // Disambiguate :root.
   // shadcn outputs `:root` (light) + `.dark` → :root is LIGHT.
   // This repo writes `:root` (dark) + `.light` → :root is DARK.
-  const rootIsLight = hasDark && !hasLight
-  const rootIsDark = hasLight && !hasDark
+  const rootIsLight = hasDark && !hasLight;
+  const rootIsDark = hasLight && !hasDark;
   // Ambiguous (just :root, or all three): default to currentMode.
 
   for (const block of blocks) {
-    const decls = extractDeclarations(block.body)
-    if (!Object.keys(decls).length) continue
+    const decls = extractDeclarations(block.body);
+    if (!Object.keys(decls).length) continue;
 
     if (block.selector === ".light") {
-      result.light = { ...(result.light ?? {}), ...decls }
+      result.light = { ...(result.light ?? {}), ...decls };
     } else if (block.selector === ".dark") {
-      result.dark = { ...(result.dark ?? {}), ...decls }
+      result.dark = { ...(result.dark ?? {}), ...decls };
     } else if (block.selector === ":root") {
       const mode: ThemeMode = rootIsLight
         ? "light"
         : rootIsDark
           ? "dark"
-          : currentMode
-      result[mode] = { ...(result[mode] ?? {}), ...decls }
+          : currentMode;
+      result[mode] = { ...(result[mode] ?? {}), ...decls };
     }
   }
 
   if (!result.light && !result.dark) {
-    warnings.push("No matching tokens found in the pasted CSS.")
+    warnings.push("No matching tokens found in the pasted CSS.");
   }
-  return { theme: result, warnings }
+  return { theme: result, warnings };
 }
 
-type CssBlock = { selector: string; body: string }
+type CssBlock = { selector: string; body: string };
 
 function extractBlocks(css: string): CssBlock[] {
   // Strip comments first.
-  const cleaned = css.replace(/\/\*[\s\S]*?\*\//g, "")
-  const blocks: CssBlock[] = []
-  const re = /([^{}]+)\{([^{}]*)\}/g
-  let m: RegExpExecArray | null
+  const cleaned = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const blocks: CssBlock[] = [];
+  const re = /([^{}]+)\{([^{}]*)\}/g;
+  let m: RegExpExecArray | null;
   while ((m = re.exec(cleaned)) !== null) {
-    const selector = m[1].trim()
-    const body = m[2]
+    const selector = m[1].trim();
+    const body = m[2];
     // Only single selectors we care about.
     if (selector === ":root" || selector === ".light" || selector === ".dark") {
-      blocks.push({ selector, body })
+      blocks.push({ selector, body });
     }
   }
-  return blocks
+  return blocks;
 }
 
 function extractDeclarations(body: string): ThemeTokens {
-  const out: ThemeTokens = {}
+  const out: ThemeTokens = {};
   // Match `--token: value;` (value may contain parens / spaces).
-  const re = /--([a-z0-9-]+)\s*:\s*([^;]+?)\s*(?:;|$)/gi
-  let m: RegExpExecArray | null
+  const re = /--([a-z0-9-]+)\s*:\s*([^;]+?)\s*(?:;|$)/gi;
+  let m: RegExpExecArray | null;
   while ((m = re.exec(body)) !== null) {
-    const key = m[1]
-    if (!TOKEN_SET.has(key)) continue
-    out[key] = m[2].trim()
+    const key = m[1];
+    if (!TOKEN_SET.has(key)) continue;
+    out[key] = m[2].trim();
   }
-  return out
+  return out;
 }
 
 /** Serialize a {light, dark} theme back into a paste-able CSS string. */
 export function formatThemeCss(theme: Theme): string {
-  const dark = formatBlock(":root", theme.dark)
-  const light = formatBlock(".light", theme.light)
-  return [dark, light].filter(Boolean).join("\n\n")
+  const dark = formatBlock(":root", theme.dark);
+  const light = formatBlock(".light", theme.light);
+  return [dark, light].filter(Boolean).join("\n\n");
 }
 
 function formatBlock(selector: string, tokens: ThemeTokens): string {
-  const keys = Object.keys(tokens).sort()
-  if (!keys.length) return ""
-  const lines = keys.map((k) => `  --${k}: ${tokens[k]};`)
-  return `${selector} {\n${lines.join("\n")}\n}`
+  const keys = Object.keys(tokens).sort();
+  if (!keys.length) return "";
+  const lines = keys.map((k) => `  --${k}: ${tokens[k]};`);
+  return `${selector} {\n${lines.join("\n")}\n}`;
 }
 
 /**
@@ -164,11 +164,11 @@ function formatBlock(selector: string, tokens: ThemeTokens): string {
  * the neutral palette stays consistent with the default Hirael look.
  */
 export type ThemePreset = {
-  id: string
-  label: string
-  swatch: string
-  overrides: Partial<Theme>
-}
+  id: string;
+  label: string;
+  swatch: string;
+  overrides: Partial<Theme>;
+};
 
 export const THEME_PRESETS: ThemePreset[] = [
   {
@@ -239,28 +239,29 @@ export const THEME_PRESETS: ThemePreset[] = [
       },
     },
   },
-]
+];
 
-export const STORAGE_KEY = "hirael.theme.v1"
-export const MODE_STORAGE_KEY = "hirael.theme.mode.v1"
+export const STORAGE_KEY = "hirael.theme.v1";
+export const MODE_STORAGE_KEY = "hirael.theme.mode.v1";
 
 /**
- * Inline script (stringified) that runs before hydration to apply persisted
- * mode + custom tokens, preventing a flash of default theme.
+ * Inline script (stringified) that runs before hydration to apply the
+ * persisted custom token overrides, preventing a flash of the default palette.
+ * The light/dark mode class itself is owned by next-themes (which injects its
+ * own pre-paint script); this only reads the persisted mode to pick which set
+ * of token overrides to apply.
  */
 export function themePrehydrationScript(): string {
   return `(()=>{try{
     var modeKey=${JSON.stringify(MODE_STORAGE_KEY)};
     var themeKey=${JSON.stringify(STORAGE_KEY)};
-    var mode=localStorage.getItem(modeKey);
-    var html=document.documentElement;
-    if(mode==='light'){html.classList.add('light');}
-    else{html.classList.add('dark');}
+    var mode=localStorage.getItem(modeKey)==='light'?'light':'dark';
     var raw=localStorage.getItem(themeKey);
     if(!raw)return;
     var t=JSON.parse(raw);
     var active=mode==='light'?t.light:t.dark;
     if(!active)return;
+    var html=document.documentElement;
     for(var k in active){html.style.setProperty('--'+k,active[k]);}
-  }catch(e){}})();`
+  }catch(e){}})();`;
 }

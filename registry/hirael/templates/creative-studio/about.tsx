@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { ScrollRevealText, WordsPullUpMultiStyle } from "./primitives"
+import { ScrollRevealText, WordsPullUpMultiStyle } from "./primitives";
 
 const HEADING_SEGMENTS = [
   { text: "Hirael is a creative studio,", className: "font-normal" },
@@ -12,10 +12,10 @@ const HEADING_SEGMENTS = [
     text: "We shape color, light and story into work that lingers.",
     className: "font-normal",
   },
-]
+];
 
 const BODY =
-  "Over the last seven years we have partnered with directors, brands and festivals across Berlin, Paris and beyond, crafting cinema and series that have earned acclaim on stages worldwide."
+  "Over the last seven years we have partnered with directors, brands and festivals across Berlin, Paris and beyond, crafting cinema and series that have earned acclaim on stages worldwide.";
 
 export function About() {
   return (
@@ -38,5 +38,5 @@ export function About() {
         />
       </div>
     </section>
-  )
+  );
 }

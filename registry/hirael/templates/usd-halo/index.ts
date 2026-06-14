@@ -1,1 +1,1 @@
-export { default } from "./usd-halo"
+export { default } from "./usd-halo";

@@ -1,141 +1,137 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight, Sparkles, Terminal } from "lucide-react"
+import * as React from "react";
+import dynamic from "next/dynamic";
+import { ArrowRight, Sparkles } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
+
+const Hero01Backdrop = dynamic(() => import("./hero-01-backdrop"), {
+  ssr: false,
+  loading: () => <div className="size-full bg-muted/20" />,
+});
+
+const NAV_LINKS = ["Product", "Docs", "Pricing", "Changelog"] as const;
 
 const STATS = [
-  { value: "12", label: "components" },
-  { value: "2", label: "API shapes" },
-  { value: "0", label: "runtime deps" },
-] as const
-
-const REGISTRY_LINES = [
-  { kind: "cmd", text: "npx shadcn add" },
-  { kind: "arg", text: "  https://hirael.com/r/multi-select" },
-  { kind: "out", text: "✓ resolved registry" },
-  { kind: "out", text: "✓ checked dependencies" },
-  { kind: "out", text: "✓ created multi-select.tsx" },
-  { kind: "blank", text: "" },
-  { kind: "meta", text: "components/ui/multi-select.tsx · 562 B" },
-] as const
+  { value: "4,000+", label: "Teams" },
+  { value: "60+", label: "Countries" },
+  { value: "99.9%", label: "Uptime" },
+] as const;
 
 export default function Hero01() {
+  const [active, setActive] = React.useState(false);
+
   return (
-    <section className="relative isolate overflow-hidden bg-background">
+    <section
+      data-slot="hero"
+      className="flex w-full items-center justify-center bg-background px-4 py-12 md:px-6"
+    >
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-32 -top-32 -z-10 size-[420px] rounded-full opacity-[0.15] blur-3xl"
-        style={{ background: "var(--primary)" }}
-      />
-
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 py-20 md:px-10 lg:grid-cols-12 lg:gap-16 lg:py-28">
-        <div className="flex flex-col gap-8 lg:col-span-7">
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border border-border bg-card px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <Sparkles className="size-3 text-foreground" />
-            production-ready
-          </span>
-
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
-            Ship the parts shadcn{" "}
-            <span className="text-foreground">doesn&apos;t</span>{" "}
-            include.
-          </h1>
-
-          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-            Multi-select, year picker, tag input, combobox: every component
-            real products need but shadcn doesn&apos;t ship. Copied straight
-            into your repo via the CLI. Two APIs per component. No runtime
-            dependency.
-          </p>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <Button asChild variant="default" size="lg" className="group">
-              <a href="#">
-                Get started
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-              </a>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href="#">Browse the registry</a>
-            </Button>
+        className="relative w-full max-w-7xl"
+        onMouseEnter={() => setActive(true)}
+        onMouseLeave={() => setActive(false)}
+      >
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
+          <div
+            aria-hidden
+            data-slot="hero-backdrop"
+            className="pointer-events-none absolute inset-0 opacity-50 mix-blend-multiply dark:opacity-20 dark:mix-blend-screen"
+          >
+            <Hero01Backdrop active={active} />
           </div>
 
-          <dl className="mt-4 grid grid-cols-3 divide-x divide-border border-y border-border">
-            {STATS.map((s, i) => (
-              <div key={s.label} className={i === 0 ? "py-4 pe-4" : "p-4"}>
-                <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {s.label}
-                </dt>
-                <dd className="mt-1 font-mono text-2xl font-medium tabular-nums">
-                  {s.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div className="flex items-start lg:col-span-5">
-          <div
-            className="relative w-full rounded-sm border border-border bg-card"
-            style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
+          <nav
+            data-slot="hero-nav"
+            className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
           >
-            <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                <Terminal className="size-3" />
-                hirael/install.sh
+            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
+              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
+                <Sparkles className="size-4" />
               </span>
-              <div className="flex items-center gap-1">
-                <span className="size-1.5 rounded-full bg-border" />
-                <span className="size-1.5 rounded-full bg-border" />
-                <span className="size-1.5 rounded-full bg-foreground" />
-              </div>
+              Aperture
+            </span>
+            <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link}
+                  href="#"
+                  className="transition-colors hover:text-foreground"
+                >
+                  {link}
+                </a>
+              ))}
             </div>
-
-            <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7]">
-              <code>
-                {REGISTRY_LINES.map((line, i) => (
-                  <span key={i} className="block">
-                    {line.kind === "cmd" && (
-                      <>
-                        <span className="text-foreground">$</span>{" "}
-                        <span className="text-foreground">{line.text.slice(2)}</span>
-                      </>
-                    )}
-                    {line.kind === "arg" && (
-                      <span className="text-muted-foreground">{line.text}</span>
-                    )}
-                    {line.kind === "out" && (
-                      <span className="text-emerald-500">{line.text}</span>
-                    )}
-                    {line.kind === "blank" && <span>&nbsp;</span>}
-                    {line.kind === "meta" && (
-                      <span className="text-muted-foreground">{line.text}</span>
-                    )}
-                  </span>
-                ))}
-              </code>
-            </pre>
-
-            <div className="border-t border-border bg-background/60 px-4 py-2.5">
-              <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.1em]">
-                <span className="text-muted-foreground">added</span>
-                <span className="text-foreground">multi-select.tsx</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <a
+                href="#"
+                className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline"
+              >
+                Sign in
+              </a>
+              <Button asChild size="sm" className="rounded-full">
+                <a href="#">Get started</a>
+              </Button>
             </div>
+          </nav>
+
+          <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10">
+            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm text-primary backdrop-blur-sm">
+              <Sparkles className="size-3.5" />
+              Trusted by 4,000+ teams
+            </span>
+
+            <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+              The interface layer your product was missing.
+            </h1>
+
+            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+              Drop in accessible components and ship a polished UI in an
+              afternoon — no design system required.
+            </p>
+
+            <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
+              <Button
+                asChild
+                size="lg"
+                className="group h-12 rounded-full px-7 text-base"
+              >
+                <a href="#">
+                  Start building
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="ghost"
+                className="h-12 rounded-full px-7 text-base"
+              >
+                <a href="#">Read the docs</a>
+              </Button>
+            </div>
+          </div>
+
+          <div
+            data-slot="hero-stats"
+            className="relative z-10 flex items-center justify-center gap-8 border-t border-border px-6 py-7 md:gap-16 md:px-10"
+          >
+            {STATS.map((stat, i) => (
+              <React.Fragment key={stat.label}>
+                {i > 0 && <span aria-hidden className="h-9 w-px bg-border" />}
+                <div className="text-center">
+                  <div className="font-serif text-2xl font-medium text-foreground md:text-3xl">
+                    {stat.value}
+                  </div>
+                  <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                    {stat.label}
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -14,27 +14,27 @@
 //
 // Run via `node scripts/check-registry.mjs` (also chained into `build`).
 
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   buildRegistry,
   loadRegistryMeta,
   registryJsonText,
-} from "./build-registry.mjs"
+} from "./build-registry.mjs";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-let errors = 0
+let errors = 0;
 const fail = (msg) => {
-  console.error(`  ✗ ${msg}`)
-  errors++
-}
+  console.error(`  ✗ ${msg}`);
+  errors++;
+};
 
-const meta = await loadRegistryMeta()
-const generated = buildRegistry(meta)
-const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY]
+const meta = await loadRegistryMeta();
+const generated = buildRegistry(meta);
+const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY];
 
 // Preview loaders registered in registry-demos.tsx, keyed by entry name.
 // Every showcased entry needs one, or RegistryDemo returns null and the
@@ -42,38 +42,38 @@ const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY]
 // (no showcase page) are intentionally absent.
 const demosSrc = readFileSync(
   path.join(ROOT, "registry/hirael/registry-demos.tsx"),
-  "utf8"
-)
+  "utf8",
+);
 const demoLoaderNames = new Set(
-  [...demosSrc.matchAll(/"([^"]+)":\s*\(\)\s*=>/g)].map((m) => m[1])
-)
+  [...demosSrc.matchAll(/["']?([\w-]+)["']?:\s*\(\)\s*=>/g)].map((m) => m[1]),
+);
 
 // 1. registry.json matches the generated output byte-for-byte.
-const onDisk = readFileSync(path.join(ROOT, "registry.json"), "utf8")
+const onDisk = readFileSync(path.join(ROOT, "registry.json"), "utf8");
 if (onDisk !== registryJsonText(generated)) {
   fail(
-    "registry.json is stale or hand-edited — run `pnpm registry:gen` to regenerate it from registry-meta.ts"
-  )
+    "registry.json is stale or hand-edited — run `pnpm registry:gen` to regenerate it from registry-meta.ts",
+  );
 }
 
 // 2–4. Per-entry checks.
 for (const entry of entries) {
-  const sourceFiles = entry.sourceFiles ?? []
+  const sourceFiles = entry.sourceFiles ?? [];
   for (const p of sourceFiles) {
     if (!existsSync(path.join(ROOT, p))) {
-      fail(`"${entry.name}" → missing sourceFile ${p}`)
+      fail(`"${entry.name}" → missing sourceFile ${p}`);
     }
   }
 
   const isBlock =
     entry.category === "blocks" ||
     entry.category === "templates" ||
-    entry.type === "registry:block"
-  const showcased = meta.REGISTRY.includes(entry)
+    entry.type === "registry:block";
+  const showcased = meta.REGISTRY.includes(entry);
   if (!isBlock && showcased) {
-    const demo = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`
+    const demo = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`;
     if (!existsSync(path.join(ROOT, demo))) {
-      fail(`component "${entry.name}" → missing demo ${demo}`)
+      fail(`component "${entry.name}" → missing demo ${demo}`);
     }
   }
 
@@ -81,40 +81,40 @@ for (const entry of entries) {
   // preview / embed iframe renders blank.
   if (showcased && !demoLoaderNames.has(entry.name)) {
     fail(
-      `"${entry.name}" → missing preview loader in registry-demos.tsx (DEMO_LOADERS) — its preview/embed would render blank`
-    )
+      `"${entry.name}" → missing preview loader in registry-demos.tsx (DEMO_LOADERS) — its preview/embed would render blank`,
+    );
   }
 
   // Declared registryDependencies must match the registry modules the
   // source actually imports.
-  const imported = new Set()
+  const imported = new Set();
   for (const p of sourceFiles) {
-    const file = path.join(ROOT, p)
-    if (!existsSync(file)) continue
-    const src = readFileSync(file, "utf8")
+    const file = path.join(ROOT, p);
+    if (!existsSync(file)) continue;
+    const src = readFileSync(file, "utf8");
     for (const m of src.matchAll(
-      /from "@\/registry\/hirael\/ui\/([a-z0-9-]+)"/g
+      /from "@\/registry\/hirael\/ui\/([a-z0-9-]+)"/g,
     )) {
-      imported.add(m[1])
+      imported.add(m[1]);
     }
   }
-  const declared = new Set(entry.registryDependencies ?? [])
+  const declared = new Set(entry.registryDependencies ?? []);
   for (const dep of imported) {
     if (!declared.has(dep)) {
-      fail(`"${entry.name}" imports "${dep}" but doesn't declare it`)
+      fail(`"${entry.name}" imports "${dep}" but doesn't declare it`);
     }
   }
   for (const dep of declared) {
     if (!imported.has(dep)) {
-      fail(`"${entry.name}" declares "${dep}" but never imports it`)
+      fail(`"${entry.name}" declares "${dep}" but never imports it`);
     }
   }
 }
 
 if (errors) {
-  console.error(`\n✗ registry check failed — ${errors} problem(s).`)
-  process.exit(1)
+  console.error(`\n✗ registry check failed — ${errors} problem(s).`);
+  process.exit(1);
 }
 console.log(
-  `✓ registry OK — ${meta.REGISTRY.length} showcased + ${meta.DISTRIBUTION_ONLY.length} distribution-only items, registry.json in sync.`
-)
+  `✓ registry OK — ${meta.REGISTRY.length} showcased + ${meta.DISTRIBUTION_ONLY.length} distribution-only items, registry.json in sync.`,
+);

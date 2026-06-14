@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { CursorGlow } from "@/registry/hirael/ui/cursor-glow"
+import { CursorGlow } from "@/registry/hirael/ui/cursor-glow";
 
 export default function CursorGlowDemo() {
   return (
@@ -18,5 +18,5 @@ export default function CursorGlowDemo() {
         </p>
       </div>
     </CursorGlow>
-  )
+  );
 }

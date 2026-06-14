@@ -1,1 +1,1 @@
-export { default } from "./mindloop"
+export { default } from "./mindloop";

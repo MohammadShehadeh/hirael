@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-import { Serif, useFadeUp } from "./primitives"
+import { Serif, useFadeUp } from "./primitives";
 
 const SOLUTION_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_125119_8e5ae31c-0021-4396-bc08-f7aebeb877a2.mp4"
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_125119_8e5ae31c-0021-4396-bc08-f7aebeb877a2.mp4";
 
 const FEATURES = [
   {
@@ -28,10 +28,10 @@ const FEATURES = [
     description:
       "Reach inboxes, the web and answer engines from a single publish.",
   },
-]
+];
 
 export function Solution() {
-  const fade = useFadeUp()
+  const fade = useFadeUp();
 
   return (
     <section
@@ -77,5 +77,5 @@ export function Solution() {
         </div>
       </div>
     </section>
-  )
+  );
 }

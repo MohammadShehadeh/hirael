@@ -1,68 +1,68 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { createPortal } from "react-dom"
+import * as React from "react";
+import { createPortal } from "react-dom";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/registry/hirael/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 export type TourStep = {
-  target: string | React.RefObject<HTMLElement | null>
-  title: React.ReactNode
-  description?: React.ReactNode
-  side?: "top" | "bottom" | "left" | "right"
-}
+  target: string | React.RefObject<HTMLElement | null>;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  side?: "top" | "bottom" | "left" | "right";
+};
 
 export type TourLabels = {
-  next?: React.ReactNode
-  back?: React.ReactNode
-  skip?: React.ReactNode
-  finish?: React.ReactNode
-}
+  next?: React.ReactNode;
+  back?: React.ReactNode;
+  skip?: React.ReactNode;
+  finish?: React.ReactNode;
+};
 
 type TourContextValue = {
-  open: boolean
-  step: number
-  start: (at?: number) => void
-  stop: () => void
-  next: () => void
-  back: () => void
-}
+  open: boolean;
+  step: number;
+  start: (at?: number) => void;
+  stop: () => void;
+  next: () => void;
+  back: () => void;
+};
 
-const TourContext = React.createContext<TourContextValue | null>(null)
+const TourContext = React.createContext<TourContextValue | null>(null);
 
 function useTour() {
-  const ctx = React.useContext(TourContext)
+  const ctx = React.useContext(TourContext);
   if (!ctx) {
-    throw new Error("Tour compound parts must be used inside <Tour>")
+    throw new Error("Tour compound parts must be used inside <Tour>");
   }
-  return ctx
+  return ctx;
 }
 
 function resolveTarget(
-  target: TourStep["target"] | undefined
+  target: TourStep["target"] | undefined,
 ): HTMLElement | null {
-  if (!target) return null
+  if (!target) return null;
   if (typeof target === "string") {
-    return document.querySelector<HTMLElement>(target)
+    return document.querySelector<HTMLElement>(target);
   }
-  return target.current
+  return target.current;
 }
 
 export type TourProps = {
-  steps: TourStep[]
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  step?: number
-  defaultStep?: number
-  onStepChange?: (step: number) => void
-  onFinish?: () => void
-  scrollIntoView?: boolean
-  spotlightPadding?: number
-  labels?: TourLabels
-  children?: React.ReactNode
-}
+  steps: TourStep[];
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  step?: number;
+  defaultStep?: number;
+  onStepChange?: (step: number) => void;
+  onFinish?: () => void;
+  scrollIntoView?: boolean;
+  spotlightPadding?: number;
+  labels?: TourLabels;
+  children?: React.ReactNode;
+};
 
 function Tour({
   steps,
@@ -78,93 +78,93 @@ function Tour({
   labels,
   children,
 }: TourProps) {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
-  const open = openProp ?? internalOpen
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
     (nextOpen: boolean) => {
-      if (openProp === undefined) setInternalOpen(nextOpen)
-      onOpenChange?.(nextOpen)
+      if (openProp === undefined) setInternalOpen(nextOpen);
+      onOpenChange?.(nextOpen);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
-  const [internalStep, setInternalStep] = React.useState(defaultStep)
-  const step = stepProp ?? internalStep
+  const [internalStep, setInternalStep] = React.useState(defaultStep);
+  const step = stepProp ?? internalStep;
   const setStep = React.useCallback(
     (nextStep: number) => {
-      if (stepProp === undefined) setInternalStep(nextStep)
-      onStepChange?.(nextStep)
+      if (stepProp === undefined) setInternalStep(nextStep);
+      onStepChange?.(nextStep);
     },
-    [stepProp, onStepChange]
-  )
+    [stepProp, onStepChange],
+  );
 
   const findResolvable = React.useCallback(
     (from: number, dir: 1 | -1) => {
       for (let i = from; i >= 0 && i < steps.length; i += dir) {
-        if (resolveTarget(steps[i]?.target)) return i
+        if (resolveTarget(steps[i]?.target)) return i;
       }
-      return -1
+      return -1;
     },
-    [steps]
-  )
+    [steps],
+  );
 
-  const stop = React.useCallback(() => setOpen(false), [setOpen])
+  const stop = React.useCallback(() => setOpen(false), [setOpen]);
 
   const finish = React.useCallback(() => {
-    onFinish?.()
-    setOpen(false)
-  }, [onFinish, setOpen])
+    onFinish?.();
+    setOpen(false);
+  }, [onFinish, setOpen]);
 
   const start = React.useCallback(
     (at?: number) => {
-      setStep(at ?? 0)
-      setOpen(true)
+      setStep(at ?? 0);
+      setOpen(true);
     },
-    [setStep, setOpen]
-  )
+    [setStep, setOpen],
+  );
 
   const next = React.useCallback(() => {
-    const idx = findResolvable(step + 1, 1)
+    const idx = findResolvable(step + 1, 1);
     if (idx === -1) {
-      finish()
+      finish();
     } else {
-      setStep(idx)
+      setStep(idx);
     }
-  }, [findResolvable, step, finish, setStep])
+  }, [findResolvable, step, finish, setStep]);
 
   const back = React.useCallback(() => {
-    const idx = findResolvable(step - 1, -1)
-    if (idx !== -1) setStep(idx)
-  }, [findResolvable, step, setStep])
+    const idx = findResolvable(step - 1, -1);
+    if (idx !== -1) setStep(idx);
+  }, [findResolvable, step, setStep]);
 
-  const restoreFocusRef = React.useRef<HTMLElement | null>(null)
+  const restoreFocusRef = React.useRef<HTMLElement | null>(null);
   React.useEffect(() => {
-    if (!open) return
+    if (!open) return;
     restoreFocusRef.current =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
-        : null
-    return () => restoreFocusRef.current?.focus()
-  }, [open])
+        : null;
+    return () => restoreFocusRef.current?.focus();
+  }, [open]);
 
   React.useEffect(() => {
-    if (!open) return
-    if (resolveTarget(steps[step]?.target)) return
-    const idx = findResolvable(step + 1, 1)
+    if (!open) return;
+    if (resolveTarget(steps[step]?.target)) return;
+    const idx = findResolvable(step + 1, 1);
     if (idx === -1) {
-      setOpen(false)
+      setOpen(false);
     } else {
-      setStep(idx)
+      setStep(idx);
     }
-  }, [open, step, steps, findResolvable, setOpen, setStep])
+  }, [open, step, steps, findResolvable, setOpen, setStep]);
 
-  const [mounted, setMounted] = React.useState(false)
-  React.useEffect(() => setMounted(true), [])
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
 
   const ctx = React.useMemo<TourContextValue>(
     () => ({ open, step, start, stop, next, back }),
-    [open, step, start, stop, next, back]
-  )
+    [open, step, start, stop, next, back],
+  );
 
   return (
     <TourContext.Provider value={ctx}>
@@ -182,24 +182,24 @@ function Tour({
             padding={spotlightPadding}
             labels={labels}
           />,
-          document.body
+          document.body,
         )}
     </TourContext.Provider>
-  )
+  );
 }
 
-type Rect = { top: number; left: number; width: number; height: number }
+type Rect = { top: number; left: number; width: number; height: number };
 
 type TourOverlayProps = {
-  steps: TourStep[]
-  step: number
-  stop: () => void
-  next: () => void
-  back: () => void
-  scrollIntoView: boolean
-  padding: number
-  labels?: TourLabels
-}
+  steps: TourStep[];
+  step: number;
+  stop: () => void;
+  next: () => void;
+  back: () => void;
+  scrollIntoView: boolean;
+  padding: number;
+  labels?: TourLabels;
+};
 
 function TourOverlay({
   steps,
@@ -211,175 +211,175 @@ function TourOverlay({
   padding,
   labels,
 }: TourOverlayProps) {
-  const current = steps[step]
-  const side = current?.side ?? "bottom"
-  const target = current?.target
+  const current = steps[step];
+  const side = current?.side ?? "bottom";
+  const target = current?.target;
 
-  const cardRef = React.useRef<HTMLDivElement>(null)
-  const [rect, setRect] = React.useState<Rect | null>(null)
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const [rect, setRect] = React.useState<Rect | null>(null);
   const [viewport, setViewport] = React.useState(() => ({
     w: window.innerWidth,
     h: window.innerHeight,
-  }))
+  }));
   const [pos, setPos] = React.useState<{ top: number; left: number } | null>(
-    null
-  )
-  const titleId = React.useId()
-  const descriptionId = React.useId()
+    null,
+  );
+  const titleId = React.useId();
+  const descriptionId = React.useId();
 
   const measure = React.useCallback(() => {
-    const el = resolveTarget(target)
+    const el = resolveTarget(target);
     if (!el) {
-      setRect(null)
-      return
+      setRect(null);
+      return;
     }
-    const r = el.getBoundingClientRect()
-    setRect({ top: r.top, left: r.left, width: r.width, height: r.height })
-    setViewport({ w: window.innerWidth, h: window.innerHeight })
-  }, [target])
+    const r = el.getBoundingClientRect();
+    setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
+    setViewport({ w: window.innerWidth, h: window.innerHeight });
+  }, [target]);
 
   React.useLayoutEffect(() => {
-    const el = resolveTarget(target)
-    if (el && scrollIntoView) el.scrollIntoView({ block: "center" })
-    measure()
-  }, [target, scrollIntoView, measure])
+    const el = resolveTarget(target);
+    if (el && scrollIntoView) el.scrollIntoView({ block: "center" });
+    measure();
+  }, [target, scrollIntoView, measure]);
 
   React.useEffect(() => {
-    let raf = 0
+    let raf = 0;
     const schedule = () => {
-      if (raf) return
+      if (raf) return;
       raf = requestAnimationFrame(() => {
-        raf = 0
-        measure()
-      })
-    }
-    window.addEventListener("resize", schedule, { passive: true })
+        raf = 0;
+        measure();
+      });
+    };
+    window.addEventListener("resize", schedule, { passive: true });
     window.addEventListener("scroll", schedule, {
       passive: true,
       capture: true,
-    })
+    });
     return () => {
-      if (raf) cancelAnimationFrame(raf)
-      window.removeEventListener("resize", schedule)
-      window.removeEventListener("scroll", schedule, { capture: true })
-    }
-  }, [measure])
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", schedule, { capture: true });
+    };
+  }, [measure]);
 
   React.useLayoutEffect(() => {
-    const card = cardRef.current
-    if (!card || !rect) return
-    const w = card.offsetWidth
-    const h = card.offsetHeight
-    const gap = 12
-    const edge = 16
+    const card = cardRef.current;
+    if (!card || !rect) return;
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    const gap = 12;
+    const edge = 16;
     const box = {
       top: rect.top - padding,
       left: rect.left - padding,
       width: rect.width + padding * 2,
       height: rect.height + padding * 2,
-    }
+    };
     const coords = (s: NonNullable<TourStep["side"]>) => {
       switch (s) {
         case "top":
           return {
             top: box.top - gap - h,
             left: box.left + box.width / 2 - w / 2,
-          }
+          };
         case "bottom":
           return {
             top: box.top + box.height + gap,
             left: box.left + box.width / 2 - w / 2,
-          }
+          };
         case "left":
           return {
             top: box.top + box.height / 2 - h / 2,
             left: box.left - gap - w,
-          }
+          };
         case "right":
           return {
             top: box.top + box.height / 2 - h / 2,
             left: box.left + box.width + gap,
-          }
+          };
       }
-    }
+    };
     const fits = (s: NonNullable<TourStep["side"]>) => {
-      const c = coords(s)
+      const c = coords(s);
       return (
         c.top >= edge &&
         c.left >= edge &&
         c.top + h <= viewport.h - edge &&
         c.left + w <= viewport.w - edge
-      )
-    }
+      );
+    };
     const opposite = {
       top: "bottom",
       bottom: "top",
       left: "right",
       right: "left",
-    } as const
-    const placed = !fits(side) && fits(opposite[side]) ? opposite[side] : side
-    const c = coords(placed)
+    } as const;
+    const placed = !fits(side) && fits(opposite[side]) ? opposite[side] : side;
+    const c = coords(placed);
     setPos({
       top: Math.min(
         Math.max(c.top, edge),
-        Math.max(edge, viewport.h - h - edge)
+        Math.max(edge, viewport.h - h - edge),
       ),
       left: Math.min(
         Math.max(c.left, edge),
-        Math.max(edge, viewport.w - w - edge)
+        Math.max(edge, viewport.w - w - edge),
       ),
-    })
-  }, [rect, viewport, side, padding, step])
+    });
+  }, [rect, viewport, side, padding, step]);
 
   React.useEffect(() => {
-    cardRef.current?.focus()
-  }, [step])
+    cardRef.current?.focus();
+  }, [step]);
 
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        e.preventDefault()
-        stop()
-        return
+        e.preventDefault();
+        stop();
+        return;
       }
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
-      e.preventDefault()
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
       const rtl = cardRef.current
         ? getComputedStyle(cardRef.current).direction === "rtl"
-        : false
-      const forward = e.key === "ArrowRight" ? !rtl : rtl
+        : false;
+      const forward = e.key === "ArrowRight" ? !rtl : rtl;
       if (forward) {
-        next()
+        next();
       } else {
-        back()
+        back();
       }
-    }
-    document.addEventListener("keydown", onKeyDown)
-    return () => document.removeEventListener("keydown", onKeyDown)
-  }, [stop, next, back])
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [stop, next, back]);
 
   const onCardKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "Tab") return
-    const card = cardRef.current
-    if (!card) return
+    if (e.key !== "Tab") return;
+    const card = cardRef.current;
+    if (!card) return;
     const focusables = card.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )
+      'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
     if (focusables.length === 0) {
-      e.preventDefault()
-      return
+      e.preventDefault();
+      return;
     }
-    const first = focusables[0]
-    const last = focusables[focusables.length - 1]
-    const active = document.activeElement
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
     if (e.shiftKey && (active === first || active === card)) {
-      e.preventDefault()
-      last.focus()
+      e.preventDefault();
+      last.focus();
     } else if (!e.shiftKey && active === last) {
-      e.preventDefault()
-      first.focus()
+      e.preventDefault();
+      first.focus();
     }
-  }
+  };
 
   const spotlight = rect
     ? {
@@ -388,13 +388,13 @@ function TourOverlay({
         w: rect.width + padding * 2,
         h: rect.height + padding * 2,
       }
-    : null
-  const radius = spotlight ? Math.min(8, spotlight.w / 2, spotlight.h / 2) : 0
+    : null;
+  const radius = spotlight ? Math.min(8, spotlight.w / 2, spotlight.h / 2) : 0;
   const scrimPath = spotlight
     ? `M0 0H${viewport.w}V${viewport.h}H0Z M${spotlight.x + radius} ${spotlight.y}h${spotlight.w - radius * 2}a${radius} ${radius} 0 0 1 ${radius} ${radius}v${spotlight.h - radius * 2}a${radius} ${radius} 0 0 1 ${-radius} ${radius}h${-(spotlight.w - radius * 2)}a${radius} ${radius} 0 0 1 ${-radius} ${-radius}v${-(spotlight.h - radius * 2)}a${radius} ${radius} 0 0 1 ${radius} ${-radius}Z`
-    : `M0 0H${viewport.w}V${viewport.h}H0Z`
+    : `M0 0H${viewport.w}V${viewport.h}H0Z`;
 
-  const isLast = step >= steps.length - 1
+  const isLast = step >= steps.length - 1;
 
   return (
     <div data-slot="tour" className="pointer-events-none fixed inset-0 z-50">
@@ -433,7 +433,7 @@ function TourOverlay({
         className={cn(
           "pointer-events-auto fixed w-72 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-popover p-4 text-popover-foreground shadow-lg outline-none",
           "animate-in fade-in-0 zoom-in-95 duration-200 ease-out",
-          pos === null && "invisible"
+          pos === null && "invisible",
         )}
         style={{ top: pos?.top ?? 0, left: pos?.left ?? 0 }}
       >
@@ -482,26 +482,26 @@ function TourOverlay({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export type TourTriggerProps = React.ComponentProps<typeof Button> & {
   /** Step index to start at, 0-based. */
-  at?: number
-}
+  at?: number;
+};
 
 function TourTrigger({ at, onClick, ...props }: TourTriggerProps) {
-  const { start } = useTour()
+  const { start } = useTour();
   return (
     <Button
       {...props}
       data-slot="tour-trigger"
       onClick={(e) => {
-        onClick?.(e)
-        if (!e.defaultPrevented) start(at)
+        onClick?.(e);
+        if (!e.defaultPrevented) start(at);
       }}
     />
-  )
+  );
 }
 
-export { Tour, TourTrigger, useTour }
+export { Tour, TourTrigger, useTour };

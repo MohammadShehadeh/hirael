@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type QuickActionsProps = React.ComponentProps<"div"> & {
   /** Number of columns in the action grid. */
-  columns?: number
-}
+  columns?: number;
+};
 
 function QuickActions({
   columns = 2,
@@ -26,29 +26,33 @@ function QuickActions({
       }}
       {...props}
     />
-  )
+  );
 }
 
 type QuickActionProps = React.ComponentProps<"button"> & {
-  asChild?: boolean
-}
+  asChild?: boolean;
+};
 
-function QuickAction({ asChild = false, className, ...props }: QuickActionProps) {
-  const Comp = asChild ? Slot : "button"
+function QuickAction({
+  asChild = false,
+  className,
+  ...props
+}: QuickActionProps) {
+  const Comp = asChild ? Slot : "button";
   return (
     <Comp
       data-slot="quick-action"
       className={cn(
         "group flex flex-col items-start gap-2.5 rounded-lg border border-border bg-card p-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className
+        className,
       )}
       {...(asChild ? {} : { type: "button" })}
       {...props}
     />
-  )
+  );
 }
 
-type QuickActionIconProps = React.ComponentProps<"span">
+type QuickActionIconProps = React.ComponentProps<"span">;
 
 function QuickActionIcon({ className, ...props }: QuickActionIconProps) {
   return (
@@ -56,14 +60,14 @@ function QuickActionIcon({ className, ...props }: QuickActionIconProps) {
       data-slot="quick-action-icon"
       className={cn(
         "inline-flex size-8 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors group-hover:bg-card [&_svg]:size-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type QuickActionLabelProps = React.ComponentProps<"span">
+type QuickActionLabelProps = React.ComponentProps<"span">;
 
 function QuickActionLabel({ className, ...props }: QuickActionLabelProps) {
   return (
@@ -72,10 +76,10 @@ function QuickActionLabel({ className, ...props }: QuickActionLabelProps) {
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type QuickActionDescriptionProps = React.ComponentProps<"span">
+type QuickActionDescriptionProps = React.ComponentProps<"span">;
 
 function QuickActionDescription({
   className,
@@ -87,7 +91,7 @@ function QuickActionDescription({
       className={cn("text-xs text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -96,4 +100,4 @@ export {
   QuickActionIcon,
   QuickActionLabel,
   QuickActionDescription,
-}
+};

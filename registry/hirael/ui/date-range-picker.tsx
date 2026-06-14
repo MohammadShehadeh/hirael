@@ -1,127 +1,131 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react"
+import * as React from "react";
+import { CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/registry/hirael/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/popover";
+import { Separator } from "@/registry/hirael/ui/separator";
 
-export type DateRange = { from?: Date; to?: Date }
+export type DateRange = { from?: Date; to?: Date };
 export type DateRangePreset = {
-  label: string
-  range: () => { from: Date; to: Date }
-}
+  label: string;
+  range: () => { from: Date; to: Date };
+};
 
 function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 function sameDay(a: Date | undefined, b: Date | undefined) {
-  if (!a || !b) return false
+  if (!a || !b) return false;
   return (
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
-  )
+  );
 }
 
 function addDays(d: Date, n: number) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n)
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 }
 
 function addMonthsClamped(d: Date, n: number) {
-  const y = d.getFullYear()
-  const m = d.getMonth() + n
-  const last = new Date(y, m + 1, 0).getDate()
-  return new Date(y, m, Math.min(d.getDate(), last))
+  const y = d.getFullYear();
+  const m = d.getMonth() + n;
+  const last = new Date(y, m + 1, 0).getDate();
+  return new Date(y, m, Math.min(d.getDate(), last));
 }
 
 function monthIndex(d: Date) {
-  return d.getFullYear() * 12 + d.getMonth()
+  return d.getFullYear() * 12 + d.getMonth();
 }
 
 function monthCells(month: Date, weekStartsOn: 0 | 1) {
-  const first = new Date(month.getFullYear(), month.getMonth(), 1)
-  const lead = (first.getDay() - weekStartsOn + 7) % 7
-  const count = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate()
-  const cells: (Date | null)[] = []
-  for (let i = 0; i < lead; i++) cells.push(null)
+  const first = new Date(month.getFullYear(), month.getMonth(), 1);
+  const lead = (first.getDay() - weekStartsOn + 7) % 7;
+  const count = new Date(
+    month.getFullYear(),
+    month.getMonth() + 1,
+    0,
+  ).getDate();
+  const cells: (Date | null)[] = [];
+  for (let i = 0; i < lead; i++) cells.push(null);
   for (let day = 1; day <= count; day++) {
-    cells.push(new Date(month.getFullYear(), month.getMonth(), day))
+    cells.push(new Date(month.getFullYear(), month.getMonth(), day));
   }
-  while (cells.length % 7 !== 0) cells.push(null)
-  return cells
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
 }
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
   {
     label: "Today",
     range: () => {
-      const t = startOfDay(new Date())
-      return { from: t, to: t }
+      const t = startOfDay(new Date());
+      return { from: t, to: t };
     },
   },
   {
     label: "Last 7 days",
     range: () => {
-      const t = startOfDay(new Date())
-      return { from: addDays(t, -6), to: t }
+      const t = startOfDay(new Date());
+      return { from: addDays(t, -6), to: t };
     },
   },
   {
     label: "Last 14 days",
     range: () => {
-      const t = startOfDay(new Date())
-      return { from: addDays(t, -13), to: t }
+      const t = startOfDay(new Date());
+      return { from: addDays(t, -13), to: t };
     },
   },
   {
     label: "Last 30 days",
     range: () => {
-      const t = startOfDay(new Date())
-      return { from: addDays(t, -29), to: t }
+      const t = startOfDay(new Date());
+      return { from: addDays(t, -29), to: t };
     },
   },
   {
     label: "This month",
     range: () => {
-      const t = new Date()
+      const t = new Date();
       return {
         from: new Date(t.getFullYear(), t.getMonth(), 1),
         to: new Date(t.getFullYear(), t.getMonth() + 1, 0),
-      }
+      };
     },
   },
   {
     label: "Last month",
     range: () => {
-      const t = new Date()
+      const t = new Date();
       return {
         from: new Date(t.getFullYear(), t.getMonth() - 1, 1),
         to: new Date(t.getFullYear(), t.getMonth(), 0),
-      }
+      };
     },
   },
-]
+];
 
 export type DateRangeCalendarProps = {
-  value?: DateRange
-  defaultValue?: DateRange
-  onValueChange?: (range: DateRange | undefined) => void
-  min?: Date
-  max?: Date
-  disabledDate?: (d: Date) => boolean
-  locale?: string
-  weekStartsOn?: 0 | 1
-  numberOfMonths?: 1 | 2
-  className?: string
-}
+  value?: DateRange;
+  defaultValue?: DateRange;
+  onValueChange?: (range: DateRange | undefined) => void;
+  min?: Date;
+  max?: Date;
+  disabledDate?: (d: Date) => boolean;
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  numberOfMonths?: 1 | 2;
+  className?: string;
+};
 
 function DateRangeCalendar({
   value: valueProp,
@@ -136,165 +140,166 @@ function DateRangeCalendar({
   className,
 }: DateRangeCalendarProps) {
   const [internal, setInternal] = React.useState<DateRange | undefined>(
-    defaultValue
-  )
-  const range = valueProp ?? internal
-  const today = startOfDay(new Date())
+    defaultValue,
+  );
+  const range = valueProp ?? internal;
+  const today = startOfDay(new Date());
 
   const [viewMonth, setViewMonth] = React.useState<Date>(() => {
-    const anchor = range?.from ?? today
-    return new Date(anchor.getFullYear(), anchor.getMonth(), 1)
-  })
-  const [hovered, setHovered] = React.useState<Date | null>(null)
+    const anchor = range?.from ?? today;
+    return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+  });
+  const [hovered, setHovered] = React.useState<Date | null>(null);
 
-  const pending = !!range?.from && !range?.to
+  const pending = !!range?.from && !range?.to;
 
   const setRange = React.useCallback(
     (next: DateRange | undefined) => {
-      if (valueProp === undefined) setInternal(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternal(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
   const isDayDisabled = React.useCallback(
     (d: Date) => {
-      if (min && d.getTime() < startOfDay(min).getTime()) return true
-      if (max && d.getTime() > startOfDay(max).getTime()) return true
-      return disabledDate ? disabledDate(d) : false
+      if (min && d.getTime() < startOfDay(min).getTime()) return true;
+      if (max && d.getTime() > startOfDay(max).getTime()) return true;
+      return disabledDate ? disabledDate(d) : false;
     },
-    [min, max, disabledDate]
-  )
+    [min, max, disabledDate],
+  );
 
   const selectDay = (d: Date) => {
     if (!range?.from || range.to) {
-      setRange({ from: d })
-      return
+      setRange({ from: d });
+      return;
     }
-    setHovered(null)
+    setHovered(null);
     if (d.getTime() < startOfDay(range.from).getTime()) {
-      setRange({ from: d, to: startOfDay(range.from) })
+      setRange({ from: d, to: startOfDay(range.from) });
     } else {
-      setRange({ from: startOfDay(range.from), to: d })
+      setRange({ from: startOfDay(range.from), to: d });
     }
-  }
+  };
 
-  const fromDay = range?.from ? startOfDay(range.from) : undefined
-  const toDay = range?.to ? startOfDay(range.to) : undefined
-  const previewing = pending && !!hovered && !!fromDay
+  const fromDay = range?.from ? startOfDay(range.from) : undefined;
+  const toDay = range?.to ? startOfDay(range.to) : undefined;
+  const previewing = pending && !!hovered && !!fromDay;
   const lo = previewing
     ? hovered.getTime() < fromDay.getTime()
       ? hovered
       : fromDay
-    : fromDay
+    : fromDay;
   const hi = previewing
     ? hovered.getTime() < fromDay.getTime()
       ? fromDay
       : hovered
-    : toDay
-  const hasSpan = !!lo && !!hi && !sameDay(lo, hi)
+    : toDay;
+  const hasSpan = !!lo && !!hi && !sameDay(lo, hi);
 
-  const months = Array.from({ length: numberOfMonths }, (_, i) =>
-    new Date(viewMonth.getFullYear(), viewMonth.getMonth() + i, 1)
-  )
+  const months = Array.from(
+    { length: numberOfMonths },
+    (_, i) => new Date(viewMonth.getFullYear(), viewMonth.getMonth() + i, 1),
+  );
 
   const isMonthVisible = (d: Date) => {
-    const k = monthIndex(d)
-    const v = monthIndex(viewMonth)
-    return k >= v && k < v + numberOfMonths
-  }
+    const k = monthIndex(d);
+    const v = monthIndex(viewMonth);
+    return k >= v && k < v + numberOfMonths;
+  };
 
   const canPrev =
     !min ||
     new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0).getTime() >=
-      startOfDay(min).getTime()
+      startOfDay(min).getTime();
   const canNext =
     !max ||
     new Date(
       viewMonth.getFullYear(),
       viewMonth.getMonth() + numberOfMonths,
-      1
-    ).getTime() <= startOfDay(max).getTime()
+      1,
+    ).getTime() <= startOfDay(max).getTime();
 
   const stepMonth = (n: number) =>
     setViewMonth(
-      new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1)
-    )
+      new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1),
+    );
 
-  const rootRef = React.useRef<HTMLDivElement>(null)
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const focusDay = (d: Date) => {
     const doFocus = () => {
       rootRef.current
         ?.querySelector<HTMLButtonElement>(`[data-day="${d.getTime()}"]`)
-        ?.focus()
-    }
+        ?.focus();
+    };
     if (!isMonthVisible(d)) {
-      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1))
-      requestAnimationFrame(doFocus)
+      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1));
+      requestAnimationFrame(doFocus);
     } else {
-      doFocus()
+      doFocus();
     }
-  }
+  };
 
   const handleKey = (e: React.KeyboardEvent, d: Date) => {
     const forward =
-      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1
-    const dow = (d.getDay() - weekStartsOn + 7) % 7
-    let next: Date
+      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1;
+    const dow = (d.getDay() - weekStartsOn + 7) % 7;
+    let next: Date;
     switch (e.key) {
       case "ArrowLeft":
-        next = addDays(d, -forward)
-        break
+        next = addDays(d, -forward);
+        break;
       case "ArrowRight":
-        next = addDays(d, forward)
-        break
+        next = addDays(d, forward);
+        break;
       case "ArrowUp":
-        next = addDays(d, -7)
-        break
+        next = addDays(d, -7);
+        break;
       case "ArrowDown":
-        next = addDays(d, 7)
-        break
+        next = addDays(d, 7);
+        break;
       case "Home":
-        next = addDays(d, -dow)
-        break
+        next = addDays(d, -dow);
+        break;
       case "End":
-        next = addDays(d, 6 - dow)
-        break
+        next = addDays(d, 6 - dow);
+        break;
       case "PageUp":
-        next = addMonthsClamped(d, e.shiftKey ? -12 : -1)
-        break
+        next = addMonthsClamped(d, e.shiftKey ? -12 : -1);
+        break;
       case "PageDown":
-        next = addMonthsClamped(d, e.shiftKey ? 12 : 1)
-        break
+        next = addMonthsClamped(d, e.shiftKey ? 12 : 1);
+        break;
       default:
-        return
+        return;
     }
-    e.preventDefault()
+    e.preventDefault();
     if (min && next.getTime() < startOfDay(min).getTime()) {
-      next = startOfDay(min)
+      next = startOfDay(min);
     }
     if (max && next.getTime() > startOfDay(max).getTime()) {
-      next = startOfDay(max)
+      next = startOfDay(max);
     }
-    focusDay(next)
-  }
+    focusDay(next);
+  };
 
   const monthFmt = new Intl.DateTimeFormat(locale, {
     month: "long",
     year: "numeric",
-  })
-  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: "short" })
-  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: "full" })
+  });
+  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: "short" });
+  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
   const weekdays = Array.from({ length: 7 }, (_, i) =>
-    weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7)))
-  )
+    weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
+  );
 
   const tabbable =
     range?.from && isMonthVisible(range.from)
       ? startOfDay(range.from)
       : isMonthVisible(today)
         ? today
-        : viewMonth
+        : viewMonth;
 
   return (
     <div
@@ -303,7 +308,7 @@ function DateRangeCalendar({
       className={cn("flex gap-4", className)}
     >
       {months.map((month, mi) => {
-        const last = mi === numberOfMonths - 1
+        const last = mi === numberOfMonths - 1;
         return (
           <div
             key={monthIndex(month)}
@@ -337,7 +342,7 @@ function DateRangeCalendar({
                 onClick={() => stepMonth(1)}
                 className={cn(
                   "size-7",
-                  !last && numberOfMonths === 2 && "sm:invisible"
+                  !last && numberOfMonths === 2 && "sm:invisible",
                 )}
               >
                 <ChevronRight className="size-3.5 rtl:rotate-180" />
@@ -361,17 +366,17 @@ function DateRangeCalendar({
               ))}
               {monthCells(month, weekStartsOn).map((d, i) => {
                 if (!d) {
-                  return <span key={i} aria-hidden className="size-8" />
+                  return <span key={i} aria-hidden className="size-8" />;
                 }
-                const t = d.getTime()
-                const isLo = !!lo && sameDay(d, lo)
-                const isHi = !!hi && sameDay(d, hi)
+                const t = d.getTime();
+                const isLo = !!lo && sameDay(d, lo);
+                const isHi = !!hi && sameDay(d, hi);
                 const isBetween =
-                  !!lo && !!hi && t > lo.getTime() && t < hi.getTime()
+                  !!lo && !!hi && t > lo.getTime() && t < hi.getTime();
                 const isAnchor =
-                  sameDay(d, range?.from) || sameDay(d, range?.to)
-                const isToday = sameDay(d, today)
-                const out = isDayDisabled(d)
+                  sameDay(d, range?.from) || sameDay(d, range?.to);
+                const isToday = sameDay(d, today);
+                const out = isDayDisabled(d);
                 return (
                   <button
                     key={i}
@@ -401,29 +406,31 @@ function DateRangeCalendar({
                         "bg-primary text-primary-foreground hover:bg-primary",
                       isLo && hasSpan && "rounded-e-none",
                       isHi && hasSpan && "rounded-s-none",
-                      !isAnchor && isToday && "ring-1 ring-inset ring-primary/60"
+                      !isAnchor &&
+                        isToday &&
+                        "ring-1 ring-inset ring-primary/60",
                     )}
                   >
                     {d.getDate()}
                   </button>
-                )
+                );
               })}
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 export type DateRangePickerProps = Omit<DateRangeCalendarProps, "className"> & {
-  presets?: DateRangePreset[]
-  showPresets?: boolean
-  placeholder?: string
-  disabled?: boolean
-  align?: React.ComponentProps<typeof PopoverContent>["align"]
-  className?: string
-}
+  presets?: DateRangePreset[];
+  showPresets?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+  align?: React.ComponentProps<typeof PopoverContent>["align"];
+  className?: string;
+};
 
 function DateRangePicker({
   value: valueProp,
@@ -438,23 +445,23 @@ function DateRangePicker({
   className,
   ...calendarProps
 }: DateRangePickerProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
   const [internal, setInternal] = React.useState<DateRange | undefined>(
-    defaultValue
-  )
-  const range = valueProp ?? internal
+    defaultValue,
+  );
+  const range = valueProp ?? internal;
 
   const setRange = (next: DateRange | undefined) => {
-    if (valueProp === undefined) setInternal(next)
-    onValueChange?.(next)
-  }
+    if (valueProp === undefined) setInternal(next);
+    onValueChange?.(next);
+  };
 
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" })
+  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   const label = range?.from
     ? range.to
       ? `${fmt.format(range.from)} – ${fmt.format(range.to)}`
       : `${fmt.format(range.from)} – …`
-    : placeholder
+    : placeholder;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -469,7 +476,7 @@ function DateRangePicker({
             "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
             !range?.from && "text-muted-foreground font-sans",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            className
+            className,
           )}
         >
           <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
@@ -494,17 +501,17 @@ function DateRangePicker({
                     type="button"
                     data-slot="date-range-picker-preset"
                     onClick={() => {
-                      const next = preset.range()
+                      const next = preset.range();
                       setRange({
                         from: startOfDay(next.from),
                         to: startOfDay(next.to),
-                      })
-                      setOpen(false)
+                      });
+                      setOpen(false);
                     }}
                     className={cn(
                       "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
                       "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:ring-2 focus-visible:ring-ring"
+                      "focus-visible:ring-2 focus-visible:ring-ring",
                     )}
                   >
                     {preset.label}
@@ -544,7 +551,7 @@ function DateRangePicker({
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
-export { DateRangePicker, DateRangeCalendar }
+export { DateRangePicker, DateRangeCalendar };

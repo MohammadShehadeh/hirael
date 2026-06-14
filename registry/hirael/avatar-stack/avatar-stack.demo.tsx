@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import {
   AvatarStack,
   AvatarStackItem,
   AvatarStackOverflow,
-} from "@/registry/hirael/ui/avatar-stack"
+} from "@/registry/hirael/ui/avatar-stack";
 
 export default function AvatarStackDemo() {
   return (
@@ -107,5 +107,5 @@ export default function AvatarStackDemo() {
         </AvatarStack>
       </div>
     </div>
-  )
+  );
 }

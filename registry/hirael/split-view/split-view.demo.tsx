@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
 import {
   SplitView,
   SplitViewPanel,
   SplitViewResizer,
-} from "@/registry/hirael/ui/split-view"
+} from "@/registry/hirael/ui/split-view";
 
 const FILES = [
   { name: "index.ts", meta: "2.1 KB" },
   { name: "router.ts", meta: "8.4 KB" },
   { name: "db.ts", meta: "3.0 KB" },
   { name: "auth.ts", meta: "5.7 KB" },
-]
+];
 
 export default function SplitViewDemo() {
   return (
@@ -28,7 +28,9 @@ export default function SplitViewDemo() {
               <button
                 type="button"
                 className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-start text-sm transition-colors hover:bg-accent ${
-                  i === 1 ? "bg-accent text-foreground" : "text-muted-foreground"
+                  i === 1
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 <span className="truncate font-mono text-xs">{file.name}</span>
@@ -60,5 +62,5 @@ export default function SplitViewDemo() {
         </pre>
       </SplitViewPanel>
     </SplitView>
-  )
+  );
 }

@@ -1,34 +1,36 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronsLeftRight } from "lucide-react"
+import * as React from "react";
+import { ChevronsLeftRight } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type ImageCompareContextValue = {
-  position: number
-  setPosition: (next: number) => void
-  orientation: "horizontal" | "vertical"
-  disabled: boolean
-  dragging: boolean
-  setDragging: (dragging: boolean) => void
-  rtl: boolean
-  positionFromPointer: (event: React.PointerEvent) => number | null
-}
+  position: number;
+  setPosition: (next: number) => void;
+  orientation: "horizontal" | "vertical";
+  disabled: boolean;
+  dragging: boolean;
+  setDragging: (dragging: boolean) => void;
+  rtl: boolean;
+  positionFromPointer: (event: React.PointerEvent) => number | null;
+};
 
 const ImageCompareContext =
-  React.createContext<ImageCompareContextValue | null>(null)
+  React.createContext<ImageCompareContextValue | null>(null);
 
 function useImageCompare() {
-  const context = React.useContext(ImageCompareContext)
+  const context = React.useContext(ImageCompareContext);
   if (!context) {
-    throw new Error("ImageCompare components must be used within <ImageCompare>")
+    throw new Error(
+      "ImageCompare components must be used within <ImageCompare>",
+    );
   }
-  return context
+  return context;
 }
 
 function clamp(value: number) {
-  return Math.min(100, Math.max(0, value))
+  return Math.min(100, Math.max(0, value));
 }
 
 export type ImageCompareProps = Omit<
@@ -36,14 +38,14 @@ export type ImageCompareProps = Omit<
   "onPointerMove"
 > & {
   /** Controlled position of the boundary, 0–100 from the reading start. */
-  position?: number
-  defaultPosition?: number
-  onPositionChange?: (position: number) => void
-  orientation?: "horizontal" | "vertical"
+  position?: number;
+  defaultPosition?: number;
+  onPositionChange?: (position: number) => void;
+  orientation?: "horizontal" | "vertical";
   /** Follow the hovering pointer instead of requiring a drag. */
-  followPointer?: boolean
-  disabled?: boolean
-}
+  followPointer?: boolean;
+  disabled?: boolean;
+};
 
 function ImageCompare({
   position: positionProp,
@@ -56,51 +58,51 @@ function ImageCompare({
   children,
   ...props
 }: ImageCompareProps) {
-  const containerRef = React.useRef<HTMLDivElement | null>(null)
-  const [rtl, setRtl] = React.useState(false)
-  const [dragging, setDragging] = React.useState(false)
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const [rtl, setRtl] = React.useState(false);
+  const [dragging, setDragging] = React.useState(false);
   const [uncontrolled, setUncontrolled] = React.useState(() =>
-    clamp(defaultPosition)
-  )
+    clamp(defaultPosition),
+  );
 
-  const position = clamp(positionProp ?? uncontrolled)
+  const position = clamp(positionProp ?? uncontrolled);
 
   const setPosition = React.useCallback(
     (next: number) => {
-      const value = clamp(next)
-      if (positionProp === undefined) setUncontrolled(value)
-      onPositionChange?.(value)
+      const value = clamp(next);
+      if (positionProp === undefined) setUncontrolled(value);
+      onPositionChange?.(value);
     },
-    [positionProp, onPositionChange]
-  )
+    [positionProp, onPositionChange],
+  );
 
   React.useLayoutEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    setRtl(getComputedStyle(node).direction === "rtl")
-  }, [])
+    const node = containerRef.current;
+    if (!node) return;
+    setRtl(getComputedStyle(node).direction === "rtl");
+  }, []);
 
   const positionFromPointer = React.useCallback(
     (event: React.PointerEvent) => {
-      const node = containerRef.current
-      if (!node) return null
-      const rect = node.getBoundingClientRect()
+      const node = containerRef.current;
+      if (!node) return null;
+      const rect = node.getBoundingClientRect();
       if (orientation === "vertical") {
-        if (rect.height === 0) return null
-        return clamp(((event.clientY - rect.top) / rect.height) * 100)
+        if (rect.height === 0) return null;
+        return clamp(((event.clientY - rect.top) / rect.height) * 100);
       }
-      if (rect.width === 0) return null
-      const raw = ((event.clientX - rect.left) / rect.width) * 100
-      return clamp(rtl ? 100 - raw : raw)
+      if (rect.width === 0) return null;
+      const raw = ((event.clientX - rect.left) / rect.width) * 100;
+      return clamp(rtl ? 100 - raw : raw);
     },
-    [orientation, rtl]
-  )
+    [orientation, rtl],
+  );
 
   const handlePointerMove = (event: React.PointerEvent) => {
-    if (!followPointer || disabled || dragging) return
-    const next = positionFromPointer(event)
-    if (next !== null) setPosition(next)
-  }
+    if (!followPointer || disabled || dragging) return;
+    const next = positionFromPointer(event);
+    if (next !== null) setPosition(next);
+  };
 
   return (
     <ImageCompareContext.Provider
@@ -124,17 +126,17 @@ function ImageCompare({
         onPointerMove={followPointer ? handlePointerMove : undefined}
         className={cn(
           "relative isolate w-full select-none overflow-hidden",
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </div>
     </ImageCompareContext.Provider>
-  )
+  );
 }
 
-export type ImageCompareBeforeProps = React.ComponentProps<"div">
+export type ImageCompareBeforeProps = React.ComponentProps<"div">;
 
 function ImageCompareBefore({
   className,
@@ -149,10 +151,10 @@ function ImageCompareBefore({
     >
       {children}
     </div>
-  )
+  );
 }
 
-export type ImageCompareAfterProps = React.ComponentProps<"div">
+export type ImageCompareAfterProps = React.ComponentProps<"div">;
 
 function ImageCompareAfter({
   className,
@@ -160,14 +162,14 @@ function ImageCompareAfter({
   children,
   ...props
 }: ImageCompareAfterProps) {
-  const { position, orientation, dragging, rtl } = useImageCompare()
+  const { position, orientation, dragging, rtl } = useImageCompare();
 
   const clipPath =
     orientation === "vertical"
       ? `inset(${position}% 0 0 0)`
       : rtl
         ? `inset(0 ${position}% 0 0)`
-        : `inset(0 0 0 ${position}%)`
+        : `inset(0 0 0 ${position}%)`;
 
   return (
     <div
@@ -182,12 +184,12 @@ function ImageCompareAfter({
     >
       {children}
     </div>
-  )
+  );
 }
 
 export type ImageCompareHandleProps = React.ComponentProps<"div"> & {
-  "aria-label"?: string
-}
+  "aria-label"?: string;
+};
 
 function ImageCompareHandle({
   className,
@@ -204,61 +206,61 @@ function ImageCompareHandle({
     setDragging,
     rtl,
     positionFromPointer,
-  } = useImageCompare()
+  } = useImageCompare();
 
-  const vertical = orientation === "vertical"
+  const vertical = orientation === "vertical";
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (disabled) return
-    event.preventDefault()
-    event.currentTarget.setPointerCapture(event.pointerId)
-    event.currentTarget.focus()
-    setDragging(true)
-    const next = positionFromPointer(event)
-    if (next !== null) setPosition(next)
-  }
+    if (disabled) return;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.focus();
+    setDragging(true);
+    const next = positionFromPointer(event);
+    if (next !== null) setPosition(next);
+  };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging || disabled) return
-    const next = positionFromPointer(event)
-    if (next !== null) setPosition(next)
-  }
+    if (!dragging || disabled) return;
+    const next = positionFromPointer(event);
+    if (next !== null) setPosition(next);
+  };
 
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
+      event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    setDragging(false)
-  }
+    setDragging(false);
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (disabled) return
-    const step = event.shiftKey ? 10 : 1
-    let next: number | null = null
+    if (disabled) return;
+    const step = event.shiftKey ? 10 : 1;
+    let next: number | null = null;
     switch (event.key) {
       case "ArrowRight":
-        next = position + (rtl ? -step : step)
-        break
+        next = position + (rtl ? -step : step);
+        break;
       case "ArrowLeft":
-        next = position + (rtl ? step : -step)
-        break
+        next = position + (rtl ? step : -step);
+        break;
       case "ArrowDown":
-        next = position + step
-        break
+        next = position + step;
+        break;
       case "ArrowUp":
-        next = position - step
-        break
+        next = position - step;
+        break;
       case "Home":
-        next = 0
-        break
+        next = 0;
+        break;
       case "End":
-        next = 100
-        break
+        next = 100;
+        break;
     }
-    if (next === null) return
-    event.preventDefault()
-    setPosition(next)
-  }
+    if (next === null) return;
+    event.preventDefault();
+    setPosition(next);
+  };
 
   return (
     <div
@@ -295,10 +297,10 @@ function ImageCompareHandle({
           ? "inset-x-0 h-8 -translate-y-1/2 cursor-row-resize flex-col"
           : cn(
               "inset-y-0 w-8 cursor-col-resize",
-              rtl ? "translate-x-1/2" : "-translate-x-1/2"
+              rtl ? "translate-x-1/2" : "-translate-x-1/2",
             ),
         disabled && "cursor-default",
-        className
+        className,
       )}
       {...props}
     >
@@ -307,7 +309,7 @@ function ImageCompareHandle({
         data-slot="image-compare-handle-line"
         className={cn(
           "absolute bg-white/90 shadow-[0_0_4px_rgba(0,0,0,0.4)]",
-          vertical ? "inset-x-0 h-px" : "inset-y-0 w-px"
+          vertical ? "inset-x-0 h-px" : "inset-y-0 w-px",
         )}
       />
       {children ?? (
@@ -316,7 +318,7 @@ function ImageCompareHandle({
           className={cn(
             "relative z-10 flex size-8 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition-transform",
             "group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2",
-            dragging && "scale-110"
+            dragging && "scale-110",
           )}
         >
           <ChevronsLeftRight
@@ -326,12 +328,12 @@ function ImageCompareHandle({
         </span>
       )}
     </div>
-  )
+  );
 }
 
 export type ImageCompareLabelProps = React.ComponentProps<"span"> & {
-  side: "before" | "after"
-}
+  side: "before" | "after";
+};
 
 function ImageCompareLabel({
   side,
@@ -339,7 +341,7 @@ function ImageCompareLabel({
   children,
   ...props
 }: ImageCompareLabelProps) {
-  const { orientation, dragging } = useImageCompare()
+  const { orientation, dragging } = useImageCompare();
 
   return (
     <span
@@ -355,13 +357,13 @@ function ImageCompareLabel({
             ? "start-3 top-3"
             : "end-3 top-3",
         dragging && "opacity-0",
-        className
+        className,
       )}
       {...props}
     >
       {children}
     </span>
-  )
+  );
 }
 
 export {
@@ -370,4 +372,4 @@ export {
   ImageCompareAfter,
   ImageCompareHandle,
   ImageCompareLabel,
-}
+};

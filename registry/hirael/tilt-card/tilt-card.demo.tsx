@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { TiltCard } from "@/registry/hirael/ui/tilt-card"
+import { TiltCard } from "@/registry/hirael/ui/tilt-card";
 
 export default function TiltCardDemo() {
   return (
@@ -30,5 +30,5 @@ export default function TiltCardDemo() {
         Point at the card to tilt
       </p>
     </div>
-  )
+  );
 }

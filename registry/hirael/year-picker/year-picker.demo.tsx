@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   YearPicker,
   YearPickerContent,
   YearPickerTrigger,
   type YearRange,
-} from "@/registry/hirael/ui/year-picker"
+} from "@/registry/hirael/ui/year-picker";
 
 export default function YearPickerDemo() {
-  const [year, setYear] = React.useState<number | undefined>(2026)
+  const [year, setYear] = React.useState<number | undefined>(2026);
   const [range, setRange] = React.useState<YearRange | undefined>({
     from: 2021,
     to: 2026,
-  })
+  });
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
@@ -52,5 +52,5 @@ export default function YearPickerDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

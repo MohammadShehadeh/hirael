@@ -1,31 +1,37 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
-import { ArrowRight, Menu, X } from "lucide-react"
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { ArrowRight, Menu, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { EASE, HiraelMark, OrangeButton, PartnerIcon, RollText } from "./primitives"
+import {
+  EASE,
+  HiraelMark,
+  OrangeButton,
+  PartnerIcon,
+  RollText,
+} from "./primitives";
 
 // WebGL hero stack — client only, so it stays out of any server render.
 const ShaderBackground = dynamic(
   () => import("./shader-background").then((m) => m.ShaderBackground),
-  { ssr: false }
-)
+  { ssr: false },
+);
 
-const NAV_LINKS = ["Projects", "Studio", "Journal", "Connect"]
+const NAV_LINKS = ["Projects", "Studio", "Journal", "Connect"];
 
 export function Hero() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Lock body scroll behind the mobile sheet.
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : ""
+    document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
-      document.body.style.overflow = ""
-    }
-  }, [menuOpen])
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <>
@@ -38,7 +44,11 @@ export function Hero() {
         <header className="relative z-20 mx-auto w-full max-w-[1440px] p-2 sm:p-3">
           <nav className="flex items-center justify-between rounded-full bg-white p-[5px]">
             <div className="flex items-center gap-6">
-              <a href="#" aria-label="Hirael home" className="flex items-center gap-2">
+              <a
+                href="#"
+                aria-label="Hirael home"
+                className="flex items-center gap-2"
+              >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-white sm:h-10 sm:w-10">
                   <HiraelMark className="h-5 w-4 sm:h-6 sm:w-5" />
                 </span>
@@ -73,7 +83,7 @@ export function Hero() {
                     size={14}
                     className={cn(
                       "text-gray-900 transition-transform duration-500 group-hover:-rotate-45",
-                      EASE
+                      EASE,
                     )}
                   />
                 </span>
@@ -100,10 +110,10 @@ export function Hero() {
             <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 sm:text-[clamp(2.5rem,5vw,4.2rem)]">
               We craft digital experiences
               <br className="hidden sm:block" />
-              <span className="sm:hidden">{" "}</span>
+              <span className="sm:hidden"> </span>
               for brands ready to dominate
               <br className="hidden sm:block" />
-              <span className="sm:hidden">{" "}</span>
+              <span className="sm:hidden"> </span>
               their category online.
             </h1>
 
@@ -127,7 +137,7 @@ export function Hero() {
       <div
         className={cn(
           "fixed inset-0 z-50 transition-opacity duration-500 md:hidden",
-          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          menuOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
         <div
@@ -137,7 +147,7 @@ export function Hero() {
         <div
           className={cn(
             "absolute inset-x-0 bottom-0 mx-3 mb-3 rounded-2xl bg-white p-6 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
-            menuOpen ? "translate-y-0" : "translate-y-full"
+            menuOpen ? "translate-y-0" : "translate-y-full",
           )}
         >
           <div className="flex flex-col gap-2">
@@ -159,5 +169,5 @@ export function Hero() {
         </div>
       </div>
     </>
-  )
+  );
 }

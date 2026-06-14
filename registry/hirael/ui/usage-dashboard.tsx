@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type UsageDashboardProps = React.ComponentProps<"div">
+type UsageDashboardProps = React.ComponentProps<"div">;
 
 function UsageDashboard({ className, ...props }: UsageDashboardProps) {
   return (
@@ -12,14 +12,14 @@ function UsageDashboard({ className, ...props }: UsageDashboardProps) {
       data-slot="usage-dashboard"
       className={cn(
         "flex flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type UsageDashboardHeaderProps = React.ComponentProps<"div">
+type UsageDashboardHeaderProps = React.ComponentProps<"div">;
 
 function UsageDashboardHeader({
   className,
@@ -30,14 +30,14 @@ function UsageDashboardHeader({
       data-slot="usage-dashboard-header"
       className={cn(
         "flex items-center justify-between gap-2 border-b border-border px-4 py-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type UsageDashboardTitleProps = React.ComponentProps<"h3">
+type UsageDashboardTitleProps = React.ComponentProps<"h3">;
 
 function UsageDashboardTitle({
   className,
@@ -49,10 +49,10 @@ function UsageDashboardTitle({
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type UsageListProps = React.ComponentProps<"div">
+type UsageListProps = React.ComponentProps<"div">;
 
 function UsageList({ className, ...props }: UsageListProps) {
   return (
@@ -61,17 +61,17 @@ function UsageList({ className, ...props }: UsageListProps) {
       className={cn("flex flex-col gap-4 p-4", className)}
       {...props}
     />
-  )
+  );
 }
 
 type UsageItemProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode
-  value: number
-  max: number
+  label: React.ReactNode;
+  value: number;
+  max: number;
   /** Short value caption, e.g. "8.2k / 10k". */
-  caption?: React.ReactNode
-  unit?: React.ReactNode
-}
+  caption?: React.ReactNode;
+  unit?: React.ReactNode;
+};
 
 function UsageItem({
   label,
@@ -81,13 +81,9 @@ function UsageItem({
   className,
   ...props
 }: UsageItemProps) {
-  const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0))
+  const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   const tone =
-    pct >= 100
-      ? "bg-red-500"
-      : pct >= 90
-        ? "bg-amber-500"
-        : "bg-foreground"
+    pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-foreground";
   return (
     <div
       data-slot="usage-item"
@@ -108,12 +104,15 @@ function UsageItem({
         className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
       >
         <div
-          className={cn("h-full rounded-full transition-[width] duration-300", tone)}
+          className={cn(
+            "h-full rounded-full transition-[width] duration-300",
+            tone,
+          )}
           style={{ width: `${pct}%` }}
         />
       </div>
     </div>
-  )
+  );
 }
 
 export {
@@ -122,4 +121,4 @@ export {
   UsageDashboardTitle,
   UsageList,
   UsageItem,
-}
+};

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   motion,
   useInView,
@@ -8,44 +8,44 @@ import {
   useScroll,
   useTransform,
   type MotionValue,
-} from "framer-motion"
+} from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function noiseDataUri(baseFrequency: number, numOctaves: number) {
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>` +
     `<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${baseFrequency}' numOctaves='${numOctaves}' stitchTiles='stitch'/>` +
     `<feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/></filter>` +
-    `<rect width='100%' height='100%' filter='url(#n)'/></svg>`
-  return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`
+    `<rect width='100%' height='100%' filter='url(#n)'/></svg>`;
+  return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 }
 
-const OVERLAY_NOISE = noiseDataUri(0.85, 3)
-const BG_NOISE = noiseDataUri(0.9, 4)
+const OVERLAY_NOISE = noiseDataUri(0.85, 3);
+const BG_NOISE = noiseDataUri(0.9, 4);
 
 const HERO_GRADIENT =
   "radial-gradient(45% 45% at 28% 30%, rgba(222,219,200,0.16), transparent 70%)," +
   "radial-gradient(42% 42% at 73% 62%, rgba(196,162,120,0.22), transparent 72%)," +
   "radial-gradient(70% 55% at 50% 112%, rgba(36,30,22,0.92), transparent 72%)," +
-  "#070707"
+  "#070707";
 
 const CARD_GRADIENT =
   "radial-gradient(55% 55% at 32% 28%, rgba(222,219,200,0.14), transparent 70%)," +
   "radial-gradient(50% 50% at 72% 78%, rgba(150,138,116,0.20), transparent 72%)," +
-  "#0b0a09"
+  "#0b0a09";
 
 const VIGNETTE =
-  "radial-gradient(125% 120% at 50% 0%, transparent 52%, rgba(0,0,0,0.55) 100%)"
+  "radial-gradient(125% 120% at 50% 0%, transparent 52%, rgba(0,0,0,0.55) 100%)";
 
 export function NoiseOverlay({
   variant = "overlay",
   className,
 }: {
-  variant?: "overlay" | "bg"
-  className?: string
+  variant?: "overlay" | "bg";
+  className?: string;
 }) {
   return (
     <div
@@ -56,17 +56,17 @@ export function NoiseOverlay({
         backgroundSize: "160px 160px",
       }}
     />
-  )
+  );
 }
 
 export function CinematicBackground({
   variant = "hero",
   className,
 }: {
-  variant?: "hero" | "card"
-  className?: string
+  variant?: "hero" | "card";
+  className?: string;
 }) {
-  const reduce = useReducedMotion()
+  const reduce = useReducedMotion();
   return (
     <div
       aria-hidden
@@ -97,21 +97,23 @@ export function CinematicBackground({
       />
       <div className="absolute inset-0" style={{ background: VIGNETTE }} />
     </div>
-  )
+  );
 }
 
 function WithAsterisk({ word }: { word: string }) {
-  const chars = Array.from(word)
-  const last = chars.pop() ?? ""
+  const chars = Array.from(word);
+  const last = chars.pop() ?? "";
   return (
     <>
       {chars.join("")}
       <span className="relative inline-block">
         {last}
-        <span className="absolute -right-[0.3em] top-[0.1em] text-[0.31em]">*</span>
+        <span className="absolute -right-[0.3em] top-[0.1em] text-[0.31em]">
+          *
+        </span>
       </span>
     </>
-  )
+  );
 }
 
 export function WordsPullUp({
@@ -122,18 +124,18 @@ export function WordsPullUp({
   startDelay = 0,
   stagger = 0.08,
 }: {
-  text: string
-  className?: string
-  wordClassName?: string
-  showAsterisk?: boolean
-  startDelay?: number
-  stagger?: number
+  text: string;
+  className?: string;
+  wordClassName?: string;
+  showAsterisk?: boolean;
+  startDelay?: number;
+  stagger?: number;
 }) {
-  const ref = React.useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true })
-  const reduce = useReducedMotion()
-  const words = text.split(" ")
-  const show = reduce || inView
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const reduce = useReducedMotion();
+  const words = text.split(" ");
+  const show = reduce || inView;
 
   return (
     <span
@@ -142,7 +144,7 @@ export function WordsPullUp({
       style={{ columnGap: "0.25em" }}
     >
       {words.map((word, i) => {
-        const last = i === words.length - 1
+        const last = i === words.length - 1;
         return (
           <motion.span
             key={i}
@@ -157,13 +159,13 @@ export function WordsPullUp({
           >
             {last && showAsterisk ? <WithAsterisk word={word} /> : word}
           </motion.span>
-        )
+        );
       })}
     </span>
-  )
+  );
 }
 
-export type StyledSegment = { text: string; className?: string }
+export type StyledSegment = { text: string; className?: string };
 
 export function WordsPullUpMultiStyle({
   segments,
@@ -171,20 +173,20 @@ export function WordsPullUpMultiStyle({
   startDelay = 0,
   stagger = 0.08,
 }: {
-  segments: StyledSegment[]
-  className?: string
-  startDelay?: number
-  stagger?: number
+  segments: StyledSegment[];
+  className?: string;
+  startDelay?: number;
+  stagger?: number;
 }) {
-  const ref = React.useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true })
-  const reduce = useReducedMotion()
-  const show = reduce || inView
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const reduce = useReducedMotion();
+  const show = reduce || inView;
 
-  const words: StyledSegment[] = []
+  const words: StyledSegment[] = [];
   for (const seg of segments) {
     for (const part of seg.text.split(" ")) {
-      if (part.length > 0) words.push({ text: part, className: seg.className })
+      if (part.length > 0) words.push({ text: part, className: seg.className });
     }
   }
 
@@ -210,7 +212,7 @@ export function WordsPullUpMultiStyle({
         </motion.span>
       ))}
     </span>
-  )
+  );
 }
 
 function AnimatedLetter({
@@ -219,18 +221,18 @@ function AnimatedLetter({
   total,
   progress,
 }: {
-  char: string
-  index: number
-  total: number
-  progress: MotionValue<number>
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
 }) {
-  const reduce = useReducedMotion()
-  const charProgress = index / total
+  const reduce = useReducedMotion();
+  const charProgress = index / total;
   const opacity = useTransform(
     progress,
     [charProgress - 0.1, charProgress + 0.05],
-    [0.2, 1]
-  )
+    [0.2, 1],
+  );
   return (
     <motion.span
       aria-hidden
@@ -239,32 +241,32 @@ function AnimatedLetter({
     >
       {char}
     </motion.span>
-  )
+  );
 }
 
 export function ScrollRevealText({
   text,
   className,
 }: {
-  text: string
-  className?: string
+  text: string;
+  className?: string;
 }) {
-  const ref = React.useRef<HTMLParagraphElement>(null)
+  const ref = React.useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.8", "end 0.2"],
-  })
-  const words = text.split(" ")
-  const total = text.length
-  const wordLengths = words.map((word) => word.length + 1)
+  });
+  const words = text.split(" ");
+  const total = text.length;
+  const wordLengths = words.map((word) => word.length + 1);
   const starts = words.map((_, i) =>
-    wordLengths.slice(0, i).reduce((sum, len) => sum + len, 0)
-  )
+    wordLengths.slice(0, i).reduce((sum, len) => sum + len, 0),
+  );
 
   return (
     <p ref={ref} aria-label={text} className={className}>
       {words.map((word, wi) => {
-        const start = starts[wi]
+        const start = starts[wi];
         return (
           <React.Fragment key={wi}>
             <span className="inline-block whitespace-nowrap">
@@ -280,8 +282,8 @@ export function ScrollRevealText({
             </span>
             {wi < words.length - 1 ? " " : null}
           </React.Fragment>
-        )
+        );
       })}
     </p>
-  )
+  );
 }

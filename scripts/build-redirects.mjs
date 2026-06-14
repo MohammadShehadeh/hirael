@@ -11,24 +11,24 @@
 // vercel.json is read by Vercel from the repo, not from the build output, so it
 // has to be regenerated at authoring time, never during the deploy build.
 
-import { readFileSync, writeFileSync } from "node:fs"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
+import { readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { loadRegistryMeta } from "./build-registry.mjs"
+import { loadRegistryMeta } from "./build-registry.mjs";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const VERCEL_PATH = path.join(ROOT, "vercel.json")
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const VERCEL_PATH = path.join(ROOT, "vercel.json");
 
-const BARE = /^\/([^/]+)$/
+const BARE = /^\/([^/]+)$/;
 
 async function main() {
-  const { REGISTRY, COMPONENTS, entryHref } = await loadRegistryMeta()
+  const { REGISTRY, COMPONENTS, entryHref } = await loadRegistryMeta();
 
-  const byName = new Map(REGISTRY.map((entry) => [entry.name, entry]))
-  const blocks = REGISTRY.filter((entry) => entry.category === "blocks")
+  const byName = new Map(REGISTRY.map((entry) => [entry.name, entry]));
+  const blocks = REGISTRY.filter((entry) => entry.category === "blocks");
 
-  const vercel = JSON.parse(readFileSync(VERCEL_PATH, "utf8"))
+  const vercel = JSON.parse(readFileSync(VERCEL_PATH, "utf8"));
 
   // Preserve exactly the historical bare `/<name>` redirects, retargeted to the
   // new nested path. We don't invent new bare URLs for items that never had one.
@@ -39,26 +39,26 @@ async function main() {
       source: `/${name}`,
       destination: entryHref(byName.get(name)),
       permanent: true,
-    }))
+    }));
 
   const componentRedirects = COMPONENTS.map((entry) => ({
     source: `/components/${entry.name}`,
     destination: entryHref(entry),
     permanent: true,
-  }))
+  }));
 
   const blockRedirects = blocks.map((entry) => ({
     source: `/blocks/${entry.name}`,
     destination: entryHref(entry),
     permanent: true,
-  }))
+  }));
 
   vercel.redirects = [...bare, ...componentRedirects, ...blockRedirects].sort(
-    (a, b) => a.source.localeCompare(b.source)
-  )
+    (a, b) => a.source.localeCompare(b.source),
+  );
 
-  writeFileSync(VERCEL_PATH, `${JSON.stringify(vercel, null, 2)}\n`)
-  console.log(`✓ vercel.json redirects generated (${vercel.redirects.length})`)
+  writeFileSync(VERCEL_PATH, `${JSON.stringify(vercel, null, 2)}\n`);
+  console.log(`✓ vercel.json redirects generated (${vercel.redirects.length})`);
 }
 
-await main()
+await main();

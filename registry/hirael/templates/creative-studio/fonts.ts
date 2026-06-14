@@ -1,11 +1,11 @@
-import { Almarai, Instrument_Serif } from "next/font/google"
+import { Almarai, Instrument_Serif } from "next/font/google";
 
 export const almarai = Almarai({
   variable: "--font-almarai",
   subsets: ["latin"],
   weight: ["300", "400", "700", "800"],
   display: "swap",
-})
+});
 
 export const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
@@ -13,4 +13,4 @@ export const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
   display: "swap",
-})
+});

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Sparkles,
   Zap,
@@ -9,13 +9,13 @@ import {
   Layers,
   Cpu,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
 type Feature = {
-  icon: LucideIcon
-  title: string
-  body: string
-}
+  icon: LucideIcon;
+  title: string;
+  body: string;
+};
 
 const FEATURES: readonly Feature[] = [
   {
@@ -48,7 +48,7 @@ const FEATURES: readonly Feature[] = [
     title: "SSR-safe",
     body: "Server components by default, with 'use client' only where interactivity demands it. App Router native.",
   },
-]
+];
 
 export default function Feature02() {
   return (
@@ -58,7 +58,7 @@ export default function Feature02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             · features
           </span>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Everything a real product needs, none of the rest.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
@@ -69,7 +69,7 @@ export default function Feature02() {
 
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
           {FEATURES.map((f) => {
-            const Icon = f.icon
+            const Icon = f.icon;
             return (
               <div
                 key={f.title}
@@ -85,10 +85,10 @@ export default function Feature02() {
                   <p className="text-sm text-muted-foreground">{f.body}</p>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

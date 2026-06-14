@@ -1,11 +1,12 @@
-import Link from "next/link"
-import type { Metadata } from "next"
-import { ArrowRight, Layers, Palette } from "lucide-react"
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowRight, Layers, Palette } from "lucide-react";
 
-import { InlineCodeBlock } from "@/components/showcase/code-block"
-import { InstallBlock } from "@/components/showcase/install-block"
-import { highlightCode } from "@/lib/highlight"
-import { SITE } from "@/lib/site"
+import { InlineCodeBlock } from "@/components/showcase/code-block";
+import { InstallBlock } from "@/components/showcase/install-block";
+import { PageHeader } from "@/components/showcase/page-header";
+import { highlightCode } from "@/lib/highlight";
+import { SITE } from "@/lib/site";
 import {
   BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
@@ -15,7 +16,7 @@ import {
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
   entryHref,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
 const COMPOSE_SNIPPET = `import {
   MultiSelect,
@@ -26,10 +27,10 @@ const COMPOSE_SNIPPET = `import {
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
   <MultiSelectContent searchPlaceholder="Filter…" />
-</MultiSelect>`
+</MultiSelect>`;
 
 const COMPONENTS_DESCRIPTION =
-  "Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out."
+  "Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.";
 
 export const metadata: Metadata = {
   title: "Components",
@@ -58,41 +59,22 @@ export const metadata: Metadata = {
     description: COMPONENTS_DESCRIPTION,
     images: ["/opengraph-image"],
   },
-}
+};
 
 export default async function ComponentsIndex() {
-  const components = COMPONENTS
-  const blocks = REGISTRY_BY_CATEGORY.blocks
-  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
+  const components = COMPONENTS;
+  const blocks = REGISTRY_BY_CATEGORY.blocks;
+  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b border-border pb-10">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ components
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            peer of shadcn, not a replacement
-          </span>
-        </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-          The full registry.
-        </h1>
-        <p className="max-w-2xl text-base text-muted-foreground">
-          The components shadcn/ui doesn&apos;t ship: multi-select, combobox,
-          tag input, currency input, file dropzone, plus {blocks.length} section blocks
-          across {BLOCK_KIND_ORDER.length} categories. Everything installs through the
-          shadcn CLI, so the source ends up in your repo and stays yours to
-          edit.
-        </p>
-        <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
-        <CountersStrip
-          components={components.length}
-          blocks={blocks.length}
-          blockKinds={BLOCK_KIND_ORDER.length}
-        />
-      </header>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:gap-14 sm:px-6 sm:py-20 md:px-10">
+      <PageHeader
+        kicker="Components"
+        title="The full registry."
+        blurb={`The components shadcn/ui doesn't ship: multi-select, combobox, tag input, currency input, file dropzone, plus ${blocks.length} section blocks across ${BLOCK_KIND_ORDER.length} categories. Everything installs through the shadcn CLI, so the source ends up in your repo and stays yours to edit.`}
+      >
+        <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
+      </PageHeader>
 
       <section className="flex flex-col gap-8">
         <div className="flex items-baseline justify-between">
@@ -105,8 +87,8 @@ export default async function ComponentsIndex() {
         </div>
 
         {COMPONENT_CATEGORY_ORDER.map((cat) => {
-          const items = REGISTRY_BY_CATEGORY[cat]
-          if (!items.length) return null
+          const items = REGISTRY_BY_CATEGORY[cat];
+          if (!items.length) return null;
           return (
             <div key={cat} className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between">
@@ -150,7 +132,7 @@ export default async function ComponentsIndex() {
                 ))}
               </ul>
             </div>
-          )
+          );
         })}
       </section>
 
@@ -161,21 +143,21 @@ export default async function ComponentsIndex() {
           </h2>
           <Link
             href="/blocks"
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
           >
             {blocks.length} blocks · view all
             <ArrowRight className="size-3" />
           </Link>
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Drop-in section compositions: heroes, features, pricing,
-          testimonials, CTAs, FAQs, auth, navigation, errors. Each block
-          shares the same registry pipeline; copy a block in one command.
+          Drop-in section compositions: heroes, features, pricing, testimonials,
+          CTAs, FAQs, auth, navigation, errors. Each block shares the same
+          registry pipeline; copy a block in one command.
         </p>
         <div className="flex flex-col gap-px overflow-hidden rounded-md border border-border bg-border">
           {BLOCK_KIND_ORDER.map((kind) => {
-            const items = BLOCKS_BY_KIND[kind]
-            if (!items.length) return null
+            const items = BLOCKS_BY_KIND[kind];
+            if (!items.length) return null;
             return (
               <div
                 key={kind}
@@ -204,7 +186,7 @@ export default async function ComponentsIndex() {
                   ))}
                 </ul>
               </div>
-            )
+            );
           })}
         </div>
       </section>
@@ -236,7 +218,7 @@ export default async function ComponentsIndex() {
             </span>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">Theme playground</span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 preset switcher · token swatches
               </span>
             </div>
@@ -255,7 +237,7 @@ export default async function ComponentsIndex() {
               <span className="text-sm font-medium">
                 All {blocks.length} blocks
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 {BLOCK_KIND_ORDER.length} categories · preview + install
               </span>
             </div>
@@ -264,42 +246,5 @@ export default async function ComponentsIndex() {
         </Link>
       </section>
     </div>
-  )
-}
-
-function CountersStrip({
-  components,
-  blocks,
-  blockKinds,
-}: {
-  components: number
-  blocks: number
-  blockKinds: number
-}) {
-  const items: { label: string; value: string }[] = [
-    {
-      label: "components",
-      value: `${components}`,
-    },
-    { label: "blocks", value: `${blocks}` },
-    { label: "block categories", value: `${blockKinds}` },
-    { label: "runtime deps", value: "0" },
-  ]
-  return (
-    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
-      {items.map((item) => (
-        <div
-          key={item.label}
-          className="flex flex-col gap-1 bg-card px-3 py-2.5"
-        >
-          <dt className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-            {item.label}
-          </dt>
-          <dd className="font-mono text-sm tabular-nums text-foreground">
-            {item.value}
-          </dd>
-        </div>
-      ))}
-    </dl>
-  )
+  );
 }

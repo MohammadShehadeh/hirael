@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react";
 
-import { MagneticButton } from "@/registry/hirael/ui/magnetic-button"
+import { MagneticButton } from "@/registry/hirael/ui/magnetic-button";
 
 export default function MagneticButtonDemo() {
   return (
@@ -25,5 +25,5 @@ export default function MagneticButtonDemo() {
         </a>
       </MagneticButton>
     </div>
-  )
+  );
 }

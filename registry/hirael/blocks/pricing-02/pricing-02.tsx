@@ -1,37 +1,61 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, Minus } from "lucide-react"
+import * as React from "react";
+import { Check, Minus } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "@/registry/hirael/ui/button";
+import { cn } from "@/lib/utils";
 
-type Cell = boolean | string
+type Cell = boolean | string;
 
 type Row = {
-  feature: string
-  hobby: Cell
-  pro: Cell
-  team: Cell
-}
+  feature: string;
+  hobby: Cell;
+  pro: Cell;
+  team: Cell;
+};
 
 type Tier = {
-  key: "hobby" | "pro" | "team"
-  name: string
-  price: string
-  cta: string
-  ctaVariant: "default" | "outline"
-  featured?: boolean
-}
+  key: "hobby" | "pro" | "team";
+  name: string;
+  price: string;
+  cta: string;
+  ctaVariant: "default" | "outline";
+  featured?: boolean;
+};
 
 const TIERS: readonly Tier[] = [
-  { key: "hobby", name: "Hobby", price: "$0", cta: "Start free", ctaVariant: "outline" },
-  { key: "pro", name: "Pro", price: "$18", cta: "Start trial", ctaVariant: "default", featured: true },
-  { key: "team", name: "Team", price: "$48", cta: "Contact", ctaVariant: "outline" },
-]
+  {
+    key: "hobby",
+    name: "Hobby",
+    price: "$0",
+    cta: "Start free",
+    ctaVariant: "outline",
+  },
+  {
+    key: "pro",
+    name: "Pro",
+    price: "$18",
+    cta: "Start trial",
+    ctaVariant: "default",
+    featured: true,
+  },
+  {
+    key: "team",
+    name: "Team",
+    price: "$48",
+    cta: "Contact",
+    ctaVariant: "outline",
+  },
+];
 
 const ROWS: readonly Row[] = [
-  { feature: "Registry components", hobby: "Up to 5", pro: "Unlimited", team: "Unlimited" },
+  {
+    feature: "Registry components",
+    hobby: "Up to 5",
+    pro: "Unlimited",
+    team: "Unlimited",
+  },
   { feature: "Theme presets", hobby: "3", pro: "Unlimited", team: "Unlimited" },
   { feature: "Private registry mirror", hobby: false, pro: true, team: true },
   { feature: "Shared workspace", hobby: false, pro: false, team: true },
@@ -39,11 +63,11 @@ const ROWS: readonly Row[] = [
   { feature: "Priority response", hobby: false, pro: true, team: true },
   { feature: "SLA support", hobby: false, pro: false, team: true },
   { feature: "Full source ownership", hobby: true, pro: true, team: true },
-]
+];
 
 function CellContent({ value }: { value: Cell }) {
   if (value === true) {
-    return <Check className="size-4 text-foreground" aria-label="Included" />
+    return <Check className="size-4 text-foreground" aria-label="Included" />;
   }
   if (value === false) {
     return (
@@ -51,13 +75,13 @@ function CellContent({ value }: { value: Cell }) {
         className="size-4 text-muted-foreground/50"
         aria-label="Not included"
       />
-    )
+    );
   }
   return (
     <span className="font-mono text-xs tabular-nums text-foreground">
       {value}
     </span>
-  )
+  );
 }
 
 export default function Pricing02() {
@@ -68,7 +92,7 @@ export default function Pricing02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             · compare plans
           </span>
-          <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+          <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Every feature, side by side.
           </h2>
           <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
@@ -119,7 +143,10 @@ export default function Pricing02() {
             </thead>
             <tbody>
               {ROWS.map((r) => (
-                <tr key={r.feature} className="border-b border-border last:border-b-0">
+                <tr
+                  key={r.feature}
+                  className="border-b border-border last:border-b-0"
+                >
                   <td className="px-5 py-4 font-mono text-xs uppercase tracking-[0.08em] text-foreground">
                     {r.feature}
                   </td>
@@ -141,5 +168,5 @@ export default function Pricing02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

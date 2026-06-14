@@ -1,6 +1,12 @@
-"use client"
+"use client";
 
-import { ChromaFlow, FilmGrain, FlutedGlass, Shader, Swirl } from "shaders/react"
+import {
+  ChromaFlow,
+  FilmGrain,
+  FlutedGlass,
+  Shader,
+  Swirl,
+} from "shaders/react";
 
 /**
  * The hero shader stack, composited bottom-to-top by the root Shader canvas:
@@ -35,5 +41,5 @@ export function ShaderBackground() {
       />
       <FilmGrain strength={0.05} />
     </Shader>
-  )
+  );
 }

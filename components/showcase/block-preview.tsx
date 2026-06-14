@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 /**
  * Renders a block in an iframe sized to a fixed simulated viewport,
@@ -21,26 +21,26 @@ export function BlockPreview({
   simHeight = 720,
 }: {
   /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
-  embedHref: string
-  title: string
-  simWidth?: number
-  simHeight?: number
+  embedHref: string;
+  title: string;
+  simWidth?: number;
+  simHeight?: number;
 }) {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const [scale, setScale] = React.useState<number | null>(null)
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [scale, setScale] = React.useState<number | null>(null);
 
   React.useLayoutEffect(() => {
-    const el = ref.current
-    if (!el) return
+    const el = ref.current;
+    if (!el) return;
     const measure = () => {
-      const w = el.clientWidth
-      if (w > 0) setScale(w / simWidth)
-    }
-    measure()
-    const ro = new ResizeObserver(measure)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [simWidth])
+      const w = el.clientWidth;
+      if (w > 0) setScale(w / simWidth);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [simWidth]);
 
   return (
     <div
@@ -63,5 +63,5 @@ export function BlockPreview({
         }}
       />
     </div>
-  )
+  );
 }

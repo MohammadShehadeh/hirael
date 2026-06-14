@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /**
  * Velorah wordmark with a registered-trademark superscript, set in
@@ -10,11 +10,11 @@ export function Wordmark({ className }: { className?: string }) {
     <span
       className={cn(
         "tracking-tight text-foreground [font-family:var(--font-velorah-serif)]",
-        className
+        className,
       )}
     >
       Velorah
       <sup className="text-[0.4em]">&reg;</sup>
     </span>
-  )
+  );
 }

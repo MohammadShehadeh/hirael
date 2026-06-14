@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { AnimatedNumber } from "@/registry/hirael/ui/animated-number"
+import { AnimatedNumber } from "@/registry/hirael/ui/animated-number";
 
 export default function AnimatedNumberDemo() {
-  const [revenue, setRevenue] = React.useState(48250)
-  const [users, setUsers] = React.useState(12481)
+  const [revenue, setRevenue] = React.useState(48250);
+  const [users, setUsers] = React.useState(12481);
 
   const shuffle = () => {
-    setRevenue(Math.round(20000 + Math.random() * 80000))
-    setUsers(Math.round(2000 + Math.random() * 40000))
-  }
+    setRevenue(Math.round(20000 + Math.random() * 80000));
+    setUsers(Math.round(2000 + Math.random() * 40000));
+  };
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -72,5 +72,5 @@ export default function AnimatedNumberDemo() {
         />
       </div>
     </div>
-  )
+  );
 }

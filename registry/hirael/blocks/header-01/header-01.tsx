@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Menu, X } from "lucide-react"
+import * as React from "react";
+import { Menu, X } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 const NAV = [
   { label: "Product", href: "#" },
   { label: "Pricing", href: "#" },
   { label: "Docs", href: "#" },
   { label: "Changelog", href: "#" },
-] as const
+] as const;
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -30,11 +30,11 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function Header01() {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
@@ -59,10 +59,7 @@ export default function Header01() {
                     {n.label}
                   </a>
                   {i < NAV.length - 1 && (
-                    <span
-                      aria-hidden
-                      className="text-muted-foreground/40"
-                    >
+                    <span aria-hidden className="text-muted-foreground/40">
                       ·
                     </span>
                   )}
@@ -72,10 +69,15 @@ export default function Header01() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button asChild variant="ghost" size="sm">
+            <Button asChild variant="ghost" size="sm" className="rounded-full">
               <a href="#">Sign in</a>
             </Button>
-            <Button asChild variant="default" size="sm">
+            <Button
+              asChild
+              variant="default"
+              size="sm"
+              className="rounded-full"
+            >
               <a href="#">Get started</a>
             </Button>
           </div>
@@ -113,7 +115,7 @@ export default function Header01() {
                 asChild
                 variant="ghost"
                 size="sm"
-                className="w-full justify-center"
+                className="w-full justify-center rounded-full"
               >
                 <a href="#" onClick={() => setOpen(false)}>
                   Sign in
@@ -123,7 +125,7 @@ export default function Header01() {
                 asChild
                 variant="default"
                 size="sm"
-                className="w-full justify-center"
+                className="w-full justify-center rounded-full"
               >
                 <a href="#" onClick={() => setOpen(false)}>
                   Get started
@@ -134,5 +136,5 @@ export default function Header01() {
         </div>
       )}
     </header>
-  )
+  );
 }

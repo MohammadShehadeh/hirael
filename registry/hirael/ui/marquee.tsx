@@ -1,21 +1,21 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type MarqueeProps = React.ComponentProps<"div"> & {
   /** Scroll the opposite direction. */
-  reverse?: boolean
+  reverse?: boolean;
   /** Pause while the pointer is over the track. */
-  pauseOnHover?: boolean
+  pauseOnHover?: boolean;
   /** Scroll top-to-bottom instead of left-to-right. */
-  vertical?: boolean
+  vertical?: boolean;
   /** How many times the children are duplicated to fill the loop. */
-  repeat?: number
+  repeat?: number;
   /** Seconds for one full loop. Lower is faster. */
-  duration?: number
+  duration?: number;
   /** Gap between items, any CSS length. */
-  gap?: string
-}
+  gap?: string;
+};
 
 // Keyframes travel with the component so it works the moment it is copied
 // into a project — no Tailwind config or globals.css edits required.
@@ -31,7 +31,7 @@ const MARQUEE_KEYFRAMES = `
 [data-slot="marquee"][data-pause="true"]:hover [data-slot="marquee-track"] {
   animation-play-state: paused;
 }
-`
+`;
 
 function Marquee({
   reverse = false,
@@ -52,7 +52,7 @@ function Marquee({
     animationIterationCount: "infinite",
     animationDirection: reverse ? "reverse" : "normal",
     gap: "var(--marquee-gap)",
-  }
+  };
 
   return (
     <div
@@ -69,7 +69,7 @@ function Marquee({
       className={cn(
         "group flex w-full max-w-full min-w-0 overflow-hidden",
         vertical ? "flex-col" : "flex-row",
-        className
+        className,
       )}
       {...props}
     >
@@ -82,14 +82,14 @@ function Marquee({
           style={trackStyle}
           className={cn(
             "flex shrink-0 justify-around",
-            vertical ? "flex-col" : "flex-row"
+            vertical ? "flex-col" : "flex-row",
           )}
         >
           {children}
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export { Marquee }
+export { Marquee };

@@ -1,10 +1,13 @@
-import { RivrMark } from "./primitives"
+import { RivrMark } from "./primitives";
 
 const COLUMNS = [
-  { heading: "Protocol", links: ["Vaults", "Staking", "Lending", "NFT collateral"] },
+  {
+    heading: "Protocol",
+    links: ["Vaults", "Staking", "Lending", "NFT collateral"],
+  },
   { heading: "Developers", links: ["Docs", "SDK", "API", "Status"] },
   { heading: "Community", links: ["Discord", "Forum", "Governance", "Blog"] },
-]
+];
 
 export function Footer() {
   return (
@@ -61,5 +64,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

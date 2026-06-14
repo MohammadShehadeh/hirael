@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Marquee } from "@/registry/hirael/ui/marquee"
+import { Marquee } from "@/registry/hirael/ui/marquee";
 
 const brands = [
   "Vercel",
@@ -11,14 +11,14 @@ const brands = [
   "Framer",
   "Resend",
   "Clerk",
-]
+];
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground">
       {children}
     </span>
-  )
+  );
 }
 
 export default function MarqueeDemo() {
@@ -54,5 +54,5 @@ export default function MarqueeDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

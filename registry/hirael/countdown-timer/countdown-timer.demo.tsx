@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { CountdownTimer } from "@/registry/hirael/ui/countdown-timer"
+import { CountdownTimer } from "@/registry/hirael/ui/countdown-timer";
 
 export default function CountdownTimerDemo() {
   const [launchTarget] = React.useState(
-    () => Date.now() + (3 * 86400 + 7 * 3600 + 24 * 60 + 30) * 1000
-  )
+    () => Date.now() + (3 * 86400 + 7 * 3600 + 24 * 60 + 30) * 1000,
+  );
   const [saleTarget] = React.useState(
-    () => Date.now() + (5 * 3600 + 32 * 60 + 10) * 1000
-  )
+    () => Date.now() + (5 * 3600 + 32 * 60 + 10) * 1000,
+  );
   const [shortTarget, setShortTarget] = React.useState(
-    () => Date.now() + 10_000
-  )
-  const [completedAt, setCompletedAt] = React.useState<string | null>(null)
+    () => Date.now() + 10_000,
+  );
+  const [completedAt, setCompletedAt] = React.useState<string | null>(null);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -55,9 +55,7 @@ export default function CountdownTimerDemo() {
           variant="inline"
           hideZeroDays
           target={shortTarget}
-          onComplete={() =>
-            setCompletedAt(new Date().toLocaleTimeString())
-          }
+          onComplete={() => setCompletedAt(new Date().toLocaleTimeString())}
           completeContent={
             <span className="text-xl font-semibold text-primary">
               We&apos;re live!
@@ -72,8 +70,8 @@ export default function CountdownTimerDemo() {
         <button
           type="button"
           onClick={() => {
-            setCompletedAt(null)
-            setShortTarget(Date.now() + 10_000)
+            setCompletedAt(null);
+            setShortTarget(Date.now() + 10_000);
           }}
           className="mt-1 w-fit rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-accent"
         >
@@ -81,5 +79,5 @@ export default function CountdownTimerDemo() {
         </button>
       </div>
     </div>
-  )
+  );
 }

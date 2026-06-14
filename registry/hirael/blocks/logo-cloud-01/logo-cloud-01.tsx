@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import { ArrowRight } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 
 type Logo = {
-  name: string
-  href: string
-  mark: React.ReactNode
-}
+  name: string;
+  href: string;
+  mark: React.ReactNode;
+};
 
 const LOGOS: readonly Logo[] = [
   {
@@ -18,7 +18,9 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm font-semibold tracking-[-0.02em]">
-        <span aria-hidden className="me-1 text-primary">◈</span>
+        <span aria-hidden className="me-1 text-primary">
+          ◈
+        </span>
         ACME / Co.
       </span>
     ),
@@ -28,7 +30,9 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="text-sm font-semibold tracking-[-0.02em]">
-        <span aria-hidden className="me-1">⌬</span>
+        <span aria-hidden className="me-1">
+          ⌬
+        </span>
         Helix
       </span>
     ),
@@ -47,7 +51,9 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
-        <span aria-hidden className="me-1">▲</span>
+        <span aria-hidden className="me-1">
+          ▲
+        </span>
         vanta
       </span>
     ),
@@ -66,7 +72,9 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="text-sm font-medium tracking-[-0.01em]">
-        <span aria-hidden className="me-1">⬢</span>
+        <span aria-hidden className="me-1">
+          ⬢
+        </span>
         Lattice
       </span>
     ),
@@ -94,7 +102,9 @@ const LOGOS: readonly Logo[] = [
     href: "#",
     mark: (
       <span className="font-mono text-sm tracking-[-0.02em]">
-        <span aria-hidden className="me-1">◇</span>
+        <span aria-hidden className="me-1">
+          ◇
+        </span>
         verbit
       </span>
     ),
@@ -108,13 +118,13 @@ const LOGOS: readonly Logo[] = [
       </span>
     ),
   },
-] as const
+] as const;
 
 const STATS = [
   { value: "40k", label: "weekly installs" },
   { value: "12k", label: "developers" },
   { value: "0", label: "runtime deps" },
-] as const
+] as const;
 
 export default function LogoCloud01() {
   return (
@@ -124,12 +134,10 @@ export default function LogoCloud01() {
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
-          <Badge variant="outline">
-            · trusted by teams shipping at scale
-          </Badge>
+          <Badge variant="outline">· trusted by teams shipping at scale</Badge>
           <h2
             id="logo-cloud-01-heading"
-            className="text-balance text-2xl font-semibold tracking-[-0.035em] sm:text-3xl"
+            className="text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl"
           >
             10,000+ engineers reach for Hirael
             <br className="hidden sm:inline" />
@@ -187,5 +195,5 @@ export default function LogoCloud01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

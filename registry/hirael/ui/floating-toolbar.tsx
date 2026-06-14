@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type FloatingToolbarProps = React.ComponentProps<"div">
+type FloatingToolbarProps = React.ComponentProps<"div">;
 
 function FloatingToolbar({ className, ...props }: FloatingToolbarProps) {
   return (
@@ -13,16 +13,16 @@ function FloatingToolbar({ className, ...props }: FloatingToolbarProps) {
       data-slot="floating-toolbar"
       className={cn(
         "inline-flex items-center gap-0.5 rounded-full border border-border bg-popover/95 p-1 text-popover-foreground shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/80",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 type FloatingToolbarButtonProps = React.ComponentProps<"button"> & {
-  active?: boolean
-}
+  active?: boolean;
+};
 
 function FloatingToolbarButton({
   className,
@@ -37,14 +37,14 @@ function FloatingToolbarButton({
       aria-pressed={active}
       className={cn(
         "inline-flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-full px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[active]:bg-accent data-[active]:text-foreground [&_svg]:size-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type FloatingToolbarSeparatorProps = React.ComponentProps<"div">
+type FloatingToolbarSeparatorProps = React.ComponentProps<"div">;
 
 function FloatingToolbarSeparator({
   className,
@@ -57,10 +57,10 @@ function FloatingToolbarSeparator({
       className={cn("mx-0.5 h-5 w-px shrink-0 bg-border", className)}
       {...props}
     />
-  )
+  );
 }
 
-type FloatingToolbarLabelProps = React.ComponentProps<"span">
+type FloatingToolbarLabelProps = React.ComponentProps<"span">;
 
 function FloatingToolbarLabel({
   className,
@@ -71,11 +71,11 @@ function FloatingToolbarLabel({
       data-slot="floating-toolbar-label"
       className={cn(
         "px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -83,4 +83,4 @@ export {
   FloatingToolbarButton,
   FloatingToolbarSeparator,
   FloatingToolbarLabel,
-}
+};

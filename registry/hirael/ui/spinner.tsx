@@ -1,31 +1,56 @@
-import * as React from "react"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-export type SpinnerProps = React.ComponentProps<"span"> & {
-  variant?: "circle" | "dots" | "bars"
-  size?: "sm" | "md" | "lg"
-  /** Accessible label announced to assistive tech. Defaults to "Loading". */
-  label?: string
-}
+const circleVariants = cva(
+  "block animate-spin rounded-full border-current border-t-transparent",
+  {
+    variants: {
+      size: {
+        sm: "size-4 border-2",
+        md: "size-5 border-2",
+        lg: "size-8 border-[3px]",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
 
-const circleSize = {
-  sm: "size-4 border-2",
-  md: "size-5 border-2",
-  lg: "size-8 border-[3px]",
-} as const
+const dotVariants = cva("animate-bounce rounded-full bg-current", {
+  variants: {
+    size: {
+      sm: "size-1",
+      md: "size-1.5",
+      lg: "size-2.5",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+});
 
-const dotSize = {
-  sm: "size-1",
-  md: "size-1.5",
-  lg: "size-2.5",
-} as const
+const barVariants = cva("animate-pulse rounded-full bg-current", {
+  variants: {
+    size: {
+      sm: "h-3 w-0.5",
+      md: "h-4 w-[3px]",
+      lg: "h-6 w-1",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+});
 
-const barSize = {
-  sm: "h-3 w-0.5",
-  md: "h-4 w-[3px]",
-  lg: "h-6 w-1",
-} as const
+export type SpinnerProps = React.ComponentProps<"span"> &
+  VariantProps<typeof circleVariants> & {
+    variant?: "circle" | "dots" | "bars";
+    /** Accessible label announced to assistive tech. Defaults to "Loading". */
+    label?: string;
+  };
 
 function Spinner({
   variant = "circle",
@@ -45,64 +70,39 @@ function Spinner({
       {...props}
     >
       {variant === "circle" && (
-        <span
-          aria-hidden
-          className={cn(
-            "block animate-spin rounded-full border-current border-t-transparent",
-            circleSize[size]
-          )}
-        />
+        <span aria-hidden className={circleVariants({ size })} />
       )}
 
       {variant === "dots" && (
         <span aria-hidden className="inline-flex items-center gap-1">
           <span
-            className={cn(
-              "animate-bounce rounded-full bg-current [animation-delay:-0.3s]",
-              dotSize[size]
-            )}
+            className={cn(dotVariants({ size }), "[animation-delay:-0.3s]")}
           />
           <span
-            className={cn(
-              "animate-bounce rounded-full bg-current [animation-delay:-0.15s]",
-              dotSize[size]
-            )}
+            className={cn(dotVariants({ size }), "[animation-delay:-0.15s]")}
           />
-          <span
-            className={cn("animate-bounce rounded-full bg-current", dotSize[size])}
-          />
+          <span className={dotVariants({ size })} />
         </span>
       )}
 
       {variant === "bars" && (
         <span aria-hidden className="inline-flex items-end gap-0.5">
           <span
-            className={cn(
-              "animate-pulse rounded-full bg-current [animation-delay:-0.4s]",
-              barSize[size]
-            )}
+            className={cn(barVariants({ size }), "[animation-delay:-0.4s]")}
           />
           <span
-            className={cn(
-              "animate-pulse rounded-full bg-current [animation-delay:-0.2s]",
-              barSize[size]
-            )}
+            className={cn(barVariants({ size }), "[animation-delay:-0.2s]")}
           />
+          <span className={barVariants({ size })} />
           <span
-            className={cn("animate-pulse rounded-full bg-current", barSize[size])}
-          />
-          <span
-            className={cn(
-              "animate-pulse rounded-full bg-current [animation-delay:-0.6s]",
-              barSize[size]
-            )}
+            className={cn(barVariants({ size }), "[animation-delay:-0.6s]")}
           />
         </span>
       )}
 
       <span className="sr-only">{label}</span>
     </span>
-  )
+  );
 }
 
-export { Spinner }
+export { Spinner };

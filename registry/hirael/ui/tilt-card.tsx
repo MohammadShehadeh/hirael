@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   motion,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useSpring,
-} from "motion/react"
+} from "motion/react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type TiltCardProps = React.ComponentProps<"div"> & {
   /** Maximum tilt on each axis, in degrees. */
-  max?: number
+  max?: number;
   /** Scale applied while pointing. */
-  scale?: number
+  scale?: number;
   /** Perspective depth, in px. */
-  perspective?: number
+  perspective?: number;
   /** Render a cursor-following glare highlight. */
-  glare?: boolean
-}
+  glare?: boolean;
+};
 
-const SPRING = { stiffness: 200, damping: 18, mass: 0.3 }
+const SPRING = { stiffness: 200, damping: 18, mass: 0.3 };
 
 function TiltCard({
   className,
@@ -34,28 +34,28 @@ function TiltCard({
   glare = false,
   ...props
 }: TiltCardProps) {
-  const reduced = useReducedMotion()
-  const rotateX = useSpring(0, SPRING)
-  const rotateY = useSpring(0, SPRING)
-  const glareX = useMotionValue(50)
-  const glareY = useMotionValue(50)
-  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`
+  const reduced = useReducedMotion();
+  const rotateX = useSpring(0, SPRING);
+  const rotateY = useSpring(0, SPRING);
+  const glareX = useMotionValue(50);
+  const glareY = useMotionValue(50);
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (reduced) return
-    const rect = event.currentTarget.getBoundingClientRect()
-    const px = (event.clientX - rect.left) / rect.width
-    const py = (event.clientY - rect.top) / rect.height
-    rotateX.set((0.5 - py) * max * 2)
-    rotateY.set((px - 0.5) * max * 2)
-    glareX.set(px * 100)
-    glareY.set(py * 100)
-  }
+    if (reduced) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+    rotateX.set((0.5 - py) * max * 2);
+    rotateY.set((px - 0.5) * max * 2);
+    glareX.set(px * 100);
+    glareY.set(py * 100);
+  };
 
   const reset = () => {
-    rotateX.set(0)
-    rotateY.set(0)
-  }
+    rotateX.set(0);
+    rotateY.set(0);
+  };
 
   return (
     <div
@@ -83,7 +83,7 @@ function TiltCard({
         ) : null}
       </motion.div>
     </div>
-  )
+  );
 }
 
-export { TiltCard }
+export { TiltCard };

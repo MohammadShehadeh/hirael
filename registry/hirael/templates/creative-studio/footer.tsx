@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react";
 
-import { NoiseOverlay, WordsPullUpMultiStyle } from "./primitives"
+import { NoiseOverlay, WordsPullUpMultiStyle } from "./primitives";
 
-const CREAM = "#E1E0CC"
+const CREAM = "#E1E0CC";
 
 const HEADLINE = [
   { text: "Let us make", className: "font-normal" },
@@ -12,7 +12,7 @@ const HEADLINE = [
     text: "something rare.",
     className: "italic [font-family:var(--font-instrument-serif)]",
   },
-]
+];
 
 const LINK_COLUMNS = [
   {
@@ -23,7 +23,7 @@ const LINK_COLUMNS = [
     heading: "Connect",
     links: ["Inquiries", "Instagram", "Vimeo", "LinkedIn"],
   },
-]
+];
 
 export function Footer() {
   return (
@@ -40,7 +40,10 @@ export function Footer() {
               className="max-w-xl text-4xl leading-[0.95] tracking-[-0.02em] sm:text-5xl sm:leading-[0.9] md:text-6xl"
               style={{ color: CREAM }}
             >
-              <WordsPullUpMultiStyle segments={HEADLINE} className="justify-start" />
+              <WordsPullUpMultiStyle
+                segments={HEADLINE}
+                className="justify-start"
+              />
             </h2>
           </div>
 
@@ -117,5 +120,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
+import * as React from "react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/registry/hirael/ui/button"
-import { Input } from "@/registry/hirael/ui/input"
+import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
+import { Input } from "@/registry/hirael/ui/input";
 
-const CODE_LENGTH = 6
-const RESEND_SECONDS = 30
-const MASKED_EMAIL = "a•••@studio.com"
+const CODE_LENGTH = 6;
+const RESEND_SECONDS = 30;
+const MASKED_EMAIL = "a•••@studio.com";
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -29,103 +29,108 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function OtpVerify01() {
   const [code, setCode] = React.useState<string[]>(
-    Array.from({ length: CODE_LENGTH }, () => "")
-  )
-  const [error, setError] = React.useState<string | null>(null)
+    Array.from({ length: CODE_LENGTH }, () => ""),
+  );
+  const [error, setError] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<"idle" | "verifying" | "success">(
-    "idle"
-  )
-  const [secondsLeft, setSecondsLeft] = React.useState(RESEND_SECONDS)
-  const inputsRef = React.useRef<Array<HTMLInputElement | null>>([])
+    "idle",
+  );
+  const [secondsLeft, setSecondsLeft] = React.useState(RESEND_SECONDS);
+  const inputsRef = React.useRef<Array<HTMLInputElement | null>>([]);
 
   React.useEffect(() => {
-    if (secondsLeft <= 0) return
+    if (secondsLeft <= 0) return;
     const id = window.setTimeout(() => {
-      setSecondsLeft((s) => s - 1)
-    }, 1000)
-    return () => window.clearTimeout(id)
-  }, [secondsLeft])
+      setSecondsLeft((s) => s - 1);
+    }, 1000);
+    return () => window.clearTimeout(id);
+  }, [secondsLeft]);
 
   const applyDigits = (start: number, raw: string) => {
-    const digits = raw.replace(/\D/g, "").slice(0, CODE_LENGTH - start)
-    if (!digits) return
+    const digits = raw.replace(/\D/g, "").slice(0, CODE_LENGTH - start);
+    if (!digits) return;
     setCode((prev) => {
-      const next = [...prev]
+      const next = [...prev];
       for (let j = 0; j < digits.length; j++) {
-        next[start + j] = digits[j]
+        next[start + j] = digits[j];
       }
-      return next
-    })
-    setError(null)
-    inputsRef.current[Math.min(start + digits.length, CODE_LENGTH - 1)]?.focus()
-  }
+      return next;
+    });
+    setError(null);
+    inputsRef.current[
+      Math.min(start + digits.length, CODE_LENGTH - 1)
+    ]?.focus();
+  };
 
   const clearDigit = (index: number) => {
     setCode((prev) => {
-      const next = [...prev]
-      next[index] = ""
-      return next
-    })
-  }
+      const next = [...prev];
+      next[index] = "";
+      return next;
+    });
+  };
 
   const onChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value
+    const raw = e.target.value;
     if (raw === "") {
-      clearDigit(index)
-      return
+      clearDigit(index);
+      return;
     }
-    applyDigits(index, raw)
-  }
+    applyDigits(index, raw);
+  };
 
   const onKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Backspace" && e.currentTarget.value === "" && index > 0) {
-      e.preventDefault()
-      clearDigit(index - 1)
-      inputsRef.current[index - 1]?.focus()
-      return
+      e.preventDefault();
+      clearDigit(index - 1);
+      inputsRef.current[index - 1]?.focus();
+      return;
     }
     if (e.key === "ArrowLeft" && index > 0) {
-      e.preventDefault()
-      inputsRef.current[index - 1]?.focus()
-      return
+      e.preventDefault();
+      inputsRef.current[index - 1]?.focus();
+      return;
     }
     if (e.key === "ArrowRight" && index < CODE_LENGTH - 1) {
-      e.preventDefault()
-      inputsRef.current[index + 1]?.focus()
+      e.preventDefault();
+      inputsRef.current[index + 1]?.focus();
     }
-  }
+  };
 
-  const onPaste = (index: number, e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    applyDigits(index, e.clipboardData.getData("text"))
-  }
+  const onPaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>,
+  ) => {
+    e.preventDefault();
+    applyDigits(index, e.clipboardData.getData("text"));
+  };
 
   const resend = () => {
-    setCode(Array.from({ length: CODE_LENGTH }, () => ""))
-    setError(null)
-    setSecondsLeft(RESEND_SECONDS)
-    inputsRef.current[0]?.focus()
-  }
+    setCode(Array.from({ length: CODE_LENGTH }, () => ""));
+    setError(null);
+    setSecondsLeft(RESEND_SECONDS);
+    inputsRef.current[0]?.focus();
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (code.some((d) => d === "")) {
-      setError("Enter all six digits to continue.")
-      return
+      setError("Enter all six digits to continue.");
+      return;
     }
-    setError(null)
-    setStatus("verifying")
-    await new Promise((r) => setTimeout(r, 900))
-    setStatus("success")
-  }
+    setError(null);
+    setStatus("verifying");
+    await new Promise((r) => setTimeout(r, 900));
+    setStatus("success");
+  };
 
   return (
     <section className="relative isolate flex min-h-[640px] items-center justify-center bg-background py-16 md:py-24">
@@ -154,7 +159,7 @@ export default function OtpVerify01() {
                 <CheckCircle2 className="size-5" />
               </span>
               <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-semibold tracking-[-0.025em]">
+                <h1 className="font-serif text-3xl font-medium tracking-tight">
                   You&apos;re verified
                 </h1>
                 <p className="text-xs text-muted-foreground">
@@ -175,7 +180,7 @@ export default function OtpVerify01() {
                   <BrandMark className="size-6 text-foreground" />
                 </div>
                 <div className="flex flex-col items-center gap-1 text-center">
-                  <h1 className="text-2xl font-semibold tracking-[-0.025em]">
+                  <h1 className="font-serif text-3xl font-medium tracking-tight">
                     Check your email
                   </h1>
                   <p className="text-xs text-muted-foreground">
@@ -202,7 +207,7 @@ export default function OtpVerify01() {
                       <Input
                         key={i}
                         ref={(el) => {
-                          inputsRef.current[i] = el
+                          inputsRef.current[i] = el;
                         }}
                         type="text"
                         inputMode="numeric"
@@ -219,13 +224,16 @@ export default function OtpVerify01() {
                         onFocus={(e) => e.target.select()}
                         className={cn(
                           "size-11 px-0 text-center font-mono text-base tabular-nums",
-                          digit && "border-foreground"
+                          digit && "border-foreground",
                         )}
                       />
                     ))}
                   </div>
                   {error ? (
-                    <p id="otp01-code-error" className="text-xs text-destructive">
+                    <p
+                      id="otp01-code-error"
+                      className="text-xs text-destructive"
+                    >
                       {error}
                     </p>
                   ) : null}
@@ -297,5 +305,5 @@ export default function OtpVerify01() {
         </p>
       </div>
     </section>
-  )
+  );
 }

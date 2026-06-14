@@ -50,8 +50,8 @@ const NEXACORE_CSS = `
   backdrop-filter: blur(36px);
   -webkit-backdrop-filter: blur(36px);
 }
-`
+`;
 
 export function NexacoreStyles() {
-  return <style dangerouslySetInnerHTML={{ __html: NEXACORE_CSS }} />
+  return <style dangerouslySetInnerHTML={{ __html: NEXACORE_CSS }} />;
 }

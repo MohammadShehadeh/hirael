@@ -1,37 +1,37 @@
-import { notFound } from "next/navigation"
-import type { Metadata } from "next"
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-import { ComponentCategoryPage } from "@/components/showcase/component-category-page"
-import { SITE } from "@/lib/site"
+import { ComponentCategoryPage } from "@/components/showcase/component-category-page";
+import { SITE } from "@/lib/site";
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_DESCRIPTIONS,
   COMPONENT_CATEGORY_ORDER,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
-type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number]
+type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number];
 
-export const dynamicParams = false
+export const dynamicParams = false;
 
 function isComponentCategory(value: string): value is ComponentCategory {
-  return (COMPONENT_CATEGORY_ORDER as readonly string[]).includes(value)
+  return (COMPONENT_CATEGORY_ORDER as readonly string[]).includes(value);
 }
 
 export function generateStaticParams() {
-  return COMPONENT_CATEGORY_ORDER.map((category) => ({ category }))
+  return COMPONENT_CATEGORY_ORDER.map((category) => ({ category }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>
+  params: Promise<{ category: string }>;
 }): Promise<Metadata> {
-  const { category } = await params
-  if (!isComponentCategory(category)) return {}
-  const label = CATEGORY_LABELS[category]
-  const description = COMPONENT_CATEGORY_DESCRIPTIONS[category]
-  const title = `${label} components`
-  const url = `${SITE.url}/components/${category}`
+  const { category } = await params;
+  if (!isComponentCategory(category)) return {};
+  const label = CATEGORY_LABELS[category];
+  const description = COMPONENT_CATEGORY_DESCRIPTIONS[category];
+  const title = `${label} components`;
+  const url = `${SITE.url}/components/${category}`;
   return {
     title,
     description,
@@ -59,15 +59,15 @@ export async function generateMetadata({
       description,
       images: ["/opengraph-image"],
     },
-  }
+  };
 }
 
 export default async function ComponentCategoryRoute({
   params,
 }: {
-  params: Promise<{ category: string }>
+  params: Promise<{ category: string }>;
 }) {
-  const { category } = await params
-  if (!isComponentCategory(category)) notFound()
-  return <ComponentCategoryPage category={category} />
+  const { category } = await params;
+  if (!isComponentCategory(category)) notFound();
+  return <ComponentCategoryPage category={category} />;
 }

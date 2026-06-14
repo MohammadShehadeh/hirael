@@ -1,40 +1,48 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { BlockViewer } from "@/components/showcase/block-viewer"
-import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs"
-import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block"
-import { DirectionToggle } from "@/components/showcase/direction-toggle"
-import { InstallBlock } from "@/components/showcase/install-block"
-import { RegistryDemo } from "@/registry/hirael/registry-demos"
+import { cn } from "@/lib/utils";
+import { BlockViewer } from "@/components/showcase/block-viewer";
+import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs";
+import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block";
+import { DirectionToggle } from "@/components/showcase/direction-toggle";
+import { InstallBlock } from "@/components/showcase/install-block";
+import { RegistryDemo } from "@/registry/hirael/registry-demos";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/registry/hirael/ui/table";
 import {
   entryEmbedHref,
   type RegistryEntryMeta,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
-type Tab = "preview" | "usage" | "api" | "code" | "install"
+type Tab = "preview" | "usage" | "api" | "code" | "install";
 
 export type SourceFile = {
-  code: string
-  html: string
-  lang: string
-}
+  code: string;
+  html: string;
+  lang: string;
+};
 
 export type ApiProp = {
-  name: string
-  type: string
-  required: boolean
-  default: string | null
-  description: string | null
-}
+  name: string;
+  type: string;
+  required: boolean;
+  default: string | null;
+  description: string | null;
+};
 
 export type ApiPart = {
-  name: string
-  props: ApiProp[]
-  extendsNative: boolean
-}
+  name: string;
+  props: ApiProp[];
+  extendsNative: boolean;
+};
 
 export function ComponentPage({
   entry,
@@ -43,46 +51,46 @@ export function ComponentPage({
   api,
   breadcrumb,
 }: {
-  entry: RegistryEntryMeta
+  entry: RegistryEntryMeta;
   /** Pre-highlighted source files keyed by repo-relative path. */
-  source: Record<string, SourceFile>
+  source: Record<string, SourceFile>;
   /** Pre-highlighted demo source — shows how to use the component. */
-  demoSource?: SourceFile | null
+  demoSource?: SourceFile | null;
   /** Extracted per-part props tables (registry-props.json). */
-  api?: ApiPart[] | null
+  api?: ApiPart[] | null;
   /** Hierarchy trail shown above the header for navigation. */
-  breadcrumb?: Crumb[]
+  breadcrumb?: Crumb[];
 }) {
-  const [tab, setTab] = React.useState<Tab>("preview")
-  const [rtl, setRtl] = React.useState(false)
+  const [tab, setTab] = React.useState<Tab>("preview");
+  const [rtl, setRtl] = React.useState(false);
 
   const isComposite =
-    entry.category === "blocks" || entry.category === "templates"
-  const embedHref = entryEmbedHref(entry)
+    entry.category === "blocks" || entry.category === "templates";
+  const embedHref = entryEmbedHref(entry);
 
   const codeTabs: CodeBlockTab[] = React.useMemo(
     () =>
       (entry.sourceFiles ?? [])
         .map((f, i) => {
-          const file = source[f]
-          if (!file) return null
-          const label = isComposite ? entry.installTargets?.[i] ?? f : f
-          return { label, code: file.code, html: file.html }
+          const file = source[f];
+          if (!file) return null;
+          const label = isComposite ? (entry.installTargets?.[i] ?? f) : f;
+          return { label, code: file.code, html: file.html };
         })
         .filter((t): t is CodeBlockTab => t !== null),
-    [entry.sourceFiles, entry.installTargets, source, isComposite]
-  )
+    [entry.sourceFiles, entry.installTargets, source, isComposite],
+  );
 
-  const showUsageTab = !isComposite && !!demoSource
-  const showApiTab = !isComposite && !!api?.length
+  const showUsageTab = !isComposite && !!demoSource;
+  const showApiTab = !isComposite && !!api?.length;
 
   const tabs = React.useMemo<Array<[Tab, string]>>(() => {
-    const list: Array<[Tab, string]> = [["preview", "Preview"]]
-    if (showUsageTab) list.push(["usage", "Usage"])
-    if (showApiTab) list.push(["api", "API"])
-    list.push(["code", "Code"], ["install", "Install"])
-    return list
-  }, [showUsageTab, showApiTab])
+    const list: Array<[Tab, string]> = [["preview", "Preview"]];
+    if (showUsageTab) list.push(["usage", "Usage"]);
+    if (showApiTab) list.push(["api", "API"]);
+    list.push(["code", "Code"], ["install", "Install"]);
+    return list;
+  }, [showUsageTab, showApiTab]);
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 md:px-10">
@@ -121,10 +129,10 @@ export function ComponentPage({
         className="inline-flex w-fit items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-1 backdrop-blur-md"
         onKeyDown={(e) => {
           if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key))
-            return
-          e.preventDefault()
-          const order = tabs.map(([k]) => k)
-          const i = order.indexOf(tab)
+            return;
+          e.preventDefault();
+          const order = tabs.map(([k]) => k);
+          const i = order.indexOf(tab);
           const next =
             e.key === "Home"
               ? order[0]
@@ -133,15 +141,15 @@ export function ComponentPage({
                 : order[
                     (i + (e.key === "ArrowRight" ? 1 : -1) + order.length) %
                       order.length
-                  ]
-          setTab(next)
+                  ];
+          setTab(next);
           e.currentTarget
             .querySelector<HTMLButtonElement>(`[data-tab="${next}"]`)
-            ?.focus()
+            ?.focus();
         }}
       >
         {tabs.map(([k, label]) => {
-          const active = tab === k
+          const active = tab === k;
           return (
             <button
               key={k}
@@ -154,15 +162,15 @@ export function ComponentPage({
               data-tab={k}
               onClick={() => setTab(k)}
               className={cn(
-                "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cool",
+                "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
                 active
                   ? "bg-background text-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklch,var(--foreground)_10%,transparent),0_1px_0_0_color-mix(in_oklch,var(--background)_60%,transparent)]"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {label}
             </button>
-          )
+          );
         })}
       </div>
 
@@ -214,7 +222,7 @@ export function ComponentPage({
           <div className="grid gap-4">
             <InstallBlock name={entry.name} />
             <div className="rounded-sm border border-border bg-card p-4">
-              <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 shadcn dependencies
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -230,7 +238,7 @@ export function ComponentPage({
             </div>
             {entry.dependencies?.length ? (
               <div className="rounded-sm border border-border bg-card p-4">
-                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                   npm dependencies
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
@@ -249,11 +257,11 @@ export function ComponentPage({
         )}
       </div>
     </div>
-  )
+  );
 }
 
 const API_TH =
-  "px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground"
+  "px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground";
 
 function ApiPanel({ parts }: { parts: ApiPart[] }) {
   return (
@@ -274,52 +282,44 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
             )}
           </div>
           {part.props.length ? (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className={API_TH}>Prop</th>
-                    <th className={API_TH}>Type</th>
-                    <th className={API_TH}>Default</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {part.props.map((prop) => (
-                    <tr
-                      key={prop.name}
-                      className="border-b border-border align-top last:border-b-0"
-                    >
-                      <td className="px-4 py-2.5">
-                        <code className="font-mono text-xs text-foreground">
-                          {prop.name}
-                          {prop.required && (
-                            <span
-                              className="text-destructive"
-                              title="Required"
-                            >
-                              *
-                            </span>
-                          )}
-                        </code>
-                        {prop.description && (
-                          <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">
-                            {prop.description}
-                          </p>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className={API_TH}>Prop</TableHead>
+                  <TableHead className={API_TH}>Type</TableHead>
+                  <TableHead className={API_TH}>Default</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {part.props.map((prop) => (
+                  <TableRow key={prop.name} className="align-top">
+                    <TableCell className="px-4 py-2.5 whitespace-normal">
+                      <code className="font-mono text-xs text-foreground">
+                        {prop.name}
+                        {prop.required && (
+                          <span className="text-destructive" title="Required">
+                            *
+                          </span>
                         )}
-                      </td>
-                      <td className="px-4 py-2.5">
-                        <code className="font-mono text-xs text-muted-foreground">
-                          {prop.type}
-                        </code>
-                      </td>
-                      <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">
-                        {prop.default ?? "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </code>
+                      {prop.description && (
+                        <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">
+                          {prop.description}
+                        </p>
+                      )}
+                    </TableCell>
+                    <TableCell className="px-4 py-2.5 whitespace-normal">
+                      <code className="font-mono text-xs text-muted-foreground">
+                        {prop.type}
+                      </code>
+                    </TableCell>
+                    <TableCell className="px-4 py-2.5 whitespace-normal font-mono text-xs text-muted-foreground">
+                      {prop.default ?? "—"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
             <p className="px-4 py-3 text-xs text-muted-foreground">
               {part.extendsNative
@@ -330,5 +330,5 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
         </section>
       ))}
     </div>
-  )
+  );
 }

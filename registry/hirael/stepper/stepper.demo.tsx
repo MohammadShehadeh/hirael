@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   Stepper,
@@ -10,17 +10,17 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from "@/registry/hirael/ui/stepper"
+} from "@/registry/hirael/ui/stepper";
 
 const steps = [
   { step: 1, title: "Account", description: "Email & password" },
   { step: 2, title: "Profile", description: "Name & avatar" },
   { step: 3, title: "Billing", description: "Plan & card" },
   { step: 4, title: "Done", description: "Review & submit" },
-]
+];
 
 export default function StepperDemo() {
-  const [current, setCurrent] = React.useState(2)
+  const [current, setCurrent] = React.useState(2);
 
   return (
     <div className="grid w-full max-w-2xl gap-10">
@@ -66,7 +66,11 @@ export default function StepperDemo() {
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Vertical · with descriptions
         </p>
-        <Stepper value={current} onValueChange={setCurrent} orientation="vertical">
+        <Stepper
+          value={current}
+          onValueChange={setCurrent}
+          orientation="vertical"
+        >
           {steps.map(({ step, title, description }) => (
             <StepperItem key={step} step={step}>
               <StepperTrigger>
@@ -82,5 +86,5 @@ export default function StepperDemo() {
         </Stepper>
       </div>
     </div>
-  )
+  );
 }

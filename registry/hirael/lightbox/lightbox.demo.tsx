@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Lightbox,
   LightboxContent,
   LightboxThumbnails,
   LightboxTrigger,
-} from "@/registry/hirael/ui/lightbox"
+} from "@/registry/hirael/ui/lightbox";
 
 const full = (id: string) =>
-  `https://images.unsplash.com/${id}?q=80&w=1600&auto=format&fit=crop`
+  `https://images.unsplash.com/${id}?q=80&w=1600&auto=format&fit=crop`;
 const thumb = (id: string) =>
-  `https://images.unsplash.com/${id}?q=80&w=400&auto=format&fit=crop`
+  `https://images.unsplash.com/${id}?q=80&w=400&auto=format&fit=crop`;
 
 const photos = [
   {
@@ -38,7 +38,7 @@ const photos = [
     alt: "Sunbeams falling through a green forest",
     caption: "Old-growth forest, midsummer",
   },
-]
+];
 
 const single = [
   {
@@ -46,7 +46,7 @@ const single = [
     alt: "Sunlit mountain ridge under clouds",
     caption: "Highland ridge after the storm",
   },
-]
+];
 
 export default function LightboxDemo() {
   return (
@@ -92,5 +92,5 @@ export default function LightboxDemo() {
         </Lightbox>
       </div>
     </div>
-  )
+  );
 }

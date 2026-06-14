@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   KpiCard,
@@ -7,7 +7,7 @@ import {
   KpiCardSpark,
   KpiCardValue,
   KpiGrid,
-} from "@/registry/hirael/ui/kpi-grid"
+} from "@/registry/hirael/ui/kpi-grid";
 
 const KPIS = [
   {
@@ -38,7 +38,7 @@ const KPIS = [
     delta: "0.0%",
     spark: [12, 13, 12, 12, 13, 12, 12],
   },
-]
+];
 
 export default function KpiGridDemo() {
   return (
@@ -52,5 +52,5 @@ export default function KpiGridDemo() {
         </KpiCard>
       ))}
     </KpiGrid>
-  )
+  );
 }

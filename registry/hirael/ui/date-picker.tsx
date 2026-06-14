@@ -1,68 +1,72 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react"
+import * as React from "react";
+import { CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/registry/hirael/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
+} from "@/registry/hirael/ui/popover";
 
 function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 function sameDay(a: Date | null | undefined, b: Date | null | undefined) {
-  if (!a || !b) return false
+  if (!a || !b) return false;
   return (
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
-  )
+  );
 }
 
 function addDays(d: Date, n: number) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n)
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 }
 
 function addMonthsClamped(d: Date, n: number) {
-  const y = d.getFullYear()
-  const m = d.getMonth() + n
-  const last = new Date(y, m + 1, 0).getDate()
-  return new Date(y, m, Math.min(d.getDate(), last))
+  const y = d.getFullYear();
+  const m = d.getMonth() + n;
+  const last = new Date(y, m + 1, 0).getDate();
+  return new Date(y, m, Math.min(d.getDate(), last));
 }
 
 function monthIndex(d: Date) {
-  return d.getFullYear() * 12 + d.getMonth()
+  return d.getFullYear() * 12 + d.getMonth();
 }
 
 function monthCells(month: Date, weekStartsOn: 0 | 1) {
-  const first = new Date(month.getFullYear(), month.getMonth(), 1)
-  const lead = (first.getDay() - weekStartsOn + 7) % 7
-  const count = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate()
-  const cells: (Date | null)[] = []
-  for (let i = 0; i < lead; i++) cells.push(null)
+  const first = new Date(month.getFullYear(), month.getMonth(), 1);
+  const lead = (first.getDay() - weekStartsOn + 7) % 7;
+  const count = new Date(
+    month.getFullYear(),
+    month.getMonth() + 1,
+    0,
+  ).getDate();
+  const cells: (Date | null)[] = [];
+  for (let i = 0; i < lead; i++) cells.push(null);
   for (let day = 1; day <= count; day++) {
-    cells.push(new Date(month.getFullYear(), month.getMonth(), day))
+    cells.push(new Date(month.getFullYear(), month.getMonth(), day));
   }
-  while (cells.length % 7 !== 0) cells.push(null)
-  return cells
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
 }
 
 export type DateCalendarProps = {
-  value?: Date | null
-  defaultValue?: Date | null
-  onValueChange?: (date: Date | null) => void
-  min?: Date
-  max?: Date
-  disabledDate?: (d: Date) => boolean
-  locale?: string
-  weekStartsOn?: 0 | 1
-  className?: string
-}
+  value?: Date | null;
+  defaultValue?: Date | null;
+  onValueChange?: (date: Date | null) => void;
+  min?: Date;
+  max?: Date;
+  disabledDate?: (d: Date) => boolean;
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  className?: string;
+};
 
 function DateCalendar({
   value: valueProp,
@@ -75,124 +79,124 @@ function DateCalendar({
   weekStartsOn = 1,
   className,
 }: DateCalendarProps) {
-  const [internal, setInternal] = React.useState<Date | null>(defaultValue)
-  const value = valueProp !== undefined ? valueProp : internal
-  const today = startOfDay(new Date())
+  const [internal, setInternal] = React.useState<Date | null>(defaultValue);
+  const value = valueProp !== undefined ? valueProp : internal;
+  const today = startOfDay(new Date());
 
   const [viewMonth, setViewMonth] = React.useState<Date>(() => {
-    const anchor = value ?? today
-    return new Date(anchor.getFullYear(), anchor.getMonth(), 1)
-  })
+    const anchor = value ?? today;
+    return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+  });
 
   const setValue = React.useCallback(
     (next: Date | null) => {
-      if (valueProp === undefined) setInternal(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternal(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
   const isDayDisabled = React.useCallback(
     (d: Date) => {
-      if (min && d.getTime() < startOfDay(min).getTime()) return true
-      if (max && d.getTime() > startOfDay(max).getTime()) return true
-      return disabledDate ? disabledDate(d) : false
+      if (min && d.getTime() < startOfDay(min).getTime()) return true;
+      if (max && d.getTime() > startOfDay(max).getTime()) return true;
+      return disabledDate ? disabledDate(d) : false;
     },
-    [min, max, disabledDate]
-  )
+    [min, max, disabledDate],
+  );
 
-  const selected = value ? startOfDay(value) : null
+  const selected = value ? startOfDay(value) : null;
 
-  const isMonthVisible = (d: Date) => monthIndex(d) === monthIndex(viewMonth)
+  const isMonthVisible = (d: Date) => monthIndex(d) === monthIndex(viewMonth);
 
   const canPrev =
     !min ||
     new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0).getTime() >=
-      startOfDay(min).getTime()
+      startOfDay(min).getTime();
   const canNext =
     !max ||
     new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1).getTime() <=
-      startOfDay(max).getTime()
+      startOfDay(max).getTime();
 
   const stepMonth = (n: number) =>
     setViewMonth(
-      new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1)
-    )
+      new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1),
+    );
 
-  const rootRef = React.useRef<HTMLDivElement>(null)
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const focusDay = (d: Date) => {
     const doFocus = () => {
       rootRef.current
         ?.querySelector<HTMLButtonElement>(`[data-day="${d.getTime()}"]`)
-        ?.focus()
-    }
+        ?.focus();
+    };
     if (!isMonthVisible(d)) {
-      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1))
-      requestAnimationFrame(doFocus)
+      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1));
+      requestAnimationFrame(doFocus);
     } else {
-      doFocus()
+      doFocus();
     }
-  }
+  };
 
   const handleKey = (e: React.KeyboardEvent, d: Date) => {
     const forward =
-      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1
-    const dow = (d.getDay() - weekStartsOn + 7) % 7
-    let next: Date
+      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1;
+    const dow = (d.getDay() - weekStartsOn + 7) % 7;
+    let next: Date;
     switch (e.key) {
       case "ArrowLeft":
-        next = addDays(d, -forward)
-        break
+        next = addDays(d, -forward);
+        break;
       case "ArrowRight":
-        next = addDays(d, forward)
-        break
+        next = addDays(d, forward);
+        break;
       case "ArrowUp":
-        next = addDays(d, -7)
-        break
+        next = addDays(d, -7);
+        break;
       case "ArrowDown":
-        next = addDays(d, 7)
-        break
+        next = addDays(d, 7);
+        break;
       case "Home":
-        next = addDays(d, -dow)
-        break
+        next = addDays(d, -dow);
+        break;
       case "End":
-        next = addDays(d, 6 - dow)
-        break
+        next = addDays(d, 6 - dow);
+        break;
       case "PageUp":
-        next = addMonthsClamped(d, e.shiftKey ? -12 : -1)
-        break
+        next = addMonthsClamped(d, e.shiftKey ? -12 : -1);
+        break;
       case "PageDown":
-        next = addMonthsClamped(d, e.shiftKey ? 12 : 1)
-        break
+        next = addMonthsClamped(d, e.shiftKey ? 12 : 1);
+        break;
       default:
-        return
+        return;
     }
-    e.preventDefault()
+    e.preventDefault();
     if (min && next.getTime() < startOfDay(min).getTime()) {
-      next = startOfDay(min)
+      next = startOfDay(min);
     }
     if (max && next.getTime() > startOfDay(max).getTime()) {
-      next = startOfDay(max)
+      next = startOfDay(max);
     }
-    focusDay(next)
-  }
+    focusDay(next);
+  };
 
   const monthFmt = new Intl.DateTimeFormat(locale, {
     month: "long",
     year: "numeric",
-  })
-  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: "short" })
-  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: "full" })
+  });
+  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: "short" });
+  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
   const weekdays = Array.from({ length: 7 }, (_, i) =>
-    weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7)))
-  )
+    weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
+  );
 
   const tabbable =
     selected && isMonthVisible(selected)
       ? selected
       : isMonthVisible(today)
         ? today
-        : viewMonth
+        : viewMonth;
 
   return (
     <div
@@ -247,11 +251,11 @@ function DateCalendar({
         ))}
         {monthCells(viewMonth, weekStartsOn).map((d, i) => {
           if (!d) {
-            return <span key={i} aria-hidden className="size-8" />
+            return <span key={i} aria-hidden className="size-8" />;
           }
-          const isSelected = sameDay(d, selected)
-          const isToday = sameDay(d, today)
-          const out = isDayDisabled(d)
+          const isSelected = sameDay(d, selected);
+          const isToday = sameDay(d, today);
+          const out = isDayDisabled(d);
           return (
             <button
               key={i}
@@ -272,54 +276,54 @@ function DateCalendar({
                 "disabled:opacity-30 disabled:hover:bg-transparent",
                 isSelected &&
                   "bg-primary text-primary-foreground hover:bg-primary",
-                !isSelected && isToday && "ring-1 ring-inset ring-primary/60"
+                !isSelected && isToday && "ring-1 ring-inset ring-primary/60",
               )}
             >
               {d.getDate()}
             </button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 type DatePickerContextValue = {
-  value: Date | null
-  setValue: (date: Date | null) => void
-  open: boolean
-  setOpen: (open: boolean) => void
-  min?: Date
-  max?: Date
-  disabled?: boolean
-}
+  value: Date | null;
+  setValue: (date: Date | null) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  min?: Date;
+  max?: Date;
+  disabled?: boolean;
+};
 
 const DatePickerContext = React.createContext<DatePickerContextValue | null>(
-  null
-)
+  null,
+);
 
 function useDatePicker() {
-  const ctx = React.useContext(DatePickerContext)
+  const ctx = React.useContext(DatePickerContext);
   if (!ctx) {
     throw new Error(
-      "DatePicker compound components must be used inside <DatePicker>"
-    )
+      "DatePicker compound components must be used inside <DatePicker>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 export type DatePickerProps = {
-  value?: Date | null
-  defaultValue?: Date | null
-  onValueChange?: (date: Date | null) => void
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  min?: Date
-  max?: Date
-  disabled?: boolean
-  children?: React.ReactNode
-}
+  value?: Date | null;
+  defaultValue?: Date | null;
+  onValueChange?: (date: Date | null) => void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  min?: Date;
+  max?: Date;
+  disabled?: boolean;
+  children?: React.ReactNode;
+};
 
 function DatePicker({
   value: valueProp,
@@ -334,31 +338,31 @@ function DatePicker({
   children,
 }: DatePickerProps) {
   const [internalValue, setInternalValue] = React.useState<Date | null>(
-    defaultValue
-  )
-  const value = valueProp !== undefined ? valueProp : internalValue
+    defaultValue,
+  );
+  const value = valueProp !== undefined ? valueProp : internalValue;
   const setValue = React.useCallback(
     (next: Date | null) => {
-      if (valueProp === undefined) setInternalValue(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
-  const open = openProp ?? internalOpen
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
     (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next)
-      onOpenChange?.(next)
+      if (openProp === undefined) setInternalOpen(next);
+      onOpenChange?.(next);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
   const ctx = React.useMemo<DatePickerContextValue>(
     () => ({ value, setValue, open, setOpen, min, max, disabled }),
-    [value, setValue, open, setOpen, min, max, disabled]
-  )
+    [value, setValue, open, setOpen, min, max, disabled],
+  );
 
   return (
     <DatePickerContext.Provider value={ctx}>
@@ -366,7 +370,7 @@ function DatePicker({
         {children}
       </Popover>
     </DatePickerContext.Provider>
-  )
+  );
 }
 
 function DatePickerTrigger({
@@ -376,12 +380,12 @@ function DatePickerTrigger({
   children,
   ...props
 }: Omit<React.ComponentProps<"button">, "children"> & {
-  placeholder?: string
-  locale?: string
-  children?: React.ReactNode
+  placeholder?: string;
+  locale?: string;
+  children?: React.ReactNode;
 }) {
-  const ctx = useDatePicker()
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" })
+  const ctx = useDatePicker();
+  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   return (
     <PopoverTrigger asChild>
       <button
@@ -394,7 +398,7 @@ function DatePickerTrigger({
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           !ctx.value && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -404,7 +408,7 @@ function DatePickerTrigger({
         </span>
       </button>
     </PopoverTrigger>
-  )
+  );
 }
 
 function DatePickerContent({
@@ -414,11 +418,11 @@ function DatePickerContent({
   className,
   ...props
 }: React.ComponentProps<typeof PopoverContent> & {
-  locale?: string
-  weekStartsOn?: 0 | 1
-  disabledDate?: (d: Date) => boolean
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  disabledDate?: (d: Date) => boolean;
 }) {
-  const ctx = useDatePicker()
+  const ctx = useDatePicker();
   return (
     <PopoverContent
       align="start"
@@ -430,8 +434,8 @@ function DatePickerContent({
         <DateCalendar
           value={ctx.value}
           onValueChange={(d) => {
-            ctx.setValue(d)
-            ctx.setOpen(false)
+            ctx.setValue(d);
+            ctx.setOpen(false);
           }}
           min={ctx.min}
           max={ctx.max}
@@ -456,7 +460,7 @@ function DatePickerContent({
         )}
       </div>
     </PopoverContent>
-  )
+  );
 }
 
-export { DatePicker, DatePickerTrigger, DatePickerContent, DateCalendar }
+export { DatePicker, DatePickerTrigger, DatePickerContent, DateCalendar };

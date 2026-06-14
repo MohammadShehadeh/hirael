@@ -1,55 +1,44 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Input } from "@/registry/hirael/ui/input"
-import { Label } from "@/registry/hirael/ui/label"
-import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
-import { useTheme } from "@/components/showcase/theme-provider"
-import { RegistryDemo } from "@/registry/hirael/registry-demos"
-import { COMPONENTS } from "@/registry/hirael/registry-meta"
+import { Button } from "@/registry/hirael/ui/button";
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Input } from "@/registry/hirael/ui/input";
+import { Label } from "@/registry/hirael/ui/label";
+import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
+import { PageHeader } from "@/components/showcase/page-header";
+import { useTheme } from "@/components/showcase/theme-provider";
+import { RegistryDemo } from "@/registry/hirael/registry-demos";
+import { COMPONENTS } from "@/registry/hirael/registry-meta";
 
 export function ThemePlayground() {
-  const { mode, theme } = useTheme()
+  const { mode, theme } = useTheme();
   const overrideCount =
-    Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const components = COMPONENTS
+    Object.keys(theme.dark).length + Object.keys(theme.light).length;
+  const components = COMPONENTS;
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
-      <header className="flex flex-col gap-5 border-b border-border pb-8">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ playground
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            live theme preview
-          </span>
-        </div>
-        <h1 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
-          Your theme, every component.
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Paste a CSS variable block from your own app or any shadcn theme
-          generator and watch the entire Hirael registry re-skin. The active
-          theme is persisted in your browser; reset any time.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:gap-14 sm:px-6 sm:py-20 md:px-10">
+      <PageHeader
+        kicker="Theme"
+        title="Your theme, every component."
+        blurb="Paste a CSS variable block from your own app or any shadcn theme generator and watch the entire Hirael registry re-skin. The active theme is persisted in your browser; reset any time."
+        live
+      >
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <ThemeSheetTrigger />
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             mode · {mode}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             ·
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             {overrideCount} override{overrideCount === 1 ? "" : "s"} active
           </span>
         </div>
-      </header>
+      </PageHeader>
 
       <Section
         eyebrow="Surfaces"
@@ -57,9 +46,15 @@ export function ThemePlayground() {
         description="The three surface layers components stack on: background, card, popover. Borders read against each."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
-          <Surface label="background" className="bg-background text-foreground" />
+          <Surface
+            label="background"
+            className="bg-background text-foreground"
+          />
           <Surface label="card" className="bg-card text-card-foreground" />
-          <Surface label="popover" className="bg-popover text-popover-foreground" />
+          <Surface
+            label="popover"
+            className="bg-popover text-popover-foreground"
+          />
         </div>
       </Section>
 
@@ -112,7 +107,7 @@ export function ThemePlayground() {
                   <h3 className="text-sm font-medium tracking-[-0.01em]">
                     {entry.title}
                   </h3>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
                     /{entry.name}
                   </span>
                 </div>
@@ -120,7 +115,7 @@ export function ThemePlayground() {
                   <RegistryDemo name={entry.name} />
                 </div>
               </article>
-            )
+            );
           })}
         </div>
       </Section>
@@ -140,7 +135,7 @@ export function ThemePlayground() {
         </div>
       </Section>
     </div>
-  )
+  );
 }
 
 function Section({
@@ -149,10 +144,10 @@ function Section({
   description,
   children,
 }: {
-  eyebrow: string
-  title: string
-  description: string
-  children: React.ReactNode
+  eyebrow: string;
+  title: string;
+  description: string;
+  children: React.ReactNode;
 }) {
   return (
     <section className="flex flex-col gap-4">
@@ -165,19 +160,19 @@ function Section({
       </div>
       {children}
     </section>
-  )
+  );
 }
 
 function Surface({ label, className }: { label: string; className: string }) {
   return (
     <div className={`flex flex-col gap-1 p-5 ${className}`}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.1em] opacity-70">
+      <span className="font-mono text-[10px] uppercase tracking-widest opacity-70">
         --{label}
       </span>
       <span className="text-sm">Aa · the quick brown fox</span>
       <span className="text-xs opacity-60">Muted line of secondary copy.</span>
     </div>
-  )
+  );
 }
 
 function Swatch({ label, varName }: { label: string; varName: string }) {
@@ -192,5 +187,5 @@ function Swatch({ label, varName }: { label: string; varName: string }) {
         {label}
       </span>
     </div>
-  )
+  );
 }

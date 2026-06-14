@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight, Sparkles } from "lucide-react";
 
 import {
   AnnouncementBar,
   AnnouncementBarBadge,
   AnnouncementBarLink,
-} from "@/registry/hirael/ui/announcement-bar"
+} from "@/registry/hirael/ui/announcement-bar";
 
 export default function AnnouncementBarDemo() {
   return (
@@ -52,5 +52,5 @@ export default function AnnouncementBarDemo() {
         </AnnouncementBar>
       </div>
     </div>
-  )
+  );
 }

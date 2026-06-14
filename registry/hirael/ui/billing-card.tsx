@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type BillingCardProps = React.ComponentProps<"div">
+type BillingCardProps = React.ComponentProps<"div">;
 
 function BillingCard({ className, ...props }: BillingCardProps) {
   return (
@@ -12,14 +12,14 @@ function BillingCard({ className, ...props }: BillingCardProps) {
       data-slot="billing-card"
       className={cn(
         "flex flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type BillingCardHeaderProps = React.ComponentProps<"div">
+type BillingCardHeaderProps = React.ComponentProps<"div">;
 
 function BillingCardHeader({ className, ...props }: BillingCardHeaderProps) {
   return (
@@ -28,10 +28,10 @@ function BillingCardHeader({ className, ...props }: BillingCardHeaderProps) {
       className={cn("flex items-start justify-between gap-3", className)}
       {...props}
     />
-  )
+  );
 }
 
-type BillingCardEyebrowProps = React.ComponentProps<"p">
+type BillingCardEyebrowProps = React.ComponentProps<"p">;
 
 function BillingCardEyebrow({ className, ...props }: BillingCardEyebrowProps) {
   return (
@@ -39,14 +39,14 @@ function BillingCardEyebrow({ className, ...props }: BillingCardEyebrowProps) {
       data-slot="billing-card-eyebrow"
       className={cn(
         "font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type BillingCardPlanProps = React.ComponentProps<"p">
+type BillingCardPlanProps = React.ComponentProps<"p">;
 
 function BillingCardPlan({ className, ...props }: BillingCardPlanProps) {
   return (
@@ -54,16 +54,16 @@ function BillingCardPlan({ className, ...props }: BillingCardPlanProps) {
       data-slot="billing-card-plan"
       className={cn(
         "text-xl font-semibold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 type BillingCardPriceProps = React.ComponentProps<"p"> & {
-  cycle?: React.ReactNode
-}
+  cycle?: React.ReactNode;
+};
 
 function BillingCardPrice({
   cycle,
@@ -78,18 +78,16 @@ function BillingCardPrice({
       {...props}
     >
       <span className="text-lg font-semibold tracking-tight">{children}</span>
-      {cycle ? (
-        <span className="text-muted-foreground"> / {cycle}</span>
-      ) : null}
+      {cycle ? <span className="text-muted-foreground"> / {cycle}</span> : null}
     </p>
-  )
+  );
 }
 
 type BillingCardMeterProps = React.ComponentProps<"div"> & {
-  value: number
-  max: number
-  label?: React.ReactNode
-}
+  value: number;
+  max: number;
+  label?: React.ReactNode;
+};
 
 function BillingCardMeter({
   value,
@@ -98,7 +96,7 @@ function BillingCardMeter({
   className,
   ...props
 }: BillingCardMeterProps) {
-  const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0))
+  const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   return (
     <div
       data-slot="billing-card-meter"
@@ -126,12 +124,12 @@ function BillingCardMeter({
         />
       </div>
     </div>
-  )
+  );
 }
 
 type BillingCardRowProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode
-}
+  label: React.ReactNode;
+};
 
 function BillingCardRow({
   label,
@@ -142,16 +140,19 @@ function BillingCardRow({
   return (
     <div
       data-slot="billing-card-row"
-      className={cn("flex items-center justify-between gap-3 text-sm", className)}
+      className={cn(
+        "flex items-center justify-between gap-3 text-sm",
+        className,
+      )}
       {...props}
     >
       <span className="text-muted-foreground">{label}</span>
       <span className="text-foreground">{children}</span>
     </div>
-  )
+  );
 }
 
-type BillingCardFooterProps = React.ComponentProps<"div">
+type BillingCardFooterProps = React.ComponentProps<"div">;
 
 function BillingCardFooter({ className, ...props }: BillingCardFooterProps) {
   return (
@@ -159,11 +160,11 @@ function BillingCardFooter({ className, ...props }: BillingCardFooterProps) {
       data-slot="billing-card-footer"
       className={cn(
         "flex items-center gap-2 border-t border-border pt-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -175,4 +176,4 @@ export {
   BillingCardMeter,
   BillingCardRow,
   BillingCardFooter,
-}
+};

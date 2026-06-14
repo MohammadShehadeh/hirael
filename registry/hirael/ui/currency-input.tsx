@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
-} from "@/registry/hirael/ui/input-group"
+} from "@/registry/hirael/ui/input-group";
 
 function resolveCurrencySymbol(currency: string, locale: string): string {
   try {
@@ -16,93 +16,89 @@ function resolveCurrencySymbol(currency: string, locale: string): string {
       style: "currency",
       currency,
       currencyDisplay: "narrowSymbol",
-    }).formatToParts(0)
-    const symbol = parts.find((p) => p.type === "currency")?.value
-    return symbol ?? currency
+    }).formatToParts(0);
+    const symbol = parts.find((p) => p.type === "currency")?.value;
+    return symbol ?? currency;
   } catch {
-    return currency
+    return currency;
   }
 }
 
-function formatNumber(
-  value: number,
-  locale: string,
-  decimals: number
-): string {
+function formatNumber(value: number, locale: string, decimals: number): string {
   try {
     return new Intl.NumberFormat(locale, {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
-    }).format(value)
+    }).format(value);
   } catch {
-    return value.toFixed(decimals)
+    return value.toFixed(decimals);
   }
 }
 
 function sanitizeInput(raw: string, decimals: number): string {
-  if (!raw) return ""
-  let str = raw.replace(/[^\d.\-]/g, "")
-  const negative = str.startsWith("-")
-  str = str.replace(/-/g, "")
-  const firstDot = str.indexOf(".")
+  if (!raw) return "";
+  let str = raw.replace(/[^\d.\-]/g, "");
+  const negative = str.startsWith("-");
+  str = str.replace(/-/g, "");
+  const firstDot = str.indexOf(".");
   if (firstDot !== -1) {
     str =
-      str.slice(0, firstDot + 1) + str.slice(firstDot + 1).replace(/\./g, "")
+      str.slice(0, firstDot + 1) + str.slice(firstDot + 1).replace(/\./g, "");
   }
   if (decimals === 0) {
-    str = str.replace(/\./g, "")
+    str = str.replace(/\./g, "");
   } else if (firstDot !== -1) {
-    const [whole, frac = ""] = str.split(".")
-    str = `${whole}.${frac.slice(0, decimals)}`
+    const [whole, frac = ""] = str.split(".");
+    str = `${whole}.${frac.slice(0, decimals)}`;
   }
-  return negative ? `-${str}` : str
+  return negative ? `-${str}` : str;
 }
 
 function parseToNumber(view: string): number | null {
-  if (!view || view === "-" || view === "." || view === "-.") return null
-  const n = Number(view)
-  return Number.isFinite(n) ? n : null
+  if (!view || view === "-" || view === "." || view === "-.") return null;
+  const n = Number(view);
+  return Number.isFinite(n) ? n : null;
 }
 
 type Ctx = {
-  id: string
-  value: number | null
-  setValue: (next: number | null) => void
-  view: string
-  setView: (next: string) => void
-  currency: string
-  locale: string
-  decimals: number
-  disabled?: boolean
-  symbol: string
-}
+  id: string;
+  value: number | null;
+  setValue: (next: number | null) => void;
+  view: string;
+  setView: (next: string) => void;
+  currency: string;
+  locale: string;
+  decimals: number;
+  disabled?: boolean;
+  symbol: string;
+};
 
-const CurrencyInputContext = React.createContext<Ctx | null>(null)
+const CurrencyInputContext = React.createContext<Ctx | null>(null);
 
 function useCurrencyInput() {
-  const ctx = React.useContext(CurrencyInputContext)
+  const ctx = React.useContext(CurrencyInputContext);
   if (!ctx) {
     throw new Error(
-      "CurrencyInput compound parts must be used inside <CurrencyInput>"
-    )
+      "CurrencyInput compound parts must be used inside <CurrencyInput>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 export type CurrencyInputProps = Omit<
   React.ComponentProps<"div">,
   "children" | "value" | "defaultValue" | "onChange"
 > & {
-  id?: string
-  value?: number | null
-  defaultValue?: number | null
-  onValueChange?: (value: number | null) => void
-  currency?: string
-  locale?: string
-  decimals?: number
-  disabled?: boolean
-  children?: React.ReactNode
-}
+  id?: string;
+  value?: number | null;
+  defaultValue?: number | null;
+  onValueChange?: (value: number | null) => void;
+  currency?: string;
+  locale?: string;
+  decimals?: number;
+  disabled?: boolean;
+  children?: React.ReactNode;
+};
 
 function CurrencyInput({
   id,
@@ -117,48 +113,48 @@ function CurrencyInput({
   children,
   ...props
 }: CurrencyInputProps) {
-  const reactId = React.useId()
-  const fieldId = id ?? reactId
+  const reactId = React.useId();
+  const fieldId = id ?? reactId;
 
   const [internalValue, setInternalValue] = React.useState<number | null>(
-    defaultValue
-  )
-  const value = valueProp !== undefined ? valueProp : internalValue
+    defaultValue,
+  );
+  const value = valueProp !== undefined ? valueProp : internalValue;
 
   // Tracks the value currently reflected in the view so the sync effect below
   // can tell an external value change apart from one the field just made while
   // typing — otherwise every keystroke gets reformatted (e.g. "1" → "1.00").
-  const lastSeenValue = React.useRef<number | null | undefined>(value)
+  const lastSeenValue = React.useRef<number | null | undefined>(value);
 
   const setValue = React.useCallback(
     (next: number | null) => {
-      lastSeenValue.current = next
-      if (valueProp === undefined) setInternalValue(next)
-      onValueChange?.(next)
+      lastSeenValue.current = next;
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
   const [view, setView] = React.useState<string>(() =>
     value === null || value === undefined
       ? ""
-      : formatNumber(value, locale, decimals)
-  )
+      : formatNumber(value, locale, decimals),
+  );
 
   React.useEffect(() => {
-    if (lastSeenValue.current === value) return
-    lastSeenValue.current = value
+    if (lastSeenValue.current === value) return;
+    lastSeenValue.current = value;
     setView(
       value === null || value === undefined
         ? ""
-        : formatNumber(value, locale, decimals)
-    )
-  }, [value, locale, decimals])
+        : formatNumber(value, locale, decimals),
+    );
+  }, [value, locale, decimals]);
 
   const symbol = React.useMemo(
     () => resolveCurrencySymbol(currency, locale),
-    [currency, locale]
-  )
+    [currency, locale],
+  );
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -173,8 +169,18 @@ function CurrencyInput({
       disabled,
       symbol,
     }),
-    [fieldId, value, setValue, view, currency, locale, decimals, disabled, symbol]
-  )
+    [
+      fieldId,
+      value,
+      setValue,
+      view,
+      currency,
+      locale,
+      decimals,
+      disabled,
+      symbol,
+    ],
+  );
 
   return (
     <CurrencyInputContext.Provider value={ctx}>
@@ -187,22 +193,22 @@ function CurrencyInput({
         {children}
       </InputGroup>
     </CurrencyInputContext.Provider>
-  )
+  );
 }
 
 type CurrencyInputPrefixProps = Omit<
   React.ComponentProps<typeof InputGroupAddon>,
   "align" | "children"
 > & {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 function CurrencyInputPrefix({
   className,
   children,
   ...props
 }: CurrencyInputPrefixProps) {
-  const ctx = useCurrencyInput()
+  const ctx = useCurrencyInput();
   return (
     <InputGroupAddon
       data-slot="currency-input-prefix"
@@ -214,13 +220,13 @@ function CurrencyInputPrefix({
         {children ?? ctx.symbol}
       </InputGroupText>
     </InputGroupAddon>
-  )
+  );
 }
 
 type CurrencyInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
->
+>;
 
 function CurrencyInputField({
   placeholder = "0",
@@ -229,7 +235,7 @@ function CurrencyInputField({
   inputMode = "decimal",
   ...props
 }: CurrencyInputFieldProps) {
-  const ctx = useCurrencyInput()
+  const ctx = useCurrencyInput();
 
   return (
     <InputGroupInput
@@ -241,38 +247,34 @@ function CurrencyInputField({
       placeholder={placeholder}
       data-slot="currency-input-field"
       onChange={(e) => {
-        const sanitized = sanitizeInput(e.target.value, ctx.decimals)
-        ctx.setView(sanitized)
-        const parsed = parseToNumber(sanitized)
-        ctx.setValue(parsed)
+        const sanitized = sanitizeInput(e.target.value, ctx.decimals);
+        ctx.setView(sanitized);
+        const parsed = parseToNumber(sanitized);
+        ctx.setValue(parsed);
       }}
       onFocus={(e) => {
-        onFocus?.(e)
-        if (ctx.value === null || ctx.value === undefined) return
+        onFocus?.(e);
+        if (ctx.value === null || ctx.value === undefined) return;
         const raw =
           ctx.decimals > 0
             ? ctx.value.toFixed(ctx.decimals)
-            : String(Math.trunc(ctx.value))
-        ctx.setView(raw)
+            : String(Math.trunc(ctx.value));
+        ctx.setView(raw);
       }}
       onBlur={(e) => {
-        onBlur?.(e)
-        const parsed = parseToNumber(ctx.view)
+        onBlur?.(e);
+        const parsed = parseToNumber(ctx.view);
         if (parsed === null) {
-          ctx.setView("")
-          ctx.setValue(null)
-          return
+          ctx.setView("");
+          ctx.setValue(null);
+          return;
         }
-        ctx.setView(formatNumber(parsed, ctx.locale, ctx.decimals))
-        ctx.setValue(parsed)
+        ctx.setView(formatNumber(parsed, ctx.locale, ctx.decimals));
+        ctx.setValue(parsed);
       }}
       {...props}
     />
-  )
+  );
 }
 
-export {
-  CurrencyInput,
-  CurrencyInputPrefix,
-  CurrencyInputField,
-}
+export { CurrencyInput, CurrencyInputPrefix, CurrencyInputField };

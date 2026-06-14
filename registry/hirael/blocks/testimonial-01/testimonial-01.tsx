@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-const LOGOS = ["Linear", "Vercel", "Resend", "Cal.com", "Raycast"] as const
+const LOGOS = ["Linear", "Vercel", "Resend", "Cal.com", "Raycast"] as const;
 
 export default function Testimonial01() {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-10 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · testimonial
+          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+            <span className="size-1 rounded-full bg-foreground" />
+            Testimonial
           </span>
 
           <blockquote className="relative">
@@ -20,7 +21,7 @@ export default function Testimonial01() {
             >
               &ldquo;
             </span>
-            <p className="text-balance text-2xl font-medium leading-[1.25] tracking-[-0.02em] sm:text-3xl">
+            <p className="text-balance font-serif text-2xl leading-[1.3] tracking-tight sm:text-3xl">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation.
@@ -58,5 +59,5 @@ export default function Testimonial01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

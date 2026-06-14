@@ -1,4 +1,4 @@
-import { Wordmark } from "./primitives"
+import { Wordmark } from "./primitives";
 
 const FOOTER_LINKS = [
   "product",
@@ -7,7 +7,7 @@ const FOOTER_LINKS = [
   "community",
   "press",
   "preorder",
-]
+];
 
 export function Footer() {
   return (
@@ -58,5 +58,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

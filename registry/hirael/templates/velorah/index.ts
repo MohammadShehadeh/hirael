@@ -1,1 +1,1 @@
-export { default } from "./velorah"
+export { default } from "./velorah";

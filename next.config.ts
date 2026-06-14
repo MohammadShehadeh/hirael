@@ -1,4 +1,4 @@
-import type { NextConfig } from "next"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Fully static site: every route is pre-rendered to plain HTML at build
@@ -12,6 +12,6 @@ const nextConfig: NextConfig = {
     // export doesn't have — serve image sources as-is.
     unoptimized: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

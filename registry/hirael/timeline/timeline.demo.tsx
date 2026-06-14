@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Check, GitBranch, GitCommit, Rocket } from "lucide-react"
+import { Check, GitBranch, GitCommit, Rocket } from "lucide-react";
 
 import {
   Timeline,
@@ -10,7 +10,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@/registry/hirael/ui/timeline"
+} from "@/registry/hirael/ui/timeline";
 
 export default function TimelineDemo() {
   return (
@@ -26,7 +26,8 @@ export default function TimelineDemo() {
               <TimelineTime>Today · 14:02</TimelineTime>
               <TimelineTitle>Deployment shipped to production</TimelineTitle>
               <TimelineDescription>
-                Build <code className="font-mono">b-29f1</code> passed all gates.
+                Build <code className="font-mono">b-29f1</code> passed all
+                gates.
               </TimelineDescription>
             </TimelineContent>
           </TimelineItem>
@@ -106,5 +107,5 @@ export default function TimelineDemo() {
         </Timeline>
       </div>
     </div>
-  )
+  );
 }

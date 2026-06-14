@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   MonthPicker,
   MonthPickerContent,
   MonthPickerTrigger,
   type MonthRange,
   type MonthValue,
-} from "@/registry/hirael/ui/month-picker"
+} from "@/registry/hirael/ui/month-picker";
 
 export default function MonthPickerDemo() {
   const [month, setMonth] = React.useState<MonthValue | undefined>({
     year: 2026,
     month: 4,
-  })
+  });
   const [range, setRange] = React.useState<MonthRange | undefined>({
     from: { year: 2026, month: 0 },
     to: { year: 2026, month: 5 },
-  })
+  });
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
@@ -60,5 +60,5 @@ export default function MonthPickerDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

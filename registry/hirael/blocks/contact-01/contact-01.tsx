@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -8,49 +8,49 @@ import {
   Mail,
   MapPin,
   MessageCircle,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
-import { Checkbox } from "@/registry/hirael/ui/checkbox"
+} from "@/registry/hirael/ui/card";
+import { Checkbox } from "@/registry/hirael/ui/checkbox";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/registry/hirael/ui/field"
-import { Input } from "@/registry/hirael/ui/input"
+} from "@/registry/hirael/ui/field";
+import { Input } from "@/registry/hirael/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/registry/hirael/ui/select"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { Textarea } from "@/registry/hirael/ui/textarea"
+} from "@/registry/hirael/ui/select";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { Textarea } from "@/registry/hirael/ui/textarea";
 
-const MESSAGE_MAX = 1000
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MESSAGE_MAX = 1000;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FormState = {
-  name: string
-  email: string
-  company: string
-  topic: string
-  message: string
-  consent: boolean
-}
+  name: string;
+  email: string;
+  company: string;
+  topic: string;
+  message: string;
+  consent: boolean;
+};
 
-type FormErrors = Partial<Record<keyof FormState, string>>
+type FormErrors = Partial<Record<keyof FormState, string>>;
 
 const INITIAL: FormState = {
   name: "",
@@ -59,21 +59,21 @@ const INITIAL: FormState = {
   topic: "general",
   message: "",
   consent: false,
-}
+};
 
 const TOPICS = [
   { value: "general", label: "General question" },
   { value: "sales", label: "Sales / pricing" },
   { value: "partnerships", label: "Partnership" },
   { value: "support", label: "Technical support" },
-] as const
+] as const;
 
 type Channel = {
-  icon: React.ElementType
-  label: string
-  value: string
-  href: string
-}
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  href: string;
+};
 
 const CHANNELS: readonly Channel[] = [
   {
@@ -88,57 +88,57 @@ const CHANNELS: readonly Channel[] = [
     value: "hirael · #help",
     href: "#",
   },
-]
+];
 
 function validate(state: FormState): FormErrors {
-  const errors: FormErrors = {}
-  if (!state.name.trim()) errors.name = "Tell us who you are."
-  if (!state.email.trim()) errors.email = "We need a way to reply."
+  const errors: FormErrors = {};
+  if (!state.name.trim()) errors.name = "Tell us who you are.";
+  if (!state.email.trim()) errors.email = "We need a way to reply.";
   else if (!EMAIL_PATTERN.test(state.email))
-    errors.email = "That doesn't look like a valid email."
+    errors.email = "That doesn't look like a valid email.";
   if (state.message.trim().length < 20)
-    errors.message = "A little more detail helps us route your note."
+    errors.message = "A little more detail helps us route your note.";
   if (state.message.length > MESSAGE_MAX)
-    errors.message = `Keep it under ${MESSAGE_MAX} characters.`
-  if (!state.consent) errors.consent = "Please accept the privacy notice."
-  return errors
+    errors.message = `Keep it under ${MESSAGE_MAX} characters.`;
+  if (!state.consent) errors.consent = "Please accept the privacy notice.";
+  return errors;
 }
 
 export default function Contact01() {
-  const [state, setState] = React.useState<FormState>(INITIAL)
-  const [errors, setErrors] = React.useState<FormErrors>({})
-  const [touched, setTouched] = React.useState(false)
+  const [state, setState] = React.useState<FormState>(INITIAL);
+  const [errors, setErrors] = React.useState<FormErrors>({});
+  const [touched, setTouched] = React.useState(false);
   const [status, setStatus] = React.useState<"idle" | "sending" | "sent">(
-    "idle"
-  )
+    "idle",
+  );
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
-    setState((s) => ({ ...s, [key]: value }))
+    setState((s) => ({ ...s, [key]: value }));
     if (touched) {
-      setErrors(validate({ ...state, [key]: value }))
+      setErrors(validate({ ...state, [key]: value }));
     }
-  }
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setTouched(true)
-    const next = validate(state)
-    setErrors(next)
-    if (Object.keys(next).length > 0) return
+    e.preventDefault();
+    setTouched(true);
+    const next = validate(state);
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
 
-    setStatus("sending")
-    await new Promise((r) => setTimeout(r, 900))
-    setStatus("sent")
-  }
+    setStatus("sending");
+    await new Promise((r) => setTimeout(r, 900));
+    setStatus("sent");
+  };
 
   const reset = () => {
-    setState(INITIAL)
-    setErrors({})
-    setTouched(false)
-    setStatus("idle")
-  }
+    setState(INITIAL);
+    setErrors({});
+    setTouched(false);
+    setStatus("idle");
+  };
 
-  const messageRemaining = MESSAGE_MAX - state.message.length
+  const messageRemaining = MESSAGE_MAX - state.message.length;
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -148,12 +148,12 @@ export default function Contact01() {
             <span className="size-1 rounded-full bg-foreground" />
             Talk to us
           </Badge>
-          <h2 className="text-balance text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Have a question we haven&apos;t answered yet?
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            Drop a note and we&apos;ll route it to the right person.
-            Engineering questions, sales, partnerships: all the same form.
+            Drop a note and we&apos;ll route it to the right person. Engineering
+            questions, sales, partnerships: all the same form.
           </p>
         </div>
 
@@ -172,7 +172,7 @@ export default function Contact01() {
                   aria-live="polite"
                   className="flex flex-col items-start gap-4 rounded-md border border-dashed border-border bg-card/40 p-6"
                 >
-                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-success/10 text-success">
                     <CheckCircle2 className="size-5" />
                   </span>
                   <div className="flex flex-col gap-1">
@@ -255,17 +255,12 @@ export default function Contact01() {
                         />
                       </Field>
                       <Field>
-                        <FieldLabel htmlFor="contact-topic">
-                          Topic
-                        </FieldLabel>
+                        <FieldLabel htmlFor="contact-topic">Topic</FieldLabel>
                         <Select
                           value={state.topic}
                           onValueChange={(v) => set("topic", v)}
                         >
-                          <SelectTrigger
-                            id="contact-topic"
-                            className="w-full"
-                          >
+                          <SelectTrigger id="contact-topic" className="w-full">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -382,7 +377,7 @@ export default function Contact01() {
               <CardContent className="px-0">
                 <ul className="flex flex-col">
                   {CHANNELS.map((c, i) => {
-                    const Icon = c.icon
+                    const Icon = c.icon;
                     return (
                       <li key={c.label}>
                         <a
@@ -405,7 +400,7 @@ export default function Contact01() {
                           <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:opacity-100" />
                         </a>
                       </li>
-                    )
+                    );
                   })}
                 </ul>
               </CardContent>
@@ -435,5 +430,5 @@ export default function Contact01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

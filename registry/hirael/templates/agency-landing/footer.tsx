@@ -1,8 +1,8 @@
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { EASE, HiraelMark, OrangeButton } from "./primitives"
+import { EASE, HiraelMark, OrangeButton } from "./primitives";
 
 const LINK_COLUMNS = [
   {
@@ -17,7 +17,7 @@ const LINK_COLUMNS = [
     heading: "Connect",
     links: ["Start a project", "Book a call", "Instagram", "LinkedIn"],
   },
-]
+];
 
 export function Footer() {
   return (
@@ -55,7 +55,11 @@ export function Footer() {
         {/* Brand + navigation */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:py-20">
           <div className="col-span-2 flex flex-col gap-5 lg:col-span-1">
-            <a href="#" aria-label="Hirael home" className="flex items-center gap-2">
+            <a
+              href="#"
+              aria-label="Hirael home"
+              className="flex items-center gap-2"
+            >
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-900 sm:h-10 sm:w-10">
                 <HiraelMark className="h-5 w-4 sm:h-6 sm:w-5" />
               </span>
@@ -90,7 +94,7 @@ export function Footer() {
                         size={13}
                         className={cn(
                           "opacity-0 transition-opacity duration-300 group-hover:opacity-100 rtl:-scale-x-100",
-                          EASE
+                          EASE,
                         )}
                       />
                     </a>
@@ -133,5 +137,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

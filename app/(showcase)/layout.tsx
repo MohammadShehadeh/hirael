@@ -1,15 +1,12 @@
-import { ShowcaseSidebar } from "@/components/showcase/sidebar"
-import { ShowcaseTopbar } from "@/components/showcase/topbar"
-import { SiteFooter } from "@/components/showcase/site-footer"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/registry/hirael/ui/sidebar"
+import { ShowcaseSidebar } from "@/components/showcase/sidebar";
+import { ShowcaseTopbar } from "@/components/showcase/topbar";
+import { SiteFooter } from "@/components/showcase/site-footer";
+import { SidebarInset, SidebarProvider } from "@/registry/hirael/ui/sidebar";
 
 export default function ShowcaseLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <SidebarProvider>
@@ -20,5 +17,5 @@ export default function ShowcaseLayout({
         <SiteFooter />
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

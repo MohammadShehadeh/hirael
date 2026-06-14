@@ -1,1 +1,1 @@
-export { default } from "./agency-landing"
+export { default } from "./agency-landing";

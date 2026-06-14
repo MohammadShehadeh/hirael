@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   DateCalendar,
   DatePicker,
   DatePickerContent,
   DatePickerTrigger,
-} from "@/registry/hirael/ui/date-picker"
+} from "@/registry/hirael/ui/date-picker";
 
 export default function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date | null>(new Date(2026, 5, 12))
-  const [bounded, setBounded] = React.useState<Date | null>(null)
+  const [date, setDate] = React.useState<Date | null>(new Date(2026, 5, 12));
+  const [bounded, setBounded] = React.useState<Date | null>(null);
 
-  const fmt = new Intl.DateTimeFormat("en", { dateStyle: "medium" })
-  const print = (d: Date | null) => (d ? fmt.format(d) : "-")
+  const fmt = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+  const print = (d: Date | null) => (d ? fmt.format(d) : "-");
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -61,5 +61,5 @@ export default function DatePickerDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

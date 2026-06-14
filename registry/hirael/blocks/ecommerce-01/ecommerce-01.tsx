@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Image from "next/image"
-import { Heart, Plus } from "lucide-react"
+import * as React from "react";
+import Image from "next/image";
+import { Heart, Plus } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { Rating } from "@/registry/hirael/ui/rating"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { Rating } from "@/registry/hirael/ui/rating";
 
-type Category = "audio" | "wearables" | "travel" | "everyday"
+type Category = "audio" | "wearables" | "travel" | "everyday";
 
 const FILTERS: { value: Category | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -16,19 +16,19 @@ const FILTERS: { value: Category | "all"; label: string }[] = [
   { value: "wearables", label: "Wearables" },
   { value: "travel", label: "Travel" },
   { value: "everyday", label: "Everyday" },
-]
+];
 
 type Product = {
-  id: string
-  name: string
-  category: Category
-  price: string
-  compareAt?: string
-  rating: number
-  reviews: string
-  badge?: string
-  image: string
-}
+  id: string;
+  name: string;
+  category: Category;
+  price: string;
+  compareAt?: string;
+  rating: number;
+  reviews: string;
+  badge?: string;
+  image: string;
+};
 
 const PRODUCTS: readonly Product[] = [
   {
@@ -118,28 +118,26 @@ const PRODUCTS: readonly Product[] = [
     image:
       "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=800&auto=format&fit=crop",
   },
-]
+];
 
 const CATEGORY_LABELS: Record<Category, string> = {
   audio: "Audio",
   wearables: "Wearables",
   travel: "Travel",
   everyday: "Everyday",
-}
+};
 
 export default function Ecommerce01() {
-  const [filter, setFilter] = React.useState<Category | "all">("all")
-  const [saved, setSaved] = React.useState<readonly string[]>([])
+  const [filter, setFilter] = React.useState<Category | "all">("all");
+  const [saved, setSaved] = React.useState<readonly string[]>([]);
 
   const visible =
-    filter === "all"
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.category === filter)
+    filter === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === filter);
 
   const toggleSaved = (id: string) =>
     setSaved((prev) =>
-      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
-    )
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
+    );
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -148,7 +146,7 @@ export default function Ecommerce01() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             · shop
           </span>
-          <h2 className="max-w-xl text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
+          <h2 className="max-w-xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             The everyday carry edit.
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground">
@@ -178,7 +176,7 @@ export default function Ecommerce01() {
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
           {visible.map((p) => {
-            const isSaved = saved.includes(p.id)
+            const isSaved = saved.includes(p.id);
             return (
               <article key={p.id} className="group flex flex-col">
                 <div className="relative overflow-hidden rounded-md border border-border bg-muted">
@@ -253,10 +251,10 @@ export default function Ecommerce01() {
                   </div>
                 </div>
               </article>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ArrowRight,
@@ -10,29 +10,41 @@ import {
   MessageCircle,
   Package,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { Card } from "@/registry/hirael/ui/card"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { Card } from "@/registry/hirael/ui/card";
 
 type Spoke = {
-  name: string
-  icon: LucideIcon
+  name: string;
+  icon: LucideIcon;
   /** Position on the orbit ring, in degrees clockwise from top (0 = 12 o'clock). */
-  angle: number
-  category: string
-  href: string
-}
+  angle: number;
+  category: string;
+  href: string;
+};
 
 const SPOKES: readonly Spoke[] = [
-  { name: "Postgres", icon: Database, angle: 51, category: "Storage", href: "#" },
+  {
+    name: "Postgres",
+    icon: Database,
+    angle: 51,
+    category: "Storage",
+    href: "#",
+  },
   { name: "Resend", icon: Mail, angle: 103, category: "Email", href: "#" },
-  { name: "Discord", icon: MessageCircle, angle: 154, category: "Comms", href: "#" },
+  {
+    name: "Discord",
+    icon: MessageCircle,
+    angle: 154,
+    category: "Comms",
+    href: "#",
+  },
   { name: "S3", icon: Cloud, angle: 206, category: "Storage", href: "#" },
   { name: "Vault", icon: Lock, angle: 257, category: "Secrets", href: "#" },
   { name: "npm", icon: Package, angle: 309, category: "Registry", href: "#" },
-] as const
+] as const;
 
 export default function Integrations01() {
   return (
@@ -58,14 +70,14 @@ export default function Integrations01() {
             </Badge>
             <h2
               id="integrations-01-heading"
-              className="text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl md:text-5xl"
+              className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl"
             >
               Plays well with the rest of your stack.
             </h2>
             <p className="text-base text-muted-foreground sm:text-lg">
               Hirael is the surface. Your backend, your storage, your CI, your
-              secrets; pick whatever you already use. We don&apos;t lock you
-              in, and we don&apos;t bring our own server.
+              secrets; pick whatever you already use. We don&apos;t lock you in,
+              and we don&apos;t bring our own server.
             </p>
 
             <ul
@@ -90,7 +102,11 @@ export default function Integrations01() {
               ))}
             </ul>
 
-            <Button asChild variant="link" className="group mt-4 h-auto w-fit p-0">
+            <Button
+              asChild
+              variant="link"
+              className="group mt-4 h-auto w-fit p-0"
+            >
               <a href="#">
                 Browse all 40+ integrations
                 <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
@@ -104,11 +120,11 @@ export default function Integrations01() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function Hub() {
-  const orbit = 42
+  const orbit = 42;
 
   return (
     <div
@@ -122,9 +138,9 @@ function Hub() {
         className="absolute inset-0 size-full text-border"
       >
         {SPOKES.map((s) => {
-          const rad = ((s.angle - 90) * Math.PI) / 180
-          const x = 50 + orbit * Math.cos(rad)
-          const y = 50 + orbit * Math.sin(rad)
+          const rad = ((s.angle - 90) * Math.PI) / 180;
+          const x = 50 + orbit * Math.cos(rad);
+          const y = 50 + orbit * Math.sin(rad);
           return (
             <line
               key={s.name}
@@ -137,7 +153,7 @@ function Hub() {
               strokeDasharray="0.8 1.2"
               opacity="0.7"
             />
-          )
+          );
         })}
         <circle
           cx="50"
@@ -184,9 +200,9 @@ function Hub() {
       </Card>
 
       {SPOKES.map((s) => {
-        const rad = ((s.angle - 90) * Math.PI) / 180
-        const x = 50 + orbit * Math.cos(rad)
-        const y = 50 + orbit * Math.sin(rad)
+        const rad = ((s.angle - 90) * Math.PI) / 180;
+        const x = 50 + orbit * Math.cos(rad);
+        const y = 50 + orbit * Math.sin(rad);
         return (
           <a
             key={s.name}
@@ -210,8 +226,8 @@ function Hub() {
               {s.name}
             </span>
           </a>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

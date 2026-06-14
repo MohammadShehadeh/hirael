@@ -1,1 +1,1 @@
-export { default } from "./creative-studio"
+export { default } from "./creative-studio";

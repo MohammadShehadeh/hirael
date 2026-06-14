@@ -1,8 +1,14 @@
-import * as React from "react"
-import { AlertCircle, AlertTriangle, Ban, CheckCircle2, Info } from "lucide-react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  Ban,
+  CheckCircle2,
+  Info,
+} from "lucide-react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const calloutVariants = cva(
   "my-4 flex flex-col gap-2 overflow-hidden rounded-md border-s-4 p-4 text-sm",
@@ -22,10 +28,12 @@ const calloutVariants = cva(
     defaultVariants: {
       variant: "info",
     },
-  }
-)
+  },
+);
 
-type CalloutVariant = NonNullable<VariantProps<typeof calloutVariants>["variant"]>
+type CalloutVariant = NonNullable<
+  VariantProps<typeof calloutVariants>["variant"]
+>;
 
 const variantIcons: Record<CalloutVariant, React.ElementType> = {
   info: Info,
@@ -33,13 +41,13 @@ const variantIcons: Record<CalloutVariant, React.ElementType> = {
   warning: AlertTriangle,
   error: Ban,
   neutral: AlertCircle,
-}
+};
 
 export type CalloutProps = Omit<React.ComponentProps<"div">, "title"> &
   VariantProps<typeof calloutVariants> & {
-    title?: React.ReactNode
-    icon?: React.ElementType | React.ReactElement | false
-  }
+    title?: React.ReactNode;
+    icon?: React.ElementType | React.ReactElement | false;
+  };
 
 function Callout({
   title,
@@ -49,14 +57,15 @@ function Callout({
   children,
   ...props
 }: CalloutProps) {
-  const variantKey = (variant ?? "info") as CalloutVariant
+  const variantKey = (variant ?? "info") as CalloutVariant;
 
   const renderIcon = () => {
-    if (icon === false) return null
-    if (React.isValidElement(icon)) return icon
-    const IconComponent = (icon as React.ElementType | undefined) ?? variantIcons[variantKey]
-    return <IconComponent className="size-5 shrink-0" aria-hidden />
-  }
+    if (icon === false) return null;
+    if (React.isValidElement(icon)) return icon;
+    const IconComponent =
+      (icon as React.ElementType | undefined) ?? variantIcons[variantKey];
+    return <IconComponent className="size-5 shrink-0" aria-hidden />;
+  };
 
   return (
     <div
@@ -77,7 +86,7 @@ function Callout({
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export { Callout, calloutVariants }
+export { Callout, calloutVariants };

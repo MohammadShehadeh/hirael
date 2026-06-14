@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Plus } from "lucide-react"
+import { Plus } from "lucide-react";
 
 import {
   MorphingDialog,
@@ -9,7 +9,7 @@ import {
   MorphingDialogDescription,
   MorphingDialogTitle,
   MorphingDialogTrigger,
-} from "@/registry/hirael/ui/morphing-dialog"
+} from "@/registry/hirael/ui/morphing-dialog";
 
 export default function MorphingDialogDemo() {
   return (
@@ -38,8 +38,9 @@ export default function MorphingDialogDemo() {
             </div>
             <MorphingDialogTitle>Halo Layouts</MorphingDialogTitle>
             <MorphingDialogDescription>
-              A token-driven design system for dense product UIs: 200+ variables,
-              dark-first, and a CLI that copies source straight into your repo.
+              A token-driven design system for dense product UIs: 200+
+              variables, dark-first, and a CLI that copies source straight into
+              your repo.
             </MorphingDialogDescription>
             <div className="mt-1 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
               <span>v3.2</span>
@@ -54,5 +55,5 @@ export default function MorphingDialogDemo() {
         Click the card to expand
       </p>
     </div>
-  )
+  );
 }

@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   CalendarHeatmap,
   CalendarHeatmapLegend,
   type CalendarHeatmapDatum,
-} from "@/registry/hirael/ui/calendar-heatmap"
+} from "@/registry/hirael/ui/calendar-heatmap";
 
 function generateActivity(seed: number, days: number): CalendarHeatmapDatum[] {
-  let state = seed
+  let state = seed;
   const next = () => {
-    state = (state * 1664525 + 1013904223) % 4294967296
-    return state / 4294967296
-  }
-  const today = new Date()
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    return state / 4294967296;
+  };
+  const today = new Date();
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate() - (days - 1 - i)
-    )
-    const roll = next()
-    const value = roll < 0.3 ? 0 : Math.floor(next() * 14)
-    return { date, value }
-  })
+      today.getDate() - (days - 1 - i),
+    );
+    const roll = next();
+    const value = roll < 0.3 ? 0 : Math.floor(next() * 14);
+    return { date, value };
+  });
 }
 
 const customScale = (level: number) => {
@@ -34,14 +34,14 @@ const customScale = (level: number) => {
     "bg-emerald-400 dark:bg-emerald-700",
     "bg-emerald-500 dark:bg-emerald-500",
     "bg-emerald-700 dark:bg-emerald-300",
-  ]
-  return scale[Math.min(level, scale.length - 1)]
-}
+  ];
+  return scale[Math.min(level, scale.length - 1)];
+};
 
 export default function CalendarHeatmapDemo() {
-  const yearData = React.useMemo(() => generateActivity(42, 366), [])
-  const halfYearData = React.useMemo(() => generateActivity(7, 184), [])
-  const [selected, setSelected] = React.useState<string | null>(null)
+  const yearData = React.useMemo(() => generateActivity(42, 366), []);
+  const halfYearData = React.useMemo(() => generateActivity(7, 184), []);
+  const [selected, setSelected] = React.useState<string | null>(null);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -70,7 +70,7 @@ export default function CalendarHeatmapDemo() {
               setSelected(
                 `${value} commits on ${new Intl.DateTimeFormat(undefined, {
                   dateStyle: "medium",
-                }).format(date)}`
+                }).format(date)}`,
               )
             }
           />
@@ -94,5 +94,5 @@ export default function CalendarHeatmapDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

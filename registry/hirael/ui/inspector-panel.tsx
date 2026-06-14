@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronDown } from "lucide-react"
+import * as React from "react";
+import { ChevronDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type InspectorPanelProps = React.ComponentProps<"aside">
+type InspectorPanelProps = React.ComponentProps<"aside">;
 
 function InspectorPanel({ className, ...props }: InspectorPanelProps) {
   return (
@@ -13,14 +13,14 @@ function InspectorPanel({ className, ...props }: InspectorPanelProps) {
       data-slot="inspector-panel"
       className={cn(
         "flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type InspectorPanelHeaderProps = React.ComponentProps<"div">
+type InspectorPanelHeaderProps = React.ComponentProps<"div">;
 
 function InspectorPanelHeader({
   className,
@@ -31,32 +31,35 @@ function InspectorPanelHeader({
       data-slot="inspector-panel-header"
       className={cn(
         "flex items-center justify-between gap-2 border-b border-border px-3 py-2.5",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type InspectorPanelTitleProps = React.ComponentProps<"p">
+type InspectorPanelTitleProps = React.ComponentProps<"p">;
 
-function InspectorPanelTitle({ className, ...props }: InspectorPanelTitleProps) {
+function InspectorPanelTitle({
+  className,
+  ...props
+}: InspectorPanelTitleProps) {
   return (
     <p
       data-slot="inspector-panel-title"
       className={cn(
         "font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 type InspectorPanelSectionProps = React.ComponentProps<"div"> & {
-  title: React.ReactNode
-  defaultOpen?: boolean
-}
+  title: React.ReactNode;
+  defaultOpen?: boolean;
+};
 
 function InspectorPanelSection({
   title,
@@ -65,8 +68,8 @@ function InspectorPanelSection({
   children,
   ...props
 }: InspectorPanelSectionProps) {
-  const [open, setOpen] = React.useState(defaultOpen)
-  const reactId = React.useId()
+  const [open, setOpen] = React.useState(defaultOpen);
+  const reactId = React.useId();
   return (
     <div
       data-slot="inspector-panel-section"
@@ -86,20 +89,24 @@ function InspectorPanelSection({
           aria-hidden
           className={cn(
             "size-3.5 text-muted-foreground transition-transform duration-200",
-            open && "rotate-180"
+            open && "rotate-180",
           )}
         />
       </button>
-      <div id={reactId} hidden={!open} className="flex flex-col gap-2 px-3 pb-3 pt-1">
+      <div
+        id={reactId}
+        hidden={!open}
+        className="flex flex-col gap-2 px-3 pb-3 pt-1"
+      >
         {children}
       </div>
     </div>
-  )
+  );
 }
 
 type InspectorPanelRowProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode
-}
+  label: React.ReactNode;
+};
 
 function InspectorPanelRow({
   label,
@@ -112,14 +119,14 @@ function InspectorPanelRow({
       data-slot="inspector-panel-row"
       className={cn(
         "grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] items-center gap-2",
-        className
+        className,
       )}
       {...props}
     >
       <span className="truncate text-xs text-muted-foreground">{label}</span>
       <div className="flex items-center justify-end gap-1.5">{children}</div>
     </div>
-  )
+  );
 }
 
 export {
@@ -128,4 +135,4 @@ export {
   InspectorPanelTitle,
   InspectorPanelSection,
   InspectorPanelRow,
-}
+};

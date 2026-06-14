@@ -77,8 +77,8 @@ const VELORAH_CSS = `
     animation: none;
   }
 }
-`
+`;
 
 export function VelorahStyles() {
-  return <style dangerouslySetInnerHTML={{ __html: VELORAH_CSS }} />
+  return <style dangerouslySetInnerHTML={{ __html: VELORAH_CSS }} />;
 }

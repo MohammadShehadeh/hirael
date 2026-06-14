@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react";
 
-import { LogoMarkM } from "@/components/showcase/logo"
-import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
-import { SITE } from "@/lib/site"
+import { LogoMarkM } from "@/components/showcase/logo";
+import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
+import { SITE } from "@/lib/site";
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_ORDER,
   REGISTRY_BY_CATEGORY,
   entryHref,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 import {
   Sidebar,
   SidebarContent,
@@ -26,24 +26,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/registry/hirael/ui/sidebar"
+} from "@/registry/hirael/ui/sidebar";
 
 export function ShowcaseSidebar() {
-  const pathname = usePathname()
-  const { setOpenMobile } = useSidebar()
-  const blockCount = REGISTRY_BY_CATEGORY.blocks.length
-  const templateCount = REGISTRY_BY_CATEGORY.templates.length
+  const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+  const blockCount = REGISTRY_BY_CATEGORY.blocks.length;
+  const templateCount = REGISTRY_BY_CATEGORY.templates.length;
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(`${href}/`)
-  }
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   // The mobile sidebar is an off-canvas sheet; close it when the route
   // changes so a tapped link doesn't leave it covering the page.
   React.useEffect(() => {
-    setOpenMobile(false)
-  }, [pathname, setOpenMobile])
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   return (
     <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
@@ -115,8 +115,8 @@ export function ShowcaseSidebar() {
         </SidebarGroup>
 
         {COMPONENT_CATEGORY_ORDER.map((cat) => {
-          const items = REGISTRY_BY_CATEGORY[cat]
-          if (!items.length) return null
+          const items = REGISTRY_BY_CATEGORY[cat];
+          if (!items.length) return null;
           return (
             <SidebarGroup key={cat}>
               <SidebarGroupLabel asChild>
@@ -125,8 +125,8 @@ export function ShowcaseSidebar() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {items.map((entry) => {
-                    const href = entryHref(entry)
-                    const active = isActive(href)
+                    const href = entryHref(entry);
+                    const active = isActive(href);
                     return (
                       <SidebarMenuItem key={entry.name}>
                         <SidebarMenuButton asChild isActive={active}>
@@ -135,12 +135,12 @@ export function ShowcaseSidebar() {
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
-                    )
+                    );
                   })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
-          )
+          );
         })}
       </SidebarContent>
 
@@ -153,5 +153,5 @@ export function ShowcaseSidebar() {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

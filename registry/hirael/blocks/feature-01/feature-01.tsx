@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, Terminal, GitBranch, Gauge } from "lucide-react"
+import * as React from "react";
+import { Check, Terminal, GitBranch, Gauge } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type FeatureRow = {
-  eyebrow: string
-  headline: string
-  body: string
-  bullets: readonly string[]
-  media: "registry" | "branches" | "metrics"
-}
+  eyebrow: string;
+  headline: string;
+  body: string;
+  bullets: readonly string[];
+  media: "registry" | "branches" | "metrics";
+};
 
 const ROWS: readonly FeatureRow[] = [
   {
@@ -47,7 +47,7 @@ const ROWS: readonly FeatureRow[] = [
     ],
     media: "metrics",
   },
-]
+];
 
 function MediaRegistry() {
   return (
@@ -85,7 +85,7 @@ function MediaRegistry() {
         </code>
       </pre>
     </div>
-  )
+  );
 }
 
 function MediaBranches() {
@@ -125,11 +125,11 @@ function MediaBranches() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function MediaMetrics() {
-  const bars = [38, 52, 44, 68, 49, 81, 62, 74, 58, 88]
+  const bars = [38, 52, 44, 68, 49, 81, 62, 74, 58, 88];
   return (
     <div
       className="relative w-full rounded-sm border border-border bg-card p-5"
@@ -171,14 +171,14 @@ function MediaMetrics() {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 const MEDIA: Record<FeatureRow["media"], React.ComponentType> = {
   registry: MediaRegistry,
   branches: MediaBranches,
   metrics: MediaMetrics,
-}
+};
 
 export default function Feature01() {
   return (
@@ -186,8 +186,8 @@ export default function Feature01() {
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="flex flex-col gap-20 sm:gap-24">
           {ROWS.map((row, i) => {
-            const Media = MEDIA[row.media]
-            const mediaFirst = i % 2 === 1
+            const Media = MEDIA[row.media];
+            const mediaFirst = i % 2 === 1;
             return (
               <div
                 key={row.headline}
@@ -233,10 +233,10 @@ export default function Feature01() {
                   <Media />
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

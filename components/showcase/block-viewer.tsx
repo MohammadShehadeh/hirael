@@ -1,47 +1,54 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ExternalLink, Monitor, RefreshCw, Smartphone, Tablet } from "lucide-react"
+import * as React from "react";
+import {
+  ExternalLink,
+  Monitor,
+  RefreshCw,
+  Smartphone,
+  Tablet,
+} from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { DirectionToggle } from "@/components/showcase/direction-toggle"
+import { Button } from "@/registry/hirael/ui/button";
+import { DirectionToggle } from "@/components/showcase/direction-toggle";
+import { SegmentedControl } from "@/components/showcase/segmented-control";
 
-type Viewport = "mobile" | "tablet" | "desktop"
+type Viewport = "mobile" | "tablet" | "desktop";
 
 const SIZES: Record<Viewport, { width: number; label: string }> = {
   mobile: { width: 380, label: "Mobile" },
   tablet: { width: 768, label: "Tablet" },
   desktop: { width: 0, label: "Desktop" },
-}
+};
 
 const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
   mobile: Smartphone,
   tablet: Tablet,
   desktop: Monitor,
-}
+};
 
-const ORDER: Viewport[] = ["mobile", "tablet", "desktop"]
+const ORDER: Viewport[] = ["mobile", "tablet", "desktop"];
 
 export function BlockViewer({
   title,
   minHeight = 800,
   embedHref,
 }: {
-  title: string
-  minHeight?: number
+  title: string;
+  minHeight?: number;
   /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
-  embedHref: string
+  embedHref: string;
 }) {
-  const [viewport, setViewport] = React.useState<Viewport>("desktop")
-  const [key, setKey] = React.useState(0)
-  const [rtl, setRtl] = React.useState(false)
+  const [viewport, setViewport] = React.useState<Viewport>("desktop");
+  const [key, setKey] = React.useState(0);
+  const [rtl, setRtl] = React.useState(false);
 
-  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`
+  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`;
 
   const sizing =
     viewport === "desktop"
       ? { width: "100%", maxWidth: "100%" }
-      : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" }
+      : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" };
 
   return (
     <div
@@ -49,62 +56,62 @@ export function BlockViewer({
       className="overflow-hidden rounded-sm border border-border bg-background"
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/50 px-3 py-2">
-        <div
-          role="tablist"
-          aria-label="Preview viewport"
-          className="flex items-center gap-0.5 rounded-sm border border-border bg-background p-0.5"
-        >
-          {ORDER.map((v) => {
-            const Icon = ICONS[v]
-            const active = viewport === v
-            return (
-              <button
-                key={v}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                aria-label={`${SIZES[v].label} viewport${
-                  v === "desktop" ? "" : ` (${SIZES[v].width}px)`
-                }`}
-                onClick={() => setViewport(v)}
-                className={cn(
-                  "inline-flex h-6 items-center gap-1.5 rounded-[2px] px-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors",
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <Icon className="size-3" />
-                <span className="hidden sm:inline">{SIZES[v].label}</span>
-                {v !== "desktop" && active && (
-                  <span className="tabular-nums text-muted-foreground">
-                    {SIZES[v].width}
-                  </span>
-                )}
-              </button>
-            )
+        <SegmentedControl
+          role="tab"
+          ariaLabel="Preview viewport"
+          value={viewport}
+          onValueChange={(v) => setViewport(v as Viewport)}
+          className="rounded-sm border border-border bg-background p-0.5"
+          itemClassName="h-6 rounded-[2px] px-2 text-[10px] uppercase tracking-widest"
+          items={ORDER.map((v) => {
+            const Icon = ICONS[v];
+            return {
+              value: v,
+              ariaLabel: `${SIZES[v].label} viewport${
+                v === "desktop" ? "" : ` (${SIZES[v].width}px)`
+              }`,
+              label: (active: boolean) => (
+                <>
+                  <Icon className="size-3" />
+                  <span className="hidden sm:inline">{SIZES[v].label}</span>
+                  {v !== "desktop" && active && (
+                    <span className="tabular-nums text-muted-foreground">
+                      {SIZES[v].width}
+                    </span>
+                  )}
+                </>
+              ),
+            };
           })}
-        </div>
+        />
 
         <div className="flex items-center gap-1">
           <DirectionToggle rtl={rtl} onToggle={setRtl} className="me-1" />
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={() => setKey((k) => k + 1)}
             aria-label="Refresh preview"
-            className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="size-7 rounded-sm text-muted-foreground"
           >
             <RefreshCw className="size-3.5" />
-          </button>
-          <a
-            href={src}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open preview in new tab"
-            className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon-sm"
+            className="size-7 rounded-sm text-muted-foreground"
           >
-            <ExternalLink className="size-3.5" />
-          </a>
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open preview in new tab"
+            >
+              <ExternalLink className="size-3.5" />
+            </a>
+          </Button>
         </div>
       </div>
 
@@ -119,5 +126,5 @@ export function BlockViewer({
         />
       </div>
     </div>
-  )
+  );
 }

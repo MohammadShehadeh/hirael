@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { CopyButton } from "@/registry/hirael/ui/copy-button"
+import { CopyButton } from "@/registry/hirael/ui/copy-button";
 
 export default function CopyButtonDemo() {
   return (
@@ -37,5 +37,5 @@ export default function CopyButtonDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

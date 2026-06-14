@@ -1,61 +1,59 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { X } from "lucide-react"
+import * as React from "react";
+import { X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Badge } from "@/registry/hirael/ui/badge"
+import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 
 export type TagValidator = (
   candidate: string,
-  current: string[]
-) => true | string
+  current: string[],
+) => true | string;
 
 type Ctx = {
-  value: string[]
-  setValue: (next: string[]) => void
-  draft: string
-  setDraft: (next: string) => void
-  error: string | null
-  setError: (next: string | null) => void
-  add: (candidates: string | string[]) => boolean
-  remove: (index: number) => void
-  disabled?: boolean
-  readOnly?: boolean
-  maxTags?: number
-  caseSensitive: boolean
-  validate?: TagValidator
-  commitKeys: string[]
-  splitOn: RegExp
-  inputRef: React.RefObject<HTMLInputElement | null>
-}
+  value: string[];
+  setValue: (next: string[]) => void;
+  draft: string;
+  setDraft: (next: string) => void;
+  error: string | null;
+  setError: (next: string | null) => void;
+  add: (candidates: string | string[]) => boolean;
+  remove: (index: number) => void;
+  disabled?: boolean;
+  readOnly?: boolean;
+  maxTags?: number;
+  caseSensitive: boolean;
+  validate?: TagValidator;
+  commitKeys: string[];
+  splitOn: RegExp;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+};
 
-const TagInputContext = React.createContext<Ctx | null>(null)
+const TagInputContext = React.createContext<Ctx | null>(null);
 
 function useTagInput() {
-  const ctx = React.useContext(TagInputContext)
+  const ctx = React.useContext(TagInputContext);
   if (!ctx) {
-    throw new Error(
-      "TagInput compound parts must be used inside <TagInput>"
-    )
+    throw new Error("TagInput compound parts must be used inside <TagInput>");
   }
-  return ctx
+  return ctx;
 }
 
 export type TagInputProps = {
-  value?: string[]
-  defaultValue?: string[]
-  onValueChange?: (value: string[]) => void
-  disabled?: boolean
-  readOnly?: boolean
-  maxTags?: number
-  unique?: boolean
-  caseSensitive?: boolean
-  validate?: TagValidator
-  commitKeys?: string[]
-  splitOn?: RegExp
-  children?: React.ReactNode
-}
+  value?: string[];
+  defaultValue?: string[];
+  onValueChange?: (value: string[]) => void;
+  disabled?: boolean;
+  readOnly?: boolean;
+  maxTags?: number;
+  unique?: boolean;
+  caseSensitive?: boolean;
+  validate?: TagValidator;
+  commitKeys?: string[];
+  splitOn?: RegExp;
+  children?: React.ReactNode;
+};
 
 function TagInput({
   value: valueProp,
@@ -72,71 +70,71 @@ function TagInput({
   children,
 }: TagInputProps) {
   const [internalValue, setInternalValue] = React.useState<string[]>(
-    defaultValue ?? []
-  )
-  const value = valueProp ?? internalValue
+    defaultValue ?? [],
+  );
+  const value = valueProp ?? internalValue;
   const setValue = React.useCallback(
     (next: string[]) => {
-      if (valueProp === undefined) setInternalValue(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
-  const [draft, setDraft] = React.useState("")
-  const [error, setError] = React.useState<string | null>(null)
-  const inputRef = React.useRef<HTMLInputElement | null>(null)
+  const [draft, setDraft] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const norm = React.useCallback(
     (s: string) => (caseSensitive ? s : s.toLowerCase()),
-    [caseSensitive]
-  )
+    [caseSensitive],
+  );
 
   const add = React.useCallback(
     (candidates: string | string[]): boolean => {
-      if (disabled || readOnly) return false
-      const list = Array.isArray(candidates) ? candidates : [candidates]
-      const next = [...value]
-      let anyAdded = false
+      if (disabled || readOnly) return false;
+      const list = Array.isArray(candidates) ? candidates : [candidates];
+      const next = [...value];
+      let anyAdded = false;
       for (const raw of list) {
-        const tag = raw.trim()
-        if (!tag) continue
+        const tag = raw.trim();
+        if (!tag) continue;
         if (maxTags !== undefined && next.length >= maxTags) {
-          setError(`Limit ${maxTags} tag${maxTags === 1 ? "" : "s"}.`)
-          break
+          setError(`Limit ${maxTags} tag${maxTags === 1 ? "" : "s"}.`);
+          break;
         }
         if (unique) {
-          const haystack = next.map(norm)
-          if (haystack.includes(norm(tag))) continue
+          const haystack = next.map(norm);
+          if (haystack.includes(norm(tag))) continue;
         }
         if (validate) {
-          const result = validate(tag, next)
+          const result = validate(tag, next);
           if (result !== true) {
-            setError(result)
-            continue
+            setError(result);
+            continue;
           }
         }
-        next.push(tag)
-        anyAdded = true
+        next.push(tag);
+        anyAdded = true;
       }
       if (anyAdded) {
-        setValue(next)
-        setError(null)
+        setValue(next);
+        setError(null);
       }
-      return anyAdded
+      return anyAdded;
     },
-    [disabled, readOnly, value, maxTags, unique, norm, validate, setValue]
-  )
+    [disabled, readOnly, value, maxTags, unique, norm, validate, setValue],
+  );
 
   const remove = React.useCallback(
     (index: number) => {
-      if (disabled || readOnly) return
-      const next = value.filter((_, i) => i !== index)
-      setValue(next)
-      setError(null)
+      if (disabled || readOnly) return;
+      const next = value.filter((_, i) => i !== index);
+      setValue(next);
+      setError(null);
     },
-    [disabled, readOnly, value, setValue]
-  )
+    [disabled, readOnly, value, setValue],
+  );
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -171,15 +169,15 @@ function TagInput({
       validate,
       commitKeys,
       splitOn,
-    ]
-  )
+    ],
+  );
 
   return (
     <TagInputContext.Provider value={ctx}>{children}</TagInputContext.Provider>
-  )
+  );
 }
 
-type TagInputContainerProps = React.ComponentProps<"div">
+type TagInputContainerProps = React.ComponentProps<"div">;
 
 function TagInputContainer({
   className,
@@ -187,18 +185,18 @@ function TagInputContainer({
   onMouseDown,
   ...props
 }: TagInputContainerProps) {
-  const ctx = useTagInput()
+  const ctx = useTagInput();
   return (
     <div
       data-slot="tag-input-container"
       data-disabled={ctx.disabled || undefined}
       data-readonly={ctx.readOnly || undefined}
       onMouseDown={(e) => {
-        onMouseDown?.(e)
-        if (e.defaultPrevented) return
+        onMouseDown?.(e);
+        if (e.defaultPrevented) return;
         if (e.target === e.currentTarget) {
-          e.preventDefault()
-          ctx.inputRef.current?.focus()
+          e.preventDefault();
+          ctx.inputRef.current?.focus();
         }
       }}
       className={cn(
@@ -206,27 +204,32 @@ function TagInputContainer({
         "focus-within:border-ring",
         ctx.error && "border-destructive focus-within:border-destructive",
         (ctx.disabled || ctx.readOnly) && "opacity-60 cursor-not-allowed",
-        className
+        className,
       )}
       {...props}
     >
       {children}
     </div>
-  )
+  );
 }
 
 type TagInputTagProps = Omit<React.ComponentProps<"span">, "children"> & {
-  index: number
-  children?: React.ReactNode
-}
+  index: number;
+  children?: React.ReactNode;
+};
 
-function TagInputTag({ index, children, className, ...props }: TagInputTagProps) {
-  const ctx = useTagInput()
-  const tag = ctx.value[index]
-  if (tag === undefined) return null
+function TagInputTag({
+  index,
+  children,
+  className,
+  ...props
+}: TagInputTagProps) {
+  const ctx = useTagInput();
+  const tag = ctx.value[index];
+  if (tag === undefined) return null;
   return (
     <Badge
-      variant="default"
+      variant="secondary"
       data-slot="tag-input-tag"
       className={cn("gap-1 pe-1 font-normal", className)}
       {...props}
@@ -238,30 +241,30 @@ function TagInputTag({ index, children, className, ...props }: TagInputTagProps)
           tabIndex={-1}
           aria-label={`Remove ${tag}`}
           onClick={() => ctx.remove(index)}
-          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 transition-colors hover:bg-foreground/20 hover:text-foreground"
+          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-secondary-foreground/70 transition-colors hover:bg-secondary-foreground/20 hover:text-secondary-foreground"
         >
           <X className="size-2.5" />
         </button>
       )}
     </Badge>
-  )
+  );
 }
 
 function TagInputTags() {
-  const ctx = useTagInput()
+  const ctx = useTagInput();
   return (
     <>
       {ctx.value.map((_, i) => (
         <TagInputTag key={`${ctx.value[i]}-${i}`} index={i} />
       ))}
     </>
-  )
+  );
 }
 
 type TagInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "value" | "defaultValue" | "onChange" | "type"
->
+>;
 
 function TagInputField({
   placeholder = "Add tag…",
@@ -271,37 +274,40 @@ function TagInputField({
   onBlur,
   ...props
 }: TagInputFieldProps) {
-  const ctx = useTagInput()
+  const ctx = useTagInput();
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    onKeyDown?.(e)
-    if (e.defaultPrevented) return
+    onKeyDown?.(e);
+    if (e.defaultPrevented) return;
     if (ctx.commitKeys.includes(e.key)) {
       if (ctx.draft.trim()) {
-        e.preventDefault()
-        if (ctx.add(ctx.draft)) ctx.setDraft("")
+        e.preventDefault();
+        if (ctx.add(ctx.draft)) ctx.setDraft("");
       } else if (e.key === "Enter") {
         // Allow form submission only when draft is empty.
       }
-      return
+      return;
     }
     if (e.key === "Backspace" && !ctx.draft && ctx.value.length > 0) {
-      e.preventDefault()
-      ctx.remove(ctx.value.length - 1)
+      e.preventDefault();
+      ctx.remove(ctx.value.length - 1);
     }
-  }
+  };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    onPaste?.(e)
-    if (e.defaultPrevented) return
-    const text = e.clipboardData.getData("text")
-    if (!text) return
+    onPaste?.(e);
+    if (e.defaultPrevented) return;
+    const text = e.clipboardData.getData("text");
+    if (!text) return;
     if (ctx.splitOn.test(text)) {
-      e.preventDefault()
-      const parts = text.split(ctx.splitOn).map((p) => p.trim()).filter(Boolean)
-      ctx.add(parts)
+      e.preventDefault();
+      const parts = text
+        .split(ctx.splitOn)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      ctx.add(parts);
     }
-  }
+  };
 
   return (
     <input
@@ -309,15 +315,15 @@ function TagInputField({
       type="text"
       value={ctx.draft}
       onChange={(e) => {
-        ctx.setDraft(e.target.value)
-        if (ctx.error) ctx.setError(null)
+        ctx.setDraft(e.target.value);
+        if (ctx.error) ctx.setError(null);
       }}
       onKeyDown={handleKey}
       onPaste={handlePaste}
       onBlur={(e) => {
-        onBlur?.(e)
+        onBlur?.(e);
         if (ctx.draft.trim()) {
-          if (ctx.add(ctx.draft)) ctx.setDraft("")
+          if (ctx.add(ctx.draft)) ctx.setDraft("");
         }
       }}
       placeholder={ctx.value.length === 0 ? placeholder : undefined}
@@ -326,19 +332,16 @@ function TagInputField({
       data-slot="tag-input-field"
       className={cn(
         "flex-1 min-w-[6rem] bg-transparent px-1.5 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-function TagInputError({
-  className,
-  ...props
-}: React.ComponentProps<"p">) {
-  const ctx = useTagInput()
-  if (!ctx.error) return null
+function TagInputError({ className, ...props }: React.ComponentProps<"p">) {
+  const ctx = useTagInput();
+  if (!ctx.error) return null;
   return (
     <p
       role="alert"
@@ -348,7 +351,7 @@ function TagInputError({
     >
       {ctx.error}
     </p>
-  )
+  );
 }
 
 export {
@@ -358,4 +361,4 @@ export {
   TagInputTags,
   TagInputField,
   TagInputError,
-}
+};

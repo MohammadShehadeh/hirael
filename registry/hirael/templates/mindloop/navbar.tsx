@@ -1,28 +1,23 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import {
-  InstagramIcon,
-  LinkedinIcon,
-  Logo,
-  TwitterIcon,
-} from "./primitives"
+import { InstagramIcon, LinkedinIcon, Logo, TwitterIcon } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Philosophy", href: "#philosophy" },
   { label: "Use Cases", href: "#use-cases" },
-]
+];
 
 const SOCIAL_LINKS = [
   { label: "Instagram", Icon: InstagramIcon },
   { label: "LinkedIn", Icon: LinkedinIcon },
   { label: "Twitter", Icon: TwitterIcon },
-]
+];
 
 export function Navbar() {
   return (
@@ -61,7 +56,7 @@ export function Navbar() {
               aria-label={label}
               className={cn(
                 "liquid-glass flex h-10 w-10 items-center justify-center rounded-full",
-                "text-muted-foreground transition-colors hover:text-foreground"
+                "text-muted-foreground transition-colors hover:text-foreground",
               )}
             >
               <Icon className="h-4 w-4" />
@@ -70,5 +65,5 @@ export function Navbar() {
         </div>
       </nav>
     </header>
-  )
+  );
 }

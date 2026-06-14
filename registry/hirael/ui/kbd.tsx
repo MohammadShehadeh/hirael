@@ -1,13 +1,8 @@
-import * as React from "react"
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
-
-type KbdProps = React.ComponentProps<"button">
-
-function Kbd({ className, type = "button", ...props }: KbdProps) {
+function Kbd({ className, ...props }: React.ComponentProps<"button">) {
   return (
     <button
-      type={type}
       data-slot="kbd"
       className={cn(
         "relative inline-flex select-none touch-manipulation items-center justify-center overflow-hidden",
@@ -27,39 +22,35 @@ function Kbd({ className, type = "button", ...props }: KbdProps) {
         "active:shadow-[0_0_0_1px_oklch(0%_0_0/0.1),0_1px_2px_0_oklch(0%_0_0/0.08)]",
         "dark:active:shadow-[0_0_0_1px_oklch(0%_0_0/0.4),0_1px_2px_0_oklch(0%_0_0/0.3)]",
         "disabled:pointer-events-none disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type KbdDisplayProps = React.ComponentProps<"kbd">
-
-function KbdDisplay({ className, ...props }: KbdDisplayProps) {
+function KbdDisplay({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
       data-slot="kbd-display"
       className={cn(
         "pointer-events-none inline-flex h-5 w-fit min-w-5 select-none items-center justify-center gap-1 rounded-sm bg-muted px-1 font-sans text-xs font-medium text-muted-foreground",
         "[&_svg:not([class*='size-'])]:size-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type KbdGroupProps = React.ComponentProps<"div">
-
-function KbdGroup({ className, ...props }: KbdGroupProps) {
+function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="kbd-group"
       className={cn("inline-flex items-center gap-1", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Kbd, KbdDisplay, KbdGroup }
+export { Kbd, KbdDisplay, KbdGroup };

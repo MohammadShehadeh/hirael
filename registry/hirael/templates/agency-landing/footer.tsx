@@ -1,7 +1,4 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { ArrowUpRight, Clock } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -23,25 +20,6 @@ const LINK_COLUMNS = [
 ]
 
 export function Footer() {
-  const [time, setTime] = useState("")
-
-  // Live London clock, echoing the hero — mounted-gated so server and first
-  // client render match.
-  useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/London",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(new Date())
-    setTime(format())
-    const id = setInterval(() => setTime(format()), 1000)
-    return () => clearInterval(id)
-  }, [])
-
-  const clock = `${time || "--:--"} in London`
-
   return (
     <footer className="bg-gray-900 text-white">
       <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
@@ -139,10 +117,6 @@ export function Footer() {
             © 2026 Hirael Studio. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span className="flex items-center gap-1.5 text-[13px] text-gray-500">
-              <Clock size={14} />
-              {clock}
-            </span>
             <a
               href="#"
               className="text-[13px] text-gray-500 transition-colors duration-300 hover:text-white"

@@ -1361,7 +1361,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "agency-landing",
     title: "Agency Landing",
     description:
-      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
+      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/agency-landing/agency-landing.tsx",

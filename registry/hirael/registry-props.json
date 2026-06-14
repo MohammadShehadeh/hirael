@@ -5722,6 +5722,11 @@
       "extendsNative": false
     },
     {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
       "name": "HiraelMark",
       "props": [
         {

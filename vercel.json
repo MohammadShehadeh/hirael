@@ -67,6 +67,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/cta-03",
+      "destination": "/blocks/cta/cta-03",
+      "permanent": true
+    },
+    {
       "source": "/blocks/dashboard-01",
       "destination": "/blocks/dashboard/dashboard-01",
       "permanent": true

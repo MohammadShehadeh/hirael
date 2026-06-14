@@ -10,6 +10,7 @@ import { NAV_LINKS, SITE } from "@/lib/site";
 import { CommandMenu } from "@/components/showcase/command-menu";
 import { BrandLockup } from "@/components/showcase/logo";
 import { ThemeToggle } from "@/components/showcase/theme-toggle";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -106,13 +107,15 @@ export function SiteHeader({
               onOpenChange={setMobileOpen}
             >
               <DrawerTrigger asChild>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   aria-label="Open menu"
-                  className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-card/60 text-foreground transition-colors hover:border-foreground/40 hover:bg-accent md:hidden"
+                  className="rounded-full border border-border bg-card/60 text-foreground hover:border-foreground/40 md:hidden"
                 >
                   <Menu className="size-3.5" />
-                </button>
+                </Button>
               </DrawerTrigger>
               <DrawerContent>
                 <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
@@ -121,13 +124,15 @@ export function SiteHeader({
                     <span className="sr-only">Navigation</span>
                   </DrawerTitle>
                   <DrawerClose asChild>
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="icon"
                       aria-label="Close menu"
-                      className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-foreground/40 hover:bg-accent"
+                      className="rounded-full border border-border bg-card text-foreground hover:border-foreground/40"
                     >
                       <X className="size-3.5" />
-                    </button>
+                    </Button>
                   </DrawerClose>
                 </DrawerHeader>
                 <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">

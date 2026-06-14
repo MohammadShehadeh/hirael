@@ -4,7 +4,8 @@ import * as React from "react";
 import { ChevronRight, File, Folder } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { CopyButton } from "@/components/showcase/copy-button";
+import { SegmentedControl } from "@/components/showcase/segmented-control";
+import { CopyButton } from "@/registry/hirael/ui/copy-button";
 
 export type CodeBlockTab = {
   /** Tab label (e.g. filename or install-target path). */
@@ -62,7 +63,11 @@ export function CodeBlock({
               >
                 {current.label}
               </span>
-              <CopyButton text={current.code} label="Copy code" />
+              <CopyButton
+                value={current.code}
+                size="sm"
+                aria-label="Copy code"
+              />
             </div>
             <div
               className={cn(
@@ -85,36 +90,24 @@ export function CodeBlock({
       )}
     >
       <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
-        <div
-          role="tablist"
-          aria-label="Source files"
-          className="flex min-w-0 items-center gap-0.5 overflow-x-auto"
-        >
-          {tabs.map((t) => {
-            const isActive = active === t.label;
-            const filename = t.label.split("/").slice(-1)[0];
-            return (
-              <button
-                key={t.label}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                title={t.label}
-                onClick={() => setActive(t.label)}
-                className={cn(
-                  "shrink-0 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  isActive
-                    ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {filename}
-              </button>
-            );
-          })}
-        </div>
-        <CopyButton text={current.code} label="Copy code" className="mr-0.5" />
+        <SegmentedControl
+          role="tab"
+          ariaLabel="Source files"
+          value={current.label}
+          onValueChange={setActive}
+          className="min-w-0 overflow-x-auto"
+          items={tabs.map((t) => ({
+            value: t.label,
+            label: t.label.split("/").slice(-1)[0],
+            title: t.label,
+          }))}
+        />
+        <CopyButton
+          value={current.code}
+          size="sm"
+          aria-label="Copy code"
+          className="mr-0.5"
+        />
       </div>
       <div
         className={cn("shiki-scroll overflow-auto", maxHeight)}
@@ -220,7 +213,7 @@ function TreeRow({
           style={indent}
           className={cn(
             "flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono text-muted-foreground transition-colors hover:text-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
           )}
         >
           <ChevronRight
@@ -293,8 +286,9 @@ export function InlineCodeBlock({
       )}
     >
       <CopyButton
-        text={code}
-        label="Copy code"
+        value={code}
+        size="sm"
+        aria-label="Copy code"
         className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
       />
       <div

@@ -143,7 +143,7 @@ export default async function ComponentsIndex() {
           </h2>
           <Link
             href="/blocks"
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
           >
             {blocks.length} blocks · view all
             <ArrowRight className="size-3" />
@@ -218,7 +218,7 @@ export default async function ComponentsIndex() {
             </span>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">Theme playground</span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 preset switcher · token swatches
               </span>
             </div>
@@ -237,7 +237,7 @@ export default async function ComponentsIndex() {
               <span className="text-sm font-medium">
                 All {blocks.length} blocks
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 {BLOCK_KIND_ORDER.length} categories · preview + install
               </span>
             </div>

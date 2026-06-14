@@ -125,7 +125,6 @@ Defined in `globals.css`, reuse rather than re-rolling:
   filled with the dot-grid texture (clipped to the type via `background-clip:
 text`) so the textured layer reads as showing _through_ the letters. Used in
   the footer; monochrome and low-contrast, still texture not text.
-- `.corner-mark` — small `+` blueprint marker for section corners.
 - `.container` (`mx-auto w-full max-w-6xl`) / `.cpx` (`px-4 lg:px-6`) —
   page width + horizontal padding.
 - `.no-scrollbar` — hide scrollbars on scroll regions.

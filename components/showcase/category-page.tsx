@@ -31,7 +31,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
             ◆ {category.title.toLowerCase()}
           </span>
           {category.comingSoon && (
-            <span className="rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            <span className="rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               Roadmap
             </span>
           )}
@@ -42,7 +42,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         <p className="max-w-2xl text-base text-muted-foreground">
           {category.description}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           {category.comingSoon
             ? "Planned · not yet shipped"
             : `${blocks.length} block${blocks.length === 1 ? "" : "s"}`}
@@ -75,7 +75,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
           <Link
             key={entry.name}
             href={entryHref(entry)}
-            className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors hover:border-foreground focus-visible:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors hover:border-foreground focus-visible:border-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             <BlockPreview
               embedHref={entryEmbedHref(entry)}
@@ -92,7 +92,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
               <p className="text-xs text-muted-foreground">
                 {entry.blockTagline ?? entry.description}
               </p>
-              <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 <span className="truncate">{entryHref(entry)}</span>
                 <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-foreground">
                   view
@@ -113,7 +113,7 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.04] [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"
+          className="pointer-events-none absolute inset-0 opacity-[0.04] mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
           style={{
             backgroundImage:
               "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
@@ -132,7 +132,7 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
             ships when it&apos;s good enough that we&apos;d copy it into our own
             products.
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.1em]">
+          <div className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
             <Link
               href="/blocks"
               className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-1.5 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"

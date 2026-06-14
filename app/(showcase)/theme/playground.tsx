@@ -28,13 +28,13 @@ export function ThemePlayground() {
       >
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <ThemeSheetTrigger />
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             mode · {mode}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             ·
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             {overrideCount} override{overrideCount === 1 ? "" : "s"} active
           </span>
         </div>
@@ -107,7 +107,7 @@ export function ThemePlayground() {
                   <h3 className="text-sm font-medium tracking-[-0.01em]">
                     {entry.title}
                   </h3>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
                     /{entry.name}
                   </span>
                 </div>
@@ -166,7 +166,7 @@ function Section({
 function Surface({ label, className }: { label: string; className: string }) {
   return (
     <div className={`flex flex-col gap-1 p-5 ${className}`}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.1em] opacity-70">
+      <span className="font-mono text-[10px] uppercase tracking-widest opacity-70">
         --{label}
       </span>
       <span className="text-sm">Aa · the quick brown fox</span>

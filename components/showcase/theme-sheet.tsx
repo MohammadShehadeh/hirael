@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, Copy, Moon, Palette, RotateCcw, Sun } from "lucide-react";
+import { Moon, Palette, RotateCcw, Sun } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@/lib/theme";
 import { useTheme } from "@/components/showcase/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
+import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { Textarea } from "@/registry/hirael/ui/textarea";
 import {
   Sheet,
   SheetBody,
@@ -28,17 +30,14 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button
-          type="button"
+        <Button
+          variant="outline"
           aria-label="Open theme settings"
-          className={cn(
-            "inline-flex items-center gap-2 rounded-sm border border-sidebar-border bg-sidebar px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-sidebar-foreground transition-colors hover:border-foreground hover:text-foreground",
-            className,
-          )}
+          className={cn("capitalize", className)}
         >
-          <Palette className="size-3.5" />
+          <Palette className="size-4" />
           theme
-        </button>
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <ThemeSheetBody />
@@ -55,8 +54,6 @@ function ThemeSheetBody() {
     | { kind: "ok"; msg: string }
     | { kind: "warn"; msg: string }
   >({ kind: "idle" });
-  const [copied, setCopied] = React.useState(false);
-
   const exportCss = React.useMemo(() => {
     // Fall back to a helpful empty hint if no overrides set.
     const formatted = formatThemeCss(theme);
@@ -85,16 +82,6 @@ function ThemeSheetBody() {
       kind: "ok",
       msg: `Applied ${parts.join(" + ")} token${darkCount + lightCount === 1 ? "" : "s"}.`,
     });
-  }
-
-  async function copyExport() {
-    try {
-      await navigator.clipboard.writeText(exportCss);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      // ignore
-    }
   }
 
   function applyPreset(presetId: string) {
@@ -167,13 +154,13 @@ function ThemeSheetBody() {
           title="Paste CSS variables"
           hint={`Targets ${mode} when no .light/.dark selector is given`}
         >
-          <textarea
+          <Textarea
             value={paste}
             onChange={(e) => setPaste(e.target.value)}
             placeholder={`:root {\n  --background: oklch(...);\n  --foreground: oklch(...);\n  --primary: oklch(...);\n  ...\n}\n\n.dark {\n  ...\n}`}
             spellCheck={false}
             maxLength={10000}
-            className="h-44 w-full resize-y rounded-sm border border-border bg-card px-3 py-2 font-mono text-[11px] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus-visible:border-ring"
+            className="h-44 resize-y rounded-sm border-border bg-card field-sizing-fixed font-mono text-[11px] leading-relaxed placeholder:text-muted-foreground/60 dark:bg-card md:text-[11px]"
           />
           <div className="mt-2 flex items-center justify-between gap-3">
             <p
@@ -212,20 +199,14 @@ function ThemeSheetBody() {
             <code>{exportCss}</code>
           </pre>
           <div className="mt-2 flex items-center justify-end">
-            <Button
-              type="button"
+            <CopyButton
+              value={exportCss}
               size="sm"
               variant="outline"
-              onClick={copyExport}
               disabled={!overrideCount}
             >
-              {copied ? (
-                <Check className="size-3.5" />
-              ) : (
-                <Copy className="size-3.5" />
-              )}
-              {copied ? "Copied" : "Copy CSS"}
-            </Button>
+              Copy CSS
+            </CopyButton>
           </div>
         </Section>
       </SheetBody>

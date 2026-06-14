@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { KbdDisplay } from "@/registry/hirael/ui/kbd";
 
 // The palette (cmdk + Radix dialog) is loaded on first open, so it never
 // ships to visitors who don't search.
@@ -51,7 +52,7 @@ export function CommandMenu({ className }: { className?: string }) {
         onClick={() => setOpen(true)}
         aria-label="Search components and blocks"
         className={cn(
-          "inline-flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "inline-flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
           className,
         )}
       >
@@ -59,9 +60,9 @@ export function CommandMenu({ className }: { className?: string }) {
         <span className="hidden text-[13px] tracking-tight sm:inline">
           Search…
         </span>
-        <kbd className="ml-2 hidden h-5 select-none items-center rounded-sm border border-border bg-background px-1.5 font-mono text-[10px] text-muted-foreground sm:inline-flex">
+        <KbdDisplay className="ml-2 hidden border border-border bg-background px-1.5 font-mono text-[10px] sm:inline-flex">
           {isMac ? "⌘" : "Ctrl "}K
-        </kbd>
+        </KbdDisplay>
       </button>
 
       {armed && <CommandPalette open={open} onOpenChange={setOpen} />}

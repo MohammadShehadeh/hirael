@@ -35,7 +35,7 @@ export function ComponentCategoryPage({
         <p className="max-w-2xl text-base text-muted-foreground">
           {COMPONENT_CATEGORY_DESCRIPTIONS[category]}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           {items.length} component{items.length === 1 ? "" : "s"}
         </p>
       </header>

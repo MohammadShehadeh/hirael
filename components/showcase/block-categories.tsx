@@ -348,7 +348,7 @@ function Tile({
         </div>
         <div className="flex items-center gap-1.5">
           {comingSoon ? (
-            <span className="rounded-sm border border-border bg-card px-1 py-0.5 font-mono text-[8.5px] uppercase tracking-[0.1em] text-muted-foreground">
+            <span className="rounded-sm border border-border bg-card px-1 py-0.5 font-mono text-[8.5px] uppercase tracking-widest text-muted-foreground">
               Soon
             </span>
           ) : (
@@ -359,7 +359,7 @@ function Tile({
             )
           )}
           {indexLabel && (
-            <span className="font-mono text-[9px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground/60">
+            <span className="font-mono text-[9px] tabular-nums uppercase tracking-widest text-muted-foreground/60">
               {indexLabel}
               <span className="opacity-50">
                 /{String(total).padStart(2, "0")}

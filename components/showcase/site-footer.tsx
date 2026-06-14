@@ -51,7 +51,7 @@ export function SiteFooter({ className }: { className?: string }) {
           <div aria-hidden className="ambient-halo opacity-70" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)]"
+            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-30 mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)]"
           />
 
           <div className="relative px-6 pt-12 sm:px-10 sm:pt-14 lg:px-14">
@@ -75,7 +75,7 @@ export function SiteFooter({ className }: { className?: string }) {
 
               <Link
                 href="/components"
-                className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card md:self-auto"
+                className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 md:self-auto"
               >
                 Browse components
                 <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
@@ -129,10 +129,10 @@ export function SiteFooter({ className }: { className?: string }) {
               Hirael
             </span>
             <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
-              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 © {year} {SITE.author} · built on shadcn
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 zero runtime deps
               </p>
             </div>

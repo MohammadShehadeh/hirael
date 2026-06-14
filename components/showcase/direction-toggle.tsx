@@ -18,7 +18,7 @@ export function DirectionToggle({
       aria-label="Toggle right-to-left preview"
       onClick={() => onToggle(!rtl)}
       className={cn(
-        "inline-flex h-6 items-center rounded-sm border border-border px-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors",
+        "inline-flex h-6 items-center rounded-sm border border-border px-2 font-mono text-[10px] uppercase tracking-widest transition-colors",
         rtl
           ? "bg-accent text-foreground"
           : "bg-background text-muted-foreground hover:text-foreground",

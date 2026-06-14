@@ -192,14 +192,14 @@ export const IllIntegrations = () => (
 
 export const IllLogoCloud = () => (
   <div className="flex w-full flex-col items-center gap-1.5">
-    <div className="flex w-[80%] items-center gap-2 [mask-image:linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
+    <div className="flex w-[80%] items-center gap-2 mask-[linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
     </div>
-    <div className="flex w-[60%] items-center gap-2 [mask-image:linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
+    <div className="flex w-[60%] items-center gap-2 mask-[linear-gradient(to_right,transparent,black_30%,black_70%,transparent)]">
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />
       <Pill w="w-full" tone="bg-muted-foreground/10" className="h-2.5" />

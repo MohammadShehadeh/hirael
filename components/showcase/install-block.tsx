@@ -3,9 +3,11 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { CopyButton } from "@/components/showcase/copy-button";
+import { SegmentedControl } from "@/components/showcase/segmented-control";
+import { CopyButton } from "@/registry/hirael/ui/copy-button";
 import {
   PACKAGE_MANAGERS,
+  type PackageManager,
   getShadcnAddCommand,
   usePackageManager,
 } from "@/lib/package-managers";
@@ -36,54 +38,17 @@ export function InstallBlock({
       )}
     >
       <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
-        <div
-          role="radiogroup"
-          aria-label="Package manager"
-          className="flex items-center gap-0.5"
-          onKeyDown={(e) => {
-            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-            e.preventDefault();
-            const dir = e.key === "ArrowRight" ? 1 : -1;
-            const i = PACKAGE_MANAGERS.indexOf(pm);
-            const next =
-              PACKAGE_MANAGERS[
-                (i + dir + PACKAGE_MANAGERS.length) % PACKAGE_MANAGERS.length
-              ];
-            setPm(next);
-            // Move focus to the newly selected tab so screen readers announce it.
-            const el = e.currentTarget.querySelector<HTMLButtonElement>(
-              `[data-pm="${next}"]`,
-            );
-            el?.focus();
-          }}
-        >
-          {PACKAGE_MANAGERS.map((p) => {
-            const active = p === pm;
-            return (
-              <button
-                key={p}
-                type="button"
-                role="radio"
-                aria-checked={active}
-                tabIndex={active ? 0 : -1}
-                data-pm={p}
-                onClick={() => setPm(p)}
-                className={cn(
-                  "rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {p}
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          role="radio"
+          ariaLabel="Package manager"
+          value={pm}
+          onValueChange={(v) => setPm(v as PackageManager)}
+          items={PACKAGE_MANAGERS.map((p) => ({ value: p, label: p }))}
+        />
         <CopyButton
-          text={command}
-          label="Copy install command"
+          value={command}
+          size="sm"
+          aria-label="Copy install command"
           className="mr-0.5"
         />
       </div>

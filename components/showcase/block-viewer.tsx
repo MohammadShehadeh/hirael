@@ -9,9 +9,9 @@ import {
   Tablet,
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
+import { SegmentedControl } from "@/components/showcase/segmented-control";
 
 type Viewport = "mobile" | "tablet" | "desktop";
 
@@ -56,42 +56,34 @@ export function BlockViewer({
       className="overflow-hidden rounded-sm border border-border bg-background"
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/50 px-3 py-2">
-        <div
-          role="tablist"
-          aria-label="Preview viewport"
-          className="flex items-center gap-0.5 rounded-sm border border-border bg-background p-0.5"
-        >
-          {ORDER.map((v) => {
+        <SegmentedControl
+          role="tab"
+          ariaLabel="Preview viewport"
+          value={viewport}
+          onValueChange={(v) => setViewport(v as Viewport)}
+          className="rounded-sm border border-border bg-background p-0.5"
+          itemClassName="h-6 rounded-[2px] px-2 text-[10px] uppercase tracking-widest"
+          items={ORDER.map((v) => {
             const Icon = ICONS[v];
-            const active = viewport === v;
-            return (
-              <button
-                key={v}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                aria-label={`${SIZES[v].label} viewport${
-                  v === "desktop" ? "" : ` (${SIZES[v].width}px)`
-                }`}
-                onClick={() => setViewport(v)}
-                className={cn(
-                  "inline-flex h-6 items-center gap-1.5 rounded-[2px] px-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors",
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                <Icon className="size-3" />
-                <span className="hidden sm:inline">{SIZES[v].label}</span>
-                {v !== "desktop" && active && (
-                  <span className="tabular-nums text-muted-foreground">
-                    {SIZES[v].width}
-                  </span>
-                )}
-              </button>
-            );
+            return {
+              value: v,
+              ariaLabel: `${SIZES[v].label} viewport${
+                v === "desktop" ? "" : ` (${SIZES[v].width}px)`
+              }`,
+              label: (active: boolean) => (
+                <>
+                  <Icon className="size-3" />
+                  <span className="hidden sm:inline">{SIZES[v].label}</span>
+                  {v !== "desktop" && active && (
+                    <span className="tabular-nums text-muted-foreground">
+                      {SIZES[v].width}
+                    </span>
+                  )}
+                </>
+              ),
+            };
           })}
-        </div>
+        />
 
         <div className="flex items-center gap-1">
           <DirectionToggle rtl={rtl} onToggle={setRtl} className="me-1" />

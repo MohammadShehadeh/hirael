@@ -5,6 +5,7 @@ import { RefreshCw } from "lucide-react";
 import "./globals.css";
 
 import { LogoMark } from "@/components/showcase/logo";
+import { Button } from "@/registry/hirael/ui/button";
 
 // global-error replaces the root layout, so it has to bring its own document
 // and fonts. We mirror the root layout's setup so the fallback still reads as
@@ -36,7 +37,7 @@ export default function GlobalError() {
           <div aria-hidden className="ambient-halo" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)]"
+            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 mask-[radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)]"
           />
 
           <LogoMark className="relative size-8" />
@@ -55,23 +56,26 @@ export default function GlobalError() {
           </div>
 
           <div className="relative flex flex-wrap items-center justify-center gap-3">
-            <button
+            <Button
               type="button"
+              size="lg"
               onClick={() => window.location.reload()}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="h-11 rounded-full px-6 has-[>svg]:px-6"
             >
               <RefreshCw className="size-4" />
               Refresh page
-            </button>
+            </Button>
             {/* Plain anchor forces a full document load rather than a client
                 navigation, which is what recovery needs here. */}
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a
-              href="/"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-11 rounded-full border-border bg-card/60 px-6 text-foreground backdrop-blur-sm hover:bg-accent hover:text-foreground dark:border-border dark:bg-card/60 dark:hover:bg-accent"
             >
-              Back to home
-            </a>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href="/">Back to home</a>
+            </Button>
           </div>
         </main>
       </body>

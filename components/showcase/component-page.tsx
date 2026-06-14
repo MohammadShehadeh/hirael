@@ -10,6 +10,14 @@ import { DirectionToggle } from "@/components/showcase/direction-toggle";
 import { InstallBlock } from "@/components/showcase/install-block";
 import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/registry/hirael/ui/table";
+import {
   entryEmbedHref,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
@@ -154,7 +162,7 @@ export function ComponentPage({
               data-tab={k}
               onClick={() => setTab(k)}
               className={cn(
-                "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cool",
+                "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
                 active
                   ? "bg-background text-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklch,var(--foreground)_10%,transparent),0_1px_0_0_color-mix(in_oklch,var(--background)_60%,transparent)]"
                   : "text-muted-foreground hover:text-foreground",
@@ -214,7 +222,7 @@ export function ComponentPage({
           <div className="grid gap-4">
             <InstallBlock name={entry.name} />
             <div className="rounded-sm border border-border bg-card p-4">
-              <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 shadcn dependencies
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -230,7 +238,7 @@ export function ComponentPage({
             </div>
             {entry.dependencies?.length ? (
               <div className="rounded-sm border border-border bg-card p-4">
-                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                   npm dependencies
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
@@ -274,49 +282,44 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
             )}
           </div>
           {part.props.length ? (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className={API_TH}>Prop</th>
-                    <th className={API_TH}>Type</th>
-                    <th className={API_TH}>Default</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {part.props.map((prop) => (
-                    <tr
-                      key={prop.name}
-                      className="border-b border-border align-top last:border-b-0"
-                    >
-                      <td className="px-4 py-2.5">
-                        <code className="font-mono text-xs text-foreground">
-                          {prop.name}
-                          {prop.required && (
-                            <span className="text-destructive" title="Required">
-                              *
-                            </span>
-                          )}
-                        </code>
-                        {prop.description && (
-                          <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">
-                            {prop.description}
-                          </p>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className={API_TH}>Prop</TableHead>
+                  <TableHead className={API_TH}>Type</TableHead>
+                  <TableHead className={API_TH}>Default</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {part.props.map((prop) => (
+                  <TableRow key={prop.name} className="align-top">
+                    <TableCell className="px-4 py-2.5 whitespace-normal">
+                      <code className="font-mono text-xs text-foreground">
+                        {prop.name}
+                        {prop.required && (
+                          <span className="text-destructive" title="Required">
+                            *
+                          </span>
                         )}
-                      </td>
-                      <td className="px-4 py-2.5">
-                        <code className="font-mono text-xs text-muted-foreground">
-                          {prop.type}
-                        </code>
-                      </td>
-                      <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">
-                        {prop.default ?? "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </code>
+                      {prop.description && (
+                        <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">
+                          {prop.description}
+                        </p>
+                      )}
+                    </TableCell>
+                    <TableCell className="px-4 py-2.5 whitespace-normal">
+                      <code className="font-mono text-xs text-muted-foreground">
+                        {prop.type}
+                      </code>
+                    </TableCell>
+                    <TableCell className="px-4 py-2.5 whitespace-normal font-mono text-xs text-muted-foreground">
+                      {prop.default ?? "—"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
             <p className="px-4 py-3 text-xs text-muted-foreground">
               {part.extendsNative

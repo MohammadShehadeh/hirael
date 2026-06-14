@@ -9,8 +9,8 @@ table here in the same change.
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **69 registry UI items** (68 standalone
-components + 1 distribution-only primitive), **40 section blocks**, and
-**2 templates**. Counts come from `registry.json`; the landing page derives
+components + 1 distribution-only primitive), **41 section blocks**, and
+**3 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 
@@ -203,6 +203,7 @@ framed inside `app/embed/templates/[template]/`.
 | --- | --- | --- |
 | `creative-studio` | `framer-motion`, `lucide-react` | Dark, cinematic creative-studio landing page: full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Self-contained warm-cream palette. |
 | `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Self-contained light palette, Hirael branding. |
+| `usd-halo` | `lucide-react` | Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel. Self-contained light palette, Manrope + Inter type. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `sourceFiles` list every file in its folder, so the CLI installs the whole

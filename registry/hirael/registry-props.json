@@ -5803,5 +5803,106 @@
       "props": [],
       "extendsNative": false
     }
+  ],
+  "usd-halo": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "HeroSection",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "InfoSection",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "BackedBySection",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "UseCasesSection",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "LogoIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "PillButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "large",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Bumps the label to text-lg on md+ (used by the hero \"Join us\")."
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Marquee",
+      "props": [
+        {
+          "name": "brands",
+          "type": "MarqueeBrand[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "trackClass",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "keyframesName",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "durationSeconds",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "itemClass",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
   ]
 }

@@ -428,6 +428,28 @@
       ]
     },
     {
+      "name": "hero-04",
+      "type": "registry:block",
+      "title": "Hero 4",
+      "description": "Full-bleed hero on a rounded card with a looping video background: a centered navbar and headline, a floating glass stats card in one corner, and a faux-cutout documentation panel carved into the opposite corner.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-04/hero-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-04.tsx"
+        }
+      ]
+    },
+    {
       "name": "feature-01",
       "type": "registry:block",
       "title": "Feature 1",

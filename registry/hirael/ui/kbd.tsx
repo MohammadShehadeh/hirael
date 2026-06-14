@@ -1,13 +1,8 @@
-import * as React from "react";
-
 import { cn } from "@/lib/utils";
 
-type KbdProps = React.ComponentProps<"button">;
-
-function Kbd({ className, type = "button", ...props }: KbdProps) {
+function Kbd({ className, ...props }: React.ComponentProps<"button">) {
   return (
     <button
-      type={type}
       data-slot="kbd"
       className={cn(
         "relative inline-flex select-none touch-manipulation items-center justify-center overflow-hidden",
@@ -34,9 +29,7 @@ function Kbd({ className, type = "button", ...props }: KbdProps) {
   );
 }
 
-type KbdDisplayProps = React.ComponentProps<"kbd">;
-
-function KbdDisplay({ className, ...props }: KbdDisplayProps) {
+function KbdDisplay({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
       data-slot="kbd-display"
@@ -50,9 +43,7 @@ function KbdDisplay({ className, ...props }: KbdDisplayProps) {
   );
 }
 
-type KbdGroupProps = React.ComponentProps<"div">;
-
-function KbdGroup({ className, ...props }: KbdGroupProps) {
+function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="kbd-group"

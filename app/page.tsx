@@ -25,6 +25,7 @@ import {
   entryHref,
 } from "@/registry/hirael/registry-meta";
 import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 
 export const metadata: Metadata = {
   title: `${SITE.name} | ${SITE.description}`,
@@ -82,16 +83,14 @@ function Hero() {
   return (
     <section className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 lg:px-8">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-border bg-card/30 sm:rounded-[2rem]">
-        {/* Texture lives inside the panel: soft drifting halo, then a masked dot grid. */}
-        <div aria-hidden className="ambient-halo" />
         <div
           aria-hidden
-          className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_55%_at_50%_0%,black,transparent_80%)]"
+          style={{ backgroundImage: 'url("./images/hero-bg.jpg")' }}
+          className="pointer-events-none absolute inset-0 blur-[2px] opacity-90"
         />
-
         <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Badge>shadcn-compatible registry</Badge>
+            <Badge variant="secondary">shadcn/ui compatible registry</Badge>
 
             <h1
               style={{ animationDelay: "80ms", animationFillMode: "both" }}
@@ -115,21 +114,15 @@ function Hero() {
               style={{ animationDelay: "240ms", animationFillMode: "both" }}
               className={`flex flex-wrap items-center justify-center gap-3 pt-1 ${rise}`}
             >
-              <Link
-                href="/components"
-                className="group inline-flex h-11 items-center gap-2 rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                Browse components
-                <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
-                  <ArrowRight className="size-4 rtl:rotate-180" />
-                </span>
-              </Link>
-              <Link
-                href="/blocks"
-                className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-card/60 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                Browse blocks
-              </Link>
+              <Button size="lg" asChild>
+                <Link href="/components">
+                  Browse components
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="secondary" asChild>
+                <Link href="/blocks">Browse blocks</Link>
+              </Button>
             </div>
 
             <div

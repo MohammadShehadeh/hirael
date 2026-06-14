@@ -52,17 +52,9 @@ export function SiteHeader({
       className={cn("sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8", className)}
     >
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-      >
-        <div className="size-full bg-[url('/header-bg.png')] bg-cover bg-center bg-no-repeat" />
-        <div className="absolute inset-0 bg-background/40" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-border/60" />
-      </div>
-      <div
         className={cn(
           "mx-auto w-full transition-[max-width,padding] duration-300 ease-out",
-          scrolled ? "max-w-4xl pt-3" : "max-w-6xl pt-4",
+          scrolled ? "max-w-5xl pt-3" : "max-w-6xl pt-4",
         )}
       >
         <div

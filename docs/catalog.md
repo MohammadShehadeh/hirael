@@ -202,7 +202,7 @@ framed inside `app/embed/templates/[template]/`.
 | Template | Dependencies | What it is |
 | --- | --- | --- |
 | `creative-studio` | `framer-motion`, `lucide-react` | Dark, cinematic creative-studio landing page: full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Self-contained warm-cream palette. |
-| `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Self-contained light palette, Hirael branding. |
+| `agency-landing` | `shaders`, `lucide-react` | Bright, shader-lit agency landing page: full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Self-contained light palette, Hirael branding. |
 | `usd-halo` | `lucide-react` | Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel. Self-contained light palette, Manrope + Inter type. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose

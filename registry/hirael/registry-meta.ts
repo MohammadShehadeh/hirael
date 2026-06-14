@@ -1380,13 +1380,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "agency-landing",
     title: "Agency Landing",
     description:
-      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Built on the shaders package, with a self-contained light palette.",
+      "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/agency-landing/agency-landing.tsx",
       "registry/hirael/templates/agency-landing/hero.tsx",
       "registry/hirael/templates/agency-landing/about.tsx",
       "registry/hirael/templates/agency-landing/case-studies.tsx",
+      "registry/hirael/templates/agency-landing/footer.tsx",
       "registry/hirael/templates/agency-landing/primitives.tsx",
       "registry/hirael/templates/agency-landing/shader-background.tsx",
     ],
@@ -1395,6 +1396,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/agency-landing/hero.tsx",
       "components/templates/agency-landing/about.tsx",
       "components/templates/agency-landing/case-studies.tsx",
+      "components/templates/agency-landing/footer.tsx",
       "components/templates/agency-landing/primitives.tsx",
       "components/templates/agency-landing/shader-background.tsx",
     ],

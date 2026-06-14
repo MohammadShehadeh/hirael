@@ -115,7 +115,7 @@ export function Hero() {
     <section
       id="home"
       data-slot="hero"
-      className="flex h-svh min-h-[620px] w-full items-center justify-center bg-background p-3 md:p-5"
+      className="flex h-dvh w-full items-center justify-center bg-background p-3 md:p-5"
     >
       <div className="group relative flex h-full w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] md:rounded-[3rem]">
         <div

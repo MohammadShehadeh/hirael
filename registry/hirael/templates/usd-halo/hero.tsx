@@ -77,7 +77,7 @@ export function HeroSection() {
     <section className="flex flex-1 items-end px-6 pb-6 pt-20">
       <div
         className="relative mx-auto w-full max-w-[88rem] overflow-hidden rounded-2xl"
-        style={{ height: "calc(100svh - 96px)" }}
+        style={{ height: "calc(100dvh - 96px)" }}
       >
         <div
           className="absolute inset-0"

@@ -162,7 +162,7 @@ export function Hero({ start = true }: { start?: boolean }) {
     <section
       ref={rootRef}
       id="home"
-      className="relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden"
     >
       <Navbar />
 

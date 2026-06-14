@@ -167,11 +167,6 @@
       "permanent": true
     },
     {
-      "source": "/blocks/hero-04",
-      "destination": "/blocks/hero/hero-04",
-      "permanent": true
-    },
-    {
       "source": "/blocks/image-gallery-01",
       "destination": "/blocks/image-gallery/image-gallery-01",
       "permanent": true

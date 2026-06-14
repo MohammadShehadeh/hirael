@@ -77,7 +77,7 @@ export function HeroSection() {
     <section className="flex flex-1 items-end px-6 pb-6 pt-20">
       <div
         className="relative mx-auto w-full max-w-[88rem] overflow-hidden rounded-2xl"
-        style={{ height: "calc(100vh - 96px)" }}
+        style={{ height: "calc(100dvh - 96px)" }}
       >
         <div
           className="absolute inset-0"
@@ -86,6 +86,10 @@ export function HeroSection() {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/10"
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">

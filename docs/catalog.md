@@ -9,8 +9,8 @@ table here in the same change.
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **69 registry UI items** (68 standalone
-components + 1 distribution-only primitive), **41 section blocks**, and
-**5 templates**. Counts come from `registry.json`; the landing page derives
+components + 1 distribution-only primitive), **40 section blocks**, and
+**6 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 
@@ -168,7 +168,7 @@ kind has a category page at `/blocks/<category>` and its blocks at
 
 | Kind | Blocks | What it covers |
 | --- | --- | --- |
-| Hero | `hero-01`, `hero-02`, `hero-03`, `hero-04` | Landing hero sections — headline, sub-copy, CTAs, supporting visual. `hero-04` is a full-bleed image-background card with glassmorphism and a faux-cutout corner panel. |
+| Hero | `hero-01`, `hero-02`, `hero-03` | Landing hero sections — headline, sub-copy, CTAs, supporting visual. |
 | Feature | `feature-01`, `feature-02` | Feature grids and alternating feature rows. |
 | Pricing | `pricing-01`, `pricing-02` | Tiered pricing tables with feature lists and highlighted plan. |
 | Testimonial | `testimonial-01`, `testimonial-02` | Quote cards and testimonial walls. |
@@ -206,6 +206,7 @@ framed inside `app/embed/templates/[template]/`.
 | `mindloop` | `framer-motion`, `hls.js` | Dark, monochrome newsletter / content landing page: a full-screen video hero with an inline subscribe form, an answer-engine section, scroll-revealed mission copy, a four-up feature grid and an HLS streaming-video call to action. Self-contained pure-black palette, Inter + Instrument Serif, liquid-glass accents. |
 | `portfolio` | `gsap`, `framer-motion`, `hls.js` | Dark, single-page personal portfolio: a counter loading screen, an HLS video hero with a floating nav and a cycling role line, a bento work grid, a journal list, a scroll-pinned parallax gallery with lightbox, count-up stats and a video contact footer. Self-contained dark palette. |
 | `usd-halo` | `lucide-react` | Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette, Manrope + Inter type. |
+| `rivr` | `framer-motion`, `lucide-react` | DeFi staking landing page for a fluid-asset protocol: a photographic hero on a rounded card with a glass stats card and a carved documentation panel, a feature trio, a metrics band, a four-pillar ecosystem grid, a closing call to action and a dark footer. Self-contained light palette, Inter + Space Grotesk type. |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `sourceFiles` list every file in its folder, so the CLI installs the whole

@@ -41,6 +41,7 @@ const DEMO_LOADERS: Record<
   "testimonial-02": () => import("@/registry/hirael/blocks/testimonial-02/testimonial-02"),
   "cta-01": () => import("@/registry/hirael/blocks/cta-01/cta-01"),
   "cta-02": () => import("@/registry/hirael/blocks/cta-02/cta-02"),
+  "cta-03": () => import("@/registry/hirael/blocks/cta-03/cta-03"),
   "faq-01": () => import("@/registry/hirael/blocks/faq-01/faq-01"),
   "faq-02": () => import("@/registry/hirael/blocks/faq-02/faq-02"),
   "faq-03": () => import("@/registry/hirael/blocks/faq-03/faq-03"),
@@ -127,6 +128,9 @@ const DEMO_LOADERS: Record<
   "agency-landing": () =>
     import("@/registry/hirael/templates/agency-landing/agency-landing"),
   "mindloop": () => import("@/registry/hirael/templates/mindloop/mindloop"),
+  "portfolio": () =>
+    import("@/registry/hirael/templates/portfolio/portfolio"),
+  "usd-halo": () => import("@/registry/hirael/templates/usd-halo/usd-halo"),
 }
 
 // React.lazy defers the import until first render, so creating every demo

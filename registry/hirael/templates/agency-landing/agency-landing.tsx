@@ -1,5 +1,6 @@
 import { About } from "./about"
 import { CaseStudies } from "./case-studies"
+import { Footer } from "./footer"
 import { Hero } from "./hero"
 
 const SYSTEM_FONT =
@@ -14,6 +15,7 @@ export default function AgencyLanding() {
       <Hero />
       <About />
       <CaseStudies />
+      <Footer />
     </div>
   )
 }

@@ -16,10 +16,13 @@ const WORDMARKS = [
 
 export default function Hero02() {
   return (
-    <section className="relative isolate overflow-hidden bg-background">
+    <section
+      data-slot="hero"
+      className="relative isolate overflow-hidden bg-background"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.25] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-25 [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]"
         style={{
           backgroundImage:
             "radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0)",
@@ -36,7 +39,7 @@ export default function Hero02() {
       />
 
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-10 px-6 py-24 text-center md:px-10 lg:py-32">
-        <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em]">
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
           <span className="relative flex size-1.5">
             <span
               className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
@@ -52,7 +55,7 @@ export default function Hero02() {
           <span className="text-muted-foreground">2026.05</span>
         </span>
 
-        <h1 className="max-w-4xl text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.03] tracking-tight sm:text-6xl md:text-7xl">
           The component registry for{" "}
           <span className="relative whitespace-nowrap text-foreground">
             serious
@@ -82,14 +85,17 @@ export default function Hero02() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button asChild variant="default" size="lg" className="group">
+          <Button asChild size="lg" className="group rounded-full px-7">
             <a href="#">
               Get started
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
-          <Button asChild variant="ghost" size="lg" className="text-foreground">
-            <a href="#">Browse components →</a>
+          <Button asChild variant="ghost" size="lg" className="rounded-full text-foreground">
+            <a href="#">
+              Browse components
+              <ArrowRight className="size-4 rtl:rotate-180" />
+            </a>
           </Button>
         </div>
 
@@ -97,11 +103,11 @@ export default function Hero02() {
           <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
             Trusted by teams shipping at scale
           </p>
-          <div className="grid w-full grid-cols-2 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid w-full grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3 lg:grid-cols-6">
             {WORDMARKS.map((w) => (
               <div
                 key={w}
-                className="flex items-center justify-center bg-background px-3 py-4 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center justify-center bg-background px-3 py-5 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
               >
                 {w}
               </div>

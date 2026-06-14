@@ -23,33 +23,35 @@ const REGISTRY_LINES = [
 
 export default function Hero01() {
   return (
-    <section className="relative isolate overflow-hidden bg-background">
+    <section
+      data-slot="hero"
+      className="relative isolate overflow-hidden bg-background"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
+            "radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0)",
+          backgroundSize: "26px 26px",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 -top-32 -z-10 size-[420px] rounded-full opacity-[0.15] blur-3xl"
+        className="pointer-events-none absolute -end-32 -top-32 -z-10 size-[460px] rounded-full opacity-[0.12] blur-3xl"
         style={{ background: "var(--primary)" }}
       />
 
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 py-20 md:px-10 lg:grid-cols-12 lg:gap-16 lg:py-28">
-        <div className="flex flex-col gap-8 lg:col-span-7">
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-sm border border-border bg-card px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em]">
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-6 py-20 md:px-10 lg:grid-cols-12 lg:gap-16 lg:py-28">
+        <div className="flex flex-col gap-7 lg:col-span-7">
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-border bg-card/70 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
             <Sparkles className="size-3 text-foreground" />
             production-ready
           </span>
 
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-balance font-serif text-5xl font-medium leading-[1.03] tracking-tight sm:text-6xl md:text-7xl">
             Ship the parts shadcn{" "}
-            <span className="text-foreground">doesn&apos;t</span>{" "}
-            include.
+            <span className="italic text-foreground">doesn&apos;t</span> include.
           </h1>
 
           <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
@@ -60,24 +62,27 @@ export default function Hero01() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Button asChild variant="default" size="lg" className="group">
+            <Button asChild size="lg" className="group rounded-full px-7">
               <a href="#">
                 Get started
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </a>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" className="rounded-full px-7">
               <a href="#">Browse the registry</a>
             </Button>
           </div>
 
-          <dl className="mt-4 grid grid-cols-3 divide-x divide-border border-y border-border">
+          <dl className="mt-2 grid grid-cols-3 overflow-hidden rounded-2xl border border-border bg-card/40">
             {STATS.map((s, i) => (
-              <div key={s.label} className={i === 0 ? "py-4 pe-4" : "p-4"}>
+              <div
+                key={s.label}
+                className={i > 0 ? "border-s border-border px-5 py-4" : "px-5 py-4"}
+              >
                 <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   {s.label}
                 </dt>
-                <dd className="mt-1 font-mono text-2xl font-medium tabular-nums">
+                <dd className="mt-1 font-serif text-3xl font-medium tabular-nums">
                   {s.value}
                 </dd>
               </div>
@@ -87,8 +92,11 @@ export default function Hero01() {
 
         <div className="flex items-start lg:col-span-5">
           <div
-            className="relative w-full rounded-sm border border-border bg-card"
-            style={{ boxShadow: "8px 8px 0 0 var(--border)" }}
+            className="relative w-full overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-sm"
+            style={{
+              boxShadow:
+                "0 24px 60px -30px color-mix(in oklch, var(--foreground) 30%, transparent)",
+            }}
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -116,7 +124,7 @@ export default function Hero01() {
                       <span className="text-muted-foreground">{line.text}</span>
                     )}
                     {line.kind === "out" && (
-                      <span className="text-emerald-500">{line.text}</span>
+                      <span className="text-foreground/70">{line.text}</span>
                     )}
                     {line.kind === "blank" && <span>&nbsp;</span>}
                     {line.kind === "meta" && (
@@ -127,7 +135,7 @@ export default function Hero01() {
               </code>
             </pre>
 
-            <div className="border-t border-border bg-background/60 px-4 py-2.5">
+            <div className="border-t border-border bg-background/50 px-4 py-2.5">
               <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.1em]">
                 <span className="text-muted-foreground">added</span>
                 <span className="text-foreground">multi-select.tsx</span>

@@ -26,24 +26,27 @@ export default function Hero03() {
   }
 
   return (
-    <section className="relative isolate overflow-hidden bg-background">
+    <section
+      data-slot="hero"
+      className="relative isolate overflow-hidden bg-background"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.3] [mask-image:radial-gradient(ellipse_at_bottom_left,black_25%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-25 [mask-image:radial-gradient(ellipse_at_bottom_left,black_25%,transparent_70%)]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
+            "radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0)",
+          backgroundSize: "26px 26px",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-40 left-1/3 -z-10 size-[480px] rounded-full opacity-[0.12] blur-3xl"
+        className="pointer-events-none absolute -bottom-40 start-1/3 -z-10 size-[480px] rounded-full opacity-[0.12] blur-3xl"
         style={{ background: "var(--primary)" }}
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em]">
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
           <span className="inline-flex items-center gap-0.5 text-foreground">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star key={i} className="size-3 fill-current" />
@@ -52,9 +55,10 @@ export default function Hero03() {
           <span className="text-muted-foreground">trusted by 4,000+ builders</span>
         </span>
 
-        <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.04] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="max-w-3xl text-balance font-serif text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
           The registry your{" "}
-          <span className="text-foreground">design system</span> was missing.
+          <span className="italic text-foreground">design system</span> was
+          missing.
         </h1>
 
         <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
@@ -67,8 +71,8 @@ export default function Hero03() {
           className="flex w-full max-w-md flex-col gap-3 sm:flex-row"
         >
           {sent ? (
-            <div className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm">
-              <Check className="size-4 text-emerald-500" />
+            <div className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm">
+              <Check className="size-4 text-foreground" />
               <span className="font-medium">You&apos;re on the list</span>
               <span className="font-mono text-[11px] text-muted-foreground">
                 · check your inbox
@@ -83,11 +87,15 @@ export default function Hero03() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@company.com"
                 aria-label="Email address"
-                className="h-11 flex-1 bg-card"
+                className="h-12 flex-1 rounded-full bg-card/70 px-5 backdrop-blur-sm"
               />
-              <Button type="submit" size="lg" className="group h-11 shrink-0">
+              <Button
+                type="submit"
+                size="lg"
+                className="group h-12 shrink-0 rounded-full px-7"
+              >
                 Get early access
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
             </>
           )}

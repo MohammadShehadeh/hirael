@@ -8,9 +8,18 @@
       "type": "registry:ui",
       "title": "Multi Select",
       "description": "Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.",
-      "categories": ["inputs"],
-      "dependencies": ["cmdk", "lucide-react"],
-      "registryDependencies": ["badge", "command", "popover"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "command",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/multi-select.tsx",
@@ -24,9 +33,16 @@
       "type": "registry:ui",
       "title": "Number Range",
       "description": "Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.",
-      "categories": ["inputs"],
-      "dependencies": ["@radix-ui/react-slider"],
-      "registryDependencies": ["input", "slider"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slider"
+      ],
+      "registryDependencies": [
+        "input",
+        "slider"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/number-range.tsx",
@@ -40,9 +56,16 @@
       "type": "registry:ui",
       "title": "Year Picker",
       "description": "Decade-grid year picker with keyboard nav, min/max bounds, single or range mode.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/year-picker.tsx",
@@ -56,9 +79,15 @@
       "type": "registry:ui",
       "title": "Tag Input",
       "description": "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/tag-input.tsx",
@@ -72,9 +101,17 @@
       "type": "registry:ui",
       "title": "Combobox",
       "description": "Searchable single-select with debounced async loader, group headings and clearable selection.",
-      "categories": ["inputs"],
-      "dependencies": ["cmdk", "lucide-react"],
-      "registryDependencies": ["command", "popover"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/combobox.tsx",
@@ -88,9 +125,17 @@
       "type": "registry:ui",
       "title": "Lazy Select",
       "description": "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
-      "categories": ["inputs"],
-      "dependencies": ["cmdk", "lucide-react"],
-      "registryDependencies": ["command", "popover"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/lazy-select.tsx",
@@ -104,9 +149,15 @@
       "type": "registry:ui",
       "title": "Password Input",
       "description": "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["input-group"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input-group"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/password-input.tsx",
@@ -120,9 +171,13 @@
       "type": "registry:ui",
       "title": "Currency Input",
       "description": "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
-      "categories": ["inputs"],
+      "categories": [
+        "inputs"
+      ],
       "dependencies": [],
-      "registryDependencies": ["input-group"],
+      "registryDependencies": [
+        "input-group"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/currency-input.tsx",
@@ -136,9 +191,17 @@
       "type": "registry:ui",
       "title": "Phone Input",
       "description": "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["command", "input-group", "popover"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "input-group",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/phone-input.tsx",
@@ -152,8 +215,12 @@
       "type": "registry:ui",
       "title": "File Dropzone",
       "description": "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
-      "categories": ["files"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -168,8 +235,12 @@
       "type": "registry:ui",
       "title": "Stat Card",
       "description": "Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.",
-      "categories": ["data"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -184,8 +255,12 @@
       "type": "registry:ui",
       "title": "Rating",
       "description": "Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -200,7 +275,9 @@
       "type": "registry:ui",
       "title": "Timeline",
       "description": "Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.",
-      "categories": ["data"],
+      "categories": [
+        "data"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -216,7 +293,9 @@
       "type": "registry:ui",
       "title": "Kbd",
       "description": "3D tactile keycap with hover lift and pressed states. Compound API with KbdGroup for chords and KbdDisplay for inline keys.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -232,8 +311,13 @@
       "type": "registry:ui",
       "title": "Callout",
       "description": "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override. Ships --info / --success / --warning theme tokens.",
-      "categories": ["display"],
-      "dependencies": ["class-variance-authority", "lucide-react"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "cssVars": {
         "light": {
@@ -260,7 +344,9 @@
       "type": "registry:ui",
       "title": "Scroll Progress",
       "description": "Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -276,9 +362,17 @@
       "type": "registry:block",
       "title": "Hero 1",
       "description": "Full-bleed hero card over an animated light-beam shader, with a glass pill nav, a trust badge, a serif headline, dual CTA and a three-stat footer.",
-      "categories": ["blocks", "hero"],
-      "dependencies": ["lucide-react", "shaders"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/hero-01/hero-01.tsx",
@@ -297,9 +391,17 @@
       "type": "registry:block",
       "title": "Hero 2",
       "description": "Centered hero over animated grayscale gradient bars, with a live pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.",
-      "categories": ["blocks", "hero"],
-      "dependencies": ["lucide-react", "shaders"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/hero-02/hero-02.tsx",
@@ -318,9 +420,16 @@
       "type": "registry:block",
       "title": "Hero 3",
       "description": "Editorial centered hero on a faded grid, with a serif headline, sub-copy, dual CTA and a logo cloud of customer wordmarks.",
-      "categories": ["blocks", "hero"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/hero-03/hero-03.tsx",
@@ -334,9 +443,16 @@
       "type": "registry:block",
       "title": "Hero 4",
       "description": "Full-bleed image-banner hero with a dark scrim, a slim nav, a serif headline and dual CTA aligned to the bottom.",
-      "categories": ["blocks", "hero"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/hero-04/hero-04.tsx",
@@ -350,9 +466,17 @@
       "type": "registry:block",
       "title": "Hero 5",
       "description": "Full-bleed hero card over an animated aurora shader, with a glass pill nav, a glass content panel, a serif headline, dual CTA and an avatar social-proof row.",
-      "categories": ["blocks", "hero"],
-      "dependencies": ["lucide-react", "shaders"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/hero-05/hero-05.tsx",
@@ -371,8 +495,13 @@
       "type": "registry:block",
       "title": "Feature 1",
       "description": "Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).",
-      "categories": ["blocks", "feature"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "feature"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -387,8 +516,13 @@
       "type": "registry:block",
       "title": "Feature 2",
       "description": "Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.",
-      "categories": ["blocks", "feature"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "feature"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -403,9 +537,18 @@
       "type": "registry:block",
       "title": "Pricing 1",
       "description": "Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.",
-      "categories": ["blocks", "pricing"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "card", "separator"],
+      "categories": [
+        "blocks",
+        "pricing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "card",
+        "separator"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/pricing-01/pricing-01.tsx",
@@ -419,9 +562,16 @@
       "type": "registry:block",
       "title": "Pricing 2",
       "description": "Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.",
-      "categories": ["blocks", "pricing"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "pricing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/pricing-02/pricing-02.tsx",
@@ -435,7 +585,10 @@
       "type": "registry:block",
       "title": "Testimonial 1",
       "description": "Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.",
-      "categories": ["blocks", "testimonial"],
+      "categories": [
+        "blocks",
+        "testimonial"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -451,7 +604,10 @@
       "type": "registry:block",
       "title": "Testimonial 2",
       "description": "Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.",
-      "categories": ["blocks", "testimonial"],
+      "categories": [
+        "blocks",
+        "testimonial"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -467,9 +623,16 @@
       "type": "registry:block",
       "title": "CTA 1",
       "description": "Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.",
-      "categories": ["blocks", "cta"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/cta-01/cta-01.tsx",
@@ -483,9 +646,16 @@
       "type": "registry:block",
       "title": "CTA 2",
       "description": "Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an inline install command.",
-      "categories": ["blocks", "cta"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/cta-02/cta-02.tsx",
@@ -499,9 +669,17 @@
       "type": "registry:block",
       "title": "CTA 3",
       "description": "Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.",
-      "categories": ["blocks", "cta"],
-      "dependencies": ["lucide-react", "shaders"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/cta-03/cta-03.tsx",
@@ -520,9 +698,19 @@
       "type": "registry:block",
       "title": "FAQ 1",
       "description": "Two-column FAQ: sticky heading + contact card on the left, numbered accordion on the right.",
-      "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
-      "registryDependencies": ["accordion", "button", "card"],
+      "categories": [
+        "blocks",
+        "faq"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "accordion",
+        "button",
+        "card"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/faq-01/faq-01.tsx",
@@ -536,9 +724,16 @@
       "type": "registry:block",
       "title": "FAQ 2",
       "description": "Centered heading with two-column accordion grid below. Each row tagged with a Qn index.",
-      "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion"],
-      "registryDependencies": ["accordion"],
+      "categories": [
+        "blocks",
+        "faq"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion"
+      ],
+      "registryDependencies": [
+        "accordion"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/faq-02/faq-02.tsx",
@@ -552,8 +747,14 @@
       "type": "registry:block",
       "title": "FAQ 3",
       "description": "Searchable FAQ with category tabs, a live-filtered accordion, an empty state for missed queries and a support CTA strip.",
-      "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "categories": [
+        "blocks",
+        "faq"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
       "registryDependencies": [
         "accordion",
         "button",
@@ -574,9 +775,16 @@
       "type": "registry:block",
       "title": "FAQ 4",
       "description": "Framed single-column FAQ with side rules, a centered display header, five topic groups each pairing a heading with its own accordion, and a support footer line.",
-      "categories": ["blocks", "faq"],
-      "dependencies": ["@radix-ui/react-accordion"],
-      "registryDependencies": ["accordion"],
+      "categories": [
+        "blocks",
+        "faq"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion"
+      ],
+      "registryDependencies": [
+        "accordion"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/faq-04/faq-04.tsx",
@@ -590,8 +798,13 @@
       "type": "registry:block",
       "title": "Login 1",
       "description": "Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.",
-      "categories": ["blocks", "login"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "button",
         "checkbox",
@@ -613,9 +826,19 @@
       "type": "registry:block",
       "title": "Login 2",
       "description": "Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.",
-      "categories": ["blocks", "login"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input", "label", "password-input"],
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "password-input"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/login-02/login-02.tsx",
@@ -629,8 +852,13 @@
       "type": "registry:block",
       "title": "Signup 1",
       "description": "Centered signup card with monogram, name + email, strength-meter password-input, terms checkbox, divider and GitHub / Google providers. Validates inline on submit.",
-      "categories": ["blocks", "login"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "button",
         "checkbox",
@@ -652,9 +880,18 @@
       "type": "registry:block",
       "title": "Forgot Password 1",
       "description": "Centered reset-request card: email with inline validation and a pending submit, swapping to a check-your-inbox state that echoes the address with resend and back-to-sign-in links.",
-      "categories": ["blocks", "login"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input", "label"],
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/forgot-password-01/forgot-password-01.tsx",
@@ -668,9 +905,17 @@
       "type": "registry:block",
       "title": "OTP Verify 1",
       "description": "Centered verification card with a six-box code input built in the block: auto-advance, backspace, paste distribution and arrow-key focus, plus a 30s resend countdown and a pending → success verify flow.",
-      "categories": ["blocks", "login"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input"],
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/otp-verify-01/otp-verify-01.tsx",
@@ -684,9 +929,16 @@
       "type": "registry:block",
       "title": "Header 1",
       "description": "Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.",
-      "categories": ["blocks", "header"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "header"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/header-01/header-01.tsx",
@@ -700,8 +952,13 @@
       "type": "registry:block",
       "title": "Footer 1",
       "description": "Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.",
-      "categories": ["blocks", "footer"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "footer"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -716,9 +973,16 @@
       "type": "registry:block",
       "title": "Not Found 1",
       "description": "Centered 404 with mono eyebrow, display headline, paired CTAs and a 'try one of these' suggested-routes list.",
-      "categories": ["blocks", "not-found"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "blocks",
+        "not-found"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/not-found-01/not-found-01.tsx",
@@ -732,9 +996,16 @@
       "type": "registry:ui",
       "title": "Month Picker",
       "description": "4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/month-picker.tsx",
@@ -748,9 +1019,16 @@
       "type": "registry:ui",
       "title": "Time Picker",
       "description": "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover", "tabs"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "popover",
+        "tabs"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/time-picker.tsx",
@@ -764,9 +1042,17 @@
       "type": "registry:ui",
       "title": "Color Picker",
       "description": "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "popover", "tabs"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input",
+        "popover",
+        "tabs"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/color-picker.tsx",
@@ -780,8 +1066,12 @@
       "type": "registry:ui",
       "title": "Avatar Stack",
       "description": "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
-      "categories": ["data"],
-      "dependencies": ["@radix-ui/react-slot"],
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -796,8 +1086,12 @@
       "type": "registry:ui",
       "title": "Announcement Bar",
       "description": "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
-      "categories": ["display"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -812,7 +1106,9 @@
       "type": "registry:ui",
       "title": "Empty State",
       "description": "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -828,9 +1124,17 @@
       "type": "registry:block",
       "title": "Logo Cloud 1",
       "description": "Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.",
-      "categories": ["blocks", "logo-cloud"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button"],
+      "categories": [
+        "blocks",
+        "logo-cloud"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/logo-cloud-01/logo-cloud-01.tsx",
@@ -844,8 +1148,13 @@
       "type": "registry:block",
       "title": "Contact 1",
       "description": "Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.",
-      "categories": ["blocks", "contact"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "contact"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -870,9 +1179,19 @@
       "type": "registry:block",
       "title": "Blog 1",
       "description": "Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.",
-      "categories": ["blocks", "blog"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "card", "separator"],
+      "categories": [
+        "blocks",
+        "blog"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "separator"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/blog-01/blog-01.tsx",
@@ -886,9 +1205,18 @@
       "type": "registry:block",
       "title": "E-commerce 1",
       "description": "Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and per-card add buttons.",
-      "categories": ["blocks", "ecommerce"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "rating"],
+      "categories": [
+        "blocks",
+        "ecommerce"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "rating"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/ecommerce-01/ecommerce-01.tsx",
@@ -902,8 +1230,13 @@
       "type": "registry:block",
       "title": "E-commerce 2",
       "description": "Shopping cart with quantity steppers, removable line items, promo-code validation, a free-shipping threshold, live totals and an empty-cart state.",
-      "categories": ["blocks", "ecommerce"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "ecommerce"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "button",
         "card",
@@ -924,9 +1257,20 @@
       "type": "registry:block",
       "title": "Dashboard 1",
       "description": "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
-      "categories": ["blocks", "dashboard"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "card", "separator", "tabs"],
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "separator",
+        "tabs"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-01/dashboard-01.tsx",
@@ -940,8 +1284,13 @@
       "type": "registry:block",
       "title": "Dashboard 2",
       "description": "Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart, and top-pages and channel-share side cards.",
-      "categories": ["blocks", "dashboard"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -962,9 +1311,19 @@
       "type": "registry:block",
       "title": "Dashboard 3",
       "description": "Revenue dashboard with a month stepper, plan-mix donut and legend, invoice status list and a transactions table with status dots and a pagination footer.",
-      "categories": ["blocks", "dashboard"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "card", "separator"],
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "separator"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-03/dashboard-03.tsx",
@@ -978,9 +1337,19 @@
       "type": "registry:block",
       "title": "Dashboard 4",
       "description": "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
-      "categories": ["blocks", "dashboard"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "card", "select"],
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card",
+        "select"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-04/dashboard-04.tsx",
@@ -994,9 +1363,18 @@
       "type": "registry:block",
       "title": "Dashboard 5",
       "description": "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution and an active-deployments list with ping-dot statuses.",
-      "categories": ["blocks", "dashboard"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "select"],
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "select"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-05/dashboard-05.tsx",
@@ -1010,9 +1388,18 @@
       "type": "registry:block",
       "title": "Integrations 1",
       "description": "Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.",
-      "categories": ["blocks", "integrations"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "card"],
+      "categories": [
+        "blocks",
+        "integrations"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "card"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/integrations-01/integrations-01.tsx",
@@ -1026,9 +1413,19 @@
       "type": "registry:block",
       "title": "Image Gallery 1",
       "description": "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
-      "categories": ["blocks", "image-gallery"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "empty-state", "tabs"],
+      "categories": [
+        "blocks",
+        "image-gallery"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "empty-state",
+        "tabs"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/image-gallery-01/image-gallery-01.tsx",
@@ -1042,8 +1439,13 @@
       "type": "registry:block",
       "title": "App Shell 1",
       "description": "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
-      "categories": ["blocks", "app-shell"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "app-shell"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -1066,8 +1468,13 @@
       "type": "registry:block",
       "title": "App Shell 2",
       "description": "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
-      "categories": ["blocks", "app-shell"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "app-shell"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -1088,8 +1495,13 @@
       "type": "registry:block",
       "title": "App Shell 3",
       "description": "Split-pane inbox shell: icon rail with unread indicator, searchable conversation list with an unread filter, and a reading pane with star toggle and a reply composer that appends to the thread.",
-      "categories": ["blocks", "app-shell"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "app-shell"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -1112,8 +1524,13 @@
       "type": "registry:block",
       "title": "App Shell 4",
       "description": "Starter shell on the shadcn Sidebar primitive (inset variant): workspace switcher and ⌘K search in the rail, icon-collapsible nav with tooltips, an inset header with trigger, notification count and avatar, and a welcome heading over dashed placeholder slots.",
-      "categories": ["blocks", "app-shell"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "blocks",
+        "app-shell"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "badge",
         "button",
@@ -1135,7 +1552,9 @@
       "type": "registry:ui",
       "title": "Spinner",
       "description": "Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits the current text color and ships an accessible status label.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1151,8 +1570,12 @@
       "type": "registry:ui",
       "title": "Copy Button",
       "description": "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
-      "categories": ["display"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1167,7 +1590,9 @@
       "type": "registry:ui",
       "title": "Marquee",
       "description": "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline, zero config.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1183,8 +1608,12 @@
       "type": "registry:ui",
       "title": "Tree View",
       "description": "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
-      "categories": ["data"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1199,7 +1628,9 @@
       "type": "registry:ui",
       "title": "Animated Number",
       "description": "Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.",
-      "categories": ["data"],
+      "categories": [
+        "data"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1215,8 +1646,12 @@
       "type": "registry:ui",
       "title": "Stepper",
       "description": "Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.",
-      "categories": ["navigation"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1231,8 +1666,12 @@
       "type": "registry:ui",
       "title": "Sortable",
       "description": "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.",
-      "categories": ["data"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1247,9 +1686,16 @@
       "type": "registry:ui",
       "title": "Date Picker",
       "description": "Single-date picker with month grid, keyboard nav, min/max bounds and disabled dates. Includes an inline DateCalendar, no date library.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/date-picker.tsx",
@@ -1263,9 +1709,17 @@
       "type": "registry:ui",
       "title": "Date Range Picker",
       "description": "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar, no date library.",
-      "categories": ["pickers"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "popover", "separator"],
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover",
+        "separator"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/date-range-picker.tsx",
@@ -1279,9 +1733,13 @@
       "type": "registry:ui",
       "title": "Mention Input",
       "description": "@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.",
-      "categories": ["inputs"],
+      "categories": [
+        "inputs"
+      ],
       "dependencies": [],
-      "registryDependencies": ["spinner"],
+      "registryDependencies": [
+        "spinner"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/mention-input.tsx",
@@ -1295,9 +1753,18 @@
       "type": "registry:ui",
       "title": "Inline Edit",
       "description": "Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "input", "spinner", "textarea"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "spinner",
+        "textarea"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/inline-edit.tsx",
@@ -1311,9 +1778,15 @@
       "type": "registry:ui",
       "title": "Signature Pad",
       "description": "Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.",
-      "categories": ["inputs"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/signature-pad.tsx",
@@ -1327,9 +1800,13 @@
       "type": "registry:ui",
       "title": "Image Cropper",
       "description": "Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.",
-      "categories": ["files"],
+      "categories": [
+        "files"
+      ],
       "dependencies": [],
-      "registryDependencies": ["slider"],
+      "registryDependencies": [
+        "slider"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/image-cropper.tsx",
@@ -1343,8 +1820,12 @@
       "type": "registry:ui",
       "title": "Image Compare",
       "description": "Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.",
-      "categories": ["display"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1359,8 +1840,13 @@
       "type": "registry:ui",
       "title": "Lightbox",
       "description": "Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.",
-      "categories": ["display"],
-      "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1375,7 +1861,9 @@
       "type": "registry:ui",
       "title": "Countdown Timer",
       "description": "Count-down-to-date timer with boxed / inline / minimal variants, a useCountdown hook, digit animation and completion content.",
-      "categories": ["data"],
+      "categories": [
+        "data"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1391,7 +1879,9 @@
       "type": "registry:ui",
       "title": "QR Code",
       "description": "Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and currentColor theming.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1407,9 +1897,13 @@
       "type": "registry:ui",
       "title": "Calendar Heatmap",
       "description": "GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.",
-      "categories": ["data"],
+      "categories": [
+        "data"
+      ],
       "dependencies": [],
-      "registryDependencies": ["tooltip"],
+      "registryDependencies": [
+        "tooltip"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/calendar-heatmap.tsx",
@@ -1423,9 +1917,17 @@
       "type": "registry:ui",
       "title": "Code Block",
       "description": "Code display with built-in dependency-free syntax highlighting via theme tokens, line numbers, line highlights, diff gutters, copy button and collapsible max-height.",
-      "categories": ["display"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["badge", "button", "copy-button"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "copy-button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/code-block.tsx",
@@ -1439,7 +1941,9 @@
       "type": "registry:ui",
       "title": "Masonry",
       "description": "True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.",
-      "categories": ["display"],
+      "categories": [
+        "display"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1455,9 +1959,17 @@
       "type": "registry:ui",
       "title": "Audio Player",
       "description": "Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.",
-      "categories": ["display"],
-      "dependencies": ["@radix-ui/react-slider", "lucide-react"],
-      "registryDependencies": ["button", "slider"],
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slider",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "slider"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/audio-player.tsx",
@@ -1471,9 +1983,15 @@
       "type": "registry:ui",
       "title": "Media Input",
       "description": "Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
-      "categories": ["files"],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["button"],
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/media-input.tsx",
@@ -1487,9 +2005,13 @@
       "type": "registry:ui",
       "title": "Tour",
       "description": "Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.",
-      "categories": ["navigation"],
+      "categories": [
+        "navigation"
+      ],
       "dependencies": [],
-      "registryDependencies": ["button"],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/tour.tsx",
@@ -1503,7 +2025,9 @@
       "type": "registry:ui",
       "title": "Activity Feed",
       "description": "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
-      "categories": ["data"],
+      "categories": [
+        "data"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1519,8 +2043,12 @@
       "type": "registry:ui",
       "title": "Audit Log",
       "description": "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
-      "categories": ["data"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1535,8 +2063,12 @@
       "type": "registry:ui",
       "title": "Blur Reveal",
       "description": "Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1551,8 +2083,12 @@
       "type": "registry:ui",
       "title": "Text Reveal",
       "description": "Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1567,8 +2103,12 @@
       "type": "registry:ui",
       "title": "Scroll Reveal",
       "description": "Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1583,8 +2123,12 @@
       "type": "registry:ui",
       "title": "Spotlight Card",
       "description": "Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1599,8 +2143,13 @@
       "type": "registry:ui",
       "title": "Magnetic Button",
       "description": "Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.",
-      "categories": ["animation"],
-      "dependencies": ["@radix-ui/react-slot", "motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1615,8 +2164,12 @@
       "type": "registry:ui",
       "title": "Cursor Glow",
       "description": "Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1631,8 +2184,12 @@
       "type": "registry:ui",
       "title": "Tilt Card",
       "description": "3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.",
-      "categories": ["animation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1647,8 +2204,13 @@
       "type": "registry:ui",
       "title": "Morphing Dialog",
       "description": "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
-      "categories": ["animation"],
-      "dependencies": ["lucide-react", "motion"],
+      "categories": [
+        "animation"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1663,8 +2225,12 @@
       "type": "registry:ui",
       "title": "Dock",
       "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
-      "categories": ["navigation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1679,8 +2245,12 @@
       "type": "registry:ui",
       "title": "Floating Action Button",
       "description": "Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.",
-      "categories": ["navigation"],
-      "dependencies": ["motion"],
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1695,7 +2265,9 @@
       "type": "registry:ui",
       "title": "Floating Toolbar",
       "description": "Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels. Position it anywhere.",
-      "categories": ["navigation"],
+      "categories": [
+        "navigation"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1711,7 +2283,9 @@
       "type": "registry:ui",
       "title": "Split View",
       "description": "Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. RTL-aware.",
-      "categories": ["navigation"],
+      "categories": [
+        "navigation"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1727,7 +2301,9 @@
       "type": "registry:ui",
       "title": "Resizable Panels",
       "description": "Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. RTL-aware.",
-      "categories": ["navigation"],
+      "categories": [
+        "navigation"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1743,8 +2319,12 @@
       "type": "registry:ui",
       "title": "Inspector Panel",
       "description": "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
-      "categories": ["navigation"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1759,8 +2339,12 @@
       "type": "registry:ui",
       "title": "KPI Grid",
       "description": "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
-      "categories": ["widgets"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1775,8 +2359,12 @@
       "type": "registry:ui",
       "title": "Quick Actions",
       "description": "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
-      "categories": ["widgets"],
-      "dependencies": ["@radix-ui/react-slot"],
+      "categories": [
+        "widgets"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1791,7 +2379,9 @@
       "type": "registry:ui",
       "title": "Notifications",
       "description": "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
-      "categories": ["widgets"],
+      "categories": [
+        "widgets"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1807,7 +2397,9 @@
       "type": "registry:ui",
       "title": "Billing Card",
       "description": "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
-      "categories": ["saas"],
+      "categories": [
+        "saas"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1823,8 +2415,12 @@
       "type": "registry:ui",
       "title": "Subscription Plans",
       "description": "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
-      "categories": ["saas"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1839,8 +2435,12 @@
       "type": "registry:ui",
       "title": "API Keys",
       "description": "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
-      "categories": ["saas"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1855,7 +2455,9 @@
       "type": "registry:ui",
       "title": "Usage Dashboard",
       "description": "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
-      "categories": ["saas"],
+      "categories": [
+        "saas"
+      ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -1871,8 +2473,13 @@
       "type": "registry:block",
       "title": "Creative Studio",
       "description": "Dark, cinematic creative-studio landing page: a full-viewport hero with an animated backdrop and pull-up wordmark, a scroll-revealed about section, and a staggered feature-card grid. Framer Motion throughout, with a self-contained warm-cream palette.",
-      "categories": ["templates"],
-      "dependencies": ["framer-motion", "lucide-react"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1917,8 +2524,13 @@
       "type": "registry:block",
       "title": "Agency Landing",
       "description": "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop and pill navigation, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
-      "categories": ["templates"],
-      "dependencies": ["lucide-react", "shaders"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1963,8 +2575,13 @@
       "type": "registry:block",
       "title": "Mindloop",
       "description": "Dark, monochrome newsletter landing page: a full-screen video hero with an inline subscribe form, an answer-engine section, scroll-revealed mission copy, a four-up feature grid and a streaming-video call to action. Framer Motion throughout, with a self-contained pure-black palette and liquid-glass accents.",
-      "categories": ["templates"],
-      "dependencies": ["framer-motion", "hls.js"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "hls.js"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2029,8 +2646,14 @@
       "type": "registry:block",
       "title": "Portfolio",
       "description": "Dark, single-page personal portfolio: a counter loading screen, an HLS video hero with a floating nav and a cycling role line, a bento work grid, a journal list, a scroll-pinned parallax gallery with lightbox, count-up stats and a video contact footer. Self-contained dark palette, driven by GSAP and Framer Motion.",
-      "categories": ["templates"],
-      "dependencies": ["framer-motion", "gsap", "hls.js"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "gsap",
+        "hls.js"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2100,8 +2723,12 @@
       "type": "registry:block",
       "title": "USD Halo",
       "description": "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette.",
-      "categories": ["templates"],
-      "dependencies": ["lucide-react"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2156,8 +2783,13 @@
       "type": "registry:block",
       "title": "Rivr",
       "description": "DeFi staking landing page for a fluid-asset protocol: a video hero on a rounded card with glass stat cards and a carved documentation corner, a metrics band, a bento feature grid, a video call to action and a light footer. Self-contained light palette, Helvetica system type, Framer Motion throughout.",
-      "categories": ["templates"],
-      "dependencies": ["framer-motion", "lucide-react"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2212,8 +2844,12 @@
       "type": "registry:block",
       "title": "Velorah",
       "description": "Dark, premium landing page for an electric RV brand: a full-screen video hero with liquid-glass navigation, a centered tagline, a split feature card with switchable tabs, an HLS streaming statement with a stats row, a video preorder call to action and a multi-column footer. Self-contained pure-black palette, Inter + Instrument Serif type.",
-      "categories": ["templates"],
-      "dependencies": ["hls.js"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2283,8 +2919,13 @@
       "type": "registry:block",
       "title": "NexaCore",
       "description": "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
-      "categories": ["templates"],
-      "dependencies": ["hls.js", "lucide-react"],
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2349,8 +2990,13 @@
       "type": "registry:ui",
       "title": "Accordion",
       "description": "Radix-powered accordion primitive used by the FAQ blocks. Plus icon rotates to an X on open.",
-      "categories": ["primitives"],
-      "dependencies": ["@radix-ui/react-accordion", "lucide-react"],
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {

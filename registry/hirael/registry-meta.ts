@@ -376,6 +376,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "cta-03",
+    title: "CTA 3",
+    description:
+      "Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.",
+    blockTagline: "Centered · dithered backdrop · serif headline",
+    category: "blocks",
+    blockKind: "cta",
+    sourceFiles: [
+      "registry/hirael/blocks/cta-03/cta-03.tsx",
+      "registry/hirael/blocks/cta-03/cta-03-backdrop.tsx",
+    ],
+    installTargets: [
+      "components/blocks/cta-03.tsx",
+      "components/blocks/cta-03-backdrop.tsx",
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["shaders", "lucide-react"],
+  },
+  {
     name: "faq-01",
     title: "FAQ 1",
     description:

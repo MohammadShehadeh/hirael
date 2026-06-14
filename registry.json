@@ -602,6 +602,35 @@
       ]
     },
     {
+      "name": "cta-03",
+      "type": "registry:block",
+      "title": "CTA 3",
+      "description": "Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.",
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "shaders"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cta-03/cta-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-03.tsx"
+        },
+        {
+          "path": "registry/hirael/blocks/cta-03/cta-03-backdrop.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-03-backdrop.tsx"
+        }
+      ]
+    },
+    {
       "name": "faq-01",
       "type": "registry:block",
       "title": "FAQ 1",

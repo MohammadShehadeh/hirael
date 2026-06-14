@@ -91,7 +91,7 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 69 registry UI items (68 components + the distribution-only
-  `accordion`), 39 blocks, and 4 full-page templates (Creative Studio,
+  `accordion`), 41 blocks, and 4 full-page templates (Creative Studio,
   Agency Landing, Portfolio, USD Halo). Full
   list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,

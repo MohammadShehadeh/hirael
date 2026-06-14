@@ -1,7 +1,7 @@
 import { Marquee, type MarqueeBrand, PillButton } from "./primitives"
 
-const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38XZzbokvIgWjottwiXH07Lwa1P/HF_20260423_161253_C72B1869-400F-45ED-AC0C-52F68C2ED5BD.mp4"
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1500043357865-c6b8827edf10?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 const HERO_BRANDS: MarqueeBrand[] = [
   {
@@ -79,13 +79,13 @@ export function HeroSection() {
         className="relative mx-auto w-full max-w-[88rem] overflow-hidden rounded-2xl"
         style={{ height: "calc(100vh - 96px)" }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-          src={HERO_VIDEO}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${HERO_IMAGE})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">

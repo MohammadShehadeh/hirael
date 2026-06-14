@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react"
 
 const IMAGE_URL =
-  "https://images.unsplash.com/photo-1500043357865-c6b8827edf10?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop"
 
 const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
   { label: "Ecosystem" },
@@ -113,9 +113,9 @@ function BottomRightCorner({ reduce }: { reduce: boolean | null }) {
       initial={reduce ? false : { y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.4 }}
-      className="absolute bottom-0 end-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-background p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8"
+      className="absolute bottom-0 end-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-white p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8"
     >
-      <div className="pointer-events-none absolute -top-[1.5rem] end-0 size-[1.5rem] text-background sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute -top-[1.5rem] end-0 size-[1.5rem] text-white sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -128,7 +128,7 @@ function BottomRightCorner({ reduce }: { reduce: boolean | null }) {
         </svg>
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 -start-[1.5rem] size-[1.5rem] text-background sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute bottom-0 -start-[1.5rem] size-[1.5rem] text-white sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -141,15 +141,15 @@ function BottomRightCorner({ reduce }: { reduce: boolean | null }) {
         </svg>
       </div>
 
-      <div className="flex size-10 items-center justify-center rounded-full border border-border bg-foreground/[0.05] md:size-14">
-        <ArrowUpRight className="size-5 text-foreground/80 md:size-6 rtl:-scale-x-100" />
+      <div className="flex size-10 items-center justify-center rounded-full border border-[#1E325A]/15 bg-[#1E325A]/5 md:size-14">
+        <ArrowUpRight className="size-5 text-[#1E325A]/80 md:size-6 rtl:-scale-x-100" />
       </div>
 
       <div className="flex flex-col">
-        <span className="text-[16px] font-normal text-foreground md:text-[20px]">
+        <span className="text-[16px] font-normal text-[#1E325A] md:text-[20px]">
           Documentation
         </span>
-        <div className="flex cursor-pointer items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+        <div className="flex cursor-pointer items-center gap-1 text-[#1E325A]/60 transition-colors hover:text-[#1E325A]">
           <span className="text-[12px] font-normal md:text-[15px]">Library</span>
           <ChevronRight className="size-3 md:size-4 rtl:rotate-180" />
         </div>

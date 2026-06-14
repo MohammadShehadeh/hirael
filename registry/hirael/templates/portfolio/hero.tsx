@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { label: "Work", href: "#work", id: "work" },
   { label: "Resume", href: "#stats", id: "stats" },
 ]
-const ROLES = ["Creative", "Fullstack", "Founder", "Scholar"]
+const ROLES = ["Creative", "Developer", "Founder", "Scholar"]
 const ROLE_INTERVAL = 2000
 
 function Logo() {

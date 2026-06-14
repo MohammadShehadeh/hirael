@@ -2431,7 +2431,7 @@
       "name": "agency-landing",
       "type": "registry:block",
       "title": "Agency Landing",
-      "description": "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, and a featured-work grid of autoplaying video cards. Built on the shaders package, with a self-contained light palette.",
+      "description": "Bright, shader-lit agency landing page: a full-viewport hero with an animated WebGL backdrop, pill navigation and a live clock, an editorial about section, a featured-work grid of autoplaying video cards, and a dark closing footer with a call to action. Built on the shaders package, with a self-contained light palette.",
       "categories": [
         "templates"
       ],
@@ -2460,6 +2460,11 @@
           "path": "registry/hirael/templates/agency-landing/case-studies.tsx",
           "type": "registry:block",
           "target": "components/templates/agency-landing/case-studies.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/agency-landing/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/agency-landing/footer.tsx"
         },
         {
           "path": "registry/hirael/templates/agency-landing/primitives.tsx",

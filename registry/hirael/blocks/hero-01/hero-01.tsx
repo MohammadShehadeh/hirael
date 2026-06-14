@@ -8,7 +8,7 @@ import { Button } from "@/registry/hirael/ui/button"
 
 const Hero01Backdrop = dynamic(() => import("./hero-01-backdrop"), {
   ssr: false,
-  loading: () => <div className="size-full bg-foreground" />,
+  loading: () => <div className="size-full bg-muted/20" />,
 })
 
 const NAV_LINKS = ["Product", "Docs", "Pricing", "Changelog"] as const
@@ -32,11 +32,11 @@ export default function Hero01() {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-foreground text-background shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
           <div
             aria-hidden
             data-slot="hero-backdrop"
-            className="pointer-events-none absolute inset-0 -z-10 opacity-90"
+            className="pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply dark:opacity-45 dark:mix-blend-screen"
           >
             <Hero01Backdrop active={active} />
           </div>
@@ -45,18 +45,18 @@ export default function Hero01() {
             data-slot="hero-nav"
             className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
           >
-            <span className="flex items-center gap-2 text-base font-medium tracking-tight">
-              <span className="grid size-7 place-items-center rounded-lg bg-background/10 ring-1 ring-background/20">
+            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
+              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
                 <Sparkles className="size-4" />
               </span>
               Aperture
             </span>
-            <div className="hidden items-center gap-7 text-sm text-background/70 md:flex">
+            <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link}
                   href="#"
-                  className="transition-colors hover:text-background"
+                  className="transition-colors hover:text-foreground"
                 >
                   {link}
                 </a>
@@ -65,31 +65,27 @@ export default function Hero01() {
             <div className="flex items-center gap-2">
               <a
                 href="#"
-                className="hidden text-sm text-background/70 transition-colors hover:text-background sm:inline"
+                className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline"
               >
                 Sign in
               </a>
-              <Button
-                asChild
-                size="sm"
-                className="rounded-full bg-background text-foreground hover:bg-background/90"
-              >
+              <Button asChild size="sm" className="rounded-full">
                 <a href="#">Get started</a>
               </Button>
             </div>
           </nav>
 
           <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10">
-            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-background/15 bg-background/5 px-4 py-1.5 text-sm text-background/80 backdrop-blur-sm">
+            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm text-primary backdrop-blur-sm">
               <Sparkles className="size-3.5" />
               Trusted by 4,000+ teams
             </span>
 
-            <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
               The interface layer your product was missing.
             </h1>
 
-            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-background/70">
+            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
               Drop in accessible components and ship a polished UI in an
               afternoon — no design system required.
             </p>
@@ -98,7 +94,7 @@ export default function Hero01() {
               <Button
                 asChild
                 size="lg"
-                className="group h-12 rounded-full bg-background px-7 text-base text-foreground hover:bg-background/90"
+                className="group h-12 rounded-full px-7 text-base"
               >
                 <a href="#">
                   Start building
@@ -109,7 +105,7 @@ export default function Hero01() {
                 asChild
                 size="lg"
                 variant="ghost"
-                className="h-12 rounded-full px-7 text-base text-background/80 hover:bg-background/10 hover:text-background"
+                className="h-12 rounded-full px-7 text-base"
               >
                 <a href="#">Read the docs</a>
               </Button>
@@ -118,18 +114,16 @@ export default function Hero01() {
 
           <div
             data-slot="hero-stats"
-            className="relative z-10 flex items-center justify-center gap-8 border-t border-background/10 px-6 py-7 md:gap-16 md:px-10"
+            className="relative z-10 flex items-center justify-center gap-8 border-t border-border px-6 py-7 md:gap-16 md:px-10"
           >
             {STATS.map((stat, i) => (
               <React.Fragment key={stat.label}>
-                {i > 0 && (
-                  <span aria-hidden className="h-9 w-px bg-background/15" />
-                )}
+                {i > 0 && <span aria-hidden className="h-9 w-px bg-border" />}
                 <div className="text-center">
-                  <div className="font-serif text-2xl font-medium md:text-3xl">
+                  <div className="font-serif text-2xl font-medium text-foreground md:text-3xl">
                     {stat.value}
                   </div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.14em] text-background/55">
+                  <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
                     {stat.label}
                   </div>
                 </div>

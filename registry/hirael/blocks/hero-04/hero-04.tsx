@@ -9,7 +9,7 @@ export default function Hero04() {
   return (
     <section
       data-slot="hero"
-      className="relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-foreground text-white"
+      className="relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-background"
     >
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop"
@@ -21,39 +21,32 @@ export default function Hero04() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-black/40"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/80 to-background/20"
       />
 
-      <nav
-        data-slot="hero-nav"
-        className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
-      >
-        <span className="flex items-center gap-2 text-base font-medium tracking-tight">
-          <span className="grid size-7 place-items-center rounded-lg bg-white/10 ring-1 ring-white/20">
-            <Orbit className="size-4" />
+      <header data-slot="hero-nav" className="relative z-10 px-4 py-4 md:px-6">
+        <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 pe-2 ps-5 backdrop-blur-md">
+          <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
+            <Orbit className="size-5 text-primary" />
+            Orbit
           </span>
-          Orbit
-        </span>
-        <Button
-          asChild
-          size="sm"
-          className="rounded-full bg-white text-black hover:bg-white/90"
-        >
-          <a href="#">Get started</a>
-        </Button>
-      </nav>
+          <Button asChild size="sm" className="rounded-full">
+            <a href="#">Get started</a>
+          </Button>
+        </nav>
+      </header>
 
       <div className="relative z-10 flex flex-1 items-end px-6 pb-16 md:px-10 lg:pb-24">
-        <div className="flex max-w-2xl flex-col items-start text-start">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-start text-start">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm">
             Mission control
           </span>
 
-          <h1 className="mt-6 text-balance font-serif text-5xl font-medium leading-[1.03] tracking-tight sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 max-w-2xl text-balance font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl">
             Launch with confidence.
           </h1>
 
-          <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-white/75">
+          <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
             Monitor every deploy, rollback, and metric from a single pane of
             glass. Catch problems before your users do.
           </p>
@@ -62,7 +55,7 @@ export default function Hero04() {
             <Button
               asChild
               size="lg"
-              className="group h-12 rounded-full bg-white px-7 text-base text-black hover:bg-white/90"
+              className="group h-12 rounded-full px-7 text-base"
             >
               <a href="#">
                 Start your trial
@@ -73,7 +66,7 @@ export default function Hero04() {
               asChild
               size="lg"
               variant="ghost"
-              className="h-12 rounded-full px-7 text-base text-white/85 hover:bg-white/10 hover:text-white"
+              className="h-12 rounded-full px-7 text-base"
             >
               <a href="#">Talk to sales</a>
             </Button>

@@ -6,9 +6,9 @@ export default function Hero05Backdrop({ active = false }: { active?: boolean })
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Aurora
-        colorA="#111111"
-        colorB="#7c7c7c"
-        colorC="#e8e8e8"
+        colorA="#5a5a5a"
+        colorB="#9a9a9a"
+        colorC="#dedede"
         balance={0.5}
         intensity={1.1}
         curtainCount={4}
@@ -16,7 +16,7 @@ export default function Hero05Backdrop({ active = false }: { active?: boolean })
         waviness={0.7}
         height={0.9}
       />
-      <FilmGrain strength={0.06} animated />
+      <FilmGrain strength={0.05} animated />
     </Shader>
   )
 }

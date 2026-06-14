@@ -9,7 +9,7 @@ import { Button } from "@/registry/hirael/ui/button"
 
 const Hero05Backdrop = dynamic(() => import("./hero-05-backdrop"), {
   ssr: false,
-  loading: () => <div className="size-full bg-foreground" />,
+  loading: () => <div className="size-full bg-muted/20" />,
 })
 
 const AVATARS = [
@@ -34,11 +34,11 @@ export default function Hero05() {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-foreground text-background shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
           <div
             aria-hidden
             data-slot="hero-backdrop"
-            className="pointer-events-none absolute inset-0 -z-10"
+            className="pointer-events-none absolute inset-0 opacity-70 mix-blend-multiply dark:opacity-50 dark:mix-blend-screen"
           >
             <Hero05Backdrop active={active} />
           </div>
@@ -47,35 +47,31 @@ export default function Hero05() {
             data-slot="hero-nav"
             className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
           >
-            <span className="flex items-center gap-2 text-base font-medium tracking-tight">
-              <span className="grid size-7 place-items-center rounded-lg bg-background/10 ring-1 ring-background/20">
+            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
+              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
                 <Cloud className="size-4" />
               </span>
               Nimbus
             </span>
-            <div className="hidden items-center gap-7 text-sm text-background/70 md:flex">
+            <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link}
                   href="#"
-                  className="transition-colors hover:text-background"
+                  className="transition-colors hover:text-foreground"
                 >
                   {link}
                 </a>
               ))}
             </div>
-            <Button
-              asChild
-              size="sm"
-              className="rounded-full bg-background text-foreground hover:bg-background/90"
-            >
+            <Button asChild size="sm" className="rounded-full">
               <a href="#">Get started</a>
             </Button>
           </nav>
 
           <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-16 md:px-10">
-            <div className="flex max-w-2xl flex-col items-center rounded-[32px] border border-background/15 bg-background/5 px-6 py-12 text-center backdrop-blur-md md:px-12">
-              <span className="inline-flex items-center gap-2 rounded-full border border-background/15 bg-background/5 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
+            <div className="flex max-w-2xl flex-col items-center rounded-[32px] border border-border/60 bg-background/40 px-6 py-12 text-center backdrop-blur-md md:px-12">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
                 <span className="relative flex size-1.5">
                   <span
                     className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
@@ -89,11 +85,11 @@ export default function Hero05() {
                 All systems online
               </span>
 
-              <h1 className="mt-7 text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
+              <h1 className="mt-7 text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
                 Bring your ideas together.
               </h1>
 
-              <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-background/70">
+              <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-muted-foreground">
                 A shared canvas for notes, tasks, and docs — so your team always
                 knows what&apos;s next.
               </p>
@@ -102,7 +98,7 @@ export default function Hero05() {
                 <Button
                   asChild
                   size="lg"
-                  className="group h-12 rounded-full bg-background px-7 text-base text-foreground hover:bg-background/90"
+                  className="group h-12 rounded-full px-7 text-base"
                 >
                   <a href="#">
                     Try it free
@@ -113,7 +109,7 @@ export default function Hero05() {
                   asChild
                   size="lg"
                   variant="ghost"
-                  className="h-12 rounded-full px-7 text-base text-background/80 hover:bg-background/10 hover:text-background"
+                  className="h-12 rounded-full px-7 text-base"
                 >
                   <a href="#">See how it works</a>
                 </Button>
@@ -128,11 +124,11 @@ export default function Hero05() {
                       alt=""
                       width={32}
                       height={32}
-                      className="size-8 rounded-full border-2 border-foreground object-cover"
+                      className="size-8 rounded-full border-2 border-card object-cover"
                     />
                   ))}
                 </div>
-                <span className="text-sm text-background/65">
+                <span className="text-sm text-muted-foreground">
                   Join 2,000+ teams already on board
                 </span>
               </div>

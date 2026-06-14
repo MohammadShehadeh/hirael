@@ -9,8 +9,8 @@ table here in the same change.
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **69 registry UI items** (68 standalone
-components + 1 distribution-only primitive), **40 section blocks**, and
-**7 templates**. Counts come from `registry.json`; the landing page derives
+components + 1 distribution-only primitive), **42 section blocks**, and
+**8 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 

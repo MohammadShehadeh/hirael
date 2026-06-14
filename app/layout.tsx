@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/showcase/theme-provider";
 import { SITE } from "@/lib/site";
 import { themePrehydrationScript } from "@/lib/theme";
+import { TooltipProvider } from "@/registry/hirael/ui/tooltip";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -133,7 +134,9 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <TooltipProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

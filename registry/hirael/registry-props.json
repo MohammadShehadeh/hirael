@@ -3181,7 +3181,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -3208,7 +3208,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -3994,7 +3994,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4044,7 +4044,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4078,7 +4078,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4165,7 +4165,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4197,7 +4197,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4316,7 +4316,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null

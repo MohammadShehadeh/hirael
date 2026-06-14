@@ -115,15 +115,15 @@ const METRICS = [
 ] as const;
 
 function statusDot(status: Account["status"]) {
-  if (status === "Active") return "bg-emerald-500";
-  if (status === "Trial") return "bg-yellow-500";
-  return "bg-red-500";
+  if (status === "Active") return "bg-success";
+  if (status === "Trial") return "bg-warning";
+  return "bg-destructive";
 }
 
 function statusText(status: Account["status"]) {
-  if (status === "Active") return "text-emerald-500";
-  if (status === "Trial") return "text-yellow-500";
-  return "text-red-500";
+  if (status === "Active") return "text-success";
+  if (status === "Trial") return "text-warning";
+  return "text-destructive";
 }
 
 function BrandMark({ className }: { className?: string }) {
@@ -326,7 +326,7 @@ export default function AppShell01() {
                 <span className="text-lg font-semibold tabular-nums">
                   {m.v}
                 </span>
-                <span className="font-mono text-[10px] tabular-nums text-emerald-500">
+                <span className="font-mono text-[10px] tabular-nums text-success">
                   {m.d}
                 </span>
               </Card>

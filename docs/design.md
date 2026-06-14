@@ -8,7 +8,11 @@ radius/motion scale, update the matching section here in the same commit.
 
 Tokens are defined with Tailwind v4's `@theme inline` plus plain CSS custom
 properties. **Dark is the default canvas** (`:root`); `.light` swaps to a
-white-canvas inverse.
+white-canvas inverse. The dark palette is declared on `:root, .dark` (not just
+`:root`) so a nested `.dark` region forces dark tokens even while the page is in
+light mode — that's how an always-dark block (an image hero over a dark photo,
+say) stays dark and high-contrast in both site modes, matching the standard
+shadcn `.dark` contract.
 
 ```
 @custom-variant dark  (&:is(.dark *));

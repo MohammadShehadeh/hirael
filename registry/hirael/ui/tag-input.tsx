@@ -229,7 +229,7 @@ function TagInputTag({
   if (tag === undefined) return null;
   return (
     <Badge
-      variant="default"
+      variant="secondary"
       data-slot="tag-input-tag"
       className={cn("gap-1 pe-1 font-normal", className)}
       {...props}
@@ -241,7 +241,7 @@ function TagInputTag({
           tabIndex={-1}
           aria-label={`Remove ${tag}`}
           onClick={() => ctx.remove(index)}
-          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 transition-colors hover:bg-foreground/20 hover:text-foreground"
+          className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-secondary-foreground/70 transition-colors hover:bg-secondary-foreground/20 hover:text-secondary-foreground"
         >
           <X className="size-2.5" />
         </button>

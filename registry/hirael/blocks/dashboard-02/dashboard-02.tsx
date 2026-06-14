@@ -188,8 +188,8 @@ function deltaTone(kpi: Kpi) {
     kpi.label === "Bounce rate" ? kpi.trend === "down" : kpi.trend === "up";
   if (kpi.trend === "flat") return "bg-accent text-muted-foreground";
   return improving
-    ? "bg-emerald-500/10 text-emerald-500"
-    : "bg-red-500/10 text-red-500";
+    ? "bg-success/10 text-success"
+    : "bg-destructive/10 text-destructive";
 }
 
 function Sparkline({ points }: { points: readonly number[] }) {

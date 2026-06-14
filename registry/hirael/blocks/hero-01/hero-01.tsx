@@ -36,7 +36,7 @@ export default function Hero01() {
           <div
             aria-hidden
             data-slot="hero-backdrop"
-            className="pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply dark:opacity-45 dark:mix-blend-screen"
+            className="pointer-events-none absolute inset-0 opacity-50 mix-blend-multiply dark:opacity-20 dark:mix-blend-screen"
           >
             <Hero01Backdrop active={active} />
           </div>

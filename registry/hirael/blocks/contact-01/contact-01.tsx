@@ -172,7 +172,7 @@ export default function Contact01() {
                   aria-live="polite"
                   className="flex flex-col items-start gap-4 rounded-md border border-dashed border-border bg-card/40 p-6"
                 >
-                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-success/10 text-success">
                     <CheckCircle2 className="size-5" />
                   </span>
                   <div className="flex flex-col gap-1">

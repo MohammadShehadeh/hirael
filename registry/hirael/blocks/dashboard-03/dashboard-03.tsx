@@ -64,14 +64,14 @@ const MONTHS: readonly MonthData[] = [
       },
     ],
     invoices: [
-      { label: "Paid", count: 212, amount: "$36,180", dot: "bg-emerald-500" },
+      { label: "Paid", count: 212, amount: "$36,180", dot: "bg-success" },
       {
         label: "Open",
         count: 18,
         amount: "$1,940",
         dot: "bg-muted-foreground/50",
       },
-      { label: "Overdue", count: 4, amount: "$290", dot: "bg-red-500" },
+      { label: "Overdue", count: 4, amount: "$290", dot: "bg-destructive" },
     ],
   },
   {
@@ -102,14 +102,14 @@ const MONTHS: readonly MonthData[] = [
       },
     ],
     invoices: [
-      { label: "Paid", count: 231, amount: "$39,410", dot: "bg-emerald-500" },
+      { label: "Paid", count: 231, amount: "$39,410", dot: "bg-success" },
       {
         label: "Open",
         count: 14,
         amount: "$1,620",
         dot: "bg-muted-foreground/50",
       },
-      { label: "Overdue", count: 3, amount: "$230", dot: "bg-red-500" },
+      { label: "Overdue", count: 3, amount: "$230", dot: "bg-destructive" },
     ],
   },
   {
@@ -140,14 +140,14 @@ const MONTHS: readonly MonthData[] = [
       },
     ],
     invoices: [
-      { label: "Paid", count: 247, amount: "$42,950", dot: "bg-emerald-500" },
+      { label: "Paid", count: 247, amount: "$42,950", dot: "bg-success" },
       {
         label: "Open",
         count: 16,
         amount: "$1,780",
         dot: "bg-muted-foreground/50",
       },
-      { label: "Overdue", count: 2, amount: "$162", dot: "bg-red-500" },
+      { label: "Overdue", count: 2, amount: "$162", dot: "bg-destructive" },
     ],
   },
 ];
@@ -213,9 +213,9 @@ const TRANSACTIONS: readonly Txn[] = [
 ];
 
 const STATUS_META: Record<Txn["status"], { label: string; dot: string }> = {
-  paid: { label: "Paid", dot: "bg-emerald-500" },
+  paid: { label: "Paid", dot: "bg-success" },
   open: { label: "Open", dot: "bg-muted-foreground/50" },
-  refunded: { label: "Refunded", dot: "bg-red-500" },
+  refunded: { label: "Refunded", dot: "bg-destructive" },
 };
 
 function Donut({ plans }: { plans: readonly PlanSlice[] }) {
@@ -319,7 +319,7 @@ export default function Dashboard03() {
                     <span className="text-2xl font-semibold tracking-[-0.035em] tabular-nums">
                       {month.total}
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-emerald-500">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-success">
                       {month.delta}
                     </span>
                   </div>
@@ -431,7 +431,7 @@ export default function Dashboard03() {
                       <span
                         className={`text-end font-mono text-sm tabular-nums ${
                           t.status === "refunded"
-                            ? "text-red-500"
+                            ? "text-destructive"
                             : t.status === "open"
                               ? "text-muted-foreground"
                               : "text-foreground"

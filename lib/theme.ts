@@ -245,22 +245,23 @@ export const STORAGE_KEY = "hirael.theme.v1";
 export const MODE_STORAGE_KEY = "hirael.theme.mode.v1";
 
 /**
- * Inline script (stringified) that runs before hydration to apply persisted
- * mode + custom tokens, preventing a flash of default theme.
+ * Inline script (stringified) that runs before hydration to apply the
+ * persisted custom token overrides, preventing a flash of the default palette.
+ * The light/dark mode class itself is owned by next-themes (which injects its
+ * own pre-paint script); this only reads the persisted mode to pick which set
+ * of token overrides to apply.
  */
 export function themePrehydrationScript(): string {
   return `(()=>{try{
     var modeKey=${JSON.stringify(MODE_STORAGE_KEY)};
     var themeKey=${JSON.stringify(STORAGE_KEY)};
-    var mode=localStorage.getItem(modeKey);
-    var html=document.documentElement;
-    if(mode==='light'){html.classList.add('light');}
-    else{html.classList.add('dark');}
+    var mode=localStorage.getItem(modeKey)==='light'?'light':'dark';
     var raw=localStorage.getItem(themeKey);
     if(!raw)return;
     var t=JSON.parse(raw);
     var active=mode==='light'?t.light:t.dark;
     if(!active)return;
+    var html=document.documentElement;
     for(var k in active){html.style.setProperty('--'+k,active[k]);}
   }catch(e){}})();`;
 }

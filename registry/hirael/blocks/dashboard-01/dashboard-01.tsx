@@ -160,8 +160,8 @@ function TrendIcon({ trend }: { trend: Metric["trend"] }) {
 }
 
 function deltaTone(trend: Metric["trend"]) {
-  if (trend === "up") return "bg-emerald-500/10 text-emerald-500";
-  if (trend === "down") return "bg-red-500/10 text-red-500";
+  if (trend === "up") return "bg-success/10 text-success";
+  if (trend === "down") return "bg-destructive/10 text-destructive";
   return "bg-accent text-muted-foreground";
 }
 

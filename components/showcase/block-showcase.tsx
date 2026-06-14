@@ -23,7 +23,7 @@ function BlueprintFrame({ children }: { children: React.ReactNode }) {
     <>
       <div
         aria-hidden
-        className="blueprint-corners pointer-events-none absolute inset-0 opacity-15 transition-opacity duration-300 group-hover:opacity-25"
+        className="blueprint-corners pointer-events-none absolute inset-0 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
       />
       <div className="relative z-10 size-full">{children}</div>
     </>

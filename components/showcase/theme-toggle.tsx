@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/showcase/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle() {
   const { mode, setMode } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);

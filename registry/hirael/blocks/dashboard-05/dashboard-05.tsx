@@ -204,9 +204,9 @@ const STATUS_META: Record<
   Deploy["status"],
   { label: string; dot: string; ping: boolean }
 > = {
-  live: { label: "Live", dot: "bg-emerald-500", ping: true },
+  live: { label: "Live", dot: "bg-success", ping: true },
   stable: { label: "Stable", dot: "bg-muted-foreground/50", ping: false },
-  canary: { label: "Canary", dot: "bg-amber-500", ping: true },
+  canary: { label: "Canary", dot: "bg-warning", ping: true },
 };
 
 function DeltaChip({
@@ -222,8 +222,8 @@ function DeltaChip({
     <span
       className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
         good
-          ? "bg-emerald-500/10 text-emerald-500"
-          : "bg-red-500/10 text-red-500"
+          ? "bg-success/10 text-success"
+          : "bg-destructive/10 text-destructive"
       }`}
     >
       {up ? (
@@ -395,7 +395,7 @@ export default function Dashboard05() {
             </div>
             <p className="max-w-md text-balance text-lg font-medium leading-snug tracking-[-0.01em] sm:text-xl">
               Cold starts dropped{" "}
-              <span className="underline decoration-emerald-500/60 decoration-2 underline-offset-4">
+              <span className="underline decoration-success/60 decoration-2 underline-offset-4">
                 21% this window
               </span>{" "}
               after the v4.2.1 cache changes rolled out.
@@ -430,7 +430,7 @@ export default function Dashboard05() {
                     <div
                       className={`h-full rounded-full ${
                         row.label === "P99"
-                          ? "bg-amber-500/70"
+                          ? "bg-warning/70"
                           : "bg-foreground/70"
                       }`}
                       style={{ width: `${row.pct}%` }}
@@ -490,7 +490,7 @@ export default function Dashboard05() {
                   <span
                     className={`hidden font-mono text-[10px] uppercase tracking-[0.08em] md:inline ${
                       d.cache === "warm"
-                        ? "text-emerald-500"
+                        ? "text-success"
                         : "text-muted-foreground"
                     }`}
                   >

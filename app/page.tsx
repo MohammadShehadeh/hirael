@@ -277,10 +277,10 @@ function CardGrid({
 }) {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 mask-[linear-gradient(white,transparent)]">
-      <div className="absolute inset-0 bg-linear-to-br from-foreground/[0.08] to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
+      <div className="absolute inset-0 bg-linear-to-br from-primary/8 to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
         <svg
           aria-hidden
-          className="absolute inset-0 h-full w-full fill-foreground/[0.03] stroke-foreground/15 mix-blend-overlay"
+          className="absolute inset-0 h-full w-full fill-primary/10 stroke-primary/25"
         >
           <defs>
             <pattern

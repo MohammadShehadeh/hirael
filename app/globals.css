@@ -59,8 +59,12 @@
 
 /* Neutral palette (zinc) — dark is the primary canvas. Clean, near-monochrome
  * grays with the faintest cool cast; a single blue (--accent-cool) is the only
- * non-neutral, reserved for live/active state. */
-:root {
+ * non-neutral, reserved for live/active state. The dark values live on both
+ * `:root` and `.dark` so a nested `.dark` region (an always-dark image hero,
+ * say) forces dark tokens even while the site is in light mode — matching the
+ * standard shadcn `.dark` contract. */
+:root,
+.dark {
   --radius: 0.65rem;
 
   --background: oklch(0.141 0.005 285.823);
@@ -468,12 +472,12 @@ html.light .shiki span {
     background-image:
       linear-gradient(
         to right,
-        color-mix(in oklch, var(--foreground) 30%, transparent) 1px,
+        color-mix(in oklch, var(--primary) 30%, transparent) 1px,
         transparent 1px
       ),
       linear-gradient(
         to bottom,
-        color-mix(in oklch, var(--foreground) 30%, transparent) 1px,
+        color-mix(in oklch, var(--primary) 30%, transparent) 1px,
         transparent 1px
       );
     background-size: 15px 15px;

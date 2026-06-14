@@ -9,7 +9,7 @@ export default function Hero04() {
   return (
     <section
       data-slot="hero"
-      className="relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-background"
+      className="dark relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-background text-foreground"
     >
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop"

@@ -234,7 +234,7 @@ export default function Ecommerce02() {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Shipping</span>
                   {shipping === 0 ? (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-emerald-500">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-success">
                       Free
                     </span>
                   ) : (
@@ -256,7 +256,7 @@ export default function Ecommerce02() {
                         <X className="size-2.5" />
                       </button>
                     </span>
-                    <span className="font-mono tabular-nums text-emerald-500">
+                    <span className="font-mono tabular-nums text-success">
                       −{usd(discount)}
                     </span>
                   </div>
@@ -301,7 +301,7 @@ export default function Ecommerce02() {
                       </InputGroupAddon>
                     </InputGroup>
                     {promoError ? (
-                      <p className="text-xs text-red-500">
+                      <p className="text-xs text-destructive">
                         That code isn&apos;t recognized. Try {PROMO_CODE}.
                       </p>
                     ) : (

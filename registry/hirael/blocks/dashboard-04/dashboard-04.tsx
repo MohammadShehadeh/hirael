@@ -185,8 +185,8 @@ function DeltaChip({
     <span
       className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
         good
-          ? "bg-emerald-500/10 text-emerald-500"
-          : "bg-red-500/10 text-red-500"
+          ? "bg-success/10 text-success"
+          : "bg-destructive/10 text-destructive"
       }`}
     >
       {up ? (

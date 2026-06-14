@@ -244,7 +244,7 @@ function MultiSelectTrigger({
                         e.stopPropagation();
                         ctx.remove(opt.value);
                       }}
-                      className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-foreground/70 hover:bg-foreground/20 hover:text-foreground"
+                      className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
                     >
                       <X className="size-2.5" />
                     </span>

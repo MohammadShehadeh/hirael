@@ -1440,6 +1440,35 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["gsap", "framer-motion", "hls.js"],
   },
+  {
+    name: "usd-halo",
+    title: "USD Halo",
+    description:
+      "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel. Self-contained light palette.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/usd-halo/usd-halo.tsx",
+      "registry/hirael/templates/usd-halo/navbar.tsx",
+      "registry/hirael/templates/usd-halo/hero.tsx",
+      "registry/hirael/templates/usd-halo/info.tsx",
+      "registry/hirael/templates/usd-halo/backed-by.tsx",
+      "registry/hirael/templates/usd-halo/use-cases.tsx",
+      "registry/hirael/templates/usd-halo/primitives.tsx",
+      "registry/hirael/templates/usd-halo/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/usd-halo/usd-halo.tsx",
+      "components/templates/usd-halo/navbar.tsx",
+      "components/templates/usd-halo/hero.tsx",
+      "components/templates/usd-halo/info.tsx",
+      "components/templates/usd-halo/backed-by.tsx",
+      "components/templates/usd-halo/use-cases.tsx",
+      "components/templates/usd-halo/primitives.tsx",
+      "components/templates/usd-halo/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ]
 
 /**

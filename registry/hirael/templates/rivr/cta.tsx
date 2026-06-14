@@ -3,47 +3,59 @@
 import { motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 
-import { fadeUp, RivrMark } from "./primitives"
+import { fadeUp } from "./primitives"
+
+const CTA_VIDEO =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260427_104731_bfd355f7-1f84-4f81-ad88-52c2bca70bad.mp4"
 
 export function Cta() {
   return (
     <section
       data-slot="cta"
-      className="mx-auto w-full max-w-6xl px-6 pb-20 md:px-10 md:pb-28"
+      className="flex w-full items-center justify-center bg-background p-3 md:p-5"
     >
-      <motion.div
-        {...fadeUp()}
-        className="relative overflow-hidden rounded-[2rem] bg-foreground px-8 py-16 text-background md:px-16 md:py-24"
-      >
-        <RivrMark className="pointer-events-none absolute -end-12 -top-12 size-64 text-background/[0.06]" />
+      <div className="relative flex min-h-[600px] w-full max-w-[1536px] items-center justify-center overflow-hidden rounded-[1.5rem] p-8 md:min-h-[720px] md:rounded-[3rem]">
+        <video
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          src={CTA_VIDEO}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 z-[1] bg-gradient-to-t from-foreground/70 via-foreground/45 to-foreground/55"
+        />
 
-        <div className="relative flex max-w-2xl flex-col items-start gap-6">
-          <h2 className="font-display text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">
-            Put your idle capital to work
+        <motion.div
+          {...fadeUp()}
+          className="relative z-10 flex max-w-2xl flex-col items-center gap-8 text-center"
+        >
+          <h2 className="font-display text-4xl font-semibold leading-[1.05] text-white sm:text-5xl md:text-6xl">
+            Melt rigid assets into fluid yield.
           </h2>
-          <p className="text-base text-background/70 sm:text-lg">
-            Open the app and stake in minutes, or talk to the team about
-            integrating streaming yield into your product.
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <a
               href="#"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-background py-1.5 pe-1.5 ps-5 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-white py-1.5 pe-1.5 ps-5 text-sm font-medium text-foreground transition-colors hover:bg-white/90"
             >
-              <span>Open App</span>
+              <span>Launch App</span>
               <span className="flex size-7 items-center justify-center rounded-full bg-foreground/10">
                 <ArrowUpRight className="size-4 rtl:-scale-x-100" />
               </span>
             </a>
             <a
               href="#"
-              className="inline-flex items-center rounded-full border border-background/25 px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-background/10"
+              className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
             >
-              Book a demo
+              Read Docs
             </a>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }

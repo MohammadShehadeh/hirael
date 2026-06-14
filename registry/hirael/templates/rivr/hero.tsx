@@ -4,10 +4,9 @@ import { motion } from "framer-motion"
 import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react"
 
 import { Navbar } from "./navbar"
-import { PillButton } from "./primitives"
 
-const IMAGE_URL =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop"
+const HERO_VIDEO =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4"
 
 function HeroBadge() {
   return (
@@ -16,7 +15,7 @@ function HeroBadge() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-white/40 bg-card/60 px-4 py-2 backdrop-blur-md"
+      className="mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/60 px-4 py-2 backdrop-blur-md"
     >
       <Sparkles className="size-4 text-foreground/80" />
       <span className="text-sm font-medium text-foreground">Fluid Staking</span>
@@ -31,7 +30,7 @@ function BottomLeftCard() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-      className="absolute bottom-28 end-4 start-auto flex w-fit min-w-[150px] flex-col gap-2 rounded-[1.5rem] border border-white/40 bg-card/40 p-4 backdrop-blur-xl md:bottom-6 md:end-auto md:start-6 lg:bottom-10 lg:min-w-[180px] lg:gap-3 lg:rounded-[2rem] lg:p-5 lg:start-10"
+      className="absolute bottom-28 end-4 start-auto flex w-fit min-w-[150px] flex-col gap-2 rounded-[1.5rem] border border-white/30 bg-white/30 p-4 backdrop-blur-xl md:bottom-6 md:end-auto md:start-6 lg:bottom-10 lg:min-w-[180px] lg:gap-3 lg:rounded-[2rem] lg:p-5 lg:start-10"
     >
       <div className="flex flex-col">
         <span className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
@@ -44,7 +43,7 @@ function BottomLeftCard() {
 
       <a
         href="#"
-        className="flex w-fit items-center gap-2 self-start rounded-full bg-card py-1.5 pe-5 ps-1.5 transition-colors hover:bg-card/80"
+        className="flex w-fit items-center gap-2 self-start rounded-full bg-white py-1.5 pe-5 ps-1.5 transition-colors hover:bg-white/90"
       >
         <span className="flex items-center justify-center rounded-full bg-foreground/10 p-1">
           <ArrowUpRight className="size-4 text-foreground rtl:-scale-x-100" />
@@ -62,9 +61,9 @@ function BottomRightCorner() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-      className="absolute bottom-0 end-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-card p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8"
+      className="absolute bottom-0 end-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-background p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8"
     >
-      <div className="pointer-events-none absolute -top-[1.5rem] end-0 size-[1.5rem] text-card sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute -top-[1.5rem] end-0 size-[1.5rem] text-background sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -77,7 +76,7 @@ function BottomRightCorner() {
         </svg>
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 -start-[1.5rem] size-[1.5rem] text-card sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute bottom-0 -start-[1.5rem] size-[1.5rem] text-background sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -115,17 +114,21 @@ export function Hero() {
     <section
       id="home"
       data-slot="hero"
-      className="flex h-dvh w-full items-center justify-center bg-background p-3 md:p-5"
+      className="flex min-h-dvh w-full items-stretch bg-background p-3 md:p-5"
     >
-      <div className="group relative flex h-full w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] md:rounded-[3rem]">
-        <div
+      <div className="group relative flex min-h-[640px] w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] md:rounded-[3rem]">
+        <video
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          src={HERO_VIDEO}
+          autoPlay
+          loop
+          muted
+          playsInline
           aria-hidden
-          style={{ backgroundImage: `url("${IMAGE_URL}")` }}
-          className="absolute inset-0 z-0 bg-cover bg-no-repeat [background-position:65%] lg:[background-position:center]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 z-[1] bg-gradient-to-b from-background/75 via-background/15 to-background/45"
+          className="absolute inset-0 z-[1] bg-gradient-to-b from-background/70 via-background/10 to-background/45"
         />
 
         <div className="relative z-10 flex size-full flex-col items-center">
@@ -139,7 +142,8 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="font-display mb-4 text-4xl font-semibold leading-[1.05] text-foreground sm:text-5xl md:text-6xl lg:text-[80px]"
+              style={{ color: "var(--hero-title)" }}
+              className="font-display mb-4 text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-[80px]"
             >
               Fluid Asset Streams
             </motion.h1>
@@ -153,16 +157,6 @@ export function Hero() {
               Access Smart Vaults, stake RIVR and NFTs, and turn rigid holdings
               into liquid cash, instantly.
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease: "easeOut" }}
-              className="mt-7 flex flex-wrap items-center justify-center gap-3"
-            >
-              <PillButton label="Open App" />
-              <PillButton label="Read Docs" variant="outline" />
-            </motion.div>
           </div>
 
           <BottomLeftCard />

@@ -2719,7 +2719,7 @@
       "name": "rivr",
       "type": "registry:block",
       "title": "Rivr",
-      "description": "DeFi staking landing page for a fluid-asset protocol: a photographic hero on a rounded card with a glass stats card and a carved documentation panel, a feature trio, a metrics band, a four-pillar ecosystem grid, a closing call to action and a dark footer. Self-contained light palette, Framer Motion throughout.",
+      "description": "DeFi staking landing page for a fluid-asset protocol: a video hero on a rounded card with glass stat cards and a carved documentation corner, a metrics band, a bento feature grid, a video call to action and a light footer. Self-contained light palette, Helvetica system type, Framer Motion throughout.",
       "categories": [
         "templates"
       ],
@@ -2745,19 +2745,14 @@
           "target": "components/templates/rivr/hero.tsx"
         },
         {
+          "path": "registry/hirael/templates/rivr/metrics.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/metrics.tsx"
+        },
+        {
           "path": "registry/hirael/templates/rivr/features.tsx",
           "type": "registry:block",
           "target": "components/templates/rivr/features.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/rivr/stats.tsx",
-          "type": "registry:block",
-          "target": "components/templates/rivr/stats.tsx"
-        },
-        {
-          "path": "registry/hirael/templates/rivr/ecosystem.tsx",
-          "type": "registry:block",
-          "target": "components/templates/rivr/ecosystem.tsx"
         },
         {
           "path": "registry/hirael/templates/rivr/cta.tsx",
@@ -2778,11 +2773,77 @@
           "path": "registry/hirael/templates/rivr/styles.tsx",
           "type": "registry:block",
           "target": "components/templates/rivr/styles.tsx"
+        }
+      ]
+    },
+    {
+      "name": "nexacore",
+      "type": "registry:block",
+      "title": "NexaCore",
+      "description": "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/nexacore/nexacore.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/nexacore.tsx"
         },
         {
-          "path": "registry/hirael/templates/rivr/fonts.ts",
+          "path": "registry/hirael/templates/nexacore/navbar.tsx",
           "type": "registry:block",
-          "target": "components/templates/rivr/fonts.ts"
+          "target": "components/templates/nexacore/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/trusted.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/trusted.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/service-card.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/service-card.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/freedom.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/freedom.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hls-video.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hls-video.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/precision.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/precision.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/fonts.ts"
         }
       ]
     },

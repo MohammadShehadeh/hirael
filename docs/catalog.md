@@ -172,7 +172,7 @@ kind has a category page at `/blocks/<category>` and its blocks at
 | Feature | `feature-01`, `feature-02` | Feature grids and alternating feature rows. |
 | Pricing | `pricing-01`, `pricing-02` | Tiered pricing tables with feature lists and highlighted plan. |
 | Testimonial | `testimonial-01`, `testimonial-02` | Quote cards and testimonial walls. |
-| Call-to-action | `cta-01`, `cta-02` | Conversion bands with headline and action. |
+| Call-to-action | `cta-01`, `cta-02`, `cta-03` | Conversion bands with headline and action. |
 | FAQ | `faq-01`, `faq-02`, `faq-03`, `faq-04` | Accordion and two-column FAQ layouts. |
 | Auth | `login-01`, `login-02`, `signup-01`, `forgot-password-01`, `otp-verify-01` | Login, sign-up, password reset and OTP verification forms. |
 | Header | `header-01` | Site header / top navigation. |

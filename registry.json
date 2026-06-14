@@ -2787,6 +2787,77 @@
       ]
     },
     {
+      "name": "nexacore",
+      "type": "registry:block",
+      "title": "NexaCore",
+      "description": "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "hls.js",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/nexacore/nexacore.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/nexacore.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/trusted.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/trusted.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/service-card.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/service-card.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/freedom.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/freedom.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/hls-video.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/hls-video.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/precision.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/precision.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/nexacore/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/nexacore/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

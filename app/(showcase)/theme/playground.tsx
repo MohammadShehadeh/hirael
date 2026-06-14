@@ -7,6 +7,7 @@ import { Badge } from "@/registry/hirael/ui/badge";
 import { Input } from "@/registry/hirael/ui/input";
 import { Label } from "@/registry/hirael/ui/label";
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
+import { PageHeader } from "@/components/showcase/page-header";
 import { useTheme } from "@/components/showcase/theme-provider";
 import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
@@ -18,26 +19,14 @@ export function ThemePlayground() {
   const components = COMPONENTS;
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
-      <header className="flex flex-col gap-5 border-b border-border pb-8">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ playground
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            live theme preview
-          </span>
-        </div>
-        <h1 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
-          Your theme, every component.
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Paste a CSS variable block from your own app or any shadcn theme
-          generator and watch the entire Hirael registry re-skin. The active
-          theme is persisted in your browser; reset any time.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:gap-14 sm:px-6 sm:py-20 md:px-10">
+      <PageHeader
+        kicker="Theme"
+        title="Your theme, every component."
+        blurb="Paste a CSS variable block from your own app or any shadcn theme generator and watch the entire Hirael registry re-skin. The active theme is persisted in your browser; reset any time."
+        live
+      >
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <ThemeSheetTrigger />
           <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
             mode · {mode}
@@ -49,7 +38,7 @@ export function ThemePlayground() {
             {overrideCount} override{overrideCount === 1 ? "" : "s"} active
           </span>
         </div>
-      </header>
+      </PageHeader>
 
       <Section
         eyebrow="Surfaces"

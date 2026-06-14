@@ -4,6 +4,7 @@ import { ArrowRight, Layers, Palette } from "lucide-react";
 
 import { InlineCodeBlock } from "@/components/showcase/code-block";
 import { InstallBlock } from "@/components/showcase/install-block";
+import { PageHeader } from "@/components/showcase/page-header";
 import { highlightCode } from "@/lib/highlight";
 import { SITE } from "@/lib/site";
 import {
@@ -66,33 +67,19 @@ export default async function ComponentsIndex() {
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
-      <header className="flex flex-col gap-5 border-b border-border pb-10">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ components
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            peer of shadcn, not a replacement
-          </span>
-        </div>
-        <h1 className="text-display text-balance text-4xl leading-[1.05] sm:text-5xl md:text-6xl">
-          The full registry.
-        </h1>
-        <p className="max-w-2xl text-base text-muted-foreground">
-          The components shadcn/ui doesn&apos;t ship: multi-select, combobox,
-          tag input, currency input, file dropzone, plus {blocks.length} section
-          blocks across {BLOCK_KIND_ORDER.length} categories. Everything
-          installs through the shadcn CLI, so the source ends up in your repo
-          and stays yours to edit.
-        </p>
-        <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:gap-14 sm:px-6 sm:py-20 md:px-10">
+      <PageHeader
+        kicker="Components"
+        title="The full registry."
+        blurb={`The components shadcn/ui doesn't ship: multi-select, combobox, tag input, currency input, file dropzone, plus ${blocks.length} section blocks across ${BLOCK_KIND_ORDER.length} categories. Everything installs through the shadcn CLI, so the source ends up in your repo and stays yours to edit.`}
+      >
+        <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
         <CountersStrip
           components={components.length}
           blocks={blocks.length}
           blockKinds={BLOCK_KIND_ORDER.length}
         />
-      </header>
+      </PageHeader>
 
       <section className="flex flex-col gap-8">
         <div className="flex items-baseline justify-between">

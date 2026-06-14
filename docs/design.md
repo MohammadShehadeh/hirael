@@ -106,12 +106,21 @@ Defined in `globals.css`, reuse rather than re-rolling:
 - `.glass-panel-strong` — denser glass (≈78% card) for floating chrome (the
   site-header pill) and the footer anchor panel, where the surface should
   read near-solid while still passing texture through.
+- `.glass-panel-lit` — adds a masked gradient hairline rim (bright at top and
+  bottom, fading on the sides) for the "liquid glass" sheen. Token-only, so
+  both themes get the lit edge. Layer it on a focal container that already has
+  a radius + plain hairline border (the landing hero panel and feature cards);
+  not for whole sections.
 - `.text-display` — serif display type (Cormorant 500, tight tracking) for
   large headings; pair with mono eyebrows and sans body.
 - `.shadow-elevated` — token-only soft elevation (scales with `--foreground`,
   no hard-coded color) for focal cards and the footer panel.
 - `.wordmark-watermark` — oversized, very-low-contrast serif "Hirael" used as
   a clipped backdrop behind the footer's legal bar.
+- `.wordmark-cutout` — same oversized serif "Hirael", but the glyphs are
+  filled with the dot-grid texture (clipped to the type via `background-clip:
+text`) so the textured layer reads as showing _through_ the letters. Used in
+  the footer; monochrome and low-contrast, still texture not text.
 - `.corner-mark` — small `+` blueprint marker for section corners.
 - `.container` (`mx-auto w-full max-w-6xl`) / `.cpx` (`px-4 lg:px-6`) —
   page width + horizontal padding.

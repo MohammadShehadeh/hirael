@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { PageHeader } from "@/components/showcase/page-header";
 import { SiteFooter } from "@/components/showcase/site-footer";
 import { SiteHeader } from "@/components/showcase/site-header";
 import type { Changelog } from "@/lib/changelog";
@@ -12,23 +13,23 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
 
       <main id="main-content" className="flex-1">
         <article className="relative mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-          <header className="relative">
+          <div className="relative">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-0 -top-24 h-64 bg-[radial-gradient(ellipse_50%_60%_at_50%_0%,var(--halo-cool),transparent_70%)]"
             />
-            <p className="relative font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              Changelog
-              {lastUpdated ? ` · Updated ${lastUpdated}` : ""}
-            </p>
-            <h1 className="text-display relative mt-3 text-balance text-5xl sm:text-6xl">
-              Release notes
-            </h1>
-            <p className="relative mt-4 max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-              Every shipped version of Hirael: new components, blocks, fixes,
-              and polish.
-            </p>
-          </header>
+            <PageHeader
+              kicker="Changelog"
+              title="Release notes"
+              blurb="Every shipped version of Hirael: new components, blocks, fixes, and polish."
+            >
+              {lastUpdated ? (
+                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  Updated {lastUpdated}
+                </p>
+              ) : null}
+            </PageHeader>
+          </div>
 
           {releases.length === 0 ? (
             <p className="mt-16 text-sm text-muted-foreground">
@@ -40,7 +41,7 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
                 <section
                   key={release.key}
                   aria-labelledby={`release-${release.key}`}
-                  className="relative rounded-2xl border border-border bg-card/40 p-6 backdrop-blur-sm transition-colors hover:bg-card/60 sm:p-8"
+                  className="glass-panel-lit relative rounded-2xl border border-border bg-card/40 p-6 backdrop-blur-sm transition-colors hover:bg-card/60 sm:p-8"
                 >
                   <div className="flex flex-wrap items-center gap-3">
                     <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">

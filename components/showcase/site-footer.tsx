@@ -124,7 +124,7 @@ export function SiteFooter({ className }: { className?: string }) {
           <div className="relative">
             <span
               aria-hidden
-              className="wordmark-watermark pointer-events-none absolute inset-x-0 -bottom-4 text-center text-[18vw] leading-none sm:-bottom-8 lg:text-[12rem]"
+              className="wordmark-cutout pointer-events-none absolute inset-x-0 -bottom-4 text-center text-[18vw] leading-none sm:-bottom-8 lg:text-[12rem]"
             >
               Hirael
             </span>

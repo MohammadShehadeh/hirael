@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  ArrowRight,
   ArrowUpRight,
   Boxes,
   Download,
@@ -11,20 +10,19 @@ import {
   SunMoon,
 } from "lucide-react";
 
-import { BlockCategories } from "@/components/showcase/block-categories";
+import { BlockShowcase } from "@/components/showcase/block-showcase";
+import { Pill, SectionHeading } from "@/components/showcase/page-header";
 import { InstallBlock } from "@/components/showcase/install-block";
 import { SiteFooter } from "@/components/showcase/site-footer";
 import { SiteHeader } from "@/components/showcase/site-header";
 import { SITE } from "@/lib/site";
-import { RegistryDemo } from "@/registry/hirael/registry-demos";
+import { Marquee } from "@/registry/hirael/ui/marquee";
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   COMPONENTS,
-  REGISTRY_BY_NAME,
-  entryHref,
+  TEMPLATES,
 } from "@/registry/hirael/registry-meta";
-import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 
 export const metadata: Metadata = {
@@ -56,15 +54,21 @@ export const metadata: Metadata = {
   },
 };
 
+const blocksTotal = BLOCK_KIND_ORDER.reduce(
+  (sum, k) => sum + BLOCKS_BY_KIND[k].length,
+  0,
+);
+
 export default function LandingPage() {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
       <main className="flex-1">
         <Hero />
-        <LiveRegistry />
+        <CatalogTicker />
         <WhyHirael />
-        <CategoryGrid />
+        <SectionBlocks />
+        <ClosingCta />
       </main>
       <SiteFooter />
     </div>
@@ -72,174 +76,129 @@ export default function LandingPage() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero — borderless panel with contained texture                             */
+/* Hero — full-bleed, cinematic, oversized italic serif                       */
 /* -------------------------------------------------------------------------- */
 
 function Hero() {
-  // Staggered entrance for the hero stack; gated by motion-reduce so it
-  // settles instantly for users who ask for less motion.
   const rise =
-    "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 ease-out motion-reduce:animate-none";
+    "animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none";
+
   return (
-    <section className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 lg:px-8">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-border bg-card/30 sm:rounded-[2rem]">
-        <div
-          aria-hidden
-          style={{ backgroundImage: 'url("./images/hero-bg.jpg")' }}
-          className="pointer-events-none absolute inset-0 blur-[2px] opacity-90"
-        />
-        <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
-          <div className="flex flex-col items-center gap-6 text-center">
-            <Badge variant="secondary">shadcn/ui compatible registry</Badge>
-
-            <h1
-              style={{ animationDelay: "80ms", animationFillMode: "both" }}
-              className={`text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl ${rise}`}
-            >
-              The components shadcn/ui{" "}
-              <span className="italic text-foreground/90">doesn&apos;t</span>{" "}
-              ship.
-            </h1>
-
-            <p
-              style={{ animationDelay: "160ms", animationFillMode: "both" }}
-              className={`max-w-xl text-balance text-base text-muted-foreground sm:text-lg ${rise}`}
-            >
-              Multi-select, combobox, tag input, file dropzone, plus full
-              section blocks. Install them with the shadcn CLI and the source
-              lands in your repo. No package to update, no runtime dependency.
-            </p>
-
-            <div
-              style={{ animationDelay: "240ms", animationFillMode: "both" }}
-              className={`flex flex-wrap items-center justify-center gap-3 pt-1 ${rise}`}
-            >
-              <Button size="lg" asChild>
-                <Link href="/components">
-                  Browse components
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="secondary" asChild>
-                <Link href="/blocks">Browse blocks</Link>
-              </Button>
-            </div>
-
-            <div
-              style={{ animationDelay: "320ms", animationFillMode: "both" }}
-              className={`w-full max-w-md pt-4 ${rise}`}
-            >
-              <InstallBlock name="multi-select" />
-            </div>
-          </div>
-        </div>
+    <section className="relative isolate overflow-hidden">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="hero-aurora" />
+        <div className="bg-dot-grid absolute inset-0 opacity-30 mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent_70%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent to-background" />
       </div>
-    </section>
-  );
-}
 
-/* -------------------------------------------------------------------------- */
-/* Live registry — real demos, rendered on the landing page                   */
-/* -------------------------------------------------------------------------- */
-
-const LIVE_DEMOS = [
-  "multi-select",
-  "rating",
-  "animated-number",
-  "copy-button",
-] as const;
-
-function LiveRegistry() {
-  const componentCount = COMPONENTS.length;
-
-  return (
-    <section className="relative">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span className="text-foreground/90">/01</span>
-              <span className="h-px w-4 bg-border" />
-              Live registry
+      <div className="mx-auto flex min-h-[86vh] max-w-5xl flex-col items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
+        <div style={{ animationFillMode: "both" }} className={rise}>
+          <span className="glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full py-1 px-4 text-sm">
+            <span className="text-muted-foreground">
+              The shadcn-compatible registry
             </span>
-            <h2 className="text-display text-balance text-3xl sm:text-4xl">
-              Working demos, not screenshots.
-            </h2>
-          </div>
-          <div className="flex items-center gap-4 self-start sm:self-auto">
-            <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-              {LIVE_DEMOS.length} of {componentCount} components
-            </span>
-            <Link
-              href="/components"
-              className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
-            >
-              See all
-              <ArrowRight className="size-3" />
-            </Link>
-          </div>
-        </header>
-
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border shadow-elevated md:grid-cols-2">
-          {LIVE_DEMOS.map((name) => {
-            const entry = REGISTRY_BY_NAME[name];
-            if (!entry) return null;
-            return (
-              <article key={name} className="flex flex-col bg-card">
-                <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5 sm:px-5">
-                  <div className="flex items-baseline gap-3">
-                    <h3 className="text-sm font-medium tracking-[-0.01em]">
-                      {entry.title}
-                    </h3>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                      /{entry.name}
-                    </span>
-                  </div>
-                  <Link
-                    href={entryHref(entry)}
-                    aria-label={`Open ${entry.title} docs`}
-                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <ArrowUpRight className="size-3" />
-                  </Link>
-                </div>
-                <div className="flex min-h-[280px] flex-1 items-center justify-center p-6 sm:p-8">
-                  <RegistryDemo name={entry.name} />
-                </div>
-              </article>
-            );
-          })}
+          </span>
         </div>
 
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Click around. Each demo runs the same source the CLI installs.
+        <h1
+          style={{ animationDelay: "80ms", animationFillMode: "both" }}
+          className={`text-display text-balance text-6xl italic leading-[0.85] tracking-[-0.025em] sm:text-7xl lg:text-[7rem] ${rise}`}
+        >
+          The components
+          <br className="hidden sm:block" /> shadcn/ui doesn&apos;t ship.
+        </h1>
+
+        <p
+          style={{ animationDelay: "160ms", animationFillMode: "both" }}
+          className={`max-w-xl text-balance text-base text-muted-foreground sm:text-lg ${rise}`}
+        >
+          Multi-select, combobox, tag input, file dropzone, and the section
+          blocks most products end up building anyway. Install with the shadcn
+          CLI — the source lands in your repo, yours to keep.
         </p>
+
+        <div
+          style={{ animationDelay: "240ms", animationFillMode: "both" }}
+          className={`flex flex-wrap items-center justify-center gap-3 ${rise}`}
+        >
+          <Button size="lg" className="rounded-full px-6" asChild>
+            <Link href="/components">
+              Browse components
+              <ArrowUpRight className="size-4 rtl:-rotate-90" />
+            </Link>
+          </Button>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="glass-panel glass-panel-lit rounded-full px-6"
+            asChild
+          >
+            <Link href="/blocks">Browse blocks</Link>
+          </Button>
+        </div>
+
+        <div
+          style={{ animationDelay: "340ms", animationFillMode: "both" }}
+          className={`mt-8 flex flex-col items-center gap-5 ${rise}`}
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            Works anywhere React runs
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-foreground/55 sm:gap-x-12">
+            {["Next", "Remix", "Vite", "Astro", "shadcn/ui"].map((name) => (
+              <span
+                key={name}
+                className="text-display text-2xl italic sm:text-3xl"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/* Why Hirael — blueprint grid of what a source-first registry gives you       */
+/* Catalog ticker — a slow strip of every component name, dogfooding marquee   */
+/* -------------------------------------------------------------------------- */
+
+function CatalogTicker() {
+  return (
+    <section aria-hidden className="relative -mt-4 pb-4 sm:pb-8">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <Marquee pauseOnHover duration={70} gap="0.75rem" repeat={2}>
+            {COMPONENTS.map((entry) => (
+              <span
+                key={entry.name}
+                className="glass-panel inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-mono text-[11px] tracking-tight text-muted-foreground"
+              >
+                <span className="size-1 rounded-full bg-muted-foreground/50" />
+                {entry.name}
+              </span>
+            ))}
+          </Marquee>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Why Hirael — glass feature cards with icon circles                         */
 /* -------------------------------------------------------------------------- */
 
 const FEATURES: {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
   body: string;
-  visual?: "terminal" | "stack" | "swatches";
 }[] = [
   {
     icon: Download,
     title: "Copies into your repo",
     body: "The CLI writes the source into your project. Nothing in node_modules, no version to bump.",
-    visual: "terminal",
-  },
-  {
-    icon: Layers,
-    title: "Any React stack",
-    body: "Next, Remix, Vite, Astro. Anywhere React and Tailwind already run.",
-    visual: "stack",
   },
   {
     icon: Boxes,
@@ -247,10 +206,14 @@ const FEATURES: {
     body: "Radix primitives, shadcn conventions, your components.json. A peer, not a replacement.",
   },
   {
+    icon: Layers,
+    title: "Any React stack",
+    body: "Next, Remix, Vite, Astro — anywhere React and Tailwind already run.",
+  },
+  {
     icon: SunMoon,
     title: "Light and dark",
     body: "Theme-aware through CSS variables, so every item inherits your tokens in both modes.",
-    visual: "swatches",
   },
   {
     icon: Languages,
@@ -264,62 +227,130 @@ const FEATURES: {
   },
 ];
 
+// A few lit cells per card so the blueprint grid reads differently on each.
+// Coordinates are [column, row] in 20px grid units.
+const CARD_GRID_SQUARES: [number, number][][] = [
+  [
+    [8, 1],
+    [10, 3],
+    [9, 5],
+  ],
+  [
+    [9, 2],
+    [11, 4],
+    [8, 6],
+  ],
+  [
+    [10, 1],
+    [8, 4],
+    [11, 2],
+  ],
+  [
+    [8, 2],
+    [10, 5],
+    [9, 1],
+  ],
+  [
+    [11, 3],
+    [9, 6],
+    [8, 1],
+  ],
+  [
+    [9, 4],
+    [11, 1],
+    [10, 6],
+  ],
+];
+
+/**
+ * Faint blueprint grid with a few lit cells — adapted from the Tailwind UI
+ * "GridPattern". Token-only (foreground at low opacity) so it stays on the
+ * near-monochrome palette and works in both themes; masked so it glows at the
+ * top and fades out.
+ */
+function CardGrid({
+  id,
+  squares,
+}: {
+  id: string;
+  squares: [number, number][];
+}) {
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 mask-[linear-gradient(white,transparent)]">
+      <div className="absolute inset-0 bg-linear-to-br from-foreground/[0.08] to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
+        <svg
+          aria-hidden
+          className="absolute inset-0 h-full w-full fill-foreground/[0.03] stroke-foreground/15 mix-blend-overlay"
+        >
+          <defs>
+            <pattern
+              id={id}
+              width={20}
+              height={20}
+              patternUnits="userSpaceOnUse"
+              x="-12"
+              y="4"
+            >
+              <path d="M.5 20V.5H20" fill="none" />
+            </pattern>
+          </defs>
+          <rect
+            width="100%"
+            height="100%"
+            strokeWidth={0}
+            fill={`url(#${id})`}
+          />
+          <svg x="-12" y="4" className="overflow-visible">
+            {squares.map(([col, row], i) => (
+              <rect
+                strokeWidth="0"
+                key={`${col}-${row}-${i}`}
+                width={21}
+                height={21}
+                x={col * 20}
+                y={row * 20}
+              />
+            ))}
+          </svg>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 function WhyHirael() {
   return (
-    <section className="relative">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <header className="mb-12 flex flex-col gap-3 sm:mb-16">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-            <span className="text-foreground/90">/02</span>
-            <span className="h-px w-4 bg-border" />
-            Why Hirael
-          </span>
-          <h2 className="text-display text-balance text-3xl sm:text-4xl">
-            Own the source, not a dependency.
-          </h2>
-          <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
-            Install with the shadcn CLI and the code lands in your repo, ready
-            to read and change. Built the way shadcn ships its primitives.
-          </p>
-        </header>
+    <section className="relative py-20 sm:py-28">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          kicker="Why Hirael"
+          title="Own the source, not a dependency."
+          blurb="Install with the shadcn CLI and the code lands in your repo, ready to read and change — built the way shadcn ships its primitives."
+        />
 
-        <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-          {FEATURES.map((feature) => {
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((feature, i) => {
             const Icon = feature.icon;
             return (
               <article
                 key={feature.title}
-                className="group relative flex flex-col gap-5 rounded-2xl border border-border bg-card/40 px-6 pt-7 pb-6 backdrop-blur-sm transition-colors duration-200 hover:border-foreground/20 hover:bg-card/70"
+                className="glass-panel glass-panel-lit group relative flex flex-col gap-5 overflow-hidden rounded-2xl p-7 transition-colors duration-200 hover:bg-card/70"
               >
-                {/* Soft glow from the top edge, contained to the card. */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(70%_55%_at_50%_0%,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                <CardGrid
+                  id={`why-grid-${i}`}
+                  squares={CARD_GRID_SQUARES[i % CARD_GRID_SQUARES.length]}
                 />
-
-                {/* Glowing dashed medallion holding the icon. */}
-                <span className="relative flex size-11 shrink-0 items-center justify-center rounded-full border border-dashed border-border bg-background">
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 scale-[1.6] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--foreground)_14%,transparent),transparent_70%)] blur-md"
-                  />
-                  <Icon className="relative size-4 text-foreground/80" />
+                <span className="glass-panel-strong relative z-10 inline-flex size-11 shrink-0 items-center justify-center rounded-full">
+                  <Icon className="size-4 text-foreground" />
                 </span>
-
-                <div className="relative flex flex-col gap-1.5">
-                  <h3 className="text-sm font-medium tracking-tight">
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="text-base font-medium tracking-tight">
                     {feature.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {feature.body}
                   </p>
                 </div>
-
-                {feature.visual && (
-                  <div className="relative mt-auto pt-1">
-                    <FeatureVisual kind={feature.visual} />
-                  </div>
-                )}
               </article>
             );
           })}
@@ -329,97 +360,65 @@ function WhyHirael() {
   );
 }
 
-function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
-  if (kind === "terminal") {
-    return (
-      <div className="flex items-center gap-2 overflow-hidden rounded-md border border-border bg-card px-3 py-2">
-        <span
-          aria-hidden
-          className="font-mono text-[11px] text-muted-foreground"
-        >
-          $
-        </span>
-        <code className="truncate font-mono text-[11px] text-foreground/90">
-          npx shadcn@latest add{" "}
-          <span className="text-muted-foreground">
-            https://hirael.com/r/combobox.json
-          </span>
-        </code>
-      </div>
-    );
-  }
+/* -------------------------------------------------------------------------- */
+/* Section blocks                                                             */
+/* -------------------------------------------------------------------------- */
 
-  if (kind === "stack") {
-    return (
-      <div className="flex flex-wrap gap-1.5">
-        {["Next", "Remix", "Vite", "Astro"].map((name) => (
-          <span
-            key={name}
-            className="rounded-sm border border-border bg-card px-2 py-0.5 font-mono text-[10px] tracking-tight text-muted-foreground"
-          >
-            {name}
-          </span>
-        ))}
-      </div>
-    );
-  }
-
+function SectionBlocks() {
   return (
-    <div className="flex items-center gap-1.5">
-      {[
-        "bg-foreground",
-        "bg-muted-foreground",
-        "bg-secondary",
-        "bg-background",
-      ].map((swatch) => (
-        <span
-          key={swatch}
-          className={`size-6 rounded-md border border-border ${swatch}`}
+    <section className="relative py-20 sm:py-28">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          kicker="Section blocks"
+          title="Blocks for whole sections of a page."
+          blurb={`${blocksTotal} drop-in compositions across ${BLOCK_KIND_ORDER.length} categories — heroes, pricing, testimonials, CTAs, auth, and more.`}
         />
-      ))}
-    </div>
+
+        <BlockShowcase />
+      </div>
+    </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/* Section blocks grid                                                        */
+/* Closing CTA                                                                */
 /* -------------------------------------------------------------------------- */
 
-function CategoryGrid() {
-  const blocksTotal = BLOCK_KIND_ORDER.reduce(
-    (sum, k) => sum + BLOCKS_BY_KIND[k].length,
-    0,
-  );
-
+function ClosingCta() {
   return (
-    <section className="relative">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <header className="mb-10 flex flex-col gap-2 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span className="text-foreground/90">/03</span>
-              <span className="h-px w-4 bg-border" />
-              Section blocks
-            </span>
-            <h2 className="text-display text-balance text-3xl sm:text-4xl">
-              Blocks for whole sections of a page.
-            </h2>
-          </div>
-          <div className="flex items-center gap-4 self-start sm:self-auto">
-            <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-              {blocksTotal} blocks · {BLOCK_KIND_ORDER.length} categories
-            </span>
-            <Link
-              href="/blocks"
-              className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
-            >
-              See all
-              <ArrowRight className="size-3" />
-            </Link>
-          </div>
-        </header>
+    <section className="relative isolate overflow-hidden py-24 sm:py-32">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="hero-aurora" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent" />
+      </div>
 
-        <BlockCategories variant="indexed" />
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
+        <Pill live>Get started</Pill>
+        <h2 className="text-display text-balance text-5xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
+          Install one. Keep all of it.
+        </h2>
+        <p className="max-w-md text-balance text-sm text-muted-foreground sm:text-base">
+          One command copies the source into your repo — yours to read, edit,
+          and keep. No package, no lock-in.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button size="lg" className="rounded-full px-6" asChild>
+            <Link href="/components">
+              Browse components
+              <ArrowUpRight className="size-4 rtl:-rotate-90" />
+            </Link>
+          </Button>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="glass-panel glass-panel-lit rounded-full px-6"
+            asChild
+          >
+            <Link href="/templates">{TEMPLATES.length} full templates</Link>
+          </Button>
+        </div>
+        <InstallBlock name="combobox" className="mt-2 w-full max-w-md" />
       </div>
     </section>
   );

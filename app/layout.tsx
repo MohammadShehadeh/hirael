@@ -131,7 +131,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.className} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

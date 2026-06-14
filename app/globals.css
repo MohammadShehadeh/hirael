@@ -277,6 +277,24 @@ html.light .shiki span {
     animation: ambient-drift 42s ease-in-out infinite;
   }
 
+  /* Cinematic hero backdrop — a luminous top-down glow over a faint cool
+   * halo. Token-only so both themes get the drama without a video or image.
+   * Drifts on the same slow cadence as the ambient halo. */
+  .hero-aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        120% 85% at 50% -15%,
+        color-mix(in oklch, var(--foreground) 10%, transparent),
+        transparent 55%
+      ),
+      radial-gradient(70% 60% at 50% 0%, var(--halo-cool), transparent 72%),
+      radial-gradient(90% 60% at 50% 110%, var(--halo-warm), transparent 70%);
+    animation: ambient-drift 42s ease-in-out infinite;
+  }
+
   /* Hybrid glass + hairline. Used only on focal containers so the rest
    * of the doc-grade structure (plain hairline borders) stays clear.
    * Doubled selector raises specificity so this beats Tailwind's
@@ -289,6 +307,42 @@ html.light .shiki span {
     box-shadow:
       inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 8%, transparent),
       0 1px 24px -8px color-mix(in oklch, var(--accent-cool) 12%, transparent);
+  }
+
+  /* Lit-edge glass — adds a gradient hairline rim that is brightest at the
+   * top and bottom and fades to nothing on the sides, the "liquid glass"
+   * sheen the premium templates use. Token-only (scales with --foreground)
+   * so both themes get the lit edge. Layer it on a container that already
+   * has a radius + plain hairline border; the rim sits inside via a masked
+   * ::before. Focal panels only. */
+  .glass-panel-lit {
+    position: relative;
+  }
+  .glass-panel-lit::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--foreground) 22%, transparent) 0%,
+      color-mix(in oklch, var(--foreground) 6%, transparent) 24%,
+      transparent 42%,
+      transparent 58%,
+      color-mix(in oklch, var(--foreground) 6%, transparent) 76%,
+      color-mix(in oklch, var(--foreground) 18%, transparent) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
   }
 
   /* Denser glass — used on floating chrome (the site header bar) and the
@@ -335,6 +389,36 @@ html.light .shiki span {
     user-select: none;
   }
 
+  /* Cutout wordmark — the glyphs are filled with the dot-grid texture (plus
+   * a soft top-down falloff) clipped to the type, so the textured layer reads
+   * as showing *through* the letters rather than sitting behind them. Pure
+   * monochrome, low contrast: still texture, not text. */
+  .wordmark-cutout {
+    font-family: var(--font-serif), ui-serif, Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.8;
+    user-select: none;
+    background-image:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--foreground) 16%, transparent),
+        color-mix(in oklch, var(--foreground) 4%, transparent)
+      ),
+      radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklch, var(--foreground) 32%, transparent) 1px,
+        transparent 0
+      );
+    background-size:
+      100% 100%,
+      14px 14px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
   /* Hairline gradient rule — fades out at the edges. Replaces solid
    * border-t between sections for editorial polish. */
   .rule-gradient {
@@ -374,6 +458,35 @@ html.light .shiki span {
   }
   .cpx {
     @apply px-4 lg:px-6;
+  }
+
+  /* Engineering-blueprint texture for the block schematic plates: a faint
+     graph-paper grid masked to the four corners only, so it frames the card
+     like a registration grid without texturing the whole face. Monochrome in
+     both themes. */
+  .blueprint-corners {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklch, var(--foreground) 30%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--foreground) 30%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 15px 15px;
+    -webkit-mask-image:
+      radial-gradient(circle at top left, black, transparent 38%),
+      radial-gradient(circle at top right, black, transparent 38%),
+      radial-gradient(circle at bottom left, black, transparent 38%),
+      radial-gradient(circle at bottom right, black, transparent 38%);
+    mask-image:
+      radial-gradient(circle at top left, black, transparent 38%),
+      radial-gradient(circle at top right, black, transparent 38%),
+      radial-gradient(circle at bottom left, black, transparent 38%),
+      radial-gradient(circle at bottom right, black, transparent 38%);
   }
 
   /* Faint dot grid used as a subtle background texture on the hero —
@@ -437,6 +550,14 @@ html.light .shiki span {
   50% {
     opacity: 1;
     box-shadow: 0 0 18px 3px var(--accent-cool-glow);
+  }
+}
+
+/* Freeze the marquee ticker for visitors who ask for less motion — it falls
+ * back to a static, readable strip. */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="marquee-track"] {
+    animation: none !important;
   }
 }
 

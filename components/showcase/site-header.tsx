@@ -49,12 +49,12 @@ export function SiteHeader({
 
   return (
     <header
-      className={cn("sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8", className)}
+      className={cn("fixed top-3 z-40 w-full px-4 sm:px-6 lg:px-8", className)}
     >
       <div
         className={cn(
           "mx-auto w-full transition-[max-width,padding] duration-300 ease-out",
-          scrolled ? "max-w-5xl pt-3" : "max-w-6xl pt-4",
+          scrolled ? "max-w-5xl" : "max-w-6xl",
         )}
       >
         <div

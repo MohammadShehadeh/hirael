@@ -126,6 +126,8 @@ const DEMO_LOADERS: Record<
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
   "agency-landing": () =>
     import("@/registry/hirael/templates/agency-landing/agency-landing"),
+  "portfolio": () =>
+    import("@/registry/hirael/templates/portfolio/portfolio"),
 }
 
 // React.lazy defers the import until first render, so creating every demo

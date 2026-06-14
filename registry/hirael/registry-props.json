@@ -6415,5 +6415,178 @@
       "props": [],
       "extendsNative": false
     }
+  ],
+  "nexacore": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Trusted",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "ServiceCard",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "level",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "bullets",
+          "type": "string[]",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Freedom",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "HlsVideo",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Precision",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Logo",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "BrandMark",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "GradientText",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ContactButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Contact\"",
+          "description": null
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "\"#\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "NexacoreStyles",
+      "props": [],
+      "extendsNative": false
+    }
   ]
 }

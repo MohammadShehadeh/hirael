@@ -428,28 +428,6 @@
       ]
     },
     {
-      "name": "hero-04",
-      "type": "registry:block",
-      "title": "Hero 4",
-      "description": "Full-bleed hero on a rounded card with a photographic background: a centered navbar and headline, a floating glass stats card in one corner, and a faux-cutout documentation panel carved into the opposite corner.",
-      "categories": [
-        "blocks",
-        "hero"
-      ],
-      "dependencies": [
-        "lucide-react",
-        "motion"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/blocks/hero-04/hero-04.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/hero-04.tsx"
-        }
-      ]
-    },
-    {
       "name": "feature-01",
       "type": "registry:block",
       "title": "Feature 1",
@@ -2734,6 +2712,77 @@
           "path": "registry/hirael/templates/usd-halo/fonts.ts",
           "type": "registry:block",
           "target": "components/templates/usd-halo/fonts.ts"
+        }
+      ]
+    },
+    {
+      "name": "rivr",
+      "type": "registry:block",
+      "title": "Rivr",
+      "description": "DeFi staking landing page for a fluid-asset protocol: a photographic hero on a rounded card with a glass stats card and a carved documentation panel, a feature trio, a metrics band, a four-pillar ecosystem grid, a closing call to action and a dark footer. Self-contained light palette, Framer Motion throughout.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/rivr/rivr.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/rivr.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/features.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/features.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/stats.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/stats.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/ecosystem.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/ecosystem.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/cta.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/cta.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/rivr/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/rivr/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/rivr/fonts.ts"
         }
       ]
     },

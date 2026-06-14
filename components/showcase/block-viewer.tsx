@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
 
 type Viewport = "mobile" | "tablet" | "desktop";
@@ -94,23 +95,31 @@ export function BlockViewer({
 
         <div className="flex items-center gap-1">
           <DirectionToggle rtl={rtl} onToggle={setRtl} className="me-1" />
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={() => setKey((k) => k + 1)}
             aria-label="Refresh preview"
-            className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="size-7 rounded-sm text-muted-foreground"
           >
             <RefreshCw className="size-3.5" />
-          </button>
-          <a
-            href={src}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open preview in new tab"
-            className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon-sm"
+            className="size-7 rounded-sm text-muted-foreground"
           >
-            <ExternalLink className="size-3.5" />
-          </a>
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open preview in new tab"
+            >
+              <ExternalLink className="size-3.5" />
+            </a>
+          </Button>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check, Copy } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 export function CopyButton({
   text,
@@ -41,19 +42,15 @@ export function CopyButton({
   const iconDims = size === "md" ? "size-4" : "size-3.5";
 
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-sm"
       onClick={onClick}
       aria-label={copied ? `${label}: copied` : label}
       aria-live="polite"
       data-copied={copied || undefined}
-      className={cn(
-        "relative inline-flex shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors",
-        "hover:bg-accent hover:text-foreground",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
-        dims,
-        className,
-      )}
+      className={cn("relative text-muted-foreground", dims, className)}
     >
       <Copy
         className={cn(
@@ -71,6 +68,6 @@ export function CopyButton({
         )}
         aria-hidden
       />
-    </button>
+    </Button>
   );
 }

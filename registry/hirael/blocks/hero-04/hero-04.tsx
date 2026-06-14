@@ -3,8 +3,8 @@
 import { motion, useReducedMotion } from "motion/react"
 import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react"
 
-const VIDEO_URL =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzzbokvigwjottwixh07lwa1p/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4"
+const IMAGE_URL =
+  "https://images.unsplash.com/photo-1500043357865-c6b8827edf10?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
   { label: "Ecosystem" },
@@ -167,13 +167,10 @@ export default function Hero04() {
         data-slot="hero"
         className="group relative flex h-full w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] bg-white/10 md:rounded-[3rem]"
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          src={VIDEO_URL}
-          className="absolute inset-0 z-0 size-full object-cover object-[65%] lg:object-center"
+        <div
+          aria-hidden
+          style={{ backgroundImage: `url("${IMAGE_URL}")` }}
+          className="absolute inset-0 z-0 bg-cover bg-no-repeat [background-position:65%] lg:[background-position:center]"
         />
 
         <div className="relative z-10 flex size-full flex-col items-center">

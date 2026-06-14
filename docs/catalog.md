@@ -168,7 +168,7 @@ kind has a category page at `/blocks/<category>` and its blocks at
 
 | Kind | Blocks | What it covers |
 | --- | --- | --- |
-| Hero | `hero-01`, `hero-02`, `hero-03`, `hero-04` | Landing hero sections — headline, sub-copy, CTAs, supporting visual. `hero-04` is a full-bleed video-background card with glassmorphism and a faux-cutout corner panel. |
+| Hero | `hero-01`, `hero-02`, `hero-03`, `hero-04` | Landing hero sections — headline, sub-copy, CTAs, supporting visual. `hero-04` is a full-bleed image-background card with glassmorphism and a faux-cutout corner panel. |
 | Feature | `feature-01`, `feature-02` | Feature grids and alternating feature rows. |
 | Pricing | `pricing-01`, `pricing-02` | Tiered pricing tables with feature lists and highlighted plan. |
 | Testimonial | `testimonial-01`, `testimonial-02` | Quote cards and testimonial walls. |

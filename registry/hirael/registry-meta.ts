@@ -275,8 +275,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "hero-04",
     title: "Hero 4",
     description:
-      "Full-bleed hero on a rounded card with a looping video background: a centered navbar and headline, a floating glass stats card in one corner, and a faux-cutout documentation panel carved into the opposite corner.",
-    blockTagline: "Video background · glassmorphism · corner cutout",
+      "Full-bleed hero on a rounded card with a photographic background: a centered navbar and headline, a floating glass stats card in one corner, and a faux-cutout documentation panel carved into the opposite corner.",
+    blockTagline: "Image background · glassmorphism · corner cutout",
     category: "blocks",
     blockKind: "hero",
     sourceFiles: ["registry/hirael/blocks/hero-04/hero-04.tsx"],

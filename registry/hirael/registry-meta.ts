@@ -1457,7 +1457,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "usd-halo",
     title: "USD Halo",
     description:
-      "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel. Self-contained light palette.",
+      "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette.",
     category: "templates",
     sourceFiles: [
       "registry/hirael/templates/usd-halo/usd-halo.tsx",
@@ -1466,6 +1466,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "registry/hirael/templates/usd-halo/info.tsx",
       "registry/hirael/templates/usd-halo/backed-by.tsx",
       "registry/hirael/templates/usd-halo/use-cases.tsx",
+      "registry/hirael/templates/usd-halo/footer.tsx",
       "registry/hirael/templates/usd-halo/primitives.tsx",
       "registry/hirael/templates/usd-halo/fonts.ts",
     ],
@@ -1476,6 +1477,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "components/templates/usd-halo/info.tsx",
       "components/templates/usd-halo/backed-by.tsx",
       "components/templates/usd-halo/use-cases.tsx",
+      "components/templates/usd-halo/footer.tsx",
       "components/templates/usd-halo/primitives.tsx",
       "components/templates/usd-halo/fonts.ts",
     ],

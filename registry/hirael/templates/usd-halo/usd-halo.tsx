@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 
 import { BackedBySection } from "./backed-by"
 import { inter, manrope } from "./fonts"
+import { FooterSection } from "./footer"
 import { HeroSection } from "./hero"
 import { InfoSection } from "./info"
 import { Navbar } from "./navbar"
@@ -26,6 +27,7 @@ export default function UsdHalo() {
       <InfoSection />
       <BackedBySection />
       <UseCasesSection />
+      <FooterSection />
     </div>
   )
 }

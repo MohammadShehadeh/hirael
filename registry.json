@@ -2610,7 +2610,7 @@
       "name": "usd-halo",
       "type": "registry:block",
       "title": "USD Halo",
-      "description": "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel. Self-contained light palette.",
+      "description": "Premium fintech landing page for a stablecoin: a full-bleed video hero with a custom halo wordmark and an infinite brand marquee, a meet-the-product card grid, a backers marquee, and a use-modes split with an autoplaying video panel, closing on a dark anchor footer. Self-contained light palette.",
       "categories": [
         "templates"
       ],
@@ -2648,6 +2648,11 @@
           "path": "registry/hirael/templates/usd-halo/use-cases.tsx",
           "type": "registry:block",
           "target": "components/templates/usd-halo/use-cases.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/usd-halo/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/usd-halo/footer.tsx"
         },
         {
           "path": "registry/hirael/templates/usd-halo/primitives.tsx",

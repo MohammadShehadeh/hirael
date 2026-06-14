@@ -6067,6 +6067,11 @@
       "extendsNative": false
     },
     {
+      "name": "FooterSection",
+      "props": [],
+      "extendsNative": false
+    },
+    {
       "name": "LogoIcon",
       "props": [
         {

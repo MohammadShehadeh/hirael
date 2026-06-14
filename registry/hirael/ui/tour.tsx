@@ -159,6 +159,7 @@ function Tour({
   }, [open, step, steps, findResolvable, setOpen, setStep]);
 
   const [mounted, setMounted] = React.useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   React.useEffect(() => setMounted(true), []);
 
   const ctx = React.useMemo<TourContextValue>(
@@ -241,6 +242,7 @@ function TourOverlay({
   React.useLayoutEffect(() => {
     const el = resolveTarget(target);
     if (el && scrollIntoView) el.scrollIntoView({ block: "center" });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     measure();
   }, [target, scrollIntoView, measure]);
 

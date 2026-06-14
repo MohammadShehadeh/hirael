@@ -128,6 +128,8 @@ const DEMO_LOADERS: Record<
     import("@/registry/hirael/templates/creative-studio/creative-studio"),
   "agency-landing": () =>
     import("@/registry/hirael/templates/agency-landing/agency-landing"),
+  "portfolio": () =>
+    import("@/registry/hirael/templates/portfolio/portfolio"),
   "usd-halo": () => import("@/registry/hirael/templates/usd-halo/usd-halo"),
 }
 

@@ -1,0 +1,93 @@
+/* USD Halo landing — page-scoped styles.
+ *
+ * This route is a standalone, design-driven product landing, NOT a registry
+ * item, so it deliberately uses its own typeface and a couple of hard-coded
+ * brand colors (#F5F5F5 canvas, #2B2644 cards/footer) instead of the site's
+ * design tokens. Everything below is scoped under `.halo-page` so it can't
+ * leak into the rest of the showcase, and the keyframe names are prefixed to
+ * avoid colliding with the global stylesheet.
+ *
+ * FONT: TT Norms Pro is a licensed commercial face. Drop the two .woff2 files
+ * into `public/fonts/` (the exact paths referenced below) to activate it.
+ * Until then, `font-display: swap` plus the fallback stack render the page in
+ * Inter, so nothing looks broken — only two harmless 404s for the missing
+ * font files. */
+
+@font-face {
+  font-family: "TT Norms Pro";
+  src: url("/fonts/tt-norms-pro-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TT Norms Pro";
+  src: url("/fonts/tt-norms-pro-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+.halo-page {
+  font-family:
+    "TT Norms Pro", "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+}
+
+/* Form controls (the pill buttons) don't inherit font-family by default;
+ * force the page face everywhere. Elements that set their own inline font —
+ * the hero paragraph and every marquee wordmark — still win via inline
+ * specificity, so their bespoke faces are preserved. */
+.halo-page * {
+  font-family: inherit;
+}
+
+/* The design loads TT Norms Pro at 400 + 600 only and treats `font-medium`
+ * as its heaviest weight (semibold). Tailwind's `font-medium` is 500, which
+ * against a 400/600-only face resolves down to 400 — so remap it to 600
+ * within the page to get the intended weight on headings, the wordmark, and
+ * the buttons. */
+.halo-page .font-medium {
+  font-weight: 600;
+}
+
+/* Hero brand marquee. The track holds two identical copies of the brand list
+ * and slides exactly one copy's width (-50%) for a seamless, gapless loop. */
+@keyframes halo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.halo-page .marquee-track {
+  display: flex;
+  width: max-content;
+  animation: halo-marquee 22s linear infinite;
+}
+
+/* Backers marquee — same mechanism, slower cadence. */
+@keyframes halo-backers-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.halo-page .backers-track {
+  display: flex;
+  width: max-content;
+  animation: halo-backers-marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo-page .marquee-track,
+  .halo-page .backers-track {
+    animation: none;
+  }
+}

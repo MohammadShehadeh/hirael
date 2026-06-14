@@ -50,6 +50,7 @@ extracts the prop tables shown on component pages. See
 app/                              # Next.js App Router (output: "export")
   page.tsx                        # landing — Hero, live demos, why-Hirael grid, category grid, closing CTA
   changelog/page.tsx              # /changelog — rendered from GitHub Releases
+  halo/                           # /halo — standalone USD Halo fintech landing demo (not a registry item; own font + colors, scoped in halo.css)
   (showcase)/                     # sidebar + topbar shell
     components/page.tsx           # component index (links to category pages)
     components/[category]/        # per-category component listing

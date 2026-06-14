@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden"
     >
       <video
         className="absolute inset-0 h-full w-full object-cover"

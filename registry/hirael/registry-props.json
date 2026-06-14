@@ -6331,5 +6331,114 @@
       ],
       "extendsNative": false
     }
+  ],
+  "rivr": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Features",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Stats",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Ecosystem",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Cta",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "RivrMark",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Eyebrow",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "PillButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "\"#\"",
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"outline\" | \"solid\"",
+          "required": false,
+          "default": "\"solid\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "RivrStyles",
+      "props": [],
+      "extendsNative": false
+    }
   ]
 }

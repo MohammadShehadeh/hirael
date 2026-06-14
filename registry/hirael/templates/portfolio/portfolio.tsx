@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { MotionConfig } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -28,16 +29,18 @@ export default function Portfolio() {
     >
       <style dangerouslySetInnerHTML={{ __html: PORTFOLIO_STYLES }} />
 
-      {isLoading ? (
-        <LoadingScreen onComplete={() => setIsLoading(false)} />
-      ) : null}
+      <MotionConfig reducedMotion="user">
+        {isLoading ? (
+          <LoadingScreen onComplete={() => setIsLoading(false)} />
+        ) : null}
 
-      <Hero start={!isLoading} />
-      <SelectedWorks />
-      <Journal />
-      <Explorations />
-      <Stats />
-      <Contact />
+        <Hero start={!isLoading} />
+        <SelectedWorks />
+        <Journal />
+        <Explorations />
+        <Stats />
+        <Contact />
+      </MotionConfig>
     </div>
   )
 }

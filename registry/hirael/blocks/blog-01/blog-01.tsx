@@ -41,7 +41,7 @@ const FEATURED: Post = {
   title: "Why we shipped the same component twice, and why you should too.",
   excerpt:
     "Every Hirael primitive exposes a compound surface and a single-prop surface in the same file. Here's the design contract behind it, and the four bugs it quietly prevented in production.",
-  author: { name: "Mohammad Shehadeh", initials: "MS" },
+  author: { name: "John Doe", initials: "JD" },
   date: "May 22 · 2026",
   readMin: 9,
   href: "#",

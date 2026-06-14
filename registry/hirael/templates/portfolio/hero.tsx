@@ -33,7 +33,7 @@ function Logo() {
       />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
       <span className="relative font-display text-[13px] italic leading-none">
-        MS
+        JD
       </span>
     </a>
   );
@@ -179,7 +179,7 @@ export function Hero({ start = true }: { start?: boolean }) {
           Collection &rsquo;26
         </span>
         <h1 className="name-reveal mb-6 font-display text-6xl italic leading-[0.9] tracking-tight opacity-0 md:text-8xl lg:text-9xl">
-          Michael Smith
+          John Doe
         </h1>
         <p className="blur-in mb-3 text-lg text-[hsl(var(--text))] opacity-0 sm:text-xl">
           A{" "}

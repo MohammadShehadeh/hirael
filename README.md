@@ -17,6 +17,23 @@ source into your repo and there's no package to depend on.
 npx shadcn@latest add https://hirael.com/r/multi-select.json
 ```
 
+## The name
+
+**Hirael** is a coined word, not a translation.
+
+- **Hira-** comes from _hiraeth_ (Welsh): a deep longing for a place or
+  time you can't return to.
+- **-el** is a soft, old-feeling name ending, slightly celestial — as in
+  Gabriel or Noel.
+
+Together it reads as a quiet longing for something familiar but out of
+reach — softened by acceptance rather than despair. The intended register
+is melancholic but calm: memory and distance, a little reflective, minimal,
+more "soft sadness with clarity" than heavy or dark.
+
+It's deliberately a container word — it has no fixed dictionary meaning, so
+the meaning is the one the product earns over time.
+
 ## Why Hirael
 
 - **Peer of shadcn.** You must have shadcn installed first. Hirael

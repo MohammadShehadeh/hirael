@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { HLS_STREAM, HlsVideo } from "./hls-video";
 import { ArrowUpRight, RingLink } from "./primitives";
 
-const EMAIL = "hello@michaelsmith.com";
+const EMAIL = "hello@johndoe.com";
 
 const SOCIALS = [
   {
@@ -142,7 +142,7 @@ export function Contact() {
           </div>
 
           <span className="text-xs text-[hsl(var(--muted))]">
-            &copy; 2026 Michael Smith
+            &copy; 2026 John Doe
           </span>
         </div>
       </div>

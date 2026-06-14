@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import dynamic from "next/dynamic"
-import { ArrowRight, Sparkles } from "lucide-react"
+import * as React from "react";
+import dynamic from "next/dynamic";
+import { ArrowRight, Sparkles } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 const Hero01Backdrop = dynamic(() => import("./hero-01-backdrop"), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
-})
+});
 
-const NAV_LINKS = ["Product", "Docs", "Pricing", "Changelog"] as const
+const NAV_LINKS = ["Product", "Docs", "Pricing", "Changelog"] as const;
 
 const STATS = [
   { value: "4,000+", label: "Teams" },
   { value: "60+", label: "Countries" },
   { value: "99.9%", label: "Uptime" },
-] as const
+] as const;
 
 export default function Hero01() {
-  const [active, setActive] = React.useState(false)
+  const [active, setActive] = React.useState(false);
 
   return (
     <section
@@ -133,5 +133,5 @@ export default function Hero01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

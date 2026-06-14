@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { cn } from "@/lib/utils"
-import { NAV_LINKS } from "@/lib/site"
-import { CommandMenu } from "@/components/showcase/command-menu"
-import { BrandLockup } from "@/components/showcase/logo"
-import { ThemeToggle } from "@/components/showcase/theme-toggle"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { SidebarTrigger } from "@/registry/hirael/ui/sidebar"
+import { cn } from "@/lib/utils";
+import { NAV_LINKS } from "@/lib/site";
+import { CommandMenu } from "@/components/showcase/command-menu";
+import { BrandLockup } from "@/components/showcase/logo";
+import { ThemeToggle } from "@/components/showcase/theme-toggle";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { SidebarTrigger } from "@/registry/hirael/ui/sidebar";
 
 export function ShowcaseTopbar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(`${href}/`)
-  }
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/85 px-3 backdrop-blur-md sm:px-4">
@@ -33,7 +33,7 @@ export function ShowcaseTopbar() {
 
       <nav className="hidden flex-1 items-center gap-1 md:flex">
         {NAV_LINKS.map((link) => {
-          const active = isActive(link.href)
+          const active = isActive(link.href);
           return (
             <Link
               key={link.href}
@@ -43,12 +43,12 @@ export function ShowcaseTopbar() {
                 "rounded-full px-3 py-1.5 text-[13px] tracking-tight transition-colors",
                 active
                   ? "bg-accent text-foreground"
-                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
               )}
             >
               {link.label}
             </Link>
-          )
+          );
         })}
       </nav>
 
@@ -57,5 +57,5 @@ export function ShowcaseTopbar() {
         <ThemeToggle />
       </div>
     </header>
-  )
+  );
 }

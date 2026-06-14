@@ -26,26 +26,26 @@ item. Toggle from the header to verify.
 Near-monochrome **zinc in OKLCH** — clean grays with the faintest cool cast.
 The only non-neutral is a single cool blue.
 
-| Token | Role |
-| --- | --- |
-| `--background` / `--foreground` | Canvas + primary text |
-| `--card` / `--card-foreground` | Raised surfaces |
-| `--popover` / `--popover-foreground` | Floating surfaces |
-| `--primary` / `--primary-foreground` | Emphasis / primary actions |
-| `--secondary` / `--muted` / `--accent` | Quiet fills (share a value in dark) |
-| `--muted-foreground` | Secondary text |
-| `--border` (1px) / `--input` / `--ring` | Hairline edges + focus |
-| `--destructive` / `--success` / `--warning` / `--info` | Status (shipped by Callout) |
-| `--chart-1…5` | Data viz |
-| `--sidebar*` | Sidebar surface set |
-| **`--accent-cool`** | **The one non-neutral — live/active state ONLY** |
-| `--accent-cool-glow` / `--halo-cool` / `--halo-warm` | Soft glows behind the accent |
+| Token                                                  | Role                                             |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| `--background` / `--foreground`                        | Canvas + primary text                            |
+| `--card` / `--card-foreground`                         | Raised surfaces                                  |
+| `--popover` / `--popover-foreground`                   | Floating surfaces                                |
+| `--primary` / `--primary-foreground`                   | Emphasis / primary actions                       |
+| `--secondary` / `--muted` / `--accent`                 | Quiet fills (share a value in dark)              |
+| `--muted-foreground`                                   | Secondary text                                   |
+| `--border` (1px) / `--input` / `--ring`                | Hairline edges + focus                           |
+| `--destructive` / `--success` / `--warning` / `--info` | Status (shipped by Callout)                      |
+| `--chart-1…5`                                          | Data viz                                         |
+| `--sidebar*`                                           | Sidebar surface set                              |
+| **`--accent-cool`**                                    | **The one non-neutral — live/active state ONLY** |
+| `--accent-cool-glow` / `--halo-cool` / `--halo-warm`   | Soft glows behind the accent                     |
 
 Rules:
 
 - **Use tokens, never hard-coded colors.** No hex/rgb/oklch literals in
   component source — reach for `--background / --foreground / --border /
-  --primary / --accent` and friends.
+--primary / --accent` and friends.
 - **`--accent-cool` is reserved for live/active state** (the pulsing
   `state-dot`, "Latest" markers, active indicators). Don't spend it on
   generic accents or decoration — that's what makes it read as "live."
@@ -55,27 +55,27 @@ Rules:
 
 Derived from a single `--radius: 0.65rem`, following shadcn's standard scale:
 
-| Token | Value |
-| --- | --- |
+| Token         | Value          |
+| ------------- | -------------- |
 | `--radius-sm` | `radius − 4px` |
 | `--radius-md` | `radius − 2px` |
-| `--radius-lg` | `radius` |
+| `--radius-lg` | `radius`       |
 | `--radius-xl` | `radius + 4px` |
 
 ## Typography
 
 Loaded via `next/font` in [app/layout.tsx](../app/layout.tsx):
 
-| Family | CSS var | Used for |
-| --- | --- | --- |
-| **Inter** | `--font-sans` | Body and UI — the default face |
-| **Geist Mono** | `--font-mono` | Code, install commands, identifiers, eyebrow labels |
+| Family                 | CSS var        | Used for                                                              |
+| ---------------------- | -------------- | --------------------------------------------------------------------- |
+| **Inter**              | `--font-sans`  | Body and UI — the default face                                        |
+| **Geist Mono**         | `--font-mono`  | Code, install commands, identifiers, eyebrow labels                   |
 | **Cormorant Garamond** | `--font-serif` | Display headings (`.text-display`), the brand wordmark, serif accents |
 
 Display headings (the landing hero, section titles, `/changelog`, 404 and
 error) use the serif **`.text-display`** utility — Cormorant at weight 500
 with tight tracking — for an editorial, elegant feel that ties the chrome to
-the premium templates. A serif *italic* span carries a single emphasis word
+the premium templates. A serif _italic_ span carries a single emphasis word
 (the landing hero italicizes "doesn't"); the italic style is loaded via
 `next/font` in `app/layout.tsx` and `app/global-error.tsx`. Body and UI stay
 **sans** (Inter). Eyebrow labels are the recurring `font-mono

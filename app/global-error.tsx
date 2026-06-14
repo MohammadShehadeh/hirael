@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google"
-import { RefreshCw } from "lucide-react"
-import "./globals.css"
+import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
+import { RefreshCw } from "lucide-react";
+import "./globals.css";
 
-import { LogoMark } from "@/components/showcase/logo"
+import { LogoMark } from "@/components/showcase/logo";
 
 // global-error replaces the root layout, so it has to bring its own document
 // and fonts. We mirror the root layout's setup so the fallback still reads as
@@ -12,19 +12,19 @@ import { LogoMark } from "@/components/showcase/logo"
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-})
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-})
+});
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-})
+});
 
 export default function GlobalError() {
   return (
@@ -49,7 +49,8 @@ export default function GlobalError() {
               This page failed to load.
             </h1>
             <p className="max-w-sm text-balance text-sm text-muted-foreground">
-              An unexpected error occurred. Try refreshing the page or come back in a moment.
+              An unexpected error occurred. Try refreshing the page or come back
+              in a moment.
             </p>
           </div>
 
@@ -75,5 +76,5 @@ export default function GlobalError() {
         </main>
       </body>
     </html>
-  )
+  );
 }

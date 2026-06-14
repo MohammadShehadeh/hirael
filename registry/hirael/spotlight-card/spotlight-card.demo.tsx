@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react";
 
-import { SpotlightCard } from "@/registry/hirael/ui/spotlight-card"
+import { SpotlightCard } from "@/registry/hirael/ui/spotlight-card";
 
 export default function SpotlightCardDemo() {
   return (
@@ -19,7 +19,9 @@ export default function SpotlightCardDemo() {
       ].map((card) => (
         <SpotlightCard key={card.title} className="p-5">
           <div className="flex items-start justify-between gap-4">
-            <h3 className="text-sm font-medium text-foreground">{card.title}</h3>
+            <h3 className="text-sm font-medium text-foreground">
+              {card.title}
+            </h3>
             <ArrowUpRight className="size-4 text-muted-foreground" />
           </div>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -31,5 +33,5 @@ export default function SpotlightCardDemo() {
         Move your cursor across a card
       </p>
     </div>
-  )
+  );
 }

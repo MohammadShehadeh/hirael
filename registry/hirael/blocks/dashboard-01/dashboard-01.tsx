@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -8,35 +8,35 @@ import {
   Filter,
   Minus,
   RefreshCw,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs"
+} from "@/registry/hirael/ui/card";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
 type Metric = {
-  label: string
-  value: string
-  delta: string
-  trend: "up" | "down" | "flat"
-}
+  label: string;
+  value: string;
+  delta: string;
+  trend: "up" | "down" | "flat";
+};
 
-type Range = "1d" | "7d" | "30d" | "90d"
+type Range = "1d" | "7d" | "30d" | "90d";
 
 const RANGES: { value: Range; label: string }[] = [
   { value: "1d", label: "Today" },
   { value: "7d", label: "7 days" },
   { value: "30d", label: "30 days" },
   { value: "90d", label: "90 days" },
-]
+];
 
 const METRICS_BY_RANGE: Record<Range, readonly Metric[]> = {
   "1d": [
@@ -63,9 +63,12 @@ const METRICS_BY_RANGE: Record<Range, readonly Metric[]> = {
     { label: "Churn", value: "2.4%", delta: "-1.1%", trend: "down" },
     { label: "Avg. session", value: "3m 51s", delta: "+27s", trend: "up" },
   ],
-}
+};
 
-const CHART_BY_RANGE: Record<Range, readonly { d: string; a: number; b: number }[]> = {
+const CHART_BY_RANGE: Record<
+  Range,
+  readonly { d: string; a: number; b: number }[]
+> = {
   "1d": [
     { d: "00", a: 6, b: 3 },
     { d: "04", a: 4, b: 2 },
@@ -102,22 +105,22 @@ const CHART_BY_RANGE: Record<Range, readonly { d: string; a: number; b: number }
     { d: "M6", a: 1480, b: 1102 },
     { d: "M7", a: 1620, b: 1224 },
   ],
-}
+};
 
 const SIGNUPS_BY_RANGE: Record<Range, { count: string; conversion: string }> = {
   "1d": { count: "82", conversion: "3.91%" },
   "7d": { count: "486", conversion: "3.42%" },
   "30d": { count: "2,154", conversion: "3.18%" },
   "90d": { count: "6,820", conversion: "2.94%" },
-}
+};
 
 type Activity = {
-  initials: string
-  name: string
-  action: string
-  time: string
-  tone: "primary" | "default" | "muted"
-}
+  initials: string;
+  name: string;
+  action: string;
+  time: string;
+  tone: "primary" | "default" | "muted";
+};
 
 const ACTIVITY: readonly Activity[] = [
   {
@@ -148,34 +151,34 @@ const ACTIVITY: readonly Activity[] = [
     time: "3h ago",
     tone: "muted",
   },
-]
+];
 
 function TrendIcon({ trend }: { trend: Metric["trend"] }) {
-  if (trend === "up") return <ArrowUpRight className="size-3" />
-  if (trend === "down") return <ArrowDownRight className="size-3" />
-  return <Minus className="size-3" />
+  if (trend === "up") return <ArrowUpRight className="size-3" />;
+  if (trend === "down") return <ArrowDownRight className="size-3" />;
+  return <Minus className="size-3" />;
 }
 
 function deltaTone(trend: Metric["trend"]) {
-  if (trend === "up") return "bg-emerald-500/10 text-emerald-500"
-  if (trend === "down") return "bg-red-500/10 text-red-500"
-  return "bg-accent text-muted-foreground"
+  if (trend === "up") return "bg-emerald-500/10 text-emerald-500";
+  if (trend === "down") return "bg-red-500/10 text-red-500";
+  return "bg-accent text-muted-foreground";
 }
 
 export default function Dashboard01() {
-  const [range, setRange] = React.useState<Range>("7d")
-  const [refreshing, setRefreshing] = React.useState(false)
+  const [range, setRange] = React.useState<Range>("7d");
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  const metrics = METRICS_BY_RANGE[range]
-  const chart = CHART_BY_RANGE[range]
-  const signups = SIGNUPS_BY_RANGE[range]
-  const chartMax = Math.max(...chart.flatMap((c) => [c.a, c.b]))
+  const metrics = METRICS_BY_RANGE[range];
+  const chart = CHART_BY_RANGE[range];
+  const signups = SIGNUPS_BY_RANGE[range];
+  const chartMax = Math.max(...chart.flatMap((c) => [c.a, c.b]));
 
   const onRefresh = async () => {
-    setRefreshing(true)
-    await new Promise((r) => setTimeout(r, 600))
-    setRefreshing(false)
-  }
+    setRefreshing(true);
+    await new Promise((r) => setTimeout(r, 600));
+    setRefreshing(false);
+  };
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -203,7 +206,11 @@ export default function Dashboard01() {
                 ))}
               </TabsList>
             </Tabs>
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden sm:inline-flex"
+            >
               <Filter className="size-3.5" />
               All teams
             </Button>
@@ -278,7 +285,9 @@ export default function Dashboard01() {
                 role="img"
                 aria-label={`Sign-ups and activations across ${chart.length} buckets`}
                 className="grid h-56 items-end gap-2 sm:gap-3"
-                style={{ gridTemplateColumns: `repeat(${chart.length}, minmax(0, 1fr))` }}
+                style={{
+                  gridTemplateColumns: `repeat(${chart.length}, minmax(0, 1fr))`,
+                }}
               >
                 {chart.map((row) => (
                   <div key={row.d} className="flex h-full flex-col gap-1.5">
@@ -369,5 +378,5 @@ export default function Dashboard01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

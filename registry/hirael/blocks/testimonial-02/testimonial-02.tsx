@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 type Quote = {
-  body: string
-  initials: string
-  name: string
-  role: string
-}
+  body: string;
+  initials: string;
+  name: string;
+  role: string;
+};
 
 const QUOTES: readonly Quote[] = [
   {
@@ -46,7 +46,7 @@ const QUOTES: readonly Quote[] = [
     name: "Diego Larrea",
     role: "Engineer · Mercado",
   },
-]
+];
 
 export default function Testimonial02() {
   return (
@@ -94,5 +94,5 @@ export default function Testimonial02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

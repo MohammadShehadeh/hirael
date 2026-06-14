@@ -1,10 +1,10 @@
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 import {
   BLOCKS_BY_KIND,
   type BlockKind,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 import {
   IllAppShell,
   IllAuth,
@@ -24,26 +24,26 @@ import {
   IllNotFound,
   IllPricing,
   IllTestimonial,
-} from "@/components/showcase/block-categories-illustrations"
+} from "@/components/showcase/block-categories-illustrations";
 
 /* -------------------------------------------------------------------------- */
 /* Category registry                                                          */
 /* -------------------------------------------------------------------------- */
 
 export type CategoryMeta = {
-  slug: string
-  title: string
+  slug: string;
+  title: string;
   /** Internal BlockKind — present only for categories that have shipped blocks. */
-  blockKind?: BlockKind
-  comingSoon?: boolean
-  description: string
-}
+  blockKind?: BlockKind;
+  comingSoon?: boolean;
+  description: string;
+};
 
 type CategoryDefWithIllustration = CategoryMeta & {
-  count: number
-  freeCount?: number
-  illustration: React.ComponentType
-}
+  count: number;
+  freeCount?: number;
+  illustration: React.ComponentType;
+};
 
 export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
@@ -113,8 +113,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     slug: "not-found",
     title: "Not Found",
     blockKind: "not-found",
-    description:
-      "Centered 404s with paired CTAs and suggested-route lists.",
+    description: "Centered 404s with paired CTAs and suggested-route lists.",
   },
   {
     slug: "blog",
@@ -172,38 +171,110 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     description:
       "Stat cards, charts, and table-driven views composed into full dashboards.",
   },
-]
+];
 
 export const CATEGORY_BY_SLUG = Object.fromEntries(
-  CATEGORY_REGISTRY.map((c) => [c.slug, c])
-) as Record<string, CategoryMeta>
+  CATEGORY_REGISTRY.map((c) => [c.slug, c]),
+) as Record<string, CategoryMeta>;
 
 const CATEGORIES: CategoryDefWithIllustration[] = [
-  { ...CATEGORY_BY_SLUG["hero"], count: BLOCKS_BY_KIND.hero.length, illustration: IllHero },
-  { ...CATEGORY_BY_SLUG["features"], count: BLOCKS_BY_KIND.feature.length, illustration: IllFeatures },
-  { ...CATEGORY_BY_SLUG["pricing"], count: BLOCKS_BY_KIND.pricing.length, illustration: IllPricing },
-  { ...CATEGORY_BY_SLUG["testimonials"], count: BLOCKS_BY_KIND.testimonial.length, illustration: IllTestimonial },
-  { ...CATEGORY_BY_SLUG["cta"], count: BLOCKS_BY_KIND.cta.length, illustration: IllCta },
-  { ...CATEGORY_BY_SLUG["faqs"], count: BLOCKS_BY_KIND.faq.length, illustration: IllFaq },
-  { ...CATEGORY_BY_SLUG["auth"], count: BLOCKS_BY_KIND.login.length, illustration: IllAuth },
-  { ...CATEGORY_BY_SLUG["header"], count: BLOCKS_BY_KIND.header.length, illustration: IllHeader },
-  { ...CATEGORY_BY_SLUG["footer"], count: BLOCKS_BY_KIND.footer.length, illustration: IllFooter },
-  { ...CATEGORY_BY_SLUG["not-found"], count: BLOCKS_BY_KIND["not-found"].length, illustration: IllNotFound },
-  { ...CATEGORY_BY_SLUG["blog"], count: BLOCKS_BY_KIND.blog.length, illustration: IllBlog },
-  { ...CATEGORY_BY_SLUG["contact"], count: BLOCKS_BY_KIND.contact.length, illustration: IllContact },
-  { ...CATEGORY_BY_SLUG["ecommerce"], count: BLOCKS_BY_KIND.ecommerce.length, illustration: IllEcommerce },
-  { ...CATEGORY_BY_SLUG["image-gallery"], count: BLOCKS_BY_KIND["image-gallery"].length, illustration: IllGallery },
-  { ...CATEGORY_BY_SLUG["integrations"], count: BLOCKS_BY_KIND.integrations.length, illustration: IllIntegrations },
-  { ...CATEGORY_BY_SLUG["logo-cloud"], count: BLOCKS_BY_KIND["logo-cloud"].length, illustration: IllLogoCloud },
-  { ...CATEGORY_BY_SLUG["app-shell"], count: BLOCKS_BY_KIND["app-shell"].length, illustration: IllAppShell },
-  { ...CATEGORY_BY_SLUG["dashboard"], count: BLOCKS_BY_KIND.dashboard.length, illustration: IllDashboard },
-]
+  {
+    ...CATEGORY_BY_SLUG["hero"],
+    count: BLOCKS_BY_KIND.hero.length,
+    illustration: IllHero,
+  },
+  {
+    ...CATEGORY_BY_SLUG["features"],
+    count: BLOCKS_BY_KIND.feature.length,
+    illustration: IllFeatures,
+  },
+  {
+    ...CATEGORY_BY_SLUG["pricing"],
+    count: BLOCKS_BY_KIND.pricing.length,
+    illustration: IllPricing,
+  },
+  {
+    ...CATEGORY_BY_SLUG["testimonials"],
+    count: BLOCKS_BY_KIND.testimonial.length,
+    illustration: IllTestimonial,
+  },
+  {
+    ...CATEGORY_BY_SLUG["cta"],
+    count: BLOCKS_BY_KIND.cta.length,
+    illustration: IllCta,
+  },
+  {
+    ...CATEGORY_BY_SLUG["faqs"],
+    count: BLOCKS_BY_KIND.faq.length,
+    illustration: IllFaq,
+  },
+  {
+    ...CATEGORY_BY_SLUG["auth"],
+    count: BLOCKS_BY_KIND.login.length,
+    illustration: IllAuth,
+  },
+  {
+    ...CATEGORY_BY_SLUG["header"],
+    count: BLOCKS_BY_KIND.header.length,
+    illustration: IllHeader,
+  },
+  {
+    ...CATEGORY_BY_SLUG["footer"],
+    count: BLOCKS_BY_KIND.footer.length,
+    illustration: IllFooter,
+  },
+  {
+    ...CATEGORY_BY_SLUG["not-found"],
+    count: BLOCKS_BY_KIND["not-found"].length,
+    illustration: IllNotFound,
+  },
+  {
+    ...CATEGORY_BY_SLUG["blog"],
+    count: BLOCKS_BY_KIND.blog.length,
+    illustration: IllBlog,
+  },
+  {
+    ...CATEGORY_BY_SLUG["contact"],
+    count: BLOCKS_BY_KIND.contact.length,
+    illustration: IllContact,
+  },
+  {
+    ...CATEGORY_BY_SLUG["ecommerce"],
+    count: BLOCKS_BY_KIND.ecommerce.length,
+    illustration: IllEcommerce,
+  },
+  {
+    ...CATEGORY_BY_SLUG["image-gallery"],
+    count: BLOCKS_BY_KIND["image-gallery"].length,
+    illustration: IllGallery,
+  },
+  {
+    ...CATEGORY_BY_SLUG["integrations"],
+    count: BLOCKS_BY_KIND.integrations.length,
+    illustration: IllIntegrations,
+  },
+  {
+    ...CATEGORY_BY_SLUG["logo-cloud"],
+    count: BLOCKS_BY_KIND["logo-cloud"].length,
+    illustration: IllLogoCloud,
+  },
+  {
+    ...CATEGORY_BY_SLUG["app-shell"],
+    count: BLOCKS_BY_KIND["app-shell"].length,
+    illustration: IllAppShell,
+  },
+  {
+    ...CATEGORY_BY_SLUG["dashboard"],
+    count: BLOCKS_BY_KIND.dashboard.length,
+    illustration: IllDashboard,
+  },
+];
 
 function countLabel(count: number, free?: number) {
-  if (free && !count) return `${free} free`
-  if (free) return `${count} blocks · ${free} free`
-  if (count === 0) return "Roadmap"
-  return `${count} block${count === 1 ? "" : "s"}`
+  if (free && !count) return `${free} free`;
+  if (free) return `${count} blocks · ${free} free`;
+  if (count === 0) return "Roadmap";
+  return `${count} block${count === 1 ? "" : "s"}`;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -211,23 +282,23 @@ function countLabel(count: number, free?: number) {
 /* -------------------------------------------------------------------------- */
 
 const tileShell =
-  "group relative flex aspect-[5/4] size-full flex-col overflow-hidden rounded-xl border border-border bg-card/40 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-card/70 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.35)]"
+  "group relative flex aspect-[5/4] size-full flex-col overflow-hidden rounded-xl border border-border bg-card/40 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-card/70 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.35)]";
 
-type Variant = "plain" | "indexed"
+type Variant = "plain" | "indexed";
 
 export function BlockCategories({
   variant = "plain",
 }: {
-  variant?: Variant
+  variant?: Variant;
 } = {}) {
-  const total = CATEGORIES.length
+  const total = CATEGORIES.length;
 
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
       {CATEGORIES.map((cat, i) => {
-        const Illustration = cat.illustration
+        const Illustration = cat.illustration;
         const indexLabel =
-          variant === "indexed" ? String(i + 1).padStart(2, "0") : undefined
+          variant === "indexed" ? String(i + 1).padStart(2, "0") : undefined;
 
         return (
           <Tile
@@ -241,10 +312,10 @@ export function BlockCategories({
           >
             <Illustration />
           </Tile>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 function Tile({
@@ -256,13 +327,13 @@ function Tile({
   comingSoon,
   children,
 }: {
-  title: string
-  count: string
-  indexLabel?: string
-  total: number
-  href?: string
-  comingSoon?: boolean
-  children: React.ReactNode
+  title: string;
+  count: string;
+  indexLabel?: string;
+  total: number;
+  href?: string;
+  comingSoon?: boolean;
+  children: React.ReactNode;
 }) {
   const inner = (
     <>
@@ -290,7 +361,9 @@ function Tile({
           {indexLabel && (
             <span className="font-mono text-[9px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground/60">
               {indexLabel}
-              <span className="opacity-50">/{String(total).padStart(2, "0")}</span>
+              <span className="opacity-50">
+                /{String(total).padStart(2, "0")}
+              </span>
             </span>
           )}
         </div>
@@ -304,7 +377,7 @@ function Tile({
         {children}
       </div>
     </>
-  )
+  );
 
   if (href) {
     return (
@@ -317,12 +390,8 @@ function Tile({
       >
         {inner}
       </Link>
-    )
+    );
   }
 
-  return (
-    <div className={`${tileShell} cursor-default`}>
-      {inner}
-    </div>
-  )
+  return <div className={`${tileShell} cursor-default`}>{inner}</div>;
 }

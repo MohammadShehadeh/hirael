@@ -9,5 +9,5 @@
  * the first frame — the same trick the theme uses in `lib/theme.ts`.
  */
 export function embedDirScript(): string {
-  return `(()=>{try{var d=new URLSearchParams(location.search).get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';}catch(e){}})();`
+  return `(()=>{try{var d=new URLSearchParams(location.search).get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';}catch(e){}})();`;
 }

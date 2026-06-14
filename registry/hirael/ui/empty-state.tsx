@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type EmptyStateProps = React.ComponentProps<"div">
+type EmptyStateProps = React.ComponentProps<"div">;
 
 function EmptyState({ className, ...props }: EmptyStateProps) {
   return (
@@ -10,22 +10,26 @@ function EmptyState({ className, ...props }: EmptyStateProps) {
       data-slot="empty-state"
       className={cn(
         "flex w-full flex-col items-center justify-center gap-4 rounded-md border border-dashed border-border bg-card/30 p-10 text-center",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type EmptyStateMediaProps = React.ComponentProps<"div">
+type EmptyStateMediaProps = React.ComponentProps<"div">;
 
-function EmptyStateMedia({ className, children, ...props }: EmptyStateMediaProps) {
+function EmptyStateMedia({
+  className,
+  children,
+  ...props
+}: EmptyStateMediaProps) {
   return (
     <div
       data-slot="empty-state-media"
       className={cn(
         "relative mb-1 inline-flex size-12 items-center justify-center rounded-md border border-border bg-background text-foreground [&_svg]:size-5",
-        className
+        className,
       )}
       {...props}
     >
@@ -35,10 +39,10 @@ function EmptyStateMedia({ className, children, ...props }: EmptyStateMediaProps
       />
       {children}
     </div>
-  )
+  );
 }
 
-type EmptyStateTitleProps = React.ComponentProps<"h3">
+type EmptyStateTitleProps = React.ComponentProps<"h3">;
 
 function EmptyStateTitle({ className, ...props }: EmptyStateTitleProps) {
   return (
@@ -46,14 +50,14 @@ function EmptyStateTitle({ className, ...props }: EmptyStateTitleProps) {
       data-slot="empty-state-title"
       className={cn(
         "text-base font-semibold tracking-[-0.01em] text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type EmptyStateDescriptionProps = React.ComponentProps<"p">
+type EmptyStateDescriptionProps = React.ComponentProps<"p">;
 
 function EmptyStateDescription({
   className,
@@ -62,25 +66,25 @@ function EmptyStateDescription({
   return (
     <p
       data-slot="empty-state-description"
-      className={cn(
-        "max-w-sm text-sm text-muted-foreground",
-        className
-      )}
+      className={cn("max-w-sm text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type EmptyStateActionsProps = React.ComponentProps<"div">
+type EmptyStateActionsProps = React.ComponentProps<"div">;
 
 function EmptyStateActions({ className, ...props }: EmptyStateActionsProps) {
   return (
     <div
       data-slot="empty-state-actions"
-      className={cn("mt-2 flex flex-wrap items-center justify-center gap-2", className)}
+      className={cn(
+        "mt-2 flex flex-wrap items-center justify-center gap-2",
+        className,
+      )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -89,4 +93,4 @@ export {
   EmptyStateTitle,
   EmptyStateDescription,
   EmptyStateActions,
-}
+};

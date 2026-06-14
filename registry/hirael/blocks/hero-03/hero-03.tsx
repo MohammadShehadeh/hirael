@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
-const LOGOS = ["Helix", "Northwind", "Vanta", "Quartz", "Lumen"] as const
+const LOGOS = ["Helix", "Northwind", "Vanta", "Quartz", "Lumen"] as const;
 
 export default function Hero03() {
   return (
@@ -52,7 +52,11 @@ export default function Hero03() {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
+          <Button
+            asChild
+            size="lg"
+            className="group h-12 rounded-full px-7 text-base"
+          >
             <a href="#">
               Start free
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -85,5 +89,5 @@ export default function Hero03() {
         </div>
       </div>
     </section>
-  )
+  );
 }

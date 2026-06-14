@@ -101,8 +101,8 @@
   /* The one non-neutral — tags live/active state only. */
   --accent-cool: oklch(0.62 0.19 260);
   --accent-cool-glow: oklch(0.62 0.19 260 / 30%);
-  --halo-cool: oklch(0.55 0.10 260 / 10%);
-  --halo-warm: oklch(0.60 0.02 286 / 5%);
+  --halo-cool: oklch(0.55 0.1 260 / 10%);
+  --halo-warm: oklch(0.6 0.02 286 / 5%);
 }
 
 /* Light: white canvas, near-black ink. */
@@ -142,10 +142,10 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
 
-  --accent-cool: oklch(0.55 0.20 260);
-  --accent-cool-glow: oklch(0.55 0.20 260 / 22%);
-  --halo-cool: oklch(0.55 0.10 260 / 6%);
-  --halo-warm: oklch(0.60 0.02 286 / 4%);
+  --accent-cool: oklch(0.55 0.2 260);
+  --accent-cool-glow: oklch(0.55 0.2 260 / 22%);
+  --halo-cool: oklch(0.55 0.1 260 / 6%);
+  --halo-warm: oklch(0.6 0.02 286 / 4%);
 }
 
 /* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
@@ -227,14 +227,26 @@ html.light .shiki span {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
+    background-color: color-mix(
+      in oklch,
+      var(--muted-foreground) 40%,
+      transparent
+    );
     border-radius: 6px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in oklch, var(--muted-foreground) 60%, transparent);
+    background-color: color-mix(
+      in oklch,
+      var(--muted-foreground) 60%,
+      transparent
+    );
   }
   ::-webkit-scrollbar-thumb:active {
-    background-color: color-mix(in oklch, var(--muted-foreground) 80%, transparent);
+    background-color: color-mix(
+      in oklch,
+      var(--muted-foreground) 80%,
+      transparent
+    );
   }
 
   ::selection {
@@ -299,7 +311,9 @@ html.light .shiki span {
     font-family: var(--font-serif), ui-serif, Georgia, serif;
     font-weight: 500;
     letter-spacing: -0.015em;
-    font-feature-settings: "liga" 1, "calt" 1;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1;
   }
 
   /* Token-only elevation — soft, colorless depth for focal cards and the

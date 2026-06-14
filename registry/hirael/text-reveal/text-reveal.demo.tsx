@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { TextReveal } from "@/registry/hirael/ui/text-reveal"
+import { TextReveal } from "@/registry/hirael/ui/text-reveal";
 
 export default function TextRevealDemo() {
   return (
@@ -27,9 +27,11 @@ export default function TextRevealDemo() {
           stagger={120}
           className="text-sm leading-relaxed text-muted-foreground"
         >
-          {"Designed for headlines and pull quotes.\nEach line is masked, then slides up.\nRespects reduced-motion preferences."}
+          {
+            "Designed for headlines and pull quotes.\nEach line is masked, then slides up.\nRespects reduced-motion preferences."
+          }
         </TextReveal>
       </div>
     </div>
-  )
+  );
 }

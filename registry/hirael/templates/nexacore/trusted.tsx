@@ -1,8 +1,8 @@
-import { GradientText } from "./primitives"
-import { ServiceCard, type ServiceCardProps } from "./service-card"
+import { GradientText } from "./primitives";
+import { ServiceCard, type ServiceCardProps } from "./service-card";
 
 const TRUSTED_BG =
-  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260418_120332_3b24257a-afe6-48ca-875f-78147370f403.png&w=1280&q=85"
+  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260418_120332_3b24257a-afe6-48ca-875f-78147370f403.png&w=1280&q=85";
 
 const CARDS: ServiceCardProps[] = [
   {
@@ -29,7 +29,7 @@ const CARDS: ServiceCardProps[] = [
     title: "Activate systems with complete context, not guesswork.",
     bullets: ["Uninterrupted workflows", "Verified clean handoffs"],
   },
-]
+];
 
 export function Trusted() {
   return (
@@ -74,9 +74,10 @@ export function Trusted() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[180px]"
         style={{
-          background: "linear-gradient(to bottom, transparent, rgb(255, 255, 255))",
+          background:
+            "linear-gradient(to bottom, transparent, rgb(255, 255, 255))",
         }}
       />
     </section>
-  )
+  );
 }

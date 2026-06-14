@@ -1,47 +1,53 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ExternalLink, Monitor, RefreshCw, Smartphone, Tablet } from "lucide-react"
+import * as React from "react";
+import {
+  ExternalLink,
+  Monitor,
+  RefreshCw,
+  Smartphone,
+  Tablet,
+} from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { DirectionToggle } from "@/components/showcase/direction-toggle"
+import { cn } from "@/lib/utils";
+import { DirectionToggle } from "@/components/showcase/direction-toggle";
 
-type Viewport = "mobile" | "tablet" | "desktop"
+type Viewport = "mobile" | "tablet" | "desktop";
 
 const SIZES: Record<Viewport, { width: number; label: string }> = {
   mobile: { width: 380, label: "Mobile" },
   tablet: { width: 768, label: "Tablet" },
   desktop: { width: 0, label: "Desktop" },
-}
+};
 
 const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
   mobile: Smartphone,
   tablet: Tablet,
   desktop: Monitor,
-}
+};
 
-const ORDER: Viewport[] = ["mobile", "tablet", "desktop"]
+const ORDER: Viewport[] = ["mobile", "tablet", "desktop"];
 
 export function BlockViewer({
   title,
   minHeight = 800,
   embedHref,
 }: {
-  title: string
-  minHeight?: number
+  title: string;
+  minHeight?: number;
   /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
-  embedHref: string
+  embedHref: string;
 }) {
-  const [viewport, setViewport] = React.useState<Viewport>("desktop")
-  const [key, setKey] = React.useState(0)
-  const [rtl, setRtl] = React.useState(false)
+  const [viewport, setViewport] = React.useState<Viewport>("desktop");
+  const [key, setKey] = React.useState(0);
+  const [rtl, setRtl] = React.useState(false);
 
-  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`
+  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`;
 
   const sizing =
     viewport === "desktop"
       ? { width: "100%", maxWidth: "100%" }
-      : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" }
+      : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" };
 
   return (
     <div
@@ -55,8 +61,8 @@ export function BlockViewer({
           className="flex items-center gap-0.5 rounded-sm border border-border bg-background p-0.5"
         >
           {ORDER.map((v) => {
-            const Icon = ICONS[v]
-            const active = viewport === v
+            const Icon = ICONS[v];
+            const active = viewport === v;
             return (
               <button
                 key={v}
@@ -71,7 +77,7 @@ export function BlockViewer({
                   "inline-flex h-6 items-center gap-1.5 rounded-[2px] px-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors",
                   active
                     ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Icon className="size-3" />
@@ -82,7 +88,7 @@ export function BlockViewer({
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
 
@@ -119,5 +125,5 @@ export function BlockViewer({
         />
       </div>
     </div>
-  )
+  );
 }

@@ -1,66 +1,70 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { GripVertical } from "lucide-react"
+import * as React from "react";
+import { GripVertical } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type Orientation = "vertical" | "horizontal"
+type Orientation = "vertical" | "horizontal";
 
 type ItemEntry = {
-  node: HTMLElement
-  disabled: boolean
-}
+  node: HTMLElement;
+  disabled: boolean;
+};
 
 type SortableCtx = {
-  order: string[]
-  orientation: Orientation
-  disabled: boolean
-  dragId: string | null
-  grabbedId: string | null
-  registerItem: (id: string, entry: ItemEntry) => () => void
-  startPress: (e: React.PointerEvent, id: string) => void
-  handlePointerMove: (e: React.PointerEvent, id: string) => void
-  handlePointerEnd: (e: React.PointerEvent, id: string, cancel: boolean) => void
-  handleKeyDown: (e: React.KeyboardEvent, id: string) => void
-  handleBlur: (id: string) => void
-}
+  order: string[];
+  orientation: Orientation;
+  disabled: boolean;
+  dragId: string | null;
+  grabbedId: string | null;
+  registerItem: (id: string, entry: ItemEntry) => () => void;
+  startPress: (e: React.PointerEvent, id: string) => void;
+  handlePointerMove: (e: React.PointerEvent, id: string) => void;
+  handlePointerEnd: (
+    e: React.PointerEvent,
+    id: string,
+    cancel: boolean,
+  ) => void;
+  handleKeyDown: (e: React.KeyboardEvent, id: string) => void;
+  handleBlur: (id: string) => void;
+};
 
-const SortableContext = React.createContext<SortableCtx | null>(null)
+const SortableContext = React.createContext<SortableCtx | null>(null);
 
 function useSortable() {
-  const ctx = React.useContext(SortableContext)
+  const ctx = React.useContext(SortableContext);
   if (!ctx) {
-    throw new Error("Sortable compound parts must be used inside <Sortable>")
+    throw new Error("Sortable compound parts must be used inside <Sortable>");
   }
-  return ctx
+  return ctx;
 }
 
 type SortableItemCtx = {
-  id: string
-  disabled: boolean
-  hasHandle: boolean
-  setHasHandle: (has: boolean) => void
-  state: "idle" | "grabbed"
-}
+  id: string;
+  disabled: boolean;
+  hasHandle: boolean;
+  setHasHandle: (has: boolean) => void;
+  state: "idle" | "grabbed";
+};
 
-const SortableItemContext = React.createContext<SortableItemCtx | null>(null)
+const SortableItemContext = React.createContext<SortableItemCtx | null>(null);
 
 function useSortableItem() {
-  const ctx = React.useContext(SortableItemContext)
+  const ctx = React.useContext(SortableItemContext);
   if (!ctx) {
-    throw new Error("Sortable item parts must be used inside <SortableItem>")
+    throw new Error("Sortable item parts must be used inside <SortableItem>");
   }
-  return ctx
+  return ctx;
 }
 
-const DRAG_THRESHOLD = 5
+const DRAG_THRESHOLD = 5;
 
 function arrayMove(arr: string[], from: number, to: number) {
-  const next = arr.slice()
-  const [moved] = next.splice(from, 1)
-  next.splice(to, 0, moved)
-  return next
+  const next = arr.slice();
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
 }
 
 export type SortableProps = Omit<
@@ -68,12 +72,12 @@ export type SortableProps = Omit<
   "defaultValue" | "onChange"
 > & {
   /** Ordered item ids. */
-  value?: string[]
-  defaultValue?: string[]
-  onValueChange?: (value: string[]) => void
-  orientation?: Orientation
-  disabled?: boolean
-}
+  value?: string[];
+  defaultValue?: string[];
+  onValueChange?: (value: string[]) => void;
+  orientation?: Orientation;
+  disabled?: boolean;
+};
 
 function Sortable({
   value: valueProp,
@@ -85,216 +89,228 @@ function Sortable({
   children,
   ...props
 }: SortableProps) {
-  const [internal, setInternal] = React.useState(defaultValue)
-  const [preview, setPreview] = React.useState<string[] | null>(null)
-  const [dragId, setDragId] = React.useState<string | null>(null)
-  const [grabbedId, setGrabbedId] = React.useState<string | null>(null)
-  const [liveText, setLiveText] = React.useState("")
+  const [internal, setInternal] = React.useState(defaultValue);
+  const [preview, setPreview] = React.useState<string[] | null>(null);
+  const [dragId, setDragId] = React.useState<string | null>(null);
+  const [grabbedId, setGrabbedId] = React.useState<string | null>(null);
+  const [liveText, setLiveText] = React.useState("");
 
-  const committed = valueProp ?? internal
-  const order = preview ?? committed
+  const committed = valueProp ?? internal;
+  const order = preview ?? committed;
 
-  const orderRef = React.useRef(order)
-  orderRef.current = order
+  const orderRef = React.useRef(order);
+  orderRef.current = order;
 
-  const itemsRef = React.useRef(new Map<string, ItemEntry>())
+  const itemsRef = React.useRef(new Map<string, ItemEntry>());
   const pressRef = React.useRef<{
-    id: string
-    x: number
-    y: number
-  } | null>(null)
-  const rtlRef = React.useRef(false)
-  const listRef = React.useRef<HTMLDivElement | null>(null)
+    id: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const rtlRef = React.useRef(false);
+  const listRef = React.useRef<HTMLDivElement | null>(null);
 
   const registerItem = React.useCallback((id: string, entry: ItemEntry) => {
-    itemsRef.current.set(id, entry)
+    itemsRef.current.set(id, entry);
     return () => {
-      itemsRef.current.delete(id)
-    }
-  }, [])
+      itemsRef.current.delete(id);
+    };
+  }, []);
 
   const announce = React.useCallback((text: string) => {
-    setLiveText(text)
-  }, [])
+    setLiveText(text);
+  }, []);
 
   const commit = React.useCallback(
     (next: string[]) => {
-      setPreview(null)
-      if (valueProp === undefined) setInternal(next)
-      onValueChange?.(next)
+      setPreview(null);
+      if (valueProp === undefined) setInternal(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
   const cancel = React.useCallback(() => {
-    setPreview(null)
-    setDragId(null)
-    setGrabbedId(null)
-    pressRef.current = null
-  }, [])
+    setPreview(null);
+    setDragId(null);
+    setGrabbedId(null);
+    pressRef.current = null;
+  }, []);
 
   const startPress = React.useCallback(
     (e: React.PointerEvent, id: string) => {
-      if (disabled || e.button !== 0) return
-      pressRef.current = { id, x: e.clientX, y: e.clientY }
-      e.currentTarget.setPointerCapture(e.pointerId)
+      if (disabled || e.button !== 0) return;
+      pressRef.current = { id, x: e.clientX, y: e.clientY };
+      e.currentTarget.setPointerCapture(e.pointerId);
       rtlRef.current =
         listRef.current !== null &&
-        getComputedStyle(listRef.current).direction === "rtl"
+        getComputedStyle(listRef.current).direction === "rtl";
     },
-    [disabled]
-  )
+    [disabled],
+  );
 
   const handlePointerMove = React.useCallback(
     (e: React.PointerEvent, id: string) => {
-      const press = pressRef.current
-      if (!press || press.id !== id) return
+      const press = pressRef.current;
+      if (!press || press.id !== id) return;
 
       if (dragId !== id) {
-        const dx = e.clientX - press.x
-        const dy = e.clientY - press.y
-        if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return
-        setDragId(id)
-        setGrabbedId(null)
+        const dx = e.clientX - press.x;
+        const dy = e.clientY - press.y;
+        if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+        setDragId(id);
+        setGrabbedId(null);
       }
 
-      const current = orderRef.current
-      const horizontal = orientation === "horizontal"
-      const coord = horizontal ? e.clientX : e.clientY
-      const others = current.filter((v) => v !== id)
+      const current = orderRef.current;
+      const horizontal = orientation === "horizontal";
+      const coord = horizontal ? e.clientX : e.clientY;
+      const others = current.filter((v) => v !== id);
 
-      let before = 0
+      let before = 0;
       for (const other of others) {
-        const entry = itemsRef.current.get(other)
-        if (!entry) continue
-        const rect = entry.node.getBoundingClientRect()
+        const entry = itemsRef.current.get(other);
+        if (!entry) continue;
+        const rect = entry.node.getBoundingClientRect();
         const mid = horizontal
           ? (rect.left + rect.right) / 2
-          : (rect.top + rect.bottom) / 2
-        const passed =
-          horizontal && rtlRef.current ? coord < mid : coord > mid
-        if (passed) before += 1
+          : (rect.top + rect.bottom) / 2;
+        const passed = horizontal && rtlRef.current ? coord < mid : coord > mid;
+        if (passed) before += 1;
       }
 
       if (before !== current.indexOf(id)) {
-        const next = others.slice()
-        next.splice(before, 0, id)
-        setPreview(next)
+        const next = others.slice();
+        next.splice(before, 0, id);
+        setPreview(next);
       }
     },
-    [dragId, orientation]
-  )
+    [dragId, orientation],
+  );
 
   const handlePointerEnd = React.useCallback(
     (e: React.PointerEvent, id: string, cancelled: boolean) => {
-      const wasDragging = dragId === id
-      pressRef.current = null
-      if (!wasDragging) return
-      setDragId(null)
+      const wasDragging = dragId === id;
+      pressRef.current = null;
+      if (!wasDragging) return;
+      setDragId(null);
       if (cancelled) {
-        setPreview(null)
-        return
+        setPreview(null);
+        return;
       }
-      const next = orderRef.current
-      commit(next)
-      announce(`Moved ${id} to position ${next.indexOf(id) + 1} of ${next.length}`)
+      const next = orderRef.current;
+      commit(next);
+      announce(
+        `Moved ${id} to position ${next.indexOf(id) + 1} of ${next.length}`,
+      );
     },
-    [dragId, commit, announce]
-  )
+    [dragId, commit, announce],
+  );
 
   const moveGrabbed = React.useCallback(
     (id: string, dir: -1 | 1) => {
-      const current = orderRef.current
-      const from = current.indexOf(id)
-      if (from === -1) return
-      let to = from + dir
+      const current = orderRef.current;
+      const from = current.indexOf(id);
+      if (from === -1) return;
+      let to = from + dir;
       while (
         to >= 0 &&
         to < current.length &&
         itemsRef.current.get(current[to])?.disabled
       ) {
-        to += dir
+        to += dir;
       }
-      if (to < 0 || to >= current.length) return
-      const next = arrayMove(current, from, to)
-      setPreview(next)
-      announce(`Moved ${id} to position ${to + 1} of ${next.length}`)
+      if (to < 0 || to >= current.length) return;
+      const next = arrayMove(current, from, to);
+      setPreview(next);
+      announce(`Moved ${id} to position ${to + 1} of ${next.length}`);
     },
-    [announce]
-  )
+    [announce],
+  );
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent, id: string) => {
-      if (disabled) return
-      const horizontal = orientation === "horizontal"
+      if (disabled) return;
+      const horizontal = orientation === "horizontal";
       const rtl =
         listRef.current !== null &&
-        getComputedStyle(listRef.current).direction === "rtl"
+        getComputedStyle(listRef.current).direction === "rtl";
 
       if (e.key === " " || e.key === "Enter") {
-        e.preventDefault()
+        e.preventDefault();
         if (grabbedId === id) {
-          const next = orderRef.current
-          setGrabbedId(null)
-          commit(next)
+          const next = orderRef.current;
+          setGrabbedId(null);
+          commit(next);
           announce(
-            `Dropped ${id} at position ${next.indexOf(id) + 1} of ${next.length}`
-          )
+            `Dropped ${id} at position ${next.indexOf(id) + 1} of ${next.length}`,
+          );
         } else if (grabbedId === null && dragId === null) {
-          setGrabbedId(id)
-          const current = orderRef.current
+          setGrabbedId(id);
+          const current = orderRef.current;
           announce(
-            `Grabbed ${id}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`
-          )
+            `Grabbed ${id}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`,
+          );
         }
-        return
+        return;
       }
 
       if (e.key === "Escape") {
         if (grabbedId === id) {
-          e.preventDefault()
-          cancel()
-          announce(`Reorder cancelled. ${id} returned to its original position.`)
+          e.preventDefault();
+          cancel();
+          announce(
+            `Reorder cancelled. ${id} returned to its original position.`,
+          );
         }
-        return
+        return;
       }
 
-      if (grabbedId !== id) return
+      if (grabbedId !== id) return;
 
-      let dir: -1 | 1 | 0 = 0
+      let dir: -1 | 1 | 0 = 0;
       if (horizontal) {
-        if (e.key === "ArrowLeft") dir = rtl ? 1 : -1
-        if (e.key === "ArrowRight") dir = rtl ? -1 : 1
+        if (e.key === "ArrowLeft") dir = rtl ? 1 : -1;
+        if (e.key === "ArrowRight") dir = rtl ? -1 : 1;
       } else {
-        if (e.key === "ArrowUp") dir = -1
-        if (e.key === "ArrowDown") dir = 1
+        if (e.key === "ArrowUp") dir = -1;
+        if (e.key === "ArrowDown") dir = 1;
       }
       if (dir !== 0) {
-        e.preventDefault()
-        moveGrabbed(id, dir)
+        e.preventDefault();
+        moveGrabbed(id, dir);
       }
     },
-    [disabled, orientation, grabbedId, dragId, commit, cancel, announce, moveGrabbed]
-  )
+    [
+      disabled,
+      orientation,
+      grabbedId,
+      dragId,
+      commit,
+      cancel,
+      announce,
+      moveGrabbed,
+    ],
+  );
 
   const handleBlur = React.useCallback(
     (id: string) => {
-      if (grabbedId === id) cancel()
+      if (grabbedId === id) cancel();
     },
-    [grabbedId, cancel]
-  )
+    [grabbedId, cancel],
+  );
 
   React.useEffect(() => {
-    if (!dragId) return
+    if (!dragId) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        e.preventDefault()
-        cancel()
+        e.preventDefault();
+        cancel();
       }
-    }
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [dragId, cancel])
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [dragId, cancel]);
 
   const ctx = React.useMemo<SortableCtx>(
     () => ({
@@ -322,8 +338,8 @@ function Sortable({
       handlePointerEnd,
       handleKeyDown,
       handleBlur,
-    ]
-  )
+    ],
+  );
 
   return (
     <SortableContext.Provider value={ctx}>
@@ -335,8 +351,10 @@ function Sortable({
         data-disabled={disabled || undefined}
         className={cn(
           "flex gap-2",
-          orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-center",
-          className
+          orientation === "vertical"
+            ? "flex-col"
+            : "flex-row flex-wrap items-center",
+          className,
         )}
         {...props}
       >
@@ -346,14 +364,14 @@ function Sortable({
         </span>
       </div>
     </SortableContext.Provider>
-  )
+  );
 }
 
 export type SortableItemProps = React.ComponentProps<"div"> & {
   /** Unique id matching an entry in the root `value`. */
-  value: string
-  disabled?: boolean
-}
+  value: string;
+  disabled?: boolean;
+};
 
 function SortableItem({
   value,
@@ -373,26 +391,26 @@ function SortableItem({
     handlePointerEnd,
     handleKeyDown,
     handleBlur,
-  } = useSortable()
+  } = useSortable();
 
-  const disabled = disabledProp || rootDisabled
-  const [hasHandle, setHasHandle] = React.useState(false)
-  const ref = React.useRef<HTMLDivElement | null>(null)
+  const disabled = disabledProp || rootDisabled;
+  const [hasHandle, setHasHandle] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   React.useLayoutEffect(() => {
-    const node = ref.current
-    if (!node) return
-    return registerItem(value, { node, disabled })
-  }, [value, disabled, registerItem])
+    const node = ref.current;
+    if (!node) return;
+    return registerItem(value, { node, disabled });
+  }, [value, disabled, registerItem]);
 
-  const index = order.indexOf(value)
+  const index = order.indexOf(value);
   const state: "idle" | "grabbed" =
-    dragId === value || grabbedId === value ? "grabbed" : "idle"
+    dragId === value || grabbedId === value ? "grabbed" : "idle";
 
   const itemCtx = React.useMemo<SortableItemCtx>(
     () => ({ id: value, disabled, hasHandle, setHasHandle, state }),
-    [value, disabled, hasHandle, state]
-  )
+    [value, disabled, hasHandle, state],
+  );
 
   return (
     <SortableItemContext.Provider value={itemCtx}>
@@ -430,12 +448,12 @@ function SortableItem({
           state === "grabbed" &&
             "z-10 scale-[1.02] cursor-grabbing border-ring bg-card shadow-lg",
           disabled && "opacity-50",
-          className
+          className,
         )}
         {...props}
       />
     </SortableItemContext.Provider>
-  )
+  );
 }
 
 function SortableHandle({
@@ -449,13 +467,13 @@ function SortableHandle({
     handlePointerEnd,
     handleKeyDown,
     handleBlur,
-  } = useSortable()
-  const { id, disabled, setHasHandle, state } = useSortableItem()
+  } = useSortable();
+  const { id, disabled, setHasHandle, state } = useSortableItem();
 
   React.useLayoutEffect(() => {
-    setHasHandle(true)
-    return () => setHasHandle(false)
-  }, [setHasHandle])
+    setHasHandle(true);
+    return () => setHasHandle(false);
+  }, [setHasHandle]);
 
   return (
     <button
@@ -476,13 +494,13 @@ function SortableHandle({
         "hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:cursor-not-allowed",
         state === "grabbed" && "cursor-grabbing text-foreground",
-        className
+        className,
       )}
       {...props}
     >
       {children ?? <GripVertical aria-hidden className="size-4" />}
     </button>
-  )
+  );
 }
 
-export { Sortable, SortableItem, SortableHandle }
+export { Sortable, SortableItem, SortableHandle };

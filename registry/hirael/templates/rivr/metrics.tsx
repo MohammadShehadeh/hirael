@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { fadeUp } from "./primitives"
+import { fadeUp } from "./primitives";
 
 const METRICS = [
   { value: "$2.4B", label: "Total Value Locked" },
   { value: "8.5%", label: "Average Realized Yield" },
   { value: "140K+", label: "Active Participants" },
   { value: "< 2s", label: "Finality Engine" },
-]
+];
 
 const CELL_BORDERS = [
   "",
   "border-s border-foreground/10",
   "border-t border-foreground/10 md:border-s md:border-t-0",
   "border-s border-t border-foreground/10 md:border-t-0",
-]
+];
 
 export function Metrics() {
   return (
@@ -43,5 +43,5 @@ export function Metrics() {
         </dl>
       </div>
     </section>
-  )
+  );
 }

@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   FileDropzone,
   FileDropzoneErrors,
   FileDropzoneList,
   FileDropzoneZone,
-} from "@/registry/hirael/ui/file-dropzone"
+} from "@/registry/hirael/ui/file-dropzone";
 
 export default function FileDropzoneDemo() {
-  const [basic, setBasic] = React.useState<File[]>([])
-  const [composed, setComposed] = React.useState<File[]>([])
+  const [basic, setBasic] = React.useState<File[]>([]);
+  const [composed, setComposed] = React.useState<File[]>([]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -49,5 +49,5 @@ export default function FileDropzoneDemo() {
         </FileDropzone>
       </div>
     </div>
-  )
+  );
 }

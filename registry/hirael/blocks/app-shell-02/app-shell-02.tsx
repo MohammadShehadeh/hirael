@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Bell,
   CreditCard,
@@ -10,37 +10,52 @@ import {
   Shield,
   User,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { Card } from "@/registry/hirael/ui/card"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { Card } from "@/registry/hirael/ui/card";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { cn } from "@/lib/utils"
+} from "@/registry/hirael/ui/input-group";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { cn } from "@/lib/utils";
 
-const NAV = ["Overview", "Projects", "Activity", "Settings"] as const
+const NAV = ["Overview", "Projects", "Activity", "Settings"] as const;
 
 type SettingsTab = {
-  id: string
-  label: string
-  icon: LucideIcon
-  desc: string
-}
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  desc: string;
+};
 
 const TABS: readonly SettingsTab[] = [
-  { id: "profile", label: "Profile", icon: User, desc: "Your personal details" },
+  {
+    id: "profile",
+    label: "Profile",
+    icon: User,
+    desc: "Your personal details",
+  },
   { id: "security", label: "Security", icon: Shield, desc: "Password and 2FA" },
   { id: "api", label: "API keys", icon: KeyRound, desc: "Tokens and access" },
-  { id: "billing", label: "Billing", icon: CreditCard, desc: "Plan and invoices" },
-  { id: "integrations", label: "Integrations", icon: Plug, desc: "Connected apps" },
-]
+  {
+    id: "billing",
+    label: "Billing",
+    icon: CreditCard,
+    desc: "Plan and invoices",
+  },
+  {
+    id: "integrations",
+    label: "Integrations",
+    icon: Plug,
+    desc: "Connected apps",
+  },
+];
 
-type FieldDef = { label: string; value: string; hint?: string }
+type FieldDef = { label: string; value: string; hint?: string };
 
 const PANELS: Record<string, FieldDef[]> = {
   profile: [
@@ -54,7 +69,11 @@ const PANELS: Record<string, FieldDef[]> = {
     { label: "Active sessions", value: "3 devices" },
   ],
   api: [
-    { label: "Production key", value: "msh_live_••••8f2a", hint: "Last used 2h ago" },
+    {
+      label: "Production key",
+      value: "msh_live_••••8f2a",
+      hint: "Last used 2h ago",
+    },
     { label: "Development key", value: "msh_test_••••1c0d" },
     { label: "Webhook secret", value: "whsec_••••44b9" },
   ],
@@ -68,7 +87,7 @@ const PANELS: Record<string, FieldDef[]> = {
     { label: "Slack", value: "Connected", hint: "#product" },
     { label: "Linear", value: "Not connected" },
   ],
-}
+};
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -97,13 +116,13 @@ function BrandMark({ className }: { className?: string }) {
         <path d="M34 96 H46" opacity="0.25" />
       </svg>
     </span>
-  )
+  );
 }
 
 export default function AppShell02() {
-  const [active, setActive] = React.useState<string>("profile")
-  const tab = TABS.find((t) => t.id === active) ?? TABS[0]
-  const fields = PANELS[active] ?? []
+  const [active, setActive] = React.useState<string>("profile");
+  const tab = TABS.find((t) => t.id === active) ?? TABS[0];
+  const fields = PANELS[active] ?? [];
 
   return (
     <div className="flex min-h-[640px] flex-col bg-background">
@@ -111,7 +130,10 @@ export default function AppShell02() {
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6">
           <BrandMark className="size-7 shrink-0" />
 
-          <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+          <Separator
+            orientation="vertical"
+            className="mx-1 hidden h-5 sm:block"
+          />
 
           <nav
             aria-label="Primary"
@@ -156,7 +178,9 @@ export default function AppShell02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             workspace · plinth labs
           </span>
-          <h1 className="text-2xl font-semibold tracking-[-0.02em]">Settings</h1>
+          <h1 className="text-2xl font-semibold tracking-[-0.02em]">
+            Settings
+          </h1>
           <p className="text-sm text-muted-foreground">
             Manage your account, security, and workspace integrations.
           </p>
@@ -166,7 +190,7 @@ export default function AppShell02() {
           <nav aria-label="Settings" className="lg:col-span-3">
             <ul className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
               {TABS.map((t) => {
-                const isActive = t.id === active
+                const isActive = t.id === active;
                 return (
                   <li key={t.id} className="shrink-0 lg:shrink">
                     <button
@@ -179,7 +203,7 @@ export default function AppShell02() {
                       <span className="whitespace-nowrap">{t.label}</span>
                     </button>
                   </li>
-                )
+                );
               })}
             </ul>
           </nav>
@@ -198,7 +222,10 @@ export default function AppShell02() {
                     </span>
                   </div>
                 </div>
-                <Badge variant="outline" className="hidden font-mono sm:inline-flex">
+                <Badge
+                  variant="outline"
+                  className="hidden font-mono sm:inline-flex"
+                >
                   {fields.length} fields
                 </Badge>
               </div>
@@ -240,5 +267,5 @@ export default function AppShell02() {
         </div>
       </div>
     </div>
-  )
+  );
 }

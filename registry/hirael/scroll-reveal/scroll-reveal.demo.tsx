@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ScrollReveal } from "@/registry/hirael/ui/scroll-reveal"
+import { ScrollReveal } from "@/registry/hirael/ui/scroll-reveal";
 
 const ITEMS = [
   { dir: "up" as const, label: "Up" },
   { dir: "right" as const, label: "Right" },
   { dir: "left" as const, label: "Left" },
   { dir: "down" as const, label: "Down" },
-]
+];
 
 export default function ScrollRevealDemo() {
   return (
@@ -32,5 +32,5 @@ export default function ScrollRevealDemo() {
         ))}
       </div>
     </div>
-  )
+  );
 }

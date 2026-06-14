@@ -9,7 +9,7 @@ export type ComponentCategory =
   | "widgets"
   | "saas"
   | "blocks"
-  | "templates"
+  | "templates";
 
 export type BlockKind =
   | "hero"
@@ -29,35 +29,35 @@ export type BlockKind =
   | "dashboard"
   | "integrations"
   | "image-gallery"
-  | "app-shell"
+  | "app-shell";
 
 export type RegistryEntryMeta = {
-  name: string
-  title: string
-  description: string
-  category: ComponentCategory
-  sourceFiles?: string[]
+  name: string;
+  title: string;
+  description: string;
+  category: ComponentCategory;
+  sourceFiles?: string[];
   /**
    * Install-target paths, parallel to `sourceFiles`. Shown in the code view
    * as a file hierarchy so users see where each file lands in their project.
    */
-  installTargets?: string[]
-  installSlug?: string
-  registryDependencies?: string[]
-  dependencies?: string[]
-  blockKind?: BlockKind
-  blockTagline?: string
+  installTargets?: string[];
+  installSlug?: string;
+  registryDependencies?: string[];
+  dependencies?: string[];
+  blockKind?: BlockKind;
+  blockTagline?: string;
   /**
    * CSS variables the item ships with (registry-item schema `cssVars`).
    * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
    * them into `@theme inline` for Tailwind v4 consumers.
    */
   cssVars?: {
-    theme?: Record<string, string>
-    light?: Record<string, string>
-    dark?: Record<string, string>
-  }
-}
+    theme?: Record<string, string>;
+    light?: Record<string, string>;
+    dark?: Record<string, string>;
+  };
+};
 
 export const REGISTRY: RegistryEntryMeta[] = [
   {
@@ -830,9 +830,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockTagline: "Hub & spoke · 7 spokes · orbit ring",
     category: "blocks",
     blockKind: "integrations",
-    sourceFiles: [
-      "registry/hirael/blocks/integrations-01/integrations-01.tsx",
-    ],
+    sourceFiles: ["registry/hirael/blocks/integrations-01/integrations-01.tsx"],
     installTargets: ["components/blocks/integrations-01.tsx"],
     registryDependencies: ["badge", "button", "card"],
     dependencies: ["lucide-react"],
@@ -1653,7 +1651,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["hls.js", "lucide-react"],
   },
-]
+];
 
 /**
  * Items that install through the registry but aren't showcased on the site
@@ -1661,17 +1659,17 @@ export const REGISTRY: RegistryEntryMeta[] = [
  * REGISTRY + DISTRIBUTION_ONLY by scripts/build-registry.mjs.
  */
 export type DistributionOnlyEntry = {
-  name: string
-  title: string
-  description: string
-  type: "registry:ui" | "registry:block"
+  name: string;
+  title: string;
+  description: string;
+  type: "registry:ui" | "registry:block";
   /** Raw registry.json categories. */
-  categories: string[]
-  sourceFiles: string[]
-  installTargets?: string[]
-  registryDependencies?: string[]
-  dependencies?: string[]
-}
+  categories: string[];
+  sourceFiles: string[];
+  installTargets?: string[];
+  registryDependencies?: string[];
+  dependencies?: string[];
+};
 
 export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
   {
@@ -1685,11 +1683,11 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     registryDependencies: [],
     dependencies: ["@radix-ui/react-accordion", "lucide-react"],
   },
-]
+];
 
 export const REGISTRY_BY_NAME = Object.fromEntries(
-  REGISTRY.map((r) => [r.name, r])
-) as Record<string, RegistryEntryMeta>
+  REGISTRY.map((r) => [r.name, r]),
+) as Record<string, RegistryEntryMeta>;
 
 export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   inputs: "Inputs",
@@ -1703,7 +1701,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   saas: "SaaS",
   blocks: "Blocks",
   templates: "Templates",
-}
+};
 
 export const REGISTRY_BY_CATEGORY = (() => {
   const groups: Record<ComponentCategory, RegistryEntryMeta[]> = {
@@ -1718,16 +1716,16 @@ export const REGISTRY_BY_CATEGORY = (() => {
     saas: [],
     blocks: [],
     templates: [],
-  }
-  for (const entry of REGISTRY) groups[entry.category].push(entry)
-  return groups
-})()
+  };
+  for (const entry of REGISTRY) groups[entry.category].push(entry);
+  return groups;
+})();
 
-export const TEMPLATES = REGISTRY_BY_CATEGORY.templates
+export const TEMPLATES = REGISTRY_BY_CATEGORY.templates;
 
 export const COMPONENTS = REGISTRY.filter(
-  (entry) => entry.category !== "blocks" && entry.category !== "templates"
-)
+  (entry) => entry.category !== "blocks" && entry.category !== "templates",
+);
 
 export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   hero: "Hero sections",
@@ -1748,7 +1746,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   integrations: "Integrations",
   "image-gallery": "Image gallery",
   "app-shell": "App shell",
-}
+};
 
 export const BLOCKS_BY_KIND = (() => {
   const groups: Record<BlockKind, RegistryEntryMeta[]> = {
@@ -1770,14 +1768,14 @@ export const BLOCKS_BY_KIND = (() => {
     integrations: [],
     "image-gallery": [],
     "app-shell": [],
-  }
+  };
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
-      groups[entry.blockKind].push(entry)
+      groups[entry.blockKind].push(entry);
     }
   }
-  return groups
-})()
+  return groups;
+})();
 
 export const BLOCK_KIND_ORDER: BlockKind[] = [
   "hero",
@@ -1798,7 +1796,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "integrations",
   "image-gallery",
   "app-shell",
-]
+];
 
 /* -------------------------------------------------------------------------- */
 /* Routing — every browsable item lives under its category segment            */
@@ -1818,7 +1816,7 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "navigation",
   "widgets",
   "saas",
-]
+];
 
 /** One-line, human blurb for each component category landing page. */
 export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
@@ -1839,7 +1837,7 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   widgets:
     "Composite dashboard panels: KPI grids, notifications, quick actions.",
   saas: "Billing, plans, API keys and usage panels for product settings.",
-}
+};
 
 /**
  * URL slug per block kind. The slug differs from the kind key wherever the
@@ -1865,29 +1863,29 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   integrations: "integrations",
   "image-gallery": "image-gallery",
   "app-shell": "app-shell",
-}
+};
 
 export const BLOCK_KIND_BY_SLUG: Record<string, BlockKind> = Object.fromEntries(
-  Object.entries(BLOCK_KIND_SLUGS).map(([kind, slug]) => [slug, kind])
-) as Record<string, BlockKind>
+  Object.entries(BLOCK_KIND_SLUGS).map(([kind, slug]) => [slug, kind]),
+) as Record<string, BlockKind>;
 
 /** The category segment an entry's detail page sits under. */
 export function entryCategorySlug(entry: RegistryEntryMeta): string {
   if (entry.category === "blocks" && entry.blockKind)
-    return BLOCK_KIND_SLUGS[entry.blockKind]
-  return entry.category
+    return BLOCK_KIND_SLUGS[entry.blockKind];
+  return entry.category;
 }
 
 /** Canonical site path for an entry's detail page (category in the URL). */
 export function entryHref(entry: RegistryEntryMeta): string {
-  if (entry.category === "templates") return `/templates/${entry.name}`
+  if (entry.category === "templates") return `/templates/${entry.name}`;
   if (entry.category === "blocks")
-    return `/blocks/${entryCategorySlug(entry)}/${entry.name}`
-  return `/components/${entry.category}/${entry.name}`
+    return `/blocks/${entryCategorySlug(entry)}/${entry.name}`;
+  return `/components/${entry.category}/${entry.name}`;
 }
 
 /** Path of an entry's framed `/embed/*` preview (category in the URL). */
 export function entryEmbedHref(entry: RegistryEntryMeta): string {
-  if (entry.category === "templates") return `/embed/templates/${entry.name}`
-  return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`
+  if (entry.category === "templates") return `/embed/templates/${entry.name}`;
+  return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`;
 }

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion, useMotionTemplate, useMotionValue } from "motion/react"
+import * as React from "react";
+import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type CursorGlowProps = React.ComponentProps<"div"> & {
   /** Diameter of the glow, in px. */
-  size?: number
+  size?: number;
   /** Glow color. Defaults to a soft tint of the foreground token. */
-  color?: string
-}
+  color?: string;
+};
 
 function CursorGlow({
   className,
@@ -19,15 +19,15 @@ function CursorGlow({
   color = "color-mix(in oklch, var(--foreground) 12%, transparent)",
   ...props
 }: CursorGlowProps) {
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    x.set(event.clientX - rect.left)
-    y.set(event.clientY - rect.top)
-  }
+    const rect = event.currentTarget.getBoundingClientRect();
+    x.set(event.clientX - rect.left);
+    y.set(event.clientY - rect.top);
+  };
 
   return (
     <div
@@ -46,7 +46,7 @@ function CursorGlow({
         {children}
       </div>
     </div>
-  )
+  );
 }
 
-export { CursorGlow }
+export { CursorGlow };

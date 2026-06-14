@@ -1,11 +1,11 @@
-import type { ReactNode } from "react"
-import { Check, X } from "lucide-react"
+import type { ReactNode } from "react";
+import { Check, X } from "lucide-react";
 
-import { GradientText } from "./primitives"
-import { HlsVideo } from "./hls-video"
+import { GradientText } from "./primitives";
+import { HlsVideo } from "./hls-video";
 
 const FREEDOM_HLS =
-  "https://stream.mux.com/bnYL6x5cAX6WiJv2pOKpITehZd3NVdXpj3ylJFpX5Lk.m3u8"
+  "https://stream.mux.com/bnYL6x5cAX6WiJv2pOKpITehZd3NVdXpj3ylJFpX5Lk.m3u8";
 
 const NEGATIVES = [
   "Reactive firefighting when foundational issues surface too late",
@@ -13,7 +13,7 @@ const NEGATIVES = [
   "Constant re-verification because source data can't be trusted",
   "Fragmented vendor relations produce mismatched deliverables",
   "Scattered specs and decisions buried across siloed systems",
-]
+];
 
 const POSITIVES = [
   "Layered dependency maps eliminate costly surprises at every phase",
@@ -21,7 +21,7 @@ const POSITIVES = [
   "Live validation loops keep requirements locked across all stages",
   "Unified vendor management through a single accountable contact",
   "Centralized context and clear records accelerate every decision",
-]
+];
 
 function ControlGlyph() {
   return (
@@ -38,15 +38,15 @@ function ControlGlyph() {
         fill="rgb(200, 111, 255)"
       />
     </svg>
-  )
+  );
 }
 
 function PointRow({
   children,
   positive,
 }: {
-  children: ReactNode
-  positive?: boolean
+  children: ReactNode;
+  positive?: boolean;
 }) {
   return (
     <div
@@ -61,19 +61,27 @@ function PointRow({
         }}
       >
         {positive ? (
-          <Check className="size-full text-[var(--nexa-blue)]" strokeWidth={2.5} />
+          <Check
+            className="size-full text-[var(--nexa-blue)]"
+            strokeWidth={2.5}
+          />
         ) : (
-          <X className="size-full text-[var(--nexa-lavender-3)]" strokeWidth={2.5} />
+          <X
+            className="size-full text-[var(--nexa-lavender-3)]"
+            strokeWidth={2.5}
+          />
         )}
       </span>
       <span
-        className={positive ? "text-[var(--nexa-navy)]" : "text-[var(--nexa-lavender-3)]"}
+        className={
+          positive ? "text-[var(--nexa-navy)]" : "text-[var(--nexa-lavender-3)]"
+        }
         style={{ fontSize: "clamp(13px, 1.15vw, 17px)" }}
       >
         {children}
       </span>
     </div>
-  )
+  );
 }
 
 export function Freedom() {
@@ -82,7 +90,10 @@ export function Freedom() {
       id="method"
       data-slot="freedom"
       className="flex flex-col items-center bg-white"
-      style={{ padding: "clamp(48px, 6vw, 80px) clamp(16px, 3vw, 40px)", gap: 36 }}
+      style={{
+        padding: "clamp(48px, 6vw, 80px) clamp(16px, 3vw, 40px)",
+        gap: 36,
+      }}
     >
       <div className="flex flex-col items-center gap-9 text-center">
         <span
@@ -116,7 +127,10 @@ export function Freedom() {
           padding: "0 clamp(0px, 2.92vw, 40px)",
         }}
       >
-        <div className="order-2 flex w-full flex-col lg:order-none" style={{ gap: 12 }}>
+        <div
+          className="order-2 flex w-full flex-col lg:order-none"
+          style={{ gap: 12 }}
+        >
           {NEGATIVES.map((text) => (
             <PointRow key={text}>{text}</PointRow>
           ))}
@@ -136,7 +150,10 @@ export function Freedom() {
           </div>
         </div>
 
-        <div className="order-3 flex w-full flex-col lg:order-none" style={{ gap: 12 }}>
+        <div
+          className="order-3 flex w-full flex-col lg:order-none"
+          style={{ gap: 12 }}
+        >
           {POSITIVES.map((text) => (
             <PointRow key={text} positive>
               {text}
@@ -145,5 +162,5 @@ export function Freedom() {
         </div>
       </div>
     </section>
-  )
+  );
 }

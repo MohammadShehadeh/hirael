@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { Checkbox } from "@/registry/hirael/ui/checkbox"
-import { FieldSeparator } from "@/registry/hirael/ui/field"
-import { Input } from "@/registry/hirael/ui/input"
-import { Label } from "@/registry/hirael/ui/label"
+import { Button } from "@/registry/hirael/ui/button";
+import { Checkbox } from "@/registry/hirael/ui/checkbox";
+import { FieldSeparator } from "@/registry/hirael/ui/field";
+import { Input } from "@/registry/hirael/ui/input";
+import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
-} from "@/registry/hirael/ui/password-input"
+} from "@/registry/hirael/ui/password-input";
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -21,7 +21,7 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
         d="M21.35 11.1H12v3.2h5.34c-.23 1.4-1.66 4.1-5.34 4.1A6.4 6.4 0 1 1 12 5.6c1.83 0 3.05.78 3.75 1.45l2.55-2.46C16.74 3.05 14.55 2 12 2 6.95 2 2.85 6.1 2.85 11.15S6.95 20.3 12 20.3c6.93 0 9.5-4.86 9.5-7.4 0-.5-.06-.88-.15-1.8Z"
       />
     </svg>
-  )
+  );
 }
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -32,7 +32,7 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
         d="M12 2C6.48 2 2 6.58 2 12.22c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.36-3.37-1.36-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.35 1.11 2.92.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.13-4.55-5.04 0-1.11.39-2.02 1.03-2.74-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.04A9.4 9.4 0 0 1 12 7.04c.85 0 1.7.12 2.5.34 1.9-1.31 2.74-1.04 2.74-1.04.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.74 0 3.92-2.34 4.78-4.57 5.03.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.04 10.04 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z"
       />
     </svg>
-  )
+  );
 }
 
 function BrandMark({ className }: { className?: string }) {
@@ -53,13 +53,13 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function Login01() {
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [remember, setRemember] = React.useState(true)
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [remember, setRemember] = React.useState(true);
 
   return (
     <section className="relative isolate flex min-h-[640px] items-center justify-center bg-background py-16 md:py-24">
@@ -186,5 +186,5 @@ export default function Login01() {
         </p>
       </div>
     </section>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/hirael/ui/password-input"
+} from "@/registry/hirael/ui/password-input";
 
 export default function PasswordInputDemo() {
-  const [basic, setBasic] = React.useState("")
-  const [composed, setComposed] = React.useState("hunter2")
+  const [basic, setBasic] = React.useState("");
+  const [composed, setComposed] = React.useState("hunter2");
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -41,5 +41,5 @@ export default function PasswordInputDemo() {
         </PasswordInput>
       </div>
     </div>
-  )
+  );
 }

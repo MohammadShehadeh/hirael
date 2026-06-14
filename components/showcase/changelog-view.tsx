@@ -1,9 +1,9 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
-import { SiteFooter } from "@/components/showcase/site-footer"
-import { SiteHeader } from "@/components/showcase/site-header"
-import type { Changelog } from "@/lib/changelog"
+import { SiteFooter } from "@/components/showcase/site-footer";
+import { SiteHeader } from "@/components/showcase/site-header";
+import type { Changelog } from "@/lib/changelog";
 
 export function ChangelogView({ releases, lastUpdated }: Changelog) {
   return (
@@ -118,5 +118,5 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
 
       <SiteFooter />
     </div>
-  )
+  );
 }

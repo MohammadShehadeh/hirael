@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { QRCode } from "@/registry/hirael/ui/qr-code"
+import { QRCode } from "@/registry/hirael/ui/qr-code";
 
 const longPayload =
-  "https://hirael.com/components/qr-code?utm_source=showcase&utm_medium=demo&utm_campaign=error-correction"
+  "https://hirael.com/components/qr-code?utm_source=showcase&utm_medium=demo&utm_campaign=error-correction";
 
 export default function QrCodeDemo() {
   return (
@@ -24,7 +24,11 @@ export default function QrCodeDemo() {
           currentColor theming
         </p>
         <div className="flex items-center gap-4">
-          <QRCode value="https://hirael.com" size={96} className="text-primary" />
+          <QRCode
+            value="https://hirael.com"
+            size={96}
+            className="text-primary"
+          />
           <QRCode
             value="https://hirael.com"
             size={96}
@@ -68,9 +72,11 @@ export default function QrCodeDemo() {
             size={128}
             title="Scan to open hirael.com"
           />
-          <p className="text-xs text-muted-foreground">Scan to open hirael.com</p>
+          <p className="text-xs text-muted-foreground">
+            Scan to open hirael.com
+          </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

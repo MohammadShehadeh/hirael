@@ -1,1 +1,1 @@
-export { default } from "./rivr"
+export { default } from "./rivr";

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ImageIcon, Link2, Plus, Type } from "lucide-react"
+import { ImageIcon, Link2, Plus, Type } from "lucide-react";
 
 import {
   FloatingActionButton,
   FloatingActionButtonItem,
   FloatingActionButtonList,
   FloatingActionButtonTrigger,
-} from "@/registry/hirael/ui/floating-action-button"
+} from "@/registry/hirael/ui/floating-action-button";
 
 export default function FloatingActionButtonDemo() {
   return (
@@ -29,5 +29,5 @@ export default function FloatingActionButtonDemo() {
         </FloatingActionButtonTrigger>
       </FloatingActionButton>
     </div>
-  )
+  );
 }

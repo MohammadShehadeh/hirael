@@ -1,58 +1,58 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import * as React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/registry/hirael/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
+} from "@/registry/hirael/ui/popover";
 
-export type MonthValue = { year: number; month: number }
-export type MonthRange = { from: MonthValue; to?: MonthValue }
-export type MonthPickerMode = "single" | "range"
+export type MonthValue = { year: number; month: number };
+export type MonthRange = { from: MonthValue; to?: MonthValue };
+export type MonthPickerMode = "single" | "range";
 
 type MonthPickerContextValue =
   | {
-      mode: "single"
-      value: MonthValue | undefined
-      setValue: (v: MonthValue) => void
-      minYear: number
-      maxYear: number
-      displayYear: number
-      setDisplayYear: (n: number) => void
-      open: boolean
-      setOpen: (open: boolean) => void
-      disabled?: boolean
+      mode: "single";
+      value: MonthValue | undefined;
+      setValue: (v: MonthValue) => void;
+      minYear: number;
+      maxYear: number;
+      displayYear: number;
+      setDisplayYear: (n: number) => void;
+      open: boolean;
+      setOpen: (open: boolean) => void;
+      disabled?: boolean;
     }
   | {
-      mode: "range"
-      value: MonthRange | undefined
-      setValue: (v: MonthValue) => void
-      minYear: number
-      maxYear: number
-      displayYear: number
-      setDisplayYear: (n: number) => void
-      open: boolean
-      setOpen: (open: boolean) => void
-      disabled?: boolean
-    }
+      mode: "range";
+      value: MonthRange | undefined;
+      setValue: (v: MonthValue) => void;
+      minYear: number;
+      maxYear: number;
+      displayYear: number;
+      setDisplayYear: (n: number) => void;
+      open: boolean;
+      setOpen: (open: boolean) => void;
+      disabled?: boolean;
+    };
 
 const MonthPickerContext = React.createContext<MonthPickerContextValue | null>(
-  null
-)
+  null,
+);
 
 function useMonthPicker() {
-  const ctx = React.useContext(MonthPickerContext)
+  const ctx = React.useContext(MonthPickerContext);
   if (!ctx) {
     throw new Error(
-      "MonthPicker compound components must be used inside <MonthPicker>"
-    )
+      "MonthPicker compound components must be used inside <MonthPicker>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 const MONTH_LABELS_SHORT = [
@@ -68,7 +68,7 @@ const MONTH_LABELS_SHORT = [
   "Oct",
   "Nov",
   "Dec",
-]
+];
 
 const MONTH_LABELS_LONG = [
   "January",
@@ -83,48 +83,48 @@ const MONTH_LABELS_LONG = [
   "October",
   "November",
   "December",
-]
+];
 
 function monthKey(v: MonthValue) {
-  return v.year * 12 + v.month
+  return v.year * 12 + v.month;
 }
 
 function compareMonth(a: MonthValue, b: MonthValue) {
-  return monthKey(a) - monthKey(b)
+  return monthKey(a) - monthKey(b);
 }
 
 function monthEq(a: MonthValue | undefined, b: MonthValue | undefined) {
-  if (!a || !b) return false
-  return a.year === b.year && a.month === b.month
+  if (!a || !b) return false;
+  return a.year === b.year && a.month === b.month;
 }
 
 export type MonthPickerProps =
   | {
-      mode?: "single"
-      value?: MonthValue
-      defaultValue?: MonthValue
-      onValueChange?: (v: MonthValue) => void
-      minYear?: number
-      maxYear?: number
-      disabled?: boolean
-      open?: boolean
-      defaultOpen?: boolean
-      onOpenChange?: (open: boolean) => void
-      children?: React.ReactNode
+      mode?: "single";
+      value?: MonthValue;
+      defaultValue?: MonthValue;
+      onValueChange?: (v: MonthValue) => void;
+      minYear?: number;
+      maxYear?: number;
+      disabled?: boolean;
+      open?: boolean;
+      defaultOpen?: boolean;
+      onOpenChange?: (open: boolean) => void;
+      children?: React.ReactNode;
     }
   | {
-      mode: "range"
-      value?: MonthRange
-      defaultValue?: MonthRange
-      onValueChange?: (range: MonthRange) => void
-      minYear?: number
-      maxYear?: number
-      disabled?: boolean
-      open?: boolean
-      defaultOpen?: boolean
-      onOpenChange?: (open: boolean) => void
-      children?: React.ReactNode
-    }
+      mode: "range";
+      value?: MonthRange;
+      defaultValue?: MonthRange;
+      onValueChange?: (range: MonthRange) => void;
+      minYear?: number;
+      maxYear?: number;
+      disabled?: boolean;
+      open?: boolean;
+      defaultOpen?: boolean;
+      onOpenChange?: (open: boolean) => void;
+      children?: React.ReactNode;
+    };
 
 function MonthPicker(props: MonthPickerProps) {
   const {
@@ -135,91 +135,91 @@ function MonthPicker(props: MonthPickerProps) {
     defaultOpen = false,
     onOpenChange,
     children,
-  } = props
-  const mode = props.mode ?? "single"
+  } = props;
+  const mode = props.mode ?? "single";
 
   const singleValueProp =
     mode === "single"
       ? (props as Extract<MonthPickerProps, { mode?: "single" }>).value
-      : undefined
+      : undefined;
   const singleDefaultValue =
     mode === "single"
       ? (props as Extract<MonthPickerProps, { mode?: "single" }>).defaultValue
-      : undefined
+      : undefined;
   const singleOnValueChange =
     mode === "single"
       ? (props as Extract<MonthPickerProps, { mode?: "single" }>).onValueChange
-      : undefined
+      : undefined;
   const rangeValueProp =
     mode === "range"
       ? (props as Extract<MonthPickerProps, { mode: "range" }>).value
-      : undefined
+      : undefined;
   const rangeDefaultValue =
     mode === "range"
       ? (props as Extract<MonthPickerProps, { mode: "range" }>).defaultValue
-      : undefined
+      : undefined;
   const rangeOnValueChange =
     mode === "range"
       ? (props as Extract<MonthPickerProps, { mode: "range" }>).onValueChange
-      : undefined
+      : undefined;
 
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen)
-  const open = openProp ?? openInternal
+  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
+  const open = openProp ?? openInternal;
   const setOpen = React.useCallback(
     (next: boolean) => {
-      if (openProp === undefined) setOpenInternal(next)
-      onOpenChange?.(next)
+      if (openProp === undefined) setOpenInternal(next);
+      onOpenChange?.(next);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
   const [singleInternal, setSingleInternal] = React.useState<
     MonthValue | undefined
-  >(singleDefaultValue)
+  >(singleDefaultValue);
   const [rangeInternal, setRangeInternal] = React.useState<
     MonthRange | undefined
-  >(rangeDefaultValue)
+  >(rangeDefaultValue);
 
   const singleValue =
-    mode === "single" ? (singleValueProp ?? singleInternal) : undefined
+    mode === "single" ? (singleValueProp ?? singleInternal) : undefined;
   const rangeValue =
-    mode === "range" ? (rangeValueProp ?? rangeInternal) : undefined
+    mode === "range" ? (rangeValueProp ?? rangeInternal) : undefined;
 
   const anchor =
     (mode === "single" ? singleValue : rangeValue?.from) ??
     (() => {
-      const d = new Date()
-      return { year: d.getFullYear(), month: d.getMonth() }
-    })()
+      const d = new Date();
+      return { year: d.getFullYear(), month: d.getMonth() };
+    })();
 
-  const [displayYear, setDisplayYear] = React.useState<number>(anchor.year)
+  const [displayYear, setDisplayYear] = React.useState<number>(anchor.year);
 
   const setValueSingle = React.useCallback(
     (v: MonthValue) => {
-      if (singleValueProp === undefined) setSingleInternal(v)
-      singleOnValueChange?.(v)
-      setOpen(false)
+      if (singleValueProp === undefined) setSingleInternal(v);
+      singleOnValueChange?.(v);
+      setOpen(false);
     },
-    [singleValueProp, singleOnValueChange, setOpen]
-  )
+    [singleValueProp, singleOnValueChange, setOpen],
+  );
 
   const setValueRange = React.useCallback(
     (v: MonthValue) => {
-      const current = rangeValueProp ?? rangeInternal
-      let next: MonthRange
+      const current = rangeValueProp ?? rangeInternal;
+      let next: MonthRange;
       if (!current || (current.from && current.to)) {
-        next = { from: v }
+        next = { from: v };
       } else if (compareMonth(v, current.from) < 0) {
-        next = { from: v, to: current.from }
+        next = { from: v, to: current.from };
       } else {
-        next = { from: current.from, to: v }
+        next = { from: current.from, to: v };
       }
-      if (rangeValueProp === undefined) setRangeInternal(next)
-      rangeOnValueChange?.(next)
-      if (next.to !== undefined) setOpen(false)
+      if (rangeValueProp === undefined) setRangeInternal(next);
+      rangeOnValueChange?.(next);
+      if (next.to !== undefined) setOpen(false);
     },
-    [rangeValueProp, rangeOnValueChange, rangeInternal, setOpen]
-  )
+    [rangeValueProp, rangeOnValueChange, rangeInternal, setOpen],
+  );
 
   const ctx = React.useMemo<MonthPickerContextValue>(() => {
     if (mode === "single") {
@@ -234,7 +234,7 @@ function MonthPicker(props: MonthPickerProps) {
         open,
         setOpen,
         disabled,
-      }
+      };
     }
     return {
       mode: "range",
@@ -247,7 +247,7 @@ function MonthPicker(props: MonthPickerProps) {
       open,
       setOpen,
       disabled,
-    }
+    };
   }, [
     mode,
     singleValue,
@@ -260,7 +260,7 @@ function MonthPicker(props: MonthPickerProps) {
     open,
     setOpen,
     disabled,
-  ])
+  ]);
 
   return (
     <MonthPickerContext.Provider value={ctx}>
@@ -268,22 +268,22 @@ function MonthPicker(props: MonthPickerProps) {
         {children}
       </Popover>
     </MonthPickerContext.Provider>
-  )
+  );
 }
 
 function formatMonthValue(
   ctx: MonthPickerContextValue,
-  placeholder: string
+  placeholder: string,
 ): string {
   if (ctx.mode === "single") {
-    if (!ctx.value) return placeholder
-    return `${MONTH_LABELS_SHORT[ctx.value.month]} ${ctx.value.year}`
+    if (!ctx.value) return placeholder;
+    return `${MONTH_LABELS_SHORT[ctx.value.month]} ${ctx.value.year}`;
   }
-  if (!ctx.value) return placeholder
-  const fromStr = `${MONTH_LABELS_SHORT[ctx.value.from.month]} ${ctx.value.from.year}`
-  if (!ctx.value.to) return `${fromStr} – …`
-  const toStr = `${MONTH_LABELS_SHORT[ctx.value.to.month]} ${ctx.value.to.year}`
-  return `${fromStr} – ${toStr}`
+  if (!ctx.value) return placeholder;
+  const fromStr = `${MONTH_LABELS_SHORT[ctx.value.from.month]} ${ctx.value.from.year}`;
+  if (!ctx.value.to) return `${fromStr} – …`;
+  const toStr = `${MONTH_LABELS_SHORT[ctx.value.to.month]} ${ctx.value.to.year}`;
+  return `${fromStr} – ${toStr}`;
 }
 
 function MonthPickerTrigger({
@@ -292,11 +292,11 @@ function MonthPickerTrigger({
   children,
   ...props
 }: Omit<React.ComponentProps<"button">, "children"> & {
-  placeholder?: string
-  children?: React.ReactNode
+  placeholder?: string;
+  children?: React.ReactNode;
 }) {
-  const ctx = useMonthPicker()
-  const empty = ctx.value === undefined
+  const ctx = useMonthPicker();
+  const empty = ctx.value === undefined;
   return (
     <PopoverTrigger asChild>
       <button
@@ -309,91 +309,91 @@ function MonthPickerTrigger({
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           empty && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
         {children ?? formatMonthValue(ctx, placeholder)}
       </button>
     </PopoverTrigger>
-  )
+  );
 }
 
 function isInRange(v: MonthValue, range: MonthRange | undefined) {
-  if (!range || range.to === undefined) return false
-  return compareMonth(v, range.from) > 0 && compareMonth(v, range.to) < 0
+  if (!range || range.to === undefined) return false;
+  return compareMonth(v, range.from) > 0 && compareMonth(v, range.to) < 0;
 }
 
 function isEndpoint(v: MonthValue, range: MonthRange | undefined) {
-  if (!range) return false
-  return monthEq(v, range.from) || monthEq(v, range.to)
+  if (!range) return false;
+  return monthEq(v, range.from) || monthEq(v, range.to);
 }
 
 function MonthPickerContent({
   className,
   ...props
 }: React.ComponentProps<typeof PopoverContent>) {
-  const ctx = useMonthPicker()
+  const ctx = useMonthPicker();
   const today = (() => {
-    const d = new Date()
-    return { year: d.getFullYear(), month: d.getMonth() }
-  })()
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() };
+  })();
 
-  const canPrev = ctx.displayYear - 1 >= ctx.minYear
-  const canNext = ctx.displayYear + 1 <= ctx.maxYear
+  const canPrev = ctx.displayYear - 1 >= ctx.minYear;
+  const canNext = ctx.displayYear + 1 <= ctx.maxYear;
 
-  const gridRef = React.useRef<HTMLDivElement>(null)
+  const gridRef = React.useRef<HTMLDivElement>(null);
   const focusCell = (year: number, month: number) => {
     const el = gridRef.current?.querySelector<HTMLButtonElement>(
-      `[data-month-key="${year * 12 + month}"]`
-    )
-    el?.focus()
-  }
+      `[data-month-key="${year * 12 + month}"]`,
+    );
+    el?.focus();
+  };
 
   const handleKey = (e: React.KeyboardEvent, year: number, month: number) => {
     const forward =
-      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1
-    let nextYear = year
-    let nextMonth = month
+      getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1;
+    let nextYear = year;
+    let nextMonth = month;
     switch (e.key) {
       case "ArrowLeft":
-        nextMonth = month - forward
-        break
+        nextMonth = month - forward;
+        break;
       case "ArrowRight":
-        nextMonth = month + forward
-        break
+        nextMonth = month + forward;
+        break;
       case "ArrowUp":
-        nextMonth = month - 4
-        break
+        nextMonth = month - 4;
+        break;
       case "ArrowDown":
-        nextMonth = month + 4
-        break
+        nextMonth = month + 4;
+        break;
       case "PageUp":
-        ctx.setDisplayYear(Math.max(ctx.minYear, year - 1))
-        return
+        ctx.setDisplayYear(Math.max(ctx.minYear, year - 1));
+        return;
       case "PageDown":
-        ctx.setDisplayYear(Math.min(ctx.maxYear, year + 1))
-        return
+        ctx.setDisplayYear(Math.min(ctx.maxYear, year + 1));
+        return;
       default:
-        return
+        return;
     }
-    e.preventDefault()
+    e.preventDefault();
     while (nextMonth < 0) {
-      nextMonth += 12
-      nextYear -= 1
+      nextMonth += 12;
+      nextYear -= 1;
     }
     while (nextMonth > 11) {
-      nextMonth -= 12
-      nextYear += 1
+      nextMonth -= 12;
+      nextYear += 1;
     }
-    nextYear = Math.max(ctx.minYear, Math.min(ctx.maxYear, nextYear))
+    nextYear = Math.max(ctx.minYear, Math.min(ctx.maxYear, nextYear));
     if (nextYear !== ctx.displayYear) {
-      ctx.setDisplayYear(nextYear)
-      requestAnimationFrame(() => focusCell(nextYear, nextMonth))
+      ctx.setDisplayYear(nextYear);
+      requestAnimationFrame(() => focusCell(nextYear, nextMonth));
     } else {
-      focusCell(nextYear, nextMonth)
+      focusCell(nextYear, nextMonth);
     }
-  }
+  };
 
   return (
     <PopoverContent
@@ -436,13 +436,16 @@ function MonthPickerContent({
         className="grid grid-cols-4 gap-1"
       >
         {MONTH_LABELS_SHORT.map((label, month) => {
-          const v: MonthValue = { year: ctx.displayYear, month }
-          const out = ctx.displayYear < ctx.minYear || ctx.displayYear > ctx.maxYear
+          const v: MonthValue = { year: ctx.displayYear, month };
+          const out =
+            ctx.displayYear < ctx.minYear || ctx.displayYear > ctx.maxYear;
           const selected =
-            ctx.mode === "single" ? monthEq(ctx.value, v) : isEndpoint(v, ctx.value)
+            ctx.mode === "single"
+              ? monthEq(ctx.value, v)
+              : isEndpoint(v, ctx.value);
           const inRange =
-            ctx.mode === "range" ? isInRange(v, ctx.value) : false
-          const isToday = monthEq(today, v)
+            ctx.mode === "range" ? isInRange(v, ctx.value) : false;
+          const isToday = monthEq(today, v);
           return (
             <button
               key={month}
@@ -461,23 +464,18 @@ function MonthPickerContent({
                 "focus-visible:ring-2 focus-visible:ring-ring",
                 "disabled:opacity-30 disabled:hover:bg-transparent",
                 inRange && "bg-primary/15 text-foreground",
-                selected && "bg-primary text-primary-foreground hover:bg-primary",
-                !selected &&
-                  isToday &&
-                  "ring-1 ring-inset ring-primary/60"
+                selected &&
+                  "bg-primary text-primary-foreground hover:bg-primary",
+                !selected && isToday && "ring-1 ring-inset ring-primary/60",
               )}
             >
               {label}
             </button>
-          )
+          );
         })}
       </div>
     </PopoverContent>
-  )
+  );
 }
 
-export {
-  MonthPicker,
-  MonthPickerTrigger,
-  MonthPickerContent,
-}
+export { MonthPicker, MonthPickerTrigger, MonthPickerContent };

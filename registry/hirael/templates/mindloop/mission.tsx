@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   motion,
   useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
-} from "framer-motion"
+} from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const MISSION_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4"
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4";
 
 const PARAGRAPH_1 =
-  "We're building a space where curiosity meets clarity, where readers find depth, writers find reach, and every newsletter becomes a conversation worth having."
-const PARAGRAPH_1_HIGHLIGHTS = ["curiosity", "meets", "clarity"]
+  "We're building a space where curiosity meets clarity, where readers find depth, writers find reach, and every newsletter becomes a conversation worth having.";
+const PARAGRAPH_1_HIGHLIGHTS = ["curiosity", "meets", "clarity"];
 
 const PARAGRAPH_2 =
-  "A platform where content, community, and insight flow together, with less noise, less friction, and more meaning for everyone involved."
+  "A platform where content, community, and insight flow together, with less noise, less friction, and more meaning for everyone involved.";
 
-type Token = { text: string; highlight: boolean }
+type Token = { text: string; highlight: boolean };
 
 function tokenize(text: string, highlights: string[]): Token[] {
   return text.split(" ").map((word) => ({
     text: word,
     highlight: highlights.includes(word.replace(/[^a-zA-Z]/g, "")),
-  }))
+  }));
 }
 
 function Word({
@@ -37,15 +37,15 @@ function Word({
   progress,
   reduce,
 }: {
-  token: Token
-  index: number
-  total: number
-  progress: MotionValue<number>
-  reduce: boolean
+  token: Token;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  reduce: boolean;
 }) {
-  const start = index / total
-  const end = (index + 0.9) / total
-  const opacity = useTransform(progress, [start, end], [0.15, 1])
+  const start = index / total;
+  const end = (index + 0.9) / total;
+  const opacity = useTransform(progress, [start, end], [0.15, 1]);
   return (
     <motion.span
       className={cn(token.highlight && "text-foreground")}
@@ -53,20 +53,20 @@ function Word({
     >
       {token.text}{" "}
     </motion.span>
-  )
+  );
 }
 
 export function Mission() {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const reduce = useReducedMotion() ?? false
+  const ref = React.useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.85", "end 0.4"],
-  })
+  });
 
-  const tokens1 = tokenize(PARAGRAPH_1, PARAGRAPH_1_HIGHLIGHTS)
-  const tokens2 = tokenize(PARAGRAPH_2, [])
-  const total = tokens1.length + tokens2.length
+  const tokens1 = tokenize(PARAGRAPH_1, PARAGRAPH_1_HIGHLIGHTS);
+  const tokens2 = tokenize(PARAGRAPH_2, []);
+  const total = tokens1.length + tokens2.length;
 
   return (
     <section id="philosophy" className="px-8 pb-32 pt-0 md:px-28 md:pb-44">
@@ -115,5 +115,5 @@ export function Mission() {
         </div>
       </div>
     </section>
-  )
+  );
 }

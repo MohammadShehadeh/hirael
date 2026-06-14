@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type NotificationsProps = React.ComponentProps<"div">
+type NotificationsProps = React.ComponentProps<"div">;
 
 function Notifications({ className, ...props }: NotificationsProps) {
   return (
@@ -12,29 +12,32 @@ function Notifications({ className, ...props }: NotificationsProps) {
       data-slot="notifications"
       className={cn(
         "flex flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationsHeaderProps = React.ComponentProps<"div">
+type NotificationsHeaderProps = React.ComponentProps<"div">;
 
-function NotificationsHeader({ className, ...props }: NotificationsHeaderProps) {
+function NotificationsHeader({
+  className,
+  ...props
+}: NotificationsHeaderProps) {
   return (
     <div
       data-slot="notifications-header"
       className={cn(
         "flex items-center justify-between gap-2 border-b border-border px-4 py-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationsTitleProps = React.ComponentProps<"h3">
+type NotificationsTitleProps = React.ComponentProps<"h3">;
 
 function NotificationsTitle({ className, ...props }: NotificationsTitleProps) {
   return (
@@ -43,10 +46,10 @@ function NotificationsTitle({ className, ...props }: NotificationsTitleProps) {
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationsListProps = React.ComponentProps<"ul">
+type NotificationsListProps = React.ComponentProps<"ul">;
 
 function NotificationsList({ className, ...props }: NotificationsListProps) {
   return (
@@ -55,12 +58,12 @@ function NotificationsList({ className, ...props }: NotificationsListProps) {
       className={cn("divide-y divide-border", className)}
       {...props}
     />
-  )
+  );
 }
 
 type NotificationItemProps = React.ComponentProps<"li"> & {
-  unread?: boolean
-}
+  unread?: boolean;
+};
 
 function NotificationItem({
   unread,
@@ -74,7 +77,7 @@ function NotificationItem({
       data-unread={unread ? "" : undefined}
       className={cn(
         "relative flex gap-3 py-3 pe-4 ps-7 transition-colors hover:bg-accent/60 data-[unread]:bg-accent/30",
-        className
+        className,
       )}
       {...props}
     >
@@ -86,10 +89,10 @@ function NotificationItem({
       ) : null}
       {children}
     </li>
-  )
+  );
 }
 
-type NotificationMediaProps = React.ComponentProps<"span">
+type NotificationMediaProps = React.ComponentProps<"span">;
 
 function NotificationMedia({ className, ...props }: NotificationMediaProps) {
   return (
@@ -97,26 +100,29 @@ function NotificationMedia({ className, ...props }: NotificationMediaProps) {
       data-slot="notification-media"
       className={cn(
         "inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted text-[11px] font-medium text-muted-foreground [&_svg]:size-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationContentProps = React.ComponentProps<"div">
+type NotificationContentProps = React.ComponentProps<"div">;
 
-function NotificationContent({ className, ...props }: NotificationContentProps) {
+function NotificationContent({
+  className,
+  ...props
+}: NotificationContentProps) {
   return (
     <div
       data-slot="notification-content"
       className={cn("flex min-w-0 flex-1 flex-col gap-0.5", className)}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationTitleProps = React.ComponentProps<"p">
+type NotificationTitleProps = React.ComponentProps<"p">;
 
 function NotificationTitle({ className, ...props }: NotificationTitleProps) {
   return (
@@ -125,10 +131,10 @@ function NotificationTitle({ className, ...props }: NotificationTitleProps) {
       className={cn("text-sm text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationDescriptionProps = React.ComponentProps<"p">
+type NotificationDescriptionProps = React.ComponentProps<"p">;
 
 function NotificationDescription({
   className,
@@ -140,10 +146,10 @@ function NotificationDescription({
       className={cn("text-xs leading-relaxed text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type NotificationTimeProps = React.ComponentProps<"time">
+type NotificationTimeProps = React.ComponentProps<"time">;
 
 function NotificationTime({ className, ...props }: NotificationTimeProps) {
   return (
@@ -151,11 +157,11 @@ function NotificationTime({ className, ...props }: NotificationTimeProps) {
       data-slot="notification-time"
       className={cn(
         "shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -169,4 +175,4 @@ export {
   NotificationTitle,
   NotificationDescription,
   NotificationTime,
-}
+};

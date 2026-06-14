@@ -48,4 +48,4 @@ export const PORTFOLIO_STYLES = `
     animation: none;
   }
 }
-`
+`;

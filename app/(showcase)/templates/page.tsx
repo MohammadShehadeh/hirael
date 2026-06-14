@@ -1,12 +1,12 @@
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
-import type { Metadata } from "next"
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import type { Metadata } from "next";
 
-import { SITE } from "@/lib/site"
-import { TEMPLATES } from "@/registry/hirael/registry-meta"
+import { SITE } from "@/lib/site";
+import { TEMPLATES } from "@/registry/hirael/registry-meta";
 
 const TEMPLATES_DESCRIPTION =
-  "Full-page templates built in the Hirael style: complete, multi-section layouts you can copy into your repo with the shadcn CLI and edit like any other file."
+  "Full-page templates built in the Hirael style: complete, multi-section layouts you can copy into your repo with the shadcn CLI and edit like any other file.";
 
 export const metadata: Metadata = {
   title: "Templates",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: TEMPLATES_DESCRIPTION,
     images: ["/opengraph-image"],
   },
-}
+};
 
 export default function TemplatesIndex() {
   return (
@@ -54,8 +54,8 @@ export default function TemplatesIndex() {
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
           Complete, multi-section layouts that compose Hirael blocks and
-          components into a finished page. Copy one in with a single command
-          and make it yours.
+          components into a finished page. Copy one in with a single command and
+          make it yours.
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {TEMPLATES.length} template{TEMPLATES.length === 1 ? "" : "s"}
@@ -96,5 +96,5 @@ export default function TemplatesIndex() {
         ))}
       </section>
     </div>
-  )
+  );
 }

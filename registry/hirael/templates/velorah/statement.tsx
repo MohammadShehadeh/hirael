@@ -1,14 +1,14 @@
-import { HlsVideo } from "./hls-video"
+import { HlsVideo } from "./hls-video";
 
 const STATEMENT_HLS =
-  "https://stream.mux.com/9njY8qDfS02Uvbll018C8CK39p5EksK7mn02DDC1zYvppI.m3u8"
+  "https://stream.mux.com/9njY8qDfS02Uvbll018C8CK39p5EksK7mn02DDC1zYvppI.m3u8";
 
 const STATS = [
   { value: "OTA", label: "Over-the-air updates" },
   { value: "360°", label: "System visibility" },
   { value: "AI", label: "Adaptive routines" },
   { value: "24/7", label: "Remote monitoring" },
-]
+];
 
 export function Statement() {
   return (
@@ -53,5 +53,5 @@ export function Statement() {
         </button>
       </div>
     </section>
-  )
+  );
 }

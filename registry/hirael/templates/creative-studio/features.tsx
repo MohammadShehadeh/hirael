@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight, Check } from "lucide-react"
-import { motion, useInView, useReducedMotion } from "framer-motion"
+import * as React from "react";
+import { ArrowRight, Check } from "lucide-react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
-import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives"
+import { cn } from "@/lib/utils";
+import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives";
 
-const CREAM = "#E1E0CC"
-const PRIMARY = "#DEDBC8"
+const CREAM = "#E1E0CC";
+const PRIMARY = "#DEDBC8";
 
-const EASE_CARD: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const EASE_CARD: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function IconStoryboard({ className }: { className?: string }) {
   return (
@@ -28,7 +28,7 @@ function IconStoryboard({ className }: { className?: string }) {
       <path d="M9 5v14M15 5v14" />
       <path d="M3 9.5h6M3 14.5h6M15 9.5h6M15 14.5h6" />
     </svg>
-  )
+  );
 }
 
 function IconCritique({ className }: { className?: string }) {
@@ -46,7 +46,7 @@ function IconCritique({ className }: { className?: string }) {
       <path d="M21 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4A8 8 0 1 1 21 11.5Z" />
       <path d="m13 7 1 2.2 2.2 1-2.2 1L13 13.5 12 11.2 9.8 10.2 12 9.2Z" />
     </svg>
-  )
+  );
 }
 
 function IconImmersion({ className }: { className?: string }) {
@@ -65,16 +65,16 @@ function IconImmersion({ className }: { className?: string }) {
       <path d="M7.5 7.5a6.5 6.5 0 0 0 0 9M16.5 7.5a6.5 6.5 0 0 1 0 9" />
       <path d="M4.5 4.5a11 11 0 0 0 0 15M19.5 4.5a11 11 0 0 1 0 15" />
     </svg>
-  )
+  );
 }
 
 type InfoCard = {
-  index: number
-  number: string
-  title: string
-  Icon: (props: { className?: string }) => React.ReactElement
-  items: string[]
-}
+  index: number;
+  number: string;
+  title: string;
+  Icon: (props: { className?: string }) => React.ReactElement;
+  items: string[];
+};
 
 const INFO_CARDS: InfoCard[] = [
   {
@@ -111,21 +111,21 @@ const INFO_CARDS: InfoCard[] = [
       "Schedule syncing across your devices",
     ],
   },
-]
+];
 
 function FeatureCard({
   index,
   className,
   children,
 }: {
-  index: number
-  className?: string
-  children: React.ReactNode
+  index: number;
+  className?: string;
+  children: React.ReactNode;
 }) {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-100px" })
-  const reduce = useReducedMotion()
-  const show = reduce || inView
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const reduce = useReducedMotion();
+  const show = reduce || inView;
   return (
     <motion.div
       ref={ref}
@@ -136,7 +136,7 @@ function FeatureCard({
     >
       {children}
     </motion.div>
-  )
+  );
 }
 
 export function Features({ videoSrc }: { videoSrc?: string }) {
@@ -157,10 +157,7 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:gap-2 md:grid-cols-2 md:gap-1 lg:grid-cols-4 lg:h-[480px]">
-          <FeatureCard
-            index={0}
-            className="min-h-[320px] lg:h-full lg:min-h-0"
-          >
+          <FeatureCard index={0} className="min-h-[320px] lg:h-full lg:min-h-0">
             {videoSrc ? (
               <video
                 className="absolute inset-0 h-full w-full object-cover"
@@ -232,5 +229,5 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
         </div>
       </div>
     </section>
-  )
+  );
 }

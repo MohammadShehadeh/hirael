@@ -1,43 +1,43 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowUpRight, LifeBuoy, Mail, Search, SearchX } from "lucide-react"
+import * as React from "react";
+import { ArrowUpRight, LifeBuoy, Mail, Search, SearchX } from "lucide-react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/registry/hirael/ui/accordion"
-import { Button } from "@/registry/hirael/ui/button"
+} from "@/registry/hirael/ui/accordion";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   EmptyState,
   EmptyStateActions,
   EmptyStateDescription,
   EmptyStateMedia,
   EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state"
+} from "@/registry/hirael/ui/empty-state";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs"
+} from "@/registry/hirael/ui/input-group";
+import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
-type Category = "getting-started" | "billing" | "licensing"
+type Category = "getting-started" | "billing" | "licensing";
 
 const CATEGORIES: { value: Category | "all"; label: string }[] = [
   { value: "all", label: "All" },
   { value: "getting-started", label: "Getting started" },
   { value: "billing", label: "Billing" },
   { value: "licensing", label: "Licensing" },
-]
+];
 
 const CATEGORY_LABELS: Record<Category, string> = {
   "getting-started": "Getting started",
   billing: "Billing",
   licensing: "Licensing",
-}
+};
 
 const FAQS: readonly { q: string; a: string; category: Category }[] = [
   {
@@ -80,26 +80,26 @@ const FAQS: readonly { q: string; a: string; category: Category }[] = [
     a: "No attribution required. A mention is appreciated but never a condition of use.",
     category: "licensing",
   },
-]
+];
 
 export default function Faq03() {
-  const [query, setQuery] = React.useState("")
-  const [category, setCategory] = React.useState<Category | "all">("all")
+  const [query, setQuery] = React.useState("");
+  const [category, setCategory] = React.useState<Category | "all">("all");
 
-  const normalized = query.trim().toLowerCase()
+  const normalized = query.trim().toLowerCase();
   const visible = FAQS.filter((f) => {
-    if (category !== "all" && f.category !== category) return false
-    if (!normalized) return true
+    if (category !== "all" && f.category !== category) return false;
+    if (!normalized) return true;
     return (
       f.q.toLowerCase().includes(normalized) ||
       f.a.toLowerCase().includes(normalized)
-    )
-  })
+    );
+  });
 
   const clearFilters = () => {
-    setQuery("")
-    setCategory("all")
-  }
+    setQuery("");
+    setCategory("all");
+  };
 
   return (
     <section className="bg-background py-20 md:py-28">
@@ -215,5 +215,5 @@ export default function Faq03() {
         </div>
       </div>
     </section>
-  )
+  );
 }

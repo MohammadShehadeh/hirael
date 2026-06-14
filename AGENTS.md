@@ -71,7 +71,7 @@ with the rest of the catalog (the full checklist is in
   rewritten on install based on the consumer's `components.json`. Never
   import primitives by relative path.
 - **Design tokens, never hard-coded colors.** Use `--background /
-  --foreground / --border / --primary / --accent` and friends (see
+--foreground / --border / --primary / --accent` and friends (see
   [docs/design.md](./docs/design.md)). Light is a faithful inverse of dark;
   both must work. The single non-neutral is `--accent-cool`, reserved for
   live/active state — don't spend it on decoration.
@@ -84,7 +84,7 @@ with the rest of the catalog (the full checklist is in
   through `RegistryDemo`, which returns nothing if the name is unregistered,
   so the preview iframe silently comes up blank. (Blocks/templates point at
   the block file; components point at the `*.demo.tsx`.) `pnpm
-  check:registry` fails when a showcased entry is missing here.
+check:registry` fails when a showcased entry is missing here.
 
 ## Copy reads like a human
 

@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   TagInput,
   TagInputContainer,
   TagInputError,
   TagInputField,
   TagInputTag,
-} from "@/registry/hirael/ui/tag-input"
+} from "@/registry/hirael/ui/tag-input";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function TagInputDemo() {
-  const [basic, setBasic] = React.useState<string[]>(["typescript", "react"])
-  const [emails, setEmails] = React.useState<string[]>(["jane@hirael.com"])
+  const [basic, setBasic] = React.useState<string[]>(["typescript", "react"]);
+  const [emails, setEmails] = React.useState<string[]>(["jane@hirael.com"]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -55,5 +55,5 @@ export default function TagInputDemo() {
         </TagInput>
       </div>
     </div>
-  )
+  );
 }

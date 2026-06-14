@@ -1,11 +1,11 @@
-import Link from "next/link"
-import type { Metadata } from "next"
-import { ArrowRight, Layers, Palette } from "lucide-react"
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowRight, Layers, Palette } from "lucide-react";
 
-import { InlineCodeBlock } from "@/components/showcase/code-block"
-import { InstallBlock } from "@/components/showcase/install-block"
-import { highlightCode } from "@/lib/highlight"
-import { SITE } from "@/lib/site"
+import { InlineCodeBlock } from "@/components/showcase/code-block";
+import { InstallBlock } from "@/components/showcase/install-block";
+import { highlightCode } from "@/lib/highlight";
+import { SITE } from "@/lib/site";
 import {
   BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
@@ -15,7 +15,7 @@ import {
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
   entryHref,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
 const COMPOSE_SNIPPET = `import {
   MultiSelect,
@@ -26,10 +26,10 @@ const COMPOSE_SNIPPET = `import {
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
   <MultiSelectContent searchPlaceholder="Filter…" />
-</MultiSelect>`
+</MultiSelect>`;
 
 const COMPONENTS_DESCRIPTION =
-  "Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out."
+  "Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.";
 
 export const metadata: Metadata = {
   title: "Components",
@@ -58,12 +58,12 @@ export const metadata: Metadata = {
     description: COMPONENTS_DESCRIPTION,
     images: ["/opengraph-image"],
   },
-}
+};
 
 export default async function ComponentsIndex() {
-  const components = COMPONENTS
-  const blocks = REGISTRY_BY_CATEGORY.blocks
-  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx")
+  const components = COMPONENTS;
+  const blocks = REGISTRY_BY_CATEGORY.blocks;
+  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:gap-14 sm:px-6 sm:py-12 md:px-10 md:py-16">
@@ -81,10 +81,10 @@ export default async function ComponentsIndex() {
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
           The components shadcn/ui doesn&apos;t ship: multi-select, combobox,
-          tag input, currency input, file dropzone, plus {blocks.length} section blocks
-          across {BLOCK_KIND_ORDER.length} categories. Everything installs through the
-          shadcn CLI, so the source ends up in your repo and stays yours to
-          edit.
+          tag input, currency input, file dropzone, plus {blocks.length} section
+          blocks across {BLOCK_KIND_ORDER.length} categories. Everything
+          installs through the shadcn CLI, so the source ends up in your repo
+          and stays yours to edit.
         </p>
         <InstallBlock name="multi-select" className="mt-2 max-w-2xl" />
         <CountersStrip
@@ -105,8 +105,8 @@ export default async function ComponentsIndex() {
         </div>
 
         {COMPONENT_CATEGORY_ORDER.map((cat) => {
-          const items = REGISTRY_BY_CATEGORY[cat]
-          if (!items.length) return null
+          const items = REGISTRY_BY_CATEGORY[cat];
+          if (!items.length) return null;
           return (
             <div key={cat} className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between">
@@ -150,7 +150,7 @@ export default async function ComponentsIndex() {
                 ))}
               </ul>
             </div>
-          )
+          );
         })}
       </section>
 
@@ -168,14 +168,14 @@ export default async function ComponentsIndex() {
           </Link>
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Drop-in section compositions: heroes, features, pricing,
-          testimonials, CTAs, FAQs, auth, navigation, errors. Each block
-          shares the same registry pipeline; copy a block in one command.
+          Drop-in section compositions: heroes, features, pricing, testimonials,
+          CTAs, FAQs, auth, navigation, errors. Each block shares the same
+          registry pipeline; copy a block in one command.
         </p>
         <div className="flex flex-col gap-px overflow-hidden rounded-md border border-border bg-border">
           {BLOCK_KIND_ORDER.map((kind) => {
-            const items = BLOCKS_BY_KIND[kind]
-            if (!items.length) return null
+            const items = BLOCKS_BY_KIND[kind];
+            if (!items.length) return null;
             return (
               <div
                 key={kind}
@@ -204,7 +204,7 @@ export default async function ComponentsIndex() {
                   ))}
                 </ul>
               </div>
-            )
+            );
           })}
         </div>
       </section>
@@ -264,7 +264,7 @@ export default async function ComponentsIndex() {
         </Link>
       </section>
     </div>
-  )
+  );
 }
 
 function CountersStrip({
@@ -272,9 +272,9 @@ function CountersStrip({
   blocks,
   blockKinds,
 }: {
-  components: number
-  blocks: number
-  blockKinds: number
+  components: number;
+  blocks: number;
+  blockKinds: number;
 }) {
   const items: { label: string; value: string }[] = [
     {
@@ -284,7 +284,7 @@ function CountersStrip({
     { label: "blocks", value: `${blocks}` },
     { label: "block categories", value: `${blockKinds}` },
     { label: "runtime deps", value: "0" },
-  ]
+  ];
   return (
     <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
       {items.map((item) => (
@@ -301,5 +301,5 @@ function CountersStrip({
         </div>
       ))}
     </dl>
-  )
+  );
 }

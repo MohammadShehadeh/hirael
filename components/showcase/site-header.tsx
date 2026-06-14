@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { NAV_LINKS, SITE } from "@/lib/site"
-import { CommandMenu } from "@/components/showcase/command-menu"
-import { BrandLockup } from "@/components/showcase/logo"
-import { ThemeToggle } from "@/components/showcase/theme-toggle"
+import { cn } from "@/lib/utils";
+import { NAV_LINKS, SITE } from "@/lib/site";
+import { CommandMenu } from "@/components/showcase/command-menu";
+import { BrandLockup } from "@/components/showcase/logo";
+import { ThemeToggle } from "@/components/showcase/theme-toggle";
 import {
   Drawer,
   DrawerClose,
@@ -17,42 +17,39 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/registry/hirael/ui/drawer"
+} from "@/registry/hirael/ui/drawer";
 
 export function SiteHeader({
   className,
   withSidebarTrigger,
 }: {
-  className?: string
-  withSidebarTrigger?: React.ReactNode
+  className?: string;
+  withSidebarTrigger?: React.ReactNode;
 }) {
-  const pathname = usePathname()
-  const [mobileOpen, setMobileOpen] = React.useState(false)
-  const [scrolled, setScrolled] = React.useState(false)
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(`${href}/`)
-  }
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   React.useEffect(() => {
-    setMobileOpen(false)
-  }, [pathname])
+    setMobileOpen(false);
+  }, [pathname]);
 
   // Condense the bar into a tighter glass pill once the page leaves the top.
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8",
-        className
-      )}
+      className={cn("sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8", className)}
     >
       <div
         aria-hidden
@@ -65,7 +62,7 @@ export function SiteHeader({
       <div
         className={cn(
           "mx-auto w-full transition-[max-width,padding] duration-300 ease-out",
-          scrolled ? "max-w-4xl pt-3" : "max-w-6xl pt-4"
+          scrolled ? "max-w-4xl pt-3" : "max-w-6xl pt-4",
         )}
       >
         <div
@@ -73,7 +70,7 @@ export function SiteHeader({
             "relative flex h-14 items-center justify-between gap-3 rounded-full ps-4 pe-2 transition-all duration-300 ease-out sm:ps-5",
             scrolled
               ? "glass-panel-strong"
-              : "border border-transparent bg-transparent"
+              : "border border-transparent bg-transparent",
           )}
         >
           <div className="flex shrink-0 items-center gap-2">
@@ -89,7 +86,7 @@ export function SiteHeader({
 
           <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
             {NAV_LINKS.map((link) => {
-              const active = isActive(link.href)
+              const active = isActive(link.href);
               return (
                 <Link
                   key={link.href}
@@ -99,12 +96,12 @@ export function SiteHeader({
                     "rounded-full px-3.5 py-1.5 text-[13px] tracking-tight transition-colors",
                     active
                       ? "bg-accent text-foreground"
-                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
                   )}
                 >
                   {link.label}
                 </Link>
-              )
+              );
             })}
           </nav>
 
@@ -143,7 +140,7 @@ export function SiteHeader({
                 </DrawerHeader>
                 <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                   {NAV_LINKS.map((link) => {
-                    const active = isActive(link.href)
+                    const active = isActive(link.href);
                     return (
                       <Link
                         key={link.href}
@@ -153,12 +150,12 @@ export function SiteHeader({
                           "rounded-xl px-3 py-2.5 text-sm transition-colors",
                           active
                             ? "bg-accent text-foreground"
-                            : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                            : "text-muted-foreground hover:bg-accent hover:text-foreground",
                         )}
                       >
                         {link.label}
                       </Link>
-                    )
+                    );
                   })}
                 </nav>
               </DrawerContent>
@@ -167,5 +164,5 @@ export function SiteHeader({
         </div>
       </div>
     </header>
-  )
+  );
 }

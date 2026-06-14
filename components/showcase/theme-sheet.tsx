@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, Copy, Moon, Palette, RotateCcw, Sun } from "lucide-react"
+import * as React from "react";
+import { Check, Copy, Moon, Palette, RotateCcw, Sun } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   formatThemeCss,
   parseThemeCss,
   THEME_PRESETS,
   type ThemeMode,
-} from "@/lib/theme"
-import { useTheme } from "@/components/showcase/theme-provider"
-import { Button } from "@/registry/hirael/ui/button"
+} from "@/lib/theme";
+import { useTheme } from "@/components/showcase/theme-provider";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Sheet,
   SheetBody,
@@ -21,10 +21,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/registry/hirael/ui/sheet"
+} from "@/registry/hirael/ui/sheet";
 
 export function ThemeSheetTrigger({ className }: { className?: string }) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -33,7 +33,7 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
           aria-label="Open theme settings"
           className={cn(
             "inline-flex items-center gap-2 rounded-sm border border-sidebar-border bg-sidebar px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-sidebar-foreground transition-colors hover:border-foreground hover:text-foreground",
-            className
+            className,
           )}
         >
           <Palette className="size-3.5" />
@@ -44,66 +44,68 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
         <ThemeSheetBody />
       </SheetContent>
     </Sheet>
-  )
+  );
 }
 
 function ThemeSheetBody() {
-  const { mode, setMode, theme, mergeTheme, reset } = useTheme()
-  const [paste, setPaste] = React.useState("")
+  const { mode, setMode, theme, mergeTheme, reset } = useTheme();
+  const [paste, setPaste] = React.useState("");
   const [parseStatus, setParseStatus] = React.useState<
-    { kind: "idle" } | { kind: "ok"; msg: string } | { kind: "warn"; msg: string }
-  >({ kind: "idle" })
-  const [copied, setCopied] = React.useState(false)
+    | { kind: "idle" }
+    | { kind: "ok"; msg: string }
+    | { kind: "warn"; msg: string }
+  >({ kind: "idle" });
+  const [copied, setCopied] = React.useState(false);
 
   const exportCss = React.useMemo(() => {
     // Fall back to a helpful empty hint if no overrides set.
-    const formatted = formatThemeCss(theme)
+    const formatted = formatThemeCss(theme);
     return (
       formatted ||
       "/* No overrides yet. Paste a theme below or pick a preset to populate this. */"
-    )
-  }, [theme])
+    );
+  }, [theme]);
 
   function applyPaste() {
-    const { theme: parsed, warnings } = parseThemeCss(paste, mode)
-    const lightCount = Object.keys(parsed.light ?? {}).length
-    const darkCount = Object.keys(parsed.dark ?? {}).length
+    const { theme: parsed, warnings } = parseThemeCss(paste, mode);
+    const lightCount = Object.keys(parsed.light ?? {}).length;
+    const darkCount = Object.keys(parsed.dark ?? {}).length;
     if (!lightCount && !darkCount) {
       setParseStatus({
         kind: "warn",
         msg: warnings[0] ?? "No tokens recognized.",
-      })
-      return
+      });
+      return;
     }
-    mergeTheme(parsed)
-    const parts: string[] = []
-    if (darkCount) parts.push(`${darkCount} dark`)
-    if (lightCount) parts.push(`${lightCount} light`)
+    mergeTheme(parsed);
+    const parts: string[] = [];
+    if (darkCount) parts.push(`${darkCount} dark`);
+    if (lightCount) parts.push(`${lightCount} light`);
     setParseStatus({
       kind: "ok",
       msg: `Applied ${parts.join(" + ")} token${darkCount + lightCount === 1 ? "" : "s"}.`,
-    })
+    });
   }
 
   async function copyExport() {
     try {
-      await navigator.clipboard.writeText(exportCss)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
+      await navigator.clipboard.writeText(exportCss);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
     } catch {
       // ignore
     }
   }
 
   function applyPreset(presetId: string) {
-    const preset = THEME_PRESETS.find((p) => p.id === presetId)
-    if (!preset) return
-    mergeTheme(preset.overrides)
-    setParseStatus({ kind: "ok", msg: `Applied "${preset.label}" preset.` })
+    const preset = THEME_PRESETS.find((p) => p.id === presetId);
+    if (!preset) return;
+    mergeTheme(preset.overrides);
+    setParseStatus({ kind: "ok", msg: `Applied "${preset.label}" preset.` });
   }
 
   const overrideCount =
-    Object.keys(theme.light).length + Object.keys(theme.dark).length
+    Object.keys(theme.light).length + Object.keys(theme.dark).length;
 
   return (
     <>
@@ -115,8 +117,8 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview Hirael components against your own theme. Paste a CSS
-          variable block, pick a preset, or copy the active theme back out.
+          Preview Hirael components against your own theme. Paste a CSS variable
+          block, pick a preset, or copy the active theme back out.
         </SheetDescription>
       </SheetHeader>
 
@@ -183,7 +185,7 @@ function ThemeSheetBody() {
                   ? "text-destructive"
                   : parseStatus.kind === "ok"
                     ? "text-foreground"
-                    : "text-muted-foreground"
+                    : "text-muted-foreground",
               )}
             >
               {parseStatus.kind === "idle"
@@ -244,7 +246,7 @@ function ThemeSheetBody() {
         </Button>
       </SheetFooter>
     </>
-  )
+  );
 }
 
 function Section({
@@ -252,9 +254,9 @@ function Section({
   hint,
   children,
 }: {
-  title: string
-  hint?: string
-  children: React.ReactNode
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
 }) {
   return (
     <section>
@@ -270,7 +272,7 @@ function Section({
       </div>
       {children}
     </section>
-  )
+  );
 }
 
 function ModeButton({
@@ -279,10 +281,10 @@ function ModeButton({
   icon,
   label,
 }: {
-  active: boolean
-  onClick: () => void
-  icon: React.ReactNode
-  label: string
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
 }) {
   return (
     <button
@@ -293,15 +295,15 @@ function ModeButton({
         "flex items-center justify-center gap-2 rounded-sm border px-3 py-2 text-sm transition-colors",
         active
           ? "border-foreground bg-accent text-foreground"
-          : "border-border bg-card text-muted-foreground hover:text-foreground"
+          : "border-border bg-card text-muted-foreground hover:text-foreground",
       )}
     >
       {icon}
       {label}
       {active && <span className="ml-1 size-1.5 rounded-full bg-foreground" />}
     </button>
-  )
+  );
 }
 
 // Re-export for client mode usage on the mode-helper as needed.
-export type { ThemeMode }
+export type { ThemeMode };

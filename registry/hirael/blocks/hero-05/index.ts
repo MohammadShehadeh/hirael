@@ -1,1 +1,1 @@
-export { default } from "./hero-05"
+export { default } from "./hero-05";

@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   Combobox,
   ComboboxContent,
   ComboboxTrigger,
   useAsyncComboboxOptions,
-} from "@/registry/hirael/ui/combobox"
+} from "@/registry/hirael/ui/combobox";
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },
@@ -18,11 +18,11 @@ const FRAMEWORKS = [
   { value: "sveltekit", label: "SvelteKit", group: "Svelte" },
   { value: "solid-start", label: "SolidStart", group: "Solid" },
   { value: "tanstack-start", label: "TanStack Start", group: "React" },
-]
+];
 
-type Pkg = { name: string; description: string }
+type Pkg = { name: string; description: string };
 async function fakeSearchPackages(q: string): Promise<Pkg[]> {
-  await new Promise((r) => setTimeout(r, 250))
+  await new Promise((r) => setTimeout(r, 250));
   const all: Pkg[] = [
     { name: "react", description: "A JS library for UIs" },
     { name: "react-dom", description: "Renderer for the DOM" },
@@ -32,27 +32,27 @@ async function fakeSearchPackages(q: string): Promise<Pkg[]> {
     { name: "tailwindcss", description: "Utility-first CSS" },
     { name: "shadcn", description: "Build your own component library" },
     { name: "lucide-react", description: "Icon set" },
-  ]
-  if (!q) return all.slice(0, 5)
+  ];
+  if (!q) return all.slice(0, 5);
   return all.filter((p) =>
-    `${p.name} ${p.description}`.toLowerCase().includes(q.toLowerCase())
-  )
+    `${p.name} ${p.description}`.toLowerCase().includes(q.toLowerCase()),
+  );
 }
 
 export default function ComboboxDemo() {
   const [staticValue, setStaticValue] = React.useState<string | undefined>(
-    "next"
-  )
-  const [asyncValue, setAsyncValue] = React.useState<string | undefined>()
+    "next",
+  );
+  const [asyncValue, setAsyncValue] = React.useState<string | undefined>();
 
   const mapPkg = React.useCallback(
     (p: Pkg) => ({ value: p.name, label: p.name, group: "npm" }),
-    []
-  )
+    [],
+  );
   const { setQuery, options, loading } = useAsyncComboboxOptions(
     fakeSearchPackages,
-    mapPkg
-  )
+    mapPkg,
+  );
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -89,5 +89,5 @@ export default function ComboboxDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

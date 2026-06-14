@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Spinner } from "@/registry/hirael/ui/spinner"
+import { Spinner } from "@/registry/hirael/ui/spinner";
 
 export default function SpinnerDemo() {
   return (
@@ -64,5 +64,5 @@ export default function SpinnerDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 export default function Cta01() {
   return (
@@ -70,5 +70,5 @@ export default function Cta01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

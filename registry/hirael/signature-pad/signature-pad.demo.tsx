@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Download } from "lucide-react"
+import * as React from "react";
+import { Download } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   SignaturePad,
   SignaturePadClear,
   SignaturePadUndo,
   type SignaturePadRef,
-} from "@/registry/hirael/ui/signature-pad"
+} from "@/registry/hirael/ui/signature-pad";
 
 export default function SignaturePadDemo() {
-  const padRef = React.useRef<SignaturePadRef>(null)
-  const [dataUrl, setDataUrl] = React.useState<string | null>(null)
-  const [exportEmpty, setExportEmpty] = React.useState(true)
+  const padRef = React.useRef<SignaturePadRef>(null);
+  const [dataUrl, setDataUrl] = React.useState<string | null>(null);
+  const [exportEmpty, setExportEmpty] = React.useState(true);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -38,8 +38,8 @@ export default function SignaturePadDemo() {
           ref={padRef}
           placeholder="Sign, then export"
           onChange={(isEmpty) => {
-            setExportEmpty(isEmpty)
-            if (isEmpty) setDataUrl(null)
+            setExportEmpty(isEmpty);
+            if (isEmpty) setDataUrl(null);
           }}
         />
         <div className="flex items-center gap-2">
@@ -49,11 +49,11 @@ export default function SignaturePadDemo() {
             size="sm"
             disabled={exportEmpty}
             onClick={() => {
-              const pad = padRef.current
-              if (!pad || pad.isEmpty()) return
+              const pad = padRef.current;
+              if (!pad || pad.isEmpty()) return;
               setDataUrl(
-                pad.toDataURL("image/png", { backgroundColor: "#ffffff" })
-              )
+                pad.toDataURL("image/png", { backgroundColor: "#ffffff" }),
+              );
             }}
           >
             <Download aria-hidden />
@@ -87,5 +87,5 @@ export default function SignaturePadDemo() {
         </SignaturePad>
       </div>
     </div>
-  )
+  );
 }

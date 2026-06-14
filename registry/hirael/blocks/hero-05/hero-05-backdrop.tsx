@@ -1,8 +1,12 @@
-"use client"
+"use client";
 
-import { Aurora, FilmGrain, Shader } from "shaders/react"
+import { Aurora, FilmGrain, Shader } from "shaders/react";
 
-export default function Hero05Backdrop({ active = false }: { active?: boolean }) {
+export default function Hero05Backdrop({
+  active = false,
+}: {
+  active?: boolean;
+}) {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Aurora
@@ -18,5 +22,5 @@ export default function Hero05Backdrop({ active = false }: { active?: boolean })
       />
       <FilmGrain strength={0.05} animated />
     </Shader>
-  )
+  );
 }

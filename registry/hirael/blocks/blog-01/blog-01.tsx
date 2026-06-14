@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Image from "next/image"
-import { ArrowRight, Clock } from "lucide-react"
+import * as React from "react";
+import Image from "next/image";
+import { ArrowRight, Clock } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
@@ -13,20 +13,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/card";
+import { Separator } from "@/registry/hirael/ui/separator";
 
 type Post = {
-  category: string
-  title: string
-  excerpt: string
-  author: { name: string; initials: string }
-  date: string
-  readMin: number
-  href: string
+  category: string;
+  title: string;
+  excerpt: string;
+  author: { name: string; initials: string };
+  date: string;
+  readMin: number;
+  href: string;
   /** Optional cover image URL. If absent, a stylized placeholder renders. */
-  cover?: string
-}
+  cover?: string;
+};
 
 // Free-to-use photos from Unsplash. Swap for your own assets — and remember
 // to add the image host to `images.remotePatterns` in next.config.
@@ -34,7 +34,7 @@ const IMG = {
   a: "https://images.unsplash.com/photo-1778601473900-9b68b33ff35e?q=80&w=1200&auto=format&fit=crop",
   b: "https://images.unsplash.com/photo-1779995734326-3d3790120164?q=80&w=1200&auto=format&fit=crop",
   c: "https://images.unsplash.com/photo-1779890306846-ad651833f050?q=80&w=1200&auto=format&fit=crop",
-} as const
+} as const;
 
 const FEATURED: Post = {
   category: "Engineering",
@@ -46,7 +46,7 @@ const FEATURED: Post = {
   readMin: 9,
   href: "#",
   cover: IMG.a,
-}
+};
 
 const POSTS: readonly Post[] = [
   {
@@ -93,7 +93,7 @@ const POSTS: readonly Post[] = [
     href: "#",
     cover: IMG.b,
   },
-]
+];
 
 function PostCover({
   cover,
@@ -101,10 +101,10 @@ function PostCover({
   category,
   featured,
 }: {
-  cover?: string
-  alt: string
-  category: string
-  featured?: boolean
+  cover?: string;
+  alt: string;
+  category: string;
+  featured?: boolean;
 }) {
   if (cover) {
     return (
@@ -123,7 +123,7 @@ function PostCover({
           </Badge>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -149,7 +149,7 @@ function PostCover({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function Blog01() {
@@ -238,7 +238,7 @@ export default function Blog01() {
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {POSTS.map((p) => {
-            const titleId = `blog-01-post-${p.title.replace(/\s+/g, "-").slice(0, 24)}`
+            const titleId = `blog-01-post-${p.title.replace(/\s+/g, "-").slice(0, 24)}`;
             return (
               <Card
                 key={p.title}
@@ -252,7 +252,11 @@ export default function Blog01() {
                       tabIndex={-1}
                       className="block aspect-[16/10] overflow-hidden"
                     >
-                      <PostCover cover={p.cover} alt={p.title} category={p.category} />
+                      <PostCover
+                        cover={p.cover}
+                        alt={p.title}
+                        category={p.category}
+                      />
                     </a>
                   )}
                   <CardHeader className="px-5 pt-5">
@@ -302,10 +306,10 @@ export default function Blog01() {
                   </CardFooter>
                 </article>
               </Card>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

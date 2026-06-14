@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { Plus } from "lucide-react"
+import * as React from "react";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { Plus } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Accordion({
   className,
@@ -16,7 +16,7 @@ function Accordion({
       className={cn("flex flex-col", className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionItem({
@@ -28,11 +28,11 @@ function AccordionItem({
       data-slot="accordion-item"
       className={cn(
         "border-b border-border last:border-b-0 data-[state=open]:border-b",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionTrigger({
@@ -48,7 +48,7 @@ function AccordionTrigger({
           "group flex w-full flex-1 items-center justify-between gap-4 py-5 text-start text-base font-medium tracking-[-0.01em] outline-none transition-colors",
           "hover:text-foreground focus-visible:text-foreground",
           "data-[state=open]:text-foreground",
-          className
+          className,
         )}
         {...props}
       >
@@ -59,7 +59,7 @@ function AccordionTrigger({
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
-  )
+  );
 }
 
 function AccordionContent({
@@ -72,13 +72,13 @@ function AccordionContent({
       data-slot="accordion-content"
       className={cn(
         "overflow-hidden text-sm text-muted-foreground",
-        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
       )}
       {...props}
     >
       <div className={cn("pb-5 pe-8", className)}>{children}</div>
     </AccordionPrimitive.Content>
-  )
+  );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

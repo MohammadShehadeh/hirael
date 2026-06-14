@@ -1,5 +1,5 @@
-import Link from "next/link"
-import type { Metadata } from "next"
+import Link from "next/link";
+import type { Metadata } from "next";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -9,21 +9,22 @@ import {
   Layers,
   MonitorSmartphone,
   SunMoon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { BlockCategories } from "@/components/showcase/block-categories"
-import { InstallBlock } from "@/components/showcase/install-block"
-import { SiteFooter } from "@/components/showcase/site-footer"
-import { SiteHeader } from "@/components/showcase/site-header"
-import { SITE } from "@/lib/site"
-import { RegistryDemo } from "@/registry/hirael/registry-demos"
+import { BlockCategories } from "@/components/showcase/block-categories";
+import { InstallBlock } from "@/components/showcase/install-block";
+import { SiteFooter } from "@/components/showcase/site-footer";
+import { SiteHeader } from "@/components/showcase/site-header";
+import { SITE } from "@/lib/site";
+import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   COMPONENTS,
   REGISTRY_BY_NAME,
   entryHref,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
+import { Badge } from "@/registry/hirael/ui/badge";
 
 export const metadata: Metadata = {
   title: `${SITE.name} | ${SITE.description}`,
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     description: SITE.longDescription,
     images: ["/opengraph-image"],
   },
-}
+};
 
 export default function LandingPage() {
   return (
@@ -66,7 +67,7 @@ export default function LandingPage() {
       </main>
       <SiteFooter />
     </div>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -77,7 +78,7 @@ function Hero() {
   // Staggered entrance for the hero stack; gated by motion-reduce so it
   // settles instantly for users who ask for less motion.
   const rise =
-    "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 ease-out motion-reduce:animate-none"
+    "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 ease-out motion-reduce:animate-none";
   return (
     <section className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 lg:px-8">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-border bg-card/30 sm:rounded-[2rem]">
@@ -90,20 +91,15 @@ function Hero() {
 
         <div className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-24 lg:py-28">
           <div className="flex flex-col items-center gap-6 text-center">
-            <span
-              style={{ animationFillMode: "both" }}
-              className={`inline-flex items-center gap-2 rounded-full border border-border bg-background/40 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm ${rise}`}
-            >
-              <span aria-hidden className="size-1 rounded-full bg-muted-foreground" />
-              shadcn-compatible registry
-            </span>
+            <Badge>shadcn-compatible registry</Badge>
 
             <h1
               style={{ animationDelay: "80ms", animationFillMode: "both" }}
               className={`text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl ${rise}`}
             >
               The components shadcn/ui{" "}
-              <span className="italic text-foreground/90">doesn&apos;t</span> ship.
+              <span className="italic text-foreground/90">doesn&apos;t</span>{" "}
+              ship.
             </h1>
 
             <p
@@ -146,7 +142,7 @@ function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -158,10 +154,10 @@ const LIVE_DEMOS = [
   "rating",
   "animated-number",
   "copy-button",
-] as const
+] as const;
 
 function LiveRegistry() {
-  const componentCount = COMPONENTS.length
+  const componentCount = COMPONENTS.length;
 
   return (
     <section className="relative">
@@ -193,8 +189,8 @@ function LiveRegistry() {
 
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border shadow-elevated md:grid-cols-2">
           {LIVE_DEMOS.map((name) => {
-            const entry = REGISTRY_BY_NAME[name]
-            if (!entry) return null
+            const entry = REGISTRY_BY_NAME[name];
+            if (!entry) return null;
             return (
               <article key={name} className="flex flex-col bg-card">
                 <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5 sm:px-5">
@@ -218,7 +214,7 @@ function LiveRegistry() {
                   <RegistryDemo name={entry.name} />
                 </div>
               </article>
-            )
+            );
           })}
         </div>
 
@@ -227,7 +223,7 @@ function LiveRegistry() {
         </p>
       </div>
     </section>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -235,10 +231,10 @@ function LiveRegistry() {
 /* -------------------------------------------------------------------------- */
 
 const FEATURES: {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  body: string
-  visual?: "terminal" | "stack" | "swatches"
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  body: string;
+  visual?: "terminal" | "stack" | "swatches";
 }[] = [
   {
     icon: Download,
@@ -273,7 +269,7 @@ const FEATURES: {
     title: "Responsive by default",
     body: "Built to hold their shape from small phones to ultra-wide displays.",
   },
-]
+];
 
 function WhyHirael() {
   return (
@@ -296,7 +292,7 @@ function WhyHirael() {
 
         <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {FEATURES.map((feature) => {
-            const Icon = feature.icon
+            const Icon = feature.icon;
             return (
               <article
                 key={feature.title}
@@ -332,19 +328,22 @@ function WhyHirael() {
                   </div>
                 )}
               </article>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
   if (kind === "terminal") {
     return (
       <div className="flex items-center gap-2 overflow-hidden rounded-md border border-border bg-card px-3 py-2">
-        <span aria-hidden className="font-mono text-[11px] text-muted-foreground">
+        <span
+          aria-hidden
+          className="font-mono text-[11px] text-muted-foreground"
+        >
           $
         </span>
         <code className="truncate font-mono text-[11px] text-foreground/90">
@@ -354,7 +353,7 @@ function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
           </span>
         </code>
       </div>
-    )
+    );
   }
 
   if (kind === "stack") {
@@ -369,21 +368,24 @@ function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
           </span>
         ))}
       </div>
-    )
+    );
   }
 
   return (
     <div className="flex items-center gap-1.5">
-      {["bg-foreground", "bg-muted-foreground", "bg-secondary", "bg-background"].map(
-        (swatch) => (
-          <span
-            key={swatch}
-            className={`size-6 rounded-md border border-border ${swatch}`}
-          />
-        )
-      )}
+      {[
+        "bg-foreground",
+        "bg-muted-foreground",
+        "bg-secondary",
+        "bg-background",
+      ].map((swatch) => (
+        <span
+          key={swatch}
+          className={`size-6 rounded-md border border-border ${swatch}`}
+        />
+      ))}
     </div>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -393,8 +395,8 @@ function FeatureVisual({ kind }: { kind: "terminal" | "stack" | "swatches" }) {
 function CategoryGrid() {
   const blocksTotal = BLOCK_KIND_ORDER.reduce(
     (sum, k) => sum + BLOCKS_BY_KIND[k].length,
-    0
-  )
+    0,
+  );
 
   return (
     <section className="relative">
@@ -427,5 +429,5 @@ function CategoryGrid() {
         <BlockCategories variant="indexed" />
       </div>
     </section>
-  )
+  );
 }

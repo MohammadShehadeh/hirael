@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { onAnchorClick, SectionHeader } from "./primitives"
+import { onAnchorClick, SectionHeader } from "./primitives";
 
 const PROJECTS = [
   {
@@ -31,12 +31,12 @@ const PROJECTS = [
       "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80",
     span: "md:col-span-7",
   },
-]
+];
 
 const HALFTONE = {
   backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)",
   backgroundSize: "4px 4px",
-}
+};
 
 export function SelectedWorks() {
   return (
@@ -73,7 +73,7 @@ export function SelectedWorks() {
               transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
               className={cn(
                 "group relative block h-[320px] overflow-hidden rounded-3xl border border-[hsl(var(--stroke))] bg-[hsl(var(--surface))] md:h-[440px]",
-                project.span
+                project.span,
               )}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -101,5 +101,5 @@ export function SelectedWorks() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

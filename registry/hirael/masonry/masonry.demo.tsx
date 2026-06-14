@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Masonry, MasonryItem } from "@/registry/hirael/ui/masonry"
+import { Masonry, MasonryItem } from "@/registry/hirael/ui/masonry";
 
 const cards = [
   {
@@ -31,7 +31,7 @@ const cards = [
     title: "Sable",
     body: "Medium length card body that wraps onto a couple of lines at most widths.",
   },
-]
+];
 
 const aspects = [
   "aspect-square",
@@ -40,7 +40,7 @@ const aspects = [
   "aspect-[4/5]",
   "aspect-[3/2]",
   "aspect-[2/3]",
-]
+];
 
 export default function MasonryDemo() {
   return (
@@ -87,23 +87,30 @@ export default function MasonryDemo() {
           Compact · columns 2 / md 4
         </p>
         <Masonry columns={{ base: 2, md: 4 }} gap={8}>
-          {["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta"].map(
-            (label, i) => (
-              <MasonryItem
-                key={label}
-                className="rounded-md border border-border bg-card px-3 py-2"
-              >
-                <p className="text-xs font-medium text-foreground">{label}</p>
-                {i % 3 === 1 ? (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Extra line for height variance.
-                  </p>
-                ) : null}
-              </MasonryItem>
-            )
-          )}
+          {[
+            "Alpha",
+            "Beta",
+            "Gamma",
+            "Delta",
+            "Epsilon",
+            "Zeta",
+            "Eta",
+            "Theta",
+          ].map((label, i) => (
+            <MasonryItem
+              key={label}
+              className="rounded-md border border-border bg-card px-3 py-2"
+            >
+              <p className="text-xs font-medium text-foreground">{label}</p>
+              {i % 3 === 1 ? (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Extra line for height variance.
+                </p>
+              ) : null}
+            </MasonryItem>
+          ))}
         </Masonry>
       </div>
     </div>
-  )
+  );
 }

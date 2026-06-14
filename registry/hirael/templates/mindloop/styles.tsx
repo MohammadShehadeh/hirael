@@ -47,8 +47,8 @@ const MINDLOOP_CSS = `
   mask-composite: exclude;
   pointer-events: none;
 }
-`
+`;
 
 export function MindloopStyles() {
-  return <style dangerouslySetInnerHTML={{ __html: MINDLOOP_CSS }} />
+  return <style dangerouslySetInnerHTML={{ __html: MINDLOOP_CSS }} />;
 }

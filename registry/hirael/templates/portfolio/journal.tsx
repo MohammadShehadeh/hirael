@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-import { ArrowUpRight, onAnchorClick, SectionHeader } from "./primitives"
+import { ArrowUpRight, onAnchorClick, SectionHeader } from "./primitives";
 
 const ENTRIES = [
   {
@@ -33,7 +33,7 @@ const ENTRIES = [
     readTime: "5 min read",
     date: "Feb 2026",
   },
-]
+];
 
 export function Journal() {
   return (
@@ -87,5 +87,5 @@ export function Journal() {
         </div>
       </div>
     </section>
-  )
+  );
 }

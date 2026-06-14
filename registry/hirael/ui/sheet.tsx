@@ -1,31 +1,29 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Sheet(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="sheet" {...props} />
+  return <DialogPrimitive.Root data-slot="sheet" {...props} />;
 }
 
 function SheetTrigger(
-  props: React.ComponentProps<typeof DialogPrimitive.Trigger>
+  props: React.ComponentProps<typeof DialogPrimitive.Trigger>,
 ) {
-  return <DialogPrimitive.Trigger data-slot="sheet-trigger" {...props} />
+  return <DialogPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
 }
 
-function SheetClose(
-  props: React.ComponentProps<typeof DialogPrimitive.Close>
-) {
-  return <DialogPrimitive.Close data-slot="sheet-close" {...props} />
+function SheetClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close data-slot="sheet-close" {...props} />;
 }
 
 function SheetPortal(
-  props: React.ComponentProps<typeof DialogPrimitive.Portal>
+  props: React.ComponentProps<typeof DialogPrimitive.Portal>,
 ) {
-  return <DialogPrimitive.Portal data-slot="sheet-portal" {...props} />
+  return <DialogPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
 function SheetOverlay({
@@ -39,16 +37,18 @@ function SheetOverlay({
         "fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         "duration-200 ease-out",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type SheetContentProps = React.ComponentProps<typeof DialogPrimitive.Content> & {
-  side?: "left" | "right"
-}
+type SheetContentProps = React.ComponentProps<
+  typeof DialogPrimitive.Content
+> & {
+  side?: "left" | "right";
+};
 
 function SheetContent({
   className,
@@ -68,7 +68,7 @@ function SheetContent({
             "right-0 top-0 border-l data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
           side === "left" &&
             "left-0 top-0 border-r data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left",
-          className
+          className,
         )}
         {...props}
       >
@@ -81,23 +81,20 @@ function SheetContent({
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </SheetPortal>
-  )
+  );
 }
 
-function SheetHeader({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
       className={cn(
         "flex flex-col gap-1 border-b border-border px-6 py-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function SheetTitle({
@@ -107,13 +104,10 @@ function SheetTitle({
   return (
     <DialogPrimitive.Title
       data-slot="sheet-title"
-      className={cn(
-        "text-base font-semibold tracking-[-0.02em]",
-        className
-      )}
+      className={cn("text-base font-semibold tracking-[-0.02em]", className)}
       {...props}
     />
-  )
+  );
 }
 
 function SheetDescription({
@@ -126,36 +120,30 @@ function SheetDescription({
       className={cn("text-xs text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-function SheetBody({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SheetBody({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-body"
       className={cn("flex-1 overflow-y-auto px-6 py-5", className)}
       {...props}
     />
-  )
+  );
 }
 
-function SheetFooter({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-footer"
       className={cn(
         "flex items-center justify-between gap-2 border-t border-border px-6 py-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -170,4 +158,4 @@ export {
   SheetDescription,
   SheetBody,
   SheetFooter,
-}
+};

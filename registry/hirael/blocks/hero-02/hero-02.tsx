@@ -1,20 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import dynamic from "next/dynamic"
-import { ArrowRight, Play } from "lucide-react"
+import * as React from "react";
+import dynamic from "next/dynamic";
+import { ArrowRight, Play } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 const Hero02Backdrop = dynamic(() => import("./hero-02-backdrop"), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
-})
+});
 
-const WORDMARKS = ["Helix", "Northwind", "Vanta", "Quartz", "Lumen", "Atlas"] as const
+const WORDMARKS = [
+  "Helix",
+  "Northwind",
+  "Vanta",
+  "Quartz",
+  "Lumen",
+  "Atlas",
+] as const;
 
 export default function Hero02() {
-  const [active, setActive] = React.useState(false)
+  const [active, setActive] = React.useState(false);
 
   return (
     <section
@@ -61,7 +68,11 @@ export default function Hero02() {
       </p>
 
       <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-        <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
+        <Button
+          asChild
+          size="lg"
+          className="group h-12 rounded-full px-7 text-base"
+        >
           <a href="#">
             Get started
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -96,5 +107,5 @@ export default function Hero02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

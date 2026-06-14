@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   Sortable,
   SortableHandle,
   SortableItem,
-} from "@/registry/hirael/ui/sortable"
+} from "@/registry/hirael/ui/sortable";
 
 const tasks = {
   "design-review": "Design review with the product team",
   "fix-onboarding": "Fix onboarding empty state",
   "ship-registry": "Ship the registry build pipeline",
   "write-changelog": "Write the release changelog",
-}
+};
 
-const tags = ["react", "tailwind", "radix", "cmdk", "lucide"]
+const tags = ["react", "tailwind", "radix", "cmdk", "lucide"];
 
 export default function SortableDemo() {
-  const [taskOrder, setTaskOrder] = React.useState(Object.keys(tasks))
-  const [tagOrder, setTagOrder] = React.useState(tags)
+  const [taskOrder, setTaskOrder] = React.useState(Object.keys(tasks));
+  const [tagOrder, setTagOrder] = React.useState(tags);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -94,5 +94,5 @@ export default function SortableDemo() {
         </Sortable>
       </div>
     </div>
-  )
+  );
 }

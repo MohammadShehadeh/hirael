@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { AnimatePresence, motion } from "framer-motion"
+import * as React from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { ArrowUpRight, RingLink } from "./primitives"
+import { ArrowUpRight, RingLink } from "./primitives";
 
 const ITEMS = [
   {
@@ -40,16 +40,16 @@ const ITEMS = [
       "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80",
     rotate: 2,
   },
-]
+];
 
 function Card({
   image,
   rotate,
   onOpen,
 }: {
-  image: string
-  rotate: number
-  onOpen: () => void
+  image: string;
+  rotate: number;
+  onOpen: () => void;
 }) {
   return (
     <button
@@ -66,23 +66,23 @@ function Card({
         className="aspect-square w-full rounded-2xl border border-[hsl(var(--stroke))] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
       />
     </button>
-  )
+  );
 }
 
 export function Explorations() {
-  const sectionRef = React.useRef<HTMLDivElement>(null)
-  const pinRef = React.useRef<HTMLDivElement>(null)
-  const col1Ref = React.useRef<HTMLDivElement>(null)
-  const col2Ref = React.useRef<HTMLDivElement>(null)
-  const [active, setActive] = React.useState<string | null>(null)
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const pinRef = React.useRef<HTMLDivElement>(null);
+  const col1Ref = React.useRef<HTMLDivElement>(null);
+  const col2Ref = React.useRef<HTMLDivElement>(null);
+  const [active, setActive] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches
-    if (reduce) return
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduce) return;
 
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -90,7 +90,7 @@ export function Explorations() {
         end: "bottom bottom",
         pin: pinRef.current,
         pinSpacing: false,
-      })
+      });
       const scrub = (yPercent: number) => ({
         yPercent,
         ease: "none" as const,
@@ -100,22 +100,22 @@ export function Explorations() {
           end: "bottom bottom",
           scrub: 1,
         },
-      })
-      gsap.to(col1Ref.current, scrub(-10))
-      gsap.to(col2Ref.current, scrub(-26))
-    }, sectionRef)
+      });
+      gsap.to(col1Ref.current, scrub(-10));
+      gsap.to(col2Ref.current, scrub(-26));
+    }, sectionRef);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   React.useEffect(() => {
-    if (!active) return
+    if (!active) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(null)
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  }, [active])
+      if (e.key === "Escape") setActive(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active]);
 
   return (
     <section
@@ -199,7 +199,7 @@ export function Explorations() {
             aria-label="Exploration preview"
             onClick={() => setActive(null)}
             className={cn(
-              "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6"
+              "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6",
             )}
           >
             <button
@@ -231,5 +231,5 @@ export function Explorations() {
         ) : null}
       </AnimatePresence>
     </section>
-  )
+  );
 }

@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { MessageCircle } from "lucide-react"
+import * as React from "react";
+import { MessageCircle } from "lucide-react";
 
 type LinkColumn = {
-  title: string
-  links: readonly { label: string; href: string }[]
-}
+  title: string;
+  links: readonly { label: string; href: string }[];
+};
 
 const COLUMNS: readonly LinkColumn[] = [
   {
@@ -39,7 +39,7 @@ const COLUMNS: readonly LinkColumn[] = [
       { label: "License", href: "#" },
     ],
   },
-]
+];
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -59,7 +59,7 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function Footer01() {
@@ -118,5 +118,5 @@ export default function Footer01() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

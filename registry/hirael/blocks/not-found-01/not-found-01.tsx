@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 type Suggestion = {
-  route: string
-  description: string
-}
+  route: string;
+  description: string;
+};
 
 const SUGGESTIONS: readonly Suggestion[] = [
   { route: "/registry", description: "Browse every shipped component" },
   { route: "/themes", description: "Tune the accent and re-skin live" },
   { route: "/docs/install", description: "Get up and running in a minute" },
-]
+];
 
 export default function NotFound01() {
   return (
@@ -28,8 +28,8 @@ export default function NotFound01() {
             Page not found.
           </h1>
           <p className="max-w-md text-base text-muted-foreground sm:text-lg">
-            The route you tried doesn&apos;t resolve to anything we ship. It
-            may have moved, or it may have never existed.
+            The route you tried doesn&apos;t resolve to anything we ship. It may
+            have moved, or it may have never existed.
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Button asChild variant="default" size="lg">
@@ -68,5 +68,5 @@ export default function NotFound01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

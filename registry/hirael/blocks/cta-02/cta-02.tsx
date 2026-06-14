@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 export default function Cta02() {
   return (
@@ -49,7 +49,8 @@ export default function Cta02() {
               aria-hidden
               className="absolute inset-x-0 bottom-1.5 -z-0 h-3 rounded-full"
               style={{
-                background: "color-mix(in oklch, var(--primary) 30%, transparent)",
+                background:
+                  "color-mix(in oklch, var(--primary) 30%, transparent)",
               }}
             />
           </span>
@@ -57,8 +58,8 @@ export default function Cta02() {
 
         <p className="max-w-xl text-balance text-base text-muted-foreground">
           Hirael fills the obvious gaps in shadcn: the components your team
-          quietly rebuilds project after project, so you can spend that
-          time on the work only you can do.
+          quietly rebuilds project after project, so you can spend that time on
+          the work only you can do.
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -70,7 +71,10 @@ export default function Cta02() {
           </Button>
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             or{" "}
-            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
+            <a
+              className="underline-offset-4 hover:text-foreground hover:underline"
+              href="#"
+            >
               read the dual-API contract
             </a>
           </span>
@@ -87,5 +91,5 @@ export default function Cta02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

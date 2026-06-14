@@ -1,15 +1,15 @@
-import Link from "next/link"
-import type { Metadata } from "next"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import { SiteFooter } from "@/components/showcase/site-footer"
-import { SiteHeader } from "@/components/showcase/site-header"
+import { SiteFooter } from "@/components/showcase/site-footer";
+import { SiteHeader } from "@/components/showcase/site-header";
 
 export const metadata: Metadata = {
   title: "Page not found",
   description: "The page you were looking for could not be found.",
   robots: { index: false, follow: false },
-}
+};
 
 export default function NotFound() {
   return (
@@ -24,7 +24,10 @@ export default function NotFound() {
           />
           <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-28 lg:py-36">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-sm">
-              <span aria-hidden className="size-1 rounded-full bg-muted-foreground" />
+              <span
+                aria-hidden
+                className="size-1 rounded-full bg-muted-foreground"
+              />
               404 · Not found
             </span>
 
@@ -58,5 +61,5 @@ export default function NotFound() {
       </main>
       <SiteFooter />
     </div>
-  )
+  );
 }

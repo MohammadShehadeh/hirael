@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Plus } from "lucide-react"
+import { Plus } from "lucide-react";
 
 import {
   ApiKeyItem,
@@ -11,12 +11,22 @@ import {
   ApiKeysHeader,
   ApiKeysList,
   ApiKeysTitle,
-} from "@/registry/hirael/ui/api-keys"
+} from "@/registry/hirael/ui/api-keys";
 
 const KEYS = [
-  { label: "Production", created: "Created Mar 4", used: "Used 2h ago", value: "sk_live_9f8a7b6c5d4e3f2a1b0c" },
-  { label: "Development", created: "Created Apr 18", used: "Used 5d ago", value: "sk_test_1a2b3c4d5e6f7g8h9i0j" },
-]
+  {
+    label: "Production",
+    created: "Created Mar 4",
+    used: "Used 2h ago",
+    value: "sk_live_9f8a7b6c5d4e3f2a1b0c",
+  },
+  {
+    label: "Development",
+    created: "Created Apr 18",
+    used: "Used 5d ago",
+    value: "sk_test_1a2b3c4d5e6f7g8h9i0j",
+  },
+];
 
 export default function ApiKeysDemo() {
   return (
@@ -41,5 +51,5 @@ export default function ApiKeysDemo() {
         ))}
       </ApiKeysList>
     </ApiKeys>
-  )
+  );
 }

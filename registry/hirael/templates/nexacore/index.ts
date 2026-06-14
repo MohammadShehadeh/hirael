@@ -1,1 +1,1 @@
-export { default } from "./nexacore"
+export { default } from "./nexacore";

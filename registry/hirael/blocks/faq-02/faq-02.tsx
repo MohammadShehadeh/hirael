@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/registry/hirael/ui/accordion"
+} from "@/registry/hirael/ui/accordion";
 
 const FAQS = [
   {
@@ -34,7 +34,7 @@ const FAQS = [
     q: "Do I own the code?",
     a: "Yes. Installing pulls the source straight into your repo; yours to keep, edit, and ship. No telemetry, no lock-in.",
   },
-] as const
+] as const;
 
 export default function Faq02() {
   return (
@@ -48,8 +48,8 @@ export default function Faq02() {
             Everything you&apos;d ask in the first ten minutes.
           </h2>
           <p className="max-w-xl text-balance text-sm text-muted-foreground">
-            Short answers first. If something isn&apos;t here, the issue
-            tracker is open and we usually respond within a day.
+            Short answers first. If something isn&apos;t here, the issue tracker
+            is open and we usually respond within a day.
           </p>
         </div>
 
@@ -85,5 +85,5 @@ export default function Faq02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

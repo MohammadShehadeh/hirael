@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -13,55 +13,89 @@ import {
   ShoppingCart,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
+} from "@/registry/hirael/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/registry/hirael/ui/select"
-import { cn } from "@/lib/utils"
+} from "@/registry/hirael/ui/select";
+import { cn } from "@/lib/utils";
 
 type Stat = {
-  icon: LucideIcon
-  label: string
-  value: string
-  delta: string
-  up: boolean
-  good: boolean
-}
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  delta: string;
+  up: boolean;
+  good: boolean;
+};
 
 const STATS: readonly Stat[] = [
-  { icon: ShoppingCart, label: "Open orders", value: "36", delta: "+12.5%", up: true, good: true },
-  { icon: Package, label: "Items sold", value: "1,482", delta: "+6.8%", up: true, good: true },
-  { icon: Users, label: "Store sessions", value: "9,214", delta: "+4.1%", up: true, good: true },
-  { icon: RotateCcw, label: "Refund rate", value: "0.8%", delta: "-0.2%", up: false, good: true },
-]
+  {
+    icon: ShoppingCart,
+    label: "Open orders",
+    value: "36",
+    delta: "+12.5%",
+    up: true,
+    good: true,
+  },
+  {
+    icon: Package,
+    label: "Items sold",
+    value: "1,482",
+    delta: "+6.8%",
+    up: true,
+    good: true,
+  },
+  {
+    icon: Users,
+    label: "Store sessions",
+    value: "9,214",
+    delta: "+4.1%",
+    up: true,
+    good: true,
+  },
+  {
+    icon: RotateCcw,
+    label: "Refund rate",
+    value: "0.8%",
+    delta: "-0.2%",
+    up: false,
+    good: true,
+  },
+];
 
-const TODAY_SERIES = [12, 9, 14, 24, 46, 74, 92, 84, 102, 96, 71, 48, 31]
-const YESTERDAY_SERIES = [10, 8, 11, 19, 39, 61, 78, 73, 84, 80, 64, 41, 26]
-const HOUR_TICKS = ["00", "04", "08", "12", "16", "20", "24"] as const
+const TODAY_SERIES = [12, 9, 14, 24, 46, 74, 92, 84, 102, 96, 71, 48, 31];
+const YESTERDAY_SERIES = [10, 8, 11, 19, 39, 61, 78, 73, 84, 80, 64, 41, 26];
+const HOUR_TICKS = ["00", "04", "08", "12", "16", "20", "24"] as const;
 
-const PEAK_BARS = [14, 18, 26, 41, 58, 92, 100, 86, 54, 38, 27, 19] as const
+const PEAK_BARS = [14, 18, 26, 41, 58, 92, 100, 86, 54, 38, 27, 19] as const;
 
-type WeekRange = "this" | "last"
+type WeekRange = "this" | "last";
 
 const WEEK: Record<
   WeekRange,
   {
-    orders: { value: string; delta: string; bars: readonly number[] }
-    minis: readonly { label: string; value: string; delta: string; good: boolean; spark: readonly number[] }[]
+    orders: { value: string; delta: string; bars: readonly number[] };
+    minis: readonly {
+      label: string;
+      value: string;
+      delta: string;
+      good: boolean;
+      spark: readonly number[];
+    }[];
   }
 > = {
   this: {
@@ -71,9 +105,27 @@ const WEEK: Record<
       bars: [148, 176, 162, 196, 228, 184, 224],
     },
     minis: [
-      { label: "Gross revenue", value: "$24,820", delta: "+9.2%", good: true, spark: [30, 34, 31, 38, 44, 41, 48] },
-      { label: "Returning buyers", value: "58.4%", delta: "+1.9%", good: true, spark: [52, 54, 53, 55, 56, 57, 58] },
-      { label: "Checkout conversion", value: "3.1%", delta: "+0.4%", good: true, spark: [2.5, 2.7, 2.6, 2.9, 3.0, 2.9, 3.1] },
+      {
+        label: "Gross revenue",
+        value: "$24,820",
+        delta: "+9.2%",
+        good: true,
+        spark: [30, 34, 31, 38, 44, 41, 48],
+      },
+      {
+        label: "Returning buyers",
+        value: "58.4%",
+        delta: "+1.9%",
+        good: true,
+        spark: [52, 54, 53, 55, 56, 57, 58],
+      },
+      {
+        label: "Checkout conversion",
+        value: "3.1%",
+        delta: "+0.4%",
+        good: true,
+        spark: [2.5, 2.7, 2.6, 2.9, 3.0, 2.9, 3.1],
+      },
     ],
   },
   last: {
@@ -83,23 +135,41 @@ const WEEK: Record<
       bars: [132, 158, 149, 171, 198, 166, 212],
     },
     minis: [
-      { label: "Gross revenue", value: "$22,730", delta: "+5.8%", good: true, spark: [27, 30, 28, 33, 37, 35, 41] },
-      { label: "Returning buyers", value: "56.5%", delta: "-0.3%", good: false, spark: [57, 56, 57, 56, 55, 56, 56] },
-      { label: "Checkout conversion", value: "2.7%", delta: "+0.1%", good: true, spark: [2.4, 2.5, 2.4, 2.6, 2.7, 2.6, 2.7] },
+      {
+        label: "Gross revenue",
+        value: "$22,730",
+        delta: "+5.8%",
+        good: true,
+        spark: [27, 30, 28, 33, 37, 35, 41],
+      },
+      {
+        label: "Returning buyers",
+        value: "56.5%",
+        delta: "-0.3%",
+        good: false,
+        spark: [57, 56, 57, 56, 55, 56, 56],
+      },
+      {
+        label: "Checkout conversion",
+        value: "2.7%",
+        delta: "+0.1%",
+        good: true,
+        spark: [2.4, 2.5, 2.4, 2.6, 2.7, 2.6, 2.7],
+      },
     ],
   },
-}
+};
 
-const BUDGET = { spent: 223.1, cap: 400 }
+const BUDGET = { spent: 223.1, cap: 400 };
 
 function linePath(values: readonly number[], max: number, h: number) {
-  const step = 100 / (values.length - 1)
+  const step = 100 / (values.length - 1);
   return values
     .map(
       (v, i) =>
-        `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(h - 2 - (v / max) * (h - 6)).toFixed(2)}`
+        `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(h - 2 - (v / max) * (h - 6)).toFixed(2)}`,
     )
-    .join(" ")
+    .join(" ");
 }
 
 function DeltaChip({
@@ -107,14 +177,16 @@ function DeltaChip({
   up,
   good,
 }: {
-  delta: string
-  up: boolean
-  good: boolean
+  delta: string;
+  up: boolean;
+  good: boolean;
 }) {
   return (
     <span
       className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
-        good ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"
+        good
+          ? "bg-emerald-500/10 text-emerald-500"
+          : "bg-red-500/10 text-red-500"
       }`}
     >
       {up ? (
@@ -124,7 +196,7 @@ function DeltaChip({
       )}
       {delta}
     </span>
-  )
+  );
 }
 
 function PanelCard({
@@ -133,10 +205,10 @@ function PanelCard({
   children,
   className,
 }: {
-  icon: LucideIcon
-  label: string
-  children: React.ReactNode
-  className?: string
+  icon: LucideIcon;
+  label: string;
+  children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <Card className={cn("gap-2 rounded-md py-2.5", className)}>
@@ -162,18 +234,18 @@ function PanelCard({
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default function Dashboard04() {
-  const [range, setRange] = React.useState<WeekRange>("this")
-  const week = WEEK[range]
+  const [range, setRange] = React.useState<WeekRange>("this");
+  const week = WEEK[range];
 
-  const chartMax = Math.max(...TODAY_SERIES, ...YESTERDAY_SERIES)
-  const todayLine = linePath(TODAY_SERIES, chartMax, 46)
-  const yesterdayLine = linePath(YESTERDAY_SERIES, chartMax, 46)
-  const barMax = Math.max(...week.orders.bars)
-  const budgetPct = Math.round((BUDGET.spent / BUDGET.cap) * 100)
+  const chartMax = Math.max(...TODAY_SERIES, ...YESTERDAY_SERIES);
+  const todayLine = linePath(TODAY_SERIES, chartMax, 46);
+  const yesterdayLine = linePath(YESTERDAY_SERIES, chartMax, 46);
+  const barMax = Math.max(...week.orders.bars);
+  const budgetPct = Math.round((BUDGET.spent / BUDGET.cap) * 100);
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -374,7 +446,11 @@ export default function Dashboard04() {
             Week in review
           </h3>
           <Select value={range} onValueChange={(v) => setRange(v as WeekRange)}>
-            <SelectTrigger size="sm" className="w-[130px]" aria-label="Week range">
+            <SelectTrigger
+              size="sm"
+              className="w-[130px]"
+              aria-label="Week range"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -406,7 +482,10 @@ export default function Dashboard04() {
               }}
             >
               {week.orders.bars.map((b, i) => (
-                <div key={i} className="flex h-full flex-col justify-end gap-1.5">
+                <div
+                  key={i}
+                  className="flex h-full flex-col justify-end gap-1.5"
+                >
                   <div
                     className="rounded-t-xs bg-foreground/80 transition-all duration-300 ease-out"
                     style={{ height: `${(b / barMax) * 100}%` }}
@@ -421,16 +500,16 @@ export default function Dashboard04() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {week.minis.map((m) => {
-              const max = Math.max(...m.spark)
-              const min = Math.min(...m.spark)
-              const span = max - min || 1
-              const step = 100 / (m.spark.length - 1)
+              const max = Math.max(...m.spark);
+              const min = Math.min(...m.spark);
+              const span = max - min || 1;
+              const step = 100 / (m.spark.length - 1);
               const pts = m.spark
                 .map(
                   (v, i) =>
-                    `${(i * step).toFixed(1)},${(22 - ((v - min) / span) * 16).toFixed(1)}`
+                    `${(i * step).toFixed(1)},${(22 - ((v - min) / span) * 16).toFixed(1)}`,
                 )
-                .join(" ")
+                .join(" ");
               return (
                 <PanelCard key={m.label} icon={CreditCard} label={m.label}>
                   <div className="flex items-start justify-between gap-3">
@@ -458,11 +537,11 @@ export default function Dashboard04() {
                     />
                   </svg>
                 </PanelCard>
-              )
+              );
             })}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

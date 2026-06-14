@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   InspectorPanel,
@@ -6,14 +6,14 @@ import {
   InspectorPanelRow,
   InspectorPanelSection,
   InspectorPanelTitle,
-} from "@/registry/hirael/ui/inspector-panel"
+} from "@/registry/hirael/ui/inspector-panel";
 
 function Field({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex h-7 w-full items-center rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground">
       {children}
     </span>
-  )
+  );
 }
 
 export default function InspectorPanelDemo() {
@@ -57,5 +57,5 @@ export default function InspectorPanelDemo() {
         </InspectorPanelSection>
       </InspectorPanel>
     </div>
-  )
+  );
 }

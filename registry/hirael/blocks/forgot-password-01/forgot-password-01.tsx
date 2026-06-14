@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight, Loader2, MailCheck } from "lucide-react"
+import * as React from "react";
+import { ArrowRight, Loader2, MailCheck } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { Input } from "@/registry/hirael/ui/input"
-import { Label } from "@/registry/hirael/ui/label"
+import { Button } from "@/registry/hirael/ui/button";
+import { Input } from "@/registry/hirael/ui/input";
+import { Label } from "@/registry/hirael/ui/label";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -27,35 +27,35 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function ForgotPassword01() {
-  const [email, setEmail] = React.useState("")
-  const [error, setError] = React.useState<string | null>(null)
+  const [email, setEmail] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<"idle" | "sending" | "sent">(
-    "idle"
-  )
+    "idle",
+  );
 
   const send = async () => {
-    setStatus("sending")
-    await new Promise((r) => setTimeout(r, 900))
-    setStatus("sent")
-  }
+    setStatus("sending");
+    await new Promise((r) => setTimeout(r, 900));
+    setStatus("sent");
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!email.trim()) {
-      setError("Enter the email you signed up with.")
-      return
+      setError("Enter the email you signed up with.");
+      return;
     }
     if (!EMAIL_PATTERN.test(email)) {
-      setError("That doesn't look like a valid email.")
-      return
+      setError("That doesn't look like a valid email.");
+      return;
     }
-    setError(null)
-    await send()
-  }
+    setError(null);
+    await send();
+  };
 
   return (
     <section className="relative isolate flex min-h-[640px] items-center justify-center bg-background py-16 md:py-24">
@@ -89,8 +89,8 @@ export default function ForgotPassword01() {
                 </h1>
                 <p className="text-xs text-muted-foreground">
                   We sent a reset link to{" "}
-                  <span className="font-mono text-foreground">{email}</span>.
-                  It expires in 15 minutes.
+                  <span className="font-mono text-foreground">{email}</span>. It
+                  expires in 15 minutes.
                 </p>
               </div>
               <div className="mt-2 flex flex-col items-center gap-2">
@@ -123,8 +123,7 @@ export default function ForgotPassword01() {
                     Forgot your password?
                   </h1>
                   <p className="text-xs text-muted-foreground">
-                    Enter your email and we&apos;ll send you a link to reset
-                    it.
+                    Enter your email and we&apos;ll send you a link to reset it.
                   </p>
                 </div>
               </div>
@@ -149,7 +148,9 @@ export default function ForgotPassword01() {
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
                     aria-invalid={Boolean(error) || undefined}
-                    aria-describedby={error ? "forgot01-email-error" : undefined}
+                    aria-describedby={
+                      error ? "forgot01-email-error" : undefined
+                    }
                   />
                   {error ? (
                     <p
@@ -202,5 +203,5 @@ export default function ForgotPassword01() {
         </p>
       </div>
     </section>
-  )
+  );
 }

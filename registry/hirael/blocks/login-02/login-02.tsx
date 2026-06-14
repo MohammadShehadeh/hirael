@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowRight, Quote } from "lucide-react"
+import * as React from "react";
+import { ArrowRight, Quote } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { Input } from "@/registry/hirael/ui/input"
-import { Label } from "@/registry/hirael/ui/label"
+import { Button } from "@/registry/hirael/ui/button";
+import { Input } from "@/registry/hirael/ui/input";
+import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/hirael/ui/password-input"
+} from "@/registry/hirael/ui/password-input";
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -30,12 +30,12 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function Login02() {
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   return (
     <section className="grid min-h-[640px] grid-cols-1 bg-background md:grid-cols-2">
@@ -58,8 +58,8 @@ export default function Login02() {
               Welcome back.
             </h1>
             <p className="text-sm text-muted-foreground">
-              Use the email you signed up with. We&apos;ll fetch your
-              workspace from there.
+              Use the email you signed up with. We&apos;ll fetch your workspace
+              from there.
             </p>
           </div>
 
@@ -109,7 +109,12 @@ export default function Login02() {
               </PasswordInput>
             </div>
 
-            <Button type="submit" variant="default" size="lg" className="group mt-2">
+            <Button
+              type="submit"
+              variant="default"
+              size="lg"
+              className="group mt-2"
+            >
               Continue
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
             </Button>
@@ -144,7 +149,10 @@ export default function Login02() {
         />
 
         <div className="flex w-full max-w-md flex-col gap-8 px-8 py-12 md:gap-10 md:px-10 lg:px-12 lg:py-16">
-          <Quote className="size-7 text-foreground md:size-8" strokeWidth={1.5} />
+          <Quote
+            className="size-7 text-foreground md:size-8"
+            strokeWidth={1.5}
+          />
 
           <blockquote className="text-balance text-xl font-medium leading-[1.3] tracking-[-0.02em] md:text-2xl lg:text-3xl">
             Lorem ipsum dolor sit amet, consectetur{" "}
@@ -182,5 +190,5 @@ export default function Login02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

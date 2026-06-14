@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { X } from "lucide-react"
+import * as React from "react";
+import { X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type AnnouncementBarProps = React.ComponentProps<"div"> & {
-  tone?: "default" | "primary" | "muted"
-  dismissible?: boolean
+  tone?: "default" | "primary" | "muted";
+  dismissible?: boolean;
   /** Controlled-open. If provided, internal state is bypassed. */
-  open?: boolean
+  open?: boolean;
   /** Fires when the user dismisses via the close button. */
-  onDismiss?: () => void
+  onDismiss?: () => void;
   /** localStorage key. When set, the dismissed state is persisted across reloads. */
-  storageKey?: string
-}
+  storageKey?: string;
+};
 
 const toneClasses: Record<NonNullable<AnnouncementBarProps["tone"]>, string> = {
   default: "border-border bg-card text-card-foreground",
   primary: "border-foreground/15 bg-foreground text-background",
   muted: "border-border bg-muted text-foreground",
-}
+};
 
-const noopUnsubscribe = () => () => {}
+const noopUnsubscribe = () => () => {};
 
 // Server render returns false (visible by default) so the SSR HTML and the
 // hydration pass agree without warnings. Once hydration is committed, the
@@ -30,25 +30,26 @@ const noopUnsubscribe = () => () => {}
 function useStoredDismiss(storageKey?: string) {
   const subscribe = React.useCallback(
     (cb: () => void) => {
-      if (!storageKey || typeof window === "undefined") return noopUnsubscribe()
+      if (!storageKey || typeof window === "undefined")
+        return noopUnsubscribe();
       const handler = (e: StorageEvent) => {
-        if (e.key === storageKey) cb()
-      }
-      window.addEventListener("storage", handler)
-      return () => window.removeEventListener("storage", handler)
+        if (e.key === storageKey) cb();
+      };
+      window.addEventListener("storage", handler);
+      return () => window.removeEventListener("storage", handler);
     },
-    [storageKey]
-  )
+    [storageKey],
+  );
   const getSnapshot = React.useCallback(() => {
-    if (!storageKey || typeof window === "undefined") return false
+    if (!storageKey || typeof window === "undefined") return false;
     try {
-      return window.localStorage.getItem(storageKey) === "1"
+      return window.localStorage.getItem(storageKey) === "1";
     } catch {
-      return false
+      return false;
     }
-  }, [storageKey])
-  const getServerSnapshot = React.useCallback(() => false, [])
-  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  }, [storageKey]);
+  const getServerSnapshot = React.useCallback(() => false, []);
+  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 function AnnouncementBar({
@@ -61,27 +62,25 @@ function AnnouncementBar({
   children,
   ...props
 }: AnnouncementBarProps) {
-  const storedDismissed = useStoredDismiss(storageKey)
-  const [localDismissed, setLocalDismissed] = React.useState(false)
+  const storedDismissed = useStoredDismiss(storageKey);
+  const [localDismissed, setLocalDismissed] = React.useState(false);
 
-  const isControlled = open !== undefined
-  const dismissed = isControlled
-    ? !open
-    : storedDismissed || localDismissed
+  const isControlled = open !== undefined;
+  const dismissed = isControlled ? !open : storedDismissed || localDismissed;
 
-  if (dismissed) return null
+  if (dismissed) return null;
 
   const handleDismiss = () => {
-    if (!isControlled) setLocalDismissed(true)
+    if (!isControlled) setLocalDismissed(true);
     if (storageKey && typeof window !== "undefined") {
       try {
-        window.localStorage.setItem(storageKey, "1")
+        window.localStorage.setItem(storageKey, "1");
       } catch {}
     }
-    onDismiss?.()
-  }
+    onDismiss?.();
+  };
 
-  const isPrimary = tone === "primary"
+  const isPrimary = tone === "primary";
 
   return (
     <div
@@ -92,7 +91,7 @@ function AnnouncementBar({
       className={cn(
         "relative isolate flex w-full items-center justify-center gap-3 border-b px-4 py-2 text-sm",
         toneClasses[tone],
-        className
+        className,
       )}
       {...props}
     >
@@ -108,44 +107,50 @@ function AnnouncementBar({
             "absolute end-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             isPrimary
               ? "text-background/70 hover:bg-background/10 hover:text-background"
-              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground",
           )}
         >
           <X className="size-3.5" />
         </button>
       )}
     </div>
-  )
+  );
 }
 
-type AnnouncementBarBadgeProps = React.ComponentProps<"span">
+type AnnouncementBarBadgeProps = React.ComponentProps<"span">;
 
-function AnnouncementBarBadge({ className, ...props }: AnnouncementBarBadgeProps) {
+function AnnouncementBarBadge({
+  className,
+  ...props
+}: AnnouncementBarBadgeProps) {
   return (
     <span
       data-slot="announcement-bar-badge"
       className={cn(
         "inline-flex items-center rounded-sm border border-current/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] opacity-80",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type AnnouncementBarLinkProps = React.ComponentProps<"a">
+type AnnouncementBarLinkProps = React.ComponentProps<"a">;
 
-function AnnouncementBarLink({ className, ...props }: AnnouncementBarLinkProps) {
+function AnnouncementBarLink({
+  className,
+  ...props
+}: AnnouncementBarLinkProps) {
   return (
     <a
       data-slot="announcement-bar-link"
       className={cn(
         "inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { AnnouncementBar, AnnouncementBarBadge, AnnouncementBarLink }
+export { AnnouncementBar, AnnouncementBarBadge, AnnouncementBarLink };

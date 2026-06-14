@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { GitMerge, MessageSquare, UserPlus } from "lucide-react"
+import { GitMerge, MessageSquare, UserPlus } from "lucide-react";
 
 import {
   ActivityFeed,
@@ -13,7 +13,7 @@ import {
   ActivityFeedHeader,
   ActivityFeedItem,
   ActivityFeedTime,
-} from "@/registry/hirael/ui/activity-feed"
+} from "@/registry/hirael/ui/activity-feed";
 
 export default function ActivityFeedDemo() {
   return (
@@ -48,8 +48,8 @@ export default function ActivityFeedDemo() {
                 <ActivityFeedTime className="ms-auto">13:58</ActivityFeedTime>
               </ActivityFeedHeader>
               <ActivityFeedBody>
-                Looks good. Can we add a test for the proration edge case
-                before this ships?
+                Looks good. Can we add a test for the proration edge case before
+                this ships?
               </ActivityFeedBody>
             </ActivityFeedContent>
           </ActivityFeedItem>
@@ -99,5 +99,5 @@ export default function ActivityFeedDemo() {
         </ActivityFeed>
       </div>
     </div>
-  )
+  );
 }

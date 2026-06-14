@@ -1,31 +1,31 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type SpinnerProps = React.ComponentProps<"span"> & {
-  variant?: "circle" | "dots" | "bars"
-  size?: "sm" | "md" | "lg"
+  variant?: "circle" | "dots" | "bars";
+  size?: "sm" | "md" | "lg";
   /** Accessible label announced to assistive tech. Defaults to "Loading". */
-  label?: string
-}
+  label?: string;
+};
 
 const circleSize = {
   sm: "size-4 border-2",
   md: "size-5 border-2",
   lg: "size-8 border-[3px]",
-} as const
+} as const;
 
 const dotSize = {
   sm: "size-1",
   md: "size-1.5",
   lg: "size-2.5",
-} as const
+} as const;
 
 const barSize = {
   sm: "h-3 w-0.5",
   md: "h-4 w-[3px]",
   lg: "h-6 w-1",
-} as const
+} as const;
 
 function Spinner({
   variant = "circle",
@@ -49,7 +49,7 @@ function Spinner({
           aria-hidden
           className={cn(
             "block animate-spin rounded-full border-current border-t-transparent",
-            circleSize[size]
+            circleSize[size],
           )}
         />
       )}
@@ -59,17 +59,20 @@ function Spinner({
           <span
             className={cn(
               "animate-bounce rounded-full bg-current [animation-delay:-0.3s]",
-              dotSize[size]
+              dotSize[size],
             )}
           />
           <span
             className={cn(
               "animate-bounce rounded-full bg-current [animation-delay:-0.15s]",
-              dotSize[size]
+              dotSize[size],
             )}
           />
           <span
-            className={cn("animate-bounce rounded-full bg-current", dotSize[size])}
+            className={cn(
+              "animate-bounce rounded-full bg-current",
+              dotSize[size],
+            )}
           />
         </span>
       )}
@@ -79,22 +82,25 @@ function Spinner({
           <span
             className={cn(
               "animate-pulse rounded-full bg-current [animation-delay:-0.4s]",
-              barSize[size]
+              barSize[size],
             )}
           />
           <span
             className={cn(
               "animate-pulse rounded-full bg-current [animation-delay:-0.2s]",
-              barSize[size]
+              barSize[size],
             )}
           />
           <span
-            className={cn("animate-pulse rounded-full bg-current", barSize[size])}
+            className={cn(
+              "animate-pulse rounded-full bg-current",
+              barSize[size],
+            )}
           />
           <span
             className={cn(
               "animate-pulse rounded-full bg-current [animation-delay:-0.6s]",
-              barSize[size]
+              barSize[size],
             )}
           />
         </span>
@@ -102,7 +108,7 @@ function Spinner({
 
       <span className="sr-only">{label}</span>
     </span>
-  )
+  );
 }
 
-export { Spinner }
+export { Spinner };

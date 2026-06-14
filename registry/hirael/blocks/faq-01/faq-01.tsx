@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowUpRight, MessageCircleQuestion } from "lucide-react"
+import * as React from "react";
+import { ArrowUpRight, MessageCircleQuestion } from "lucide-react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/registry/hirael/ui/accordion"
-import { Button } from "@/registry/hirael/ui/button"
-import { Card, CardContent } from "@/registry/hirael/ui/card"
+} from "@/registry/hirael/ui/accordion";
+import { Button } from "@/registry/hirael/ui/button";
+import { Card, CardContent } from "@/registry/hirael/ui/card";
 
 const FAQS = [
   {
@@ -37,7 +37,7 @@ const FAQS = [
     q: "Is it production-ready?",
     a: "Yes. Every shipped component is typed end-to-end, keyboard-accessible, and SSR-safe. We don't tag a component as stable until it has both API shapes, focus-management coverage, and a working demo in the registry.",
   },
-] as const
+] as const;
 
 export default function Faq01() {
   return (
@@ -50,8 +50,8 @@ export default function Faq01() {
               FAQ · the short answers
             </span>
             <h2 className="text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-4xl md:text-5xl">
-              Frequently{" "}
-              <span className="text-foreground">unobvious</span> questions.
+              Frequently <span className="text-foreground">unobvious</span>{" "}
+              questions.
             </h2>
             <p className="text-sm text-muted-foreground">
               The questions teams ask in their first ten minutes with Hirael,
@@ -82,7 +82,12 @@ export default function Faq01() {
         </div>
 
         <div className="lg:col-span-7">
-          <Accordion type="single" collapsible defaultValue="item-0" className="border-y border-border">
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue="item-0"
+            className="border-y border-border"
+          >
             {FAQS.map((f, i) => (
               <AccordionItem key={f.q} value={`item-${i}`} className="px-1">
                 <AccordionTrigger>
@@ -102,5 +107,5 @@ export default function Faq01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

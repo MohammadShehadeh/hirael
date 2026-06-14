@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/registry/hirael/ui/button"
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Input } from "@/registry/hirael/ui/input"
-import { Label } from "@/registry/hirael/ui/label"
-import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet"
-import { useTheme } from "@/components/showcase/theme-provider"
-import { RegistryDemo } from "@/registry/hirael/registry-demos"
-import { COMPONENTS } from "@/registry/hirael/registry-meta"
+import { Button } from "@/registry/hirael/ui/button";
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Input } from "@/registry/hirael/ui/input";
+import { Label } from "@/registry/hirael/ui/label";
+import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
+import { useTheme } from "@/components/showcase/theme-provider";
+import { RegistryDemo } from "@/registry/hirael/registry-demos";
+import { COMPONENTS } from "@/registry/hirael/registry-meta";
 
 export function ThemePlayground() {
-  const { mode, theme } = useTheme()
+  const { mode, theme } = useTheme();
   const overrideCount =
-    Object.keys(theme.dark).length + Object.keys(theme.light).length
-  const components = COMPONENTS
+    Object.keys(theme.dark).length + Object.keys(theme.light).length;
+  const components = COMPONENTS;
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
@@ -57,9 +57,15 @@ export function ThemePlayground() {
         description="The three surface layers components stack on: background, card, popover. Borders read against each."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
-          <Surface label="background" className="bg-background text-foreground" />
+          <Surface
+            label="background"
+            className="bg-background text-foreground"
+          />
           <Surface label="card" className="bg-card text-card-foreground" />
-          <Surface label="popover" className="bg-popover text-popover-foreground" />
+          <Surface
+            label="popover"
+            className="bg-popover text-popover-foreground"
+          />
         </div>
       </Section>
 
@@ -120,7 +126,7 @@ export function ThemePlayground() {
                   <RegistryDemo name={entry.name} />
                 </div>
               </article>
-            )
+            );
           })}
         </div>
       </Section>
@@ -140,7 +146,7 @@ export function ThemePlayground() {
         </div>
       </Section>
     </div>
-  )
+  );
 }
 
 function Section({
@@ -149,10 +155,10 @@ function Section({
   description,
   children,
 }: {
-  eyebrow: string
-  title: string
-  description: string
-  children: React.ReactNode
+  eyebrow: string;
+  title: string;
+  description: string;
+  children: React.ReactNode;
 }) {
   return (
     <section className="flex flex-col gap-4">
@@ -165,7 +171,7 @@ function Section({
       </div>
       {children}
     </section>
-  )
+  );
 }
 
 function Surface({ label, className }: { label: string; className: string }) {
@@ -177,7 +183,7 @@ function Surface({ label, className }: { label: string; className: string }) {
       <span className="text-sm">Aa · the quick brown fox</span>
       <span className="text-xs opacity-60">Muted line of secondary copy.</span>
     </div>
-  )
+  );
 }
 
 function Swatch({ label, varName }: { label: string; varName: string }) {
@@ -192,5 +198,5 @@ function Swatch({ label, varName }: { label: string; varName: string }) {
         {label}
       </span>
     </div>
-  )
+  );
 }

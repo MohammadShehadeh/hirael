@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Archive,
   Inbox,
@@ -11,38 +11,38 @@ import {
   Star,
   Trash2,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs"
-import { Textarea } from "@/registry/hirael/ui/textarea"
+} from "@/registry/hirael/ui/input-group";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
+import { Textarea } from "@/registry/hirael/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/registry/hirael/ui/tooltip"
-import { cn } from "@/lib/utils"
+} from "@/registry/hirael/ui/tooltip";
+import { cn } from "@/lib/utils";
 
-type Message = { from: string; initials: string; time: string; body: string }
+type Message = { from: string; initials: string; time: string; body: string };
 
 type Conversation = {
-  id: string
-  sender: string
-  initials: string
-  email: string
-  subject: string
-  preview: string
-  time: string
-  unread?: boolean
-  thread: readonly Message[]
-}
+  id: string;
+  sender: string;
+  initials: string;
+  email: string;
+  subject: string;
+  preview: string;
+  time: string;
+  unread?: boolean;
+  thread: readonly Message[];
+};
 
 const CONVERSATIONS: readonly Conversation[] = [
   {
@@ -179,14 +179,14 @@ const CONVERSATIONS: readonly Conversation[] = [
       },
     ],
   },
-]
+];
 
 const RAIL: { icon: LucideIcon; label: string; current?: boolean }[] = [
   { icon: Inbox, label: "Inbox", current: true },
   { icon: Send, label: "Sent" },
   { icon: Archive, label: "Archive" },
   { icon: Trash2, label: "Trash" },
-]
+];
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -206,63 +206,63 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function AppShell03() {
-  const [selectedId, setSelectedId] = React.useState(CONVERSATIONS[0].id)
-  const [readIds, setReadIds] = React.useState<readonly string[]>([])
+  const [selectedId, setSelectedId] = React.useState(CONVERSATIONS[0].id);
+  const [readIds, setReadIds] = React.useState<readonly string[]>([]);
   const [starred, setStarred] = React.useState<readonly string[]>([
     "launch-checklist",
-  ])
-  const [replies, setReplies] = React.useState<Record<string, Message[]>>({})
-  const [query, setQuery] = React.useState("")
-  const [filter, setFilter] = React.useState<"all" | "unread">("all")
-  const [draft, setDraft] = React.useState("")
+  ]);
+  const [replies, setReplies] = React.useState<Record<string, Message[]>>({});
+  const [query, setQuery] = React.useState("");
+  const [filter, setFilter] = React.useState<"all" | "unread">("all");
+  const [draft, setDraft] = React.useState("");
 
-  const isUnread = (c: Conversation) => !!c.unread && !readIds.includes(c.id)
-  const unreadCount = CONVERSATIONS.filter(isUnread).length
+  const isUnread = (c: Conversation) => !!c.unread && !readIds.includes(c.id);
+  const unreadCount = CONVERSATIONS.filter(isUnread).length;
 
-  const normalized = query.trim().toLowerCase()
+  const normalized = query.trim().toLowerCase();
   const visible = CONVERSATIONS.filter((c) => {
-    if (filter === "unread" && !isUnread(c)) return false
-    if (!normalized) return true
+    if (filter === "unread" && !isUnread(c)) return false;
+    if (!normalized) return true;
     return (
       c.sender.toLowerCase().includes(normalized) ||
       c.subject.toLowerCase().includes(normalized)
-    )
-  })
+    );
+  });
 
   const selected =
-    CONVERSATIONS.find((c) => c.id === selectedId) ?? CONVERSATIONS[0]
-  const thread = [...selected.thread, ...(replies[selected.id] ?? [])]
-  const isStarred = starred.includes(selected.id)
+    CONVERSATIONS.find((c) => c.id === selectedId) ?? CONVERSATIONS[0];
+  const thread = [...selected.thread, ...(replies[selected.id] ?? [])];
+  const isStarred = starred.includes(selected.id);
 
   const openConversation = (id: string) => {
-    setSelectedId(id)
-    setDraft("")
-    setReadIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
-  }
+    setSelectedId(id);
+    setDraft("");
+    setReadIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  };
 
   const toggleStar = () =>
     setStarred((prev) =>
       prev.includes(selected.id)
         ? prev.filter((s) => s !== selected.id)
-        : [...prev, selected.id]
-    )
+        : [...prev, selected.id],
+    );
 
   const sendReply = () => {
-    const body = draft.trim()
-    if (!body) return
+    const body = draft.trim();
+    if (!body) return;
     setReplies((prev) => ({
       ...prev,
       [selected.id]: [
         ...(prev[selected.id] ?? []),
         { from: "You", initials: "YO", time: "Just now", body },
       ],
-    }))
-    setDraft("")
-  }
+    }));
+    setDraft("");
+  };
 
   return (
     <div className="flex min-h-[640px] bg-background">
@@ -288,7 +288,7 @@ export default function AppShell03() {
                   "relative inline-flex size-9 items-center justify-center rounded-md transition-colors",
                   item.current
                     ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
                 <item.icon className="size-4" />
@@ -325,7 +325,10 @@ export default function AppShell03() {
       >
         <div className="flex h-14 shrink-0 items-center justify-between gap-2 px-4">
           <h2 className="text-sm font-medium tracking-[-0.01em]">Inbox</h2>
-          <Badge variant="outline" className="font-mono text-[10px] tabular-nums">
+          <Badge
+            variant="outline"
+            className="font-mono text-[10px] tabular-nums"
+          >
             {unreadCount} unread
           </Badge>
         </div>
@@ -372,8 +375,8 @@ export default function AppShell03() {
         <Separator />
         <ul className="flex-1 overflow-y-auto">
           {visible.map((c) => {
-            const active = c.id === selected.id
-            const unread = isUnread(c)
+            const active = c.id === selected.id;
+            const unread = isUnread(c);
             return (
               <li key={c.id}>
                 <button
@@ -382,7 +385,7 @@ export default function AppShell03() {
                   aria-current={active ? "true" : undefined}
                   className={cn(
                     "flex w-full flex-col gap-0.5 border-b border-border px-4 py-3 text-start transition-colors",
-                    active ? "bg-accent/70" : "hover:bg-accent/40"
+                    active ? "bg-accent/70" : "hover:bg-accent/40",
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -395,7 +398,7 @@ export default function AppShell03() {
                     <span
                       className={cn(
                         "truncate text-sm",
-                        unread ? "font-semibold" : "font-medium"
+                        unread ? "font-semibold" : "font-medium",
                       )}
                     >
                       {c.sender}
@@ -412,7 +415,7 @@ export default function AppShell03() {
                   </span>
                 </button>
               </li>
-            )
+            );
           })}
           {visible.length === 0 && (
             <li className="px-4 py-10 text-center text-xs text-muted-foreground">
@@ -422,7 +425,10 @@ export default function AppShell03() {
         </ul>
       </section>
 
-      <section aria-label="Conversation" className="flex min-w-0 flex-1 flex-col">
+      <section
+        aria-label="Conversation"
+        className="flex min-w-0 flex-1 flex-col"
+      >
         <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4 sm:px-6">
           <h2 className="truncate text-sm font-medium tracking-[-0.01em]">
             {selected.subject}
@@ -434,11 +440,11 @@ export default function AppShell03() {
               className="size-8"
               onClick={toggleStar}
               aria-pressed={isStarred}
-              aria-label={isStarred ? "Unstar conversation" : "Star conversation"}
+              aria-label={
+                isStarred ? "Unstar conversation" : "Star conversation"
+              }
             >
-              <Star
-                className={cn("size-4", isStarred && "fill-current")}
-              />
+              <Star className={cn("size-4", isStarred && "fill-current")} />
             </Button>
             <Button
               variant="ghost"
@@ -464,7 +470,9 @@ export default function AppShell03() {
             {selected.initials}
           </span>
           <div className="flex min-w-0 flex-col">
-            <span className="truncate text-sm font-medium">{selected.sender}</span>
+            <span className="truncate text-sm font-medium">
+              {selected.sender}
+            </span>
             <span className="truncate font-mono text-[11px] text-muted-foreground">
               {selected.email} · to you
             </span>
@@ -477,7 +485,7 @@ export default function AppShell03() {
               key={`${m.from}-${i}`}
               className={cn(
                 "flex max-w-xl flex-col gap-2 rounded-md border border-border p-4",
-                m.from === "You" ? "self-end bg-accent/50" : "bg-card/40"
+                m.from === "You" ? "self-end bg-accent/50" : "bg-card/40",
               )}
             >
               <div className="flex items-center gap-2">
@@ -500,8 +508,8 @@ export default function AppShell03() {
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                sendReply()
+                e.preventDefault();
+                sendReply();
               }
             }}
             placeholder={`Reply to ${selected.sender}…`}
@@ -520,5 +528,5 @@ export default function AppShell03() {
         </div>
       </section>
     </div>
-  )
+  );
 }

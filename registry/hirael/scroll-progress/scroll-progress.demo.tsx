@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { ScrollProgress } from "@/registry/hirael/ui/scroll-progress"
+import { ScrollProgress } from "@/registry/hirael/ui/scroll-progress";
 
 export default function ScrollProgressDemo() {
-  const containerRef = React.useRef<HTMLDivElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <div className="grid w-full max-w-3xl gap-3">
@@ -38,5 +38,5 @@ export default function ScrollProgressDemo() {
         document scroll, useful on long blog posts.
       </p>
     </div>
-  )
+  );
 }

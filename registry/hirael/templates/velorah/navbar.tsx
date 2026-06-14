@@ -1,4 +1,4 @@
-import { Wordmark } from "./primitives"
+import { Wordmark } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Home", href: "#" },
@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: "About", href: "#" },
   { label: "Journal", href: "#" },
   { label: "Reach Us", href: "#" },
-]
+];
 
 export function Navbar() {
   return (
@@ -32,5 +32,5 @@ export function Navbar() {
         Begin Journey
       </button>
     </nav>
-  )
+  );
 }

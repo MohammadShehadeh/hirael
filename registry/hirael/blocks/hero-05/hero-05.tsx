@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import dynamic from "next/dynamic"
-import Image from "next/image"
-import { ArrowRight, Cloud } from "lucide-react"
+import * as React from "react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { ArrowRight, Cloud } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 const Hero05Backdrop = dynamic(() => import("./hero-05-backdrop"), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
-})
+});
 
 const AVATARS = [
   "photo-1500648767791-00dcc994a43e",
   "photo-1494790108377-be9c29b29330",
   "photo-1507003211169-0a1dd7228f2d",
   "photo-1438761681033-6461ffad8d80",
-] as const
+] as const;
 
-const NAV_LINKS = ["Product", "Docs", "Pricing"] as const
+const NAV_LINKS = ["Product", "Docs", "Pricing"] as const;
 
 export default function Hero05() {
-  const [active, setActive] = React.useState(false)
+  const [active, setActive] = React.useState(false);
 
   return (
     <section
@@ -137,5 +137,5 @@ export default function Hero05() {
         </div>
       </div>
     </section>
-  )
+  );
 }

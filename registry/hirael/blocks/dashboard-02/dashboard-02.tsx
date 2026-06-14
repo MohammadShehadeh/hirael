@@ -1,64 +1,136 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArrowDownRight, ArrowUpRight, Minus, Share2 } from "lucide-react"
+import * as React from "react";
+import { ArrowDownRight, ArrowUpRight, Minus, Share2 } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
+} from "@/registry/hirael/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/registry/hirael/ui/select"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/select";
+import { Separator } from "@/registry/hirael/ui/separator";
 
-type Range = "7d" | "14d" | "28d"
+type Range = "7d" | "14d" | "28d";
 
 const RANGES: { value: Range; label: string }[] = [
   { value: "7d", label: "Last 7 days" },
   { value: "14d", label: "Last 14 days" },
   { value: "28d", label: "Last 28 days" },
-]
+];
 
 type Kpi = {
-  label: string
-  value: string
-  delta: string
-  trend: "up" | "down" | "flat"
-  spark: readonly number[]
-}
+  label: string;
+  value: string;
+  delta: string;
+  trend: "up" | "down" | "flat";
+  spark: readonly number[];
+};
 
 const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
   "7d": [
-    { label: "Visitors", value: "24,310", delta: "+12.4%", trend: "up", spark: [12, 18, 14, 22, 19, 26, 31] },
-    { label: "Page views", value: "96,482", delta: "+8.1%", trend: "up", spark: [40, 52, 47, 58, 54, 66, 72] },
-    { label: "Avg. time", value: "3m 42s", delta: "+9s", trend: "up", spark: [30, 28, 33, 31, 36, 34, 39] },
-    { label: "Bounce rate", value: "38.2%", delta: "-1.8%", trend: "down", spark: [46, 44, 45, 42, 43, 40, 38] },
+    {
+      label: "Visitors",
+      value: "24,310",
+      delta: "+12.4%",
+      trend: "up",
+      spark: [12, 18, 14, 22, 19, 26, 31],
+    },
+    {
+      label: "Page views",
+      value: "96,482",
+      delta: "+8.1%",
+      trend: "up",
+      spark: [40, 52, 47, 58, 54, 66, 72],
+    },
+    {
+      label: "Avg. time",
+      value: "3m 42s",
+      delta: "+9s",
+      trend: "up",
+      spark: [30, 28, 33, 31, 36, 34, 39],
+    },
+    {
+      label: "Bounce rate",
+      value: "38.2%",
+      delta: "-1.8%",
+      trend: "down",
+      spark: [46, 44, 45, 42, 43, 40, 38],
+    },
   ],
   "14d": [
-    { label: "Visitors", value: "46,920", delta: "+9.6%", trend: "up", spark: [14, 16, 13, 19, 18, 24, 27] },
-    { label: "Page views", value: "182,104", delta: "+6.4%", trend: "up", spark: [44, 49, 46, 55, 52, 61, 67] },
-    { label: "Avg. time", value: "3m 31s", delta: "0s", trend: "flat", spark: [32, 31, 33, 32, 33, 32, 33] },
-    { label: "Bounce rate", value: "39.6%", delta: "-0.9%", trend: "down", spark: [45, 44, 46, 43, 44, 41, 40] },
+    {
+      label: "Visitors",
+      value: "46,920",
+      delta: "+9.6%",
+      trend: "up",
+      spark: [14, 16, 13, 19, 18, 24, 27],
+    },
+    {
+      label: "Page views",
+      value: "182,104",
+      delta: "+6.4%",
+      trend: "up",
+      spark: [44, 49, 46, 55, 52, 61, 67],
+    },
+    {
+      label: "Avg. time",
+      value: "3m 31s",
+      delta: "0s",
+      trend: "flat",
+      spark: [32, 31, 33, 32, 33, 32, 33],
+    },
+    {
+      label: "Bounce rate",
+      value: "39.6%",
+      delta: "-0.9%",
+      trend: "down",
+      spark: [45, 44, 46, 43, 44, 41, 40],
+    },
   ],
   "28d": [
-    { label: "Visitors", value: "88,475", delta: "+21.2%", trend: "up", spark: [10, 13, 12, 17, 16, 22, 28] },
-    { label: "Page views", value: "351,889", delta: "+17.8%", trend: "up", spark: [36, 42, 40, 51, 49, 60, 71] },
-    { label: "Avg. time", value: "3m 24s", delta: "+18s", trend: "up", spark: [27, 29, 28, 32, 31, 35, 38] },
-    { label: "Bounce rate", value: "40.4%", delta: "+0.6%", trend: "up", spark: [39, 40, 39, 41, 40, 42, 41] },
+    {
+      label: "Visitors",
+      value: "88,475",
+      delta: "+21.2%",
+      trend: "up",
+      spark: [10, 13, 12, 17, 16, 22, 28],
+    },
+    {
+      label: "Page views",
+      value: "351,889",
+      delta: "+17.8%",
+      trend: "up",
+      spark: [36, 42, 40, 51, 49, 60, 71],
+    },
+    {
+      label: "Avg. time",
+      value: "3m 24s",
+      delta: "+18s",
+      trend: "up",
+      spark: [27, 29, 28, 32, 31, 35, 38],
+    },
+    {
+      label: "Bounce rate",
+      value: "40.4%",
+      delta: "+0.6%",
+      trend: "up",
+      spark: [39, 40, 39, 41, 40, 42, 41],
+    },
   ],
-}
+};
 
-type ChartBucket = { label: string; visitors: number; views: number }
+type ChartBucket = { label: string; visitors: number; views: number };
 
 const CHART_BY_RANGE: Record<Range, readonly ChartBucket[]> = {
   "7d": [
@@ -88,7 +160,7 @@ const CHART_BY_RANGE: Record<Range, readonly ChartBucket[]> = {
     { label: "D24", visitors: 13180, views: 53600 },
     { label: "D28", visitors: 15285, views: 58889 },
   ],
-}
+};
 
 const TOP_PAGES = [
   { path: "/blocks", views: "18,204", share: 86 },
@@ -96,38 +168,41 @@ const TOP_PAGES = [
   { path: "/blocks/hero-01", views: "9,482", share: 45 },
   { path: "/theme", views: "6,150", share: 29 },
   { path: "/blocks/faq-02", views: "4,067", share: 19 },
-] as const
+] as const;
 
 const CHANNELS = [
   { label: "Organic search", share: 44 },
   { label: "Direct", share: 31 },
   { label: "Referral", share: 16 },
   { label: "Social", share: 9 },
-] as const
+] as const;
 
 function TrendIcon({ trend }: { trend: Kpi["trend"] }) {
-  if (trend === "up") return <ArrowUpRight className="size-3" />
-  if (trend === "down") return <ArrowDownRight className="size-3" />
-  return <Minus className="size-3" />
+  if (trend === "up") return <ArrowUpRight className="size-3" />;
+  if (trend === "down") return <ArrowDownRight className="size-3" />;
+  return <Minus className="size-3" />;
 }
 
 function deltaTone(kpi: Kpi) {
   const improving =
-    kpi.label === "Bounce rate" ? kpi.trend === "down" : kpi.trend === "up"
-  if (kpi.trend === "flat") return "bg-accent text-muted-foreground"
+    kpi.label === "Bounce rate" ? kpi.trend === "down" : kpi.trend === "up";
+  if (kpi.trend === "flat") return "bg-accent text-muted-foreground";
   return improving
     ? "bg-emerald-500/10 text-emerald-500"
-    : "bg-red-500/10 text-red-500"
+    : "bg-red-500/10 text-red-500";
 }
 
 function Sparkline({ points }: { points: readonly number[] }) {
-  const max = Math.max(...points)
-  const min = Math.min(...points)
-  const span = max - min || 1
-  const step = 100 / (points.length - 1)
+  const max = Math.max(...points);
+  const min = Math.min(...points);
+  const span = max - min || 1;
+  const step = 100 / (points.length - 1);
   const coords = points
-    .map((p, i) => `${(i * step).toFixed(1)},${(26 - ((p - min) / span) * 20).toFixed(1)}`)
-    .join(" ")
+    .map(
+      (p, i) =>
+        `${(i * step).toFixed(1)},${(26 - ((p - min) / span) * 20).toFixed(1)}`,
+    )
+    .join(" ");
   return (
     <svg
       viewBox="0 0 100 30"
@@ -143,27 +218,33 @@ function Sparkline({ points }: { points: readonly number[] }) {
         className="stroke-foreground/40"
       />
     </svg>
-  )
+  );
 }
 
 function linePath(values: number[], max: number) {
-  const step = 100 / (values.length - 1)
+  const step = 100 / (values.length - 1);
   return values
     .map(
       (v, i) =>
-        `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(44 - (v / max) * 38).toFixed(2)}`
+        `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(44 - (v / max) * 38).toFixed(2)}`,
     )
-    .join(" ")
+    .join(" ");
 }
 
 export default function Dashboard02() {
-  const [range, setRange] = React.useState<Range>("7d")
+  const [range, setRange] = React.useState<Range>("7d");
 
-  const kpis = KPIS_BY_RANGE[range]
-  const chart = CHART_BY_RANGE[range]
-  const max = Math.max(...chart.map((b) => b.views))
-  const viewsLine = linePath(chart.map((b) => b.views), max)
-  const visitorsLine = linePath(chart.map((b) => b.visitors), max)
+  const kpis = KPIS_BY_RANGE[range];
+  const chart = CHART_BY_RANGE[range];
+  const max = Math.max(...chart.map((b) => b.views));
+  const viewsLine = linePath(
+    chart.map((b) => b.views),
+    max,
+  );
+  const visitorsLine = linePath(
+    chart.map((b) => b.visitors),
+    max,
+  );
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -179,7 +260,11 @@ export default function Dashboard02() {
           </div>
           <div className="flex items-center gap-2">
             <Select value={range} onValueChange={(v) => setRange(v as Range)}>
-              <SelectTrigger size="sm" className="w-[150px]" aria-label="Date range">
+              <SelectTrigger
+                size="sm"
+                className="w-[150px]"
+                aria-label="Date range"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -319,7 +404,12 @@ export default function Dashboard02() {
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
                     · top pages
                   </CardDescription>
-                  <Button variant="link" size="sm" className="h-auto p-0" asChild>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-auto p-0"
+                    asChild
+                  >
                     <a href="#">View all</a>
                   </Button>
                 </div>
@@ -377,5 +467,5 @@ export default function Dashboard02() {
         </div>
       </div>
     </section>
-  )
+  );
 }

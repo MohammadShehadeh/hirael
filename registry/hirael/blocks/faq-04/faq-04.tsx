@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/registry/hirael/ui/accordion"
+} from "@/registry/hirael/ui/accordion";
 
 type Group = {
-  label: string
-  faqs: readonly { q: string; a: string }[]
-}
+  label: string;
+  faqs: readonly { q: string; a: string }[];
+};
 
 const GROUPS: readonly Group[] = [
   {
@@ -100,7 +100,7 @@ const GROUPS: readonly Group[] = [
       },
     ],
   },
-]
+];
 
 export default function Faq04() {
   return (
@@ -123,8 +123,8 @@ export default function Faq04() {
             Asked, answered, archived.
           </h2>
           <p className="max-w-md text-balance text-sm text-muted-foreground">
-            Every question we&apos;ve answered more than twice, grouped by
-            topic so you can skip to yours.
+            Every question we&apos;ve answered more than twice, grouped by topic
+            so you can skip to yours.
           </p>
         </div>
 
@@ -136,8 +136,8 @@ export default function Faq04() {
                   {group.label}
                 </h3>
                 <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground">
-                  {String(gi + 1).padStart(2, "0")} ·{" "}
-                  {group.faqs.length} questions
+                  {String(gi + 1).padStart(2, "0")} · {group.faqs.length}{" "}
+                  questions
                 </span>
               </div>
               <Accordion type="single" collapsible className="w-full">
@@ -165,5 +165,5 @@ export default function Faq04() {
         </div>
       </div>
     </section>
-  )
+  );
 }

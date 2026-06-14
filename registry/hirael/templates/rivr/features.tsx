@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Activity, ArrowUpRight, Layers, ShieldCheck } from "lucide-react"
+import { motion } from "framer-motion";
+import { Activity, ArrowUpRight, Layers, ShieldCheck } from "lucide-react";
 
-import { fadeUp, PillButton } from "./primitives"
+import { fadeUp, PillButton } from "./primitives";
 
 const CARD_BASE =
-  "group relative overflow-hidden rounded-[1.5rem] bg-card p-7 transition-shadow hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:rounded-[2rem]"
+  "group relative overflow-hidden rounded-[1.5rem] bg-card p-7 transition-shadow hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:rounded-[2rem]";
 
 const ICON_CHIP =
-  "flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground"
+  "flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground";
 
 export function Features() {
   return (
@@ -24,7 +24,11 @@ export function Features() {
         <h2 className="font-display max-w-2xl text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl">
           Architected for high-performance DeFi
         </h2>
-        <PillButton label="Start Staking" variant="outline" className="shrink-0" />
+        <PillButton
+          label="Start Staking"
+          variant="outline"
+          className="shrink-0"
+        />
       </motion.div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:grid-rows-2 md:gap-5">
@@ -74,7 +78,9 @@ export function Features() {
             <ShieldCheck className="size-6" />
           </span>
           <div className="mt-6">
-            <h3 className="text-xl font-semibold text-foreground">Bank-grade</h3>
+            <h3 className="text-xl font-semibold text-foreground">
+              Bank-grade
+            </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Smart contracts audited by leading firms, with on-chain proofs you
               can verify yourself.
@@ -98,7 +104,9 @@ export function Features() {
             <ArrowUpRight className="size-7 rtl:-scale-x-100" />
           </span>
           <div>
-            <h3 className="text-xl font-semibold text-foreground">Cross-Chain</h3>
+            <h3 className="text-xl font-semibold text-foreground">
+              Cross-Chain
+            </h3>
             <p className="mt-1 text-sm text-muted-foreground">
               Move liquidity across networks.
             </p>
@@ -106,5 +114,5 @@ export function Features() {
         </motion.a>
       </div>
     </section>
-  )
+  );
 }

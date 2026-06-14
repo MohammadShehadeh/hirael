@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check } from "lucide-react"
+import * as React from "react";
+import { Check } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type SubscriptionPlansProps = React.ComponentProps<"div">
+type SubscriptionPlansProps = React.ComponentProps<"div">;
 
 function SubscriptionPlans({ className, ...props }: SubscriptionPlansProps) {
   return (
@@ -14,13 +14,13 @@ function SubscriptionPlans({ className, ...props }: SubscriptionPlansProps) {
       className={cn("grid gap-3 sm:grid-cols-3", className)}
       {...props}
     />
-  )
+  );
 }
 
 type SubscriptionPlanProps = React.ComponentProps<"div"> & {
-  featured?: boolean
-  current?: boolean
-}
+  featured?: boolean;
+  current?: boolean;
+};
 
 function SubscriptionPlan({
   featured,
@@ -36,14 +36,14 @@ function SubscriptionPlan({
       className={cn(
         "relative flex flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground",
         featured && "border-foreground/30 ring-1 ring-foreground/20",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type SubscriptionPlanBadgeProps = React.ComponentProps<"span">
+type SubscriptionPlanBadgeProps = React.ComponentProps<"span">;
 
 function SubscriptionPlanBadge({
   className,
@@ -54,14 +54,14 @@ function SubscriptionPlanBadge({
       data-slot="subscription-plan-badge"
       className={cn(
         "absolute -top-2.5 end-4 inline-flex items-center rounded-full border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type SubscriptionPlanNameProps = React.ComponentProps<"h3">
+type SubscriptionPlanNameProps = React.ComponentProps<"h3">;
 
 function SubscriptionPlanName({
   className,
@@ -73,12 +73,12 @@ function SubscriptionPlanName({
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 type SubscriptionPlanPriceProps = React.ComponentProps<"p"> & {
-  cycle?: React.ReactNode
-}
+  cycle?: React.ReactNode;
+};
 
 function SubscriptionPlanPrice({
   cycle,
@@ -99,10 +99,10 @@ function SubscriptionPlanPrice({
         <span className="text-sm text-muted-foreground">/ {cycle}</span>
       ) : null}
     </p>
-  )
+  );
 }
 
-type SubscriptionPlanDescriptionProps = React.ComponentProps<"p">
+type SubscriptionPlanDescriptionProps = React.ComponentProps<"p">;
 
 function SubscriptionPlanDescription({
   className,
@@ -114,10 +114,10 @@ function SubscriptionPlanDescription({
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type SubscriptionPlanFeaturesProps = React.ComponentProps<"ul">
+type SubscriptionPlanFeaturesProps = React.ComponentProps<"ul">;
 
 function SubscriptionPlanFeatures({
   className,
@@ -129,10 +129,10 @@ function SubscriptionPlanFeatures({
       className={cn("flex flex-1 flex-col gap-2 text-sm", className)}
       {...props}
     />
-  )
+  );
 }
 
-type SubscriptionPlanFeatureProps = React.ComponentProps<"li">
+type SubscriptionPlanFeatureProps = React.ComponentProps<"li">;
 
 function SubscriptionPlanFeature({
   className,
@@ -148,12 +148,12 @@ function SubscriptionPlanFeature({
       <Check className="size-4 shrink-0 text-foreground" aria-hidden />
       <span>{children}</span>
     </li>
-  )
+  );
 }
 
 type SubscriptionPlanActionProps = React.ComponentProps<"button"> & {
-  variant?: "primary" | "outline"
-}
+  variant?: "primary" | "outline";
+};
 
 function SubscriptionPlanAction({
   variant = "outline",
@@ -169,11 +169,11 @@ function SubscriptionPlanAction({
         variant === "primary"
           ? "bg-primary text-primary-foreground hover:bg-primary/90"
           : "border border-border bg-background text-foreground hover:bg-accent",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -186,4 +186,4 @@ export {
   SubscriptionPlanFeatures,
   SubscriptionPlanFeature,
   SubscriptionPlanAction,
-}
+};

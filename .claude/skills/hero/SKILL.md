@@ -12,7 +12,7 @@ palette to hide behind. This is the rule heroes most often get wrong.
 
 ## Theme awareness is non-negotiable
 
-Templates (`registry/hirael/templates/*`) are *self-contained palettes* — they
+Templates (`registry/hirael/templates/*`) are _self-contained palettes_ — they
 hard-code `bg-[#EFEFEF]`, `text-white`, etc. and force one look. **Blocks are
 not templates.** Copy the composition of the template heroes, never their
 colors.
@@ -41,7 +41,7 @@ not @paper-design. WebGL is client-only, so it must be a dynamic import:
 const HeroBackdrop = dynamic(() => import("./hero-0X-backdrop"), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
-})
+});
 ```
 
 Layer it so **one grayscale shader reads in both themes** via mix-blend — the

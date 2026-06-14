@@ -1,8 +1,12 @@
-"use client"
+"use client";
 
-import { Dither, Shader, Swirl } from "shaders/react"
+import { Dither, Shader, Swirl } from "shaders/react";
 
-export default function Cta03Backdrop({ active = false }: { active?: boolean }) {
+export default function Cta03Backdrop({
+  active = false,
+}: {
+  active?: boolean;
+}) {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Swirl
@@ -19,5 +23,5 @@ export default function Cta03Backdrop({ active = false }: { active?: boolean }) 
         pixelSize={3}
       />
     </Shader>
-  )
+  );
 }

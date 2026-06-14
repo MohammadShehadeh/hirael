@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check } from "lucide-react"
+import * as React from "react";
+import { Check } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/registry/hirael/ui/card"
-import { Separator } from "@/registry/hirael/ui/separator"
-import { cn } from "@/lib/utils"
+} from "@/registry/hirael/ui/card";
+import { Separator } from "@/registry/hirael/ui/separator";
+import { cn } from "@/lib/utils";
 
 type Tier = {
-  name: string
-  price: string
-  blurb: string
-  features: readonly string[]
-  cta: string
-  featured?: boolean
-  ctaVariant: "default" | "outline"
-}
+  name: string;
+  price: string;
+  blurb: string;
+  features: readonly string[];
+  cta: string;
+  featured?: boolean;
+  ctaVariant: "default" | "outline";
+};
 
 const TIERS: readonly Tier[] = [
   {
@@ -64,7 +64,7 @@ const TIERS: readonly Tier[] = [
     cta: "Contact sales",
     ctaVariant: "outline",
   },
-]
+];
 
 export default function Pricing01() {
   return (
@@ -144,5 +144,5 @@ export default function Pricing01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

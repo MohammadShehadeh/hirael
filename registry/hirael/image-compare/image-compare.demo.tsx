@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
 import {
   ImageCompare,
@@ -8,12 +8,12 @@ import {
   ImageCompareBefore,
   ImageCompareHandle,
   ImageCompareLabel,
-} from "@/registry/hirael/ui/image-compare"
+} from "@/registry/hirael/ui/image-compare";
 
 const PHOTO =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop";
 const PHOTO_ALT =
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop"
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop";
 
 function MockPanel({ styled }: { styled?: boolean }) {
   return (
@@ -21,7 +21,9 @@ function MockPanel({ styled }: { styled?: boolean }) {
       <div className="grid h-full content-start gap-3 rounded-lg border border-border bg-card p-4">
         <div
           className={
-            styled ? "h-3 w-1/3 rounded bg-foreground" : "h-3 w-1/3 rounded bg-muted"
+            styled
+              ? "h-3 w-1/3 rounded bg-foreground"
+              : "h-3 w-1/3 rounded bg-muted"
           }
         />
         <div
@@ -56,7 +58,7 @@ function MockPanel({ styled }: { styled?: boolean }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function ImageCompareDemo() {
@@ -144,5 +146,5 @@ export default function ImageCompareDemo() {
         </ImageCompare>
       </div>
     </div>
-  )
+  );
 }

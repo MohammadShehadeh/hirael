@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react"
+import * as React from "react";
+import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
 type BlurRevealProps = HTMLMotionProps<"div"> & {
   /** Delay before the reveal starts, in ms. */
-  delay?: number
+  delay?: number;
   /** Reveal duration, in ms. */
-  duration?: number
+  duration?: number;
   /** Reveal once and stay, or replay every time it re-enters the viewport. */
-  once?: boolean
+  once?: boolean;
   /** Visible fraction (0–1) that triggers the reveal. */
-  amount?: number
+  amount?: number;
   /** Starting blur, in px. */
-  blur?: number
+  blur?: number;
   /** Starting vertical offset, in px. */
-  y?: number
-}
+  y?: number;
+};
 
 function BlurReveal({
   delay = 0,
@@ -27,10 +27,10 @@ function BlurReveal({
   y = 8,
   ...props
 }: BlurRevealProps) {
-  const reduced = useReducedMotion()
+  const reduced = useReducedMotion();
 
   if (reduced) {
-    return <motion.div data-slot="blur-reveal" {...props} />
+    return <motion.div data-slot="blur-reveal" {...props} />;
   }
 
   return (
@@ -46,7 +46,7 @@ function BlurReveal({
       }}
       {...props}
     />
-  )
+  );
 }
 
-export { BlurReveal }
+export { BlurReveal };

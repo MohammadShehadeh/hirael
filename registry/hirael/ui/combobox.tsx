@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronDown, Loader2, X } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronDown, Loader2, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/registry/hirael/ui/popover"
+} from "@/registry/hirael/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -16,56 +16,54 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/hirael/ui/command"
+} from "@/registry/hirael/ui/command";
 
 export type ComboboxOption = {
-  value: string
-  label: string
-  group?: string
-  disabled?: boolean
-}
+  value: string;
+  label: string;
+  group?: string;
+  disabled?: boolean;
+};
 
 type Ctx = {
-  value: string | undefined
-  setValue: (next: string | undefined) => void
-  options: ComboboxOption[]
-  open: boolean
-  setOpen: (next: boolean) => void
-  search: string
-  setSearch: (next: string) => void
-  loading?: boolean
-  disabled?: boolean
-  clearable: boolean
-  externalFilter: boolean
-}
+  value: string | undefined;
+  setValue: (next: string | undefined) => void;
+  options: ComboboxOption[];
+  open: boolean;
+  setOpen: (next: boolean) => void;
+  search: string;
+  setSearch: (next: string) => void;
+  loading?: boolean;
+  disabled?: boolean;
+  clearable: boolean;
+  externalFilter: boolean;
+};
 
-const ComboboxContext = React.createContext<Ctx | null>(null)
+const ComboboxContext = React.createContext<Ctx | null>(null);
 
 function useCombobox() {
-  const ctx = React.useContext(ComboboxContext)
+  const ctx = React.useContext(ComboboxContext);
   if (!ctx) {
-    throw new Error(
-      "Combobox compound parts must be used inside <Combobox>"
-    )
+    throw new Error("Combobox compound parts must be used inside <Combobox>");
   }
-  return ctx
+  return ctx;
 }
 
 export type ComboboxProps = {
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string | undefined) => void
-  options?: ComboboxOption[]
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  onSearchChange?: (search: string) => void
-  externalFilter?: boolean
-  loading?: boolean
-  disabled?: boolean
-  clearable?: boolean
-  children?: React.ReactNode
-}
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string | undefined) => void;
+  options?: ComboboxOption[];
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onSearchChange?: (search: string) => void;
+  externalFilter?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+  clearable?: boolean;
+  children?: React.ReactNode;
+};
 
 function Combobox({
   value: valueProp,
@@ -83,35 +81,35 @@ function Combobox({
   children,
 }: ComboboxProps) {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(
-    defaultValue
-  )
-  const value = valueProp !== undefined ? valueProp : internalValue
+    defaultValue,
+  );
+  const value = valueProp !== undefined ? valueProp : internalValue;
   const setValue = React.useCallback(
     (next: string | undefined) => {
-      if (valueProp === undefined) setInternalValue(next)
-      onValueChange?.(next)
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
     },
-    [valueProp, onValueChange]
-  )
+    [valueProp, onValueChange],
+  );
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
-  const open = openProp ?? internalOpen
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
     (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next)
-      onOpenChange?.(next)
+      if (openProp === undefined) setInternalOpen(next);
+      onOpenChange?.(next);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
-  const [search, setSearchState] = React.useState("")
+  const [search, setSearchState] = React.useState("");
   const setSearch = React.useCallback(
     (next: string) => {
-      setSearchState(next)
-      onSearchChange?.(next)
+      setSearchState(next);
+      onSearchChange?.(next);
     },
-    [onSearchChange]
-  )
+    [onSearchChange],
+  );
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -139,8 +137,8 @@ function Combobox({
       disabled,
       clearable,
       externalFilter,
-    ]
-  )
+    ],
+  );
 
   return (
     <ComboboxContext.Provider value={ctx}>
@@ -148,17 +146,14 @@ function Combobox({
         {children}
       </Popover>
     </ComboboxContext.Provider>
-  )
+  );
 }
 
-type ComboboxTriggerProps = Omit<
-  React.ComponentProps<"button">,
-  "children"
-> & {
-  placeholder?: string
-  className?: string
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode)
-}
+type ComboboxTriggerProps = Omit<React.ComponentProps<"button">, "children"> & {
+  placeholder?: string;
+  className?: string;
+  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
+};
 
 function ComboboxTrigger({
   placeholder = "Select…",
@@ -166,8 +161,8 @@ function ComboboxTrigger({
   children,
   ...props
 }: ComboboxTriggerProps) {
-  const ctx = useCombobox()
-  const selected = ctx.options.find((o) => o.value === ctx.value)
+  const ctx = useCombobox();
+  const selected = ctx.options.find((o) => o.value === ctx.value);
 
   return (
     <PopoverTrigger asChild>
@@ -184,7 +179,7 @@ function ComboboxTrigger({
           "hover:border-ring/60 focus-visible:border-ring",
           "data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -197,7 +192,7 @@ function ComboboxTrigger({
             <span
               className={cn(
                 "min-w-0 flex-1 truncate",
-                !selected && "text-muted-foreground"
+                !selected && "text-muted-foreground",
               )}
             >
               {selected ? selected.label : placeholder}
@@ -209,9 +204,9 @@ function ComboboxTrigger({
                   tabIndex={-1}
                   aria-label="Clear selection"
                   onPointerDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    ctx.setValue(undefined)
+                    e.preventDefault();
+                    e.stopPropagation();
+                    ctx.setValue(undefined);
                   }}
                   className="inline-flex size-4 items-center justify-center rounded-[2px] hover:bg-accent hover:text-foreground"
                 >
@@ -221,7 +216,7 @@ function ComboboxTrigger({
               <ChevronDown
                 className={cn(
                   "size-3.5 transition-transform duration-150",
-                  ctx.open && "rotate-180"
+                  ctx.open && "rotate-180",
                 )}
               />
             </span>
@@ -229,15 +224,15 @@ function ComboboxTrigger({
         )}
       </button>
     </PopoverTrigger>
-  )
+  );
 }
 
 type ComboboxContentProps = React.ComponentProps<typeof PopoverContent> & {
-  searchPlaceholder?: string
-  emptyMessage?: string
-  loadingMessage?: string
-  children?: React.ReactNode
-}
+  searchPlaceholder?: string;
+  emptyMessage?: string;
+  loadingMessage?: string;
+  children?: React.ReactNode;
+};
 
 function ComboboxContent({
   className,
@@ -247,17 +242,17 @@ function ComboboxContent({
   children,
   ...props
 }: ComboboxContentProps) {
-  const ctx = useCombobox()
+  const ctx = useCombobox();
 
   const groups = React.useMemo(() => {
-    const map = new Map<string | undefined, ComboboxOption[]>()
+    const map = new Map<string | undefined, ComboboxOption[]>();
     for (const opt of ctx.options) {
-      const key = opt.group
-      if (!map.has(key)) map.set(key, [])
-      map.get(key)!.push(opt)
+      const key = opt.group;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(opt);
     }
-    return Array.from(map.entries())
-  }, [ctx.options])
+    return Array.from(map.entries());
+  }, [ctx.options]);
 
   return (
     <PopoverContent
@@ -266,7 +261,7 @@ function ComboboxContent({
       data-slot="combobox-content"
       className={cn(
         "w-(--radix-popover-trigger-width) min-w-[14rem] p-0",
-        className
+        className,
       )}
       onOpenAutoFocus={(e) => e.preventDefault()}
       {...props}
@@ -299,16 +294,16 @@ function ComboboxContent({
         </CommandList>
       </Command>
     </PopoverContent>
-  )
+  );
 }
 
 type ComboboxItemProps = Omit<
   React.ComponentProps<typeof CommandItem>,
   "value" | "onSelect" | "children"
 > & {
-  option: ComboboxOption
-  children?: React.ReactNode
-}
+  option: ComboboxOption;
+  children?: React.ReactNode;
+};
 
 function ComboboxItem({
   option,
@@ -316,61 +311,61 @@ function ComboboxItem({
   className,
   ...props
 }: ComboboxItemProps) {
-  const ctx = useCombobox()
-  const selected = ctx.value === option.value
+  const ctx = useCombobox();
+  const selected = ctx.value === option.value;
 
   return (
     <CommandItem
       value={`${option.label} ${option.value}`}
       disabled={option.disabled}
       onSelect={() => {
-        ctx.setValue(selected ? undefined : option.value)
-        ctx.setOpen(false)
+        ctx.setValue(selected ? undefined : option.value);
+        ctx.setOpen(false);
       }}
       data-slot="combobox-item"
       className={cn("justify-between", className)}
       {...props}
     >
       <span className="min-w-0 truncate">{children ?? option.label}</span>
-      {selected && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
+      {selected && (
+        <Check className="size-3.5 text-foreground" strokeWidth={3} />
+      )}
     </CommandItem>
-  )
+  );
 }
 
 export function useAsyncComboboxOptions<T>(
   loader: (query: string) => Promise<T[]>,
   map: (item: T) => ComboboxOption,
-  { debounce = 200, initialQuery = "" }: { debounce?: number; initialQuery?: string } = {}
+  {
+    debounce = 200,
+    initialQuery = "",
+  }: { debounce?: number; initialQuery?: string } = {},
 ) {
-  const [query, setQuery] = React.useState(initialQuery)
-  const [options, setOptions] = React.useState<ComboboxOption[]>([])
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState<unknown>(null)
-  const reqId = React.useRef(0)
+  const [query, setQuery] = React.useState(initialQuery);
+  const [options, setOptions] = React.useState<ComboboxOption[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<unknown>(null);
+  const reqId = React.useRef(0);
 
   React.useEffect(() => {
-    const id = ++reqId.current
+    const id = ++reqId.current;
     const t = setTimeout(async () => {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        const result = await loader(query)
-        if (id === reqId.current) setOptions(result.map(map))
+        const result = await loader(query);
+        if (id === reqId.current) setOptions(result.map(map));
       } catch (e) {
-        if (id === reqId.current) setError(e)
+        if (id === reqId.current) setError(e);
       } finally {
-        if (id === reqId.current) setLoading(false)
+        if (id === reqId.current) setLoading(false);
       }
-    }, debounce)
-    return () => clearTimeout(t)
-  }, [query, loader, map, debounce])
+    }, debounce);
+    return () => clearTimeout(t);
+  }, [query, loader, map, debounce]);
 
-  return { query, setQuery, options, loading, error }
+  return { query, setQuery, options, loading, error };
 }
 
-export {
-  Combobox,
-  ComboboxTrigger,
-  ComboboxContent,
-  ComboboxItem,
-}
+export { Combobox, ComboboxTrigger, ComboboxContent, ComboboxItem };

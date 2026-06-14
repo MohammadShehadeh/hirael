@@ -1,8 +1,12 @@
-"use client"
+"use client";
 
-import { Shader, Stripes } from "shaders/react"
+import { Shader, Stripes } from "shaders/react";
 
-export default function Hero02Backdrop({ active = false }: { active?: boolean }) {
+export default function Hero02Backdrop({
+  active = false,
+}: {
+  active?: boolean;
+}) {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Stripes
@@ -15,5 +19,5 @@ export default function Hero02Backdrop({ active = false }: { active?: boolean })
         speed={active ? 0.5 : 0.16}
       />
     </Shader>
-  )
+  );
 }

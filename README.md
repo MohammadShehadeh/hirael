@@ -54,7 +54,7 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
   icons and arrow-key navigation, and work under `dir="rtl"` with no
   extra configuration. Every preview on the site has an RTL toggle.
 - **Design-token driven** — tokens reuse `--background / --foreground /
-  --border / --primary / --accent` and friends, never hard-coded colors.
+--border / --primary / --accent` and friends, never hard-coded colors.
 
 ## Tech stack
 
@@ -73,35 +73,35 @@ npx shadcn@latest add https://hirael.com/r/multi-select.json
 
 ## Components
 
-| Component       | Category   | Status | Registry deps                            |
-| --------------- | ---------- | ------ | ---------------------------------------- |
-| MultiSelect     | inputs     | stable | `button`, `popover`, `command`, `badge`  |
-| NumberRange     | inputs     | stable | `slider`, `input`, `label`               |
-| TagInput        | inputs     | stable | `badge`                                  |
-| Combobox        | inputs     | stable | `button`, `popover`, `command`           |
-| PasswordInput   | inputs     | stable | `input`, `input-group`                   |
-| CurrencyInput   | inputs     | stable | `input`, `input-group`                   |
+| Component       | Category   | Status | Registry deps                                |
+| --------------- | ---------- | ------ | -------------------------------------------- |
+| MultiSelect     | inputs     | stable | `button`, `popover`, `command`, `badge`      |
+| NumberRange     | inputs     | stable | `slider`, `input`, `label`                   |
+| TagInput        | inputs     | stable | `badge`                                      |
+| Combobox        | inputs     | stable | `button`, `popover`, `command`               |
+| PasswordInput   | inputs     | stable | `input`, `input-group`                       |
+| CurrencyInput   | inputs     | stable | `input`, `input-group`                       |
 | PhoneInput      | inputs     | stable | `input`, `input-group`, `popover`, `command` |
-| Rating          | inputs     | stable | —                                        |
-| YearPicker      | pickers    | stable | `button`, `popover`                      |
-| MonthPicker     | pickers    | stable | `button`, `popover`                      |
-| TimePicker      | pickers    | stable | `popover`, `tabs`                        |
-| ColorPicker     | pickers    | stable | `popover`, `input`, `tabs`               |
-| FileDropzone    | files      | stable | `button`                                 |
-| StatCard        | data       | stable | —                                        |
-| Timeline        | data       | stable | —                                        |
-| AvatarStack     | data       | stable | —                                        |
-| TreeView        | data       | stable | —                                        |
-| AnimatedNumber  | data       | stable | —                                        |
-| Spinner         | display    | stable | —                                        |
-| CopyButton      | display    | stable | —                                        |
-| Marquee         | display    | stable | —                                        |
-| Kbd             | display    | stable | —                                        |
-| Callout         | display    | stable | —                                        |
-| ScrollProgress  | display    | stable | —                                        |
-| AnnouncementBar | display    | stable | —                                        |
-| EmptyState      | display    | stable | —                                        |
-| Stepper         | navigation | stable | —                                        |
+| Rating          | inputs     | stable | —                                            |
+| YearPicker      | pickers    | stable | `button`, `popover`                          |
+| MonthPicker     | pickers    | stable | `button`, `popover`                          |
+| TimePicker      | pickers    | stable | `popover`, `tabs`                            |
+| ColorPicker     | pickers    | stable | `popover`, `input`, `tabs`                   |
+| FileDropzone    | files      | stable | `button`                                     |
+| StatCard        | data       | stable | —                                            |
+| Timeline        | data       | stable | —                                            |
+| AvatarStack     | data       | stable | —                                            |
+| TreeView        | data       | stable | —                                            |
+| AnimatedNumber  | data       | stable | —                                            |
+| Spinner         | display    | stable | —                                            |
+| CopyButton      | display    | stable | —                                            |
+| Marquee         | display    | stable | —                                            |
+| Kbd             | display    | stable | —                                            |
+| Callout         | display    | stable | —                                            |
+| ScrollProgress  | display    | stable | —                                            |
+| AnnouncementBar | display    | stable | —                                            |
+| EmptyState      | display    | stable | —                                            |
+| Stepper         | navigation | stable | —                                            |
 
 Marketing blocks (Hero, Feature, Pricing, Testimonial, CTA, FAQ, Login,
 Header, Footer, Not-Found, Logo Cloud, Contact, Blog, Dashboard,
@@ -184,23 +184,23 @@ match your `components.json`.
 
 ## Available scripts
 
-| Script                 | What it does                                              |
-| ---------------------- | --------------------------------------------------------- |
-| `pnpm dev`             | Next.js dev server with Turbopack on port 3000            |
-| `pnpm build`           | `registry:build` then `next build` (static export → `out/`) |
-| `pnpm start`           | Serve the static export in `out/` locally                 |
-| `pnpm lint`            | ESLint via `next lint` (`next/core-web-vitals` + TS)      |
-| `pnpm typecheck`       | `tsc --noEmit`                                            |
-| `pnpm registry:build`  | `shadcn build` — generates `/public/r/<name>.json`        |
+| Script                | What it does                                                |
+| --------------------- | ----------------------------------------------------------- |
+| `pnpm dev`            | Next.js dev server with Turbopack on port 3000              |
+| `pnpm build`          | `registry:build` then `next build` (static export → `out/`) |
+| `pnpm start`          | Serve the static export in `out/` locally                   |
+| `pnpm lint`           | ESLint via `next lint` (`next/core-web-vitals` + TS)        |
+| `pnpm typecheck`      | `tsc --noEmit`                                              |
+| `pnpm registry:build` | `shadcn build` — generates `/public/r/<name>.json`          |
 
 ## Configuration
 
 Environment variables are optional and read at runtime in the
 showcase site.
 
-| Variable               | Used in                            | Default                                | Notes                                                                                              |
-| ---------------------- | ---------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_BASE_URL` | `components/showcase/install-block.tsx` | `window.location.origin` at runtime    | Override the public origin used when generating `npx shadcn add <origin>/r/<name>.json` snippets.  |
+| Variable               | Used in                                 | Default                             | Notes                                                                                             |
+| ---------------------- | --------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_BASE_URL` | `components/showcase/install-block.tsx` | `window.location.origin` at runtime | Override the public origin used when generating `npx shadcn add <origin>/r/<name>.json` snippets. |
 
 `registry.json` (`homepage`) and `lib/site.ts` (`SITE.registry.origin`)
 hold the canonical published origin — update both if the project moves
@@ -217,12 +217,12 @@ import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/components/ui/multi-select"
+} from "@/components/ui/multi-select";
 
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
   <MultiSelectContent searchPlaceholder="Filter…" />
-</MultiSelect>
+</MultiSelect>;
 ```
 
 The bare component name is the root primitive (it holds the state).

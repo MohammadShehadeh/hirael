@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import dynamic from "next/dynamic"
-import { ArrowRight } from "lucide-react"
+import * as React from "react";
+import dynamic from "next/dynamic";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 const Cta03Backdrop = dynamic(() => import("./cta-03-backdrop"), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
-})
+});
 
 export default function Cta03() {
-  const [active, setActive] = React.useState(false)
+  const [active, setActive] = React.useState(false);
 
   return (
     <section className="flex w-full items-center justify-center px-4 py-12 md:px-6">
@@ -42,8 +42,8 @@ export default function Cta03() {
             </h2>
 
             <p className="mb-12 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-              An AI editor that keeps your voice and tightens everything else. It
-              drafts, trims, and proofs while you type.
+              An AI editor that keeps your voice and tightens everything else.
+              It drafts, trims, and proofs while you type.
             </p>
 
             <Button
@@ -60,5 +60,5 @@ export default function Cta03() {
         </div>
       </div>
     </section>
-  )
+  );
 }

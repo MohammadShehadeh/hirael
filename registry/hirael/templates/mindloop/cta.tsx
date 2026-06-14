@@ -1,46 +1,46 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion } from "framer-motion"
+import * as React from "react";
+import { motion } from "framer-motion";
 
-import { Logo, Serif, useFadeUp } from "./primitives"
+import { Logo, Serif, useFadeUp } from "./primitives";
 
 const CTA_HLS =
-  "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"
+  "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8";
 
 function HlsBackgroundVideo({
   src,
   className,
 }: {
-  src: string
-  className?: string
+  src: string;
+  className?: string;
 }) {
-  const ref = React.useRef<HTMLVideoElement>(null)
+  const ref = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
-    const video = ref.current
-    if (!video) return
-    let hls: InstanceType<typeof import("hls.js")["default"]> | undefined
-    let cancelled = false
+    const video = ref.current;
+    if (!video) return;
+    let hls: InstanceType<(typeof import("hls.js"))["default"]> | undefined;
+    let cancelled = false;
 
     import("hls.js").then(({ default: Hls }) => {
-      if (cancelled) return
-      const el = ref.current
-      if (!el) return
+      if (cancelled) return;
+      const el = ref.current;
+      if (!el) return;
       if (Hls.isSupported()) {
-        hls = new Hls()
-        hls.loadSource(src)
-        hls.attachMedia(el)
+        hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(el);
       } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
-        el.src = src
+        el.src = src;
       }
-    })
+    });
 
     return () => {
-      cancelled = true
-      hls?.destroy()
-    }
-  }, [src])
+      cancelled = true;
+      hls?.destroy();
+    };
+  }, [src]);
 
   return (
     <video
@@ -52,11 +52,11 @@ function HlsBackgroundVideo({
       playsInline
       aria-hidden
     />
-  )
+  );
 }
 
 export function Cta() {
-  const fade = useFadeUp()
+  const fade = useFadeUp();
 
   return (
     <section className="relative overflow-hidden border-t border-border/30 px-8 py-32 md:px-28 md:py-44">
@@ -101,5 +101,5 @@ export function Cta() {
         </div>
       </motion.div>
     </section>
-  )
+  );
 }

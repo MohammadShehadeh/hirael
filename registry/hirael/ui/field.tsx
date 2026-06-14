@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
-import { Label } from "@/registry/hirael/ui/label"
-import { Separator } from "@/registry/hirael/ui/separator"
+import { cn } from "@/lib/utils";
+import { Label } from "@/registry/hirael/ui/label";
+import { Separator } from "@/registry/hirael/ui/separator";
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -14,11 +14,11 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
       className={cn(
         "flex flex-col gap-6",
         "has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLegend({
@@ -34,11 +34,11 @@ function FieldLegend({
         "mb-3 font-medium",
         "data-[variant=legend]:text-base",
         "data-[variant=label]:text-sm",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -47,11 +47,11 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="field-group"
       className={cn(
         "group/field-group @container/field-group flex w-full flex-col gap-5 data-[slot=checkbox-group]:gap-3 [&>[data-slot=field-group]]:gap-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 const fieldVariants = cva(
@@ -73,8 +73,8 @@ const fieldVariants = cva(
     defaultVariants: {
       orientation: "vertical",
     },
-  }
-)
+  },
+);
 
 function Field({
   className,
@@ -89,7 +89,7 @@ function Field({
       className={cn(fieldVariants({ orientation }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -98,11 +98,11 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="field-content"
       className={cn(
         "group/field-content flex flex-1 flex-col gap-1.5 leading-snug",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLabel({
@@ -114,11 +114,11 @@ function FieldLabel({
       data-slot="field-label"
       className={cn(
         "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -127,11 +127,11 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="field-label"
       className={cn(
         "flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -141,11 +141,11 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
       className={cn(
         "text-sm leading-normal font-normal text-muted-foreground",
         "[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldSeparator({
@@ -153,16 +153,13 @@ function FieldSeparator({
   className,
   ...props
 }: React.ComponentProps<"div"> & {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }) {
   return (
     <div
       data-slot="field-separator"
       data-content={!!children}
-      className={cn(
-        "relative my-1 h-5 text-sm",
-        className
-      )}
+      className={cn("relative my-1 h-5 text-sm", className)}
       {...props}
     >
       <Separator className="absolute inset-0 top-1/2" />
@@ -175,7 +172,7 @@ function FieldSeparator({
         </span>
       )}
     </div>
-  )
+  );
 }
 
 function FieldError({
@@ -183,7 +180,7 @@ function FieldError({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  if (!children) return null
+  if (!children) return null;
   return (
     <div
       role="alert"
@@ -193,7 +190,7 @@ function FieldError({
     >
       {children}
     </div>
-  )
+  );
 }
 
 export {
@@ -207,4 +204,4 @@ export {
   FieldSet,
   FieldContent,
   FieldTitle,
-}
+};

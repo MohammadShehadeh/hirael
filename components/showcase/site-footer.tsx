@@ -1,13 +1,13 @@
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { SITE } from "@/lib/site"
-import { BrandLockup } from "@/components/showcase/logo"
+import { cn } from "@/lib/utils";
+import { SITE } from "@/lib/site";
+import { BrandLockup } from "@/components/showcase/logo";
 
 const FOOTER_LINKS: {
-  label: string
-  links: { href: string; label: string; external?: boolean }[]
+  label: string;
+  links: { href: string; label: string; external?: boolean }[];
 }[] = [
   {
     label: "Library",
@@ -36,13 +36,15 @@ const FOOTER_LINKS: {
       { href: SITE.githubUrl, label: "GitHub", external: true },
     ],
   },
-]
+];
 
 export function SiteFooter({ className }: { className?: string }) {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
 
   return (
-    <footer className={cn("mt-auto px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8", className)}>
+    <footer
+      className={cn("mt-auto px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8", className)}
+    >
       <div className="mx-auto w-full max-w-6xl">
         <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-elevated sm:rounded-[2rem]">
           {/* Texture: a soft halo and a masked dot grid, contained in the panel. */}
@@ -138,5 +140,5 @@ export function SiteFooter({ className }: { className?: string }) {
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,13 +1,13 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react";
 
-import { LogoIcon } from "./primitives"
+import { LogoIcon } from "./primitives";
 
 const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: "Product", links: ["Wallet", "Rewards", "Network", "Security"] },
   { heading: "Developers", links: ["Docs", "API", "Status", "GitHub"] },
   { heading: "Company", links: ["About", "Careers", "Blog", "Press"] },
   { heading: "Legal", links: ["Terms", "Privacy", "Disclosures", "Cookies"] },
-]
+];
 
 /**
  * Dark anchor footer. The off-white page resolves onto a #2B2644 card that
@@ -15,7 +15,7 @@ const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
  * pill up top, four link columns, then a legal bar.
  */
 export function FooterSection() {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-[#F5F5F5] px-6 pb-6">
@@ -79,5 +79,5 @@ export function FooterSection() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,40 +1,40 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Image from "next/image"
-import { ArrowRight, Minus, Plus, ShoppingBag, X } from "lucide-react"
+import * as React from "react";
+import Image from "next/image";
+import { ArrowRight, Minus, Plus, ShoppingBag, X } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/registry/hirael/ui/card"
+} from "@/registry/hirael/ui/card";
 import {
   EmptyState,
   EmptyStateActions,
   EmptyStateDescription,
   EmptyStateMedia,
   EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state"
+} from "@/registry/hirael/ui/empty-state";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/input-group";
+import { Separator } from "@/registry/hirael/ui/separator";
 
 type LineItem = {
-  id: string
-  name: string
-  variant: string
-  price: number
-  qty: number
-  image: string
-}
+  id: string;
+  name: string;
+  variant: string;
+  price: number;
+  qty: number;
+  image: string;
+};
 
 const INITIAL_ITEMS: readonly LineItem[] = [
   {
@@ -64,47 +64,47 @@ const INITIAL_ITEMS: readonly LineItem[] = [
     image:
       "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=400&auto=format&fit=crop",
   },
-]
+];
 
-const PROMO_CODE = "HIRAEL10"
-const PROMO_RATE = 0.1
-const FREE_SHIPPING_OVER = 200
-const SHIPPING_FLAT = 12
+const PROMO_CODE = "HIRAEL10";
+const PROMO_RATE = 0.1;
+const FREE_SHIPPING_OVER = 200;
+const SHIPPING_FLAT = 12;
 
 const usd = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD" })
+  n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
 export default function Ecommerce02() {
-  const [items, setItems] = React.useState<readonly LineItem[]>(INITIAL_ITEMS)
-  const [code, setCode] = React.useState("")
-  const [promoApplied, setPromoApplied] = React.useState(false)
-  const [promoError, setPromoError] = React.useState(false)
+  const [items, setItems] = React.useState<readonly LineItem[]>(INITIAL_ITEMS);
+  const [code, setCode] = React.useState("");
+  const [promoApplied, setPromoApplied] = React.useState(false);
+  const [promoError, setPromoError] = React.useState(false);
 
-  const count = items.reduce((sum, i) => sum + i.qty, 0)
-  const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0)
-  const discount = promoApplied ? subtotal * PROMO_RATE : 0
+  const count = items.reduce((sum, i) => sum + i.qty, 0);
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const discount = promoApplied ? subtotal * PROMO_RATE : 0;
   const shipping =
     items.length === 0 || subtotal - discount >= FREE_SHIPPING_OVER
       ? 0
-      : SHIPPING_FLAT
-  const total = subtotal - discount + shipping
+      : SHIPPING_FLAT;
+  const total = subtotal - discount + shipping;
 
   const setQty = (id: string, qty: number) =>
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, qty: Math.max(1, qty) } : i))
-    )
+      prev.map((i) => (i.id === id ? { ...i, qty: Math.max(1, qty) } : i)),
+    );
 
   const removeItem = (id: string) =>
-    setItems((prev) => prev.filter((i) => i.id !== id))
+    setItems((prev) => prev.filter((i) => i.id !== id));
 
   const applyPromo = () => {
     if (code.trim().toUpperCase() === PROMO_CODE) {
-      setPromoApplied(true)
-      setPromoError(false)
+      setPromoApplied(true);
+      setPromoError(false);
     } else {
-      setPromoError(true)
+      setPromoError(true);
     }
-  }
+  };
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -130,8 +130,8 @@ export default function Ecommerce02() {
             </EmptyStateMedia>
             <EmptyStateTitle>Your cart is empty</EmptyStateTitle>
             <EmptyStateDescription>
-              Everything you remove ends up here as free shelf space. Refill
-              it with the demo order to keep exploring.
+              Everything you remove ends up here as free shelf space. Refill it
+              with the demo order to keep exploring.
             </EmptyStateDescription>
             <EmptyStateActions>
               <Button
@@ -283,11 +283,11 @@ export default function Ecommerce02() {
                       <InputGroupInput
                         value={code}
                         onChange={(e) => {
-                          setCode(e.target.value)
-                          setPromoError(false)
+                          setCode(e.target.value);
+                          setPromoError(false);
                         }}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter") applyPromo()
+                          if (e.key === "Enter") applyPromo();
                         }}
                         placeholder="Promo code"
                         aria-label="Promo code"
@@ -325,5 +325,5 @@ export default function Ecommerce02() {
         )}
       </div>
     </section>
-  )
+  );
 }

@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react"
+import { motion } from "framer-motion";
+import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 
-import { Navbar } from "./navbar"
+import { Navbar } from "./navbar";
 
 const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4"
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4";
 
 function HeroBadge() {
   return (
@@ -20,7 +20,7 @@ function HeroBadge() {
       <Sparkles className="size-4 text-foreground/80" />
       <span className="text-sm font-medium text-foreground">Fluid Staking</span>
     </motion.div>
-  )
+  );
 }
 
 function BottomLeftCard() {
@@ -48,10 +48,12 @@ function BottomLeftCard() {
         <span className="flex items-center justify-center rounded-full bg-foreground/10 p-1">
           <ArrowUpRight className="size-4 text-foreground rtl:-scale-x-100" />
         </span>
-        <span className="text-sm font-medium text-foreground">Join Discord</span>
+        <span className="text-sm font-medium text-foreground">
+          Join Discord
+        </span>
       </a>
     </motion.div>
-  )
+  );
 }
 
 function BottomRightCorner() {
@@ -72,7 +74,10 @@ function BottomRightCorner() {
           xmlns="http://www.w3.org/2000/svg"
           className="rtl:-scale-x-100"
         >
-          <path d="M56 56V0C56 30.9279 30.9279 56 0 56H56Z" fill="currentColor" />
+          <path
+            d="M56 56V0C56 30.9279 30.9279 56 0 56H56Z"
+            fill="currentColor"
+          />
         </svg>
       </div>
 
@@ -85,7 +90,10 @@ function BottomRightCorner() {
           xmlns="http://www.w3.org/2000/svg"
           className="rtl:-scale-x-100"
         >
-          <path d="M56 56H0C30.9279 56 56 30.9279 56 0V56Z" fill="currentColor" />
+          <path
+            d="M56 56H0C30.9279 56 56 30.9279 56 0V56Z"
+            fill="currentColor"
+          />
         </svg>
       </div>
 
@@ -106,7 +114,7 @@ function BottomRightCorner() {
         </a>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function Hero() {
@@ -164,5 +172,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

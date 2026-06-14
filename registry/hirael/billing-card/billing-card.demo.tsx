@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   BillingCard,
@@ -9,7 +9,7 @@ import {
   BillingCardPlan,
   BillingCardPrice,
   BillingCardRow,
-} from "@/registry/hirael/ui/billing-card"
+} from "@/registry/hirael/ui/billing-card";
 
 export default function BillingCardDemo() {
   return (
@@ -44,5 +44,5 @@ export default function BillingCardDemo() {
         </button>
       </BillingCardFooter>
     </BillingCard>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-const LOGOS = ["Linear", "Vercel", "Resend", "Cal.com", "Raycast"] as const
+const LOGOS = ["Linear", "Vercel", "Resend", "Cal.com", "Raycast"] as const;
 
 export default function Testimonial01() {
   return (
@@ -58,5 +58,5 @@ export default function Testimonial01() {
         </div>
       </div>
     </section>
-  )
+  );
 }

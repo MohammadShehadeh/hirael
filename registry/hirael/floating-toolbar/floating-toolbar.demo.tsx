@@ -1,19 +1,13 @@
-"use client"
+"use client";
 
-import {
-  Bold,
-  Italic,
-  Link2,
-  Strikethrough,
-  Underline,
-} from "lucide-react"
+import { Bold, Italic, Link2, Strikethrough, Underline } from "lucide-react";
 
 import {
   FloatingToolbar,
   FloatingToolbarButton,
   FloatingToolbarLabel,
   FloatingToolbarSeparator,
-} from "@/registry/hirael/ui/floating-toolbar"
+} from "@/registry/hirael/ui/floating-toolbar";
 
 export default function FloatingToolbarDemo() {
   return (
@@ -40,5 +34,5 @@ export default function FloatingToolbarDemo() {
         </FloatingToolbarButton>
       </FloatingToolbar>
     </div>
-  )
+  );
 }

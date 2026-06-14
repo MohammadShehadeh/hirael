@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Rating } from "@/registry/hirael/ui/rating"
+import { Rating } from "@/registry/hirael/ui/rating";
 
 export default function RatingDemo() {
-  const [value, setValue] = React.useState(3.5)
+  const [value, setValue] = React.useState(3.5);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -56,5 +56,5 @@ export default function RatingDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

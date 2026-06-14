@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -8,74 +8,158 @@ import {
   MoonStar,
   MoreHorizontal,
   Sparkles,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/registry/hirael/ui/select"
+} from "@/registry/hirael/ui/select";
 
-type Range = "4h" | "24h" | "7d"
+type Range = "4h" | "24h" | "7d";
 
 const RANGES: { value: Range; label: string }[] = [
   { value: "4h", label: "Last 4 hours" },
   { value: "24h", label: "Last 24 hours" },
   { value: "7d", label: "Last 7 days" },
-]
+];
 
 type Kpi = {
-  label: string
-  value: string
-  delta: string
-  up: boolean
-  good: boolean
-  spark: readonly number[]
-}
+  label: string;
+  value: string;
+  delta: string;
+  up: boolean;
+  good: boolean;
+  spark: readonly number[];
+};
 
 const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
   "4h": [
-    { label: "Requests", value: "248.6K", delta: "+8.4%", up: true, good: true, spark: [42, 48, 45, 56, 52, 61, 68] },
-    { label: "Errors", value: "212", delta: "-22.1%", up: false, good: true, spark: [38, 32, 35, 26, 22, 18, 14] },
-    { label: "P95 latency", value: "184 ms", delta: "-6.3%", up: false, good: true, spark: [52, 49, 50, 46, 44, 45, 41] },
-    { label: "Compute", value: "96.4 GB-s", delta: "+3.1%", up: true, good: false, spark: [30, 32, 31, 35, 34, 37, 39] },
+    {
+      label: "Requests",
+      value: "248.6K",
+      delta: "+8.4%",
+      up: true,
+      good: true,
+      spark: [42, 48, 45, 56, 52, 61, 68],
+    },
+    {
+      label: "Errors",
+      value: "212",
+      delta: "-22.1%",
+      up: false,
+      good: true,
+      spark: [38, 32, 35, 26, 22, 18, 14],
+    },
+    {
+      label: "P95 latency",
+      value: "184 ms",
+      delta: "-6.3%",
+      up: false,
+      good: true,
+      spark: [52, 49, 50, 46, 44, 45, 41],
+    },
+    {
+      label: "Compute",
+      value: "96.4 GB-s",
+      delta: "+3.1%",
+      up: true,
+      good: false,
+      spark: [30, 32, 31, 35, 34, 37, 39],
+    },
   ],
   "24h": [
-    { label: "Requests", value: "1.42M", delta: "+11.9%", up: true, good: true, spark: [36, 44, 41, 52, 49, 58, 66] },
-    { label: "Errors", value: "1,894", delta: "-9.6%", up: false, good: true, spark: [44, 40, 42, 36, 33, 30, 27] },
-    { label: "P95 latency", value: "201 ms", delta: "-2.4%", up: false, good: true, spark: [55, 53, 54, 51, 50, 49, 48] },
-    { label: "Compute", value: "612 GB-s", delta: "+5.8%", up: true, good: false, spark: [26, 29, 28, 33, 32, 36, 40] },
+    {
+      label: "Requests",
+      value: "1.42M",
+      delta: "+11.9%",
+      up: true,
+      good: true,
+      spark: [36, 44, 41, 52, 49, 58, 66],
+    },
+    {
+      label: "Errors",
+      value: "1,894",
+      delta: "-9.6%",
+      up: false,
+      good: true,
+      spark: [44, 40, 42, 36, 33, 30, 27],
+    },
+    {
+      label: "P95 latency",
+      value: "201 ms",
+      delta: "-2.4%",
+      up: false,
+      good: true,
+      spark: [55, 53, 54, 51, 50, 49, 48],
+    },
+    {
+      label: "Compute",
+      value: "612 GB-s",
+      delta: "+5.8%",
+      up: true,
+      good: false,
+      spark: [26, 29, 28, 33, 32, 36, 40],
+    },
   ],
   "7d": [
-    { label: "Requests", value: "9.81M", delta: "+19.2%", up: true, good: true, spark: [28, 36, 33, 46, 42, 55, 64] },
-    { label: "Errors", value: "11.2K", delta: "-14.8%", up: false, good: true, spark: [52, 46, 49, 40, 36, 31, 26] },
-    { label: "P95 latency", value: "196 ms", delta: "-4.1%", up: false, good: true, spark: [58, 55, 56, 52, 50, 48, 46] },
-    { label: "Compute", value: "4.1 TB-s", delta: "+9.4%", up: true, good: false, spark: [22, 26, 25, 31, 30, 35, 41] },
+    {
+      label: "Requests",
+      value: "9.81M",
+      delta: "+19.2%",
+      up: true,
+      good: true,
+      spark: [28, 36, 33, 46, 42, 55, 64],
+    },
+    {
+      label: "Errors",
+      value: "11.2K",
+      delta: "-14.8%",
+      up: false,
+      good: true,
+      spark: [52, 46, 49, 40, 36, 31, 26],
+    },
+    {
+      label: "P95 latency",
+      value: "196 ms",
+      delta: "-4.1%",
+      up: false,
+      good: true,
+      spark: [58, 55, 56, 52, 50, 48, 46],
+    },
+    {
+      label: "Compute",
+      value: "4.1 TB-s",
+      delta: "+9.4%",
+      up: true,
+      good: false,
+      spark: [22, 26, 25, 31, 30, 35, 41],
+    },
   ],
-}
+};
 
-const CACHE_SERIES = [88, 91, 90, 93, 92, 95, 96]
-const DURATION_SERIES = [31, 28, 29, 26, 27, 24, 23]
+const CACHE_SERIES = [88, 91, 90, 93, 92, 95, 96];
+const DURATION_SERIES = [31, 28, 29, 26, 27, 24, 23];
 
 const LATENCY = [
   { label: "P50", value: "92 ms", pct: 28 },
   { label: "P95", value: "184 ms", pct: 58 },
   { label: "P99", value: "412 ms", pct: 86 },
-] as const
+] as const;
 
 type Deploy = {
-  version: string
-  env: string
-  branch: string
-  message: string
-  date: string
-  status: "live" | "stable" | "canary"
-  cache: "warm" | "cold"
-}
+  version: string;
+  env: string;
+  branch: string;
+  message: string;
+  date: string;
+  status: "live" | "stable" | "canary";
+  cache: "warm" | "cold";
+};
 
 const DEPLOYS: readonly Deploy[] = [
   {
@@ -114,29 +198,46 @@ const DEPLOYS: readonly Deploy[] = [
     status: "stable",
     cache: "cold",
   },
-]
+];
 
-const STATUS_META: Record<Deploy["status"], { label: string; dot: string; ping: boolean }> = {
+const STATUS_META: Record<
+  Deploy["status"],
+  { label: string; dot: string; ping: boolean }
+> = {
   live: { label: "Live", dot: "bg-emerald-500", ping: true },
   stable: { label: "Stable", dot: "bg-muted-foreground/50", ping: false },
   canary: { label: "Canary", dot: "bg-amber-500", ping: true },
-}
+};
 
-function DeltaChip({ delta, up, good }: { delta: string; up: boolean; good: boolean }) {
+function DeltaChip({
+  delta,
+  up,
+  good,
+}: {
+  delta: string;
+  up: boolean;
+  good: boolean;
+}) {
   return (
     <span
       className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
-        good ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"
+        good
+          ? "bg-emerald-500/10 text-emerald-500"
+          : "bg-red-500/10 text-red-500"
       }`}
     >
-      {up ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
+      {up ? (
+        <ArrowUpRight className="size-3" />
+      ) : (
+        <ArrowDownRight className="size-3" />
+      )}
       {delta}
     </span>
-  )
+  );
 }
 
 function StatusDot({ status }: { status: Deploy["status"] }) {
-  const meta = STATUS_META[status]
+  const meta = STATUS_META[status];
   return (
     <Badge
       variant="outline"
@@ -148,24 +249,26 @@ function StatusDot({ status }: { status: Deploy["status"] }) {
             className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${meta.dot}`}
           />
         )}
-        <span className={`relative inline-flex size-2 rounded-full ${meta.dot}`} />
+        <span
+          className={`relative inline-flex size-2 rounded-full ${meta.dot}`}
+        />
       </span>
       {meta.label}
     </Badge>
-  )
+  );
 }
 
 function Spark({ points, h = 28 }: { points: readonly number[]; h?: number }) {
-  const max = Math.max(...points)
-  const min = Math.min(...points)
-  const span = max - min || 1
-  const step = 100 / (points.length - 1)
+  const max = Math.max(...points);
+  const min = Math.min(...points);
+  const span = max - min || 1;
+  const step = 100 / (points.length - 1);
   const line = points
     .map(
       (v, i) =>
-        `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)} ${(h - 3 - ((v - min) / span) * (h - 8)).toFixed(1)}`
+        `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)} ${(h - 3 - ((v - min) / span) * (h - 8)).toFixed(1)}`,
     )
-    .join(" ")
+    .join(" ");
   return (
     <svg
       viewBox={`0 0 100 ${h}`}
@@ -183,7 +286,7 @@ function Spark({ points, h = 28 }: { points: readonly number[]; h?: number }) {
         className="stroke-foreground/60"
       />
     </svg>
-  )
+  );
 }
 
 function CellHeader({ label }: { label: string }) {
@@ -201,12 +304,12 @@ function CellHeader({ label }: { label: string }) {
         <MoreHorizontal className="size-3.5" />
       </Button>
     </div>
-  )
+  );
 }
 
 export default function Dashboard05() {
-  const [range, setRange] = React.useState<Range>("4h")
-  const kpis = KPIS_BY_RANGE[range]
+  const [range, setRange] = React.useState<Range>("4h");
+  const kpis = KPIS_BY_RANGE[range];
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -223,7 +326,11 @@ export default function Dashboard05() {
               </h2>
             </div>
             <Select value={range} onValueChange={(v) => setRange(v as Range)}>
-              <SelectTrigger size="sm" className="w-[150px]" aria-label="Time range">
+              <SelectTrigger
+                size="sm"
+                className="w-[150px]"
+                aria-label="Time range"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -302,7 +409,10 @@ export default function Dashboard05() {
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 Latency distribution
-                <Badge variant="outline" className="font-mono text-[9px] uppercase">
+                <Badge
+                  variant="outline"
+                  className="font-mono text-[9px] uppercase"
+                >
                   p95 target · 200ms
                 </Badge>
               </span>
@@ -401,5 +511,5 @@ export default function Dashboard05() {
         </div>
       </div>
     </section>
-  )
+  );
 }

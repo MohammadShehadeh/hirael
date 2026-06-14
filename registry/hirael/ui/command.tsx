@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
+import * as React from "react";
+import { Command as CommandPrimitive } from "cmdk";
+import { Search } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Command({
   className,
@@ -15,11 +15,11 @@ function Command({
       data-slot="command"
       className={cn(
         "flex h-full w-full flex-col overflow-hidden rounded-sm bg-popover text-popover-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandInput({
@@ -37,12 +37,12 @@ function CommandInput({
         data-slot="command-input"
         className={cn(
           "flex h-9 w-full bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       />
     </div>
-  )
+  );
 }
 
 function CommandList({
@@ -54,15 +54,15 @@ function CommandList({
       data-slot="command-list"
       className={cn(
         "max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandEmpty(
-  props: React.ComponentProps<typeof CommandPrimitive.Empty>
+  props: React.ComponentProps<typeof CommandPrimitive.Empty>,
 ) {
   return (
     <CommandPrimitive.Empty
@@ -70,7 +70,7 @@ function CommandEmpty(
       className="py-6 text-center text-sm text-muted-foreground"
       {...props}
     />
-  )
+  );
 }
 
 function CommandGroup({
@@ -83,11 +83,11 @@ function CommandGroup({
       className={cn(
         "overflow-hidden p-1 text-foreground",
         "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.08em] [&_[cmdk-group-heading]]:text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandSeparator({
@@ -100,7 +100,7 @@ function CommandSeparator({
       className={cn("h-px bg-border my-1", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandItem({
@@ -115,11 +115,11 @@ function CommandItem({
         "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         "[&_svg]:size-4 [&_svg]:shrink-0",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -130,4 +130,4 @@ export {
   CommandGroup,
   CommandItem,
   CommandSeparator,
-}
+};

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "pnpm registry:gen && pnpm registry:props && node scripts/check-registry.mjs && pnpm registry:build && next build",
     "start": "npx serve out",
     "lint": "eslint .",
@@ -12,7 +12,11 @@
     "redirects:gen": "node scripts/build-redirects.mjs",
     "registry:props": "node scripts/extract-props.mjs",
     "registry:build": "shadcn build",
-    "check:registry": "node scripts/check-registry.mjs"
+    "check:registry": "node scripts/check-registry.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.13",
@@ -53,6 +57,9 @@
     "@types/react-dom": "19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.2.9",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "3.8.4",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3"
   },

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   InlineEdit,
@@ -8,10 +8,10 @@ import {
   InlineEditInput,
   InlineEditPreview,
   InlineEditTextarea,
-} from "@/registry/hirael/ui/inline-edit"
+} from "@/registry/hirael/ui/inline-edit";
 
 export default function InlineEditDemo() {
-  const [title, setTitle] = React.useState("Quarterly revenue report")
+  const [title, setTitle] = React.useState("Quarterly revenue report");
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -46,7 +46,7 @@ export default function InlineEditDemo() {
               : null
           }
           onSubmit={async () => {
-            await new Promise((resolve) => setTimeout(resolve, 800))
+            await new Promise((resolve) => setTimeout(resolve, 800));
           }}
         >
           <div className="grid gap-2">
@@ -75,5 +75,5 @@ export default function InlineEditDemo() {
         </InlineEdit>
       </div>
     </div>
-  )
+  );
 }

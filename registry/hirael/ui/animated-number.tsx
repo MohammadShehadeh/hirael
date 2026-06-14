@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type AnimatedNumberProps = Omit<
   React.ComponentProps<"span">,
   "children"
 > & {
   /** Target value to animate toward. */
-  value: number
+  value: number;
   /** Value the first animation starts from. Defaults to 0. */
-  startValue?: number
+  startValue?: number;
   /** Tween length in milliseconds. */
-  duration?: number
+  duration?: number;
   /** Fixed number of decimal places. */
-  decimals?: number
+  decimals?: number;
   /** Extra `Intl.NumberFormat` options (currency, notation, …). */
-  format?: Intl.NumberFormatOptions
-  locale?: string
-  prefix?: string
-  suffix?: string
-}
+  format?: Intl.NumberFormatOptions;
+  locale?: string;
+  prefix?: string;
+  suffix?: string;
+};
 
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 function AnimatedNumber({
   value,
@@ -37,11 +37,11 @@ function AnimatedNumber({
   className,
   ...props
 }: AnimatedNumberProps) {
-  const [display, setDisplay] = React.useState(startValue)
+  const [display, setDisplay] = React.useState(startValue);
   // Tracks the latest rendered value so an animation interrupted mid-flight
   // resumes from where it visually is, instead of snapping back.
-  const displayRef = React.useRef(startValue)
-  const frameRef = React.useRef<number | undefined>(undefined)
+  const displayRef = React.useRef(startValue);
+  const frameRef = React.useRef<number | undefined>(undefined);
 
   const formatter = React.useMemo(
     () =>
@@ -50,38 +50,39 @@ function AnimatedNumber({
         maximumFractionDigits: decimals,
         ...format,
       }),
-    [locale, decimals, format]
-  )
+    [locale, decimals, format],
+  );
 
   React.useEffect(() => {
     const reduceMotion =
       typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
     if (reduceMotion || duration <= 0) {
-      displayRef.current = value
-      setDisplay(value)
-      return
+      displayRef.current = value;
+      setDisplay(value);
+      return;
     }
 
-    const from = displayRef.current
-    const start = performance.now()
+    const from = displayRef.current;
+    const start = performance.now();
 
     const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1)
-      const next = t < 1 ? from + (value - from) * easeOutCubic(t) : value
-      displayRef.current = next
-      setDisplay(next)
-      if (t < 1) frameRef.current = requestAnimationFrame(tick)
-    }
+      const t = Math.min((now - start) / duration, 1);
+      const next = t < 1 ? from + (value - from) * easeOutCubic(t) : value;
+      displayRef.current = next;
+      setDisplay(next);
+      if (t < 1) frameRef.current = requestAnimationFrame(tick);
+    };
 
-    frameRef.current = requestAnimationFrame(tick)
+    frameRef.current = requestAnimationFrame(tick);
     return () => {
-      if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current)
-    }
-  }, [value, duration])
+      if (frameRef.current !== undefined)
+        cancelAnimationFrame(frameRef.current);
+    };
+  }, [value, duration]);
 
-  const formatted = formatter.format(display)
+  const formatted = formatter.format(display);
 
   return (
     <span
@@ -94,7 +95,7 @@ function AnimatedNumber({
       <span aria-hidden>{formatted}</span>
       {suffix}
     </span>
-  )
+  );
 }
 
-export { AnimatedNumber }
+export { AnimatedNumber };

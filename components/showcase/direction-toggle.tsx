@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export function DirectionToggle({
   rtl,
   onToggle,
   className,
 }: {
-  rtl: boolean
-  onToggle: (rtl: boolean) => void
-  className?: string
+  rtl: boolean;
+  onToggle: (rtl: boolean) => void;
+  className?: string;
 }) {
   return (
     <button
@@ -22,10 +22,10 @@ export function DirectionToggle({
         rtl
           ? "bg-accent text-foreground"
           : "bg-background text-muted-foreground hover:text-foreground",
-        className
+        className,
       )}
     >
       RTL
     </button>
-  )
+  );
 }

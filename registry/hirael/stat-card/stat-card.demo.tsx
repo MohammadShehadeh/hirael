@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {
   StatCard,
   StatCardDelta,
   StatCardLabel,
   StatCardValue,
-} from "@/registry/hirael/ui/stat-card"
+} from "@/registry/hirael/ui/stat-card";
 
 export default function StatCardDemo() {
   return (
@@ -57,5 +57,5 @@ export default function StatCardDemo() {
         </StatCard>
       </div>
     </div>
-  )
+  );
 }

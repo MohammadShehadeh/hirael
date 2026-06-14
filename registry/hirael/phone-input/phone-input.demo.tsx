@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
-} from "@/registry/hirael/ui/phone-input"
+} from "@/registry/hirael/ui/phone-input";
 
 export default function PhoneInputDemo() {
-  const [basic, setBasic] = React.useState("")
-  const [composed, setComposed] = React.useState("+442071838750")
+  const [basic, setBasic] = React.useState("");
+  const [composed, setComposed] = React.useState("+442071838750");
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -47,5 +47,5 @@ export default function PhoneInputDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

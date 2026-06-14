@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { ArrowRight, Orbit } from "lucide-react"
+import Image from "next/image";
+import { ArrowRight, Orbit } from "lucide-react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 
 export default function Hero04() {
   return (
@@ -74,5 +74,5 @@ export default function Hero04() {
         </div>
       </div>
     </section>
-  )
+  );
 }

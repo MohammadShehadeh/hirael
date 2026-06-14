@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Callout } from "@/registry/hirael/ui/callout"
+import { Callout } from "@/registry/hirael/ui/callout";
 
 export default function CalloutDemo() {
   return (
@@ -11,12 +11,13 @@ export default function CalloutDemo() {
       </Callout>
 
       <Callout variant="success" title="Deploy succeeded">
-        Build <code className="font-mono">b-29f1</code> is now live on production.
+        Build <code className="font-mono">b-29f1</code> is now live on
+        production.
       </Callout>
 
       <Callout variant="warning" title="Rate limit approaching">
-        You&apos;ve used 87% of your monthly quota. Consider upgrading before the
-        reset.
+        You&apos;ve used 87% of your monthly quota. Consider upgrading before
+        the reset.
       </Callout>
 
       <Callout variant="error" title="Migration failed">
@@ -29,9 +30,10 @@ export default function CalloutDemo() {
       </Callout>
 
       <Callout variant="info" icon={false}>
-        Title-less callouts also work. Pass <code className="font-mono">icon={`{false}`}</code>{" "}
-        to drop the leading icon.
+        Title-less callouts also work. Pass{" "}
+        <code className="font-mono">icon={`{false}`}</code> to drop the leading
+        icon.
       </Callout>
     </div>
-  )
+  );
 }

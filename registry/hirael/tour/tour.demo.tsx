@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { Tour, TourTrigger, type TourStep } from "@/registry/hirael/ui/tour"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { Tour, TourTrigger, type TourStep } from "@/registry/hirael/ui/tour";
 
 const steps: TourStep[] = [
   {
@@ -32,10 +32,10 @@ const steps: TourStep[] = [
     description: "Deleting the workspace is permanent. No undo, no backups.",
     side: "top",
   },
-]
+];
 
 export default function TourDemo() {
-  const [completed, setCompleted] = React.useState(false)
+  const [completed, setCompleted] = React.useState(false);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -98,5 +98,5 @@ export default function TourDemo() {
         </Tour>
       </div>
     </div>
-  )
+  );
 }

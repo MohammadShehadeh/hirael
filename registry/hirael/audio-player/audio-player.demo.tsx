@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Music, Upload } from "lucide-react"
+import * as React from "react";
+import { Music, Upload } from "lucide-react";
 
 import {
   AudioPlayer,
@@ -12,27 +12,27 @@ import {
   AudioPlayerTime,
   AudioPlayerVolume,
   useAudioPlayer,
-} from "@/registry/hirael/ui/audio-player"
+} from "@/registry/hirael/ui/audio-player";
 import {
   MediaInput,
   MediaInputContent,
   MediaInputEmpty,
   MediaInputFile,
   MediaInputTrigger,
-} from "@/registry/hirael/ui/media-input"
+} from "@/registry/hirael/ui/media-input";
 
 function PlaybackStatus() {
-  const { playing, rate } = useAudioPlayer()
+  const { playing, rate } = useAudioPlayer();
 
   return (
     <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
       {playing ? `Playing at ${rate}×` : "Paused"}
     </span>
-  )
+  );
 }
 
 export default function AudioPlayerDemo() {
-  const [src, setSrc] = React.useState<string>()
+  const [src, setSrc] = React.useState<string>();
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -101,5 +101,5 @@ export default function AudioPlayerDemo() {
         </AudioPlayer>
       </div>
     </div>
-  )
+  );
 }

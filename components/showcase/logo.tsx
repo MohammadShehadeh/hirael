@@ -1,12 +1,12 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-cormorant), ui-serif, serif",
   fontWeight: 500,
   letterSpacing: "0.18em",
-}
+};
 
 /**
  * Arch-and-star mark — slim doorway with a 4-point star inside and three
@@ -37,7 +37,7 @@ function ArchMarkSvg({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 /**
@@ -78,15 +78,15 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
         HIRAEL
       </text>
     </svg>
-  )
+  );
 }
 
 export function Logo({
   className,
   title = "Hirael",
 }: {
-  className?: string
-  title?: string
+  className?: string;
+  title?: string;
 }) {
   return (
     <span
@@ -96,7 +96,7 @@ export function Logo({
     >
       <HiraelWordmarkSvg className="h-full w-auto" />
     </span>
-  )
+  );
 }
 
 export function LogoMark({ className }: { className?: string }) {
@@ -104,35 +104,32 @@ export function LogoMark({ className }: { className?: string }) {
     <span
       role="img"
       aria-label="Hirael"
-      className={cn(
-        "inline-flex size-6 shrink-0 text-foreground",
-        className
-      )}
+      className={cn("inline-flex size-6 shrink-0 text-foreground", className)}
     >
       <ArchMarkSvg className="size-full" />
     </span>
-  )
+  );
 }
 
 export function LogoMarkM({ className }: { className?: string }) {
-  return <LogoMark className={className} />
+  return <LogoMark className={className} />;
 }
 
 export function BrandLockup({
   className,
   logoClassName,
 }: {
-  className?: string
-  logoClassName?: string
+  className?: string;
+  logoClassName?: string;
 }) {
   return (
     <span
       className={cn(
         "inline-block whitespace-nowrap text-foreground",
-        className
+        className,
       )}
     >
       <Logo className={cn("inline-block h-6 align-middle", logoClassName)} />
     </span>
-  )
+  );
 }

@@ -7,5 +7,5 @@ export function Tagline() {
         anywhere.
       </h2>
     </section>
-  )
+  );
 }

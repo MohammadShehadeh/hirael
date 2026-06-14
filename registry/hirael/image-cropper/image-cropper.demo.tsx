@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/registry/hirael/ui/button"
+import { Button } from "@/registry/hirael/ui/button";
 import {
   ImageCropper,
   ImageCropperZoom,
   type ImageCropperRef,
-} from "@/registry/hirael/ui/image-cropper"
+} from "@/registry/hirael/ui/image-cropper";
 
 const IMAGE_URL =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop";
 
 export default function ImageCropperDemo() {
-  const avatarRef = React.useRef<ImageCropperRef>(null)
-  const [avatar, setAvatar] = React.useState<string | null>(null)
+  const avatarRef = React.useRef<ImageCropperRef>(null);
+  const [avatar, setAvatar] = React.useState<string | null>(null);
 
   return (
     <div className="grid w-full max-w-2xl gap-8">
@@ -39,7 +39,7 @@ export default function ImageCropperDemo() {
             size="sm"
             onClick={() =>
               setAvatar(
-                avatarRef.current?.getCroppedDataUrl({ size: 256 }) ?? null
+                avatarRef.current?.getCroppedDataUrl({ size: 256 }) ?? null,
               )
             }
           >
@@ -70,5 +70,5 @@ export default function ImageCropperDemo() {
         </ImageCropper>
       </div>
     </div>
-  )
+  );
 }

@@ -1,8 +1,12 @@
-"use client"
+"use client";
 
-import { Beam, Shader, Swirl } from "shaders/react"
+import { Beam, Shader, Swirl } from "shaders/react";
 
-export default function Hero01Backdrop({ active = false }: { active?: boolean }) {
+export default function Hero01Backdrop({
+  active = false,
+}: {
+  active?: boolean;
+}) {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Swirl
@@ -32,5 +36,5 @@ export default function Hero01Backdrop({ active = false }: { active?: boolean })
         outsideColor="transparent"
       />
     </Shader>
-  )
+  );
 }

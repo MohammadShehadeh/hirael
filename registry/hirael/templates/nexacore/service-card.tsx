@@ -1,6 +1,6 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /**
  * Escalating orbit glyph: a base ring shared by every card, plus a growing
@@ -16,11 +16,13 @@ function ServiceIcon({ level }: { level: number }) {
       className="h-[17px] w-[17px] shrink-0 text-[var(--nexa-accent)]"
     >
       <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.3" />
-      {level >= 2 ? <circle cx="11.5" cy="4.5" r="2" fill="currentColor" /> : null}
+      {level >= 2 ? (
+        <circle cx="11.5" cy="4.5" r="2" fill="currentColor" />
+      ) : null}
       {level >= 3 ? <circle cx="4" cy="11" r="3" fill="currentColor" /> : null}
       {level >= 4 ? <circle cx="12" cy="12" r="4" fill="currentColor" /> : null}
     </svg>
-  )
+  );
 }
 
 function Bullet() {
@@ -34,17 +36,22 @@ function Bullet() {
       <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" />
       <circle cx="8" cy="8" r="2.5" fill="currentColor" />
     </svg>
-  )
+  );
 }
 
 export type ServiceCardProps = {
-  label: string
-  level: number
-  title: string
-  bullets: string[]
-}
+  label: string;
+  level: number;
+  title: string;
+  bullets: string[];
+};
 
-export function ServiceCard({ label, level, title, bullets }: ServiceCardProps) {
+export function ServiceCard({
+  label,
+  level,
+  title,
+  bullets,
+}: ServiceCardProps) {
   return (
     <div
       data-slot="service-card"
@@ -70,11 +77,15 @@ export function ServiceCard({ label, level, title, bullets }: ServiceCardProps) 
 
       <div
         className="relative z-[2] flex h-full flex-col"
-        style={{ padding: "clamp(16px, 1.94vw, 32px) clamp(18px, 2.36vw, 36px)" }}
+        style={{
+          padding: "clamp(16px, 1.94vw, 32px) clamp(18px, 2.36vw, 36px)",
+        }}
       >
         <span
           className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--nexa-badge)] text-white"
-          style={{ padding: "clamp(6px, 0.7vw, 12px) clamp(10px, 1.25vw, 20px)" }}
+          style={{
+            padding: "clamp(6px, 0.7vw, 12px) clamp(10px, 1.25vw, 20px)",
+          }}
         >
           <ServiceIcon level={level} />
           <span style={{ fontSize: "clamp(12px, 0.97vw, 15px)" }}>{label}</span>
@@ -105,7 +116,7 @@ export function ServiceCard({ label, level, title, bullets }: ServiceCardProps) 
         <div
           className={cn(
             "max-h-0 translate-y-5 overflow-hidden opacity-0 transition-all duration-500",
-            "group-hover:max-h-20 group-hover:translate-y-0 group-hover:opacity-100"
+            "group-hover:max-h-20 group-hover:translate-y-0 group-hover:opacity-100",
           )}
         >
           <button
@@ -122,5 +133,5 @@ export function ServiceCard({ label, level, title, bullets }: ServiceCardProps) 
         </div>
       </div>
     </div>
-  )
+  );
 }

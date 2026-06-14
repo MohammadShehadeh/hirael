@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, Copy, Eye, EyeOff } from "lucide-react"
+import * as React from "react";
+import { Check, Copy, Eye, EyeOff } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type ApiKeysProps = React.ComponentProps<"div">
+type ApiKeysProps = React.ComponentProps<"div">;
 
 function ApiKeys({ className, ...props }: ApiKeysProps) {
   return (
@@ -13,14 +13,14 @@ function ApiKeys({ className, ...props }: ApiKeysProps) {
       data-slot="api-keys"
       className={cn(
         "flex flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type ApiKeysHeaderProps = React.ComponentProps<"div">
+type ApiKeysHeaderProps = React.ComponentProps<"div">;
 
 function ApiKeysHeader({ className, ...props }: ApiKeysHeaderProps) {
   return (
@@ -28,14 +28,14 @@ function ApiKeysHeader({ className, ...props }: ApiKeysHeaderProps) {
       data-slot="api-keys-header"
       className={cn(
         "flex items-center justify-between gap-2 border-b border-border px-4 py-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type ApiKeysTitleProps = React.ComponentProps<"h3">
+type ApiKeysTitleProps = React.ComponentProps<"h3">;
 
 function ApiKeysTitle({ className, ...props }: ApiKeysTitleProps) {
   return (
@@ -44,10 +44,10 @@ function ApiKeysTitle({ className, ...props }: ApiKeysTitleProps) {
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type ApiKeysListProps = React.ComponentProps<"ul">
+type ApiKeysListProps = React.ComponentProps<"ul">;
 
 function ApiKeysList({ className, ...props }: ApiKeysListProps) {
   return (
@@ -56,10 +56,10 @@ function ApiKeysList({ className, ...props }: ApiKeysListProps) {
       className={cn("divide-y divide-border", className)}
       {...props}
     />
-  )
+  );
 }
 
-type ApiKeyItemProps = React.ComponentProps<"li">
+type ApiKeyItemProps = React.ComponentProps<"li">;
 
 function ApiKeyItem({ className, ...props }: ApiKeyItemProps) {
   return (
@@ -67,16 +67,16 @@ function ApiKeyItem({ className, ...props }: ApiKeyItemProps) {
       data-slot="api-key-item"
       className={cn(
         "flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 type ApiKeyNameProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode
-}
+  label: React.ReactNode;
+};
 
 function ApiKeyName({ label, className, children, ...props }: ApiKeyNameProps) {
   return (
@@ -94,14 +94,14 @@ function ApiKeyName({ label, className, children, ...props }: ApiKeyNameProps) {
         </span>
       ) : null}
     </div>
-  )
+  );
 }
 
 type ApiKeyValueProps = Omit<React.ComponentProps<"div">, "children"> & {
-  value: string
+  value: string;
   /** Whether the key starts revealed. */
-  defaultRevealed?: boolean
-}
+  defaultRevealed?: boolean;
+};
 
 function ApiKeyValue({
   value,
@@ -109,27 +109,27 @@ function ApiKeyValue({
   className,
   ...props
 }: ApiKeyValueProps) {
-  const [revealed, setRevealed] = React.useState(defaultRevealed)
-  const [copied, setCopied] = React.useState(false)
+  const [revealed, setRevealed] = React.useState(defaultRevealed);
+  const [copied, setCopied] = React.useState(false);
 
-  const masked = `${value.slice(0, 3)}${"•".repeat(8)}${value.slice(-4)}`
+  const masked = `${value.slice(0, 3)}${"•".repeat(8)}${value.slice(-4)}`;
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(value)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1500)
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
     } catch {
-      setCopied(false)
+      setCopied(false);
     }
-  }
+  };
 
   return (
     <div
       data-slot="api-key-value"
       className={cn(
         "inline-flex items-center gap-0.5 rounded-md border border-border bg-background py-0.5 pe-0.5 ps-2",
-        className
+        className,
       )}
       {...props}
     >
@@ -154,10 +154,10 @@ function ApiKeyValue({
         {copied ? <Check className="text-emerald-500" /> : <Copy />}
       </button>
     </div>
-  )
+  );
 }
 
-type ApiKeyMetaProps = React.ComponentProps<"span">
+type ApiKeyMetaProps = React.ComponentProps<"span">;
 
 function ApiKeyMeta({ className, ...props }: ApiKeyMetaProps) {
   return (
@@ -165,11 +165,11 @@ function ApiKeyMeta({ className, ...props }: ApiKeyMetaProps) {
       data-slot="api-key-meta"
       className={cn(
         "font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -181,4 +181,4 @@ export {
   ApiKeyName,
   ApiKeyValue,
   ApiKeyMeta,
-}
+};

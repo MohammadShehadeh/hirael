@@ -1,4 +1,4 @@
-const FOOTER_LINKS = ["Privacy", "Terms", "Contact"]
+const FOOTER_LINKS = ["Privacy", "Terms", "Contact"];
 
 export function Footer() {
   return (
@@ -20,5 +20,5 @@ export function Footer() {
         </nav>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,44 +1,46 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { createPortal } from "react-dom"
+import * as React from "react";
+import { createPortal } from "react-dom";
 import {
   AnimatePresence,
   HTMLMotionProps,
   MotionConfig,
   motion,
-} from "motion/react"
-import { X } from "lucide-react"
+} from "motion/react";
+import { X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 type MorphingDialogContextValue = {
-  isOpen: boolean
-  open: () => void
-  close: () => void
-  uniqueId: string
-  titleId: string
-  descriptionId: string
-  triggerRef: React.RefObject<HTMLDivElement | null>
-}
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  uniqueId: string;
+  titleId: string;
+  descriptionId: string;
+  triggerRef: React.RefObject<HTMLDivElement | null>;
+};
 
 const MorphingDialogContext =
-  React.createContext<MorphingDialogContextValue | null>(null)
+  React.createContext<MorphingDialogContextValue | null>(null);
 
 function useMorphingDialog() {
-  const ctx = React.useContext(MorphingDialogContext)
+  const ctx = React.useContext(MorphingDialogContext);
   if (!ctx) {
-    throw new Error("MorphingDialog parts must be used within <MorphingDialog>")
+    throw new Error(
+      "MorphingDialog parts must be used within <MorphingDialog>",
+    );
   }
-  return ctx
+  return ctx;
 }
 
 type MorphingDialogProps = {
-  children: React.ReactNode
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-}
+  children: React.ReactNode;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
 function MorphingDialog({
   children,
@@ -46,18 +48,18 @@ function MorphingDialog({
   defaultOpen,
   onOpenChange,
 }: MorphingDialogProps) {
-  const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false)
-  const isOpen = openProp ?? uncontrolled
-  const reactId = React.useId()
-  const triggerRef = React.useRef<HTMLDivElement | null>(null)
+  const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
+  const isOpen = openProp ?? uncontrolled;
+  const reactId = React.useId();
+  const triggerRef = React.useRef<HTMLDivElement | null>(null);
 
   const setOpen = React.useCallback(
     (next: boolean) => {
-      if (openProp === undefined) setUncontrolled(next)
-      onOpenChange?.(next)
+      if (openProp === undefined) setUncontrolled(next);
+      onOpenChange?.(next);
     },
-    [openProp, onOpenChange]
-  )
+    [openProp, onOpenChange],
+  );
 
   const value = React.useMemo<MorphingDialogContextValue>(
     () => ({
@@ -69,17 +71,17 @@ function MorphingDialog({
       descriptionId: `${reactId}-description`,
       triggerRef,
     }),
-    [isOpen, setOpen, reactId]
-  )
+    [isOpen, setOpen, reactId],
+  );
 
   return (
     <MorphingDialogContext.Provider value={value}>
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </MorphingDialogContext.Provider>
-  )
+  );
 }
 
-type MorphingDialogTriggerProps = HTMLMotionProps<"div">
+type MorphingDialogTriggerProps = HTMLMotionProps<"div">;
 
 function MorphingDialogTrigger({
   className,
@@ -87,7 +89,7 @@ function MorphingDialogTrigger({
   style,
   ...props
 }: MorphingDialogTriggerProps) {
-  const { open, isOpen, uniqueId, triggerRef } = useMorphingDialog()
+  const { open, isOpen, uniqueId, triggerRef } = useMorphingDialog();
   return (
     <motion.div
       {...props}
@@ -100,30 +102,30 @@ function MorphingDialogTrigger({
       onClick={open}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          open()
+          event.preventDefault();
+          open();
         }
       }}
       style={{ borderRadius: 12, ...style }}
       className={cn(
         "cursor-pointer overflow-hidden border border-border bg-card text-card-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className
+        className,
       )}
     >
       {children}
     </motion.div>
-  )
+  );
 }
 
 function focusablewithin(container: HTMLElement) {
   return Array.from(
     container.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-    )
-  )
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+    ),
+  );
 }
 
-type MorphingDialogContentProps = HTMLMotionProps<"div">
+type MorphingDialogContentProps = HTMLMotionProps<"div">;
 
 function MorphingDialogContent({
   className,
@@ -132,53 +134,53 @@ function MorphingDialogContent({
   ...props
 }: MorphingDialogContentProps) {
   const { isOpen, close, uniqueId, titleId, descriptionId, triggerRef } =
-    useMorphingDialog()
-  const panelRef = React.useRef<HTMLDivElement>(null)
+    useMorphingDialog();
+  const panelRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (!isOpen) return
-    const panel = panelRef.current
-    const trigger = triggerRef.current
-    panel?.focus()
+    if (!isOpen) return;
+    const panel = panelRef.current;
+    const trigger = triggerRef.current;
+    panel?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.preventDefault()
-        close()
-        return
+        event.preventDefault();
+        close();
+        return;
       }
       if (event.key === "Tab" && panel) {
-        const focusables = focusablewithin(panel)
+        const focusables = focusablewithin(panel);
         if (!focusables.length) {
-          event.preventDefault()
-          panel.focus()
-          return
+          event.preventDefault();
+          panel.focus();
+          return;
         }
-        const first = focusables[0]
-        const last = focusables[focusables.length - 1]
-        const active = document.activeElement
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
         if (event.shiftKey && (active === first || active === panel)) {
-          event.preventDefault()
-          last.focus()
+          event.preventDefault();
+          last.focus();
         } else if (!event.shiftKey && active === last) {
-          event.preventDefault()
-          first.focus()
+          event.preventDefault();
+          first.focus();
         }
       }
-    }
+    };
 
-    document.addEventListener("keydown", onKeyDown)
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = "hidden"
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener("keydown", onKeyDown)
-      document.body.style.overflow = previousOverflow
-      trigger?.focus()
-    }
-  }, [isOpen, close, triggerRef])
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      trigger?.focus();
+    };
+  }, [isOpen, close, triggerRef]);
 
-  if (typeof document === "undefined") return null
+  if (typeof document === "undefined") return null;
 
   return createPortal(
     <AnimatePresence>
@@ -207,7 +209,7 @@ function MorphingDialogContent({
               style={{ borderRadius: 12, ...style }}
               className={cn(
                 "pointer-events-auto relative overflow-hidden border border-border bg-card text-card-foreground shadow-lg focus:outline-none",
-                className
+                className,
               )}
             >
               {children}
@@ -216,34 +218,37 @@ function MorphingDialogContent({
         </div>
       ) : null}
     </AnimatePresence>,
-    document.body
-  )
+    document.body,
+  );
 }
 
-type MorphingDialogTitleProps = React.ComponentProps<"h2">
+type MorphingDialogTitleProps = React.ComponentProps<"h2">;
 
-function MorphingDialogTitle({ className, ...props }: MorphingDialogTitleProps) {
-  const { titleId } = useMorphingDialog()
+function MorphingDialogTitle({
+  className,
+  ...props
+}: MorphingDialogTitleProps) {
+  const { titleId } = useMorphingDialog();
   return (
     <h2
       id={titleId}
       data-slot="morphing-dialog-title"
       className={cn(
         "text-lg font-semibold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-type MorphingDialogDescriptionProps = React.ComponentProps<"p">
+type MorphingDialogDescriptionProps = React.ComponentProps<"p">;
 
 function MorphingDialogDescription({
   className,
   ...props
 }: MorphingDialogDescriptionProps) {
-  const { descriptionId } = useMorphingDialog()
+  const { descriptionId } = useMorphingDialog();
   return (
     <p
       id={descriptionId}
@@ -251,17 +256,17 @@ function MorphingDialogDescription({
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-type MorphingDialogCloseProps = React.ComponentProps<"button">
+type MorphingDialogCloseProps = React.ComponentProps<"button">;
 
 function MorphingDialogClose({
   className,
   children,
   ...props
 }: MorphingDialogCloseProps) {
-  const { close } = useMorphingDialog()
+  const { close } = useMorphingDialog();
   return (
     <button
       type="button"
@@ -270,13 +275,13 @@ function MorphingDialogClose({
       aria-label="Close"
       className={cn(
         "absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className
+        className,
       )}
       {...props}
     >
       {children ?? <X className="size-4" />}
     </button>
-  )
+  );
 }
 
 export {
@@ -286,4 +291,4 @@ export {
   MorphingDialogTitle,
   MorphingDialogDescription,
   MorphingDialogClose,
-}
+};

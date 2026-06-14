@@ -1,28 +1,28 @@
-import type { Metadata, Viewport } from "next"
-import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google"
-import Script from "next/script"
-import "./globals.css"
+import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
+import Script from "next/script";
+import "./globals.css";
 
-import { ThemeProvider } from "@/components/showcase/theme-provider"
-import { SITE } from "@/lib/site"
-import { themePrehydrationScript } from "@/lib/theme"
+import { ThemeProvider } from "@/components/showcase/theme-provider";
+import { SITE } from "@/lib/site";
+import { themePrehydrationScript } from "@/lib/theme";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-})
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-})
+});
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-})
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
   category: "technology",
-}
+};
 
 export const viewport: Viewport = {
   themeColor: [
@@ -81,12 +81,12 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "#09090b" },
   ],
   colorScheme: "light dark",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -136,5 +136,5 @@ export default function RootLayout({
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

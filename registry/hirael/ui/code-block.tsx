@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronDown, ChevronUp, FileCode } from "lucide-react"
+import * as React from "react";
+import { ChevronDown, ChevronUp, FileCode } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { CopyButton } from "@/registry/hirael/ui/copy-button"
+import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { CopyButton } from "@/registry/hirael/ui/copy-button";
 
 type TokenType =
   | "comment"
@@ -19,11 +19,11 @@ type TokenType =
   | "property"
   | "tag"
   | "punctuation"
-  | "plain"
+  | "plain";
 
-type Token = { type: TokenType; content: string }
+type Token = { type: TokenType; content: string };
 
-type Rule = { type: TokenType; re: string }
+type Rule = { type: TokenType; re: string };
 
 const TOKEN_CLASSES: Record<TokenType, string | undefined> = {
   comment: "italic text-muted-foreground",
@@ -37,19 +37,22 @@ const TOKEN_CLASSES: Record<TokenType, string | undefined> = {
   tag: "text-chart-1",
   punctuation: "text-muted-foreground",
   plain: undefined,
-}
+};
 
 const JS_RULES: Rule[] = [
   { type: "comment", re: String.raw`\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$)` },
   {
     type: "string",
-    re: String.raw`'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|\`(?:[^\`\\]|\\[\s\S])*\`` ,
+    re: String.raw`'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|\`(?:[^\`\\]|\\[\s\S])*\``,
   },
   {
     type: "keyword",
     re: String.raw`\b(?:import|export|from|default|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|implements|interface|type|enum|public|private|protected|readonly|static|async|await|yield|try|catch|finally|throw|typeof|instanceof|in|of|as|satisfies|keyof|infer|declare|namespace|abstract|this|super|void|delete|get|set)\b`,
   },
-  { type: "literal", re: String.raw`\b(?:true|false|null|undefined|NaN|Infinity)\b` },
+  {
+    type: "literal",
+    re: String.raw`\b(?:true|false|null|undefined|NaN|Infinity)\b`,
+  },
   {
     type: "number",
     re: String.raw`\b0[xXbBoO]\w+\b|\b\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?n?\b`,
@@ -57,7 +60,7 @@ const JS_RULES: Rule[] = [
   { type: "function", re: String.raw`\b[a-z_$][\w$]*(?=\s*\()` },
   { type: "type", re: String.raw`\b[A-Z][\w$]*\b` },
   { type: "punctuation", re: String.raw`[{}()[\]<>,;.:?!=+\-*/%&|^~]+` },
-]
+];
 
 const JSON_RULES: Rule[] = [
   { type: "property", re: String.raw`"(?:[^"\\]|\\.)*"(?=\s*:)` },
@@ -65,7 +68,7 @@ const JSON_RULES: Rule[] = [
   { type: "literal", re: String.raw`\b(?:true|false|null)\b` },
   { type: "number", re: String.raw`-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b` },
   { type: "punctuation", re: String.raw`[{}[\],:]+` },
-]
+];
 
 const BASH_RULES: Rule[] = [
   { type: "comment", re: String.raw`#[^\n]*` },
@@ -78,7 +81,7 @@ const BASH_RULES: Rule[] = [
   { type: "property", re: String.raw`(?<=\s)--?[\w-]+\b` },
   { type: "number", re: String.raw`\b\d+\b` },
   { type: "punctuation", re: String.raw`[|&;<>(){}[\]=]+` },
-]
+];
 
 const CSS_RULES: Rule[] = [
   { type: "comment", re: String.raw`\/\*[\s\S]*?(?:\*\/|$)` },
@@ -93,7 +96,7 @@ const CSS_RULES: Rule[] = [
   },
   { type: "function", re: String.raw`\b[\w-]+(?=\()` },
   { type: "punctuation", re: String.raw`[{}();:,>~+*]+` },
-]
+];
 
 const HTML_RULES: Rule[] = [
   { type: "comment", re: String.raw`<!--[\s\S]*?(?:-->|$)` },
@@ -103,7 +106,7 @@ const HTML_RULES: Rule[] = [
   { type: "string", re: String.raw`"[^"]*"|'[^']*'` },
   { type: "literal", re: String.raw`&\w+;` },
   { type: "punctuation", re: String.raw`\/?>|=` },
-]
+];
 
 const GRAMMARS: Record<string, Rule[]> = {
   js: JS_RULES,
@@ -124,80 +127,83 @@ const GRAMMARS: Record<string, Rule[]> = {
   html: HTML_RULES,
   xml: HTML_RULES,
   svg: HTML_RULES,
-}
+};
 
 function tokenize(code: string, language?: string): Token[][] | null {
-  const rules = language ? GRAMMARS[language.toLowerCase()] : undefined
-  if (!rules) return null
+  const rules = language ? GRAMMARS[language.toLowerCase()] : undefined;
+  if (!rules) return null;
 
-  const master = new RegExp(rules.map((rule) => `(${rule.re})`).join("|"), "g")
-  const tokens: Token[] = []
-  let last = 0
+  const master = new RegExp(rules.map((rule) => `(${rule.re})`).join("|"), "g");
+  const tokens: Token[] = [];
+  let last = 0;
   for (const match of code.matchAll(master)) {
-    const index = match.index ?? 0
+    const index = match.index ?? 0;
     if (index > last) {
-      tokens.push({ type: "plain", content: code.slice(last, index) })
+      tokens.push({ type: "plain", content: code.slice(last, index) });
     }
-    const groupIndex = match.slice(1).findIndex((group) => group !== undefined)
-    tokens.push({ type: rules[groupIndex].type, content: match[0] })
-    last = index + match[0].length
+    const groupIndex = match.slice(1).findIndex((group) => group !== undefined);
+    tokens.push({ type: rules[groupIndex].type, content: match[0] });
+    last = index + match[0].length;
   }
   if (last < code.length) {
-    tokens.push({ type: "plain", content: code.slice(last) })
+    tokens.push({ type: "plain", content: code.slice(last) });
   }
 
-  const lines: Token[][] = [[]]
+  const lines: Token[][] = [[]];
   for (const token of tokens) {
-    const parts = token.content.split("\n")
+    const parts = token.content.split("\n");
     parts.forEach((part, partIndex) => {
-      if (partIndex > 0) lines.push([])
-      if (part) lines[lines.length - 1].push({ type: token.type, content: part })
-    })
+      if (partIndex > 0) lines.push([]);
+      if (part)
+        lines[lines.length - 1].push({ type: token.type, content: part });
+    });
   }
-  return lines
+  return lines;
 }
 
 type CodeBlockContextValue = {
-  code: string
-  language?: string
-  filename?: string
-  highlight: boolean
-  showLineNumbers: boolean
-  highlightLines: number[]
-  addedLines: number[]
-  removedLines: number[]
-  wrap: boolean
-  maxHeight?: number
-  copyable: boolean
-  expanded: boolean
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>
-}
+  code: string;
+  language?: string;
+  filename?: string;
+  highlight: boolean;
+  showLineNumbers: boolean;
+  highlightLines: number[];
+  addedLines: number[];
+  removedLines: number[];
+  wrap: boolean;
+  maxHeight?: number;
+  copyable: boolean;
+  expanded: boolean;
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(null)
+const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(
+  null,
+);
 
 function useCodeBlock() {
-  const context = React.useContext(CodeBlockContext)
+  const context = React.useContext(CodeBlockContext);
   if (!context) {
-    throw new Error("useCodeBlock must be used within a <CodeBlock />")
+    throw new Error("useCodeBlock must be used within a <CodeBlock />");
   }
-  return context
+  return context;
 }
 
 export type CodeBlockProps = React.ComponentProps<"div"> & {
   /** Raw code to display. A string child is accepted as an alternative. */
-  code?: string
-  language?: string
-  filename?: string
+  code?: string;
+  language?: string;
+  filename?: string;
   /** Tokenize and color the code when the language has a built-in grammar. */
-  highlight?: boolean
-  showLineNumbers?: boolean
-  highlightLines?: number[]
-  addedLines?: number[]
-  removedLines?: number[]
-  wrap?: boolean
-  maxHeight?: number
-  copyable?: boolean
-}
+  highlight?: boolean;
+  showLineNumbers?: boolean;
+  highlightLines?: number[];
+  addedLines?: number[];
+  removedLines?: number[];
+  wrap?: boolean;
+  maxHeight?: number;
+  copyable?: boolean;
+};
 
 function CodeBlock({
   code,
@@ -215,13 +221,13 @@ function CodeBlock({
   children,
   ...props
 }: CodeBlockProps) {
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = React.useState(false);
 
   const rawCode = (
     code ?? (typeof children === "string" ? children : "")
-  ).replace(/\n$/, "")
-  const hasCustomChildren = children != null && typeof children !== "string"
-  const showHeader = Boolean(filename || language || copyable)
+  ).replace(/\n$/, "");
+  const hasCustomChildren = children != null && typeof children !== "string";
+  const showHeader = Boolean(filename || language || copyable);
 
   const contextValue = React.useMemo<CodeBlockContextValue>(
     () => ({
@@ -252,8 +258,8 @@ function CodeBlock({
       maxHeight,
       copyable,
       expanded,
-    ]
-  )
+    ],
+  );
 
   return (
     <CodeBlockContext.Provider value={contextValue}>
@@ -261,7 +267,7 @@ function CodeBlock({
         data-slot="code-block"
         className={cn(
           "overflow-hidden rounded-md border border-border bg-card text-card-foreground",
-          className
+          className,
         )}
         {...props}
       >
@@ -275,7 +281,7 @@ function CodeBlock({
         )}
       </div>
     </CodeBlockContext.Provider>
-  )
+  );
 }
 
 function CodeBlockHeader({
@@ -283,14 +289,14 @@ function CodeBlockHeader({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { code, language, filename, copyable } = useCodeBlock()
+  const { code, language, filename, copyable } = useCodeBlock();
 
   return (
     <div
       data-slot="code-block-header"
       className={cn(
         "flex min-h-10 items-center gap-2 border-b border-border px-3 py-1",
-        className
+        className,
       )}
       {...props}
     >
@@ -301,7 +307,10 @@ function CodeBlockHeader({
               data-slot="code-block-filename"
               className="flex items-center gap-1.5 font-mono text-xs text-foreground"
             >
-              <FileCode className="size-3.5 text-muted-foreground" aria-hidden />
+              <FileCode
+                className="size-3.5 text-muted-foreground"
+                aria-hidden
+              />
               {filename}
             </span>
           )}
@@ -316,7 +325,7 @@ function CodeBlockHeader({
         </>
       )}
     </div>
-  )
+  );
 }
 
 function CodeBlockContent({
@@ -335,25 +344,25 @@ function CodeBlockContent({
     maxHeight,
     expanded,
     setExpanded,
-  } = useCodeBlock()
-  const preRef = React.useRef<HTMLPreElement>(null)
-  const [overflowing, setOverflowing] = React.useState(false)
+  } = useCodeBlock();
+  const preRef = React.useRef<HTMLPreElement>(null);
+  const [overflowing, setOverflowing] = React.useState(false);
 
-  const lines = code.split("\n")
+  const lines = code.split("\n");
   const tokenLines = React.useMemo(
     () => (highlight ? tokenize(code, language) : null),
-    [highlight, code, language]
-  )
-  const hasDiff = addedLines.length > 0 || removedLines.length > 0
-  const collapsible = maxHeight != null
-  const collapsed = collapsible && !expanded
+    [highlight, code, language],
+  );
+  const hasDiff = addedLines.length > 0 || removedLines.length > 0;
+  const collapsible = maxHeight != null;
+  const collapsed = collapsible && !expanded;
 
   React.useEffect(() => {
-    if (maxHeight == null) return
-    const pre = preRef.current
-    if (!pre) return
-    setOverflowing(pre.scrollHeight > maxHeight)
-  }, [maxHeight, code, wrap])
+    if (maxHeight == null) return;
+    const pre = preRef.current;
+    if (!pre) return;
+    setOverflowing(pre.scrollHeight > maxHeight);
+  }, [maxHeight, code, wrap]);
 
   return (
     <div
@@ -371,15 +380,15 @@ function CodeBlockContent({
           dir="ltr"
           className={cn(
             "overflow-x-auto py-3 font-mono text-[13px] leading-6",
-            wrap && "whitespace-pre-wrap break-words"
+            wrap && "whitespace-pre-wrap break-words",
           )}
         >
           <code data-slot="code-block-code" className="block w-fit min-w-full">
             {lines.map((line, index) => {
-              const lineNumber = index + 1
-              const highlighted = highlightLines.includes(lineNumber)
-              const added = addedLines.includes(lineNumber)
-              const removed = removedLines.includes(lineNumber)
+              const lineNumber = index + 1;
+              const highlighted = highlightLines.includes(lineNumber);
+              const added = addedLines.includes(lineNumber);
+              const removed = removedLines.includes(lineNumber);
 
               return (
                 <span
@@ -393,7 +402,7 @@ function CodeBlockContent({
                     showLineNumbers || hasDiff ? "ps-2" : "ps-4",
                     highlighted && "border-primary bg-accent",
                     added && "bg-primary/10",
-                    removed && "bg-destructive/10"
+                    removed && "bg-destructive/10",
                   )}
                 >
                   {showLineNumbers && (
@@ -411,7 +420,7 @@ function CodeBlockContent({
                       className={cn(
                         "w-4 shrink-0 select-none",
                         added && "text-primary before:content-['+']",
-                        removed && "text-destructive before:content-['−']"
+                        removed && "text-destructive before:content-['−']",
                       )}
                     />
                   )}
@@ -429,11 +438,11 @@ function CodeBlockContent({
                             >
                               {token.content}
                             </span>
-                          )
+                          ),
                         ) ?? line)}
                   </span>
                 </span>
-              )
+              );
             })}
           </code>
         </pre>
@@ -464,7 +473,7 @@ function CodeBlockContent({
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export { CodeBlock, CodeBlockHeader, CodeBlockContent }
+export { CodeBlock, CodeBlockHeader, CodeBlockContent };

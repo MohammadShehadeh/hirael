@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/registry/hirael/ui/multi-select"
+} from "@/registry/hirael/ui/multi-select";
 
 const FRAMEWORKS = [
   { value: "next", label: "Next.js", group: "React" },
@@ -19,11 +19,11 @@ const FRAMEWORKS = [
   { value: "qwik", label: "Qwik City", group: "Other" },
   { value: "tanstack-start", label: "TanStack Start", group: "React" },
   { value: "rakkas", label: "Rakkas", group: "React", disabled: true },
-]
+];
 
 export default function MultiSelectDemo() {
-  const [basic, setBasic] = React.useState<string[]>(["next", "astro"])
-  const [composed, setComposed] = React.useState<string[]>([])
+  const [basic, setBasic] = React.useState<string[]>(["next", "astro"]);
+  const [composed, setComposed] = React.useState<string[]>([]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
@@ -61,5 +61,5 @@ export default function MultiSelectDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Bell,
   ChevronRight,
@@ -16,18 +16,18 @@ import {
   Settings,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { Card } from "@/registry/hirael/ui/card"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import { Card } from "@/registry/hirael/ui/card";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/registry/hirael/ui/input-group"
-import { KbdDisplay } from "@/registry/hirael/ui/kbd"
-import { Separator } from "@/registry/hirael/ui/separator"
+} from "@/registry/hirael/ui/input-group";
+import { KbdDisplay } from "@/registry/hirael/ui/kbd";
+import { Separator } from "@/registry/hirael/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -44,15 +44,15 @@ import {
   SidebarProvider,
   SidebarSeparator,
   SidebarTrigger,
-} from "@/registry/hirael/ui/sidebar"
+} from "@/registry/hirael/ui/sidebar";
 
 type NavLink = {
-  label: string
-  icon: LucideIcon
-  href: string
-  active?: boolean
-  badge?: string
-}
+  label: string;
+  icon: LucideIcon;
+  href: string;
+  active?: boolean;
+  badge?: string;
+};
 
 const PRIMARY: readonly NavLink[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "#", active: true },
@@ -60,46 +60,70 @@ const PRIMARY: readonly NavLink[] = [
   { label: "Customers", icon: Users, href: "#" },
   { label: "Billing", icon: CreditCard, href: "#" },
   { label: "Explore", icon: Compass, href: "#" },
-]
+];
 
 const SECONDARY: readonly NavLink[] = [
   { label: "Settings", icon: Settings, href: "#" },
   { label: "Support", icon: LifeBuoy, href: "#" },
-]
+];
 
 type Account = {
-  name: string
-  plan: "Hobby" | "Pro" | "Team"
-  mrr: string
-  status: "Active" | "Trial" | "Past due"
-  initials: string
-}
+  name: string;
+  plan: "Hobby" | "Pro" | "Team";
+  mrr: string;
+  status: "Active" | "Trial" | "Past due";
+  initials: string;
+};
 
 const ROWS: readonly Account[] = [
-  { name: "Plinth Labs", plan: "Pro", mrr: "$2,480", status: "Active", initials: "PL" },
-  { name: "Helix", plan: "Team", mrr: "$6,120", status: "Active", initials: "HX" },
+  {
+    name: "Plinth Labs",
+    plan: "Pro",
+    mrr: "$2,480",
+    status: "Active",
+    initials: "PL",
+  },
+  {
+    name: "Helix",
+    plan: "Team",
+    mrr: "$6,120",
+    status: "Active",
+    initials: "HX",
+  },
   { name: "Brella", plan: "Hobby", mrr: "$0", status: "Trial", initials: "BR" },
-  { name: "Verbit", plan: "Pro", mrr: "$1,860", status: "Past due", initials: "VB" },
-  { name: "Mercado", plan: "Team", mrr: "$5,400", status: "Active", initials: "MC" },
-]
+  {
+    name: "Verbit",
+    plan: "Pro",
+    mrr: "$1,860",
+    status: "Past due",
+    initials: "VB",
+  },
+  {
+    name: "Mercado",
+    plan: "Team",
+    mrr: "$5,400",
+    status: "Active",
+    initials: "MC",
+  },
+];
 
 const METRICS = [
   { l: "Customers", v: "1,284", d: "+4.1%" },
   { l: "MRR", v: "$48.2k", d: "+8.7%" },
   { l: "Churn", v: "1.8%", d: "-0.4%" },
   { l: "NPS", v: "62", d: "+2" },
-] as const
+] as const;
 
 function statusDot(status: Account["status"]) {
-  if (status === "Active") return "bg-emerald-500"
-  if (status === "Trial") return "bg-yellow-500"
-  return "bg-red-500"
+  if (status === "Active") return "bg-emerald-500";
+  if (status === "Trial") return "bg-yellow-500";
+  return "bg-red-500";
 }
 
 function statusText(status: Account["status"]) {
-  if (status === "Active") return "text-emerald-500"
-  if (status === "Trial") return "text-yellow-500"
-  return "text-red-500"
+  if (status === "Active") return "text-emerald-500";
+  if (status === "Trial") return "text-yellow-500";
+  return "text-red-500";
 }
 
 function BrandMark({ className }: { className?: string }) {
@@ -120,21 +144,21 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M28 92 H52" opacity="0.45" />
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
-  )
+  );
 }
 
 export default function AppShell01() {
-  const [query, setQuery] = React.useState("")
+  const [query, setQuery] = React.useState("");
   const filteredRows = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return ROWS
+    const q = query.trim().toLowerCase();
+    if (!q) return ROWS;
     return ROWS.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
         r.plan.toLowerCase().includes(q) ||
-        r.status.toLowerCase().includes(q)
-    )
-  }, [query])
+        r.status.toLowerCase().includes(q),
+    );
+  }, [query]);
 
   return (
     <SidebarProvider>
@@ -230,7 +254,10 @@ export default function AppShell01() {
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-3 backdrop-blur sm:px-4">
           <SidebarTrigger className="-ms-1" />
-          <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+          <Separator
+            orientation="vertical"
+            className="mx-1 hidden h-5 sm:block"
+          />
           <nav
             aria-label="Breadcrumb"
             className="hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex"
@@ -271,7 +298,11 @@ export default function AppShell01() {
             <Plus className="size-3" />
             New customer
           </Button>
-          <Button size="icon" className="size-8 sm:hidden" aria-label="New customer">
+          <Button
+            size="icon"
+            className="size-8 sm:hidden"
+            aria-label="New customer"
+          >
             <Plus className="size-3.5" />
           </Button>
         </header>
@@ -379,7 +410,9 @@ export default function AppShell01() {
                         </td>
                         <td className="px-4 py-2.5">
                           <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
-                            <span className={`size-1.5 rounded-full ${statusDot(r.status)}`} />
+                            <span
+                              className={`size-1.5 rounded-full ${statusDot(r.status)}`}
+                            />
                             <span className={statusText(r.status)}>
                               {r.status}
                             </span>
@@ -405,5 +438,5 @@ export default function AppShell01() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

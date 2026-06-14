@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const FEATURE_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4"
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4";
 
 const FEATURE_TABS = [
   { label: "Living Electric", id: "electric" },
@@ -13,10 +13,10 @@ const FEATURE_TABS = [
   { label: "Sleep Well", id: "sleep" },
   { label: "Acoustic Comfort", id: "acoustic" },
   { label: "5+ Seasons", id: "seasons" },
-]
+];
 
 export function Feature() {
-  const [active, setActive] = React.useState("electric")
+  const [active, setActive] = React.useState("electric");
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-0 md:px-12">
@@ -44,7 +44,7 @@ export function Feature() {
                     "rounded-full border px-4 py-2 text-xs transition-colors",
                     active === tab.id
                       ? "border-foreground bg-foreground text-primary-foreground"
-                      : "border-border text-muted-foreground hover:text-foreground"
+                      : "border-border text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {tab.label}
@@ -82,5 +82,5 @@ export function Feature() {
         </div>
       </div>
     </section>
-  )
+  );
 }

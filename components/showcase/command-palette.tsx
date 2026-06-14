@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Boxes, Frame, LayoutTemplate } from "lucide-react"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Boxes, Frame, LayoutTemplate } from "lucide-react";
 
 import {
   Command,
@@ -12,7 +12,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/hirael/ui/command"
+} from "@/registry/hirael/ui/command";
 import {
   CATEGORY_LABELS,
   COMPONENTS,
@@ -20,7 +20,7 @@ import {
   TEMPLATES,
   entryHref,
   type ComponentCategory,
-} from "@/registry/hirael/registry-meta"
+} from "@/registry/hirael/registry-meta";
 
 /**
  * The heavy half of the ⌘K palette — Radix dialog + the project's own
@@ -31,22 +31,22 @@ export function CommandPalette({
   open,
   onOpenChange,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const router = useRouter()
+  const router = useRouter();
 
   const go = React.useCallback(
     (href: string) => {
-      onOpenChange(false)
-      router.push(href)
+      onOpenChange(false);
+      router.push(href);
     },
-    [router, onOpenChange]
-  )
+    [router, onOpenChange],
+  );
 
-  const components = COMPONENTS
-  const blocks = REGISTRY.filter((r) => r.category === "blocks")
-  const templates = TEMPLATES
+  const components = COMPONENTS;
+  const blocks = REGISTRY.filter((r) => r.category === "blocks");
+  const templates = TEMPLATES;
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
@@ -113,5 +113,5 @@ export function CommandPalette({
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
-  )
+  );
 }

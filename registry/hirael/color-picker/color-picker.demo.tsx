@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Label } from "@/registry/hirael/ui/label"
+import { Label } from "@/registry/hirael/ui/label";
 import {
   ColorPicker,
   ColorPickerContent,
   ColorPickerTrigger,
-} from "@/registry/hirael/ui/color-picker"
+} from "@/registry/hirael/ui/color-picker";
 
 export default function ColorPickerDemo() {
-  const [accent, setAccent] = React.useState<string>("#0ea5e9")
-  const [brand, setBrand] = React.useState<string>("#a855f7")
+  const [accent, setAccent] = React.useState<string>("#0ea5e9");
+  const [brand, setBrand] = React.useState<string>("#a855f7");
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
@@ -50,5 +50,5 @@ export default function ColorPickerDemo() {
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,24 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Image from "next/image"
-import { ArrowUpRight } from "lucide-react"
+import * as React from "react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 
-import { Badge } from "@/registry/hirael/ui/badge"
-import { Button } from "@/registry/hirael/ui/button"
-import { EmptyState, EmptyStateDescription, EmptyStateTitle } from "@/registry/hirael/ui/empty-state"
-import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs"
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
+import {
+  EmptyState,
+  EmptyStateDescription,
+  EmptyStateTitle,
+} from "@/registry/hirael/ui/empty-state";
+import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
 type Tile = {
-  title: string
-  meta: string
-  tag: string
-  aspect: string
-  src: string
-}
+  title: string;
+  meta: string;
+  tag: string;
+  aspect: string;
+  src: string;
+};
 
-const FILTERS = ["All", "Web", "Brand", "Editorial", "Motion"] as const
-type Filter = (typeof FILTERS)[number]
+const FILTERS = ["All", "Web", "Brand", "Editorial", "Motion"] as const;
+type Filter = (typeof FILTERS)[number];
 
 // Free-to-use photos from Unsplash. Swap these for your own assets — and
 // remember to add the image host to `images.remotePatterns` in next.config.
@@ -26,7 +30,7 @@ const IMG = {
   a: "https://images.unsplash.com/photo-1778601473900-9b68b33ff35e?q=80&w=1200&auto=format&fit=crop",
   b: "https://images.unsplash.com/photo-1779995734326-3d3790120164?q=80&w=1200&auto=format&fit=crop",
   c: "https://images.unsplash.com/photo-1779890306846-ad651833f050?q=80&w=1200&auto=format&fit=crop",
-} as const
+} as const;
 
 const TILES: readonly Tile[] = [
   {
@@ -85,12 +89,12 @@ const TILES: readonly Tile[] = [
     aspect: "aspect-square",
     src: IMG.a,
   },
-] as const
+] as const;
 
 export default function ImageGallery01() {
-  const [filter, setFilter] = React.useState<Filter>("All")
+  const [filter, setFilter] = React.useState<Filter>("All");
   const visible =
-    filter === "All" ? TILES : TILES.filter((t) => t.tag === filter)
+    filter === "All" ? TILES : TILES.filter((t) => t.tag === filter);
 
   return (
     <section
@@ -110,8 +114,8 @@ export default function ImageGallery01() {
               A studio archive, gridded.
             </h2>
             <p className="text-base text-muted-foreground">
-              Eight pieces from the last 14 months: websites, identity work,
-              an annual report, and a motion reel. More in the full archive.
+              Eight pieces from the last 14 months: websites, identity work, an
+              annual report, and a motion reel. More in the full archive.
             </p>
           </div>
 
@@ -196,5 +200,5 @@ export default function ImageGallery01() {
         )}
       </div>
     </section>
-  )
+  );
 }

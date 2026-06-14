@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import gsap from "gsap"
+import * as React from "react";
+import gsap from "gsap";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { HLS_STREAM, HlsVideo } from "./hls-video"
-import { ArrowUpRight, onAnchorClick, RingLink } from "./primitives"
+import { HLS_STREAM, HlsVideo } from "./hls-video";
+import { ArrowUpRight, onAnchorClick, RingLink } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Home", href: "#home", id: "home" },
   { label: "Work", href: "#work", id: "work" },
   { label: "Resume", href: "#stats", id: "stats" },
-]
-const ROLES = ["Creative", "Developer", "Founder", "Scholar"]
-const ROLE_INTERVAL = 2000
+];
+const ROLES = ["Creative", "Developer", "Founder", "Scholar"];
+const ROLE_INTERVAL = 2000;
 
 function Logo() {
   return (
@@ -28,8 +28,7 @@ function Logo() {
       <span
         className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          backgroundImage:
-            "linear-gradient(270deg, #89AACC 0%, #4E85BF 100%)",
+          backgroundImage: "linear-gradient(270deg, #89AACC 0%, #4E85BF 100%)",
         }}
       />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
@@ -37,49 +36,49 @@ function Logo() {
         MS
       </span>
     </a>
-  )
+  );
 }
 
 function Navbar() {
-  const [scrolled, setScrolled] = React.useState(false)
-  const [active, setActive] = React.useState("home")
+  const [scrolled, setScrolled] = React.useState(false);
+  const [active, setActive] = React.useState("home");
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 100)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 100);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id)
+          if (entry.isIntersecting) setActive(entry.target.id);
         }
       },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-    )
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+    );
     for (const link of NAV_LINKS) {
-      const el = document.getElementById(link.id)
-      if (el) observer.observe(el)
+      const el = document.getElementById(link.id);
+      if (el) observer.observe(el);
     }
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
       <div
         className={cn(
           "inline-flex items-center rounded-full border border-white/10 bg-[hsl(var(--surface))] px-2 py-2 backdrop-blur-md transition-shadow duration-300",
-          scrolled && "shadow-md shadow-black/10"
+          scrolled && "shadow-md shadow-black/10",
         )}
       >
         <Logo />
         <span className="mx-1 hidden h-5 w-px bg-[hsl(var(--stroke))] sm:block" />
         <div className="flex items-center gap-0.5">
           {NAV_LINKS.map((link) => {
-            const isActive = active === link.id
+            const isActive = active === link.id;
             return (
               <a
                 key={link.label}
@@ -90,12 +89,12 @@ function Navbar() {
                   "rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm",
                   isActive
                     ? "bg-[hsl(var(--stroke))]/50 text-[hsl(var(--text))]"
-                    : "text-[hsl(var(--muted))] hover:bg-[hsl(var(--stroke))]/50 hover:text-[hsl(var(--text))]"
+                    : "text-[hsl(var(--muted))] hover:bg-[hsl(var(--stroke))]/50 hover:text-[hsl(var(--text))]",
                 )}
               >
                 {link.label}
               </a>
-            )
+            );
           })}
         </div>
         <span className="mx-1 hidden h-5 w-px bg-[hsl(var(--stroke))] sm:block" />
@@ -108,40 +107,40 @@ function Navbar() {
         </RingLink>
       </div>
     </nav>
-  )
+  );
 }
 
 export function Hero({ start = true }: { start?: boolean }) {
-  const rootRef = React.useRef<HTMLElement>(null)
-  const [roleIndex, setRoleIndex] = React.useState(0)
+  const rootRef = React.useRef<HTMLElement>(null);
+  const [roleIndex, setRoleIndex] = React.useState(0);
 
   React.useEffect(() => {
     const id = setInterval(
       () => setRoleIndex((i) => (i + 1) % ROLES.length),
-      ROLE_INTERVAL
-    )
-    return () => clearInterval(id)
-  }, [])
+      ROLE_INTERVAL,
+    );
+    return () => clearInterval(id);
+  }, []);
 
   React.useEffect(() => {
-    if (!start) return
+    if (!start) return;
     const ctx = gsap.context(() => {
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       if (reduce) {
         gsap.set([".name-reveal", ".blur-in"], {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-        })
-        return
+        });
+        return;
       }
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(
         ".name-reveal",
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }
+        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 },
       ).fromTo(
         ".blur-in",
         { opacity: 0, y: 20, filter: "blur(10px)" },
@@ -152,11 +151,11 @@ export function Hero({ start = true }: { start?: boolean }) {
           duration: 1,
           stagger: 0.1,
         },
-        0.3
-      )
-    }, rootRef)
-    return () => ctx.revert()
-  }, [start])
+        0.3,
+      );
+    }, rootRef);
+    return () => ctx.revert();
+  }, [start]);
 
   return (
     <section
@@ -223,5 +222,5 @@ export function Hero({ start = true }: { start?: boolean }) {
         </span>
       </div>
     </section>
-  )
+  );
 }

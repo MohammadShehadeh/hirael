@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ImageIcon, Music, Upload } from "lucide-react"
+import * as React from "react";
+import { ImageIcon, Music, Upload } from "lucide-react";
 
 import {
   MediaInput,
@@ -11,24 +11,24 @@ import {
   MediaInputFile,
   MediaInputTrigger,
   useMediaInput,
-} from "@/registry/hirael/ui/media-input"
-import { AudioPlayer } from "@/registry/hirael/ui/audio-player"
+} from "@/registry/hirael/ui/media-input";
+import { AudioPlayer } from "@/registry/hirael/ui/audio-player";
 
 function AudioPreview() {
-  const { value } = useMediaInput()
-  if (!value) return null
+  const { value } = useMediaInput();
+  if (!value) return null;
 
   return (
     <AudioPlayer
       src={value.url}
       className="rounded-md border border-border bg-card p-3"
     />
-  )
+  );
 }
 
 function ImagePreview() {
-  const { value } = useMediaInput()
-  if (!value) return null
+  const { value } = useMediaInput();
+  if (!value) return null;
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -37,7 +37,7 @@ function ImagePreview() {
       alt={value.file.name}
       className="max-h-48 w-full rounded-md border border-border object-cover"
     />
-  )
+  );
 }
 
 export default function MediaInputDemo() {
@@ -51,8 +51,8 @@ export default function MediaInputDemo() {
           <MediaInputEmpty>
             <Music aria-hidden className="size-6 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
-              Pick a local audio file. It plays from your browser only.
-              Nothing is uploaded.
+              Pick a local audio file. It plays from your browser only. Nothing
+              is uploaded.
             </p>
             <MediaInputTrigger>
               <Upload aria-hidden />
@@ -93,5 +93,5 @@ export default function MediaInputDemo() {
         </MediaInput>
       </div>
     </div>
-  )
+  );
 }

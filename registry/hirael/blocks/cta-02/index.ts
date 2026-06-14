@@ -1,1 +1,1 @@
-export { default } from "./cta-02"
+export { default } from "./cta-02";

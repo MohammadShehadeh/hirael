@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   SubscriptionPlan,
@@ -10,7 +10,7 @@ import {
   SubscriptionPlanName,
   SubscriptionPlanPrice,
   SubscriptionPlans,
-} from "@/registry/hirael/ui/subscription-plans"
+} from "@/registry/hirael/ui/subscription-plans";
 
 export default function SubscriptionPlansDemo() {
   return (
@@ -62,5 +62,5 @@ export default function SubscriptionPlansDemo() {
         <SubscriptionPlanAction disabled>Current plan</SubscriptionPlanAction>
       </SubscriptionPlan>
     </SubscriptionPlans>
-  )
+  );
 }

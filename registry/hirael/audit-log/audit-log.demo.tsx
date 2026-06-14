@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AuditLog,
@@ -10,7 +10,7 @@ import {
   AuditLogStatus,
   AuditLogTime,
   AuditLogTrigger,
-} from "@/registry/hirael/ui/audit-log"
+} from "@/registry/hirael/ui/audit-log";
 
 export default function AuditLogDemo() {
   return (
@@ -71,5 +71,5 @@ export default function AuditLogDemo() {
         </AuditLogItem>
       </AuditLog>
     </div>
-  )
+  );
 }

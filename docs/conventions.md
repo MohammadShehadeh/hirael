@@ -18,13 +18,16 @@ heading rather than starting a new doc.
   ```tsx
   export default async function Page({
     params,
-  }: { params: Promise<{ component: string }> }) {
-    const { component } = await params
+  }: {
+    params: Promise<{ component: string }>;
+  }) {
+    const { component } = await params;
   }
   ```
 
   The same applies to `generateMetadata`. Don't destructure `params`
   synchronously — that's the pre-15 shape.
+
 - **Static param sets are closed.** Dynamic routes use
   `export const dynamicParams = false` + `generateStaticParams()`, so only
   enumerated paths are built and anything else 404s. Add new items to the
@@ -93,7 +96,7 @@ heading rather than starting a new doc.
 - **Every browsable item sits under its category segment.** Components live at
   `/components/<category>/<name>`, blocks at `/blocks/<category>/<name>`.
   Templates stay flat (`/templates/<name>`) — there's a single template
-  category, so the collection *is* the group. Each tier also has a category
+  category, so the collection _is_ the group. Each tier also has a category
   listing page (`/components/<category>`, `/blocks/<category>`).
 - **Never hand-write item paths — call the helpers in `registry-meta.ts`.**
   `entryHref(entry)` gives the detail path, `entryEmbedHref(entry)` the framed
@@ -101,7 +104,7 @@ heading rather than starting a new doc.
   logic in one place, and live in data-only `registry-meta.ts` so the sidebar
   and command palette can import them without dragging block-illustration code
   into a client bundle.
-- **Component vs block slugs differ.** A component's category key *is* its slug
+- **Component vs block slugs differ.** A component's category key _is_ its slug
   (`inputs`, `pickers`, …). Block slugs come from `BLOCK_KIND_SLUGS`, which
   reads better in a path than the raw kind (`feature` → `features`, `login` →
   `auth`, `faq` → `faqs`). `BLOCK_KIND_BY_SLUG` is the reverse.

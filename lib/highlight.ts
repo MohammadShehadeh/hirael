@@ -7,10 +7,10 @@
  * globals.css picks the right one based on the `.light` mode class.
  */
 
-import type { BundledLanguage, Highlighter } from "shiki"
+import type { BundledLanguage, Highlighter } from "shiki";
 
-const DARK_THEME = "vesper"
-const LIGHT_THEME = "vitesse-light"
+const DARK_THEME = "vesper";
+const LIGHT_THEME = "vitesse-light";
 
 const SUPPORTED_LANGS: BundledLanguage[] = [
   "tsx",
@@ -23,64 +23,64 @@ const SUPPORTED_LANGS: BundledLanguage[] = [
   "json",
   "html",
   "md",
-]
+];
 
-let highlighterPromise: Promise<Highlighter> | undefined
+let highlighterPromise: Promise<Highlighter> | undefined;
 
 async function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
-    const { createHighlighter } = await import("shiki")
+    const { createHighlighter } = await import("shiki");
     highlighterPromise = createHighlighter({
       themes: [DARK_THEME, LIGHT_THEME],
       langs: SUPPORTED_LANGS,
-    })
+    });
   }
-  return highlighterPromise
+  return highlighterPromise;
 }
 
-export type HighlightLang = BundledLanguage | "plaintext"
+export type HighlightLang = BundledLanguage | "plaintext";
 
 export async function highlightCode(
   code: string,
-  lang: HighlightLang
+  lang: HighlightLang,
 ): Promise<string> {
   const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage)
     ? (lang as BundledLanguage)
-    : "tsx"
-  const hl = await getHighlighter()
+    : "tsx";
+  const hl = await getHighlighter();
   return hl.codeToHtml(code, {
     lang: safeLang,
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: "dark",
-  })
+  });
 }
 
 /** Infer a shiki lang from a filename. */
 export function langFromPath(filePath: string): HighlightLang {
-  const ext = filePath.split(".").pop()?.toLowerCase()
+  const ext = filePath.split(".").pop()?.toLowerCase();
   switch (ext) {
     case "tsx":
     case "jsx":
-      return "tsx"
+      return "tsx";
     case "ts":
-      return "ts"
+      return "ts";
     case "js":
     case "mjs":
     case "cjs":
-      return "js"
+      return "js";
     case "css":
-      return "css"
+      return "css";
     case "json":
-      return "json"
+      return "json";
     case "html":
-      return "html"
+      return "html";
     case "md":
     case "mdx":
-      return "md"
+      return "md";
     case "sh":
     case "bash":
-      return "bash"
+      return "bash";
     default:
-      return "tsx"
+      return "tsx";
   }
 }

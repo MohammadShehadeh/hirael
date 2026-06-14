@@ -105,19 +105,19 @@ so the history is scannable and ready for tooling. The format is:
 <optional footer(s)>
 ```
 
-| Type       | When to use                                                   |
-| ---------- | ------------------------------------------------------------- |
-| `feat`     | New component, block, prop, public surface area               |
-| `fix`      | Bug fix in a component, block, or the showcase site           |
-| `docs`     | README, CONTRIBUTING, comments, JSDoc                         |
-| `style`    | Formatting only — no behavior change                          |
-| `refactor` | Internal rework with no externally visible change             |
-| `perf`     | Performance improvement                                       |
-| `test`     | Adding or correcting tests                                    |
-| `build`    | Build pipeline, Tailwind config, `tsconfig`, deps             |
-| `ci`       | GitHub Actions and other CI                                   |
-| `chore`    | Maintenance with no production impact                         |
-| `revert`   | Revert a prior commit                                         |
+| Type       | When to use                                         |
+| ---------- | --------------------------------------------------- |
+| `feat`     | New component, block, prop, public surface area     |
+| `fix`      | Bug fix in a component, block, or the showcase site |
+| `docs`     | README, CONTRIBUTING, comments, JSDoc               |
+| `style`    | Formatting only — no behavior change                |
+| `refactor` | Internal rework with no externally visible change   |
+| `perf`     | Performance improvement                             |
+| `test`     | Adding or correcting tests                          |
+| `build`    | Build pipeline, Tailwind config, `tsconfig`, deps   |
+| `ci`       | GitHub Actions and other CI                         |
+| `chore`    | Maintenance with no production impact               |
+| `revert`   | Revert a prior commit                               |
 
 Scope is optional but encouraged — use the component or area name:
 
@@ -180,7 +180,7 @@ reformatting committed files.
   The alias is rewritten on install based on the consumer's
   `components.json`.
 - **Tokens.** Use `--background / --foreground / --border / --primary /
-  --accent` and the rest of the design tokens — never hard-code a
+--accent` and the rest of the design tokens — never hard-code a
   color. Light is a faithful inverse of dark; both must work.
 - **`cn` helper.** Compose class names with `cn(...)` from
   `@/lib/utils`. Don't ad-hoc-concatenate `className` strings.
@@ -219,7 +219,7 @@ For each new component:
 - [ ] All imports for shadcn primitives go through
       `@/registry/hirael/ui/*` (alias is rewritten on install).
 - [ ] Tokens reuse `--background / --foreground / --border /
-      --primary / --accent` and friends — never hard-code colors.
+  --primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
@@ -277,7 +277,7 @@ also expected to:
    [component contribution checklist](#component-contribution-checklist)**
    when adding a component.
 5. **Run the full build pipeline locally** — `pnpm lint && pnpm
-   typecheck && pnpm registry:build && pnpm build`.
+typecheck && pnpm registry:build && pnpm build`.
 6. **Open the PR** with:
    - a clear title in Conventional Commit format,
    - a short summary of the change and the motivation,

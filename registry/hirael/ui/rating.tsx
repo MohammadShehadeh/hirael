@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Star } from "lucide-react"
+import * as React from "react";
+import { Star } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type RatingProps = Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
 > & {
-  value?: number
-  defaultValue?: number
-  onValueChange?: (value: number) => void
-  max?: number
-  step?: 0.5 | 1
-  readOnly?: boolean
-  disabled?: boolean
-  size?: "sm" | "md" | "lg"
-  name?: string
-  "aria-label"?: string
-}
+  value?: number;
+  defaultValue?: number;
+  onValueChange?: (value: number) => void;
+  max?: number;
+  step?: 0.5 | 1;
+  readOnly?: boolean;
+  disabled?: boolean;
+  size?: "sm" | "md" | "lg";
+  name?: string;
+  "aria-label"?: string;
+};
 
 const sizeMap = {
   sm: "size-4",
   md: "size-5",
   lg: "size-6",
-} as const
+} as const;
 
 function Rating({
   value: valueProp,
@@ -40,21 +40,21 @@ function Rating({
   className,
   ...props
 }: RatingProps) {
-  const isControlled = valueProp !== undefined
-  const [internal, setInternal] = React.useState(defaultValue ?? 0)
-  const [hover, setHover] = React.useState<number | null>(null)
+  const isControlled = valueProp !== undefined;
+  const [internal, setInternal] = React.useState(defaultValue ?? 0);
+  const [hover, setHover] = React.useState<number | null>(null);
 
-  const value = isControlled ? (valueProp as number) : internal
-  const display = hover ?? value
+  const value = isControlled ? (valueProp as number) : internal;
+  const display = hover ?? value;
 
-  const interactive = !readOnly && !disabled
-  const iconSize = sizeMap[size]
+  const interactive = !readOnly && !disabled;
+  const iconSize = sizeMap[size];
 
   const commit = (next: number) => {
-    if (!interactive) return
-    if (!isControlled) setInternal(next)
-    onValueChange?.(next)
-  }
+    if (!interactive) return;
+    if (!isControlled) setInternal(next);
+    onValueChange?.(next);
+  };
 
   return (
     <div
@@ -66,29 +66,29 @@ function Rating({
       className={cn(
         "inline-flex items-center gap-0.5",
         disabled && "pointer-events-none opacity-50",
-        className
+        className,
       )}
       onMouseLeave={() => setHover(null)}
       {...props}
     >
       {Array.from({ length: max }).map((_, i) => {
-        const fullValue = i + 1
-        const halfValue = i + 0.5
-        const filled = display >= fullValue
-        const half = !filled && display >= halfValue
+        const fullValue = i + 1;
+        const halfValue = i + 0.5;
+        const filled = display >= fullValue;
+        const half = !filled && display >= halfValue;
 
         return (
           <span
             key={i}
             className={cn(
               "relative inline-flex",
-              interactive && "cursor-pointer"
+              interactive && "cursor-pointer",
             )}
           >
             <Star
               className={cn(
                 iconSize,
-                "text-muted-foreground/40 transition-colors"
+                "text-muted-foreground/40 transition-colors",
               )}
               aria-hidden
             />
@@ -97,7 +97,8 @@ function Rating({
                 className={cn(
                   iconSize,
                   "absolute inset-0 fill-yellow-400 text-yellow-400 transition-[clip-path]",
-                  half && "[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]"
+                  half &&
+                    "[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]",
                 )}
                 aria-hidden
               />
@@ -137,12 +138,12 @@ function Rating({
               />
             )}
           </span>
-        )
+        );
       })}
 
       {name && <input type="hidden" name={name} value={value} />}
     </div>
-  )
+  );
 }
 
-export { Rating }
+export { Rating };

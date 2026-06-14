@@ -1,27 +1,30 @@
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "@radix-ui/react-slot";
 
 import { cn } from "@/lib/utils";
 
-type AvatarStackProps = React.ComponentProps<"div"> & {
-  size?: "sm" | "md" | "lg";
-  spacing?: "tight" | "normal" | "loose";
-};
+const avatarStackVariants = cva("flex items-center", {
+  variants: {
+    size: {
+      sm: "[&>[data-slot='avatar-stack-item']]:size-6 [&>[data-slot='avatar-stack-item']]:text-[10px]",
+      md: "[&>[data-slot='avatar-stack-item']]:size-8 [&>[data-slot='avatar-stack-item']]:text-xs",
+      lg: "[&>[data-slot='avatar-stack-item']]:size-10 [&>[data-slot='avatar-stack-item']]:text-sm",
+    },
+    spacing: {
+      tight: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-3",
+      normal: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-2",
+      loose: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-1",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+    spacing: "normal",
+  },
+});
 
-const sizeClasses: Record<NonNullable<AvatarStackProps["size"]>, string> = {
-  sm: "[&>[data-slot='avatar-stack-item']]:size-6 [&>[data-slot='avatar-stack-item']]:text-[10px]",
-  md: "[&>[data-slot='avatar-stack-item']]:size-8 [&>[data-slot='avatar-stack-item']]:text-xs",
-  lg: "[&>[data-slot='avatar-stack-item']]:size-10 [&>[data-slot='avatar-stack-item']]:text-sm",
-};
-
-const spacingClasses: Record<
-  NonNullable<AvatarStackProps["spacing"]>,
-  string
-> = {
-  tight: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-3",
-  normal: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-2",
-  loose: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-1",
-};
+type AvatarStackProps = React.ComponentProps<"div"> &
+  VariantProps<typeof avatarStackVariants>;
 
 function AvatarStack({
   className,
@@ -33,12 +36,7 @@ function AvatarStack({
     <div
       data-slot="avatar-stack"
       data-size={size}
-      className={cn(
-        "flex items-center",
-        sizeClasses[size],
-        spacingClasses[spacing],
-        className,
-      )}
+      className={cn(avatarStackVariants({ size, spacing }), className)}
       {...props}
     />
   );

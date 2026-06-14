@@ -1,4 +1,5 @@
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
@@ -31,18 +32,28 @@ function TimelineItem({ className, ...props }: TimelineItemProps) {
   );
 }
 
-type TimelineDotProps = Omit<React.ComponentProps<"span">, "children"> & {
-  tone?: "default" | "muted" | "success" | "warning" | "danger";
-  children?: React.ReactNode;
-};
+const timelineDotVariants = cva(
+  "relative z-10 mt-1.5 inline-flex size-[15px] shrink-0 items-center justify-center rounded-full ring-2 ring-background",
+  {
+    variants: {
+      tone: {
+        default: "bg-foreground",
+        muted: "bg-muted-foreground",
+        success: "bg-success",
+        warning: "bg-warning",
+        danger: "bg-destructive",
+      },
+    },
+    defaultVariants: {
+      tone: "default",
+    },
+  },
+);
 
-const toneClasses: Record<NonNullable<TimelineDotProps["tone"]>, string> = {
-  default: "bg-foreground",
-  muted: "bg-muted-foreground",
-  success: "bg-success",
-  warning: "bg-warning",
-  danger: "bg-destructive",
-};
+type TimelineDotProps = Omit<React.ComponentProps<"span">, "children"> &
+  VariantProps<typeof timelineDotVariants> & {
+    children?: React.ReactNode;
+  };
 
 function TimelineDot({
   className,
@@ -69,11 +80,7 @@ function TimelineDot({
     <span
       data-slot="timeline-dot"
       data-tone={tone}
-      className={cn(
-        "relative z-10 mt-1.5 inline-flex size-[15px] shrink-0 items-center justify-center rounded-full ring-2 ring-background",
-        toneClasses[tone],
-        className,
-      )}
+      className={cn(timelineDotVariants({ tone }), className)}
       {...props}
     />
   );

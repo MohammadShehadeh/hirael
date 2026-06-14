@@ -278,7 +278,9 @@
       "categories": [
         "data"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -1070,7 +1072,8 @@
         "data"
       ],
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@radix-ui/react-slot",
+        "class-variance-authority"
       ],
       "registryDependencies": [],
       "files": [
@@ -1090,6 +1093,7 @@
         "display"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react"
       ],
       "registryDependencies": [],
@@ -1555,7 +1559,9 @@
       "categories": [
         "display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -2047,6 +2053,7 @@
         "data"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react"
       ],
       "registryDependencies": [],

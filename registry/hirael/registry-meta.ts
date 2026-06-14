@@ -188,7 +188,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "data",
     sourceFiles: ["registry/hirael/ui/timeline.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["class-variance-authority"],
   },
   {
     name: "kbd",
@@ -654,7 +654,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "data",
     sourceFiles: ["registry/hirael/ui/avatar-stack.tsx"],
     registryDependencies: [],
-    dependencies: ["@radix-ui/react-slot"],
+    dependencies: ["@radix-ui/react-slot", "class-variance-authority"],
   },
   {
     name: "announcement-bar",
@@ -664,7 +664,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     sourceFiles: ["registry/hirael/ui/announcement-bar.tsx"],
     registryDependencies: [],
-    dependencies: ["lucide-react"],
+    dependencies: ["lucide-react", "class-variance-authority"],
   },
   {
     name: "empty-state",
@@ -939,7 +939,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     sourceFiles: ["registry/hirael/ui/spinner.tsx"],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["class-variance-authority"],
   },
   {
     name: "copy-button",
@@ -1179,7 +1179,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "data",
     sourceFiles: ["registry/hirael/ui/audit-log.tsx"],
     registryDependencies: [],
-    dependencies: ["lucide-react"],
+    dependencies: ["lucide-react", "class-variance-authority"],
   },
   {
     name: "blur-reveal",

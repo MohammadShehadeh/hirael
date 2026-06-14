@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -161,18 +162,25 @@ function AuditLogTime({ className, ...props }: AuditLogTimeProps) {
   );
 }
 
-type AuditLogStatusTone = "default" | "success" | "warning" | "danger";
+const auditLogStatusVariants = cva(
+  "inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 font-mono text-[10px] uppercase leading-none tracking-[0.08em]",
+  {
+    variants: {
+      tone: {
+        default: "border-border text-muted-foreground",
+        success: "border-success/30 text-success",
+        warning: "border-warning/30 text-warning",
+        danger: "border-destructive/30 text-destructive",
+      },
+    },
+    defaultVariants: {
+      tone: "default",
+    },
+  },
+);
 
-type AuditLogStatusProps = React.ComponentProps<"span"> & {
-  tone?: AuditLogStatusTone;
-};
-
-const statusToneClasses: Record<AuditLogStatusTone, string> = {
-  default: "border-border text-muted-foreground",
-  success: "border-success/30 text-success",
-  warning: "border-warning/30 text-warning",
-  danger: "border-destructive/30 text-destructive",
-};
+type AuditLogStatusProps = React.ComponentProps<"span"> &
+  VariantProps<typeof auditLogStatusVariants>;
 
 function AuditLogStatus({
   tone = "default",
@@ -183,11 +191,7 @@ function AuditLogStatus({
     <span
       data-slot="audit-log-status"
       data-tone={tone}
-      className={cn(
-        "inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 font-mono text-[10px] uppercase leading-none tracking-[0.08em]",
-        statusToneClasses[tone],
-        className,
-      )}
+      className={cn(auditLogStatusVariants({ tone }), className)}
       {...props}
     />
   );

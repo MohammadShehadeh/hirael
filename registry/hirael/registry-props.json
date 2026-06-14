@@ -1445,7 +1445,7 @@
       "props": [
         {
           "name": "tone",
-          "type": "\"default\" | \"muted\" | \"success\" | \"warning\" | \"danger\"",
+          "type": "\"default\" | \"muted\" | \"success\" | \"warning\" | \"danger\" | null",
           "required": false,
           "default": "\"default\"",
           "description": null
@@ -1899,14 +1899,14 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"md\" | \"lg\"",
+          "type": "\"sm\" | \"md\" | \"lg\" | null",
           "required": false,
           "default": "\"md\"",
           "description": null
         },
         {
           "name": "spacing",
-          "type": "\"tight\" | \"normal\" | \"loose\"",
+          "type": "\"tight\" | \"normal\" | \"loose\" | null",
           "required": false,
           "default": "\"normal\"",
           "description": null
@@ -1996,7 +1996,7 @@
       "props": [
         {
           "name": "tone",
-          "type": "\"default\" | \"muted\" | \"primary\"",
+          "type": "\"default\" | \"muted\" | \"primary\" | null",
           "required": false,
           "default": "\"default\"",
           "description": null
@@ -2075,17 +2075,17 @@
       "name": "Spinner",
       "props": [
         {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\" | null",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
+        },
+        {
           "name": "variant",
           "type": "\"circle\" | \"dots\" | \"bars\"",
           "required": false,
           "default": "\"circle\"",
-          "description": null
-        },
-        {
-          "name": "size",
-          "type": "\"sm\" | \"md\" | \"lg\"",
-          "required": false,
-          "default": "\"md\"",
           "description": null
         },
         {
@@ -4471,7 +4471,7 @@
       "props": [
         {
           "name": "tone",
-          "type": "AuditLogStatusTone",
+          "type": "\"default\" | \"success\" | \"warning\" | \"danger\" | null",
           "required": false,
           "default": "\"default\"",
           "description": null

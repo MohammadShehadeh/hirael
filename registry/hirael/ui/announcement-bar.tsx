@@ -1,26 +1,37 @@
 "use client";
 
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type AnnouncementBarProps = React.ComponentProps<"div"> & {
-  tone?: "default" | "primary" | "muted";
-  dismissible?: boolean;
-  /** Controlled-open. If provided, internal state is bypassed. */
-  open?: boolean;
-  /** Fires when the user dismisses via the close button. */
-  onDismiss?: () => void;
-  /** localStorage key. When set, the dismissed state is persisted across reloads. */
-  storageKey?: string;
-};
+type AnnouncementBarProps = React.ComponentProps<"div"> &
+  VariantProps<typeof announcementBarVariants> & {
+    dismissible?: boolean;
+    /** Controlled-open. If provided, internal state is bypassed. */
+    open?: boolean;
+    /** Fires when the user dismisses via the close button. */
+    onDismiss?: () => void;
+    /** localStorage key. When set, the dismissed state is persisted across reloads. */
+    storageKey?: string;
+  };
 
-const toneClasses: Record<NonNullable<AnnouncementBarProps["tone"]>, string> = {
-  default: "border-border bg-card text-card-foreground",
-  primary: "border-foreground/15 bg-foreground text-background",
-  muted: "border-border bg-muted text-foreground",
-};
+const announcementBarVariants = cva(
+  "relative isolate flex w-full items-center justify-center gap-3 border-b px-4 py-2 text-sm",
+  {
+    variants: {
+      tone: {
+        default: "border-border bg-card text-card-foreground",
+        primary: "border-foreground/15 bg-foreground text-background",
+        muted: "border-border bg-muted text-foreground",
+      },
+    },
+    defaultVariants: {
+      tone: "default",
+    },
+  },
+);
 
 const noopUnsubscribe = () => () => {};
 
@@ -88,11 +99,7 @@ function AnnouncementBar({
       aria-label="Site announcement"
       data-slot="announcement-bar"
       data-tone={tone}
-      className={cn(
-        "relative isolate flex w-full items-center justify-center gap-3 border-b px-4 py-2 text-sm",
-        toneClasses[tone],
-        className,
-      )}
+      className={cn(announcementBarVariants({ tone }), className)}
       {...props}
     >
       <div className="flex flex-1 items-center justify-center gap-2 text-center">

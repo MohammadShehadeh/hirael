@@ -5804,6 +5804,242 @@
       "extendsNative": false
     }
   ],
+  "portfolio": [
+    {
+      "name": "LoadingScreen",
+      "props": [
+        {
+          "name": "onComplete",
+          "type": "() => void",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [
+        {
+          "name": "start",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "SelectedWorks",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Journal",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Explorations",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Stats",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Contact",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "HlsVideo",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ArrowUpRight",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ArrowRight",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "RingLink",
+      "props": [
+        {
+          "name": "href",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "outerClassName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "innerClassName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ViewAllButton",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "SectionHeader",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "lead",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "accent",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "trailing",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "viewAll",
+          "type": "{ label: string; href: string; }",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    }
+  ],
   "usd-halo": [
     {
       "name": "Navbar",

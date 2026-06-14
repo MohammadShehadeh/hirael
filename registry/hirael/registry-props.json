@@ -5798,5 +5798,191 @@
       "props": [],
       "extendsNative": false
     }
+  ],
+  "mindloop": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Search",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Mission",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Solution",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Cta",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Serif",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Logo",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\"",
+          "required": false,
+          "default": "\"sm\"",
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "InstagramIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "LinkedinIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TwitterIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "ChatGptIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "PerplexityIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "GoogleAiIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Avatar",
+      "props": [
+        {
+          "name": "tone",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "AvatarRow",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "MindloopStyles",
+      "props": [],
+      "extendsNative": false
+    }
   ]
 }

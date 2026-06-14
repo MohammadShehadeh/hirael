@@ -1382,6 +1382,41 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["shaders", "lucide-react"],
   },
+  {
+    name: "mindloop",
+    title: "Mindloop",
+    description:
+      "Dark, monochrome newsletter landing page: a full-screen video hero with an inline subscribe form, an answer-engine section, scroll-revealed mission copy, a four-up feature grid and a streaming-video call to action. Framer Motion throughout, with a self-contained pure-black palette and liquid-glass accents.",
+    category: "templates",
+    sourceFiles: [
+      "registry/hirael/templates/mindloop/mindloop.tsx",
+      "registry/hirael/templates/mindloop/navbar.tsx",
+      "registry/hirael/templates/mindloop/hero.tsx",
+      "registry/hirael/templates/mindloop/search.tsx",
+      "registry/hirael/templates/mindloop/mission.tsx",
+      "registry/hirael/templates/mindloop/solution.tsx",
+      "registry/hirael/templates/mindloop/cta.tsx",
+      "registry/hirael/templates/mindloop/footer.tsx",
+      "registry/hirael/templates/mindloop/primitives.tsx",
+      "registry/hirael/templates/mindloop/styles.tsx",
+      "registry/hirael/templates/mindloop/fonts.ts",
+    ],
+    installTargets: [
+      "components/templates/mindloop/mindloop.tsx",
+      "components/templates/mindloop/navbar.tsx",
+      "components/templates/mindloop/hero.tsx",
+      "components/templates/mindloop/search.tsx",
+      "components/templates/mindloop/mission.tsx",
+      "components/templates/mindloop/solution.tsx",
+      "components/templates/mindloop/cta.tsx",
+      "components/templates/mindloop/footer.tsx",
+      "components/templates/mindloop/primitives.tsx",
+      "components/templates/mindloop/styles.tsx",
+      "components/templates/mindloop/fonts.ts",
+    ],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "hls.js"],
+  },
 ]
 
 /**

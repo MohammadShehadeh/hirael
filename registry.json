@@ -2474,6 +2474,77 @@
       ]
     },
     {
+      "name": "mindloop",
+      "type": "registry:block",
+      "title": "Mindloop",
+      "description": "Dark, monochrome newsletter landing page: a full-screen video hero with an inline subscribe form, an answer-engine section, scroll-revealed mission copy, a four-up feature grid and a streaming-video call to action. Framer Motion throughout, with a self-contained pure-black palette and liquid-glass accents.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "hls.js"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/mindloop/mindloop.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/mindloop.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/search.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/search.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/mission.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/mission.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/solution.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/solution.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/cta.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/cta.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/mindloop/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/mindloop/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

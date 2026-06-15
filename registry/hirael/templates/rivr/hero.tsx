@@ -142,7 +142,7 @@ export function Hero() {
         <div className="relative z-10 flex size-full flex-col items-center">
           <Navbar />
 
-          <div className="flex w-full max-w-4xl flex-col items-center px-6 pt-8 text-center md:pt-12">
+          <div className="flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 pb-16 text-center">
             <HeroBadge />
 
             <motion.h1

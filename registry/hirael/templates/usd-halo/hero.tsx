@@ -115,7 +115,7 @@ export function HeroSection() {
 
           <PillButton label="Join us" large />
 
-          <div className="mt-24 w-full max-w-md overflow-hidden">
+          <div className="mt-auto w-full max-w-md overflow-hidden pt-24">
             <Marquee
               brands={HERO_BRANDS}
               trackClass="marquee-track"

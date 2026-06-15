@@ -123,10 +123,7 @@ function LanguageSwitcher({
     defaultOpen,
     onOpenChange,
   );
-  const active = React.useMemo(
-    () => languages.find((language) => language.value === value),
-    [languages, value],
-  );
+  const active = languages.find((language) => language.value === value);
 
   const context = React.useMemo<LanguageSwitcherContextValue>(
     () => ({ value, setValue, active, languages, open, setOpen, disabled }),
@@ -213,15 +210,7 @@ function LanguageSwitcherContent({
   emptyMessage?: string;
 }) {
   const { languages } = useLanguageSwitcher();
-  const groups = React.useMemo(() => {
-    const buckets = new Map<string | undefined, Language[]>();
-    for (const language of languages) {
-      const bucket = buckets.get(language.group) ?? [];
-      bucket.push(language);
-      buckets.set(language.group, bucket);
-    }
-    return [...buckets];
-  }, [languages]);
+  const groups = useGroupedLanguages(languages);
 
   return (
     <PopoverContent
@@ -294,6 +283,19 @@ function LanguageSwitcherItem({
       {selected && <Check className="size-4 text-foreground" strokeWidth={3} />}
     </CommandItem>
   );
+}
+
+/** Bucket languages by their `group`, preserving first-seen order. */
+function useGroupedLanguages(languages: Language[]) {
+  return React.useMemo(() => {
+    const groups = new Map<string | undefined, Language[]>();
+    for (const language of languages) {
+      const bucket = groups.get(language.group) ?? [];
+      bucket.push(language);
+      groups.set(language.group, bucket);
+    }
+    return [...groups];
+  }, [languages]);
 }
 
 export {

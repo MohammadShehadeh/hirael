@@ -138,10 +138,7 @@ function TenantSwitcher({
     defaultOpen,
     onOpenChange,
   );
-  const active = React.useMemo(
-    () => tenants.find((tenant) => tenant.value === value),
-    [tenants, value],
-  );
+  const active = tenants.find((tenant) => tenant.value === value);
 
   const context = React.useMemo<TenantSwitcherContextValue>(
     () => ({ value, setValue, active, tenants, open, setOpen, disabled }),
@@ -228,7 +225,7 @@ function TenantSwitcherContent({
   footer?: React.ReactNode;
 }) {
   const { tenants } = useTenantSwitcher();
-  const groups = useGroupedByLabel(tenants);
+  const groups = useGroupedTenants(tenants);
 
   return (
     <PopoverContent
@@ -332,8 +329,8 @@ function TenantSwitcherCreate({
   );
 }
 
-/** Bucket items by their `group`, preserving first-seen order. */
-function useGroupedByLabel(tenants: Tenant[]) {
+/** Bucket tenants by their `group`, preserving first-seen order. */
+function useGroupedTenants(tenants: Tenant[]) {
   return React.useMemo(() => {
     const groups = new Map<string | undefined, Tenant[]>();
     for (const tenant of tenants) {

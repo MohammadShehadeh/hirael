@@ -4,6 +4,11 @@ import * as React from "react";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/registry/hirael/ui/collapsible";
 
 type InspectorPanelProps = React.ComponentProps<"aside">;
 
@@ -68,39 +73,24 @@ function InspectorPanelSection({
   children,
   ...props
 }: InspectorPanelSectionProps) {
-  const [open, setOpen] = React.useState(defaultOpen);
-  const reactId = React.useId();
   return (
-    <div
+    <Collapsible
+      defaultOpen={defaultOpen}
       data-slot="inspector-panel-section"
-      data-state={open ? "open" : "closed"}
       className={cn("border-b border-border last:border-b-0", className)}
       {...props}
     >
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={reactId}
-        onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-      >
+      <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
         <span className="text-xs font-medium text-foreground">{title}</span>
         <ChevronDown
           aria-hidden
-          className={cn(
-            "size-3.5 text-muted-foreground transition-transform duration-200",
-            open && "rotate-180",
-          )}
+          className="size-3.5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
         />
-      </button>
-      <div
-        id={reactId}
-        hidden={!open}
-        className="flex flex-col gap-2 px-3 pb-3 pt-1"
-      >
+      </CollapsibleTrigger>
+      <CollapsibleContent className="flex flex-col gap-2 px-3 pb-3 pt-1">
         {children}
-      </div>
-    </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
 

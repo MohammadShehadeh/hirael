@@ -122,7 +122,7 @@ export function Hero() {
     <section
       id="home"
       data-slot="hero"
-      className="flex min-h-dvh w-full items-stretch bg-background p-3 md:p-5"
+      className="flex min-h-dvh w-full items-stretch justify-center bg-background p-3 md:p-5"
     >
       <div className="group relative flex min-h-[640px] w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] md:rounded-[3rem]">
         <video
@@ -142,7 +142,7 @@ export function Hero() {
         <div className="relative z-10 flex size-full flex-col items-center">
           <Navbar />
 
-          <div className="flex w-full max-w-4xl flex-col items-center px-6 pt-8 text-center md:pt-12">
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
             <HeroBadge />
 
             <motion.h1

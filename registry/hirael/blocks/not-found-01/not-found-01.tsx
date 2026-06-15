@@ -59,7 +59,7 @@ export default function NotFound01() {
                         {s.description}
                       </span>
                     </div>
-                    <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:opacity-100" />
+                    <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:opacity-100 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                   </a>
                 </li>
               ))}

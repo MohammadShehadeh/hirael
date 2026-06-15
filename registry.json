@@ -100,17 +100,16 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable single-select with debounced async loader, group headings and clearable selection.",
+      "description": "Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.",
       "categories": [
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
+        "@base-ui/react",
         "lucide-react"
       ],
       "registryDependencies": [
-        "command",
-        "popover"
+        "input-group"
       ],
       "files": [
         {
@@ -1602,7 +1601,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "collapsible"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/tree-view.tsx",
@@ -2038,7 +2039,9 @@
         "class-variance-authority",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "collapsible"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/audit-log.tsx",
@@ -2314,12 +2317,38 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "collapsible"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/inspector-panel.tsx",
           "type": "registry:ui",
           "target": "components/ui/inspector-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tenant-switcher",
+      "type": "registry:ui",
+      "title": "Tenant Switcher",
+      "description": "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/tenant-switcher.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tenant-switcher.tsx"
         }
       ]
     },

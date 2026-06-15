@@ -91,6 +91,10 @@ export function HeroSection() {
           aria-hidden
           className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/10"
         />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/85 via-white/40 to-transparent"
+        />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">
           <h1
@@ -115,13 +119,13 @@ export function HeroSection() {
 
           <PillButton label="Join us" large />
 
-          <div className="mt-24 w-full max-w-md overflow-hidden">
+          <div className="mt-auto w-full max-w-md overflow-hidden pt-24">
             <Marquee
               brands={HERO_BRANDS}
               trackClass="marquee-track"
               keyframesName="marquee"
               durationSeconds={22}
-              itemClass="mx-7 shrink-0 whitespace-nowrap text-black/60"
+              itemClass="mx-7 shrink-0 whitespace-nowrap text-black/80"
             />
           </div>
         </div>

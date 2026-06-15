@@ -163,6 +163,8 @@ const DEMO_LOADERS: Record<
     import("@/registry/hirael/resizable-panels/resizable-panels.demo"),
   "inspector-panel": () =>
     import("@/registry/hirael/inspector-panel/inspector-panel.demo"),
+  "tenant-switcher": () =>
+    import("@/registry/hirael/tenant-switcher/tenant-switcher.demo"),
   "kpi-grid": () => import("@/registry/hirael/kpi-grid/kpi-grid.demo"),
   "quick-actions": () =>
     import("@/registry/hirael/quick-actions/quick-actions.demo"),

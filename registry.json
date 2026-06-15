@@ -2324,6 +2324,54 @@
       ]
     },
     {
+      "name": "tenant-switcher",
+      "type": "registry:ui",
+      "title": "Tenant Switcher",
+      "description": "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/tenant-switcher.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tenant-switcher.tsx"
+        }
+      ]
+    },
+    {
+      "name": "language-switcher",
+      "type": "registry:ui",
+      "title": "Language Switcher",
+      "description": "Locale switcher with a code chip, native and translated names, search and a current-language check. Full or icon-only trigger. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "command",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/language-switcher.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/language-switcher.tsx"
+        }
+      ]
+    },
+    {
       "name": "kpi-grid",
       "type": "registry:ui",
       "title": "KPI Grid",

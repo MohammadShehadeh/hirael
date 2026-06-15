@@ -412,6 +412,11 @@
       "permanent": true
     },
     {
+      "source": "/components/language-switcher",
+      "destination": "/components/navigation/language-switcher",
+      "permanent": true
+    },
+    {
       "source": "/components/lazy-select",
       "destination": "/components/inputs/lazy-select",
       "permanent": true
@@ -554,6 +559,11 @@
     {
       "source": "/components/tag-input",
       "destination": "/components/inputs/tag-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/tenant-switcher",
+      "destination": "/components/navigation/tenant-switcher",
       "permanent": true
     },
     {

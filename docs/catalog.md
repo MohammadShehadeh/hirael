@@ -8,7 +8,7 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **69 registry UI items** (68 standalone
+pages). As of the last update: **71 registry UI items** (70 standalone
 components + 1 distribution-only primitive), **42 section blocks**, and
 **8 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -102,18 +102,20 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `scroll-progress`  | —                                | Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.                                                     |
 | `spinner`          | —                                | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label.         |
 
-#### Navigation (8)
+#### Navigation (10)
 
-| Component                | Registry deps | What it is                                                                                                                                        |
-| ------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dock`                   | —             | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.    |
-| `floating-action-button` | —             | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.                  |
-| `floating-toolbar`       | —             | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels.                                          |
-| `inspector-panel`        | —             | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.                  |
-| `resizable-panels`       | —             | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups.     |
-| `split-view`             | —             | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation.                   |
-| `stepper`                | —             | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API. |
-| `tour`                   | `button`      | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.                  |
+| Component                | Registry deps        | What it is                                                                                                                                         |
+| ------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tenant-switcher`        | `popover`, `command` | Workspace / organization / project switcher for multi-tenant apps: logo or initials, plan or role caption, grouped searchable list, create action. |
+| `language-switcher`      | `popover`, `command` | Locale switcher with a code chip, native and translated names, search, current-language check, and a full or icon-only trigger.                    |
+| `dock`                   | —                    | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.     |
+| `floating-action-button` | —                    | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.                   |
+| `floating-toolbar`       | —                    | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels.                                           |
+| `inspector-panel`        | —                    | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.                   |
+| `resizable-panels`       | —                    | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups.      |
+| `split-view`             | —                    | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation.                    |
+| `stepper`                | —                    | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.  |
+| `tour`                   | `button`             | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.                   |
 
 #### Animation (8)
 

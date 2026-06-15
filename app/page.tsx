@@ -102,7 +102,7 @@ function Hero() {
 
         <h1
           style={{ animationDelay: "80ms", animationFillMode: "both" }}
-          className={`text-display text-balance text-6xl italic leading-[0.85] tracking-[-0.025em] sm:text-7xl lg:text-[7rem] ${rise}`}
+          className={`text-display text-balance text-[clamp(2.5rem,11vw,7rem)] italic leading-[0.9] tracking-[-0.025em] sm:leading-[0.85] ${rise}`}
         >
           The components
           <br className="hidden sm:block" /> shadcn/ui doesn&apos;t ship.

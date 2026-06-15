@@ -5047,6 +5047,330 @@
       "extendsNative": true
     }
   ],
+  "tenant-switcher": [
+    {
+      "name": "TenantSwitcher",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tenants",
+          "type": "Tenant[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSearchChange",
+          "type": "((search: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TenantSwitcherTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select workspace\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Find workspace…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"No workspaces found.\"",
+          "description": null
+        },
+        {
+          "name": "footer",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherItem",
+      "props": [
+        {
+          "name": "tenant",
+          "type": "Tenant",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherCreate",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Create workspace\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "language-switcher": [
+    {
+      "name": "LanguageSwitcher",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "languages",
+          "type": "Language[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onSearchChange",
+          "type": "((search: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "LanguageSwitcherTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Language\"",
+          "description": null
+        },
+        {
+          "name": "iconOnly",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Hide the text label and show only the globe and code."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LanguageSwitcherContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search languages…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"No languages found.\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LanguageSwitcherItem",
+      "props": [
+        {
+          "name": "language",
+          "type": "Language",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
   "kpi-grid": [
     {
       "name": "KpiGrid",

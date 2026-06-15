@@ -1312,6 +1312,26 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "tenant-switcher",
+    title: "Tenant Switcher",
+    description:
+      "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/tenant-switcher.tsx"],
+    registryDependencies: ["popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
+  },
+  {
+    name: "language-switcher",
+    title: "Language Switcher",
+    description:
+      "Locale switcher with a code chip, native and translated names, search and a current-language check. Full or icon-only trigger. Compound API.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/language-switcher.tsx"],
+    registryDependencies: ["popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
+  },
+  {
     name: "kpi-grid",
     title: "KPI Grid",
     description:

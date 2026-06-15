@@ -37,7 +37,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 
 | Component        | Registry deps                            | What it is                                                                                                                                                        |
 | ---------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `combobox`       | `command`, `popover`                     | Searchable single-select with debounced async loader, group headings and clearable selection.                                                                     |
+| `combobox`       | `input-group`                            | Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.                                       |
 | `currency-input` | `input-group`                            | Locale-aware grouping with currency-symbol prefix and configurable decimal precision.                                                                             |
 | `inline-edit`    | `button`, `input`, `spinner`, `textarea` | Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.                                                  |
 | `lazy-select`    | `command`, `popover`                     | Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook. |

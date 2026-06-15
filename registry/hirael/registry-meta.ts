@@ -104,11 +104,11 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "combobox",
     title: "Combobox",
     description:
-      "Searchable single-select with debounced async loader, group headings and clearable selection.",
+      "Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/combobox.tsx"],
-    registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    registryDependencies: ["input-group"],
+    dependencies: ["@base-ui/react", "lucide-react"],
   },
   {
     name: "lazy-select",

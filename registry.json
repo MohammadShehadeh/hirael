@@ -100,17 +100,16 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable single-select with debounced async loader, group headings and clearable selection.",
+      "description": "Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.",
       "categories": [
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
+        "@base-ui/react",
         "lucide-react"
       ],
       "registryDependencies": [
-        "command",
-        "popover"
+        "input-group"
       ],
       "files": [
         {

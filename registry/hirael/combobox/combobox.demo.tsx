@@ -1,92 +1,127 @@
 "use client";
 
 import * as React from "react";
+import { GlobeIcon } from "lucide-react";
 
 import { Label } from "@/registry/hirael/ui/label";
+import { InputGroupAddon } from "@/registry/hirael/ui/input-group";
 import {
   Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxCollection,
   ComboboxContent,
-  ComboboxTrigger,
-  useAsyncComboboxOptions,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
 } from "@/registry/hirael/ui/combobox";
 
 const FRAMEWORKS = [
-  { value: "next", label: "Next.js", group: "React" },
-  { value: "remix", label: "Remix", group: "React" },
-  { value: "astro", label: "Astro", group: "Hybrid" },
-  { value: "nuxt", label: "Nuxt", group: "Vue" },
-  { value: "sveltekit", label: "SvelteKit", group: "Svelte" },
-  { value: "solid-start", label: "SolidStart", group: "Solid" },
-  { value: "tanstack-start", label: "TanStack Start", group: "React" },
+  "Next.js",
+  "SvelteKit",
+  "Nuxt.js",
+  "Remix",
+  "Astro",
+  "Gatsby",
 ];
 
-type Pkg = { name: string; description: string };
-async function fakeSearchPackages(q: string): Promise<Pkg[]> {
-  await new Promise((r) => setTimeout(r, 250));
-  const all: Pkg[] = [
-    { name: "react", description: "A JS library for UIs" },
-    { name: "react-dom", description: "Renderer for the DOM" },
-    { name: "react-router", description: "Declarative routing" },
-    { name: "zod", description: "TypeScript-first schemas" },
-    { name: "next", description: "The React framework" },
-    { name: "tailwindcss", description: "Utility-first CSS" },
-    { name: "shadcn", description: "Build your own component library" },
-    { name: "lucide-react", description: "Icon set" },
-  ];
-  if (!q) return all.slice(0, 5);
-  return all.filter((p) =>
-    `${p.name} ${p.description}`.toLowerCase().includes(q.toLowerCase()),
-  );
-}
+const TIMEZONES = [
+  {
+    value: "Americas",
+    items: ["(GMT-5) New York", "(GMT-8) Los Angeles", "(GMT-3) São Paulo"],
+  },
+  {
+    value: "Europe",
+    items: ["(GMT+0) London", "(GMT+1) Paris", "(GMT+1) Berlin"],
+  },
+  {
+    value: "Asia/Pacific",
+    items: ["(GMT+9) Tokyo", "(GMT+4) Dubai", "(GMT+11) Sydney"],
+  },
+];
 
 export default function ComboboxDemo() {
-  const [staticValue, setStaticValue] = React.useState<string | undefined>(
-    "next",
-  );
-  const [asyncValue, setAsyncValue] = React.useState<string | undefined>();
-
-  const mapPkg = React.useCallback(
-    (p: Pkg) => ({ value: p.name, label: p.name, group: "npm" }),
-    [],
-  );
-  const { setQuery, options, loading } = useAsyncComboboxOptions(
-    fakeSearchPackages,
-    mapPkg,
-  );
+  const anchor = useComboboxAnchor();
 
   return (
-    <div className="grid w-full max-w-md gap-8">
+    <div className="grid w-full max-w-xs gap-8">
       <div className="grid gap-2">
-        <Label>Static options</Label>
-        <Combobox
-          options={FRAMEWORKS}
-          value={staticValue}
-          onValueChange={setStaticValue}
-        >
-          <ComboboxTrigger placeholder="Pick a framework" />
-          <ComboboxContent />
+        <Label>Single with clear</Label>
+        <Combobox items={FRAMEWORKS} defaultValue="Next.js">
+          <ComboboxInput placeholder="Select a framework" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+            <ComboboxList>
+              {(item: string) => (
+                <ComboboxItem key={item} value={item}>
+                  {item}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
         </Combobox>
       </div>
 
       <div className="grid gap-2">
-        <Label>Async loader (250ms simulated)</Label>
-        <Combobox
-          value={asyncValue}
-          onValueChange={setAsyncValue}
-          options={options}
-          loading={loading}
-          onSearchChange={setQuery}
-          externalFilter
-        >
-          <ComboboxTrigger placeholder="Search npm packages…" />
-          <ComboboxContent
-            searchPlaceholder="Type to query…"
-            emptyMessage="No packages match."
-          />
+        <Label>Grouped with an addon</Label>
+        <Combobox items={TIMEZONES}>
+          <ComboboxInput placeholder="Select a timezone">
+            <InputGroupAddon>
+              <GlobeIcon />
+            </InputGroupAddon>
+          </ComboboxInput>
+          <ComboboxContent>
+            <ComboboxEmpty>No timezones found.</ComboboxEmpty>
+            <ComboboxList>
+              {(group: (typeof TIMEZONES)[number]) => (
+                <ComboboxGroup key={group.value} items={group.items}>
+                  <ComboboxLabel>{group.value}</ComboboxLabel>
+                  <ComboboxCollection>
+                    {(item: string) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxCollection>
+                </ComboboxGroup>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
         </Combobox>
-        <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          value = {asyncValue ? `"${asyncValue}"` : "-"}
-        </p>
+      </div>
+
+      <div className="grid gap-2">
+        <Label>Multiple</Label>
+        <Combobox multiple items={FRAMEWORKS} defaultValue={["Next.js"]}>
+          <ComboboxChips ref={anchor}>
+            <ComboboxValue>
+              {(values: string[]) => (
+                <>
+                  {values.map((value) => (
+                    <ComboboxChip key={value}>{value}</ComboboxChip>
+                  ))}
+                  <ComboboxChipsInput placeholder="Add framework…" />
+                </>
+              )}
+            </ComboboxValue>
+          </ComboboxChips>
+          <ComboboxContent anchor={anchor}>
+            <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+            <ComboboxList>
+              {(item: string) => (
+                <ComboboxItem key={item} value={item}>
+                  {item}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
       </div>
     </div>
   );

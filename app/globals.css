@@ -181,13 +181,7 @@ html.light .shiki span {
     border-color: var(--border);
     outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
-  html {
-    color-scheme: dark;
-    scroll-behavior: smooth;
-  }
-  html.light {
-    color-scheme: light;
-  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -198,23 +192,7 @@ html.light .shiki span {
     text-rendering: optimizeLegibility;
     position: relative;
   }
-  /* Site-wide noise grain — kills the flat-canvas feel without
-   * announcing itself. ~2% opacity, tiled SVG turbulence. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 180px 180px;
-    opacity: 0.025;
-    mix-blend-mode: overlay;
-  }
-  html.light body::before {
-    opacity: 0.018;
-    mix-blend-mode: multiply;
-  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;

@@ -90,7 +90,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className="scroll-smooth antialiased"
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{ __html: themePrehydrationScript() }}

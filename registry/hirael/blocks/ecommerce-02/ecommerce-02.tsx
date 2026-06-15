@@ -317,7 +317,7 @@ export default function Ecommerce02() {
 
                 <Button className="mt-1 w-full">
                   Checkout · {usd(total)}
-                  <ArrowRight className="size-4" />
+                  <ArrowRight className="size-4 rtl:rotate-180" />
                 </Button>
                 <p className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                   Free returns · 2-year warranty · secure checkout

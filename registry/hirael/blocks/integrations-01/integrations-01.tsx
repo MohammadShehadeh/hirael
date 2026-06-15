@@ -109,7 +109,7 @@ export default function Integrations01() {
             >
               <a href="#">
                 Browse all 40+ integrations
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </a>
             </Button>
           </div>

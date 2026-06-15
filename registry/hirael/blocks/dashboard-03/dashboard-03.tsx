@@ -278,7 +278,7 @@ export default function Dashboard03() {
                 disabled={monthIndex === 0}
                 aria-label="Previous month"
               >
-                <ChevronLeft className="size-3.5" />
+                <ChevronLeft className="size-3.5 rtl:rotate-180" />
               </Button>
               <span className="w-32 text-center font-mono text-xs tabular-nums">
                 {month.label}
@@ -293,7 +293,7 @@ export default function Dashboard03() {
                 disabled={monthIndex === MONTHS.length - 1}
                 aria-label="Next month"
               >
-                <ChevronRight className="size-3.5" />
+                <ChevronRight className="size-3.5 rtl:rotate-180" />
               </Button>
             </div>
             <Button variant="outline" size="sm">
@@ -450,12 +450,12 @@ export default function Dashboard03() {
                 </span>
                 <div className="flex items-center gap-1">
                   <Button variant="ghost" size="sm" disabled>
-                    <ChevronLeft className="size-3.5" />
+                    <ChevronLeft className="size-3.5 rtl:rotate-180" />
                     Prev
                   </Button>
                   <Button variant="ghost" size="sm">
                     Next
-                    <ChevronRight className="size-3.5" />
+                    <ChevronRight className="size-3.5 rtl:rotate-180" />
                   </Button>
                 </div>
               </div>

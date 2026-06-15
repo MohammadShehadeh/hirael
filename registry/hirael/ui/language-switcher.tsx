@@ -169,7 +169,7 @@ function LanguageSwitcherTrigger({
           "group flex h-9 items-center gap-2 rounded-md border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          iconOnly ? "w-auto" : "w-full",
+          iconOnly ? "w-fit" : "w-full",
           className,
         )}
         {...props}

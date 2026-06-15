@@ -20,9 +20,7 @@ import {
 } from "@/registry/hirael/ui/command";
 
 export type Tenant = {
-  /** Stable id used as the selected value. */
   value: string;
-  /** Display name, e.g. "Acme Inc". */
   label: string;
   /** Logo image URL. Falls back to the label's initials. */
   image?: string;
@@ -33,28 +31,44 @@ export type Tenant = {
   disabled?: boolean;
 };
 
-type Ctx = {
+function useControllableState<T>(
+  controlled: T | undefined,
+  defaultValue: T,
+  onChange?: (value: T) => void,
+) {
+  const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
+  const value = controlled === undefined ? uncontrolled : controlled;
+  const setValue = React.useCallback(
+    (next: T) => {
+      if (controlled === undefined) setUncontrolled(next);
+      onChange?.(next);
+    },
+    [controlled, onChange],
+  );
+  return [value, setValue] as const;
+}
+
+type TenantSwitcherContextValue = {
   value: string | undefined;
-  setValue: (next: string | undefined) => void;
-  tenants: Tenant[];
+  setValue: (value: string | undefined) => void;
   active: Tenant | undefined;
+  tenants: Tenant[];
   open: boolean;
-  setOpen: (next: boolean) => void;
-  search: string;
-  setSearch: (next: string) => void;
+  setOpen: (open: boolean) => void;
   disabled?: boolean;
 };
 
-const TenantSwitcherContext = React.createContext<Ctx | null>(null);
+const TenantSwitcherContext =
+  React.createContext<TenantSwitcherContextValue | null>(null);
 
 function useTenantSwitcher() {
-  const ctx = React.useContext(TenantSwitcherContext);
-  if (!ctx) {
+  const context = React.useContext(TenantSwitcherContext);
+  if (!context) {
     throw new Error(
-      "TenantSwitcher compound parts must be used inside <TenantSwitcher>",
+      "TenantSwitcher parts must be used within <TenantSwitcher>",
     );
   }
-  return ctx;
+  return context;
 }
 
 function initials(label: string) {
@@ -62,7 +76,7 @@ function initials(label: string) {
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
+    .map((word) => word[0]?.toUpperCase())
     .join("");
 }
 
@@ -99,7 +113,6 @@ export type TenantSwitcherProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onSearchChange?: (search: string) => void;
   disabled?: boolean;
   children?: React.ReactNode;
 };
@@ -112,70 +125,31 @@ function TenantSwitcher({
   open: openProp,
   defaultOpen = false,
   onOpenChange,
-  onSearchChange,
   disabled,
   children,
 }: TenantSwitcherProps) {
-  const [internalValue, setInternalValue] = React.useState<string | undefined>(
+  const [value, setValue] = useControllableState(
+    valueProp,
     defaultValue,
+    onValueChange,
   );
-  const value = valueProp !== undefined ? valueProp : internalValue;
-  const setValue = React.useCallback(
-    (next: string | undefined) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
+  const [open, setOpen] = useControllableState(
+    openProp,
+    defaultOpen,
+    onOpenChange,
   );
-
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
+  const active = React.useMemo(
+    () => tenants.find((tenant) => tenant.value === value),
+    [tenants, value],
   );
 
-  const [search, setSearchState] = React.useState("");
-  const setSearch = React.useCallback(
-    (next: string) => {
-      setSearchState(next);
-      onSearchChange?.(next);
-    },
-    [onSearchChange],
-  );
-
-  const active = tenants.find((t) => t.value === value);
-
-  const ctx = React.useMemo<Ctx>(
-    () => ({
-      value,
-      setValue,
-      tenants,
-      active,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      disabled,
-    }),
-    [
-      value,
-      setValue,
-      tenants,
-      active,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      disabled,
-    ],
+  const context = React.useMemo<TenantSwitcherContextValue>(
+    () => ({ value, setValue, active, tenants, open, setOpen, disabled }),
+    [value, setValue, active, tenants, open, setOpen, disabled],
   );
 
   return (
-    <TenantSwitcherContext.Provider value={ctx}>
+    <TenantSwitcherContext.Provider value={context}>
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
@@ -183,33 +157,27 @@ function TenantSwitcher({
   );
 }
 
-type TenantSwitcherTriggerProps = Omit<
-  React.ComponentProps<"button">,
-  "children"
-> & {
-  placeholder?: string;
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
-};
-
 function TenantSwitcherTrigger({
   placeholder = "Select workspace",
   className,
   children,
   ...props
-}: TenantSwitcherTriggerProps) {
-  const ctx = useTenantSwitcher();
-  const active = ctx.active;
+}: Omit<React.ComponentProps<"button">, "children"> & {
+  placeholder?: string;
+  children?: React.ReactNode;
+}) {
+  const { active, open, disabled } = useTenantSwitcher();
 
   return (
     <PopoverTrigger asChild>
       <button
         type="button"
         role="combobox"
-        aria-expanded={ctx.open}
+        aria-expanded={open}
         aria-haspopup="listbox"
-        disabled={ctx.disabled}
+        disabled={disabled}
         data-slot="tenant-switcher-trigger"
-        data-state={ctx.open ? "open" : "closed"}
+        data-state={open ? "open" : "closed"}
         className={cn(
           "group flex h-12 w-full items-center gap-2.5 rounded-md border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
@@ -218,11 +186,7 @@ function TenantSwitcherTrigger({
         )}
         {...props}
       >
-        {typeof children === "function" ? (
-          children(ctx)
-        ) : children ? (
-          children
-        ) : (
+        {children ?? (
           <>
             <TenantLogo tenant={active} />
             <span className="flex min-w-0 flex-1 flex-col">
@@ -248,17 +212,6 @@ function TenantSwitcherTrigger({
   );
 }
 
-type TenantSwitcherContentProps = React.ComponentProps<
-  typeof PopoverContent
-> & {
-  searchable?: boolean;
-  searchPlaceholder?: string;
-  emptyMessage?: string;
-  /** Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>. */
-  footer?: React.ReactNode;
-  children?: React.ReactNode;
-};
-
 function TenantSwitcherContent({
   className,
   searchable = true,
@@ -267,18 +220,15 @@ function TenantSwitcherContent({
   footer,
   children,
   ...props
-}: TenantSwitcherContentProps) {
-  const ctx = useTenantSwitcher();
-
-  const groups = React.useMemo(() => {
-    const map = new Map<string | undefined, Tenant[]>();
-    for (const t of ctx.tenants) {
-      const key = t.group;
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push(t);
-    }
-    return Array.from(map.entries());
-  }, [ctx.tenants]);
+}: React.ComponentProps<typeof PopoverContent> & {
+  searchable?: boolean;
+  searchPlaceholder?: string;
+  emptyMessage?: string;
+  /** Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>. */
+  footer?: React.ReactNode;
+}) {
+  const { tenants } = useTenantSwitcher();
+  const groups = useGroupedByLabel(tenants);
 
   return (
     <PopoverContent
@@ -289,24 +239,18 @@ function TenantSwitcherContent({
         "w-(--radix-popover-trigger-width) min-w-[15rem] p-0",
         className,
       )}
-      onOpenAutoFocus={(e) => e.preventDefault()}
+      onOpenAutoFocus={(event) => event.preventDefault()}
       {...props}
     >
-      <Command shouldFilter={searchable} loop>
-        {searchable && (
-          <CommandInput
-            placeholder={searchPlaceholder}
-            value={ctx.search}
-            onValueChange={ctx.setSearch}
-          />
-        )}
+      <Command loop>
+        {searchable && <CommandInput placeholder={searchPlaceholder} />}
         <CommandList>
           <CommandEmpty>{emptyMessage}</CommandEmpty>
           {children ??
             groups.map(([group, items]) => (
-              <CommandGroup key={group ?? "__default"} heading={group}>
-                {items.map((t) => (
-                  <TenantSwitcherItem key={t.value} tenant={t} />
+              <CommandGroup key={group ?? "__ungrouped"} heading={group}>
+                {items.map((tenant) => (
+                  <TenantSwitcherItem key={tenant.value} tenant={tenant} />
                 ))}
               </CommandGroup>
             ))}
@@ -322,30 +266,28 @@ function TenantSwitcherContent({
   );
 }
 
-type TenantSwitcherItemProps = Omit<
-  React.ComponentProps<typeof CommandItem>,
-  "value" | "onSelect" | "children"
-> & {
-  tenant: Tenant;
-  children?: React.ReactNode;
-};
-
 function TenantSwitcherItem({
   tenant,
   children,
   className,
   ...props
-}: TenantSwitcherItemProps) {
-  const ctx = useTenantSwitcher();
-  const selected = ctx.value === tenant.value;
+}: Omit<
+  React.ComponentProps<typeof CommandItem>,
+  "value" | "onSelect" | "children"
+> & {
+  tenant: Tenant;
+  children?: React.ReactNode;
+}) {
+  const { value, setValue, setOpen } = useTenantSwitcher();
+  const selected = value === tenant.value;
 
   return (
     <CommandItem
       value={`${tenant.label} ${tenant.value}`}
       disabled={tenant.disabled}
       onSelect={() => {
-        ctx.setValue(tenant.value);
-        ctx.setOpen(false);
+        setValue(tenant.value);
+        setOpen(false);
       }}
       data-slot="tenant-switcher-item"
       className={cn("gap-2.5", className)}
@@ -367,15 +309,11 @@ function TenantSwitcherItem({
   );
 }
 
-type TenantSwitcherCreateProps = React.ComponentProps<"button"> & {
-  children?: React.ReactNode;
-};
-
 function TenantSwitcherCreate({
   className,
   children = "Create workspace",
   ...props
-}: TenantSwitcherCreateProps) {
+}: React.ComponentProps<"button">) {
   return (
     <button
       type="button"
@@ -392,6 +330,19 @@ function TenantSwitcherCreate({
       <span className="truncate">{children}</span>
     </button>
   );
+}
+
+/** Bucket items by their `group`, preserving first-seen order. */
+function useGroupedByLabel(tenants: Tenant[]) {
+  return React.useMemo(() => {
+    const groups = new Map<string | undefined, Tenant[]>();
+    for (const tenant of tenants) {
+      const bucket = groups.get(tenant.group) ?? [];
+      bucket.push(tenant);
+      groups.set(tenant.group, bucket);
+    }
+    return [...groups];
+  }, [tenants]);
 }
 
 export {

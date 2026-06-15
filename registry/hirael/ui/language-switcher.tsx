@@ -30,28 +30,44 @@ export type Language = {
   disabled?: boolean;
 };
 
-type Ctx = {
+function useControllableState<T>(
+  controlled: T | undefined,
+  defaultValue: T,
+  onChange?: (value: T) => void,
+) {
+  const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
+  const value = controlled === undefined ? uncontrolled : controlled;
+  const setValue = React.useCallback(
+    (next: T) => {
+      if (controlled === undefined) setUncontrolled(next);
+      onChange?.(next);
+    },
+    [controlled, onChange],
+  );
+  return [value, setValue] as const;
+}
+
+type LanguageSwitcherContextValue = {
   value: string | undefined;
-  setValue: (next: string | undefined) => void;
-  languages: Language[];
+  setValue: (value: string | undefined) => void;
   active: Language | undefined;
+  languages: Language[];
   open: boolean;
-  setOpen: (next: boolean) => void;
-  search: string;
-  setSearch: (next: string) => void;
+  setOpen: (open: boolean) => void;
   disabled?: boolean;
 };
 
-const LanguageSwitcherContext = React.createContext<Ctx | null>(null);
+const LanguageSwitcherContext =
+  React.createContext<LanguageSwitcherContextValue | null>(null);
 
 function useLanguageSwitcher() {
-  const ctx = React.useContext(LanguageSwitcherContext);
-  if (!ctx) {
+  const context = React.useContext(LanguageSwitcherContext);
+  if (!context) {
     throw new Error(
-      "LanguageSwitcher compound parts must be used inside <LanguageSwitcher>",
+      "LanguageSwitcher parts must be used within <LanguageSwitcher>",
     );
   }
-  return ctx;
+  return context;
 }
 
 function LanguageCode({
@@ -82,7 +98,6 @@ export type LanguageSwitcherProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onSearchChange?: (search: string) => void;
   disabled?: boolean;
   children?: React.ReactNode;
 };
@@ -95,70 +110,31 @@ function LanguageSwitcher({
   open: openProp,
   defaultOpen = false,
   onOpenChange,
-  onSearchChange,
   disabled,
   children,
 }: LanguageSwitcherProps) {
-  const [internalValue, setInternalValue] = React.useState<string | undefined>(
+  const [value, setValue] = useControllableState(
+    valueProp,
     defaultValue,
+    onValueChange,
   );
-  const value = valueProp !== undefined ? valueProp : internalValue;
-  const setValue = React.useCallback(
-    (next: string | undefined) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
+  const [open, setOpen] = useControllableState(
+    openProp,
+    defaultOpen,
+    onOpenChange,
   );
-
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
+  const active = React.useMemo(
+    () => languages.find((language) => language.value === value),
+    [languages, value],
   );
 
-  const [search, setSearchState] = React.useState("");
-  const setSearch = React.useCallback(
-    (next: string) => {
-      setSearchState(next);
-      onSearchChange?.(next);
-    },
-    [onSearchChange],
-  );
-
-  const active = languages.find((l) => l.value === value);
-
-  const ctx = React.useMemo<Ctx>(
-    () => ({
-      value,
-      setValue,
-      languages,
-      active,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      disabled,
-    }),
-    [
-      value,
-      setValue,
-      languages,
-      active,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      disabled,
-    ],
+  const context = React.useMemo<LanguageSwitcherContextValue>(
+    () => ({ value, setValue, active, languages, open, setOpen, disabled }),
+    [value, setValue, active, languages, open, setOpen, disabled],
   );
 
   return (
-    <LanguageSwitcherContext.Provider value={ctx}>
+    <LanguageSwitcherContext.Provider value={context}>
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
@@ -166,38 +142,32 @@ function LanguageSwitcher({
   );
 }
 
-type LanguageSwitcherTriggerProps = Omit<
-  React.ComponentProps<"button">,
-  "children"
-> & {
-  placeholder?: string;
-  /** Hide the text label and show only the globe and code. */
-  iconOnly?: boolean;
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
-};
-
 function LanguageSwitcherTrigger({
   placeholder = "Language",
   iconOnly = false,
   className,
   children,
   ...props
-}: LanguageSwitcherTriggerProps) {
-  const ctx = useLanguageSwitcher();
-  const active = ctx.active;
-  const labelText = active ? (active.nativeLabel ?? active.label) : placeholder;
+}: Omit<React.ComponentProps<"button">, "children"> & {
+  placeholder?: string;
+  /** Hide the text label and show only the globe and code. */
+  iconOnly?: boolean;
+  children?: React.ReactNode;
+}) {
+  const { active, open, disabled } = useLanguageSwitcher();
+  const label = active ? (active.nativeLabel ?? active.label) : placeholder;
 
   return (
     <PopoverTrigger asChild>
       <button
         type="button"
         role="combobox"
-        aria-expanded={ctx.open}
+        aria-expanded={open}
         aria-haspopup="listbox"
-        aria-label={iconOnly ? labelText : undefined}
-        disabled={ctx.disabled}
+        aria-label={iconOnly ? label : undefined}
+        disabled={disabled}
         data-slot="language-switcher-trigger"
-        data-state={ctx.open ? "open" : "closed"}
+        data-state={open ? "open" : "closed"}
         className={cn(
           "group flex h-9 items-center gap-2 rounded-md border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
@@ -207,45 +177,28 @@ function LanguageSwitcherTrigger({
         )}
         {...props}
       >
-        {typeof children === "function" ? (
-          children(ctx)
-        ) : children ? (
-          children
-        ) : (
+        {children ?? (
           <>
             <Globe className="size-4 shrink-0 text-muted-foreground" />
-            {!iconOnly && (
+            {iconOnly ? (
+              active && <LanguageCode value={active.value} />
+            ) : (
               <span
                 className={cn(
                   "min-w-0 flex-1 truncate",
                   !active && "text-muted-foreground",
                 )}
               >
-                {labelText}
+                {label}
               </span>
             )}
-            {iconOnly && active && <LanguageCode value={active.value} />}
-            <ChevronDown
-              className={cn(
-                "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
-                ctx.open && "rotate-180",
-              )}
-            />
+            <ChevronDown className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]:rotate-180" />
           </>
         )}
       </button>
     </PopoverTrigger>
   );
 }
-
-type LanguageSwitcherContentProps = React.ComponentProps<
-  typeof PopoverContent
-> & {
-  searchable?: boolean;
-  searchPlaceholder?: string;
-  emptyMessage?: string;
-  children?: React.ReactNode;
-};
 
 function LanguageSwitcherContent({
   className,
@@ -254,18 +207,21 @@ function LanguageSwitcherContent({
   emptyMessage = "No languages found.",
   children,
   ...props
-}: LanguageSwitcherContentProps) {
-  const ctx = useLanguageSwitcher();
-
+}: React.ComponentProps<typeof PopoverContent> & {
+  searchable?: boolean;
+  searchPlaceholder?: string;
+  emptyMessage?: string;
+}) {
+  const { languages } = useLanguageSwitcher();
   const groups = React.useMemo(() => {
-    const map = new Map<string | undefined, Language[]>();
-    for (const l of ctx.languages) {
-      const key = l.group;
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push(l);
+    const buckets = new Map<string | undefined, Language[]>();
+    for (const language of languages) {
+      const bucket = buckets.get(language.group) ?? [];
+      bucket.push(language);
+      buckets.set(language.group, bucket);
     }
-    return Array.from(map.entries());
-  }, [ctx.languages]);
+    return [...buckets];
+  }, [languages]);
 
   return (
     <PopoverContent
@@ -276,24 +232,21 @@ function LanguageSwitcherContent({
         "w-(--radix-popover-trigger-width) min-w-[14rem] p-0",
         className,
       )}
-      onOpenAutoFocus={(e) => e.preventDefault()}
+      onOpenAutoFocus={(event) => event.preventDefault()}
       {...props}
     >
-      <Command shouldFilter={searchable} loop>
-        {searchable && (
-          <CommandInput
-            placeholder={searchPlaceholder}
-            value={ctx.search}
-            onValueChange={ctx.setSearch}
-          />
-        )}
+      <Command loop>
+        {searchable && <CommandInput placeholder={searchPlaceholder} />}
         <CommandList>
           <CommandEmpty>{emptyMessage}</CommandEmpty>
           {children ??
             groups.map(([group, items]) => (
-              <CommandGroup key={group ?? "__default"} heading={group}>
-                {items.map((l) => (
-                  <LanguageSwitcherItem key={l.value} language={l} />
+              <CommandGroup key={group ?? "__ungrouped"} heading={group}>
+                {items.map((language) => (
+                  <LanguageSwitcherItem
+                    key={language.value}
+                    language={language}
+                  />
                 ))}
               </CommandGroup>
             ))}
@@ -303,20 +256,18 @@ function LanguageSwitcherContent({
   );
 }
 
-type LanguageSwitcherItemProps = Omit<
-  React.ComponentProps<typeof CommandItem>,
-  "value" | "onSelect" | "children"
-> & {
-  language: Language;
-};
-
 function LanguageSwitcherItem({
   language,
   className,
   ...props
-}: LanguageSwitcherItemProps) {
-  const ctx = useLanguageSwitcher();
-  const selected = ctx.value === language.value;
+}: Omit<
+  React.ComponentProps<typeof CommandItem>,
+  "value" | "onSelect" | "children"
+> & {
+  language: Language;
+}) {
+  const { value, setValue, setOpen } = useLanguageSwitcher();
+  const selected = value === language.value;
   const primary = language.nativeLabel ?? language.label;
 
   return (
@@ -324,8 +275,8 @@ function LanguageSwitcherItem({
       value={`${language.label} ${language.nativeLabel ?? ""} ${language.value}`}
       disabled={language.disabled}
       onSelect={() => {
-        ctx.setValue(language.value);
-        ctx.setOpen(false);
+        setValue(language.value);
+        setOpen(false);
       }}
       data-slot="language-switcher-item"
       className={cn("gap-2.5", className)}

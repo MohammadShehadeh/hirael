@@ -5101,13 +5101,6 @@
           "description": null
         },
         {
-          "name": "onSearchChange",
-          "type": "((search: string) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "disabled",
           "type": "boolean",
           "required": false,
@@ -5136,7 +5129,7 @@
         },
         {
           "name": "children",
-          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "type": "React.ReactNode",
           "required": false,
           "default": null,
           "description": null
@@ -5147,13 +5140,6 @@
     {
       "name": "TenantSwitcherContent",
       "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        },
         {
           "name": "searchable",
           "type": "boolean",
@@ -5207,15 +5193,7 @@
     },
     {
       "name": "TenantSwitcherCreate",
-      "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": "\"Create workspace\"",
-          "description": null
-        }
-      ],
+      "props": [],
       "extendsNative": true
     }
   ],
@@ -5273,13 +5251,6 @@
           "description": null
         },
         {
-          "name": "onSearchChange",
-          "type": "((search: string) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "disabled",
           "type": "boolean",
           "required": false,
@@ -5315,7 +5286,7 @@
         },
         {
           "name": "children",
-          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "type": "React.ReactNode",
           "required": false,
           "default": null,
           "description": null
@@ -5326,13 +5297,6 @@
     {
       "name": "LanguageSwitcherContent",
       "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        },
         {
           "name": "searchable",
           "type": "boolean",

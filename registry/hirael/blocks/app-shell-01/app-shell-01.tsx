@@ -263,7 +263,7 @@ export default function AppShell01() {
             className="hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex"
           >
             <span>Workspace</span>
-            <ChevronRight className="size-3" aria-hidden />
+            <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
             <span className="text-foreground">Dashboard</span>
           </nav>
 

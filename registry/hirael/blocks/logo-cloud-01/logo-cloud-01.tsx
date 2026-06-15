@@ -189,7 +189,7 @@ export default function LogoCloud01() {
           <Button variant="link" className="group h-auto p-0" asChild>
             <a href="#">
               See the case studies
-              <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
         </div>

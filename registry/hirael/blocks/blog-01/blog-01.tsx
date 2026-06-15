@@ -139,7 +139,7 @@ function PostCover({
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full opacity-[0.18] blur-3xl"
+        className="pointer-events-none absolute -end-16 -top-16 size-64 rounded-full opacity-[0.18] blur-3xl"
         style={{ background: "var(--primary)" }}
       />
       <div className="absolute inset-0 flex items-end p-4">
@@ -172,7 +172,7 @@ export default function Blog01() {
           <Button variant="link" className="group h-auto p-0" asChild>
             <a href="#">
               All posts
-              <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
         </div>
@@ -229,7 +229,7 @@ export default function Blog01() {
               >
                 <a href={FEATURED.href}>
                   Read the post
-                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5" />
+                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5 rtl:rotate-180 rtl:group-hover/cta:-translate-x-0.5" />
                 </a>
               </Button>
             </div>

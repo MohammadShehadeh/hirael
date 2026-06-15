@@ -177,7 +177,7 @@ export default function ForgotPassword01() {
                   ) : (
                     <>
                       Send reset link
-                      <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+                      <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                     </>
                   )}
                 </Button>

@@ -116,7 +116,7 @@ export default function Login02() {
               className="group mt-2"
             >
               Continue
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
+              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Button>
 
             <p className="mt-2 text-center text-xs text-muted-foreground">
@@ -144,7 +144,7 @@ export default function Login02() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-32 -right-24 -z-10 size-[420px] rounded-full opacity-[0.18] blur-3xl"
+          className="pointer-events-none absolute -bottom-32 -end-24 -z-10 size-[420px] rounded-full opacity-[0.18] blur-3xl"
           style={{ background: "var(--primary)" }}
         />
 

@@ -104,11 +104,11 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "combobox",
     title: "Combobox",
     description:
-      "Searchable single-select with debounced async loader, group headings and clearable selection.",
+      "Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.",
     category: "inputs",
     sourceFiles: ["registry/hirael/ui/combobox.tsx"],
-    registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    registryDependencies: ["input-group"],
+    dependencies: ["@base-ui/react", "lucide-react"],
   },
   {
     name: "lazy-select",
@@ -958,7 +958,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/tree-view.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
   {
@@ -1168,7 +1168,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/audit-log.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
   {
@@ -1308,8 +1308,18 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
     category: "navigation",
     sourceFiles: ["registry/hirael/ui/inspector-panel.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "tenant-switcher",
+    title: "Tenant Switcher",
+    description:
+      "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
+    category: "navigation",
+    sourceFiles: ["registry/hirael/ui/tenant-switcher.tsx"],
+    registryDependencies: ["popover", "command"],
+    dependencies: ["cmdk", "lucide-react"],
   },
   {
     name: "kpi-grid",

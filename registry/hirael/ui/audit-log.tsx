@@ -5,6 +5,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/registry/hirael/ui/collapsible";
 
 type AuditLogProps = React.ComponentProps<"ul">;
 
@@ -21,24 +26,6 @@ function AuditLog({ className, ...props }: AuditLogProps) {
   );
 }
 
-type AuditLogItemContextValue = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  contentId: string;
-  triggerId: string;
-};
-
-const AuditLogItemContext =
-  React.createContext<AuditLogItemContextValue | null>(null);
-
-function useAuditLogItem() {
-  const ctx = React.useContext(AuditLogItemContext);
-  if (!ctx) {
-    throw new Error("AuditLog parts must be used within <AuditLogItem>");
-  }
-  return ctx;
-}
-
 type AuditLogItemProps = Omit<React.ComponentProps<"li">, "onToggle"> & {
   open?: boolean;
   defaultOpen?: boolean;
@@ -46,80 +33,53 @@ type AuditLogItemProps = Omit<React.ComponentProps<"li">, "onToggle"> & {
 };
 
 function AuditLogItem({
-  open: openProp,
+  open,
   defaultOpen,
   onOpenChange,
   className,
   children,
   ...props
 }: AuditLogItemProps) {
-  const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
-  const open = openProp ?? uncontrolled;
-  const reactId = React.useId();
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setUncontrolled(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
-
-  const value = React.useMemo<AuditLogItemContextValue>(
-    () => ({
-      open,
-      setOpen,
-      contentId: `${reactId}-content`,
-      triggerId: `${reactId}-trigger`,
-    }),
-    [open, setOpen, reactId],
-  );
-
   return (
-    <AuditLogItemContext.Provider value={value}>
+    <Collapsible
+      asChild
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+    >
       <li
         data-slot="audit-log-item"
-        data-state={open ? "open" : "closed"}
         className={cn("flex flex-col", className)}
         {...props}
       >
         {children}
       </li>
-    </AuditLogItemContext.Provider>
+    </Collapsible>
   );
 }
 
-type AuditLogTriggerProps = React.ComponentProps<"button">;
+type AuditLogTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
 
 function AuditLogTrigger({
   className,
   children,
   ...props
 }: AuditLogTriggerProps) {
-  const { open, setOpen, contentId, triggerId } = useAuditLogItem();
   return (
-    <button
-      type="button"
-      id={triggerId}
+    <CollapsibleTrigger
       data-slot="audit-log-trigger"
-      aria-expanded={open}
-      aria-controls={contentId}
-      onClick={() => setOpen(!open)}
       className={cn(
-        "flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+        "group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         className,
       )}
       {...props}
     >
       <ChevronRight
         aria-hidden
-        className={cn(
-          "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
-          open ? "rotate-90" : "rtl:rotate-180",
-        )}
+        className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180"
       />
       {children}
-    </button>
+    </CollapsibleTrigger>
   );
 }
 
@@ -204,22 +164,19 @@ function AuditLogDetail({
   children,
   ...props
 }: AuditLogDetailProps) {
-  const { open, contentId, triggerId } = useAuditLogItem();
   return (
-    <dl
-      id={contentId}
-      role="region"
-      aria-labelledby={triggerId}
-      data-slot="audit-log-detail"
-      hidden={!open}
-      className={cn(
-        "grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </dl>
+    <CollapsibleContent asChild>
+      <dl
+        data-slot="audit-log-detail"
+        className={cn(
+          "grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </dl>
+    </CollapsibleContent>
   );
 }
 

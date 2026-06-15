@@ -568,103 +568,16 @@
   "combobox": [
     {
       "name": "Combobox",
-      "props": [
-        {
-          "name": "value",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultValue",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "onValueChange",
-          "type": "((value: string | undefined) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "options",
-          "type": "ComboboxOption[]",
-          "required": false,
-          "default": "[]",
-          "description": null
-        },
-        {
-          "name": "open",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultOpen",
-          "type": "boolean",
-          "required": false,
-          "default": "false",
-          "description": null
-        },
-        {
-          "name": "onOpenChange",
-          "type": "((open: boolean) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "onSearchChange",
-          "type": "((search: string) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "externalFilter",
-          "type": "boolean",
-          "required": false,
-          "default": "false",
-          "description": null
-        },
-        {
-          "name": "loading",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "disabled",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "clearable",
-          "type": "boolean",
-          "required": false,
-          "default": "true",
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": false
+      "props": [],
+      "extendsNative": true
     },
     {
-      "name": "ComboboxTrigger",
+      "name": "ComboboxValue",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxInput",
       "props": [
         {
           "name": "className",
@@ -674,15 +587,67 @@
           "description": null
         },
         {
-          "name": "placeholder",
+          "name": "showClear",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxClear",
+      "props": [
+        {
+          "name": "className",
           "type": "string",
           "required": false,
-          "default": "\"Select…\"",
+          "default": null,
           "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxChips",
+      "props": [
+        {
+          "name": "ref",
+          "type": "React.Ref<HTMLDivElement>",
+          "required": false,
+          "default": null,
+          "description": "Allows getting a ref to the component instance.\nOnce the component unmounts, React will set `ref.current` to `null`\n(or call the ref with `null` if you passed a callback ref)."
         },
         {
-          "name": "children",
-          "type": "React.ReactNode | ((ctx: Ctx) => React.ReactNode)",
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxChip",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxChipsInput",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
           "required": false,
           "default": null,
           "description": null
@@ -694,49 +659,119 @@
       "name": "ComboboxContent",
       "props": [
         {
-          "name": "children",
-          "type": "React.ReactNode",
+          "name": "className",
+          "type": "string",
           "required": false,
           "default": null,
           "description": null
         },
         {
-          "name": "searchPlaceholder",
-          "type": "string",
+          "name": "sideOffset",
+          "type": "number",
           "required": false,
-          "default": "\"Search…\"",
+          "default": "6",
           "description": null
         },
         {
-          "name": "emptyMessage",
-          "type": "string",
+          "name": "align",
+          "type": "\"center\" | \"start\" | \"end\"",
           "required": false,
-          "default": "\"Nothing found.\"",
+          "default": "\"start\"",
           "description": null
         },
         {
-          "name": "loadingMessage",
-          "type": "string",
+          "name": "alignOffset",
+          "type": "number",
           "required": false,
-          "default": "\"Loading…\"",
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "anchor",
+          "type": "Element | VirtualElement | React.RefObject<Element | null> | (() => Element | VirtualElement | null) | null",
+          "required": false,
+          "default": null,
           "description": null
         }
       ],
       "extendsNative": true
     },
     {
+      "name": "ComboboxEmpty",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxList",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxGroup",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxLabel",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxCollection",
+      "props": [],
+      "extendsNative": true
+    },
+    {
       "name": "ComboboxItem",
       "props": [
         {
-          "name": "option",
-          "type": "ComboboxOption",
-          "required": true,
+          "name": "className",
+          "type": "string",
+          "required": false,
           "default": null,
           "description": null
-        },
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ComboboxSeparator",
+      "props": [
         {
-          "name": "children",
-          "type": "React.ReactNode",
+          "name": "className",
+          "type": "string",
           "required": false,
           "default": null,
           "description": null
@@ -2696,15 +2731,15 @@
           "description": null
         },
         {
-          "name": "disabledDate",
-          "type": "((d: Date) => boolean)",
+          "name": "locale",
+          "type": "string",
           "required": false,
           "default": null,
           "description": null
         },
         {
-          "name": "locale",
-          "type": "string",
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
           "required": false,
           "default": null,
           "description": null
@@ -3530,7 +3565,7 @@
         },
         {
           "name": "variant",
-          "type": "\"boxed\" | \"inline\" | \"minimal\"",
+          "type": "\"inline\" | \"boxed\" | \"minimal\"",
           "required": false,
           "default": "\"boxed\"",
           "description": null
@@ -5044,6 +5079,156 @@
           "description": null
         }
       ],
+      "extendsNative": true
+    }
+  ],
+  "tenant-switcher": [
+    {
+      "name": "TenantSwitcher",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tenants",
+          "type": "Tenant[]",
+          "required": false,
+          "default": "[]",
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TenantSwitcherTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select workspace\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherContent",
+      "props": [
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Find workspace…\"",
+          "description": null
+        },
+        {
+          "name": "emptyMessage",
+          "type": "string",
+          "required": false,
+          "default": "\"No workspaces found.\"",
+          "description": null
+        },
+        {
+          "name": "footer",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherItem",
+      "props": [
+        {
+          "name": "tenant",
+          "type": "Tenant",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TenantSwitcherCreate",
+      "props": [],
       "extendsNative": true
     }
   ],

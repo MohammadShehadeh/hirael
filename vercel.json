@@ -557,6 +557,11 @@
       "permanent": true
     },
     {
+      "source": "/components/tenant-switcher",
+      "destination": "/components/navigation/tenant-switcher",
+      "permanent": true
+    },
+    {
       "source": "/components/text-reveal",
       "destination": "/components/animation/text-reveal",
       "permanent": true

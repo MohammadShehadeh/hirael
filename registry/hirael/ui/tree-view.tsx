@@ -4,6 +4,11 @@ import * as React from "react";
 import { ChevronRight, File, Folder, FolderOpen } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/registry/hirael/ui/collapsible";
 
 type TreeCtx = {
   selected: string | undefined;
@@ -97,22 +102,84 @@ function TreeItem({
   const depth = React.useContext(TreeDepthContext);
 
   const hasChildren = React.Children.count(children) > 0;
-  const [expanded, setExpanded] = React.useState(defaultExpanded);
-
   const isSelected = !hasChildren && selected === value;
 
+  const triggerStyle: React.CSSProperties = {
+    paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
+  };
+  const triggerClassName = cn(
+    "group flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start outline-none transition-colors",
+    "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    isSelected ? "bg-accent font-medium text-foreground" : "text-foreground/80",
+    className,
+  );
+
+  // Folder open/closed and the chevron rotation are driven off the trigger's
+  // data-[state] (set by Collapsible) instead of tracked React state.
   const leadingIcon =
     icon !== undefined ? (
       icon
     ) : hasChildren ? (
-      expanded ? (
-        <FolderOpen className="size-4 text-muted-foreground" />
-      ) : (
-        <Folder className="size-4 text-muted-foreground" />
-      )
+      <>
+        <Folder className="size-4 text-muted-foreground group-data-[state=open]:hidden" />
+        <FolderOpen className="hidden size-4 text-muted-foreground group-data-[state=open]:block" />
+      </>
     ) : (
       <File className="size-4 text-muted-foreground" />
     );
+
+  const labelRow = (
+    <>
+      <ChevronRight
+        aria-hidden
+        className={cn(
+          "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
+          hasChildren
+            ? "group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180"
+            : "invisible",
+        )}
+      />
+      {leadingIcon != null && (
+        <span className="flex shrink-0 items-center [&_svg]:size-4">
+          {leadingIcon}
+        </span>
+      )}
+      <span className="min-w-0 truncate">{label}</span>
+    </>
+  );
+
+  if (hasChildren) {
+    return (
+      <Collapsible asChild defaultOpen={defaultExpanded}>
+        <div
+          data-slot="tree-item"
+          role="treeitem"
+          aria-selected={isSelected}
+          {...props}
+        >
+          <CollapsibleTrigger asChild>
+            <button
+              type="button"
+              disabled={disabled}
+              data-slot="tree-item-trigger"
+              style={triggerStyle}
+              className={triggerClassName}
+            >
+              {labelRow}
+            </button>
+          </CollapsibleTrigger>
+          <CollapsibleContent asChild>
+            <div role="group">
+              <TreeDepthContext.Provider value={depth + 1}>
+                {children}
+              </TreeDepthContext.Provider>
+            </div>
+          </CollapsibleContent>
+        </div>
+      </Collapsible>
+    );
+  }
 
   return (
     <div
@@ -126,47 +193,12 @@ function TreeItem({
         disabled={disabled}
         data-slot="tree-item-trigger"
         data-state={isSelected ? "selected" : undefined}
-        aria-expanded={hasChildren ? expanded : undefined}
-        onClick={() => {
-          if (hasChildren) setExpanded((o) => !o);
-          else setSelected(value);
-        }}
-        style={{
-          paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
-        }}
-        className={cn(
-          "flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start outline-none transition-colors",
-          "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          isSelected
-            ? "bg-accent font-medium text-foreground"
-            : "text-foreground/80",
-          className,
-        )}
+        onClick={() => setSelected(value)}
+        style={triggerStyle}
+        className={triggerClassName}
       >
-        <ChevronRight
-          aria-hidden
-          className={cn(
-            "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
-            !hasChildren && "invisible",
-            expanded ? "rotate-90" : "rtl:rotate-180",
-          )}
-        />
-        {leadingIcon != null && (
-          <span className="flex shrink-0 items-center [&_svg]:size-4">
-            {leadingIcon}
-          </span>
-        )}
-        <span className="min-w-0 truncate">{label}</span>
+        {labelRow}
       </button>
-
-      {hasChildren && expanded && (
-        <div role="group">
-          <TreeDepthContext.Provider value={depth + 1}>
-            {children}
-          </TreeDepthContext.Provider>
-        </div>
-      )}
     </div>
   );
 }

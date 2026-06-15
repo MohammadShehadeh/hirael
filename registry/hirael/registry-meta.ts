@@ -1322,16 +1322,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["cmdk", "lucide-react"],
   },
   {
-    name: "language-switcher",
-    title: "Language Switcher",
-    description:
-      "Locale switcher with a code chip, native and translated names, search and a current-language check. Full or icon-only trigger. Compound API.",
-    category: "navigation",
-    sourceFiles: ["registry/hirael/ui/language-switcher.tsx"],
-    registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
-  },
-  {
     name: "kpi-grid",
     title: "KPI Grid",
     description:

@@ -82,7 +82,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `sortable`         | —             | Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.                                |
 | `stat-card`        | —             | Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.                                                            |
 | `timeline`         | —             | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                  |
-| `tree-view`        | —             | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
+| `tree-view`        | `collapsible` | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
 
 #### Display & feedback (14)
 

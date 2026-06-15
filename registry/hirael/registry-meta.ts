@@ -958,7 +958,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/tree-view.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
   {

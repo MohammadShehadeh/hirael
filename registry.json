@@ -760,7 +760,7 @@
       "registryDependencies": [
         "accordion",
         "button",
-        "empty-state",
+        "empty",
         "input-group",
         "tabs"
       ],
@@ -1106,24 +1106,6 @@
       ]
     },
     {
-      "name": "empty-state",
-      "type": "registry:ui",
-      "title": "Empty State",
-      "description": "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
-      "categories": [
-        "display"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/ui/empty-state.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/empty-state.tsx"
-        }
-      ]
-    },
-    {
       "name": "logo-cloud-01",
       "type": "registry:block",
       "title": "Logo Cloud 1",
@@ -1244,7 +1226,7 @@
       "registryDependencies": [
         "button",
         "card",
-        "empty-state",
+        "empty",
         "input-group",
         "separator"
       ],
@@ -1416,7 +1398,7 @@
       "name": "image-gallery-01",
       "type": "registry:block",
       "title": "Image Gallery 1",
-      "description": "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
+      "description": "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an Empty fallback for empty filters.",
       "categories": [
         "blocks",
         "image-gallery"
@@ -1427,7 +1409,7 @@
       "registryDependencies": [
         "badge",
         "button",
-        "empty-state",
+        "empty",
         "tabs"
       ],
       "files": [

@@ -93,7 +93,6 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `callout`          | —                                | MDX-style admonition with info / success / warning / error / neutral variants. Ships `--info` / `--success` / `--warning` theme tokens.      |
 | `code-block`       | `badge`, `button`, `copy-button` | Code display with dependency-free token highlighting, line numbers, line highlights, diff gutters, copy button and collapsible max-height.   |
 | `copy-button`      | —                                | Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.      |
-| `empty-state`      | —                                | Dashed-bordered empty-state surface with media slot, title, description and an action row.                                                   |
 | `image-compare`    | —                                | Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.      |
 | `kbd`              | —                                | 3D tactile keycap with hover lift and pressed states. Compound API with `KbdGroup` for chords and `KbdDisplay` for inline keys.              |
 | `lightbox`         | —                                | Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.             |

@@ -56,7 +56,7 @@ the meaning is the one the product earns over time.
 - **Data display** — StatCard, Timeline, AvatarStack, TreeView,
   AnimatedNumber.
 - **Display & feedback** — Spinner, CopyButton, Marquee, Kbd, Callout,
-  ScrollProgress, AnnouncementBar, EmptyState.
+  ScrollProgress, AnnouncementBar.
 - **Navigation** — Stepper (horizontal & vertical orientation).
 - **Marketing blocks** — Hero, Feature, Pricing, Testimonial, CTA, FAQ,
   Login, Header, Footer, Not-Found, Logo Cloud, Contact, Blog,
@@ -117,7 +117,6 @@ the meaning is the one the product earns over time.
 | Callout         | display    | stable | —                                            |
 | ScrollProgress  | display    | stable | —                                            |
 | AnnouncementBar | display    | stable | —                                            |
-| EmptyState      | display    | stable | —                                            |
 | Stepper         | navigation | stable | —                                            |
 
 Marketing blocks (Hero, Feature, Pricing, Testimonial, CTA, FAQ, Login,

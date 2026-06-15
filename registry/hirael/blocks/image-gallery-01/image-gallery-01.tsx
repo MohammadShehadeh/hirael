@@ -7,10 +7,12 @@ import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
-  EmptyState,
-  EmptyStateDescription,
-  EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state";
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/registry/hirael/ui/empty";
 import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
 type Tile = {
@@ -135,21 +137,24 @@ export default function ImageGallery01() {
         </div>
 
         {visible.length === 0 ? (
-          <EmptyState className="mt-10">
-            <EmptyStateTitle>Nothing in {filter} yet</EmptyStateTitle>
-            <EmptyStateDescription>
-              No pieces in this archive. Switch the filter, or check back next
-              quarter.
-            </EmptyStateDescription>
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2"
-              onClick={() => setFilter("All")}
-            >
-              Show all
-            </Button>
-          </EmptyState>
+          <Empty className="mt-10">
+            <EmptyHeader>
+              <EmptyTitle>Nothing in {filter} yet</EmptyTitle>
+              <EmptyDescription>
+                No pieces in this archive. Switch the filter, or check back next
+                quarter.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setFilter("All")}
+              >
+                Show all
+              </Button>
+            </EmptyContent>
+          </Empty>
         ) : (
           <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
             {visible.map((t) => (

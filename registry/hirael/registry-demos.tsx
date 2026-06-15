@@ -76,7 +76,6 @@ const DEMO_LOADERS: Record<
     import("@/registry/hirael/avatar-stack/avatar-stack.demo"),
   "announcement-bar": () =>
     import("@/registry/hirael/announcement-bar/announcement-bar.demo"),
-  "empty-state": () => import("@/registry/hirael/empty-state/empty-state.demo"),
   "logo-cloud-01": () =>
     import("@/registry/hirael/blocks/logo-cloud-01/logo-cloud-01"),
   "contact-01": () => import("@/registry/hirael/blocks/contact-01/contact-01"),

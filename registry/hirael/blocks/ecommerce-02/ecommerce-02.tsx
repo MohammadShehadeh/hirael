@@ -13,12 +13,13 @@ import {
   CardTitle,
 } from "@/registry/hirael/ui/card";
 import {
-  EmptyState,
-  EmptyStateActions,
-  EmptyStateDescription,
-  EmptyStateMedia,
-  EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state";
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/registry/hirael/ui/empty";
 import {
   InputGroup,
   InputGroupAddon,
@@ -124,16 +125,18 @@ export default function Ecommerce02() {
         </div>
 
         {items.length === 0 ? (
-          <EmptyState>
-            <EmptyStateMedia>
-              <ShoppingBag />
-            </EmptyStateMedia>
-            <EmptyStateTitle>Your cart is empty</EmptyStateTitle>
-            <EmptyStateDescription>
-              Everything you remove ends up here as free shelf space. Refill it
-              with the demo order to keep exploring.
-            </EmptyStateDescription>
-            <EmptyStateActions>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ShoppingBag />
+              </EmptyMedia>
+              <EmptyTitle>Your cart is empty</EmptyTitle>
+              <EmptyDescription>
+                Everything you remove ends up here as free shelf space. Refill
+                it with the demo order to keep exploring.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button
                 variant="outline"
                 size="sm"
@@ -141,8 +144,8 @@ export default function Ecommerce02() {
               >
                 Restore demo cart
               </Button>
-            </EmptyStateActions>
-          </EmptyState>
+            </EmptyContent>
+          </Empty>
         ) : (
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
             <ul className="flex flex-col border-t border-border lg:col-span-2">

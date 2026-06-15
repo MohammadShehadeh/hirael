@@ -477,7 +477,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [
       "accordion",
       "button",
-      "empty-state",
+      "empty",
       "input-group",
       "tabs",
     ],
@@ -667,16 +667,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react", "class-variance-authority"],
   },
   {
-    name: "empty-state",
-    title: "Empty State",
-    description:
-      "Dashed-bordered empty-state surface with media slot, title, description and an action row.",
-    category: "display",
-    sourceFiles: ["registry/hirael/ui/empty-state.tsx"],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
     name: "logo-cloud-01",
     title: "Logo Cloud 1",
     description:
@@ -751,7 +741,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [
       "button",
       "card",
-      "empty-state",
+      "empty",
       "input-group",
       "separator",
     ],
@@ -839,7 +829,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "image-gallery-01",
     title: "Image Gallery 1",
     description:
-      "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an EmptyState fallback for empty filters.",
+      "Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an Empty fallback for empty filters.",
     blockTagline: "Tabs filter · masonry · empty state",
     category: "blocks",
     blockKind: "image-gallery",
@@ -847,7 +837,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "registry/hirael/blocks/image-gallery-01/image-gallery-01.tsx",
     ],
     installTargets: ["components/blocks/image-gallery-01.tsx"],
-    registryDependencies: ["badge", "button", "empty-state", "tabs"],
+    registryDependencies: ["badge", "button", "empty", "tabs"],
     dependencies: ["lucide-react"],
   },
   {

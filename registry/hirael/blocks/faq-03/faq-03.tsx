@@ -11,12 +11,13 @@ import {
 } from "@/registry/hirael/ui/accordion";
 import { Button } from "@/registry/hirael/ui/button";
 import {
-  EmptyState,
-  EmptyStateActions,
-  EmptyStateDescription,
-  EmptyStateMedia,
-  EmptyStateTitle,
-} from "@/registry/hirael/ui/empty-state";
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/registry/hirael/ui/empty";
 import {
   InputGroup,
   InputGroupAddon,
@@ -166,24 +167,26 @@ export default function Faq03() {
             ))}
           </Accordion>
         ) : (
-          <EmptyState>
-            <EmptyStateMedia>
-              <SearchX />
-            </EmptyStateMedia>
-            <EmptyStateTitle>No matching questions</EmptyStateTitle>
-            <EmptyStateDescription>
-              Nothing matches &ldquo;{query.trim()}&rdquo;
-              {category !== "all"
-                ? ` in ${CATEGORY_LABELS[category as Category]}`
-                : ""}
-              . Try different keywords or clear the filters.
-            </EmptyStateDescription>
-            <EmptyStateActions>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <SearchX />
+              </EmptyMedia>
+              <EmptyTitle>No matching questions</EmptyTitle>
+              <EmptyDescription>
+                Nothing matches &ldquo;{query.trim()}&rdquo;
+                {category !== "all"
+                  ? ` in ${CATEGORY_LABELS[category as Category]}`
+                  : ""}
+                . Try different keywords or clear the filters.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" size="sm" onClick={clearFilters}>
                 Clear filters
               </Button>
-            </EmptyStateActions>
-          </EmptyState>
+            </EmptyContent>
+          </Empty>
         )}
 
         <div className="flex flex-col items-start justify-between gap-4 rounded-md border border-border bg-card/40 p-5 sm:flex-row sm:items-center sm:p-6">

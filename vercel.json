@@ -367,11 +367,6 @@
       "permanent": true
     },
     {
-      "source": "/components/empty-state",
-      "destination": "/components/display/empty-state",
-      "permanent": true
-    },
-    {
       "source": "/components/file-dropzone",
       "destination": "/components/files/file-dropzone",
       "permanent": true
@@ -619,11 +614,6 @@
     {
       "source": "/date-range-picker",
       "destination": "/components/pickers/date-range-picker",
-      "permanent": true
-    },
-    {
-      "source": "/empty-state",
-      "destination": "/components/display/empty-state",
       "permanent": true
     },
     {

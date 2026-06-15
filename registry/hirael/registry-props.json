@@ -2043,33 +2043,6 @@
       "extendsNative": true
     }
   ],
-  "empty-state": [
-    {
-      "name": "EmptyState",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "EmptyStateMedia",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "EmptyStateTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "EmptyStateDescription",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "EmptyStateActions",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
   "spinner": [
     {
       "name": "Spinner",

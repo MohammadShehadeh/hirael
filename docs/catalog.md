@@ -75,7 +75,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | ------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activity-feed`    | —             | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                 |
 | `animated-number`  | —             | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                   |
-| `audit-log`        | —             | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                 |
+| `audit-log`        | `collapsible` | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                 |
 | `avatar-stack`     | —             | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button. |
 | `calendar-heatmap` | `tooltip`     | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                            |
 | `countdown-timer`  | —             | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                  |
@@ -111,7 +111,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `dock`                   | —                    | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.     |
 | `floating-action-button` | —                    | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.                   |
 | `floating-toolbar`       | —                    | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels.                                           |
-| `inspector-panel`        | —                    | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.                   |
+| `inspector-panel`        | `collapsible`        | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.                   |
 | `resizable-panels`       | —                    | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups.      |
 | `split-view`             | —                    | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation.                    |
 | `stepper`                | —                    | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.  |

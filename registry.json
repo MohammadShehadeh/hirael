@@ -2038,7 +2038,9 @@
         "class-variance-authority",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "collapsible"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/audit-log.tsx",
@@ -2314,7 +2316,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "collapsible"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/inspector-panel.tsx",

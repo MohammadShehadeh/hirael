@@ -1168,7 +1168,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
     category: "data",
     sourceFiles: ["registry/hirael/ui/audit-log.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
   {
@@ -1308,7 +1308,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
     category: "navigation",
     sourceFiles: ["registry/hirael/ui/inspector-panel.tsx"],
-    registryDependencies: [],
+    registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
   {

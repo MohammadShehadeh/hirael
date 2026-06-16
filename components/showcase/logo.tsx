@@ -152,10 +152,6 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
-export function LogoMarkM({ className }: { className?: string }) {
-  return <LogoMark className={className} />;
-}
-
 /**
  * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
  * surface with a top-lit gradient, a hairline edge, a layered drop shadow, and

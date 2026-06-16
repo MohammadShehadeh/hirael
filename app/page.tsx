@@ -88,7 +88,7 @@ function Hero() {
     <section className="relative isolate overflow-hidden">
       <div aria-hidden className="absolute inset-0 -z-10">
         <Image
-          src="/images/hero-dark.png"
+          src="/images/hero-dark.jpg"
           alt=""
           fill
           priority
@@ -96,10 +96,9 @@ function Hero() {
           className="hidden object-cover object-center opacity-75 dark:block"
         />
         <Image
-          src="/images/hero-light.png"
+          src="/images/hero-light.jpg"
           alt=""
           fill
-          priority
           sizes="100vw"
           className="object-cover object-center opacity-85 dark:hidden"
         />

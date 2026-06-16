@@ -27,23 +27,28 @@ item. Toggle from the header to verify.
 
 ## Palette
 
-Near-monochrome **zinc in OKLCH** — clean grays with the faintest cool cast.
-The only non-neutral is a single cool blue.
+The Hirael brand board, in OKLCH. **Dark is a cool blue-slate canvas**
+(`#0D1117` bg, `#1A1F29` raised, `#2E3440` fills) under **warm cream ink**
+(`#E7E4DE`). Two non-neutrals, each with a job: a **warm taupe** (`#ADA69A`,
+`--warm`) is the brand tone, and a **single cool blue** (`--accent-cool`) is
+reserved for live/active state. Light is the faithful inverse — a warm
+near-white canvas (`#F4F2EC`) under slate ink (`#161B22`).
 
-| Token                                                  | Role                                             |
-| ------------------------------------------------------ | ------------------------------------------------ |
-| `--background` / `--foreground`                        | Canvas + primary text                            |
-| `--card` / `--card-foreground`                         | Raised surfaces                                  |
-| `--popover` / `--popover-foreground`                   | Floating surfaces                                |
-| `--primary` / `--primary-foreground`                   | Emphasis / primary actions                       |
-| `--secondary` / `--muted` / `--accent`                 | Quiet fills (share a value in dark)              |
-| `--muted-foreground`                                   | Secondary text                                   |
-| `--border` (1px) / `--input` / `--ring`                | Hairline edges + focus                           |
-| `--destructive` / `--success` / `--warning` / `--info` | Status (shipped by Callout)                      |
-| `--chart-1…5`                                          | Data viz                                         |
-| `--sidebar*`                                           | Sidebar surface set                              |
-| **`--accent-cool`**                                    | **The one non-neutral — live/active state ONLY** |
-| `--accent-cool-glow` / `--halo-cool` / `--halo-warm`   | Soft glows behind the accent                     |
+| Token                                                  | Role                                              |
+| ------------------------------------------------------ | ------------------------------------------------- |
+| `--background` / `--foreground`                        | Canvas + primary text                             |
+| `--card` / `--card-foreground`                         | Raised surfaces                                   |
+| `--popover` / `--popover-foreground`                   | Floating surfaces                                 |
+| `--primary` / `--primary-foreground`                   | Emphasis — cream on dark, slate on light          |
+| `--secondary` / `--muted` / `--accent`                 | Quiet slate fills (share a value in dark)         |
+| `--muted-foreground`                                   | Secondary text                                    |
+| `--border` (1px) / `--input` / `--ring`                | Hairline edges + focus                            |
+| `--destructive` / `--success` / `--warning` / `--info` | Status (shipped by Callout)                       |
+| `--chart-1…5`                                          | Data viz (taupe + cool-blue + slate ramp)         |
+| `--sidebar*`                                           | Sidebar surface set                               |
+| **`--warm`** / `--warm-foreground` / `--warm-glow`     | **Brand warm tone — taupe, decoration & sheen**   |
+| **`--accent-cool`**                                    | **The cool non-neutral — live/active state ONLY** |
+| `--accent-cool-glow` / `--halo-cool` / `--halo-warm`   | Soft glows (cool-far + taupe-near)                |
 
 Rules:
 
@@ -53,7 +58,10 @@ Rules:
 - **`--accent-cool` is reserved for live/active state** (the pulsing
   `state-dot`, "Latest" markers, active indicators). Don't spend it on
   generic accents or decoration — that's what makes it read as "live."
-- Borders are **1px and soft** (`--border` is white at ~10% in dark).
+- **`--warm` is the brand tone** — taupe sheen on the wordmark, halo glows,
+  warm decoration. It's a quiet metal, not a call-to-action; pair it _with_
+  the cool accent (warm-near, cool-far), never as a substitute for it.
+- Borders are **1px and soft** (`--border` is cream at ~9% in dark).
 
 ## Radius
 
@@ -103,7 +111,7 @@ Defined in `globals.css`, reuse rather than re-rolling:
   section divider; preferred over a solid `border-t` between sections).
 - `.state-dot` — pulsing cool dot for live/active indicators.
 - `.bg-dot-grid` — faint monochrome dot-grid texture (hero background).
-- `.ambient-halo` — large soft radial glows (warm-near, cool-far) that drift
+- `.ambient-halo` — large soft radial glows (taupe-near, cool-far) that drift
   slowly; depth behind the hero and focal bands.
 - `.glass-panel` — translucent blurred panel with a hairline border and a
   faint cool shadow; focal containers only, never whole sections.

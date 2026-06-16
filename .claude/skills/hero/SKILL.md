@@ -26,8 +26,10 @@ colors.
 - **Primary `Button` is already theme-aware** (`bg-primary` flips per theme).
   Use the default and ghost/outline variants; don't restyle them to
   `bg-background text-foreground`.
-- **`--accent-cool` is the only non-neutral**, reserved for live/active dots
-  (`style={{ background: "var(--accent-cool)" }}`). Everything else is neutral.
+- **`--accent-cool` is the cool non-neutral**, reserved for live/active dots
+  (`style={{ background: "var(--accent-cool)" }}`). The warm taupe `--warm` is
+  the brand tone for sheen and glows (warm-near, cool-far). Everything else is
+  neutral slate/cream — don't introduce other hues.
 
 The reference implementation for a theme-aware shader surface is
 [`blocks/cta-03`](../../../registry/hirael/blocks/cta-03/cta-03.tsx).

@@ -10,8 +10,10 @@ const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
 
 /**
  * Arch-and-star mark — slim doorway with a 4-point star inside and three
- * reflection strokes below the base. Drawn with stroke=currentColor so it
- * tracks the surrounding text color. The mark reads at favicon size.
+ * reflection lines below the base. The reflection is feathered: brightest at
+ * the centre and dissolving at both ends, so it reads as light shimmering on
+ * water (matching the brand mark). Drawn with stroke=currentColor so it tracks
+ * the surrounding text color; reads at favicon size.
  */
 function ArchMarkSvg({ className }: { className?: string }) {
   return (
@@ -28,14 +30,31 @@ function ArchMarkSvg({ className }: { className?: string }) {
       strokeLinejoin="round"
     >
       <title>Hirael</title>
+      <defs>
+        <linearGradient
+          id="hirael-refl-mark"
+          gradientUnits="userSpaceOnUse"
+          x1="12"
+          y1="0"
+          x2="68"
+          y2="0"
+        >
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
+          <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </linearGradient>
+      </defs>
       {/* Archway: vertical sides + semicircular top, open at the base. */}
       <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
       {/* 4-point star, centered inside the arch. */}
       <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
-      {/* Three short reflection strokes below the arch base. */}
-      <path d="M22 86 H58" opacity="0.7" />
-      <path d="M28 92 H52" opacity="0.45" />
-      <path d="M34 96 H46" opacity="0.25" />
+      {/* Three reflection lines on the water: centre-bright, feathered ends,
+          fading and narrowing as they fall away from the base. */}
+      <g stroke="url(#hirael-refl-mark)">
+        <path d="M18 84 H62" opacity="0.9" />
+        <path d="M24 89 H56" opacity="0.6" />
+        <path d="M30 94 H50" opacity="0.32" />
+      </g>
     </svg>
   );
 }
@@ -55,6 +74,20 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
       className={className}
     >
       <title>Hirael</title>
+      <defs>
+        <linearGradient
+          id="hirael-refl-word"
+          gradientUnits="userSpaceOnUse"
+          x1="6"
+          y1="0"
+          x2="46"
+          y2="0"
+        >
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
+          <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </linearGradient>
+      </defs>
       <g
         fill="none"
         stroke="currentColor"
@@ -64,9 +97,17 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
       >
         <path d="M10 48 V22 a16 16 0 0 1 32 0 V48" />
         <path d="M26 26 L28.4 32 L34 34 L28.4 36 L26 42 L23.6 36 L18 34 L23.6 32 Z" />
-        <path d="M14 53 H38" opacity="0.7" />
-        <path d="M18 56.5 H34" opacity="0.45" />
-        <path d="M22 59 H30" opacity="0.25" />
+      </g>
+      <g
+        fill="none"
+        stroke="url(#hirael-refl-word)"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 52.5 H40" opacity="0.9" />
+        <path d="M16 55.5 H36" opacity="0.6" />
+        <path d="M20 58.5 H32" opacity="0.32" />
       </g>
       <text
         x="56"
@@ -113,6 +154,37 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function LogoMarkM({ className }: { className?: string }) {
   return <LogoMark className={className} />;
+}
+
+/**
+ * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
+ * surface with a top-lit gradient, a hairline edge, a layered drop shadow, and
+ * a glossy top bevel (the same physical-key treatment as the Kbd component, so
+ * the brand mark reads like a pressable key). Matches the board's ICON / MARK
+ * panel. Size with a single `size-*` utility on `className`.
+ */
+export function LogoTile({
+  className,
+  markClassName,
+}: {
+  className?: string;
+  markClassName?: string;
+}) {
+  return (
+    <span
+      role="img"
+      aria-label="Hirael"
+      className={cn(
+        "relative inline-flex size-9 shrink-0 select-none items-center justify-center overflow-hidden rounded-sm text-foreground",
+        "border border-input bg-linear-to-b from-card to-card/80",
+        "shadow-[0_1px_0_1px_oklch(0%_0_0/0.1),0_2px_4px_-1px_oklch(0%_0_0/0.1),0_4px_6px_-2px_oklch(0%_0_0/0.05)]",
+        "dark:shadow-[0_1px_0_1px_oklch(0%_0_0/0.4),0_2px_4px_-1px_oklch(0%_0_0/0.3),0_4px_6px_-2px_oklch(0%_0_0/0.2)]",
+        className,
+      )}
+    >
+      <ArchMarkSvg className={cn("relative size-8", markClassName)} />
+    </span>
+  );
 }
 
 export function BrandLockup({

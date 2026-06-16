@@ -72,9 +72,11 @@ with the rest of the catalog (the full checklist is in
   import primitives by relative path.
 - **Design tokens, never hard-coded colors.** Use `--background /
 --foreground / --border / --primary / --accent` and friends (see
-  [docs/design.md](./docs/design.md)). Light is a faithful inverse of dark;
-  both must work. The single non-neutral is `--accent-cool`, reserved for
-  live/active state — don't spend it on decoration.
+  [docs/design.md](./docs/design.md)). The canvas is cool blue-slate under
+  warm cream ink; light is a faithful inverse of dark and both must work.
+  Two non-neutrals: `--warm` (taupe) is the brand tone for sheen and glows,
+  and `--accent-cool` is reserved for live/active state — don't spend either
+  on generic decoration, and don't substitute one for the other.
 - **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
 - **A demo at `registry/hirael/examples/<name>-demo.tsx`** showing a basic
   compose and a customized compose.

@@ -63,7 +63,7 @@ app/                              # Next.js App Router (output: "export")
   embed/blocks/[category]/[block]/ # isolated framed block previews
   embed/templates/[template]/     # isolated framed template previews
   global-error.tsx, not-found.tsx # error + 404 surfaces
-  globals.css                     # design tokens (zinc palette, 0.65rem radius)
+  globals.css                     # design tokens (slate canvas, cream ink, 0.65rem radius)
   layout.tsx, manifest.ts, sitemap.ts, robots.ts, opengraph-image.tsx, icon.tsx …
 components/showcase/              # site chrome — NOT part of the registry
   site-header.tsx, topbar.tsx, sidebar.tsx, site-footer.tsx
@@ -131,8 +131,10 @@ yet committed:
 
 - **Dark is the default canvas.** `:root` is dark; `.light` is the inverse.
   Both must work for every item. Don't assume light-first.
-- **`--accent-cool` (the one blue) is reserved for live/active state.**
-  Don't spend it on generic accents or decoration.
+- **`--accent-cool` (the cool blue) is reserved for live/active state.**
+  Don't spend it on generic accents or decoration. The warm taupe `--warm`
+  is the brand tone for sheen and glows — pair them (warm-near, cool-far),
+  don't swap one for the other.
 - **registry.json is generated.** Don't hand-edit it; edit
   `registry-meta.ts` and run `pnpm registry:gen`.
 - **Comments are stripped from `registry/hirael/**` on publish.\*\* Keep

@@ -1,5 +1,5 @@
 {
   "permissions": {
-    "allow": ["Bash(*)", "PowerShell(*)"]
+    "allow": ["Bash(*)", "PowerShell(*)", "Edit(/.claude/skills/hero/**)"]
   }
 }

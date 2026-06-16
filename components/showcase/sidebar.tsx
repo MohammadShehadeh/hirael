@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react";
 
-import { LogoMarkM } from "@/components/showcase/logo";
+import { LogoTile } from "@/components/showcase/logo";
 import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
 import { SITE } from "@/lib/site";
 import {
@@ -53,7 +53,7 @@ export function ShowcaseSidebar() {
           className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
           aria-label={`${SITE.name} | home`}
         >
-          <LogoMarkM className="size-8 shrink-0" />
+          <LogoTile className="size-8 shrink-0" />
           <span
             className="truncate whitespace-nowrap text-xl leading-none text-foreground"
             style={{

@@ -17,7 +17,7 @@ export default function Hero01Backdrop({
         endThickness={0.42}
         startSoftness={5}
         endSoftness={1}
-        insideColor="#cfdecf"
+        insideColor="#d9cfba"
         outsideColor="transparent"
       />
       <Beam
@@ -27,7 +27,7 @@ export default function Hero01Backdrop({
         endThickness={0.28}
         startSoftness={1}
         endSoftness={1}
-        insideColor="#cfdecf"
+        insideColor="#d9cfba"
         outsideColor="transparent"
       />
     </Shader>

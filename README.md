@@ -42,10 +42,11 @@ the meaning is the one the product earns over time.
 - **Distributed via the shadcn registry schema.** No runtime dependency
   on a Hirael package — source is copied straight into your repo.
 - **Considered design tokens.** 1px soft borders, 0.65rem radius scale
-  (sm/md/lg/xl derived from `--radius`), a near-monochrome zinc palette
-  in OKLch with dark as the primary canvas and a single cool blue
-  (`--accent-cool`) reserved for live/active state. Inter for body,
-  Geist Mono for code and identifiers.
+  (sm/md/lg/xl derived from `--radius`), a cool blue-slate canvas in OKLch
+  with dark as the primary mode and warm cream ink, plus two non-neutrals —
+  a warm taupe brand tone (`--warm`) and a single cool blue (`--accent-cool`)
+  reserved for live/active state. Inter for body, Geist Mono for code and
+  identifiers, Cormorant Garamond for the display wordmark.
 
 ## Features
 
@@ -261,14 +262,14 @@ styling and slot-targeting works out of the box.
 
 ## Design tokens
 
-Dark is the primary canvas (`:root`); light is a white-canvas inverse
+Dark is the primary canvas (`:root`); light is a warm-cream inverse
 behind a `.light` class, with the standard shadcn `.dark` class
 mirrored onto `<html>` in dark mode so `dark:` variants resolve the
-same way they do in a consumer app. The palette is near-monochrome
-zinc in OKLch — clean grays with the faintest cool cast — plus a
-single non-neutral, a cool blue (`--accent-cool`), reserved for
-live/active state. `--primary` carries emphasis. Borders are 1px and
-soft. Radii follow shadcn's standard scale derived from
+same way they do in a consumer app. The palette is a cool blue-slate
+canvas in OKLch under warm cream ink, with two non-neutrals — a warm
+taupe brand tone (`--warm`) and a single cool blue (`--accent-cool`)
+reserved for live/active state. `--primary` carries emphasis (cream
+on dark, slate on light). Borders are 1px and soft. Radii follow shadcn's standard scale derived from
 `--radius: 0.65rem` (sm = radius − 4px, md = radius − 2px, lg =
 radius, xl = radius + 4px). Inter is the default body face; Geist
 Mono is reserved for code, install commands, and identifiers;

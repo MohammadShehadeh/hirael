@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -86,9 +87,24 @@ function Hero() {
   return (
     <section className="relative isolate overflow-hidden">
       <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="hero-aurora" />
-        <div className="bg-dot-grid absolute inset-0 opacity-30 mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent_70%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent to-background" />
+        <Image
+          src="/images/hero-dark.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hidden object-cover object-center opacity-75 dark:block"
+        />
+        <Image
+          src="/images/hero-light.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-85 dark:hidden"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-background/25 via-background/45 to-background" />
+        <div className="bg-dot-grid absolute inset-0 opacity-20 mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent_70%)]" />
       </div>
 
       <div className="mx-auto flex min-h-[86vh] max-w-5xl flex-col items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">

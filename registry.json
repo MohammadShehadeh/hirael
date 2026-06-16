@@ -571,7 +571,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button"
+        "button",
+        "table"
       ],
       "files": [
         {
@@ -938,7 +939,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button"
+        "button",
+        "drawer",
+        "dropdown-menu"
       ],
       "files": [
         {
@@ -1095,7 +1098,9 @@
         "class-variance-authority",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/announcement-bar.tsx",
@@ -1438,7 +1443,8 @@
         "input-group",
         "kbd",
         "separator",
-        "sidebar"
+        "sidebar",
+        "table"
       ],
       "files": [
         {
@@ -1683,6 +1689,7 @@
       ],
       "registryDependencies": [
         "button",
+        "calendar-utils",
         "popover"
       ],
       "files": [
@@ -1706,6 +1713,7 @@
       ],
       "registryDependencies": [
         "button",
+        "calendar-utils",
         "popover",
         "separator"
       ],
@@ -2439,7 +2447,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/subscription-plans.tsx",
@@ -2459,7 +2469,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/ui/api-keys.tsx",
@@ -3004,6 +3016,357 @@
       ]
     },
     {
+      "name": "hero-06",
+      "type": "registry:block",
+      "title": "Hero 6",
+      "description": "Centered personal hero: a live \"available for work\" badge, a serif headline with a primary-tinted emphasis span, a sub-line, a three-stat row with hairline dividers, dual rounded CTAs, and a tooltip-backed core-stack icon row framed by gradient rules. Rotated geometric border accents fade in behind it (and stay still under reduced motion).",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-06/hero-06.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-06.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-07",
+      "type": "registry:block",
+      "title": "Hero 7",
+      "description": "Centered hero with a word-by-word blur-in serif headline, a glass beta badge with a live dot, dual rounded CTAs, and animated beam line-art SVGs that trace the top, bottom, and both sides of the section. Respects reduced-motion.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-07/hero-07.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-07.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-08",
+      "type": "registry:block",
+      "title": "Hero 8",
+      "description": "Centered hero on a framed, token-lit panel: a pill badge eyebrow, a serif headline with an italic emphasis span, sub-copy, dual CTA buttons, and a faux app-window preview below. Headline, sub-copy, and CTAs fade and rise in with staggered motion that respects reduced-motion.",
+      "categories": [
+        "blocks",
+        "hero"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/hero-08/hero-08.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/hero-08.tsx"
+        }
+      ]
+    },
+    {
+      "name": "testimonial-03",
+      "type": "registry:block",
+      "title": "Testimonial 3",
+      "description": "Centered statement quote with a serif display heading, an inline quote glyph in the corner, gradient hairline dividers, and a highlighted phrase, closed by a small mono attribution line.",
+      "categories": [
+        "blocks",
+        "testimonial"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/testimonial-03/testimonial-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/testimonial-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cta-04",
+      "type": "registry:block",
+      "title": "CTA 4",
+      "description": "Centered \"get in touch\" CTA with a mono eyebrow, serif headline, mail button, a direct-contact line, and a row of outline social icon buttons, capped by a soft radial glow dome with a starfield speckle.",
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cta-04/cta-04.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-04.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cta-05",
+      "type": "registry:block",
+      "title": "CTA 5",
+      "description": "Contact CTA panel with a scroll-reactive radial glow, an eyebrow badge, a word-by-word reveal headline, and two contact actions (email and call) each pairing a button with its detail line.",
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cta-05/cta-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-05.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cta-06",
+      "type": "registry:block",
+      "title": "CTA 6",
+      "description": "Framed CTA banner over a tokenized gradient surface: an eyebrow label, a serif headline with an italic emphasis, short sub-copy, and a primary action button with a motion reveal.",
+      "categories": [
+        "blocks",
+        "cta"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cta-06/cta-06.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cta-06.tsx"
+        }
+      ]
+    },
+    {
+      "name": "footer-02",
+      "type": "registry:block",
+      "title": "Footer 2",
+      "description": "Rounded-top footer with a brand block beside a multi-column link grid. Each column caps at five links and shows a \"View all\" arrow when there are more. A soft radial tint sits behind the top edge, and a bottom meta row carries the copyright and secondary links.",
+      "categories": [
+        "blocks",
+        "footer"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/footer-02/footer-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/footer-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "footer-03",
+      "type": "registry:block",
+      "title": "Footer 3",
+      "description": "Boxed link-column footer: a two-column brand block with wordmark, blurb, and ghost social buttons, two link columns, and a divided copyright row. Sits in a soft outlined panel.",
+      "categories": [
+        "blocks",
+        "footer"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/footer-03/footer-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/footer-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "faq-05",
+      "type": "registry:block",
+      "title": "FAQ 5",
+      "description": "Two-column FAQ block: a mono eyebrow, serif headline and short intro sit on the start side; a single-open accordion of five questions sits on the end side, split by a vertical divider that collapses to a stacked layout on mobile.",
+      "categories": [
+        "blocks",
+        "faq"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "accordion"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/faq-05/faq-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/faq-05.tsx"
+        }
+      ]
+    },
+    {
+      "name": "contact-02",
+      "type": "registry:block",
+      "title": "Contact 2",
+      "description": "Bordered contact section with a serif header, a three-column info grid (email, location, social) using muted-fill labels and divider rules, and a \"Find us online\" footer of pill-shaped social links.",
+      "categories": [
+        "blocks",
+        "contact"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/contact-02/contact-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/contact-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "login-03",
+      "type": "registry:block",
+      "title": "Login 3",
+      "description": "Split-screen sign-in: a decorative animated-paths aside with a brand mark and a short quote, paired with a clean GitHub-only sign-in pane. A back-to-home link, mobile-collapsing layout, and token-based radial glows behind the form.",
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/login-03/login-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/login-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toc",
+      "type": "registry:ui",
+      "title": "Table of Contents",
+      "description": "On-this-page navigation that tracks the active heading as you scroll and highlights it with a moving border marker. Takes a flat or nested items list, or composes from parts. Smooth scroll respects reduced-motion.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/toc.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/toc.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell-05",
+      "type": "registry:block",
+      "title": "App Shell 5",
+      "description": "Inset sidebar app shell: a collapsible icon sidebar with a brand header, grouped Workspace and Tools nav (with a Beta badge), and an account menu in the footer, paired with a sticky header carrying the sidebar toggle and a breadcrumb. The inset holds a stat row and a placeholder for page content.",
+      "categories": [
+        "blocks",
+        "app-shell"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "breadcrumb",
+        "dropdown-menu",
+        "separator",
+        "sidebar"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/app-shell-05/app-shell-05.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/app-shell-05.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-06",
+      "type": "registry:block",
+      "title": "Dashboard 6",
+      "description": "Pipeline overview dashboard: four stat cards for success, failure, skipped, and live activity, a clickable latest-runs bar chart with a run breakdown panel, and a recent-runs list. The active-now stat uses --accent-cool for live state; every other color is a design token, so it works in light and dark.",
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "button",
+        "card",
+        "chart",
+        "empty",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/dashboard-06/dashboard-06.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-06.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",
@@ -3021,6 +3384,24 @@
           "path": "registry/hirael/ui/accordion.tsx",
           "type": "registry:ui",
           "target": "components/ui/accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar-utils",
+      "type": "registry:ui",
+      "title": "Calendar Utils",
+      "description": "Dependency-free date helpers (month grids, day math, keyboard-grid navigation) shared by date-picker and date-range-picker.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/calendar-utils.ts",
+          "type": "registry:ui",
+          "target": "components/ui/calendar-utils.ts"
         }
       ]
     }

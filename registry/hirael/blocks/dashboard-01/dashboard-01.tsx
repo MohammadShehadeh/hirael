@@ -186,7 +186,7 @@ export default function Dashboard01() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-3">
             <Badge variant="outline" className="w-fit">
-              · overview
+              overview
             </Badge>
             <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Operations · {RANGES.find((r) => r.value === range)?.label}.
@@ -254,7 +254,7 @@ export default function Dashboard01() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    · sign-ups
+                    sign-ups
                   </CardDescription>
                   <CardTitle className="text-lg">
                     {signups.count} new sign-ups
@@ -329,7 +329,7 @@ export default function Dashboard01() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  · recent activity
+                  recent activity
                 </CardDescription>
                 <Button variant="link" size="sm" className="h-auto p-0" asChild>
                   <a href="#">View all</a>

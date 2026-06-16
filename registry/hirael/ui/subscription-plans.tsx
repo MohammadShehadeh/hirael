@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 type SubscriptionPlansProps = React.ComponentProps<"div">;
 
@@ -161,16 +162,11 @@ function SubscriptionPlanAction({
   ...props
 }: SubscriptionPlanActionProps) {
   return (
-    <button
+    <Button
       type="button"
+      variant={variant === "primary" ? "default" : "outline"}
       data-slot="subscription-plan-action"
-      className={cn(
-        "inline-flex h-9 w-full items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
-        variant === "primary"
-          ? "bg-primary text-primary-foreground hover:bg-primary/90"
-          : "border border-border bg-background text-foreground hover:bg-accent",
-        className,
-      )}
+      className={cn("w-full", className)}
       {...props}
     />
   );

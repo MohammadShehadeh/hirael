@@ -4,6 +4,14 @@ import * as React from "react";
 import { Check, Minus } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/registry/hirael/ui/table";
 import { cn } from "@/lib/utils";
 
 type Cell = boolean | string;
@@ -90,7 +98,7 @@ export default function Pricing02() {
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div className="flex flex-col gap-5">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · compare plans
+            compare plans
           </span>
           <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Every feature, side by side.
@@ -101,26 +109,26 @@ export default function Pricing02() {
           </p>
         </div>
 
-        <div className="mt-12 overflow-x-auto rounded-md border border-border bg-card">
-          <table className="w-full border-collapse text-start">
-            <thead className="sticky top-0 z-10 bg-card">
-              <tr className="border-b border-border">
-                <th className="w-2/5 px-5 py-5 align-bottom">
+        <div className="mt-12 overflow-hidden rounded-md border border-border bg-card">
+          <Table className="border-collapse text-start">
+            <TableHeader className="sticky top-0 z-10 bg-card">
+              <TableRow className="border-b border-border hover:bg-transparent">
+                <TableHead className="w-2/5 px-5 py-5 align-bottom text-start">
                   <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    · plan
+                    plan
                   </span>
-                </th>
+                </TableHead>
                 {TIERS.map((t) => (
-                  <th
+                  <TableHead
                     key={t.key}
                     className={cn(
-                      "px-5 py-5 align-bottom",
+                      "px-5 py-5 align-bottom text-start",
                       t.featured && "bg-background/40",
                     )}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-base font-semibold tracking-[-0.01em]">
+                        <span className="text-base font-semibold tracking-[-0.01em] text-foreground">
                           {t.name}
                         </span>
                         <span className="font-mono text-xs tabular-nums text-muted-foreground">
@@ -137,21 +145,21 @@ export default function Pricing02() {
                         <a href="#">{t.cta}</a>
                       </Button>
                     </div>
-                  </th>
+                  </TableHead>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {ROWS.map((r) => (
-                <tr
+                <TableRow
                   key={r.feature}
-                  className="border-b border-border last:border-b-0"
+                  className="border-b border-border last:border-b-0 hover:bg-transparent"
                 >
-                  <td className="px-5 py-4 font-mono text-xs uppercase tracking-[0.08em] text-foreground">
+                  <TableCell className="px-5 py-4 font-mono text-xs uppercase tracking-[0.08em] text-foreground">
                     {r.feature}
-                  </td>
+                  </TableCell>
                   {(["hobby", "pro", "team"] as const).map((k) => (
-                    <td
+                    <TableCell
                       key={k}
                       className={cn(
                         "px-5 py-4",
@@ -159,12 +167,12 @@ export default function Pricing02() {
                       )}
                     >
                       <CellContent value={r[k]} />
-                    </td>
+                    </TableCell>
                   ))}
-                </tr>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
     </section>

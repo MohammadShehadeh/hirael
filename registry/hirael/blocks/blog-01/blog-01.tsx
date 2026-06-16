@@ -159,7 +159,7 @@ export default function Blog01() {
         <div className="flex flex-col gap-5 border-b border-border pb-10 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-4">
             <Badge variant="outline" className="w-fit">
-              · journal
+              journal
             </Badge>
             <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
               Writing from the workshop.

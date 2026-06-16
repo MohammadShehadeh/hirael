@@ -66,7 +66,7 @@ export default function Integrations01() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="flex flex-col gap-5 lg:col-span-5">
             <Badge variant="outline" className="w-fit">
-              · integrations
+              integrations
             </Badge>
             <h2
               id="integrations-01-heading"

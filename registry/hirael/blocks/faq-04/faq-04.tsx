@@ -117,7 +117,7 @@ export default function Faq04() {
 
         <div className="flex flex-col items-center gap-4 border-b border-border px-6 py-12 text-center md:px-10 md:py-16">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-            · faq
+            faq
           </span>
           <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Asked, answered, archived.

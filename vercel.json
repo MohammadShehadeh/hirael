@@ -47,6 +47,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/app-shell-05",
+      "destination": "/blocks/app-shell/app-shell-05",
+      "permanent": true
+    },
+    {
       "source": "/blocks/blog-01",
       "destination": "/blocks/blog/blog-01",
       "permanent": true
@@ -54,6 +59,11 @@
     {
       "source": "/blocks/contact-01",
       "destination": "/blocks/contact/contact-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/contact-02",
+      "destination": "/blocks/contact/contact-02",
       "permanent": true
     },
     {
@@ -69,6 +79,21 @@
     {
       "source": "/blocks/cta-03",
       "destination": "/blocks/cta/cta-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cta-04",
+      "destination": "/blocks/cta/cta-04",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cta-05",
+      "destination": "/blocks/cta/cta-05",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cta-06",
+      "destination": "/blocks/cta/cta-06",
       "permanent": true
     },
     {
@@ -94,6 +119,11 @@
     {
       "source": "/blocks/dashboard-05",
       "destination": "/blocks/dashboard/dashboard-05",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/dashboard-06",
+      "destination": "/blocks/dashboard/dashboard-06",
       "permanent": true
     },
     {
@@ -127,6 +157,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/faq-05",
+      "destination": "/blocks/faqs/faq-05",
+      "permanent": true
+    },
+    {
       "source": "/blocks/feature-01",
       "destination": "/blocks/features/feature-01",
       "permanent": true
@@ -139,6 +174,16 @@
     {
       "source": "/blocks/footer-01",
       "destination": "/blocks/footer/footer-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/footer-02",
+      "destination": "/blocks/footer/footer-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/footer-03",
+      "destination": "/blocks/footer/footer-03",
       "permanent": true
     },
     {
@@ -177,6 +222,21 @@
       "permanent": true
     },
     {
+      "source": "/blocks/hero-06",
+      "destination": "/blocks/hero/hero-06",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/hero-07",
+      "destination": "/blocks/hero/hero-07",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/hero-08",
+      "destination": "/blocks/hero/hero-08",
+      "permanent": true
+    },
+    {
       "source": "/blocks/image-gallery-01",
       "destination": "/blocks/image-gallery/image-gallery-01",
       "permanent": true
@@ -194,6 +254,11 @@
     {
       "source": "/blocks/login-02",
       "destination": "/blocks/auth/login-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/login-03",
+      "destination": "/blocks/auth/login-03",
       "permanent": true
     },
     {
@@ -234,6 +299,11 @@
     {
       "source": "/blocks/testimonial-02",
       "destination": "/blocks/testimonials/testimonial-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/testimonial-03",
+      "destination": "/blocks/testimonials/testimonial-03",
       "permanent": true
     },
     {
@@ -579,6 +649,11 @@
     {
       "source": "/components/timeline",
       "destination": "/components/data/timeline",
+      "permanent": true
+    },
+    {
+      "source": "/components/toc",
+      "destination": "/components/navigation/toc",
       "permanent": true
     },
     {

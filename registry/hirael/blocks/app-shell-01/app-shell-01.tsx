@@ -29,6 +29,14 @@ import {
 import { KbdDisplay } from "@/registry/hirael/ui/kbd";
 import { Separator } from "@/registry/hirael/ui/separator";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/registry/hirael/ui/table";
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -336,7 +344,7 @@ export default function AppShell01() {
           <Card className="gap-0 overflow-hidden p-0">
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                · recent accounts
+                recent accounts
                 {query && (
                   <span className="ms-2 text-foreground">
                     ({filteredRows.length} of {ROWS.length})
@@ -368,71 +376,75 @@ export default function AppShell01() {
                 </Button>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="text-start font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                      <th className="px-4 py-2 font-normal">Account</th>
-                      <th className="px-4 py-2 font-normal">Plan</th>
-                      <th className="hidden px-4 py-2 font-normal sm:table-cell">
-                        MRR
-                      </th>
-                      <th className="px-4 py-2 font-normal">Status</th>
-                      <th className="px-4 py-2 text-end font-normal">
-                        <span className="sr-only">Actions</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredRows.map((r) => (
-                      <tr
-                        key={r.name}
-                        className="border-t border-border text-sm transition-colors hover:bg-accent/30"
-                      >
-                        <td className="px-4 py-2.5">
-                          <span className="inline-flex items-center gap-2">
-                            <span className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium text-foreground">
-                              {r.initials}
-                            </span>
-                            <span className="font-medium">{r.name}</span>
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground hover:bg-transparent">
+                    <TableHead className="h-auto px-4 py-2 text-start font-normal text-muted-foreground">
+                      Account
+                    </TableHead>
+                    <TableHead className="h-auto px-4 py-2 text-start font-normal text-muted-foreground">
+                      Plan
+                    </TableHead>
+                    <TableHead className="hidden h-auto px-4 py-2 text-start font-normal text-muted-foreground sm:table-cell">
+                      MRR
+                    </TableHead>
+                    <TableHead className="h-auto px-4 py-2 text-start font-normal text-muted-foreground">
+                      Status
+                    </TableHead>
+                    <TableHead className="h-auto px-4 py-2 text-end font-normal text-muted-foreground">
+                      <span className="sr-only">Actions</span>
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRows.map((r) => (
+                    <TableRow
+                      key={r.name}
+                      className="text-sm hover:bg-accent/30"
+                    >
+                      <TableCell className="px-4 py-2.5">
+                        <span className="inline-flex items-center gap-2">
+                          <span className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium text-foreground">
+                            {r.initials}
                           </span>
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <Badge
-                            variant={r.plan === "Hobby" ? "outline" : "default"}
-                            className="font-mono"
-                          >
-                            {r.plan}
-                          </Badge>
-                        </td>
-                        <td className="hidden px-4 py-2.5 font-mono tabular-nums text-foreground sm:table-cell">
-                          {r.mrr}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
-                            <span
-                              className={`size-1.5 rounded-full ${statusDot(r.status)}`}
-                            />
-                            <span className={statusText(r.status)}>
-                              {r.status}
-                            </span>
+                          <span className="font-medium">{r.name}</span>
+                        </span>
+                      </TableCell>
+                      <TableCell className="px-4 py-2.5">
+                        <Badge
+                          variant={r.plan === "Hobby" ? "outline" : "default"}
+                          className="font-mono"
+                        >
+                          {r.plan}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="hidden px-4 py-2.5 font-mono tabular-nums text-foreground sm:table-cell">
+                        {r.mrr}
+                      </TableCell>
+                      <TableCell className="px-4 py-2.5">
+                        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
+                          <span
+                            className={`size-1.5 rounded-full ${statusDot(r.status)}`}
+                          />
+                          <span className={statusText(r.status)}>
+                            {r.status}
                           </span>
-                        </td>
-                        <td className="px-4 py-2.5 text-end">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-7"
-                            aria-label={`Actions for ${r.name}`}
-                          >
-                            <MoreHorizontal className="size-3.5" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </span>
+                      </TableCell>
+                      <TableCell className="px-4 py-2.5 text-end">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-7"
+                          aria-label={`Actions for ${r.name}`}
+                        >
+                          <MoreHorizontal className="size-3.5" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </Card>
         </div>

@@ -32,9 +32,9 @@ assumes a request-time server.
 ## registry-meta.ts is the single source of truth — never hand-edit registry.json
 
 [registry/hirael/registry-meta.ts](./registry/hirael/registry-meta.ts)
-declares every item: name, title, description, category, `sourceFiles`,
-`installTargets`, `registryDependencies`, `dependencies`, and (for blocks)
-`blockKind` / `blockTagline`. From it:
+declares every item: name, title, description, category, `files`
+(each `{ path, target? }`), `registryDependencies`, `dependencies`, and
+(for blocks) `blockKind` / `blockTagline`. From it:
 
 - `pnpm registry:gen` regenerates **registry.json** — it is GENERATED, do
   not edit it by hand.
@@ -76,14 +76,14 @@ with the rest of the catalog (the full checklist is in
   both must work. The single non-neutral is `--accent-cool`, reserved for
   live/active state — don't spend it on decoration.
 - **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
-- **A `*.demo.tsx`** under `registry/hirael/<name>/` showing a basic compose
-  and a customized compose.
+- **A demo at `registry/hirael/examples/<name>-demo.tsx`** showing a basic
+  compose and a customized compose.
 - **A preview loader in
   [registry-demos.tsx](./registry/hirael/registry-demos.tsx)** keyed by the
   entry name — the showcase and `/embed/*` previews render every item
   through `RegistryDemo`, which returns nothing if the name is unregistered,
   so the preview iframe silently comes up blank. (Blocks/templates point at
-  the block file; components point at the `*.demo.tsx`.) `pnpm
+  the block file; components point at the `examples/<name>-demo.tsx`.) `pnpm
 check:registry` fails when a showcased entry is missing here.
 
 ## Copy reads like a human

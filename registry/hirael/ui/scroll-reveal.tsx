@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
 type ScrollRevealDirection = "up" | "down" | "left" | "right";

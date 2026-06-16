@@ -113,7 +113,7 @@ export default function Ecommerce02() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="flex flex-col gap-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-              · cart
+              cart
             </span>
             <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
               Almost yours.
@@ -223,7 +223,7 @@ export default function Ecommerce02() {
             <Card className="h-fit lg:sticky lg:top-6">
               <CardHeader>
                 <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  · order summary
+                  order summary
                 </CardDescription>
                 <CardTitle className="sr-only">Order summary</CardTitle>
               </CardHeader>

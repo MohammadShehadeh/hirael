@@ -52,7 +52,7 @@ export default function Login02() {
 
           <div className="mb-8 flex flex-col gap-2">
             <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
-              · sign in
+              sign in
             </span>
             <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Welcome back.

@@ -219,9 +219,6 @@ function LazySelectTrigger({
     <PopoverTrigger asChild>
       <button
         type="button"
-        role="combobox"
-        aria-expanded={ctx.open}
-        aria-haspopup="listbox"
         disabled={ctx.disabled}
         data-slot="lazy-select-trigger"
         data-state={ctx.open ? "open" : "closed"}

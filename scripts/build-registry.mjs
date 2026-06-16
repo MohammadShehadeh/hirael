@@ -55,14 +55,14 @@ function toRegistryItem(entry) {
     throw new Error(`"${entry.name}": could not derive categories`);
   }
 
-  const files = (entry.sourceFiles ?? []).map((sourcePath, i) => ({
-    path: sourcePath,
-    type,
-    target: isComposite
-      ? entry.installTargets?.[i]
-      : `components/ui/${path.basename(sourcePath)}`,
+  const files = (entry.files ?? []).map((file) => ({
+    path: file.path,
+    type: file.type ?? type,
+    target:
+      file.target ??
+      (isComposite ? undefined : `components/ui/${path.basename(file.path)}`),
   }));
-  if (!files.length) throw new Error(`"${entry.name}": no sourceFiles`);
+  if (!files.length) throw new Error(`"${entry.name}": no files`);
   for (const f of files) {
     if (!f.target) throw new Error(`"${entry.name}": missing install target`);
   }

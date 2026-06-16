@@ -4,7 +4,7 @@
 // generated from it by scripts/build-registry.mjs. This script fails the
 // build early when:
 //   1. registry.json is stale (doesn't match what build-registry generates)
-//   2. a sourceFile referenced by registry-meta.ts is missing on disk
+//   2. a file referenced by registry-meta.ts is missing on disk
 //   3. a non-block component is missing its sibling demo file
 //   4. an item's declared registryDependencies drift from the
 //      `@/registry/hirael/ui/*` modules its source actually imports
@@ -36,10 +36,10 @@ const meta = await loadRegistryMeta();
 const generated = buildRegistry(meta);
 const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY];
 
-// Preview loaders registered in registry-demos.tsx, keyed by entry name.
-// Every showcased entry needs one, or RegistryDemo returns null and the
-// item's preview / embed iframe renders blank. Distribution-only items
-// (no showcase page) are intentionally absent.
+// Preview loaders registered in registry-demos.tsx: block/template names in
+// BLOCK_LOADERS, component example slugs in EXAMPLE_LOADERS. A showcased entry
+// with no matching loader renders blank in its preview / embed iframe.
+// Distribution-only items (no showcase page) are intentionally absent.
 const demosSrc = readFileSync(
   path.join(ROOT, "registry/hirael/registry-demos.tsx"),
   "utf8",
@@ -58,10 +58,10 @@ if (onDisk !== registryJsonText(generated)) {
 
 // 2–4. Per-entry checks.
 for (const entry of entries) {
-  const sourceFiles = entry.sourceFiles ?? [];
-  for (const p of sourceFiles) {
+  const filePaths = (entry.files ?? []).map((f) => f.path);
+  for (const p of filePaths) {
     if (!existsSync(path.join(ROOT, p))) {
-      fail(`"${entry.name}" → missing sourceFile ${p}`);
+      fail(`"${entry.name}" → missing file ${p}`);
     }
   }
 
@@ -71,24 +71,33 @@ for (const entry of entries) {
     entry.type === "registry:block";
   const showcased = meta.REGISTRY.includes(entry);
   if (!isBlock && showcased) {
-    const demo = `registry/hirael/${entry.name}/${entry.name}.demo.tsx`;
-    if (!existsSync(path.join(ROOT, demo))) {
-      fail(`component "${entry.name}" → missing demo ${demo}`);
+    // Each example needs its source file in examples/ and a slug-keyed loader
+    // in EXAMPLE_LOADERS, or its block on the page renders blank.
+    for (const ex of meta.getExamples(entry.name)) {
+      const demo = `registry/hirael/examples/${ex.slug}.tsx`;
+      if (!existsSync(path.join(ROOT, demo))) {
+        fail(`component "${entry.name}" → missing example ${demo}`);
+      }
+      if (!demoLoaderNames.has(ex.slug)) {
+        fail(
+          `component "${entry.name}" → example "${ex.slug}" has no loader in registry-demos.tsx (EXAMPLE_LOADERS) — its preview would render blank`,
+        );
+      }
     }
   }
 
-  // Every showcased entry must be registered in registry-demos.tsx or its
+  // Blocks/templates must be registered in BLOCK_LOADERS by name, or their
   // preview / embed iframe renders blank.
-  if (showcased && !demoLoaderNames.has(entry.name)) {
+  if (isBlock && showcased && !demoLoaderNames.has(entry.name)) {
     fail(
-      `"${entry.name}" → missing preview loader in registry-demos.tsx (DEMO_LOADERS) — its preview/embed would render blank`,
+      `"${entry.name}" → missing preview loader in registry-demos.tsx (BLOCK_LOADERS) — its preview/embed would render blank`,
     );
   }
 
   // Declared registryDependencies must match the registry modules the
   // source actually imports.
   const imported = new Set();
-  for (const p of sourceFiles) {
+  for (const p of filePaths) {
     const file = path.join(ROOT, p);
     if (!existsSync(file)) continue;
     const src = readFileSync(file, "utf8");

@@ -25,6 +25,24 @@ type ThemeContextValue = {
 
 const EMPTY_THEME: Theme = { light: {}, dark: {} };
 
+// Read the persisted token overrides synchronously so the editor state, the
+// applied CSS variables, and the pre-paint script agree on the very first
+// render. Without this the provider would mount empty and immediately write
+// EMPTY_THEME back to storage, wiping a saved theme — and the framed `/embed/*`
+// block previews (which re-run the same pre-paint script from the root layout)
+// would load against the default palette instead of the active theme.
+function readPersistedTheme(): Theme {
+  if (typeof window === "undefined") return EMPTY_THEME;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return EMPTY_THEME;
+    const parsed = JSON.parse(raw) as Partial<Theme>;
+    return { light: parsed.light ?? {}, dark: parsed.dark ?? {} };
+  } catch {
+    return EMPTY_THEME;
+  }
+}
+
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
 // Owns the live token-editor overrides and bridges next-themes' light/dark
@@ -37,7 +55,25 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
   const mode: ThemeMode =
     (resolvedTheme ?? activeMode) === "light" ? "light" : "dark";
 
-  const [theme, setThemeState] = React.useState<Theme>(EMPTY_THEME);
+  const [theme, setThemeState] = React.useState<Theme>(readPersistedTheme);
+
+  // Keep already-mounted documents in sync when another same-origin document
+  // changes the theme. The theme sheet lives in the global nav, so a user can
+  // re-skin while a block's `/embed/*` preview iframe is already on screen;
+  // next-themes mirrors the light/dark mode across frames itself, this carries
+  // the custom token overrides the same way. `storage` only fires in *other*
+  // documents, so the writer never hears its own change.
+  React.useEffect(() => {
+    function onStorage(e: StorageEvent) {
+      if (e.key !== STORAGE_KEY) return;
+      const next = readPersistedTheme();
+      setThemeState((prev) =>
+        JSON.stringify(next) === JSON.stringify(prev) ? prev : next,
+      );
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   // Apply tokens for the active mode. Clearing a token requires removeProperty.
   const appliedKeysRef = React.useRef<Set<string>>(new Set());

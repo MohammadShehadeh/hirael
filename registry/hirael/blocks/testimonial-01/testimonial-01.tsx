@@ -44,15 +44,8 @@ export default function Testimonial01() {
 
           <div className="w-full border-t border-border pt-8">
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-xs text-muted-foreground">
-              {LOGOS.map((l, i) => (
-                <React.Fragment key={l}>
-                  <span>{l}</span>
-                  {i < LOGOS.length - 1 && (
-                    <span aria-hidden className="text-muted-foreground/40">
-                      ·
-                    </span>
-                  )}
-                </React.Fragment>
+              {LOGOS.map((l) => (
+                <span key={l}>{l}</span>
               ))}
             </div>
           </div>

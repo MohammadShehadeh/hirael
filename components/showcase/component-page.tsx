@@ -8,7 +8,7 @@ import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs";
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
 import { InstallBlock } from "@/components/showcase/install-block";
-import { RegistryDemo } from "@/registry/hirael/registry-demos";
+import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
   Table,
   TableBody,
@@ -21,8 +21,6 @@ import {
   entryEmbedHref,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
-
-type Tab = "preview" | "usage" | "api" | "code" | "install";
 
 export type SourceFile = {
   code: string;
@@ -44,56 +42,51 @@ export type ApiPart = {
   extendsNative: boolean;
 };
 
+/** A single example a component showcases — its slug, label and source. */
+export type ExampleEntry = {
+  slug: string;
+  title: string;
+  source: SourceFile | null;
+};
+
 export function ComponentPage({
   entry,
   source,
-  demoSource,
+  examples,
   api,
   breadcrumb,
 }: {
   entry: RegistryEntryMeta;
-  /** Pre-highlighted source files keyed by repo-relative path. */
+  /** Pre-highlighted install source files, keyed by repo-relative path. */
   source: Record<string, SourceFile>;
-  /** Pre-highlighted demo source — shows how to use the component. */
-  demoSource?: SourceFile | null;
+  /** Component examples, each with pre-highlighted source. Composite items pass none. */
+  examples?: ExampleEntry[];
   /** Extracted per-part props tables (registry-props.json). */
   api?: ApiPart[] | null;
   /** Hierarchy trail shown above the header for navigation. */
   breadcrumb?: Crumb[];
 }) {
-  const [tab, setTab] = React.useState<Tab>("preview");
-  const [rtl, setRtl] = React.useState(false);
-
   const isComposite =
     entry.category === "blocks" || entry.category === "templates";
   const embedHref = entryEmbedHref(entry);
 
   const codeTabs: CodeBlockTab[] = React.useMemo(
     () =>
-      (entry.sourceFiles ?? [])
-        .map((f, i) => {
-          const file = source[f];
+      (entry.files ?? [])
+        .map((f) => {
+          const file = source[f.path];
           if (!file) return null;
-          const label = isComposite ? (entry.installTargets?.[i] ?? f) : f;
+          const label = isComposite ? (f.target ?? f.path) : f.path;
           return { label, code: file.code, html: file.html };
         })
         .filter((t): t is CodeBlockTab => t !== null),
-    [entry.sourceFiles, entry.installTargets, source, isComposite],
+    [entry.files, source, isComposite],
   );
 
-  const showUsageTab = !isComposite && !!demoSource;
-  const showApiTab = !isComposite && !!api?.length;
-
-  const tabs = React.useMemo<Array<[Tab, string]>>(() => {
-    const list: Array<[Tab, string]> = [["preview", "Preview"]];
-    if (showUsageTab) list.push(["usage", "Usage"]);
-    if (showApiTab) list.push(["api", "API"]);
-    list.push(["code", "Code"], ["install", "Install"]);
-    return list;
-  }, [showUsageTab, showApiTab]);
+  const exampleList = examples ?? [];
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 md:px-10">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:gap-12 sm:px-6 sm:py-10 md:px-10">
       <header className="flex flex-col gap-3 border-b border-border pb-6">
         {breadcrumb ? (
           <Breadcrumbs items={breadcrumb} />
@@ -123,138 +116,175 @@ export function ComponentPage({
         <InstallBlock name={entry.name} className="mt-1" />
       </header>
 
-      <div
-        role="tablist"
-        aria-label="View"
-        className="inline-flex w-fit items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-1 backdrop-blur-md"
-        onKeyDown={(e) => {
-          if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key))
-            return;
-          e.preventDefault();
-          const order = tabs.map(([k]) => k);
-          const i = order.indexOf(tab);
-          const next =
-            e.key === "Home"
-              ? order[0]
-              : e.key === "End"
-                ? order[order.length - 1]
-                : order[
-                    (i + (e.key === "ArrowRight" ? 1 : -1) + order.length) %
-                      order.length
-                  ];
-          setTab(next);
-          e.currentTarget
-            .querySelector<HTMLButtonElement>(`[data-tab="${next}"]`)
-            ?.focus();
-        }}
-      >
-        {tabs.map(([k, label]) => {
-          const active = tab === k;
-          return (
-            <button
-              key={k}
-              type="button"
-              role="tab"
-              id={`cmp-tab-${k}`}
-              aria-selected={active}
-              aria-controls="cmp-tabpanel"
-              tabIndex={active ? 0 : -1}
-              data-tab={k}
-              onClick={() => setTab(k)}
-              className={cn(
-                "relative rounded-sm px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-200 ease-out outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
-                active
-                  ? "bg-background text-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklch,var(--foreground)_10%,transparent),0_1px_0_0_color-mix(in_oklch,var(--background)_60%,transparent)]"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div
-        role="tabpanel"
-        id="cmp-tabpanel"
-        aria-labelledby={`cmp-tab-${tab}`}
-        tabIndex={0}
-        className="focus-visible:outline-none"
-      >
-        {tab === "preview" &&
-          (isComposite ? (
+      {isComposite ? (
+        <>
+          <Section label="Preview">
             <BlockViewer title={entry.title} embedHref={embedHref} />
-          ) : (
-            <div className="relative rounded-sm border border-border bg-card/40">
-              <DirectionToggle
-                rtl={rtl}
-                onToggle={setRtl}
-                className="absolute right-3 top-3 z-10"
-              />
-              <div
-                dir={rtl ? "rtl" : undefined}
-                className="flex min-h-[360px] items-center justify-center p-6 sm:min-h-[420px] sm:p-8 md:p-10"
-              >
-                <RegistryDemo name={entry.name} />
-              </div>
+          </Section>
+          {codeTabs.length > 0 && (
+            <Section label="Code">
+              <CodeBlock tabs={codeTabs} layout="tree" />
+            </Section>
+          )}
+        </>
+      ) : (
+        <>
+          <Section label={exampleList.length > 1 ? "Examples" : "Example"}>
+            <div className="flex flex-col gap-8">
+              {exampleList.map((example) => (
+                <ExampleBlock
+                  key={example.slug}
+                  example={example}
+                  showTitle={exampleList.length > 1}
+                />
+              ))}
             </div>
-          ))}
+          </Section>
 
-        {tab === "usage" && demoSource && (
+          {api?.length ? (
+            <Section label="API">
+              <ApiPanel parts={api} />
+            </Section>
+          ) : null}
+
+          {codeTabs.length > 0 && (
+            <Section label="Component source">
+              <CodeBlock tabs={codeTabs} layout="tabs" />
+            </Section>
+          )}
+        </>
+      )}
+
+      <DependenciesSection entry={entry} />
+    </div>
+  );
+}
+
+function Section({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+        {label}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+/** One example: a preview ↔ code toggle (with an RTL toggle on the preview). */
+function ExampleBlock({
+  example,
+  showTitle,
+}: {
+  example: ExampleEntry;
+  showTitle: boolean;
+}) {
+  const [view, setView] = React.useState<"preview" | "code">("preview");
+  const [rtl, setRtl] = React.useState(false);
+  const hasCode = !!example.source;
+
+  return (
+    <section data-slot="example" className="flex flex-col gap-3">
+      {showTitle && (
+        <h3 className="text-sm font-medium tracking-[-0.01em]">
+          {example.title}
+        </h3>
+      )}
+      <div className="relative overflow-hidden rounded-sm border border-border bg-card/40">
+        <div className="flex items-center justify-between gap-2 border-b border-border/70 px-3 py-2">
+          <div
+            role="tablist"
+            aria-label="Example view"
+            className="inline-flex items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-0.5"
+          >
+            {(["preview", "code"] as const).map((v) => {
+              const active = view === v;
+              return (
+                <button
+                  key={v}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  disabled={v === "code" && !hasCode}
+                  onClick={() => setView(v)}
+                  className={cn(
+                    "rounded-sm px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40",
+                    active
+                      ? "bg-background text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {v}
+                </button>
+              );
+            })}
+          </div>
+          {view === "preview" && (
+            <DirectionToggle rtl={rtl} onToggle={setRtl} />
+          )}
+        </div>
+
+        {view === "preview" ? (
+          <div
+            dir={rtl ? "rtl" : undefined}
+            className="flex min-h-[360px] items-center justify-center p-6 sm:min-h-[420px] sm:p-8 md:p-10"
+          >
+            <RegistryExample name={example.slug} />
+          </div>
+        ) : example.source ? (
           <CodeBlock
             tabs={[
               {
-                label: `${entry.name}.demo.tsx`,
-                code: demoSource.code,
-                html: demoSource.html,
+                label: `${example.slug}.tsx`,
+                code: example.source.code,
+                html: example.source.html,
               },
             ]}
           />
-        )}
+        ) : null}
+      </div>
+    </section>
+  );
+}
 
-        {tab === "api" && api && <ApiPanel parts={api} />}
+function DependenciesSection({ entry }: { entry: RegistryEntryMeta }) {
+  const registryDeps = entry.registryDependencies ?? [];
+  const npmDeps = entry.dependencies ?? [];
+  if (!registryDeps.length && !npmDeps.length) return null;
 
-        {tab === "code" && codeTabs.length > 0 && (
-          <CodeBlock tabs={codeTabs} layout={isComposite ? "tree" : "tabs"} />
+  return (
+    <Section label="Dependencies">
+      <div className="grid gap-4 sm:grid-cols-2">
+        {registryDeps.length > 0 && (
+          <DepGroup title="shadcn registry" deps={registryDeps} />
         )}
+        {npmDeps.length > 0 && <DepGroup title="npm" deps={npmDeps} />}
+      </div>
+    </Section>
+  );
+}
 
-        {tab === "install" && (
-          <div className="grid gap-4">
-            <InstallBlock name={entry.name} />
-            <div className="rounded-sm border border-border bg-card p-4">
-              <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                shadcn dependencies
-              </h3>
-              <div className="flex flex-wrap gap-1.5">
-                {(entry.registryDependencies ?? []).map((d) => (
-                  <span
-                    key={d}
-                    className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
-                  >
-                    {d}
-                  </span>
-                ))}
-              </div>
-            </div>
-            {entry.dependencies?.length ? (
-              <div className="rounded-sm border border-border bg-card p-4">
-                <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  npm dependencies
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {entry.dependencies.map((d) => (
-                    <span
-                      key={d}
-                      className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
-                    >
-                      {d}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        )}
+function DepGroup({ title, deps }: { title: string; deps: string[] }) {
+  return (
+    <div className="rounded-sm border border-border bg-card p-4">
+      <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        {title}
+      </h3>
+      <div className="flex flex-wrap gap-1.5">
+        {deps.map((d) => (
+          <span
+            key={d}
+            className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
+          >
+            {d}
+          </span>
+        ))}
       </div>
     </div>
   );

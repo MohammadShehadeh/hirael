@@ -22,7 +22,7 @@ export default function NotFound01() {
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · 404
+            404
           </span>
           <h1 className="text-balance font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl">
             Page not found.

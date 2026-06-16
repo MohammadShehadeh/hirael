@@ -106,7 +106,7 @@ export default async function BlockRoute({
     entryCategorySlug(entry) !== category
   )
     notFound();
-  const source = await loadSource(entry.sourceFiles);
+  const source = await loadSource(entry.files?.map((f) => f.path));
   const meta = CATEGORY_BY_SLUG[category];
   return (
     <ComponentPage

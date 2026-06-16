@@ -60,8 +60,7 @@ host.
 registry/hirael/
   ui/<component>.tsx         # source (flat compound exports), alongside
                              # the shadcn primitives the registry imports
-  <component>/
-    <component>.demo.tsx     # showcase demo
+  examples/<component>-demo.tsx  # showcase demo per component
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
@@ -208,8 +207,13 @@ For each new component:
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `registry/hirael/<name>/<name>.demo.tsx` showing a basic compose
-      **and** a customized compose.
+- [ ] `registry/hirael/examples/<name>-demo.tsx` showing a basic compose
+      **and** a customized compose. To showcase several focused examples
+      instead, add `<name>-<variant>.tsx` files, list them (ordered, with
+      titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`, and register
+      each slug in `EXAMPLE_LOADERS` in `registry-demos.tsx` — the component
+      page stacks them as titled preview/code blocks (the first is the
+      representative preview used in grids and embeds).
 - [ ] Entry in `registry/hirael/registry-meta.ts` with category,
       description, `dependencies`, `registryDependencies` and source
       file list, then `pnpm registry:gen` to regenerate `registry.json`
@@ -219,7 +223,7 @@ For each new component:
 - [ ] All imports for shadcn primitives go through
       `@/registry/hirael/ui/*` (alias is rewritten on install).
 - [ ] Tokens reuse `--background / --foreground / --border /
-  --primary / --accent` and friends — never hard-code colors.
+--primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
@@ -231,7 +235,7 @@ Templates are full-page, multi-section layouts. They live under
 `registry/hirael/templates/<template>/`, use `category: "templates"` in
 `registry-meta.ts`, and ship as a multi-file `registry:block` in
 `registry.json`. Like blocks, they are previewed full-bleed and do not
-need a `*.demo.tsx`.
+need a demo under `registry/hirael/examples/`.
 
 ## Testing requirements
 

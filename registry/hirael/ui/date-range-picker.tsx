@@ -11,57 +11,21 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 import { Separator } from "@/registry/hirael/ui/separator";
+import {
+  addDays,
+  clampDate,
+  gridKeyToDate,
+  monthCells,
+  monthIndex,
+  sameDay,
+  startOfDay,
+} from "@/registry/hirael/ui/calendar-utils";
 
 export type DateRange = { from?: Date; to?: Date };
 export type DateRangePreset = {
   label: string;
   range: () => { from: Date; to: Date };
 };
-
-function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-
-function sameDay(a: Date | undefined, b: Date | undefined) {
-  if (!a || !b) return false;
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  );
-}
-
-function addDays(d: Date, n: number) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
-}
-
-function addMonthsClamped(d: Date, n: number) {
-  const y = d.getFullYear();
-  const m = d.getMonth() + n;
-  const last = new Date(y, m + 1, 0).getDate();
-  return new Date(y, m, Math.min(d.getDate(), last));
-}
-
-function monthIndex(d: Date) {
-  return d.getFullYear() * 12 + d.getMonth();
-}
-
-function monthCells(month: Date, weekStartsOn: 0 | 1) {
-  const first = new Date(month.getFullYear(), month.getMonth(), 1);
-  const lead = (first.getDay() - weekStartsOn + 7) % 7;
-  const count = new Date(
-    month.getFullYear(),
-    month.getMonth() + 1,
-    0,
-  ).getDate();
-  const cells: (Date | null)[] = [];
-  for (let i = 0; i < lead; i++) cells.push(null);
-  for (let day = 1; day <= count; day++) {
-    cells.push(new Date(month.getFullYear(), month.getMonth(), day));
-  }
-  while (cells.length % 7 !== 0) cells.push(null);
-  return cells;
-}
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
   {
@@ -244,44 +208,14 @@ function DateRangeCalendar({
   const handleKey = (e: React.KeyboardEvent, d: Date) => {
     const forward =
       getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1;
-    const dow = (d.getDay() - weekStartsOn + 7) % 7;
-    let next: Date;
-    switch (e.key) {
-      case "ArrowLeft":
-        next = addDays(d, -forward);
-        break;
-      case "ArrowRight":
-        next = addDays(d, forward);
-        break;
-      case "ArrowUp":
-        next = addDays(d, -7);
-        break;
-      case "ArrowDown":
-        next = addDays(d, 7);
-        break;
-      case "Home":
-        next = addDays(d, -dow);
-        break;
-      case "End":
-        next = addDays(d, 6 - dow);
-        break;
-      case "PageUp":
-        next = addMonthsClamped(d, e.shiftKey ? -12 : -1);
-        break;
-      case "PageDown":
-        next = addMonthsClamped(d, e.shiftKey ? 12 : 1);
-        break;
-      default:
-        return;
-    }
+    const next = gridKeyToDate(e.key, d, {
+      weekStartsOn,
+      shiftKey: e.shiftKey,
+      forward,
+    });
+    if (!next) return;
     e.preventDefault();
-    if (min && next.getTime() < startOfDay(min).getTime()) {
-      next = startOfDay(min);
-    }
-    if (max && next.getTime() > startOfDay(max).getTime()) {
-      next = startOfDay(max);
-    }
-    focusDay(next);
+    focusDay(clampDate(next, min, max));
   };
 
   const monthFmt = new Intl.DateTimeFormat(locale, {
@@ -423,135 +357,229 @@ function DateRangeCalendar({
   );
 }
 
-export type DateRangePickerProps = Omit<DateRangeCalendarProps, "className"> & {
-  presets?: DateRangePreset[];
-  showPresets?: boolean;
-  placeholder?: string;
+type DateRangePickerContextValue = {
+  range: DateRange | undefined;
+  setRange: (range: DateRange | undefined) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  min?: Date;
+  max?: Date;
   disabled?: boolean;
-  align?: React.ComponentProps<typeof PopoverContent>["align"];
-  className?: string;
+};
+
+const DateRangePickerContext =
+  React.createContext<DateRangePickerContextValue | null>(null);
+
+function useDateRangePicker() {
+  const ctx = React.useContext(DateRangePickerContext);
+  if (!ctx) {
+    throw new Error(
+      "DateRangePicker compound components must be used inside <DateRangePicker>",
+    );
+  }
+  return ctx;
+}
+
+export type DateRangePickerProps = {
+  value?: DateRange;
+  defaultValue?: DateRange;
+  onValueChange?: (range: DateRange | undefined) => void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  min?: Date;
+  max?: Date;
+  disabled?: boolean;
+  children?: React.ReactNode;
 };
 
 function DateRangePicker({
   value: valueProp,
   defaultValue,
   onValueChange,
-  presets = DEFAULT_PRESETS,
-  showPresets = true,
-  placeholder = "Pick a date range",
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  min,
+  max,
   disabled,
-  align = "start",
-  locale,
-  className,
-  ...calendarProps
+  children,
 }: DateRangePickerProps) {
-  const [open, setOpen] = React.useState(false);
-  const [internal, setInternal] = React.useState<DateRange | undefined>(
-    defaultValue,
+  const [internalRange, setInternalRange] = React.useState<
+    DateRange | undefined
+  >(defaultValue);
+  const range = valueProp !== undefined ? valueProp : internalRange;
+  const setRange = React.useCallback(
+    (next: DateRange | undefined) => {
+      if (valueProp === undefined) setInternalRange(next);
+      onValueChange?.(next);
+    },
+    [valueProp, onValueChange],
   );
-  const range = valueProp ?? internal;
 
-  const setRange = (next: DateRange | undefined) => {
-    if (valueProp === undefined) setInternal(next);
-    onValueChange?.(next);
-  };
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
+  const open = openProp ?? internalOpen;
+  const setOpen = React.useCallback(
+    (next: boolean) => {
+      if (openProp === undefined) setInternalOpen(next);
+      onOpenChange?.(next);
+    },
+    [openProp, onOpenChange],
+  );
 
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
-  const label = range?.from
-    ? range.to
-      ? `${fmt.format(range.from)} – ${fmt.format(range.to)}`
-      : `${fmt.format(range.from)} – …`
-    : placeholder;
+  const ctx = React.useMemo<DateRangePickerContextValue>(
+    () => ({ range, setRange, open, setOpen, min, max, disabled }),
+    [range, setRange, open, setOpen, min, max, disabled],
+  );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          disabled={disabled}
-          data-slot="date-range-picker-trigger"
-          data-state={open ? "open" : "closed"}
-          className={cn(
-            "inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
-            "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
-            !range?.from && "text-muted-foreground font-sans",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            className,
-          )}
-        >
-          <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-          <span className="flex-1 truncate">{label}</span>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        align={align}
-        data-slot="date-range-picker-content"
-        className="w-auto p-3"
-      >
-        <div className="flex flex-col gap-3 sm:flex-row">
-          {showPresets && presets.length > 0 && (
-            <>
-              <div
-                data-slot="date-range-picker-presets"
-                className="flex flex-row flex-wrap gap-0.5 sm:w-32 sm:flex-col"
-              >
-                {presets.map((preset) => (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    data-slot="date-range-picker-preset"
-                    onClick={() => {
-                      const next = preset.range();
-                      setRange({
-                        from: startOfDay(next.from),
-                        to: startOfDay(next.to),
-                      });
-                      setOpen(false);
-                    }}
-                    className={cn(
-                      "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:ring-2 focus-visible:ring-ring",
-                    )}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-              </div>
-              <Separator
-                orientation="vertical"
-                className="max-sm:hidden h-auto"
-              />
-              <Separator className="sm:hidden" />
-            </>
-          )}
-          <div className="flex flex-col gap-2">
-            <DateRangeCalendar
-              value={range ?? {}}
-              onValueChange={setRange}
-              locale={locale}
-              {...calendarProps}
-            />
-            {range?.from && (
-              <div className="flex justify-end">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  data-slot="date-range-picker-clear"
-                  onClick={() => setRange(undefined)}
-                  className="h-7 gap-1 px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
-                >
-                  <X className="size-3" />
-                  Clear
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <DateRangePickerContext.Provider value={ctx}>
+      <Popover open={open} onOpenChange={setOpen}>
+        {children}
+      </Popover>
+    </DateRangePickerContext.Provider>
   );
 }
 
-export { DateRangePicker, DateRangeCalendar };
+function DateRangePickerTrigger({
+  placeholder = "Pick a date range",
+  locale,
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<"button">, "children"> & {
+  placeholder?: string;
+  locale?: string;
+  children?: React.ReactNode;
+}) {
+  const ctx = useDateRangePicker();
+  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
+  const label = ctx.range?.from
+    ? ctx.range.to
+      ? `${fmt.format(ctx.range.from)} – ${fmt.format(ctx.range.to)}`
+      : `${fmt.format(ctx.range.from)} – …`
+    : placeholder;
+  return (
+    <PopoverTrigger asChild>
+      <button
+        type="button"
+        disabled={ctx.disabled}
+        data-slot="date-range-picker-trigger"
+        data-state={ctx.open ? "open" : "closed"}
+        className={cn(
+          "inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
+          "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
+          !ctx.range?.from && "text-muted-foreground font-sans",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        {...props}
+      >
+        <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
+        <span className="flex-1 truncate">{children ?? label}</span>
+      </button>
+    </PopoverTrigger>
+  );
+}
+
+function DateRangePickerContent({
+  presets = DEFAULT_PRESETS,
+  showPresets = true,
+  locale,
+  weekStartsOn,
+  numberOfMonths,
+  disabledDate,
+  align = "start",
+  className,
+  ...props
+}: React.ComponentProps<typeof PopoverContent> & {
+  presets?: DateRangePreset[];
+  showPresets?: boolean;
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  numberOfMonths?: 1 | 2;
+  disabledDate?: (d: Date) => boolean;
+}) {
+  const ctx = useDateRangePicker();
+  return (
+    <PopoverContent
+      align={align}
+      data-slot="date-range-picker-content"
+      className={cn("w-auto p-3", className)}
+      {...props}
+    >
+      <div className="flex flex-col gap-3 sm:flex-row">
+        {showPresets && presets.length > 0 && (
+          <>
+            <div
+              data-slot="date-range-picker-presets"
+              className="flex flex-row flex-wrap gap-0.5 sm:w-32 sm:flex-col"
+            >
+              {presets.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  data-slot="date-range-picker-preset"
+                  onClick={() => {
+                    const next = preset.range();
+                    ctx.setRange({
+                      from: startOfDay(next.from),
+                      to: startOfDay(next.to),
+                    });
+                    ctx.setOpen(false);
+                  }}
+                  className={cn(
+                    "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus-visible:ring-2 focus-visible:ring-ring",
+                  )}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+            <Separator
+              orientation="vertical"
+              className="max-sm:hidden h-auto"
+            />
+            <Separator className="sm:hidden" />
+          </>
+        )}
+        <div className="flex flex-col gap-2">
+          <DateRangeCalendar
+            value={ctx.range ?? {}}
+            onValueChange={ctx.setRange}
+            min={ctx.min}
+            max={ctx.max}
+            disabledDate={disabledDate}
+            locale={locale}
+            weekStartsOn={weekStartsOn}
+            numberOfMonths={numberOfMonths}
+          />
+          {ctx.range?.from && (
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                data-slot="date-range-picker-clear"
+                onClick={() => ctx.setRange(undefined)}
+                className="h-7 gap-1 px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
+              >
+                <X className="size-3" />
+                Clear
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </PopoverContent>
+  );
+}
+
+export {
+  DateRangePicker,
+  DateRangePickerTrigger,
+  DateRangePickerContent,
+  DateRangeCalendar,
+};

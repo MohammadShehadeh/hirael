@@ -371,7 +371,7 @@ export default function Contact01() {
             <Card>
               <CardHeader>
                 <CardTitle className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  · other ways to reach us
+                  other ways to reach us
                 </CardTitle>
               </CardHeader>
               <CardContent className="px-0">

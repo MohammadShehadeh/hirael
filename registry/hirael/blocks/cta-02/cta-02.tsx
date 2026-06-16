@@ -38,7 +38,7 @@ export default function Cta02() {
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-          · one-line install
+          one-line install
         </span>
 
         <h2 className="text-balance font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">

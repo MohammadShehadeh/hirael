@@ -134,7 +134,7 @@ export default function LogoCloud01() {
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
-          <Badge variant="outline">· trusted by teams shipping at scale</Badge>
+          <Badge variant="outline">trusted by teams shipping at scale</Badge>
           <h2
             id="logo-cloud-01-heading"
             className="text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl"
@@ -169,21 +169,14 @@ export default function LogoCloud01() {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <dl className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:gap-6">
-            {STATS.map((s, i) => (
-              <React.Fragment key={s.label}>
-                {i > 0 && (
-                  <span aria-hidden className="text-muted-foreground/40">
-                    ·
-                  </span>
-                )}
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-mono text-sm font-semibold tabular-nums text-foreground">
-                    {s.value}
-                  </dd>
-                  <span>{s.label}</span>
-                </div>
-              </React.Fragment>
+            {STATS.map((s) => (
+              <div key={s.label} className="flex items-baseline gap-1.5">
+                <dt className="sr-only">{s.label}</dt>
+                <dd className="font-mono text-sm font-semibold tabular-nums text-foreground">
+                  {s.value}
+                </dd>
+                <span>{s.label}</span>
+              </div>
             ))}
           </dl>
           <Button variant="link" className="group h-auto p-0" asChild>

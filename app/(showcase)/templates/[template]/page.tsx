@@ -89,7 +89,7 @@ export default async function TemplateRoute({
   const { template } = await params;
   const entry = REGISTRY_BY_NAME[template];
   if (!entry || entry.category !== "templates") notFound();
-  const source = await loadSource(entry.sourceFiles);
+  const source = await loadSource(entry.files?.map((f) => f.path));
   return (
     <ComponentPage
       entry={entry}

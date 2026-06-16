@@ -144,7 +144,7 @@ export default function Ecommerce01() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:px-10">
         <div className="flex flex-col gap-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-            · shop
+            shop
           </span>
           <h2 className="max-w-xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             The everyday carry edit.

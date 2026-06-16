@@ -253,7 +253,7 @@ export default function Dashboard04() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-3">
             <Badge variant="outline" className="w-fit">
-              · storefront
+              storefront
             </Badge>
             <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Today at the counter.

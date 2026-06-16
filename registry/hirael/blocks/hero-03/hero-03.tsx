@@ -37,9 +37,7 @@ export default function Hero03() {
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm">
-          Since 2021
-          <span className="text-border">·</span>
-          One calm workspace
+          Since 2021 — One calm workspace
         </span>
 
         <h1 className="max-w-3xl text-balance font-serif text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">

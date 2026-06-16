@@ -56,7 +56,7 @@ export default function Feature02() {
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            · features
+            features
           </span>
           <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Everything a real product needs, none of the rest.

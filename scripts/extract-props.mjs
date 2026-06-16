@@ -113,7 +113,7 @@ async function main() {
   const meta = await loadRegistryMeta();
   const entries = meta.REGISTRY.filter((e) => e.category !== "blocks");
   const rootNames = entries.flatMap((e) =>
-    (e.sourceFiles ?? []).map((f) => path.join(ROOT, f)),
+    (e.files ?? []).map((f) => path.join(ROOT, f.path)),
   );
   const program = createProgram(rootNames);
   const checker = program.getTypeChecker();
@@ -121,8 +121,8 @@ async function main() {
   const out = {};
   for (const entry of entries) {
     const parts = [];
-    for (const file of entry.sourceFiles ?? []) {
-      const sourceFile = program.getSourceFile(path.join(ROOT, file));
+    for (const file of entry.files ?? []) {
+      const sourceFile = program.getSourceFile(path.join(ROOT, file.path));
       if (!sourceFile) continue;
       const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
       if (!moduleSymbol) continue;

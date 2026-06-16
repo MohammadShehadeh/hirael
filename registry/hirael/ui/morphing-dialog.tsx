@@ -117,7 +117,7 @@ function MorphingDialogTrigger({
   );
 }
 
-function focusablewithin(container: HTMLElement) {
+function focusableWithin(container: HTMLElement) {
   return Array.from(
     container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
@@ -150,7 +150,7 @@ function MorphingDialogContent({
         return;
       }
       if (event.key === "Tab" && panel) {
-        const focusables = focusablewithin(panel);
+        const focusables = focusableWithin(panel);
         if (!focusables.length) {
           event.preventDefault();
           panel.focus();
@@ -195,7 +195,10 @@ function MorphingDialogContent({
             exit={{ opacity: 0 }}
             onClick={close}
           />
-          <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            data-slot="morphing-dialog-positioner"
+            className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
             <motion.div
               {...props}
               ref={panelRef}

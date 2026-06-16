@@ -252,7 +252,7 @@ export default function Dashboard02() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-3">
             <Badge variant="outline" className="w-fit">
-              · analytics
+              analytics
             </Badge>
             <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Traffic, end to end.
@@ -310,7 +310,7 @@ export default function Dashboard02() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    · page views vs visitors
+                    page views vs visitors
                   </CardDescription>
                   <CardTitle className="text-lg">
                     {RANGES.find((r) => r.value === range)?.label}
@@ -402,7 +402,7 @@ export default function Dashboard02() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    · top pages
+                    top pages
                   </CardDescription>
                   <Button
                     variant="link"
@@ -440,7 +440,7 @@ export default function Dashboard02() {
             <Card>
               <CardHeader>
                 <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  · channels
+                  channels
                 </CardDescription>
                 <CardTitle className="sr-only">Channels</CardTitle>
               </CardHeader>

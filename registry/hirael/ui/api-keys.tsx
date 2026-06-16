@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check, Copy, Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 type ApiKeysProps = React.ComponentProps<"div">;
 
@@ -136,23 +137,27 @@ function ApiKeyValue({
       <code className="truncate font-mono text-xs text-foreground">
         {revealed ? value : masked}
       </code>
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="icon"
         aria-label={revealed ? "Hide key" : "Reveal key"}
         aria-pressed={revealed}
         onClick={() => setRevealed((value) => !value)}
-        className="inline-flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+        className="size-6 rounded text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
       >
         {revealed ? <EyeOff /> : <Eye />}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
+        variant="ghost"
+        size="icon"
         aria-label="Copy key"
         onClick={copy}
-        className="inline-flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+        className="size-6 rounded text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
       >
         {copied ? <Check className="text-success" /> : <Copy />}
-      </button>
+      </Button>
     </div>
   );
 }

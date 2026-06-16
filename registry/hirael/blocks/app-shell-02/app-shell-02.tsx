@@ -258,7 +258,7 @@ export default function AppShell02() {
 
               <div className="flex items-center justify-between border-t border-border bg-muted/30 px-5 py-3">
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  · changes save automatically
+                  changes save automatically
                 </span>
                 <Button size="sm">Done</Button>
               </div>

@@ -10,51 +10,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
-
-function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-
-function sameDay(a: Date | null | undefined, b: Date | null | undefined) {
-  if (!a || !b) return false;
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  );
-}
-
-function addDays(d: Date, n: number) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
-}
-
-function addMonthsClamped(d: Date, n: number) {
-  const y = d.getFullYear();
-  const m = d.getMonth() + n;
-  const last = new Date(y, m + 1, 0).getDate();
-  return new Date(y, m, Math.min(d.getDate(), last));
-}
-
-function monthIndex(d: Date) {
-  return d.getFullYear() * 12 + d.getMonth();
-}
-
-function monthCells(month: Date, weekStartsOn: 0 | 1) {
-  const first = new Date(month.getFullYear(), month.getMonth(), 1);
-  const lead = (first.getDay() - weekStartsOn + 7) % 7;
-  const count = new Date(
-    month.getFullYear(),
-    month.getMonth() + 1,
-    0,
-  ).getDate();
-  const cells: (Date | null)[] = [];
-  for (let i = 0; i < lead; i++) cells.push(null);
-  for (let day = 1; day <= count; day++) {
-    cells.push(new Date(month.getFullYear(), month.getMonth(), day));
-  }
-  while (cells.length % 7 !== 0) cells.push(null);
-  return cells;
-}
+import {
+  clampDate,
+  gridKeyToDate,
+  monthCells,
+  monthIndex,
+  sameDay,
+  startOfDay,
+} from "@/registry/hirael/ui/calendar-utils";
 
 export type DateCalendarProps = {
   value?: Date | null;
@@ -141,44 +104,14 @@ function DateCalendar({
   const handleKey = (e: React.KeyboardEvent, d: Date) => {
     const forward =
       getComputedStyle(e.currentTarget).direction === "rtl" ? -1 : 1;
-    const dow = (d.getDay() - weekStartsOn + 7) % 7;
-    let next: Date;
-    switch (e.key) {
-      case "ArrowLeft":
-        next = addDays(d, -forward);
-        break;
-      case "ArrowRight":
-        next = addDays(d, forward);
-        break;
-      case "ArrowUp":
-        next = addDays(d, -7);
-        break;
-      case "ArrowDown":
-        next = addDays(d, 7);
-        break;
-      case "Home":
-        next = addDays(d, -dow);
-        break;
-      case "End":
-        next = addDays(d, 6 - dow);
-        break;
-      case "PageUp":
-        next = addMonthsClamped(d, e.shiftKey ? -12 : -1);
-        break;
-      case "PageDown":
-        next = addMonthsClamped(d, e.shiftKey ? 12 : 1);
-        break;
-      default:
-        return;
-    }
+    const next = gridKeyToDate(e.key, d, {
+      weekStartsOn,
+      shiftKey: e.shiftKey,
+      forward,
+    });
+    if (!next) return;
     e.preventDefault();
-    if (min && next.getTime() < startOfDay(min).getTime()) {
-      next = startOfDay(min);
-    }
-    if (max && next.getTime() > startOfDay(max).getTime()) {
-      next = startOfDay(max);
-    }
-    focusDay(next);
+    focusDay(clampDate(next, min, max));
   };
 
   const monthFmt = new Intl.DateTimeFormat(locale, {

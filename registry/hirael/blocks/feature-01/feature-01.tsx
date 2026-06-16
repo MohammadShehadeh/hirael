@@ -15,7 +15,7 @@ type FeatureRow = {
 
 const ROWS: readonly FeatureRow[] = [
   {
-    eyebrow: "· registry",
+    eyebrow: "registry",
     headline: "One CLI command, source in your repo.",
     body: "Hirael distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX, no package pin, no version drift.",
     bullets: [
@@ -26,7 +26,7 @@ const ROWS: readonly FeatureRow[] = [
     media: "registry",
   },
   {
-    eyebrow: "· composition",
+    eyebrow: "composition",
     headline: "Composition, the shadcn way.",
     body: "Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare name is the root and holds state; every rendered piece carries a data-slot for downstream styling.",
     bullets: [
@@ -37,7 +37,7 @@ const ROWS: readonly FeatureRow[] = [
     media: "branches",
   },
   {
-    eyebrow: "· performance",
+    eyebrow: "performance",
     headline: "Built for dense product surfaces.",
     body: "Virtualized lists, debounced async, and stable keys are wired in by default, built to hold up under real production data, not just a demo.",
     bullets: [

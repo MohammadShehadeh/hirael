@@ -262,7 +262,7 @@ export default function Dashboard03() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-3">
             <Badge variant="outline" className="w-fit">
-              · revenue
+              revenue
             </Badge>
             <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Where the money lands.
@@ -308,7 +308,7 @@ export default function Dashboard03() {
             <Card>
               <CardHeader>
                 <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  · plan mix
+                  plan mix
                 </CardDescription>
                 <CardTitle className="sr-only">Plan mix</CardTitle>
               </CardHeader>
@@ -344,7 +344,7 @@ export default function Dashboard03() {
             <Card>
               <CardHeader>
                 <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  · invoices
+                  invoices
                 </CardDescription>
                 <CardTitle className="sr-only">Invoices</CardTitle>
               </CardHeader>
@@ -375,7 +375,7 @@ export default function Dashboard03() {
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    · transactions
+                    transactions
                   </CardDescription>
                   <CardTitle className="text-lg">Latest activity</CardTitle>
                 </div>

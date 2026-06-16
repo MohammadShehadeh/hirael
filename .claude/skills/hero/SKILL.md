@@ -70,7 +70,7 @@ same trick cta-03 uses:
   `onMouseEnter`/`onMouseLeave`.
 
 Declare `dependencies: ["shaders", "lucide-react"]` and add the backdrop file
-to both `sourceFiles` and `installTargets` in `registry-meta.ts`.
+to the entry's `files` array (`{ path, target }`) in `registry-meta.ts`.
 
 ## Image heroes
 

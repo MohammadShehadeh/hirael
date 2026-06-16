@@ -5,8 +5,11 @@ import { Moon, Palette, RotateCcw, Sun } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
+  accentTheme,
   formatThemeCss,
   parseThemeCss,
+  radiusTheme,
+  RADIUS_OPTIONS,
   THEME_PRESETS,
   type ThemeMode,
 } from "@/lib/theme";
@@ -49,6 +52,7 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
 function ThemeSheetBody() {
   const { mode, setMode, theme, mergeTheme, reset } = useTheme();
   const [paste, setPaste] = React.useState("");
+  const [accentHue, setAccentHue] = React.useState(250);
   const [parseStatus, setParseStatus] = React.useState<
     | { kind: "idle" }
     | { kind: "ok"; msg: string }
@@ -91,6 +95,18 @@ function ThemeSheetBody() {
     setParseStatus({ kind: "ok", msg: `Applied "${preset.label}" preset.` });
   }
 
+  const activeRadius = theme[mode].radius ?? theme.dark.radius;
+
+  function applyRadius(value: string) {
+    mergeTheme(radiusTheme(value));
+    setParseStatus({ kind: "ok", msg: `Radius set to ${value}.` });
+  }
+
+  function applyHue(hue: number) {
+    setAccentHue(hue);
+    mergeTheme(accentTheme(hue));
+  }
+
   const overrideCount =
     Object.keys(theme.light).length + Object.keys(theme.dark).length;
 
@@ -104,8 +120,9 @@ function ThemeSheetBody() {
         </div>
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
-          Preview Hirael components against your own theme. Paste a CSS variable
-          block, pick a preset, or copy the active theme back out.
+          Preview Hirael components against your own theme. Generate an accent
+          and radius, pick a preset, or paste a CSS variable block — then copy
+          the result back out.
         </SheetDescription>
       </SheetHeader>
 
@@ -148,6 +165,74 @@ function ThemeSheetBody() {
           <p className="mt-2 text-[11px] text-muted-foreground">
             Presets only override the accent and ring; neutrals stay intact.
           </p>
+        </Section>
+
+        <Section title="Generate" hint="radius + accent, both modes">
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="mb-1.5 text-[11px] text-muted-foreground">Radius</p>
+              <div className="grid grid-cols-6 gap-1">
+                {RADIUS_OPTIONS.map((r) => {
+                  const active = activeRadius === r;
+                  return (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => applyRadius(r)}
+                      aria-pressed={active}
+                      title={r}
+                      className={cn(
+                        "flex flex-col items-center gap-1 rounded-sm border px-1 py-1.5 transition-colors",
+                        active
+                          ? "border-foreground bg-accent text-foreground"
+                          : "border-border bg-card text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      <span
+                        aria-hidden
+                        className="size-4 border border-current/40 bg-current/10"
+                        style={{ borderRadius: r }}
+                      />
+                      <span className="font-mono text-[8px] tracking-tight">
+                        {r.replace("rem", "")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-1.5 flex items-center justify-between">
+                <p className="text-[11px] text-muted-foreground">Accent hue</p>
+                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+                  <span
+                    aria-hidden
+                    className="size-3.5 rounded-full border border-border"
+                    style={{ background: `oklch(0.7 0.16 ${accentHue})` }}
+                  />
+                  {accentHue}°
+                </span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={360}
+                step={1}
+                value={accentHue}
+                onChange={(e) => applyHue(Number(e.target.value))}
+                aria-label="Accent hue"
+                className="h-2 w-full cursor-pointer appearance-none rounded-full border border-border"
+                style={{
+                  background:
+                    "linear-gradient(to right, oklch(0.7 0.16 0), oklch(0.7 0.16 60), oklch(0.7 0.16 120), oklch(0.7 0.16 180), oklch(0.7 0.16 240), oklch(0.7 0.16 300), oklch(0.7 0.16 360))",
+                }}
+              />
+              <p className="mt-1.5 text-[11px] text-muted-foreground">
+                Sets primary, ring and primary-foreground for both modes.
+              </p>
+            </div>
+          </div>
         </Section>
 
         <Section

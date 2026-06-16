@@ -50,7 +50,6 @@ export default function Hero02() {
           />
         </span>
         Live
-        <span className="text-muted-foreground">·</span>
         <span className="text-muted-foreground">2026.06</span>
       </span>
 

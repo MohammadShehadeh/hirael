@@ -107,7 +107,7 @@ export default function Faq03() {
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
-            · help center
+            help center
           </span>
           <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Find the answer before you file the issue.

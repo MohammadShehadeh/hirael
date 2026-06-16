@@ -2710,6 +2710,34 @@
           "description": null
         },
         {
+          "name": "onValueChange",
+          "type": "((range: DateRange | undefined) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
           "name": "min",
           "type": "Date",
           "required": false,
@@ -2724,10 +2752,30 @@
           "description": null
         },
         {
-          "name": "onValueChange",
-          "type": "((range: DateRange | undefined) => void)",
+          "name": "disabled",
+          "type": "boolean",
           "required": false,
           "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DateRangePickerTrigger",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick a date range\"",
           "description": null
         },
         {
@@ -2738,8 +2786,35 @@
           "description": null
         },
         {
-          "name": "disabledDate",
-          "type": "((d: Date) => boolean)",
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DateRangePickerContent",
+      "props": [
+        {
+          "name": "presets",
+          "type": "DateRangePreset[]",
+          "required": false,
+          "default": "DEFAULT_PRESETS",
+          "description": null
+        },
+        {
+          "name": "showPresets",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
           "required": false,
           "default": null,
           "description": null
@@ -2759,49 +2834,14 @@
           "description": null
         },
         {
-          "name": "presets",
-          "type": "DateRangePreset[]",
-          "required": false,
-          "default": "DEFAULT_PRESETS",
-          "description": null
-        },
-        {
-          "name": "showPresets",
-          "type": "boolean",
-          "required": false,
-          "default": "true",
-          "description": null
-        },
-        {
-          "name": "placeholder",
-          "type": "string",
-          "required": false,
-          "default": "\"Pick a date range\"",
-          "description": null
-        },
-        {
-          "name": "disabled",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "align",
-          "type": "\"center\" | \"start\" | \"end\"",
-          "required": false,
-          "default": "\"start\"",
-          "description": null
-        },
-        {
-          "name": "className",
-          "type": "string",
+          "name": "disabledDate",
+          "type": "((d: Date) => boolean)",
           "required": false,
           "default": null,
           "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     },
     {
       "name": "DateRangeCalendar",
@@ -6818,6 +6858,189 @@
     },
     {
       "name": "NexacoreStyles",
+      "props": [],
+      "extendsNative": false
+    }
+  ],
+  "toc": [
+    {
+      "name": "TableOfContents",
+      "props": [
+        {
+          "name": "items",
+          "type": "TocItem[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "activeId",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"On this page\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TableOfContentsLabel",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TableOfContentsList",
+      "props": [
+        {
+          "name": "items",
+          "type": "TocItem[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "level",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TableOfContentsItem",
+      "props": [
+        {
+          "name": "item",
+          "type": "TocItem",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "level",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TableOfContentsLink",
+      "props": [
+        {
+          "name": "level",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "edgecloud": [
+    {
+      "name": "Eyebrow",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Header",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Promo",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Faster",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Potential",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "GlobalNetwork",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Experience",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Flexible",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Price",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Asked",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Discuss",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "OtherProducts",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
       "props": [],
       "extendsNative": false
     }

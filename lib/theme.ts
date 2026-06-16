@@ -241,6 +241,47 @@ export const THEME_PRESETS: ThemePreset[] = [
   },
 ];
 
+/**
+ * Generator knobs. These produce token overrides that flow through the same
+ * `mergeTheme` → live-preview → export path as a pasted theme, so the editor
+ * both consumes and generates CSS. They stay on-brand: radius and accent
+ * only, never the curated neutral palette.
+ */
+export const RADIUS_OPTIONS = [
+  "0rem",
+  "0.25rem",
+  "0.5rem",
+  "0.65rem",
+  "0.85rem",
+  "1rem",
+] as const;
+
+/** Radius applies to both modes equally. */
+export function radiusTheme(value: string): Theme {
+  return { light: { radius: value }, dark: { radius: value } };
+}
+
+/**
+ * A coherent primary / ring / primary-foreground accent generated from a hue,
+ * mirroring the lightness/chroma the curated presets use so a generated accent
+ * sits naturally next to them in both modes.
+ */
+export function accentTheme(hue: number): Theme {
+  const h = Math.round(((hue % 360) + 360) % 360);
+  return {
+    dark: {
+      primary: `oklch(0.72 0.16 ${h})`,
+      "primary-foreground": `oklch(0.14 0.02 ${h})`,
+      ring: `oklch(0.68 0.16 ${h})`,
+    },
+    light: {
+      primary: `oklch(0.54 0.16 ${h})`,
+      "primary-foreground": `oklch(0.98 0.01 ${h})`,
+      ring: `oklch(0.6 0.16 ${h})`,
+    },
+  };
+}
+
 export const STORAGE_KEY = "hirael.theme.v1";
 export const MODE_STORAGE_KEY = "hirael.theme.mode.v1";
 

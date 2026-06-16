@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 type AnnouncementBarProps = React.ComponentProps<"div"> &
   VariantProps<typeof announcementBarVariants> & {
@@ -106,19 +107,20 @@ function AnnouncementBar({
         {children}
       </div>
       {dismissible && (
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon"
           onClick={handleDismiss}
           aria-label="Dismiss announcement"
           className={cn(
-            "absolute end-2 inline-flex size-7 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            isPrimary
-              ? "text-background/70 hover:bg-background/10 hover:text-background"
-              : "text-muted-foreground hover:bg-accent hover:text-foreground",
+            "absolute end-2 size-7",
+            isPrimary &&
+              "text-background/70 hover:bg-background/10 hover:text-background",
           )}
         >
           <X className="size-3.5" />
-        </button>
+        </Button>
       )}
     </div>
   );

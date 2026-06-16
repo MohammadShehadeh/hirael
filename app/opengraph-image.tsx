@@ -30,8 +30,8 @@ export default function OpenGraphImage() {
     >
       <svg
         width="160"
-        height="200"
-        viewBox="0 0 80 100"
+        height="168"
+        viewBox="0 13 80 84"
         fill="none"
         stroke="#E7E4DE"
         strokeWidth="2.2"
@@ -52,7 +52,7 @@ export default function OpenGraphImage() {
           height: 170,
           fontSize: 128,
           letterSpacing: 24,
-          paddingLeft: 24,
+          marginRight: -24,
           fontWeight: 500,
         }}
       >
@@ -63,7 +63,7 @@ export default function OpenGraphImage() {
           marginTop: 12,
           fontSize: 28,
           letterSpacing: 6,
-          paddingLeft: 6,
+          marginRight: -6,
           color: "#ADA69A",
           textTransform: "uppercase",
         }}
@@ -77,6 +77,7 @@ export default function OpenGraphImage() {
           color: "#99A0AD",
           fontFamily: "sans-serif",
           letterSpacing: 0.5,
+          marginRight: -0.5,
         }}
       >
         {SITE.description}
@@ -88,6 +89,7 @@ export default function OpenGraphImage() {
           color: "#E7E4DE",
           fontFamily: "monospace",
           letterSpacing: 3,
+          marginRight: -3,
           textTransform: "uppercase",
         }}
       >

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
@@ -36,7 +36,7 @@ export default function Hero01() {
           <div
             aria-hidden
             data-slot="hero-backdrop"
-            className="pointer-events-none absolute inset-0 opacity-50 mix-blend-multiply dark:opacity-20 dark:mix-blend-screen"
+            className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-10 dark:mix-blend-screen"
           >
             <Hero01Backdrop active={active} />
           </div>
@@ -46,9 +46,6 @@ export default function Hero01() {
             className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
           >
             <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
-                <Sparkles className="size-4" />
-              </span>
               Aperture
             </span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
@@ -76,11 +73,6 @@ export default function Hero01() {
           </nav>
 
           <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10">
-            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm text-primary backdrop-blur-sm">
-              <Sparkles className="size-3.5" />
-              Trusted by 4,000+ teams
-            </span>
-
             <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
               The interface layer your product was missing.
             </h1>

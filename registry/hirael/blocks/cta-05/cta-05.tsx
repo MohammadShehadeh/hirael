@@ -27,11 +27,8 @@ export default function Cta05() {
   });
 
   return (
-    <section
-      data-slot="cta"
-      className="bg-background px-4 py-12 md:px-6 md:py-16"
-    >
-      <div ref={containerRef} className="mx-auto w-full max-w-6xl">
+    <section data-slot="cta" className="bg-background py-12 md:py-16">
+      <div ref={containerRef} className="container w-full">
         <motion.div
           data-slot="cta-panel"
           initial={{ opacity: 0, y: 20 }}

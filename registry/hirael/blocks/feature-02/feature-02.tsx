@@ -53,7 +53,7 @@ const FEATURES: readonly Feature[] = [
 export default function Feature02() {
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             features

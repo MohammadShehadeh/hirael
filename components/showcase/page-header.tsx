@@ -51,7 +51,7 @@ export function PageHeader({
         {title}
       </h1>
       {blurb && (
-        <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-2xl text-balance text-sm text-muted-foreground sm:text-base">
           {blurb}
         </p>
       )}
@@ -79,7 +79,7 @@ export function SectionHeading({
         {title}
       </h2>
       {blurb && (
-        <p className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-2xl text-balance text-sm text-muted-foreground sm:text-base">
           {blurb}
         </p>
       )}

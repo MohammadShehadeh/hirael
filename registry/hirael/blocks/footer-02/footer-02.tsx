@@ -76,7 +76,7 @@ export default function Footer02() {
     >
       <div
         data-slot="footer-inner"
-        className="relative mx-auto w-full max-w-6xl px-4 py-12 lg:px-6 lg:py-16"
+        className="relative container w-full py-12 lg:py-16"
       >
         <div
           aria-hidden

@@ -89,7 +89,7 @@ export function ComponentPage({
   const exampleList = examples ?? [];
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:gap-12 sm:px-6 sm:py-10 md:px-10">
+    <div className="container flex w-full flex-col gap-10 py-8 sm:gap-12 sm:py-10">
       <header className="flex flex-col gap-3 border-b border-border pb-6">
         {breadcrumb ? (
           <Breadcrumbs items={breadcrumb} />

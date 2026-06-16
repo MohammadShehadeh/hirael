@@ -51,7 +51,7 @@ const QUOTES: readonly Quote[] = [
 export default function Testimonial02() {
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex max-w-2xl flex-col gap-5">
           <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
             <span className="size-1 rounded-full bg-foreground" />

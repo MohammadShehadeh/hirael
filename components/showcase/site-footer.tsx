@@ -42,10 +42,8 @@ export function SiteFooter({ className }: { className?: string }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer
-      className={cn("mt-auto px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8", className)}
-    >
-      <div className="mx-auto w-full max-w-6xl">
+    <footer className={cn("mt-auto pb-4 sm:pb-6", className)}>
+      <div className="container w-full">
         <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-elevated sm:rounded-[2rem]">
           {/* Texture: a soft halo and a masked dot grid, contained in the panel. */}
           <div aria-hidden className="ambient-halo opacity-70" />

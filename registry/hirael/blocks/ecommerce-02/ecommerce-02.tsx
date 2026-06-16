@@ -109,7 +109,7 @@ export default function Ecommerce02() {
 
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:px-10">
+      <div className="container flex w-full flex-col gap-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="flex flex-col gap-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">

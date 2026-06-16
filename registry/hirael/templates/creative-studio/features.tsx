@@ -141,10 +141,10 @@ function FeatureCard({
 
 export function Features({ videoSrc }: { videoSrc?: string }) {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black px-4 py-20 sm:px-6 sm:py-28 md:py-32">
+    <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-28 md:py-32">
       <NoiseOverlay variant="bg" className="opacity-[0.15]" />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-12 md:gap-16">
+      <div className="relative container flex flex-col gap-12 md:gap-16">
         <div className="flex flex-col items-center gap-1 text-center">
           <WordsPullUp
             text="Studio-grade craft for visionary creators."

@@ -449,12 +449,6 @@ html.light .shiki-inline span {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .container {
-    @apply mx-auto w-full max-w-6xl;
-  }
-  .cpx {
-    @apply px-4 lg:px-6;
-  }
 
   /* Engineering-blueprint texture for the block schematic plates: a faint
      graph-paper grid masked to the four corners only, so it frames the card
@@ -560,4 +554,10 @@ html.light .shiki-inline span {
   border-radius: 2px;
   background-color: var(--accent-cool);
   box-shadow: 0 0 8px 0 var(--accent-cool-glow);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 1280px;
 }

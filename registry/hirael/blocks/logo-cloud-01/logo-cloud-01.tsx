@@ -132,7 +132,7 @@ export default function LogoCloud01() {
       className="bg-background py-20 sm:py-28"
       aria-labelledby="logo-cloud-01-heading"
     >
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex flex-col items-center gap-4 text-center">
           <Badge variant="outline">trusted by teams shipping at scale</Badge>
           <h2

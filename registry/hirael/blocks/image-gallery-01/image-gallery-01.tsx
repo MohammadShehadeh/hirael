@@ -103,7 +103,7 @@ export default function ImageGallery01() {
       className="bg-background py-20 sm:py-28"
       aria-labelledby="image-gallery-01-heading"
     >
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex flex-col gap-5 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-10">
           <div className="flex max-w-xl flex-col gap-4">
             <Badge variant="outline" className="w-fit">

@@ -65,7 +65,7 @@ function BrandMark({ className }: { className?: string }) {
 export default function Footer01() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto w-full max-w-7xl px-6 py-16 md:px-10">
+      <div className="container w-full py-16">
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-5 lg:gap-16">
           <div className="col-span-2">
             <div className="flex flex-col gap-4">

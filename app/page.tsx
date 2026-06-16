@@ -182,7 +182,7 @@ function Hero() {
 function CatalogTicker() {
   return (
     <section aria-hidden className="relative -mt-4 pb-4 sm:pb-8">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="container w-full">
         <div className="relative overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <Marquee pauseOnHover duration={70} gap="0.75rem" repeat={2}>
             {COMPONENTS.map((entry) => (
@@ -336,7 +336,7 @@ function CardGrid({
 function WhyHirael() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="container w-full">
         <SectionHeading
           kicker="Why Hirael"
           title="Own the source, not a dependency."
@@ -382,7 +382,7 @@ function WhyHirael() {
 function SectionBlocks() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="container w-full">
         <SectionHeading
           kicker="Section blocks"
           title="Blocks for whole sections of a page."

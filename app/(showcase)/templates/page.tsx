@@ -1,10 +1,14 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/showcase/page-header";
 import { SITE } from "@/lib/site";
-import { TEMPLATES } from "@/registry/hirael/registry-meta";
+import {
+  TEMPLATES,
+  entryEmbedHref,
+  entryHref,
+} from "@/registry/hirael/registry-meta";
 
 const TEMPLATES_DESCRIPTION =
   "Full-page templates built in the Hirael style: complete, multi-section layouts you can copy into your repo with the shadcn CLI and edit like any other file.";
@@ -40,7 +44,7 @@ export const metadata: Metadata = {
 
 export default function TemplatesIndex() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 py-16 sm:gap-16 sm:px-6 sm:py-20 md:px-10">
+    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
         kicker="Templates"
         title="Full pages, ready to copy."
@@ -51,37 +55,61 @@ export default function TemplatesIndex() {
         </p>
       </PageHeader>
 
-      <section className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <section className="flex flex-col gap-10 sm:gap-12">
         {TEMPLATES.map((entry) => (
-          <Link
+          <div
             key={entry.name}
-            href={`/templates/${entry.name}`}
-            className="glass-panel glass-panel-lit group relative flex flex-col gap-4 overflow-hidden rounded-2xl p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-card/70"
+            className="overflow-hidden rounded-lg border border-border bg-background"
           >
-            <div className="flex items-start justify-between gap-3">
-              <h2 className="text-lg font-medium tracking-[-0.01em] text-foreground">
-                {entry.title}
-              </h2>
-              <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-foreground/40 group-hover:bg-accent group-hover:text-foreground">
-                <ArrowUpRight className="size-3.5 rtl:-rotate-90" />
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {entry.description}
-            </p>
-            {entry.dependencies?.length ? (
-              <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
-                {entry.dependencies.map((dep) => (
-                  <span
-                    key={dep}
-                    className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted-foreground"
-                  >
-                    {dep}
-                  </span>
-                ))}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card/50 px-4 py-3 sm:px-5">
+              <div className="flex min-w-0 flex-col gap-0.5">
+                <h2 className="text-base font-medium tracking-[-0.015em]">
+                  {entry.title}
+                </h2>
+                <p className="line-clamp-1 text-xs text-muted-foreground">
+                  {entry.description}
+                </p>
               </div>
-            ) : null}
-          </Link>
+              <div className="flex shrink-0 items-center gap-2">
+                {entry.dependencies?.length ? (
+                  <div className="hidden flex-wrap gap-1.5 sm:flex">
+                    {entry.dependencies.map((dep) => (
+                      <span
+                        key={dep}
+                        className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted-foreground"
+                      >
+                        {dep}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+                <a
+                  href={entryEmbedHref(entry)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                >
+                  Open
+                  <ArrowUpRight className="size-3 rtl:-rotate-90" />
+                </a>
+                <Link
+                  href={entryHref(entry)}
+                  className="group inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-foreground transition-colors hover:border-foreground"
+                >
+                  View
+                  <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180" />
+                </Link>
+              </div>
+            </div>
+            <div className="h-115 bg-card/20 sm:h-150 lg:h-175">
+              <iframe
+                src={entryEmbedHref(entry)}
+                title={`${entry.title} preview`}
+                loading="lazy"
+                className="size-full border-0 bg-background"
+              />
+            </div>
+          </div>
         ))}
       </section>
     </div>

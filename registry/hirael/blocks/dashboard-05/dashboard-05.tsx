@@ -313,7 +313,7 @@ export default function Dashboard05() {
 
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-4">
           <div className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4">
             <div className="flex flex-col gap-1.5">

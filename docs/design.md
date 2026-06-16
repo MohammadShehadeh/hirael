@@ -133,6 +133,7 @@ Defined in `globals.css`, reuse rather than re-rolling:
   filled with the dot-grid texture (clipped to the type via `background-clip:
 text`) so the textured layer reads as showing _through_ the letters. Used in
   the footer; monochrome and low-contrast, still texture not text.
-- `.container` (`mx-auto w-full max-w-6xl`) / `.cpx` (`px-4 lg:px-6`) —
-  page width + horizontal padding.
+- `container` (`@utility`: centered, `max-width: 1280px`, `1rem` inline
+  padding) — the page/section width wrapper. Put it on the outer wrapper of a
+  page or section to center, cap width, and add the gutter in one class.
 - `.no-scrollbar` — hide scrollbars on scroll regions.

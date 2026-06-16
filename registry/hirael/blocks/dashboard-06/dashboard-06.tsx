@@ -425,7 +425,7 @@ export default function Dashboard06() {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 md:px-10">
+      <div className="container flex w-full flex-col gap-6">
         <div className="flex flex-col gap-1">
           <span className="inline-flex w-fit items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
             <span className="size-1 rounded-full bg-foreground" />

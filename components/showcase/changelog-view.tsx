@@ -12,7 +12,7 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
       <SiteHeader />
 
       <main id="main-content" className="flex-1">
-        <article className="relative mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <article className="relative container w-full py-16 sm:py-20">
           <div className="relative">
             <div
               aria-hidden

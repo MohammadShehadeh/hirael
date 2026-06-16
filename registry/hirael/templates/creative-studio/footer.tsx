@@ -27,10 +27,10 @@ const LINK_COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black px-4 pb-8 pt-20 sm:px-6 sm:pt-28 md:pt-32">
+    <footer className="relative overflow-hidden bg-black pb-8 pt-20 sm:pt-28 md:pt-32">
       <NoiseOverlay variant="bg" className="opacity-[0.12]" />
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative container">
         <div className="flex flex-col gap-8 border-b border-white/10 pb-12 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-5">
             <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-[#DEDBC8] sm:text-xs">

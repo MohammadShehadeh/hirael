@@ -127,7 +127,7 @@ export default function AppShell02() {
   return (
     <div className="flex min-h-[640px] flex-col bg-background">
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6">
+        <div className="container flex h-14 w-full items-center gap-3">
           <BrandMark className="size-7 shrink-0" />
 
           <Separator
@@ -173,7 +173,7 @@ export default function AppShell02() {
         </div>
       </header>
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+      <div className="container w-full py-6 sm:py-8">
         <div className="flex flex-col gap-1">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             workspace · plinth labs

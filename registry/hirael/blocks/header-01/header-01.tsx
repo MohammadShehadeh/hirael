@@ -64,7 +64,7 @@ function BrandMark({ className }: { className?: string }) {
 export default function Header01() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
-      <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex h-14 items-center justify-between">
           <a
             href="#"

@@ -42,7 +42,7 @@ const FAQS = [
 export default function Faq01() {
   return (
     <section className="bg-background py-20 md:py-28">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 md:px-10 lg:grid-cols-12 lg:gap-16">
+      <div className="container grid w-full grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <div className="sticky top-12 flex flex-col gap-6">
             <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">

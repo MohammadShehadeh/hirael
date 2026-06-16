@@ -49,15 +49,8 @@ export function SiteHeader({
   }, []);
 
   return (
-    <header
-      className={cn("fixed top-3 z-40 w-full px-4 sm:px-6 lg:px-8", className)}
-    >
-      <div
-        className={cn(
-          "mx-auto w-full transition-[max-width,padding] duration-300 ease-out",
-          scrolled ? "max-w-5xl" : "max-w-6xl",
-        )}
-      >
+    <header className={cn("fixed top-3 z-40 w-full", className)}>
+      <div className="container w-full">
         <div
           className={cn(
             "relative flex h-14 items-center justify-between gap-3 rounded-full ps-4 pe-2 transition-all duration-300 ease-out sm:ps-5",

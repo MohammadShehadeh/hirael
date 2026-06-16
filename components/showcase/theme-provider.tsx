@@ -76,6 +76,9 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Apply tokens for the active mode. Clearing a token requires removeProperty.
+  // This stays synchronous on every change so the live preview tracks the hue
+  // slider in real time. Setting a handful of custom properties on <html> is
+  // cheap; the page repaint the browser does off the back of it is rAF-batched.
   const appliedKeysRef = React.useRef<Set<string>>(new Set());
   React.useEffect(() => {
     const html = document.documentElement;
@@ -90,12 +93,22 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
       if (!next.has(k)) html.style.removeProperty(`--${k}`);
     }
     appliedKeysRef.current = next;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(theme));
-    } catch {
-      // ignore
-    }
   }, [mode, theme]);
+
+  // Persistence is debounced so dragging the hue slider doesn't run a
+  // JSON.stringify + synchronous localStorage write on every pointer-move tick.
+  // It also drives the cross-frame `storage` sync, which doesn't need to be
+  // frame-accurate. Mode isn't a dependency — the full theme is persisted.
+  React.useEffect(() => {
+    const id = window.setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(theme));
+      } catch {
+        // ignore
+      }
+    }, 200);
+    return () => window.clearTimeout(id);
+  }, [theme]);
 
   const setMode = React.useCallback((m: ThemeMode) => setTheme(m), [setTheme]);
 

@@ -107,8 +107,8 @@ export default function Footer03() {
       data-slot="footer"
       className="w-full rounded-sm border border-input bg-muted/10 p-2"
     >
-      <div className="px-4 pt-12 pb-2 md:pb-12">
-        <div className="mx-auto max-w-6xl">
+      <div className="pt-12 pb-2 md:pb-12">
+        <div className="container">
           <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div data-slot="footer-brand" className="lg:col-span-2">
               <span className="mb-3 inline-flex items-center gap-2 text-base font-semibold tracking-tight text-foreground">

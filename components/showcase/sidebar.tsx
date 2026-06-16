@@ -145,8 +145,8 @@ export function ShowcaseSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex items-center justify-between gap-2 rounded-sm border border-sidebar-border bg-sidebar-accent/30 px-2 py-1.5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 bg-sidebar-accent/30 px-1 py-2">
+          <span className="font-mono text-sm uppercase text-muted-foreground">
             peer of shadcn
           </span>
           <ThemeSheetTrigger />

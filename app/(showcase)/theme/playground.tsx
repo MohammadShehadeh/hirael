@@ -13,13 +13,10 @@ import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
 
 export function ThemePlayground() {
-  const { mode, theme } = useTheme();
-  const overrideCount =
-    Object.keys(theme.dark).length + Object.keys(theme.light).length;
   const components = COMPONENTS;
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:gap-14 sm:px-6 sm:py-20 md:px-10">
+    <div className="container flex w-full flex-col gap-12 py-16 sm:gap-14 sm:py-20">
       <PageHeader
         kicker="Theme"
         title="Your theme, every component."
@@ -28,15 +25,7 @@ export function ThemePlayground() {
       >
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <ThemeSheetTrigger />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            mode · {mode}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            ·
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            {overrideCount} override{overrideCount === 1 ? "" : "s"} active
-          </span>
+          <ThemeStatus />
         </div>
       </PageHeader>
 
@@ -135,6 +124,29 @@ export function ThemePlayground() {
         </div>
       </Section>
     </div>
+  );
+}
+
+// Only this slice reads the live theme, so a token edit re-renders these three
+// lines of header text — not the ~70-component preview grid below, which
+// re-skins through the CSS custom properties the provider writes to <html>.
+function ThemeStatus() {
+  const { mode, theme } = useTheme();
+  const overrideCount =
+    Object.keys(theme.dark).length + Object.keys(theme.light).length;
+
+  return (
+    <>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        mode · {mode}
+      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        ·
+      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        {overrideCount} override{overrideCount === 1 ? "" : "s"} active
+      </span>
+    </>
   );
 }
 

@@ -183,7 +183,7 @@ const MEDIA: Record<FeatureRow["media"], React.ComponentType> = {
 export default function Feature01() {
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex flex-col gap-20 sm:gap-24">
           {ROWS.map((row, i) => {
             const Media = MEDIA[row.media];

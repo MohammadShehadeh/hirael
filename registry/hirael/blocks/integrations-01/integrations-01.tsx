@@ -62,7 +62,7 @@ export default function Integrations01() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="flex flex-col gap-5 lg:col-span-5">
             <Badge variant="outline" className="w-fit">

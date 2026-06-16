@@ -41,7 +41,7 @@ export default function BlocksIndex() {
   const blockCount = REGISTRY.filter((r) => r.category === "blocks").length;
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 py-16 sm:gap-16 sm:px-6 sm:py-20 md:px-10">
+    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
         kicker="Blocks"
         title="Page sections, ready to copy."

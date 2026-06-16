@@ -182,7 +182,7 @@ export default function Dashboard01() {
 
   return (
     <section className="bg-background py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
+      <div className="container w-full">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex max-w-xl flex-col gap-3">
             <Badge variant="outline" className="w-fit">

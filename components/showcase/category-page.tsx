@@ -17,7 +17,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
     : [];
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:gap-12 sm:px-6 sm:py-12 md:px-10 md:py-16">
+    <div className="container flex w-full flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
       <Breadcrumbs
         items={[
           { label: "Blocks", href: "/blocks" },

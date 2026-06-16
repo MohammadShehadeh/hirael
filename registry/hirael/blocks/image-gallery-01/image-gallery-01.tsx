@@ -29,9 +29,9 @@ type Filter = (typeof FILTERS)[number];
 // Free-to-use photos from Unsplash. Swap these for your own assets — and
 // remember to add the image host to `images.remotePatterns` in next.config.
 const IMG = {
-  a: "https://images.unsplash.com/photo-1778601473900-9b68b33ff35e?q=80&w=1200&auto=format&fit=crop",
-  b: "https://images.unsplash.com/photo-1779995734326-3d3790120164?q=80&w=1200&auto=format&fit=crop",
-  c: "https://images.unsplash.com/photo-1779890306846-ad651833f050?q=80&w=1200&auto=format&fit=crop",
+  a: "https://images.unsplash.com/photo-1502447533750-9860c1269ae3?q=80&w=687&auto=format&fit=crop",
+  b: "https://images.unsplash.com/photo-1571832194445-4480b617ee01?q=80&w=880&auto=format&fit=crop",
+  c: "https://images.unsplash.com/photo-1678769435037-2de940e13c89?q=80&w=750&auto=format&fit=crop",
 } as const;
 
 const TILES: readonly Tile[] = [

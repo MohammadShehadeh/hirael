@@ -8,6 +8,7 @@ import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs";
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
 import { InstallBlock } from "@/components/showcase/install-block";
+import { SectionLabel } from "@/components/showcase/page-header";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
   Table,
@@ -110,10 +111,10 @@ export function ComponentPage({
             )}
           </div>
         )}
-        <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+        <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">
           {entry.title}
         </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {entry.description}
         </p>
         <InstallBlock name={entry.name} className="mt-1" />
@@ -172,9 +173,7 @@ function Section({
 }) {
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-        {label}
-      </h2>
+      <SectionLabel>{label}</SectionLabel>
       {children}
     </section>
   );

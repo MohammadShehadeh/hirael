@@ -16,7 +16,7 @@ export function ThemePlayground() {
   const components = COMPONENTS;
 
   return (
-    <div className="container flex w-full flex-col gap-12 py-16 sm:gap-14 sm:py-20">
+    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
         kicker="Theme"
         title="Your theme, every component."

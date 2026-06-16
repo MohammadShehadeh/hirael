@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft } from "lucide-react";
 import type { CategoryMeta } from "@/components/showcase/block-categories";
 import { BlockPreview } from "@/components/showcase/block-preview";
 import { Breadcrumbs } from "@/components/showcase/breadcrumbs";
+import { SectionLabel } from "@/components/showcase/page-header";
 import {
   BLOCKS_BY_KIND,
   entryEmbedHref,
@@ -39,7 +40,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {category.title}.
         </h1>
-        <p className="max-w-2xl text-base text-muted-foreground">
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {category.description}
         </p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -62,9 +63,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
-          Variants
-        </h2>
+        <SectionLabel>Variants</SectionLabel>
         <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
           {blocks.length} variant{blocks.length === 1 ? "" : "s"}
         </span>
@@ -84,7 +83,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
 
             <div className="flex flex-col gap-2 p-4 sm:p-5">
               <div className="flex items-center justify-between gap-2">
-                <h3 className="text-base font-medium tracking-[-0.015em]">
+                <h3 className="text-base font-medium tracking-[-0.01em]">
                   {entry.title}
                 </h3>
                 <span className="size-1.5 shrink-0 rounded-full bg-foreground" />

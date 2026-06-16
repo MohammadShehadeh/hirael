@@ -4,7 +4,7 @@ import { ArrowRight, Layers, Palette } from "lucide-react";
 
 import { InlineCodeBlock } from "@/components/showcase/code-block";
 import { InstallBlock } from "@/components/showcase/install-block";
-import { PageHeader } from "@/components/showcase/page-header";
+import { PageHeader, SectionLabel } from "@/components/showcase/page-header";
 import { highlightCode } from "@/lib/highlight";
 import { SITE } from "@/lib/site";
 import {
@@ -67,7 +67,7 @@ export default async function ComponentsIndex() {
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
 
   return (
-    <div className="container flex w-full flex-col gap-12 py-16 sm:gap-14 sm:py-20">
+    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
         kicker="Components"
         title="The full registry."
@@ -78,9 +78,7 @@ export default async function ComponentsIndex() {
 
       <section className="flex flex-col gap-8">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
-            Components
-          </h2>
+          <SectionLabel>Components</SectionLabel>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             {components.length} total
           </span>
@@ -112,9 +110,9 @@ export default async function ComponentsIndex() {
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2">
-                          <h4 className="text-base font-medium tracking-[-0.01em]">
+                          <h3 className="text-base font-medium tracking-[-0.01em]">
                             {entry.title}
-                          </h4>
+                          </h3>
                           <span
                             aria-hidden
                             className="size-1.5 rounded-full bg-foreground"
@@ -138,9 +136,7 @@ export default async function ComponentsIndex() {
 
       <section className="flex flex-col gap-8 border-t border-border pt-10">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
-            Section blocks
-          </h2>
+          <SectionLabel>Section blocks</SectionLabel>
           <Link
             href="/blocks"
             className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
@@ -192,9 +188,7 @@ export default async function ComponentsIndex() {
       </section>
 
       <section className="flex flex-col gap-5 border-t border-border pt-10">
-        <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-foreground">
-          Composition (the shadcn way)
-        </h2>
+        <SectionLabel>Composition (the shadcn way)</SectionLabel>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Every compound component ships as flat top-level exports, no
           namespacing, no convenience wrappers. The bare name is the root

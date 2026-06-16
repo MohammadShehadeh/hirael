@@ -63,7 +63,7 @@ export default function TemplatesIndex() {
           >
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card/50 px-4 py-3 sm:px-5">
               <div className="flex min-w-0 flex-col gap-0.5">
-                <h2 className="text-base font-medium tracking-[-0.015em]">
+                <h2 className="text-base font-medium tracking-[-0.01em]">
                   {entry.title}
                 </h2>
                 <p className="line-clamp-1 text-xs text-muted-foreground">

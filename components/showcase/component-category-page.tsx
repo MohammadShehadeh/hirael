@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/showcase/breadcrumbs";
+import { SectionLabel } from "@/components/showcase/page-header";
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_DESCRIPTIONS,
@@ -32,7 +33,7 @@ export function ComponentCategoryPage({
         <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {label}.
         </h1>
-        <p className="max-w-2xl text-base text-muted-foreground">
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {COMPONENT_CATEGORY_DESCRIPTIONS[category]}
         </p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -42,9 +43,7 @@ export function ComponentCategoryPage({
 
       <section className="flex flex-col gap-6">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
-            Components
-          </h2>
+          <SectionLabel>Components</SectionLabel>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             {items.length} total
           </span>

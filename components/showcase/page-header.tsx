@@ -60,6 +60,30 @@ export function PageHeader({
   );
 }
 
+/**
+ * Small mono-uppercase heading that labels a content section (an h2). Shared so
+ * these section eyebrows read identically across the index, category, and
+ * detail pages instead of drifting per file.
+ */
+export function SectionLabel({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <h2
+      className={cn(
+        "font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground",
+        className,
+      )}
+    >
+      {children}
+    </h2>
+  );
+}
+
 /** In-page section header (h2). Same language, one step smaller than PageHeader. */
 export function SectionHeading({
   kicker,

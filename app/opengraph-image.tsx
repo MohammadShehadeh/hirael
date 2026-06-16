@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${SITE.name} | ${SITE.description}`;
+export const alt = `${SITE.description} - ${SITE.name}`;
 
 export default function OpenGraphImage() {
   const components = COMPONENTS.length;

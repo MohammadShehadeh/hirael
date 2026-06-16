@@ -42,20 +42,20 @@ export async function generateMetadata({
       type: "website",
       url,
       siteName: SITE.name,
-      title: `${title} | ${SITE.name}`,
+      title: `${title} - ${SITE.name}`,
       description,
       images: [
         {
           url: "/opengraph-image",
           width: 1200,
           height: 630,
-          alt: `${title} | ${SITE.name}`,
+          alt: `${title} - ${SITE.name}`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${SITE.name}`,
+      title: `${title} - ${SITE.name}`,
       description,
       images: ["/opengraph-image"],
     },

@@ -27,7 +27,7 @@ import {
 import { Button } from "@/registry/hirael/ui/button";
 
 export const metadata: Metadata = {
-  title: `${SITE.name} | ${SITE.description}`,
+  title: `${SITE.description} - ${SITE.name}`,
   description: SITE.longDescription,
   alternates: {
     canonical: "/",
@@ -36,20 +36,20 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} | ${SITE.description}`,
+    title: `${SITE.description} - ${SITE.name}`,
     description: SITE.longDescription,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE.name} | ${SITE.description}`,
+        alt: `${SITE.description} - ${SITE.name}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} | ${SITE.description}`,
+    title: `${SITE.description} - ${SITE.name}`,
     description: SITE.longDescription,
     images: ["/opengraph-image"],
   },

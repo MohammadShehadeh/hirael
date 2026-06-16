@@ -45,7 +45,7 @@ export async function generateMetadata({
     return {};
   const href = entryHref(entry);
   const url = `${SITE.url}${href}`;
-  const title = `${entry.title} | ${SITE.name}`;
+  const title = `${entry.title} - ${SITE.name}`;
   return {
     title: entry.title,
     description: entry.description,

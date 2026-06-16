@@ -185,6 +185,17 @@ html.light .shiki span {
   text-decoration: var(--shiki-light-text-decoration, inherit) !important;
 }
 
+/* Inline shiki — token spans only (no surface/padding), used to syntax-color
+   short type signatures in the API table. Same dual-theme light swap as the
+   block .shiki above. */
+.shiki-inline span {
+  background: transparent !important;
+}
+html.light .shiki-inline,
+html.light .shiki-inline span {
+  color: var(--shiki-light) !important;
+}
+
 @layer base {
   * {
     border-color: var(--border);

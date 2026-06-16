@@ -9,7 +9,7 @@ import type {
   ExampleEntry,
   SourceFile,
 } from "@/components/showcase/component-page";
-import { highlightCode, langFromPath } from "@/lib/highlight";
+import { highlightCode, highlightInline, langFromPath } from "@/lib/highlight";
 import { SITE } from "@/lib/site";
 import {
   CATEGORY_LABELS,
@@ -147,12 +147,30 @@ export default async function ComponentRoute({
     loadExamples(entry.name),
   ]);
   const api = (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null;
+  // Pre-highlight each prop's type and default as inline TS so the API table
+  // gets the same VSCode token colors as the code blocks.
+  const apiHighlighted = api
+    ? await Promise.all(
+        api.map(async (part) => ({
+          ...part,
+          props: await Promise.all(
+            part.props.map(async (p) => ({
+              ...p,
+              typeHtml: await highlightInline(p.type, "ts"),
+              defaultHtml: p.default
+                ? await highlightInline(p.default, "ts")
+                : null,
+            })),
+          ),
+        })),
+      )
+    : null;
   return (
     <ComponentPage
       entry={entry}
       source={source}
       examples={examples}
-      api={api}
+      api={apiHighlighted}
       breadcrumb={[
         { label: "Components", href: "/components" },
         {

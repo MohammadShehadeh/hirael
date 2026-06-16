@@ -9,8 +9,10 @@
 
 import type { BundledLanguage, Highlighter } from "shiki";
 
-const DARK_THEME = "vesper";
-const LIGHT_THEME = "vitesse-light";
+// VSCode's own default themes — the familiar editor colors (blue keywords,
+// orange strings, teal types, yellow functions, green numbers/comments).
+const DARK_THEME = "dark-plus";
+const LIGHT_THEME = "light-plus";
 
 const SUPPORTED_LANGS: BundledLanguage[] = [
   "tsx",
@@ -52,6 +54,27 @@ export async function highlightCode(
     lang: safeLang,
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: "dark",
+  });
+}
+
+/**
+ * Inline highlight — token `<span>`s only, no `<pre>`/`<code>` wrapper or
+ * surface — for syntax-coloring short type signatures inside the API table.
+ * Defaults to `ts` so prop types and defaults read like editor code.
+ */
+export async function highlightInline(
+  code: string,
+  lang: HighlightLang = "ts",
+): Promise<string> {
+  const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage)
+    ? (lang as BundledLanguage)
+    : "ts";
+  const hl = await getHighlighter();
+  return hl.codeToHtml(code, {
+    lang: safeLang,
+    themes: { light: LIGHT_THEME, dark: DARK_THEME },
+    defaultColor: "dark",
+    structure: "inline",
   });
 }
 

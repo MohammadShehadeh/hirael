@@ -34,6 +34,9 @@ export type ApiProp = {
   required: boolean;
   default: string | null;
   description: string | null;
+  /** Pre-highlighted inline HTML (VSCode token colors) for `type` / `default`. */
+  typeHtml?: string;
+  defaultHtml?: string | null;
 };
 
 export type ApiPart = {
@@ -339,12 +342,26 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
                       )}
                     </TableCell>
                     <TableCell className="px-4 py-2.5 whitespace-normal">
-                      <code className="font-mono text-xs text-muted-foreground">
-                        {prop.type}
-                      </code>
+                      {prop.typeHtml ? (
+                        <code
+                          className="shiki-inline font-mono text-xs"
+                          dangerouslySetInnerHTML={{ __html: prop.typeHtml }}
+                        />
+                      ) : (
+                        <code className="font-mono text-xs text-muted-foreground">
+                          {prop.type}
+                        </code>
+                      )}
                     </TableCell>
                     <TableCell className="px-4 py-2.5 whitespace-normal font-mono text-xs text-muted-foreground">
-                      {prop.default ?? "—"}
+                      {prop.defaultHtml ? (
+                        <code
+                          className="shiki-inline"
+                          dangerouslySetInnerHTML={{ __html: prop.defaultHtml }}
+                        />
+                      ) : (
+                        (prop.default ?? "—")
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

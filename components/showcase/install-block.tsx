@@ -66,23 +66,37 @@ export function InstallBlock({
   );
 }
 
+// VSCode dark-plus / light-plus token colors, applied semantically so the
+// install command reads like editor-highlighted shell (bash itself has nothing
+// to colorize in a bare command, so we classify the tokens ourselves).
+const TOKEN_CLASS = {
+  runner: "text-[#795e26] dark:text-[#dcdcaa]", // npx / pnpm / yarn / bunx
+  verb: "text-[#0000ff] dark:text-[#569cd6]", // dlx / add
+  flag: "text-[#0070c1] dark:text-[#9cdcfe]", // --bun
+  pkg: "text-[#267f99] dark:text-[#4ec9b0]", // shadcn@latest
+  url: "text-[#a31515] dark:text-[#ce9178]", // registry URL
+  plain: "text-muted-foreground",
+} as const;
+
+function classifyToken(token: string, index: number): keyof typeof TOKEN_CLASS {
+  if (index === 0) return "runner";
+  if (/^https?:\/\//.test(token)) return "url";
+  if (token.startsWith("-")) return "flag";
+  if (token === "dlx" || token === "add") return "verb";
+  if (token.includes("shadcn")) return "pkg";
+  return "plain";
+}
+
 function CommandLine({ command }: { command: string }) {
   const tokens = command.split(" ");
   return (
     <code className="no-scrollbar min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs">
-      {tokens.map((t, i) => {
-        const emphasis = t === "shadcn@latest" || /^https?:\/\//.test(t);
-        return (
-          <React.Fragment key={i}>
-            {i > 0 && " "}
-            <span
-              className={emphasis ? "text-foreground" : "text-muted-foreground"}
-            >
-              {t}
-            </span>
-          </React.Fragment>
-        );
-      })}
+      {tokens.map((t, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && " "}
+          <span className={TOKEN_CLASS[classifyToken(t, i)]}>{t}</span>
+        </React.Fragment>
+      ))}
     </code>
   );
 }

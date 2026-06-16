@@ -235,7 +235,7 @@ function ExampleBlock({
         {view === "preview" ? (
           <div
             dir={rtl ? "rtl" : undefined}
-            className="flex min-h-[360px] items-center justify-center p-6 sm:min-h-[420px] sm:p-8 md:p-10"
+            className="flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
             <RegistryExample name={example.slug} />
           </div>

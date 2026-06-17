@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -13,9 +13,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jet-brains-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 const cormorant = Cormorant_Garamond({
@@ -93,7 +94,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className="scroll-smooth antialiased"
+      className="scroll-smooth"
       suppressHydrationWarning
     >
       <head>
@@ -137,7 +138,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} ${geistMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
       >
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

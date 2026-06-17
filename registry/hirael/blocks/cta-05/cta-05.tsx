@@ -63,7 +63,7 @@ export default function Cta05() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg"
+              className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
             >
               Tell us what you’re building and where it’s stuck. We read every
               message and usually reply within a day.
@@ -122,7 +122,7 @@ function AnimatedTitle({
   return (
     <h2
       className={cn(
-        "mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-tight tracking-tight text-foreground md:text-5xl",
+        "mx-auto max-w-3xl font-serif text-3xl font-medium leading-tight tracking-tight text-foreground md:text-5xl",
         className,
       )}
       {...props}

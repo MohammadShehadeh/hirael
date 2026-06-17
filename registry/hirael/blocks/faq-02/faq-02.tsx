@@ -44,10 +44,10 @@ export default function Faq02() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             frequently asked
           </span>
-          <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+          <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Everything you&apos;d ask in the first ten minutes.
           </h2>
-          <p className="max-w-xl text-balance text-sm text-muted-foreground">
+          <p className="max-w-xl text-sm text-muted-foreground">
             Short answers first. If something isn&apos;t here, the issue tracker
             is open and we usually respond within a day.
           </p>

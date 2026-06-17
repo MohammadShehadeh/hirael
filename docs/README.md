@@ -67,6 +67,9 @@ app/                              # Next.js App Router (output: "export")
   layout.tsx, manifest.ts, sitemap.ts, robots.ts, opengraph-image.tsx, icon.tsx …
 components/showcase/              # site chrome — NOT part of the registry
   site-header.tsx, topbar.tsx, sidebar.tsx, site-footer.tsx
+  component-page.tsx              # shared detail-page layout (content + "On this page" rail)
+  toc.tsx                         # scroll-spy table of contents for the detail pages
+  pager.tsx                       # prev/next walk across the whole catalog
   changelog-view.tsx              # /changelog presentation
   code-block.tsx, command-menu.tsx, theme-*.tsx, logo.tsx, install-block.tsx …
 registry/hirael/                  # canonical source for every registry item
@@ -91,16 +94,22 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 70 registry UI items (69 components + the distribution-only
-  `accordion`), 40 blocks, and 7 full-page templates (Creative Studio,
-  Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah). Full
-  list in [catalog.md](./catalog.md).
+  `accordion`), 40 blocks, and 9 full-page templates (Creative Studio,
+  Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah,
+  Asme). Full list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
-  per-category listing pages, per-item pages (demo + usage source + prop table
-  - install) with a breadcrumb trail, theme playground, command menu, light/dark
-    toggle. Every browsable item sits under its category segment
-    (`/components/<category>/<name>`, `/blocks/<category>/<name>`); build
-    `entryHref(entry)` rather than hand-writing paths, and old flat URLs 301 to
-    the nested ones via generated `vercel.json` redirects.
+  per-category listing pages, and per-item detail pages laid out like the
+  shadcn/ui docs: a breadcrumb + title header, then anchored sections (preview
+  or examples, installation, API/props, source, dependencies) in a content
+  column beside a sticky scroll-spy "On this page" rail (`toc.tsx`, hidden
+  below `xl`). Headings are deep-linkable, the live previews sit on a faint
+  dot-grid canvas, and a prev/next pager (`pager.tsx`) walks the whole
+  collection across category boundaries. Plus a theme playground, command
+  menu, and light/dark toggle. Every browsable item sits under its category
+  segment
+  (`/components/<category>/<name>`, `/blocks/<category>/<name>`); build
+  `entryHref(entry)` rather than hand-writing paths, and old flat URLs 301 to
+  the nested ones via generated `vercel.json` redirects.
 - **RTL** — every component and block works under `dir="rtl"`; previews have
   an RTL toggle.
 - **Fully static export** — `output: "export"`, image optimization off,

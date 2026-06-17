@@ -40,11 +40,11 @@ export default function Hero03() {
           Since 2021 — One calm workspace
         </span>
 
-        <h1 className="max-w-3xl text-balance font-serif text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
+        <h1 className="max-w-3xl font-serif text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
           Software that respects your time.
         </h1>
 
-        <p className="max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           Plan, build, and ship from one workspace your whole team will actually
           enjoy using. No tab sprawl, no busywork.
         </p>

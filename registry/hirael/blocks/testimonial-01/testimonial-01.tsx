@@ -21,10 +21,10 @@ export default function Testimonial01() {
             >
               &ldquo;
             </span>
-            <p className="text-balance font-serif text-2xl leading-[1.3] tracking-tight sm:text-3xl">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation.
+            <p className="font-serif text-2xl leading-[1.3] tracking-tight sm:text-3xl">
+              The compound APIs match shadcn exactly, so there was nothing new
+              for the team to learn. We pulled in the date picker and the data
+              table and shipped the same afternoon.
             </p>
           </blockquote>
 

@@ -63,7 +63,7 @@ export default function Cta04() {
 
         <h2
           data-slot="cta-title"
-          className="mt-6 text-balance font-serif text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
+          className="mt-6 font-serif text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
         >
           Let&apos;s work{" "}
           <span className="italic text-foreground">together</span>.

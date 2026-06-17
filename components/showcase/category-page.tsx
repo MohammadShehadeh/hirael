@@ -37,7 +37,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
             </span>
           )}
         </div>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {category.title}.
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
@@ -123,7 +123,7 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             In design
           </span>
-          <h3 className="text-balance text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
+          <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
             {category.title} blocks are on the roadmap.
           </h3>
           <p className="max-w-xl text-sm text-muted-foreground">

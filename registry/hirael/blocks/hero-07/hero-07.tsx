@@ -16,7 +16,7 @@ function Headline() {
   return (
     <h1
       data-slot="hero-headline"
-      className="max-w-3xl text-balance font-serif text-[42px] font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl md:text-7xl"
+      className="max-w-3xl font-serif text-[42px] font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl md:text-7xl"
     >
       {words.map((word, i) => {
         const accent = i >= words.length - 2;
@@ -269,7 +269,7 @@ export default function Hero07() {
 
         <p
           data-slot="hero-subhead"
-          className="mt-2 max-w-xl text-pretty text-muted-foreground sm:mt-4"
+          className="mt-2 max-w-xl text-muted-foreground sm:mt-4"
         >
           One source of truth for your interface. Design it, theme it, and reuse
           it across every project without rewriting the same components.

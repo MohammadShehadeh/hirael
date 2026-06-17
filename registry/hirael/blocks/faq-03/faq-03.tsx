@@ -109,10 +109,10 @@ export default function Faq03() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             help center
           </span>
-          <h2 className="max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+          <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Find the answer before you file the issue.
           </h2>
-          <p className="max-w-xl text-balance text-sm text-muted-foreground">
+          <p className="max-w-xl text-sm text-muted-foreground">
             Search the questions we hear most, or narrow by topic. Anything
             unanswered lands in the inbox below.
           </p>

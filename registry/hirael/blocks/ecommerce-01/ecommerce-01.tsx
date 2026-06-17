@@ -146,7 +146,7 @@ export default function Ecommerce01() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             shop
           </span>
-          <h2 className="max-w-xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+          <h2 className="max-w-xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             The everyday carry edit.
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground">

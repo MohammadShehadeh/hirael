@@ -42,11 +42,11 @@ export default function Hero04() {
             Mission control
           </span>
 
-          <h1 className="mt-6 max-w-2xl text-balance font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+          <h1 className="mt-6 max-w-2xl font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl">
             Launch with confidence.
           </h1>
 
-          <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Monitor every deploy, rollback, and metric from a single pane of
             glass. Catch problems before your users do.
           </p>

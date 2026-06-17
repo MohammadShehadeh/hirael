@@ -115,7 +115,7 @@ export default function Footer03() {
                 <BrandMark />
                 Hirael
               </span>
-              <p className="mb-4 max-w-sm text-balance text-sm text-muted-foreground">
+              <p className="mb-4 max-w-sm text-sm text-muted-foreground">
                 Visual building blocks for teams that ship at scale. Composable,
                 token-driven, and yours to keep.
               </p>

@@ -11,37 +11,37 @@ type Quote = {
 
 const QUOTES: readonly Quote[] = [
   {
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    body: "The compound APIs are identical to shadcn, so onboarding was zero. We composed a whole settings page out of these in an afternoon.",
     initials: "MR",
     name: "Maya Renner",
     role: "Staff engineer · Plinth Labs",
   },
   {
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    body: "Light and dark are true inverses, which almost no kit gets right. I stopped patching contrast bugs.",
     initials: "JT",
     name: "Jules Tanaka",
     role: "Design systems · Hexpoint",
   },
   {
-    body: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    body: "RTL just worked. We flipped the locale and didn't have to touch a single component.",
     initials: "AO",
     name: "Adaeze Okafor",
     role: "Founding engineer · Brella",
   },
   {
-    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
+    body: "It's source in our repo, not another dependency to keep up with. That's what sold the team.",
     initials: "SK",
     name: "Soren Kim",
     role: "Frontend lead · Verbit",
   },
   {
-    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+    body: "We replaced three half-finished internal components in a morning and deleted a lot of code.",
     initials: "RP",
     name: "Reema Patel",
     role: "CTO · Lattice & Co.",
   },
   {
-    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    body: "The blocks gave us a real landing page on day one. We swapped the copy and colors and shipped.",
     initials: "DL",
     name: "Diego Larrea",
     role: "Engineer · Mercado",
@@ -57,13 +57,13 @@ export default function Testimonial02() {
             <span className="size-1 rounded-full bg-foreground" />
             What teams say
           </span>
-          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             What people are{" "}
             <span className="italic text-foreground">actually</span> saying.
           </h2>
           <p className="text-base text-muted-foreground sm:text-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Notes from engineers and designers building with the catalog in
+            production.
           </p>
         </div>
 

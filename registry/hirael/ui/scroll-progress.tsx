@@ -64,7 +64,7 @@ function ScrollProgress({
       data-slot="scroll-progress"
       aria-hidden
       className={cn(
-        "pointer-events-none fixed inset-x-0 z-50 h-1 origin-left bg-foreground/80",
+        "pointer-events-none fixed inset-x-0 z-50 h-1 origin-left bg-foreground/80 rtl:origin-right",
         position === "top" ? "top-0" : "bottom-0",
         className,
       )}

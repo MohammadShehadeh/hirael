@@ -41,7 +41,7 @@ export default function Cta02() {
           one-line install
         </span>
 
-        <h2 className="text-balance font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        <h2 className="font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           Make your component layer{" "}
           <span className="relative inline-block">
             <span className="relative z-10 italic">do its job.</span>
@@ -56,7 +56,7 @@ export default function Cta02() {
           </span>
         </h2>
 
-        <p className="max-w-xl text-balance text-base text-muted-foreground">
+        <p className="max-w-xl text-base text-muted-foreground">
           Hirael fills the obvious gaps in shadcn: the components your team
           quietly rebuilds project after project, so you can spend that time on
           the work only you can do.

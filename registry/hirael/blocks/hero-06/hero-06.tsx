@@ -100,12 +100,12 @@ export default function Hero06() {
         </Badge>
 
         <div className="space-y-4">
-          <h1 className="mx-auto max-w-3xl text-balance font-serif text-4xl font-medium leading-[1.06] tracking-tight sm:text-5xl md:text-6xl">
+          <h1 className="mx-auto max-w-3xl font-serif text-4xl font-medium leading-[1.06] tracking-tight sm:text-5xl md:text-6xl">
             Frontend engineer where{" "}
             <span className="italic text-primary">craft meets code</span> at
             scale.
           </h1>
-          <p className="mx-auto max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
+          <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground">
             Engineering rigor, a designer’s eye, and an unhealthy attention to
             the details.
           </p>

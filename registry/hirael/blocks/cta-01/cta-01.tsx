@@ -31,7 +31,7 @@ export default function Cta01() {
                 <span className="size-1 rounded-full bg-foreground" />
                 Get started
               </span>
-              <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+              <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
                 Stop rebuilding the components{" "}
                 <span className="italic text-foreground">every project</span>{" "}
                 needs.

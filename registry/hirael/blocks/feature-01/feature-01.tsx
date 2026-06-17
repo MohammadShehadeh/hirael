@@ -203,7 +203,7 @@ export default function Feature01() {
                     <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                       {row.eyebrow}
                     </span>
-                    <h3 className="text-balance text-2xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-3xl">
+                    <h3 className="text-2xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-3xl">
                       {row.headline}
                     </h3>
                     <p className="max-w-lg text-sm text-muted-foreground sm:text-base">

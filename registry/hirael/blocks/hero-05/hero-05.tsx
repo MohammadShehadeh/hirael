@@ -85,11 +85,11 @@ export default function Hero05() {
                 All systems online
               </span>
 
-              <h1 className="mt-7 text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+              <h1 className="mt-7 font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
                 Bring your ideas together.
               </h1>
 
-              <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-muted-foreground">
+              <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
                 A shared canvas for notes, tasks, and docs — so your team always
                 knows what&apos;s next.
               </p>

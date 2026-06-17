@@ -65,7 +65,7 @@ export default function Hero08() {
           </Badge>
 
           <motion.h1
-            className="text-balance font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl"
+            className="font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl"
             variants={item}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
@@ -74,7 +74,7 @@ export default function Hero08() {
           </motion.h1>
 
           <motion.p
-            className="mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg md:text-balance"
+            className="mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg"
             variants={item}
             transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
           >

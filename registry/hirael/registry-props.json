@@ -6689,6 +6689,94 @@
       "extendsNative": false
     }
   ],
+  "asme": [
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "About",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "FeaturedVideo",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Philosophy",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Services",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Serif",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "InstagramIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "TwitterIcon",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "AsmeStyles",
+      "props": [],
+      "extendsNative": false
+    }
+  ],
   "nexacore": [
     {
       "name": "Navbar",

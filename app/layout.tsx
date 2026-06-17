@@ -94,7 +94,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className="scroll-smooth antialiased"
+      className="scroll-smooth"
       suppressHydrationWarning
     >
       <head>

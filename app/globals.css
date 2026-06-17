@@ -547,7 +547,7 @@ html.light .shiki-inline span {
 [data-sidebar="menu-button"][data-active="true"]::before {
   content: "";
   position: absolute;
-  left: -1px;
+  inset-inline-start: -1px;
   top: 6px;
   bottom: 6px;
   width: 2px;

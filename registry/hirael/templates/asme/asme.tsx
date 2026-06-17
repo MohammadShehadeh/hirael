@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { About } from "./about";
 import { FeaturedVideo } from "./featured-video";
 import { inter, instrumentSerif } from "./fonts";
+import { Footer } from "./footer";
 import { Hero } from "./hero";
 import { Philosophy } from "./philosophy";
 import { Services } from "./services";
@@ -32,6 +33,7 @@ export default function Asme() {
         <FeaturedVideo />
         <Philosophy />
         <Services />
+        <Footer />
       </main>
     </MotionConfig>
   );

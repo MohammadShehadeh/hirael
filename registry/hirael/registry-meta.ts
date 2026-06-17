@@ -1924,7 +1924,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "asme",
     title: "Asme",
     description:
-      "Dark, liquid-glass marketing landing page: a full-viewport hero with a cross-fading background video, a frosted glass pill nav and an inline email form, then scroll-revealed about, featured-video, philosophy and services sections. Framer Motion throughout, with a self-contained pure-black palette and Instrument Serif accents.",
+      "Dark, liquid-glass marketing landing page: a full-viewport hero with a cross-fading background video, a frosted glass pill nav and an inline email form, then scroll-revealed about, featured-video, philosophy and services sections, closing on a multi-column footer. Framer Motion throughout, with a self-contained pure-black palette and Instrument Serif accents.",
     category: "templates",
     files: [
       {
@@ -1954,6 +1954,10 @@ export const REGISTRY: RegistryEntryMeta[] = [
       {
         path: "registry/hirael/templates/asme/services.tsx",
         target: "components/templates/asme/services.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/footer.tsx",
+        target: "components/templates/asme/footer.tsx",
       },
       {
         path: "registry/hirael/templates/asme/primitives.tsx",

@@ -2561,3 +2561,44 @@ export function entryEmbedHref(entry: RegistryEntryMeta): string {
   if (entry.category === "templates") return `/embed/templates/${entry.name}`;
   return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Sibling navigation — a linear walk through each collection                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Every component flattened into display order: category by category (the
+ * sidebar / index order), and within a category the registry order. This is
+ * the path the detail-page pager walks, so Next steps from the last item of
+ * one category straight into the first of the next.
+ */
+export const COMPONENTS_ORDERED: RegistryEntryMeta[] =
+  COMPONENT_CATEGORY_ORDER.flatMap((cat) => REGISTRY_BY_CATEGORY[cat]);
+
+/** Every block flattened into display order: kind by kind, then registry order. */
+export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap(
+  (kind) => BLOCKS_BY_KIND[kind],
+);
+
+/**
+ * The previous and next entry within an item's own collection
+ * (components | blocks | templates). Used for the detail-page pager; either
+ * side is `null` at a collection boundary.
+ */
+export function entrySiblings(entry: RegistryEntryMeta): {
+  prev: RegistryEntryMeta | null;
+  next: RegistryEntryMeta | null;
+} {
+  const list =
+    entry.category === "templates"
+      ? TEMPLATES
+      : entry.category === "blocks"
+        ? BLOCKS_ORDERED
+        : COMPONENTS_ORDERED;
+  const i = list.findIndex((e) => e.name === entry.name);
+  if (i === -1) return { prev: null, next: null };
+  return {
+    prev: i > 0 ? list[i - 1] : null,
+    next: i < list.length - 1 ? list[i + 1] : null,
+  };
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Hash } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { BlockViewer } from "@/components/showcase/block-viewer";
@@ -8,7 +9,9 @@ import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs";
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
 import { InstallBlock } from "@/components/showcase/install-block";
+import { Pager } from "@/components/showcase/pager";
 import { SectionLabel } from "@/components/showcase/page-header";
+import { Toc, type TocItem } from "@/components/showcase/toc";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
   Table,
@@ -20,6 +23,7 @@ import {
 } from "@/registry/hirael/ui/table";
 import {
   entryEmbedHref,
+  entrySiblings,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
 
@@ -88,92 +92,161 @@ export function ComponentPage({
   );
 
   const exampleList = examples ?? [];
+  const registryDeps = entry.registryDependencies ?? [];
+  const npmDeps = entry.dependencies ?? [];
+
+  // One descriptor list drives both the rendered sections and the "On this
+  // page" rail, so the two can never drift. Order mirrors shadcn/ui's docs:
+  // the showcase first, then how to install it, then the reference material.
+  const sections: PageSection[] = [];
+
+  if (isComposite) {
+    sections.push({
+      id: "preview",
+      label: "Preview",
+      content: <BlockViewer title={entry.title} embedHref={embedHref} />,
+    });
+  } else {
+    sections.push({
+      id: "examples",
+      label: exampleList.length > 1 ? "Examples" : "Example",
+      content: (
+        <div className="flex flex-col gap-8">
+          {exampleList.map((example) => (
+            <ExampleBlock
+              key={example.slug}
+              example={example}
+              showTitle={exampleList.length > 1}
+            />
+          ))}
+        </div>
+      ),
+    });
+  }
+
+  sections.push({
+    id: "installation",
+    label: "Installation",
+    content: <InstallBlock name={entry.name} />,
+  });
+
+  if (!isComposite && api?.length) {
+    sections.push({
+      id: "api",
+      label: "API",
+      content: <ApiPanel parts={api} />,
+    });
+  }
+
+  if (codeTabs.length > 0) {
+    sections.push(
+      isComposite
+        ? {
+            id: "code",
+            label: "Code",
+            content: <CodeBlock tabs={codeTabs} layout="tree" />,
+          }
+        : {
+            id: "component-source",
+            label: "Component source",
+            content: <CodeBlock tabs={codeTabs} layout="tabs" />,
+          },
+    );
+  }
+
+  if (registryDeps.length || npmDeps.length) {
+    sections.push({
+      id: "dependencies",
+      label: "Dependencies",
+      content: (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {registryDeps.length > 0 && (
+            <DepGroup title="shadcn registry" deps={registryDeps} />
+          )}
+          {npmDeps.length > 0 && <DepGroup title="npm" deps={npmDeps} />}
+        </div>
+      ),
+    });
+  }
+
+  const tocItems: TocItem[] = sections.map(({ id, label }) => ({ id, label }));
+  const { prev, next } = entrySiblings(entry);
 
   return (
-    <div className="container flex w-full flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
-      <header className="flex flex-col gap-3 border-b border-border pb-6">
-        {breadcrumb ? (
-          <Breadcrumbs items={breadcrumb} />
-        ) : (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              {entry.category}
-            </span>
-            {entry.blockKind && (
-              <>
-                <span className="font-mono text-[10px] text-muted-foreground">
-                  ·
+    <div className="container py-10 sm:py-12 md:py-16">
+      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
+        <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
+          <header className="flex flex-col gap-3 border-b border-border pb-6">
+            {breadcrumb ? (
+              <Breadcrumbs items={breadcrumb} />
+            ) : (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {entry.category}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                  {entry.blockKind}
-                </span>
-              </>
+                {entry.blockKind && (
+                  <>
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      ·
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                      {entry.blockKind}
+                    </span>
+                  </>
+                )}
+              </div>
             )}
+            <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">
+              {entry.title}
+            </h1>
+            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+              {entry.description}
+            </p>
+          </header>
+
+          {sections.map((section) => (
+            <Section key={section.id} id={section.id} label={section.label}>
+              {section.content}
+            </Section>
+          ))}
+
+          <Pager prev={prev} next={next} />
+        </div>
+
+        <aside className="hidden xl:block">
+          <div className="sticky top-24">
+            <Toc items={tocItems} />
           </div>
-        )}
-        <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">
-          {entry.title}
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          {entry.description}
-        </p>
-        <InstallBlock name={entry.name} className="mt-1" />
-      </header>
-
-      {isComposite ? (
-        <>
-          <Section label="Preview">
-            <BlockViewer title={entry.title} embedHref={embedHref} />
-          </Section>
-          {codeTabs.length > 0 && (
-            <Section label="Code">
-              <CodeBlock tabs={codeTabs} layout="tree" />
-            </Section>
-          )}
-        </>
-      ) : (
-        <>
-          <Section label={exampleList.length > 1 ? "Examples" : "Example"}>
-            <div className="flex flex-col gap-8">
-              {exampleList.map((example) => (
-                <ExampleBlock
-                  key={example.slug}
-                  example={example}
-                  showTitle={exampleList.length > 1}
-                />
-              ))}
-            </div>
-          </Section>
-
-          {api?.length ? (
-            <Section label="API">
-              <ApiPanel parts={api} />
-            </Section>
-          ) : null}
-
-          {codeTabs.length > 0 && (
-            <Section label="Component source">
-              <CodeBlock tabs={codeTabs} layout="tabs" />
-            </Section>
-          )}
-        </>
-      )}
-
-      <DependenciesSection entry={entry} />
+        </aside>
+      </div>
     </div>
   );
 }
 
+type PageSection = { id: string; label: string; content: React.ReactNode };
+
 function Section({
+  id,
   label,
   children,
 }: {
+  id: string;
   label: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-4">
-      <SectionLabel>{label}</SectionLabel>
+    <section id={id} className="flex scroll-mt-24 flex-col gap-4">
+      <a
+        href={`#${id}`}
+        className="group/anchor inline-flex w-fit items-center gap-1.5"
+        aria-label={`${label} section`}
+      >
+        <SectionLabel>{label}</SectionLabel>
+        <Hash
+          className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover/anchor:opacity-100"
+          aria-hidden
+        />
+      </a>
       {children}
     </section>
   );
@@ -198,8 +271,8 @@ function ExampleBlock({
           {example.title}
         </h3>
       )}
-      <div className="relative overflow-hidden rounded-sm border border-border bg-card/40">
-        <div className="flex items-center justify-between gap-2 border-b border-border/70 px-3 py-2">
+      <div className="relative overflow-hidden rounded-md border border-border">
+        <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
           <div
             role="tablist"
             aria-label="Example view"
@@ -235,7 +308,7 @@ function ExampleBlock({
         {view === "preview" ? (
           <div
             dir={rtl ? "rtl" : undefined}
-            className="flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
+            className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
             <RegistryExample name={example.slug} />
           </div>
@@ -252,23 +325,6 @@ function ExampleBlock({
         ) : null}
       </div>
     </section>
-  );
-}
-
-function DependenciesSection({ entry }: { entry: RegistryEntryMeta }) {
-  const registryDeps = entry.registryDependencies ?? [];
-  const npmDeps = entry.dependencies ?? [];
-  if (!registryDeps.length && !npmDeps.length) return null;
-
-  return (
-    <Section label="Dependencies">
-      <div className="grid gap-4 sm:grid-cols-2">
-        {registryDeps.length > 0 && (
-          <DepGroup title="shadcn registry" deps={registryDeps} />
-        )}
-        {npmDeps.length > 0 && <DepGroup title="npm" deps={npmDeps} />}
-      </div>
-    </Section>
   );
 }
 

@@ -115,7 +115,7 @@ export function BlockViewer({
         </div>
       </div>
 
-      <div className="flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
+      <div className="bg-dot-grid flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
         <iframe
           key={key}
           src={src}

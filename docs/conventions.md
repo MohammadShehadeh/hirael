@@ -184,6 +184,17 @@ things to keep in sync when you touch it:
   `rootMargin` clears the same band. Change one, change all three. The rail is
   client-only (an `IntersectionObserver`), which is fine under `output:
 "export"` — it ships static and wires up on hydration.
+- **Headings deep-link; the pager walks the collection.** Each `<Section>`
+  heading is an `<a href="#id">` with a hover-revealed hash, and the page ends
+  with a prev/next `Pager`. Siblings come from `entrySiblings(entry)` in
+  `registry-meta.ts`, which walks a flat per-collection order
+  (`COMPONENTS_ORDERED` chains every category end-to-end, `BLOCKS_ORDERED`
+  every kind), so Next crosses category boundaries. The pager chevrons flip
+  with `rtl:rotate-180`.
+- **Previews sit on a dot-grid canvas.** Component examples and the block
+  viewer back their preview surface with `bg-dot-grid` (token-only, so it
+  works in both themes); the toolbar keeps the `bg-card` tint so chrome reads
+  apart from the canvas.
 
 ## Gating signal
 

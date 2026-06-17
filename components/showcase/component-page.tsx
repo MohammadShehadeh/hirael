@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Hash } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { BlockViewer } from "@/components/showcase/block-viewer";
@@ -8,6 +9,7 @@ import { Breadcrumbs, type Crumb } from "@/components/showcase/breadcrumbs";
 import { CodeBlock, type CodeBlockTab } from "@/components/showcase/code-block";
 import { DirectionToggle } from "@/components/showcase/direction-toggle";
 import { InstallBlock } from "@/components/showcase/install-block";
+import { Pager } from "@/components/showcase/pager";
 import { SectionLabel } from "@/components/showcase/page-header";
 import { Toc, type TocItem } from "@/components/showcase/toc";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
@@ -21,6 +23,7 @@ import {
 } from "@/registry/hirael/ui/table";
 import {
   entryEmbedHref,
+  entrySiblings,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
 
@@ -167,6 +170,7 @@ export function ComponentPage({
   }
 
   const tocItems: TocItem[] = sections.map(({ id, label }) => ({ id, label }));
+  const { prev, next } = entrySiblings(entry);
 
   return (
     <div className="container py-10 sm:py-12 md:py-16">
@@ -205,6 +209,8 @@ export function ComponentPage({
               {section.content}
             </Section>
           ))}
+
+          <Pager prev={prev} next={next} />
         </div>
 
         <aside className="hidden xl:block">
@@ -230,7 +236,17 @@ function Section({
 }) {
   return (
     <section id={id} className="flex scroll-mt-24 flex-col gap-4">
-      <SectionLabel>{label}</SectionLabel>
+      <a
+        href={`#${id}`}
+        className="group/anchor inline-flex w-fit items-center gap-1.5"
+        aria-label={`${label} section`}
+      >
+        <SectionLabel>{label}</SectionLabel>
+        <Hash
+          className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover/anchor:opacity-100"
+          aria-hidden
+        />
+      </a>
       {children}
     </section>
   );
@@ -255,8 +271,8 @@ function ExampleBlock({
           {example.title}
         </h3>
       )}
-      <div className="relative overflow-hidden rounded-sm border border-border bg-card/40">
-        <div className="flex items-center justify-between gap-2 border-b border-border/70 px-3 py-2">
+      <div className="relative overflow-hidden rounded-md border border-border">
+        <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
           <div
             role="tablist"
             aria-label="Example view"
@@ -292,7 +308,7 @@ function ExampleBlock({
         {view === "preview" ? (
           <div
             dir={rtl ? "rtl" : undefined}
-            className="flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
+            className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
             <RegistryExample name={example.slug} />
           </div>

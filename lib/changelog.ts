@@ -93,22 +93,18 @@ function parseSections(body: string | null | undefined): ChangelogSection[] {
       continue;
     }
 
-    if (line.startsWith("- ")) {
-      if (!current) {
-        current = { heading: "Highlights", items: [] };
-        sections.push(current);
-      }
-      current.items.push(line.slice(2).trim());
-      continue;
+    // Any non-heading line is an item of the current section. Bullets drop
+    // their "- " marker; a stray prose line (or a body with no heading at
+    // all) falls under an implicit "Highlights" section rather than becoming
+    // its own empty, dangling heading.
+    if (!current) {
+      current = { heading: "Highlights", items: [] };
+      sections.push(current);
     }
-
-    current = { heading: line, items: [] };
-    sections.push(current);
+    current.items.push(line.startsWith("- ") ? line.slice(2).trim() : line);
   }
 
-  return sections.filter(
-    (section) => section.heading || section.items.length > 0,
-  );
+  return sections.filter((section) => section.items.length > 0);
 }
 
 function releaseToChangelog(release: GitHubRelease): ChangelogRelease | null {
@@ -135,14 +131,24 @@ function releaseToChangelog(release: GitHubRelease): ChangelogRelease | null {
 }
 
 function compareSemver(a: string, b: string): number {
-  const parse = (v: string) =>
-    v
-      .replace(/^v/, "")
+  const parse = (v: string) => {
+    const [core, prerelease = ""] = v.replace(/^v/, "").split("-");
+    const [major, minor, patch] = core
       .split(".")
       .map((n) => Number.parseInt(n, 10) || 0);
-  const [aMajor, aMinor, aPatch] = parse(a);
-  const [bMajor, bMinor, bPatch] = parse(b);
-  return bMajor - aMajor || bMinor - aMinor || bPatch - aPatch;
+    return { major, minor, patch, prerelease };
+  };
+  const pa = parse(a);
+  const pb = parse(b);
+  const core =
+    pb.major - pa.major || pb.minor - pa.minor || pb.patch - pa.patch;
+  if (core) return core;
+  // Same x.y.z: a final release outranks its prereleases (1.4.0 before
+  // 1.4.0-rc.1); between two prereleases, sort the labels descending.
+  if (pa.prerelease === pb.prerelease) return 0;
+  if (!pa.prerelease) return -1;
+  if (!pb.prerelease) return 1;
+  return pb.prerelease.localeCompare(pa.prerelease);
 }
 
 export async function getChangelog(): Promise<Changelog> {
@@ -158,9 +164,18 @@ export async function getChangelog(): Promise<Changelog> {
 
   releases.sort((a, b) => compareSemver(a.version, b.version));
 
+  // "Updated" is the most recently shipped release by date, not the highest
+  // version — a backported patch can ship after a newer major, and ISO dates
+  // compare chronologically as strings.
+  const mostRecent = releases.reduce<ChangelogRelease | null>((latest, r) => {
+    if (!r.isoDate) return latest;
+    if (!latest?.isoDate || r.isoDate > latest.isoDate) return r;
+    return latest;
+  }, null);
+
   return {
     releases,
     totalReleases: releases.length,
-    lastUpdated: releases[0]?.displayDate ?? null,
+    lastUpdated: (mostRecent ?? releases[0])?.displayDate ?? null,
   };
 }

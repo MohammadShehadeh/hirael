@@ -18,6 +18,8 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import ts from "typescript";
+
 import {
   buildRegistry,
   loadRegistryMeta,
@@ -25,6 +27,35 @@ import {
 } from "./build-registry.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// The `@/registry/hirael/ui/<name>` modules a source file actually imports,
+// read from the TS AST so import specifiers inside comments or string
+// literals don't count, and quote style / line-wrapping don't matter.
+function collectUiImports(src, fileName) {
+  const sf = ts.createSourceFile(
+    fileName,
+    src,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX,
+  );
+  const deps = new Set();
+  const visit = (node) => {
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      const m = node.moduleSpecifier.text.match(
+        /^@\/registry\/hirael\/ui\/([a-z0-9-]+)$/,
+      );
+      if (m) deps.add(m[1]);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return deps;
+}
 
 let errors = 0;
 const fail = (msg) => {
@@ -100,11 +131,8 @@ for (const entry of entries) {
   for (const p of filePaths) {
     const file = path.join(ROOT, p);
     if (!existsSync(file)) continue;
-    const src = readFileSync(file, "utf8");
-    for (const m of src.matchAll(
-      /from "@\/registry\/hirael\/ui\/([a-z0-9-]+)"/g,
-    )) {
-      imported.add(m[1]);
+    for (const dep of collectUiImports(readFileSync(file, "utf8"), p)) {
+      imported.add(dep);
     }
   }
   const declared = new Set(entry.registryDependencies ?? []);

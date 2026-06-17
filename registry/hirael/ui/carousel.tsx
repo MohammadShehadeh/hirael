@@ -51,15 +51,27 @@ function Carousel({
   children,
   ...props
 }: React.ComponentProps<"div"> & CarouselProps) {
+  const [detectedDirection, setDetectedDirection] = React.useState<
+    "ltr" | "rtl"
+  >("ltr");
+  const direction = opts?.direction ?? detectedDirection;
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
       axis: orientation === "horizontal" ? "x" : "y",
+      direction,
     },
     plugins,
   );
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
+
+  React.useEffect(() => {
+    const node = api?.rootNode();
+    if (!node) return;
+    const dir = getComputedStyle(node).direction === "rtl" ? "rtl" : "ltr";
+    setDetectedDirection((prev) => (prev === dir ? prev : dir));
+  }, [api]);
 
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
@@ -79,13 +91,15 @@ function Carousel({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === "ArrowLeft") {
         event.preventDefault();
-        scrollPrev();
+        if (direction === "rtl") scrollNext();
+        else scrollPrev();
       } else if (event.key === "ArrowRight") {
         event.preventDefault();
-        scrollNext();
+        if (direction === "rtl") scrollPrev();
+        else scrollNext();
       }
     },
-    [scrollPrev, scrollNext],
+    [direction, scrollPrev, scrollNext],
   );
 
   React.useEffect(() => {
@@ -187,7 +201,7 @@ function CarouselPrevious({
       className={cn(
         "absolute size-8 rounded-full",
         orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
+          ? "top-1/2 -start-12 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
@@ -195,7 +209,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <ArrowLeft className="rtl:rotate-180" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -217,7 +231,7 @@ function CarouselNext({
       className={cn(
         "absolute size-8 rounded-full",
         orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
+          ? "top-1/2 -end-12 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
@@ -225,7 +239,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <ArrowRight className="rtl:rotate-180" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

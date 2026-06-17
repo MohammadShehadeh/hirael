@@ -155,9 +155,9 @@ export default function Login02() {
           />
 
           <blockquote className="text-balance font-serif text-2xl leading-[1.3] tracking-tight md:text-3xl lg:text-4xl">
-            Lorem ipsum dolor sit amet, consectetur{" "}
-            <span className="italic text-foreground">adipiscing elit</span>, sed
-            do eiusmod tempor incididunt ut labore.
+            The parts compose just like the primitives we{" "}
+            <span className="italic text-foreground">already use</span>, so we
+            shipped the new dashboard without learning anything new.
           </blockquote>
 
           <div className="flex items-center gap-4 border-t border-border pt-6">

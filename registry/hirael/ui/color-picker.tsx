@@ -351,10 +351,15 @@ function SaturationValueArea() {
     ctx.setHsv({ h: ctx.hsv.h, s: x * 100, v: (1 - y) * 100 });
   };
 
+  const updateRef = React.useRef(updateFromPointer);
+  React.useEffect(() => {
+    updateRef.current = updateFromPointer;
+  });
+
   React.useEffect(() => {
     const onMove = (e: PointerEvent) => {
       if (!draggingRef.current) return;
-      updateFromPointer(e.clientX, e.clientY);
+      updateRef.current(e.clientX, e.clientY);
     };
     const onUp = () => {
       draggingRef.current = false;
@@ -365,7 +370,7 @@ function SaturationValueArea() {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  });
+  }, []);
 
   const pureHue = rgbToHex(hsvToRgb({ h: ctx.hsv.h, s: 100, v: 100 }));
 
@@ -437,10 +442,15 @@ function HueSlider() {
     ctx.setHsv({ h: x * 360, s: ctx.hsv.s, v: ctx.hsv.v });
   };
 
+  const updateRef = React.useRef(updateFromPointer);
+  React.useEffect(() => {
+    updateRef.current = updateFromPointer;
+  });
+
   React.useEffect(() => {
     const onMove = (e: PointerEvent) => {
       if (!draggingRef.current) return;
-      updateFromPointer(e.clientX);
+      updateRef.current(e.clientX);
     };
     const onUp = () => {
       draggingRef.current = false;
@@ -451,7 +461,7 @@ function HueSlider() {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  });
+  }, []);
 
   return (
     <div

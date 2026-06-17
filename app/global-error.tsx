@@ -31,7 +31,7 @@ export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.className} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />

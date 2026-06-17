@@ -9,52 +9,53 @@ const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
 };
 
 /**
- * Arch-and-star mark — slim doorway with a 4-point star inside and three
- * reflection lines below the base. The reflection is feathered: brightest at
- * the centre and dissolving at both ends, so it reads as light shimmering on
- * water (matching the brand mark). Drawn with stroke=currentColor so it tracks
- * the surrounding text color; reads at favicon size.
+ * Arch-and-star mark — a squared doorway with a 4-point star inside and three
+ * stacked reflection lenses below the base, reading as light on water (the
+ * brand mark). The arch is stroked and the star and reflections are filled,
+ * all in currentColor so the mark tracks the surrounding text color. The
+ * viewBox is cropped to the artwork so it stays legible at favicon size.
  */
+function ArchMarkPaths() {
+  return (
+    <>
+      <path
+        d="M160 340V235C160 171 203 128 256 128C309 128 352 171 352 235V340"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="18"
+        strokeLinecap="square"
+      />
+      <path
+        d="M256 220C262 242 274 254 296 260C274 266 262 278 256 300C250 278 238 266 216 260C238 254 250 242 256 220Z"
+        fill="currentColor"
+      />
+      <path
+        d="M95 372C160 364 352 364 417 372C352 380 160 380 95 372Z"
+        fill="currentColor"
+      />
+      <path
+        d="M135 405C185 399 327 399 377 405C327 411 185 411 135 405Z"
+        fill="currentColor"
+      />
+      <path
+        d="M190 438C220 434 292 434 322 438C292 442 220 442 190 438Z"
+        fill="currentColor"
+      />
+    </>
+  );
+}
+
 function ArchMarkSvg({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 80 100"
+      viewBox="80 104 352 352"
       role="img"
       aria-hidden
       className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
     >
       <title>Hirael</title>
-      <defs>
-        <linearGradient
-          id="hirael-refl-mark"
-          gradientUnits="userSpaceOnUse"
-          x1="12"
-          y1="0"
-          x2="68"
-          y2="0"
-        >
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
-          <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {/* Archway: vertical sides + semicircular top, open at the base. */}
-      <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
-      {/* 4-point star, centered inside the arch. */}
-      <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
-      {/* Three reflection lines on the water: centre-bright, feathered ends,
-          fading and narrowing as they fall away from the base. */}
-      <g stroke="url(#hirael-refl-mark)">
-        <path d="M18 84 H62" opacity="0.9" />
-        <path d="M24 89 H56" opacity="0.6" />
-        <path d="M30 94 H50" opacity="0.32" />
-      </g>
+      <ArchMarkPaths />
     </svg>
   );
 }
@@ -74,41 +75,9 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
       className={className}
     >
       <title>Hirael</title>
-      <defs>
-        <linearGradient
-          id="hirael-refl-word"
-          gradientUnits="userSpaceOnUse"
-          x1="6"
-          y1="0"
-          x2="46"
-          y2="0"
-        >
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
-          <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M10 48 V22 a16 16 0 0 1 32 0 V48" />
-        <path d="M26 26 L28.4 32 L34 34 L28.4 36 L26 42 L23.6 36 L18 34 L23.6 32 Z" />
-      </g>
-      <g
-        fill="none"
-        stroke="url(#hirael-refl-word)"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 52.5 H40" opacity="0.9" />
-        <path d="M16 55.5 H36" opacity="0.6" />
-        <path d="M20 58.5 H32" opacity="0.32" />
-      </g>
+      <svg x="6" y="6" width="46" height="46" viewBox="80 104 352 352">
+        <ArchMarkPaths />
+      </svg>
       <text
         x="56"
         y="44"

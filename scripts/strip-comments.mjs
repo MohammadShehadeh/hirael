@@ -77,6 +77,39 @@ function collectCommentRanges(src, fileName) {
   return ranges;
 }
 
+// Collapse runs of 3+ newlines (left behind when a comment line is removed)
+// down to a single blank line — but never inside a string/template/regex
+// literal, whose internal newlines are meaningful source the consumer copies
+// verbatim.
+function collapseBlankLines(src, fileName) {
+  const sf = ts.createSourceFile(
+    fileName,
+    src,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX,
+  );
+  const protectedSpans = [];
+  function visit(node) {
+    if (
+      ts.isStringLiteralLike(node) ||
+      ts.isTemplateExpression(node) ||
+      ts.isRegularExpressionLiteral(node)
+    ) {
+      protectedSpans.push([node.getStart(sf), node.getEnd()]);
+    }
+    ts.forEachChild(node, visit);
+  }
+  visit(sf);
+
+  const inProtected = (offset) =>
+    protectedSpans.some(([s, e]) => offset >= s && offset < e);
+
+  return src.replace(/\n{3,}/g, (match, offset) =>
+    inProtected(offset) ? match : "\n\n",
+  );
+}
+
 function stripComments(src, fileName) {
   const ranges = collectCommentRanges(src, fileName);
   if (ranges.length === 0) return src;
@@ -98,7 +131,7 @@ function stripComments(src, fileName) {
     out = out.slice(0, from) + out.slice(to);
   }
 
-  out = out.replace(/\n{3,}/g, "\n\n");
+  out = collapseBlankLines(out, fileName);
   if (!out.endsWith("\n")) out += "\n";
   return out;
 }

@@ -169,6 +169,22 @@ into sections.
   text. Prefer "Pick a date" over "Effortlessly select your desired date."
 - **No em dashes in user-facing copy** — a deliberate site-wide decision.
 
+## Detail-page layout (`component-page.tsx`)
+
+The shared per-item page (components, blocks, templates) renders a content
+column beside a sticky "On this page" rail (`toc.tsx`), shadcn-docs style. Two
+things to keep in sync when you touch it:
+
+- **One descriptor list, two consumers.** `ComponentPage` builds a single
+  `sections` array (`{ id, label, content }`) and feeds it to both the rendered
+  `<Section>`s and the `Toc`. Add or reorder a section there, not in two places,
+  or the rail drifts from the page.
+- **Sticky offsets must agree.** The topbar is `sticky h-14`, so every section
+  carries `scroll-mt-24` and the rail sticks at `top-24`; the scroll-spy
+  `rootMargin` clears the same band. Change one, change all three. The rail is
+  client-only (an `IntersectionObserver`), which is fine under `output:
+"export"` — it ships static and wires up on hydration.
+
 ## Gating signal
 
 There is no unit/visual-regression suite yet. Before requesting review:

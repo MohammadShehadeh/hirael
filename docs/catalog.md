@@ -10,7 +10,7 @@ The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
 pages). As of the last update: **70 registry UI items** (69 standalone
 components + 1 distribution-only primitive), **56 section blocks**, and
-**8 templates**. Counts come from `registry.json`; the landing page derives
+**9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
 
@@ -210,6 +210,7 @@ framed inside `app/embed/templates/[template]/`.
 | `velorah`         | `hls.js`                          | Dark, premium landing page for an electric RV brand: a full-screen video hero with liquid-glass navigation, a centered tagline, a split feature card with switchable tabs, an HLS streaming statement with a stats row, a video preorder call to action and a multi-column footer. Self-contained pure-black palette, Inter + Instrument Serif type.                           |
 | `rivr`            | `framer-motion`, `lucide-react`   | DeFi staking landing page for a fluid-asset protocol: a video hero on a rounded card with glass stat cards and a carved documentation corner, a metrics band, a bento feature grid, a video call to action and a light footer. Self-contained light palette, Helvetica system type.                                                                                            |
 | `nexacore`        | `hls.js`, `lucide-react`          | Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, Plus Jakarta Sans type. |
+| `asme`            | `framer-motion`, `lucide-react`   | Dark, liquid-glass marketing landing page: a full-viewport hero with a cross-fading background video, a frosted glass pill nav and an inline email form, then scroll-revealed about, featured-video, philosophy and services sections. Self-contained pure-black palette, Inter + Instrument Serif type, liquid-glass surfaces throughout.                                     |
 
 A template is one `registry-meta.ts` entry (`category: "templates"`) whose
 `files` list every file in its folder, so the CLI installs the whole

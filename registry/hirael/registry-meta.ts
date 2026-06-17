@@ -1921,6 +1921,57 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["hls.js"],
   },
   {
+    name: "asme",
+    title: "Asme",
+    description:
+      "Dark, liquid-glass marketing landing page: a full-viewport hero with a cross-fading background video, a frosted glass pill nav and an inline email form, then scroll-revealed about, featured-video, philosophy and services sections. Framer Motion throughout, with a self-contained pure-black palette and Instrument Serif accents.",
+    category: "templates",
+    files: [
+      {
+        path: "registry/hirael/templates/asme/asme.tsx",
+        target: "components/templates/asme/asme.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/hero.tsx",
+        target: "components/templates/asme/hero.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/navbar.tsx",
+        target: "components/templates/asme/navbar.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/about.tsx",
+        target: "components/templates/asme/about.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/featured-video.tsx",
+        target: "components/templates/asme/featured-video.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/philosophy.tsx",
+        target: "components/templates/asme/philosophy.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/services.tsx",
+        target: "components/templates/asme/services.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/primitives.tsx",
+        target: "components/templates/asme/primitives.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/styles.tsx",
+        target: "components/templates/asme/styles.tsx",
+      },
+      {
+        path: "registry/hirael/templates/asme/fonts.ts",
+        target: "components/templates/asme/fonts.ts",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "lucide-react"],
+  },
+  {
     name: "nexacore",
     title: "NexaCore",
     description:

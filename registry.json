@@ -2945,6 +2945,72 @@
       ]
     },
     {
+      "name": "asme",
+      "type": "registry:block",
+      "title": "Asme",
+      "description": "Dark, liquid-glass marketing landing page: a full-viewport hero with a cross-fading background video, a frosted glass pill nav and an inline email form, then scroll-revealed about, featured-video, philosophy and services sections. Framer Motion throughout, with a self-contained pure-black palette and Instrument Serif accents.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/asme/asme.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/asme.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/about.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/about.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/featured-video.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/featured-video.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/philosophy.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/philosophy.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/services.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/services.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/asme/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/asme/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/asme/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "nexacore",
       "type": "registry:block",
       "title": "NexaCore",

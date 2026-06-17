@@ -53,7 +53,7 @@ export default function Hero02() {
         <span className="text-muted-foreground">2026.06</span>
       </span>
 
-      <h1 className="mt-8 max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
+      <h1 className="mt-8 max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
         Ship faster with tools that stay{" "}
         <span className="italic underline decoration-border decoration-2 underline-offset-[10px]">
           out of your way
@@ -61,7 +61,7 @@ export default function Hero02() {
         .
       </h1>
 
-      <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+      <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
         A focused toolkit for teams that would rather build than configure.
         Sensible defaults, no busywork.
       </p>

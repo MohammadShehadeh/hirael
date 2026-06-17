@@ -161,7 +161,7 @@ export default function Blog01() {
             <Badge variant="outline" className="w-fit">
               journal
             </Badge>
-            <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+            <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
               Writing from the workshop.
             </h2>
             <p className="text-base text-muted-foreground">
@@ -202,7 +202,7 @@ export default function Blog01() {
               </span>
               <h3
                 id="blog-01-featured-title"
-                className="text-balance text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
+                className="text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
               >
                 <a
                   href={FEATURED.href}
@@ -273,7 +273,7 @@ export default function Blog01() {
                     </div>
                     <CardTitle
                       id={titleId}
-                      className="mt-2 text-balance text-base leading-snug tracking-[-0.01em]"
+                      className="mt-2 text-base leading-snug tracking-[-0.01em]"
                     >
                       <a
                         href={p.href}

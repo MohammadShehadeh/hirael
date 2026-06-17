@@ -10,7 +10,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-jet-brains-mono);
   --font-serif: var(--font-cormorant);
 
   --color-background: var(--background);
@@ -166,8 +166,8 @@
    light mode. */
 .shiki {
   background-color: var(--card) !important;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 12px;
+  font-family: var(--font-jet-brains-mono), ui-monospace, monospace;
+  font-size: 14px;
   line-height: 1.65;
   padding: 14px 16px;
   tab-size: 2;

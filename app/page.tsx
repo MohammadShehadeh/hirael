@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
+  ArrowRight,
   ArrowUpRight,
   Boxes,
   Download,
@@ -25,6 +26,7 @@ import {
   TEMPLATES,
 } from "@/registry/hirael/registry-meta";
 import { Button } from "@/registry/hirael/ui/button";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: `${SITE.description} - ${SITE.name}`,
@@ -107,17 +109,19 @@ function Hero() {
       </div>
 
       <div className="mx-auto flex min-h-[86vh] max-w-5xl flex-col items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
-        <div style={{ animationFillMode: "both" }} className={rise}>
+        <Link href="/changelog" className={cn("group text-foreground", rise)}>
           <span className="glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full py-1 px-4 text-sm">
-            <span className="text-muted-foreground">
-              The shadcn-compatible registry
-            </span>
+            <span className="group-hover:underline">View Changelog</span>
+            <ArrowRight
+              className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
+              size={16}
+            />
           </span>
-        </div>
+        </Link>
 
         <h1
           style={{ animationDelay: "80ms", animationFillMode: "both" }}
-          className={`text-display w-full text-balance text-[clamp(2.5rem,11vw,7rem)] italic leading-[0.9] tracking-[-0.025em] sm:leading-[0.85] ${rise}`}
+          className={`text-display w-full text-[clamp(2.5rem,11vw,7rem)] italic leading-[0.9] tracking-[-0.025em] sm:leading-[0.85] ${rise}`}
         >
           The components <br className="hidden sm:block" />
           shadcn/ui doesn&apos;t ship.
@@ -125,7 +129,7 @@ function Hero() {
 
         <p
           style={{ animationDelay: "160ms", animationFillMode: "both" }}
-          className={`max-w-xl text-balance text-base text-muted-foreground sm:text-lg ${rise}`}
+          className={`max-w-xl text-base text-muted-foreground sm:text-lg ${rise}`}
         >
           Multi-select, combobox, tag input, file dropzone, and the section
           blocks most products end up building anyway. Install with the shadcn
@@ -410,10 +414,10 @@ function ClosingCta() {
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
         <Pill live>Get started</Pill>
-        <h2 className="text-display text-balance text-5xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
+        <h2 className="text-display text-5xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
           Install one. Keep all of it.
         </h2>
-        <p className="max-w-md text-balance text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-md text-sm text-muted-foreground sm:text-base">
           One command copies the source into your repo — yours to read, edit,
           and keep. No package, no lock-in.
         </p>

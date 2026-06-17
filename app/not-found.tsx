@@ -31,11 +31,11 @@ export default function NotFound() {
               404 · Not found
             </span>
 
-            <h1 className="text-display text-balance text-5xl leading-[1.04] sm:text-6xl md:text-7xl">
+            <h1 className="text-display text-5xl leading-[1.04] sm:text-6xl md:text-7xl">
               This page isn&apos;t in the registry.
             </h1>
 
-            <p className="max-w-md text-balance text-base text-muted-foreground sm:text-lg">
+            <p className="max-w-md text-base text-muted-foreground sm:text-lg">
               The link may be broken, or the page may have moved. Everything
               Hirael ships is still a click away.
             </p>

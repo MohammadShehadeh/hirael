@@ -49,7 +49,7 @@ export default function Faq01() {
               <span className="size-1 rounded-full bg-foreground" />
               FAQ · the short answers
             </span>
-            <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+            <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
               Frequently{" "}
               <span className="italic text-foreground">unobvious</span>{" "}
               questions.

@@ -47,11 +47,11 @@ export function PageHeader({
   return (
     <header className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
       <Pill live={live}>{kicker}</Pill>
-      <h1 className="text-display text-balance text-5xl italic leading-[0.92] tracking-[-0.02em] sm:text-6xl">
+      <h1 className="text-display text-5xl italic leading-[0.92] tracking-[-0.02em] sm:text-6xl">
         {title}
       </h1>
       {blurb && (
-        <p className="max-w-2xl text-balance text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {blurb}
         </p>
       )}
@@ -99,11 +99,11 @@ export function SectionHeading({
   return (
     <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center gap-5 text-center sm:mb-16">
       <Pill live={live}>{kicker}</Pill>
-      <h2 className="text-display text-balance text-4xl italic leading-[0.95] tracking-[-0.01em] sm:text-5xl lg:text-6xl">
+      <h2 className="text-display text-4xl italic leading-[0.95] tracking-[-0.01em] sm:text-5xl lg:text-6xl">
         {title}
       </h2>
       {blurb && (
-        <p className="max-w-2xl text-balance text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {blurb}
         </p>
       )}

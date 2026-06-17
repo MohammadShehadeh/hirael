@@ -73,11 +73,11 @@ export default function Hero01() {
           </nav>
 
           <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10">
-            <h1 className="max-w-4xl text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+            <h1 className="max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
               The interface layer your product was missing.
             </h1>
 
-            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               Drop in accessible components and ship a polished UI in an
               afternoon — no design system required.
             </p>

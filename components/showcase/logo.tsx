@@ -147,7 +147,7 @@ export function LogoTile({
         className,
       )}
     >
-      <ArchMarkSvg className={cn("relative size-8", markClassName)} />
+      <ArchMarkSvg className={cn("relative size-7.5", markClassName)} />
     </span>
   );
 }

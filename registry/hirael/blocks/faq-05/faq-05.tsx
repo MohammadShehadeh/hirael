@@ -48,7 +48,7 @@ export default function Faq05() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">
             faq
           </span>
-          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl">
+          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl">
             Questions, answered.
           </h2>
           <p className="max-w-sm text-sm text-muted-foreground">

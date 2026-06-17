@@ -255,7 +255,7 @@ export default function Dashboard04() {
             <Badge variant="outline" className="w-fit">
               storefront
             </Badge>
-            <h2 className="text-balance font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+            <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               Today at the counter.
             </h2>
           </div>

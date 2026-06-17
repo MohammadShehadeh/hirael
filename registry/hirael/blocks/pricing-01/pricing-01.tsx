@@ -75,7 +75,7 @@ export default function Pricing01() {
             <span className="size-1 rounded-full bg-foreground" />
             Pricing
           </span>
-          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Pay for the parts you{" "}
             <span className="italic text-foreground">actually</span> use.
           </h2>

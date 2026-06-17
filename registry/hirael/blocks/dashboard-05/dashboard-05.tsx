@@ -393,7 +393,7 @@ export default function Dashboard05() {
                 View traces
               </Button>
             </div>
-            <p className="max-w-md text-balance text-lg font-medium leading-snug tracking-[-0.01em] sm:text-xl">
+            <p className="max-w-md text-lg font-medium leading-snug tracking-[-0.01em] sm:text-xl">
               Cold starts dropped{" "}
               <span className="underline decoration-success/60 decoration-2 underline-offset-4">
                 21% this window

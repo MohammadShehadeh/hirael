@@ -35,7 +35,7 @@ export default function Cta06() {
                 <span className="size-1 rounded-full bg-foreground" />
                 Get started
               </span>
-              <h2 className="mt-3 max-w-lg text-balance text-start font-serif text-3xl font-medium leading-[1.05] tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              <h2 className="mt-3 max-w-lg text-start font-serif text-3xl font-medium leading-[1.05] tracking-tight text-foreground sm:text-4xl md:text-5xl">
                 Ship faster without{" "}
                 <span className="italic">fighting your tools.</span>
               </h2>

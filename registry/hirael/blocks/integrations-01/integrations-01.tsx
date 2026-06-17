@@ -70,7 +70,7 @@ export default function Integrations01() {
             </Badge>
             <h2
               id="integrations-01-heading"
-              className="text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl"
+              className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl"
             >
               Plays well with the rest of your stack.
             </h2>

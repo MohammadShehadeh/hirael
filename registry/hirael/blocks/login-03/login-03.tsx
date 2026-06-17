@@ -126,7 +126,7 @@ export default function Login03() {
 
         <div className="relative z-10 mt-auto">
           <blockquote className="flex flex-col gap-3">
-            <p className="text-balance font-serif text-2xl leading-[1.25] tracking-tight md:text-3xl">
+            <p className="font-serif text-2xl leading-[1.25] tracking-tight md:text-3xl">
               We wired up auth in an afternoon and{" "}
               <span className="italic text-foreground">never looked back</span>.
               The source lives in our repo, so it bends to us.

@@ -30,7 +30,7 @@ export function ComponentCategoryPage({
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
           ◆ {label.toLowerCase()}
         </span>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {label}.
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">

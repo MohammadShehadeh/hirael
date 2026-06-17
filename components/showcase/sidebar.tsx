@@ -53,7 +53,7 @@ export function ShowcaseSidebar() {
           className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
           aria-label={`${SITE.name} | home`}
         >
-          <LogoTile className="size-8 shrink-0" />
+          <LogoTile />
           <span
             className="truncate whitespace-nowrap text-xl leading-none text-foreground"
             style={{

@@ -24,7 +24,7 @@ export default function NotFound01() {
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             404
           </span>
-          <h1 className="text-balance font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl">
+          <h1 className="font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl">
             Page not found.
           </h1>
           <p className="max-w-md text-base text-muted-foreground sm:text-lg">

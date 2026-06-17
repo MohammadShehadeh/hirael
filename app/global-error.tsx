@@ -1,6 +1,6 @@
 "use client";
 
-import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
 import { RefreshCw } from "lucide-react";
 import "./globals.css";
 
@@ -15,9 +15,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jet-brains-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 const cormorant = Cormorant_Garamond({
@@ -31,7 +32,7 @@ export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} ${geistMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
       >
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />
@@ -47,10 +48,10 @@ export default function GlobalError() {
               <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                 Something went wrong
               </span>
-              <h1 className="text-display text-balance text-3xl leading-[1.05] sm:text-4xl">
+              <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">
                 This page failed to load.
               </h1>
-              <p className="max-w-sm text-balance text-sm text-muted-foreground">
+              <p className="max-w-sm text-sm text-muted-foreground">
                 An unexpected error occurred. Try refreshing the page or come
                 back in a moment.
               </p>

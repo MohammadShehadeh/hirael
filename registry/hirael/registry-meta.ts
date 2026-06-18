@@ -2588,6 +2588,96 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "review-queue",
+    title: "Review Queue",
+    description:
+      "Work a moderation queue one item at a time with approve, reject and skip actions, keyboard shortcuts, progress and a done state. Compound API.",
+    category: "saas",
+    files: [{ path: "registry/hirael/ui/review-queue.tsx" }],
+    registryDependencies: ["badge", "button", "kbd"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "role-manager",
+    title: "Role Manager",
+    description:
+      "Two-pane role admin: a role list with add, duplicate and delete, and a grouped permission checklist for the selected role; system roles are read-only. Compound API.",
+    category: "saas",
+    files: [{ path: "registry/hirael/ui/role-manager.tsx" }],
+    registryDependencies: ["badge", "button", "checkbox"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "feature-flag-manager",
+    title: "Feature Flag Manager",
+    description:
+      "Searchable list of feature flags with key, description, environment tags, rollout percentage and an accessible on/off toggle. Compound API.",
+    category: "saas",
+    files: [{ path: "registry/hirael/ui/feature-flag-manager.tsx" }],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "keyboard-shortcuts",
+    title: "Keyboard Shortcuts",
+    description:
+      "Shortcuts cheat-sheet dialog opened with the ? key, grouped by area with searchable rows and keys rendered as keycaps. Compound API.",
+    category: "navigation",
+    files: [{ path: "registry/hirael/ui/keyboard-shortcuts.tsx" }],
+    registryDependencies: ["dialog", "kbd"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "onboarding",
+    title: "Onboarding",
+    description:
+      "Multi-step onboarding wizard with a progress header, per-step panels, back, skip and next, and a completion state. Compound API.",
+    category: "navigation",
+    files: [{ path: "registry/hirael/ui/onboarding.tsx" }],
+    registryDependencies: ["button", "progress"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "breadcrumb-generator",
+    title: "Breadcrumb Generator",
+    description:
+      "Generate a breadcrumb trail from a path or items, with an optional home icon, a current-page last item and middle-collapse into a dropdown. Compound API.",
+    category: "navigation",
+    files: [{ path: "registry/hirael/ui/breadcrumb-generator.tsx" }],
+    registryDependencies: ["breadcrumb", "dropdown-menu"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "advanced-search-bar",
+    title: "Advanced Search Bar",
+    description:
+      "Power search field with a scope selector, inline removable filter tokens and a grouped suggestions dropdown with keyboard navigation. Compound API.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/ui/advanced-search-bar.tsx" }],
+    registryDependencies: ["badge", "button", "input-group"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "changelog-viewer",
+    title: "Changelog Viewer",
+    description:
+      "Vertical timeline of versioned releases with dates, grouped added / fixed / changed / removed sections and a latest marker. Compound API.",
+    category: "display",
+    files: [{ path: "registry/hirael/ui/changelog-viewer.tsx" }],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "release-notes",
+    title: "Release Notes",
+    description:
+      "Single-release what's-new card with a version badge, date, title, summary and a list of highlights. Compound API.",
+    category: "display",
+    files: [{ path: "registry/hirael/ui/release-notes.tsx" }],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**

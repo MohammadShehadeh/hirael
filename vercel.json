@@ -337,6 +337,11 @@
       "permanent": true
     },
     {
+      "source": "/components/advanced-search-bar",
+      "destination": "/components/inputs/advanced-search-bar",
+      "permanent": true
+    },
+    {
       "source": "/components/agent-workflow",
       "destination": "/components/ai/agent-workflow",
       "permanent": true
@@ -412,6 +417,11 @@
       "permanent": true
     },
     {
+      "source": "/components/breadcrumb-generator",
+      "destination": "/components/navigation/breadcrumb-generator",
+      "permanent": true
+    },
+    {
       "source": "/components/bundle-builder",
       "destination": "/components/commerce/bundle-builder",
       "permanent": true
@@ -424,6 +434,11 @@
     {
       "source": "/components/callout",
       "destination": "/components/display/callout",
+      "permanent": true
+    },
+    {
+      "source": "/components/changelog-viewer",
+      "destination": "/components/display/changelog-viewer",
       "permanent": true
     },
     {
@@ -492,6 +507,11 @@
       "permanent": true
     },
     {
+      "source": "/components/feature-flag-manager",
+      "destination": "/components/saas/feature-flag-manager",
+      "permanent": true
+    },
+    {
       "source": "/components/file-dropzone",
       "destination": "/components/files/file-dropzone",
       "permanent": true
@@ -554,6 +574,11 @@
     {
       "source": "/components/kbd",
       "destination": "/components/display/kbd",
+      "permanent": true
+    },
+    {
+      "source": "/components/keyboard-shortcuts",
+      "destination": "/components/navigation/keyboard-shortcuts",
       "permanent": true
     },
     {
@@ -632,6 +657,11 @@
       "permanent": true
     },
     {
+      "source": "/components/onboarding",
+      "destination": "/components/navigation/onboarding",
+      "permanent": true
+    },
+    {
       "source": "/components/password-input",
       "destination": "/components/inputs/password-input",
       "permanent": true
@@ -682,6 +712,11 @@
       "permanent": true
     },
     {
+      "source": "/components/release-notes",
+      "destination": "/components/display/release-notes",
+      "permanent": true
+    },
+    {
       "source": "/components/request-builder",
       "destination": "/components/dev/request-builder",
       "permanent": true
@@ -689,6 +724,16 @@
     {
       "source": "/components/resizable-panels",
       "destination": "/components/navigation/resizable-panels",
+      "permanent": true
+    },
+    {
+      "source": "/components/review-queue",
+      "destination": "/components/saas/review-queue",
+      "permanent": true
+    },
+    {
+      "source": "/components/role-manager",
+      "destination": "/components/saas/role-manager",
       "permanent": true
     },
     {

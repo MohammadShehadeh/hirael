@@ -4099,6 +4099,213 @@
       ]
     },
     {
+      "name": "review-queue",
+      "type": "registry:ui",
+      "title": "Review Queue",
+      "description": "Work a moderation queue one item at a time with approve, reject and skip actions, keyboard shortcuts, progress and a done state. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/review-queue.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/review-queue.tsx"
+        }
+      ]
+    },
+    {
+      "name": "role-manager",
+      "type": "registry:ui",
+      "title": "Role Manager",
+      "description": "Two-pane role admin: a role list with add, duplicate and delete, and a grouped permission checklist for the selected role; system roles are read-only. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "checkbox"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/role-manager.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/role-manager.tsx"
+        }
+      ]
+    },
+    {
+      "name": "feature-flag-manager",
+      "type": "registry:ui",
+      "title": "Feature Flag Manager",
+      "description": "Searchable list of feature flags with key, description, environment tags, rollout percentage and an accessible on/off toggle. Compound API.",
+      "categories": [
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/feature-flag-manager.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/feature-flag-manager.tsx"
+        }
+      ]
+    },
+    {
+      "name": "keyboard-shortcuts",
+      "type": "registry:ui",
+      "title": "Keyboard Shortcuts",
+      "description": "Shortcuts cheat-sheet dialog opened with the ? key, grouped by area with searchable rows and keys rendered as keycaps. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/keyboard-shortcuts.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/keyboard-shortcuts.tsx"
+        }
+      ]
+    },
+    {
+      "name": "onboarding",
+      "type": "registry:ui",
+      "title": "Onboarding",
+      "description": "Multi-step onboarding wizard with a progress header, per-step panels, back, skip and next, and a completion state. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "progress"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/onboarding.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/onboarding.tsx"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb-generator",
+      "type": "registry:ui",
+      "title": "Breadcrumb Generator",
+      "description": "Generate a breadcrumb trail from a path or items, with an optional home icon, a current-page last item and middle-collapse into a dropdown. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "breadcrumb",
+        "dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/breadcrumb-generator.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/breadcrumb-generator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "advanced-search-bar",
+      "type": "registry:ui",
+      "title": "Advanced Search Bar",
+      "description": "Power search field with a scope selector, inline removable filter tokens and a grouped suggestions dropdown with keyboard navigation. Compound API.",
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input-group"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/advanced-search-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/advanced-search-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "changelog-viewer",
+      "type": "registry:ui",
+      "title": "Changelog Viewer",
+      "description": "Vertical timeline of versioned releases with dates, grouped added / fixed / changed / removed sections and a latest marker. Compound API.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/changelog-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/changelog-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "release-notes",
+      "type": "registry:ui",
+      "title": "Release Notes",
+      "description": "Single-release what's-new card with a version badge, date, title, summary and a list of highlights. Compound API.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/release-notes.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/release-notes.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

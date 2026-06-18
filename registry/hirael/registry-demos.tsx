@@ -290,6 +290,23 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/shipment-tracker-demo"),
   "auction-timeline-demo": () =>
     import("@/registry/hirael/examples/auction-timeline-demo"),
+  "review-queue-demo": () =>
+    import("@/registry/hirael/examples/review-queue-demo"),
+  "role-manager-demo": () =>
+    import("@/registry/hirael/examples/role-manager-demo"),
+  "feature-flag-manager-demo": () =>
+    import("@/registry/hirael/examples/feature-flag-manager-demo"),
+  "keyboard-shortcuts-demo": () =>
+    import("@/registry/hirael/examples/keyboard-shortcuts-demo"),
+  "onboarding-demo": () => import("@/registry/hirael/examples/onboarding-demo"),
+  "breadcrumb-generator-demo": () =>
+    import("@/registry/hirael/examples/breadcrumb-generator-demo"),
+  "advanced-search-bar-demo": () =>
+    import("@/registry/hirael/examples/advanced-search-bar-demo"),
+  "changelog-viewer-demo": () =>
+    import("@/registry/hirael/examples/changelog-viewer-demo"),
+  "release-notes-demo": () =>
+    import("@/registry/hirael/examples/release-notes-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

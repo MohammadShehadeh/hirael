@@ -10283,5 +10283,914 @@
       ],
       "extendsNative": true
     }
+  ],
+  "review-queue": [
+    {
+      "name": "ReviewQueue",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly TItem[]",
+          "required": true,
+          "default": null,
+          "description": "The items waiting for a decision, in queue order."
+        },
+        {
+          "name": "onDecision",
+          "type": "((id: string, decision: ReviewDecision) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the focused item is approved, rejected, or skipped."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReviewQueueItem",
+      "props": [
+        {
+          "name": "children",
+          "type": "(item: TItem) => React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Render the focused item. Not called while the queue is empty."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReviewQueueProgress",
+      "props": [
+        {
+          "name": "children",
+          "type": "((position: number, total: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Render custom progress copy. Receives the 1-based position and total."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReviewQueueActions",
+      "props": [
+        {
+          "name": "approveLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Approve\"",
+          "description": "Label for the approve button. Defaults to \"Approve\"."
+        },
+        {
+          "name": "rejectLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Reject\"",
+          "description": "Label for the reject button. Defaults to \"Reject\"."
+        },
+        {
+          "name": "skipLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Skip\"",
+          "description": "Label for the skip button. Defaults to \"Skip\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReviewQueueEmpty",
+      "props": [
+        {
+          "name": "whenDone",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Hide the empty state while items remain. Defaults to true."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReviewQueueRemaining",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": "\"secondary\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "((remaining: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Render custom copy. Receives the number of items still to review."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "role-manager": [
+    {
+      "name": "RoleManager",
+      "props": [
+        {
+          "name": "roles",
+          "type": "Role[]",
+          "required": true,
+          "default": null,
+          "description": "Roles to administer. The first part holds the name, member count, and a System badge for built-in roles."
+        },
+        {
+          "name": "permissions",
+          "type": "Permission[]",
+          "required": true,
+          "default": null,
+          "description": "Permissions offered in the detail checklist. Adjacent items sharing `group` render under one section header."
+        },
+        {
+          "name": "defaultSelectedId",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Id of the role selected on first render. Falls back to the first role."
+        },
+        {
+          "name": "onChange",
+          "type": "((roles: Role[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the full role set whenever a role is added, duplicated, deleted, or its permissions change."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RoleManagerToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RoleList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RoleItem",
+      "props": [
+        {
+          "name": "role",
+          "type": "Role",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RoleManagerDetail",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RoleManagerDetailActions",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RolePermissions",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "feature-flag-manager": [
+    {
+      "name": "FeatureFlagManager",
+      "props": [
+        {
+          "name": "value",
+          "type": "FeatureFlag[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled list of flags."
+        },
+        {
+          "name": "defaultValue",
+          "type": "FeatureFlag[]",
+          "required": false,
+          "default": null,
+          "description": "Uncontrolled initial list of flags."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: FeatureFlag[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next list whenever a flag is toggled."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FeatureFlagManagerToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FeatureFlagList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FeatureFlagItem",
+      "props": [
+        {
+          "name": "flag",
+          "type": "FeatureFlag",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FeatureFlagSwitch",
+      "props": [
+        {
+          "name": "flag",
+          "type": "FeatureFlag",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "keyboard-shortcuts": [
+    {
+      "name": "KeyboardShortcuts",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "hotkey",
+          "type": "string | null",
+          "required": false,
+          "default": "\"?\"",
+          "description": "Key that opens the cheat sheet from anywhere. Pass null to disable\nthe global hotkey."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KeyboardShortcutsTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KeyboardShortcutsContent",
+      "props": [
+        {
+          "name": "title",
+          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>)",
+          "required": false,
+          "default": "\"Keyboard shortcuts\"",
+          "description": null
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "description",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KeyboardShortcutsSearch",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KeyboardShortcutsGroup",
+      "props": [
+        {
+          "name": "heading",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Group heading shown above its shortcut rows."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KeyboardShortcut",
+      "props": [
+        {
+          "name": "keys",
+          "type": "string[]",
+          "required": true,
+          "default": null,
+          "description": "Keys in the combo, each rendered as a KbdDisplay inside a KbdGroup."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "onboarding": [
+    {
+      "name": "Onboarding",
+      "props": [
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "The active step index, 0-based. Pass with `onStepChange` to control."
+        },
+        {
+          "name": "defaultStep",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "The initial step index for the uncontrolled case, 0-based."
+        },
+        {
+          "name": "onStepChange",
+          "type": "((step: number) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the active step changes, with the next 0-based index."
+        },
+        {
+          "name": "onComplete",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": "Called once when the last step is finished."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingProgress",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"dots\" | \"bar\"",
+          "required": false,
+          "default": "\"dots\"",
+          "description": "Render a continuous bar instead of one dot per step."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingStep",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "This step's index, 0-based. Renders only while it is the active step."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingStepTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingStepDescription",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingStepBody",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingComplete",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "OnboardingActions",
+      "props": [
+        {
+          "name": "showSkip",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show the Skip button on non-final steps."
+        },
+        {
+          "name": "finishLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Finish\"",
+          "description": "Label for the advance button on the last step."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "breadcrumb-generator": [
+    {
+      "name": "BreadcrumbGenerator",
+      "props": [
+        {
+          "name": "items",
+          "type": "BreadcrumbCrumb[]",
+          "required": false,
+          "default": null,
+          "description": "Crumbs to render. The last item becomes the current page."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "A URL path to derive crumbs from when `items` is omitted."
+        },
+        {
+          "name": "basePath",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Prefix prepended to each `href` generated from `path`."
+        },
+        {
+          "name": "maxItems",
+          "type": "number",
+          "required": false,
+          "default": "4",
+          "description": "Collapse the middle into an ellipsis when the trail exceeds this."
+        },
+        {
+          "name": "showHome",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Prepend a Home crumb linking to `homeHref`."
+        },
+        {
+          "name": "homeHref",
+          "type": "string",
+          "required": false,
+          "default": "\"/\"",
+          "description": "Destination for the leading Home crumb."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BreadcrumbGeneratorItem",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "isCurrent",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Render as the current page (non-link) instead of a link."
+        }
+      ],
+      "extendsNative": false
+    }
+  ],
+  "advanced-search-bar": [
+    {
+      "name": "AdvancedSearchBar",
+      "props": [
+        {
+          "name": "defaultValue",
+          "type": "string | (readonly string[] & string)",
+          "required": false,
+          "default": null,
+          "description": "Default query text when uncontrolled."
+        },
+        {
+          "name": "scopes",
+          "type": "SearchScopeItem[]",
+          "required": false,
+          "default": "[{ value: \"all\", label: \"All\" }]",
+          "description": "The selectable search scopes shown in the leading dropdown."
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "The active scope value (controlled)."
+        },
+        {
+          "name": "defaultScope",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Default scope value when uncontrolled."
+        },
+        {
+          "name": "onScopeChange",
+          "type": "((scope: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the active scope changes."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "The query text (controlled)."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the query text changes."
+        },
+        {
+          "name": "tokens",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "The active filter tokens, each `key:value` (controlled)."
+        },
+        {
+          "name": "defaultTokens",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "Default filter tokens when uncontrolled."
+        },
+        {
+          "name": "onTokensChange",
+          "type": "((tokens: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the active filter tokens change."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchScope",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchField",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search…\"",
+          "description": "Placeholder shown in the text input."
+        },
+        {
+          "name": "icon",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Render the leading search icon."
+        },
+        {
+          "name": "filters",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render the trailing filters button."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchTokens",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchToken",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Index of the token in the active filter list."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchSuggestions",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchSuggestionGroup",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Heading shown above the group."
+        },
+        {
+          "name": "live",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Mark the group as live results, adding the active-state indicator."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SearchSuggestion",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Inserted as the query, or added as a token when it reads `key:value`."
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional leading icon."
+        },
+        {
+          "name": "onSelect",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Run instead of the default insert/add when this suggestion is chosen."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "changelog-viewer": [
+    {
+      "name": "ChangelogViewer",
+      "props": [
+        {
+          "name": "entries",
+          "type": "ChangelogEntryConfig[]",
+          "required": false,
+          "default": null,
+          "description": "Config-driven entries. Omit to compose `ChangelogEntry` children instead."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ChangelogEntry",
+      "props": [
+        {
+          "name": "version",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Release version, e.g. `v1.4.0`."
+        },
+        {
+          "name": "date",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Release date, rendered as a `time` element."
+        },
+        {
+          "name": "title",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional headline for the release."
+        },
+        {
+          "name": "latest",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Marks this as the newest release with a live accent-cool marker."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ChangelogSection",
+      "props": [
+        {
+          "name": "type",
+          "type": "ChangelogChangeType",
+          "required": true,
+          "default": null,
+          "description": "Change category. Sets the tag Badge label, icon, and token shade."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ChangelogList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ChangelogItem",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "release-notes": [
+    {
+      "name": "ReleaseNotes",
+      "props": [
+        {
+          "name": "title",
+          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>)",
+          "required": false,
+          "default": null,
+          "description": "Release title shown as the heading in the default header."
+        },
+        {
+          "name": "version",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Version label shown as a badge in the default header, e.g. \"v2.0\"."
+        },
+        {
+          "name": "date",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Release date shown beside the version, e.g. \"June 18, 2026\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesHeader",
+      "props": [
+        {
+          "name": "title",
+          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "version",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "date",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesSummary",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesHighlights",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesHighlight",
+      "props": [
+        {
+          "name": "icon",
+          "type": "false | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+          "required": false,
+          "default": null,
+          "description": "Optional leading icon. Defaults to a sparkles glyph."
+        },
+        {
+          "name": "title",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Short headline for the highlight."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesSection",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Label shown above the grouped content."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ReleaseNotesFooter",
+      "props": [],
+      "extendsNative": true
+    }
   ]
 }

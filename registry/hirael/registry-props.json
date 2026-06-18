@@ -9531,5 +9531,757 @@
       ],
       "extendsNative": true
     }
+  ],
+  "upload-manager": [
+    {
+      "name": "UploadItem",
+      "props": [
+        {
+          "name": "item",
+          "type": "UploadItem",
+          "required": true,
+          "default": null,
+          "description": "The queue entry to render."
+        },
+        {
+          "name": "onCancel",
+          "type": "((id: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the user cancels an in-flight upload."
+        },
+        {
+          "name": "onRetry",
+          "type": "((id: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the user retries a failed upload."
+        },
+        {
+          "name": "onRemove",
+          "type": "((id: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the user removes the entry. Falls back to the root's remove."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "UploadManager",
+      "props": [
+        {
+          "name": "value",
+          "type": "UploadItem[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled queue of upload items."
+        },
+        {
+          "name": "defaultValue",
+          "type": "UploadItem[]",
+          "required": false,
+          "default": null,
+          "description": "Initial queue when uncontrolled."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((items: UploadItem[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the queue changes (add, remove, or progress update)."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "UploadDropzone",
+      "props": [
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Restrict the native file picker, e.g. \"image/*,.pdf\"."
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Allow selecting more than one file at a time."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onAdd",
+          "type": "((files: File[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the selected or dropped files so the queue can append them."
+        },
+        {
+          "name": "headline",
+          "type": "string",
+          "required": false,
+          "default": "\"Drop files here, or click to browse\"",
+          "description": null
+        },
+        {
+          "name": "subline",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "UploadList",
+      "props": [
+        {
+          "name": "empty",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Shown when the queue is empty. Hides the list entirely if omitted."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "UploadSummary",
+      "props": [
+        {
+          "name": "children",
+          "type": "((summary: { total: number; done: number; uploading: number; error: number; queued: number; progress: number; }) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "file-explorer": [
+    {
+      "name": "FileExplorer",
+      "props": [
+        {
+          "name": "tree",
+          "type": "FileNode",
+          "required": true,
+          "default": null,
+          "description": "Root folder rendered in the tree and browsed in the main pane."
+        },
+        {
+          "name": "defaultPath",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "Initial folder path, as folder names from the root's children down."
+        },
+        {
+          "name": "path",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled folder path, as folder names from the root's children down."
+        },
+        {
+          "name": "onPathChange",
+          "type": "((path: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the new path when the user navigates."
+        },
+        {
+          "name": "defaultView",
+          "type": "FileView",
+          "required": false,
+          "default": "\"list\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerSidebar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerTree",
+      "props": [
+        {
+          "name": "node",
+          "type": "FileNode",
+          "required": false,
+          "default": null,
+          "description": "Folder to render. Defaults to the explorer's root tree."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerBreadcrumb",
+      "props": [
+        {
+          "name": "rootLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Home\"",
+          "description": "Label for the root crumb."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerList",
+      "props": [
+        {
+          "name": "emptyState",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Empty folder\"",
+          "description": "Shown when the current folder has no children."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FileExplorerItem",
+      "props": [
+        {
+          "name": "node",
+          "type": "FileNode",
+          "required": true,
+          "default": null,
+          "description": "The file or folder this row represents."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "asset-manager": [
+    {
+      "name": "AssetManager",
+      "props": [
+        {
+          "name": "assets",
+          "type": "Asset[]",
+          "required": true,
+          "default": null,
+          "description": "Assets to display in the library."
+        },
+        {
+          "name": "defaultView",
+          "type": "AssetView",
+          "required": false,
+          "default": "\"grid\"",
+          "description": "Initial layout for an uncontrolled manager."
+        },
+        {
+          "name": "defaultSelectedId",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Id of the asset selected on first render."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetLibrary",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetToolbar",
+      "props": [
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search assets\"",
+          "description": "Placeholder for the search field."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetGrid",
+      "props": [
+        {
+          "name": "emptyState",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Rendered when no assets match the current search."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetCard",
+      "props": [
+        {
+          "name": "asset",
+          "type": "Asset",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetThumbnail",
+      "props": [
+        {
+          "name": "asset",
+          "type": "Asset",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AssetDetail",
+      "props": [
+        {
+          "name": "emptyState",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Rendered when nothing is selected."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "kanban-board": [
+    {
+      "name": "KanbanBoard",
+      "props": [
+        {
+          "name": "value",
+          "type": "KanbanColumnData[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled list of columns with their cards."
+        },
+        {
+          "name": "defaultValue",
+          "type": "KanbanColumnData[]",
+          "required": false,
+          "default": "[]",
+          "description": "Initial columns when uncontrolled."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: KanbanColumnData[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next columns after any move."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumn",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique id matching a column in the root value."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumnHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanCards",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanCard",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique id matching a card in this column."
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Position of this card within its column, used for the drop indicator."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanAddCard",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "nested-sortable": [
+    {
+      "name": "NestedSortable",
+      "props": [
+        {
+          "name": "value",
+          "type": "NestedItem[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled tree of items."
+        },
+        {
+          "name": "defaultValue",
+          "type": "NestedItem[]",
+          "required": false,
+          "default": "[]",
+          "description": "Initial tree of items when uncontrolled."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: NestedItem[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the rebuilt tree after a reorder, indent, or outdent."
+        },
+        {
+          "name": "maxDepth",
+          "type": "number",
+          "required": false,
+          "default": "Infinity",
+          "description": "Deepest nesting level allowed, where the top level is 0."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NestedSortableItem",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique id matching an entry in the root tree."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NestedSortableHandle",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "NestedSortableLabel",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "shipment-tracker": [
+    {
+      "name": "ShipmentTracker",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "ShipmentOrientation",
+          "required": false,
+          "default": "\"horizontal\"",
+          "description": "Lays the stage stepper out along the inline axis or stacked vertically. Defaults to `horizontal`."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ShipmentStages",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ShipmentStage",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"current\" | \"complete\" | \"upcoming\"",
+          "required": false,
+          "default": "\"upcoming\"",
+          "description": "Progress of this stage. `current` reads as live (accent-cool, pulsing)."
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Short stage name, e.g. \"Out for delivery\"."
+        },
+        {
+          "name": "time",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "When the stage was reached. Omit for stages not yet hit."
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Replaces the default stage icon."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ShipmentEvents",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ShipmentEvent",
+      "props": [
+        {
+          "name": "time",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "When the event happened."
+        },
+        {
+          "name": "location",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Where the event happened."
+        },
+        {
+          "name": "description",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "What happened."
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Replaces the default location marker icon."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "auction-timeline": [
+    {
+      "name": "AuctionTimeline",
+      "props": [
+        {
+          "name": "endsAt",
+          "type": "string | number | Date",
+          "required": false,
+          "default": null,
+          "description": "When the auction closes. Read by `AuctionCountdown` to drive the live clock."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionBid",
+      "props": [
+        {
+          "name": "amount",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "The current leading bid, already formatted (e.g. \"$2,450\")."
+        },
+        {
+          "name": "bids",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Number of bids placed so far."
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Current bid\"",
+          "description": "Label above the amount."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionCountdown",
+      "props": [
+        {
+          "name": "endedLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Bidding closed\"",
+          "description": "Shown once the countdown reaches zero."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionStatus",
+      "props": [
+        {
+          "name": "state",
+          "type": "AuctionStatusState",
+          "required": true,
+          "default": null,
+          "description": "Current lifecycle of the auction. `live` and `closing` read as active."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionHistory",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionBidRow",
+      "props": [
+        {
+          "name": "bidder",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Name of the bidder."
+        },
+        {
+          "name": "amount",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Bid amount, already formatted."
+        },
+        {
+          "name": "time",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "When the bid was placed."
+        },
+        {
+          "name": "leading",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Marks this as the current leading bid."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AuctionWinner",
+      "props": [
+        {
+          "name": "winner",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Name of the winning bidder."
+        },
+        {
+          "name": "amount",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Winning amount, already formatted."
+        },
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Winner\"",
+          "description": "Label above the winner."
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

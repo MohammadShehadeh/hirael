@@ -3942,6 +3942,163 @@
       ]
     },
     {
+      "name": "upload-manager",
+      "type": "registry:ui",
+      "title": "Upload Manager",
+      "description": "Upload queue with per-file progress, status and retry, cancel and remove actions, plus an overall progress summary. Compound API.",
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "progress"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/upload-manager.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/upload-manager.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-explorer",
+      "type": "registry:ui",
+      "title": "File Explorer",
+      "description": "Two-pane file browser: a collapsible folder tree, a breadcrumb path and a list or grid of the current folder's contents. Compound API.",
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "breadcrumb",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/file-explorer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/file-explorer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "asset-manager",
+      "type": "registry:ui",
+      "title": "Asset Manager",
+      "description": "Media library with a thumbnail grid or list, search, multi-select and a detail inspector showing the selected asset's preview and metadata. Compound API.",
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/asset-manager.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/asset-manager.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kanban-board",
+      "type": "registry:ui",
+      "title": "Kanban Board",
+      "description": "Column board with cards you drag between and within columns (native DnD, no library) plus keyboard move actions. Controlled board value. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/kanban-board.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kanban-board.tsx"
+        }
+      ]
+    },
+    {
+      "name": "nested-sortable",
+      "type": "registry:ui",
+      "title": "Nested Sortable",
+      "description": "Drag-to-reorder outline with nesting: indent and outdent items into a real tree, with pointer and keyboard control and live-region announcements. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/nested-sortable.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/nested-sortable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "shipment-tracker",
+      "type": "registry:ui",
+      "title": "Shipment Tracker",
+      "description": "Order delivery stages as a connected progress stepper with timestamps and a live current stage, plus an event history list. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/shipment-tracker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/shipment-tracker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auction-timeline",
+      "type": "registry:ui",
+      "title": "Auction Timeline",
+      "description": "Live auction panel with the leading bid, a countdown to close, a live status and a bid-history timeline; shows the winner once closed. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/auction-timeline.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/auction-timeline.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

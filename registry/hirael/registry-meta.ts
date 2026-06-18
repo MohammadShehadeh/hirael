@@ -2518,6 +2518,76 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["badge", "button", "input", "select"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "upload-manager",
+    title: "Upload Manager",
+    description:
+      "Upload queue with per-file progress, status and retry, cancel and remove actions, plus an overall progress summary. Compound API.",
+    category: "files",
+    files: [{ path: "registry/hirael/ui/upload-manager.tsx" }],
+    registryDependencies: ["button", "progress"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "file-explorer",
+    title: "File Explorer",
+    description:
+      "Two-pane file browser: a collapsible folder tree, a breadcrumb path and a list or grid of the current folder's contents. Compound API.",
+    category: "files",
+    files: [{ path: "registry/hirael/ui/file-explorer.tsx" }],
+    registryDependencies: ["breadcrumb", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "asset-manager",
+    title: "Asset Manager",
+    description:
+      "Media library with a thumbnail grid or list, search, multi-select and a detail inspector showing the selected asset's preview and metadata. Compound API.",
+    category: "files",
+    files: [{ path: "registry/hirael/ui/asset-manager.tsx" }],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "kanban-board",
+    title: "Kanban Board",
+    description:
+      "Column board with cards you drag between and within columns (native DnD, no library) plus keyboard move actions. Controlled board value. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/kanban-board.tsx" }],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "nested-sortable",
+    title: "Nested Sortable",
+    description:
+      "Drag-to-reorder outline with nesting: indent and outdent items into a real tree, with pointer and keyboard control and live-region announcements. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/nested-sortable.tsx" }],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "shipment-tracker",
+    title: "Shipment Tracker",
+    description:
+      "Order delivery stages as a connected progress stepper with timestamps and a live current stage, plus an event history list. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/shipment-tracker.tsx" }],
+    registryDependencies: [],
+    dependencies: ["class-variance-authority", "lucide-react"],
+  },
+  {
+    name: "auction-timeline",
+    title: "Auction Timeline",
+    description:
+      "Live auction panel with the leading bid, a countdown to close, a live status and a bid-history timeline; shows the winner once closed. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/auction-timeline.tsx" }],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**

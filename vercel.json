@@ -377,6 +377,16 @@
       "permanent": true
     },
     {
+      "source": "/components/asset-manager",
+      "destination": "/components/files/asset-manager",
+      "permanent": true
+    },
+    {
+      "source": "/components/auction-timeline",
+      "destination": "/components/data/auction-timeline",
+      "permanent": true
+    },
+    {
       "source": "/components/audio-player",
       "destination": "/components/display/audio-player",
       "permanent": true
@@ -487,6 +497,11 @@
       "permanent": true
     },
     {
+      "source": "/components/file-explorer",
+      "destination": "/components/files/file-explorer",
+      "permanent": true
+    },
+    {
       "source": "/components/filter-builder",
       "destination": "/components/data/filter-builder",
       "permanent": true
@@ -529,6 +544,11 @@
     {
       "source": "/components/json-viewer",
       "destination": "/components/dev/json-viewer",
+      "permanent": true
+    },
+    {
+      "source": "/components/kanban-board",
+      "destination": "/components/data/kanban-board",
       "permanent": true
     },
     {
@@ -594,6 +614,11 @@
     {
       "source": "/components/multi-select",
       "destination": "/components/inputs/multi-select",
+      "permanent": true
+    },
+    {
+      "source": "/components/nested-sortable",
+      "destination": "/components/data/nested-sortable",
       "permanent": true
     },
     {
@@ -674,6 +699,11 @@
     {
       "source": "/components/scroll-reveal",
       "destination": "/components/animation/scroll-reveal",
+      "permanent": true
+    },
+    {
+      "source": "/components/shipment-tracker",
+      "destination": "/components/data/shipment-tracker",
       "permanent": true
     },
     {
@@ -769,6 +799,11 @@
     {
       "source": "/components/tree-view",
       "destination": "/components/data/tree-view",
+      "permanent": true
+    },
+    {
+      "source": "/components/upload-manager",
+      "destination": "/components/files/upload-manager",
       "permanent": true
     },
     {

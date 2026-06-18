@@ -67,6 +67,22 @@ function arrayMove(arr: string[], from: number, to: number) {
   return next;
 }
 
+function reorderPinned(
+  order: string[],
+  isDisabled: (id: string) => boolean,
+  id: string,
+  toMovablePos: number,
+) {
+  const movable = order.filter((v) => !isDisabled(v));
+  const from = movable.indexOf(id);
+  if (from === -1) return order;
+  const to = Math.max(0, Math.min(toMovablePos, movable.length - 1));
+  if (to === from) return order;
+  const nextMovable = arrayMove(movable, from, to);
+  let m = 0;
+  return order.map((v) => (isDisabled(v) ? v : nextMovable[m++]));
+}
+
 export type SortableProps = Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
@@ -117,6 +133,11 @@ function Sortable({
     };
   }, []);
 
+  const isDisabled = React.useCallback(
+    (id: string) => itemsRef.current.get(id)?.disabled ?? false,
+    [],
+  );
+
   const announce = React.useCallback((text: string) => {
     setLiveText(text);
   }, []);
@@ -165,10 +186,10 @@ function Sortable({
       const current = orderRef.current;
       const horizontal = orientation === "horizontal";
       const coord = horizontal ? e.clientX : e.clientY;
-      const others = current.filter((v) => v !== id);
+      const movableOthers = current.filter((v) => v !== id && !isDisabled(v));
 
       let before = 0;
-      for (const other of others) {
+      for (const other of movableOthers) {
         const entry = itemsRef.current.get(other);
         if (!entry) continue;
         const rect = entry.node.getBoundingClientRect();
@@ -179,13 +200,12 @@ function Sortable({
         if (passed) before += 1;
       }
 
-      if (before !== current.indexOf(id)) {
-        const next = others.slice();
-        next.splice(before, 0, id);
-        setPreview(next);
+      const movablePos = current.filter((v) => !isDisabled(v)).indexOf(id);
+      if (before !== movablePos) {
+        setPreview(reorderPinned(current, isDisabled, id, before));
       }
     },
-    [dragId, orientation],
+    [dragId, orientation, isDisabled],
   );
 
   const handlePointerEnd = React.useCallback(
@@ -210,22 +230,18 @@ function Sortable({
   const moveGrabbed = React.useCallback(
     (id: string, dir: -1 | 1) => {
       const current = orderRef.current;
-      const from = current.indexOf(id);
+      const movable = current.filter((v) => !isDisabled(v));
+      const from = movable.indexOf(id);
       if (from === -1) return;
-      let to = from + dir;
-      while (
-        to >= 0 &&
-        to < current.length &&
-        itemsRef.current.get(current[to])?.disabled
-      ) {
-        to += dir;
-      }
-      if (to < 0 || to >= current.length) return;
-      const next = arrayMove(current, from, to);
+      const to = from + dir;
+      if (to < 0 || to >= movable.length) return;
+      const next = reorderPinned(current, isDisabled, id, to);
       setPreview(next);
-      announce(`Moved ${id} to position ${to + 1} of ${next.length}`);
+      announce(
+        `Moved ${id} to position ${next.indexOf(id) + 1} of ${next.length}`,
+      );
     },
-    [announce],
+    [announce, isDisabled],
   );
 
   const handleKeyDown = React.useCallback(

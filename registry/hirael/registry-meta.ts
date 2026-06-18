@@ -5,6 +5,7 @@ export type ComponentCategory =
   | "data"
   | "ai"
   | "dev"
+  | "commerce"
   | "display"
   | "animation"
   | "navigation"
@@ -2457,6 +2458,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["dialog", "kbd"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "discount-builder",
+    title: "Discount Builder",
+    description:
+      "Configure a store discount: percentage, fixed amount or free shipping, with optional conditions and a live summary. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/discount-builder.tsx" }],
+    registryDependencies: ["badge", "button", "input", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "bundle-builder",
+    title: "Bundle Builder",
+    description:
+      "Assemble a product bundle from a catalog with quantity steppers, a bundle discount and live savings versus buying separately. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/bundle-builder.tsx" }],
+    registryDependencies: ["badge", "button", "input", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "vendor-comparison",
+    title: "Vendor Comparison",
+    description:
+      "Compare vendors or plans across grouped features with boolean, text and rating cells, a sticky feature column and a recommended column. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/vendor-comparison.tsx" }],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "inventory-matrix",
+    title: "Inventory Matrix",
+    description:
+      "Editable stock grid of variants by location with row and column totals and low-stock and out-of-stock highlighting. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/inventory-matrix.tsx" }],
+    registryDependencies: ["input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "variant-editor",
+    title: "Variant Editor",
+    description:
+      "Define product option axes and edit the generated variant rows (price, SKU, stock); editing options regenerates rows and keeps existing data. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/variant-editor.tsx" }],
+    registryDependencies: ["badge", "button", "input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "pricing-rules-builder",
+    title: "Pricing Rules Builder",
+    description:
+      "Build top-down conditional pricing rules of the form when condition then price action, each with a live summary. Compound API.",
+    category: "commerce",
+    files: [{ path: "registry/hirael/ui/pricing-rules-builder.tsx" }],
+    registryDependencies: ["badge", "button", "input", "select"],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**
@@ -2512,6 +2573,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   data: "Data display",
   ai: "AI",
   dev: "Developer",
+  commerce: "Commerce",
   display: "Display",
   animation: "Animation",
   navigation: "Navigation",
@@ -2529,6 +2591,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     data: [],
     ai: [],
     dev: [],
+    commerce: [],
     display: [],
     animation: [],
     navigation: [],
@@ -2661,6 +2724,7 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "data",
   "ai",
   "dev",
+  "commerce",
   "display",
   "animation",
   "navigation",
@@ -2681,6 +2745,8 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   data: "Feeds, timelines, trees, heatmaps and other ways to show structured data.",
   ai: "Chat threads, prompt editors, tool-call and agent-run views, and citation UIs for AI products.",
   dev: "Developer tools: JSON and diff viewers, a log stream, a terminal and an HTTP request builder.",
+  commerce:
+    "Storefront and catalog tooling: variant and pricing editors, inventory, bundles, discounts and vendor comparison.",
   display:
     "Callouts, code blocks, marquees, lightboxes and other visual helpers.",
   animation:

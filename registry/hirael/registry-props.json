@@ -8845,5 +8845,691 @@
       "props": [],
       "extendsNative": true
     }
+  ],
+  "discount-builder": [
+    {
+      "name": "DiscountType",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountCondition",
+      "props": [
+        {
+          "name": "condition",
+          "type": "DiscountCondition",
+          "required": true,
+          "default": null,
+          "description": "The condition row this part renders."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountBuilder",
+      "props": [
+        {
+          "name": "value",
+          "type": "Discount",
+          "required": false,
+          "default": null,
+          "description": "Controlled discount configuration."
+        },
+        {
+          "name": "defaultValue",
+          "type": "Discount",
+          "required": false,
+          "default": null,
+          "description": "Initial discount for an uncontrolled builder."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: Discount) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the discount changes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountValue",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"0\"",
+          "description": "Placeholder shown in the empty amount field."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountConditions",
+      "props": [
+        {
+          "name": "emptyHint",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"No conditions. The discount applies to every order.\"",
+          "description": "Shown when no conditions have been added."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountAddCondition",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiscountSummary",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "bundle-builder": [
+    {
+      "name": "BundleBuilder",
+      "props": [
+        {
+          "name": "products",
+          "type": "BundleProduct[]",
+          "required": true,
+          "default": null,
+          "description": "Catalog of products the picker can add to the bundle."
+        },
+        {
+          "name": "value",
+          "type": "BundleLine[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled list of bundle lines."
+        },
+        {
+          "name": "defaultValue",
+          "type": "BundleLine[]",
+          "required": false,
+          "default": null,
+          "description": "Initial bundle lines for an uncontrolled builder."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: BundleLine[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the bundle lines change."
+        },
+        {
+          "name": "discount",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Controlled bundle discount as a percentage from 0 to 100."
+        },
+        {
+          "name": "defaultDiscount",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Initial discount percentage for an uncontrolled builder."
+        },
+        {
+          "name": "onDiscountChange",
+          "type": "((discount: number) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the discount percentage changes."
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "\"en-US\"",
+          "description": "BCP 47 locale used to format prices."
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": false,
+          "default": "\"USD\"",
+          "description": "ISO 4217 currency code used to format prices."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BundlePicker",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Add a product\"",
+          "description": "Placeholder shown in the picker before a product is chosen."
+        },
+        {
+          "name": "addLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Add\"",
+          "description": "Label for the add button."
+        },
+        {
+          "name": "variant",
+          "type": "\"select\" | \"list\"",
+          "required": false,
+          "default": "\"select\"",
+          "description": "Render an add-button list instead of a Select."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BundleItems",
+      "props": [
+        {
+          "name": "emptyHint",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"No products in the bundle yet.\"",
+          "description": "Shown when the bundle has no lines yet."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BundleItem",
+      "props": [
+        {
+          "name": "line",
+          "type": "BundleLine",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "BundleSummary",
+      "props": [
+        {
+          "name": "showDiscount",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show the discount percentage input."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "vendor-comparison": [
+    {
+      "name": "VendorComparison",
+      "props": [
+        {
+          "name": "vendors",
+          "type": "Vendor[]",
+          "required": true,
+          "default": null,
+          "description": "Columns of the table. Mark one vendor `recommended` to tint its column and label it."
+        },
+        {
+          "name": "features",
+          "type": "Feature[]",
+          "required": false,
+          "default": null,
+          "description": "Rows of the table. Pass to render config-driven; omit to compose rows as children. Group adjacent features with `group`."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VendorComparisonHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "VendorComparisonGroup",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "VendorComparisonRow",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Feature name shown in the sticky start column."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VendorComparisonCell",
+      "props": [
+        {
+          "name": "value",
+          "type": "CellValue",
+          "required": false,
+          "default": null,
+          "description": "Cell content. `true`/`false` render a check or x icon; strings and numbers render as text."
+        },
+        {
+          "name": "recommended",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Tint the cell to match a recommended vendor column."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "inventory-matrix": [
+    {
+      "name": "InventoryMatrix",
+      "props": [
+        {
+          "name": "variants",
+          "type": "Variant[]",
+          "required": true,
+          "default": null,
+          "description": "Rows of the grid. Each variant (size, SKU, …) renders one stock row."
+        },
+        {
+          "name": "locations",
+          "type": "Location[]",
+          "required": true,
+          "default": null,
+          "description": "Columns of the grid. Each location or warehouse renders one stock column."
+        },
+        {
+          "name": "value",
+          "type": "StockMap",
+          "required": false,
+          "default": null,
+          "description": "Controlled stock map of variant id to location id to on-hand quantity."
+        },
+        {
+          "name": "defaultValue",
+          "type": "StockMap",
+          "required": false,
+          "default": null,
+          "description": "Initial stock map for uncontrolled use."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: StockMap) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next stock map whenever a cell changes."
+        },
+        {
+          "name": "lowStockThreshold",
+          "type": "number",
+          "required": false,
+          "default": "5",
+          "description": "Quantities at or below this count tint as low stock. Zero or less is out of stock."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InventoryMatrixHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "InventoryRow",
+      "props": [
+        {
+          "name": "variant",
+          "type": "Variant",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InventoryCell",
+      "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Defines a string value that labels the current element.\nAccessible name for the cell input, e.g. \"Stock for M at Berlin\"."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "On-hand quantity shown in the cell input."
+        },
+        {
+          "name": "state",
+          "type": "StockState",
+          "required": true,
+          "default": null,
+          "description": "Stock state derived from the low-stock threshold, driving the cell tint."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: number) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the parsed quantity when the cell input changes."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "InventoryTotals",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "variant-editor": [
+    {
+      "name": "VariantOption",
+      "props": [
+        {
+          "name": "option",
+          "type": "VariantOption",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantRow",
+      "props": [
+        {
+          "name": "row",
+          "type": "VariantRow",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "axisNames",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantEditor",
+      "props": [
+        {
+          "name": "value",
+          "type": "VariantEditorState",
+          "required": false,
+          "default": null,
+          "description": "Controlled options and generated rows."
+        },
+        {
+          "name": "defaultValue",
+          "type": "VariantEditorState",
+          "required": false,
+          "default": null,
+          "description": "Initial options and rows for an uncontrolled editor."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: VariantEditorState) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the options or any row changes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantOptions",
+      "props": [
+        {
+          "name": "addLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Add option\"",
+          "description": "Override the add-axis control label."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantValues",
+      "props": [
+        {
+          "name": "option",
+          "type": "VariantOption",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantTable",
+      "props": [
+        {
+          "name": "emptyHint",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Add options with values to generate variants.\"",
+          "description": "Shown when no variants are generated yet."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "VariantCount",
+      "props": [
+        {
+          "name": "children",
+          "type": "((count: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Render the label from the variant count."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "pricing-rules-builder": [
+    {
+      "name": "PricingRules",
+      "props": [
+        {
+          "name": "fields",
+          "type": "PricingField[]",
+          "required": false,
+          "default": "DEFAULT_FIELDS",
+          "description": "Condition fields a rule can target. `operators` overrides the default operator list per field."
+        },
+        {
+          "name": "actions",
+          "type": "PricingAction[]",
+          "required": false,
+          "default": "DEFAULT_ACTIONS",
+          "description": "Price actions a rule can apply. `unit` decorates the action value in the summary chip."
+        },
+        {
+          "name": "value",
+          "type": "PricingRule[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled list of rules."
+        },
+        {
+          "name": "defaultValue",
+          "type": "PricingRule[]",
+          "required": false,
+          "default": null,
+          "description": "Initial rules for an uncontrolled builder."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: PricingRule[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the rule list changes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PricingRule",
+      "props": [
+        {
+          "name": "rule",
+          "type": "PricingRule",
+          "required": true,
+          "default": null,
+          "description": "The rule this row renders."
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Order in which the rule is evaluated, shown as an ordinal. Rules apply top-down."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PricingRuleCondition",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"When\"",
+          "description": "Label shown before the condition controls."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PricingRuleAction",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"then\"",
+          "description": "Label shown before the action controls."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PricingRuleSummary",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PricingRulesAdd",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

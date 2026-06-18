@@ -264,6 +264,18 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/command-palette-demo"),
   "spotlight-search-demo": () =>
     import("@/registry/hirael/examples/spotlight-search-demo"),
+  "discount-builder-demo": () =>
+    import("@/registry/hirael/examples/discount-builder-demo"),
+  "bundle-builder-demo": () =>
+    import("@/registry/hirael/examples/bundle-builder-demo"),
+  "vendor-comparison-demo": () =>
+    import("@/registry/hirael/examples/vendor-comparison-demo"),
+  "inventory-matrix-demo": () =>
+    import("@/registry/hirael/examples/inventory-matrix-demo"),
+  "variant-editor-demo": () =>
+    import("@/registry/hirael/examples/variant-editor-demo"),
+  "pricing-rules-builder-demo": () =>
+    import("@/registry/hirael/examples/pricing-rules-builder-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

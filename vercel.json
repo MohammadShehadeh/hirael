@@ -402,6 +402,11 @@
       "permanent": true
     },
     {
+      "source": "/components/bundle-builder",
+      "destination": "/components/commerce/bundle-builder",
+      "permanent": true
+    },
+    {
       "source": "/components/calendar-heatmap",
       "destination": "/components/data/calendar-heatmap",
       "permanent": true
@@ -467,6 +472,11 @@
       "permanent": true
     },
     {
+      "source": "/components/discount-builder",
+      "destination": "/components/commerce/discount-builder",
+      "permanent": true
+    },
+    {
       "source": "/components/dock",
       "destination": "/components/navigation/dock",
       "permanent": true
@@ -509,6 +519,11 @@
     {
       "source": "/components/inspector-panel",
       "destination": "/components/navigation/inspector-panel",
+      "permanent": true
+    },
+    {
+      "source": "/components/inventory-matrix",
+      "destination": "/components/commerce/inventory-matrix",
       "permanent": true
     },
     {
@@ -604,6 +619,11 @@
     {
       "source": "/components/phone-input",
       "destination": "/components/inputs/phone-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/pricing-rules-builder",
+      "destination": "/components/commerce/pricing-rules-builder",
       "permanent": true
     },
     {
@@ -754,6 +774,16 @@
     {
       "source": "/components/usage-dashboard",
       "destination": "/components/saas/usage-dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/components/variant-editor",
+      "destination": "/components/commerce/variant-editor",
+      "permanent": true
+    },
+    {
+      "source": "/components/vendor-comparison",
+      "destination": "/components/commerce/vendor-comparison",
       "permanent": true
     },
     {

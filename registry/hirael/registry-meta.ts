@@ -2034,7 +2034,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "infrazen",
     title: "Infrazen",
     description:
-      "Dark, technical web3 landing page for a decentralized infrastructure protocol: a glass navbar with a live network status, a hero leading with a plain-language value proposition and a live metrics strip, a hairline-joined feature grid, a centralized-cloud-versus-Infrazen reframe, a grouped integrations grid, three-tier usage pricing, a single-open FAQ and a closing CTA with footer. Self-contained near-black palette with a single mint-emerald signal accent, Space Grotesk and JetBrains Mono type.",
+      "Dark, grid-driven landing page for a developer infrastructure platform in the Linear / Vercel / Stripe register: a glass navbar, a hero with a glitch headline and a live product-console mockup over a parallax dot-grid, a logo and metrics trust band, a problem-solution-outcome feature bento, an Infrazen-versus-legacy-cloud comparison matrix, an architecture-flow ecosystem section with an API-first CLI snippet, a masonry product gallery with modal previews, three-tier pricing with a feature-comparison table, a categorized FAQ, and a closing CTA with footer. Technical section dividers, diagonal-stripe and dot-grid textures, corner-tick framing, and reduced-motion-safe reveals throughout. Self-contained near-black palette with a single mint-emerald accent, Space Grotesk and JetBrains Mono type.",
     category: "templates",
     files: [
       {
@@ -2048,6 +2048,10 @@ export const REGISTRY: RegistryEntryMeta[] = [
       {
         path: "registry/hirael/templates/infrazen/hero.tsx",
         target: "components/templates/infrazen/hero.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/product-mock.tsx",
+        target: "components/templates/infrazen/product-mock.tsx",
       },
       {
         path: "registry/hirael/templates/infrazen/trusted.tsx",
@@ -2064,6 +2068,10 @@ export const REGISTRY: RegistryEntryMeta[] = [
       {
         path: "registry/hirael/templates/infrazen/integrations.tsx",
         target: "components/templates/infrazen/integrations.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/gallery.tsx",
+        target: "components/templates/infrazen/gallery.tsx",
       },
       {
         path: "registry/hirael/templates/infrazen/pricing.tsx",

@@ -1,53 +1,64 @@
 "use client";
 
-import { motion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
-import { Button, reveal, StatusPill } from "./primitives";
-
-const METRICS = [
-  { value: "12,840", label: "active nodes" },
-  { value: "38", label: "regions" },
-  { value: "99.98%", label: "network uptime" },
-  { value: "$0.011", label: "per vCPU-hour" },
-];
+import { Button, CornerTicks, GlitchText, reveal } from "./primitives";
+import { ProductMock } from "./product-mock";
 
 export function Hero() {
+  const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const gridY = useTransform(scrollY, [0, 700], [0, 90]);
+
   return (
     <section
       id="top"
       data-slot="hero"
-      className="relative overflow-hidden px-4 pb-20 pt-32 sm:px-6 sm:pt-40"
+      className="relative overflow-hidden px-4 pb-16 pt-32 sm:px-6 sm:pt-40"
     >
+      <motion.div
+        aria-hidden
+        style={{ y: reduce ? 0 : gridY }}
+        className="pointer-events-none absolute inset-0 -top-32"
+      >
+        <div className="zen-grid zen-fade-edges absolute inset-0" />
+        <div className="zen-dots zen-fade-edges absolute inset-0 opacity-60" />
+      </motion.div>
       <div
         aria-hidden
-        className="zen-grid zen-grid-fade pointer-events-none absolute inset-0"
-      />
-      <div
-        aria-hidden
-        className="zen-glow pointer-events-none absolute inset-x-0 top-0 h-[480px]"
+        className="zen-glow pointer-events-none absolute inset-x-0 top-0 h-[520px]"
       />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
-        <motion.div {...reveal({ y: 12 })}>
-          <StatusPill />
-        </motion.div>
+        <motion.span
+          {...reveal({ y: 12 })}
+          className="zen-mono inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground"
+        >
+          <span className="size-1.5 rounded-full bg-[var(--zen)]" />
+          Now in general availability
+        </motion.span>
 
         <motion.h1
           {...reveal({ y: 18, delay: 0.05 })}
-          className="mt-6 text-balance font-semibold leading-[1.05] tracking-tight text-foreground"
-          style={{ fontSize: "clamp(2.4rem, 6vw, 4.25rem)" }}
+          className="mt-6 text-balance font-semibold leading-[1.02] tracking-tight text-foreground"
+          style={{ fontSize: "clamp(2.6rem, 6.5vw, 4.75rem)" }}
         >
-          Cloud infrastructure, run by a network. Not a company.
+          Infrastructure that <GlitchText>scales itself.</GlitchText>
         </motion.h1>
 
         <motion.p
           {...reveal({ y: 18, delay: 0.12 })}
           className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
-          Infrazen is a permissionless protocol for compute, storage, and
-          bandwidth. Independent operators run the hardware, smart contracts
-          handle settlement, and your apps get cloud-grade infrastructure with
-          no single point of control.
+          Infrazen runs your apps across a global network of regions, with
+          autoscaling, edge caching, and observability built in. Push from git
+          and watch it go live everywhere in seconds. The platform handles
+          capacity, failover, and traffic.
         </motion.p>
 
         <motion.div
@@ -55,10 +66,10 @@ export function Hero() {
           className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
         >
           <Button href="#pricing" withArrow>
-            Start building
+            Start deploying
           </Button>
           <Button href="#" variant="ghost">
-            Read the docs
+            View documentation
           </Button>
         </motion.div>
 
@@ -66,28 +77,21 @@ export function Hero() {
           {...reveal({ y: 12, delay: 0.24 })}
           className="zen-mono mt-4 text-xs text-muted-foreground"
         >
-          Free to start. No credit card. Settle on-chain when you scale.
+          Free to start. No credit card. Deploy in under five minutes.
         </motion.p>
       </div>
 
-      <motion.dl
-        {...reveal({ y: 24, delay: 0.3 })}
-        className="relative mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-4"
+      <motion.div
+        {...reveal({ y: 32, delay: 0.28 })}
+        className="relative mx-auto mt-16 max-w-5xl"
       >
-        {METRICS.map((metric) => (
-          <div
-            key={metric.label}
-            className="flex flex-col items-center bg-card px-4 py-6 text-center"
-          >
-            <dt className="zen-mono text-2xl font-semibold text-foreground sm:text-3xl">
-              {metric.value}
-            </dt>
-            <dd className="mt-1 text-xs text-muted-foreground">
-              {metric.label}
-            </dd>
-          </div>
-        ))}
-      </motion.dl>
+        <CornerTicks />
+        <ProductMock />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -bottom-px h-24 bg-gradient-to-b from-transparent to-background"
+        />
+      </motion.div>
     </section>
   );
 }

@@ -3,19 +3,19 @@ import { Logo, StatusPill } from "./primitives";
 const COLUMNS = [
   {
     heading: "Product",
-    links: ["Compute", "Storage", "Bandwidth", "Pricing"],
+    links: ["Compute", "Edge network", "Observability", "Pricing"],
   },
   {
     heading: "Developers",
-    links: ["Docs", "SDKs", "CLI", "Status"],
-  },
-  {
-    heading: "Protocol",
-    links: ["Token", "Operators", "Governance", "Audits"],
+    links: ["Documentation", "API reference", "CLI", "Status"],
   },
   {
     heading: "Company",
-    links: ["About", "Blog", "Careers", "Contact"],
+    links: ["About", "Blog", "Careers", "Customers"],
+  },
+  {
+    heading: "Legal",
+    links: ["Terms", "Privacy", "Security", "DPA"],
   },
 ];
 
@@ -66,7 +66,7 @@ export function Footer() {
               </span>
             </div>
             <p className="max-w-xs text-sm text-muted-foreground">
-              A permissionless protocol for compute, storage, and bandwidth.
+              Global infrastructure for teams that ship fast.
             </p>
             <StatusPill className="w-fit" />
           </div>
@@ -94,7 +94,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="zen-mono text-xs text-muted-foreground">
-            © 2026 Infrazen Labs · Built on open infrastructure
+            © 2026 Infrazen, Inc. · All systems operational
           </p>
           <div className="flex items-center gap-2">
             {SOCIALS.map(({ label, href, icon: Icon }) => (

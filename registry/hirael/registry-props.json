@@ -6962,6 +6962,19 @@
       "extendsNative": false
     },
     {
+      "name": "ProductMock",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
       "name": "Trusted",
       "props": [],
       "extendsNative": false
@@ -6978,6 +6991,11 @@
     },
     {
       "name": "Integrations",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Gallery",
       "props": [],
       "extendsNative": false
     },
@@ -7095,6 +7113,51 @@
           "name": "className",
           "type": "string",
           "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "GlitchText",
+      "props": [
+        {
+          "name": "children",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "CornerTicks",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "SectionDivider",
+      "props": [
+        {
+          "name": "index",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
           "default": null,
           "description": null
         }

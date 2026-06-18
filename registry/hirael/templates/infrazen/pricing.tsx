@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
-import { Button, reveal, SectionLabel } from "./primitives";
+import { Button, reveal } from "./primitives";
 
 type Plan = {
   name: string;
@@ -19,45 +19,55 @@ type Plan = {
 
 const PLANS: Plan[] = [
   {
-    name: "Builder",
+    name: "Hobby",
     price: "$0",
-    unit: "+ usage",
-    caption: "For prototypes and weekend builds.",
+    unit: "forever",
+    caption: "For side projects and prototypes.",
     features: [
-      "Pay-as-you-go compute and storage",
-      "On-chain usage receipts",
+      "1 region, automatic HTTPS",
+      "100 GB bandwidth included",
+      "Preview deploy for every push",
       "Community support",
-      "1 project",
     ],
     cta: "Start free",
   },
   {
-    name: "Scale",
-    price: "$49",
-    unit: "/ mo + usage",
-    caption: "For production workloads that grow.",
+    name: "Pro",
+    price: "$20",
+    unit: "/ user / month",
+    caption: "For teams shipping to production.",
     features: [
-      "Autoscaling across 38 regions",
-      "Programmable SLAs with auto refunds",
-      "Priority support, 99.98% uptime",
-      "Unlimited projects and members",
+      "All 38 regions with autoscaling",
+      "Observability and 99.99% SLA",
+      "Unlimited preview deploys",
+      "Email support, 1 TB bandwidth",
     ],
-    cta: "Start building",
+    cta: "Start 14-day trial",
     featured: true,
   },
   {
     name: "Enterprise",
     price: "Custom",
     unit: "annual",
-    caption: "For teams running at real scale.",
+    caption: "For scale and compliance needs.",
     features: [
-      "Dedicated operator pools",
-      "Custom SLAs and settlement terms",
-      "SSO, audit log exports",
+      "Dedicated capacity and custom SLAs",
+      "SSO, SAML, and audit logs",
       "Solutions engineering",
+      "24/7 support with a named contact",
     ],
-    cta: "Talk to us",
+    cta: "Contact sales",
   },
+];
+
+const COMPARISON: { label: string; values: [string, string, string] }[] = [
+  { label: "Regions", values: ["1", "38", "38 + dedicated"] },
+  { label: "Bandwidth", values: ["100 GB", "1 TB", "Custom"] },
+  { label: "Build minutes", values: ["100 / mo", "6,000 / mo", "Unlimited"] },
+  { label: "Team seats", values: ["1", "Unlimited", "Unlimited + SSO"] },
+  { label: "Log retention", values: ["24 hours", "30 days", "Custom"] },
+  { label: "Uptime SLA", values: ["—", "99.99%", "99.99%+"] },
+  { label: "Support", values: ["Community", "Email", "24/7 + TAM"] },
 ];
 
 function PlanCard({ plan }: { plan: Plan }) {
@@ -72,7 +82,7 @@ function PlanCard({ plan }: { plan: Plan }) {
     >
       {plan.featured ? (
         <span className="zen-mono absolute -top-3 start-7 rounded-full bg-[var(--zen)] px-3 py-1 text-xs font-medium text-primary-foreground">
-          Most popular
+          Recommended
         </span>
       ) : null}
 
@@ -113,21 +123,16 @@ function PlanCard({ plan }: { plan: Plan }) {
 
 export function Pricing() {
   return (
-    <section
-      id="pricing"
-      data-slot="pricing"
-      className="border-t border-border px-4 py-24 sm:px-6"
-    >
+    <section id="pricing" data-slot="pricing" className="px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <motion.div {...reveal()} className="mx-auto max-w-2xl text-center">
-          <SectionLabel className="justify-center">Pricing</SectionLabel>
-          <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Priced like a meter, not a mystery.
+          <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Pricing that scales with you, not against you.
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
-            Start free and pay for what you use. Every charge is metered
-            per-second and settled on-chain, so the invoice always matches the
-            usage.
+            Start free and upgrade when you ship to production. Usage past your
+            plan is billed per-second, with no egress fees and no per-seat
+            surprises.
           </p>
         </motion.div>
 
@@ -140,13 +145,61 @@ export function Pricing() {
           ))}
         </motion.div>
 
-        <motion.p
-          {...reveal({ y: 12, delay: 0.1 })}
-          className="zen-mono mt-8 text-center text-xs text-muted-foreground"
+        <motion.div
+          {...reveal({ y: 24, delay: 0.1 })}
+          className="mt-8 overflow-x-auto rounded-2xl border border-border"
         >
-          $0.011 / vCPU-hour · $0.018 / GB-month storage · $0 egress · cancel
-          anytime
-        </motion.p>
+          <table className="w-full min-w-[620px] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="px-5 py-4 text-start font-medium text-muted-foreground">
+                  Compare plans
+                </th>
+                {PLANS.map((plan) => (
+                  <th
+                    key={plan.name}
+                    className={cn(
+                      "px-5 py-4 text-center font-medium",
+                      plan.featured
+                        ? "bg-[var(--surface-2)] text-[var(--zen)]"
+                        : "text-foreground",
+                    )}
+                  >
+                    {plan.name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {COMPARISON.map((row) => (
+                <tr
+                  key={row.label}
+                  className="border-b border-border last:border-0"
+                >
+                  <th
+                    scope="row"
+                    className="px-5 py-3.5 text-start font-normal text-muted-foreground"
+                  >
+                    {row.label}
+                  </th>
+                  {row.values.map((value, i) => (
+                    <td
+                      key={i}
+                      className={cn(
+                        "zen-mono px-5 py-3.5 text-center text-xs",
+                        i === 1
+                          ? "bg-[var(--surface-2)] text-foreground"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      {value}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.div>
       </div>
     </section>
   );

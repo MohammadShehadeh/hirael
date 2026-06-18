@@ -71,27 +71,6 @@ export function Wordmark({ className }: { className?: string }) {
   );
 }
 
-/** Mono eyebrow with a leading signal dot, e.g. `· FEATURES`. */
-export function SectionLabel({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        "zen-mono inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[var(--zen)]",
-        className,
-      )}
-    >
-      <span className="size-1.5 rounded-full bg-[var(--zen)]" aria-hidden />
-      {children}
-    </span>
-  );
-}
-
 /** Live-network status chip with a pulsing dot. */
 export function StatusPill({ className }: { className?: string }) {
   return (
@@ -105,7 +84,7 @@ export function StatusPill({ className }: { className?: string }) {
         <span className="zen-pulse absolute inline-flex size-full rounded-full bg-[var(--zen)]" />
         <span className="relative inline-flex size-2 rounded-full bg-[var(--zen)]" />
       </span>
-      Network: live
+      All systems operational
     </span>
   );
 }
@@ -142,5 +121,70 @@ export function Button({
         <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
       ) : null}
     </a>
+  );
+}
+
+/**
+ * Glitch-fringed display text: two clipped, offset color copies flicker briefly
+ * over a stable base. Disabled entirely under reduced motion.
+ */
+export function GlitchText({
+  children,
+  className,
+}: {
+  children: string;
+  className?: string;
+}) {
+  return (
+    <span className={cn("zen-glitch", className)} data-text={children}>
+      {children}
+    </span>
+  );
+}
+
+/** L-shaped accent ticks pinned to the four corners of a relative parent. */
+export function CornerTicks() {
+  const base = "pointer-events-none absolute size-2.5 border-[var(--zen-line)]";
+  return (
+    <>
+      <span
+        aria-hidden
+        className={cn(base, "start-0 top-0 border-s border-t")}
+      />
+      <span aria-hidden className={cn(base, "end-0 top-0 border-e border-t")} />
+      <span
+        aria-hidden
+        className={cn(base, "bottom-0 start-0 border-b border-s")}
+      />
+      <span
+        aria-hidden
+        className={cn(base, "bottom-0 end-0 border-b border-e")}
+      />
+    </>
+  );
+}
+
+/**
+ * Full-width technical separator between major sections: a 1px rule carrying a
+ * mono index and label, capped with a band of diagonal stripes.
+ */
+export function SectionDivider({
+  index,
+  label,
+}: {
+  index: string;
+  label: string;
+}) {
+  return (
+    <div data-slot="section-divider" className="border-t border-border">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-4 sm:px-6">
+        <span className="zen-mono text-xs text-[var(--zen)]">{index}</span>
+        <span className="zen-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          {label}
+        </span>
+        <span className="h-px flex-1 bg-border" />
+        <span aria-hidden className="zen-diagonal h-3 w-20 opacity-50" />
+      </div>
+    </div>
   );
 }

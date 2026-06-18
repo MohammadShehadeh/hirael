@@ -27,7 +27,7 @@ export default function ReleaseNotesDemo() {
             Pages load in under a second, even on large projects.
           </ReleaseNotesHighlight>
           <ReleaseNotesHighlight icon={Sparkles} title="Live collaboration">
-            See teammates' cursors and edits as they happen.
+            See cursors and edits from teammates as they happen.
           </ReleaseNotesHighlight>
           <ReleaseNotesHighlight icon={Check} title="Redesigned settings">
             Everything is now one click away from the sidebar.

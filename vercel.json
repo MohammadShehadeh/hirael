@@ -337,6 +337,26 @@
       "permanent": true
     },
     {
+      "source": "/components/agent-workflow",
+      "destination": "/components/ai/agent-workflow",
+      "permanent": true
+    },
+    {
+      "source": "/components/ai-chat",
+      "destination": "/components/ai/ai-chat",
+      "permanent": true
+    },
+    {
+      "source": "/components/ai-completion-input",
+      "destination": "/components/ai/ai-completion-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/ai-tool-call",
+      "destination": "/components/ai/ai-tool-call",
+      "permanent": true
+    },
+    {
       "source": "/components/animated-number",
       "destination": "/components/data/animated-number",
       "permanent": true
@@ -552,6 +572,11 @@
       "permanent": true
     },
     {
+      "source": "/components/prompt-editor",
+      "destination": "/components/ai/prompt-editor",
+      "permanent": true
+    },
+    {
       "source": "/components/qr-code",
       "destination": "/components/display/qr-code",
       "permanent": true
@@ -559,6 +584,11 @@
     {
       "source": "/components/quick-actions",
       "destination": "/components/widgets/quick-actions",
+      "permanent": true
+    },
+    {
+      "source": "/components/rag-citations",
+      "destination": "/components/ai/rag-citations",
       "permanent": true
     },
     {

@@ -7050,5 +7050,575 @@
       ],
       "extendsNative": true
     }
+  ],
+  "ai-chat": [
+    {
+      "name": "AiChat",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatMessages",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatMessage",
+      "props": [
+        {
+          "name": "role",
+          "type": "\"user\" | \"assistant\"",
+          "required": true,
+          "default": null,
+          "description": "Who sent the message. Lays the row out from the start (assistant) or the end (user)."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatAvatar",
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Image source for the avatar. Falls back to children (initials or an icon) when absent."
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Alt text for the avatar image."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatGroup",
+      "props": [
+        {
+          "name": "role",
+          "type": "\"user\" | \"assistant\"",
+          "required": true,
+          "default": null,
+          "description": "Aligns the bubble, actions, and timestamp stack to the start (assistant) or the end (user)."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatBubble",
+      "props": [
+        {
+          "name": "role",
+          "type": "\"user\" | \"assistant\"",
+          "required": true,
+          "default": null,
+          "description": "Who sent the message. Selects the user or assistant surface."
+        },
+        {
+          "name": "tone",
+          "type": "\"muted\" | \"solid\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatActions",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatTyping",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Assistant is typing\"",
+          "description": "Accessible label announced while the reply is pending. Defaults to \"Assistant is typing\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatComposer",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatInput",
+      "props": [
+        {
+          "name": "onSubmit",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the message is submitted with Enter (Shift+Enter inserts a newline)."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatSend",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Send message\"",
+          "description": "Accessible label for the send button. Defaults to \"Send message\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiChatTimestamp",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "prompt-editor": [
+    {
+      "name": "PromptEditor",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Controlled template text. Use with `onValueChange`."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Initial template text when uncontrolled."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next template text whenever it changes."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Disable the field and variable chips."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PromptEditorToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "PromptEditorField",
+      "props": [
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false,
+          "default": "6",
+          "description": "Minimum number of visible text rows."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PromptEditorVariables",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Heading text shown before the chips."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PromptEditorVariable",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Variable name inserted as `{{name}}` at the caret on click."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PromptEditorFooter",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Render custom footer content instead of the default counts."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "ai-completion-input": [
+    {
+      "name": "AiCompletionInput",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "The current text. Controls the field when provided."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next text whenever the typed value changes."
+        },
+        {
+          "name": "suggestion",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": "The predicted completion string, supplied by the consumer. The part not already typed is shown as ghost text."
+        },
+        {
+          "name": "onAccept",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the full accepted text when the ghost suggestion is accepted."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiCompletionField",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiCompletionGhost",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiCompletionHint",
+      "props": [
+        {
+          "name": "idleChildren",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "null",
+          "description": "Shown when no suggestion is pending. Hidden by default."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "ai-tool-call": [
+    {
+      "name": "AiToolCall",
+      "props": [
+        {
+          "name": "status",
+          "type": "AiToolCallStatus",
+          "required": false,
+          "default": "\"pending\"",
+          "description": "Lifecycle of the tool call. Drives the badge, dot, and default open state."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallTrigger",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "The tool or function name, rendered in mono as the row label."
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallStatusBadge",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"success\" | \"error\" | \"pending\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallStatusDot",
+      "props": [
+        {
+          "name": "status",
+          "type": "AiToolCallStatus",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallSection",
+      "props": [
+        {
+          "name": "label",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Label shown above the block, e.g. \"Arguments\" or \"Result\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallArguments",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": "The call arguments object, shown as pretty-printed JSON."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AiToolCallResult",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": "The value the tool returned, shown as pretty-printed JSON."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "agent-workflow": [
+    {
+      "name": "AgentWorkflow",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowStep",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"done\" | \"error\" | \"pending\" | \"running\"",
+          "required": false,
+          "default": "\"pending\"",
+          "description": "Lifecycle of this step. `running` reads as live (accent-cool, pulsing)."
+        },
+        {
+          "name": "kind",
+          "type": "AgentWorkflowKind",
+          "required": false,
+          "default": null,
+          "description": "What the step represents, used to pick a default marker icon."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowMarker",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"done\" | \"error\" | \"pending\" | \"running\"",
+          "required": false,
+          "default": "\"pending\"",
+          "description": "Lifecycle of the step this marker belongs to."
+        },
+        {
+          "name": "kind",
+          "type": "AgentWorkflowKind",
+          "required": false,
+          "default": null,
+          "description": "What the step represents. Picks the fallback icon when no children are passed."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowMeta",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AgentWorkflowDetail",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "rag-citations": [
+    {
+      "name": "RagCitations",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationsAnswer",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationMark",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Citation number, matching the source card with the same index."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationsSources",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationSource",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Citation number, matching the inline mark with the same index."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationSourceTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationSourceSnippet",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationSourceUrl",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RagCitationScore",
+      "props": [
+        {
+          "name": "score",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Relevance score for the source, shown as a small chip."
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

@@ -232,6 +232,17 @@ const EXAMPLE_LOADERS: Record<
   "usage-dashboard-demo": () =>
     import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
+  "ai-chat-demo": () => import("@/registry/hirael/examples/ai-chat-demo"),
+  "prompt-editor-demo": () =>
+    import("@/registry/hirael/examples/prompt-editor-demo"),
+  "ai-completion-input-demo": () =>
+    import("@/registry/hirael/examples/ai-completion-input-demo"),
+  "ai-tool-call-demo": () =>
+    import("@/registry/hirael/examples/ai-tool-call-demo"),
+  "agent-workflow-demo": () =>
+    import("@/registry/hirael/examples/agent-workflow-demo"),
+  "rag-citations-demo": () =>
+    import("@/registry/hirael/examples/rag-citations-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

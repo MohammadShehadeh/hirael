@@ -3,6 +3,7 @@ export type ComponentCategory =
   | "pickers"
   | "files"
   | "data"
+  | "ai"
   | "display"
   | "animation"
   | "navigation"
@@ -2285,6 +2286,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["card", "chart", "empty", "tooltip", "button"],
     dependencies: ["recharts", "lucide-react"],
   },
+  {
+    name: "ai-chat",
+    title: "AI Chat",
+    description:
+      "Chat thread for AI products: role-aligned bubbles, avatars, a typing indicator, message actions and an auto-growing composer. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/ai-chat.tsx" }],
+    registryDependencies: ["button"],
+    dependencies: ["class-variance-authority"],
+  },
+  {
+    name: "prompt-editor",
+    title: "Prompt Editor",
+    description:
+      "Prompt template editor that highlights {{variable}} tokens live, inserts them from a chip row, and counts characters and approximate tokens. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/prompt-editor.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "ai-completion-input",
+    title: "AI Completion Input",
+    description:
+      "Text field with an inline ghost completion you accept with Tab. The suggestion is supplied by you, so nothing calls a model. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/ai-completion-input.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "ai-tool-call",
+    title: "AI Tool Call",
+    description:
+      "Collapsible view of an LLM tool call: function name, pending / done / error status and pretty-printed argument and result JSON. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/ai-tool-call.tsx" }],
+    registryDependencies: ["collapsible"],
+    dependencies: ["class-variance-authority", "lucide-react"],
+  },
+  {
+    name: "agent-workflow",
+    title: "Agent Workflow",
+    description:
+      "Rail-connected trace of an agent run: thought, tool and output steps with done / running / error status and expandable detail. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/agent-workflow.tsx" }],
+    registryDependencies: [],
+    dependencies: ["class-variance-authority", "lucide-react"],
+  },
+  {
+    name: "rag-citations",
+    title: "RAG Citations",
+    description:
+      "Grounded answer with inline citation markers that cross-link to source cards showing title, snippet, url and relevance. Compound API.",
+    category: "ai",
+    files: [{ path: "registry/hirael/ui/rag-citations.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**
@@ -2338,6 +2399,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   pickers: "Pickers",
   files: "Files",
   data: "Data display",
+  ai: "AI",
   display: "Display",
   animation: "Animation",
   navigation: "Navigation",
@@ -2353,6 +2415,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     pickers: [],
     files: [],
     data: [],
+    ai: [],
     display: [],
     animation: [],
     navigation: [],
@@ -2483,6 +2546,7 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "pickers",
   "files",
   "data",
+  "ai",
   "display",
   "animation",
   "navigation",
@@ -2501,6 +2565,7 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
     "Date, time, month, year and color pickers with keyboard navigation and no date library.",
   files: "Upload zones, image croppers and local media pickers.",
   data: "Feeds, timelines, trees, heatmaps and other ways to show structured data.",
+  ai: "Chat threads, prompt editors, tool-call and agent-run views, and citation UIs for AI products.",
   display:
     "Callouts, code blocks, marquees, lightboxes and other visual helpers.",
   animation:

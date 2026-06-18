@@ -6950,6 +6950,163 @@
       "extendsNative": false
     }
   ],
+  "infrazen": [
+    {
+      "name": "Navbar",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Hero",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Trusted",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Features",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Advantage",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Integrations",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Pricing",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Faq",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Cta",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Footer",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "Logo",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Wordmark",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "SectionLabel",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "StatusPill",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "Button",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "\"#\"",
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"ghost\"",
+          "required": false,
+          "default": "\"primary\"",
+          "description": null
+        },
+        {
+          "name": "withArrow",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "InfrazenStyles",
+      "props": [],
+      "extendsNative": false
+    }
+  ],
   "toc": [
     {
       "name": "TableOfContents",

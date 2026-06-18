@@ -3087,6 +3087,92 @@
       ]
     },
     {
+      "name": "infrazen",
+      "type": "registry:block",
+      "title": "Infrazen",
+      "description": "Dark, technical web3 landing page for a decentralized infrastructure protocol: a glass navbar with a live network status, a hero leading with a plain-language value proposition and a live metrics strip, a hairline-joined feature grid, a centralized-cloud-versus-Infrazen reframe, a grouped integrations grid, three-tier usage pricing, a single-open FAQ and a closing CTA with footer. Self-contained near-black palette with a single mint-emerald signal accent, Space Grotesk and JetBrains Mono type.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/templates/infrazen/infrazen.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/infrazen.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/navbar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/navbar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/trusted.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/trusted.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/features.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/features.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/advantage.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/advantage.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/integrations.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/integrations.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/pricing.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/pricing.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/faq.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/faq.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/cta.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/cta.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/primitives.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/styles.tsx",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/styles.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/infrazen/fonts.ts",
+          "type": "registry:block",
+          "target": "components/templates/infrazen/fonts.ts"
+        }
+      ]
+    },
+    {
       "name": "hero-06",
       "type": "registry:block",
       "title": "Hero 6",

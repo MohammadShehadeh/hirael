@@ -2031,6 +2031,73 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["hls.js", "lucide-react"],
   },
   {
+    name: "infrazen",
+    title: "Infrazen",
+    description:
+      "Dark, technical web3 landing page for a decentralized infrastructure protocol: a glass navbar with a live network status, a hero leading with a plain-language value proposition and a live metrics strip, a hairline-joined feature grid, a centralized-cloud-versus-Infrazen reframe, a grouped integrations grid, three-tier usage pricing, a single-open FAQ and a closing CTA with footer. Self-contained near-black palette with a single mint-emerald signal accent, Space Grotesk and JetBrains Mono type.",
+    category: "templates",
+    files: [
+      {
+        path: "registry/hirael/templates/infrazen/infrazen.tsx",
+        target: "components/templates/infrazen/infrazen.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/navbar.tsx",
+        target: "components/templates/infrazen/navbar.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/hero.tsx",
+        target: "components/templates/infrazen/hero.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/trusted.tsx",
+        target: "components/templates/infrazen/trusted.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/features.tsx",
+        target: "components/templates/infrazen/features.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/advantage.tsx",
+        target: "components/templates/infrazen/advantage.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/integrations.tsx",
+        target: "components/templates/infrazen/integrations.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/pricing.tsx",
+        target: "components/templates/infrazen/pricing.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/faq.tsx",
+        target: "components/templates/infrazen/faq.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/cta.tsx",
+        target: "components/templates/infrazen/cta.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/footer.tsx",
+        target: "components/templates/infrazen/footer.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/primitives.tsx",
+        target: "components/templates/infrazen/primitives.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/styles.tsx",
+        target: "components/templates/infrazen/styles.tsx",
+      },
+      {
+        path: "registry/hirael/templates/infrazen/fonts.ts",
+        target: "components/templates/infrazen/fonts.ts",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["framer-motion", "lucide-react"],
+  },
+  {
     name: "hero-06",
     title: "Hero 6",
     description:

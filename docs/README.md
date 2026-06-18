@@ -94,9 +94,9 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
 - **Catalog** — 70 registry UI items (69 components + the distribution-only
-  `accordion`), 40 blocks, and 9 full-page templates (Creative Studio,
+  `accordion`), 40 blocks, and 10 full-page templates (Creative Studio,
   Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah,
-  Asme). Full list in [catalog.md](./catalog.md).
+  Asme, Infrazen). Full list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
   per-category listing pages, and per-item detail pages laid out like the
   shadcn/ui docs: a breadcrumb + title header, then anchored sections (preview

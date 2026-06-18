@@ -88,6 +88,7 @@ const BLOCK_LOADERS: Record<
   velorah: () => import("@/registry/hirael/templates/velorah/velorah"),
   nexacore: () => import("@/registry/hirael/templates/nexacore/nexacore"),
   asme: () => import("@/registry/hirael/templates/asme/asme"),
+  infrazen: () => import("@/registry/hirael/templates/infrazen/infrazen"),
   "hero-06": () => import("@/registry/hirael/blocks/hero-06/hero-06"),
   "hero-07": () => import("@/registry/hirael/blocks/hero-07/hero-07"),
   "hero-08": () => import("@/registry/hirael/blocks/hero-08/hero-08"),

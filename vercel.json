@@ -372,6 +372,11 @@
       "permanent": true
     },
     {
+      "source": "/components/approval-workflow",
+      "destination": "/components/data/approval-workflow",
+      "permanent": true
+    },
+    {
       "source": "/components/audio-player",
       "destination": "/components/display/audio-player",
       "permanent": true
@@ -422,6 +427,11 @@
       "permanent": true
     },
     {
+      "source": "/components/command-palette",
+      "destination": "/components/navigation/command-palette",
+      "permanent": true
+    },
+    {
       "source": "/components/copy-button",
       "destination": "/components/display/copy-button",
       "permanent": true
@@ -452,6 +462,11 @@
       "permanent": true
     },
     {
+      "source": "/components/diff-viewer",
+      "destination": "/components/dev/diff-viewer",
+      "permanent": true
+    },
+    {
       "source": "/components/dock",
       "destination": "/components/navigation/dock",
       "permanent": true
@@ -459,6 +474,11 @@
     {
       "source": "/components/file-dropzone",
       "destination": "/components/files/file-dropzone",
+      "permanent": true
+    },
+    {
+      "source": "/components/filter-builder",
+      "destination": "/components/data/filter-builder",
       "permanent": true
     },
     {
@@ -492,6 +512,11 @@
       "permanent": true
     },
     {
+      "source": "/components/json-viewer",
+      "destination": "/components/dev/json-viewer",
+      "permanent": true
+    },
+    {
       "source": "/components/kbd",
       "destination": "/components/display/kbd",
       "permanent": true
@@ -509,6 +534,11 @@
     {
       "source": "/components/lightbox",
       "destination": "/components/display/lightbox",
+      "permanent": true
+    },
+    {
+      "source": "/components/log-viewer",
+      "destination": "/components/dev/log-viewer",
       "permanent": true
     },
     {
@@ -567,6 +597,11 @@
       "permanent": true
     },
     {
+      "source": "/components/permission-matrix",
+      "destination": "/components/data/permission-matrix",
+      "permanent": true
+    },
+    {
       "source": "/components/phone-input",
       "destination": "/components/inputs/phone-input",
       "permanent": true
@@ -582,6 +617,11 @@
       "permanent": true
     },
     {
+      "source": "/components/query-builder",
+      "destination": "/components/data/query-builder",
+      "permanent": true
+    },
+    {
       "source": "/components/quick-actions",
       "destination": "/components/widgets/quick-actions",
       "permanent": true
@@ -594,6 +634,11 @@
     {
       "source": "/components/rating",
       "destination": "/components/inputs/rating",
+      "permanent": true
+    },
+    {
+      "source": "/components/request-builder",
+      "destination": "/components/dev/request-builder",
       "permanent": true
     },
     {
@@ -637,6 +682,11 @@
       "permanent": true
     },
     {
+      "source": "/components/spotlight-search",
+      "destination": "/components/navigation/spotlight-search",
+      "permanent": true
+    },
+    {
       "source": "/components/stat-card",
       "destination": "/components/data/stat-card",
       "permanent": true
@@ -659,6 +709,11 @@
     {
       "source": "/components/tenant-switcher",
       "destination": "/components/navigation/tenant-switcher",
+      "permanent": true
+    },
+    {
+      "source": "/components/terminal",
+      "destination": "/components/dev/terminal",
       "permanent": true
     },
     {

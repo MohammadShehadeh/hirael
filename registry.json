@@ -3560,6 +3560,245 @@
       ]
     },
     {
+      "name": "query-builder",
+      "type": "registry:ui",
+      "title": "Query Builder",
+      "description": "Nested AND/OR query of field, operator and value rules, with add and remove at every level. Controlled tree value. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/query-builder.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/query-builder.tsx"
+        }
+      ]
+    },
+    {
+      "name": "filter-builder",
+      "type": "registry:ui",
+      "title": "Filter Builder",
+      "description": "Flat list of field / operator / value filters with an add row, removable active-filter chips and a clear all. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input",
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/filter-builder.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/filter-builder.tsx"
+        }
+      ]
+    },
+    {
+      "name": "permission-matrix",
+      "type": "registry:ui",
+      "title": "Permission Matrix",
+      "description": "Roles by permissions checkbox grid with grouped rows, a sticky label column and column master toggles with indeterminate state. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "checkbox"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/permission-matrix.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/permission-matrix.tsx"
+        }
+      ]
+    },
+    {
+      "name": "approval-workflow",
+      "type": "registry:ui",
+      "title": "Approval Workflow",
+      "description": "Rail-connected approval chain: approved / rejected / pending stages with approver, timestamp, comment and approve / reject actions on the current step. Compound API.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/approval-workflow.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/approval-workflow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "json-viewer",
+      "type": "registry:ui",
+      "title": "JSON Viewer",
+      "description": "Collapsible, syntax-highlighted JSON tree with type-colored values, array indices and a configurable expand depth. Dependency-free. Compound API.",
+      "categories": [
+        "dev"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/json-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/json-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "diff-viewer",
+      "type": "registry:ui",
+      "title": "Diff Viewer",
+      "description": "Line-level text diff with unified or split mode, line numbers and add / remove gutter signs. Computes its own LCS, dependency-free. Compound API.",
+      "categories": [
+        "dev"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/diff-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/diff-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "log-viewer",
+      "type": "registry:ui",
+      "title": "Log Viewer",
+      "description": "Monospace log stream with per-line level and timestamp, level filter chips, search with highlight, a line count and a live tail indicator. Compound API.",
+      "categories": [
+        "dev"
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input-group"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/log-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/log-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "request-builder",
+      "type": "registry:ui",
+      "title": "Request Builder",
+      "description": "Compose an HTTP request: method, URL, editable params and headers, a body editor, and a response panel with status, time and size. Compound API.",
+      "categories": [
+        "dev"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "select",
+        "tabs"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/request-builder.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/request-builder.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:ui",
+      "title": "Terminal",
+      "description": "Presentational terminal with window chrome, scrollback, command history and a pluggable command handler. Dependency-free. Compound API.",
+      "categories": [
+        "dev"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/terminal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/terminal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "title": "Command Palette",
+      "description": "Ready-to-use Cmd+K command launcher: grouped actions with icons and shortcuts, a trigger button and a global hotkey. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "command",
+        "kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/command-palette.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/command-palette.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spotlight-search",
+      "type": "registry:ui",
+      "title": "Spotlight Search",
+      "description": "Centered search overlay with a large field, grouped rich results, full keyboard navigation, an empty state and a hint footer. Compound API.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/spotlight-search.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spotlight-search.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

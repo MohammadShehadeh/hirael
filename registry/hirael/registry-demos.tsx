@@ -243,6 +243,27 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/agent-workflow-demo"),
   "rag-citations-demo": () =>
     import("@/registry/hirael/examples/rag-citations-demo"),
+  "query-builder-demo": () =>
+    import("@/registry/hirael/examples/query-builder-demo"),
+  "filter-builder-demo": () =>
+    import("@/registry/hirael/examples/filter-builder-demo"),
+  "permission-matrix-demo": () =>
+    import("@/registry/hirael/examples/permission-matrix-demo"),
+  "approval-workflow-demo": () =>
+    import("@/registry/hirael/examples/approval-workflow-demo"),
+  "json-viewer-demo": () =>
+    import("@/registry/hirael/examples/json-viewer-demo"),
+  "diff-viewer-demo": () =>
+    import("@/registry/hirael/examples/diff-viewer-demo"),
+  "log-viewer-demo": () =>
+    import("@/registry/hirael/examples/log-viewer-demo"),
+  "request-builder-demo": () =>
+    import("@/registry/hirael/examples/request-builder-demo"),
+  "terminal-demo": () => import("@/registry/hirael/examples/terminal-demo"),
+  "command-palette-demo": () =>
+    import("@/registry/hirael/examples/command-palette-demo"),
+  "spotlight-search-demo": () =>
+    import("@/registry/hirael/examples/spotlight-search-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

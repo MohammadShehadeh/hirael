@@ -7620,5 +7620,1230 @@
       ],
       "extendsNative": true
     }
+  ],
+  "query-builder": [
+    {
+      "name": "QueryBuilder",
+      "props": [
+        {
+          "name": "fields",
+          "type": "QueryField[]",
+          "required": true,
+          "default": null,
+          "description": "Selectable fields. Each field can carry its own operator list."
+        },
+        {
+          "name": "value",
+          "type": "QueryGroupNode",
+          "required": false,
+          "default": null,
+          "description": "Controlled root group."
+        },
+        {
+          "name": "defaultValue",
+          "type": "QueryGroupNode",
+          "required": false,
+          "default": null,
+          "description": "Initial root group for uncontrolled use."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: QueryGroupNode) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next root group whenever the tree changes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QueryGroup",
+      "props": [
+        {
+          "name": "node",
+          "type": "QueryGroupNode",
+          "required": true,
+          "default": null,
+          "description": "The group node this part renders recursively."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QueryRule",
+      "props": [
+        {
+          "name": "rule",
+          "type": "QueryRule",
+          "required": true,
+          "default": null,
+          "description": "The rule node this part renders."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "QueryCombinator",
+      "props": [
+        {
+          "name": "value",
+          "type": "QueryCombinatorValue",
+          "required": true,
+          "default": null,
+          "description": "The active combinator."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: QueryCombinatorValue) => void",
+          "required": true,
+          "default": null,
+          "description": "Called when a combinator is selected."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "filter-builder": [
+    {
+      "name": "FilterBuilder",
+      "props": [
+        {
+          "name": "fields",
+          "type": "FilterField[]",
+          "required": true,
+          "default": null,
+          "description": "Fields a condition can target. `operators` overrides the default operator list per field."
+        },
+        {
+          "name": "value",
+          "type": "FilterCondition[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled list of conditions."
+        },
+        {
+          "name": "defaultValue",
+          "type": "FilterCondition[]",
+          "required": false,
+          "default": null,
+          "description": "Initial conditions for an uncontrolled builder."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: FilterCondition[]) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called whenever the condition list changes."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FilterRow",
+      "props": [
+        {
+          "name": "condition",
+          "type": "FilterCondition",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FilterAdd",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FilterChips",
+      "props": [
+        {
+          "name": "emptyHint",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"No filters yet.\"",
+          "description": "Shown when no conditions exist."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "FilterChip",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "condition",
+          "type": "FilterCondition",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "permission-matrix": [
+    {
+      "name": "PermissionMatrix",
+      "props": [
+        {
+          "name": "roles",
+          "type": "Role[]",
+          "required": true,
+          "default": null,
+          "description": "Columns of the grid. Each role renders one checkbox column."
+        },
+        {
+          "name": "permissions",
+          "type": "Permission[]",
+          "required": true,
+          "default": null,
+          "description": "Rows of the grid. Group adjacent permissions under a section header with `group`."
+        },
+        {
+          "name": "value",
+          "type": "GrantState",
+          "required": false,
+          "default": null,
+          "description": "Controlled grant map of permission id to the role ids that hold it."
+        },
+        {
+          "name": "defaultValue",
+          "type": "GrantState",
+          "required": false,
+          "default": null,
+          "description": "Initial grant map for uncontrolled use."
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: GrantState) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the next grant map whenever a grant changes."
+        },
+        {
+          "name": "columnToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show a master checkbox in each column header that toggles the whole column."
+        },
+        {
+          "name": "rowToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Show a leading toggle-all checkbox on each permission row."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PermissionMatrixHeader",
+      "props": [
+        {
+          "name": "columnToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "rowToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PermissionGroupRow",
+      "props": [
+        {
+          "name": "rowToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PermissionRow",
+      "props": [
+        {
+          "name": "permission",
+          "type": "Permission",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rowToggles",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "PermissionCell",
+      "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Defines a string value that labels the current element.\nAccessible name for the cell checkbox, e.g. \"Grant Edit to Admin\"."
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onCheckedChange",
+          "type": "((checked: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "approval-workflow": [
+    {
+      "name": "ApprovalWorkflow",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStep",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"pending\" | \"approved\" | \"rejected\" | \"current\"",
+          "required": false,
+          "default": "\"pending\"",
+          "description": "Outcome of this stage. `current` reads as live (accent-cool, pulsing) and is the step awaiting action."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepMarker",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"pending\" | \"approved\" | \"rejected\" | \"current\"",
+          "required": false,
+          "default": "\"pending\"",
+          "description": "Outcome of the stage this marker belongs to."
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Avatar image for the approver. Falls back to children, then a status icon."
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Alt text for the avatar image."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepMeta",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepComment",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ApprovalStepActions",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "json-viewer": [
+    {
+      "name": "JsonViewer",
+      "props": [
+        {
+          "name": "data",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": "The value to render as a collapsible JSON tree."
+        },
+        {
+          "name": "defaultExpandedDepth",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": "Depth up to which nodes start expanded. Defaults to 1."
+        },
+        {
+          "name": "rootName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Optional label shown as the key of the root node."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerRoot",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonNode",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": "The JSON value rendered by this node."
+        },
+        {
+          "name": "nodeKey",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "The object key or array index labeling this node, if any."
+        },
+        {
+          "name": "isIndex",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Render this node's key as a quoted array index rather than a plain key."
+        },
+        {
+          "name": "depth",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Nesting level, used for indentation."
+        },
+        {
+          "name": "defaultExpandedDepth",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": "Depth up to which expandable nodes start open."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "diff-viewer": [
+    {
+      "name": "DiffViewer",
+      "props": [
+        {
+          "name": "oldText",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Original text. Lines are compared against `newText` with a line LCS."
+        },
+        {
+          "name": "newText",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Updated text. Lines absent from `oldText` are marked as additions."
+        },
+        {
+          "name": "mode",
+          "type": "\"unified\" | \"split\"",
+          "required": false,
+          "default": "\"unified\"",
+          "description": "Single column of +/- lines, or old and new side by side."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffLine",
+      "props": [
+        {
+          "name": "type",
+          "type": "DiffType",
+          "required": true,
+          "default": null,
+          "description": "Classification of the line relative to the old text."
+        },
+        {
+          "name": "oldNumber",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "newNumber",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showOldNumber",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Render only the start-side gutter (old number, then sign)."
+        },
+        {
+          "name": "showNewNumber",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Render the end-side gutter (new number)."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerHeader",
+      "props": [
+        {
+          "name": "fileName",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Name of the file or label shown before the old → new pair."
+        },
+        {
+          "name": "oldLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "newLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "log-viewer": [
+    {
+      "name": "LogViewer",
+      "props": [
+        {
+          "name": "live",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Show the pulsing tailing indicator and \"Live\" label in the toolbar."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerSearch",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Search logs\"",
+          "description": "Placeholder for the search field."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerLevelFilter",
+      "props": [
+        {
+          "name": "levels",
+          "type": "readonly LogLevel[]",
+          "required": false,
+          "default": "LEVELS",
+          "description": "Levels to expose as toggle chips. Defaults to all four."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerCount",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerLive",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Live\"",
+          "description": "Label shown next to the pulsing dot."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LogViewerBody",
+      "props": [
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Wrap long lines instead of scrolling them horizontally."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "LogLine",
+      "props": [
+        {
+          "name": "level",
+          "type": "LogLevel",
+          "required": true,
+          "default": null,
+          "description": "Severity of this line. Drives its level tag and message color."
+        },
+        {
+          "name": "time",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Timestamp shown before the message, e.g. \"12:04:31\"."
+        },
+        {
+          "name": "children",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "request-builder": [
+    {
+      "name": "RequestBuilder",
+      "props": [
+        {
+          "name": "defaultMethod",
+          "type": "RequestMethodName",
+          "required": false,
+          "default": "\"GET\"",
+          "description": "Method selected when the builder first renders."
+        },
+        {
+          "name": "defaultUrl",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": "URL shown in the address input when the builder first renders."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestBar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestMethod",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"default\"",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestUrl",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestSend",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "pending",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Show a busy state and disable the control while a request is in flight."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestSection",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestKeyValues",
+      "props": [
+        {
+          "name": "rows",
+          "type": "RequestKeyValue[]",
+          "required": true,
+          "default": null,
+          "description": "The rows to render. Each needs a stable `id`."
+        },
+        {
+          "name": "onChange",
+          "type": "(rows: RequestKeyValue[]) => void",
+          "required": true,
+          "default": null,
+          "description": "Called with the next rows whenever a value, toggle, add, or remove fires."
+        },
+        {
+          "name": "addLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Add row\"",
+          "description": "Label for the add-row button."
+        },
+        {
+          "name": "namePlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Key\"",
+          "description": "Placeholder for the key field."
+        },
+        {
+          "name": "valuePlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Value\"",
+          "description": "Placeholder for the value field."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestKeyValueRow",
+      "props": [
+        {
+          "name": "row",
+          "type": "RequestKeyValue",
+          "required": true,
+          "default": null,
+          "description": "The row this control edits."
+        },
+        {
+          "name": "onNameChange",
+          "type": "(name: string) => void",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onEnabledChange",
+          "type": "(enabled: boolean) => void",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onRemove",
+          "type": "() => void",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "namePlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Key\"",
+          "description": null
+        },
+        {
+          "name": "valuePlaceholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Value\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestBody",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestBodyPre",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestResponse",
+      "props": [
+        {
+          "name": "time",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Response time, formatted by the caller (for example \"142 ms\")."
+        },
+        {
+          "name": "size",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Response size, formatted by the caller (for example \"1.2 KB\")."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "RequestStatus",
+      "props": [
+        {
+          "name": "status",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "HTTP status code. 2xx/3xx read as success, 4xx/5xx as error."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "terminal": [
+    {
+      "name": "Terminal",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalHeader",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Title shown beside the window dots."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalBody",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalLine",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalPrompt",
+      "props": [
+        {
+          "name": "symbol",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"$\"",
+          "description": "Prompt symbol or user@host:path label. Defaults to \"$\"."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalOutput",
+      "props": [
+        {
+          "name": "tone",
+          "type": "TerminalOutputTone",
+          "required": false,
+          "default": "\"default\"",
+          "description": "Color treatment for the output text."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "TerminalInput",
+      "props": [
+        {
+          "name": "prompt",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"$\"",
+          "description": "Prompt symbol shown before the editable line. Defaults to \"$\"."
+        },
+        {
+          "name": "onCommand",
+          "type": "((input: string) => React.ReactNode | string | void)",
+          "required": false,
+          "default": null,
+          "description": "Runs the entered command and returns the output to append below it.\nReturn a string or node to echo as output, or nothing to echo only the\ncommand. The component handles the echo, Up/Down history, and clearing\nthe field."
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "command-palette": [
+    {
+      "name": "CommandPalette",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "required": false,
+          "default": "\"k\"",
+          "description": "Single key paired with ⌘ / Ctrl to toggle the palette."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteInput",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteList",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteEmpty",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteGroup",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteItem",
+      "props": [
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Leading icon, typically a lucide-react icon."
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Trailing keyboard hint rendered as a Kbd display."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CommandPaletteSeparator",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "spotlight-search": [
+    {
+      "name": "SpotlightSearch",
+      "props": [
+        {
+          "name": "shortcut",
+          "type": "string | null",
+          "required": false,
+          "default": "\"k\"",
+          "description": "Keyboard shortcut letter that opens the overlay with Ctrl/Cmd held, e.g. \"k\". Pass null to disable."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchTrigger",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchContent",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "\"Search\"",
+          "description": "Accessible title for the dialog; visually hidden."
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchInput",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Search\"",
+          "description": "Label announced to assistive tech for the search field."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchResults",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchGroup",
+      "props": [
+        {
+          "name": "heading",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchItem",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Text matched against the query, alongside the title and description."
+        },
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Leading icon or thumbnail rendered at the start of the row."
+        },
+        {
+          "name": "description",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Secondary line shown under the title."
+        },
+        {
+          "name": "meta",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "End-aligned category tag or meta shown opposite the title."
+        },
+        {
+          "name": "onSelect",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": "Called when the row is chosen by click or Enter."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchEmpty",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SpotlightSearchFooter",
+      "props": [],
+      "extendsNative": true
+    }
   ]
 }

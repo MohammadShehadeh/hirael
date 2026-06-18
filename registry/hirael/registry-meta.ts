@@ -4,6 +4,7 @@ export type ComponentCategory =
   | "files"
   | "data"
   | "ai"
+  | "dev"
   | "display"
   | "animation"
   | "navigation"
@@ -2346,6 +2347,116 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "query-builder",
+    title: "Query Builder",
+    description:
+      "Nested AND/OR query of field, operator and value rules, with add and remove at every level. Controlled tree value. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/query-builder.tsx" }],
+    registryDependencies: ["button", "input", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "filter-builder",
+    title: "Filter Builder",
+    description:
+      "Flat list of field / operator / value filters with an add row, removable active-filter chips and a clear all. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/filter-builder.tsx" }],
+    registryDependencies: ["badge", "button", "input", "select"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "permission-matrix",
+    title: "Permission Matrix",
+    description:
+      "Roles by permissions checkbox grid with grouped rows, a sticky label column and column master toggles with indeterminate state. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/permission-matrix.tsx" }],
+    registryDependencies: ["checkbox"],
+    dependencies: [],
+  },
+  {
+    name: "approval-workflow",
+    title: "Approval Workflow",
+    description:
+      "Rail-connected approval chain: approved / rejected / pending stages with approver, timestamp, comment and approve / reject actions on the current step. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/ui/approval-workflow.tsx" }],
+    registryDependencies: [],
+    dependencies: ["class-variance-authority", "lucide-react"],
+  },
+  {
+    name: "json-viewer",
+    title: "JSON Viewer",
+    description:
+      "Collapsible, syntax-highlighted JSON tree with type-colored values, array indices and a configurable expand depth. Dependency-free. Compound API.",
+    category: "dev",
+    files: [{ path: "registry/hirael/ui/json-viewer.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "diff-viewer",
+    title: "Diff Viewer",
+    description:
+      "Line-level text diff with unified or split mode, line numbers and add / remove gutter signs. Computes its own LCS, dependency-free. Compound API.",
+    category: "dev",
+    files: [{ path: "registry/hirael/ui/diff-viewer.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "log-viewer",
+    title: "Log Viewer",
+    description:
+      "Monospace log stream with per-line level and timestamp, level filter chips, search with highlight, a line count and a live tail indicator. Compound API.",
+    category: "dev",
+    files: [{ path: "registry/hirael/ui/log-viewer.tsx" }],
+    registryDependencies: ["button", "input-group"],
+    dependencies: ["class-variance-authority", "lucide-react"],
+  },
+  {
+    name: "request-builder",
+    title: "Request Builder",
+    description:
+      "Compose an HTTP request: method, URL, editable params and headers, a body editor, and a response panel with status, time and size. Compound API.",
+    category: "dev",
+    files: [{ path: "registry/hirael/ui/request-builder.tsx" }],
+    registryDependencies: ["button", "input", "select", "tabs"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "terminal",
+    title: "Terminal",
+    description:
+      "Presentational terminal with window chrome, scrollback, command history and a pluggable command handler. Dependency-free. Compound API.",
+    category: "dev",
+    files: [{ path: "registry/hirael/ui/terminal.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "command-palette",
+    title: "Command Palette",
+    description:
+      "Ready-to-use Cmd+K command launcher: grouped actions with icons and shortcuts, a trigger button and a global hotkey. Compound API.",
+    category: "navigation",
+    files: [{ path: "registry/hirael/ui/command-palette.tsx" }],
+    registryDependencies: ["command", "kbd"],
+    dependencies: [],
+  },
+  {
+    name: "spotlight-search",
+    title: "Spotlight Search",
+    description:
+      "Centered search overlay with a large field, grouped rich results, full keyboard navigation, an empty state and a hint footer. Compound API.",
+    category: "navigation",
+    files: [{ path: "registry/hirael/ui/spotlight-search.tsx" }],
+    registryDependencies: ["dialog", "kbd"],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**
@@ -2400,6 +2511,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   files: "Files",
   data: "Data display",
   ai: "AI",
+  dev: "Developer",
   display: "Display",
   animation: "Animation",
   navigation: "Navigation",
@@ -2416,6 +2528,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     files: [],
     data: [],
     ai: [],
+    dev: [],
     display: [],
     animation: [],
     navigation: [],
@@ -2547,6 +2660,7 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "files",
   "data",
   "ai",
+  "dev",
   "display",
   "animation",
   "navigation",
@@ -2566,6 +2680,7 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   files: "Upload zones, image croppers and local media pickers.",
   data: "Feeds, timelines, trees, heatmaps and other ways to show structured data.",
   ai: "Chat threads, prompt editors, tool-call and agent-run views, and citation UIs for AI products.",
+  dev: "Developer tools: JSON and diff viewers, a log stream, a terminal and an HTTP request builder.",
   display:
     "Callouts, code blocks, marquees, lightboxes and other visual helpers.",
   animation:

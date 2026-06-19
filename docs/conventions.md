@@ -43,9 +43,15 @@ heading rather than starting a new doc.
 
 ## React 19
 
-- **The React Compiler is NOT enabled here** (unlike some sibling repos), so
-  the usual `useMemo`/`useCallback` rules apply — add them where a real
-  measured need exists, but prefer plain derived values for readability.
+- **The React Compiler is enabled** (`reactCompiler: true` in
+  [next.config.ts](../next.config.ts), via `babel-plugin-react-compiler`), so
+  the showcase build auto-memoizes components and hooks. Don't hand-write
+  `useMemo`/`useCallback` in showcase/demo code (`app/`, `components/`, `lib/`,
+  `registry/hirael/examples/`) — prefer plain derived values. **The exception
+  is shipped registry primitives (`registry/hirael/ui/*`):** they're copied as
+  raw source into consumer repos that may not run the compiler, so keep their
+  explicit memoization. The compiler only optimizes how this site is built; it
+  never touches what ships.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.

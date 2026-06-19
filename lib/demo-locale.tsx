@@ -39,8 +39,7 @@ export function useDemoLocale(): DemoLocale {
  */
 export function useT() {
   const locale = useDemoLocale();
-  return React.useCallback(
-    <T,>(pair: { en: T; ar: T }): T => pair[locale],
-    [locale],
-  );
+  return function t<T>(pair: { en: T; ar: T }): T {
+    return pair[locale];
+  };
 }

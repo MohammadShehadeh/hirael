@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
     // export doesn't have — serve image sources as-is.
     unoptimized: true,
   },
+  // React Compiler auto-memoizes components and hooks at build time, so the
+  // showcase needs far less hand-written useMemo/useCallback. Note this only
+  // optimizes how the site itself is built — the registry ships raw source,
+  // so shipped components keep their explicit memoization for consumers who
+  // don't run the compiler.
+  reactCompiler: true,
 };
 
 export default nextConfig;

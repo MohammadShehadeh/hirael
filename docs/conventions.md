@@ -141,6 +141,22 @@ theme uses — so an RTL preview comes up correct on the first frame instead
 of flipping after hydration. The embed shells are plain background wrappers;
 don't reintroduce direction state there.
 
+**Portaled overlays carry direction explicitly.** Radix/Base UI portal
+popover, dropdown, select, dialog, sheet, tooltip and hover-card content to
+`<body>` — outside any `dir` wrapper — and Radix's Popper does not stamp
+`dir` on the floating node, so portaled content otherwise only picks up RTL
+from `<html dir>`. Each overlay's `*Content` reads `Direction.useDirection()`
+and sets `dir` **only when it resolves to `rtl`** (never forcing `ltr`, so a
+consumer's `html[dir]` is never overridden); wrapping a subtree in the
+`direction` primitive's `DirectionProvider` (Radix) or Base UI's then drives
+them. `ExampleBlock` wraps each preview in both providers, which is why
+multi-select / combobox / picker dropdowns render RTL on the showcase even
+though `dir` is only on a wrapper `<div>`, not `<html>`. Radix menu/select
+primitives already consume the provider themselves. Keep physical geometry
+that is genuinely physical (Sheet/Sidebar `side`, drawer `vaul-direction`,
+`data-[side]` animations, centering transforms) — convert only content
+layout (text, padding, adornment positions) to logical utilities.
+
 **Component previews render Arabic in RTL.** On component detail pages the
 RTL toggle isn't only a direction flip — `ExampleBlock` (in
 `component-page.tsx`) wraps the demo in a `DemoLocaleProvider`

@@ -12,101 +12,113 @@ import {
 export default function MentionInputDemo() {
   const t = useT();
 
-  const TEAM: MentionItem[] = [
-    {
-      id: "1",
-      label: "john.doe",
-      description: t({
-        en: "John Doe · Design lead",
-        ar: "John Doe · قائد التصميم",
-      }),
-    },
-    {
-      id: "2",
-      label: "mohammad.shehadeh",
-      description: t({
-        en: "Mohammad Shehadeh · Frontend",
-        ar: "Mohammad Shehadeh · واجهة أمامية",
-      }),
-    },
-    {
-      id: "3",
-      label: "jane.doe",
-      description: t({ en: "Jane Doe · Product", ar: "Jane Doe · المنتج" }),
-    },
-    {
-      id: "4",
-      label: "richard.roe",
-      description: t({
-        en: "Richard Roe · Backend",
-        ar: "Richard Roe · واجهة خلفية",
-      }),
-    },
-    {
-      id: "5",
-      label: "mary.major",
-      description: t({ en: "Mary Major · QA", ar: "Mary Major · ضمان الجودة" }),
-    },
-  ];
+  const TEAM: MentionItem[] = React.useMemo(
+    () => [
+      {
+        id: "1",
+        label: "john.doe",
+        description: t({
+          en: "John Doe · Design lead",
+          ar: "John Doe · قائد التصميم",
+        }),
+      },
+      {
+        id: "2",
+        label: "mohammad.shehadeh",
+        description: t({
+          en: "Mohammad Shehadeh · Frontend",
+          ar: "Mohammad Shehadeh · واجهة أمامية",
+        }),
+      },
+      {
+        id: "3",
+        label: "jane.doe",
+        description: t({ en: "Jane Doe · Product", ar: "Jane Doe · المنتج" }),
+      },
+      {
+        id: "4",
+        label: "richard.roe",
+        description: t({
+          en: "Richard Roe · Backend",
+          ar: "Richard Roe · واجهة خلفية",
+        }),
+      },
+      {
+        id: "5",
+        label: "mary.major",
+        description: t({
+          en: "Mary Major · QA",
+          ar: "Mary Major · ضمان الجودة",
+        }),
+      },
+    ],
+    [t],
+  );
 
-  const CHANNELS: MentionItem[] = [
-    {
-      id: "c1",
-      label: "general",
-      description: t({
-        en: "Company-wide announcements",
-        ar: "إعلانات على مستوى الشركة",
-      }),
-    },
-    {
-      id: "c2",
-      label: "design",
-      description: t({
-        en: "Design critiques and reviews",
-        ar: "نقد التصميم ومراجعاته",
-      }),
-    },
-    {
-      id: "c3",
-      label: "engineering",
-      description: t({ en: "Build, ship, repeat", ar: "ابنِ، انشر، كرّر" }),
-    },
-    {
-      id: "c4",
-      label: "random",
-      description: t({ en: "Watercooler", ar: "دردشة جانبية" }),
-    },
-  ];
+  const CHANNELS: MentionItem[] = React.useMemo(
+    () => [
+      {
+        id: "c1",
+        label: "general",
+        description: t({
+          en: "Company-wide announcements",
+          ar: "إعلانات على مستوى الشركة",
+        }),
+      },
+      {
+        id: "c2",
+        label: "design",
+        description: t({
+          en: "Design critiques and reviews",
+          ar: "نقد التصميم ومراجعاته",
+        }),
+      },
+      {
+        id: "c3",
+        label: "engineering",
+        description: t({ en: "Build, ship, repeat", ar: "ابنِ، انشر، كرّر" }),
+      },
+      {
+        id: "c4",
+        label: "random",
+        description: t({ en: "Watercooler", ar: "دردشة جانبية" }),
+      },
+    ],
+    [t],
+  );
 
-  function searchPeopleAndChannels(
-    query: string,
-    trigger: string,
-  ): Promise<MentionItem[]> {
-    const source = trigger === "#" ? CHANNELS : TEAM;
-    const q = query.toLowerCase();
-    return Promise.resolve(
-      source.filter(
-        (it) =>
-          it.label.toLowerCase().includes(q) ||
-          it.description?.toLowerCase().includes(q),
-      ),
-    );
-  }
+  const searchPeopleAndChannels = React.useCallback(
+    (query: string, trigger: string): Promise<MentionItem[]> => {
+      const source = trigger === "#" ? CHANNELS : TEAM;
+      const q = query.toLowerCase();
+      return Promise.resolve(
+        source.filter(
+          (it) =>
+            it.label.toLowerCase().includes(q) ||
+            it.description?.toLowerCase().includes(q),
+        ),
+      );
+    },
+    [CHANNELS, TEAM],
+  );
 
-  function searchDirectory(query: string): Promise<MentionItem[]> {
-    const q = query.toLowerCase();
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          TEAM.filter(
-            (it) =>
-              it.label.toLowerCase().includes(q) ||
-              it.description?.toLowerCase().includes(q),
-          ),
-        );
-      }, 600);
-    });
-  }
+  const searchDirectory = React.useCallback(
+    (query: string): Promise<MentionItem[]> => {
+      const q = query.toLowerCase();
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            TEAM.filter(
+              (it) =>
+                it.label.toLowerCase().includes(q) ||
+                it.description?.toLowerCase().includes(q),
+            ),
+          );
+        }, 600);
+      });
+    },
+    [TEAM],
+  );
 
   const [comment, setComment] = React.useState(
     t({

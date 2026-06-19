@@ -16,39 +16,42 @@ type User = { id: string; name: string };
 
 const PAGE_SIZE = 20;
 
+const FIRST_NAMES = {
+  en: [
+    "Ava",
+    "Liam",
+    "Noah",
+    "Mia",
+    "Zoe",
+    "Ezra",
+    "Iris",
+    "Omar",
+    "Lena",
+    "Kai",
+  ],
+  ar: [
+    "سارة",
+    "خالد",
+    "ليلى",
+    "عمر",
+    "نور",
+    "يوسف",
+    "فاطمة",
+    "أحمد",
+    "هدى",
+    "زيد",
+  ],
+};
+const LAST_NAMES = {
+  en: ["Khan", "Reyes", "Okafor", "Park", "Vance", "Sato", "Diallo", "Costa"],
+  ar: ["خان", "رييس", "أوكافور", "بارك", "فانس", "ساتو", "ديالو", "كوستا"],
+};
+
 export default function LazySelectDemo() {
   const t = useT();
 
-  const firstNames = t({
-    en: [
-      "Ava",
-      "Liam",
-      "Noah",
-      "Mia",
-      "Zoe",
-      "Ezra",
-      "Iris",
-      "Omar",
-      "Lena",
-      "Kai",
-    ],
-    ar: [
-      "سارة",
-      "خالد",
-      "ليلى",
-      "عمر",
-      "نور",
-      "يوسف",
-      "فاطمة",
-      "أحمد",
-      "هدى",
-      "زيد",
-    ],
-  });
-  const lastNames = t({
-    en: ["Khan", "Reyes", "Okafor", "Park", "Vance", "Sato", "Diallo", "Costa"],
-    ar: ["خان", "رييس", "أوكافور", "بارك", "فانس", "ساتو", "ديالو", "كوستا"],
-  });
+  const firstNames = t(FIRST_NAMES);
+  const lastNames = t(LAST_NAMES);
 
   const ALL_USERS: User[] = React.useMemo(
     () =>

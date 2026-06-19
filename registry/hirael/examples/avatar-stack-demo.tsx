@@ -7,6 +7,13 @@ import {
   AvatarStackOverflow,
 } from "@/registry/hirael/ui/avatar-stack";
 
+const TRIO = [
+  { en: "AM", ar: "أم" },
+  { en: "JK", ar: "خك" },
+  { en: "RP", ar: "رب" },
+];
+const QUARTET = [...TRIO, { en: "DL", ar: "نل" }];
+
 export default function AvatarStackDemo() {
   const t = useT();
 
@@ -17,24 +24,20 @@ export default function AvatarStackDemo() {
           {t({ en: "Sizes", ar: "الأحجام" })}
         </p>
         <div className="flex flex-wrap items-end gap-6">
-          <AvatarStack size="sm">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackOverflow count={4} />
-          </AvatarStack>
-          <AvatarStack size="md">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackOverflow count={12} />
-          </AvatarStack>
-          <AvatarStack size="lg">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackOverflow count={28} />
-          </AvatarStack>
+          {(
+            [
+              { size: "sm", count: 4 },
+              { size: "md", count: 12 },
+              { size: "lg", count: 28 },
+            ] as const
+          ).map(({ size, count }) => (
+            <AvatarStack key={size} size={size}>
+              {TRIO.map((i) => (
+                <AvatarStackItem key={i.en}>{t(i)}</AvatarStackItem>
+              ))}
+              <AvatarStackOverflow count={count} />
+            </AvatarStack>
+          ))}
         </div>
       </div>
 
@@ -43,24 +46,13 @@ export default function AvatarStackDemo() {
           {t({ en: "Spacing", ar: "التباعد" })}
         </p>
         <div className="flex flex-wrap items-center gap-8">
-          <AvatarStack spacing="tight">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "DL", ar: "نل" })}</AvatarStackItem>
-          </AvatarStack>
-          <AvatarStack spacing="normal">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "DL", ar: "نل" })}</AvatarStackItem>
-          </AvatarStack>
-          <AvatarStack spacing="loose">
-            <AvatarStackItem>{t({ en: "AM", ar: "أم" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "JK", ar: "خك" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "RP", ar: "رب" })}</AvatarStackItem>
-            <AvatarStackItem>{t({ en: "DL", ar: "نل" })}</AvatarStackItem>
-          </AvatarStack>
+          {(["tight", "normal", "loose"] as const).map((spacing) => (
+            <AvatarStack key={spacing} spacing={spacing}>
+              {QUARTET.map((i) => (
+                <AvatarStackItem key={i.en}>{t(i)}</AvatarStackItem>
+              ))}
+            </AvatarStack>
+          ))}
         </div>
       </div>
 

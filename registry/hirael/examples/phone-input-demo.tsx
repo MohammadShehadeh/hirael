@@ -32,7 +32,9 @@ export default function PhoneInputDemo() {
           defaultCountry="US"
         >
           <PhoneInputCountrySelect />
-          <PhoneInputField />
+          <PhoneInputField
+            placeholder={t({ en: "Phone number", ar: "رقم الهاتف" })}
+          />
         </PhoneInput>
         <p className="font-mono text-[11px] text-muted-foreground">
           E.164: {basic || "-"}

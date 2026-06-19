@@ -315,6 +315,7 @@ function PhoneInputField({
   placeholder = "Phone number",
   onBlur,
   inputMode = "tel",
+  className,
   ...props
 }: PhoneInputFieldProps) {
   const ctx = usePhoneInput();
@@ -329,6 +330,7 @@ function PhoneInputField({
       placeholder={placeholder}
       disabled={ctx.disabled}
       data-slot="phone-input-field"
+      className={cn("rtl:text-right", className)}
       onChange={(e) => {
         const cleaned = e.target.value.replace(/[^\d\s]/g, "");
         ctx.setNational(cleaned);

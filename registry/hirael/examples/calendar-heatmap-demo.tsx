@@ -41,8 +41,8 @@ const customScale = (level: number) => {
 
 export default function CalendarHeatmapDemo() {
   const t = useT();
-  const yearData = React.useMemo(() => generateActivity(42, 366), []);
-  const halfYearData = React.useMemo(() => generateActivity(7, 184), []);
+  const yearData = generateActivity(42, 366);
+  const halfYearData = generateActivity(7, 184);
   const [selected, setSelected] = React.useState<string | null>(null);
 
   const locale = t({ en: "en-US", ar: "ar" });

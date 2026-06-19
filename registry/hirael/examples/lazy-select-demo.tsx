@@ -53,43 +53,33 @@ export default function LazySelectDemo() {
   const firstNames = t(FIRST_NAMES);
   const lastNames = t(LAST_NAMES);
 
-  const ALL_USERS: User[] = React.useMemo(
-    () =>
-      Array.from({ length: 137 }, (_, i) => ({
-        id: `u-${i + 1}`,
-        name: `${firstNames[i % 10]} ${lastNames[i % 8]} #${i + 1}`,
-      })),
-    [firstNames, lastNames],
-  );
+  const ALL_USERS: User[] = Array.from({ length: 137 }, (_, i) => ({
+    id: `u-${i + 1}`,
+    name: `${firstNames[i % 10]} ${lastNames[i % 8]} #${i + 1}`,
+  }));
 
-  const fetchUsers = React.useCallback(
-    async ({
-      query,
-      page,
-    }: {
-      query: string;
-      page: number;
-    }): Promise<LazyPage<User>> => {
-      await new Promise((r) => setTimeout(r, 450));
-      const filtered = query
-        ? ALL_USERS.filter((u) =>
-            u.name.toLowerCase().includes(query.toLowerCase()),
-          )
-        : ALL_USERS;
-      const start = page * PAGE_SIZE;
-      const items = filtered.slice(start, start + PAGE_SIZE);
-      return { items, hasMore: start + PAGE_SIZE < filtered.length };
-    },
-    [ALL_USERS],
-  );
+  const fetchUsers = async ({
+    query,
+    page,
+  }: {
+    query: string;
+    page: number;
+  }): Promise<LazyPage<User>> => {
+    await new Promise((r) => setTimeout(r, 450));
+    const filtered = query
+      ? ALL_USERS.filter((u) =>
+          u.name.toLowerCase().includes(query.toLowerCase()),
+        )
+      : ALL_USERS;
+    const start = page * PAGE_SIZE;
+    const items = filtered.slice(start, start + PAGE_SIZE);
+    return { items, hasMore: start + PAGE_SIZE < filtered.length };
+  };
 
   const [value, setValue] = React.useState<string | undefined>();
   const [open, setOpen] = React.useState(false);
 
-  const mapUser = React.useCallback(
-    (u: User) => ({ value: u.id, label: u.name }),
-    [],
-  );
+  const mapUser = (u: User) => ({ value: u.id, label: u.name });
 
   // `enabled: open` defers all network work until the dropdown is opened —
   // the "lazy" half. `loadMore` appends the next page on scroll — the

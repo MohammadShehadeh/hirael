@@ -53,10 +53,10 @@ export function InstallBlock({
         />
       </div>
 
-      <div className="flex items-start gap-2.5 px-3 py-2.5">
+      <div className="flex items-center gap-2.5 px-3 py-2.5">
         <span
           aria-hidden
-          className="select-none font-mono text-xs leading-relaxed text-muted-foreground"
+          className="select-none font-mono text-xs text-muted-foreground"
         >
           $
         </span>
@@ -92,7 +92,7 @@ function CommandLine({ command }: { command: string }) {
   return (
     <code
       dir="ltr"
-      className="min-w-0 flex-1 font-mono text-xs leading-relaxed [overflow-wrap:anywhere]"
+      className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs"
     >
       {tokens.map((t, i) => (
         <React.Fragment key={i}>

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Download } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import { Button } from "@/registry/hirael/ui/button";
 import {
   SignaturePad,
@@ -12,6 +13,7 @@ import {
 } from "@/registry/hirael/ui/signature-pad";
 
 export default function SignaturePadDemo() {
+  const t = useT();
   const padRef = React.useRef<SignaturePadRef>(null);
   const [dataUrl, setDataUrl] = React.useState<string | null>(null);
   const [exportEmpty, setExportEmpty] = React.useState(true);
@@ -20,9 +22,9 @@ export default function SignaturePadDemo() {
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Basic
+          {t({ en: "Basic", ar: "أساسي" })}
         </p>
-        <SignaturePad placeholder="Sign here">
+        <SignaturePad placeholder={t({ en: "Sign here", ar: "وقّع هنا" })}>
           <div className="absolute end-2 top-2 flex gap-1.5">
             <SignaturePadUndo />
             <SignaturePadClear />
@@ -32,11 +34,11 @@ export default function SignaturePadDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Export
+          {t({ en: "Export", ar: "تصدير" })}
         </p>
         <SignaturePad
           ref={padRef}
-          placeholder="Sign, then export"
+          placeholder={t({ en: "Sign, then export", ar: "وقّع ثم صدّر" })}
           onChange={(isEmpty) => {
             setExportEmpty(isEmpty);
             if (isEmpty) setDataUrl(null);
@@ -57,13 +59,13 @@ export default function SignaturePadDemo() {
             }}
           >
             <Download aria-hidden />
-            Export PNG
+            {t({ en: "Export PNG", ar: "تصدير PNG" })}
           </Button>
           {dataUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={dataUrl}
-              alt="Exported signature"
+              alt={t({ en: "Exported signature", ar: "التوقيع المصدَّر" })}
               className="h-16 rounded-sm border border-border"
             />
           )}
@@ -72,12 +74,12 @@ export default function SignaturePadDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Thin pen
+          {t({ en: "Thin pen", ar: "قلم رفيع" })}
         </p>
         <SignaturePad
           minStrokeWidth={0.75}
           maxStrokeWidth={1.5}
-          placeholder="Fine-tip pen"
+          placeholder={t({ en: "Fine-tip pen", ar: "قلم بسنّ دقيق" })}
           className="h-32"
         >
           <div className="absolute end-2 top-2 flex gap-1.5">

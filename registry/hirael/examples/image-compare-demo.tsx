@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { useT } from "@/lib/demo-locale";
 import {
   ImageCompare,
   ImageCompareAfter,
@@ -62,17 +63,22 @@ function MockPanel({ styled }: { styled?: boolean }) {
 }
 
 export default function ImageCompareDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Drag to compare · labels
+          {t({ en: "Drag to compare · labels", ar: "اسحب للمقارنة · تسميات" })}
         </p>
         <ImageCompare className="aspect-video rounded-lg border border-border">
           <ImageCompareBefore>
             <Image
               src={PHOTO}
-              alt="Forest lake, original"
+              alt={t({
+                en: "Forest lake, original",
+                ar: "بحيرة الغابة، الأصلية",
+              })}
               width={1200}
               height={675}
               className="size-full object-cover grayscale"
@@ -81,21 +87,28 @@ export default function ImageCompareDemo() {
           <ImageCompareAfter>
             <Image
               src={PHOTO}
-              alt="Forest lake, edited"
+              alt={t({
+                en: "Forest lake, edited",
+                ar: "بحيرة الغابة، المعدّلة",
+              })}
               width={1200}
               height={675}
               className="size-full object-cover"
             />
           </ImageCompareAfter>
-          <ImageCompareLabel side="before">Before</ImageCompareLabel>
-          <ImageCompareLabel side="after">After</ImageCompareLabel>
+          <ImageCompareLabel side="before">
+            {t({ en: "Before", ar: "قبل" })}
+          </ImageCompareLabel>
+          <ImageCompareLabel side="after">
+            {t({ en: "After", ar: "بعد" })}
+          </ImageCompareLabel>
           <ImageCompareHandle />
         </ImageCompare>
       </div>
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Vertical orientation
+          {t({ en: "Vertical orientation", ar: "اتجاه عمودي" })}
         </p>
         <ImageCompare
           orientation="vertical"
@@ -105,7 +118,7 @@ export default function ImageCompareDemo() {
           <ImageCompareBefore>
             <Image
               src={PHOTO}
-              alt="Forest lake"
+              alt={t({ en: "Forest lake", ar: "بحيرة الغابة" })}
               width={1200}
               height={675}
               className="size-full object-cover"
@@ -114,21 +127,28 @@ export default function ImageCompareDemo() {
           <ImageCompareAfter>
             <Image
               src={PHOTO_ALT}
-              alt="Mountain valley"
+              alt={t({ en: "Mountain valley", ar: "وادٍ جبلي" })}
               width={1200}
               height={675}
               className="size-full object-cover"
             />
           </ImageCompareAfter>
-          <ImageCompareLabel side="before">Lake</ImageCompareLabel>
-          <ImageCompareLabel side="after">Valley</ImageCompareLabel>
+          <ImageCompareLabel side="before">
+            {t({ en: "Lake", ar: "بحيرة" })}
+          </ImageCompareLabel>
+          <ImageCompareLabel side="after">
+            {t({ en: "Valley", ar: "وادٍ" })}
+          </ImageCompareLabel>
           <ImageCompareHandle />
         </ImageCompare>
       </div>
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Follow pointer · wireframe vs styled
+          {t({
+            en: "Follow pointer · wireframe vs styled",
+            ar: "تتبّع المؤشر · مخطط مقابل مُنسّق",
+          })}
         </p>
         <ImageCompare
           followPointer
@@ -140,8 +160,12 @@ export default function ImageCompareDemo() {
           <ImageCompareAfter>
             <MockPanel styled />
           </ImageCompareAfter>
-          <ImageCompareLabel side="before">Wireframe</ImageCompareLabel>
-          <ImageCompareLabel side="after">Styled</ImageCompareLabel>
+          <ImageCompareLabel side="before">
+            {t({ en: "Wireframe", ar: "مخطط" })}
+          </ImageCompareLabel>
+          <ImageCompareLabel side="after">
+            {t({ en: "Styled", ar: "مُنسّق" })}
+          </ImageCompareLabel>
           <ImageCompareHandle />
         </ImageCompare>
       </div>

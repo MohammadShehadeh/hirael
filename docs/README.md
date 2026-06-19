@@ -81,7 +81,7 @@ registry/hirael/                  # canonical source for every registry item
   registry-meta.ts                # SINGLE SOURCE OF TRUTH
   registry-demos.tsx              # demo registry used by the landing/live previews
 hooks/                            # shared client hooks
-lib/                              # site.ts, theme.ts, embed.ts, changelog.ts, highlight.ts, utils.ts …
+lib/                              # site.ts, theme.ts, embed.ts, changelog.ts, highlight.ts, utils.ts, demo-locale.tsx (RTL→Arabic demos) …
 scripts/                          # build-registry, extract-props, check-registry, strip-comments
 registry.json                    # GENERATED — do not hand-edit
 components.json                   # shadcn config; ui alias → registry/hirael/ui

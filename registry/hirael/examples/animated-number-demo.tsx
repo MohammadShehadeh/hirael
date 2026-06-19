@@ -2,9 +2,11 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { AnimatedNumber } from "@/registry/hirael/ui/animated-number";
 
 export default function AnimatedNumberDemo() {
+  const t = useT();
   const [revenue, setRevenue] = React.useState(48250);
   const [users, setUsers] = React.useState(12481);
 
@@ -17,12 +19,15 @@ export default function AnimatedNumberDemo() {
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Metric cards · live values
+          {t({
+            en: "Metric cards · live values",
+            ar: "بطاقات المقاييس · قيم حيّة",
+          })}
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-md border border-border bg-card p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Revenue
+              {t({ en: "Revenue", ar: "الإيرادات" })}
             </p>
             <AnimatedNumber
               value={revenue}
@@ -32,7 +37,7 @@ export default function AnimatedNumberDemo() {
           </div>
           <div className="rounded-md border border-border bg-card p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Active users
+              {t({ en: "Active users", ar: "المستخدمون النشطون" })}
             </p>
             <AnimatedNumber
               value={users}
@@ -41,7 +46,7 @@ export default function AnimatedNumberDemo() {
           </div>
           <div className="rounded-md border border-border bg-card p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Conversion
+              {t({ en: "Conversion", ar: "معدل التحويل" })}
             </p>
             <AnimatedNumber
               value={3.2}
@@ -56,13 +61,13 @@ export default function AnimatedNumberDemo() {
           onClick={shuffle}
           className="mt-1 w-fit rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-accent"
         >
-          Randomize
+          {t({ en: "Randomize", ar: "تغيير عشوائي" })}
         </button>
       </div>
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Compact notation
+          {t({ en: "Compact notation", ar: "تنسيق مختصر" })}
         </p>
         <AnimatedNumber
           value={1284000}

@@ -79,7 +79,9 @@ with the rest of the catalog (the full checklist is in
   on generic decoration, and don't substitute one for the other.
 - **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
 - **A demo at `registry/hirael/examples/<name>-demo.tsx`** showing a basic
-  compose and a customized compose.
+  compose and a customized compose, with every user-facing string sourced
+  through `useT()` (`lib/demo-locale.tsx`) — `t({ en: "…", ar: "…" })` — so the
+  preview's RTL toggle renders the demo in Arabic, not mirrored English.
 - **A preview loader in
   [registry-demos.tsx](./registry/hirael/registry-demos.tsx)** keyed by the
   entry name — the showcase and `/embed/*` previews render every item

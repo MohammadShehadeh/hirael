@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   YearPicker,
@@ -11,6 +12,8 @@ import {
 } from "@/registry/hirael/ui/year-picker";
 
 export default function YearPickerDemo() {
+  const t = useT();
+
   const [year, setYear] = React.useState<number | undefined>(2026);
   const [range, setRange] = React.useState<YearRange | undefined>({
     from: 2021,
@@ -20,14 +23,14 @@ export default function YearPickerDemo() {
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
       <div className="grid gap-2">
-        <Label>Founded</Label>
+        <Label>{t({ en: "Founded", ar: "تأسست" })}</Label>
         <YearPicker
           value={year}
           onValueChange={setYear}
           minYear={1970}
           maxYear={2035}
         >
-          <YearPickerTrigger placeholder="Year" />
+          <YearPickerTrigger placeholder={t({ en: "Year", ar: "السنة" })} />
           <YearPickerContent />
         </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
@@ -36,7 +39,7 @@ export default function YearPickerDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Range</Label>
+        <Label>{t({ en: "Range", ar: "النطاق" })}</Label>
         <YearPicker
           mode="range"
           value={range}
@@ -44,7 +47,9 @@ export default function YearPickerDemo() {
           minYear={2000}
           maxYear={2030}
         >
-          <YearPickerTrigger placeholder="Pick a range" />
+          <YearPickerTrigger
+            placeholder={t({ en: "Pick a range", ar: "اختر نطاقًا" })}
+          />
           <YearPickerContent />
         </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">

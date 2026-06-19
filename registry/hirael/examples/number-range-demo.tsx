@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   NumberRange,
@@ -14,6 +15,8 @@ const usd = (n: number) =>
 const parseNum = (s: string) => Number(s.replace(/[^\d.-]/g, "")) || 0;
 
 export default function NumberRangeDemo() {
+  const t = useT();
+
   const [price, setPrice] = React.useState<[number, number]>([200, 1400]);
   const [age, setAge] = React.useState<[number, number]>([18, 65]);
 
@@ -21,7 +24,7 @@ export default function NumberRangeDemo() {
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
-          <Label>Price (USD)</Label>
+          <Label>{t({ en: "Price (USD)", ar: "السعر (دولار)" })}</Label>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             ${usd(price[0])} – ${usd(price[1])}
           </span>
@@ -43,9 +46,9 @@ export default function NumberRangeDemo() {
 
       <div className="grid gap-3">
         <div className="flex items-baseline justify-between">
-          <Label>Age</Label>
+          <Label>{t({ en: "Age", ar: "العمر" })}</Label>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-            {age[0]}–{age[1]} yrs
+            {age[0]}–{age[1]} {t({ en: "yrs", ar: "سنة" })}
           </span>
         </div>
         <NumberRange
@@ -54,7 +57,7 @@ export default function NumberRangeDemo() {
           step={1}
           value={age}
           onValueChange={setAge}
-          suffix="yrs"
+          suffix={t({ en: "yrs", ar: "سنة" })}
         >
           <NumberRangeSlider />
           <NumberRangeInputs separator="→" />

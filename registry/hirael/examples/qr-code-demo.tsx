@@ -1,16 +1,19 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { QRCode } from "@/registry/hirael/ui/qr-code";
 
 const longPayload =
   "https://hirael.com/components/qr-code?utm_source=showcase&utm_medium=demo&utm_campaign=error-correction";
 
 export default function QrCodeDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Sizes
+          {t({ en: "Sizes", ar: "الأحجام" })}
         </p>
         <div className="flex items-end gap-4">
           <QRCode value="https://hirael.com" size={64} title="hirael.com" />
@@ -21,7 +24,7 @@ export default function QrCodeDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          currentColor theming
+          {t({ en: "currentColor theming", ar: "تنسيق currentColor" })}
         </p>
         <div className="flex items-center gap-4">
           <QRCode
@@ -44,7 +47,10 @@ export default function QrCodeDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Error correction · L vs H
+          {t({
+            en: "Error correction · L vs H",
+            ar: "تصحيح الأخطاء · L مقابل H",
+          })}
         </p>
         <div className="flex items-end gap-6">
           <div className="grid justify-items-center gap-1.5">
@@ -64,16 +70,19 @@ export default function QrCodeDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          In a card
+          {t({ en: "In a card", ar: "داخل بطاقة" })}
         </p>
         <div className="grid w-fit justify-items-center gap-3 rounded-lg border border-border bg-card p-6">
           <QRCode
             value="https://hirael.com"
             size={128}
-            title="Scan to open hirael.com"
+            title={t({
+              en: "Scan to open hirael.com",
+              ar: "امسح للفتح hirael.com",
+            })}
           />
           <p className="text-xs text-muted-foreground">
-            Scan to open hirael.com
+            {t({ en: "Scan to open hirael.com", ar: "امسح للفتح hirael.com" })}
           </p>
         </div>
       </div>

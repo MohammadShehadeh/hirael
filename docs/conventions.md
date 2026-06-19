@@ -141,6 +141,21 @@ theme uses — so an RTL preview comes up correct on the first frame instead
 of flipping after hydration. The embed shells are plain background wrappers;
 don't reintroduce direction state there.
 
+**Component previews render Arabic in RTL.** On component detail pages the
+RTL toggle isn't only a direction flip — `ExampleBlock` (in
+`component-page.tsx`) wraps the demo in a `DemoLocaleProvider`
+(`lib/demo-locale.tsx`) set to `ar` when RTL is on, `en` otherwise, and
+remounts the demo via a `key` so locale-derived initial state (entered
+text, selections) re-seeds in the active language. So an RTL component
+preview shows real Arabic text, not mirrored English. Every component demo
+in `registry/hirael/examples/*` therefore sources its user-facing strings
+through `useT()`: `t({ en: "Pick a date", ar: "اختر تاريخًا" })`, which works
+for strings, arrays of options, and JSX nodes alike. A new demo must do the
+same — wrap visible copy in `t({ en, ar })`, keeping brand names, codes,
+URLs, and Western digits unchanged. (Blocks/templates preview through the
+`/embed/*` iframe and stay English for now; the provider is wired only into
+the component `ExampleBlock`.)
+
 ## Changelog fetch
 
 [lib/changelog.ts](../lib/changelog.ts) fetches GitHub Releases with

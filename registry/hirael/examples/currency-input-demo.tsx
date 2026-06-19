@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   CurrencyInput,
@@ -10,6 +11,8 @@ import {
 } from "@/registry/hirael/ui/currency-input";
 
 export default function CurrencyInputDemo() {
+  const t = useT();
+
   const [basic, setBasic] = React.useState<number | null>(1499.5);
   const [composed, setComposed] = React.useState<number | null>(12480);
 
@@ -29,7 +32,8 @@ export default function CurrencyInputDemo() {
           <CurrencyInputField />
         </CurrencyInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          parsed: {basic === null ? "null" : basic}
+          {t({ en: "parsed:", ar: "المُحلَّل:" })}{" "}
+          {basic === null ? "null" : basic}
         </p>
       </div>
 
@@ -47,7 +51,8 @@ export default function CurrencyInputDemo() {
           <CurrencyInputField placeholder="0,00" />
         </CurrencyInput>
         <p className="font-mono text-[11px] text-muted-foreground">
-          parsed: {composed === null ? "null" : composed}
+          {t({ en: "parsed:", ar: "المُحلَّل:" })}{" "}
+          {composed === null ? "null" : composed}
         </p>
       </div>
     </div>

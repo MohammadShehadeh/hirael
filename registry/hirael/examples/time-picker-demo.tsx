@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   TimePicker,
@@ -11,6 +12,7 @@ import {
 } from "@/registry/hirael/ui/time-picker";
 
 export default function TimePickerDemo() {
+  const t = useT();
   const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 });
   const [t12, setT12] = React.useState<TimeValue>({
     hour: 9,
@@ -21,7 +23,9 @@ export default function TimePickerDemo() {
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
       <div className="grid gap-2">
-        <Label>Meeting time (24h)</Label>
+        <Label>
+          {t({ en: "Meeting time (24h)", ar: "وقت الاجتماع (24 ساعة)" })}
+        </Label>
         <TimePicker
           value={t24}
           onValueChange={setT24}
@@ -37,7 +41,9 @@ export default function TimePickerDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Reminder (12h · seconds)</Label>
+        <Label>
+          {t({ en: "Reminder (12h · seconds)", ar: "تذكير (12 ساعة · ثوانٍ)" })}
+        </Label>
         <TimePicker
           value={t12}
           onValueChange={setT12}

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   FileDropzone,
@@ -11,13 +12,19 @@ import {
 } from "@/registry/hirael/ui/file-dropzone";
 
 export default function FileDropzoneDemo() {
+  const t = useT();
   const [basic, setBasic] = React.useState<File[]>([]);
   const [composed, setComposed] = React.useState<File[]>([]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
-        <Label>Images & PDFs · up to 5 MB</Label>
+        <Label>
+          {t({
+            en: "Images & PDFs · up to 5 MB",
+            ar: "صور وملفات PDF · حتى 5 ميغابايت",
+          })}
+        </Label>
         <FileDropzone
           value={basic}
           onValueChange={setBasic}
@@ -32,7 +39,12 @@ export default function FileDropzoneDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Data files · custom layout</Label>
+        <Label>
+          {t({
+            en: "Data files · custom layout",
+            ar: "ملفات البيانات · تخطيط مخصص",
+          })}
+        </Label>
         <FileDropzone
           value={composed}
           onValueChange={setComposed}
@@ -41,8 +53,11 @@ export default function FileDropzoneDemo() {
           multiple
         >
           <FileDropzoneZone
-            headline="Drop data files"
-            subline="csv, json, txt · max 1 MB each"
+            headline={t({ en: "Drop data files", ar: "أسقط ملفات البيانات" })}
+            subline={t({
+              en: "csv, json, txt · max 1 MB each",
+              ar: "csv، json، txt · بحد أقصى 1 ميغابايت لكل ملف",
+            })}
           />
           <FileDropzoneErrors />
           <FileDropzoneList />

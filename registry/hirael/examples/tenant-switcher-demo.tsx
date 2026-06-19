@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import { CommandGroup } from "@/registry/hirael/ui/command";
 import {
@@ -13,33 +14,67 @@ import {
   type Tenant,
 } from "@/registry/hirael/ui/tenant-switcher";
 
-const WORKSPACES: Tenant[] = [
-  { value: "personal", label: "Personal", caption: "Free", group: "Personal" },
-  { value: "acme", label: "Acme Inc", caption: "Pro plan", group: "Teams" },
-  { value: "globex", label: "Globex", caption: "Enterprise", group: "Teams" },
-  { value: "initech", label: "Initech", caption: "Pro plan", group: "Teams" },
-];
-
-const PROJECTS: Tenant[] = [
-  { value: "web", label: "Web app", caption: "Owner" },
-  { value: "marketing", label: "Marketing site", caption: "Admin" },
-  { value: "docs", label: "Docs", caption: "Editor" },
-  {
-    value: "internal",
-    label: "Internal tools",
-    caption: "Viewer",
-    disabled: true,
-  },
-];
-
 export default function TenantSwitcherDemo() {
+  const t = useT();
+
+  const WORKSPACES: Tenant[] = [
+    {
+      value: "personal",
+      label: t({ en: "Personal", ar: "شخصي" }),
+      caption: t({ en: "Free", ar: "مجاني" }),
+      group: t({ en: "Personal", ar: "شخصي" }),
+    },
+    {
+      value: "acme",
+      label: t({ en: "Acme Inc", ar: "شركة نور" }),
+      caption: t({ en: "Pro plan", ar: "خطة احترافية" }),
+      group: t({ en: "Teams", ar: "الفرق" }),
+    },
+    {
+      value: "globex",
+      label: t({ en: "Globex", ar: "مشروع أطلس" }),
+      caption: t({ en: "Enterprise", ar: "خطة المؤسسات" }),
+      group: t({ en: "Teams", ar: "الفرق" }),
+    },
+    {
+      value: "initech",
+      label: t({ en: "Initech", ar: "فريق التصميم" }),
+      caption: t({ en: "Pro plan", ar: "خطة احترافية" }),
+      group: t({ en: "Teams", ar: "الفرق" }),
+    },
+  ];
+
+  const PROJECTS: Tenant[] = [
+    {
+      value: "web",
+      label: t({ en: "Web app", ar: "تطبيق الويب" }),
+      caption: t({ en: "Owner", ar: "مالك" }),
+    },
+    {
+      value: "marketing",
+      label: t({ en: "Marketing site", ar: "الموقع التسويقي" }),
+      caption: t({ en: "Admin", ar: "مدير" }),
+    },
+    {
+      value: "docs",
+      label: t({ en: "Docs", ar: "التوثيق" }),
+      caption: t({ en: "Editor", ar: "محرر" }),
+    },
+    {
+      value: "internal",
+      label: t({ en: "Internal tools", ar: "الأدوات الداخلية" }),
+      caption: t({ en: "Viewer", ar: "مشاهد" }),
+      disabled: true,
+    },
+  ];
+
   const [workspace, setWorkspace] = React.useState<string | undefined>("acme");
   const [project, setProject] = React.useState<string | undefined>("web");
 
   return (
     <div className="grid w-full max-w-sm gap-8">
       <div className="grid gap-2">
-        <Label>Workspace</Label>
+        <Label>{t({ en: "Workspace", ar: "مساحة العمل" })}</Label>
         <TenantSwitcher
           tenants={WORKSPACES}
           value={workspace}
@@ -49,7 +84,7 @@ export default function TenantSwitcherDemo() {
           <TenantSwitcherContent
             footer={
               <TenantSwitcherCreate onClick={() => setWorkspace("personal")}>
-                Create workspace
+                {t({ en: "Create workspace", ar: "إنشاء مساحة عمل" })}
               </TenantSwitcherCreate>
             }
           />
@@ -57,15 +92,22 @@ export default function TenantSwitcherDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Project (compound, no search)</Label>
+        <Label>
+          {t({
+            en: "Project (compound, no search)",
+            ar: "مشروع (مركّب، بلا بحث)",
+          })}
+        </Label>
         <TenantSwitcher
           tenants={PROJECTS}
           value={project}
           onValueChange={setProject}
         >
-          <TenantSwitcherTrigger placeholder="Pick a project" />
+          <TenantSwitcherTrigger
+            placeholder={t({ en: "Pick a project", ar: "اختر مشروعًا" })}
+          />
           <TenantSwitcherContent searchable={false}>
-            <CommandGroup heading="Projects">
+            <CommandGroup heading={t({ en: "Projects", ar: "المشاريع" })}>
               {PROJECTS.map((p) => (
                 <TenantSwitcherItem key={p.value} tenant={p} />
               ))}

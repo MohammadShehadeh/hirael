@@ -1,37 +1,7 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { Masonry, MasonryItem } from "@/registry/hirael/ui/masonry";
-
-const cards = [
-  {
-    title: "Drift",
-    body: "A short note.",
-  },
-  {
-    title: "Meridian",
-    body: "Longer-form content stretches this card so the masonry has real height variance to balance across columns.",
-  },
-  {
-    title: "Halcyon",
-    body: "Two lines of copy, enough to sit between the extremes.",
-  },
-  {
-    title: "Vantage",
-    body: "Columns are filled by measured height, so reading order is preserved far better than CSS columns, which fill top-to-bottom one column at a time.",
-  },
-  {
-    title: "Ember",
-    body: "Compact.",
-  },
-  {
-    title: "Lattice",
-    body: "Items keep their identity across re-balances, so component state inside a card survives a column move.",
-  },
-  {
-    title: "Sable",
-    body: "Medium length card body that wraps onto a couple of lines at most widths.",
-  },
-];
 
 const aspects = [
   "aspect-square",
@@ -43,11 +13,59 @@ const aspects = [
 ];
 
 export default function MasonryDemo() {
+  const t = useT();
+
+  const cards = [
+    {
+      title: "Drift",
+      body: t({ en: "A short note.", ar: "ملاحظة قصيرة." }),
+    },
+    {
+      title: "Meridian",
+      body: t({
+        en: "Longer-form content stretches this card so the masonry has real height variance to balance across columns.",
+        ar: "محتوى أطول يمدّ هذه البطاقة كي يكون للتخطيط الحجري تفاوت ارتفاع حقيقي يوازن بين الأعمدة.",
+      }),
+    },
+    {
+      title: "Halcyon",
+      body: t({
+        en: "Two lines of copy, enough to sit between the extremes.",
+        ar: "سطران من النص، يكفيان ليقعا بين الطرفين.",
+      }),
+    },
+    {
+      title: "Vantage",
+      body: t({
+        en: "Columns are filled by measured height, so reading order is preserved far better than CSS columns, which fill top-to-bottom one column at a time.",
+        ar: "تُملأ الأعمدة وفق الارتفاع المقيس، فيُحفظ ترتيب القراءة أفضل بكثير من أعمدة CSS التي تملأ عمودًا تلو الآخر من الأعلى إلى الأسفل.",
+      }),
+    },
+    {
+      title: "Ember",
+      body: t({ en: "Compact.", ar: "مدمج." }),
+    },
+    {
+      title: "Lattice",
+      body: t({
+        en: "Items keep their identity across re-balances, so component state inside a card survives a column move.",
+        ar: "تحتفظ العناصر بهويتها عبر إعادة التوازن، فتبقى حالة المكوّن داخل البطاقة سليمة عند نقلها بين الأعمدة.",
+      }),
+    },
+    {
+      title: "Sable",
+      body: t({
+        en: "Medium length card body that wraps onto a couple of lines at most widths.",
+        ar: "نصّ بطاقة متوسط الطول يلتفّ على سطرين عند معظم العروض.",
+      }),
+    },
+  ];
+
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Cards · default columns
+          {t({ en: "Cards · default columns", ar: "بطاقات · أعمدة افتراضية" })}
         </p>
         <Masonry>
           {cards.map((card) => (
@@ -66,7 +84,10 @@ export default function MasonryDemo() {
 
       <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Media · varied aspect ratios
+          {t({
+            en: "Media · varied aspect ratios",
+            ar: "وسائط · نِسب أبعاد متنوّعة",
+          })}
         </p>
         <Masonry columns={{ base: 2, lg: 3 }} gap={8}>
           {aspects.map((aspect, i) => (
@@ -84,7 +105,10 @@ export default function MasonryDemo() {
 
       <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Compact · columns 2 / md 4
+          {t({
+            en: "Compact · columns 2 / md 4",
+            ar: "مدمج · عمودان / md أربعة",
+          })}
         </p>
         <Masonry columns={{ base: 2, md: 4 }} gap={8}>
           {[
@@ -104,7 +128,10 @@ export default function MasonryDemo() {
               <p className="text-xs font-medium text-foreground">{label}</p>
               {i % 3 === 1 ? (
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Extra line for height variance.
+                  {t({
+                    en: "Extra line for height variance.",
+                    ar: "سطر إضافي لتفاوت الارتفاع.",
+                  })}
                 </p>
               ) : null}
             </MasonryItem>

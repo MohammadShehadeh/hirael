@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { Marquee } from "@/registry/hirael/ui/marquee";
 
 const brands = [
@@ -22,11 +23,16 @@ function Chip({ children }: { children: React.ReactNode }) {
 }
 
 export default function MarqueeDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full min-w-0 max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Pause on hover · edge fade
+          {t({
+            en: "Pause on hover · edge fade",
+            ar: "إيقاف عند المرور · تلاشٍ عند الحواف",
+          })}
         </p>
         <div className="relative w-full min-w-0 overflow-hidden">
           <Marquee pauseOnHover duration={28} className="py-1">
@@ -41,7 +47,7 @@ export default function MarqueeDemo() {
 
       <div className="grid min-w-0 gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Reverse direction
+          {t({ en: "Reverse direction", ar: "اتجاه معكوس" })}
         </p>
         <div className="relative w-full min-w-0 overflow-hidden">
           <Marquee reverse pauseOnHover duration={28} className="py-1">

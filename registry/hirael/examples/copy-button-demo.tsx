@@ -1,13 +1,19 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { CopyButton } from "@/registry/hirael/ui/copy-button";
 
 export default function CopyButtonDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Icon only · ghost &amp; outline
+          {t({
+            en: "Icon only · ghost & outline",
+            ar: "أيقونة فقط · شفاف ومحدّد",
+          })}
         </p>
         <div className="flex items-center gap-3">
           <CopyButton value="npm install hirael" />
@@ -18,16 +24,16 @@ export default function CopyButtonDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          With label
+          {t({ en: "With label", ar: "مع نص" })}
         </p>
         <CopyButton value="hirael@latest" variant="outline" className="w-fit">
-          Copy version
+          {t({ en: "Copy version", ar: "نسخ الإصدار" })}
         </CopyButton>
       </div>
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          In a code snippet
+          {t({ en: "In a code snippet", ar: "ضمن مقتطف شيفرة" })}
         </p>
         <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">
           <code className="truncate font-mono text-xs text-foreground">

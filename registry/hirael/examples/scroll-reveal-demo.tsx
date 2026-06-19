@@ -1,28 +1,34 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { ScrollReveal } from "@/registry/hirael/ui/scroll-reveal";
 
-const ITEMS = [
-  { dir: "up" as const, label: "Up" },
-  { dir: "right" as const, label: "Right" },
-  { dir: "left" as const, label: "Left" },
-  { dir: "down" as const, label: "Down" },
-];
-
 export default function ScrollRevealDemo() {
+  const t = useT();
+
+  const items = [
+    { dir: "up" as const, label: t({ en: "Up", ar: "أعلى" }) },
+    { dir: "right" as const, label: t({ en: "Right", ar: "يمين" }) },
+    { dir: "left" as const, label: t({ en: "Left", ar: "يسار" }) },
+    { dir: "down" as const, label: t({ en: "Down", ar: "أسفل" }) },
+  ];
+
   return (
     <div className="grid w-full max-w-xl gap-6">
       <ScrollReveal>
         <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          Reveal on scroll
+          {t({ en: "Reveal on scroll", ar: "ظهور عند التمرير" })}
         </p>
       </ScrollReveal>
       <div className="grid grid-cols-2 gap-3">
-        {ITEMS.map((item, i) => (
-          <ScrollReveal key={item.label} direction={item.dir} delay={i * 100}>
+        {items.map((item, i) => (
+          <ScrollReveal key={item.dir} direction={item.dir} delay={i * 100}>
             <div className="flex h-24 flex-col justify-between rounded-md border border-border bg-card p-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                from {item.label.toLowerCase()}
+                {t({
+                  en: `from ${item.label.toLowerCase()}`,
+                  ar: `من ${item.label}`,
+                })}
               </span>
               <span className="text-sm font-medium text-foreground">
                 {item.label}

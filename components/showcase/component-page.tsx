@@ -12,6 +12,7 @@ import { InstallBlock } from "@/components/showcase/install-block";
 import { Pager } from "@/components/showcase/pager";
 import { SectionLabel } from "@/components/showcase/page-header";
 import { Toc, type TocItem } from "@/components/showcase/toc";
+import { DemoLocaleProvider } from "@/lib/demo-locale";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
   Table,
@@ -310,7 +311,11 @@ function ExampleBlock({
             dir={rtl ? "rtl" : undefined}
             className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
-            <RegistryExample name={example.slug} />
+            <DemoLocaleProvider locale={rtl ? "ar" : "en"}>
+              {/* Remount on direction change so locale-derived initial state
+                  (entered text, selections) re-seeds in the active language. */}
+              <RegistryExample key={rtl ? "ar" : "en"} name={example.slug} />
+            </DemoLocaleProvider>
           </div>
         ) : example.source ? (
           <CodeBlock

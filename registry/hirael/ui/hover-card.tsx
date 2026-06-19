@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { HoverCard as HoverCardPrimitive } from "radix-ui";
+import { HoverCard as HoverCardPrimitive, Direction } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 
@@ -25,10 +25,12 @@ function HoverCardContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+  const direction = Direction.useDirection();
   return (
     <HoverCardPrimitive.Portal data-slot="hover-card-portal">
       <HoverCardPrimitive.Content
         data-slot="hover-card-content"
+        dir={direction === "rtl" ? "rtl" : undefined}
         align={align}
         sideOffset={sideOffset}
         className={cn(

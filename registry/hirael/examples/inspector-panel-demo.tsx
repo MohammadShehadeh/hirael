@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import {
   InspectorPanel,
   InspectorPanelHeader,
@@ -17,42 +18,51 @@ function Field({ children }: { children: React.ReactNode }) {
 }
 
 export default function InspectorPanelDemo() {
+  const t = useT();
+
   return (
     <div className="flex w-full max-w-xl justify-center">
       <InspectorPanel>
         <InspectorPanelHeader>
-          <InspectorPanelTitle>Inspector</InspectorPanelTitle>
-          <span className="text-xs text-muted-foreground">Frame 12</span>
+          <InspectorPanelTitle>
+            {t({ en: "Inspector", ar: "المفتّش" })}
+          </InspectorPanelTitle>
+          <span className="text-xs text-muted-foreground">
+            {t({ en: "Frame 12", ar: "إطار 12" })}
+          </span>
         </InspectorPanelHeader>
 
-        <InspectorPanelSection title="Layout">
-          <InspectorPanelRow label="Width">
+        <InspectorPanelSection title={t({ en: "Layout", ar: "التخطيط" })}>
+          <InspectorPanelRow label={t({ en: "Width", ar: "العرض" })}>
             <Field>320</Field>
           </InspectorPanelRow>
-          <InspectorPanelRow label="Height">
+          <InspectorPanelRow label={t({ en: "Height", ar: "الارتفاع" })}>
             <Field>192</Field>
           </InspectorPanelRow>
-          <InspectorPanelRow label="Radius">
+          <InspectorPanelRow label={t({ en: "Radius", ar: "نصف القطر" })}>
             <Field>12</Field>
           </InspectorPanelRow>
         </InspectorPanelSection>
 
-        <InspectorPanelSection title="Appearance">
-          <InspectorPanelRow label="Fill">
+        <InspectorPanelSection title={t({ en: "Appearance", ar: "المظهر" })}>
+          <InspectorPanelRow label={t({ en: "Fill", ar: "التعبئة" })}>
             <span className="size-4 rounded-sm border border-border bg-foreground/80" />
             <Field>#18181B</Field>
           </InspectorPanelRow>
-          <InspectorPanelRow label="Opacity">
+          <InspectorPanelRow label={t({ en: "Opacity", ar: "الشفافية" })}>
             <Field>100%</Field>
           </InspectorPanelRow>
         </InspectorPanelSection>
 
-        <InspectorPanelSection title="Typography" defaultOpen={false}>
-          <InspectorPanelRow label="Size">
+        <InspectorPanelSection
+          title={t({ en: "Typography", ar: "الطباعة" })}
+          defaultOpen={false}
+        >
+          <InspectorPanelRow label={t({ en: "Size", ar: "الحجم" })}>
             <Field>14</Field>
           </InspectorPanelRow>
-          <InspectorPanelRow label="Weight">
-            <Field>Medium</Field>
+          <InspectorPanelRow label={t({ en: "Weight", ar: "السماكة" })}>
+            <Field>{t({ en: "Medium", ar: "متوسط" })}</Field>
           </InspectorPanelRow>
         </InspectorPanelSection>
       </InspectorPanel>

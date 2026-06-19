@@ -43,9 +43,15 @@ heading rather than starting a new doc.
 
 ## React 19
 
-- **The React Compiler is NOT enabled here** (unlike some sibling repos), so
-  the usual `useMemo`/`useCallback` rules apply — add them where a real
-  measured need exists, but prefer plain derived values for readability.
+- **The React Compiler is enabled** (`reactCompiler: true` in
+  [next.config.ts](../next.config.ts), via `babel-plugin-react-compiler`), so
+  the showcase build auto-memoizes components and hooks. Don't hand-write
+  `useMemo`/`useCallback` in showcase/demo code (`app/`, `components/`, `lib/`,
+  `registry/hirael/examples/`) — prefer plain derived values. **The exception
+  is shipped registry primitives (`registry/hirael/ui/*`):** they're copied as
+  raw source into consumer repos that may not run the compiler, so keep their
+  explicit memoization. The compiler only optimizes how this site is built; it
+  never touches what ships.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.
@@ -140,6 +146,37 @@ param. It's applied to `<html dir>` by a pre-paint inline script
 theme uses — so an RTL preview comes up correct on the first frame instead
 of flipping after hydration. The embed shells are plain background wrappers;
 don't reintroduce direction state there.
+
+**Portaled overlays carry direction explicitly.** Radix/Base UI portal
+popover, dropdown, select, dialog, sheet, tooltip and hover-card content to
+`<body>` — outside any `dir` wrapper — and Radix's Popper does not stamp
+`dir` on the floating node, so portaled content otherwise only picks up RTL
+from `<html dir>`. Each overlay's `*Content` reads `Direction.useDirection()`
+and sets `dir` **only when it resolves to `rtl`** (never forcing `ltr`, so a
+consumer's `html[dir]` is never overridden); wrapping a subtree in the
+`direction` primitive's `DirectionProvider` (Radix) or Base UI's then drives
+them. `ExampleBlock` wraps each preview in both providers, which is why
+multi-select / combobox / picker dropdowns render RTL on the showcase even
+though `dir` is only on a wrapper `<div>`, not `<html>`. Radix menu/select
+primitives already consume the provider themselves. Keep physical geometry
+that is genuinely physical (Sheet/Sidebar `side`, drawer `vaul-direction`,
+`data-[side]` animations, centering transforms) — convert only content
+layout (text, padding, adornment positions) to logical utilities.
+
+**Component previews render Arabic in RTL.** On component detail pages the
+RTL toggle isn't only a direction flip — `ExampleBlock` (in
+`component-page.tsx`) wraps the demo in a `DemoLocaleProvider`
+(`lib/demo-locale.tsx`) set to `ar` when RTL is on, `en` otherwise, and
+remounts the demo via a `key` so locale-derived initial state (entered
+text, selections) re-seeds in the active language. So an RTL component
+preview shows real Arabic text, not mirrored English. Every component demo
+in `registry/hirael/examples/*` therefore sources its user-facing strings
+through `useT()`: `t({ en: "Pick a date", ar: "اختر تاريخًا" })`, which works
+for strings, arrays of options, and JSX nodes alike. A new demo must do the
+same — wrap visible copy in `t({ en, ar })`, keeping brand names, codes,
+URLs, and Western digits unchanged. (Blocks/templates preview through the
+`/embed/*` iframe and stay English for now; the provider is wired only into
+the component `ExampleBlock`.)
 
 ## Changelog fetch
 

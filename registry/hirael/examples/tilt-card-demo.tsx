@@ -1,15 +1,18 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { TiltCard } from "@/registry/hirael/ui/tilt-card";
 
 export default function TiltCardDemo() {
+  const t = useT();
+
   return (
     <div className="flex w-full max-w-xl flex-col items-center gap-4">
       <TiltCard glare className="w-64">
         <div className="flex flex-col gap-6 p-5">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              Virtual
+              {t({ en: "Virtual", ar: "افتراضية" })}
             </span>
             <span className="size-6 rounded-full bg-foreground/10" />
           </div>
@@ -18,7 +21,7 @@ export default function TiltCardDemo() {
           </div>
           <div className="flex items-end justify-between">
             <span className="text-sm font-medium text-foreground">
-              A. Khoury
+              {t({ en: "A. Khoury", ar: "أ. خوري" })}
             </span>
             <span className="font-mono text-xs text-muted-foreground">
               09 / 28
@@ -27,7 +30,10 @@ export default function TiltCardDemo() {
         </div>
       </TiltCard>
       <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-        Point at the card to tilt
+        {t({
+          en: "Point at the card to tilt",
+          ar: "وجّه المؤشر نحو البطاقة للإمالة",
+        })}
       </p>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { CreditCard, GitPullRequest, UserPlus } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   NotificationContent,
   NotificationDescription,
@@ -16,15 +17,19 @@ import {
 } from "@/registry/hirael/ui/notifications";
 
 export default function NotificationsDemo() {
+  const t = useT();
+
   return (
     <Notifications className="w-full max-w-sm">
       <NotificationsHeader>
-        <NotificationsTitle>Notifications</NotificationsTitle>
+        <NotificationsTitle>
+          {t({ en: "Notifications", ar: "الإشعارات" })}
+        </NotificationsTitle>
         <button
           type="button"
           className="text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          Mark all read
+          {t({ en: "Mark all read", ar: "تعيين الكل كمقروء" })}
         </button>
       </NotificationsHeader>
       <NotificationsList>
@@ -34,14 +39,30 @@ export default function NotificationsDemo() {
           </NotificationMedia>
           <NotificationContent>
             <NotificationTitle>
-              <span className="font-medium">Lena Park</span> requested your
-              review
+              {t({
+                en: (
+                  <>
+                    <span className="font-medium">Lena Park</span> requested
+                    your review
+                  </>
+                ),
+                ar: (
+                  <>
+                    طلبت <span className="font-medium">ليلى</span> مراجعتك
+                  </>
+                ),
+              })}
             </NotificationTitle>
             <NotificationDescription>
-              feat/billing-flow · 2 files changed
+              {t({
+                en: "feat/billing-flow · 2 files changed",
+                ar: "feat/billing-flow · تغيّر ملفّان",
+              })}
             </NotificationDescription>
           </NotificationContent>
-          <NotificationTime>2m</NotificationTime>
+          <NotificationTime>
+            {t({ en: "2m", ar: "قبل دقيقتين" })}
+          </NotificationTime>
         </NotificationItem>
 
         <NotificationItem unread>
@@ -49,12 +70,17 @@ export default function NotificationsDemo() {
             <CreditCard />
           </NotificationMedia>
           <NotificationContent>
-            <NotificationTitle>Payment received</NotificationTitle>
+            <NotificationTitle>
+              {t({ en: "Payment received", ar: "تم استلام الدفعة" })}
+            </NotificationTitle>
             <NotificationDescription>
-              Invoice #3812 was paid in full.
+              {t({
+                en: "Invoice #3812 was paid in full.",
+                ar: "تم سداد الفاتورة رقم 3812 بالكامل.",
+              })}
             </NotificationDescription>
           </NotificationContent>
-          <NotificationTime>1h</NotificationTime>
+          <NotificationTime>{t({ en: "1h", ar: "قبل ساعة" })}</NotificationTime>
         </NotificationItem>
 
         <NotificationItem>
@@ -62,12 +88,19 @@ export default function NotificationsDemo() {
             <UserPlus />
           </NotificationMedia>
           <NotificationContent>
-            <NotificationTitle>Theo Adams joined</NotificationTitle>
+            <NotificationTitle>
+              {t({ en: "Theo Adams joined", ar: "انضمّ يوسف" })}
+            </NotificationTitle>
             <NotificationDescription>
-              Accepted your invite to the workspace.
+              {t({
+                en: "Accepted your invite to the workspace.",
+                ar: "قبِل دعوتك إلى مساحة العمل.",
+              })}
             </NotificationDescription>
           </NotificationContent>
-          <NotificationTime>3h</NotificationTime>
+          <NotificationTime>
+            {t({ en: "3h", ar: "قبل 3 ساعات" })}
+          </NotificationTime>
         </NotificationItem>
       </NotificationsList>
     </Notifications>

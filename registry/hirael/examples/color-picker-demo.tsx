@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   ColorPicker,
@@ -10,13 +11,14 @@ import {
 } from "@/registry/hirael/ui/color-picker";
 
 export default function ColorPickerDemo() {
+  const t = useT();
   const [accent, setAccent] = React.useState<string>("#0ea5e9");
   const [brand, setBrand] = React.useState<string>("#a855f7");
 
   return (
     <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
       <div className="grid gap-2">
-        <Label>Accent color</Label>
+        <Label>{t({ en: "Accent color", ar: "لون التمييز" })}</Label>
         <ColorPicker value={accent} onValueChange={setAccent}>
           <ColorPickerTrigger />
           <ColorPickerContent />
@@ -27,7 +29,12 @@ export default function ColorPickerDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Brand color · custom swatches</Label>
+        <Label>
+          {t({
+            en: "Brand color · custom swatches",
+            ar: "لون العلامة · عيّنات مخصصة",
+          })}
+        </Label>
         <ColorPicker
           value={brand}
           onValueChange={setBrand}

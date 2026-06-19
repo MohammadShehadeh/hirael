@@ -2,6 +2,7 @@
 
 import { ArrowRight, Sparkles } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   AnnouncementBar,
   AnnouncementBarBadge,
@@ -9,19 +10,26 @@ import {
 } from "@/registry/hirael/ui/announcement-bar";
 
 export default function AnnouncementBarDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-3xl gap-6">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Default · dismissible
+          {t({ en: "Default · dismissible", ar: "افتراضي · قابل للإغلاق" })}
         </p>
         <AnnouncementBar dismissible className="rounded-md border">
-          <AnnouncementBarBadge>new</AnnouncementBarBadge>
+          <AnnouncementBarBadge>
+            {t({ en: "new", ar: "جديد" })}
+          </AnnouncementBarBadge>
           <span className="text-foreground">
-            v1.4 ships with a new combobox primitive.
+            {t({
+              en: "v1.4 ships with a new combobox primitive.",
+              ar: "يأتي الإصدار v1.4 مع عنصر combobox جديد.",
+            })}
           </span>
           <AnnouncementBarLink href="#">
-            Read the post
+            {t({ en: "Read the post", ar: "اقرأ المقال" })}
             <ArrowRight className="size-3" />
           </AnnouncementBarLink>
         </AnnouncementBar>
@@ -29,13 +37,18 @@ export default function AnnouncementBarDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Primary
+          {t({ en: "Primary", ar: "أساسي" })}
         </p>
         <AnnouncementBar tone="primary" className="rounded-md border">
           <Sparkles className="size-3.5" />
-          <span>Early-access pricing ends Friday.</span>
+          <span>
+            {t({
+              en: "Early-access pricing ends Friday.",
+              ar: "ينتهي سعر الوصول المبكر يوم الجمعة.",
+            })}
+          </span>
           <AnnouncementBarLink href="#">
-            Claim 50% off
+            {t({ en: "Claim 50% off", ar: "احصل على خصم 50%" })}
             <ArrowRight className="size-3" />
           </AnnouncementBarLink>
         </AnnouncementBar>
@@ -43,11 +56,14 @@ export default function AnnouncementBarDemo() {
 
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Muted · simple
+          {t({ en: "Muted · simple", ar: "هادئ · بسيط" })}
         </p>
         <AnnouncementBar tone="muted" className="rounded-md">
           <span className="text-muted-foreground">
-            Scheduled maintenance on May 28, 02:00 UTC · ~15 min downtime.
+            {t({
+              en: "Scheduled maintenance on May 28, 02:00 UTC · ~15 min downtime.",
+              ar: "صيانة مجدولة في 28 مايو، 02:00 بتوقيت UTC · توقف لنحو 15 دقيقة.",
+            })}
           </span>
         </AnnouncementBar>
       </div>

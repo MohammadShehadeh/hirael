@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   LazySelect,
@@ -13,57 +14,72 @@ import {
 
 type User = { id: string; name: string };
 
-const ALL_USERS: User[] = Array.from({ length: 137 }, (_, i) => ({
-  id: `u-${i + 1}`,
-  name: `${
-    [
-      "Ava",
-      "Liam",
-      "Noah",
-      "Mia",
-      "Zoe",
-      "Ezra",
-      "Iris",
-      "Omar",
-      "Lena",
-      "Kai",
-    ][i % 10]
-  } ${
-    ["Khan", "Reyes", "Okafor", "Park", "Vance", "Sato", "Diallo", "Costa"][
-      i % 8
-    ]
-  } #${i + 1}`,
-}));
-
 const PAGE_SIZE = 20;
 
-// Stand-in for a paginated, searchable API endpoint.
-async function fetchUsers({
-  query,
-  page,
-}: {
-  query: string;
-  page: number;
-}): Promise<LazyPage<User>> {
-  await new Promise((r) => setTimeout(r, 450));
-  const filtered = query
-    ? ALL_USERS.filter((u) =>
-        u.name.toLowerCase().includes(query.toLowerCase()),
-      )
-    : ALL_USERS;
-  const start = page * PAGE_SIZE;
-  const items = filtered.slice(start, start + PAGE_SIZE);
-  return { items, hasMore: start + PAGE_SIZE < filtered.length };
-}
+const FIRST_NAMES = {
+  en: [
+    "Ava",
+    "Liam",
+    "Noah",
+    "Mia",
+    "Zoe",
+    "Ezra",
+    "Iris",
+    "Omar",
+    "Lena",
+    "Kai",
+  ],
+  ar: [
+    "سارة",
+    "خالد",
+    "ليلى",
+    "عمر",
+    "نور",
+    "يوسف",
+    "فاطمة",
+    "أحمد",
+    "هدى",
+    "زيد",
+  ],
+};
+const LAST_NAMES = {
+  en: ["Khan", "Reyes", "Okafor", "Park", "Vance", "Sato", "Diallo", "Costa"],
+  ar: ["خان", "رييس", "أوكافور", "بارك", "فانس", "ساتو", "ديالو", "كوستا"],
+};
 
 export default function LazySelectDemo() {
+  const t = useT();
+
+  const firstNames = t(FIRST_NAMES);
+  const lastNames = t(LAST_NAMES);
+
+  const ALL_USERS: User[] = Array.from({ length: 137 }, (_, i) => ({
+    id: `u-${i + 1}`,
+    name: `${firstNames[i % 10]} ${lastNames[i % 8]} #${i + 1}`,
+  }));
+
+  const fetchUsers = async ({
+    query,
+    page,
+  }: {
+    query: string;
+    page: number;
+  }): Promise<LazyPage<User>> => {
+    await new Promise((r) => setTimeout(r, 450));
+    const filtered = query
+      ? ALL_USERS.filter((u) =>
+          u.name.toLowerCase().includes(query.toLowerCase()),
+        )
+      : ALL_USERS;
+    const start = page * PAGE_SIZE;
+    const items = filtered.slice(start, start + PAGE_SIZE);
+    return { items, hasMore: start + PAGE_SIZE < filtered.length };
+  };
+
   const [value, setValue] = React.useState<string | undefined>();
   const [open, setOpen] = React.useState(false);
 
-  const mapUser = React.useCallback(
-    (u: User) => ({ value: u.id, label: u.name }),
-    [],
-  );
+  const mapUser = (u: User) => ({ value: u.id, label: u.name });
 
   // `enabled: open` defers all network work until the dropdown is opened —
   // the "lazy" half. `loadMore` appends the next page on scroll — the
@@ -73,7 +89,12 @@ export default function LazySelectDemo() {
 
   return (
     <div className="grid w-full max-w-md gap-2">
-      <Label>Assignee · lazy-loaded on open, paged on scroll</Label>
+      <Label>
+        {t({
+          en: "Assignee · lazy-loaded on open, paged on scroll",
+          ar: "المسؤول · يُحمّل عند الفتح، ويُقسّم صفحات عند التمرير",
+        })}
+      </Label>
       <LazySelect
         value={value}
         onValueChange={setValue}
@@ -86,13 +107,27 @@ export default function LazySelectDemo() {
         onSearchChange={setQuery}
         onLoadMore={loadMore}
       >
-        <LazySelectTrigger placeholder="Select a teammate…" />
+        <LazySelectTrigger
+          placeholder={t({ en: "Select a teammate…", ar: "اختر زميلًا…" })}
+        />
         <LazySelectContent
-          searchPlaceholder="Search teammates…"
-          emptyMessage="No teammates match."
-          loadingMessage="Fetching teammates…"
-          loadingMoreMessage="Loading more…"
-          endMessage="End of list"
+          searchPlaceholder={t({
+            en: "Search teammates…",
+            ar: "ابحث عن زملاء…",
+          })}
+          emptyMessage={t({
+            en: "No teammates match.",
+            ar: "لا زملاء مطابقون.",
+          })}
+          loadingMessage={t({
+            en: "Fetching teammates…",
+            ar: "جارٍ جلب الزملاء…",
+          })}
+          loadingMoreMessage={t({
+            en: "Loading more…",
+            ar: "جارٍ تحميل المزيد…",
+          })}
+          endMessage={t({ en: "End of list", ar: "نهاية القائمة" })}
         />
       </LazySelect>
       <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">

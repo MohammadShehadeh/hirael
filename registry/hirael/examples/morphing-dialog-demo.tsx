@@ -2,6 +2,7 @@
 
 import { Plus } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   MorphingDialog,
   MorphingDialogClose,
@@ -12,6 +13,8 @@ import {
 } from "@/registry/hirael/ui/morphing-dialog";
 
 export default function MorphingDialogDemo() {
+  const t = useT();
+
   return (
     <div className="flex w-full max-w-xl flex-col items-center gap-3">
       <MorphingDialog>
@@ -25,7 +28,7 @@ export default function MorphingDialogDemo() {
                 Halo Layouts
               </span>
               <span className="text-xs text-muted-foreground">
-                Design system
+                {t({ en: "Design system", ar: "نظام تصميم" })}
               </span>
             </div>
             <Plus className="ms-auto size-4 text-muted-foreground" />
@@ -38,9 +41,10 @@ export default function MorphingDialogDemo() {
             </div>
             <MorphingDialogTitle>Halo Layouts</MorphingDialogTitle>
             <MorphingDialogDescription>
-              A token-driven design system for dense product UIs: 200+
-              variables, dark-first, and a CLI that copies source straight into
-              your repo.
+              {t({
+                en: "A token-driven design system for dense product UIs: 200+ variables, dark-first, and a CLI that copies source straight into your repo.",
+                ar: "نظام تصميم قائم على الرموز لواجهات المنتجات الكثيفة: أكثر من 200 متغيّر، يبدأ بالوضع الداكن، وأداة سطر أوامر تنسخ المصدر مباشرة إلى مستودعك.",
+              })}
             </MorphingDialogDescription>
             <div className="mt-1 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
               <span>v3.2</span>
@@ -52,7 +56,7 @@ export default function MorphingDialogDemo() {
         </MorphingDialogContent>
       </MorphingDialog>
       <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-        Click the card to expand
+        {t({ en: "Click the card to expand", ar: "انقر على البطاقة لتتوسّع" })}
       </p>
     </div>
   );

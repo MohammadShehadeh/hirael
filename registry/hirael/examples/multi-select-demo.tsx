@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   MultiSelect,
@@ -9,51 +10,74 @@ import {
   MultiSelectTrigger,
 } from "@/registry/hirael/ui/multi-select";
 
-const FRAMEWORKS = [
-  { value: "next", label: "Next.js", group: "React" },
-  { value: "remix", label: "Remix", group: "React" },
-  { value: "astro", label: "Astro", group: "Hybrid" },
-  { value: "nuxt", label: "Nuxt", group: "Vue" },
-  { value: "sveltekit", label: "SvelteKit", group: "Svelte" },
-  { value: "solid-start", label: "SolidStart", group: "Solid" },
-  { value: "qwik", label: "Qwik City", group: "Other" },
-  { value: "tanstack-start", label: "TanStack Start", group: "React" },
-  { value: "rakkas", label: "Rakkas", group: "React", disabled: true },
-];
-
 export default function MultiSelectDemo() {
+  const t = useT();
+
+  const groups = {
+    react: "React",
+    vue: "Vue",
+    svelte: "Svelte",
+    solid: "Solid",
+    hybrid: t({ en: "Hybrid", ar: "هجين" }),
+    other: t({ en: "Other", ar: "أخرى" }),
+  };
+
+  const FRAMEWORKS = [
+    { value: "next", label: "Next.js", group: groups.react },
+    { value: "remix", label: "Remix", group: groups.react },
+    { value: "astro", label: "Astro", group: groups.hybrid },
+    { value: "nuxt", label: "Nuxt", group: groups.vue },
+    { value: "sveltekit", label: "SvelteKit", group: groups.svelte },
+    { value: "solid-start", label: "SolidStart", group: groups.solid },
+    { value: "qwik", label: "Qwik City", group: groups.other },
+    { value: "tanstack-start", label: "TanStack Start", group: groups.react },
+    { value: "rakkas", label: "Rakkas", group: groups.react, disabled: true },
+  ];
+
   const [basic, setBasic] = React.useState<string[]>(["next", "astro"]);
   const [composed, setComposed] = React.useState<string[]>([]);
 
   return (
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
-        <Label htmlFor="ms-basic">Basic</Label>
+        <Label htmlFor="ms-basic">{t({ en: "Basic", ar: "أساسي" })}</Label>
         <MultiSelect
           options={FRAMEWORKS}
           value={basic}
           onValueChange={setBasic}
           maxCount={5}
         >
-          <MultiSelectTrigger placeholder="Pick frameworks" />
+          <MultiSelectTrigger
+            placeholder={t({ en: "Pick frameworks", ar: "اختر أطر العمل" })}
+          />
           <MultiSelectContent />
         </MultiSelect>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {basic.length} of {FRAMEWORKS.length} selected
+          {t({
+            en: `${basic.length} of ${FRAMEWORKS.length} selected`,
+            ar: `${basic.length} من ${FRAMEWORKS.length} محدد`,
+          })}
         </p>
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="ms-composed">Composed</Label>
+        <Label htmlFor="ms-composed">
+          {t({ en: "Composed", ar: "مركّب" })}
+        </Label>
         <MultiSelect
           options={FRAMEWORKS}
           value={composed}
           onValueChange={setComposed}
         >
-          <MultiSelectTrigger placeholder="Compose your own" />
+          <MultiSelectTrigger
+            placeholder={t({ en: "Compose your own", ar: "ركّب اختيارك" })}
+          />
           <MultiSelectContent
-            searchPlaceholder="Filter frameworks…"
-            emptyMessage="No matches."
+            searchPlaceholder={t({
+              en: "Filter frameworks…",
+              ar: "تصفية أطر العمل…",
+            })}
+            emptyMessage={t({ en: "No matches.", ar: "لا نتائج." })}
           />
         </MultiSelect>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">

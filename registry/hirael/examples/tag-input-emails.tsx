@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import {
   TagInput,
@@ -14,16 +15,25 @@ import {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function TagInputEmails() {
+  const t = useT();
+
   const [emails, setEmails] = React.useState<string[]>(["jane@hirael.com"]);
 
   return (
     <div className="grid w-full max-w-md gap-2">
-      <Label>Email tags · validated</Label>
+      <Label>
+        {t({ en: "Email tags · validated", ar: "وسوم بريد · مُتحقق منها" })}
+      </Label>
       <TagInput
         value={emails}
         onValueChange={setEmails}
         validate={(tag) =>
-          EMAIL_RE.test(tag) ? true : `Not a valid email: ${tag}`
+          EMAIL_RE.test(tag)
+            ? true
+            : t({
+                en: `Not a valid email: ${tag}`,
+                ar: `بريد غير صالح: ${tag}`,
+              })
         }
         maxTags={5}
       >

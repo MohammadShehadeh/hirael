@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import {
   SubscriptionPlan,
   SubscriptionPlanAction,
@@ -13,53 +14,98 @@ import {
 } from "@/registry/hirael/ui/subscription-plans";
 
 export default function SubscriptionPlansDemo() {
+  const t = useT();
+
   return (
     <SubscriptionPlans className="w-full max-w-3xl">
       <SubscriptionPlan>
-        <SubscriptionPlanName>Starter</SubscriptionPlanName>
+        <SubscriptionPlanName>
+          {t({ en: "Starter", ar: "المبتدئ" })}
+        </SubscriptionPlanName>
         <SubscriptionPlanPrice cycle="mo">$0</SubscriptionPlanPrice>
         <SubscriptionPlanDescription>
-          For side projects and trials.
+          {t({
+            en: "For side projects and trials.",
+            ar: "للمشاريع الجانبية والتجارب.",
+          })}
         </SubscriptionPlanDescription>
         <SubscriptionPlanFeatures>
-          <SubscriptionPlanFeature>1 project</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>Community support</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>1k requests / day</SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "1 project", ar: "مشروع واحد" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Community support", ar: "دعم المجتمع" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "1k requests / day", ar: "1000 طلب / يوم" })}
+          </SubscriptionPlanFeature>
         </SubscriptionPlanFeatures>
-        <SubscriptionPlanAction>Choose Starter</SubscriptionPlanAction>
+        <SubscriptionPlanAction>
+          {t({ en: "Choose Starter", ar: "اختيار المبتدئ" })}
+        </SubscriptionPlanAction>
       </SubscriptionPlan>
 
       <SubscriptionPlan featured>
-        <SubscriptionPlanBadge>Popular</SubscriptionPlanBadge>
-        <SubscriptionPlanName>Pro</SubscriptionPlanName>
+        <SubscriptionPlanBadge>
+          {t({ en: "Popular", ar: "الأكثر شيوعًا" })}
+        </SubscriptionPlanBadge>
+        <SubscriptionPlanName>
+          {t({ en: "Pro", ar: "الاحترافي" })}
+        </SubscriptionPlanName>
         <SubscriptionPlanPrice cycle="mo">$29</SubscriptionPlanPrice>
         <SubscriptionPlanDescription>
-          For growing teams shipping fast.
+          {t({
+            en: "For growing teams shipping fast.",
+            ar: "للفرق النامية التي تطلق بسرعة.",
+          })}
         </SubscriptionPlanDescription>
         <SubscriptionPlanFeatures>
-          <SubscriptionPlanFeature>Unlimited projects</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>Priority support</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>100k requests / day</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>Audit log</SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Unlimited projects", ar: "مشاريع غير محدودة" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Priority support", ar: "دعم ذو أولوية" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "100k requests / day", ar: "100 ألف طلب / يوم" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Audit log", ar: "سجل التدقيق" })}
+          </SubscriptionPlanFeature>
         </SubscriptionPlanFeatures>
         <SubscriptionPlanAction variant="primary">
-          Upgrade to Pro
+          {t({ en: "Upgrade to Pro", ar: "الترقية إلى الاحترافي" })}
         </SubscriptionPlanAction>
       </SubscriptionPlan>
 
       <SubscriptionPlan current>
-        <SubscriptionPlanBadge>Current</SubscriptionPlanBadge>
-        <SubscriptionPlanName>Scale</SubscriptionPlanName>
+        <SubscriptionPlanBadge>
+          {t({ en: "Current", ar: "الحالية" })}
+        </SubscriptionPlanBadge>
+        <SubscriptionPlanName>
+          {t({ en: "Scale", ar: "التوسّع" })}
+        </SubscriptionPlanName>
         <SubscriptionPlanPrice cycle="mo">$99</SubscriptionPlanPrice>
         <SubscriptionPlanDescription>
-          For high-volume production.
+          {t({
+            en: "For high-volume production.",
+            ar: "للإنتاج عالي الحجم.",
+          })}
         </SubscriptionPlanDescription>
         <SubscriptionPlanFeatures>
-          <SubscriptionPlanFeature>Everything in Pro</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>SSO &amp; SAML</SubscriptionPlanFeature>
-          <SubscriptionPlanFeature>Unlimited requests</SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Everything in Pro", ar: "كل ما في الاحترافي" })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: <>SSO &amp; SAML</>, ar: <>SSO و SAML</> })}
+          </SubscriptionPlanFeature>
+          <SubscriptionPlanFeature>
+            {t({ en: "Unlimited requests", ar: "طلبات غير محدودة" })}
+          </SubscriptionPlanFeature>
         </SubscriptionPlanFeatures>
-        <SubscriptionPlanAction disabled>Current plan</SubscriptionPlanAction>
+        <SubscriptionPlanAction disabled>
+          {t({ en: "Current plan", ar: "الخطة الحالية" })}
+        </SubscriptionPlanAction>
       </SubscriptionPlan>
     </SubscriptionPlans>
   );

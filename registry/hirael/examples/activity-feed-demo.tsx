@@ -2,6 +2,7 @@
 
 import { GitMerge, MessageSquare, UserPlus } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   ActivityFeed,
   ActivityFeedAction,
@@ -16,52 +17,90 @@ import {
 } from "@/registry/hirael/ui/activity-feed";
 
 export default function ActivityFeedDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-xl gap-8">
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Team activity
+          {t({ en: "Team activity", ar: "نشاط الفريق" })}
         </p>
         <ActivityFeed>
-          <ActivityFeedDivider>Today</ActivityFeedDivider>
+          <ActivityFeedDivider>
+            {t({ en: "Today", ar: "اليوم" })}
+          </ActivityFeedDivider>
           <ActivityFeedItem>
             <ActivityFeedAvatar>
               <GitMerge className="text-foreground" />
             </ActivityFeedAvatar>
             <ActivityFeedContent>
               <ActivityFeedHeader>
-                <ActivityFeedActor>Lena Park</ActivityFeedActor>
+                <ActivityFeedActor>
+                  {t({ en: "Lena Park", ar: "ليلى" })}
+                </ActivityFeedActor>
                 <ActivityFeedAction>
-                  merged <span className="font-mono">feat/billing</span> into
-                  main
+                  {t({
+                    en: (
+                      <>
+                        merged <span className="font-mono">feat/billing</span>{" "}
+                        into main
+                      </>
+                    ),
+                    ar: (
+                      <>
+                        دمجت <span className="font-mono">feat/billing</span> في
+                        main
+                      </>
+                    ),
+                  })}
                 </ActivityFeedAction>
                 <ActivityFeedTime className="ms-auto">14:20</ActivityFeedTime>
               </ActivityFeedHeader>
             </ActivityFeedContent>
           </ActivityFeedItem>
           <ActivityFeedItem>
-            <ActivityFeedAvatar>MS</ActivityFeedAvatar>
+            <ActivityFeedAvatar>
+              {t({ en: "MS", ar: "م.س" })}
+            </ActivityFeedAvatar>
             <ActivityFeedContent>
               <ActivityFeedHeader>
-                <ActivityFeedActor>Mara Singh</ActivityFeedActor>
-                <ActivityFeedAction>commented on PR #1284</ActivityFeedAction>
+                <ActivityFeedActor>
+                  {t({ en: "Mara Singh", ar: "مارا سينغ" })}
+                </ActivityFeedActor>
+                <ActivityFeedAction>
+                  {t({
+                    en: "commented on PR #1284",
+                    ar: "علّقت على طلب السحب رقم 1284",
+                  })}
+                </ActivityFeedAction>
                 <ActivityFeedTime className="ms-auto">13:58</ActivityFeedTime>
               </ActivityFeedHeader>
               <ActivityFeedBody>
-                Looks good. Can we add a test for the proration edge case before
-                this ships?
+                {t({
+                  en: "Looks good. Can we add a test for the proration edge case before this ships?",
+                  ar: "يبدو جيدًا. هل يمكننا إضافة اختبار لحالة احتساب التناسب قبل الإطلاق؟",
+                })}
               </ActivityFeedBody>
             </ActivityFeedContent>
           </ActivityFeedItem>
-          <ActivityFeedDivider>Yesterday</ActivityFeedDivider>
+          <ActivityFeedDivider>
+            {t({ en: "Yesterday", ar: "أمس" })}
+          </ActivityFeedDivider>
           <ActivityFeedItem>
             <ActivityFeedAvatar>
               <UserPlus className="text-foreground" />
             </ActivityFeedAvatar>
             <ActivityFeedContent>
               <ActivityFeedHeader>
-                <ActivityFeedActor>Theo Adams</ActivityFeedActor>
-                <ActivityFeedAction>joined the workspace</ActivityFeedAction>
+                <ActivityFeedActor>
+                  {t({ en: "Theo Adams", ar: "يوسف" })}
+                </ActivityFeedActor>
+                <ActivityFeedAction>
+                  {t({
+                    en: "joined the workspace",
+                    ar: "انضمّ إلى مساحة العمل",
+                  })}
+                </ActivityFeedAction>
                 <ActivityFeedTime className="ms-auto">17:02</ActivityFeedTime>
               </ActivityFeedHeader>
             </ActivityFeedContent>
@@ -71,7 +110,7 @@ export default function ActivityFeedDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Compact
+          {t({ en: "Compact", ar: "مدمج" })}
         </p>
         <ActivityFeed>
           <ActivityFeedItem>
@@ -80,20 +119,37 @@ export default function ActivityFeedDemo() {
             </ActivityFeedAvatar>
             <ActivityFeedContent>
               <ActivityFeedHeader>
-                <ActivityFeedActor>Support</ActivityFeedActor>
-                <ActivityFeedAction>replied to ticket 4821</ActivityFeedAction>
+                <ActivityFeedActor>
+                  {t({ en: "Support", ar: "الدعم" })}
+                </ActivityFeedActor>
+                <ActivityFeedAction>
+                  {t({
+                    en: "replied to ticket 4821",
+                    ar: "رد على التذكرة 4821",
+                  })}
+                </ActivityFeedAction>
               </ActivityFeedHeader>
-              <ActivityFeedTime>2 hours ago</ActivityFeedTime>
+              <ActivityFeedTime>
+                {t({ en: "2 hours ago", ar: "قبل ساعتين" })}
+              </ActivityFeedTime>
             </ActivityFeedContent>
           </ActivityFeedItem>
           <ActivityFeedItem>
-            <ActivityFeedAvatar>AK</ActivityFeedAvatar>
+            <ActivityFeedAvatar>
+              {t({ en: "AK", ar: "آ.ك" })}
+            </ActivityFeedAvatar>
             <ActivityFeedContent>
               <ActivityFeedHeader>
-                <ActivityFeedActor>Aria Kettle</ActivityFeedActor>
-                <ActivityFeedAction>closed ticket 4820</ActivityFeedAction>
+                <ActivityFeedActor>
+                  {t({ en: "Aria Kettle", ar: "آريا كيتل" })}
+                </ActivityFeedActor>
+                <ActivityFeedAction>
+                  {t({ en: "closed ticket 4820", ar: "أغلقت التذكرة 4820" })}
+                </ActivityFeedAction>
               </ActivityFeedHeader>
-              <ActivityFeedTime>4 hours ago</ActivityFeedTime>
+              <ActivityFeedTime>
+                {t({ en: "4 hours ago", ar: "قبل 4 ساعات" })}
+              </ActivityFeedTime>
             </ActivityFeedContent>
           </ActivityFeedItem>
         </ActivityFeed>

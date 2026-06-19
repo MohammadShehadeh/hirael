@@ -90,7 +90,10 @@ function classifyToken(token: string, index: number): keyof typeof TOKEN_CLASS {
 function CommandLine({ command }: { command: string }) {
   const tokens = command.split(" ");
   return (
-    <code className="no-scrollbar min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs">
+    <code
+      dir="ltr"
+      className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs"
+    >
       {tokens.map((t, i) => (
         <React.Fragment key={i}>
           {i > 0 && " "}

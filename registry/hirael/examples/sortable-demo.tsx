@@ -2,22 +2,37 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   Sortable,
   SortableHandle,
   SortableItem,
 } from "@/registry/hirael/ui/sortable";
 
-const tasks = {
-  "design-review": "Design review with the product team",
-  "fix-onboarding": "Fix onboarding empty state",
-  "ship-registry": "Ship the registry build pipeline",
-  "write-changelog": "Write the release changelog",
-};
-
 const tags = ["react", "tailwind", "radix", "cmdk", "lucide"];
 
 export default function SortableDemo() {
+  const t = useT();
+
+  const tasks = {
+    "design-review": t({
+      en: "Design review with the product team",
+      ar: "مراجعة التصميم مع فريق المنتج",
+    }),
+    "fix-onboarding": t({
+      en: "Fix onboarding empty state",
+      ar: "إصلاح الحالة الفارغة في الإعداد",
+    }),
+    "ship-registry": t({
+      en: "Ship the registry build pipeline",
+      ar: "إطلاق مسار بناء السجل",
+    }),
+    "write-changelog": t({
+      en: "Write the release changelog",
+      ar: "كتابة سجل تغييرات الإصدار",
+    }),
+  };
+
   const [taskOrder, setTaskOrder] = React.useState(Object.keys(tasks));
   const [tagOrder, setTagOrder] = React.useState(tags);
 
@@ -25,7 +40,7 @@ export default function SortableDemo() {
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Tasks · drag handle
+          {t({ en: "Tasks · drag handle", ar: "المهام · مقبض السحب" })}
         </p>
         <Sortable value={taskOrder} onValueChange={setTaskOrder}>
           {Object.entries(tasks).map(([id, title]) => (
@@ -45,7 +60,10 @@ export default function SortableDemo() {
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Tags · horizontal, whole item drags
+          {t({
+            en: "Tags · horizontal, whole item drags",
+            ar: "الوسوم · أفقي، يُسحب العنصر بالكامل",
+          })}
         </p>
         <Sortable
           orientation="horizontal"
@@ -69,7 +87,10 @@ export default function SortableDemo() {
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Disabled item · skipped while sorting
+          {t({
+            en: "Disabled item · skipped while sorting",
+            ar: "عنصر معطّل · يُتخطّى أثناء الترتيب",
+          })}
         </p>
         <Sortable
           defaultValue={["draft", "locked", "review", "published"]}
@@ -77,19 +98,19 @@ export default function SortableDemo() {
         >
           <SortableItem value="draft" className="p-3">
             <SortableHandle />
-            Draft
+            {t({ en: "Draft", ar: "مسودة" })}
           </SortableItem>
           <SortableItem value="locked" disabled className="p-3">
             <SortableHandle />
-            Locked (disabled)
+            {t({ en: "Locked (disabled)", ar: "مقفل (معطّل)" })}
           </SortableItem>
           <SortableItem value="review" className="p-3">
             <SortableHandle />
-            In review
+            {t({ en: "In review", ar: "قيد المراجعة" })}
           </SortableItem>
           <SortableItem value="published" className="p-3">
             <SortableHandle />
-            Published
+            {t({ en: "Published", ar: "منشور" })}
           </SortableItem>
         </Sortable>
       </div>

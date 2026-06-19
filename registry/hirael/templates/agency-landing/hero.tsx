@@ -75,7 +75,7 @@ export function Hero() {
               </span>
               <button
                 type="button"
-                className="group flex items-center gap-2 rounded-full bg-gray-900 py-2 pl-5 pr-2 text-[13px] font-medium text-white"
+                className="group flex items-center gap-2 rounded-full bg-gray-900 py-2 ps-5 pe-2 text-[13px] font-medium text-white"
               >
                 <RollText>Book a strategy call</RollText>
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">

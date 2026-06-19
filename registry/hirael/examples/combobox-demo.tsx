@@ -3,6 +3,7 @@
 import * as React from "react";
 import { GlobeIcon } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import { Label } from "@/registry/hirael/ui/label";
 import { InputGroupAddon } from "@/registry/hirael/ui/input-group";
 import {
@@ -31,32 +32,51 @@ const FRAMEWORKS = [
   "Gatsby",
 ];
 
-const TIMEZONES = [
-  {
-    value: "Americas",
-    items: ["(GMT-5) New York", "(GMT-8) Los Angeles", "(GMT-3) São Paulo"],
-  },
-  {
-    value: "Europe",
-    items: ["(GMT+0) London", "(GMT+1) Paris", "(GMT+1) Berlin"],
-  },
-  {
-    value: "Asia/Pacific",
-    items: ["(GMT+9) Tokyo", "(GMT+4) Dubai", "(GMT+11) Sydney"],
-  },
-];
-
 export default function ComboboxDemo() {
+  const t = useT();
+
+  const TIMEZONES = [
+    {
+      value: t({ en: "Americas", ar: "الأمريكتان" }),
+      items: [
+        t({ en: "(GMT-5) New York", ar: "(GMT-5) نيويورك" }),
+        t({ en: "(GMT-8) Los Angeles", ar: "(GMT-8) لوس أنجلوس" }),
+        t({ en: "(GMT-3) São Paulo", ar: "(GMT-3) ساو باولو" }),
+      ],
+    },
+    {
+      value: t({ en: "Europe", ar: "أوروبا" }),
+      items: [
+        t({ en: "(GMT+0) London", ar: "(GMT+0) لندن" }),
+        t({ en: "(GMT+1) Paris", ar: "(GMT+1) باريس" }),
+        t({ en: "(GMT+1) Berlin", ar: "(GMT+1) برلين" }),
+      ],
+    },
+    {
+      value: t({ en: "Asia/Pacific", ar: "آسيا/المحيط الهادئ" }),
+      items: [
+        t({ en: "(GMT+9) Tokyo", ar: "(GMT+9) طوكيو" }),
+        t({ en: "(GMT+4) Dubai", ar: "(GMT+4) دبي" }),
+        t({ en: "(GMT+11) Sydney", ar: "(GMT+11) سيدني" }),
+      ],
+    },
+  ];
+
   const anchor = useComboboxAnchor();
 
   return (
     <div className="grid w-full max-w-xs gap-8">
       <div className="grid gap-2">
-        <Label>Single with clear</Label>
+        <Label>{t({ en: "Single with clear", ar: "مفرد مع مسح" })}</Label>
         <Combobox items={FRAMEWORKS} defaultValue="Next.js">
-          <ComboboxInput placeholder="Select a framework" showClear />
+          <ComboboxInput
+            placeholder={t({ en: "Select a framework", ar: "اختر إطار عمل" })}
+            showClear
+          />
           <ComboboxContent>
-            <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+            <ComboboxEmpty>
+              {t({ en: "No frameworks found.", ar: "لا أطر عمل." })}
+            </ComboboxEmpty>
             <ComboboxList>
               {(item: string) => (
                 <ComboboxItem key={item} value={item}>
@@ -69,15 +89,24 @@ export default function ComboboxDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Grouped with an addon</Label>
+        <Label>
+          {t({ en: "Grouped with an addon", ar: "مجمّع مع إضافة" })}
+        </Label>
         <Combobox items={TIMEZONES}>
-          <ComboboxInput placeholder="Select a timezone">
+          <ComboboxInput
+            placeholder={t({
+              en: "Select a timezone",
+              ar: "اختر منطقة زمنية",
+            })}
+          >
             <InputGroupAddon>
               <GlobeIcon />
             </InputGroupAddon>
           </ComboboxInput>
           <ComboboxContent>
-            <ComboboxEmpty>No timezones found.</ComboboxEmpty>
+            <ComboboxEmpty>
+              {t({ en: "No timezones found.", ar: "لا مناطق زمنية." })}
+            </ComboboxEmpty>
             <ComboboxList>
               {(group: (typeof TIMEZONES)[number]) => (
                 <ComboboxGroup key={group.value} items={group.items}>
@@ -97,7 +126,7 @@ export default function ComboboxDemo() {
       </div>
 
       <div className="grid gap-2">
-        <Label>Multiple</Label>
+        <Label>{t({ en: "Multiple", ar: "متعدد" })}</Label>
         <Combobox multiple items={FRAMEWORKS} defaultValue={["Next.js"]}>
           <ComboboxChips ref={anchor}>
             <ComboboxValue>
@@ -106,13 +135,20 @@ export default function ComboboxDemo() {
                   {values.map((value) => (
                     <ComboboxChip key={value}>{value}</ComboboxChip>
                   ))}
-                  <ComboboxChipsInput placeholder="Add framework…" />
+                  <ComboboxChipsInput
+                    placeholder={t({
+                      en: "Add framework…",
+                      ar: "أضف إطار عمل…",
+                    })}
+                  />
                 </>
               )}
             </ComboboxValue>
           </ComboboxChips>
           <ComboboxContent anchor={anchor}>
-            <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+            <ComboboxEmpty>
+              {t({ en: "No frameworks found.", ar: "لا أطر عمل." })}
+            </ComboboxEmpty>
             <ComboboxList>
               {(item: string) => (
                 <ComboboxItem key={item} value={item}>

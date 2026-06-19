@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Hash } from "lucide-react";
+import { DirectionProvider as BaseDirectionProvider } from "@base-ui/react/direction-provider";
 
 import { cn } from "@/lib/utils";
 import { BlockViewer } from "@/components/showcase/block-viewer";
@@ -12,6 +13,8 @@ import { InstallBlock } from "@/components/showcase/install-block";
 import { Pager } from "@/components/showcase/pager";
 import { SectionLabel } from "@/components/showcase/page-header";
 import { Toc, type TocItem } from "@/components/showcase/toc";
+import { DemoLocaleProvider } from "@/lib/demo-locale";
+import { DirectionProvider } from "@/registry/hirael/ui/direction";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
   Table,
@@ -310,7 +313,20 @@ function ExampleBlock({
             dir={rtl ? "rtl" : undefined}
             className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
-            <RegistryExample name={example.slug} />
+            {/* Radix + Base UI direction providers cross React portals, so
+                dropdown/popover content (which portals to <body>, outside this
+                dir wrapper) still renders RTL. Remount on direction change so
+                locale-derived initial state re-seeds in the active language. */}
+            <DirectionProvider dir={rtl ? "rtl" : "ltr"}>
+              <BaseDirectionProvider direction={rtl ? "rtl" : "ltr"}>
+                <DemoLocaleProvider locale={rtl ? "ar" : "en"}>
+                  <RegistryExample
+                    key={rtl ? "ar" : "en"}
+                    name={example.slug}
+                  />
+                </DemoLocaleProvider>
+              </BaseDirectionProvider>
+            </DirectionProvider>
           </div>
         ) : example.source ? (
           <CodeBlock

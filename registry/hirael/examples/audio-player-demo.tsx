@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Music, Upload } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import {
   AudioPlayer,
   AudioPlayerPlay,
@@ -22,16 +23,20 @@ import {
 } from "@/registry/hirael/ui/media-input";
 
 function PlaybackStatus() {
+  const t = useT();
   const { playing, rate } = useAudioPlayer();
 
   return (
     <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-      {playing ? `Playing at ${rate}×` : "Paused"}
+      {playing
+        ? t({ en: `Playing at ${rate}×`, ar: `تشغيل بسرعة ${rate}×` })
+        : t({ en: "Paused", ar: "متوقف مؤقتًا" })}
     </span>
   );
 }
 
 export default function AudioPlayerDemo() {
+  const t = useT();
   const [src, setSrc] = React.useState<string>();
 
   return (
@@ -43,23 +48,27 @@ export default function AudioPlayerDemo() {
         <MediaInputEmpty>
           <Music aria-hidden className="size-6 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            Pick a local audio file to preview the player. It plays from your
-            browser only. Nothing is uploaded.
+            {t({
+              en: "Pick a local audio file to preview the player. It plays from your browser only. Nothing is uploaded.",
+              ar: "اختر ملفًا صوتيًا محليًا لمعاينة المشغّل. يُشغَّل من متصفّحك فقط. لا يُرفع أي شيء.",
+            })}
           </p>
           <MediaInputTrigger>
             <Upload aria-hidden />
-            Choose audio file
+            {t({ en: "Choose audio file", ar: "اختر ملفًا صوتيًا" })}
           </MediaInputTrigger>
         </MediaInputEmpty>
         <MediaInputContent className="flex items-center justify-between gap-3">
           <MediaInputFile />
-          <MediaInputTrigger size="sm">Replace audio</MediaInputTrigger>
+          <MediaInputTrigger size="sm">
+            {t({ en: "Replace audio", ar: "استبدال الصوت" })}
+          </MediaInputTrigger>
         </MediaInputContent>
       </MediaInput>
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Full player · composed
+          {t({ en: "Full player · composed", ar: "مشغّل كامل · مركّب" })}
         </p>
         <AudioPlayer
           src={src}
@@ -78,7 +87,7 @@ export default function AudioPlayerDemo() {
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Podcast row · minimal
+          {t({ en: "Podcast row · minimal", ar: "صفّ بودكاست · مبسّط" })}
         </p>
         <AudioPlayer src={src}>
           <AudioPlayerPlay />
@@ -89,7 +98,7 @@ export default function AudioPlayerDemo() {
 
       <div className="grid gap-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Custom · useAudioPlayer
+          {t({ en: "Custom · useAudioPlayer", ar: "مخصّص · useAudioPlayer" })}
         </p>
         <AudioPlayer
           src={src}

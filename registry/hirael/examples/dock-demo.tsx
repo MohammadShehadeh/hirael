@@ -2,23 +2,34 @@
 
 import { Calendar, Folder, Home, Mail, Music, Settings } from "lucide-react";
 
+import { useT } from "@/lib/demo-locale";
 import { Dock, DockItem, DockLabel } from "@/registry/hirael/ui/dock";
 
-const APPS = [
-  { label: "Home", icon: Home },
-  { label: "Files", icon: Folder },
-  { label: "Mail", icon: Mail },
-  { label: "Calendar", icon: Calendar },
-  { label: "Music", icon: Music },
-  { label: "Settings", icon: Settings },
-];
-
 export default function DockDemo() {
+  const t = useT();
+
+  const APPS = [
+    { key: "home", label: t({ en: "Home", ar: "الرئيسية" }), icon: Home },
+    { key: "files", label: t({ en: "Files", ar: "الملفات" }), icon: Folder },
+    { key: "mail", label: t({ en: "Mail", ar: "البريد" }), icon: Mail },
+    {
+      key: "calendar",
+      label: t({ en: "Calendar", ar: "التقويم" }),
+      icon: Calendar,
+    },
+    { key: "music", label: t({ en: "Music", ar: "الموسيقى" }), icon: Music },
+    {
+      key: "settings",
+      label: t({ en: "Settings", ar: "الإعدادات" }),
+      icon: Settings,
+    },
+  ];
+
   return (
     <div className="flex w-full max-w-xl items-end justify-center pt-12">
       <Dock>
         {APPS.map((app) => (
-          <DockItem key={app.label} aria-label={app.label}>
+          <DockItem key={app.key} aria-label={app.label}>
             <DockLabel>{app.label}</DockLabel>
             <app.icon />
           </DockItem>

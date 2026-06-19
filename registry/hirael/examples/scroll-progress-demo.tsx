@@ -2,15 +2,20 @@
 
 import * as React from "react";
 
+import { useT } from "@/lib/demo-locale";
 import { ScrollProgress } from "@/registry/hirael/ui/scroll-progress";
 
 export default function ScrollProgressDemo() {
+  const t = useT();
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <div className="grid w-full max-w-3xl gap-3">
       <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-        Scoped to container · pinned to the top of this preview
+        {t({
+          en: "Scoped to container · pinned to the top of this preview",
+          ar: "محصور في الحاوية · مثبّت أعلى هذه المعاينة",
+        })}
       </p>
 
       <div className="relative h-72 overflow-hidden rounded-md border border-border">
@@ -24,18 +29,31 @@ export default function ScrollProgressDemo() {
         >
           {Array.from({ length: 18 }).map((_, i) => (
             <p key={i} className="mb-4">
-              {i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue
-              ligula ac quam viverra nec consectetur ante hendrerit. Donec et
-              mollis dolor.
+              {i + 1}.{" "}
+              {t({
+                en: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.",
+                ar: "هذا نص افتراضي يُستخدم لملء المساحة وعرض تدفق القراءة. تتوالى الجمل لتظهر كيف ينساب المحتوى داخل الحاوية. مرّر للأسفل لتتبّع شريط التقدم وهو يمتلئ مع حركة القراءة.",
+              })}
             </p>
           ))}
         </div>
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Tip: omit <code className="font-mono">target</code> to track the whole
-        document scroll, useful on long blog posts.
+        {t({
+          en: (
+            <>
+              Tip: omit <code className="font-mono">target</code> to track the
+              whole document scroll, useful on long blog posts.
+            </>
+          ),
+          ar: (
+            <>
+              نصيحة: احذف <code className="font-mono">target</code> لتتبّع تمرير
+              المستند بالكامل، وهو مفيد في المقالات الطويلة.
+            </>
+          ),
+        })}
       </p>
     </div>
   );

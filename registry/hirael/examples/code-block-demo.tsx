@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/demo-locale";
 import { CodeBlock } from "@/registry/hirael/ui/code-block";
 
 const utilsSnippet = `import { clsx, type ClassValue } from "clsx"
@@ -43,11 +44,16 @@ export async function loadUsers() {
 }`;
 
 export default function CodeBlockDemo() {
+  const t = useT();
+
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Filename, language and highlighted lines
+          {t({
+            en: "Filename, language and highlighted lines",
+            ar: "اسم الملف واللغة والأسطر المظلَّلة",
+          })}
         </p>
         <CodeBlock
           code={utilsSnippet}
@@ -59,7 +65,7 @@ export default function CodeBlockDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Diff: config change
+          {t({ en: "Diff: config change", ar: "فرق: تغيير الإعدادات" })}
         </p>
         <CodeBlock
           code={diffSnippet}
@@ -72,7 +78,7 @@ export default function CodeBlockDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Max height with expand
+          {t({ en: "Max height with expand", ar: "ارتفاع أقصى مع التوسيع" })}
         </p>
         <CodeBlock
           code={longSnippet}
@@ -84,7 +90,10 @@ export default function CodeBlockDemo() {
 
       <div className="grid gap-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Bare, no header, no numbers
+          {t({
+            en: "Bare, no header, no numbers",
+            ar: "مجرّد، بلا ترويسة، بلا أرقام",
+          })}
         </p>
         <CodeBlock showLineNumbers={false} copyable={false}>
           npx shadcn@latest add code-block

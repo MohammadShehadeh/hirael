@@ -299,7 +299,7 @@ function SignaturePad({
           aria-hidden
           data-slot="signature-pad-baseline"
           className={cn(
-            "pointer-events-none absolute bottom-7 left-4 right-4 flex items-end gap-2 transition-opacity duration-300",
+            "pointer-events-none absolute bottom-7 start-4 end-4 flex items-end gap-2 transition-opacity duration-300",
             empty ? "opacity-100" : "opacity-0",
           )}
         >

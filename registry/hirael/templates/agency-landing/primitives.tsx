@@ -63,7 +63,7 @@ export function OrangeButton({
     <button
       type="button"
       className={cn(
-        "group inline-flex items-center gap-2 rounded-full bg-[#F26522] py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-colors hover:bg-[#e05a1a] sm:pl-6 sm:text-[14px]",
+        "group inline-flex items-center gap-2 rounded-full bg-[#F26522] py-2 ps-5 pe-2 text-[13px] font-medium text-white transition-colors hover:bg-[#e05a1a] sm:ps-6 sm:text-[14px]",
         className,
       )}
     >

@@ -36,7 +36,7 @@ export function CaseStudies() {
                 playsInline
                 className="h-full w-full object-cover"
               />
-              <div className="absolute bottom-4 left-4">
+              <div className="absolute bottom-4 start-4">
                 <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[148px]">
                   <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
                     <LinkIcon className="h-[14px] w-[14px] -rotate-45 text-gray-900 transition-transform duration-300 group-hover:rotate-0" />
@@ -67,7 +67,7 @@ export function CaseStudies() {
                 playsInline
                 className="h-full w-full object-cover"
               />
-              <div className="absolute bottom-4 left-4">
+              <div className="absolute bottom-4 start-4">
                 <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-gray-900 transition-all duration-300 ease-in-out group-hover:w-[168px]">
                   <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
                     <ArrowRight

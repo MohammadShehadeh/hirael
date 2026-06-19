@@ -108,7 +108,7 @@ function WithAsterisk({ word }: { word: string }) {
       {chars.join("")}
       <span className="relative inline-block">
         {last}
-        <span className="absolute -right-[0.3em] top-[0.1em] text-[0.31em]">
+        <span className="absolute -end-[0.3em] top-[0.1em] text-[0.31em]">
           *
         </span>
       </span>

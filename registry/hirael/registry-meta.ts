@@ -2082,6 +2082,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react", "motion"],
   },
   {
+    name: "hero-09",
+    title: "Hero 9",
+    description:
+      "Full-bleed image hero with a Morning/Night scene toggle that swaps the photo with a pull-down and spring animation, a glass pill nav, an inline Arabic/English switch, a serif headline and dual CTA. Theme-aware and right-to-left ready.",
+    blockTagline: "Image hero · day/night toggle · AR/EN",
+    category: "blocks",
+    blockKind: "hero",
+    files: [
+      {
+        path: "registry/hirael/blocks/hero-09/hero-09.tsx",
+        target: "components/blocks/hero-09.tsx",
+      },
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
     name: "testimonial-03",
     title: "Testimonial 3",
     description:

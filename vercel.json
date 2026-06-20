@@ -237,6 +237,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/hero-09",
+      "destination": "/blocks/hero/hero-09",
+      "permanent": true
+    },
+    {
       "source": "/blocks/image-gallery-01",
       "destination": "/blocks/image-gallery/image-gallery-01",
       "permanent": true

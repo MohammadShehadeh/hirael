@@ -13,15 +13,17 @@ type Scene = "morning" | "night";
 
 const IMG: Record<Scene, string> = {
   morning:
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2400&auto=format&fit=crop",
+    "https://res.cloudinary.com/dsdhxhhqh/image/upload/v1778837456/hf_20260515_092045_b654224c-4741-458f-8596-fa5bfeffabbc_1_oyfhme.jpg",
   night:
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop",
+    "https://res.cloudinary.com/dsdhxhhqh/image/upload/v1778837447/hf_20260515_092102_24e30358-d694-4b70-8a56-a4f0887cf8ae_1_ry5dvs.jpg",
 };
 
 const COPY = {
   en: {
     dir: "ltr",
     toLang: "العربية",
+    brandName: "Aswar Dar Al-Iraq",
+    brandTag: "Solar Energy",
     nav: ["How it works", "Cases", "Pricing", "About"],
     navCta: "Get started",
     eyebrow: "Home solar",
@@ -35,13 +37,15 @@ const COPY = {
       night: { label: "Night", note: "Runs on your battery" },
     },
     alt: {
-      morning: "Sunlight streaming through a forest at dawn",
-      night: "Earth at night from orbit, city lights glowing",
+      morning: "A home powered by solar in the morning light",
+      night: "The same home powered by solar at night",
     },
   },
   ar: {
     dir: "rtl",
     toLang: "English",
+    brandName: "اسوار دار العراق",
+    brandTag: "للطاقة الشمسية",
     nav: ["كيف يعمل", "الحالات", "الأسعار", "من نحن"],
     navCta: "ابدأ الآن",
     eyebrow: "طاقة شمسية منزلية",
@@ -55,8 +59,8 @@ const COPY = {
       night: { label: "الليل", note: "تعمل بالبطارية" },
     },
     alt: {
-      morning: "أشعة الشمس تتخلل الغابة عند الفجر",
-      night: "الأرض ليلاً من المدار وأضواء المدن تتوهّج",
+      morning: "منزل يعمل بالطاقة الشمسية في ضوء الصباح",
+      night: "المنزل نفسه يعمل بالطاقة الشمسية ليلاً",
     },
   },
 } satisfies Record<Lang, unknown>;
@@ -166,9 +170,21 @@ export default function Hero09() {
 
       <header data-slot="hero-nav" className="relative z-10 px-4 py-4 md:px-6">
         <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border border-border bg-card/70 py-2 pe-2 ps-5 backdrop-blur-md">
-          <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-            <Zap className="size-5 text-primary" />
-            reposit
+          <span className="flex min-w-0 items-center gap-2.5 text-foreground">
+            <Zap className="size-5 shrink-0 text-primary" />
+            <span className="flex min-w-0 flex-col leading-none">
+              <span className="truncate text-sm font-semibold tracking-tight">
+                {c.brandName}
+              </span>
+              <span
+                className={cn(
+                  "mt-1 truncate text-[10px] text-muted-foreground",
+                  lang === "en" && "font-medium uppercase tracking-[0.12em]",
+                )}
+              >
+                {c.brandTag}
+              </span>
+            </span>
           </span>
 
           <div className="hidden items-center gap-7 text-sm text-muted-foreground lg:flex">
@@ -192,7 +208,9 @@ export default function Hero09() {
               className="rounded-full text-muted-foreground hover:text-foreground"
             >
               <Languages className="size-4" />
-              <span className="text-xs font-medium">{c.toLang}</span>
+              <span className="hidden text-xs font-medium sm:inline">
+                {c.toLang}
+              </span>
             </Button>
             <Button asChild size="sm" className="rounded-full">
               <a href="#">{c.navCta}</a>
@@ -203,11 +221,23 @@ export default function Hero09() {
 
       <div className="relative z-10 flex flex-1 items-end justify-center px-6 pb-12 md:px-10 md:pb-16">
         <div className="flex w-full max-w-3xl flex-col items-center text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
+          <span
+            className={cn(
+              "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3.5 py-1.5 text-[11px] text-muted-foreground backdrop-blur-sm",
+              lang === "en"
+                ? "font-mono uppercase tracking-[0.16em]"
+                : "font-medium",
+            )}
+          >
             {c.eyebrow}
           </span>
 
-          <h1 className="mt-6 max-w-2xl text-balance font-serif text-5xl font-medium leading-[1.02] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+          <h1
+            className={cn(
+              "mt-6 max-w-2xl text-balance font-serif text-5xl font-medium leading-[1.02] text-foreground sm:text-6xl md:text-7xl",
+              lang === "en" ? "tracking-tight" : "tracking-normal",
+            )}
+          >
             {c.titleLead}{" "}
             <span className="text-foreground/55">{c.titleAccent}</span>
           </h1>

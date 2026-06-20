@@ -140,6 +140,14 @@ positioning is fine where geometry genuinely is physical (Radix
 `data-[side]` animations, the color-picker canvas, `side="left|right"` on
 Sheet/Sidebar). Every preview has an RTL toggle — verify with it.
 
+**CSS-transform animations don't flip themselves.** `translateX` is physical,
+so a keyframe that scrolls a `dir`-aware flex flow has to flip its sign under
+RTL or the loop tears (content exits with nothing trailing it). The marquee
+(`ui/marquee.tsx`) drives its horizontal travel through a `--marquee-x-dir`
+sign (`-1` ltr, `1` rtl, set by a `[dir="rtl"] [data-slot="marquee-track"]`
+rule) so the track moves toward the inline-start either way; `translateY` for
+the vertical mode stays put since the block axis doesn't flip.
+
 The framed `/embed/*` previews carry direction as a `?dir=rtl` query
 param. It's applied to `<html dir>` by a pre-paint inline script
 (`lib/embed.ts`, rendered from each embed `page.tsx`), the same trick the

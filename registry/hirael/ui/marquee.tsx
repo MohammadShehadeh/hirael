@@ -19,10 +19,13 @@ export type MarqueeProps = React.ComponentProps<"div"> & {
 
 // Keyframes travel with the component so it works the moment it is copied
 // into a project — no Tailwind config or globals.css edits required.
+// The horizontal track moves toward the inline-start: flex reverses the
+// duplicated tracks under dir="rtl", so the travel sign flips with it
+// (--marquee-x-dir: -1 ltr, 1 rtl) to keep the loop seamless either way.
 const MARQUEE_KEYFRAMES = `
 @keyframes msh-marquee-x {
   from { transform: translateX(0); }
-  to { transform: translateX(calc(-100% - var(--marquee-gap))); }
+  to { transform: translateX(calc(var(--marquee-x-dir, -1) * (100% + var(--marquee-gap)))); }
 }
 @keyframes msh-marquee-y {
   from { transform: translateY(0); }
@@ -30,6 +33,9 @@ const MARQUEE_KEYFRAMES = `
 }
 [data-slot="marquee"][data-pause="true"]:hover [data-slot="marquee-track"] {
   animation-play-state: paused;
+}
+[dir="rtl"] [data-slot="marquee-track"] {
+  --marquee-x-dir: 1;
 }
 `;
 

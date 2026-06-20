@@ -7050,5 +7050,27 @@
       ],
       "extendsNative": true
     }
+  ],
+  "confirm": [
+    {
+      "name": "ConfirmProvider",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOptions",
+          "type": "Pick<ConfirmOptions, \"tone\" | \"confirmText\" | \"cancelText\" | \"dismissible\">",
+          "required": false,
+          "default": null,
+          "description": "Defaults merged under every `confirm()` call."
+        }
+      ],
+      "extendsNative": false
+    }
   ]
 }

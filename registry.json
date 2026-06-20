@@ -3438,6 +3438,27 @@
       ]
     },
     {
+      "name": "confirm",
+      "type": "registry:ui",
+      "title": "Confirm",
+      "description": "Imperative confirmation dialog: a root provider plus a useConfirm hook that resolves a promise on confirm or cancel. Default or destructive tone, an optional icon, and an async confirm action with a pending spinner.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "alert-dialog",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/confirm.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/confirm.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

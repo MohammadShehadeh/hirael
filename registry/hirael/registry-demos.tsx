@@ -183,6 +183,7 @@ const EXAMPLE_LOADERS: Record<
   "calendar-heatmap-demo": () =>
     import("@/registry/hirael/examples/calendar-heatmap-demo"),
   "code-block-demo": () => import("@/registry/hirael/examples/code-block-demo"),
+  "confirm-demo": () => import("@/registry/hirael/examples/confirm-demo"),
   "masonry-demo": () => import("@/registry/hirael/examples/masonry-demo"),
   "audio-player-demo": () =>
     import("@/registry/hirael/examples/audio-player-demo"),

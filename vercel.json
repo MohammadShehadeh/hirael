@@ -402,6 +402,11 @@
       "permanent": true
     },
     {
+      "source": "/components/confirm",
+      "destination": "/components/display/confirm",
+      "permanent": true
+    },
+    {
       "source": "/components/copy-button",
       "destination": "/components/display/copy-button",
       "permanent": true

@@ -2285,6 +2285,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["card", "chart", "empty", "tooltip", "button"],
     dependencies: ["recharts", "lucide-react"],
   },
+  {
+    name: "confirm",
+    title: "Confirm",
+    description:
+      "Imperative confirmation dialog: a root provider plus a useConfirm hook that resolves a promise on confirm or cancel. Default or destructive tone, an optional icon, and an async confirm action with a pending spinner.",
+    category: "display",
+    files: [{ path: "registry/hirael/ui/confirm.tsx" }],
+    registryDependencies: ["alert-dialog", "button"],
+    dependencies: [],
+  },
 ];
 
 /**

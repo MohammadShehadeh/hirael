@@ -8,7 +8,7 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **72 registry UI items** (70 standalone
+pages). As of the last update: **73 registry UI items** (71 standalone
 components + 2 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -84,7 +84,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `timeline`         | —             | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                  |
 | `tree-view`        | `collapsible` | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
 
-#### Display & feedback (14)
+#### Display & feedback (15)
 
 | Component          | Registry deps                    | What it is                                                                                                                                                                                     |
 | ------------------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -102,6 +102,7 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `qr-code`          | —                                | Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and `currentColor` theming.                                                           |
 | `scroll-progress`  | —                                | Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.                                                                                                       |
 | `spinner`          | —                                | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label.                                                           |
+| `unsaved-guard`    | `confirm`                        | Unsaved-changes navigation guard from a provider and a `useUnsavedGuard` hook. Warns on reload, tab close and in-app links, with a `guard(proceed)` for programmatic navigation.               |
 
 #### Navigation (10)
 

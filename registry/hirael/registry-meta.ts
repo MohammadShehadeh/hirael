@@ -2295,6 +2295,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["alert-dialog", "button"],
     dependencies: [],
   },
+  {
+    name: "unsaved-guard",
+    title: "Unsaved Guard",
+    description:
+      "Unsaved-changes guard: a root provider plus a useUnsavedGuard hook. Warns before reload, tab close and in-app link navigation, and returns a guard(proceed) to wrap programmatic navigation in a confirm dialog.",
+    category: "display",
+    files: [{ path: "registry/hirael/ui/unsaved-guard.tsx" }],
+    registryDependencies: ["confirm"],
+    dependencies: [],
+  },
 ];
 
 /**

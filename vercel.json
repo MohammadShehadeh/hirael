@@ -672,6 +672,11 @@
       "permanent": true
     },
     {
+      "source": "/components/unsaved-guard",
+      "destination": "/components/display/unsaved-guard",
+      "permanent": true
+    },
+    {
       "source": "/components/usage-dashboard",
       "destination": "/components/saas/usage-dashboard",
       "permanent": true

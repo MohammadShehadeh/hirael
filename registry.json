@@ -3459,6 +3459,26 @@
       ]
     },
     {
+      "name": "unsaved-guard",
+      "type": "registry:ui",
+      "title": "Unsaved Guard",
+      "description": "Unsaved-changes guard: a root provider plus a useUnsavedGuard hook. Warns before reload, tab close and in-app link navigation, and returns a guard(proceed) to wrap programmatic navigation in a confirm dialog.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "confirm"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/unsaved-guard.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/unsaved-guard.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

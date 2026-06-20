@@ -7072,5 +7072,41 @@
       ],
       "extendsNative": false
     }
+  ],
+  "unsaved-guard": [
+    {
+      "name": "UnsavedGuardProvider",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "beforeUnload",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Warn on reload / tab close via the browser's native prompt. Default true."
+        },
+        {
+          "name": "onProceed",
+          "type": "((href: string) => void)",
+          "required": false,
+          "default": null,
+          "description": "Called with the destination URL when the user confirms leaving via an\nin-app link. Use it to navigate through your router (e.g. `router.push`);\ndefaults to a full navigation."
+        },
+        {
+          "name": "defaultOptions",
+          "type": "Omit<UnsavedGuardOptions, \"when\">",
+          "required": false,
+          "default": null,
+          "description": "Default leave-dialog copy, overridden per `useUnsavedGuard` call."
+        }
+      ],
+      "extendsNative": false
+    }
   ]
 }

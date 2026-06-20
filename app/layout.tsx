@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  JetBrains_Mono,
+  Inter,
+  Noto_Sans_Arabic,
+} from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -11,6 +16,12 @@ import { TooltipProvider } from "@/registry/hirael/ui/tooltip";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const notoSansArabic = Noto_Sans_Arabic({
+  variable: "--font-noto-sans-arabic",
+  weight: ["400", "500", "600"],
+  subsets: ["latin", "arabic"],
 });
 
 const jetBrainsMono = JetBrains_Mono({
@@ -138,7 +149,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.className} ${notoSansArabic.variable} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
       >
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

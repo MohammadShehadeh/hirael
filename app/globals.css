@@ -12,6 +12,7 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jet-brains-mono);
   --font-serif: var(--font-cormorant);
+  --font-arabic: var(--font-noto-sans-arabic);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);

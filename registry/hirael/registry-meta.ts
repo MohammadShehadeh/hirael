@@ -1768,6 +1768,57 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["gsap", "framer-motion", "hls.js"],
   },
   {
+    name: "aswar",
+    title: "Aswar Dar Al-Iraq",
+    description:
+      "Bilingual Arabic/English solar landing page: a full-bleed photo hero whose Morning/Night toggle flips the whole page between light and dark, a how-it-works step grid, image case studies, an about block with a stat strip, an open-roles list, resource cards and a testimonial wall. Token-based and right-to-left ready.",
+    category: "templates",
+    files: [
+      {
+        path: "registry/hirael/templates/aswar/aswar.tsx",
+        target: "components/templates/aswar/aswar.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/hero.tsx",
+        target: "components/templates/aswar/hero.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/how-it-works.tsx",
+        target: "components/templates/aswar/how-it-works.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/cases.tsx",
+        target: "components/templates/aswar/cases.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/about.tsx",
+        target: "components/templates/aswar/about.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/careers.tsx",
+        target: "components/templates/aswar/careers.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/resources.tsx",
+        target: "components/templates/aswar/resources.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/customers.tsx",
+        target: "components/templates/aswar/customers.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/footer.tsx",
+        target: "components/templates/aswar/footer.tsx",
+      },
+      {
+        path: "registry/hirael/templates/aswar/primitives.tsx",
+        target: "components/templates/aswar/primitives.tsx",
+      },
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
     name: "usd-halo",
     title: "USD Halo",
     description:
@@ -2080,23 +2131,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ["badge", "button"],
     dependencies: ["lucide-react", "motion"],
-  },
-  {
-    name: "hero-09",
-    title: "Hero 9",
-    description:
-      "Full-bleed image hero with a Morning/Night scene toggle that swaps the photo with a pull-down and spring animation, a glass pill nav, an inline Arabic/English switch, a serif headline and dual CTA. Theme-aware and right-to-left ready.",
-    blockTagline: "Image hero · day/night toggle · AR/EN",
-    category: "blocks",
-    blockKind: "hero",
-    files: [
-      {
-        path: "registry/hirael/blocks/hero-09/hero-09.tsx",
-        target: "components/blocks/hero-09.tsx",
-      },
-    ],
-    registryDependencies: ["button"],
-    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "testimonial-03",

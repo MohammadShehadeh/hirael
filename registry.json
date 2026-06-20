@@ -2749,6 +2749,74 @@
       ]
     },
     {
+      "name": "aswar",
+      "type": "registry:block",
+      "title": "Aswar Dar Al-Iraq",
+      "description": "Bilingual Arabic/English solar landing page: a full-bleed photo hero whose Morning/Night toggle flips the whole page between light and dark, a how-it-works step grid, image case studies, an about block with a stat strip, an open-roles list, resource cards and a testimonial wall. Token-based and right-to-left ready.",
+      "categories": [
+        "templates"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/templates/aswar/aswar.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/aswar.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/hero.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/hero.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/how-it-works.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/how-it-works.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/cases.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/cases.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/about.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/about.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/careers.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/careers.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/resources.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/resources.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/customers.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/customers.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/footer.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/footer.tsx"
+        },
+        {
+          "path": "registry/hirael/templates/aswar/primitives.tsx",
+          "type": "registry:block",
+          "target": "components/templates/aswar/primitives.tsx"
+        }
+      ]
+    },
+    {
       "name": "usd-halo",
       "type": "registry:block",
       "title": "USD Halo",
@@ -3158,30 +3226,6 @@
           "path": "registry/hirael/blocks/hero-08/hero-08.tsx",
           "type": "registry:block",
           "target": "components/blocks/hero-08.tsx"
-        }
-      ]
-    },
-    {
-      "name": "hero-09",
-      "type": "registry:block",
-      "title": "Hero 9",
-      "description": "Full-bleed image hero with a Morning/Night scene toggle that swaps the photo with a pull-down and spring animation, a glass pill nav, an inline Arabic/English switch, a serif headline and dual CTA. Theme-aware and right-to-left ready.",
-      "categories": [
-        "blocks",
-        "hero"
-      ],
-      "dependencies": [
-        "lucide-react",
-        "motion"
-      ],
-      "registryDependencies": [
-        "button"
-      ],
-      "files": [
-        {
-          "path": "registry/hirael/blocks/hero-09/hero-09.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/hero-09.tsx"
         }
       ]
     },

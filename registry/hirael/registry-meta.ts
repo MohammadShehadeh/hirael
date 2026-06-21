@@ -1206,6 +1206,33 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "rich-text-editor",
+    title: "Rich Text Editor",
+    description:
+      "Tiptap editor with a formatting toolbar (headings, lists, links, highlight, alignment) and a hover bubble to edit or unlink links inline. Outputs HTML, controlled or uncontrolled, with composable parts.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/ui/rich-text-editor.tsx" }],
+    registryDependencies: [
+      "button",
+      "input",
+      "popover",
+      "separator",
+      "skeleton",
+      "toggle",
+      "tooltip",
+    ],
+    dependencies: [
+      "@tiptap/react",
+      "@tiptap/pm",
+      "@tiptap/core",
+      "@tiptap/starter-kit",
+      "@tiptap/extension-text-align",
+      "@tiptap/extension-highlight",
+      "@tiptap/extension-placeholder",
+      "lucide-react",
+    ],
+  },
+  {
     name: "inline-edit",
     title: "Inline Edit",
     description:

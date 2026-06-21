@@ -577,6 +577,11 @@
       "permanent": true
     },
     {
+      "source": "/components/rich-text-editor",
+      "destination": "/components/inputs/rich-text-editor",
+      "permanent": true
+    },
+    {
       "source": "/components/scroll-progress",
       "destination": "/components/display/scroll-progress",
       "permanent": true

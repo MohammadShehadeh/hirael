@@ -3012,6 +3012,157 @@
       "extendsNative": true
     }
   ],
+  "rich-text-editor": [
+    {
+      "name": "RichTextEditor",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Write something…\"",
+          "description": null
+        },
+        {
+          "name": "editable",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "RichTextEditorToolbar",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RichTextEditorButton",
+      "props": [
+        {
+          "name": "tooltip",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "pressed",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        },
+        {
+          "name": "onPressedChange",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "RichTextEditorSeparator",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RichTextEditorContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "RichTextEditorLinkPopover",
+      "props": [],
+      "extendsNative": false
+    },
+    {
+      "name": "RichTextEditorLinkBubble",
+      "props": [],
+      "extendsNative": false
+    }
+  ],
   "inline-edit": [
     {
       "name": "InlineEdit",

@@ -127,6 +127,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/dashboard-07",
+      "destination": "/blocks/dashboard/dashboard-07",
+      "permanent": true
+    },
+    {
       "source": "/blocks/ecommerce-01",
       "destination": "/blocks/ecommerce/ecommerce-01",
       "permanent": true
@@ -424,16 +429,6 @@
     {
       "source": "/components/cursor-glow",
       "destination": "/components/animation/cursor-glow",
-      "permanent": true
-    },
-    {
-      "source": "/components/data-table",
-      "destination": "/components/data/data-table",
-      "permanent": true
-    },
-    {
-      "source": "/components/data-table-client",
-      "destination": "/components/data/data-table-client",
       "permanent": true
     },
     {

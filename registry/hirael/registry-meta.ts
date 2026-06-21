@@ -2286,6 +2286,34 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["recharts", "lucide-react"],
   },
   {
+    name: "dashboard-07",
+    title: "Dashboard 7",
+    description:
+      "Accounts table section with the same data shown two ways: a client-side table that sorts, filters and pages in memory, and a server-driven table whose query lives in the URL. Faceted, text, range and date filters, sortable columns, row selection and pagination, framed in a card with tabs.",
+    blockTagline: "Data table · client + server modes",
+    category: "blocks",
+    blockKind: "dashboard",
+    files: [
+      {
+        path: "registry/hirael/blocks/dashboard-07/dashboard-07.tsx",
+        target: "components/blocks/dashboard-07.tsx",
+      },
+    ],
+    registryDependencies: [
+      "badge",
+      "card",
+      "checkbox",
+      "data-table",
+      "data-table-client",
+      "data-table-column-header",
+      "data-table-parsers",
+      "data-table-toolbar",
+      "tabs",
+      "use-data-table",
+    ],
+    dependencies: ["@tanstack/react-table", "nuqs"],
+  },
+  {
     name: "confirm",
     title: "Confirm",
     description:
@@ -2304,34 +2332,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     files: [{ path: "registry/hirael/ui/unsaved-guard.tsx" }],
     registryDependencies: ["confirm"],
     dependencies: [],
-  },
-  {
-    name: "data-table",
-    title: "Data Table",
-    description:
-      "Server-driven table built on TanStack Table: sortable columns, faceted, text, range and date filters, column visibility, row selection and pagination, with sort, filters and page kept in the URL. Pairs the DataTable renderer with the useDataTable hook and toolbar. For in-memory data, see data-table-client.",
-    category: "data",
-    files: [{ path: "registry/hirael/ui/data-table.tsx" }],
-    registryDependencies: [
-      "data-table-pagination",
-      "data-table-utils",
-      "table",
-    ],
-    dependencies: ["@tanstack/react-table"],
-  },
-  {
-    name: "data-table-client",
-    title: "Data Table (Client)",
-    description:
-      "Client-side table that sorts, filters and paginates a local array in memory — no URL state. Reuses the DataTable renderer and toolbar through the useDataTableClient hook, with a DataTableClient convenience component for the common case.",
-    category: "data",
-    files: [{ path: "registry/hirael/ui/data-table-client.tsx" }],
-    registryDependencies: [
-      "data-table",
-      "data-table-toolbar",
-      "data-table-utils",
-    ],
-    dependencies: ["@tanstack/react-table"],
   },
 ];
 
@@ -2522,6 +2522,36 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     files: [{ path: "registry/hirael/ui/use-data-table.ts" }],
     registryDependencies: ["data-table-parsers", "data-table-utils"],
     dependencies: ["@tanstack/react-table", "nuqs"],
+  },
+  {
+    name: "data-table",
+    title: "Data Table",
+    description:
+      "Renderer for the data table: takes a TanStack table instance and draws the header, rows, empty state and pagination. Compose it with useDataTable (server) or useDataTableClient, plus the toolbar and filters.",
+    type: "registry:ui",
+    categories: ["primitives"],
+    files: [{ path: "registry/hirael/ui/data-table.tsx" }],
+    registryDependencies: [
+      "data-table-pagination",
+      "data-table-utils",
+      "table",
+    ],
+    dependencies: ["@tanstack/react-table"],
+  },
+  {
+    name: "data-table-client",
+    title: "useDataTableClient",
+    description:
+      "Hook for the client-side data table: TanStack Table that sorts, filters and pages a local array in memory, with a per-variant filter function wired from each column's meta. Ships a DataTableClient convenience component.",
+    type: "registry:ui",
+    categories: ["primitives"],
+    files: [{ path: "registry/hirael/ui/data-table-client.tsx" }],
+    registryDependencies: [
+      "data-table",
+      "data-table-toolbar",
+      "data-table-utils",
+    ],
+    dependencies: ["@tanstack/react-table"],
   },
 ];
 

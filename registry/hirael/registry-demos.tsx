@@ -105,6 +105,8 @@ const BLOCK_LOADERS: Record<
     import("@/registry/hirael/blocks/app-shell-05/app-shell-05"),
   "dashboard-06": () =>
     import("@/registry/hirael/blocks/dashboard-06/dashboard-06"),
+  "dashboard-07": () =>
+    import("@/registry/hirael/blocks/dashboard-07/dashboard-07"),
 };
 
 /** Component examples, keyed by example slug (file basename in examples/). */
@@ -235,9 +237,6 @@ const EXAMPLE_LOADERS: Record<
   "usage-dashboard-demo": () =>
     import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
-  "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
-  "data-table-client-demo": () =>
-    import("@/registry/hirael/examples/data-table-client-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

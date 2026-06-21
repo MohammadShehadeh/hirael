@@ -55,10 +55,9 @@ heading rather than starting a new doc.
 - **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
   the compiler can't memoize without serving stale rows, so every file that
   creates or reads a table instance starts with the `"use no memo"` directive —
-  the whole `data-table-*` / `use-data-table*` family **and their demos**
-  (`registry/hirael/examples/data-table*-demo.tsx`). This is the one place demo
-  code keeps explicit `useMemo` and the pragma instead of leaning on the
-  compiler.
+  the whole `data-table*` / `use-data-table` family **and the `dashboard-07`
+  block** that demos them. This is the one place block/demo code keeps explicit
+  `useMemo` and the pragma instead of leaning on the compiler.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.
@@ -100,16 +99,17 @@ heading rather than starting a new doc.
   the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
   Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
   published.
-- **Distribution-only items** (e.g. `accordion`, the `data-table-*` parts)
-  live in `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the registry
-  but have no standalone showcase page. A multi-file kit like the data table is
-  one item per file, wired together with `registryDependencies`, with only the
-  two entry points (`data-table`, `data-table-client`) showcased.
-- **URL-state demos wrap themselves in a nuqs adapter.** The server
-  `data-table` demo uses `useDataTable`, which syncs page/sort/filters to the
-  URL via nuqs, so the demo wraps its content in `NuqsAdapter`
+- **Distribution-only items** (e.g. `accordion`, the whole `data-table*`
+  family) live in `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the
+  registry but have no standalone showcase page. A multi-file kit like the data
+  table is one item per file, wired together with `registryDependencies`; it's
+  showcased through the `dashboard-07` block rather than cramped component
+  previews, since a table wants the full-width block surface.
+- **URL-state blocks wrap themselves in a nuqs adapter.** The `dashboard-07`
+  block's server table uses `useDataTable`, which syncs page/sort/filters to the
+  URL via nuqs, so the block wraps its content in `NuqsAdapter`
   (`nuqs/adapters/next/app`). That's safe under `output: "export"` because
-  previews render client-side through `React.lazy` + `Suspense`
+  block previews render client-side through `React.lazy` + `Suspense`
   (`registry-demos.tsx`), so `useSearchParams` is never called during the
   static prerender.
 

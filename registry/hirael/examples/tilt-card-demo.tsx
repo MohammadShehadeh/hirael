@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { TiltCard } from "@/registry/hirael/ui/tilt-card";
+import { TiltCard } from "@/registry/hirael/components/tilt-card";
 
 export default function TiltCardDemo() {
   const t = useT();

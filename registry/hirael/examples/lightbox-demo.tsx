@@ -7,7 +7,7 @@ import {
   LightboxContent,
   LightboxThumbnails,
   LightboxTrigger,
-} from "@/registry/hirael/ui/lightbox";
+} from "@/registry/hirael/components/lightbox";
 
 const full = (id: string) =>
   `https://images.unsplash.com/${id}?q=80&w=1600&auto=format&fit=crop`;

@@ -14,7 +14,7 @@ import {
   ActivityFeedHeader,
   ActivityFeedItem,
   ActivityFeedTime,
-} from "@/registry/hirael/ui/activity-feed";
+} from "@/registry/hirael/components/activity-feed";
 
 export default function ActivityFeedDemo() {
   const t = useT();

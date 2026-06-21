@@ -19,7 +19,7 @@ import {
   monthIndex,
   sameDay,
   startOfDay,
-} from "@/registry/hirael/ui/calendar-utils";
+} from "@/registry/hirael/components/calendar-utils";
 
 export type DateRange = { from?: Date; to?: Date };
 export type DateRangePreset = {

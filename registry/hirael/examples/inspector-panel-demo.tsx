@@ -7,7 +7,7 @@ import {
   InspectorPanelRow,
   InspectorPanelSection,
   InspectorPanelTitle,
-} from "@/registry/hirael/ui/inspector-panel";
+} from "@/registry/hirael/components/inspector-panel";
 
 function Field({ children }: { children: React.ReactNode }) {
   return (

@@ -10,7 +10,7 @@ import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/hirael/ui/password-input";
+} from "@/registry/hirael/components/password-input";
 
 function BrandMark({ className }: { className?: string }) {
   return (

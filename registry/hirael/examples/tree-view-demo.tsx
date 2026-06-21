@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { TreeItem, TreeView } from "@/registry/hirael/ui/tree-view";
+import { TreeItem, TreeView } from "@/registry/hirael/components/tree-view";
 
 export default function TreeViewDemo() {
   const t = useT();

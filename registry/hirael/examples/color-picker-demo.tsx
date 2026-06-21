@@ -8,7 +8,7 @@ import {
   ColorPicker,
   ColorPickerContent,
   ColorPickerTrigger,
-} from "@/registry/hirael/ui/color-picker";
+} from "@/registry/hirael/components/color-picker";
 
 export default function ColorPickerDemo() {
   const t = useT();

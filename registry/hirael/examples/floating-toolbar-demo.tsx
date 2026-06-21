@@ -8,7 +8,7 @@ import {
   FloatingToolbarButton,
   FloatingToolbarLabel,
   FloatingToolbarSeparator,
-} from "@/registry/hirael/ui/floating-toolbar";
+} from "@/registry/hirael/components/floating-toolbar";
 
 export default function FloatingToolbarDemo() {
   const t = useT();

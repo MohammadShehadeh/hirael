@@ -6,7 +6,7 @@ import {
   TableOfContentsLabel,
   TableOfContentsList,
   type TocItem,
-} from "@/registry/hirael/ui/toc";
+} from "@/registry/hirael/components/toc";
 
 export default function TocDemo() {
   const t = useT();

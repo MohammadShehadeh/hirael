@@ -11,7 +11,7 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from "@/registry/hirael/ui/stepper";
+} from "@/registry/hirael/components/stepper";
 
 export default function StepperDemo() {
   const t = useT();

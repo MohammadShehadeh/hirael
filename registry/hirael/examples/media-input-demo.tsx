@@ -12,8 +12,8 @@ import {
   MediaInputFile,
   MediaInputTrigger,
   useMediaInput,
-} from "@/registry/hirael/ui/media-input";
-import { AudioPlayer } from "@/registry/hirael/ui/audio-player";
+} from "@/registry/hirael/components/media-input";
+import { AudioPlayer } from "@/registry/hirael/components/audio-player";
 
 function AudioPreview() {
   const { value } = useMediaInput();

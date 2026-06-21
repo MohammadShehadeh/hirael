@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/components",
+    "components": "@/registry/hirael/components",
     "utils": "@/lib/utils",
     "ui": "@/registry/hirael/ui",
     "lib": "@/lib",

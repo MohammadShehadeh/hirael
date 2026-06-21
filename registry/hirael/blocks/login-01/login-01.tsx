@@ -11,7 +11,7 @@ import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
-} from "@/registry/hirael/ui/password-input";
+} from "@/registry/hirael/components/password-input";
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (

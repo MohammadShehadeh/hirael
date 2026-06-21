@@ -18,7 +18,7 @@ import { InstallBlock } from "@/components/showcase/install-block";
 import { SiteFooter } from "@/components/showcase/site-footer";
 import { SiteHeader } from "@/components/showcase/site-header";
 import { SITE } from "@/lib/site";
-import { Marquee } from "@/registry/hirael/ui/marquee";
+import { Marquee } from "@/registry/hirael/components/marquee";
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,

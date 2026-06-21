@@ -26,7 +26,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/registry/hirael/ui/input-group";
-import { KbdDisplay } from "@/registry/hirael/ui/kbd";
+import { KbdDisplay } from "@/registry/hirael/components/kbd";
 import { Separator } from "@/registry/hirael/ui/separator";
 import {
   Table,

@@ -5,7 +5,7 @@ import {
   AvatarStack,
   AvatarStackItem,
   AvatarStackOverflow,
-} from "@/registry/hirael/ui/avatar-stack";
+} from "@/registry/hirael/components/avatar-stack";
 
 const TRIO = [
   { en: "AM", ar: "أم" },

@@ -7,7 +7,7 @@ import {
   AnnouncementBar,
   AnnouncementBarBadge,
   AnnouncementBarLink,
-} from "@/registry/hirael/ui/announcement-bar";
+} from "@/registry/hirael/components/announcement-bar";
 
 export default function AnnouncementBarDemo() {
   const t = useT();

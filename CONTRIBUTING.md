@@ -175,9 +175,10 @@ reformatting committed files.
   user-facing text are concise, plain, and specific — short labels and
   sentences, no filler or marketing voice. Prefer "Pick a date" over
   "Effortlessly select your desired date."
-- **Imports for shadcn primitives** go through `@/registry/hirael/ui/*`.
-  The alias is rewritten on install based on the consumer's
-  `components.json`.
+- **Imports** go through aliases rewritten on install from the consumer's
+  `components.json`: shadcn primitives from `@/registry/hirael/ui/*`, other
+  hirael components from `@/registry/hirael/components/*`. `ui/` holds only
+  shadcn primitives; everything hirael adds lives in `components/`.
 - **Tokens.** Use `--background / --foreground / --border / --primary /
 --accent` and the rest of the design tokens — never hard-code a
   color. Light is a faithful inverse of dark; both must work.
@@ -202,10 +203,12 @@ reformatting committed files.
 
 For each new component:
 
-- [ ] Source file at `registry/hirael/ui/<name>.tsx` exporting the
+- [ ] Source file at `registry/hirael/components/<name>.tsx` (or a
+      `components/<name>/` folder for a multi-file kit) exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
+      (`registry/hirael/ui/` is reserved for shadcn primitives.)
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
 - [ ] `registry/hirael/examples/<name>-demo.tsx` showing a basic compose
       **and** a customized compose. To showcase several focused examples
@@ -220,8 +223,9 @@ For each new component:
       (never edit it by hand — `pnpm check:registry` fails if it
       drifts or if declared `registryDependencies` don't match the
       component's actual imports).
-- [ ] All imports for shadcn primitives go through
-      `@/registry/hirael/ui/*` (alias is rewritten on install).
+- [ ] Imports go through `@/registry/hirael/ui/*` (shadcn primitives) and
+      `@/registry/hirael/components/*` (other hirael components) — both
+      aliases are rewritten on install.
 - [ ] Tokens reuse `--background / --foreground / --border /
 --primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`

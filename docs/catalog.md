@@ -6,8 +6,10 @@ The canonical source for every item is
 human-readable index — when you add or rename an item, update the matching
 table here in the same change.
 
-The catalog spans three tiers: **components** (single UI primitives),
-**blocks** (marketing / app sections), and **templates** (full, multi-section
+The catalog spans three tiers: **components** (the composable UI components
+hirael adds, in `registry/hirael/components/`; `ui/` is reserved for the
+shadcn primitives they build on), **blocks** (marketing / app sections), and
+**templates** (full, multi-section
 pages). As of the last update: **75 registry UI items** (73 standalone
 components + 2 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives

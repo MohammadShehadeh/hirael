@@ -21,7 +21,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@/registry/hirael/ui/combobox";
+} from "@/registry/hirael/components/combobox";
 
 const FRAMEWORKS = [
   "Next.js",

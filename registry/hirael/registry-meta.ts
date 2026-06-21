@@ -47,7 +47,7 @@ export type RegistryFileType =
  * `sourceFiles` + `installTargets` pair required.
  */
 export type RegistryFileMeta = {
-  /** Repo-relative source path, e.g. `registry/hirael/ui/multi-select.tsx`. */
+  /** Repo-relative source path, e.g. `registry/hirael/components/multi-select.tsx`. */
   path: string;
   /**
    * Where the file lands in a consumer project. Optional for UI components
@@ -93,7 +93,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/multi-select.tsx" }],
+    files: [{ path: "registry/hirael/components/multi-select.tsx" }],
     registryDependencies: ["popover", "command", "badge"],
     dependencies: ["cmdk", "lucide-react"],
   },
@@ -103,7 +103,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/number-range.tsx" }],
+    files: [{ path: "registry/hirael/components/number-range.tsx" }],
     registryDependencies: ["slider", "input"],
     dependencies: ["@radix-ui/react-slider"],
   },
@@ -113,7 +113,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Decade-grid year picker with keyboard nav, min/max bounds, single or range mode.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/year-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/year-picker.tsx" }],
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
   },
@@ -123,7 +123,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/tag-input.tsx" }],
+    files: [{ path: "registry/hirael/components/tag-input.tsx" }],
     registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
   },
@@ -133,7 +133,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/combobox.tsx" }],
+    files: [{ path: "registry/hirael/components/combobox.tsx" }],
     registryDependencies: ["input-group"],
     dependencies: ["@base-ui/react", "lucide-react"],
   },
@@ -143,7 +143,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/lazy-select.tsx" }],
+    files: [{ path: "registry/hirael/components/lazy-select.tsx" }],
     registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
@@ -153,7 +153,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/password-input.tsx" }],
+    files: [{ path: "registry/hirael/components/password-input.tsx" }],
     registryDependencies: ["input-group"],
     dependencies: ["lucide-react"],
   },
@@ -163,7 +163,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Locale-aware grouping with currency-symbol prefix and configurable decimal precision.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/currency-input.tsx" }],
+    files: [{ path: "registry/hirael/components/currency-input.tsx" }],
     registryDependencies: ["input-group"],
     dependencies: [],
   },
@@ -173,7 +173,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Country dial-code dropdown with E.164 output. Compound and single-prop APIs.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/phone-input.tsx" }],
+    files: [{ path: "registry/hirael/components/phone-input.tsx" }],
     registryDependencies: ["input-group", "popover", "command"],
     dependencies: ["lucide-react"],
   },
@@ -183,7 +183,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
     category: "files",
-    files: [{ path: "registry/hirael/ui/file-dropzone.tsx" }],
+    files: [{ path: "registry/hirael/components/file-dropzone.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -193,7 +193,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/stat-card.tsx" }],
+    files: [{ path: "registry/hirael/components/stat-card.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -203,7 +203,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/rating.tsx" }],
+    files: [{ path: "registry/hirael/components/rating.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -213,7 +213,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/timeline.tsx" }],
+    files: [{ path: "registry/hirael/components/timeline.tsx" }],
     registryDependencies: [],
     dependencies: ["class-variance-authority"],
   },
@@ -223,7 +223,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "3D tactile keycap with hover lift and pressed states. Compound API with KbdGroup for chords and KbdDisplay for inline keys.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/kbd.tsx" }],
+    files: [{ path: "registry/hirael/components/kbd.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -233,7 +233,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "MDX-style admonition with info / success / warning / error / neutral variants and optional icon override. Ships --info / --success / --warning theme tokens.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/callout.tsx" }],
+    files: [{ path: "registry/hirael/components/callout.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react", "class-variance-authority"],
     cssVars: {
@@ -255,7 +255,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/scroll-progress.tsx" }],
+    files: [{ path: "registry/hirael/components/scroll-progress.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -743,7 +743,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/month-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/month-picker.tsx" }],
     registryDependencies: ["button", "popover"],
     dependencies: ["lucide-react"],
   },
@@ -753,7 +753,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/time-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/time-picker.tsx" }],
     registryDependencies: ["popover", "tabs"],
     dependencies: ["lucide-react"],
   },
@@ -763,7 +763,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/color-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/color-picker.tsx" }],
     registryDependencies: ["popover", "input", "tabs"],
     dependencies: ["lucide-react"],
   },
@@ -773,7 +773,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/avatar-stack.tsx" }],
+    files: [{ path: "registry/hirael/components/avatar-stack.tsx" }],
     registryDependencies: [],
     dependencies: ["@radix-ui/react-slot", "class-variance-authority"],
   },
@@ -783,7 +783,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/announcement-bar.tsx" }],
+    files: [{ path: "registry/hirael/components/announcement-bar.tsx" }],
     registryDependencies: ["button"],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
@@ -1111,7 +1111,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits the current text color and ships an accessible status label.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/spinner.tsx" }],
+    files: [{ path: "registry/hirael/components/spinner.tsx" }],
     registryDependencies: [],
     dependencies: ["class-variance-authority"],
   },
@@ -1121,7 +1121,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/copy-button.tsx" }],
+    files: [{ path: "registry/hirael/components/copy-button.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1131,7 +1131,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes ship inline, zero config.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/marquee.tsx" }],
+    files: [{ path: "registry/hirael/components/marquee.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1141,7 +1141,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/tree-view.tsx" }],
+    files: [{ path: "registry/hirael/components/tree-view.tsx" }],
     registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
@@ -1151,7 +1151,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/animated-number.tsx" }],
+    files: [{ path: "registry/hirael/components/animated-number.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1161,7 +1161,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/stepper.tsx" }],
+    files: [{ path: "registry/hirael/components/stepper.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1171,7 +1171,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/sortable.tsx" }],
+    files: [{ path: "registry/hirael/components/sortable.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1181,7 +1181,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Single-date picker with month grid, keyboard nav, min/max bounds and disabled dates. Includes an inline DateCalendar, no date library.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/date-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/date-picker.tsx" }],
     registryDependencies: ["button", "popover", "calendar-utils"],
     dependencies: ["lucide-react"],
   },
@@ -1191,7 +1191,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar, no date library.",
     category: "pickers",
-    files: [{ path: "registry/hirael/ui/date-range-picker.tsx" }],
+    files: [{ path: "registry/hirael/components/date-range-picker.tsx" }],
     registryDependencies: ["button", "popover", "separator", "calendar-utils"],
     dependencies: ["lucide-react"],
   },
@@ -1201,7 +1201,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/mention-input.tsx" }],
+    files: [{ path: "registry/hirael/components/mention-input.tsx" }],
     registryDependencies: ["spinner"],
     dependencies: [],
   },
@@ -1211,7 +1211,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Tiptap editor with a formatting toolbar (headings, lists, links, highlight, alignment) and a hover bubble to edit or unlink links inline. Outputs HTML, controlled or uncontrolled, with composable parts.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/rich-text-editor.tsx" }],
+    files: [{ path: "registry/hirael/components/rich-text-editor.tsx" }],
     registryDependencies: [
       "button",
       "input",
@@ -1238,7 +1238,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/inline-edit.tsx" }],
+    files: [{ path: "registry/hirael/components/inline-edit.tsx" }],
     registryDependencies: ["button", "input", "spinner", "textarea"],
     dependencies: ["lucide-react"],
   },
@@ -1248,7 +1248,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.",
     category: "inputs",
-    files: [{ path: "registry/hirael/ui/signature-pad.tsx" }],
+    files: [{ path: "registry/hirael/components/signature-pad.tsx" }],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -1258,7 +1258,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.",
     category: "files",
-    files: [{ path: "registry/hirael/ui/image-cropper.tsx" }],
+    files: [{ path: "registry/hirael/components/image-cropper.tsx" }],
     registryDependencies: ["slider"],
     dependencies: [],
   },
@@ -1268,7 +1268,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/image-compare.tsx" }],
+    files: [{ path: "registry/hirael/components/image-compare.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1278,7 +1278,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/lightbox.tsx" }],
+    files: [{ path: "registry/hirael/components/lightbox.tsx" }],
     registryDependencies: [],
     dependencies: ["@radix-ui/react-dialog", "lucide-react"],
   },
@@ -1288,7 +1288,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Count-down-to-date timer with boxed / inline / minimal variants, a useCountdown hook, digit animation and completion content.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/countdown-timer.tsx" }],
+    files: [{ path: "registry/hirael/components/countdown-timer.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1298,7 +1298,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and currentColor theming.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/qr-code.tsx" }],
+    files: [{ path: "registry/hirael/components/qr-code.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1308,7 +1308,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/calendar-heatmap.tsx" }],
+    files: [{ path: "registry/hirael/components/calendar-heatmap.tsx" }],
     registryDependencies: ["tooltip"],
     dependencies: [],
   },
@@ -1318,7 +1318,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Code display with built-in dependency-free syntax highlighting via theme tokens, line numbers, line highlights, diff gutters, copy button and collapsible max-height.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/code-block.tsx" }],
+    files: [{ path: "registry/hirael/components/code-block.tsx" }],
     registryDependencies: ["badge", "button", "copy-button"],
     dependencies: ["lucide-react"],
   },
@@ -1328,7 +1328,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/masonry.tsx" }],
+    files: [{ path: "registry/hirael/components/masonry.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1338,7 +1338,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/audio-player.tsx" }],
+    files: [{ path: "registry/hirael/components/audio-player.tsx" }],
     registryDependencies: ["button", "slider"],
     dependencies: ["@radix-ui/react-slider", "lucide-react"],
   },
@@ -1348,7 +1348,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser.",
     category: "files",
-    files: [{ path: "registry/hirael/ui/media-input.tsx" }],
+    files: [{ path: "registry/hirael/components/media-input.tsx" }],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -1358,7 +1358,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/tour.tsx" }],
+    files: [{ path: "registry/hirael/components/tour.tsx" }],
     registryDependencies: ["button"],
     dependencies: [],
   },
@@ -1368,7 +1368,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/activity-feed.tsx" }],
+    files: [{ path: "registry/hirael/components/activity-feed.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1378,7 +1378,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
     category: "data",
-    files: [{ path: "registry/hirael/ui/audit-log.tsx" }],
+    files: [{ path: "registry/hirael/components/audit-log.tsx" }],
     registryDependencies: ["collapsible"],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
@@ -1388,7 +1388,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/blur-reveal.tsx" }],
+    files: [{ path: "registry/hirael/components/blur-reveal.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1398,7 +1398,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/text-reveal.tsx" }],
+    files: [{ path: "registry/hirael/components/text-reveal.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1408,7 +1408,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/scroll-reveal.tsx" }],
+    files: [{ path: "registry/hirael/components/scroll-reveal.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1418,7 +1418,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/spotlight-card.tsx" }],
+    files: [{ path: "registry/hirael/components/spotlight-card.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1428,7 +1428,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/magnetic-button.tsx" }],
+    files: [{ path: "registry/hirael/components/magnetic-button.tsx" }],
     registryDependencies: [],
     dependencies: ["@radix-ui/react-slot", "motion"],
   },
@@ -1438,7 +1438,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Ambient glow layer that follows the pointer across its container and fades when it leaves. Drop it behind heroes, grids or feature panels.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/cursor-glow.tsx" }],
+    files: [{ path: "registry/hirael/components/cursor-glow.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1448,7 +1448,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/tilt-card.tsx" }],
+    files: [{ path: "registry/hirael/components/tilt-card.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1458,7 +1458,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
     category: "animation",
-    files: [{ path: "registry/hirael/ui/morphing-dialog.tsx" }],
+    files: [{ path: "registry/hirael/components/morphing-dialog.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react", "motion"],
   },
@@ -1468,7 +1468,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/dock.tsx" }],
+    files: [{ path: "registry/hirael/components/dock.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1478,7 +1478,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/floating-action-button.tsx" }],
+    files: [{ path: "registry/hirael/components/floating-action-button.tsx" }],
     registryDependencies: [],
     dependencies: ["motion"],
   },
@@ -1488,7 +1488,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels. Position it anywhere.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/floating-toolbar.tsx" }],
+    files: [{ path: "registry/hirael/components/floating-toolbar.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1498,7 +1498,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. RTL-aware.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/split-view.tsx" }],
+    files: [{ path: "registry/hirael/components/split-view.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1508,7 +1508,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. RTL-aware.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/resizable-panels.tsx" }],
+    files: [{ path: "registry/hirael/components/resizable-panels.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1518,7 +1518,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/inspector-panel.tsx" }],
+    files: [{ path: "registry/hirael/components/inspector-panel.tsx" }],
     registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
@@ -1528,7 +1528,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/tenant-switcher.tsx" }],
+    files: [{ path: "registry/hirael/components/tenant-switcher.tsx" }],
     registryDependencies: ["popover", "command"],
     dependencies: ["cmdk", "lucide-react"],
   },
@@ -1538,7 +1538,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
     category: "widgets",
-    files: [{ path: "registry/hirael/ui/kpi-grid.tsx" }],
+    files: [{ path: "registry/hirael/components/kpi-grid.tsx" }],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1548,7 +1548,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
     category: "widgets",
-    files: [{ path: "registry/hirael/ui/quick-actions.tsx" }],
+    files: [{ path: "registry/hirael/components/quick-actions.tsx" }],
     registryDependencies: [],
     dependencies: ["@radix-ui/react-slot"],
   },
@@ -1558,7 +1558,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
     category: "widgets",
-    files: [{ path: "registry/hirael/ui/notifications.tsx" }],
+    files: [{ path: "registry/hirael/components/notifications.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1568,7 +1568,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
     category: "saas",
-    files: [{ path: "registry/hirael/ui/billing-card.tsx" }],
+    files: [{ path: "registry/hirael/components/billing-card.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1578,7 +1578,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
     category: "saas",
-    files: [{ path: "registry/hirael/ui/subscription-plans.tsx" }],
+    files: [{ path: "registry/hirael/components/subscription-plans.tsx" }],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -1588,7 +1588,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
     category: "saas",
-    files: [{ path: "registry/hirael/ui/api-keys.tsx" }],
+    files: [{ path: "registry/hirael/components/api-keys.tsx" }],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -1598,7 +1598,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
     category: "saas",
-    files: [{ path: "registry/hirael/ui/usage-dashboard.tsx" }],
+    files: [{ path: "registry/hirael/components/usage-dashboard.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -2267,7 +2267,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "On-this-page navigation that tracks the active heading as you scroll and highlights it with a moving border marker. Takes a flat or nested items list, or composes from parts. Smooth scroll respects reduced-motion.",
     category: "navigation",
-    files: [{ path: "registry/hirael/ui/toc.tsx" }],
+    files: [{ path: "registry/hirael/components/toc.tsx" }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -2318,7 +2318,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Imperative confirmation dialog: a root provider plus a useConfirm hook that resolves a promise on confirm or cancel. Default or destructive tone, an optional icon, and an async confirm action with a pending spinner.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/confirm.tsx" }],
+    files: [{ path: "registry/hirael/components/confirm.tsx" }],
     registryDependencies: ["alert-dialog", "button"],
     dependencies: [],
   },
@@ -2328,7 +2328,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description:
       "Unsaved-changes guard: a root provider plus a useUnsavedGuard hook. Warns before reload, tab close and in-app link navigation, and returns a guard(proceed) to wrap programmatic navigation in a confirm dialog.",
     category: "display",
-    files: [{ path: "registry/hirael/ui/unsaved-guard.tsx" }],
+    files: [{ path: "registry/hirael/components/unsaved-guard.tsx" }],
     registryDependencies: ["confirm"],
     dependencies: [],
   },
@@ -2461,7 +2461,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
       "Dependency-free date helpers (month grids, day math, keyboard-grid navigation) shared by date-picker and date-range-picker.",
     type: "registry:ui",
     categories: ["primitives"],
-    files: [{ path: "registry/hirael/ui/calendar-utils.ts" }],
+    files: [{ path: "registry/hirael/components/calendar-utils.ts" }],
     registryDependencies: [],
     dependencies: [],
   },

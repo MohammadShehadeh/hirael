@@ -5,7 +5,7 @@ import {
   SplitView,
   SplitViewPanel,
   SplitViewResizer,
-} from "@/registry/hirael/ui/split-view";
+} from "@/registry/hirael/components/split-view";
 
 const FILES = [
   { name: "index.ts", meta: "2.1 KB" },

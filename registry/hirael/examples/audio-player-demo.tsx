@@ -13,14 +13,14 @@ import {
   AudioPlayerTime,
   AudioPlayerVolume,
   useAudioPlayer,
-} from "@/registry/hirael/ui/audio-player";
+} from "@/registry/hirael/components/audio-player";
 import {
   MediaInput,
   MediaInputContent,
   MediaInputEmpty,
   MediaInputFile,
   MediaInputTrigger,
-} from "@/registry/hirael/ui/media-input";
+} from "@/registry/hirael/components/media-input";
 
 function PlaybackStatus() {
   const t = useT();

@@ -13,7 +13,7 @@ import {
   RichTextEditorSeparator,
   RichTextEditorToolbar,
   useRichTextEditor,
-} from "@/registry/hirael/ui/rich-text-editor";
+} from "@/registry/hirael/components/rich-text-editor";
 
 function CompactToolbar() {
   const t = useT();

@@ -5,7 +5,11 @@ import * as React from "react";
 import { useT } from "@/lib/demo-locale";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
-import { Tour, TourTrigger, type TourStep } from "@/registry/hirael/ui/tour";
+import {
+  Tour,
+  TourTrigger,
+  type TourStep,
+} from "@/registry/hirael/components/tour";
 
 export default function TourDemo() {
   const t = useT();

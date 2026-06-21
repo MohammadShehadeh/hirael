@@ -12,7 +12,7 @@ import {
   TenantSwitcherItem,
   TenantSwitcherTrigger,
   type Tenant,
-} from "@/registry/hirael/ui/tenant-switcher";
+} from "@/registry/hirael/components/tenant-switcher";
 
 export default function TenantSwitcherDemo() {
   const t = useT();

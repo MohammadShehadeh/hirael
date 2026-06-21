@@ -36,6 +36,19 @@ export async function loadRegistryMeta() {
   return import(`${pathToFileURL(outFile).href}?v=${Date.now()}`);
 }
 
+/**
+ * Default install target for a source file. Primitives in `registry/hirael/ui`
+ * land in the consumer's `components/ui`; extended components under
+ * `registry/hirael/components` keep their sub-path (so a multi-file kit like
+ * the data table installs as a folder).
+ */
+function deriveTarget(p) {
+  if (p.startsWith("registry/hirael/components/")) {
+    return p.slice("registry/hirael/".length);
+  }
+  return `components/ui/${path.basename(p)}`;
+}
+
 /** Map one meta entry to a registry.json item. */
 function toRegistryItem(entry) {
   const isBlock =
@@ -58,9 +71,7 @@ function toRegistryItem(entry) {
   const files = (entry.files ?? []).map((file) => ({
     path: file.path,
     type: file.type ?? type,
-    target:
-      file.target ??
-      (isComposite ? undefined : `components/ui/${path.basename(file.path)}`),
+    target: file.target ?? (isComposite ? undefined : deriveTarget(file.path)),
   }));
   if (!files.length) throw new Error(`"${entry.name}": no files`);
   for (const f of files) {

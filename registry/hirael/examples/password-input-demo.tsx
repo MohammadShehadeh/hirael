@@ -8,7 +8,7 @@ import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/hirael/ui/password-input";
+} from "@/registry/hirael/components/password-input";
 
 export default function PasswordInputDemo() {
   const t = useT();

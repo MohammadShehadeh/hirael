@@ -5,7 +5,7 @@ import { ChevronRight, File, Folder } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { SegmentedControl } from "@/components/showcase/segmented-control";
-import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { CopyButton } from "@/registry/hirael/components/copy-button";
 
 export type CodeBlockTab = {
   /** Tab label (e.g. filename or install-target path). */

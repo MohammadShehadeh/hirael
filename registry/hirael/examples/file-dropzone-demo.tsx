@@ -9,7 +9,7 @@ import {
   FileDropzoneErrors,
   FileDropzoneList,
   FileDropzoneZone,
-} from "@/registry/hirael/ui/file-dropzone";
+} from "@/registry/hirael/components/file-dropzone";
 
 export default function FileDropzoneDemo() {
   const t = useT();

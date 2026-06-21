@@ -5,7 +5,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/registry/hirael/ui/resizable-panels";
+} from "@/registry/hirael/components/resizable-panels";
 
 function Pane({
   label,

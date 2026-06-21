@@ -10,7 +10,7 @@ import {
   MonthPickerTrigger,
   type MonthRange,
   type MonthValue,
-} from "@/registry/hirael/ui/month-picker";
+} from "@/registry/hirael/components/month-picker";
 
 export default function MonthPickerDemo() {
   const t = useT();

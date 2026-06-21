@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { QRCode } from "@/registry/hirael/ui/qr-code";
+import { QRCode } from "@/registry/hirael/components/qr-code";
 
 const longPayload =
   "https://hirael.com/components/qr-code?utm_source=showcase&utm_medium=demo&utm_campaign=error-correction";

@@ -14,7 +14,7 @@ import {
   NotificationsHeader,
   NotificationsList,
   NotificationsTitle,
-} from "@/registry/hirael/ui/notifications";
+} from "@/registry/hirael/components/notifications";
 
 export default function NotificationsDemo() {
   const t = useT();

@@ -8,7 +8,7 @@ import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
-} from "@/registry/hirael/ui/phone-input";
+} from "@/registry/hirael/components/phone-input";
 
 export default function PhoneInputDemo() {
   const t = useT();

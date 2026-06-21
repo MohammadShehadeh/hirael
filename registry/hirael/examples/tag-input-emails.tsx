@@ -10,7 +10,7 @@ import {
   TagInputError,
   TagInputField,
   TagInputTag,
-} from "@/registry/hirael/ui/tag-input";
+} from "@/registry/hirael/components/tag-input";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

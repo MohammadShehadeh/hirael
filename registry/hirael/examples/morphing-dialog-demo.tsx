@@ -10,7 +10,7 @@ import {
   MorphingDialogDescription,
   MorphingDialogTitle,
   MorphingDialogTrigger,
-} from "@/registry/hirael/ui/morphing-dialog";
+} from "@/registry/hirael/components/morphing-dialog";
 
 export default function MorphingDialogDemo() {
   const t = useT();

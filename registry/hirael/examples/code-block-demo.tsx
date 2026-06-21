@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { CodeBlock } from "@/registry/hirael/ui/code-block";
+import { CodeBlock } from "@/registry/hirael/components/code-block";
 
 const utilsSnippet = `import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"

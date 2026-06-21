@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp, FileCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
-import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { CopyButton } from "@/registry/hirael/components/copy-button";
 
 type TokenType =
   | "comment"

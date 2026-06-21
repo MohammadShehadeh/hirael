@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { CopyButton } from "@/registry/hirael/components/copy-button";
 
 export default function CopyButtonDemo() {
   const t = useT();

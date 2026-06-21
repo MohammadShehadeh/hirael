@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { Callout } from "@/registry/hirael/ui/callout";
+import { Callout } from "@/registry/hirael/components/callout";
 
 export default function CalloutDemo() {
   const t = useT();

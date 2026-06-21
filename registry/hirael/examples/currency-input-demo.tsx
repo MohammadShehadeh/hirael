@@ -8,7 +8,7 @@ import {
   CurrencyInput,
   CurrencyInputField,
   CurrencyInputPrefix,
-} from "@/registry/hirael/ui/currency-input";
+} from "@/registry/hirael/components/currency-input";
 
 export default function CurrencyInputDemo() {
   const t = useT();

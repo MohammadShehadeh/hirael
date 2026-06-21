@@ -9,7 +9,7 @@ import {
   YearPickerContent,
   YearPickerTrigger,
   type YearRange,
-} from "@/registry/hirael/ui/year-picker";
+} from "@/registry/hirael/components/year-picker";
 
 export default function YearPickerDemo() {
   const t = useT();

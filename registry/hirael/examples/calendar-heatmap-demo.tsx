@@ -7,7 +7,7 @@ import {
   CalendarHeatmap,
   CalendarHeatmapLegend,
   type CalendarHeatmapDatum,
-} from "@/registry/hirael/ui/calendar-heatmap";
+} from "@/registry/hirael/components/calendar-heatmap";
 
 function generateActivity(seed: number, days: number): CalendarHeatmapDatum[] {
   let state = seed;

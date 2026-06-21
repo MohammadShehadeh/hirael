@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { ScrollProgress } from "@/registry/hirael/ui/scroll-progress";
+import { ScrollProgress } from "@/registry/hirael/components/scroll-progress";
 
 export default function ScrollProgressDemo() {
   const t = useT();

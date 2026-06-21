@@ -8,7 +8,7 @@ import {
   KpiCardSpark,
   KpiCardValue,
   KpiGrid,
-} from "@/registry/hirael/ui/kpi-grid";
+} from "@/registry/hirael/components/kpi-grid";
 
 export default function KpiGridDemo() {
   const t = useT();

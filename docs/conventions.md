@@ -91,24 +91,31 @@ heading rather than starting a new doc.
   compound API: the bare `Name` holds state; parts are `NameTrigger`,
   `NameContent`, … A single-prop convenience form is optional and secondary,
   never the only API. Every rendered slot carries `data-slot="<kebab>"`.
-- **Import shadcn primitives from `@/registry/hirael/ui/*`** (the `ui` alias).
-  The alias is rewritten to the consumer's `components.json` on install — a
-  relative import would break that rewrite.
+- **`ui/` is shadcn primitives; everything hirael adds lives in `components/`.**
+  `registry/hirael/ui/*` holds only shadcn-style primitives (button, table,
+  popover, …) — the things shadcn itself ships, kept as install dependencies.
+  Every component hirael _adds_ (the whole showcased catalog: multi-select,
+  combobox, date-picker, data-table, …) lives in `registry/hirael/components/`:
+  single-file ones as `components/<name>.tsx`, multi-file kits as a folder
+  `components/<name>/*`. `components.json`'s `components` alias is
+  `@/registry/hirael/components` so the two aliases (`ui`, `components`) map
+  cleanly to the consumer's on install.
+- **Imports + the two aliases.** Import primitives from
+  `@/registry/hirael/ui/*` and extended components from
+  `@/registry/hirael/components/*`; never by relative path across items (shadcn
+  rewrites both aliases to the consumer's `components.json` on install — it
+  keys off the `/ui/` and `/components/` path segments, see the `ga` transform
+  in the shadcn CLI). Inside one multi-file kit, parts import each other by
+  **relative path** (like templates). `check:registry` collects both `ui/*` and
+  `components/*` imports and matches them to `registryDependencies`.
 - **Tokens, not colors.** Never hard-code a color in component source.
 - **Comments are stripped on publish** (`scripts/strip-comments.mjs`) because
   the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
   Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
   published.
-- **`ui/` is shadcn primitives; multi-file extended components get a folder.**
-  `registry/hirael/ui/*` holds single-file primitives (button, table, …). A
-  composite that isn't a pure primitive — like the data table — ships as a
-  folder, `registry/hirael/components/<name>/*`, declared as one registry item
-  with many `files` (parts + hook + lib) that install under
-  `components/<name>/`. Its parts import each other by **relative path** (like
-  templates) and pull primitives from `@/registry/hirael/ui/*`;
-  `check:registry` only validates the `ui/*` deps, so relative sibling imports
-  aren't flagged. The component page renders any multi-file item as a file
-  tree (`component-page.tsx`, `treeView`).
+- **The component page renders any multi-file item as a file tree**
+  (`component-page.tsx`, `treeView`) — used by the data table and every block /
+  template.
 - **Distribution-only items** (`accordion`, `calendar-utils`) live in
   `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the registry but have
   no standalone showcase page.

@@ -15,7 +15,7 @@ import {
 } from "@/lib/theme";
 import { useTheme } from "@/components/showcase/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
-import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { CopyButton } from "@/registry/hirael/components/copy-button";
 import { Textarea } from "@/registry/hirael/ui/textarea";
 import {
   Sheet,

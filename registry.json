@@ -3479,6 +3479,54 @@
       ]
     },
     {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Server-driven table built on TanStack Table: sortable columns, faceted, text, range and date filters, column visibility, row selection and pagination, with sort, filters and page kept in the URL. Pairs the DataTable renderer with the useDataTable hook and toolbar. For in-memory data, see data-table-client.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [
+        "data-table-pagination",
+        "data-table-utils",
+        "table"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-client",
+      "type": "registry:ui",
+      "title": "Data Table (Client)",
+      "description": "Client-side table that sorts, filters and paginates a local array in memory — no URL state. Reuses the DataTable renderer and toolbar through the useDataTableClient hook, with a DataTableClient convenience component for the common case.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [
+        "data-table",
+        "data-table-toolbar",
+        "data-table-utils"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-client.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-client.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",
@@ -3514,6 +3562,278 @@
           "path": "registry/hirael/ui/calendar-utils.ts",
           "type": "registry:ui",
           "target": "components/ui/calendar-utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-table-utils",
+      "type": "registry:ui",
+      "title": "Data Table Utils",
+      "description": "Shared types and helpers for the data table: filter-variant column meta, column-pinning styles and a date formatter.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-utils.ts",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-table-column-header",
+      "type": "registry:ui",
+      "title": "Data Table Column Header",
+      "description": "Sortable, hideable column header for the data table, with an asc / desc / reset and hide menu.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-column-header.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-column-header.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-pagination",
+      "type": "registry:ui",
+      "title": "Data Table Pagination",
+      "description": "Pagination controls for the data table: rows-per-page select, page count and first / previous / next / last.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-pagination.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-pagination.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-view-options",
+      "type": "registry:ui",
+      "title": "Data Table View Options",
+      "description": "Column visibility toggle for the data table, in a searchable popover.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "command",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-view-options.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-view-options.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-faceted-filter",
+      "type": "registry:ui",
+      "title": "Data Table Faceted Filter",
+      "description": "Faceted select / multi-select filter for a data table column, with counts and selected badges.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "command",
+        "data-table-utils",
+        "popover",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-faceted-filter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-faceted-filter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-slider-filter",
+      "type": "registry:ui",
+      "title": "Data Table Slider Filter",
+      "description": "Numeric range filter for a data table column: dual number inputs and a slider.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "popover",
+        "separator",
+        "slider"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-slider-filter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-slider-filter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-date-filter",
+      "type": "registry:ui",
+      "title": "Data Table Date Filter",
+      "description": "Date and date-range filter for a data table column, backed by the calendar.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "button",
+        "calendar",
+        "data-table-utils",
+        "popover",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-date-filter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-date-filter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-toolbar",
+      "type": "registry:ui",
+      "title": "Data Table Toolbar",
+      "description": "Data table toolbar that renders a filter per filterable column from its meta, plus a reset and view options.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "data-table-date-filter",
+        "data-table-faceted-filter",
+        "data-table-slider-filter",
+        "data-table-view-options",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-toolbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-skeleton",
+      "type": "registry:ui",
+      "title": "Data Table Skeleton",
+      "description": "Loading skeleton matching the data table layout: toolbar, rows and pagination.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "skeleton",
+        "table"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-skeleton.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table-parsers",
+      "type": "registry:ui",
+      "title": "Data Table Parsers",
+      "description": "nuqs URL parser for the data table's sorting state, validated with zod.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "nuqs",
+        "zod"
+      ],
+      "registryDependencies": [
+        "data-table-utils"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/data-table-parsers.ts",
+          "type": "registry:ui",
+          "target": "components/ui/data-table-parsers.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-data-table",
+      "type": "registry:ui",
+      "title": "useDataTable",
+      "description": "Hook for the server-driven data table: TanStack Table in manual mode with pagination, sorting and filters synced to the URL via nuqs.",
+      "categories": [
+        "primitives"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "nuqs"
+      ],
+      "registryDependencies": [
+        "data-table-parsers",
+        "data-table-utils"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/use-data-table.ts",
+          "type": "registry:ui",
+          "target": "components/ui/use-data-table.ts"
         }
       ]
     }

@@ -7108,5 +7108,63 @@
       ],
       "extendsNative": false
     }
+  ],
+  "data-table": [
+    {
+      "name": "DataTable",
+      "props": [
+        {
+          "name": "table",
+          "type": "TanstackTable<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "actionBar",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "data-table-client": [
+    {
+      "name": "DataTableClient",
+      "props": [
+        {
+          "name": "actionBar",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "withToolbar",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "pageSizeOptions",
+          "type": "number[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "initialState",
+          "type": "(Omit<Partial<TableState>, \"sorting\"> & { sorting?: ExtendedColumnSort<TData>[] | undefined; })",
+          "required": false,
+          "default": null,
+          "description": "Use this option to optionally pass initial state to the table. This state will be used when resetting various table states either automatically by the table (eg. `options.autoResetPageIndex`) or via functions like `table.resetRowSelection()`. Most reset function allow you optionally pass a flag to reset to a blank/default state instead of the initial state.\n\nTable state will not be reset when this object changes, which also means that the initial state object does not need to be stable."
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

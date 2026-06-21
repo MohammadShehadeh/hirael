@@ -8,8 +8,8 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **73 registry UI items** (71 standalone
-components + 2 distribution-only primitives), **56 section blocks**, and
+pages). As of the last update: **86 registry UI items** (73 standalone
+components + 13 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
@@ -69,20 +69,22 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `image-cropper` | `slider`      | Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.          |
 | `media-input`   | `button`      | Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser. |
 
-#### Data display (10)
+#### Data display (12)
 
-| Component          | Registry deps | What it is                                                                                                                                                       |
-| ------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activity-feed`    | —             | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                 |
-| `animated-number`  | —             | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                   |
-| `audit-log`        | `collapsible` | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                 |
-| `avatar-stack`     | —             | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button. |
-| `calendar-heatmap` | `tooltip`     | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                            |
-| `countdown-timer`  | —             | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                  |
-| `sortable`         | —             | Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.                                |
-| `stat-card`        | —             | Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.                                                            |
-| `timeline`         | —             | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                  |
-| `tree-view`        | `collapsible` | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
+| Component           | Registry deps                                          | What it is                                                                                                                                                                                                                 |
+| ------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `activity-feed`     | —                                                      | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                                                                           |
+| `animated-number`   | —                                                      | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                                                                             |
+| `audit-log`         | `collapsible`                                          | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                                                                           |
+| `avatar-stack`      | —                                                      | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button.                                                           |
+| `calendar-heatmap`  | `tooltip`                                              | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                                                                                      |
+| `countdown-timer`   | —                                                      | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                                                                            |
+| `data-table`        | `data-table-pagination`, `data-table-utils`, `table`   | Server-driven TanStack table: sortable columns, faceted / text / range / date filters, column visibility, row selection and pagination, with sort, filters and page synced to the URL via the `useDataTable` hook.         |
+| `data-table-client` | `data-table`, `data-table-toolbar`, `data-table-utils` | Client-side variant: in-memory sort, filter and pagination over a local array via the `useDataTableClient` hook, plus a `DataTableClient` convenience wrapper. Shares the renderer, toolbar and filters with `data-table`. |
+| `sortable`          | —                                                      | Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.                                                                                          |
+| `stat-card`         | —                                                      | Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.                                                                                                                      |
+| `timeline`          | —                                                      | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                                                                            |
+| `tree-view`         | `collapsible`                                          | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                                                                            |
 
 #### Display & feedback (15)
 
@@ -152,11 +154,28 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 > The SaaS "Audit Logs" view is served by the `audit-log` component (Data
 > display) rather than a near-duplicate entry.
 
-#### Primitives — distribution-only (1)
+#### Primitives — distribution-only (13)
 
-| Component   | Registry deps | What it is                                                                                                                                         |
-| ----------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `accordion` | —             | Radix-powered accordion primitive used by the FAQ blocks. Listed in `DISTRIBUTION_ONLY` so it ships in the registry without its own showcase page. |
+Items listed in `DISTRIBUTION_ONLY` ship in the registry as dependencies of
+other entries but have no showcase page of their own. The `data-table-*` and
+`use-data-table` parts are pulled in by the `data-table` / `data-table-client`
+entries; install either of those and the pieces it needs come with it.
+
+| Component                   | Registry deps                                                                                                                   | What it is                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `accordion`                 | —                                                                                                                               | Radix-powered accordion primitive used by the FAQ blocks.                                           |
+| `calendar-utils`            | —                                                                                                                               | Dependency-free date helpers shared by `date-picker` and `date-range-picker`.                       |
+| `data-table-utils`          | —                                                                                                                               | Shared types, filter-variant column meta, column-pinning styles and a date formatter for the table. |
+| `data-table-column-header`  | `dropdown-menu`                                                                                                                 | Sortable, hideable column header with an asc / desc / reset and hide menu.                          |
+| `data-table-pagination`     | `button`, `select`                                                                                                              | Rows-per-page select, page count and first / previous / next / last controls.                       |
+| `data-table-view-options`   | `button`, `command`, `popover`                                                                                                  | Column visibility toggle in a searchable popover.                                                   |
+| `data-table-faceted-filter` | `badge`, `button`, `command`, `data-table-utils`, `popover`, `separator`                                                        | Select / multi-select filter with counts and selected badges.                                       |
+| `data-table-slider-filter`  | `button`, `input`, `label`, `popover`, `separator`, `slider`                                                                    | Numeric range filter with dual number inputs and a slider.                                          |
+| `data-table-date-filter`    | `button`, `calendar`, `data-table-utils`, `popover`, `separator`                                                                | Date and date-range filter backed by the calendar.                                                  |
+| `data-table-toolbar`        | `button`, `data-table-date-filter`, `data-table-faceted-filter`, `data-table-slider-filter`, `data-table-view-options`, `input` | Renders a filter per filterable column from its meta, plus reset and view options.                  |
+| `data-table-skeleton`       | `skeleton`, `table`                                                                                                             | Loading skeleton matching the toolbar, rows and pagination.                                         |
+| `data-table-parsers`        | `data-table-utils`                                                                                                              | nuqs URL parser for the table's sorting state, validated with zod.                                  |
+| `use-data-table`            | `data-table-parsers`, `data-table-utils`                                                                                        | Hook wiring TanStack Table in manual mode with URL-synced pagination, sorting and filters.          |
 
 ## Blocks
 

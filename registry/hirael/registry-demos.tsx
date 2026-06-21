@@ -235,6 +235,9 @@ const EXAMPLE_LOADERS: Record<
   "usage-dashboard-demo": () =>
     import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
+  "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
+  "data-table-client-demo": () =>
+    import("@/registry/hirael/examples/data-table-client-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

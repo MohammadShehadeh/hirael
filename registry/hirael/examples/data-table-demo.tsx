@@ -8,10 +8,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useT } from "@/lib/demo-locale";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Checkbox } from "@/registry/hirael/ui/checkbox";
-import { DataTable } from "@/registry/hirael/ui/data-table";
-import { DataTableColumnHeader } from "@/registry/hirael/ui/data-table-column-header";
-import { DataTableToolbar } from "@/registry/hirael/ui/data-table-toolbar";
-import { useDataTable } from "@/registry/hirael/ui/use-data-table";
+import { DataTable } from "@/registry/hirael/components/data-table/data-table";
+import { DataTableColumnHeader } from "@/registry/hirael/components/data-table/data-table-column-header";
+import { DataTableToolbar } from "@/registry/hirael/components/data-table/data-table-toolbar";
+import { useDataTable } from "@/registry/hirael/components/data-table/use-data-table";
 
 type Account = {
   id: string;

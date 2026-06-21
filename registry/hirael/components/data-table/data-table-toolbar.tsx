@@ -2,10 +2,10 @@
 "use client";
 
 import { Button } from "@/registry/hirael/ui/button";
-import { DataTableDateFilter } from "@/registry/hirael/ui/data-table-date-filter";
-import { DataTableFacetedFilter } from "@/registry/hirael/ui/data-table-faceted-filter";
-import { DataTableSliderFilter } from "@/registry/hirael/ui/data-table-slider-filter";
-import { DataTableViewOptions } from "@/registry/hirael/ui/data-table-view-options";
+import { DataTableDateFilter } from "./data-table-date-filter";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableSliderFilter } from "./data-table-slider-filter";
+import { DataTableViewOptions } from "./data-table-view-options";
 import { Input } from "@/registry/hirael/ui/input";
 import { cn } from "@/lib/utils";
 import type { Column, Table } from "@tanstack/react-table";

@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 import { Separator } from "@/registry/hirael/ui/separator";
-import type { Option } from "@/registry/hirael/ui/data-table-utils";
+import type { Option } from "./data-table-utils";
 import { cn } from "@/lib/utils";
 import type { Column } from "@tanstack/react-table";
 import { Check, PlusCircle, XCircle } from "lucide-react";

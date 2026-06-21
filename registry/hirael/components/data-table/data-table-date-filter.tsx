@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 import { Separator } from "@/registry/hirael/ui/separator";
-import { formatDate } from "@/registry/hirael/ui/data-table-utils";
+import { formatDate } from "./data-table-utils";
 import type { Column } from "@tanstack/react-table";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";

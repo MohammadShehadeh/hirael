@@ -55,9 +55,9 @@ heading rather than starting a new doc.
 - **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
   the compiler can't memoize without serving stale rows, so every file that
   creates or reads a table instance starts with the `"use no memo"` directive —
-  the whole `data-table*` / `use-data-table` family **and the `data-table-demo`
-  example** that demos them. This is the one place demo code keeps explicit
-  `useMemo` and the pragma instead of leaning on the compiler.
+  the whole `registry/hirael/components/data-table/*` folder **and the
+  `data-table-demo` example** that demos it. This is the one place demo code
+  keeps explicit `useMemo` and the pragma instead of leaning on the compiler.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.
@@ -99,12 +99,19 @@ heading rather than starting a new doc.
   the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
   Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
   published.
-- **Distribution-only items** (e.g. `accordion`, the `data-table-*` parts and
-  `use-data-table`) live in `DISTRIBUTION_ONLY` in `registry-meta.ts`: they
-  ship in the registry but have no standalone showcase page. The data table is
-  one item per file; the showcased **`data-table`** entry ships the renderer and
-  re-exports the hook, toolbar and column header, so `shadcn add data-table`
-  pulls the whole working kit through `registryDependencies`.
+- **`ui/` is shadcn primitives; multi-file extended components get a folder.**
+  `registry/hirael/ui/*` holds single-file primitives (button, table, …). A
+  composite that isn't a pure primitive — like the data table — ships as a
+  folder, `registry/hirael/components/<name>/*`, declared as one registry item
+  with many `files` (parts + hook + lib) that install under
+  `components/<name>/`. Its parts import each other by **relative path** (like
+  templates) and pull primitives from `@/registry/hirael/ui/*`;
+  `check:registry` only validates the `ui/*` deps, so relative sibling imports
+  aren't flagged. The component page renders any multi-file item as a file
+  tree (`component-page.tsx`, `treeView`).
+- **Distribution-only items** (`accordion`, `calendar-utils`) live in
+  `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the registry but have
+  no standalone showcase page.
 - **One `useDataTable`, server or client.** The hook always keeps page, sort
   and per-column filters in the URL (nuqs). Pass `pageCount` and it runs
   manual (the server queries; `data` is the current page); omit it and the

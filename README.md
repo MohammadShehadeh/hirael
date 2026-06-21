@@ -144,7 +144,8 @@ hirael/
 ├── components/showcase/          # site chrome (not part of the registry)
 ├── registry/
 │   └── hirael/                   # canonical source for every registry item
-│       ├── ui/                   # component + primitive source (flat compound exports)
+│       ├── ui/                   # shadcn primitives + single-file components
+│       ├── components/<name>/    # multi-file extended components (e.g. data-table)
 │       ├── examples/             # <component>-demo.tsx showcase demos
 │       ├── blocks/<block>/       # marketing blocks
 │       ├── templates/<template>/ # full-page templates

@@ -1,7 +1,7 @@
 "use no memo";
 "use client";
 
-import { DataTablePagination } from "@/registry/hirael/ui/data-table-pagination";
+import { DataTablePagination } from "./data-table-pagination";
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/registry/hirael/ui/table";
-import { getColumnPinningStyle } from "@/registry/hirael/ui/data-table-utils";
+import { getColumnPinningStyle } from "./data-table-utils";
 import { cn } from "@/lib/utils";
 import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
 import type * as React from "react";
@@ -105,12 +105,3 @@ export function DataTable<TData>({
     </div>
   );
 }
-
-export { useDataTable } from "@/registry/hirael/ui/use-data-table";
-export { DataTableToolbar } from "@/registry/hirael/ui/data-table-toolbar";
-export { DataTableColumnHeader } from "@/registry/hirael/ui/data-table-column-header";
-export type {
-  Option,
-  FilterVariant,
-  DataTableRowAction,
-} from "@/registry/hirael/ui/data-table-utils";

@@ -1,4 +1,4 @@
-import type { ExtendedColumnSort } from "@/registry/hirael/ui/data-table-utils";
+import type { ExtendedColumnSort } from "./data-table-utils";
 import { createParser } from "nuqs/server";
 import { z } from "zod";
 

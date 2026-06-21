@@ -1,11 +1,8 @@
 "use no memo";
 "use client";
 
-import { getSortingStateParser } from "@/registry/hirael/ui/data-table-parsers";
-import type {
-  ExtendedColumnSort,
-  FilterVariant,
-} from "@/registry/hirael/ui/data-table-utils";
+import { getSortingStateParser } from "./data-table-parsers";
+import type { ExtendedColumnSort, FilterVariant } from "./data-table-utils";
 import type { ColumnDef, FilterFn, RowData } from "@tanstack/react-table";
 import {
   type ColumnFiltersState,

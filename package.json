@@ -13,6 +13,7 @@
     "registry:props": "node scripts/extract-props.mjs",
     "registry:build": "shadcn build",
     "check:registry": "node scripts/check-registry.mjs",
+    "check:install": "node scripts/check-install.mjs",
     "prepare": "husky"
   },
   "lint-staged": {

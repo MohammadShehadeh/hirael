@@ -709,7 +709,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "accordion",
+        "https://hirael.com/r/accordion.json",
         "button",
         "card"
       ],
@@ -734,7 +734,7 @@
         "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -758,7 +758,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "accordion",
+        "https://hirael.com/r/accordion.json",
         "button",
         "empty",
         "input-group",
@@ -785,7 +785,7 @@
         "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -813,7 +813,7 @@
         "field",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -839,7 +839,7 @@
         "button",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -867,7 +867,7 @@
         "field",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -1205,7 +1205,7 @@
       "registryDependencies": [
         "badge",
         "button",
-        "rating"
+        "https://hirael.com/r/rating.json"
       ],
       "files": [
         {
@@ -1441,7 +1441,7 @@
         "button",
         "card",
         "input-group",
-        "kbd",
+        "https://hirael.com/r/kbd.json",
         "separator",
         "sidebar",
         "table"
@@ -1526,7 +1526,7 @@
         "badge",
         "button",
         "input-group",
-        "kbd",
+        "https://hirael.com/r/kbd.json",
         "separator",
         "sidebar"
       ],
@@ -1689,7 +1689,7 @@
       ],
       "registryDependencies": [
         "button",
-        "calendar-utils",
+        "https://hirael.com/r/calendar-utils.json",
         "popover"
       ],
       "files": [
@@ -1713,7 +1713,7 @@
       ],
       "registryDependencies": [
         "button",
-        "calendar-utils",
+        "https://hirael.com/r/calendar-utils.json",
         "popover",
         "separator"
       ],
@@ -1735,7 +1735,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "spinner"
+        "https://hirael.com/r/spinner.json"
       ],
       "files": [
         {
@@ -1794,7 +1794,7 @@
       "registryDependencies": [
         "button",
         "input",
-        "spinner",
+        "https://hirael.com/r/spinner.json",
         "textarea"
       ],
       "files": [
@@ -1958,7 +1958,7 @@
       "registryDependencies": [
         "badge",
         "button",
-        "copy-button"
+        "https://hirael.com/r/copy-button.json"
       ],
       "files": [
         {
@@ -3341,7 +3341,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -3503,7 +3503,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "confirm"
+        "https://hirael.com/r/confirm.json"
       ],
       "files": [
         {

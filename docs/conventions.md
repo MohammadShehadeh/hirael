@@ -83,6 +83,19 @@ heading rather than starting a new doc.
   generated; `pnpm check:registry` fails the build on drift, on declared
   `registryDependencies` that don't match a component's real imports, or on a
   showcased entry missing its preview loader in `registry-demos.tsx`.
+- **Cross-hirael deps are emitted as URLs.** `registry-meta.ts` lists
+  `registryDependencies` by bare name (so `check:registry` can match them to
+  imports). At generation time `build-registry.mjs` rewrites any dep that is a
+  hirael item into an absolute `https://hirael.com/r/<name>.json` URL — bare
+  names resolve against the default `ui.shadcn.com` registry, which only has the
+  shadcn primitives, so a hirael-only dep (`calendar-utils`, `confirm`, …) must
+  be a URL to install. `REGISTRY_BASE_URL` overrides the base (the install
+  smoke-test points it at a local server).
+- **`pnpm check:install` is a real `shadcn add` smoke-test** (CI only — it needs
+  network for shadcn's base-color + primitive fetches). It builds the registry
+  against a local server, installs `date-picker` into a throwaway project, and
+  asserts the component + its cross-hirael dep land under `components/` with
+  every `@/registry/hirael/*` import rewritten to the consumer's aliases.
 - **Register the preview loader in `registry-demos.tsx`.** Every showcased
   item renders its preview / `/embed/*` iframe through `RegistryDemo`, keyed
   by entry name; an unregistered name returns `null` and the preview comes up

@@ -44,3 +44,11 @@ jobs:
         env:
           GITHUB_TOKEN_HIRAEL: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm build
+
+      - name: Install smoke test (real shadcn add)
+        # Serves the built registry locally and runs the real shadcn CLI to
+        # install a component into a throwaway project, asserting it lands under
+        # components/ with imports rewritten and cross-hirael deps resolved.
+        # Needs network (shadcn fetches base colors + primitives from
+        # ui.shadcn.com), so it runs here rather than in the sandbox.
+        run: pnpm check:install

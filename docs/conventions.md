@@ -48,10 +48,10 @@ heading rather than starting a new doc.
   the showcase build auto-memoizes components and hooks. Don't hand-write
   `useMemo`/`useCallback` in showcase/demo code (`app/`, `components/`, `lib/`,
   `registry/hirael/examples/`) — prefer plain derived values. **The exception
-  is shipped registry primitives (`registry/hirael/ui/*`):** they're copied as
-  raw source into consumer repos that may not run the compiler, so keep their
-  explicit memoization. The compiler only optimizes how this site is built; it
-  never touches what ships.
+  is shipped registry source (`registry/hirael/ui/*` and
+  `registry/hirael/components/*`):** it's copied as raw source into consumer
+  repos that may not run the compiler, so keep its explicit memoization. The
+  compiler only optimizes how this site is built; it never touches what ships.
 - **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
   the compiler can't memoize without serving stale rows, so every file that
   creates or reads a table instance starts with the `"use no memo"` directive —

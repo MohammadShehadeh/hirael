@@ -44,8 +44,13 @@ import {
   useSidebar,
 } from "@/registry/hirael/ui/sidebar";
 
+// The recurring eyebrow label: mono, tiny, uppercase, tracked, muted — the
+// same treatment the "On this page" rail and changelog header use.
+const EYEBROW_CLASS =
+  "font-mono text-[10px] font-normal uppercase tracking-[0.14em] text-muted-foreground";
+
 const COUNT_CLASS =
-  "ms-auto font-mono text-[10px] tabular-nums text-muted-foreground";
+  "ms-auto font-mono text-[10px] tabular-nums tracking-normal text-muted-foreground";
 
 export function ShowcaseSidebar() {
   const pathname = usePathname();
@@ -164,7 +169,9 @@ export function ShowcaseSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupLabel className={EYEBROW_CLASS}>
+            Workspace
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -227,7 +234,7 @@ export function ShowcaseSidebar() {
               placeholder="Filter components…"
               aria-label="Filter components"
               autoComplete="off"
-              className="h-8 ps-8 pe-10 text-sm"
+              className="h-8 border-sidebar-border bg-sidebar-accent/40 ps-8 pe-10 dark:bg-sidebar-accent/40"
             />
             {query ? (
               <button
@@ -262,11 +269,18 @@ export function ShowcaseSidebar() {
               className="group/collapsible"
             >
               <SidebarGroup className="px-2 py-0.5">
-                <SidebarGroupLabel asChild>
-                  <CollapsibleTrigger className="w-full cursor-pointer gap-1.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                <SidebarGroupLabel
+                  asChild
+                  className={`${EYEBROW_CLASS} w-full cursor-pointer gap-1.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground${
+                    cat === activeCategory
+                      ? " text-sidebar-accent-foreground"
+                      : ""
+                  }`}
+                >
+                  <CollapsibleTrigger>
                     <span className="truncate">{label}</span>
                     <span className={COUNT_CLASS}>{items.length}</span>
-                    <ChevronDown className="shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
+                    <ChevronDown className="shrink-0 text-muted-foreground/80 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
                   </CollapsibleTrigger>
                 </SidebarGroupLabel>
                 <CollapsibleContent>
@@ -277,7 +291,11 @@ export function ShowcaseSidebar() {
                         const active = isActive(href);
                         return (
                           <SidebarMenuItem key={entry.name}>
-                            <SidebarMenuButton asChild isActive={active}>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={active}
+                              className="text-[13px] text-sidebar-foreground/70"
+                            >
                               <Link
                                 href={href}
                                 ref={active ? activeItemRef : undefined}
@@ -320,9 +338,7 @@ export function ShowcaseSidebar() {
 
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 bg-sidebar-accent/30 px-1 py-2">
-          <span className="font-mono text-sm uppercase text-muted-foreground">
-            peer of shadcn
-          </span>
+          <span className={EYEBROW_CLASS}>peer of shadcn</span>
           <ThemeSheetTrigger />
         </div>
       </SidebarFooter>

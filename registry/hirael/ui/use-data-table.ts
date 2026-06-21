@@ -2,8 +2,11 @@
 "use client";
 
 import { getSortingStateParser } from "@/registry/hirael/ui/data-table-parsers";
-import type { ExtendedColumnSort } from "@/registry/hirael/ui/data-table-utils";
-import type { ColumnDef, RowData } from "@tanstack/react-table";
+import type {
+  ExtendedColumnSort,
+  FilterVariant,
+} from "@/registry/hirael/ui/data-table-utils";
+import type { ColumnDef, FilterFn, RowData } from "@tanstack/react-table";
 import {
   type ColumnFiltersState,
   getCoreRowModel,
@@ -24,8 +27,8 @@ import {
 } from "@tanstack/react-table";
 import {
   parseAsArrayOf,
-  parseAsInteger,
   parseAsString,
+  parseAsInteger,
   type SingleParser,
   type UseQueryStateOptions,
   useQueryState,
@@ -37,11 +40,9 @@ function useCallbackRef<T extends (...args: never[]) => unknown>(
   callback: T | undefined,
 ): T {
   const callbackRef = React.useRef(callback);
-
   React.useEffect(() => {
     callbackRef.current = callback;
   });
-
   return React.useMemo(
     () => ((...args) => callbackRef.current?.(...args)) as T,
     [],
@@ -58,7 +59,6 @@ function useDebouncedCallback<T extends (...args: never[]) => unknown>(
     () => () => window.clearTimeout(debounceTimerRef.current),
     [],
   );
-
   return React.useCallback(
     (...args: Parameters<T>) => {
       window.clearTimeout(debounceTimerRef.current);
@@ -69,6 +69,95 @@ function useDebouncedCallback<T extends (...args: never[]) => unknown>(
     },
     [handleCallback, delay],
   );
+}
+
+function toTime(value: unknown): number | null {
+  if (value instanceof Date) return value.getTime();
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const time = new Date(value).getTime();
+    return Number.isNaN(time) ? null : time;
+  }
+  return null;
+}
+
+function startOfDay(timestamp: number): number {
+  const date = new Date(timestamp);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
+
+function endOfDay(timestamp: number): number {
+  const date = new Date(timestamp);
+  date.setHours(23, 59, 59, 999);
+  return date.getTime();
+}
+
+const ARRAY_VARIANTS = new Set<FilterVariant>([
+  "select",
+  "multiSelect",
+  "range",
+  "dateRange",
+]);
+
+function isArrayVariant(variant: FilterVariant | undefined): boolean {
+  return variant ? ARRAY_VARIANTS.has(variant) : false;
+}
+
+// In-memory filter for a column, picked from its `meta.variant`. Used when the
+// table runs client-side (no `pageCount`); manual mode ignores it.
+function getFilterFn<TData>(
+  variant: FilterVariant | undefined,
+): FilterFn<TData> {
+  return (row, columnId, filterValue) => {
+    if (filterValue == null || filterValue === "") return true;
+    const value = row.getValue(columnId);
+
+    switch (variant) {
+      case "select":
+      case "multiSelect": {
+        const selected = (
+          Array.isArray(filterValue) ? filterValue : [filterValue]
+        ).map(String);
+        if (selected.length === 0) return true;
+        return selected.includes(String(value));
+      }
+      case "range": {
+        if (!Array.isArray(filterValue)) return true;
+        const [min, max] = filterValue;
+        const num = Number(value);
+        if (Number.isNaN(num)) return false;
+        if (min != null && min !== "" && num < Number(min)) return false;
+        if (max != null && max !== "" && num > Number(max)) return false;
+        return true;
+      }
+      case "date":
+      case "dateRange": {
+        const rowTime = toTime(value);
+        if (rowTime == null) return false;
+        if (Array.isArray(filterValue)) {
+          const [from, to] = filterValue;
+          if (from != null && from !== "" && rowTime < startOfDay(Number(from)))
+            return false;
+          if (to != null && to !== "" && rowTime > endOfDay(Number(to)))
+            return false;
+          return true;
+        }
+        const target = Number(filterValue);
+        if (Number.isNaN(target)) return true;
+        return startOfDay(rowTime) === startOfDay(target);
+      }
+      default: {
+        const needle = String(
+          Array.isArray(filterValue) ? (filterValue[0] ?? "") : filterValue,
+        ).toLowerCase();
+        if (!needle) return true;
+        return String(value ?? "")
+          .toLowerCase()
+          .includes(needle);
+      }
+    }
+  };
 }
 
 function getColumnId<TData extends RowData>(column: ColumnDef<TData>): string {
@@ -84,18 +173,24 @@ const ARRAY_SEPARATOR = ",";
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 
-interface UseDataTableProps<TData>
-  extends
-    Omit<
-      TableOptions<TData>,
-      | "state"
-      | "pageCount"
-      | "getCoreRowModel"
-      | "manualFiltering"
-      | "manualPagination"
-      | "manualSorting"
-    >,
-    Required<Pick<TableOptions<TData>, "pageCount">> {
+interface UseDataTableProps<TData> extends Omit<
+  TableOptions<TData>,
+  | "state"
+  | "pageCount"
+  | "getCoreRowModel"
+  | "manualFiltering"
+  | "manualPagination"
+  | "manualSorting"
+> {
+  /**
+   * Total page count from the server. Pass it to run the table in manual mode
+   * (server does pagination / sorting / filtering, `data` is the current page).
+   * Omit it to run in memory: pass the full `data` and the table paginates,
+   * sorts and filters it from the URL state.
+   */
+  pageCount?: number;
+  /** Override the server/client mode. Defaults to `pageCount != null`. */
+  manual?: boolean;
   initialState?: Omit<Partial<TableState>, "sorting"> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
@@ -112,7 +207,8 @@ interface UseDataTableProps<TData>
 export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const {
     columns,
-    pageCount = -1,
+    pageCount,
+    manual = pageCount != null,
     initialState,
     prefix = "",
     history = "replace",
@@ -170,10 +266,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   );
 
   const pagination: PaginationState = React.useMemo(() => {
-    return {
-      pageIndex: page - 1,
-      pageSize: perPage,
-    };
+    return { pageIndex: page - 1, pageSize: perPage };
   }, [page, perPage]);
 
   const onPaginationChange = React.useCallback(
@@ -219,21 +312,27 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     return columns.filter((column) => column.enableColumnFilter);
   }, [columns]);
 
+  // Wire each filterable column an in-memory filterFn from its variant so the
+  // table can filter client-side; manual mode ignores these.
+  const tableColumns = React.useMemo<ColumnDef<TData>[]>(() => {
+    return columns.map((column) => {
+      if (column.filterFn || !column.enableColumnFilter) return column;
+      return { ...column, filterFn: getFilterFn<TData>(column.meta?.variant) };
+    });
+  }, [columns]);
+
   const filterParsers = React.useMemo(() => {
     return filterableColumns.reduce<
       Record<string, SingleParser<string> | SingleParser<string[]>>
     >((acc, column) => {
       const id = getColumnId(column);
       if (!id) return acc;
-
       const key = `${prefix}${id}`;
-      if (column.meta?.options) {
-        acc[key] = parseAsArrayOf(parseAsString, ARRAY_SEPARATOR).withOptions(
-          queryStateOptions,
-        );
-      } else {
-        acc[key] = parseAsString.withOptions(queryStateOptions);
-      }
+      acc[key] = isArrayVariant(column.meta?.variant)
+        ? parseAsArrayOf(parseAsString, ARRAY_SEPARATOR).withOptions(
+            queryStateOptions,
+          )
+        : parseAsString.withOptions(queryStateOptions);
       return acc;
     }, {});
   }, [filterableColumns, queryStateOptions, prefix]);
@@ -252,15 +351,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     return Object.entries(filterValues).reduce<ColumnFiltersState>(
       (filters, [key, value]) => {
         if (value !== null) {
-          const processedValue = Array.isArray(value)
-            ? value
-            : typeof value === "string" && /[^a-zA-Z0-9]/.test(value)
-              ? value.split(/[^a-zA-Z0-9]+/).filter(Boolean)
-              : [value];
-
           filters.push({
             id: prefix ? key.slice(prefix.length) : key,
-            value: processedValue,
+            value,
           });
         }
         return filters;
@@ -308,9 +401,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   const table = useReactTable({
     ...tableProps,
-    columns,
+    columns: tableColumns,
     initialState,
-    pageCount,
+    pageCount: manual ? (pageCount ?? -1) : undefined,
     state: {
       pagination,
       sorting,
@@ -335,9 +428,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    manualPagination: true,
-    manualSorting: true,
-    manualFiltering: true,
+    manualPagination: manual,
+    manualSorting: manual,
+    manualFiltering: manual,
   });
 
   return React.useMemo(

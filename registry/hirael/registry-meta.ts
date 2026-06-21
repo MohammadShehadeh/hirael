@@ -1209,7 +1209,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "rich-text-editor",
     title: "Rich Text Editor",
     description:
-      "Tiptap editor with a formatting toolbar: headings, lists, links, highlight, alignment and undo. Outputs HTML, controlled or uncontrolled, with composable toolbar parts.",
+      "Tiptap editor with a formatting toolbar (headings, lists, links, highlight, alignment) and a hover bubble to edit or unlink links inline. Outputs HTML, controlled or uncontrolled, with composable parts.",
     category: "inputs",
     files: [{ path: "registry/hirael/ui/rich-text-editor.tsx" }],
     registryDependencies: [

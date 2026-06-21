@@ -3156,6 +3156,11 @@
       "name": "RichTextEditorLinkPopover",
       "props": [],
       "extendsNative": false
+    },
+    {
+      "name": "RichTextEditorLinkBubble",
+      "props": [],
+      "extendsNative": false
     }
   ],
   "inline-edit": [

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { Extension } from "@tiptap/core";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -22,6 +23,7 @@ import {
   Bold,
   Check,
   Code,
+  ExternalLink,
   Heading1,
   Heading2,
   Heading3,
@@ -31,6 +33,7 @@ import {
   List,
   ListOrdered,
   Minus,
+  Pencil,
   Pilcrow,
   Quote,
   Redo,
@@ -38,6 +41,8 @@ import {
   Trash2,
   Underline as UnderlineIcon,
   Undo,
+  Unlink,
+  X,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -272,6 +277,7 @@ function RichTextEditor({
           <>
             {isEditable && <RichTextEditorToolbar />}
             <RichTextEditorContent />
+            {isEditable && <RichTextEditorLinkBubble />}
           </>
         )}
       </div>
@@ -467,6 +473,242 @@ function RichTextEditorLinkPopover() {
         </form>
       </PopoverContent>
     </Popover>
+  );
+}
+
+type LinkTarget = { el: HTMLAnchorElement; href: string };
+
+function RichTextEditorLinkBubble() {
+  const editor = useRichTextEditor();
+  const [target, setTarget] = React.useState<LinkTarget | null>(null);
+  const [editing, setEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState("");
+  const editingRef = React.useRef(false);
+  const hideTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [, reposition] = React.useReducer((n: number) => n + 1, 0);
+
+  React.useEffect(() => {
+    editingRef.current = editing;
+  }, [editing]);
+
+  const clearHide = React.useCallback(() => {
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
+    }
+  }, []);
+
+  const linkFromNode = React.useCallback(
+    (node: Node | null | undefined): HTMLAnchorElement | null => {
+      const el = node instanceof HTMLElement ? node : node?.parentElement;
+      return el?.closest("a") ?? null;
+    },
+    [],
+  );
+
+  const linkAtSelection = React.useCallback((): HTMLAnchorElement | null => {
+    if (!editor.isEditable || !editor.isActive("link")) return null;
+    return linkFromNode(editor.view.domAtPos(editor.state.selection.from).node);
+  }, [editor, linkFromNode]);
+
+  const show = React.useCallback((el: HTMLAnchorElement) => {
+    const href = el.getAttribute("href") ?? "";
+    setTarget((prev) =>
+      prev && prev.el === el && prev.href === href ? prev : { el, href },
+    );
+  }, []);
+
+  const scheduleHide = React.useCallback(() => {
+    clearHide();
+    hideTimer.current = setTimeout(() => {
+      if (editingRef.current) return;
+      const el = linkAtSelection();
+      if (el) show(el);
+      else setTarget(null);
+    }, 200);
+  }, [clearHide, linkAtSelection, show]);
+
+  React.useEffect(() => {
+    const onSelect = () => {
+      if (editingRef.current) return;
+      const el = linkAtSelection();
+      if (el) {
+        clearHide();
+        show(el);
+      } else {
+        scheduleHide();
+      }
+    };
+    editor.on("selectionUpdate", onSelect);
+    return () => {
+      editor.off("selectionUpdate", onSelect);
+    };
+  }, [editor, linkAtSelection, show, clearHide, scheduleHide]);
+
+  React.useEffect(() => {
+    const dom = editor.view.dom;
+    const onOver = (e: Event) => {
+      if (!editor.isEditable) return;
+      const el = linkFromNode(e.target as Node | null);
+      if (el) {
+        clearHide();
+        show(el);
+      }
+    };
+    const onOut = () => scheduleHide();
+    dom.addEventListener("mouseover", onOver);
+    dom.addEventListener("mouseout", onOut);
+    return () => {
+      dom.removeEventListener("mouseover", onOver);
+      dom.removeEventListener("mouseout", onOut);
+    };
+  }, [editor, linkFromNode, show, clearHide, scheduleHide]);
+
+  React.useEffect(() => {
+    if (!target) return;
+    window.addEventListener("scroll", reposition, true);
+    window.addEventListener("resize", reposition);
+    return () => {
+      window.removeEventListener("scroll", reposition, true);
+      window.removeEventListener("resize", reposition);
+    };
+  }, [target]);
+
+  React.useEffect(() => {
+    if (editing) inputRef.current?.focus();
+  }, [editing]);
+
+  if (typeof document === "undefined" || !target || !target.el.isConnected) {
+    return null;
+  }
+
+  const rect = target.el.getBoundingClientRect();
+  if (rect.width === 0 && rect.height === 0) return null;
+  const below = rect.top < 64;
+
+  const selectLink = () => {
+    const from = editor.view.posAtDOM(target.el, 0);
+    const to = from + (target.el.textContent?.length ?? 0);
+    return editor
+      .chain()
+      .focus()
+      .setTextSelection({ from, to })
+      .extendMarkRange("link");
+  };
+
+  const applyEdit = () => {
+    const href = draft.trim();
+    setEditing(false);
+    if (href === "") {
+      selectLink().unsetLink().run();
+      setTarget(null);
+      return;
+    }
+    selectLink().setLink({ href }).run();
+    requestAnimationFrame(() => {
+      const el = linkAtSelection();
+      if (el) show(el);
+      else setTarget(null);
+    });
+  };
+
+  const removeLink = () => {
+    selectLink().unsetLink().run();
+    setEditing(false);
+    setTarget(null);
+  };
+
+  return createPortal(
+    <div
+      data-slot="rich-text-editor-link-bubble"
+      role="dialog"
+      onMouseEnter={clearHide}
+      onMouseLeave={scheduleHide}
+      style={{
+        position: "fixed",
+        top: below ? rect.bottom + 8 : rect.top - 8,
+        left: Math.max(8, rect.left),
+        transform: below ? undefined : "translateY(-100%)",
+      }}
+      className="z-50 flex max-w-[min(22rem,calc(100vw-1rem))] items-center gap-1 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
+    >
+      {editing ? (
+        <form
+          className="flex items-center gap-1"
+          onSubmit={(e) => {
+            e.preventDefault();
+            applyEdit();
+          }}
+        >
+          <Input
+            ref={inputRef}
+            type="url"
+            dir="ltr"
+            placeholder="https://example.com"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setEditing(false);
+            }}
+            className="h-8 w-56 text-sm"
+          />
+          <Button
+            type="submit"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Apply"
+          >
+            <Check className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Cancel"
+            onClick={() => setEditing(false)}
+          >
+            <X className="size-4" />
+          </Button>
+        </form>
+      ) : (
+        <>
+          <a
+            href={target.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            dir="ltr"
+            className="flex min-w-0 items-center gap-1.5 px-2 text-sm text-primary underline-offset-2 hover:underline"
+          >
+            <ExternalLink className="size-3.5 shrink-0" />
+            <span className="truncate">{target.href}</span>
+          </a>
+          <RichTextEditorSeparator className="h-5" />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Edit link"
+            onClick={() => {
+              setDraft(target.href);
+              setEditing(true);
+            }}
+          >
+            <Pencil className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Remove link"
+            onClick={removeLink}
+          >
+            <Unlink className="size-4" />
+          </Button>
+        </>
+      )}
+    </div>,
+    document.body,
   );
 }
 
@@ -679,5 +921,6 @@ export {
   RichTextEditorSeparator,
   RichTextEditorContent,
   RichTextEditorLinkPopover,
+  RichTextEditorLinkBubble,
   useRichTextEditor,
 };

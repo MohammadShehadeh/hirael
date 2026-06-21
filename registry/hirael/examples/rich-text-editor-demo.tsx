@@ -68,8 +68,8 @@ export default function RichTextEditorDemo() {
   const t = useT();
 
   const initialHtml = t({
-    en: "<h2>Release notes</h2><p>We shipped a <strong>rich text editor</strong> with <em>formatting</em>, lists and <mark>highlights</mark>.</p><ul><li>Headings, quotes and code</li><li>Links and text alignment</li></ul>",
-    ar: "<h2>ملاحظات الإصدار</h2><p>أطلقنا <strong>محرّر نصوص غنيًا</strong> مع <em>تنسيق</em> وقوائم و<mark>تمييز</mark>.</p><ul><li>عناوين واقتباسات وشيفرة</li><li>روابط ومحاذاة النص</li></ul>",
+    en: '<h2>Release notes</h2><p>We shipped a <strong>rich text editor</strong> with <em>formatting</em>, lists and <mark>highlights</mark>. Hover a <a href="https://hirael.com">link</a> to edit or unlink it.</p><ul><li>Headings, quotes and code</li><li>Links and text alignment</li></ul>',
+    ar: '<h2>ملاحظات الإصدار</h2><p>أطلقنا <strong>محرّر نصوص غنيًا</strong> مع <em>تنسيق</em> وقوائم و<mark>تمييز</mark>. مرّر فوق <a href="https://hirael.com">رابط</a> لتعديله أو إزالته.</p><ul><li>عناوين واقتباسات وشيفرة</li><li>روابط ومحاذاة النص</li></ul>',
   });
 
   const [value, setValue] = React.useState(
@@ -83,7 +83,10 @@ export default function RichTextEditorDemo() {
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: "Default toolbar", ar: "شريط الأدوات الافتراضي" })}
+          {t({
+            en: "Default toolbar · hover a link",
+            ar: "شريط الأدوات الافتراضي · مرّر فوق رابط",
+          })}
         </p>
         <RichTextEditor
           defaultValue={initialHtml}

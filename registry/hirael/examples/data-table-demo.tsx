@@ -5,6 +5,7 @@ import * as React from "react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { ColumnDef } from "@tanstack/react-table";
 
+import { useT } from "@/lib/demo-locale";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Checkbox } from "@/registry/hirael/ui/checkbox";
 import { DataTable } from "@/registry/hirael/ui/data-table";
@@ -19,7 +20,6 @@ type Account = {
   status: "active" | "trial" | "past_due" | "canceled";
   plan: "free" | "pro" | "enterprise";
   mrr: number;
-  seats: number;
   signedUp: number;
 };
 
@@ -33,8 +33,6 @@ const CUSTOMERS = [
   ["Harbor Eight", "accounts@harbor8.io"],
   ["Sable Type", "team@sabletype.com"],
   ["Mara Health", "admin@marahealth.org"],
-  ["Lumen Bank", "ops@lumen.bank"],
-  ["Drift Audio", "pay@driftaudio.fm"],
 ];
 
 const STATUSES: Account["status"][] = [
@@ -45,7 +43,7 @@ const STATUSES: Account["status"][] = [
 ];
 const PLANS: Account["plan"][] = ["free", "pro", "enterprise"];
 
-const DATA: Account[] = Array.from({ length: 64 }, (_, i) => {
+const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
   const [customer, email] = CUSTOMERS[i % CUSTOMERS.length] ?? [
     "Acme",
     "a@b.c",
@@ -57,37 +55,27 @@ const DATA: Account[] = Array.from({ length: 64 }, (_, i) => {
     status: STATUSES[i % STATUSES.length] ?? "active",
     plan: PLANS[i % PLANS.length] ?? "free",
     mrr: Math.round(((i * 173) % 1400) + 30),
-    seats: ((i * 7) % 90) + 3,
-    signedUp: Date.now() - (i % 45) * DAY,
+    signedUp: Date.now() - (i % 30) * DAY,
   };
 });
 
-const STATUS_LABELS: Record<Account["status"], string> = {
-  active: "Active",
-  trial: "Trial",
-  past_due: "Past due",
-  canceled: "Canceled",
-};
-const PLAN_LABELS: Record<Account["plan"], string> = {
-  free: "Free",
-  pro: "Pro",
-  enterprise: "Enterprise",
-};
+function useColumns(): ColumnDef<Account>[] {
+  const t = useT();
 
-const currency = new Intl.NumberFormat(undefined, {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
-const shortDate = new Intl.DateTimeFormat(undefined, {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
+  return React.useMemo<ColumnDef<Account>[]>(() => {
+    const statusLabel: Record<Account["status"], string> = {
+      active: t({ en: "Active", ar: "نشط" }),
+      trial: t({ en: "Trial", ar: "تجريبي" }),
+      past_due: t({ en: "Past due", ar: "متأخر" }),
+      canceled: t({ en: "Canceled", ar: "ملغى" }),
+    };
+    const planLabel: Record<Account["plan"], string> = {
+      free: t({ en: "Free", ar: "مجاني" }),
+      pro: t({ en: "Pro", ar: "احترافي" }),
+      enterprise: t({ en: "Enterprise", ar: "مؤسسات" }),
+    };
 
-function useAccountColumns(): ColumnDef<Account>[] {
-  return React.useMemo<ColumnDef<Account>[]>(
-    () => [
+    return [
       {
         id: "select",
         header: ({ table }) => (
@@ -99,14 +87,14 @@ function useAccountColumns(): ColumnDef<Account>[] {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(!!value)
             }
-            aria-label="Select all"
+            aria-label={t({ en: "Select all", ar: "تحديد الكل" })}
           />
         ),
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
+            aria-label={t({ en: "Select row", ar: "تحديد الصف" })}
           />
         ),
         enableSorting: false,
@@ -116,7 +104,10 @@ function useAccountColumns(): ColumnDef<Account>[] {
       {
         accessorKey: "customer",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Customer" />
+          <DataTableColumnHeader
+            column={column}
+            label={t({ en: "Customer", ar: "العميل" })}
+          />
         ),
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -128,14 +119,14 @@ function useAccountColumns(): ColumnDef<Account>[] {
         ),
         enableColumnFilter: true,
         meta: {
-          label: "Customer",
-          placeholder: "Search customer…",
+          label: t({ en: "Customer", ar: "العميل" }),
+          placeholder: t({ en: "Search customer…", ar: "ابحث عن عميل…" }),
           variant: "text",
         },
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header: t({ en: "Status", ar: "الحالة" }),
         cell: ({ row }) => {
           const status = row.original.status;
           const tone =
@@ -144,68 +135,76 @@ function useAccountColumns(): ColumnDef<Account>[] {
               : status === "past_due"
                 ? "destructive"
                 : "secondary";
-          return <Badge variant={tone}>{STATUS_LABELS[status]}</Badge>;
+          return <Badge variant={tone}>{statusLabel[status]}</Badge>;
         },
         enableColumnFilter: true,
         meta: {
-          label: "Status",
+          label: t({ en: "Status", ar: "الحالة" }),
           variant: "multiSelect",
           options: STATUSES.map((value) => ({
-            label: STATUS_LABELS[value],
+            label: statusLabel[value],
             value,
           })),
         },
       },
       {
         accessorKey: "plan",
-        header: "Plan",
-        cell: ({ row }) => PLAN_LABELS[row.original.plan],
+        header: t({ en: "Plan", ar: "الخطة" }),
+        cell: ({ row }) => planLabel[row.original.plan],
         enableColumnFilter: true,
         meta: {
-          label: "Plan",
+          label: t({ en: "Plan", ar: "الخطة" }),
           variant: "select",
-          options: PLANS.map((value) => ({ label: PLAN_LABELS[value], value })),
+          options: PLANS.map((value) => ({ label: planLabel[value], value })),
         },
       },
       {
         accessorKey: "mrr",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="MRR" />
+          <DataTableColumnHeader
+            column={column}
+            label={t({ en: "MRR", ar: "الإيراد الشهري" })}
+          />
         ),
-        cell: ({ row }) => currency.format(row.original.mrr),
+        cell: ({ row }) =>
+          new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+          }).format(row.original.mrr),
         enableColumnFilter: true,
-        meta: { label: "MRR", variant: "range", range: [0, 1500], unit: "$" },
-      },
-      {
-        accessorKey: "seats",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Seats" />
-        ),
-        cell: ({ row }) => (
-          <span className="tabular-nums">{row.original.seats}</span>
-        ),
+        meta: {
+          label: t({ en: "MRR", ar: "الإيراد الشهري" }),
+          variant: "range",
+          range: [0, 1500],
+          unit: "$",
+        },
       },
       {
         accessorKey: "signedUp",
-        header: "Signed up",
-        cell: ({ row }) => shortDate.format(row.original.signedUp),
+        header: t({ en: "Signed up", ar: "تاريخ الاشتراك" }),
+        cell: ({ row }) =>
+          new Intl.DateTimeFormat(undefined, {
+            month: "short",
+            day: "numeric",
+          }).format(row.original.signedUp),
         enableColumnFilter: true,
-        meta: { label: "Signed up", variant: "date" },
+        meta: {
+          label: t({ en: "Signed up", ar: "تاريخ الاشتراك" }),
+          variant: "date",
+        },
       },
-    ],
-    [],
-  );
+    ];
+  }, [t]);
 }
 
 function AccountsTable() {
-  const columns = useAccountColumns();
+  const columns = useColumns();
   const { table } = useDataTable({
     data: DATA,
     columns,
     getRowId: (row) => row.id,
-    initialState: {
-      pagination: { pageIndex: 0, pageSize: 8 },
-    },
+    initialState: { pagination: { pageIndex: 0, pageSize: 5 } },
   });
 
   return (
@@ -215,28 +214,14 @@ function AccountsTable() {
   );
 }
 
-export default function DashboardSeven() {
+export default function DataTableDemo() {
+  // useDataTable keeps page, sort and filters in the URL. In an app the adapter
+  // lives at the root; the demo scopes it here.
   return (
     <NuqsAdapter>
-      <section
-        data-slot="data-table-block"
-        className="mx-auto w-full max-w-6xl p-4 sm:p-6"
-      >
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-          <div className="space-y-1">
-            <h2 className="font-semibold text-xl tracking-tight">Accounts</h2>
-            <p className="text-muted-foreground text-sm">
-              Filter, sort and page through {DATA.length} accounts. The view
-              lives in the URL, so any filtered, sorted page is a shareable
-              link.
-            </p>
-          </div>
-          <Badge variant="secondary" className="font-normal">
-            {DATA.length} total
-          </Badge>
-        </div>
+      <div className="w-full max-w-4xl">
         <AccountsTable />
-      </section>
+      </div>
     </NuqsAdapter>
   );
 }

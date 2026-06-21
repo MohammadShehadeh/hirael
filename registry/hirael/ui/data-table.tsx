@@ -105,3 +105,12 @@ export function DataTable<TData>({
     </div>
   );
 }
+
+export { useDataTable } from "@/registry/hirael/ui/use-data-table";
+export { DataTableToolbar } from "@/registry/hirael/ui/data-table-toolbar";
+export { DataTableColumnHeader } from "@/registry/hirael/ui/data-table-column-header";
+export type {
+  Option,
+  FilterVariant,
+  DataTableRowAction,
+} from "@/registry/hirael/ui/data-table-utils";

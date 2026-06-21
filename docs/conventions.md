@@ -55,8 +55,8 @@ heading rather than starting a new doc.
 - **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
   the compiler can't memoize without serving stale rows, so every file that
   creates or reads a table instance starts with the `"use no memo"` directive —
-  the whole `data-table*` / `use-data-table` family **and the `dashboard-07`
-  block** that demos them. This is the one place block/demo code keeps explicit
+  the whole `data-table*` / `use-data-table` family **and the `data-table-demo`
+  example** that demos them. This is the one place demo code keeps explicit
   `useMemo` and the pragma instead of leaning on the compiler.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
@@ -99,12 +99,12 @@ heading rather than starting a new doc.
   the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
   Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
   published.
-- **Distribution-only items** (e.g. `accordion`, the whole `data-table*`
-  family) live in `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the
-  registry but have no standalone showcase page. A multi-file kit like the data
-  table is one item per file, wired together with `registryDependencies`; it's
-  showcased through the `dashboard-07` block rather than cramped component
-  previews, since a table wants the full-width block surface.
+- **Distribution-only items** (e.g. `accordion`, the `data-table-*` parts and
+  `use-data-table`) live in `DISTRIBUTION_ONLY` in `registry-meta.ts`: they
+  ship in the registry but have no standalone showcase page. The data table is
+  one item per file; the showcased **`data-table`** entry ships the renderer and
+  re-exports the hook, toolbar and column header, so `shadcn add data-table`
+  pulls the whole working kit through `registryDependencies`.
 - **One `useDataTable`, server or client.** The hook always keeps page, sort
   and per-column filters in the URL (nuqs). Pass `pageCount` and it runs
   manual (the server queries; `data` is the current page); omit it and the
@@ -112,10 +112,10 @@ heading rather than starting a new doc.
   URL state. Filter values are encoded per `meta.variant` — arrays for
   `select` / `multiSelect` / `range` / `dateRange`, scalars for `text` /
   `number` / `date` — so a multi-word text filter survives a round-trip.
-- **URL-state blocks wrap themselves in a nuqs adapter.** `dashboard-07` uses
-  `useDataTable`, so it wraps its content in `NuqsAdapter`
+- **URL-state demos wrap themselves in a nuqs adapter.** The `data-table-demo`
+  example uses `useDataTable`, so it wraps its content in `NuqsAdapter`
   (`nuqs/adapters/next/app`). That's safe under `output: "export"` because
-  block previews render client-side through `React.lazy` + `Suspense`
+  previews render client-side through `React.lazy` + `Suspense`
   (`registry-demos.tsx`), so `useSearchParams` is never called during the
   static prerender.
 

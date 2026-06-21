@@ -7259,5 +7259,60 @@
       ],
       "extendsNative": false
     }
+  ],
+  "data-table": [
+    {
+      "name": "DataTable",
+      "props": [
+        {
+          "name": "table",
+          "type": "TanstackTable<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "actionBar",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableToolbar",
+      "props": [
+        {
+          "name": "table",
+          "type": "Table<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableColumnHeader",
+      "props": [
+        {
+          "name": "column",
+          "type": "Column<TData, TValue>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

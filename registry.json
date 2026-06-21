@@ -1746,6 +1746,41 @@
       ]
     },
     {
+      "name": "rich-text-editor",
+      "type": "registry:ui",
+      "title": "Rich Text Editor",
+      "description": "Tiptap editor with a formatting toolbar (headings, lists, links, highlight, alignment) and a hover bubble to edit or unlink links inline. Outputs HTML, controlled or uncontrolled, with composable parts.",
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "@tiptap/core",
+        "@tiptap/extension-highlight",
+        "@tiptap/extension-placeholder",
+        "@tiptap/extension-text-align",
+        "@tiptap/pm",
+        "@tiptap/react",
+        "@tiptap/starter-kit",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover",
+        "separator",
+        "skeleton",
+        "toggle",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/rich-text-editor.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/rich-text-editor.tsx"
+        }
+      ]
+    },
+    {
       "name": "inline-edit",
       "type": "registry:ui",
       "title": "Inline Edit",

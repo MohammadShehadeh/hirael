@@ -170,6 +170,8 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/date-range-picker-bounded"),
   "mention-input-demo": () =>
     import("@/registry/hirael/examples/mention-input-demo"),
+  "rich-text-editor-demo": () =>
+    import("@/registry/hirael/examples/rich-text-editor-demo"),
   "inline-edit-demo": () =>
     import("@/registry/hirael/examples/inline-edit-demo"),
   "signature-pad-demo": () =>

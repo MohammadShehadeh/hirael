@@ -8,7 +8,7 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **73 registry UI items** (71 standalone
+pages). As of the last update: **74 registry UI items** (72 standalone
 components + 2 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -33,22 +33,23 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 
 ## Components
 
-#### Inputs (12)
+#### Inputs (13)
 
-| Component        | Registry deps                            | What it is                                                                                                                                                        |
-| ---------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `combobox`       | `input-group`                            | Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.                                       |
-| `currency-input` | `input-group`                            | Locale-aware grouping with currency-symbol prefix and configurable decimal precision.                                                                             |
-| `inline-edit`    | `button`, `input`, `spinner`, `textarea` | Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.                                                  |
-| `lazy-select`    | `command`, `popover`                     | Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook. |
-| `mention-input`  | `spinner`                                | @-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.                                     |
-| `multi-select`   | `badge`, `command`, `popover`            | Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.                                        |
-| `number-range`   | `input`, `slider`                        | Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.                                                     |
-| `password-input` | `input-group`                            | Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.                                                                        |
-| `phone-input`    | `command`, `input-group`, `popover`      | Country dial-code dropdown with E.164 output. Compound and single-prop APIs.                                                                                      |
-| `rating`         | —                                        | Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.                                                                       |
-| `signature-pad`  | `button`                                 | Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.                                             |
-| `tag-input`      | `badge`                                  | Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.                                                                 |
+| Component          | Registry deps                                                              | What it is                                                                                                                                                              |
+| ------------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `combobox`         | `input-group`                                                              | Searchable select on Base UI: single or multiple selection, chips, grouped options, an input addon slot and a clear button.                                             |
+| `currency-input`   | `input-group`                                                              | Locale-aware grouping with currency-symbol prefix and configurable decimal precision.                                                                                   |
+| `inline-edit`      | `button`, `input`, `spinner`, `textarea`                                   | Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.                                                        |
+| `lazy-select`      | `command`, `popover`                                                       | Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.       |
+| `mention-input`    | `spinner`                                                                  | @-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.                                           |
+| `multi-select`     | `badge`, `command`, `popover`                                              | Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.                                              |
+| `number-range`     | `input`, `slider`                                                          | Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.                                                           |
+| `password-input`   | `input-group`                                                              | Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.                                                                              |
+| `phone-input`      | `command`, `input-group`, `popover`                                        | Country dial-code dropdown with E.164 output. Compound and single-prop APIs.                                                                                            |
+| `rating`           | —                                                                          | Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.                                                                             |
+| `rich-text-editor` | `button`, `input`, `popover`, `separator`, `skeleton`, `toggle`, `tooltip` | Tiptap editor with a formatting toolbar: headings, lists, links, highlight, alignment and undo. HTML in/out, controlled or uncontrolled, with composable toolbar parts. |
+| `signature-pad`    | `button`                                                                   | Canvas signature capture with velocity-based ink, per-stroke undo, theme-aware re-inking and PNG/JPEG export via ref.                                                   |
+| `tag-input`        | `badge`                                                                    | Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.                                                                       |
 
 #### Pickers (6)
 

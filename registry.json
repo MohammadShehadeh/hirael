@@ -3438,6 +3438,47 @@
       ]
     },
     {
+      "name": "confirm",
+      "type": "registry:ui",
+      "title": "Confirm",
+      "description": "Imperative confirmation dialog: a root provider plus a useConfirm hook that resolves a promise on confirm or cancel. Default or destructive tone, an optional icon, and an async confirm action with a pending spinner.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "alert-dialog",
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/confirm.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/confirm.tsx"
+        }
+      ]
+    },
+    {
+      "name": "unsaved-guard",
+      "type": "registry:ui",
+      "title": "Unsaved Guard",
+      "description": "Unsaved-changes guard: a root provider plus a useUnsavedGuard hook. Warns before reload, tab close and in-app link navigation, and returns a guard(proceed) to wrap programmatic navigation in a confirm dialog.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "confirm"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/ui/unsaved-guard.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/unsaved-guard.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

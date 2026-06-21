@@ -8,8 +8,8 @@ table here in the same change.
 
 The catalog spans three tiers: **components** (single UI primitives),
 **blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **70 registry UI items** (69 standalone
-components + 1 distribution-only primitive), **56 section blocks**, and
+pages). As of the last update: **73 registry UI items** (71 standalone
+components + 2 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
@@ -84,23 +84,25 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `timeline`         | —             | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                  |
 | `tree-view`        | `collapsible` | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
 
-#### Display & feedback (13)
+#### Display & feedback (15)
 
-| Component          | Registry deps                    | What it is                                                                                                                                   |
-| ------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `announcement-bar` | —                                | Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.                               |
-| `audio-player`     | `button`, `slider`               | Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.                  |
-| `callout`          | —                                | MDX-style admonition with info / success / warning / error / neutral variants. Ships `--info` / `--success` / `--warning` theme tokens.      |
-| `code-block`       | `badge`, `button`, `copy-button` | Code display with dependency-free token highlighting, line numbers, line highlights, diff gutters, copy button and collapsible max-height.   |
-| `copy-button`      | —                                | Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.      |
-| `image-compare`    | —                                | Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.      |
-| `kbd`              | —                                | 3D tactile keycap with hover lift and pressed states. Compound API with `KbdGroup` for chords and `KbdDisplay` for inline keys.              |
-| `lightbox`         | —                                | Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.             |
-| `marquee`          | —                                | Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes inline, zero config. |
-| `masonry`          | —                                | True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.       |
-| `qr-code`          | —                                | Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and `currentColor` theming.         |
-| `scroll-progress`  | —                                | Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.                                                     |
-| `spinner`          | —                                | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label.         |
+| Component          | Registry deps                    | What it is                                                                                                                                                                                     |
+| ------------------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `announcement-bar` | —                                | Top-of-page banner with default / primary / muted tones, optional dismiss button and localStorage persistence.                                                                                 |
+| `audio-player`     | `button`, `slider`               | Composable audio player with play/pause, scrub-safe seek with buffered tint, skip, time readouts, volume and playback rate.                                                                    |
+| `callout`          | —                                | MDX-style admonition with info / success / warning / error / neutral variants. Ships `--info` / `--success` / `--warning` theme tokens.                                                        |
+| `code-block`       | `badge`, `button`, `copy-button` | Code display with dependency-free token highlighting, line numbers, line highlights, diff gutters, copy button and collapsible max-height.                                                     |
+| `confirm`          | `alert-dialog`, `button`         | Imperative confirm dialog from a root provider and a `useConfirm` hook that resolves a promise. Default or destructive tone, optional icon and an async confirm action with a pending spinner. |
+| `copy-button`      | —                                | Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.                                                        |
+| `image-compare`    | —                                | Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.                                                        |
+| `kbd`              | —                                | 3D tactile keycap with hover lift and pressed states. Compound API with `KbdGroup` for chords and `KbdDisplay` for inline keys.                                                                |
+| `lightbox`         | —                                | Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.                                                               |
+| `marquee`          | —                                | Infinite scrolling row or column for logos and testimonials, with pause-on-hover, reverse and vertical modes. Keyframes inline, zero config.                                                   |
+| `masonry`          | —                                | True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.                                                         |
+| `qr-code`          | —                                | Dependency-free QR code generator rendering crisp SVG, with L/M/Q/H error correction, quiet-zone control and `currentColor` theming.                                                           |
+| `scroll-progress`  | —                                | Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.                                                                                                       |
+| `spinner`          | —                                | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label.                                                           |
+| `unsaved-guard`    | `confirm`                        | Unsaved-changes navigation guard from a provider and a `useUnsavedGuard` hook. Warns on reload, tab close and in-app links, with a `guard(proceed)` for programmatic navigation.               |
 
 #### Navigation (10)
 

@@ -7,7 +7,7 @@ import {
   MentionInput,
   getMentions,
   type MentionItem,
-} from "@/registry/hirael/ui/mention-input";
+} from "@/registry/hirael/components/mention-input";
 
 export default function MentionInputDemo() {
   const t = useT();

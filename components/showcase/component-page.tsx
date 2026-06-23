@@ -79,6 +79,9 @@ export function ComponentPage({
 }) {
   const isComposite =
     entry.category === "blocks" || entry.category === "templates";
+  // Multi-file items (composites, or a component that ships a folder of parts
+  // like the data table) show their install tree; single files stay flat.
+  const treeView = isComposite || (entry.files ?? []).length > 1;
   const embedHref = entryEmbedHref(entry);
 
   const codeTabs: CodeBlockTab[] = React.useMemo(
@@ -87,11 +90,11 @@ export function ComponentPage({
         .map((f) => {
           const file = source[f.path];
           if (!file) return null;
-          const label = isComposite ? (f.target ?? f.path) : f.path;
+          const label = treeView ? (f.target ?? f.path) : f.path;
           return { label, code: file.code, html: file.html };
         })
         .filter((t): t is CodeBlockTab => t !== null),
-    [entry.files, source, isComposite],
+    [entry.files, source, treeView],
   );
 
   const exampleList = examples ?? [];
@@ -152,7 +155,9 @@ export function ComponentPage({
         : {
             id: "component-source",
             label: "Component source",
-            content: <CodeBlock tabs={codeTabs} layout="tabs" />,
+            content: (
+              <CodeBlock tabs={codeTabs} layout={treeView ? "tree" : "tabs"} />
+            ),
           },
     );
   }

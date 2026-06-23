@@ -11,7 +11,7 @@ import {
   AuditLogStatus,
   AuditLogTime,
   AuditLogTrigger,
-} from "@/registry/hirael/ui/audit-log";
+} from "@/registry/hirael/components/audit-log";
 
 export default function AuditLogDemo() {
   const t = useT();

@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Spinner } from "@/registry/hirael/ui/spinner";
+import { Spinner } from "@/registry/hirael/components/spinner";
 
 export type MentionItem = {
   id: string;

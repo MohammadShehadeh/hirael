@@ -9,7 +9,7 @@ import {
   InlineEditInput,
   InlineEditPreview,
   InlineEditTextarea,
-} from "@/registry/hirael/ui/inline-edit";
+} from "@/registry/hirael/components/inline-edit";
 
 export default function InlineEditDemo() {
   const t = useT();

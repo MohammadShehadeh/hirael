@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { KbdDisplay } from "@/registry/hirael/ui/kbd";
+import { KbdDisplay } from "@/registry/hirael/components/kbd";
 
 // The palette (cmdk + Radix dialog) is loaded on first open, so it never
 // ships to visitors who don't search.

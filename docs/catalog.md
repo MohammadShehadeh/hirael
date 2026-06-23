@@ -6,9 +6,11 @@ The canonical source for every item is
 human-readable index — when you add or rename an item, update the matching
 table here in the same change.
 
-The catalog spans three tiers: **components** (single UI primitives),
-**blocks** (marketing / app sections), and **templates** (full, multi-section
-pages). As of the last update: **74 registry UI items** (72 standalone
+The catalog spans three tiers: **components** (the composable UI components
+hirael adds, in `registry/hirael/components/`; `ui/` is reserved for the
+shadcn primitives they build on), **blocks** (marketing / app sections), and
+**templates** (full, multi-section
+pages). As of the last update: **75 registry UI items** (73 standalone
 components + 2 distribution-only primitives), **56 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -70,20 +72,21 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `image-cropper` | `slider`      | Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.          |
 | `media-input`   | `button`      | Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser. |
 
-#### Data display (10)
+#### Data display (11)
 
-| Component          | Registry deps | What it is                                                                                                                                                       |
-| ------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activity-feed`    | —             | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                 |
-| `animated-number`  | —             | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                   |
-| `audit-log`        | `collapsible` | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                 |
-| `avatar-stack`     | —             | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button. |
-| `calendar-heatmap` | `tooltip`     | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                            |
-| `countdown-timer`  | —             | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                  |
-| `sortable`         | —             | Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.                                |
-| `stat-card`        | —             | Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.                                                            |
-| `timeline`         | —             | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                  |
-| `tree-view`        | `collapsible` | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                  |
+| Component          | Registry deps                                                                                                                                | What it is                                                                                                                                                                                                                                                                                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `activity-feed`    | —                                                                                                                                            | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                                                                                                                                                                                                  |
+| `animated-number`  | —                                                                                                                                            | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                                                                                                                                                                                                    |
+| `audit-log`        | `collapsible`                                                                                                                                | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                                                                                                                                                                                                  |
+| `avatar-stack`     | —                                                                                                                                            | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button.                                                                                                                                                                                  |
+| `calendar-heatmap` | `tooltip`                                                                                                                                    | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                                                                                                                                                                                                             |
+| `countdown-timer`  | —                                                                                                                                            | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                                                                                                                                                                                                   |
+| `data-table`       | `badge`, `button`, `calendar`, `command`, `dropdown-menu`, `input`, `label`, `popover`, `select`, `separator`, `skeleton`, `slider`, `table` | TanStack data table: faceted / text / range / date filters, sorting, column visibility, selection and pagination, with the view kept in the URL. One `useDataTable` hook — server-side with `pageCount`, or in-memory without. Ships a `components/data-table/` folder of composable parts (renderer, hook, toolbar, filters), not a single file. |
+| `sortable`         | —                                                                                                                                            | Drag-to-reorder list with pointer and keyboard sorting, handle or whole-item dragging, and live-region announcements. No dnd-kit.                                                                                                                                                                                                                 |
+| `stat-card`        | —                                                                                                                                            | Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.                                                                                                                                                                                                                                             |
+| `timeline`         | —                                                                                                                                            | Vertical event timeline with default or icon dots, tone variants and labelled time / title / description parts.                                                                                                                                                                                                                                   |
+| `tree-view`        | `collapsible`                                                                                                                                | Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.                                                                                                                                                                                                   |
 
 #### Display & feedback (15)
 
@@ -153,11 +156,17 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 > The SaaS "Audit Logs" view is served by the `audit-log` component (Data
 > display) rather than a near-duplicate entry.
 
-#### Primitives — distribution-only (1)
+#### Primitives — distribution-only (2)
 
-| Component   | Registry deps | What it is                                                                                                                                         |
-| ----------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `accordion` | —             | Radix-powered accordion primitive used by the FAQ blocks. Listed in `DISTRIBUTION_ONLY` so it ships in the registry without its own showcase page. |
+Items listed in `DISTRIBUTION_ONLY` ship in the registry as dependencies of
+other entries but have no showcase page of their own. (The data-table parts
+that used to live here now ship together inside the `data-table` component
+under Data display — see below.)
+
+| Component        | Registry deps | What it is                                                                    |
+| ---------------- | ------------- | ----------------------------------------------------------------------------- |
+| `accordion`      | —             | Radix-powered accordion primitive used by the FAQ blocks.                     |
+| `calendar-utils` | —             | Dependency-free date helpers shared by `date-picker` and `date-range-picker`. |
 
 ## Blocks
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { Spinner } from "@/registry/hirael/ui/spinner";
+import { Spinner } from "@/registry/hirael/components/spinner";
 
 export default function SpinnerDemo() {
   const t = useT();

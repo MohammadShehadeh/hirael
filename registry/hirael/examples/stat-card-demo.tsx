@@ -6,7 +6,7 @@ import {
   StatCardDelta,
   StatCardLabel,
   StatCardValue,
-} from "@/registry/hirael/ui/stat-card";
+} from "@/registry/hirael/components/stat-card";
 
 export default function StatCardDemo() {
   const t = useT();

@@ -48,10 +48,16 @@ heading rather than starting a new doc.
   the showcase build auto-memoizes components and hooks. Don't hand-write
   `useMemo`/`useCallback` in showcase/demo code (`app/`, `components/`, `lib/`,
   `registry/hirael/examples/`) — prefer plain derived values. **The exception
-  is shipped registry primitives (`registry/hirael/ui/*`):** they're copied as
-  raw source into consumer repos that may not run the compiler, so keep their
-  explicit memoization. The compiler only optimizes how this site is built; it
-  never touches what ships.
+  is shipped registry source (`registry/hirael/ui/*` and
+  `registry/hirael/components/*`):** it's copied as raw source into consumer
+  repos that may not run the compiler, so keep its explicit memoization. The
+  compiler only optimizes how this site is built; it never touches what ships.
+- **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
+  the compiler can't memoize without serving stale rows, so every file that
+  creates or reads a table instance starts with the `"use no memo"` directive —
+  the whole `registry/hirael/components/data-table/*` folder **and the
+  `data-table-demo` example** that demos it. This is the one place demo code
+  keeps explicit `useMemo` and the pragma instead of leaning on the compiler.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.
@@ -77,6 +83,23 @@ heading rather than starting a new doc.
   generated; `pnpm check:registry` fails the build on drift, on declared
   `registryDependencies` that don't match a component's real imports, or on a
   showcased entry missing its preview loader in `registry-demos.tsx`.
+- **Cross-hirael deps are emitted as URLs.** `registry-meta.ts` lists
+  `registryDependencies` by bare name (so `check:registry` can match them to
+  imports). At generation time `build-registry.mjs` rewrites any dep that is a
+  hirael item into an absolute `https://hirael.com/r/<name>.json` URL — bare
+  names resolve against the default `ui.shadcn.com` registry, which only has the
+  shadcn primitives, so a hirael-only dep (`calendar-utils`, `confirm`, …) must
+  be a URL to install. `REGISTRY_BASE_URL` overrides the base if the registry is
+  served somewhere other than `https://hirael.com`.
+- **`pnpm check:install` verifies install resolution offline.** A real
+  `shadcn add` can't run in CI — the CLI always reaches `ui.shadcn.com` for base
+  colors and primitives, which stalls the runner — so instead this rebuilds
+  `/r/*.json` and applies shadcn's own import-rewrite rules to every item,
+  asserting that each installs to the right place (`ui/` → `components/ui`,
+  extended → `components/`), every `@/registry/hirael/*` import maps to a
+  consumer alias (nothing left pointing back at the registry), and every
+  cross-hirael dep is a `/r/<name>.json` URL rather than a bare name. Network-free
+  and deterministic; runs in CI after the build.
 - **Register the preview loader in `registry-demos.tsx`.** Every showcased
   item renders its preview / `/embed/*` iframe through `RegistryDemo`, keyed
   by entry name; an unregistered name returns `null` and the preview comes up
@@ -85,17 +108,47 @@ heading rather than starting a new doc.
   compound API: the bare `Name` holds state; parts are `NameTrigger`,
   `NameContent`, … A single-prop convenience form is optional and secondary,
   never the only API. Every rendered slot carries `data-slot="<kebab>"`.
-- **Import shadcn primitives from `@/registry/hirael/ui/*`** (the `ui` alias).
-  The alias is rewritten to the consumer's `components.json` on install — a
-  relative import would break that rewrite.
+- **`ui/` is shadcn primitives; everything hirael adds lives in `components/`.**
+  `registry/hirael/ui/*` holds only shadcn-style primitives (button, table,
+  popover, …) — the things shadcn itself ships, kept as install dependencies.
+  Every component hirael _adds_ (the whole showcased catalog: multi-select,
+  combobox, date-picker, data-table, …) lives in `registry/hirael/components/`:
+  single-file ones as `components/<name>.tsx`, multi-file kits as a folder
+  `components/<name>/*`. `components.json`'s `components` alias is
+  `@/registry/hirael/components` so the two aliases (`ui`, `components`) map
+  cleanly to the consumer's on install.
+- **Imports + the two aliases.** Import primitives from
+  `@/registry/hirael/ui/*` and extended components from
+  `@/registry/hirael/components/*`; never by relative path across items (shadcn
+  rewrites both aliases to the consumer's `components.json` on install — it
+  keys off the `/ui/` and `/components/` path segments, see the `ga` transform
+  in the shadcn CLI). Inside one multi-file kit, parts import each other by
+  **relative path** (like templates). `check:registry` collects both `ui/*` and
+  `components/*` imports and matches them to `registryDependencies`.
 - **Tokens, not colors.** Never hard-code a color in component source.
 - **Comments are stripped on publish** (`scripts/strip-comments.mjs`) because
   the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
   Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
   published.
-- **Distribution-only items** (e.g. `accordion`) live in `DISTRIBUTION_ONLY`
-  in `registry-meta.ts`: they ship in the registry but have no standalone
-  showcase page.
+- **The component page renders any multi-file item as a file tree**
+  (`component-page.tsx`, `treeView`) — used by the data table and every block /
+  template.
+- **Distribution-only items** (`accordion`, `calendar-utils`) live in
+  `DISTRIBUTION_ONLY` in `registry-meta.ts`: they ship in the registry but have
+  no standalone showcase page.
+- **One `useDataTable`, server or client.** The hook always keeps page, sort
+  and per-column filters in the URL (nuqs). Pass `pageCount` and it runs
+  manual (the server queries; `data` is the current page); omit it and the
+  table sorts, filters and pages the full `data` array in memory from the same
+  URL state. Filter values are encoded per `meta.variant` — arrays for
+  `select` / `multiSelect` / `range` / `dateRange`, scalars for `text` /
+  `number` / `date` — so a multi-word text filter survives a round-trip.
+- **URL-state demos wrap themselves in a nuqs adapter.** The `data-table-demo`
+  example uses `useDataTable`, so it wraps its content in `NuqsAdapter`
+  (`nuqs/adapters/next/app`). That's safe under `output: "export"` because
+  previews render client-side through `React.lazy` + `Suspense`
+  (`registry-demos.tsx`), so `useSearchParams` is never called during the
+  static prerender.
 
 ## Routing & URLs
 

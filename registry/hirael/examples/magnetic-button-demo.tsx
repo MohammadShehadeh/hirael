@@ -3,7 +3,7 @@
 import { ArrowRight } from "lucide-react";
 
 import { useT } from "@/lib/demo-locale";
-import { MagneticButton } from "@/registry/hirael/ui/magnetic-button";
+import { MagneticButton } from "@/registry/hirael/components/magnetic-button";
 
 export default function MagneticButtonDemo() {
   const t = useT();

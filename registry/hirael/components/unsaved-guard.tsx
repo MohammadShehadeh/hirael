@@ -2,7 +2,10 @@
 
 import * as React from "react";
 
-import { ConfirmProvider, useConfirm } from "@/registry/hirael/ui/confirm";
+import {
+  ConfirmProvider,
+  useConfirm,
+} from "@/registry/hirael/components/confirm";
 
 export type UnsavedGuardOptions = {
   /** Whether there are unsaved changes to guard. */

@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { Masonry, MasonryItem } from "@/registry/hirael/ui/masonry";
+import { Masonry, MasonryItem } from "@/registry/hirael/components/masonry";
 
 const aspects = [
   "aspect-square",

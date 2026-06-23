@@ -11,7 +11,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@/registry/hirael/ui/timeline";
+} from "@/registry/hirael/components/timeline";
 
 export default function TimelineDemo() {
   const t = useT();

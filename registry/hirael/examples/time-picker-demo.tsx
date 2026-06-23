@@ -9,7 +9,7 @@ import {
   TimePickerContent,
   TimePickerTrigger,
   type TimeValue,
-} from "@/registry/hirael/ui/time-picker";
+} from "@/registry/hirael/components/time-picker";
 
 export default function TimePickerDemo() {
   const t = useT();

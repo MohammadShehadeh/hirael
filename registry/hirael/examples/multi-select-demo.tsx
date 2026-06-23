@@ -8,7 +8,7 @@ import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/registry/hirael/ui/multi-select";
+} from "@/registry/hirael/components/multi-select";
 
 export default function MultiSelectDemo() {
   const t = useT();

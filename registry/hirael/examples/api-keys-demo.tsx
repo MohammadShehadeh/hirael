@@ -12,7 +12,7 @@ import {
   ApiKeysHeader,
   ApiKeysList,
   ApiKeysTitle,
-} from "@/registry/hirael/ui/api-keys";
+} from "@/registry/hirael/components/api-keys";
 
 export default function ApiKeysDemo() {
   const t = useT();

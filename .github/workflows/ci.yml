@@ -44,3 +44,12 @@ jobs:
         env:
           GITHUB_TOKEN_HIRAEL: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm build
+
+      - name: Install resolution check
+        # Verifies every item would install cleanly: applies shadcn's own
+        # import-rewrite rules to the built /r/*.json and asserts each lands
+        # under the right target with @/registry/hirael imports remapped to
+        # consumer aliases and cross-hirael deps emitted as /r URLs. Offline and
+        # deterministic — a real `shadcn add` can't run here (it stalls fetching
+        # base colors from ui.shadcn.com).
+        run: pnpm check:install

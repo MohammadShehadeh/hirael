@@ -9,7 +9,7 @@ import {
   DatePicker,
   DatePickerContent,
   DatePickerTrigger,
-} from "@/registry/hirael/ui/date-picker";
+} from "@/registry/hirael/components/date-picker";
 
 export default function DatePickerDemo() {
   const t = useT();

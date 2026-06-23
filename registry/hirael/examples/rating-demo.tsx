@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Rating } from "@/registry/hirael/ui/rating";
+import { Rating } from "@/registry/hirael/components/rating";
 
 export default function RatingDemo() {
   const t = useT();

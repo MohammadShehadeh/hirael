@@ -22,9 +22,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/multi-select.tsx",
+          "path": "registry/hirael/components/multi-select.tsx",
           "type": "registry:ui",
-          "target": "components/ui/multi-select.tsx"
+          "target": "components/multi-select.tsx"
         }
       ]
     },
@@ -45,9 +45,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/number-range.tsx",
+          "path": "registry/hirael/components/number-range.tsx",
           "type": "registry:ui",
-          "target": "components/ui/number-range.tsx"
+          "target": "components/number-range.tsx"
         }
       ]
     },
@@ -68,9 +68,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/year-picker.tsx",
+          "path": "registry/hirael/components/year-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/year-picker.tsx"
+          "target": "components/year-picker.tsx"
         }
       ]
     },
@@ -90,9 +90,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/tag-input.tsx",
+          "path": "registry/hirael/components/tag-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/tag-input.tsx"
+          "target": "components/tag-input.tsx"
         }
       ]
     },
@@ -113,9 +113,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/combobox.tsx",
+          "path": "registry/hirael/components/combobox.tsx",
           "type": "registry:ui",
-          "target": "components/ui/combobox.tsx"
+          "target": "components/combobox.tsx"
         }
       ]
     },
@@ -137,9 +137,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/lazy-select.tsx",
+          "path": "registry/hirael/components/lazy-select.tsx",
           "type": "registry:ui",
-          "target": "components/ui/lazy-select.tsx"
+          "target": "components/lazy-select.tsx"
         }
       ]
     },
@@ -159,9 +159,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/password-input.tsx",
+          "path": "registry/hirael/components/password-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/password-input.tsx"
+          "target": "components/password-input.tsx"
         }
       ]
     },
@@ -179,9 +179,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/currency-input.tsx",
+          "path": "registry/hirael/components/currency-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/currency-input.tsx"
+          "target": "components/currency-input.tsx"
         }
       ]
     },
@@ -203,9 +203,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/phone-input.tsx",
+          "path": "registry/hirael/components/phone-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/phone-input.tsx"
+          "target": "components/phone-input.tsx"
         }
       ]
     },
@@ -223,9 +223,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/file-dropzone.tsx",
+          "path": "registry/hirael/components/file-dropzone.tsx",
           "type": "registry:ui",
-          "target": "components/ui/file-dropzone.tsx"
+          "target": "components/file-dropzone.tsx"
         }
       ]
     },
@@ -243,9 +243,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/stat-card.tsx",
+          "path": "registry/hirael/components/stat-card.tsx",
           "type": "registry:ui",
-          "target": "components/ui/stat-card.tsx"
+          "target": "components/stat-card.tsx"
         }
       ]
     },
@@ -263,9 +263,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/rating.tsx",
+          "path": "registry/hirael/components/rating.tsx",
           "type": "registry:ui",
-          "target": "components/ui/rating.tsx"
+          "target": "components/rating.tsx"
         }
       ]
     },
@@ -283,9 +283,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/timeline.tsx",
+          "path": "registry/hirael/components/timeline.tsx",
           "type": "registry:ui",
-          "target": "components/ui/timeline.tsx"
+          "target": "components/timeline.tsx"
         }
       ]
     },
@@ -301,9 +301,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/kbd.tsx",
+          "path": "registry/hirael/components/kbd.tsx",
           "type": "registry:ui",
-          "target": "components/ui/kbd.tsx"
+          "target": "components/kbd.tsx"
         }
       ]
     },
@@ -334,9 +334,9 @@
       },
       "files": [
         {
-          "path": "registry/hirael/ui/callout.tsx",
+          "path": "registry/hirael/components/callout.tsx",
           "type": "registry:ui",
-          "target": "components/ui/callout.tsx"
+          "target": "components/callout.tsx"
         }
       ]
     },
@@ -352,9 +352,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/scroll-progress.tsx",
+          "path": "registry/hirael/components/scroll-progress.tsx",
           "type": "registry:ui",
-          "target": "components/ui/scroll-progress.tsx"
+          "target": "components/scroll-progress.tsx"
         }
       ]
     },
@@ -709,7 +709,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "accordion",
+        "https://hirael.com/r/accordion.json",
         "button",
         "card"
       ],
@@ -734,7 +734,7 @@
         "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -758,7 +758,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "accordion",
+        "https://hirael.com/r/accordion.json",
         "button",
         "empty",
         "input-group",
@@ -785,7 +785,7 @@
         "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -813,7 +813,7 @@
         "field",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -839,7 +839,7 @@
         "button",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -867,7 +867,7 @@
         "field",
         "input",
         "label",
-        "password-input"
+        "https://hirael.com/r/password-input.json"
       ],
       "files": [
         {
@@ -1012,9 +1012,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/month-picker.tsx",
+          "path": "registry/hirael/components/month-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/month-picker.tsx"
+          "target": "components/month-picker.tsx"
         }
       ]
     },
@@ -1035,9 +1035,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/time-picker.tsx",
+          "path": "registry/hirael/components/time-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/time-picker.tsx"
+          "target": "components/time-picker.tsx"
         }
       ]
     },
@@ -1059,9 +1059,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/color-picker.tsx",
+          "path": "registry/hirael/components/color-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/color-picker.tsx"
+          "target": "components/color-picker.tsx"
         }
       ]
     },
@@ -1080,9 +1080,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/avatar-stack.tsx",
+          "path": "registry/hirael/components/avatar-stack.tsx",
           "type": "registry:ui",
-          "target": "components/ui/avatar-stack.tsx"
+          "target": "components/avatar-stack.tsx"
         }
       ]
     },
@@ -1103,9 +1103,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/announcement-bar.tsx",
+          "path": "registry/hirael/components/announcement-bar.tsx",
           "type": "registry:ui",
-          "target": "components/ui/announcement-bar.tsx"
+          "target": "components/announcement-bar.tsx"
         }
       ]
     },
@@ -1205,7 +1205,7 @@
       "registryDependencies": [
         "badge",
         "button",
-        "rating"
+        "https://hirael.com/r/rating.json"
       ],
       "files": [
         {
@@ -1441,7 +1441,7 @@
         "button",
         "card",
         "input-group",
-        "kbd",
+        "https://hirael.com/r/kbd.json",
         "separator",
         "sidebar",
         "table"
@@ -1526,7 +1526,7 @@
         "badge",
         "button",
         "input-group",
-        "kbd",
+        "https://hirael.com/r/kbd.json",
         "separator",
         "sidebar"
       ],
@@ -1552,9 +1552,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/spinner.tsx",
+          "path": "registry/hirael/components/spinner.tsx",
           "type": "registry:ui",
-          "target": "components/ui/spinner.tsx"
+          "target": "components/spinner.tsx"
         }
       ]
     },
@@ -1572,9 +1572,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/copy-button.tsx",
+          "path": "registry/hirael/components/copy-button.tsx",
           "type": "registry:ui",
-          "target": "components/ui/copy-button.tsx"
+          "target": "components/copy-button.tsx"
         }
       ]
     },
@@ -1590,9 +1590,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/marquee.tsx",
+          "path": "registry/hirael/components/marquee.tsx",
           "type": "registry:ui",
-          "target": "components/ui/marquee.tsx"
+          "target": "components/marquee.tsx"
         }
       ]
     },
@@ -1612,9 +1612,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/tree-view.tsx",
+          "path": "registry/hirael/components/tree-view.tsx",
           "type": "registry:ui",
-          "target": "components/ui/tree-view.tsx"
+          "target": "components/tree-view.tsx"
         }
       ]
     },
@@ -1630,9 +1630,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/animated-number.tsx",
+          "path": "registry/hirael/components/animated-number.tsx",
           "type": "registry:ui",
-          "target": "components/ui/animated-number.tsx"
+          "target": "components/animated-number.tsx"
         }
       ]
     },
@@ -1650,9 +1650,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/stepper.tsx",
+          "path": "registry/hirael/components/stepper.tsx",
           "type": "registry:ui",
-          "target": "components/ui/stepper.tsx"
+          "target": "components/stepper.tsx"
         }
       ]
     },
@@ -1670,9 +1670,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/sortable.tsx",
+          "path": "registry/hirael/components/sortable.tsx",
           "type": "registry:ui",
-          "target": "components/ui/sortable.tsx"
+          "target": "components/sortable.tsx"
         }
       ]
     },
@@ -1689,14 +1689,14 @@
       ],
       "registryDependencies": [
         "button",
-        "calendar-utils",
+        "https://hirael.com/r/calendar-utils.json",
         "popover"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/date-picker.tsx",
+          "path": "registry/hirael/components/date-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/date-picker.tsx"
+          "target": "components/date-picker.tsx"
         }
       ]
     },
@@ -1713,15 +1713,15 @@
       ],
       "registryDependencies": [
         "button",
-        "calendar-utils",
+        "https://hirael.com/r/calendar-utils.json",
         "popover",
         "separator"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/date-range-picker.tsx",
+          "path": "registry/hirael/components/date-range-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/date-range-picker.tsx"
+          "target": "components/date-range-picker.tsx"
         }
       ]
     },
@@ -1735,13 +1735,13 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "spinner"
+        "https://hirael.com/r/spinner.json"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/mention-input.tsx",
+          "path": "registry/hirael/components/mention-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/mention-input.tsx"
+          "target": "components/mention-input.tsx"
         }
       ]
     },
@@ -1774,9 +1774,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/rich-text-editor.tsx",
+          "path": "registry/hirael/components/rich-text-editor.tsx",
           "type": "registry:ui",
-          "target": "components/ui/rich-text-editor.tsx"
+          "target": "components/rich-text-editor.tsx"
         }
       ]
     },
@@ -1794,14 +1794,14 @@
       "registryDependencies": [
         "button",
         "input",
-        "spinner",
+        "https://hirael.com/r/spinner.json",
         "textarea"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/inline-edit.tsx",
+          "path": "registry/hirael/components/inline-edit.tsx",
           "type": "registry:ui",
-          "target": "components/ui/inline-edit.tsx"
+          "target": "components/inline-edit.tsx"
         }
       ]
     },
@@ -1821,9 +1821,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/signature-pad.tsx",
+          "path": "registry/hirael/components/signature-pad.tsx",
           "type": "registry:ui",
-          "target": "components/ui/signature-pad.tsx"
+          "target": "components/signature-pad.tsx"
         }
       ]
     },
@@ -1841,9 +1841,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/image-cropper.tsx",
+          "path": "registry/hirael/components/image-cropper.tsx",
           "type": "registry:ui",
-          "target": "components/ui/image-cropper.tsx"
+          "target": "components/image-cropper.tsx"
         }
       ]
     },
@@ -1861,9 +1861,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/image-compare.tsx",
+          "path": "registry/hirael/components/image-compare.tsx",
           "type": "registry:ui",
-          "target": "components/ui/image-compare.tsx"
+          "target": "components/image-compare.tsx"
         }
       ]
     },
@@ -1882,9 +1882,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/lightbox.tsx",
+          "path": "registry/hirael/components/lightbox.tsx",
           "type": "registry:ui",
-          "target": "components/ui/lightbox.tsx"
+          "target": "components/lightbox.tsx"
         }
       ]
     },
@@ -1900,9 +1900,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/countdown-timer.tsx",
+          "path": "registry/hirael/components/countdown-timer.tsx",
           "type": "registry:ui",
-          "target": "components/ui/countdown-timer.tsx"
+          "target": "components/countdown-timer.tsx"
         }
       ]
     },
@@ -1918,9 +1918,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/qr-code.tsx",
+          "path": "registry/hirael/components/qr-code.tsx",
           "type": "registry:ui",
-          "target": "components/ui/qr-code.tsx"
+          "target": "components/qr-code.tsx"
         }
       ]
     },
@@ -1938,9 +1938,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/calendar-heatmap.tsx",
+          "path": "registry/hirael/components/calendar-heatmap.tsx",
           "type": "registry:ui",
-          "target": "components/ui/calendar-heatmap.tsx"
+          "target": "components/calendar-heatmap.tsx"
         }
       ]
     },
@@ -1958,13 +1958,13 @@
       "registryDependencies": [
         "badge",
         "button",
-        "copy-button"
+        "https://hirael.com/r/copy-button.json"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/code-block.tsx",
+          "path": "registry/hirael/components/code-block.tsx",
           "type": "registry:ui",
-          "target": "components/ui/code-block.tsx"
+          "target": "components/code-block.tsx"
         }
       ]
     },
@@ -1980,9 +1980,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/masonry.tsx",
+          "path": "registry/hirael/components/masonry.tsx",
           "type": "registry:ui",
-          "target": "components/ui/masonry.tsx"
+          "target": "components/masonry.tsx"
         }
       ]
     },
@@ -2004,9 +2004,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/audio-player.tsx",
+          "path": "registry/hirael/components/audio-player.tsx",
           "type": "registry:ui",
-          "target": "components/ui/audio-player.tsx"
+          "target": "components/audio-player.tsx"
         }
       ]
     },
@@ -2026,9 +2026,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/media-input.tsx",
+          "path": "registry/hirael/components/media-input.tsx",
           "type": "registry:ui",
-          "target": "components/ui/media-input.tsx"
+          "target": "components/media-input.tsx"
         }
       ]
     },
@@ -2046,9 +2046,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/tour.tsx",
+          "path": "registry/hirael/components/tour.tsx",
           "type": "registry:ui",
-          "target": "components/ui/tour.tsx"
+          "target": "components/tour.tsx"
         }
       ]
     },
@@ -2064,9 +2064,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/activity-feed.tsx",
+          "path": "registry/hirael/components/activity-feed.tsx",
           "type": "registry:ui",
-          "target": "components/ui/activity-feed.tsx"
+          "target": "components/activity-feed.tsx"
         }
       ]
     },
@@ -2087,9 +2087,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/audit-log.tsx",
+          "path": "registry/hirael/components/audit-log.tsx",
           "type": "registry:ui",
-          "target": "components/ui/audit-log.tsx"
+          "target": "components/audit-log.tsx"
         }
       ]
     },
@@ -2107,9 +2107,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/blur-reveal.tsx",
+          "path": "registry/hirael/components/blur-reveal.tsx",
           "type": "registry:ui",
-          "target": "components/ui/blur-reveal.tsx"
+          "target": "components/blur-reveal.tsx"
         }
       ]
     },
@@ -2127,9 +2127,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/text-reveal.tsx",
+          "path": "registry/hirael/components/text-reveal.tsx",
           "type": "registry:ui",
-          "target": "components/ui/text-reveal.tsx"
+          "target": "components/text-reveal.tsx"
         }
       ]
     },
@@ -2147,9 +2147,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/scroll-reveal.tsx",
+          "path": "registry/hirael/components/scroll-reveal.tsx",
           "type": "registry:ui",
-          "target": "components/ui/scroll-reveal.tsx"
+          "target": "components/scroll-reveal.tsx"
         }
       ]
     },
@@ -2167,9 +2167,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/spotlight-card.tsx",
+          "path": "registry/hirael/components/spotlight-card.tsx",
           "type": "registry:ui",
-          "target": "components/ui/spotlight-card.tsx"
+          "target": "components/spotlight-card.tsx"
         }
       ]
     },
@@ -2188,9 +2188,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/magnetic-button.tsx",
+          "path": "registry/hirael/components/magnetic-button.tsx",
           "type": "registry:ui",
-          "target": "components/ui/magnetic-button.tsx"
+          "target": "components/magnetic-button.tsx"
         }
       ]
     },
@@ -2208,9 +2208,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/cursor-glow.tsx",
+          "path": "registry/hirael/components/cursor-glow.tsx",
           "type": "registry:ui",
-          "target": "components/ui/cursor-glow.tsx"
+          "target": "components/cursor-glow.tsx"
         }
       ]
     },
@@ -2228,9 +2228,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/tilt-card.tsx",
+          "path": "registry/hirael/components/tilt-card.tsx",
           "type": "registry:ui",
-          "target": "components/ui/tilt-card.tsx"
+          "target": "components/tilt-card.tsx"
         }
       ]
     },
@@ -2249,9 +2249,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/morphing-dialog.tsx",
+          "path": "registry/hirael/components/morphing-dialog.tsx",
           "type": "registry:ui",
-          "target": "components/ui/morphing-dialog.tsx"
+          "target": "components/morphing-dialog.tsx"
         }
       ]
     },
@@ -2269,9 +2269,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/dock.tsx",
+          "path": "registry/hirael/components/dock.tsx",
           "type": "registry:ui",
-          "target": "components/ui/dock.tsx"
+          "target": "components/dock.tsx"
         }
       ]
     },
@@ -2289,9 +2289,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/floating-action-button.tsx",
+          "path": "registry/hirael/components/floating-action-button.tsx",
           "type": "registry:ui",
-          "target": "components/ui/floating-action-button.tsx"
+          "target": "components/floating-action-button.tsx"
         }
       ]
     },
@@ -2307,9 +2307,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/floating-toolbar.tsx",
+          "path": "registry/hirael/components/floating-toolbar.tsx",
           "type": "registry:ui",
-          "target": "components/ui/floating-toolbar.tsx"
+          "target": "components/floating-toolbar.tsx"
         }
       ]
     },
@@ -2325,9 +2325,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/split-view.tsx",
+          "path": "registry/hirael/components/split-view.tsx",
           "type": "registry:ui",
-          "target": "components/ui/split-view.tsx"
+          "target": "components/split-view.tsx"
         }
       ]
     },
@@ -2343,9 +2343,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/resizable-panels.tsx",
+          "path": "registry/hirael/components/resizable-panels.tsx",
           "type": "registry:ui",
-          "target": "components/ui/resizable-panels.tsx"
+          "target": "components/resizable-panels.tsx"
         }
       ]
     },
@@ -2365,9 +2365,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/inspector-panel.tsx",
+          "path": "registry/hirael/components/inspector-panel.tsx",
           "type": "registry:ui",
-          "target": "components/ui/inspector-panel.tsx"
+          "target": "components/inspector-panel.tsx"
         }
       ]
     },
@@ -2389,9 +2389,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/tenant-switcher.tsx",
+          "path": "registry/hirael/components/tenant-switcher.tsx",
           "type": "registry:ui",
-          "target": "components/ui/tenant-switcher.tsx"
+          "target": "components/tenant-switcher.tsx"
         }
       ]
     },
@@ -2409,9 +2409,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/kpi-grid.tsx",
+          "path": "registry/hirael/components/kpi-grid.tsx",
           "type": "registry:ui",
-          "target": "components/ui/kpi-grid.tsx"
+          "target": "components/kpi-grid.tsx"
         }
       ]
     },
@@ -2429,9 +2429,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/quick-actions.tsx",
+          "path": "registry/hirael/components/quick-actions.tsx",
           "type": "registry:ui",
-          "target": "components/ui/quick-actions.tsx"
+          "target": "components/quick-actions.tsx"
         }
       ]
     },
@@ -2447,9 +2447,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/notifications.tsx",
+          "path": "registry/hirael/components/notifications.tsx",
           "type": "registry:ui",
-          "target": "components/ui/notifications.tsx"
+          "target": "components/notifications.tsx"
         }
       ]
     },
@@ -2465,9 +2465,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/billing-card.tsx",
+          "path": "registry/hirael/components/billing-card.tsx",
           "type": "registry:ui",
-          "target": "components/ui/billing-card.tsx"
+          "target": "components/billing-card.tsx"
         }
       ]
     },
@@ -2487,9 +2487,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/subscription-plans.tsx",
+          "path": "registry/hirael/components/subscription-plans.tsx",
           "type": "registry:ui",
-          "target": "components/ui/subscription-plans.tsx"
+          "target": "components/subscription-plans.tsx"
         }
       ]
     },
@@ -2509,9 +2509,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/api-keys.tsx",
+          "path": "registry/hirael/components/api-keys.tsx",
           "type": "registry:ui",
-          "target": "components/ui/api-keys.tsx"
+          "target": "components/api-keys.tsx"
         }
       ]
     },
@@ -2527,9 +2527,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/usage-dashboard.tsx",
+          "path": "registry/hirael/components/usage-dashboard.tsx",
           "type": "registry:ui",
-          "target": "components/ui/usage-dashboard.tsx"
+          "target": "components/usage-dashboard.tsx"
         }
       ]
     },
@@ -3341,7 +3341,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "accordion"
+        "https://hirael.com/r/accordion.json"
       ],
       "files": [
         {
@@ -3410,9 +3410,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/toc.tsx",
+          "path": "registry/hirael/components/toc.tsx",
           "type": "registry:ui",
-          "target": "components/ui/toc.tsx"
+          "target": "components/toc.tsx"
         }
       ]
     },
@@ -3487,9 +3487,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/confirm.tsx",
+          "path": "registry/hirael/components/confirm.tsx",
           "type": "registry:ui",
-          "target": "components/ui/confirm.tsx"
+          "target": "components/confirm.tsx"
         }
       ]
     },
@@ -3503,13 +3503,106 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "confirm"
+        "https://hirael.com/r/confirm.json"
       ],
       "files": [
         {
-          "path": "registry/hirael/ui/unsaved-guard.tsx",
+          "path": "registry/hirael/components/unsaved-guard.tsx",
           "type": "registry:ui",
-          "target": "components/ui/unsaved-guard.tsx"
+          "target": "components/unsaved-guard.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "TanStack-powered data table: faceted, text, range and date filters, sortable columns, column visibility, row selection and pagination, with page, sort and filters kept in the URL. One useDataTable hook drives it — pass pageCount to query server-side, or omit it to sort, filter and page a local array in memory. Ships as a folder of composable parts.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react",
+        "nuqs",
+        "react-day-picker",
+        "zod"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "calendar",
+        "command",
+        "dropdown-menu",
+        "input",
+        "label",
+        "popover",
+        "select",
+        "separator",
+        "skeleton",
+        "slider",
+        "table"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/data-table/data-table.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-toolbar.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-toolbar.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-column-header.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-column-header.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-pagination.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-pagination.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-view-options.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-view-options.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-faceted-filter.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-faceted-filter.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-slider-filter.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-slider-filter.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-date-filter.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-date-filter.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-skeleton.tsx",
+          "type": "registry:component",
+          "target": "components/data-table/data-table-skeleton.tsx"
+        },
+        {
+          "path": "registry/hirael/components/data-table/use-data-table.ts",
+          "type": "registry:hook",
+          "target": "components/data-table/use-data-table.ts"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-parsers.ts",
+          "type": "registry:lib",
+          "target": "components/data-table/data-table-parsers.ts"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-utils.ts",
+          "type": "registry:lib",
+          "target": "components/data-table/data-table-utils.ts"
         }
       ]
     },
@@ -3546,9 +3639,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/ui/calendar-utils.ts",
+          "path": "registry/hirael/components/calendar-utils.ts",
           "type": "registry:ui",
-          "target": "components/ui/calendar-utils.ts"
+          "target": "components/calendar-utils.ts"
         }
       ]
     }

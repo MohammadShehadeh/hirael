@@ -10,7 +10,7 @@ import {
   SignaturePadClear,
   SignaturePadUndo,
   type SignaturePadRef,
-} from "@/registry/hirael/ui/signature-pad";
+} from "@/registry/hirael/components/signature-pad";
 
 export default function SignaturePadDemo() {
   const t = useT();

@@ -427,6 +427,11 @@
       "permanent": true
     },
     {
+      "source": "/components/data-table",
+      "destination": "/components/data/data-table",
+      "permanent": true
+    },
+    {
       "source": "/components/date-picker",
       "destination": "/components/pickers/date-picker",
       "permanent": true

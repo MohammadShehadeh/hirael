@@ -9,7 +9,7 @@ import {
   QuickActionIcon,
   QuickActionLabel,
   QuickActions,
-} from "@/registry/hirael/ui/quick-actions";
+} from "@/registry/hirael/components/quick-actions";
 
 export default function QuickActionsDemo() {
   const t = useT();

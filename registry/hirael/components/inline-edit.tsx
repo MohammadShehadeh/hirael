@@ -6,7 +6,7 @@ import { Check, Pencil, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 import { Input } from "@/registry/hirael/ui/input";
-import { Spinner } from "@/registry/hirael/ui/spinner";
+import { Spinner } from "@/registry/hirael/components/spinner";
 import { Textarea } from "@/registry/hirael/ui/textarea";
 
 type InlineEditCtx = {

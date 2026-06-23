@@ -7,7 +7,7 @@ import {
   Sortable,
   SortableHandle,
   SortableItem,
-} from "@/registry/hirael/ui/sortable";
+} from "@/registry/hirael/components/sortable";
 
 const tags = ["react", "tailwind", "radix", "cmdk", "lucide"];
 

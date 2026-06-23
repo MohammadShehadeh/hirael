@@ -10,7 +10,7 @@ import {
   TagInputError,
   TagInputField,
   TagInputTag,
-} from "@/registry/hirael/ui/tag-input";
+} from "@/registry/hirael/components/tag-input";
 
 export default function TagInputDemo() {
   const t = useT();

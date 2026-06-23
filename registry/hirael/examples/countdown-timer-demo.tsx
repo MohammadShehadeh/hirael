@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { CountdownTimer } from "@/registry/hirael/ui/countdown-timer";
+import { CountdownTimer } from "@/registry/hirael/components/countdown-timer";
 
 export default function CountdownTimerDemo() {
   const t = useT();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { TextReveal } from "@/registry/hirael/ui/text-reveal";
+import { TextReveal } from "@/registry/hirael/components/text-reveal";
 
 export default function TextRevealDemo() {
   const t = useT();

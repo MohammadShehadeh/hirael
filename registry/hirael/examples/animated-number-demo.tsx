@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { AnimatedNumber } from "@/registry/hirael/ui/animated-number";
+import { AnimatedNumber } from "@/registry/hirael/components/animated-number";
 
 export default function AnimatedNumberDemo() {
   const t = useT();

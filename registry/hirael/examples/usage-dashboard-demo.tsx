@@ -7,7 +7,7 @@ import {
   UsageDashboardTitle,
   UsageItem,
   UsageList,
-} from "@/registry/hirael/ui/usage-dashboard";
+} from "@/registry/hirael/components/usage-dashboard";
 
 export default function UsageDashboardDemo() {
   const t = useT();

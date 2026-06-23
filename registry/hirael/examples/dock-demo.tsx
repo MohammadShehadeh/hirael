@@ -3,7 +3,7 @@
 import { Calendar, Folder, Home, Mail, Music, Settings } from "lucide-react";
 
 import { useT } from "@/lib/demo-locale";
-import { Dock, DockItem, DockLabel } from "@/registry/hirael/ui/dock";
+import { Dock, DockItem, DockLabel } from "@/registry/hirael/components/dock";
 
 export default function DockDemo() {
   const t = useT();

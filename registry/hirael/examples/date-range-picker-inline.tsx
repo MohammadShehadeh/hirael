@@ -1,6 +1,6 @@
 "use client";
 
-import { DateRangeCalendar } from "@/registry/hirael/ui/date-range-picker";
+import { DateRangeCalendar } from "@/registry/hirael/components/date-range-picker";
 
 export default function DateRangePickerInline() {
   return (

@@ -46,8 +46,12 @@ function collectUiImports(src, fileName) {
       node.moduleSpecifier &&
       ts.isStringLiteral(node.moduleSpecifier)
     ) {
+      // A registry item is referenced either as a ui primitive
+      // (`@/registry/hirael/ui/<name>`) or an extended component
+      // (`@/registry/hirael/components/<name>`, optionally a file inside the
+      // item's folder). The first path segment is the item name.
       const m = node.moduleSpecifier.text.match(
-        /^@\/registry\/hirael\/ui\/([a-z0-9-]+)$/,
+        /^@\/registry\/hirael\/(?:ui|components)\/([a-z0-9-]+)/,
       );
       if (m) deps.add(m[1]);
     }

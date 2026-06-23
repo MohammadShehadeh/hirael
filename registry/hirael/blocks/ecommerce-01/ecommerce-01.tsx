@@ -6,7 +6,7 @@ import { Heart, Plus } from "lucide-react";
 
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
-import { Rating } from "@/registry/hirael/ui/rating";
+import { Rating } from "@/registry/hirael/components/rating";
 
 type Category = "audio" | "wearables" | "travel" | "everyday";
 

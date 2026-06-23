@@ -10,7 +10,7 @@ import {
   BillingCardPlan,
   BillingCardPrice,
   BillingCardRow,
-} from "@/registry/hirael/ui/billing-card";
+} from "@/registry/hirael/components/billing-card";
 
 export default function BillingCardDemo() {
   const t = useT();

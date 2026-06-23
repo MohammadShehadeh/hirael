@@ -9,7 +9,7 @@ import {
   DateRangePickerContent,
   DateRangePickerTrigger,
   type DateRange,
-} from "@/registry/hirael/ui/date-range-picker";
+} from "@/registry/hirael/components/date-range-picker";
 
 const fmt = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 const print = (r: DateRange | undefined) =>

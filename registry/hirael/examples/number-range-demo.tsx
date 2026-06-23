@@ -8,7 +8,7 @@ import {
   NumberRange,
   NumberRangeInputs,
   NumberRangeSlider,
-} from "@/registry/hirael/ui/number-range";
+} from "@/registry/hirael/components/number-range";
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n);

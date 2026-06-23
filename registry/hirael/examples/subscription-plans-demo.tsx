@@ -11,7 +11,7 @@ import {
   SubscriptionPlanName,
   SubscriptionPlanPrice,
   SubscriptionPlans,
-} from "@/registry/hirael/ui/subscription-plans";
+} from "@/registry/hirael/components/subscription-plans";
 
 export default function SubscriptionPlansDemo() {
   const t = useT();

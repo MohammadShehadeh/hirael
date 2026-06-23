@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { ScrollReveal } from "@/registry/hirael/ui/scroll-reveal";
+import { ScrollReveal } from "@/registry/hirael/components/scroll-reveal";
 
 export default function ScrollRevealDemo() {
   const t = useT();

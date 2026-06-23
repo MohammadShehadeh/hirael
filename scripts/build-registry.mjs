@@ -16,6 +16,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const META_PATH = path.join(ROOT, "registry/hirael/registry-meta.ts");
 const REGISTRY_JSON_PATH = path.join(ROOT, "registry.json");
 
+// Where the registry is served. Cross-hirael `registryDependencies` are
+// emitted as absolute URLs so the shadcn CLI resolves them against hirael
+// instead of the default ui.shadcn.com registry (bare names only resolve
+// there). Overridable so the install smoke-test can point deps at a local
+// server; production builds use hirael.com.
+const REGISTRY_BASE_URL = process.env.REGISTRY_BASE_URL ?? "https://hirael.com";
+
 /**
  * registry-meta.ts is data-only TypeScript. Transpile it to ESM in a cache
  * dir and import it so we evaluate the real module instead of regex-parsing.
@@ -36,8 +43,32 @@ export async function loadRegistryMeta() {
   return import(`${pathToFileURL(outFile).href}?v=${Date.now()}`);
 }
 
+/**
+ * Default install target for a source file. Primitives in `registry/hirael/ui`
+ * land in the consumer's `components/ui`; extended components under
+ * `registry/hirael/components` keep their sub-path (so a multi-file kit like
+ * the data table installs as a folder).
+ */
+function deriveTarget(p) {
+  if (p.startsWith("registry/hirael/components/")) {
+    return p.slice("registry/hirael/".length);
+  }
+  return `components/ui/${path.basename(p)}`;
+}
+
+/**
+ * Resolve a `registryDependencies` entry. Names that are hirael items become
+ * absolute `/r/<name>.json` URLs (so the CLI fetches them from hirael); every
+ * other name is a shadcn primitive and stays bare (resolved from the consumer's
+ * default registry). URLs and `@`-namespaced deps pass through untouched.
+ */
+function resolveDep(dep, hiraelNames) {
+  if (dep.includes("/") || dep.startsWith("@")) return dep;
+  return hiraelNames.has(dep) ? `${REGISTRY_BASE_URL}/r/${dep}.json` : dep;
+}
+
 /** Map one meta entry to a registry.json item. */
-function toRegistryItem(entry) {
+function toRegistryItem(entry, hiraelNames) {
   const isBlock =
     entry.type === "registry:block" || entry.category === "blocks";
   const isTemplate = entry.category === "templates";
@@ -58,9 +89,7 @@ function toRegistryItem(entry) {
   const files = (entry.files ?? []).map((file) => ({
     path: file.path,
     type: file.type ?? type,
-    target:
-      file.target ??
-      (isComposite ? undefined : `components/ui/${path.basename(file.path)}`),
+    target: file.target ?? (isComposite ? undefined : deriveTarget(file.path)),
   }));
   if (!files.length) throw new Error(`"${entry.name}": no files`);
   for (const f of files) {
@@ -74,18 +103,22 @@ function toRegistryItem(entry) {
     description: entry.description,
     categories,
     dependencies: [...(entry.dependencies ?? [])].sort(),
-    registryDependencies: [...(entry.registryDependencies ?? [])].sort(),
+    registryDependencies: [...(entry.registryDependencies ?? [])]
+      .sort()
+      .map((dep) => resolveDep(dep, hiraelNames)),
     ...(entry.cssVars ? { cssVars: entry.cssVars } : {}),
     files,
   };
 }
 
 export function buildRegistry({ REGISTRY, DISTRIBUTION_ONLY }) {
+  const all = [...REGISTRY, ...(DISTRIBUTION_ONLY ?? [])];
+  const hiraelNames = new Set(all.map((e) => e.name));
   return {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "hirael",
     homepage: "https://hirael.com",
-    items: [...REGISTRY, ...(DISTRIBUTION_ONLY ?? [])].map(toRegistryItem),
+    items: all.map((entry) => toRegistryItem(entry, hiraelNames)),
   };
 }
 

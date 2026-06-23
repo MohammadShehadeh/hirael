@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { BlurReveal } from "@/registry/hirael/ui/blur-reveal";
+import { BlurReveal } from "@/registry/hirael/components/blur-reveal";
 
 export default function BlurRevealDemo() {
   const t = useT();

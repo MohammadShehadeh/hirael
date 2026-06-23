@@ -9,7 +9,7 @@ import { Input } from "@/registry/hirael/ui/input";
 import {
   UnsavedGuardProvider,
   useUnsavedGuard,
-} from "@/registry/hirael/ui/unsaved-guard";
+} from "@/registry/hirael/components/unsaved-guard";
 
 type Tab = "profile" | "billing";
 

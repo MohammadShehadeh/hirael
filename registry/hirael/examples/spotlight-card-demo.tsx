@@ -3,7 +3,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { useT } from "@/lib/demo-locale";
-import { SpotlightCard } from "@/registry/hirael/ui/spotlight-card";
+import { SpotlightCard } from "@/registry/hirael/components/spotlight-card";
 
 export default function SpotlightCardDemo() {
   const t = useT();

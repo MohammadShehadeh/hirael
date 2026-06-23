@@ -67,9 +67,14 @@ with the rest of the catalog (the full checklist is in
   API, and never a reason to skip the compound parts.
 - **`data-slot` on every rendered slot** (`data-slot="<kebab>"`) so
   downstream styling and slot-targeting works in a consumer app.
-- **Import shadcn primitives from `@/registry/hirael/ui/*`** — the alias is
-  rewritten on install based on the consumer's `components.json`. Never
-  import primitives by relative path.
+- **`ui/` is shadcn primitives only; everything hirael adds lives in
+  `components/`.** Import shadcn primitives from `@/registry/hirael/ui/*` and
+  other hirael components from `@/registry/hirael/components/*` — both aliases
+  are rewritten on install based on the consumer's `components.json`. Never
+  import across items by relative path (a single multi-file kit's own parts
+  may import each other relatively). A new extended component goes in
+  `registry/hirael/components/<name>.tsx` (or a `components/<name>/` folder if
+  it's a multi-file kit); never add non-shadcn components to `ui/`.
 - **Design tokens, never hard-coded colors.** Use `--background /
 --foreground / --border / --primary / --accent` and friends (see
   [docs/design.md](./docs/design.md)). The canvas is cool blue-slate under

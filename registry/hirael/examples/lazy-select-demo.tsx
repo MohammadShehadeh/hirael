@@ -10,7 +10,7 @@ import {
   LazySelectTrigger,
   useLazySelectOptions,
   type LazyPage,
-} from "@/registry/hirael/ui/lazy-select";
+} from "@/registry/hirael/components/lazy-select";
 
 type User = { id: string; name: string };
 

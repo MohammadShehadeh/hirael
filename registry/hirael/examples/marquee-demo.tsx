@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { Marquee } from "@/registry/hirael/ui/marquee";
+import { Marquee } from "@/registry/hirael/components/marquee";
 
 const brands = [
   "Vercel",

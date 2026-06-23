@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { SegmentedControl } from "@/components/showcase/segmented-control";
-import { CopyButton } from "@/registry/hirael/ui/copy-button";
+import { CopyButton } from "@/registry/hirael/components/copy-button";
 import {
   PACKAGE_MANAGERS,
   type PackageManager,

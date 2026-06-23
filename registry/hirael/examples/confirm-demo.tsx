@@ -5,7 +5,10 @@ import { Trash2 } from "lucide-react";
 
 import { useT } from "@/lib/demo-locale";
 import { Button } from "@/registry/hirael/ui/button";
-import { ConfirmProvider, useConfirm } from "@/registry/hirael/ui/confirm";
+import {
+  ConfirmProvider,
+  useConfirm,
+} from "@/registry/hirael/components/confirm";
 
 function ConfirmDemoInner() {
   const t = useT();

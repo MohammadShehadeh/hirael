@@ -7259,5 +7259,236 @@
       ],
       "extendsNative": false
     }
+  ],
+  "data-table": [
+    {
+      "name": "DataTable",
+      "props": [
+        {
+          "name": "table",
+          "type": "TanstackTable<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "actionBar",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableToolbar",
+      "props": [
+        {
+          "name": "table",
+          "type": "Table<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableColumnHeader",
+      "props": [
+        {
+          "name": "column",
+          "type": "Column<TData, TValue>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTablePagination",
+      "props": [
+        {
+          "name": "table",
+          "type": "Table<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "pageSizeOptions",
+          "type": "number[]",
+          "required": false,
+          "default": "[10, 20, 30, 40, 50]",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableViewOptions",
+      "props": [
+        {
+          "name": "table",
+          "type": "Table<TData>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DataTableFacetedFilter",
+      "props": [
+        {
+          "name": "column",
+          "type": "Column<TData, TValue>",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "options",
+          "type": "Option[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DataTableSliderFilter",
+      "props": [
+        {
+          "name": "column",
+          "type": "Column<TData, unknown>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DataTableDateFilter",
+      "props": [
+        {
+          "name": "column",
+          "type": "Column<TData, unknown>",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "DataTableSkeleton",
+      "props": [
+        {
+          "name": "columnCount",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rowCount",
+          "type": "number",
+          "required": false,
+          "default": "10",
+          "description": null
+        },
+        {
+          "name": "filterCount",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "cellWidths",
+          "type": "string[]",
+          "required": false,
+          "default": "[\"auto\"]",
+          "description": null
+        },
+        {
+          "name": "withViewOptions",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "withPagination",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "shrinkZero",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
   ]
 }

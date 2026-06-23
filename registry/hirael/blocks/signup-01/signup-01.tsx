@@ -12,7 +12,7 @@ import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
-} from "@/registry/hirael/ui/password-input";
+} from "@/registry/hirael/components/password-input";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

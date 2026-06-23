@@ -8,7 +8,7 @@ import {
   FloatingActionButtonItem,
   FloatingActionButtonList,
   FloatingActionButtonTrigger,
-} from "@/registry/hirael/ui/floating-action-button";
+} from "@/registry/hirael/components/floating-action-button";
 
 export default function FloatingActionButtonDemo() {
   const t = useT();

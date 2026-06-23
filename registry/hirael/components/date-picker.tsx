@@ -17,7 +17,7 @@ import {
   monthIndex,
   sameDay,
   startOfDay,
-} from "@/registry/hirael/ui/calendar-utils";
+} from "@/registry/hirael/components/calendar-utils";
 
 export type DateCalendarProps = {
   value?: Date | null;

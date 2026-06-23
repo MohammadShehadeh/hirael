@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
-import { CursorGlow } from "@/registry/hirael/ui/cursor-glow";
+import { CursorGlow } from "@/registry/hirael/components/cursor-glow";
 
 export default function CursorGlowDemo() {
   const t = useT();

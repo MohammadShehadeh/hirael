@@ -89,13 +89,17 @@ heading rather than starting a new doc.
   hirael item into an absolute `https://hirael.com/r/<name>.json` URL — bare
   names resolve against the default `ui.shadcn.com` registry, which only has the
   shadcn primitives, so a hirael-only dep (`calendar-utils`, `confirm`, …) must
-  be a URL to install. `REGISTRY_BASE_URL` overrides the base (the install
-  smoke-test points it at a local server).
-- **`pnpm check:install` is a real `shadcn add` smoke-test** (CI only — it needs
-  network for shadcn's base-color + primitive fetches). It builds the registry
-  against a local server, installs `date-picker` into a throwaway project, and
-  asserts the component + its cross-hirael dep land under `components/` with
-  every `@/registry/hirael/*` import rewritten to the consumer's aliases.
+  be a URL to install. `REGISTRY_BASE_URL` overrides the base if the registry is
+  served somewhere other than `https://hirael.com`.
+- **`pnpm check:install` verifies install resolution offline.** A real
+  `shadcn add` can't run in CI — the CLI always reaches `ui.shadcn.com` for base
+  colors and primitives, which stalls the runner — so instead this rebuilds
+  `/r/*.json` and applies shadcn's own import-rewrite rules to every item,
+  asserting that each installs to the right place (`ui/` → `components/ui`,
+  extended → `components/`), every `@/registry/hirael/*` import maps to a
+  consumer alias (nothing left pointing back at the registry), and every
+  cross-hirael dep is a `/r/<name>.json` URL rather than a bare name. Network-free
+  and deterministic; runs in CI after the build.
 - **Register the preview loader in `registry-demos.tsx`.** Every showcased
   item renders its preview / `/embed/*` iframe through `RegistryDemo`, keyed
   by entry name; an unregistered name returns `null` and the preview comes up

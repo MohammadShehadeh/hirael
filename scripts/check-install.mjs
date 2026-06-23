@@ -1,159 +1,117 @@
-// Real `shadcn add` smoke test for the registry.
+// Offline install verification for the registry.
 //
-// Builds the registry with `registryDependencies` URLs pointed at a local
-// server, serves `/r/*.json`, then runs the real shadcn CLI to install a
-// component into a throwaway consumer project and asserts:
-//   - extended components land under the consumer's `components/` (not `ui/`),
-//   - a cross-hirael dependency (date-picker -> calendar-utils) is pulled in
-//     via its `/r/*.json` URL, proving deps resolve against hirael and not the
-//     default ui.shadcn.com registry,
-//   - every `@/registry/hirael/*` import is rewritten to the consumer's aliases.
+// A real `shadcn add` can't run in CI: the CLI always reaches ui.shadcn.com
+// for base colors and primitives, which stalls on the runner. Instead this
+// applies shadcn's own import-rewrite rules (the `ga` transform in the CLI) to
+// the built `/r/*.json` and asserts, for every item, that:
+//   - it installs to the right place (ui -> components/ui, extended ->
+//     components/),
+//   - every `@/registry/hirael/*` import rewrites cleanly to a consumer alias
+//     (nothing is left pointing back at the registry),
+//   - any dependency on another hirael item is a `/r/<name>.json` URL, not a
+//     bare name (bare names resolve against ui.shadcn.com, which only has the
+//     shadcn primitives).
 //
-// Needs network: shadcn fetches base colors and shadcn primitives from
-// ui.shadcn.com, so this runs in CI, not in the sandboxed dev environment.
-// Run with `pnpm check:install`.
+// Deterministic and network-free. Run with `pnpm check:install`.
 
 import { execFileSync } from "node:child_process";
-import {
-  mkdtempSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-  createReadStream,
-  existsSync,
-} from "node:fs";
-import { createServer } from "node:http";
-import { tmpdir } from "node:os";
+import { readdirSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const PORT = Number(process.env.CHECK_INSTALL_PORT ?? 4499);
-const BASE = `http://localhost:${PORT}`;
-const SHADCN = path.join(ROOT, "node_modules/.bin/shadcn");
+const R_DIR = path.join(ROOT, "public/r");
 
-function run(cmd, args, opts = {}) {
-  execFileSync(cmd, args, { stdio: "inherit", cwd: ROOT, ...opts });
+// Consumer aliases (shadcn defaults). The CLI maps the registry's `/ui/` and
+// `/components/` path segments onto these on install.
+const CONSUMER = {
+  ui: "@/components/ui",
+  components: "@/components",
+  lib: "@/lib",
+  hooks: "@/hooks",
+};
+
+// Mirror of shadcn's import transform for `@/registry/<...>/<seg>/...` paths.
+function rewrite(spec) {
+  return spec
+    .replace(/^@\/registry\/[^/]+\/ui(?=\/|$)/, CONSUMER.ui)
+    .replace(/^@\/registry\/[^/]+\/components(?=\/|$)/, CONSUMER.components)
+    .replace(/^@\/registry\/[^/]+\/hooks(?=\/|$)/, CONSUMER.hooks)
+    .replace(/^@\/registry\/[^/]+\/lib(?=\/|$)/, CONSUMER.lib);
 }
 
-let server;
-let consumer;
-let ok = false;
-try {
-  // 1. Generate registry.json + /r/*.json with deps pointed at the local server.
-  console.log(`• building registry with deps -> ${BASE}`);
-  run("node", ["scripts/build-registry.mjs"], {
-    env: { ...process.env, REGISTRY_BASE_URL: BASE },
-  });
-  run("pnpm", ["registry:build"]);
+const importSpecifiers = (src) =>
+  [...src.matchAll(/(?:import|export)[^"']*?["']([^"']+)["']/g)].map(
+    (m) => m[1],
+  );
 
-  // 2. Serve public/ (so /r/<name>.json is reachable).
-  server = createServer((req, res) => {
-    const file = path.join(ROOT, "public", (req.url ?? "/").split("?")[0]);
-    if (!file.startsWith(path.join(ROOT, "public")) || !existsSync(file)) {
-      res.writeHead(404);
-      res.end();
-      return;
+let errors = 0;
+const fail = (msg) => {
+  console.error(`  ✗ ${msg}`);
+  errors++;
+};
+
+// Rebuild /r/*.json from scratch. `shadcn build` only writes, never prunes, so
+// clear the dir first — otherwise stale files from an earlier catalog (since
+// removed from registry.json) would be validated alongside the current items.
+rmSync(R_DIR, { recursive: true, force: true });
+// Regenerate registry.json from registry-meta.ts (applies the cross-hirael URL
+// rewrite), then emit /r/*.json from it. Both offline; no shadcn add.
+execFileSync("pnpm", ["registry:gen"], { stdio: "inherit", cwd: ROOT });
+execFileSync("pnpm", ["registry:build"], { stdio: "inherit", cwd: ROOT });
+
+// `shadcn build` also copies the registry index to `public/r/registry.json`;
+// it's not an installable item, so skip it.
+const files = readdirSync(R_DIR).filter(
+  (f) => f.endsWith(".json") && f !== "registry.json",
+);
+if (files.length === 0)
+  throw new Error("no /r/*.json — run `pnpm build` first");
+const itemNames = new Set(files.map((f) => f.replace(/\.json$/, "")));
+
+let checked = 0;
+for (const jsonFile of files) {
+  const item = JSON.parse(readFileSync(path.join(R_DIR, jsonFile), "utf8"));
+
+  // Cross-hirael deps must be URLs, not bare names.
+  for (const dep of item.registryDependencies ?? []) {
+    if (!dep.includes("/") && itemNames.has(dep)) {
+      fail(
+        `"${item.name}" depends on hirael item "${dep}" by bare name (must be a /r URL)`,
+      );
     }
-    res.writeHead(200, { "content-type": "application/json" });
-    createReadStream(file).pipe(res);
-  });
-  await new Promise((resolve, reject) => {
-    server.once("error", reject);
-    server.listen(PORT, resolve);
-  });
-  console.log(`• serving registry on ${BASE}`);
+  }
 
-  // 3. Throwaway consumer project with standard shadcn aliases.
-  consumer = mkdtempSync(path.join(tmpdir(), "hirael-consumer-"));
-  mkdirSync(path.join(consumer, "app"), { recursive: true });
-  writeFileSync(
-    path.join(consumer, "components.json"),
-    JSON.stringify({
-      $schema: "https://ui.shadcn.com/schema.json",
-      style: "new-york",
-      rsc: true,
-      tsx: true,
-      tailwind: {
-        config: "",
-        css: "app/globals.css",
-        baseColor: "zinc",
-        cssVariables: true,
-        prefix: "",
-      },
-      aliases: {
-        components: "@/components",
-        utils: "@/lib/utils",
-        ui: "@/components/ui",
-        lib: "@/lib",
-        hooks: "@/hooks",
-      },
-      iconLibrary: "lucide",
-    }),
-  );
-  writeFileSync(
-    path.join(consumer, "tsconfig.json"),
-    JSON.stringify({
-      compilerOptions: { baseUrl: ".", paths: { "@/*": ["./*"] } },
-    }),
-  );
-  writeFileSync(
-    path.join(consumer, "package.json"),
-    JSON.stringify({
-      name: "hirael-consumer",
-      version: "0.0.0",
-      private: true,
-    }),
-  );
-  writeFileSync(
-    path.join(consumer, "app/globals.css"),
-    '@import "tailwindcss";\n',
-  );
-  console.log(`• consumer at ${consumer}`);
+  for (const file of item.files ?? []) {
+    if (typeof file.content !== "string") continue;
+    checked++;
 
-  // 4. Real install of a components/ item that pulls a cross-hirael dep.
-  console.log("• shadcn add date-picker");
-  run(
-    SHADCN,
-    [
-      "add",
-      `${BASE}/r/date-picker.json`,
-      "--yes",
-      "--overwrite",
-      "--cwd",
-      consumer,
-    ],
-    { timeout: 240_000 },
-  );
+    // Targets: primitives -> components/ui, extended -> components/.
+    if (file.target && file.path?.startsWith("registry/hirael/components/")) {
+      if (!file.target.startsWith("components/"))
+        fail(
+          `"${item.name}" → ${file.path} installs to ${file.target}, expected components/*`,
+        );
+    }
 
-  // 5. Assert the install landed where we expect, with imports rewritten.
-  const dpPath = path.join(consumer, "components/date-picker.tsx");
-  const cuPath = path.join(consumer, "components/calendar-utils.ts");
-  const fail = (m) => {
-    throw new Error(m);
-  };
-  if (!existsSync(dpPath))
-    fail("date-picker.tsx did not install to components/");
-  if (!existsSync(cuPath))
-    fail("calendar-utils.ts (cross-hirael dep) was not pulled in via its URL");
-  const dp = readFileSync(dpPath, "utf8");
-  if (dp.includes("@/registry/hirael/"))
-    fail("date-picker.tsx still has an unrewritten @/registry/hirael/* import");
-  if (!dp.includes("@/components/calendar-utils"))
-    fail(
-      "date-picker.tsx does not import calendar-utils via the consumer alias",
-    );
-
-  console.log(
-    "\n✓ install OK — date-picker + calendar-utils installed under components/, imports rewritten",
-  );
-  ok = true;
-} finally {
-  if (server) server.close();
-  if (consumer) rmSync(consumer, { recursive: true, force: true });
-  // Restore registry.json to the production base URL.
-  run("node", ["scripts/build-registry.mjs"]);
+    // Every registry import must rewrite to a consumer alias and leave nothing
+    // pointing back at @/registry/hirael.
+    for (const spec of importSpecifiers(file.content)) {
+      if (!spec.startsWith("@/registry/hirael/")) continue;
+      const out = rewrite(spec);
+      if (out.startsWith("@/registry/hirael/")) {
+        fail(
+          `"${item.name}" → ${file.target ?? file.path}: import "${spec}" does not map to a consumer alias`,
+        );
+      }
+    }
+  }
 }
 
-process.exit(ok ? 0 : 1);
+if (errors) {
+  console.error(`\n✗ install check failed — ${errors} problem(s).`);
+  process.exit(1);
+}
+console.log(
+  `✓ install OK — ${files.length} items / ${checked} files: imports rewrite to consumer aliases, cross-hirael deps are URLs.`,
+);

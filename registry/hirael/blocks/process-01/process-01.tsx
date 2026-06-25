@@ -45,7 +45,7 @@ export default function Process01() {
 
         <ol
           data-slot="process-steps"
-          className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6"
+          className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-3"
         >
           {STEPS.map((step, i) => {
             const Icon = step.icon;
@@ -54,11 +54,17 @@ export default function Process01() {
               <li
                 key={step.title}
                 data-slot="process-step"
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-5"
               >
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-card">
-                    <Icon className="size-5" />
+                  <span
+                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-card font-serif text-xl text-foreground tabular-nums"
+                    style={{
+                      boxShadow:
+                        "inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 12%, transparent)",
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <span
                     aria-hidden
@@ -68,13 +74,13 @@ export default function Process01() {
                     )}
                   />
                 </div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  Step {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col gap-1.5">
-                  <h3 className="text-lg font-semibold tracking-[-0.01em]">
-                    {step.title}
-                  </h3>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Icon className="size-4 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold tracking-[-0.01em]">
+                      {step.title}
+                    </h3>
+                  </div>
                   <p className="text-sm text-muted-foreground">{step.body}</p>
                 </div>
               </li>

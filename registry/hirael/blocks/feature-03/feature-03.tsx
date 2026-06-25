@@ -4,6 +4,7 @@ import {
   Braces,
   Palette,
   Server,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 
@@ -13,7 +14,7 @@ type Tile = {
   icon: LucideIcon;
   title: string;
   body: string;
-  className: string;
+  swatches?: boolean;
 };
 
 const TILES: readonly Tile[] = [
@@ -21,33 +22,38 @@ const TILES: readonly Tile[] = [
     icon: Combine,
     title: "Dual API by default",
     body: "Every component ships a compound surface and a single-prop surface in one file. Reach for whichever fits.",
-    className: "lg:col-span-2",
   },
   {
     icon: Languages,
     title: "RTL is built in",
     body: "Logical properties throughout, so every component works under dir=rtl with no extra config.",
-    className: "lg:col-span-2",
   },
   {
     icon: Braces,
     title: "Typed end to end",
     body: "Strict TypeScript with generics that flow from options to onChange. No any, no manual hints.",
-    className: "lg:col-span-2",
   },
   {
     icon: Palette,
     title: "Your theme tokens",
     body: "Reads the same CSS variables as shadcn/ui, so it re-skins live against any token system.",
-    className: "lg:col-span-3",
+    swatches: true,
   },
   {
     icon: Server,
     title: "SSR safe",
     body: "Server components by default, with 'use client' only where interactivity demands it.",
-    className: "lg:col-span-3",
   },
 ];
+
+const WRITTEN_FILES = ["button.tsx", "input.tsx", "combobox.tsx"] as const;
+const SWATCHES = [
+  "bg-background",
+  "bg-card",
+  "bg-muted",
+  "bg-primary",
+  "bg-foreground",
+] as const;
 
 export default function Feature03() {
   return (
@@ -98,9 +104,9 @@ export default function Feature03() {
 
             <div
               aria-hidden
-              className="relative z-10 mt-8 rounded-md border border-border bg-background p-4"
+              className="relative z-10 mt-8 overflow-hidden rounded-md border border-border bg-background"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   components/ui
                 </span>
@@ -110,21 +116,20 @@ export default function Feature03() {
                   <span className="size-1.5 rounded-full bg-foreground" />
                 </div>
               </div>
-              <div className="mt-3 flex flex-col gap-2">
-                <span className="h-2 w-2/3 rounded-full bg-foreground/15" />
-                <span className="h-2 w-5/6 rounded-full bg-foreground/10" />
-                <span className="h-2 w-1/2 rounded-full bg-foreground/15" />
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["button", "input", "popover", "command"].map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-sm border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+              <ul className="flex flex-col gap-2.5 p-4 font-mono text-[12px]">
+                {WRITTEN_FILES.map((file) => (
+                  <li
+                    key={file}
+                    className="flex items-center gap-2 text-foreground"
                   >
-                    {t}
-                  </span>
+                    <Check className="size-3.5 shrink-0 text-muted-foreground" />
+                    {file}
+                  </li>
                 ))}
-              </div>
+                <li className="ps-[22px] text-muted-foreground/60">
+                  + 4 more files
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -134,10 +139,7 @@ export default function Feature03() {
               <div
                 key={tile.title}
                 data-slot="feature-tile"
-                className={cn(
-                  "flex flex-col gap-4 rounded-xl border border-border bg-card p-6",
-                  tile.className,
-                )}
+                className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 lg:col-span-2"
               >
                 <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
                   <Icon className="size-4" />
@@ -148,6 +150,19 @@ export default function Feature03() {
                   </h3>
                   <p className="text-sm text-muted-foreground">{tile.body}</p>
                 </div>
+                {tile.swatches ? (
+                  <div className="mt-auto flex items-center gap-1.5 pt-2">
+                    {SWATCHES.map((swatch) => (
+                      <span
+                        key={swatch}
+                        className={cn(
+                          "size-5 rounded-md border border-border",
+                          swatch,
+                        )}
+                      />
+                    ))}
+                  </div>
+                ) : null}
               </div>
             );
           })}

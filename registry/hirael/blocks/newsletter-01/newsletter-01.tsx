@@ -114,6 +114,22 @@ export default function Newsletter01() {
                 </Button>
               </form>
 
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2 rtl:space-x-reverse">
+                  {["MS", "AK", "JD", "RL"].map((initials) => (
+                    <span
+                      key={initials}
+                      className="inline-flex size-7 items-center justify-center rounded-full border-2 border-card bg-muted font-mono text-[10px] font-medium text-muted-foreground"
+                    >
+                      {initials}
+                    </span>
+                  ))}
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Join 1,200+ developers on the list.
+                </span>
+              </div>
+
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 Only release notes. Unsubscribe in one click.
               </p>

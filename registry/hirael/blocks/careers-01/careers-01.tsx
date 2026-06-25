@@ -108,18 +108,18 @@ export default function Careers01() {
 
         <ul data-slot="careers-list" className="mt-8 border-t border-border">
           {roles.map((role) => (
-            <li key={role.title}>
+            <li key={role.title} className="border-b border-border">
               <a
                 href={role.href}
                 data-slot="careers-role"
-                className="group flex items-center justify-between gap-4 border-b border-border py-5 transition-colors duration-150 ease-out hover:bg-accent/40"
+                className="group -mx-4 flex items-center justify-between gap-4 rounded-lg px-4 py-5 transition-colors duration-150 ease-out hover:bg-accent/50"
               >
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-2">
                   <h3 className="text-base font-medium tracking-[-0.01em] sm:text-lg">
                     {role.title}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground sm:text-sm">
-                    <span className="font-mono uppercase tracking-[0.08em]">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm">
+                    <span className="rounded-full border border-border bg-card px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em]">
                       {role.department}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
@@ -132,7 +132,7 @@ export default function Careers01() {
                     </span>
                   </div>
                 </div>
-                <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-foreground/40 group-hover:text-foreground">
+                <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-150 ease-out group-hover:border-foreground group-hover:bg-foreground group-hover:text-background">
                   <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </span>
               </a>

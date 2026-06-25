@@ -37,8 +37,19 @@ export default function Comparison01() {
 
         <div
           data-slot="comparison-grid"
-          className="mt-12 grid overflow-hidden rounded-xl border border-border md:grid-cols-2"
+          className="relative mt-12 grid overflow-hidden rounded-xl border border-border md:grid-cols-2"
+          style={{
+            boxShadow:
+              "0 24px 60px -34px color-mix(in oklch, var(--foreground) 22%, transparent)",
+          }}
         >
+          <span
+            aria-hidden
+            className="absolute start-1/2 top-1/2 z-20 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-background font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground shadow-sm md:grid rtl:translate-x-1/2"
+          >
+            vs
+          </span>
+
           <div
             data-slot="comparison-ours"
             className="relative border-b border-border bg-card p-7 sm:p-8 md:border-b-0 md:border-e"
@@ -48,7 +59,7 @@ export default function Comparison01() {
               className="pointer-events-none absolute inset-0"
               style={{
                 backgroundImage:
-                  "radial-gradient(100% 80% at 0% 0%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 60%)",
+                  "radial-gradient(110% 80% at 50% 0%, color-mix(in oklch, var(--primary) 11%, transparent), transparent 62%)",
               }}
             />
             <div className="relative z-10 flex flex-col gap-6">
@@ -63,8 +74,16 @@ export default function Comparison01() {
               <ul className="flex flex-col gap-3.5">
                 {HIRAEL.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm">
-                    <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-border bg-background">
-                      <Check className="size-3" />
+                    <span
+                      className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border"
+                      style={{
+                        borderColor:
+                          "color-mix(in oklch, var(--primary) 30%, transparent)",
+                        backgroundColor:
+                          "color-mix(in oklch, var(--primary) 12%, transparent)",
+                      }}
+                    >
+                      <Check className="size-3 text-foreground" />
                     </span>
                     <span className="text-foreground">{item}</span>
                   </li>
@@ -77,7 +96,7 @@ export default function Comparison01() {
           </div>
 
           <div data-slot="comparison-theirs" className="bg-muted/20 p-7 sm:p-8">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 opacity-80">
               <div className="flex flex-col gap-1">
                 <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                   the usual way
@@ -93,7 +112,7 @@ export default function Comparison01() {
                     className="flex items-start gap-3 text-sm text-muted-foreground"
                   >
                     <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-border">
-                      <Minus className="size-3" />
+                      <Minus className="size-3 text-muted-foreground/60" />
                     </span>
                     <span>{item}</span>
                   </li>

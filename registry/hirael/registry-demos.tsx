@@ -105,6 +105,13 @@ const BLOCK_LOADERS: Record<
     import("@/registry/hirael/blocks/app-shell-05/app-shell-05"),
   "dashboard-06": () =>
     import("@/registry/hirael/blocks/dashboard-06/dashboard-06"),
+  "process-01": () => import("@/registry/hirael/blocks/process-01/process-01"),
+  "feature-03": () => import("@/registry/hirael/blocks/feature-03/feature-03"),
+  "comparison-01": () =>
+    import("@/registry/hirael/blocks/comparison-01/comparison-01"),
+  "newsletter-01": () =>
+    import("@/registry/hirael/blocks/newsletter-01/newsletter-01"),
+  "careers-01": () => import("@/registry/hirael/blocks/careers-01/careers-01"),
 };
 
 /** Component examples, keyed by example slug (file basename in examples/). */

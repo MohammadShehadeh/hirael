@@ -410,6 +410,76 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
       </div>
     </div>
   ),
+
+  process: ({ title, count }) => (
+    <div className="flex size-full flex-col items-center justify-center gap-3 px-4">
+      <Label title={title} count={count} center />
+      <div className="flex w-4/5 items-center">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className={cn("flex items-center", i < 2 && "flex-1")}>
+            <span className="flex size-5 items-center justify-center rounded-full border border-border bg-card">
+              <span className="block size-1.5 rounded-full bg-primary/35" />
+            </span>
+            {i < 2 ? <span className="h-px flex-1 bg-border" /> : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
+  comparison: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-3 px-4">
+      <Label title={title} count={count} center />
+      <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-col gap-1 rounded-md border border-primary/30 bg-primary/5 p-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center gap-1.5">
+              <span className="size-1.5 shrink-0 rounded-full bg-primary/40" />
+              <Bar className="h-1 w-full" />
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col gap-1 rounded-md border border-border/70 p-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center gap-1.5">
+              <span className="h-px w-1.5 shrink-0 bg-muted-foreground/40" />
+              <Bar className="h-1 w-full bg-muted-foreground/12" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+
+  newsletter: ({ title, count }) => (
+    <div className="flex size-full flex-col items-center justify-center gap-2.5 px-4">
+      <Label title={title} count={count} center />
+      <div className="flex w-3/4 items-center gap-1.5">
+        <div className="h-4 flex-1 rounded-sm border border-border/70 bg-muted/20" />
+        <div className="h-4 w-10 rounded-sm bg-primary/25" />
+      </div>
+    </div>
+  ),
+
+  careers: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-2 px-5">
+      <Label title={title} count={count} />
+      <div className="flex flex-col gap-1.5">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="flex items-center justify-between gap-2 rounded-md border border-border/60 px-2 py-1.5"
+          >
+            <div className="flex flex-col gap-1">
+              <Bar className="h-1 w-16 bg-primary/20" />
+              <Bar className="h-0.5 w-10 bg-muted-foreground/12" />
+            </div>
+            <span className="size-2.5 rounded-full border border-border/70" />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
 };
 
 function GenericSchematic({ title, count }: SchematicProps) {

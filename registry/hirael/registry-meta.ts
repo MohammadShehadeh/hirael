@@ -14,9 +14,12 @@ export type ComponentCategory =
 export type BlockKind =
   | "hero"
   | "feature"
+  | "process"
   | "pricing"
+  | "comparison"
   | "testimonial"
   | "cta"
+  | "newsletter"
   | "faq"
   | "login"
   | "header"
@@ -24,6 +27,7 @@ export type BlockKind =
   | "not-found"
   | "logo-cloud"
   | "contact"
+  | "careers"
   | "blog"
   | "ecommerce"
   | "dashboard"
@@ -2423,6 +2427,91 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "zod",
     ],
   },
+  {
+    name: "process-01",
+    title: "Process 1",
+    description:
+      "How-it-works section with a three-step row: each step pairs an icon badge, a Step NN label, a title and a short body, joined by a hairline connector on desktop.",
+    blockTagline: "How it works · 3 steps · connector line",
+    category: "blocks",
+    blockKind: "process",
+    files: [
+      {
+        path: "registry/hirael/blocks/process-01/process-01.tsx",
+        target: "components/blocks/process-01.tsx",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "feature-03",
+    title: "Feature 3",
+    description:
+      "Bento feature grid: a large lead tile with a faux file-tree preview beside five smaller token-lit tiles, each with an icon, title and short blurb.",
+    blockTagline: "Bento grid · lead tile · icon tiles",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-03/feature-03.tsx",
+        target: "components/blocks/feature-03.tsx",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "comparison-01",
+    title: "Comparison 1",
+    description:
+      "Two-column us-and-them panel: a featured column of checked points beside a muted column of the usual trade-offs, split by a divider that stacks on mobile.",
+    blockTagline: "Us vs them · two columns · check and minus rows",
+    category: "blocks",
+    blockKind: "comparison",
+    files: [
+      {
+        path: "registry/hirael/blocks/comparison-01/comparison-01.tsx",
+        target: "components/blocks/comparison-01.tsx",
+      },
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "newsletter-01",
+    title: "Newsletter 1",
+    description:
+      "Centered subscribe panel with an inline email form, inline validation and a success state that swaps in a confirmation once a valid address is entered.",
+    blockTagline: "Inline subscribe · validation · success state",
+    category: "blocks",
+    blockKind: "newsletter",
+    files: [
+      {
+        path: "registry/hirael/blocks/newsletter-01/newsletter-01.tsx",
+        target: "components/blocks/newsletter-01.tsx",
+      },
+    ],
+    registryDependencies: ["button", "input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "careers-01",
+    title: "Careers 1",
+    description:
+      "Open-roles list with department filter pills and rows that show title, department, location and type, each linking out with a hover arrow.",
+    blockTagline: "Open roles · department filter · linked rows",
+    category: "blocks",
+    blockKind: "careers",
+    files: [
+      {
+        path: "registry/hirael/blocks/careers-01/careers-01.tsx",
+        target: "components/blocks/careers-01.tsx",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**
@@ -2540,9 +2629,12 @@ export function getExamples(name: string): ExampleRef[] {
 export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   hero: "Hero sections",
   feature: "Features",
+  process: "How it works",
   pricing: "Pricing",
+  comparison: "Comparison",
   testimonial: "Testimonials",
   cta: "Call-to-action",
+  newsletter: "Newsletter",
   faq: "FAQ",
   login: "Auth",
   header: "Headers",
@@ -2550,6 +2642,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   "not-found": "404",
   "logo-cloud": "Logo cloud",
   contact: "Contact",
+  careers: "Careers",
   blog: "Blog",
   ecommerce: "E-commerce",
   dashboard: "Dashboard",
@@ -2562,9 +2655,12 @@ export const BLOCKS_BY_KIND = (() => {
   const groups: Record<BlockKind, RegistryEntryMeta[]> = {
     hero: [],
     feature: [],
+    process: [],
     pricing: [],
+    comparison: [],
     testimonial: [],
     cta: [],
+    newsletter: [],
     faq: [],
     login: [],
     header: [],
@@ -2572,6 +2668,7 @@ export const BLOCKS_BY_KIND = (() => {
     "not-found": [],
     "logo-cloud": [],
     contact: [],
+    careers: [],
     blog: [],
     ecommerce: [],
     dashboard: [],
@@ -2590,9 +2687,12 @@ export const BLOCKS_BY_KIND = (() => {
 export const BLOCK_KIND_ORDER: BlockKind[] = [
   "hero",
   "feature",
+  "process",
   "pricing",
+  "comparison",
   "testimonial",
   "cta",
+  "newsletter",
   "faq",
   "login",
   "header",
@@ -2600,6 +2700,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "not-found",
   "logo-cloud",
   "contact",
+  "careers",
   "blog",
   "ecommerce",
   "dashboard",
@@ -2657,9 +2758,12 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
 export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   hero: "hero",
   feature: "features",
+  process: "process",
   pricing: "pricing",
+  comparison: "comparison",
   testimonial: "testimonials",
   cta: "cta",
+  newsletter: "newsletter",
   faq: "faqs",
   login: "auth",
   header: "header",
@@ -2667,6 +2771,7 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   "not-found": "not-found",
   "logo-cloud": "logo-cloud",
   contact: "contact",
+  careers: "careers",
   blog: "blog",
   ecommerce: "ecommerce",
   dashboard: "dashboard",

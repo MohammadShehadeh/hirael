@@ -58,7 +58,14 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: "Features",
     blockKind: "feature",
     description:
-      "Alternating rows, three-up icon grids, and bordered feature cards.",
+      "Alternating rows, three-up icon grids, bordered feature cards, and bento layouts.",
+  },
+  {
+    slug: "process",
+    title: "How It Works",
+    blockKind: "process",
+    description:
+      "Numbered step rows and onboarding flows that walk through how a product works.",
   },
   {
     slug: "pricing",
@@ -66,6 +73,13 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     blockKind: "pricing",
     description:
       "Three-tier card layouts and feature-comparison tables, each with per-tier CTAs.",
+  },
+  {
+    slug: "comparison",
+    title: "Comparison",
+    blockKind: "comparison",
+    description:
+      "Us-and-them panels and side-by-side tables that frame the difference.",
   },
   {
     slug: "testimonials",
@@ -80,6 +94,13 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     blockKind: "cta",
     description:
       "Framed bands and centered announce blocks with inline install hints.",
+  },
+  {
+    slug: "newsletter",
+    title: "Newsletter",
+    blockKind: "newsletter",
+    description:
+      "Inline subscribe sections with email capture, validation, and a success state.",
   },
   {
     slug: "faqs",
@@ -128,6 +149,13 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     blockKind: "contact",
     description:
       "Split form-and-info layouts, map embeds, and inline support panels.",
+  },
+  {
+    slug: "careers",
+    title: "Careers",
+    blockKind: "careers",
+    description:
+      "Open-roles lists with department filters and linked job rows.",
   },
   {
     slug: "ecommerce",

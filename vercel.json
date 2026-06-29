@@ -57,6 +57,16 @@
       "permanent": true
     },
     {
+      "source": "/blocks/careers-01",
+      "destination": "/blocks/careers/careers-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/comparison-01",
+      "destination": "/blocks/comparison/comparison-01",
+      "permanent": true
+    },
+    {
       "source": "/blocks/contact-01",
       "destination": "/blocks/contact/contact-01",
       "permanent": true
@@ -172,6 +182,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/feature-03",
+      "destination": "/blocks/features/feature-03",
+      "permanent": true
+    },
+    {
       "source": "/blocks/footer-01",
       "destination": "/blocks/footer/footer-01",
       "permanent": true
@@ -267,6 +282,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/newsletter-01",
+      "destination": "/blocks/newsletter/newsletter-01",
+      "permanent": true
+    },
+    {
       "source": "/blocks/not-found-01",
       "destination": "/blocks/not-found/not-found-01",
       "permanent": true
@@ -284,6 +304,11 @@
     {
       "source": "/blocks/pricing-02",
       "destination": "/blocks/pricing/pricing-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/process-01",
+      "destination": "/blocks/process/process-01",
       "permanent": true
     },
     {

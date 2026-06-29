@@ -3607,6 +3607,116 @@
       ]
     },
     {
+      "name": "process-01",
+      "type": "registry:block",
+      "title": "Process 1",
+      "description": "How-it-works section with a three-step row: each step pairs an icon badge, a Step NN label, a title and a short body, joined by a hairline connector on desktop.",
+      "categories": [
+        "blocks",
+        "process"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/process-01/process-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/process-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "feature-03",
+      "type": "registry:block",
+      "title": "Feature 3",
+      "description": "Bento feature grid: a large lead tile with a faux file-tree preview beside five smaller token-lit tiles, each with an icon, title and short blurb.",
+      "categories": [
+        "blocks",
+        "feature"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/feature-03/feature-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/feature-03.tsx"
+        }
+      ]
+    },
+    {
+      "name": "comparison-01",
+      "type": "registry:block",
+      "title": "Comparison 1",
+      "description": "Two-column us-and-them panel: a featured column of checked points beside a muted column of the usual trade-offs, split by a divider that stacks on mobile.",
+      "categories": [
+        "blocks",
+        "comparison"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/comparison-01/comparison-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/comparison-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "newsletter-01",
+      "type": "registry:block",
+      "title": "Newsletter 1",
+      "description": "Centered subscribe panel with an inline email form, inline validation and a success state that swaps in a confirmation once a valid address is entered.",
+      "categories": [
+        "blocks",
+        "newsletter"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/newsletter-01/newsletter-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/newsletter-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "careers-01",
+      "type": "registry:block",
+      "title": "Careers 1",
+      "description": "Open-roles list with department filter pills and rows that show title, department, location and type, each linking out with a hover arrow.",
+      "categories": [
+        "blocks",
+        "careers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/careers-01/careers-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/careers-01.tsx"
+        }
+      ]
+    },
+    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",

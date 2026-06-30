@@ -196,7 +196,14 @@ JSON the shadcn CLI installs — but the plumbing differs: shadcn/ui builds from
 `registry.json` + a `new-york-v4/` **style** directory via `build-registry.mts`;
 hirael builds from `registry-meta.ts` (its single source of truth) into a
 single `registry/hirael/` tree via `scripts/build-registry.mjs`. Don't port the
-style-directory split — hirael ships one style.
+style-directory split — hirael ships one style. (shadcn/ui's
+`new-york-v4/{ui,blocks,charts,examples,hooks,internal,lib}` maps to hirael's
+`registry/hirael/{ui,components,blocks,templates,examples}`.)
+
+Component **code** is kept in parity too, not just the repo layout: hirael's
+`ui/*` primitives are the shadcn **v4** function-component shape (`data-slot`,
+`cva`, no `forwardRef`) and demos/blocks follow shadcn's design rules. See
+[conventions.md → Component code shape & UI/UX rules](./conventions.md#component-code-shape--uiux-rules-parity-with-shadcnui).
 
 ### shadcn/ui vs hirael
 

@@ -305,3 +305,20 @@ pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 plus the manual checks in [CONTRIBUTING.md](../CONTRIBUTING.md) (exercise the
 showcase demo, validate an `npx shadcn add` into a consumer app, check both
 themes, spot-check keyboard/AT for interactive items).
+
+## Commits & repo tooling
+
+- **Conventional Commits are enforced.** `.commitlintrc.json` extends
+  `@commitlint/config-conventional`, and `.github/workflows/commitlint.yml`
+  validates every PR's commit messages. Use `type(scope): summary`
+  (`feat`, `fix`, `docs`, `refactor`, `build`, `ci`, `chore`, …) — see
+  [CONTRIBUTING.md](../CONTRIBUTING.md) for the type table. Run a message past
+  it locally with `echo "feat: x" | pnpm exec commitlint`; for pre-push
+  feedback you can add an optional `.husky/commit-msg` running
+  `pnpm exec commitlint --edit "$1"`.
+- **Node is pinned** in `.nvmrc` (`22`, matching CI's `setup-node`); `nvm use`
+  picks it up. Editor defaults live in `.editorconfig` (2-space, LF, final
+  newline).
+- This convention set mirrors the upstream **shadcn/ui** repo; see
+  [README.md → Upstream alignment with shadcn/ui](./README.md#upstream-alignment-with-shadcnui)
+  for what hirael adopted from it and what it deliberately does not.

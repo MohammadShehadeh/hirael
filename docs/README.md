@@ -123,18 +123,17 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
 
 ## What's pending
 
-These are referenced as `TODO` in `README.md` / `CONTRIBUTING.md` and not
-yet committed:
-
-- `LICENSE` file (MIT is declared but the full text file is missing).
-- `SECURITY.md`, `CODE_OF_CONDUCT.md`, and `.github/ISSUE_TEMPLATE/`.
 - An automated test runner — there is **no unit/visual-regression suite
   today**; the gating signal is `pnpm lint && pnpm typecheck && pnpm build`
-  plus the manual checks in `CONTRIBUTING.md`.
+  plus the manual checks in `CONTRIBUTING.md`. shadcn/ui runs vitest; see
+  "Upstream alignment" below for the recommended minimal test set.
 - Hosting-specific build/env/domain docs once the deploy pipeline is final.
-- Some prose in the top-level `README.md` still references old project
-  names (`forgecn`) in the directory tree and clone URL — correct these
-  when you next touch that file.
+
+Resolved since the last pass: `LICENSE` (MIT), `SECURITY.md`,
+`CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, a PR template, `dependabot`,
+`.editorconfig`, `.nvmrc`, and conventional-commit enforcement are now
+committed (see "Upstream alignment with shadcn/ui" below). The old `forgecn`
+clone URL in the top-level `README.md` / `CONTRIBUTING.md` has been corrected.
 
 ## Deliberate decisions — do not "fix" these
 
@@ -157,6 +156,109 @@ yet committed:
   build only.
 - **Don't add a `playable`/`published` flag.** An item's presence in
   `registry-meta.ts` is the source of truth for whether it exists.
+
+## Upstream alignment with shadcn/ui
+
+Hirael's sibling reference is the **shadcn/ui monorepo** (mirrored at
+`MohammadShehadeh/ui`). Hirael is, in effect, a standalone, flattened
+equivalent of just that repo's `apps/v4` showcase-and-registry app. It
+deliberately is **not** a monorepo and ships **no published package**, so most
+of shadcn/ui's repo-level machinery does not apply. This section records what
+that repo looks like, how hirael compares, and which conventions were adopted
+vs deliberately skipped — so the next agent doesn't restructure hirael toward a
+shape it chose not to take.
+
+### How shadcn/ui is structured
+
+```
+ui/                         # Turborepo + pnpm workspaces + changesets
+├── apps/
+│   └── v4/                 # the ui.shadcn.com docs + registry site (Next 16)
+│       ├── app/ content/   #   app routes + fumadocs MDX docs
+│       ├── registry/       #   registry.json + new-york-v4/{ui,example} source,
+│       │                   #   built by scripts/build-registry.mts
+│       └── scripts/        #   build-registry / capture / validate-registries
+├── packages/
+│   ├── shadcn/             # the published `shadcn` CLI (npm, versioned by changesets)
+│   └── tests/              # shared test fixtures
+├── templates/              # framework starters (next/vite/astro/react-router/start)
+├── skills/shadcn/          # agent skill (SKILL.md + rules/, cli.md, registry.md, evals/)
+├── .changeset/             # changesets versioning for the CLI
+├── .github/                # workflows (code-check, test, release, validate-registries),
+│                           #   ISSUE_TEMPLATE, dependabot, FUNDING, version scripts
+├── turbo.json, vitest.config.ts, vitest.workspace.ts
+├── .commitlintrc.json, .editorconfig, .nvmrc, .npmrc, .kodiak.toml
+└── prettier.config.cjs (import sorting) · README/CONTRIBUTING/SECURITY/LICENSE
+```
+
+The registry idea is the same in both repos — declare items, build them into
+JSON the shadcn CLI installs — but the plumbing differs: shadcn/ui builds from
+`registry.json` + a `new-york-v4/` **style** directory via `build-registry.mts`;
+hirael builds from `registry-meta.ts` (its single source of truth) into a
+single `registry/hirael/` tree via `scripts/build-registry.mjs`. Don't port the
+style-directory split — hirael ships one style.
+
+### shadcn/ui vs hirael
+
+| Area                 | shadcn/ui (`ui`)                               | hirael                                                                          |
+| -------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
+| Topology             | Turborepo monorepo (`apps/*`, `packages/*`)    | single Next.js app                                                              |
+| Build orchestration  | `turbo run` across workspaces                  | plain `pnpm` scripts                                                            |
+| Published artifact   | `shadcn` CLI on npm                            | none — registry JSON only                                                       |
+| Registry source      | `registry.json` + `new-york-v4/{ui,example}`   | `registry-meta.ts` → generated `registry.json`                                  |
+| Tests                | vitest workspace                               | none (build pipeline is the gate)                                               |
+| Lint / format        | eslint + prettier w/ import sorting            | eslint + prettier (no import-order plugin)                                      |
+| Commits              | Conventional Commits + `.commitlintrc.json`    | Conventional Commits + `.commitlintrc.json` (now enforced in CI)                |
+| Release / versioning | changesets → npm publish                       | GitHub Release → Vercel prod deploy                                             |
+| CI                   | code-check, test, validate-registries, release | `ci.yml` (lint/typecheck/build/check:registry/check:install) + `commitlint.yml` |
+| Agent tooling        | `skills/shadcn`                                | `.claude/` skills (`hero`, etc.) + `AGENTS.md`                                  |
+| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE, dependabot  | now mirrored (see below)                                                        |
+
+### Adopted into hirael (this change)
+
+Repo-hygiene conventions shadcn/ui ships that hirael lacked, none of which
+touch the static-export / release-driven architecture:
+
+- **Conventional-commit enforcement** — `.commitlintrc.json`
+  (`@commitlint/config-conventional`) plus a `commitlint.yml` CI job that
+  validates PR commit messages. Hirael already _documented_ the convention;
+  this enforces it the way shadcn/ui's config does.
+- `.editorconfig` and `.nvmrc` (Node `22`, matching CI).
+- `LICENSE` (MIT), `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant).
+- `.github/ISSUE_TEMPLATE/` (bug + feature + config), a `PULL_REQUEST_TEMPLATE.md`,
+  and `dependabot.yml` (npm + github-actions, weekly).
+
+### Deliberately NOT adopted
+
+These belong to shadcn/ui's published-package monorepo and would fight
+hirael's [deliberate decisions](#deliberate-decisions--do-not-fix-these):
+
+- **Monorepo conversion** (`apps/` + `packages/` + `turbo.json`) — hirael is one
+  static-export app with no package to publish; a workspace split adds cost with
+  no consumer.
+- **Changesets release flow** — hirael's changelog is GitHub-Release-driven (see
+  "Public changelog is release-tag driven" in `AGENTS.md`). Don't replace it.
+- **`packages/shadcn` CLI and `templates/` starters** — hirael distributes only
+  `/r/*.json`; there is no CLI and no `create`-style framework templates.
+- **`new-york-v4` style-directory registry layout** — hirael's single
+  `registry/hirael/{ui,components,blocks,templates,examples}` is the one-style
+  equivalent.
+- **`.npmrc` workspace linking and `.kodiak.toml` auto-merge** — workspace- and
+  automerge-specific; not needed for a single repo.
+
+### Recommended, not yet applied
+
+- **vitest smoke tests** — hirael still has no test runner. A minimal set worth
+  adding: a `registry.json`-vs-`registry-meta.ts` drift check (already covered
+  by `check:registry`, could be a test) and an import-rewrite assertion
+  (mirrors `check:install`). shadcn/ui's `apps/v4/registry/*.test.ts` are the
+  reference shape.
+- **prettier import-order sorting** (`@ianvs/prettier-plugin-sort-imports`) — ui
+  sorts imports via prettier; hirael doesn't enforce a formatter today, so this
+  is optional.
+- **Optional local `commit-msg` hook** — contributors who want pre-push feedback
+  can add `.husky/commit-msg` containing `pnpm exec commitlint --edit "$1"`. CI
+  already enforces it; the hook is convenience only.
 
 ## Keep these docs current
 

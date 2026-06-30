@@ -5,9 +5,8 @@ and benefits from every well-scoped PR. This guide covers the dev
 workflow, the conventions we follow, and the checklist for shipping a
 new component or block.
 
-By participating you agree to abide by the project's Code of Conduct.
-
-> **TODO** — link to `CODE_OF_CONDUCT.md` once committed.
+By participating you agree to abide by the project's
+[Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Table of contents
 
@@ -25,15 +24,16 @@ By participating you agree to abide by the project's Code of Conduct.
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) **20+**
-- [pnpm](https://pnpm.io) **8+** (the repo ships `pnpm-lock.yaml`; do
+- [Node.js](https://nodejs.org) **20+** (CI runs Node 22; `.nvmrc` pins
+  the version — run `nvm use`)
+- [pnpm](https://pnpm.io) **10+** (the repo ships `pnpm-lock.yaml`; do
   not switch package managers in a PR)
 
 ### First-time setup
 
 ```bash
-git clone https://github.com/MohammadShehadeh/forgecn.git
-cd forgecn
+git clone https://github.com/MohammadShehadeh/hirael.com.git
+cd hirael.com
 pnpm install
 pnpm dev          # showcase site at http://localhost:3000
 ```
@@ -94,7 +94,13 @@ focused.
 ### Commit messages — Conventional Commits
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/)
-so the history is scannable and ready for tooling. The format is:
+so the history is scannable and ready for tooling. This is **enforced** —
+`.commitlintrc.json` (`@commitlint/config-conventional`) runs against every
+PR's commits via the `commitlint` CI workflow, and your PR title should use
+the same format. Check a message locally with
+`echo "feat: …" | pnpm exec commitlint`; for pre-push feedback you can add an
+optional `.husky/commit-msg` hook running `pnpm exec commitlint --edit "$1"`.
+The format is:
 
 ```
 <type>(<optional scope>): <imperative summary>
@@ -266,9 +272,11 @@ also expected to:
 4. Spot-check keyboard navigation and screen-reader output for any
    interactive component.
 
-> **TODO** — automated unit and visual-regression tests are not yet
-> set up. A future PR is expected to introduce a test runner; until
-> then, the build pipeline plus the manual checks above are the
+> **Note** — automated unit and visual-regression tests are not yet set
+> up. A future PR is expected to introduce a test runner (vitest, mirroring
+> shadcn/ui — see
+> [docs/README.md → Upstream alignment](./docs/README.md#upstream-alignment-with-shadcnui));
+> until then, the build pipeline plus the manual checks above are the
 > contract.
 
 ## Pull request process
@@ -298,9 +306,8 @@ typecheck && pnpm registry:build && pnpm build`.
 
 ## Issue workflow
 
-> **TODO** — issue templates under `.github/ISSUE_TEMPLATE/` are not
-> yet committed. Until they land, please follow the conventions
-> below.
+Use the issue forms under `.github/ISSUE_TEMPLATE/` — **Bug report** and
+**Feature request** — which prompt for the fields below.
 
 - **Bug reports** should include: the component or block, the
   reproduction steps, the expected vs actual behavior, your Node
@@ -320,10 +327,6 @@ typecheck && pnpm registry:build && pnpm build`.
 Please do **not** open a public GitHub issue for security
 vulnerabilities. Follow the private disclosure process documented in
 **[SECURITY.md](./SECURITY.md)**.
-
-> **TODO** — `SECURITY.md` is not yet committed. Until it lands,
-> contact the maintainer privately via the email listed on
-> [mohammadshehadeh.com](https://mohammadshehadeh.com).
 
 ---
 

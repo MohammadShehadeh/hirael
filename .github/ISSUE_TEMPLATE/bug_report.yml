@@ -1,0 +1,97 @@
+name: "Bug report"
+description: Report an issue with a Hirael component, block, template, or the showcase site
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for taking the time to file a bug report. Please search open/closed issues before submitting — it may already be reported or fixed.
+
+  - type: markdown
+    attributes:
+      value: |
+        #### If you aren't sure this is a bug, please open a discussion instead:
+        - [Discussions](https://github.com/MohammadShehadeh/hirael.com/discussions/new?category=general)
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of the bug. If you intend to submit a PR for this issue, tell us how in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+
+  - type: input
+    id: items-affected
+    attributes:
+      label: Affected item(s)
+      description: Which Hirael component, block, or template is affected?
+      placeholder: ex. MultiSelect, hero-01, creative-studio...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Where does the bug occur?
+      options:
+        - Component / block source (installed into my app)
+        - Showcase site (hirael.com)
+        - Registry install (npx shadcn add ...)
+        - RTL / direction
+        - Theming (light/dark, design tokens)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How to reproduce
+      description: A step-by-step description of how to reproduce the bug.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    id: codesandbox-stackblitz
+    attributes:
+      label: Codesandbox/StackBlitz link
+      description: |
+        A link to a CodeSandbox or StackBlitz with a minimal reproduction. If not applicable, link a GitHub repository we can run to recreate the issue. Vague reports without a reproduction may be closed.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: "Browser console and/or server logs around the time the bug occurred. Optional if a reproduction is provided. Please paste text rather than screenshots."
+      render: bash
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Relevant info about your OS, Node version, package manager, and browser.
+      render: bash
+      placeholder: OS, Node, pnpm/npm, Browser
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before submitting
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael.com/blob/main/CONTRIBUTING.md).
+      options:
+        - label: I've searched the documentation and existing issues
+          required: true
+        - label: I verified the issue reproduces against the latest published item
+          required: true

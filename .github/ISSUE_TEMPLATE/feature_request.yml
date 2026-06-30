@@ -1,0 +1,66 @@
+name: "Feature request"
+description: Suggest a new component, block, template, or improvement for Hirael
+title: "[feat]: "
+labels: ["area: request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for taking the time to create a feature request! Please search open/closed issues before submitting — it may already be reported.
+
+  - type: markdown
+    attributes:
+      value: |
+        #### If this is more of a question than a request, please open a discussion instead:
+        - [Discussions](https://github.com/MohammadShehadeh/hirael.com/discussions/new?category=general)
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature description
+      description: Describe the user problem first, then the component or API you have in mind. Reference existing shadcn or Radix conventions where relevant.
+      placeholder: "I think this would be useful because..."
+      value: "Describe your feature request..."
+    validations:
+      required: true
+
+  - type: input
+    id: items-affected
+    attributes:
+      label: Related item(s)
+      description: Is this relevant to an existing Hirael component, block, or template?
+      placeholder: ex. MultiSelect, pricing-01...
+    validations:
+      required: false
+
+  - type: textarea
+    id: api-sketch
+    attributes:
+      label: Proposed API / registryDependencies
+      description: Sketch the compound surface area (flat parts) and any shadcn `registryDependencies` you anticipate.
+      placeholder: |
+        <Thing>
+          <ThingTrigger />
+          <ThingContent />
+        </Thing>
+        registryDependencies: button, popover
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other context — screenshots, links, prior art.
+      placeholder: ex. screenshots, links to similar components, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before submitting
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael.com/blob/main/CONTRIBUTING.md).
+      options:
+        - label: I've searched the documentation and existing issues/PRs
+          required: true

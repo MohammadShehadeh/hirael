@@ -162,11 +162,13 @@ pnpm lint        # ESLint via next/core-web-vitals + next/typescript
 pnpm typecheck   # tsc --noEmit
 ```
 
-The repo does not enforce a separate formatter. Match the surrounding
-code (2-space indent, double-quoted strings, no semicolons at the end
-of statements is the prevailing style in `registry/hirael/`). If your
-editor disagrees, reset its formatter on this repo rather than
-reformatting committed files.
+Formatting is Prettier with its default config (`.prettierrc` is `{}`):
+2-space indent, double-quoted strings, semicolons. It runs automatically on
+staged files via the husky pre-commit hook (`lint-staged`), so you rarely need
+to think about it — just don't fight it with a different editor formatter.
+Generated files (`registry.json`, `vercel.json`, `registry-props.json`) are
+excluded via `.prettierignore` because `check:registry` verifies them
+byte-for-byte against the generators' output.
 
 ### Component conventions
 

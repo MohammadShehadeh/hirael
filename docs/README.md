@@ -192,13 +192,19 @@ ui/                         # Turborepo + pnpm workspaces + changesets
 ```
 
 The registry idea is the same in both repos — declare items, build them into
-JSON the shadcn CLI installs — but the plumbing differs: shadcn/ui builds from
-`registry.json` + a `new-york-v4/` **style** directory via `build-registry.mts`;
-hirael builds from `registry-meta.ts` (its single source of truth) into a
-single `registry/hirael/` tree via `scripts/build-registry.mjs`. Don't port the
-style-directory split — hirael ships one style. (shadcn/ui's
-`new-york-v4/{ui,blocks,charts,examples,hooks,internal,lib}` maps to hirael's
-`registry/hirael/{ui,components,blocks,templates,examples}`.)
+JSON the shadcn CLI installs — but the plumbing differs. shadcn/ui's current
+model (see `apps/v4/registry/README.md` there) authors two **bases**
+(`bases/base/` for Base UI, `bases/radix/` for Radix) and a set of style-token
+CSS files (`nova`, `sera`, `vega`, …); `build-registry.mts` crosses them into
+generated combinations (`base-nova`, `radix-sera`, …) and even generates
+`ui-rtl/` RTL variants for the nova styles. `new-york-v4/` is its **legacy**
+directly-authored registry. hirael builds from `registry-meta.ts` (its single
+source of truth) into a single `registry/hirael/` tree via
+`scripts/build-registry.mjs`. Don't port the bases×styles matrix — hirael ships
+one base and one style, and its RTL support lives in the components themselves
+(logical properties) rather than generated variants. The directly-authored
+analogue is `new-york-v4/{ui,blocks,charts,examples,hooks,internal,lib}` →
+hirael's `registry/hirael/{ui,components,blocks,templates,examples}`.
 
 Component **code** is kept in parity too, not just the repo layout: hirael's
 `ui/*` primitives are the shadcn **v4** function-component shape (`data-slot`,
@@ -207,19 +213,19 @@ Component **code** is kept in parity too, not just the repo layout: hirael's
 
 ### shadcn/ui vs hirael
 
-| Area                 | shadcn/ui (`ui`)                               | hirael                                                                          |
-| -------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
-| Topology             | Turborepo monorepo (`apps/*`, `packages/*`)    | single Next.js app                                                              |
-| Build orchestration  | `turbo run` across workspaces                  | plain `pnpm` scripts                                                            |
-| Published artifact   | `shadcn` CLI on npm                            | none — registry JSON only                                                       |
-| Registry source      | `registry.json` + `new-york-v4/{ui,example}`   | `registry-meta.ts` → generated `registry.json`                                  |
-| Tests                | vitest workspace                               | none (build pipeline is the gate)                                               |
-| Lint / format        | eslint + prettier w/ import sorting            | eslint + prettier (no import-order plugin)                                      |
-| Commits              | Conventional Commits + `.commitlintrc.json`    | Conventional Commits + `.commitlintrc.json` (now enforced in CI)                |
-| Release / versioning | changesets → npm publish                       | GitHub Release → Vercel prod deploy                                             |
-| CI                   | code-check, test, validate-registries, release | `ci.yml` (lint/typecheck/build/check:registry/check:install) + `commitlint.yml` |
-| Agent tooling        | `skills/shadcn`                                | `.claude/` skills (`hero`, etc.) + `AGENTS.md`                                  |
-| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE, dependabot  | now mirrored (see below)                                                        |
+| Area                 | shadcn/ui (`ui`)                                                             | hirael                                                                          |
+| -------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Topology             | Turborepo monorepo (`apps/*`, `packages/*`)                                  | single Next.js app                                                              |
+| Build orchestration  | `turbo run` across workspaces                                                | plain `pnpm` scripts                                                            |
+| Published artifact   | `shadcn` CLI on npm                                                          | none — registry JSON only                                                       |
+| Registry source      | `bases/{base,radix}` × style tokens (generated combos; `new-york-v4` legacy) | `registry-meta.ts` → generated `registry.json`                                  |
+| Tests                | vitest workspace                                                             | none (build pipeline is the gate)                                               |
+| Lint / format        | eslint + prettier w/ import sorting                                          | eslint + prettier (no import-order plugin)                                      |
+| Commits              | Conventional Commits + `.commitlintrc.json`                                  | Conventional Commits + `.commitlintrc.json` (now enforced in CI)                |
+| Release / versioning | changesets → npm publish                                                     | GitHub Release → Vercel prod deploy                                             |
+| CI                   | code-check, test, validate-registries, release                               | `ci.yml` (lint/typecheck/build/check:registry/check:install) + `commitlint.yml` |
+| Agent tooling        | `skills/shadcn`                                                              | `.claude/` skills (`hero`, etc.) + `AGENTS.md`                                  |
+| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE, dependabot                                | now mirrored (see below)                                                        |
 
 ### Adopted into hirael (this change)
 
@@ -260,9 +266,13 @@ hirael's [deliberate decisions](#deliberate-decisions--do-not-fix-these):
   by `check:registry`, could be a test) and an import-rewrite assertion
   (mirrors `check:install`). shadcn/ui's `apps/v4/registry/*.test.ts` are the
   reference shape.
-- **prettier import-order sorting** (`@ianvs/prettier-plugin-sort-imports`) — ui
-  sorts imports via prettier; hirael doesn't enforce a formatter today, so this
-  is optional.
+- **prettier plugins** — hirael already runs prettier (default config, enforced
+  on staged files by lint-staged); the delta vs ui is the plugins:
+  `@ianvs/prettier-plugin-sort-imports` (import order) and
+  `prettier-plugin-tailwindcss` with `tailwindFunctions: ["cn", "cva"]`
+  (canonical class order — the more valuable of the two for a registry whose
+  source is copied into consumer repos). Adopting them reformats many files, so
+  do it as a dedicated one-commit change if at all.
 - **Optional local `commit-msg` hook** — contributors who want pre-push feedback
   can add `.husky/commit-msg` containing `pnpm exec commitlint --edit "$1"`. CI
   already enforces it; the hook is convenience only.

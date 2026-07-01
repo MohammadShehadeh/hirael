@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -24,7 +25,43 @@ const SERVICES = [
   },
 ];
 
-export function Services() {
+function ServiceVideo({ src, posterSrc }: { src: string; posterSrc?: string }) {
+  const [failed, setFailed] = React.useState(false);
+
+  if (failed) {
+    return (
+      <div
+        aria-hidden
+        className="glow-center h-full w-full bg-card bg-cover bg-center"
+        style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
+      />
+    );
+  }
+
+  return (
+    <video
+      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+      src={src}
+      poster={posterSrc}
+      muted
+      autoPlay
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden
+      tabIndex={-1}
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+export function Services({
+  videoSrcs,
+  posterSrcs,
+}: {
+  videoSrcs?: string[];
+  posterSrcs?: string[];
+}) {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-28 md:py-40">
       <div aria-hidden className="glow-center absolute inset-0" />
@@ -50,16 +87,9 @@ export function Services() {
               className="liquid-glass group overflow-hidden rounded-3xl"
             >
               <div className="relative aspect-video overflow-hidden">
-                <video
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  src={service.videoUrl}
-                  muted
-                  autoPlay
-                  loop
-                  playsInline
-                  preload="auto"
-                  aria-hidden
-                  tabIndex={-1}
+                <ServiceVideo
+                  src={videoSrcs?.[index] ?? service.videoUrl}
+                  posterSrc={posterSrcs?.[index]}
                 />
                 <div
                   aria-hidden

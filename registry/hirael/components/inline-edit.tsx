@@ -142,6 +142,13 @@ function InlineEdit({
           setValue(next);
           setEditing(false);
         })
+        .catch((reason: unknown) => {
+          setError(
+            reason instanceof Error && reason.message
+              ? reason.message
+              : "Could not save",
+          );
+        })
         .finally(() => setPending(false));
     } else {
       setValue(next);
@@ -205,6 +212,7 @@ function InlineEdit({
           <p
             data-slot="inline-edit-error"
             id={errorId}
+            role="alert"
             className="mt-1.5 text-xs text-destructive"
           >
             {error}

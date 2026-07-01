@@ -79,7 +79,17 @@ function ImageCompare({
   React.useLayoutEffect(() => {
     const node = containerRef.current;
     if (!node) return;
-    setRtl(getComputedStyle(node).direction === "rtl");
+    const update = () => {
+      setRtl(getComputedStyle(node).direction === "rtl");
+    };
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["dir"],
+      subtree: true,
+    });
+    return () => observer.disconnect();
   }, []);
 
   const positionFromPointer = React.useCallback(

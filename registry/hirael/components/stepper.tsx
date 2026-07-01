@@ -143,12 +143,13 @@ function StepperTrigger({
   ...props
 }: React.ComponentProps<"button">) {
   const { setValue } = useStepper();
-  const { step, disabled } = useStepperItem();
+  const { step, state, disabled } = useStepperItem();
 
   return (
     <button
       type="button"
       data-slot="stepper-trigger"
+      aria-current={state === "active" ? "step" : undefined}
       disabled={disabled}
       onClick={() => setValue(step)}
       className={cn(

@@ -35,28 +35,58 @@ function formatNumber(value: number, locale: string, decimals: number): string {
   }
 }
 
-function sanitizeInput(raw: string, decimals: number): string {
+function resolveSeparators(locale: string): { decimal: string; group: string } {
+  try {
+    const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
+    return {
+      decimal: parts.find((p) => p.type === "decimal")?.value ?? ".",
+      group: parts.find((p) => p.type === "group")?.value ?? ",",
+    };
+  } catch {
+    return { decimal: ".", group: "," };
+  }
+}
+
+function sanitizeInput(
+  raw: string,
+  decimals: number,
+  decimalSeparator: string,
+): string {
   if (!raw) return "";
-  let str = raw.replace(/[^\d.\-]/g, "");
+  let str = "";
+  for (const ch of raw) {
+    if ((ch >= "0" && ch <= "9") || ch === "-" || ch === decimalSeparator) {
+      str += ch;
+    }
+  }
   const negative = str.startsWith("-");
   str = str.replace(/-/g, "");
-  const firstDot = str.indexOf(".");
-  if (firstDot !== -1) {
+  const firstSep = str.indexOf(decimalSeparator);
+  if (firstSep !== -1) {
     str =
-      str.slice(0, firstDot + 1) + str.slice(firstDot + 1).replace(/\./g, "");
+      str.slice(0, firstSep + 1) +
+      str
+        .slice(firstSep + 1)
+        .split(decimalSeparator)
+        .join("");
   }
   if (decimals === 0) {
-    str = str.replace(/\./g, "");
-  } else if (firstDot !== -1) {
-    const [whole, frac = ""] = str.split(".");
-    str = `${whole}.${frac.slice(0, decimals)}`;
+    str = str.split(decimalSeparator).join("");
+  } else if (firstSep !== -1) {
+    const whole = str.slice(0, firstSep);
+    const frac = str.slice(firstSep + 1);
+    str = `${whole}${decimalSeparator}${frac.slice(0, decimals)}`;
   }
   return negative ? `-${str}` : str;
 }
 
-function parseToNumber(view: string): number | null {
-  if (!view || view === "-" || view === "." || view === "-.") return null;
-  const n = Number(view);
+function parseToNumber(view: string, decimalSeparator: string): number | null {
+  if (!view) return null;
+  const normalized = view.split(decimalSeparator).join(".");
+  if (normalized === "-" || normalized === "." || normalized === "-.") {
+    return null;
+  }
+  const n = Number(normalized);
   return Number.isFinite(n) ? n : null;
 }
 
@@ -71,6 +101,8 @@ type Ctx = {
   decimals: number;
   disabled?: boolean;
   symbol: string;
+  decimalSeparator: string;
+  groupSeparator: string;
 };
 
 const CurrencyInputContext = React.createContext<Ctx | null>(null);
@@ -156,6 +188,8 @@ function CurrencyInput({
     [currency, locale],
   );
 
+  const separators = React.useMemo(() => resolveSeparators(locale), [locale]);
+
   const ctx = React.useMemo<Ctx>(
     () => ({
       id: fieldId,
@@ -168,6 +202,8 @@ function CurrencyInput({
       decimals,
       disabled,
       symbol,
+      decimalSeparator: separators.decimal,
+      groupSeparator: separators.group,
     }),
     [
       fieldId,
@@ -179,6 +215,7 @@ function CurrencyInput({
       decimals,
       disabled,
       symbol,
+      separators,
     ],
   );
 
@@ -223,6 +260,33 @@ function CurrencyInputPrefix({
   );
 }
 
+type CurrencyInputSuffixProps = Omit<
+  React.ComponentProps<typeof InputGroupAddon>,
+  "align" | "children"
+> & {
+  children?: React.ReactNode;
+};
+
+function CurrencyInputSuffix({
+  className,
+  children,
+  ...props
+}: CurrencyInputSuffixProps) {
+  const ctx = useCurrencyInput();
+  return (
+    <InputGroupAddon
+      data-slot="currency-input-suffix"
+      align="inline-end"
+      className={className}
+      {...props}
+    >
+      <InputGroupText className="font-mono">
+        {children ?? ctx.symbol}
+      </InputGroupText>
+    </InputGroupAddon>
+  );
+}
+
 type CurrencyInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
@@ -247,9 +311,13 @@ function CurrencyInputField({
       placeholder={placeholder}
       data-slot="currency-input-field"
       onChange={(e) => {
-        const sanitized = sanitizeInput(e.target.value, ctx.decimals);
+        const sanitized = sanitizeInput(
+          e.target.value,
+          ctx.decimals,
+          ctx.decimalSeparator,
+        );
         ctx.setView(sanitized);
-        const parsed = parseToNumber(sanitized);
+        const parsed = parseToNumber(sanitized, ctx.decimalSeparator);
         ctx.setValue(parsed);
       }}
       onFocus={(e) => {
@@ -257,13 +325,13 @@ function CurrencyInputField({
         if (ctx.value === null || ctx.value === undefined) return;
         const raw =
           ctx.decimals > 0
-            ? ctx.value.toFixed(ctx.decimals)
+            ? ctx.value.toFixed(ctx.decimals).replace(".", ctx.decimalSeparator)
             : String(Math.trunc(ctx.value));
         ctx.setView(raw);
       }}
       onBlur={(e) => {
         onBlur?.(e);
-        const parsed = parseToNumber(ctx.view);
+        const parsed = parseToNumber(ctx.view, ctx.decimalSeparator);
         if (parsed === null) {
           ctx.setView("");
           ctx.setValue(null);
@@ -277,4 +345,9 @@ function CurrencyInputField({
   );
 }
 
-export { CurrencyInput, CurrencyInputPrefix, CurrencyInputField };
+export {
+  CurrencyInput,
+  CurrencyInputPrefix,
+  CurrencyInputSuffix,
+  CurrencyInputField,
+};

@@ -315,6 +315,14 @@ function LightboxContent({
     }
   }
 
+  function handlePointerCancel(event: React.PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    setDragging(false);
+    if (zoomed) setPan({ x: drag.panX, y: drag.panY });
+  }
+
   return (
     <LightboxPortal>
       <LightboxOverlay />
@@ -339,7 +347,7 @@ function LightboxContent({
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
         >
           {item ? (
             // eslint-disable-next-line @next/next/no-img-element

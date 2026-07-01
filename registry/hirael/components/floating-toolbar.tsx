@@ -11,6 +11,21 @@ function FloatingToolbar({ className, ...props }: FloatingToolbarProps) {
     <div
       role="toolbar"
       data-slot="floating-toolbar"
+      onKeyDown={(event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            '[data-slot="floating-toolbar-button"]:not(:disabled)',
+          ),
+        );
+        const index = items.indexOf(document.activeElement as HTMLElement);
+        if (index === -1) return;
+        event.preventDefault();
+        const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+        let delta = event.key === "ArrowRight" ? 1 : -1;
+        if (rtl) delta = -delta;
+        items[(index + delta + items.length) % items.length]?.focus();
+      }}
       className={cn(
         "inline-flex items-center gap-0.5 rounded-full border border-border bg-popover/95 p-1 text-popover-foreground shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/80",
         className,

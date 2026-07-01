@@ -116,6 +116,8 @@ function Sortable({
 
   const orderRef = React.useRef(order);
   orderRef.current = order;
+  const committedRef = React.useRef(committed);
+  committedRef.current = committed;
 
   const itemsRef = React.useRef(new Map<string, ItemEntry>());
   const pressRef = React.useRef<{
@@ -142,9 +144,17 @@ function Sortable({
     setLiveText(text);
   }, []);
 
+  const itemLabel = React.useCallback((id: string) => {
+    return itemsRef.current.get(id)?.node.textContent?.trim() || null;
+  }, []);
+
   const commit = React.useCallback(
     (next: string[]) => {
       setPreview(null);
+      const prev = committedRef.current;
+      if (next.length === prev.length && next.every((v, i) => v === prev[i])) {
+        return;
+      }
       if (valueProp === undefined) setInternal(next);
       onValueChange?.(next);
     },
@@ -220,11 +230,14 @@ function Sortable({
       }
       const next = orderRef.current;
       commit(next);
+      const label = itemLabel(id);
       announce(
-        `Moved ${id} to position ${next.indexOf(id) + 1} of ${next.length}`,
+        label
+          ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
+          : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [dragId, commit, announce],
+    [dragId, commit, announce, itemLabel],
   );
 
   const moveGrabbed = React.useCallback(
@@ -237,11 +250,14 @@ function Sortable({
       if (to < 0 || to >= movable.length) return;
       const next = reorderPinned(current, isDisabled, id, to);
       setPreview(next);
+      const label = itemLabel(id);
       announce(
-        `Moved ${id} to position ${next.indexOf(id) + 1} of ${next.length}`,
+        label
+          ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
+          : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [announce, isDisabled],
+    [announce, isDisabled, itemLabel],
   );
 
   const handleKeyDown = React.useCallback(
@@ -258,14 +274,18 @@ function Sortable({
           const next = orderRef.current;
           setGrabbedId(null);
           commit(next);
+          const label = itemLabel(id);
           announce(
-            `Dropped ${id} at position ${next.indexOf(id) + 1} of ${next.length}`,
+            label
+              ? `Dropped ${label} at position ${next.indexOf(id) + 1} of ${next.length}`
+              : `Dropped at position ${next.indexOf(id) + 1} of ${next.length}`,
           );
         } else if (grabbedId === null && dragId === null) {
           setGrabbedId(id);
           const current = orderRef.current;
+          const label = itemLabel(id);
           announce(
-            `Grabbed ${id}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`,
+            `Grabbed ${label ?? "item"}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`,
           );
         }
         return;
@@ -275,8 +295,9 @@ function Sortable({
         if (grabbedId === id) {
           e.preventDefault();
           cancel();
+          const label = itemLabel(id);
           announce(
-            `Reorder cancelled. ${id} returned to its original position.`,
+            `Reorder cancelled. ${label ?? "Item"} returned to its original position.`,
           );
         }
         return;
@@ -306,6 +327,7 @@ function Sortable({
       cancel,
       announce,
       moveGrabbed,
+      itemLabel,
     ],
   );
 
@@ -437,7 +459,6 @@ function SortableItem({
         data-state={state}
         data-disabled={disabled || undefined}
         aria-roledescription="sortable item"
-        aria-pressed={hasHandle ? undefined : state === "grabbed"}
         tabIndex={hasHandle || disabled ? undefined : 0}
         style={{ ...style, order: index === -1 ? undefined : index }}
         onPointerDown={

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -95,7 +95,6 @@ type Ctx = {
   setCountry: (next: Country) => void;
   national: string;
   setNational: (next: string) => void;
-  emit: (country: Country, national: string) => void;
   disabled?: boolean;
   open: boolean;
   setOpen: (next: boolean) => void;
@@ -142,13 +141,12 @@ function PhoneInput({
     [defaultCountry],
   );
 
-  const initial = React.useMemo(
-    () => parseE164(valueProp ?? defaultValue, fallback),
-    [],
+  const [country, setCountryState] = React.useState<Country>(
+    () => parseE164(valueProp ?? defaultValue, fallback).country,
   );
-
-  const [country, setCountryState] = React.useState<Country>(initial.country);
-  const [national, setNationalState] = React.useState<string>(initial.national);
+  const [national, setNationalState] = React.useState<string>(
+    () => parseE164(valueProp ?? defaultValue, fallback).national,
+  );
   const [open, setOpen] = React.useState(false);
 
   const isControlled = valueProp !== undefined;
@@ -196,12 +194,11 @@ function PhoneInput({
       setCountry,
       national,
       setNational,
-      emit,
       disabled,
       open,
       setOpen,
     }),
-    [fieldId, country, setCountry, national, setNational, emit, disabled, open],
+    [fieldId, country, setCountry, national, setNational, disabled, open],
   );
 
   return (
@@ -292,8 +289,16 @@ function PhoneInputCountrySelect({
                       </span>
                       <span className="min-w-0 truncate">{c.name}</span>
                     </span>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {c.dialCode}
+                    <span className="flex shrink-0 items-center gap-1.5">
+                      <span className="font-mono text-xs text-muted-foreground">
+                        {c.dialCode}
+                      </span>
+                      {ctx.country.iso2 === c.iso2 && (
+                        <Check
+                          className="size-3.5 text-foreground"
+                          strokeWidth={3}
+                        />
+                      )}
                     </span>
                   </CommandItem>
                 ))}

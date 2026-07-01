@@ -30,7 +30,7 @@ export default function Hero08() {
   return (
     <section
       data-slot="hero"
-      className="relative z-0 max-h-fit min-h-180 overflow-hidden rounded-sm border border-muted bg-background pt-30"
+      className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-muted bg-background pt-30"
     >
       <div
         data-slot="hero-backdrop"
@@ -88,13 +88,13 @@ export default function Hero08() {
             transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
           >
             <Button asChild size="lg">
-              <a className="group flex items-center gap-2" href="#">
+              <a className="flex items-center gap-2" href="#">
                 <GithubIcon className="size-4" />
                 Connect repository
               </a>
             </Button>
             <Button asChild variant="secondary" size="lg">
-              <a className="group flex items-center gap-2" href="#features">
+              <a className="flex items-center gap-2" href="#features">
                 <Play className="size-3.5 fill-current" />
                 See how it works
               </a>

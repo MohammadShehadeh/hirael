@@ -906,7 +906,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/dashboard-01.tsx",
       },
     ],
-    registryDependencies: ["badge", "button", "card", "separator", "tabs"],
+    registryDependencies: [
+      "avatar",
+      "badge",
+      "button",
+      "card",
+      "separator",
+      "tabs",
+      "tooltip",
+    ],
     dependencies: ["lucide-react"],
   },
   {
@@ -1583,7 +1591,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
     category: "saas",
     files: [{ path: "registry/hirael/components/subscription-plans.tsx" }],
-    registryDependencies: ["button"],
+    registryDependencies: ["badge", "button"],
     dependencies: ["lucide-react"],
   },
   {
@@ -2509,7 +2517,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/careers-01.tsx",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
   },
 ];

@@ -169,7 +169,7 @@ function TableOfContents({
       <nav
         data-slot="toc"
         aria-label={ariaLabel ?? "On this page"}
-        className={cn("space-y-3", className)}
+        className={cn("flex flex-col gap-3", className)}
         {...props}
       >
         {content}
@@ -216,7 +216,7 @@ function TableOfContentsList({
       data-slot="toc-list"
       data-level={level}
       className={cn(
-        "space-y-1",
+        "flex flex-col gap-1",
         level === 0 ? "border-s border-border" : "ms-4 mt-1",
         className,
       )}

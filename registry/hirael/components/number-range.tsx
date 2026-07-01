@@ -59,7 +59,10 @@ const defaultParse: NumberParser = (s) => {
   return Number.isFinite(n) ? n : 0;
 };
 
-export type NumberRangeProps = {
+export type NumberRangeProps = Omit<
+  React.ComponentProps<"div">,
+  "defaultValue" | "prefix"
+> & {
   value?: NumberRangeValue;
   defaultValue?: NumberRangeValue;
   onValueChange?: (value: NumberRangeValue) => void;
@@ -71,8 +74,6 @@ export type NumberRangeProps = {
   parse?: NumberParser;
   prefix?: string;
   suffix?: string;
-  className?: string;
-  children?: React.ReactNode;
 };
 
 function NumberRange({
@@ -89,6 +90,7 @@ function NumberRange({
   suffix,
   className,
   children,
+  ...props
 }: NumberRangeProps) {
   const [internal, setInternal] = React.useState<NumberRangeValue>(
     defaultValue ?? [min, max],
@@ -124,6 +126,7 @@ function NumberRange({
       <div
         data-slot="number-range"
         className={cn("flex flex-col gap-3", className)}
+        {...props}
       >
         {children}
       </div>
@@ -169,13 +172,14 @@ function NumberRangeInput({
   const ctx = useNumberRange();
   const i = bound === "min" ? 0 : 1;
   const current = ctx.value[i];
+  const format = ctx.format;
 
-  const [draft, setDraft] = React.useState<string>(ctx.format(current));
+  const [draft, setDraft] = React.useState<string>(format(current));
   const [editing, setEditing] = React.useState(false);
 
   React.useEffect(() => {
-    if (!editing) setDraft(ctx.format(current));
-  }, [current, ctx, editing]);
+    if (!editing) setDraft(format(current));
+  }, [current, format, editing]);
 
   const commit = (raw: string) => {
     const parsed = ctx.parse(raw);
@@ -238,13 +242,15 @@ function NumberRangeInput({
   );
 }
 
+type NumberRangeInputsProps = React.ComponentProps<"div"> & {
+  separator?: React.ReactNode;
+};
+
 function NumberRangeInputs({
   className,
   separator = "–",
-}: {
-  className?: string;
-  separator?: React.ReactNode;
-}) {
+  ...props
+}: NumberRangeInputsProps) {
   return (
     <div
       data-slot="number-range-inputs"
@@ -252,6 +258,7 @@ function NumberRangeInputs({
         "grid grid-cols-[1fr_auto_1fr] items-center gap-2",
         className,
       )}
+      {...props}
     >
       <NumberRangeInput bound="min" aria-label="Minimum value" />
       <span className="font-mono text-xs text-muted-foreground select-none">

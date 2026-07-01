@@ -321,6 +321,23 @@ function MentionInput({
     return () => window.removeEventListener("resize", close);
   }, [open]);
 
+  React.useEffect(() => {
+    if (!open) return;
+    const el = document.getElementById(`${id}-option-${active}`);
+    el?.scrollIntoView({ block: "nearest" });
+  }, [open, active, id]);
+
+  React.useEffect(() => {
+    setSelectedLabels((prev) => {
+      if (prev.length === 0) return prev;
+      const present = new Set(
+        getMentions(value, triggers).map((m) => m.toLowerCase()),
+      );
+      const next = prev.filter((label) => present.has(label.toLowerCase()));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [value, triggers]);
+
   const detect = React.useCallback(
     (text: string, caret: number) => {
       const next = dismissedRef.current
@@ -395,10 +412,6 @@ function MentionInput({
   return (
     <div
       ref={wrapperRef}
-      role="combobox"
-      aria-expanded={open}
-      aria-haspopup="listbox"
-      aria-controls={listboxId}
       data-slot="mention-input"
       data-disabled={disabled || undefined}
       className={cn("relative w-full", className)}
@@ -435,6 +448,9 @@ function MentionInput({
         value={value}
         placeholder={placeholder}
         disabled={disabled}
+        role="combobox"
+        aria-expanded={open}
+        aria-haspopup="listbox"
         aria-autocomplete="list"
         aria-controls={listboxId}
         aria-activedescendant={

@@ -1,21 +1,45 @@
+"use client";
+
+import * as React from "react";
+
 import { Navbar } from "./navbar";
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4.mp4";
 
-export function Hero() {
+export function Hero({
+  videoSrc = HERO_VIDEO,
+  posterSrc,
+}: {
+  videoSrc?: string;
+  posterSrc?: string;
+}) {
+  const [videoFailed, setVideoFailed] = React.useState(false);
+
   return (
     <section className="relative min-h-screen overflow-hidden">
-      <video
-        className="absolute inset-0 z-0 h-full w-full object-cover"
-        src={HERO_VIDEO}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-        tabIndex={-1}
-      />
+      {videoFailed ? (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-0 bg-gradient-to-b from-muted via-background to-background bg-cover bg-center"
+          style={
+            posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined
+          }
+        />
+      ) : (
+        <video
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          src={videoSrc}
+          poster={posterSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          tabIndex={-1}
+          onError={() => setVideoFailed(true)}
+        />
+      )}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 z-[1] h-[40%] bg-gradient-to-t from-black via-black/60 to-transparent"

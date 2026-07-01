@@ -42,6 +42,13 @@ function addDays(date: Date, days: number): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 }
 
+function addMonthsClamped(date: Date, months: number): Date {
+  const year = date.getFullYear();
+  const month = date.getMonth() + months;
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  return new Date(year, month, Math.min(date.getDate(), lastDay));
+}
+
 function dayKey(date: Date): number {
   return (
     date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
@@ -101,11 +108,7 @@ function CalendarHeatmap({
     const rangeEnd = endDate ? toLocalDate(endDate) : today;
     const rangeStart = startDate
       ? toLocalDate(startDate)
-      : new Date(
-          rangeEnd.getFullYear(),
-          rangeEnd.getMonth() - months,
-          rangeEnd.getDate() + 1,
-        );
+      : addDays(addMonthsClamped(rangeEnd, -months), 1);
 
     const values = new Map<number, number>();
     for (const datum of data) {
@@ -209,17 +212,73 @@ function CalendarHeatmap({
 
   const defaultFormatter = React.useCallback(
     (date: Date, value: number) => {
-      const formatted = new Intl.DateTimeFormat(locale, {
+      const formattedDate = new Intl.DateTimeFormat(locale, {
         month: "short",
         day: "numeric",
         year: "numeric",
       }).format(date);
-      return `${value} contribution${value === 1 ? "" : "s"} · ${formatted}`;
+      const formattedValue = new Intl.NumberFormat(locale).format(value);
+      return `${formattedValue} · ${formattedDate}`;
     },
     [locale],
   );
 
   const formatTooltip = tooltipFormatter ?? defaultFormatter;
+
+  const cellRefs = React.useRef(new Map<number, HTMLButtonElement | null>());
+  const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
+
+  const defaultTabbableIndex = React.useMemo(() => {
+    const todayIndex = cells.findIndex(
+      (cell) => cell.inRange && dayKey(cell.date) === dayKey(today),
+    );
+    if (todayIndex !== -1) return todayIndex;
+    for (let i = cells.length - 1; i >= 0; i--) {
+      if (cells[i].inRange) return i;
+    }
+    return -1;
+  }, [cells, today]);
+
+  const tabbableIndex =
+    focusedIndex !== null && cells[focusedIndex]?.inRange
+      ? focusedIndex
+      : defaultTabbableIndex;
+
+  const handleCellKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+    let target: number;
+    switch (event.key) {
+      case "ArrowUp":
+        target = index - 1;
+        break;
+      case "ArrowDown":
+        target = index + 1;
+        break;
+      case "ArrowLeft":
+        target = index + (rtl ? 7 : -7);
+        break;
+      case "ArrowRight":
+        target = index + (rtl ? -7 : 7);
+        break;
+      case "Home":
+        target = index - (index % 7);
+        while (target < index && !cells[target]?.inRange) target += 1;
+        break;
+      case "End":
+        target = index - (index % 7) + 6;
+        while (target > index && !cells[target]?.inRange) target -= 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    if (target < 0 || target >= cells.length || !cells[target].inRange) return;
+    setFocusedIndex(target);
+    cellRefs.current.get(target)?.focus();
+  };
 
   return (
     <div
@@ -288,7 +347,7 @@ function CalendarHeatmap({
                 gap,
               }}
             >
-              {cells.map((cell) => {
+              {cells.map((cell, index) => {
                 if (!cell.inRange) {
                   return (
                     <div
@@ -299,7 +358,11 @@ function CalendarHeatmap({
                     />
                   );
                 }
-                const label = defaultFormatter(cell.date, cell.value);
+                const tooltip = formatTooltip(cell.date, cell.value);
+                const label =
+                  typeof tooltip === "string"
+                    ? tooltip
+                    : defaultFormatter(cell.date, cell.value);
                 const cellClassName = cn(
                   "rounded-[2px]",
                   resolveLevelClass(cell.level),
@@ -312,14 +375,21 @@ function CalendarHeatmap({
                       {onSelectDay ? (
                         <button
                           type="button"
+                          ref={(el) => {
+                            cellRefs.current.set(index, el);
+                          }}
                           data-slot="calendar-heatmap-cell"
                           data-level={cell.level}
                           aria-label={label}
+                          tabIndex={index === tabbableIndex ? 0 : -1}
                           className={cellClassName}
+                          onFocus={() => setFocusedIndex(index)}
+                          onKeyDown={(event) => handleCellKeyDown(event, index)}
                           onClick={() => onSelectDay(cell.date, cell.value)}
                         />
                       ) : (
                         <div
+                          role="img"
                           data-slot="calendar-heatmap-cell"
                           data-level={cell.level}
                           aria-label={label}
@@ -327,9 +397,7 @@ function CalendarHeatmap({
                         />
                       )}
                     </TooltipTrigger>
-                    <TooltipContent>
-                      {formatTooltip(cell.date, cell.value)}
-                    </TooltipContent>
+                    <TooltipContent>{tooltip}</TooltipContent>
                   </Tooltip>
                 );
               })}

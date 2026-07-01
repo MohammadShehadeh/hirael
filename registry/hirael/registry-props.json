@@ -266,23 +266,9 @@
           "required": false,
           "default": null,
           "description": null
-        },
-        {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     },
     {
       "name": "NumberRangeSlider",
@@ -306,13 +292,6 @@
       "name": "NumberRangeInputs",
       "props": [
         {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "separator",
           "type": "React.ReactNode",
           "required": false,
@@ -320,7 +299,7 @@
           "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     }
   ],
   "year-picker": [
@@ -1176,6 +1155,19 @@
       "extendsNative": true
     },
     {
+      "name": "CurrencyInputSuffix",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
       "name": "CurrencyInputField",
       "props": [],
       "extendsNative": true
@@ -1462,6 +1454,19 @@
         }
       ],
       "extendsNative": true
+    },
+    {
+      "name": "RatingItem",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
     }
   ],
   "timeline": [
@@ -1679,6 +1684,13 @@
           "description": null
         },
         {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
           "name": "children",
           "type": "React.ReactNode",
           "required": false,
@@ -1690,7 +1702,15 @@
     },
     {
       "name": "MonthPickerContent",
-      "props": [],
+      "props": [
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
       "extendsNative": true
     }
   ],
@@ -1700,7 +1720,7 @@
       "props": [
         {
           "name": "value",
-          "type": "TimeValue",
+          "type": "TimeValue | null",
           "required": false,
           "default": null,
           "description": null
@@ -1717,6 +1737,20 @@
           "type": "((v: TimeValue) => void)",
           "required": false,
           "default": null,
+          "description": null
+        },
+        {
+          "name": "onClear",
+          "type": "(() => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
           "description": null
         },
         {
@@ -1801,13 +1835,6 @@
           "required": false,
           "default": null,
           "description": null
-        },
-        {
-          "name": "showIcon",
-          "type": "boolean",
-          "required": false,
-          "default": "true",
-          "description": null
         }
       ],
       "extendsNative": true
@@ -1847,7 +1874,21 @@
           "name": "format",
           "type": "ColorFormat",
           "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultFormat",
+          "type": "ColorFormat",
+          "required": false,
           "default": "\"hex\"",
+          "description": null
+        },
+        {
+          "name": "onFormatChange",
+          "type": "((format: ColorFormat) => void)",
+          "required": false,
+          "default": null,
           "description": null
         },
         {
@@ -1924,6 +1965,36 @@
     },
     {
       "name": "ColorPickerContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerArea",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerHueSlider",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerFormatTabs",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerFormatInputs",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerEyedropper",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "ColorPickerSwatches",
       "props": [],
       "extendsNative": true
     }
@@ -2617,6 +2688,27 @@
           "required": false,
           "default": null,
           "description": null
+        },
+        {
+          "name": "month",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultMonth",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onMonthChange",
+          "type": "((month: Date) => void)",
+          "required": false,
+          "default": null,
+          "description": null
         }
       ],
       "extendsNative": true
@@ -2641,6 +2733,27 @@
         {
           "name": "onValueChange",
           "type": "((date: Date | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "month",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultMonth",
+          "type": "Date",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onMonthChange",
+          "type": "((month: Date) => void)",
           "required": false,
           "default": null,
           "description": null
@@ -2679,16 +2792,9 @@
           "required": false,
           "default": "1",
           "description": null
-        },
-        {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     }
   ],
   "date-range-picker": [
@@ -4330,6 +4436,20 @@
           "type": "boolean",
           "required": false,
           "default": "false",
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "MediaInputValue | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "MediaInputValue | null",
+          "required": false,
+          "default": "null",
           "description": null
         },
         {
@@ -6773,7 +6893,22 @@
     },
     {
       "name": "Hero",
-      "props": [],
+      "props": [
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "required": false,
+          "default": "HERO_VIDEO",
+          "description": null
+        },
+        {
+          "name": "posterSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
       "extendsNative": false
     },
     {
@@ -6783,7 +6918,22 @@
     },
     {
       "name": "Feature",
-      "props": [],
+      "props": [
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "required": false,
+          "default": "FEATURE_VIDEO",
+          "description": null
+        },
+        {
+          "name": "posterSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
       "extendsNative": false
     },
     {
@@ -6843,7 +6993,22 @@
   "asme": [
     {
       "name": "Hero",
-      "props": [],
+      "props": [
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "required": false,
+          "default": "HERO_VIDEO_URL",
+          "description": null
+        },
+        {
+          "name": "posterSrc",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
       "extendsNative": false
     },
     {
@@ -6868,7 +7033,22 @@
     },
     {
       "name": "Services",
-      "props": [],
+      "props": [
+        {
+          "name": "videoSrcs",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "posterSrcs",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
       "extendsNative": false
     },
     {

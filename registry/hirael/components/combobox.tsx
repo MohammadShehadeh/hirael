@@ -16,7 +16,7 @@ type WithClassName<T> = Omit<T, "className"> & { className?: string };
 function Combobox<Value, Multiple extends boolean | undefined = false>(
   props: ComboboxPrimitive.Root.Props<Value, Multiple>,
 ) {
-  return <ComboboxPrimitive.Root data-slot="combobox" {...props} />;
+  return <ComboboxPrimitive.Root {...props} />;
 }
 
 function ComboboxValue(props: ComboboxPrimitive.Value.Props) {
@@ -39,10 +39,15 @@ function ComboboxInput({
   ...props
 }: WithClassName<ComboboxPrimitive.Input.Props> & { showClear?: boolean }) {
   return (
-    <InputGroup className={className}>
+    <InputGroup
+      className={cn(
+        "has-[[data-slot=combobox-input]:focus-visible]:border-ring has-[[data-slot=combobox-input]:focus-visible]:ring-[3px] has-[[data-slot=combobox-input]:focus-visible]:ring-ring/50",
+        className,
+      )}
+    >
       {children}
       <ComboboxPrimitive.Input
-        data-slot="input-group-control"
+        data-slot="combobox-input"
         className="flex-1 rounded-none border-0 bg-transparent px-2 text-sm shadow-none outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
         {...props}
       />

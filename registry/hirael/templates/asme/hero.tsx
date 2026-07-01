@@ -21,12 +21,19 @@ const SOCIAL_LINKS: {
   { label: "Website", Icon: Globe },
 ];
 
-export function Hero() {
+export function Hero({
+  videoSrc = HERO_VIDEO_URL,
+  posterSrc,
+}: {
+  videoSrc?: string;
+  posterSrc?: string;
+}) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const rafRef = React.useRef<number | null>(null);
   const restartTimerRef = React.useRef<number | null>(null);
   const hasStartedRef = React.useRef(false);
   const isFadingOutRef = React.useRef(false);
+  const [videoFailed, setVideoFailed] = React.useState(false);
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -107,23 +114,35 @@ export function Hero() {
 
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden">
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover object-bottom"
-        src={HERO_VIDEO_URL}
-        muted
-        autoPlay
-        playsInline
-        preload="auto"
-        aria-hidden
-        tabIndex={-1}
-        style={{ opacity: 0 }}
-      />
+      {videoFailed ? (
+        <div
+          aria-hidden
+          className="glow-top absolute inset-0 bg-cover bg-bottom"
+          style={
+            posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined
+          }
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover object-bottom"
+          src={videoSrc}
+          poster={posterSrc}
+          muted
+          autoPlay
+          playsInline
+          preload="auto"
+          aria-hidden
+          tabIndex={-1}
+          style={{ opacity: 0 }}
+          onError={() => setVideoFailed(true)}
+        />
+      )}
 
       <Navbar />
 
       <div className="relative z-10 flex flex-1 -translate-y-[20%] flex-col items-center justify-center px-6 py-12 text-center">
-        <h1 className="mb-10 whitespace-nowrap text-7xl tracking-tight text-foreground [font-family:var(--font-asme-serif)] md:text-8xl lg:text-9xl">
+        <h1 className="mb-10 text-7xl tracking-tight text-foreground [font-family:var(--font-asme-serif)] sm:whitespace-nowrap md:text-8xl lg:text-9xl">
           Know it <em className="italic">all</em>.
         </h1>
 

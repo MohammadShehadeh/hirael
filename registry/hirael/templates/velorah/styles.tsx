@@ -1,6 +1,6 @@
 const VELORAH_CSS = `
 .velorah {
-  --background: hsl(201 100% 13%);
+  --background: hsl(0 0% 0%);
   --foreground: hsl(0 0% 100%);
   --card: hsl(0 0% 6%);
   --card-foreground: hsl(0 0% 100%);

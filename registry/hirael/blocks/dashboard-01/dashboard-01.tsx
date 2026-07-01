@@ -10,6 +10,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback } from "@/registry/hirael/ui/avatar";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -21,6 +23,11 @@ import {
 } from "@/registry/hirael/ui/card";
 import { Separator } from "@/registry/hirael/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/registry/hirael/ui/tooltip";
 
 type Metric = {
   label: string;
@@ -222,7 +229,7 @@ export default function Dashboard01() {
               aria-label="Refresh data"
             >
               <RefreshCw
-                className={`size-3.5 ${refreshing ? "animate-spin" : ""}`}
+                className={cn("size-3.5", refreshing && "animate-spin")}
               />
               <span className="hidden sm:inline">Refresh</span>
             </Button>
@@ -238,12 +245,15 @@ export default function Dashboard01() {
               <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">
                 {m.value}
               </span>
-              <span
-                className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${deltaTone(m.trend)}`}
+              <Badge
+                className={cn(
+                  "rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none",
+                  deltaTone(m.trend),
+                )}
               >
                 <TrendIcon trend={m.trend} />
                 {m.delta}
-              </span>
+              </Badge>
             </div>
           ))}
         </div>
@@ -292,16 +302,24 @@ export default function Dashboard01() {
                 {chart.map((row) => (
                   <div key={row.d} className="flex h-full flex-col gap-1.5">
                     <div className="flex h-full items-end gap-1">
-                      <div
-                        className="flex-1 rounded-t-xs bg-foreground/85 transition-all duration-300 ease-out hover:bg-foreground"
-                        style={{ height: `${(row.a / chartMax) * 100}%` }}
-                        title={`Sign-ups · ${row.a}`}
-                      />
-                      <div
-                        className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-all duration-300 ease-out hover:bg-muted-foreground/60"
-                        style={{ height: `${(row.b / chartMax) * 100}%` }}
-                        title={`Activated · ${row.b}`}
-                      />
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="flex-1 rounded-t-xs bg-foreground/85 transition-all duration-300 ease-out hover:bg-foreground"
+                            style={{ height: `${(row.a / chartMax) * 100}%` }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>Sign-ups · {row.a}</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-all duration-300 ease-out hover:bg-muted-foreground/60"
+                            style={{ height: `${(row.b / chartMax) * 100}%` }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>Activated · {row.b}</TooltipContent>
+                      </Tooltip>
                     </div>
                     <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       {row.d}
@@ -342,21 +360,25 @@ export default function Dashboard01() {
                 {ACTIVITY.map((a, i) => (
                   <li
                     key={a.name}
-                    className={`flex items-center gap-3 px-6 py-3 ${
-                      i < ACTIVITY.length - 1 ? "border-b border-border" : ""
-                    }`}
+                    className={cn(
+                      "flex items-center gap-3 px-6 py-3",
+                      i < ACTIVITY.length - 1 && "border-b border-border",
+                    )}
                   >
-                    <span
-                      className={`inline-flex size-8 shrink-0 items-center justify-center rounded-full font-mono text-xs font-medium ${
-                        a.tone === "primary"
-                          ? "bg-foreground text-background"
-                          : a.tone === "muted"
-                            ? "border border-border bg-card text-muted-foreground"
-                            : "bg-muted text-foreground"
-                      }`}
-                    >
-                      {a.initials}
-                    </span>
+                    <Avatar>
+                      <AvatarFallback
+                        className={cn(
+                          "font-mono text-xs font-medium",
+                          a.tone === "primary"
+                            ? "bg-foreground text-background"
+                            : a.tone === "muted"
+                              ? "border border-border bg-card text-muted-foreground"
+                              : "bg-muted text-foreground",
+                        )}
+                      >
+                        {a.initials}
+                      </AvatarFallback>
+                    </Avatar>
                     <div className="flex min-w-0 flex-1 flex-col">
                       <p className="truncate text-sm">
                         <span className="font-medium text-foreground">

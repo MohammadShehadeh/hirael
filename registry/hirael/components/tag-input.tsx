@@ -18,6 +18,7 @@ type Ctx = {
   setDraft: (next: string) => void;
   error: string | null;
   setError: (next: string | null) => void;
+  errorId: string;
   add: (candidates: string | string[]) => boolean;
   remove: (index: number) => void;
   disabled?: boolean;
@@ -83,6 +84,7 @@ function TagInput({
 
   const [draft, setDraft] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
+  const errorId = React.useId();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const norm = React.useCallback(
@@ -96,11 +98,12 @@ function TagInput({
       const list = Array.isArray(candidates) ? candidates : [candidates];
       const next = [...value];
       let anyAdded = false;
+      let batchError: string | null = null;
       for (const raw of list) {
         const tag = raw.trim();
         if (!tag) continue;
         if (maxTags !== undefined && next.length >= maxTags) {
-          setError(`Limit ${maxTags} tag${maxTags === 1 ? "" : "s"}.`);
+          batchError = `Limit ${maxTags} tag${maxTags === 1 ? "" : "s"}.`;
           break;
         }
         if (unique) {
@@ -110,15 +113,17 @@ function TagInput({
         if (validate) {
           const result = validate(tag, next);
           if (result !== true) {
-            setError(result);
+            batchError = result;
             continue;
           }
         }
         next.push(tag);
         anyAdded = true;
       }
-      if (anyAdded) {
-        setValue(next);
+      if (anyAdded) setValue(next);
+      if (batchError) {
+        setError(batchError);
+      } else if (anyAdded) {
         setError(null);
       }
       return anyAdded;
@@ -144,6 +149,7 @@ function TagInput({
       setDraft,
       error,
       setError,
+      errorId,
       add,
       remove,
       disabled,
@@ -160,6 +166,7 @@ function TagInput({
       setValue,
       draft,
       error,
+      errorId,
       add,
       remove,
       disabled,
@@ -283,8 +290,8 @@ function TagInputField({
       if (ctx.draft.trim()) {
         e.preventDefault();
         if (ctx.add(ctx.draft)) ctx.setDraft("");
-      } else if (e.key === "Enter") {
-        // Allow form submission only when draft is empty.
+      } else if (e.key !== "Enter") {
+        e.preventDefault();
       }
       return;
     }
@@ -329,6 +336,8 @@ function TagInputField({
       placeholder={ctx.value.length === 0 ? placeholder : undefined}
       disabled={ctx.disabled}
       readOnly={ctx.readOnly}
+      aria-invalid={ctx.error ? true : undefined}
+      aria-describedby={ctx.error ? ctx.errorId : undefined}
       data-slot="tag-input-field"
       className={cn(
         "flex-1 min-w-[6rem] bg-transparent px-1.5 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
@@ -345,6 +354,7 @@ function TagInputError({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
       role="alert"
+      id={ctx.errorId}
       data-slot="tag-input-error"
       className={cn("text-[11px] text-destructive", className)}
       {...props}

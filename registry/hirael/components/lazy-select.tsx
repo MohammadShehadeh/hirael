@@ -219,6 +219,9 @@ function LazySelectTrigger({
     <PopoverTrigger asChild>
       <button
         type="button"
+        role="combobox"
+        aria-expanded={ctx.open}
+        aria-haspopup="listbox"
         disabled={ctx.disabled}
         data-slot="lazy-select-trigger"
         data-state={ctx.open ? "open" : "closed"}
@@ -248,9 +251,7 @@ function LazySelectTrigger({
             <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
               {ctx.clearable && ctx.value !== undefined && !ctx.disabled && (
                 <span
-                  role="button"
-                  tabIndex={-1}
-                  aria-label="Clear selection"
+                  aria-hidden
                   onPointerDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

@@ -77,16 +77,21 @@ function SplitView({
   const onResizerPointerDown = React.useCallback(
     (event: React.PointerEvent) => {
       event.preventDefault();
+      const handle = event.currentTarget as HTMLElement;
+      handle.setPointerCapture(event.pointerId);
       setDragging(true);
       const onMove = (ev: PointerEvent) =>
         resizeToPointer(ev.clientX, ev.clientY);
-      const onUp = () => {
-        window.removeEventListener("pointermove", onMove);
-        window.removeEventListener("pointerup", onUp);
+      const onUp = (ev: PointerEvent) => {
+        if (handle.hasPointerCapture(ev.pointerId)) {
+          handle.releasePointerCapture(ev.pointerId);
+        }
+        handle.removeEventListener("pointermove", onMove);
+        handle.removeEventListener("pointerup", onUp);
         setDragging(false);
       };
-      window.addEventListener("pointermove", onMove);
-      window.addEventListener("pointerup", onUp);
+      handle.addEventListener("pointermove", onMove);
+      handle.addEventListener("pointerup", onUp);
     },
     [resizeToPointer],
   );

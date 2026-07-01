@@ -65,75 +65,76 @@ export function DataTableFacetedFilter<TData, TValue>({
     [column, multiple, selectedValues],
   );
 
-  const onReset = React.useCallback(
-    (event?: React.MouseEvent) => {
-      event?.stopPropagation();
-      column?.setFilterValue(undefined);
-    },
-    [column],
-  );
+  const onReset = React.useCallback(() => {
+    column?.setFilterValue(undefined);
+  }, [column]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          data-slot="data-table-faceted-filter"
-          className="border-dashed font-normal"
-        >
-          {selectedValues?.size > 0 ? (
-            <div
-              role="button"
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              onClick={onReset}
-            >
-              <XCircle />
-            </div>
-          ) : (
-            <PlusCircle />
-          )}
-          {title}
-          {selectedValues?.size > 0 && (
-            <>
-              <Separator
-                orientation="vertical"
-                className="mx-0.5 data-[orientation=vertical]:h-4"
-              />
-              <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
-              >
-                {selectedValues.size}
-              </Badge>
-              <div className="hidden items-center gap-1 lg:flex">
-                {selectedValues.size > 2 ? (
-                  <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
-                  >
-                    {selectedValues.size} selected
-                  </Badge>
-                ) : (
-                  options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
-                      <Badge
-                        variant="secondary"
-                        key={option.value}
-                        className="rounded-sm px-1 font-normal"
-                      >
-                        {option.label}
-                      </Badge>
-                    ))
-                )}
-              </div>
-            </>
-          )}
-        </Button>
-      </PopoverTrigger>
+      <div className="flex items-center">
+        {selectedValues?.size > 0 ? (
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={`Clear ${title} filter`}
+            data-slot="data-table-faceted-filter-reset"
+            className="rounded-e-none border-e-0 border-dashed px-2"
+            onClick={onReset}
+          >
+            <XCircle />
+          </Button>
+        ) : null}
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            data-slot="data-table-faceted-filter"
+            className={cn(
+              "border-dashed font-normal",
+              selectedValues?.size > 0 && "rounded-s-none",
+            )}
+          >
+            {selectedValues?.size > 0 ? null : <PlusCircle />}
+            {title}
+            {selectedValues?.size > 0 && (
+              <>
+                <Separator
+                  orientation="vertical"
+                  className="mx-0.5 data-[orientation=vertical]:h-4"
+                />
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm px-1 font-normal lg:hidden"
+                >
+                  {selectedValues.size}
+                </Badge>
+                <div className="hidden items-center gap-1 lg:flex">
+                  {selectedValues.size > 2 ? (
+                    <Badge
+                      variant="secondary"
+                      className="rounded-sm px-1 font-normal"
+                    >
+                      {selectedValues.size} selected
+                    </Badge>
+                  ) : (
+                    options
+                      .filter((option) => selectedValues.has(option.value))
+                      .map((option) => (
+                        <Badge
+                          variant="secondary"
+                          key={option.value}
+                          className="rounded-sm px-1 font-normal"
+                        >
+                          {option.label}
+                        </Badge>
+                      ))
+                  )}
+                </div>
+              </>
+            )}
+          </Button>
+        </PopoverTrigger>
+      </div>
       <PopoverContent className="w-50 p-0" align="start">
         <Command>
           <CommandInput placeholder={title} />
@@ -160,7 +161,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     </div>
                     {option.icon && <option.icon />}
                     <span className="truncate">{option.label}</span>
-                    {option.count && (
+                    {option.count != null && option.count > 0 && (
                       <span className="ms-auto font-mono text-xs">
                         {option.count}
                       </span>

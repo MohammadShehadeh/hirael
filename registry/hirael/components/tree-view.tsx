@@ -13,6 +13,10 @@ import {
 type TreeCtx = {
   selected: string | undefined;
   setSelected: (value: string) => void;
+  tabbable: string | null;
+  setTabbable: (value: string) => void;
+  registerItem: (value: string, el: HTMLButtonElement) => () => void;
+  getVisibleItems: () => HTMLButtonElement[];
 };
 
 const TreeViewContext = React.createContext<TreeCtx | null>(null);
@@ -26,6 +30,9 @@ function useTreeView() {
 }
 
 const TreeDepthContext = React.createContext(0);
+
+const TreeParentContext =
+  React.createContext<React.RefObject<HTMLButtonElement | null> | null>(null);
 
 /** Horizontal inset per nesting level, plus the base inset, in px. */
 const TREE_INDENT_PER_LEVEL = 14;
@@ -53,6 +60,9 @@ function TreeView({
   );
   const selected = valueProp ?? internal;
 
+  const itemsRef = React.useRef(new Map<string, HTMLButtonElement>());
+  const [tabbable, setTabbable] = React.useState<string | null>(null);
+
   const setSelected = React.useCallback(
     (next: string) => {
       if (valueProp === undefined) setInternal(next);
@@ -61,9 +71,67 @@ function TreeView({
     [valueProp, onValueChange],
   );
 
+  const getVisibleItems = React.useCallback(
+    () =>
+      Array.from(itemsRef.current.values())
+        .filter((el) => el.isConnected && !el.disabled)
+        .sort((a, b) =>
+          a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING
+            ? -1
+            : 1,
+        ),
+    [],
+  );
+
+  const firstVisibleValue = React.useCallback(() => {
+    const first = getVisibleItems()[0];
+    if (!first) return null;
+    for (const [itemValue, itemEl] of itemsRef.current) {
+      if (itemEl === first) return itemValue;
+    }
+    return null;
+  }, [getVisibleItems]);
+
+  const registerItem = React.useCallback(
+    (value: string, el: HTMLButtonElement) => {
+      itemsRef.current.set(value, el);
+      return () => {
+        itemsRef.current.delete(value);
+        setTabbable((current) =>
+          current === value ? firstVisibleValue() : current,
+        );
+      };
+    },
+    [firstVisibleValue],
+  );
+
+  React.useEffect(() => {
+    setTabbable((current) => {
+      if (current !== null && itemsRef.current.has(current)) return current;
+      if (selected !== undefined && itemsRef.current.has(selected)) {
+        return selected;
+      }
+      return firstVisibleValue();
+    });
+  }, [selected, firstVisibleValue]);
+
   const ctx = React.useMemo<TreeCtx>(
-    () => ({ selected, setSelected }),
-    [selected, setSelected],
+    () => ({
+      selected,
+      setSelected,
+      tabbable,
+      setTabbable,
+      registerItem,
+      getVisibleItems,
+    }),
+    [
+      selected,
+      setSelected,
+      tabbable,
+      setTabbable,
+      registerItem,
+      getVisibleItems,
+    ],
   );
 
   return (
@@ -98,11 +166,64 @@ function TreeItem({
   children,
   ...props
 }: TreeItemProps) {
-  const { selected, setSelected } = useTreeView();
+  const {
+    selected,
+    setSelected,
+    tabbable,
+    setTabbable,
+    registerItem,
+    getVisibleItems,
+  } = useTreeView();
   const depth = React.useContext(TreeDepthContext);
+  const parentTriggerRef = React.useContext(TreeParentContext);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = React.useState(defaultExpanded);
 
   const hasChildren = React.Children.count(children) > 0;
   const isSelected = !hasChildren && selected === value;
+
+  React.useLayoutEffect(() => {
+    const el = triggerRef.current;
+    if (!el) return;
+    return registerItem(value, el);
+  }, [registerItem, value]);
+
+  const onTriggerKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    const { key } = event;
+    if (
+      key !== "ArrowDown" &&
+      key !== "ArrowUp" &&
+      key !== "ArrowLeft" &&
+      key !== "ArrowRight" &&
+      key !== "Home" &&
+      key !== "End"
+    ) {
+      return;
+    }
+    event.preventDefault();
+    const items = getVisibleItems();
+    const index = items.indexOf(event.currentTarget);
+    const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+    const expandKey = rtl ? "ArrowLeft" : "ArrowRight";
+
+    if (key === "ArrowDown") {
+      items[index + 1]?.focus();
+    } else if (key === "ArrowUp") {
+      items[index - 1]?.focus();
+    } else if (key === "Home") {
+      items[0]?.focus();
+    } else if (key === "End") {
+      items[items.length - 1]?.focus();
+    } else if (key === expandKey) {
+      if (!hasChildren) return;
+      if (open) items[index + 1]?.focus();
+      else setOpen(true);
+    } else if (hasChildren && open) {
+      setOpen(false);
+    } else {
+      parentTriggerRef?.current?.focus();
+    }
+  };
 
   const triggerStyle: React.CSSProperties = {
     paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
@@ -114,6 +235,17 @@ function TreeItem({
     isSelected ? "bg-accent font-medium text-foreground" : "text-foreground/80",
     className,
   );
+  const triggerProps = {
+    ref: triggerRef,
+    type: "button" as const,
+    disabled,
+    tabIndex: tabbable === value ? 0 : -1,
+    "data-slot": "tree-item-trigger",
+    style: triggerStyle,
+    className: triggerClassName,
+    onKeyDown: onTriggerKeyDown,
+    onFocus: () => setTabbable(value),
+  };
 
   // Folder open/closed and the chevron rotation are driven off the trigger's
   // data-[state] (set by Collapsible) instead of tracked React state.
@@ -151,28 +283,23 @@ function TreeItem({
 
   if (hasChildren) {
     return (
-      <Collapsible asChild defaultOpen={defaultExpanded}>
+      <Collapsible asChild open={open} onOpenChange={setOpen}>
         <div
           data-slot="tree-item"
           role="treeitem"
           aria-selected={isSelected}
+          aria-expanded={open}
           {...props}
         >
           <CollapsibleTrigger asChild>
-            <button
-              type="button"
-              disabled={disabled}
-              data-slot="tree-item-trigger"
-              style={triggerStyle}
-              className={triggerClassName}
-            >
-              {labelRow}
-            </button>
+            <button {...triggerProps}>{labelRow}</button>
           </CollapsibleTrigger>
           <CollapsibleContent asChild>
             <div role="group">
               <TreeDepthContext.Provider value={depth + 1}>
-                {children}
+                <TreeParentContext.Provider value={triggerRef}>
+                  {children}
+                </TreeParentContext.Provider>
               </TreeDepthContext.Provider>
             </div>
           </CollapsibleContent>
@@ -189,13 +316,9 @@ function TreeItem({
       {...props}
     >
       <button
-        type="button"
-        disabled={disabled}
-        data-slot="tree-item-trigger"
+        {...triggerProps}
         data-state={isSelected ? "selected" : undefined}
         onClick={() => setSelected(value)}
-        style={triggerStyle}
-        className={triggerClassName}
       >
         {labelRow}
       </button>

@@ -13,8 +13,6 @@ const NAV_ITEMS = [
   "Inquiries",
 ];
 
-const CREAM = "#E1E0CC";
-
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function Hero({
@@ -65,7 +63,7 @@ export function Hero({
               <li key={item} className="shrink-0">
                 <a
                   href="#"
-                  className="text-xs text-[#E1E0CC]/80 transition-colors hover:text-[#E1E0CC] md:text-sm"
+                  className="text-xs text-(--cs-cream)/80 transition-colors hover:text-(--cs-cream) md:text-sm"
                 >
                   {item}
                 </a>
@@ -77,10 +75,7 @@ export function Hero({
         <div className="relative z-10 mt-auto p-4 sm:p-6 md:p-8 lg:p-10">
           <div className="grid grid-cols-12 items-end gap-6 md:gap-8">
             <div className="col-span-12 lg:col-span-8">
-              <h1
-                className="text-[24vw] font-medium leading-[0.85] tracking-[-0.07em] sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]"
-                style={{ color: CREAM }}
-              >
+              <h1 className="text-[24vw] font-medium leading-[0.85] tracking-[-0.07em] text-(--cs-cream) sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]">
                 <WordsPullUp text="Hirael" showAsterisk />
               </h1>
             </div>
@@ -88,25 +83,22 @@ export function Hero({
             <div className="col-span-12 flex flex-col gap-4 md:gap-6 lg:col-span-4">
               <motion.p
                 {...fade(0.5)}
-                className="max-w-md text-sm text-[#DEDBC8]/70 sm:text-base"
+                className="max-w-md text-sm text-(--cs-ink)/70 sm:text-base"
                 style={{ lineHeight: 1.3 }}
               >
                 Hirael is a worldwide network of visual artists, filmmakers and
-                storytellers bound not by place, status or labels but by passion
-                and hunger to unlock potential through our unique perspectives.
+                storytellers, held together by craft and curiosity, not place or
+                title.
               </motion.p>
 
               <motion.div {...fade(0.7)}>
                 <a
                   href="#"
-                  className="group inline-flex w-fit items-center gap-2 rounded-full bg-[#DEDBC8] py-1.5 pe-1.5 ps-5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
+                  className="group inline-flex w-fit items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 pe-1.5 ps-5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
                 >
                   Join the lab
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
-                    <ArrowRight
-                      className="h-4 w-4 rtl:rotate-180"
-                      style={{ color: CREAM }}
-                    />
+                    <ArrowRight className="h-4 w-4 text-(--cs-cream) rtl:rotate-180" />
                   </span>
                 </a>
               </motion.div>

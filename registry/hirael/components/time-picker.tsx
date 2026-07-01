@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Clock } from "lucide-react";
+import { Clock, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -20,8 +20,10 @@ export type TimeValue = {
 export type TimeFormat = "12h" | "24h";
 
 type TimePickerContextValue = {
-  value: TimeValue;
+  value: TimeValue | null;
   setValue: (v: TimeValue) => void;
+  clearValue: () => void;
+  clearable: boolean;
   format: TimeFormat;
   showSeconds: boolean;
   minuteStep: number;
@@ -55,9 +57,11 @@ function clampStep(value: number, step: number, max: number) {
 }
 
 export type TimePickerProps = {
-  value?: TimeValue;
+  value?: TimeValue | null;
   defaultValue?: TimeValue;
   onValueChange?: (v: TimeValue) => void;
+  onClear?: () => void;
+  clearable?: boolean;
   format?: TimeFormat;
   showSeconds?: boolean;
   minuteStep?: number;
@@ -73,6 +77,8 @@ function TimePicker({
   value: valueProp,
   defaultValue,
   onValueChange,
+  onClear,
+  clearable = false,
   format = "24h",
   showSeconds = false,
   minuteStep = 1,
@@ -93,10 +99,10 @@ function TimePicker({
     [openProp, onOpenChange],
   );
 
-  const [internal, setInternal] = React.useState<TimeValue>(
-    defaultValue ?? { hour: 9, minute: 0, second: showSeconds ? 0 : undefined },
+  const [internal, setInternal] = React.useState<TimeValue | null>(
+    defaultValue ?? null,
   );
-  const value = valueProp ?? internal;
+  const value = valueProp !== undefined ? valueProp : internal;
 
   const setValue = React.useCallback(
     (next: TimeValue) => {
@@ -106,10 +112,17 @@ function TimePicker({
     [valueProp, onValueChange],
   );
 
+  const clearValue = React.useCallback(() => {
+    if (valueProp === undefined) setInternal(null);
+    onClear?.();
+  }, [valueProp, onClear]);
+
   const ctx = React.useMemo<TimePickerContextValue>(
     () => ({
       value,
       setValue,
+      clearValue,
+      clearable,
       format,
       showSeconds,
       minuteStep,
@@ -121,6 +134,8 @@ function TimePicker({
     [
       value,
       setValue,
+      clearValue,
+      clearable,
       format,
       showSeconds,
       minuteStep,
@@ -158,15 +173,15 @@ function TimePickerTrigger({
   placeholder = "Pick a time",
   className,
   children,
-  showIcon = true,
   ...props
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
   children?: React.ReactNode;
-  showIcon?: boolean;
 }) {
   const ctx = useTimePicker();
-  const label = formatTimeValue(ctx.value, ctx.format, ctx.showSeconds);
+  const label = ctx.value
+    ? formatTimeValue(ctx.value, ctx.format, ctx.showSeconds)
+    : null;
   return (
     <PopoverTrigger asChild>
       <button
@@ -175,17 +190,18 @@ function TimePickerTrigger({
         data-slot="time-picker-trigger"
         data-state={ctx.open ? "open" : "closed"}
         className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
+          "inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors",
           "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
+          !ctx.value && "text-muted-foreground font-sans",
           "disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
         {...props}
       >
-        {children ?? <span>{label || placeholder}</span>}
-        {showIcon && (
-          <Clock className="size-3.5 shrink-0 text-muted-foreground" />
-        )}
+        <Clock className="size-3.5 shrink-0 text-muted-foreground" />
+        <span className="flex-1 truncate">
+          {children ?? label ?? placeholder}
+        </span>
       </button>
     </PopoverTrigger>
   );
@@ -198,33 +214,66 @@ function ScrollColumn({
   ariaLabel,
 }: {
   values: number[];
-  selected: number;
+  selected?: number;
   onSelect: (n: number) => void;
   ariaLabel: string;
 }) {
   const listRef = React.useRef<HTMLDivElement>(null);
 
+  const displayValues = React.useMemo(() => {
+    if (selected === undefined || values.includes(selected)) return values;
+    return [...values, selected].sort((a, b) => a - b);
+  }, [values, selected]);
+
+  const tabbableValue = selected ?? displayValues[0];
+
   React.useEffect(() => {
+    if (selected === undefined) return;
     const el = listRef.current?.querySelector<HTMLButtonElement>(
       `[data-val="${selected}"]`,
     );
-    if (el) {
-      el.scrollIntoView({
-        block: "center",
-        behavior: "instant" as ScrollBehavior,
-      });
-    }
+    el?.scrollIntoView({ block: "center", behavior: "instant" });
   }, [selected]);
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    let nextIndex: number;
+    switch (e.key) {
+      case "ArrowDown":
+        nextIndex = Math.min(displayValues.length - 1, index + 1);
+        break;
+      case "ArrowUp":
+        nextIndex = Math.max(0, index - 1);
+        break;
+      case "Home":
+        nextIndex = 0;
+        break;
+      case "End":
+        nextIndex = displayValues.length - 1;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    const n = displayValues[nextIndex];
+    onSelect(n);
+    listRef.current
+      ?.querySelector<HTMLButtonElement>(`[data-val="${n}"]`)
+      ?.focus();
+  };
 
   return (
     <div
       ref={listRef}
       role="listbox"
       aria-label={ariaLabel}
+      data-slot="time-picker-column"
       className="relative h-40 w-14 overflow-y-auto scroll-smooth rounded-sm border border-input bg-card snap-y snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       <div className="flex flex-col items-stretch py-16">
-        {values.map((n) => {
+        {displayValues.map((n, index) => {
           const active = n === selected;
           return (
             <button
@@ -233,7 +282,10 @@ function ScrollColumn({
               role="option"
               aria-selected={active}
               data-val={n}
+              data-slot="time-picker-option"
+              tabIndex={n === tabbableValue ? 0 : -1}
               onClick={() => onSelect(n)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
               className={cn(
                 "h-8 snap-center text-center font-mono text-sm tabular-nums outline-none transition-colors",
                 "hover:bg-accent",
@@ -250,6 +302,7 @@ function ScrollColumn({
       </div>
       <div
         aria-hidden
+        data-slot="time-picker-column-highlight"
         className="pointer-events-none absolute inset-x-0 top-1/2 h-8 -translate-y-1/2 border-y border-primary/40 bg-primary/5"
       />
     </div>
@@ -261,7 +314,12 @@ function TimePickerContent({
   ...props
 }: React.ComponentProps<typeof PopoverContent>) {
   const ctx = useTimePicker();
-  const isAM = ctx.value.hour < 12;
+  const isAM = (ctx.value?.hour ?? 0) < 12;
+  const baseValue: TimeValue = ctx.value ?? {
+    hour: 0,
+    minute: 0,
+    second: ctx.showSeconds ? 0 : undefined,
+  };
 
   const hourValues = React.useMemo(() => {
     if (ctx.format === "24h") {
@@ -286,33 +344,35 @@ function TimePickerContent({
     );
   }, [ctx.secondStep]);
 
-  const displayHour =
-    ctx.format === "24h" ? ctx.value.hour : ((ctx.value.hour + 11) % 12) + 1;
+  const displayHour = ctx.value
+    ? ctx.format === "24h"
+      ? ctx.value.hour
+      : ((ctx.value.hour + 11) % 12) + 1
+    : undefined;
 
   const setHour = (h: number) => {
     let nextHour: number;
     if (ctx.format === "24h") {
       nextHour = h;
     } else {
-      // 12h: keep AM/PM as-is, h is 1-12
       const base = h === 12 ? 0 : h;
       nextHour = isAM ? base : base + 12;
     }
-    ctx.setValue({ ...ctx.value, hour: nextHour });
+    ctx.setValue({ ...baseValue, hour: nextHour });
   };
 
   const setMinute = (m: number) => {
-    ctx.setValue({ ...ctx.value, minute: m });
+    ctx.setValue({ ...baseValue, minute: m });
   };
 
   const setSecond = (s: number) => {
-    ctx.setValue({ ...ctx.value, second: s });
+    ctx.setValue({ ...baseValue, second: s });
   };
 
   const setMeridiem = (next: "AM" | "PM") => {
     if ((next === "AM" && isAM) || (next === "PM" && !isAM)) return;
-    const base = ctx.value.hour % 12;
-    ctx.setValue({ ...ctx.value, hour: next === "AM" ? base : base + 12 });
+    const base = baseValue.hour % 12;
+    ctx.setValue({ ...baseValue, hour: next === "AM" ? base : base + 12 });
   };
 
   return (
@@ -337,11 +397,7 @@ function TimePickerContent({
         </span>
         <ScrollColumn
           values={minuteValues}
-          selected={clampStep(
-            ctx.value.minute,
-            Math.max(1, ctx.minuteStep),
-            59,
-          )}
+          selected={ctx.value?.minute}
           onSelect={setMinute}
           ariaLabel="Minute"
         />
@@ -355,11 +411,7 @@ function TimePickerContent({
             </span>
             <ScrollColumn
               values={secondValues}
-              selected={clampStep(
-                ctx.value.second ?? 0,
-                Math.max(1, ctx.secondStep),
-                59,
-              )}
+              selected={ctx.value ? (ctx.value.second ?? 0) : undefined}
               onSelect={setSecond}
               ariaLabel="Second"
             />
@@ -387,6 +439,19 @@ function TimePickerContent({
             </TabsTrigger>
           </TabsList>
         </Tabs>
+      )}
+      {ctx.clearable && ctx.value && (
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            data-slot="time-picker-clear"
+            onClick={() => ctx.clearValue()}
+            className="inline-flex h-7 items-center gap-1 rounded-sm px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
+            <X className="size-3" />
+            Clear
+          </button>
+        </div>
       )}
     </PopoverContent>
   );

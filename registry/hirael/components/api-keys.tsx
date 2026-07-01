@@ -112,6 +112,11 @@ function ApiKeyValue({
 }: ApiKeyValueProps) {
   const [revealed, setRevealed] = React.useState(defaultRevealed);
   const [copied, setCopied] = React.useState(false);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+
+  React.useEffect(() => () => clearTimeout(timer.current), []);
 
   const masked = `${value.slice(0, 3)}${"•".repeat(8)}${value.slice(-4)}`;
 
@@ -119,7 +124,8 @@ function ApiKeyValue({
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1500);
     } catch {
       setCopied(false);
     }
@@ -152,7 +158,7 @@ function ApiKeyValue({
         type="button"
         variant="ghost"
         size="icon"
-        aria-label="Copy key"
+        aria-label={copied ? "Copied" : "Copy key"}
         onClick={copy}
         className="size-6 rounded text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
       >

@@ -50,7 +50,6 @@ type Ctx = {
   visible: boolean;
   setVisible: (v: boolean) => void;
   disabled?: boolean;
-  scorer: PasswordScorer;
   strength: PasswordStrength;
 };
 
@@ -110,10 +109,9 @@ function PasswordInput({
       visible,
       setVisible,
       disabled,
-      scorer,
       strength,
     }),
-    [fieldId, value, setValue, visible, disabled, scorer, strength],
+    [fieldId, value, setValue, visible, disabled, strength],
   );
 
   return (
@@ -161,7 +159,6 @@ function PasswordInputField({
           <InputGroupButton
             type="button"
             size="icon-sm"
-            tabIndex={-1}
             aria-label={ctx.visible ? toggleLabel.hide : toggleLabel.show}
             aria-pressed={ctx.visible}
             disabled={ctx.disabled}
@@ -203,7 +200,15 @@ function PasswordInputStrength({
       className={cn("flex flex-col gap-1.5", className)}
       {...props}
     >
-      <div className="grid grid-cols-4 gap-1">
+      <div
+        role="meter"
+        aria-label="Password strength"
+        aria-valuenow={s.score}
+        aria-valuemin={0}
+        aria-valuemax={4}
+        aria-valuetext={s.label}
+        className="grid grid-cols-4 gap-1"
+      >
         {[1, 2, 3, 4].map((tier) => (
           <span
             key={tier}
@@ -218,7 +223,10 @@ function PasswordInputStrength({
         (renderMeta ? (
           renderMeta(s)
         ) : (
-          <div className="flex items-center justify-between gap-2">
+          <div
+            aria-live="polite"
+            className="flex items-center justify-between gap-2"
+          >
             <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
               {s.label}
             </span>

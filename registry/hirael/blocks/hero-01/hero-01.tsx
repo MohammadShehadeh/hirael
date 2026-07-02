@@ -79,7 +79,7 @@ export default function Hero01() {
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               Drop in accessible components and ship a polished UI in an
-              afternoon — no design system required.
+              afternoon, no design system required.
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">

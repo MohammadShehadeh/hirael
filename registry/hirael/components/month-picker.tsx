@@ -55,35 +55,10 @@ function useMonthPicker() {
   return ctx;
 }
 
-const MONTH_LABELS_SHORT = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const MONTH_LABELS_LONG = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+function monthLabels(locale: string | undefined, style: "short" | "long") {
+  const fmt = new Intl.DateTimeFormat(locale, { month: style });
+  return Array.from({ length: 12 }, (_, m) => fmt.format(new Date(2024, m, 1)));
+}
 
 function monthKey(v: MonthValue) {
   return v.year * 12 + v.month;
@@ -164,7 +139,7 @@ function MonthPicker(props: MonthPickerProps) {
       : undefined;
 
   const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp ?? openInternal;
+  const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = React.useCallback(
     (next: boolean) => {
       if (openProp === undefined) setOpenInternal(next);
@@ -193,6 +168,23 @@ function MonthPicker(props: MonthPickerProps) {
     })();
 
   const [displayYear, setDisplayYear] = React.useState<number>(anchor.year);
+
+  const controlledAnchorYear =
+    mode === "single" ? singleValueProp?.year : rangeValueProp?.from.year;
+  const [prevControlledAnchorYear, setPrevControlledAnchorYear] =
+    React.useState(controlledAnchorYear);
+  if (controlledAnchorYear !== prevControlledAnchorYear) {
+    setPrevControlledAnchorYear(controlledAnchorYear);
+    if (controlledAnchorYear !== undefined) {
+      setDisplayYear(controlledAnchorYear);
+    }
+  }
+
+  const [prevOpen, setPrevOpen] = React.useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) setDisplayYear(anchor.year);
+  }
 
   const setValueSingle = React.useCallback(
     (v: MonthValue) => {
@@ -274,25 +266,30 @@ function MonthPicker(props: MonthPickerProps) {
 function formatMonthValue(
   ctx: MonthPickerContextValue,
   placeholder: string,
+  locale?: string,
 ): string {
+  const fmt = new Intl.DateTimeFormat(locale, {
+    month: "short",
+    year: "numeric",
+  });
+  const label = (v: MonthValue) => fmt.format(new Date(v.year, v.month, 1));
   if (ctx.mode === "single") {
-    if (!ctx.value) return placeholder;
-    return `${MONTH_LABELS_SHORT[ctx.value.month]} ${ctx.value.year}`;
+    return ctx.value ? label(ctx.value) : placeholder;
   }
   if (!ctx.value) return placeholder;
-  const fromStr = `${MONTH_LABELS_SHORT[ctx.value.from.month]} ${ctx.value.from.year}`;
-  if (!ctx.value.to) return `${fromStr} – …`;
-  const toStr = `${MONTH_LABELS_SHORT[ctx.value.to.month]} ${ctx.value.to.year}`;
-  return `${fromStr} – ${toStr}`;
+  if (!ctx.value.to) return `${label(ctx.value.from)} – …`;
+  return `${label(ctx.value.from)} – ${label(ctx.value.to)}`;
 }
 
 function MonthPickerTrigger({
   placeholder = "Pick a month",
+  locale,
   className,
   children,
   ...props
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
+  locale?: string;
   children?: React.ReactNode;
 }) {
   const ctx = useMonthPicker();
@@ -313,7 +310,7 @@ function MonthPickerTrigger({
         )}
         {...props}
       >
-        {children ?? formatMonthValue(ctx, placeholder)}
+        {children ?? formatMonthValue(ctx, placeholder, locale)}
       </button>
     </PopoverTrigger>
   );
@@ -330,17 +327,35 @@ function isEndpoint(v: MonthValue, range: MonthRange | undefined) {
 }
 
 function MonthPickerContent({
+  locale,
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent>) {
+}: React.ComponentProps<typeof PopoverContent> & {
+  locale?: string;
+}) {
   const ctx = useMonthPicker();
   const today = (() => {
     const d = new Date();
     return { year: d.getFullYear(), month: d.getMonth() };
   })();
 
+  const labelsShort = monthLabels(locale, "short");
+  const yearMonthFmt = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  });
+
   const canPrev = ctx.displayYear - 1 >= ctx.minYear;
   const canNext = ctx.displayYear + 1 <= ctx.maxYear;
+  const out = ctx.displayYear < ctx.minYear || ctx.displayYear > ctx.maxYear;
+
+  const selectedMonth = ctx.mode === "single" ? ctx.value : ctx.value?.from;
+  const tabbableMonth =
+    selectedMonth && selectedMonth.year === ctx.displayYear
+      ? selectedMonth.month
+      : today.year === ctx.displayYear
+        ? today.month
+        : 0;
 
   const gridRef = React.useRef<HTMLDivElement>(null);
   const focusCell = (year: number, month: number) => {
@@ -367,6 +382,12 @@ function MonthPickerContent({
         break;
       case "ArrowDown":
         nextMonth = month + 4;
+        break;
+      case "Home":
+        nextMonth = month - (month % 4);
+        break;
+      case "End":
+        nextMonth = month + (3 - (month % 4));
         break;
       case "PageUp":
         ctx.setDisplayYear(Math.max(ctx.minYear, year - 1));
@@ -402,7 +423,10 @@ function MonthPickerContent({
       className={cn("w-64 p-3", className)}
       {...props}
     >
-      <div className="mb-2 flex items-center justify-between">
+      <div
+        data-slot="month-picker-header"
+        className="mb-2 flex items-center justify-between"
+      >
         <Button
           type="button"
           variant="ghost"
@@ -414,7 +438,10 @@ function MonthPickerContent({
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+        <span
+          data-slot="month-picker-caption"
+          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
+        >
           {ctx.displayYear}
         </span>
         <Button
@@ -433,46 +460,54 @@ function MonthPickerContent({
         ref={gridRef}
         role="grid"
         aria-label={`Months in ${ctx.displayYear}`}
-        className="grid grid-cols-4 gap-1"
+        data-slot="month-picker-grid"
+        className="grid gap-1"
       >
-        {MONTH_LABELS_SHORT.map((label, month) => {
-          const v: MonthValue = { year: ctx.displayYear, month };
-          const out =
-            ctx.displayYear < ctx.minYear || ctx.displayYear > ctx.maxYear;
-          const selected =
-            ctx.mode === "single"
-              ? monthEq(ctx.value, v)
-              : isEndpoint(v, ctx.value);
-          const inRange =
-            ctx.mode === "range" ? isInRange(v, ctx.value) : false;
-          const isToday = monthEq(today, v);
-          return (
-            <button
-              key={month}
-              type="button"
-              role="gridcell"
-              data-month-key={month + ctx.displayYear * 12}
-              disabled={out}
-              aria-selected={selected || inRange}
-              aria-label={`${MONTH_LABELS_LONG[month]} ${ctx.displayYear}`}
-              onClick={() => ctx.setValue(v)}
-              onKeyDown={(e) => handleKey(e, ctx.displayYear, month)}
-              tabIndex={selected || (isToday && !selected) ? 0 : -1}
-              className={cn(
-                "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
-                "hover:bg-accent hover:text-accent-foreground",
-                "focus-visible:ring-2 focus-visible:ring-ring",
-                "disabled:opacity-30 disabled:hover:bg-transparent",
-                inRange && "bg-primary/15 text-foreground",
-                selected &&
-                  "bg-primary text-primary-foreground hover:bg-primary",
-                !selected && isToday && "ring-1 ring-inset ring-primary/60",
-              )}
-            >
-              {label}
-            </button>
-          );
-        })}
+        {Array.from({ length: 3 }, (_, row) => (
+          <div key={row} role="row" className="grid grid-cols-4 gap-1">
+            {labelsShort.slice(row * 4, row * 4 + 4).map((label, col) => {
+              const month = row * 4 + col;
+              const v: MonthValue = { year: ctx.displayYear, month };
+              const selected =
+                ctx.mode === "single"
+                  ? monthEq(ctx.value, v)
+                  : isEndpoint(v, ctx.value);
+              const inRange =
+                ctx.mode === "range" ? isInRange(v, ctx.value) : false;
+              const isToday = monthEq(today, v);
+              return (
+                <button
+                  key={month}
+                  type="button"
+                  role="gridcell"
+                  data-month-key={month + ctx.displayYear * 12}
+                  data-slot="month-picker-cell"
+                  disabled={out}
+                  aria-selected={selected || inRange}
+                  aria-current={isToday ? "date" : undefined}
+                  aria-label={yearMonthFmt.format(
+                    new Date(ctx.displayYear, month, 1),
+                  )}
+                  onClick={() => ctx.setValue(v)}
+                  onKeyDown={(e) => handleKey(e, ctx.displayYear, month)}
+                  tabIndex={month === tabbableMonth ? 0 : -1}
+                  className={cn(
+                    "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus-visible:ring-2 focus-visible:ring-ring",
+                    "disabled:opacity-30 disabled:hover:bg-transparent",
+                    inRange && "bg-primary/15 text-foreground",
+                    selected &&
+                      "bg-primary text-primary-foreground hover:bg-primary",
+                    !selected && isToday && "ring-1 ring-inset ring-primary/60",
+                  )}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </PopoverContent>
   );

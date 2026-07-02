@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 
 type SubscriptionPlansProps = React.ComponentProps<"div">;
@@ -51,10 +52,11 @@ function SubscriptionPlanBadge({
   ...props
 }: SubscriptionPlanBadgeProps) {
   return (
-    <span
+    <Badge
+      variant="outline"
       data-slot="subscription-plan-badge"
       className={cn(
-        "absolute -top-2.5 end-4 inline-flex items-center rounded-full border border-border bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-foreground",
+        "absolute -top-2.5 end-4 bg-background font-mono text-[10px] font-normal uppercase tracking-[0.1em]",
         className,
       )}
       {...props}

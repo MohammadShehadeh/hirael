@@ -171,6 +171,14 @@ function RichTextEditor({
 }: RichTextEditorProps) {
   const isEditable = editable && !disabled;
 
+  const onChangeRef = React.useRef(onChange);
+  onChangeRef.current = onChange;
+  const onFocusRef = React.useRef(onFocus);
+  onFocusRef.current = onFocus;
+  const onBlurRef = React.useRef(onBlur);
+  onBlurRef.current = onBlur;
+  const placeholderRef = React.useRef(placeholder);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -190,7 +198,7 @@ function RichTextEditor({
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight.configure({ multicolor: false }),
       Placeholder.configure({
-        placeholder,
+        placeholder: () => placeholderRef.current,
         emptyEditorClass: "is-editor-empty",
       }),
       SelectionHighlight,
@@ -198,9 +206,9 @@ function RichTextEditor({
     content: value ?? defaultValue,
     editable: isEditable,
     immediatelyRender: false,
-    onUpdate: ({ editor: e }) => onChange?.(e.getHTML()),
-    onFocus: () => onFocus?.(),
-    onBlur: () => onBlur?.(),
+    onUpdate: ({ editor: e }) => onChangeRef.current?.(e.getHTML()),
+    onFocus: () => onFocusRef.current?.(),
+    onBlur: () => onBlurRef.current?.(),
     editorProps: {
       attributes: {
         class:
@@ -209,14 +217,8 @@ function RichTextEditor({
     },
   });
 
-  const isInternalUpdate = React.useRef(false);
-
   React.useEffect(() => {
     if (!editor) return;
-    if (isInternalUpdate.current) {
-      isInternalUpdate.current = false;
-      return;
-    }
     if (value !== undefined && value !== editor.getHTML()) {
       editor.commands.setContent(value);
     }
@@ -229,15 +231,10 @@ function RichTextEditor({
   }, [isEditable, editor]);
 
   React.useEffect(() => {
-    if (!editor) return;
-    const handler = () => {
-      isInternalUpdate.current = true;
-    };
-    editor.on("update", handler);
-    return () => {
-      editor.off("update", handler);
-    };
-  }, [editor]);
+    if (placeholderRef.current === placeholder) return;
+    placeholderRef.current = placeholder;
+    if (editor) editor.view.dispatch(editor.state.tr);
+  }, [placeholder, editor]);
 
   if (!editor) {
     return (
@@ -486,7 +483,10 @@ function RichTextEditorLinkBubble() {
   const editingRef = React.useRef(false);
   const hideTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const rafRef = React.useRef(0);
   const [, reposition] = React.useReducer((n: number) => n + 1, 0);
+
+  React.useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   React.useEffect(() => {
     editingRef.current = editing;
@@ -606,7 +606,8 @@ function RichTextEditorLinkBubble() {
       return;
     }
     selectLink().setLink({ href }).run();
-    requestAnimationFrame(() => {
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
       const el = linkAtSelection();
       if (el) show(el);
       else setTarget(null);
@@ -619,12 +620,26 @@ function RichTextEditorLinkBubble() {
     setTarget(null);
   };
 
+  const closeBubble = () => {
+    setEditing(false);
+    setTarget(null);
+    editor.commands.focus();
+  };
+
   return createPortal(
     <div
       data-slot="rich-text-editor-link-bubble"
       role="dialog"
+      aria-label="Link"
       onMouseEnter={clearHide}
       onMouseLeave={scheduleHide}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          e.stopPropagation();
+          closeBubble();
+        }
+      }}
       style={{
         position: "fixed",
         top: below ? rect.bottom + 8 : rect.top - 8,
@@ -648,9 +663,6 @@ function RichTextEditorLinkBubble() {
             placeholder="https://example.com"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setEditing(false);
-            }}
             className="h-8 w-56 text-sm"
           />
           <Button

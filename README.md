@@ -160,14 +160,14 @@ hirael/
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org) **20+**
-- [pnpm](https://pnpm.io) **8+** (lockfile is `pnpm-lock.yaml`)
+- [Node.js](https://nodejs.org) **20+** (CI runs Node 22; `.nvmrc` pins it — `nvm use`)
+- [pnpm](https://pnpm.io) **10+** (lockfile is `pnpm-lock.yaml`)
 
 ## Installation
 
 ```bash
-git clone https://github.com/MohammadShehadeh/forgecn.git
-cd forgecn
+git clone https://github.com/MohammadShehadeh/hirael.com.git
+cd hirael.com
 pnpm install
 ```
 
@@ -307,13 +307,9 @@ contribution checklist, and the PR review process.
 
 If you discover a security issue, please follow the disclosure process
 in **[SECURITY.md](./SECURITY.md)** rather than opening a public issue.
-
-> **TODO** — `SECURITY.md` is not yet committed; add it before the
-> first public release.
+Participation is governed by our
+**[Code of Conduct](./CODE_OF_CONDUCT.md)**.
 
 ## License
 
-MIT — © Mohammad Shehadeh
-
-> **TODO** — add a top-level `LICENSE` file containing the full MIT
-> license text.
+MIT — © Mohammad Shehadeh. See **[LICENSE](./LICENSE)** for the full text.

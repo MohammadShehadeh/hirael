@@ -107,11 +107,13 @@ function MultiSelect({
     [openProp, onOpenChange],
   );
 
-  const [options, setOptions] =
-    React.useState<MultiSelectOption[]>(optionsProp);
-  React.useEffect(() => {
-    setOptions(optionsProp);
-  }, [optionsProp]);
+  const [extraOptions, setExtraOptions] = React.useState<MultiSelectOption[]>(
+    [],
+  );
+  const options = React.useMemo(
+    () => [...optionsProp, ...extraOptions],
+    [optionsProp, extraOptions],
+  );
 
   const [search, setSearch] = React.useState("");
 
@@ -121,7 +123,7 @@ function MultiSelect({
       if (exists) {
         setValue(value.filter((x) => x !== v));
       } else {
-        if (maxCount && value.length >= maxCount) return;
+        if (maxCount !== undefined && value.length >= maxCount) return;
         setValue([...value, v]);
       }
     },
@@ -140,7 +142,7 @@ function MultiSelect({
       value,
       setValue,
       options,
-      setOptions,
+      setOptions: setExtraOptions,
       open,
       setOpen,
       search,
@@ -236,9 +238,7 @@ function MultiSelectTrigger({
                   >
                     {opt.label}
                     <span
-                      role="button"
-                      tabIndex={-1}
-                      aria-label={`Remove ${opt.label}`}
+                      aria-hidden
                       onPointerDown={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -299,6 +299,9 @@ function MultiSelectContent({
   const enabled = ctx.options.filter((o) => !o.disabled);
   const allSelected =
     enabled.length > 0 && enabled.every((o) => ctx.value.includes(o.value));
+  const showSelectAllItem = showSelectAll && enabled.length > 0;
+  const showClearItem =
+    showClear && ctx.value.length > 0 && !(showSelectAllItem && allSelected);
 
   const groups = React.useMemo(() => {
     const map = new Map<string | undefined, MultiSelectOption[]>();
@@ -345,11 +348,11 @@ function MultiSelectContent({
                     ))}
                   </CommandGroup>
                 ))}
-              {(showSelectAll || showClear) && enabled.length > 0 && (
+              {(showSelectAllItem || showClearItem) && (
                 <>
                   <CommandSeparator />
                   <CommandGroup>
-                    {showSelectAll && (
+                    {showSelectAllItem && (
                       <CommandItem
                         onSelect={() => {
                           if (allSelected) {
@@ -369,6 +372,17 @@ function MultiSelectContent({
                         <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
                           {ctx.value.length} / {enabled.length}
                         </span>
+                      </CommandItem>
+                    )}
+                    {showClearItem && (
+                      <CommandItem
+                        onSelect={() => ctx.clear()}
+                        className="justify-between"
+                      >
+                        <span className="font-mono text-[10px] uppercase tracking-[0.08em]">
+                          {clearLabel}
+                        </span>
+                        <X className="size-3 text-muted-foreground" />
                       </CommandItem>
                     )}
                   </CommandGroup>
@@ -435,14 +449,21 @@ export function useAsyncOptions<T>(
   const [error, setError] = React.useState<unknown>(null);
   const reqId = React.useRef(0);
 
+  const loaderRef = React.useRef(loader);
+  const mapRef = React.useRef(map);
+  React.useEffect(() => {
+    loaderRef.current = loader;
+    mapRef.current = map;
+  });
+
   React.useEffect(() => {
     const id = ++reqId.current;
     const t = setTimeout(async () => {
       setLoading(true);
       setError(null);
       try {
-        const result = await loader(query);
-        if (id === reqId.current) setOptions(result.map(map));
+        const result = await loaderRef.current(query);
+        if (id === reqId.current) setOptions(result.map(mapRef.current));
       } catch (e) {
         if (id === reqId.current) setError(e);
       } finally {
@@ -450,7 +471,7 @@ export function useAsyncOptions<T>(
       }
     }, debounce);
     return () => clearTimeout(t);
-  }, [query, loader, map, debounce]);
+  }, [query, debounce]);
 
   return { query, setQuery, options, loading, error };
 }

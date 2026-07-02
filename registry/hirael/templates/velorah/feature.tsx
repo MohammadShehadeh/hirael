@@ -8,15 +8,60 @@ const FEATURE_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4";
 
 const FEATURE_TABS = [
-  { label: "Living Electric", id: "electric" },
-  { label: "Charge Faster", id: "charge" },
-  { label: "Sleep Well", id: "sleep" },
-  { label: "Acoustic Comfort", id: "acoustic" },
-  { label: "5+ Seasons", id: "seasons" },
+  {
+    id: "electric",
+    label: "Living Electric",
+    heading: "100% Electric",
+    description:
+      "No more fossil fuels, buzzing generators, and propane tanks. Velorah has power for days.",
+    progress: 35,
+  },
+  {
+    id: "charge",
+    label: "Charge Faster",
+    heading: "Full in 40 minutes",
+    description:
+      "Fast charging takes the battery from empty to full in the time it takes to stop for lunch.",
+    progress: 60,
+  },
+  {
+    id: "sleep",
+    label: "Sleep Well",
+    heading: "Rest like home",
+    description:
+      "A full-size bed, blackout shades, and quiet climate control keep the night undisturbed.",
+    progress: 78,
+  },
+  {
+    id: "acoustic",
+    label: "Acoustic Comfort",
+    heading: "Quiet by design",
+    description:
+      "Insulated walls and a silent drivetrain keep cabin noise down to a whisper.",
+    progress: 52,
+  },
+  {
+    id: "seasons",
+    label: "5+ Seasons",
+    heading: "Ready for any weather",
+    description:
+      "Heated floors and thermal glass carry you from summer heat to deep winter.",
+    progress: 90,
+  },
 ];
 
-export function Feature() {
-  const [active, setActive] = React.useState("electric");
+export function Feature({
+  videoSrc = FEATURE_VIDEO,
+  posterSrc,
+}: {
+  videoSrc?: string;
+  posterSrc?: string;
+}) {
+  const [activeId, setActiveId] = React.useState(FEATURE_TABS[0].id);
+  const [videoFailed, setVideoFailed] = React.useState(false);
+
+  const active =
+    FEATURE_TABS.find((tab) => tab.id === activeId) ?? FEATURE_TABS[0];
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-0 md:px-12">
@@ -25,11 +70,10 @@ export function Feature() {
           <div>
             <span className="mb-8 inline-block h-8 w-8 rounded-full border border-border" />
             <h2 className="mb-6 text-3xl tracking-[-1px] text-foreground [font-family:var(--font-velorah-serif)] sm:text-5xl">
-              100% Electric
+              {active.heading}
             </h2>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">
-              No more fossil fuels, buzzing generators, and propane tanks.
-              Velorah has power for days.
+              {active.description}
             </p>
           </div>
 
@@ -39,10 +83,11 @@ export function Feature() {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActive(tab.id)}
+                  onClick={() => setActiveId(tab.id)}
+                  aria-pressed={tab.id === active.id}
                   className={cn(
                     "rounded-full border px-4 py-2 text-xs transition-colors",
-                    active === tab.id
+                    tab.id === active.id
                       ? "border-foreground bg-foreground text-primary-foreground"
                       : "border-border text-muted-foreground hover:text-foreground",
                   )}
@@ -54,8 +99,8 @@ export function Feature() {
 
             <div className="mb-6 h-0.5 w-full rounded-full bg-border">
               <div
-                className="h-full rounded-full bg-foreground"
-                style={{ width: "35%" }}
+                className="h-full rounded-full bg-foreground transition-[width] duration-500 ease-out"
+                style={{ width: `${active.progress}%` }}
               />
             </div>
 
@@ -69,16 +114,28 @@ export function Feature() {
         </div>
 
         <div className="relative min-h-[400px] overflow-hidden rounded-2xl">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            src={FEATURE_VIDEO}
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-hidden="true"
-            tabIndex={-1}
-          />
+          {videoFailed ? (
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-br from-muted via-card to-background bg-cover bg-center"
+              style={
+                posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined
+              }
+            />
+          ) : (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src={videoSrc}
+              poster={posterSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden="true"
+              tabIndex={-1}
+              onError={() => setVideoFailed(true)}
+            />
+          )}
         </div>
       </div>
     </section>

@@ -13,11 +13,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/registry/hirael/ui/avatar";
+import { Avatar, AvatarFallback } from "@/registry/hirael/ui/avatar";
 import { Badge } from "@/registry/hirael/ui/badge";
 import {
   Breadcrumb,
@@ -28,6 +24,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -178,7 +175,6 @@ function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="size-8 rounded-md">
-                    <AvatarImage src="" alt={USER.name} />
                     <AvatarFallback className="rounded-md font-mono text-[10px]">
                       {USER.initials}
                     </AvatarFallback>
@@ -207,14 +203,16 @@ function AppSidebar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LayoutDashboard className="size-4" />
-                  Overview
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings2 className="size-4" />
-                  Settings
-                </DropdownMenuItem>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <LayoutDashboard className="size-4" />
+                    Overview
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings2 className="size-4" />
+                    Settings
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive focus:text-destructive">
                   <LogOut className="size-4" />

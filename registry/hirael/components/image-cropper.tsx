@@ -196,6 +196,13 @@ function ImageCropper({
     );
   }, [defaultZoom, defaultCrop, maxZoom, setZoom, setCrop]);
 
+  React.useLayoutEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth > 0) {
+      setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
+    }
+  }, [src]);
+
   React.useEffect(() => {
     const el = frameRef.current;
     if (!el) return;

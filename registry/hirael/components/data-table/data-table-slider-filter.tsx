@@ -33,15 +33,16 @@ function getIsValidRange(value: unknown): value is RangeValue {
 }
 
 function parseValuesAsNumbers(value: unknown): RangeValue | undefined {
-  if (
-    Array.isArray(value) &&
-    value.length === 2 &&
-    value.every(
-      (v) =>
-        (typeof v === "string" || typeof v === "number") && !Number.isNaN(v),
-    )
-  ) {
-    return [Number(value[0]), Number(value[1])];
+  if (!Array.isArray(value) || value.length !== 2) return undefined;
+
+  const parsed = value.map((v) => {
+    if (typeof v === "number") return v;
+    if (typeof v === "string" && v.trim() !== "") return Number(v);
+    return Number.NaN;
+  });
+
+  if (parsed.every((n) => Number.isFinite(n))) {
+    return [parsed[0], parsed[1]];
   }
 
   return undefined;
@@ -98,84 +99,98 @@ export function DataTableSliderFilter<TData>({
     return columnFilterValue ?? [min, max];
   }, [columnFilterValue, min, max]);
 
+  const [fromDraft, setFromDraft] = React.useState<string | null>(null);
+  const [toDraft, setToDraft] = React.useState<string | null>(null);
+
   const formatValue = React.useCallback((value: number) => {
     return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
   }, []);
 
-  const onFromInputChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value);
-      if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
-        column.setFilterValue([numValue, range[1]]);
-      }
-    },
-    [column, min, range],
-  );
+  const commitFrom = React.useCallback(() => {
+    if (fromDraft === null) return;
+    const numValue = Number(fromDraft);
+    if (fromDraft.trim() !== "" && Number.isFinite(numValue)) {
+      const clamped = Math.min(Math.max(numValue, min), range[1]);
+      column.setFilterValue([clamped, range[1]]);
+    }
+    setFromDraft(null);
+  }, [fromDraft, column, min, range]);
 
-  const onToInputChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value);
-      if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
-        column.setFilterValue([range[0], numValue]);
-      }
-    },
-    [column, max, range],
-  );
+  const commitTo = React.useCallback(() => {
+    if (toDraft === null) return;
+    const numValue = Number(toDraft);
+    if (toDraft.trim() !== "" && Number.isFinite(numValue)) {
+      const clamped = Math.min(Math.max(numValue, range[0]), max);
+      column.setFilterValue([range[0], clamped]);
+    }
+    setToDraft(null);
+  }, [toDraft, column, max, range]);
 
   const onSliderValueChange = React.useCallback(
     (value: RangeValue) => {
       if (Array.isArray(value) && value.length === 2) {
+        setFromDraft(null);
+        setToDraft(null);
         column.setFilterValue(value);
       }
     },
     [column],
   );
 
-  const onReset = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (event.target instanceof HTMLDivElement) {
-        event.stopPropagation();
-      }
-      column.setFilterValue(undefined);
-    },
-    [column],
-  );
+  const onReset = React.useCallback(() => {
+    setFromDraft(null);
+    setToDraft(null);
+    column.setFilterValue(undefined);
+  }, [column]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          data-slot="data-table-slider-filter"
-          className="border-dashed font-normal"
-        >
-          {columnFilterValue ? (
-            <button
-              type="button"
-              aria-label={`Clear ${title} filter`}
-              className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              onClick={onReset}
-            >
-              <XCircle />
-            </button>
-          ) : (
-            <PlusCircle />
-          )}
-          <span>{title}</span>
-          {columnFilterValue ? (
-            <>
-              <Separator
-                orientation="vertical"
-                className="mx-0.5 data-[orientation=vertical]:h-4"
-              />
-              {formatValue(columnFilterValue[0])} -{" "}
-              {formatValue(columnFilterValue[1])}
-              {unit ? ` ${unit}` : ""}
-            </>
-          ) : null}
-        </Button>
-      </PopoverTrigger>
+    <Popover
+      onOpenChange={(open) => {
+        if (!open) {
+          setFromDraft(null);
+          setToDraft(null);
+        }
+      }}
+    >
+      <div className="flex items-center">
+        {columnFilterValue ? (
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={`Clear ${title} filter`}
+            data-slot="data-table-slider-filter-reset"
+            className="rounded-e-none border-e-0 border-dashed px-2"
+            onClick={onReset}
+          >
+            <XCircle />
+          </Button>
+        ) : null}
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            data-slot="data-table-slider-filter"
+            className={cn(
+              "border-dashed font-normal",
+              columnFilterValue && "rounded-s-none",
+            )}
+          >
+            {columnFilterValue ? null : <PlusCircle />}
+            <span>{title}</span>
+            {columnFilterValue ? (
+              <>
+                <Separator
+                  orientation="vertical"
+                  className="mx-0.5 data-[orientation=vertical]:h-4"
+                />
+                {formatValue(columnFilterValue[0])} -{" "}
+                {formatValue(columnFilterValue[1])}
+                {unit ? ` ${unit}` : ""}
+              </>
+            ) : null}
+          </Button>
+        </PopoverTrigger>
+      </div>
       <PopoverContent align="start" className="flex w-auto flex-col gap-4">
         <div className="flex flex-col gap-3">
           <p className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -196,8 +211,15 @@ export function DataTableSliderFilter<TData>({
                 placeholder={min.toString()}
                 min={min}
                 max={max}
-                value={range[0]?.toString()}
-                onChange={onFromInputChange}
+                value={fromDraft ?? range[0].toString()}
+                onChange={(event) => setFromDraft(event.target.value)}
+                onBlur={commitFrom}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    commitFrom();
+                  }
+                }}
                 className={cn("h-8 w-24", unit && "pe-8")}
               />
               {unit && (
@@ -220,8 +242,15 @@ export function DataTableSliderFilter<TData>({
                 placeholder={max.toString()}
                 min={min}
                 max={max}
-                value={range[1]?.toString()}
-                onChange={onToInputChange}
+                value={toDraft ?? range[1].toString()}
+                onChange={(event) => setToDraft(event.target.value)}
+                onBlur={commitTo}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    commitTo();
+                  }
+                }}
                 className={cn("h-8 w-24", unit && "pe-8")}
               />
               {unit && (

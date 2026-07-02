@@ -106,7 +106,7 @@ function DateRangeCalendar({
   const [internal, setInternal] = React.useState<DateRange | undefined>(
     defaultValue,
   );
-  const range = valueProp ?? internal;
+  const range = valueProp !== undefined ? valueProp : internal;
   const today = startOfDay(new Date());
 
   const [viewMonth, setViewMonth] = React.useState<Date>(() => {
@@ -243,6 +243,11 @@ function DateRangeCalendar({
     >
       {months.map((month, mi) => {
         const last = mi === numberOfMonths - 1;
+        const cells = monthCells(month, weekStartsOn);
+        const weeks: (Date | null)[][] = [];
+        for (let i = 0; i < cells.length; i += 7) {
+          weeks.push(cells.slice(i, i + 7));
+        }
         return (
           <div
             key={monthIndex(month)}
@@ -264,7 +269,10 @@ function DateRangeCalendar({
               >
                 <ChevronLeft className="size-3.5 rtl:rotate-180" />
               </Button>
-              <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+              <span
+                data-slot="date-range-calendar-caption"
+                className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
+              >
                 {monthFmt.format(month)}
               </span>
               <Button
@@ -286,69 +294,91 @@ function DateRangeCalendar({
               role="grid"
               aria-label={monthFmt.format(month)}
               data-slot="date-range-calendar-grid"
-              className="grid grid-cols-7 gap-y-0.5"
+              className="grid gap-y-0.5"
               onMouseLeave={() => setHovered(null)}
             >
-              {weekdays.map((label, i) => (
-                <span
-                  key={i}
-                  data-slot="date-range-calendar-weekday"
-                  className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
-                >
-                  {label}
-                </span>
-              ))}
-              {monthCells(month, weekStartsOn).map((d, i) => {
-                if (!d) {
-                  return <span key={i} aria-hidden className="size-8" />;
-                }
-                const t = d.getTime();
-                const isLo = !!lo && sameDay(d, lo);
-                const isHi = !!hi && sameDay(d, hi);
-                const isBetween =
-                  !!lo && !!hi && t > lo.getTime() && t < hi.getTime();
-                const isAnchor =
-                  sameDay(d, range?.from) || sameDay(d, range?.to);
-                const isToday = sameDay(d, today);
-                const out = isDayDisabled(d);
-                return (
-                  <button
+              <div role="row" className="grid grid-cols-7">
+                {weekdays.map((label, i) => (
+                  <span
                     key={i}
-                    type="button"
-                    role="gridcell"
-                    data-day={t}
-                    data-slot="date-range-calendar-day"
-                    disabled={out}
-                    aria-selected={isAnchor || isBetween}
-                    aria-label={dayLabelFmt.format(d)}
-                    onClick={() => selectDay(d)}
-                    onKeyDown={(e) => handleKey(e, d)}
-                    onMouseEnter={() => pending && setHovered(d)}
-                    onFocus={() => pending && setHovered(d)}
-                    tabIndex={sameDay(d, tabbable) ? 0 : -1}
-                    className={cn(
-                      "relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:ring-2 focus-visible:ring-ring",
-                      "disabled:opacity-30 disabled:hover:bg-transparent",
-                      isBetween &&
-                        "rounded-none bg-accent text-accent-foreground",
-                      (isLo || isHi) &&
-                        !isAnchor &&
-                        "bg-accent text-accent-foreground",
-                      isAnchor &&
-                        "bg-primary text-primary-foreground hover:bg-primary",
-                      isLo && hasSpan && "rounded-e-none",
-                      isHi && hasSpan && "rounded-s-none",
-                      !isAnchor &&
-                        isToday &&
-                        "ring-1 ring-inset ring-primary/60",
-                    )}
+                    role="columnheader"
+                    data-slot="date-range-calendar-weekday"
+                    className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
                   >
-                    {d.getDate()}
-                  </button>
-                );
-              })}
+                    {label}
+                  </span>
+                ))}
+              </div>
+              {weeks.map((week, wi) => (
+                <div key={wi} role="row" className="grid grid-cols-7">
+                  {week.map((d, i) => {
+                    if (!d) {
+                      return (
+                        <span key={i} role="gridcell" className="size-8" />
+                      );
+                    }
+                    const t = d.getTime();
+                    const isLo = !!lo && sameDay(d, lo);
+                    const isHi = !!hi && sameDay(d, hi);
+                    const isBetween =
+                      !!lo && !!hi && t > lo.getTime() && t < hi.getTime();
+                    const isAnchor =
+                      sameDay(d, range?.from) || sameDay(d, range?.to);
+                    const isSelected =
+                      isAnchor ||
+                      (!!fromDay &&
+                        !!toDay &&
+                        t > fromDay.getTime() &&
+                        t < toDay.getTime());
+                    const isToday = sameDay(d, today);
+                    const out = isDayDisabled(d);
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        role="gridcell"
+                        data-day={t}
+                        data-slot="date-range-calendar-day"
+                        disabled={out}
+                        aria-selected={isSelected}
+                        aria-current={isToday ? "date" : undefined}
+                        aria-label={dayLabelFmt.format(d)}
+                        data-preview={
+                          (previewing &&
+                            (isLo || isHi || isBetween) &&
+                            !isSelected) ||
+                          undefined
+                        }
+                        onClick={() => selectDay(d)}
+                        onKeyDown={(e) => handleKey(e, d)}
+                        onMouseEnter={() => pending && setHovered(d)}
+                        onFocus={() => pending && setHovered(d)}
+                        tabIndex={sameDay(d, tabbable) ? 0 : -1}
+                        className={cn(
+                          "relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
+                          "hover:bg-accent hover:text-accent-foreground",
+                          "focus-visible:ring-2 focus-visible:ring-ring",
+                          "disabled:opacity-30 disabled:hover:bg-transparent",
+                          isBetween &&
+                            "rounded-none bg-accent text-accent-foreground",
+                          (isLo || isHi) &&
+                            !isAnchor &&
+                            "bg-accent text-accent-foreground",
+                          isAnchor &&
+                            "bg-primary text-primary-foreground hover:bg-primary",
+                          isLo && hasSpan && "rounded-e-none",
+                          isHi && hasSpan && "rounded-s-none",
+                          !isAnchor &&
+                            isToday &&
+                            "ring-1 ring-inset ring-primary/60",
+                        )}
+                      >
+                        {d.getDate()}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         );
@@ -418,7 +448,7 @@ function DateRangePicker({
   );
 
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
+  const open = openProp !== undefined ? openProp : internalOpen;
   const setOpen = React.useCallback(
     (next: boolean) => {
       if (openProp === undefined) setInternalOpen(next);
@@ -476,7 +506,12 @@ function DateRangePickerTrigger({
         {...props}
       >
         <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-        <span className="flex-1 truncate">{children ?? label}</span>
+        <span
+          data-slot="date-range-picker-trigger-label"
+          className="flex-1 truncate"
+        >
+          {children ?? label}
+        </span>
       </button>
     </PopoverTrigger>
   );
@@ -501,6 +536,32 @@ function DateRangePickerContent({
   disabledDate?: (d: Date) => boolean;
 }) {
   const ctx = useDateRangePicker();
+
+  const isDayDisabled = (d: Date) => {
+    if (ctx.min && d.getTime() < startOfDay(ctx.min).getTime()) return true;
+    if (ctx.max && d.getTime() > startOfDay(ctx.max).getTime()) return true;
+    return disabledDate ? disabledDate(d) : false;
+  };
+
+  const resolvePreset = (preset: DateRangePreset): DateRange | null => {
+    const raw = preset.range();
+    const rawFrom = startOfDay(raw.from);
+    const rawTo = startOfDay(raw.to);
+    if (ctx.min && rawTo.getTime() < startOfDay(ctx.min).getTime()) return null;
+    if (ctx.max && rawFrom.getTime() > startOfDay(ctx.max).getTime())
+      return null;
+    let from = clampDate(rawFrom, ctx.min, ctx.max);
+    let to = clampDate(rawTo, ctx.min, ctx.max);
+    while (from.getTime() <= to.getTime() && isDayDisabled(from)) {
+      from = addDays(from, 1);
+    }
+    while (to.getTime() >= from.getTime() && isDayDisabled(to)) {
+      to = addDays(to, -1);
+    }
+    if (from.getTime() > to.getTime()) return null;
+    return { from, to };
+  };
+
   return (
     <PopoverContent
       align={align}
@@ -508,35 +569,40 @@ function DateRangePickerContent({
       className={cn("w-auto p-3", className)}
       {...props}
     >
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div
+        data-slot="date-range-picker-content-body"
+        className="flex flex-col gap-3 sm:flex-row"
+      >
         {showPresets && presets.length > 0 && (
           <>
             <div
               data-slot="date-range-picker-presets"
               className="flex flex-row flex-wrap gap-0.5 sm:w-32 sm:flex-col"
             >
-              {presets.map((preset) => (
-                <button
-                  key={preset.label}
-                  type="button"
-                  data-slot="date-range-picker-preset"
-                  onClick={() => {
-                    const next = preset.range();
-                    ctx.setRange({
-                      from: startOfDay(next.from),
-                      to: startOfDay(next.to),
-                    });
-                    ctx.setOpen(false);
-                  }}
-                  className={cn(
-                    "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
-                    "hover:bg-accent hover:text-accent-foreground",
-                    "focus-visible:ring-2 focus-visible:ring-ring",
-                  )}
-                >
-                  {preset.label}
-                </button>
-              ))}
+              {presets.map((preset) => {
+                const resolved = resolvePreset(preset);
+                return (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    data-slot="date-range-picker-preset"
+                    disabled={!resolved}
+                    onClick={() => {
+                      if (!resolved) return;
+                      ctx.setRange(resolved);
+                      ctx.setOpen(false);
+                    }}
+                    className={cn(
+                      "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
+                      "hover:bg-accent hover:text-accent-foreground",
+                      "focus-visible:ring-2 focus-visible:ring-ring",
+                      "disabled:opacity-30 disabled:hover:bg-transparent",
+                    )}
+                  >
+                    {preset.label}
+                  </button>
+                );
+              })}
             </div>
             <Separator
               orientation="vertical"
@@ -545,7 +611,10 @@ function DateRangePickerContent({
             <Separator className="sm:hidden" />
           </>
         )}
-        <div className="flex flex-col gap-2">
+        <div
+          data-slot="date-range-picker-content-calendar"
+          className="flex flex-col gap-2"
+        >
           <DateRangeCalendar
             value={ctx.range ?? {}}
             onValueChange={ctx.setRange}
@@ -557,7 +626,10 @@ function DateRangePickerContent({
             numberOfMonths={numberOfMonths}
           />
           {ctx.range?.from && (
-            <div className="flex justify-end">
+            <div
+              data-slot="date-range-picker-content-footer"
+              className="flex justify-end"
+            >
               <Button
                 type="button"
                 variant="ghost"

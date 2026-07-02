@@ -163,6 +163,25 @@ function getColumnId<TData extends RowData>(column: ColumnDef<TData>): string {
   );
 }
 
+function serializeFilterValue(value: unknown): string {
+  if (value == null) return "";
+  return Array.isArray(value)
+    ? value.map(String).join(ARRAY_SEPARATOR)
+    : String(value);
+}
+
+function areFiltersEqual(
+  a: ColumnFiltersState,
+  b: ColumnFiltersState,
+): boolean {
+  if (a.length !== b.length) return false;
+  const values = new Map(a.map((f) => [f.id, serializeFilterValue(f.value)]));
+  return b.every(
+    (f) =>
+      values.has(f.id) && values.get(f.id) === serializeFilterValue(f.value),
+  );
+}
+
 const PAGE_KEY = "page";
 const PER_PAGE_KEY = "perPage";
 const SORT_KEY = "sort";
@@ -344,7 +363,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     debounceMs,
   );
 
-  const initialColumnFilters: ColumnFiltersState = React.useMemo(() => {
+  const queryColumnFilters: ColumnFiltersState = React.useMemo(() => {
     return Object.entries(filterValues).reduce<ColumnFiltersState>(
       (filters, [key, value]) => {
         if (value !== null) {
@@ -360,38 +379,45 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   }, [filterValues, prefix]);
 
   const [columnFilters, setColumnFilters] =
-    React.useState<ColumnFiltersState>(initialColumnFilters);
+    React.useState<ColumnFiltersState>(queryColumnFilters);
+
+  const columnFiltersRef = React.useRef(columnFilters);
+  columnFiltersRef.current = columnFilters;
+
+  React.useEffect(() => {
+    setColumnFilters((prev) =>
+      areFiltersEqual(prev, queryColumnFilters) ? prev : queryColumnFilters,
+    );
+  }, [queryColumnFilters]);
 
   const onColumnFiltersChange = React.useCallback(
     (updaterOrValue: Updater<ColumnFiltersState>) => {
-      setColumnFilters((prev) => {
-        const next =
-          typeof updaterOrValue === "function"
-            ? updaterOrValue(prev)
-            : updaterOrValue;
+      const prev = columnFiltersRef.current;
+      const next =
+        typeof updaterOrValue === "function"
+          ? updaterOrValue(prev)
+          : updaterOrValue;
 
-        const filterUpdates = next.reduce<
-          Record<string, string | string[] | null>
-        >((acc, filter) => {
-          if (
-            filterableColumns.find(
-              (column) => getColumnId(column) === filter.id,
-            )
-          ) {
-            acc[`${prefix}${filter.id}`] = filter.value as string | string[];
-          }
-          return acc;
-        }, {});
-
-        for (const prevFilter of prev) {
-          if (!next.some((filter) => filter.id === prevFilter.id)) {
-            filterUpdates[`${prefix}${prevFilter.id}`] = null;
-          }
+      const filterUpdates = next.reduce<
+        Record<string, string | string[] | null>
+      >((acc, filter) => {
+        if (
+          filterableColumns.find((column) => getColumnId(column) === filter.id)
+        ) {
+          acc[`${prefix}${filter.id}`] = filter.value as string | string[];
         }
+        return acc;
+      }, {});
 
-        debouncedSetFilterValues(filterUpdates);
-        return next;
-      });
+      for (const prevFilter of prev) {
+        if (!next.some((filter) => filter.id === prevFilter.id)) {
+          filterUpdates[`${prefix}${prevFilter.id}`] = null;
+        }
+      }
+
+      columnFiltersRef.current = next;
+      setColumnFilters(next);
+      debouncedSetFilterValues(filterUpdates);
     },
     [debouncedSetFilterValues, filterableColumns, prefix],
   );

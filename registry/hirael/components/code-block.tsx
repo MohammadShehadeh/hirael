@@ -361,7 +361,11 @@ function CodeBlockContent({
     if (maxHeight == null) return;
     const pre = preRef.current;
     if (!pre) return;
-    setOverflowing(pre.scrollHeight > maxHeight);
+    const update = () => setOverflowing(pre.scrollHeight > maxHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(pre);
+    return () => observer.disconnect();
   }, [maxHeight, code, wrap]);
 
   return (
@@ -450,7 +454,7 @@ function CodeBlockContent({
           <div
             aria-hidden
             data-slot="code-block-fade"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-card to-transparent"
           />
         )}
       </div>

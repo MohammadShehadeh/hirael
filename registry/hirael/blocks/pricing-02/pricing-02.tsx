@@ -111,7 +111,7 @@ export default function Pricing02() {
 
         <div className="mt-12 overflow-hidden rounded-md border border-border bg-card">
           <Table className="border-collapse text-start">
-            <TableHeader className="sticky top-0 z-10 bg-card">
+            <TableHeader className="bg-card">
               <TableRow className="border-b border-border hover:bg-transparent">
                 <TableHead className="w-2/5 px-5 py-5 align-bottom text-start">
                   <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -158,15 +158,15 @@ export default function Pricing02() {
                   <TableCell className="px-5 py-4 font-mono text-xs uppercase tracking-[0.08em] text-foreground">
                     {r.feature}
                   </TableCell>
-                  {(["hobby", "pro", "team"] as const).map((k) => (
+                  {TIERS.map((t) => (
                     <TableCell
-                      key={k}
+                      key={t.key}
                       className={cn(
                         "px-5 py-4",
-                        k === "pro" && "bg-background/40",
+                        t.featured && "bg-background/40",
                       )}
                     >
-                      <CellContent value={r[k]} />
+                      <CellContent value={r[t.key]} />
                     </TableCell>
                   ))}
                 </TableRow>

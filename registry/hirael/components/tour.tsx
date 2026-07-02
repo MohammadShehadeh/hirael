@@ -394,7 +394,9 @@ function TourOverlay({
     ? `M0 0H${viewport.w}V${viewport.h}H0Z M${spotlight.x + radius} ${spotlight.y}h${spotlight.w - radius * 2}a${radius} ${radius} 0 0 1 ${radius} ${radius}v${spotlight.h - radius * 2}a${radius} ${radius} 0 0 1 ${-radius} ${radius}h${-(spotlight.w - radius * 2)}a${radius} ${radius} 0 0 1 ${-radius} ${-radius}v${-(spotlight.h - radius * 2)}a${radius} ${radius} 0 0 1 ${radius} ${-radius}Z`
     : `M0 0H${viewport.w}V${viewport.h}H0Z`;
 
-  const isLast = step >= steps.length - 1;
+  const isLast = !steps.some(
+    (s, i) => i > step && resolveTarget(s.target) !== null,
+  );
 
   return (
     <div data-slot="tour" className="pointer-events-none fixed inset-0 z-50">
@@ -463,11 +465,17 @@ function TourOverlay({
           data-slot="tour-controls"
           className="mt-4 flex items-center justify-between gap-2"
         >
-          <Button variant="ghost" size="sm" onClick={stop}>
+          <Button
+            data-slot="tour-skip"
+            variant="ghost"
+            size="sm"
+            onClick={stop}
+          >
             {labels?.skip ?? "Skip"}
           </Button>
           <div className="flex items-center gap-2">
             <Button
+              data-slot="tour-back"
               variant="outline"
               size="sm"
               onClick={back}
@@ -475,7 +483,7 @@ function TourOverlay({
             >
               {labels?.back ?? "Back"}
             </Button>
-            <Button size="sm" onClick={next}>
+            <Button data-slot="tour-next" size="sm" onClick={next}>
               {isLast ? (labels?.finish ?? "Finish") : (labels?.next ?? "Next")}
             </Button>
           </div>

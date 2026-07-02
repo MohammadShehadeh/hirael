@@ -1255,11 +1255,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "avatar",
         "badge",
         "button",
         "card",
         "separator",
-        "tabs"
+        "tabs",
+        "tooltip"
       ],
       "files": [
         {
@@ -2483,6 +2485,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "badge",
         "button"
       ],
       "files": [
@@ -3707,7 +3710,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "badge"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/careers-01/careers-01.tsx",

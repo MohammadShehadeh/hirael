@@ -7,9 +7,6 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives";
 
-const CREAM = "#E1E0CC";
-const PRIMARY = "#DEDBC8";
-
 const EASE_CARD: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function IconStoryboard({ className }: { className?: string }) {
@@ -148,11 +145,11 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
         <div className="flex flex-col items-center gap-1 text-center">
           <WordsPullUp
             text="Studio-grade craft for visionary creators."
-            className="justify-center text-xl font-normal text-[#E1E0CC] sm:text-2xl md:text-3xl lg:text-4xl"
+            className="justify-center text-xl font-normal text-(--cs-cream) sm:text-2xl md:text-3xl lg:text-4xl"
           />
           <WordsPullUp
             text="Built for pure vision. Powered by art."
-            className="justify-center text-xl font-normal text-gray-500 sm:text-2xl md:text-3xl lg:text-4xl"
+            className="justify-center text-xl font-normal text-(--cs-muted) sm:text-2xl md:text-3xl lg:text-4xl"
           />
         </div>
 
@@ -175,7 +172,7 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
               className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"
             />
             <div className="absolute inset-x-0 bottom-0 p-5">
-              <p className="text-lg font-medium" style={{ color: CREAM }}>
+              <p className="text-lg font-medium text-(--cs-cream)">
                 Your creative canvas.
               </p>
             </div>
@@ -190,14 +187,14 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
               <div className="flex h-full flex-col gap-4 p-5">
                 <div className="flex items-start justify-between">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/40 sm:h-12 sm:w-12">
-                    <card.Icon className="h-5 w-5 text-[#DEDBC8] sm:h-6 sm:w-6" />
+                    <card.Icon className="h-5 w-5 text-(--cs-ink) sm:h-6 sm:w-6" />
                   </div>
-                  <span className="font-mono text-[10px] tabular-nums text-gray-500">
+                  <span className="font-mono text-[10px] tabular-nums text-(--cs-muted)">
                     {card.number}
                   </span>
                 </div>
 
-                <h3 className="text-base font-medium" style={{ color: CREAM }}>
+                <h3 className="text-base font-medium text-(--cs-cream)">
                   {card.title}
                 </h3>
 
@@ -205,12 +202,9 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
                   {card.items.map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-2 text-xs text-gray-400 sm:text-sm"
+                      className="flex items-start gap-2 text-xs text-(--cs-muted) sm:text-sm"
                     >
-                      <Check
-                        className="mt-0.5 h-3.5 w-3.5 shrink-0"
-                        style={{ color: PRIMARY }}
-                      />
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-(--cs-ink)" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -218,10 +212,10 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
 
                 <a
                   href="#"
-                  className="group mt-auto inline-flex items-center gap-1.5 text-xs font-medium text-[#DEDBC8] sm:text-sm"
+                  className="group mt-auto inline-flex items-center gap-1.5 text-xs font-medium text-(--cs-ink) sm:text-sm"
                 >
                   Learn more
-                  <ArrowRight className="h-3.5 w-3.5 -rotate-45 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <ArrowRight className="h-3.5 w-3.5 -rotate-45 transition-transform duration-200 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </div>
             </FeatureCard>

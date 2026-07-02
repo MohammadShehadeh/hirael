@@ -48,6 +48,7 @@ export default function MultiSelectDemo() {
           maxCount={5}
         >
           <MultiSelectTrigger
+            id="ms-basic"
             placeholder={t({ en: "Pick frameworks", ar: "اختر أطر العمل" })}
           />
           <MultiSelectContent />
@@ -70,6 +71,7 @@ export default function MultiSelectDemo() {
           onValueChange={setComposed}
         >
           <MultiSelectTrigger
+            id="ms-composed"
             placeholder={t({ en: "Compose your own", ar: "ركّب اختيارك" })}
           />
           <MultiSelectContent

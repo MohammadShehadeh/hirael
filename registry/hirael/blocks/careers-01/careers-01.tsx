@@ -4,6 +4,7 @@ import * as React from "react";
 import { MapPin, Clock, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 
 type Role = {
   title: string;
@@ -119,9 +120,12 @@ export default function Careers01() {
                     {role.title}
                   </h3>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm">
-                    <span className="rounded-full border border-border bg-card px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em]">
+                    <Badge
+                      variant="outline"
+                      className="bg-card font-mono text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground"
+                    >
                       {role.department}
-                    </span>
+                    </Badge>
                     <span className="inline-flex items-center gap-1.5">
                       <MapPin className="size-3.5" />
                       {role.location}

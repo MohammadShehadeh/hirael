@@ -33,7 +33,6 @@ import {
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
-  EmptyTitle,
 } from "@/registry/hirael/ui/empty";
 import {
   Tooltip,
@@ -451,7 +450,7 @@ export default function Dashboard06() {
             <CardHeader className="px-6 pt-4 pb-3">
               <CardTitle>Latest runs</CardTitle>
               <CardDescription>
-                Duration of the last {chartData.length} runs — pick a bar to
+                Duration of the last {chartData.length} runs. Pick a bar to
                 inspect.
               </CardDescription>
             </CardHeader>
@@ -562,69 +561,55 @@ export default function Dashboard06() {
             </CardDescription>
           </CardHeader>
           <CardContent className="px-0 pb-2">
-            {RUNS.length === 0 ? (
-              <Empty className="m-4 h-[180px]">
-                <EmptyMedia variant="icon">
-                  <BarChart3 />
-                </EmptyMedia>
-                <EmptyHeader>
-                  <EmptyTitle>No runs yet</EmptyTitle>
-                  <EmptyDescription>
-                    Runs show up here once your pipelines start executing.
-                  </EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              <ul className="flex flex-col">
-                {RUNS.map((run, i) => (
-                  <li key={run.id}>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedId(run.id)}
-                      className={cn(
-                        "grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-6 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50",
-                        i < RUNS.length - 1 && "border-b border-border",
-                        selectedId === run.id && "bg-muted/40",
-                      )}
-                    >
-                      <StateDot state={run.state} />
-                      <div className="flex min-w-0 flex-col">
-                        <span className="truncate text-sm font-medium">
-                          {run.pipeline}
+            <ul className="flex flex-col">
+              {RUNS.map((run, i) => (
+                <li key={run.id}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedId(run.id)}
+                    className={cn(
+                      "grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-6 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50",
+                      i < RUNS.length - 1 && "border-b border-border",
+                      selectedId === run.id && "bg-muted/40",
+                    )}
+                  >
+                    <StateDot state={run.state} />
+                    <div className="flex min-w-0 flex-col">
+                      <span className="truncate text-sm font-medium">
+                        {run.pipeline}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+                        <Hash className="size-3 shrink-0" />
+                        {run.number}
+                        <span className="inline-flex items-center gap-1">
+                          <GitBranch className="size-3 shrink-0" />
+                          {run.branch}
                         </span>
-                        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
-                          <Hash className="size-3 shrink-0" />
-                          {run.number}
-                          <span className="inline-flex items-center gap-1">
-                            <GitBranch className="size-3 shrink-0" />
-                            {run.branch}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                            {formatSeconds(run.durationSec)}
                           </span>
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                              {formatSeconds(run.durationSec)}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            Started {run.startedLabel}
-                          </TooltipContent>
-                        </Tooltip>
-                        <span
-                          className="hidden font-mono text-[10px] uppercase tracking-[0.08em] sm:inline"
-                          style={{ color: STATE_TOKEN[run.state] }}
-                        >
-                          {STATE_LABEL[run.state]}
-                        </span>
-                        <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
-                      </div>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Started {run.startedLabel}
+                        </TooltipContent>
+                      </Tooltip>
+                      <span
+                        className="hidden font-mono text-[10px] uppercase tracking-[0.08em] sm:inline"
+                        style={{ color: STATE_TOKEN[run.state] }}
+                      >
+                        {STATE_LABEL[run.state]}
+                      </span>
+                      <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
       </div>

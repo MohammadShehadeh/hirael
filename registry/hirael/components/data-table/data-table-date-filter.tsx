@@ -10,6 +10,7 @@ import {
 } from "@/registry/hirael/ui/popover";
 import { Separator } from "@/registry/hirael/ui/separator";
 import { formatDate } from "./data-table-utils";
+import { cn } from "@/lib/utils";
 import type { Column } from "@tanstack/react-table";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";
@@ -99,13 +100,9 @@ export function DataTableDateFilter<TData>({
     [column, multiple],
   );
 
-  const onReset = React.useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation();
-      column.setFilterValue(undefined);
-    },
-    [column],
-  );
+  const onReset = React.useCallback(() => {
+    column.setFilterValue(undefined);
+  }, [column]);
 
   const hasValue = React.useMemo(() => {
     if (multiple) {
@@ -174,29 +171,34 @@ export function DataTableDateFilter<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          data-slot="data-table-date-filter"
-          className="border-dashed font-normal"
-        >
-          {hasValue ? (
-            <div
-              role="button"
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              onClick={onReset}
-              className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            >
-              <XCircle />
-            </div>
-          ) : (
-            <CalendarIcon />
-          )}
-          {label}
-        </Button>
-      </PopoverTrigger>
+      <div className="flex items-center">
+        {hasValue ? (
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={`Clear ${title} filter`}
+            data-slot="data-table-date-filter-reset"
+            className="rounded-e-none border-e-0 border-dashed px-2"
+            onClick={onReset}
+          >
+            <XCircle />
+          </Button>
+        ) : null}
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            data-slot="data-table-date-filter"
+            className={cn(
+              "border-dashed font-normal",
+              hasValue && "rounded-s-none",
+            )}
+          >
+            {hasValue ? null : <CalendarIcon />}
+            {label}
+          </Button>
+        </PopoverTrigger>
+      </div>
       <PopoverContent className="w-auto p-0" align="start">
         {multiple ? (
           <Calendar

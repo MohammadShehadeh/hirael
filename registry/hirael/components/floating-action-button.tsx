@@ -67,6 +67,7 @@ function FloatingActionButton({
 }: FloatingActionButtonProps) {
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
   const open = openProp ?? uncontrolled;
+  const rootRef = React.useRef<HTMLDivElement>(null);
 
   const setOpen = React.useCallback(
     (next: boolean) => {
@@ -75,6 +76,33 @@ function FloatingActionButton({
     },
     [openProp, onOpenChange],
   );
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const root = rootRef.current;
+      if (
+        root &&
+        event.target instanceof Node &&
+        !root.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open, setOpen]);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Escape" || !open) return;
+    event.stopPropagation();
+    setOpen(false);
+    rootRef.current
+      ?.querySelector<HTMLElement>(
+        '[data-slot="floating-action-button-trigger"]',
+      )
+      ?.focus();
+  };
 
   const value = React.useMemo<FabContextValue>(
     () => ({ open, setOpen, side }),
@@ -85,8 +113,10 @@ function FloatingActionButton({
     <FabContext.Provider value={value}>
       <MotionConfig reducedMotion="user">
         <div
+          ref={rootRef}
           data-slot="floating-action-button"
           data-state={open ? "open" : "closed"}
+          onKeyDown={onKeyDown}
           className={cn("relative inline-flex", className)}
           {...props}
         >
@@ -133,6 +163,35 @@ function FloatingActionButtonList({
   ...props
 }: FloatingActionButtonListProps) {
   const { open, side } = useFab();
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!open) return;
+    const horizontal = side === "left" || side === "right";
+    const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+    const nextKey = horizontal
+      ? rtl
+        ? "ArrowLeft"
+        : "ArrowRight"
+      : "ArrowDown";
+    const prevKey = horizontal ? (rtl ? "ArrowRight" : "ArrowLeft") : "ArrowUp";
+    if (event.key !== nextKey && event.key !== prevKey) return;
+    event.preventDefault();
+    const items = Array.from(
+      event.currentTarget.querySelectorAll<HTMLElement>(
+        '[data-slot="floating-action-button-item"]:not(:disabled)',
+      ),
+    );
+    if (items.length === 0) return;
+    let delta = event.key === nextKey ? 1 : -1;
+    if (side === "top" || side === "left") delta = -delta;
+    const index = items.indexOf(document.activeElement as HTMLElement);
+    const target =
+      index === -1
+        ? items[0]
+        : items[(index + delta + items.length) % items.length];
+    target?.focus();
+  };
+
   return (
     <motion.div
       role="menu"
@@ -141,6 +200,7 @@ function FloatingActionButtonList({
       initial={false}
       animate={open ? "open" : "closed"}
       variants={listVariants}
+      onKeyDown={onKeyDown}
       className={cn(
         "absolute z-10 flex items-center gap-2",
         listSideClasses[side],
@@ -160,14 +220,19 @@ function FloatingActionButtonItem({
 }: FloatingActionButtonItemProps) {
   const { open, side } = useFab();
   const itemVariants: Variants = {
-    open: { opacity: 1, x: 0, y: 0 },
-    closed: { opacity: 0, ...closedOffset[side] },
+    open: { opacity: 1, x: 0, y: 0, visibility: "visible" },
+    closed: {
+      opacity: 0,
+      ...closedOffset[side],
+      transitionEnd: { visibility: "hidden" },
+    },
   };
   return (
     <motion.button
       type="button"
       role="menuitem"
       tabIndex={open ? 0 : -1}
+      aria-hidden={open ? undefined : true}
       data-slot="floating-action-button-item"
       variants={itemVariants}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}

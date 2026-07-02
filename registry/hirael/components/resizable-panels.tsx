@@ -60,9 +60,28 @@ function ResizablePanel({
 
 type ResizableHandleProps = React.ComponentProps<"div">;
 
-function ResizableHandle({ className, ...props }: ResizableHandleProps) {
+function ResizableHandle({ className, ref, ...props }: ResizableHandleProps) {
   const direction = React.useContext(ResizableContext);
   const isHorizontal = direction === "horizontal";
+  const localRef = React.useRef<HTMLDivElement | null>(null);
+  const [valueNow, setValueNow] = React.useState(50);
+
+  const measure = React.useCallback(
+    (handle: HTMLElement) => {
+      const prev = handle.previousElementSibling as HTMLElement | null;
+      const next = handle.nextElementSibling as HTMLElement | null;
+      if (!prev || !next) return 50;
+      const prevSize = isHorizontal ? prev.clientWidth : prev.clientHeight;
+      const nextSize = isHorizontal ? next.clientWidth : next.clientHeight;
+      const totalSize = prevSize + nextSize;
+      return totalSize > 0 ? Math.round((prevSize / totalSize) * 100) : 50;
+    },
+    [isHorizontal],
+  );
+
+  React.useEffect(() => {
+    if (localRef.current) setValueNow(measure(localRef.current));
+  }, [measure]);
 
   const resize = (handle: HTMLElement, deltaPx: number) => {
     const prev = handle.previousElementSibling as HTMLElement | null;
@@ -83,6 +102,7 @@ function ResizableHandle({ className, ...props }: ResizableHandleProps) {
     const newPrevGrow = (newPrev / totalSize) * totalGrow;
     prev.style.flexGrow = String(newPrevGrow);
     next.style.flexGrow = String(totalGrow - newPrevGrow);
+    if (totalSize > 0) setValueNow(Math.round((newPrev / totalSize) * 100));
   };
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -131,9 +151,17 @@ function ResizableHandle({ className, ...props }: ResizableHandleProps) {
 
   return (
     <div
+      ref={(node) => {
+        localRef.current = node;
+        if (typeof ref === "function") ref(node);
+        else if (ref) ref.current = node;
+      }}
       role="separator"
       tabIndex={0}
       aria-orientation={isHorizontal ? "vertical" : "horizontal"}
+      aria-valuenow={valueNow}
+      aria-valuemin={0}
+      aria-valuemax={100}
       data-slot="resizable-handle"
       onPointerDown={onPointerDown}
       onKeyDown={onKeyDown}

@@ -150,6 +150,58 @@ heading rather than starting a new doc.
   (`registry-demos.tsx`), so `useSearchParams` is never called during the
   static prerender.
 
+## Component code shape & UI/UX rules (parity with shadcn/ui)
+
+Hirael's primitives and components are kept in lockstep with shadcn/ui's actual
+source shape and design rules — not just its repo layout (see
+[README.md → Upstream alignment](./README.md#upstream-alignment-with-shadcnui)).
+A structural review against `apps/v4/registry/new-york-v4` confirmed the parity
+below; keep new work inside it.
+
+**Primitive shape (the `ui/*` files).** They are the shadcn **v4** shape, copied
+faithfully (e.g. `ui/button.tsx` matches upstream byte-for-byte modulo hirael's
+semicolons/trailing commas):
+
+- Plain **function components, not `forwardRef`** — `function Button({ … }:
+React.ComponentProps<"button"> & VariantProps<…>)`. (React 19 forwards refs as
+  a normal prop; the whole `ui/` tree is `forwardRef`-free — keep it that way.)
+- **`data-slot="<kebab>"` on every rendered element**, plus `data-variant` /
+  `data-size` where a `cva` drives variants. Variant maps are authored with
+  `cva` and the `*Variants` fn is exported alongside the component.
+- `asChild` via `radix-ui`'s `Slot`; classes always composed through `cn()`.
+
+**Hirael component shape (the `components/*` additions).** Flat compound API with
+the bare `Name` holding state — implemented with a `React.createContext` +
+`useName()` guard hook, parts (`NameTrigger`, `NameContent`, …) as top-level
+named exports, each carrying its own `data-slot`. This is hirael's own pattern;
+the rule is compound-first, never a single mega-prop component.
+
+**UI/UX usage rules** (mirrors `skills/shadcn/rules/*` — apply these in demos,
+blocks, and templates, the places that _compose_ components):
+
+- **Semantic tokens only** — `bg-primary`, `text-muted-foreground`,
+  `text-destructive`. No raw Tailwind color scales for state, and **no manual
+  `dark:` color overrides** (tokens already flip). Literal colors are allowed
+  only where the color _is_ the data (rating star, heatmap scale, a status dot).
+- **`gap-*`, not `space-x-*` / `space-y-*`** — use `flex`/`grid` + `gap`.
+- **`size-*` when width == height**; **`truncate`** over the three-class longhand.
+- **Don't add `z-index` to overlay components** (Dialog, Sheet, Drawer, Popover,
+  Tooltip, DropdownMenu, HoverCard) — they own their stacking.
+- **Compose, don't reinvent** — `Alert` for callouts, `Empty` for empty states,
+  `Badge` over styled spans, `Separator` over border divs, `Skeleton` over
+  `animate-pulse` divs, `sonner` `toast()` for toasts.
+- **Accessibility composition** — Dialog/Sheet/Drawer need a `*Title` (use
+  `sr-only` if hidden); `Avatar` needs `AvatarFallback`; group items inside their
+  `*Group`; `TabsTrigger` inside `TabsList`. `Button` has no `isLoading` — compose
+  a `Spinner` + `disabled`.
+
+**Current conformance** (from a registry-wide scan, for the next agent): no
+`forwardRef` in `ui/`, no equal `w-N h-N` (uses `size-*`), no manual `dark:`
+color overrides. Known minor divergences worth cleaning up opportunistically:
+`space-y-*`/`space-x-*` survives in ~14 files (prefer `gap`), and three files use
+a literal color for genuinely color-as-data cases (`rating`, `calendar-heatmap`
+demo, a portfolio status dot). Don't mass-rewrite; fix in passing.
+
 ## Routing & URLs
 
 - **Every browsable item sits under its category segment.** Components live at
@@ -305,3 +357,20 @@ pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 plus the manual checks in [CONTRIBUTING.md](../CONTRIBUTING.md) (exercise the
 showcase demo, validate an `npx shadcn add` into a consumer app, check both
 themes, spot-check keyboard/AT for interactive items).
+
+## Commits & repo tooling
+
+- **Conventional Commits are enforced.** `.commitlintrc.json` extends
+  `@commitlint/config-conventional`, and `.github/workflows/commitlint.yml`
+  validates every PR's commit messages. Use `type(scope): summary`
+  (`feat`, `fix`, `docs`, `refactor`, `build`, `ci`, `chore`, …) — see
+  [CONTRIBUTING.md](../CONTRIBUTING.md) for the type table. Run a message past
+  it locally with `echo "feat: x" | pnpm exec commitlint`; for pre-push
+  feedback you can add an optional `.husky/commit-msg` running
+  `pnpm exec commitlint --edit "$1"`.
+- **Node is pinned** in `.nvmrc` (`22`, matching CI's `setup-node`); `nvm use`
+  picks it up. Editor defaults live in `.editorconfig` (2-space, LF, final
+  newline).
+- This convention set mirrors the upstream **shadcn/ui** repo; see
+  [README.md → Upstream alignment with shadcn/ui](./README.md#upstream-alignment-with-shadcnui)
+  for what hirael adopted from it and what it deliberately does not.

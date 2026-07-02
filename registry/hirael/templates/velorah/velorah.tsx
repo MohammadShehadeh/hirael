@@ -18,7 +18,7 @@ export default function Velorah() {
         "velorah",
         inter.variable,
         instrumentSerif.variable,
-        "relative min-h-svh bg-[hsl(0,0%,0%)] text-foreground antialiased",
+        "relative min-h-svh bg-background text-foreground antialiased",
       )}
       style={{
         fontFamily: "var(--font-velorah-sans), ui-sans-serif, sans-serif",

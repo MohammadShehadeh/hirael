@@ -8,18 +8,28 @@ import { almarai, instrumentSerif } from "./fonts";
 import { Footer } from "./footer";
 import { Hero } from "./hero";
 
+const CREATIVE_STUDIO_CSS = `
+.creative-studio {
+  --cs-cream: #e1e0cc;
+  --cs-ink: #dedbc8;
+  --cs-muted: #8b8a80;
+}
+`;
+
 export default function CreativeStudio() {
   return (
     <div
       className={cn(
+        "creative-studio",
         almarai.variable,
         instrumentSerif.variable,
-        "bg-black text-[#DEDBC8] antialiased",
+        "bg-black text-(--cs-ink) antialiased",
       )}
       style={{
         fontFamily: "var(--font-almarai), ui-sans-serif, system-ui, sans-serif",
       }}
     >
+      <style dangerouslySetInnerHTML={{ __html: CREATIVE_STUDIO_CSS }} />
       <Hero />
       <About />
       <Features />

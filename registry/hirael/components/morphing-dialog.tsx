@@ -19,6 +19,10 @@ type MorphingDialogContextValue = {
   uniqueId: string;
   titleId: string;
   descriptionId: string;
+  hasTitle: boolean;
+  hasDescription: boolean;
+  setHasTitle: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasDescription: React.Dispatch<React.SetStateAction<boolean>>;
   triggerRef: React.RefObject<HTMLDivElement | null>;
 };
 
@@ -52,6 +56,8 @@ function MorphingDialog({
   const isOpen = openProp ?? uncontrolled;
   const reactId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
+  const [hasTitle, setHasTitle] = React.useState(false);
+  const [hasDescription, setHasDescription] = React.useState(false);
 
   const setOpen = React.useCallback(
     (next: boolean) => {
@@ -69,9 +75,13 @@ function MorphingDialog({
       uniqueId: reactId,
       titleId: `${reactId}-title`,
       descriptionId: `${reactId}-description`,
+      hasTitle,
+      hasDescription,
+      setHasTitle,
+      setHasDescription,
       triggerRef,
     }),
-    [isOpen, setOpen, reactId],
+    [isOpen, setOpen, reactId, hasTitle, hasDescription],
   );
 
   return (
@@ -133,8 +143,16 @@ function MorphingDialogContent({
   style,
   ...props
 }: MorphingDialogContentProps) {
-  const { isOpen, close, uniqueId, titleId, descriptionId, triggerRef } =
-    useMorphingDialog();
+  const {
+    isOpen,
+    close,
+    uniqueId,
+    titleId,
+    descriptionId,
+    hasTitle,
+    hasDescription,
+    triggerRef,
+  } = useMorphingDialog();
   const panelRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -206,8 +224,8 @@ function MorphingDialogContent({
               data-slot="morphing-dialog-content"
               role="dialog"
               aria-modal="true"
-              aria-labelledby={titleId}
-              aria-describedby={descriptionId}
+              aria-labelledby={hasTitle ? titleId : undefined}
+              aria-describedby={hasDescription ? descriptionId : undefined}
               tabIndex={-1}
               style={{ borderRadius: 12, ...style }}
               className={cn(
@@ -231,7 +249,13 @@ function MorphingDialogTitle({
   className,
   ...props
 }: MorphingDialogTitleProps) {
-  const { titleId } = useMorphingDialog();
+  const { titleId, setHasTitle } = useMorphingDialog();
+
+  React.useEffect(() => {
+    setHasTitle(true);
+    return () => setHasTitle(false);
+  }, [setHasTitle]);
+
   return (
     <h2
       id={titleId}
@@ -251,7 +275,13 @@ function MorphingDialogDescription({
   className,
   ...props
 }: MorphingDialogDescriptionProps) {
-  const { descriptionId } = useMorphingDialog();
+  const { descriptionId, setHasDescription } = useMorphingDialog();
+
+  React.useEffect(() => {
+    setHasDescription(true);
+    return () => setHasDescription(false);
+  }, [setHasDescription]);
+
   return (
     <p
       id={descriptionId}

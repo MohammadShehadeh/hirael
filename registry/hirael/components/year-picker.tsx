@@ -54,9 +54,9 @@ function useYearPicker() {
   return ctx;
 }
 
-const DECADE = 12;
+const YEARS_PER_VIEW = 12;
 
-function decadeStartFor(year: number) {
+function viewStartFor(year: number) {
   const base = year - (year % 10);
   return base - 1;
 }
@@ -127,7 +127,7 @@ function YearPicker(props: YearPickerProps) {
       : undefined;
 
   const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp ?? openInternal;
+  const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = React.useCallback(
     (next: boolean) => {
       if (openProp === undefined) setOpenInternal(next);
@@ -152,8 +152,25 @@ function YearPicker(props: YearPickerProps) {
     (mode === "single" ? singleValue : rangeValue?.from) ??
     new Date().getFullYear();
   const [decadeStart, setDecadeStart] = React.useState<number>(
-    decadeStartFor(anchorYear),
+    viewStartFor(anchorYear),
   );
+
+  const controlledAnchorYear =
+    mode === "single" ? singleValueProp : rangeValueProp?.from;
+  const [prevControlledAnchorYear, setPrevControlledAnchorYear] =
+    React.useState(controlledAnchorYear);
+  if (controlledAnchorYear !== prevControlledAnchorYear) {
+    setPrevControlledAnchorYear(controlledAnchorYear);
+    if (controlledAnchorYear !== undefined) {
+      setDecadeStart(viewStartFor(controlledAnchorYear));
+    }
+  }
+
+  const [prevOpen, setPrevOpen] = React.useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) setDecadeStart(viewStartFor(anchorYear));
+  }
 
   const setValueSingle = React.useCallback(
     (year: number) => {
@@ -249,8 +266,7 @@ function YearPickerTrigger({
   children?: React.ReactNode;
 }) {
   const ctx = useYearPicker();
-  const empty =
-    ctx.mode === "single" ? ctx.value === undefined : ctx.value === undefined;
+  const empty = ctx.value === undefined;
   return (
     <PopoverTrigger asChild>
       <button
@@ -288,11 +304,23 @@ function YearPickerContent({
   ...props
 }: React.ComponentProps<typeof PopoverContent>) {
   const ctx = useYearPicker();
-  const years = Array.from({ length: DECADE }, (_, i) => ctx.decadeStart + i);
+  const years = Array.from(
+    { length: YEARS_PER_VIEW },
+    (_, i) => ctx.decadeStart + i,
+  );
   const today = new Date().getFullYear();
 
-  const canPrev = ctx.decadeStart - DECADE >= ctx.minYear - 1;
-  const canNext = ctx.decadeStart + DECADE <= ctx.maxYear + 1;
+  const canPrev = ctx.decadeStart - YEARS_PER_VIEW >= ctx.minYear - 1;
+  const canNext = ctx.decadeStart + YEARS_PER_VIEW <= ctx.maxYear + 1;
+
+  const inBounds = (year: number) => year >= ctx.minYear && year <= ctx.maxYear;
+  const selectedYear = ctx.mode === "single" ? ctx.value : ctx.value?.from;
+  const tabbableYear =
+    selectedYear !== undefined && years.includes(selectedYear)
+      ? selectedYear
+      : years.includes(today) && inBounds(today)
+        ? today
+        : (years.find(inBounds) ?? years[0]);
 
   const gridRef = React.useRef<HTMLDivElement>(null);
   const focusYear = (year: number) => {
@@ -319,19 +347,25 @@ function YearPickerContent({
       case "ArrowDown":
         next = year + 4;
         break;
+      case "Home":
+        next = year - ((year - ctx.decadeStart) % 4);
+        break;
+      case "End":
+        next = year + (3 - ((year - ctx.decadeStart) % 4));
+        break;
       case "PageUp":
-        ctx.setDecadeStart(ctx.decadeStart - DECADE);
+        ctx.setDecadeStart(ctx.decadeStart - YEARS_PER_VIEW);
         return;
       case "PageDown":
-        ctx.setDecadeStart(ctx.decadeStart + DECADE);
+        ctx.setDecadeStart(ctx.decadeStart + YEARS_PER_VIEW);
         return;
       default:
         return;
     }
     e.preventDefault();
     next = Math.max(ctx.minYear, Math.min(ctx.maxYear, next));
-    if (next < ctx.decadeStart || next >= ctx.decadeStart + DECADE) {
-      ctx.setDecadeStart(decadeStartFor(next));
+    if (next < ctx.decadeStart || next >= ctx.decadeStart + YEARS_PER_VIEW) {
+      ctx.setDecadeStart(viewStartFor(next));
       requestAnimationFrame(() => focusYear(next));
     } else {
       focusYear(next);
@@ -345,28 +379,34 @@ function YearPickerContent({
       className={cn("w-64 p-3", className)}
       {...props}
     >
-      <div className="mb-2 flex items-center justify-between">
+      <div
+        data-slot="year-picker-header"
+        className="mb-2 flex items-center justify-between"
+      >
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          aria-label="Previous decade"
+          aria-label="Previous years"
           disabled={!canPrev}
-          onClick={() => ctx.setDecadeStart(ctx.decadeStart - DECADE)}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart - YEARS_PER_VIEW)}
           className="size-7"
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+        <span
+          data-slot="year-picker-caption"
+          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
+        >
           {years[0]} – {years[years.length - 1]}
         </span>
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          aria-label="Next decade"
+          aria-label="Next years"
           disabled={!canNext}
-          onClick={() => ctx.setDecadeStart(ctx.decadeStart + DECADE)}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart + YEARS_PER_VIEW)}
           className="size-7"
         >
           <ChevronRight className="size-3.5 rtl:rotate-180" />
@@ -376,43 +416,50 @@ function YearPickerContent({
         ref={gridRef}
         role="grid"
         aria-label="Years"
-        className="grid grid-cols-4 gap-1"
+        data-slot="year-picker-grid"
+        className="grid gap-1"
       >
-        {years.map((year) => {
-          const out = year < ctx.minYear || year > ctx.maxYear;
-          const selected =
-            ctx.mode === "single"
-              ? ctx.value === year
-              : isEndpoint(year, ctx.value);
-          const inRange =
-            ctx.mode === "range" ? isInRange(year, ctx.value) : false;
-          const isToday = year === today;
-          return (
-            <button
-              key={year}
-              type="button"
-              role="gridcell"
-              data-year={year}
-              disabled={out}
-              aria-selected={selected || inRange}
-              onClick={() => ctx.setValue(year)}
-              onKeyDown={(e) => handleKey(e, year)}
-              tabIndex={selected || (year === today && !selected) ? 0 : -1}
-              className={cn(
-                "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
-                "hover:bg-accent hover:text-accent-foreground",
-                "focus-visible:ring-2 focus-visible:ring-ring",
-                "disabled:opacity-30 disabled:hover:bg-transparent",
-                inRange && "bg-primary/15 text-foreground",
-                selected &&
-                  "bg-primary text-primary-foreground hover:bg-primary",
-                !selected && isToday && "ring-1 ring-inset ring-primary/60",
-              )}
-            >
-              {year}
-            </button>
-          );
-        })}
+        {Array.from({ length: YEARS_PER_VIEW / 4 }, (_, row) => (
+          <div key={row} role="row" className="grid grid-cols-4 gap-1">
+            {years.slice(row * 4, row * 4 + 4).map((year) => {
+              const out = !inBounds(year);
+              const selected =
+                ctx.mode === "single"
+                  ? ctx.value === year
+                  : isEndpoint(year, ctx.value);
+              const inRange =
+                ctx.mode === "range" ? isInRange(year, ctx.value) : false;
+              const isToday = year === today;
+              return (
+                <button
+                  key={year}
+                  type="button"
+                  role="gridcell"
+                  data-year={year}
+                  data-slot="year-picker-cell"
+                  disabled={out}
+                  aria-selected={selected || inRange}
+                  aria-current={isToday ? "date" : undefined}
+                  onClick={() => ctx.setValue(year)}
+                  onKeyDown={(e) => handleKey(e, year)}
+                  tabIndex={year === tabbableYear ? 0 : -1}
+                  className={cn(
+                    "relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus-visible:ring-2 focus-visible:ring-ring",
+                    "disabled:opacity-30 disabled:hover:bg-transparent",
+                    inRange && "bg-primary/15 text-foreground",
+                    selected &&
+                      "bg-primary text-primary-foreground hover:bg-primary",
+                    !selected && isToday && "ring-1 ring-inset ring-primary/60",
+                  )}
+                >
+                  {year}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </PopoverContent>
   );

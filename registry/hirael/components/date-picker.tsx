@@ -19,37 +19,66 @@ import {
   startOfDay,
 } from "@/registry/hirael/components/calendar-utils";
 
-export type DateCalendarProps = {
+export type DateCalendarProps = Omit<
+  React.ComponentProps<"div">,
+  "defaultValue"
+> & {
   value?: Date | null;
   defaultValue?: Date | null;
   onValueChange?: (date: Date | null) => void;
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
   min?: Date;
   max?: Date;
   disabledDate?: (d: Date) => boolean;
   locale?: string;
   weekStartsOn?: 0 | 1;
-  className?: string;
 };
 
 function DateCalendar({
   value: valueProp,
   defaultValue = null,
   onValueChange,
+  month: monthProp,
+  defaultMonth,
+  onMonthChange,
   min,
   max,
   disabledDate,
   locale,
   weekStartsOn = 1,
   className,
+  ...props
 }: DateCalendarProps) {
   const [internal, setInternal] = React.useState<Date | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internal;
   const today = startOfDay(new Date());
 
-  const [viewMonth, setViewMonth] = React.useState<Date>(() => {
-    const anchor = value ?? today;
+  const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
+    const anchor = monthProp ?? defaultMonth ?? value ?? today;
     return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
   });
+  const viewMonth =
+    monthProp !== undefined
+      ? new Date(monthProp.getFullYear(), monthProp.getMonth(), 1)
+      : internalMonth;
+  const setViewMonth = (next: Date) => {
+    if (monthProp === undefined) setInternalMonth(next);
+    onMonthChange?.(next);
+  };
+
+  const valueMonthKey = valueProp != null ? monthIndex(valueProp) : null;
+  const [prevValueMonthKey, setPrevValueMonthKey] =
+    React.useState(valueMonthKey);
+  if (valueMonthKey !== prevValueMonthKey) {
+    setPrevValueMonthKey(valueMonthKey);
+    if (valueProp != null && monthProp === undefined) {
+      setInternalMonth(
+        new Date(valueProp.getFullYear(), valueProp.getMonth(), 1),
+      );
+    }
+  }
 
   const setValue = React.useCallback(
     (next: Date | null) => {
@@ -124,6 +153,12 @@ function DateCalendar({
     weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
   );
 
+  const cells = monthCells(viewMonth, weekStartsOn);
+  const weeks: (Date | null)[][] = [];
+  for (let i = 0; i < cells.length; i += 7) {
+    weeks.push(cells.slice(i, i + 7));
+  }
+
   const tabbable =
     selected && isMonthVisible(selected)
       ? selected
@@ -136,6 +171,7 @@ function DateCalendar({
       ref={rootRef}
       data-slot="date-picker-calendar"
       className={cn("w-60", className)}
+      {...props}
     >
       <div
         data-slot="date-picker-calendar-header"
@@ -152,7 +188,10 @@ function DateCalendar({
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+        <span
+          data-slot="date-picker-calendar-caption"
+          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
+        >
           {monthFmt.format(viewMonth)}
         </span>
         <Button
@@ -171,51 +210,61 @@ function DateCalendar({
         role="grid"
         aria-label={monthFmt.format(viewMonth)}
         data-slot="date-picker-calendar-grid"
-        className="grid grid-cols-7 gap-y-0.5"
+        className="grid gap-y-0.5"
       >
-        {weekdays.map((label, i) => (
-          <span
-            key={i}
-            data-slot="date-picker-calendar-weekday"
-            className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
-          >
-            {label}
-          </span>
-        ))}
-        {monthCells(viewMonth, weekStartsOn).map((d, i) => {
-          if (!d) {
-            return <span key={i} aria-hidden className="size-8" />;
-          }
-          const isSelected = sameDay(d, selected);
-          const isToday = sameDay(d, today);
-          const out = isDayDisabled(d);
-          return (
-            <button
+        <div role="row" className="grid grid-cols-7">
+          {weekdays.map((label, i) => (
+            <span
               key={i}
-              type="button"
-              role="gridcell"
-              data-day={d.getTime()}
-              data-slot="date-picker-calendar-day"
-              disabled={out}
-              aria-selected={isSelected}
-              aria-label={dayLabelFmt.format(d)}
-              onClick={() => setValue(d)}
-              onKeyDown={(e) => handleKey(e, d)}
-              tabIndex={sameDay(d, tabbable) ? 0 : -1}
-              className={cn(
-                "relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
-                "hover:bg-accent hover:text-accent-foreground",
-                "focus-visible:ring-2 focus-visible:ring-ring",
-                "disabled:opacity-30 disabled:hover:bg-transparent",
-                isSelected &&
-                  "bg-primary text-primary-foreground hover:bg-primary",
-                !isSelected && isToday && "ring-1 ring-inset ring-primary/60",
-              )}
+              role="columnheader"
+              data-slot="date-picker-calendar-weekday"
+              className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
             >
-              {d.getDate()}
-            </button>
-          );
-        })}
+              {label}
+            </span>
+          ))}
+        </div>
+        {weeks.map((week, wi) => (
+          <div key={wi} role="row" className="grid grid-cols-7">
+            {week.map((d, i) => {
+              if (!d) {
+                return <span key={i} role="gridcell" className="size-8" />;
+              }
+              const isSelected = sameDay(d, selected);
+              const isToday = sameDay(d, today);
+              const out = isDayDisabled(d);
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  role="gridcell"
+                  data-day={d.getTime()}
+                  data-slot="date-picker-calendar-day"
+                  disabled={out}
+                  aria-selected={isSelected}
+                  aria-current={isToday ? "date" : undefined}
+                  aria-label={dayLabelFmt.format(d)}
+                  onClick={() => setValue(d)}
+                  onKeyDown={(e) => handleKey(e, d)}
+                  tabIndex={sameDay(d, tabbable) ? 0 : -1}
+                  className={cn(
+                    "relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus-visible:ring-2 focus-visible:ring-ring",
+                    "disabled:opacity-30 disabled:hover:bg-transparent",
+                    isSelected &&
+                      "bg-primary text-primary-foreground hover:bg-primary",
+                    !isSelected &&
+                      isToday &&
+                      "ring-1 ring-inset ring-primary/60",
+                  )}
+                >
+                  {d.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -283,7 +332,7 @@ function DatePicker({
   );
 
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
+  const open = openProp !== undefined ? openProp : internalOpen;
   const setOpen = React.useCallback(
     (next: boolean) => {
       if (openProp === undefined) setInternalOpen(next);
@@ -336,7 +385,7 @@ function DatePickerTrigger({
         {...props}
       >
         <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-        <span className="flex-1 truncate">
+        <span data-slot="date-picker-trigger-label" className="flex-1 truncate">
           {children ?? (ctx.value ? fmt.format(ctx.value) : placeholder)}
         </span>
       </button>
@@ -348,12 +397,18 @@ function DatePickerContent({
   locale,
   weekStartsOn,
   disabledDate,
+  month,
+  defaultMonth,
+  onMonthChange,
   className,
   ...props
 }: React.ComponentProps<typeof PopoverContent> & {
   locale?: string;
   weekStartsOn?: 0 | 1;
   disabledDate?: (d: Date) => boolean;
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
 }) {
   const ctx = useDatePicker();
   return (
@@ -363,13 +418,16 @@ function DatePickerContent({
       className={cn("w-auto p-3", className)}
       {...props}
     >
-      <div className="flex flex-col gap-2">
+      <div data-slot="date-picker-content-body" className="flex flex-col gap-2">
         <DateCalendar
           value={ctx.value}
           onValueChange={(d) => {
             ctx.setValue(d);
             ctx.setOpen(false);
           }}
+          month={month}
+          defaultMonth={defaultMonth}
+          onMonthChange={onMonthChange}
           min={ctx.min}
           max={ctx.max}
           disabledDate={disabledDate}
@@ -377,7 +435,10 @@ function DatePickerContent({
           weekStartsOn={weekStartsOn}
         />
         {ctx.value && (
-          <div className="flex justify-end">
+          <div
+            data-slot="date-picker-content-footer"
+            className="flex justify-end"
+          >
             <Button
               type="button"
               variant="ghost"

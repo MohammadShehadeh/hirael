@@ -7,6 +7,7 @@ import {
   type MotionValue,
   motion,
   useMotionValue,
+  useReducedMotion,
   useSpring,
   useTransform,
 } from "motion/react";
@@ -63,6 +64,21 @@ function Dock({
           if (event.pointerType === "mouse") mouseX.set(event.clientX);
         }}
         onPointerLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          const items = Array.from(
+            event.currentTarget.querySelectorAll<HTMLElement>(
+              '[data-slot="dock-item"]:not(:disabled)',
+            ),
+          );
+          const index = items.indexOf(document.activeElement as HTMLElement);
+          if (index === -1) return;
+          event.preventDefault();
+          const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+          let delta = event.key === "ArrowRight" ? 1 : -1;
+          if (rtl) delta = -delta;
+          items[(index + delta + items.length) % items.length]?.focus();
+        }}
         className={cn(
           "mx-auto flex items-end gap-3 rounded-2xl border border-border bg-popover/90 px-3 pb-3 pt-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/70",
           className,
@@ -81,6 +97,7 @@ function DockItem({ className, children, ...props }: DockItemProps) {
   const ref = React.useRef<HTMLButtonElement>(null);
   const { mouseX, baseSize, magnification, distance } = useDock();
   const [hovered, setHovered] = React.useState(false);
+  const reducedMotion = useReducedMotion();
 
   const distanceFromMouse = useTransform(mouseX, (x) => {
     const bounds = ref.current?.getBoundingClientRect();
@@ -105,7 +122,11 @@ function DockItem({ className, children, ...props }: DockItemProps) {
         ref={ref}
         type="button"
         data-slot="dock-item"
-        style={{ width, height: width }}
+        style={
+          reducedMotion
+            ? { width: baseSize, height: baseSize }
+            : { width, height: width }
+        }
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         onFocus={() => setHovered(true)}

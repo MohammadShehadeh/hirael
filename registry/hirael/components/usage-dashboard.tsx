@@ -78,6 +78,7 @@ function UsageItem({
   value,
   max,
   caption,
+  unit,
   className,
   ...props
 }: UsageItemProps) {
@@ -94,6 +95,7 @@ function UsageItem({
         <span className="text-sm text-foreground">{label}</span>
         <span className="font-mono text-xs tabular-nums text-muted-foreground">
           {caption ?? `${value} / ${max}`}
+          {unit != null ? <> {unit}</> : null}
         </span>
       </div>
       <div

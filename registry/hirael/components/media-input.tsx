@@ -35,12 +35,17 @@ function formatSize(bytes: number) {
   return `${bytes} B`;
 }
 
-export type MediaInputProps = Omit<React.ComponentProps<"div">, "onError"> & {
+export type MediaInputProps = Omit<
+  React.ComponentProps<"div">,
+  "onError" | "defaultValue"
+> & {
   /** Native accept filter, e.g. "audio/*" or "image/png,image/webp". */
   accept?: string;
   /** Maximum file size in bytes. Larger picks are rejected with an error. */
   maxSize?: number;
   disabled?: boolean;
+  value?: MediaInputValue | null;
+  defaultValue?: MediaInputValue | null;
   onValueChange?: (value: MediaInputValue | null) => void;
   onError?: (message: string) => void;
 };
@@ -49,6 +54,8 @@ function MediaInput({
   accept,
   maxSize,
   disabled = false,
+  value: valueProp,
+  defaultValue = null,
   onValueChange,
   onError,
   className,
@@ -56,14 +63,15 @@ function MediaInput({
   ...props
 }: MediaInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [value, setValue] = React.useState<MediaInputValue | null>(null);
+  const [internalValue, setInternalValue] =
+    React.useState<MediaInputValue | null>(defaultValue);
+  const value = valueProp !== undefined ? valueProp : internalValue;
   const [error, setError] = React.useState<string | null>(null);
-  const valueRef = React.useRef(value);
-  valueRef.current = value;
+  const createdUrlRef = React.useRef<string | null>(null);
 
   React.useEffect(
     () => () => {
-      if (valueRef.current) URL.revokeObjectURL(valueRef.current.url);
+      if (createdUrlRef.current) URL.revokeObjectURL(createdUrlRef.current);
     },
     [],
   );
@@ -72,12 +80,22 @@ function MediaInput({
     if (!disabled) inputRef.current?.click();
   }, [disabled]);
 
+  const setValue = React.useCallback(
+    (next: MediaInputValue | null) => {
+      if (valueProp === undefined) setInternalValue(next);
+      onValueChange?.(next);
+    },
+    [valueProp, onValueChange],
+  );
+
   const clear = React.useCallback(() => {
-    if (valueRef.current) URL.revokeObjectURL(valueRef.current.url);
-    setValue(null);
+    if (createdUrlRef.current) {
+      URL.revokeObjectURL(createdUrlRef.current);
+      createdUrlRef.current = null;
+    }
     setError(null);
-    onValueChange?.(null);
-  }, [onValueChange]);
+    setValue(null);
+  }, [setValue]);
 
   const handleFile = (file: File | undefined) => {
     if (!file) return;
@@ -87,11 +105,11 @@ function MediaInput({
       onError?.(message);
       return;
     }
-    if (valueRef.current) URL.revokeObjectURL(valueRef.current.url);
-    const next = { file, url: URL.createObjectURL(file) };
+    if (createdUrlRef.current) URL.revokeObjectURL(createdUrlRef.current);
+    const url = URL.createObjectURL(file);
+    createdUrlRef.current = url;
     setError(null);
-    setValue(next);
-    onValueChange?.(next);
+    setValue({ file, url });
   };
 
   const ctx = React.useMemo<MediaInputContextValue>(
@@ -162,7 +180,7 @@ function MediaInputContent({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { value } = useMediaInput();
+  const { value, error } = useMediaInput();
   if (!value) return null;
 
   return (
@@ -172,6 +190,15 @@ function MediaInputContent({
       {...props}
     >
       {children}
+      {error && (
+        <p
+          data-slot="media-input-error"
+          role="alert"
+          className="text-xs text-destructive"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }

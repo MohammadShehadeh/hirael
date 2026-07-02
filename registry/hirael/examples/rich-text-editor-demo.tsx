@@ -74,8 +74,8 @@ export default function RichTextEditorDemo() {
 
   const [value, setValue] = React.useState(
     t({
-      en: "<p>Type below — this editor is <strong>controlled</strong>.</p>",
-      ar: "<p>اكتب أدناه — هذا المحرّر <strong>متحكَّم به</strong>.</p>",
+      en: "<p>Type below. This editor is <strong>controlled</strong>.</p>",
+      ar: "<p>اكتب أدناه. هذا المحرّر <strong>متحكَّم به</strong>.</p>",
     }),
   );
 

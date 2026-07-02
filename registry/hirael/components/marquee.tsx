@@ -87,7 +87,7 @@ function Marquee({
           aria-hidden={i > 0}
           style={trackStyle}
           className={cn(
-            "flex shrink-0 justify-around",
+            "flex shrink-0 justify-around motion-reduce:[animation-play-state:paused]",
             vertical ? "flex-col" : "flex-row",
           )}
         >

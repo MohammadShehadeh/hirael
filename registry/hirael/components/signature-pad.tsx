@@ -96,6 +96,7 @@ function SignaturePad({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const strokesRef = React.useRef<Stroke[]>([]);
   const drawingRef = React.useRef(false);
+  const activePointerRef = React.useRef<number | null>(null);
   const lastTimeRef = React.useRef(0);
   const [empty, setEmpty] = React.useState(true);
   const emptyRef = React.useRef(true);
@@ -219,10 +220,11 @@ function SignaturePad({
   };
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (disabled || !e.isPrimary) return;
+    if (disabled || !e.isPrimary || drawingRef.current) return;
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
     drawingRef.current = true;
+    activePointerRef.current = e.pointerId;
     lastTimeRef.current = e.timeStamp;
     const { x, y } = pointFromEvent(e);
     const w = (minStrokeWidth + maxStrokeWidth) / 2;
@@ -237,7 +239,13 @@ function SignaturePad({
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawingRef.current || disabled) return;
+    if (
+      !drawingRef.current ||
+      disabled ||
+      e.pointerId !== activePointerRef.current
+    ) {
+      return;
+    }
     const stroke = strokesRef.current[strokesRef.current.length - 1];
     if (!stroke) return;
     const prev = stroke[stroke.length - 1];
@@ -257,8 +265,9 @@ function SignaturePad({
   };
 
   const endStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawingRef.current) return;
+    if (!drawingRef.current || e.pointerId !== activePointerRef.current) return;
     drawingRef.current = false;
+    activePointerRef.current = null;
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     }

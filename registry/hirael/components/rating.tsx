@@ -5,6 +5,28 @@ import { Star } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+type RatingContextValue = {
+  value: number;
+  display: number;
+  max: number;
+  step: 0.5 | 1;
+  interactive: boolean;
+  iconSize: string;
+  tabStop: number;
+  setHover: (next: number | null) => void;
+  commit: (next: number) => void;
+};
+
+const RatingContext = React.createContext<RatingContextValue | null>(null);
+
+function useRating() {
+  const ctx = React.useContext(RatingContext);
+  if (!ctx) {
+    throw new Error("Rating compound parts must be used inside <Rating>");
+  }
+  return ctx;
+}
+
 export type RatingProps = Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
@@ -38,6 +60,8 @@ function Rating({
   size = "md",
   name,
   className,
+  onKeyDown,
+  children,
   ...props
 }: RatingProps) {
   const isControlled = valueProp !== undefined;
@@ -50,100 +74,184 @@ function Rating({
   const interactive = !readOnly && !disabled;
   const iconSize = sizeMap[size];
 
-  const commit = (next: number) => {
-    if (!interactive) return;
-    if (!isControlled) setInternal(next);
-    onValueChange?.(next);
+  const commit = React.useCallback(
+    (next: number) => {
+      if (readOnly || disabled) return;
+      if (valueProp === undefined) setInternal(next);
+      onValueChange?.(next);
+    },
+    [readOnly, disabled, valueProp, onValueChange],
+  );
+
+  const stepAligned =
+    value > 0 && value <= max && Number.isInteger(value / step);
+  const tabStop = stepAligned ? value : step;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(e);
+    if (e.defaultPrevented || !interactive) return;
+    const rtl = getComputedStyle(e.currentTarget).direction === "rtl";
+    let next: number;
+    switch (e.key) {
+      case "ArrowRight":
+        next = value + (rtl ? -step : step);
+        break;
+      case "ArrowLeft":
+        next = value + (rtl ? step : -step);
+        break;
+      case "ArrowUp":
+        next = value + step;
+        break;
+      case "ArrowDown":
+        next = value - step;
+        break;
+      case "Home":
+        next = step;
+        break;
+      case "End":
+        next = max;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    next = Math.min(max, Math.max(step, next));
+    commit(next);
+    e.currentTarget
+      .querySelector<HTMLButtonElement>(
+        `[data-slot="rating-radio"][data-value="${next}"]`,
+      )
+      ?.focus();
   };
 
+  const ctx = React.useMemo<RatingContextValue>(
+    () => ({
+      value,
+      display,
+      max,
+      step,
+      interactive,
+      iconSize,
+      tabStop,
+      setHover,
+      commit,
+    }),
+    [value, display, max, step, interactive, iconSize, tabStop, commit],
+  );
+
   return (
-    <div
-      data-slot="rating"
-      data-readonly={readOnly || undefined}
-      data-disabled={disabled || undefined}
-      role={interactive ? "radiogroup" : "img"}
-      aria-label={props["aria-label"] ?? `Rating: ${value} of ${max}`}
-      className={cn(
-        "inline-flex items-center gap-0.5",
-        disabled && "pointer-events-none opacity-50",
-        className,
-      )}
-      onMouseLeave={() => setHover(null)}
-      {...props}
-    >
-      {Array.from({ length: max }).map((_, i) => {
-        const fullValue = i + 1;
-        const halfValue = i + 0.5;
-        const filled = display >= fullValue;
-        const half = !filled && display >= halfValue;
+    <RatingContext.Provider value={ctx}>
+      <div
+        data-slot="rating"
+        data-readonly={readOnly || undefined}
+        data-disabled={disabled || undefined}
+        role={interactive ? "radiogroup" : "img"}
+        aria-label={props["aria-label"] ?? `Rating: ${value} of ${max}`}
+        className={cn(
+          "inline-flex items-center gap-0.5",
+          disabled && "pointer-events-none opacity-50",
+          className,
+        )}
+        onMouseLeave={() => setHover(null)}
+        onKeyDown={handleKeyDown}
+        {...props}
+      >
+        {children ??
+          Array.from({ length: max }).map((_, i) => (
+            <RatingItem key={i} index={i} />
+          ))}
 
-        return (
-          <span
-            key={i}
-            className={cn(
-              "relative inline-flex",
-              interactive && "cursor-pointer",
-            )}
-          >
-            <Star
-              className={cn(
-                iconSize,
-                "text-muted-foreground/40 transition-colors",
-              )}
-              aria-hidden
-            />
-            {(filled || half) && (
-              <Star
-                className={cn(
-                  iconSize,
-                  "absolute inset-0 fill-yellow-400 text-yellow-400 transition-[clip-path]",
-                  half &&
-                    "[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]",
-                )}
-                aria-hidden
-              />
-            )}
-
-            {interactive && step === 0.5 && (
-              <>
-                <button
-                  type="button"
-                  role="radio"
-                  aria-checked={value === halfValue}
-                  aria-label={`${halfValue} of ${max}`}
-                  className="absolute inset-y-0 start-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  onMouseEnter={() => setHover(halfValue)}
-                  onClick={() => commit(value === halfValue ? 0 : halfValue)}
-                />
-                <button
-                  type="button"
-                  role="radio"
-                  aria-checked={value === fullValue}
-                  aria-label={`${fullValue} of ${max}`}
-                  className="absolute inset-y-0 end-0 w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  onMouseEnter={() => setHover(fullValue)}
-                  onClick={() => commit(value === fullValue ? 0 : fullValue)}
-                />
-              </>
-            )}
-            {interactive && step === 1 && (
-              <button
-                type="button"
-                role="radio"
-                aria-checked={value === fullValue}
-                aria-label={`${fullValue} of ${max}`}
-                className="absolute inset-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                onMouseEnter={() => setHover(fullValue)}
-                onClick={() => commit(value === fullValue ? 0 : fullValue)}
-              />
-            )}
-          </span>
-        );
-      })}
-
-      {name && <input type="hidden" name={name} value={value} />}
-    </div>
+        {name && <input type="hidden" name={name} value={value} />}
+      </div>
+    </RatingContext.Provider>
   );
 }
 
-export { Rating };
+type RatingRadioProps = {
+  value: number;
+  className?: string;
+};
+
+function RatingRadio({ value: radioValue, className }: RatingRadioProps) {
+  const ctx = useRating();
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={ctx.value === radioValue}
+      aria-label={`${radioValue} of ${ctx.max}`}
+      tabIndex={radioValue === ctx.tabStop ? 0 : -1}
+      data-slot="rating-radio"
+      data-value={radioValue}
+      className={cn(
+        "cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        className,
+      )}
+      onMouseEnter={() => ctx.setHover(radioValue)}
+      onClick={() => ctx.commit(ctx.value === radioValue ? 0 : radioValue)}
+    />
+  );
+}
+
+export type RatingItemProps = Omit<React.ComponentProps<"span">, "children"> & {
+  index: number;
+};
+
+function RatingItem({ index, className, ...props }: RatingItemProps) {
+  const ctx = useRating();
+  const fullValue = index + 1;
+  const halfValue = index + 0.5;
+  const filled = ctx.display >= fullValue;
+  const half = !filled && ctx.display >= halfValue;
+
+  return (
+    <span
+      data-slot="rating-item"
+      className={cn(
+        "relative inline-flex",
+        ctx.interactive && "cursor-pointer",
+        className,
+      )}
+      {...props}
+    >
+      <Star
+        data-slot="rating-star"
+        className={cn(
+          ctx.iconSize,
+          "text-muted-foreground/40 transition-colors",
+        )}
+        aria-hidden
+      />
+      {(filled || half) && (
+        <Star
+          data-slot="rating-star-fill"
+          className={cn(
+            ctx.iconSize,
+            "absolute inset-0 fill-warning text-warning transition-[clip-path]",
+            half &&
+              "[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]",
+          )}
+          aria-hidden
+        />
+      )}
+
+      {ctx.interactive && ctx.step === 0.5 && (
+        <>
+          <RatingRadio
+            value={halfValue}
+            className="absolute inset-y-0 start-0 w-1/2"
+          />
+          <RatingRadio
+            value={fullValue}
+            className="absolute inset-y-0 end-0 w-1/2"
+          />
+        </>
+      )}
+      {ctx.interactive && ctx.step === 1 && (
+        <RatingRadio value={fullValue} className="absolute inset-0" />
+      )}
+    </span>
+  );
+}
+
+export { Rating, RatingItem };

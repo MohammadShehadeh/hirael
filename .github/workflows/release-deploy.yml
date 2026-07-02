@@ -25,7 +25,7 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name || github.ref }}
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10
 

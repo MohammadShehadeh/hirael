@@ -7,7 +7,13 @@
  * reads as a flash. Running this synchronously in the document head sets
  * `<html dir>` before anything paints, so RTL previews come up correct on
  * the first frame — the same trick the theme uses in `lib/theme.ts`.
+ *
+ * It also stamps `data-framed` on `<html>` when the page is inside an
+ * iframe (the showcase preview). Standalone-only UI — like the
+ * demo-credentials notice on auth block embeds — hides itself under that
+ * attribute, so it shows in the static HTML and on direct visits (what
+ * Safe Browsing and stray visitors see) but never inside the showcase.
  */
 export function embedDirScript(): string {
-  return `(()=>{try{var d=new URLSearchParams(location.search).get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';}catch(e){}})();`;
+  return `(()=>{try{var d=new URLSearchParams(location.search).get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';if(window.self!==window.top)document.documentElement.setAttribute('data-framed','');}catch(e){}})();`;
 }

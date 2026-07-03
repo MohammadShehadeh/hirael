@@ -38,7 +38,7 @@ export default async function BlockEmbedRoute({
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
-      <BlockEmbedShell>
+      <BlockEmbedShell demoNotice={entry.blockKind === "login"}>
         <RegistryDemo name={entry.name} />
       </BlockEmbedShell>
     </>

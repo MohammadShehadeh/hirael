@@ -234,6 +234,32 @@ demo, a portfolio status dot). Don't mass-rewrite; fix in passing.
   from the repo (not the build output), so it must be regenerated and committed
   at authoring time, never during the deploy build.
 
+## Embed pages & Safe Browsing
+
+- **Bare auth embeds read as phishing to Google.** `/embed/blocks/auth/*`
+  serves full-viewport login forms — brand mark, password field, OAuth
+  buttons, no site chrome. Google Safe Browsing flagged exactly that as
+  "Possible phishing detected on user login" (Chrome then warns users who
+  type saved passwords anywhere on the site). The fix is a demo notice, not
+  neutering the components: `BlockEmbedShell` takes `demoNotice` (passed for
+  `blockKind === "login"`) and renders a "this form doesn't submit" banner.
+- **The notice is standalone-only via `html[data-framed]`.** The pre-paint
+  script in `lib/embed.ts` stamps `data-framed` on `<html>` when the page is
+  iframed, and the banner carries `[[data-framed]_&]:hidden`. So the static
+  HTML (what the Safe Browsing crawler sees) and direct visits show the
+  notice, while the showcase's framed previews never flash it. Any future
+  auth-looking embed (e.g. a login template) must get the same notice.
+- **Don't robots-disallow `/embed/`.** The embed routes rely on
+  `robots: { index: false }` metadata; a robots.txt disallow would keep
+  Google from fetching the pages at all, so the noindex would go unseen and
+  a Safe Browsing security review couldn't verify a fix. Crawlable +
+  noindexed is the correct pair.
+- **Registry components stay real.** `PasswordInputField` keeps native
+  `type="password"` and `autoComplete="current-password"` — consumers install
+  it for actual login forms. Don't ship demo-mode workarounds (masked text
+  inputs, `autocomplete="off"`) into registry source to appease the
+  classifier; fix it at the showcase layer.
+
 ## RTL
 
 Components, blocks, and templates must work under `dir="rtl"` with no extra

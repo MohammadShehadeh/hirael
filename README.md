@@ -202,23 +202,25 @@ match your `components.json`.
 
 ## Available scripts
 
-| Script                | What it does                                                |
-| --------------------- | ----------------------------------------------------------- |
-| `pnpm dev`            | Next.js dev server with Turbopack on port 3000              |
-| `pnpm build`          | `registry:build` then `next build` (static export → `out/`) |
-| `pnpm start`          | Serve the static export in `out/` locally                   |
-| `pnpm lint`           | ESLint via `next lint` (`next/core-web-vitals` + TS)        |
-| `pnpm typecheck`      | `tsc --noEmit`                                              |
-| `pnpm registry:build` | `shadcn build` — generates `/public/r/<name>.json`          |
+| Script                | What it does                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`            | Next.js dev server with Turbopack on port 3000                                                                  |
+| `pnpm build`          | `registry:gen` → `registry:props` → `check:registry` → `registry:build` → `next build` (static export → `out/`) |
+| `pnpm start`          | Serve the static export in `out/` locally                                                                       |
+| `pnpm lint`           | ESLint (`eslint .`, flat config)                                                                                |
+| `pnpm typecheck`      | `tsc --noEmit`                                                                                                  |
+| `pnpm registry:build` | `shadcn build` — generates `/public/r/<name>.json`                                                              |
 
 ## Configuration
 
-Environment variables are optional and read at runtime in the
-showcase site.
+Environment variables are optional and read at build time (this is a
+static export — there is no runtime server).
 
 | Variable               | Used in                                 | Default                             | Notes                                                                                             |
 | ---------------------- | --------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_BASE_URL` | `components/showcase/install-block.tsx` | `window.location.origin` at runtime | Override the public origin used when generating `npx shadcn add <origin>/r/<name>.json` snippets. |
+| `REGISTRY_BASE_URL`    | `scripts/build-registry.mjs`            | `https://hirael.com`                | Build-time override for the registry base URL baked into generated `registryDependencies` links.  |
+| `GITHUB_TOKEN_HIRAEL`  | `lib/changelog.ts`                      | none (anonymous)                    | Authenticates the build-time GitHub Releases fetch to avoid the 60 req/hr unauthenticated limit.  |
 
 `registry.json` (`homepage`) and `lib/site.ts` (`SITE.registry.origin`)
 hold the canonical published origin — update both if the project moves

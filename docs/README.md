@@ -73,8 +73,8 @@ components/showcase/              # site chrome — NOT part of the registry
   changelog-view.tsx              # /changelog presentation
   code-block.tsx, command-menu.tsx, theme-*.tsx, logo.tsx, install-block.tsx …
 registry/hirael/                  # canonical source for every registry item
-  ui/<component>.tsx              # component source (flat compound exports)
-  ui/<primitive>.tsx              # shadcn primitives the registry imports from
+  ui/<primitive>.tsx              # shadcn primitives only (button, table, popover, …)
+  components/<name>.tsx           # hirael's added components (multi-file kits as components/<name>/, e.g. data-table/)
   examples/<component>-demo.tsx   # showcase demo per component
   blocks/<block>/                 # marketing / app blocks
   templates/<template>/           # full-page templates (multi-file)

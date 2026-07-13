@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ArrowRight, Check } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives";

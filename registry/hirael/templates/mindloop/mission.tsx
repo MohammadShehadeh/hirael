@@ -7,7 +7,7 @@ import {
   useScroll,
   useTransform,
   type MotionValue,
-} from "framer-motion";
+} from "motion/react";
 
 import { cn } from "@/lib/utils";
 

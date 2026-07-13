@@ -2533,8 +2533,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2635,8 +2635,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "hls.js"
+        "hls.js",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2706,9 +2706,9 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
         "gsap",
-        "hls.js"
+        "hls.js",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2843,8 +2843,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2979,8 +2979,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [

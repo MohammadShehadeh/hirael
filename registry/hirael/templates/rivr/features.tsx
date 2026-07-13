@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Activity, ArrowUpRight, Layers, ShieldCheck } from "lucide-react";
 
 import { fadeUp, PillButton } from "./primitives";

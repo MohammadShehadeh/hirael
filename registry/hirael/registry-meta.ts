@@ -1651,7 +1651,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "agency-landing",
@@ -1745,7 +1745,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "hls.js"],
+    dependencies: ["motion", "hls.js"],
   },
   {
     name: "portfolio",
@@ -1804,7 +1804,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["gsap", "framer-motion", "hls.js"],
+    dependencies: ["gsap", "motion", "hls.js"],
   },
   {
     name: "usd-halo",
@@ -1898,7 +1898,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "velorah",
@@ -2012,7 +2012,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "nexacore",

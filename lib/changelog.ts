@@ -19,6 +19,7 @@ export type Changelog = {
   releases: ChangelogRelease[];
   totalReleases: number;
   lastUpdated: string | null;
+  latestKey: string | null;
 };
 
 const REPO = "MohammadShehadeh/hirael.com";
@@ -86,7 +87,7 @@ function parseSections(body: string | null | undefined): ChangelogSection[] {
     if (!line) continue;
     if (/^<!--[\s\S]*-->$/.test(line)) continue;
 
-    const headingMatch = line.match(/^(.+):$/);
+    const headingMatch = !line.startsWith("- ") ? line.match(/^(.+):$/) : null;
     if (headingMatch) {
       current = { heading: headingMatch[1], items: [] };
       sections.push(current);
@@ -108,26 +109,37 @@ function parseSections(body: string | null | undefined): ChangelogSection[] {
 }
 
 function releaseToChangelog(release: GitHubRelease): ChangelogRelease | null {
-  if (release.draft) return null;
-  if (!/^v?\d+\.\d+\.\d+/.test(release.tag_name)) return null;
+  // Guards against one malformed release (e.g. an unparseable date) taking
+  // down the whole changelog: any unexpected error here just drops this
+  // release, the rest of the .map/.filter in getChangelog is unaffected.
+  try {
+    if (release.draft) return null;
+    if (!/^v?\d+\.\d+\.\d+/.test(release.tag_name)) return null;
 
-  const dateString =
-    release.body?.match(DATE_OVERRIDE)?.[1] ??
-    release.published_at ??
-    release.created_at;
-  const isoDate = dateString ? new Date(dateString).toISOString() : null;
+    const dateString =
+      release.body?.match(DATE_OVERRIDE)?.[1] ??
+      release.published_at ??
+      release.created_at;
+    const parsedDate = dateString ? new Date(dateString) : null;
+    const isoDate =
+      parsedDate && !Number.isNaN(parsedDate.getTime())
+        ? parsedDate.toISOString()
+        : null;
 
-  return {
-    key: release.tag_name,
-    version: release.tag_name,
-    label: release.tag_name.replace(/^v/, ""),
-    isoDate,
-    displayDate: isoDate
-      ? RELEASE_DATE_FORMATTER.format(new Date(isoDate))
-      : null,
-    summaryTitle: release.name?.trim() || release.tag_name,
-    summarySections: parseSections(release.body),
-  };
+    return {
+      key: release.tag_name,
+      version: release.tag_name,
+      label: release.tag_name.replace(/^v/, ""),
+      isoDate,
+      displayDate: isoDate
+        ? RELEASE_DATE_FORMATTER.format(new Date(isoDate))
+        : null,
+      summaryTitle: release.name?.trim() || release.tag_name,
+      summarySections: parseSections(release.body),
+    };
+  } catch {
+    return null;
+  }
 }
 
 function compareSemver(a: string, b: string): number {
@@ -173,9 +185,12 @@ export async function getChangelog(): Promise<Changelog> {
     return latest;
   }, null);
 
+  const latest = mostRecent ?? releases[0] ?? null;
+
   return {
     releases,
     totalReleases: releases.length,
-    lastUpdated: (mostRecent ?? releases[0])?.displayDate ?? null,
+    lastUpdated: latest?.displayDate ?? null,
+    latestKey: latest?.key ?? null,
   };
 }

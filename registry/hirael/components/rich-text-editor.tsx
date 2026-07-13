@@ -486,8 +486,6 @@ function RichTextEditorLinkBubble() {
   const rafRef = React.useRef(0);
   const [, reposition] = React.useReducer((n: number) => n + 1, 0);
 
-  React.useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
-
   React.useEffect(() => {
     editingRef.current = editing;
   }, [editing]);
@@ -498,6 +496,14 @@ function RichTextEditorLinkBubble() {
       hideTimer.current = null;
     }
   }, []);
+
+  React.useEffect(
+    () => () => {
+      cancelAnimationFrame(rafRef.current);
+      clearHide();
+    },
+    [clearHide],
+  );
 
   const linkFromNode = React.useCallback(
     (node: Node | null | undefined): HTMLAnchorElement | null => {

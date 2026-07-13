@@ -503,10 +503,8 @@ export function useLazySelectOptions<T>(
     } catch (e) {
       if (id === reqId.current) setError(e);
     } finally {
-      if (id === reqId.current) {
-        loadingMoreRef.current = false;
-        setLoadingMore(false);
-      }
+      loadingMoreRef.current = false;
+      setLoadingMore(false);
     }
   }, [enabled, query, loader, map, setHasMoreBoth]);
 

@@ -43,7 +43,7 @@ export async function generateMetadata({
     entry.category !== category
   )
     return {};
-  return detailMetadata(entry);
+  return detailMetadata(entry, { ownOgImage: true });
 }
 
 /**

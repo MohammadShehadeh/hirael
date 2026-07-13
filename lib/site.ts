@@ -57,12 +57,21 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
  * format exactly (bare title dash-joined with the site name for components;
  * "<suffix> | Hirael" for blocks/templates) so this extraction changes no
  * rendered output.
+ *
+ * `ownOgImage` opts out of the site-wide `images` entry so Next's
+ * file-convention resolver fills in the route's own `opengraph-image`
+ * segment file instead — set by routes that ship a per-item
+ * `opengraph-image.tsx` (see the components detail route). We can't
+ * construct that URL by hand here: Next appends a content-hash suffix
+ * (e.g. `opengraph-image-1x58wt?<hash>`) to per-param generated images that
+ * isn't known at `generateMetadata` time, so explicitly setting `images`
+ * would point at a URL that doesn't match the emitted file.
  */
 export function detailMetadata(
   entry: RegistryEntryMeta,
-  opts: { titleSuffix?: string } = {},
+  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},
 ): Metadata {
-  const { titleSuffix } = opts;
+  const { titleSuffix, ownOgImage } = opts;
   const href = entryHref(entry);
   const url = `${SITE.url}${href}`;
   const pageTitle = titleSuffix ? `${entry.title} ${titleSuffix}` : entry.title;
@@ -81,20 +90,24 @@ export function detailMetadata(
       siteName: SITE.name,
       title: ogTitle,
       description: entry.description,
-      images: [
-        {
-          url: "/opengraph-image",
-          width: 1200,
-          height: 630,
-          alt: ogTitle,
-        },
-      ],
+      ...(ownOgImage
+        ? {}
+        : {
+            images: [
+              {
+                url: "/opengraph-image",
+                width: 1200,
+                height: 630,
+                alt: ogTitle,
+              },
+            ],
+          }),
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: entry.description,
-      images: ["/opengraph-image"],
+      ...(ownOgImage ? {} : { images: ["/opengraph-image"] }),
     },
   };
 }

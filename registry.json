@@ -36,9 +36,7 @@
       "categories": [
         "inputs"
       ],
-      "dependencies": [
-        "@radix-ui/react-slider"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "input",
         "slider"
@@ -705,7 +703,6 @@
         "faq"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -730,9 +727,7 @@
         "blocks",
         "faq"
       ],
-      "dependencies": [
-        "@radix-ui/react-accordion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://hirael.com/r/accordion.json"
       ],
@@ -754,7 +749,6 @@
         "faq"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -781,9 +775,7 @@
         "blocks",
         "faq"
       ],
-      "dependencies": [
-        "@radix-ui/react-accordion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://hirael.com/r/accordion.json"
       ],
@@ -1997,7 +1989,6 @@
         "display"
       ],
       "dependencies": [
-        "@radix-ui/react-slider",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2261,7 +2252,7 @@
       "name": "dock",
       "type": "registry:ui",
       "title": "Dock",
-      "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+      "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on motion.",
       "categories": [
         "navigation"
       ],
@@ -3730,8 +3721,8 @@
         "primitives"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
+        "lucide-react",
+        "radix-ui"
       ],
       "registryDependencies": [],
       "files": [

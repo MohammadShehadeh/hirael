@@ -109,7 +109,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/number-range.tsx" }],
     registryDependencies: ["slider", "input"],
-    dependencies: ["@radix-ui/react-slider"],
+    dependencies: [],
   },
   {
     name: "year-picker",
@@ -532,7 +532,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button", "accordion", "card"],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "faq-02",
@@ -549,7 +549,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["accordion"],
-    dependencies: ["@radix-ui/react-accordion"],
+    dependencies: [],
   },
   {
     name: "faq-03",
@@ -572,7 +572,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "input-group",
       "tabs",
     ],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "faq-04",
@@ -589,7 +589,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["accordion"],
-    dependencies: ["@radix-ui/react-accordion"],
+    dependencies: [],
   },
   {
     name: "login-01",
@@ -1352,7 +1352,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     files: [{ path: "registry/hirael/components/audio-player.tsx" }],
     registryDependencies: ["button", "slider"],
-    dependencies: ["@radix-ui/react-slider", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "media-input",
@@ -1478,7 +1478,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dock",
     title: "Dock",
     description:
-      "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+      "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on motion.",
     category: "navigation",
     files: [{ path: "registry/hirael/components/dock.tsx" }],
     registryDependencies: [],
@@ -2549,7 +2549,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     categories: ["primitives"],
     files: [{ path: "registry/hirael/ui/accordion.tsx" }],
     registryDependencies: [],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["radix-ui", "lucide-react"],
   },
   {
     name: "calendar-utils",

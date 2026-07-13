@@ -236,18 +236,27 @@ function MentionInput({
   const activeQuery = mention?.query;
   const activeTrigger = mention?.trigger;
 
+  const onSearchRef = React.useRef(onSearch);
+  React.useEffect(() => {
+    onSearchRef.current = onSearch;
+  });
+
   React.useEffect(() => {
     setActiveIndex(0);
   }, [activeQuery, activeTrigger]);
 
   React.useEffect(() => {
-    if (!onSearch || activeQuery === undefined || activeTrigger === undefined) {
+    if (
+      !onSearchRef.current ||
+      activeQuery === undefined ||
+      activeTrigger === undefined
+    ) {
       return;
     }
     let cancelled = false;
     setLoading(true);
     const t = setTimeout(() => {
-      onSearch(activeQuery, activeTrigger)
+      onSearchRef.current!(activeQuery, activeTrigger)
         .then((res) => {
           if (cancelled) return;
           setAsyncItems(res);
@@ -263,7 +272,7 @@ function MentionInput({
       cancelled = true;
       clearTimeout(t);
     };
-  }, [onSearch, activeQuery, activeTrigger]);
+  }, [activeQuery, activeTrigger]);
 
   React.useLayoutEffect(() => {
     const ta = textareaRef.current;

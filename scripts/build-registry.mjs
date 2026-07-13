@@ -111,6 +111,7 @@ function toRegistryItem(entry, hiraelNames) {
       .sort()
       .map((dep) => resolveDep(dep, hiraelNames)),
     ...(entry.cssVars ? { cssVars: entry.cssVars } : {}),
+    ...(entry.docs ? { docs: entry.docs } : {}),
     ...(files.length ? { files } : {}),
   };
 }

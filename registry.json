@@ -1774,6 +1774,7 @@
         "toggle",
         "tooltip"
       ],
+      "docs": "Pulls in Tiptap's editor engine (seven @tiptap/* packages) — expect a heavier bundle than the other input components.",
       "files": [
         {
           "path": "registry/hirael/components/rich-text-editor.tsx",
@@ -3467,6 +3468,7 @@
         "empty",
         "tooltip"
       ],
+      "docs": "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-06/dashboard-06.tsx",
@@ -3546,6 +3548,7 @@
         "slider",
         "table"
       ],
+      "docs": "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Each file keeps a \"use no memo\" pragma — required for TanStack Table under the React Compiler, so don't remove it.",
       "files": [
         {
           "path": "registry/hirael/components/data-table/data-table.tsx",

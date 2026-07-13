@@ -90,6 +90,12 @@ export type RegistryEntryMeta = {
   blockKind?: BlockKind;
   blockTagline?: string;
   cssVars?: RegistryCssVars;
+  /**
+   * Short post-install note (registry-item schema `docs`) the shadcn CLI
+   * prints after adding the item. Reserve it for items with real setup
+   * beyond the auto-installed `dependencies` — most items need none.
+   */
+  docs?: string;
 };
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -1245,6 +1251,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "@tiptap/extension-placeholder",
       "lucide-react",
     ],
+    docs: "Pulls in Tiptap's editor engine (seven @tiptap/* packages) — expect a heavier bundle than the other input components.",
   },
   {
     name: "inline-edit",
@@ -2325,6 +2332,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ["card", "chart", "empty", "tooltip", "button"],
     dependencies: ["recharts", "lucide-react"],
+    docs: "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
   },
   {
     name: "confirm",
@@ -2436,6 +2444,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "react-day-picker",
       "zod",
     ],
+    docs: "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Each file keeps a \"use no memo\" pragma — required for TanStack Table under the React Compiler, so don't remove it.",
   },
   {
     name: "process-01",

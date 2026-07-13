@@ -91,7 +91,11 @@ function toRegistryItem(entry, hiraelNames) {
     type: file.type ?? type,
     target: file.target ?? (isComposite ? undefined : deriveTarget(file.path)),
   }));
-  if (!files.length) throw new Error(`"${entry.name}": no files`);
+  // A `registry:theme` item ships only `cssVars` — no files to install — so
+  // it's the one type exempt from the "must have files" rule below.
+  if (!files.length && type !== "registry:theme") {
+    throw new Error(`"${entry.name}": no files`);
+  }
   for (const f of files) {
     if (!f.target) throw new Error(`"${entry.name}": missing install target`);
   }
@@ -107,7 +111,8 @@ function toRegistryItem(entry, hiraelNames) {
       .sort()
       .map((dep) => resolveDep(dep, hiraelNames)),
     ...(entry.cssVars ? { cssVars: entry.cssVars } : {}),
-    files,
+    ...(entry.docs ? { docs: entry.docs } : {}),
+    ...(files.length ? { files } : {}),
   };
 }
 

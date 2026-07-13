@@ -3759,6 +3759,29 @@
           "target": "components/calendar-utils.ts"
         }
       ]
+    },
+    {
+      "name": "theme-emerald",
+      "type": "registry:theme",
+      "title": "Emerald theme",
+      "description": "Emerald accent preset for the hirael palette — sets --primary, --primary-foreground and --ring for light and dark.",
+      "categories": [
+        "themes"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "primary": "oklch(0.52 0.14 155)",
+          "primary-foreground": "oklch(0.98 0.01 155)",
+          "ring": "oklch(0.58 0.14 155)"
+        },
+        "dark": {
+          "primary": "oklch(0.72 0.16 155)",
+          "primary-foreground": "oklch(0.14 0.02 155)",
+          "ring": "oklch(0.68 0.16 155)"
+        }
+      }
     }
   ]
 }

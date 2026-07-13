@@ -37,7 +37,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
     "hls.js": "^1.6.16",
     "input-otp": "^1.4.2",

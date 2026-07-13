@@ -331,10 +331,10 @@ into sections.
 
 ## Style
 
-- Registry source style: **2-space indent, double-quoted strings, no
-  trailing semicolons** (match the surrounding file). The repo does not run a
-  separate formatter — don't reformat committed files; reset your editor's
-  formatter on this repo instead.
+- Registry source style: **2-space indent, double-quoted strings,
+  semicolons** (Prettier defaults; match the surrounding file). Prettier runs
+  via lint-staged on commit (`.husky/pre-commit`), auto-formatting staged
+  files.
 - Prefer named exports; default exports are reserved for Next.js route/page
   files.
 - Use the `@/` path alias, not `../../` chains.

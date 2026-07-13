@@ -12,7 +12,6 @@
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -126,7 +125,6 @@
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2373,7 +2371,6 @@
         "navigation"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3310,9 +3307,7 @@
         "blocks",
         "footer"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "button"
       ],

@@ -99,7 +99,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/multi-select.tsx" }],
     registryDependencies: ["popover", "command", "badge"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "number-range",
@@ -149,7 +149,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/lazy-select.tsx" }],
     registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "password-input",
@@ -1542,7 +1542,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "navigation",
     files: [{ path: "registry/hirael/components/tenant-switcher.tsx" }],
     registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "kpi-grid",
@@ -2220,7 +2220,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button"],
-    dependencies: ["lucide-react"],
+    dependencies: [],
   },
   {
     name: "faq-05",

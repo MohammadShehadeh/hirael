@@ -546,14 +546,18 @@ function QRCode({
   ...props
 }: QRCodeProps) {
   const { d, dim } = React.useMemo(() => {
-    const matrix = encodeQR(value, level);
-    let path = "";
-    for (let y = 0; y < matrix.length; y++) {
-      for (let x = 0; x < matrix.length; x++) {
-        if (matrix[y][x]) path += `M${x + margin} ${y + margin}h1v1h-1z`;
+    try {
+      const matrix = encodeQR(value, level);
+      let path = "";
+      for (let y = 0; y < matrix.length; y++) {
+        for (let x = 0; x < matrix.length; x++) {
+          if (matrix[y][x]) path += `M${x + margin} ${y + margin}h1v1h-1z`;
+        }
       }
+      return { d: path, dim: matrix.length + margin * 2 };
+    } catch {
+      return { d: "", dim: margin * 2 };
     }
-    return { d: path, dim: matrix.length + margin * 2 };
   }, [value, level, margin]);
 
   return (

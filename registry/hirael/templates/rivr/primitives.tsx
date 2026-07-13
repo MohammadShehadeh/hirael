@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import type { MotionProps } from "framer-motion";
+import type { MotionProps } from "motion/react";
 
 import { cn } from "@/lib/utils";
 

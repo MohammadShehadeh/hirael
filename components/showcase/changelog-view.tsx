@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/showcase/site-footer";
 import { SiteHeader } from "@/components/showcase/site-header";
 import type { Changelog } from "@/lib/changelog";
 
-export function ChangelogView({ releases, lastUpdated }: Changelog) {
+export function ChangelogView({ releases, lastUpdated, latestKey }: Changelog) {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
@@ -37,7 +37,7 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
             </p>
           ) : (
             <div className="mt-14 space-y-5">
-              {releases.map((release, index) => (
+              {releases.map((release) => (
                 <section
                   key={release.key}
                   aria-labelledby={`release-${release.key}`}
@@ -53,7 +53,7 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
                         "Release"
                       )}
                     </p>
-                    {index === 0 ? (
+                    {release.key === latestKey ? (
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                         <span className="state-dot" />
                         Latest
@@ -76,15 +76,18 @@ export function ChangelogView({ releases, lastUpdated }: Changelog) {
 
                   {release.summarySections.length > 0 ? (
                     <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                      {release.summarySections.map((section) => (
-                        <div key={section.heading}>
+                      {release.summarySections.map((section, i) => (
+                        <div key={`${section.heading}-${i}`}>
                           <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                             {section.heading}
                           </h3>
                           {section.items.length > 0 ? (
                             <ul className="mt-3 space-y-2 text-sm">
-                              {section.items.map((item) => (
-                                <li key={item} className="flex gap-2.5">
+                              {section.items.map((item, i) => (
+                                <li
+                                  key={`${item}-${i}`}
+                                  className="flex gap-2.5"
+                                >
                                   <span
                                     aria-hidden
                                     className="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground/50"

@@ -5,7 +5,7 @@ import {
   useReducedMotion,
   type MotionProps,
   type Transition,
-} from "framer-motion";
+} from "motion/react";
 
 import { cn } from "@/lib/utils";
 

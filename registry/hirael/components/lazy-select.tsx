@@ -451,6 +451,13 @@ export function useLazySelectOptions<T>(
   const loadingMoreRef = React.useRef(false);
   const hasMoreRef = React.useRef(false);
 
+  const loaderRef = React.useRef(loader);
+  const mapRef = React.useRef(map);
+  React.useEffect(() => {
+    loaderRef.current = loader;
+    mapRef.current = map;
+  });
+
   const setLoadingBoth = React.useCallback((next: boolean) => {
     loadingRef.current = next;
     setLoading(next);
@@ -467,9 +474,9 @@ export function useLazySelectOptions<T>(
       setLoadingBoth(true);
       setError(null);
       try {
-        const res = await loader({ query, page: 0 });
+        const res = await loaderRef.current({ query, page: 0 });
         if (id !== reqId.current) return;
-        setOptions(res.items.map(map));
+        setOptions(res.items.map(mapRef.current));
         pageRef.current = 0;
         setHasMoreBoth(res.hasMore);
       } catch (e) {
@@ -479,7 +486,7 @@ export function useLazySelectOptions<T>(
       }
     }, debounce);
     return () => clearTimeout(t);
-  }, [query, enabled, loader, map, debounce, setLoadingBoth, setHasMoreBoth]);
+  }, [query, enabled, debounce, setLoadingBoth, setHasMoreBoth]);
 
   const loadMore = React.useCallback(async () => {
     if (
@@ -503,10 +510,8 @@ export function useLazySelectOptions<T>(
     } catch (e) {
       if (id === reqId.current) setError(e);
     } finally {
-      if (id === reqId.current) {
-        loadingMoreRef.current = false;
-        setLoadingMore(false);
-      }
+      loadingMoreRef.current = false;
+      setLoadingMore(false);
     }
   }, [enabled, query, loader, map, setHasMoreBoth]);
 

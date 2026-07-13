@@ -58,8 +58,8 @@ host.
 
 ```
 registry/hirael/
-  ui/<component>.tsx         # source (flat compound exports), alongside
-                             # the shadcn primitives the registry imports
+  ui/<primitive>.tsx         # shadcn primitives only
+  components/<name>.tsx      # hirael's added components (multi-file kits as components/<name>/)
   examples/<component>-demo.tsx  # showcase demo per component
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates

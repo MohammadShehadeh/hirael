@@ -12,7 +12,6 @@
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -36,9 +35,7 @@
       "categories": [
         "inputs"
       ],
-      "dependencies": [
-        "@radix-ui/react-slider"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "input",
         "slider"
@@ -128,7 +125,6 @@
         "inputs"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -705,7 +701,6 @@
         "faq"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -730,9 +725,7 @@
         "blocks",
         "faq"
       ],
-      "dependencies": [
-        "@radix-ui/react-accordion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://hirael.com/r/accordion.json"
       ],
@@ -754,7 +747,6 @@
         "faq"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -781,9 +773,7 @@
         "blocks",
         "faq"
       ],
-      "dependencies": [
-        "@radix-ui/react-accordion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://hirael.com/r/accordion.json"
       ],
@@ -1774,6 +1764,7 @@
         "toggle",
         "tooltip"
       ],
+      "docs": "Pulls in Tiptap's editor engine (seven @tiptap/* packages) — expect a heavier bundle than the other input components.",
       "files": [
         {
           "path": "registry/hirael/components/rich-text-editor.tsx",
@@ -1997,7 +1988,6 @@
         "display"
       ],
       "dependencies": [
-        "@radix-ui/react-slider",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2261,7 +2251,7 @@
       "name": "dock",
       "type": "registry:ui",
       "title": "Dock",
-      "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+      "description": "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on motion.",
       "categories": [
         "navigation"
       ],
@@ -2382,7 +2372,6 @@
         "navigation"
       ],
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2545,8 +2534,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2647,8 +2636,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "hls.js"
+        "hls.js",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2718,9 +2707,9 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
         "gsap",
-        "hls.js"
+        "hls.js",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2855,8 +2844,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -2991,8 +2980,8 @@
         "templates"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [],
       "files": [
@@ -3319,9 +3308,7 @@
         "blocks",
         "footer"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "button"
       ],
@@ -3467,6 +3454,7 @@
         "empty",
         "tooltip"
       ],
+      "docs": "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
       "files": [
         {
           "path": "registry/hirael/blocks/dashboard-06/dashboard-06.tsx",
@@ -3546,6 +3534,7 @@
         "slider",
         "table"
       ],
+      "docs": "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Each file keeps a \"use no memo\" pragma — required for TanStack Table under the React Compiler, so don't remove it.",
       "files": [
         {
           "path": "registry/hirael/components/data-table/data-table.tsx",
@@ -3730,8 +3719,8 @@
         "primitives"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
+        "lucide-react",
+        "radix-ui"
       ],
       "registryDependencies": [],
       "files": [
@@ -3759,6 +3748,29 @@
           "target": "components/calendar-utils.ts"
         }
       ]
+    },
+    {
+      "name": "theme-emerald",
+      "type": "registry:theme",
+      "title": "Emerald theme",
+      "description": "Emerald accent preset for the hirael palette — sets --primary, --primary-foreground and --ring for light and dark.",
+      "categories": [
+        "themes"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "primary": "oklch(0.52 0.14 155)",
+          "primary-foreground": "oklch(0.98 0.01 155)",
+          "ring": "oklch(0.58 0.14 155)"
+        },
+        "dark": {
+          "primary": "oklch(0.72 0.16 155)",
+          "primary-foreground": "oklch(0.14 0.02 155)",
+          "ring": "oklch(0.68 0.16 155)"
+        }
+      }
     }
   ]
 }

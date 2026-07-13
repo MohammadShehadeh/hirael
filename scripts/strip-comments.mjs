@@ -8,6 +8,29 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import ts from "typescript";
 
+// Byte spans of string / template / regex literals. Their contents are real
+// source the consumer copies verbatim — a regex's `//`, a URL in a string —
+// and must never be treated as a comment or a collapsible blank run. Shared by
+// the JSX-expression comment sweep and the blank-line collapse.
+function protectedLiteralSpans(sf) {
+  const spans = [];
+  function visit(node) {
+    if (
+      ts.isStringLiteralLike(node) ||
+      ts.isTemplateExpression(node) ||
+      ts.isRegularExpressionLiteral(node)
+    ) {
+      spans.push([node.getStart(sf), node.getEnd()]);
+    }
+    ts.forEachChild(node, visit);
+  }
+  visit(sf);
+  return spans;
+}
+
+const inProtectedSpan = (spans, offset) =>
+  spans.some(([s, e]) => offset >= s && offset < e);
+
 function collectCommentRanges(src, fileName) {
   const sf = ts.createSourceFile(
     fileName,
@@ -39,6 +62,10 @@ function collectCommentRanges(src, fileName) {
   // The parser doesn't always attach comments inside JSX children — sweep
   // them manually with the scanner, only inside JSX expression containers.
   // (Top-level block + line comments are already covered above.)
+  // The raw scanner has no expression/regex context, so a `//` inside a regex
+  // literal (e.g. `/^https?:\/\//`) scans as a line comment — guard against it
+  // by rejecting any candidate whose start falls inside a protected literal.
+  const protectedSpans = protectedLiteralSpans(sf);
   const scanner = ts.createScanner(
     ts.ScriptTarget.Latest,
     false,
@@ -56,7 +83,7 @@ function collectCommentRanges(src, fileName) {
       ) {
         const p = scanner.getTokenPos();
         const e = scanner.getTokenEnd();
-        if (p >= start && e <= end) {
+        if (p >= start && e <= end && !inProtectedSpan(protectedSpans, p)) {
           const key = `${p}:${e}`;
           if (!seen.has(key)) {
             seen.add(key);
@@ -89,24 +116,10 @@ function collapseBlankLines(src, fileName) {
     true,
     ts.ScriptKind.TSX,
   );
-  const protectedSpans = [];
-  function visit(node) {
-    if (
-      ts.isStringLiteralLike(node) ||
-      ts.isTemplateExpression(node) ||
-      ts.isRegularExpressionLiteral(node)
-    ) {
-      protectedSpans.push([node.getStart(sf), node.getEnd()]);
-    }
-    ts.forEachChild(node, visit);
-  }
-  visit(sf);
-
-  const inProtected = (offset) =>
-    protectedSpans.some(([s, e]) => offset >= s && offset < e);
+  const protectedSpans = protectedLiteralSpans(sf);
 
   return src.replace(/\n{3,}/g, (match, offset) =>
-    inProtected(offset) ? match : "\n\n",
+    inProtectedSpan(protectedSpans, offset) ? match : "\n\n",
   );
 }
 

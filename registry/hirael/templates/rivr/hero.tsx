@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 
 import { Navbar } from "./navbar";

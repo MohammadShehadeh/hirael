@@ -63,6 +63,17 @@ export type RegistryFileMeta = {
   type?: RegistryFileType;
 };
 
+/**
+ * CSS variables an item ships with (registry-item schema `cssVars`).
+ * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
+ * them into `@theme inline` for Tailwind v4 consumers.
+ */
+export type RegistryCssVars = {
+  theme?: Record<string, string>;
+  light?: Record<string, string>;
+  dark?: Record<string, string>;
+};
+
 export type RegistryEntryMeta = {
   name: string;
   title: string;
@@ -78,16 +89,13 @@ export type RegistryEntryMeta = {
   dependencies?: string[];
   blockKind?: BlockKind;
   blockTagline?: string;
+  cssVars?: RegistryCssVars;
   /**
-   * CSS variables the item ships with (registry-item schema `cssVars`).
-   * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
-   * them into `@theme inline` for Tailwind v4 consumers.
+   * Short post-install note (registry-item schema `docs`) the shadcn CLI
+   * prints after adding the item. Reserve it for items with real setup
+   * beyond the auto-installed `dependencies` — most items need none.
    */
-  cssVars?: {
-    theme?: Record<string, string>;
-    light?: Record<string, string>;
-    dark?: Record<string, string>;
-  };
+  docs?: string;
 };
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -99,7 +107,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/multi-select.tsx" }],
     registryDependencies: ["popover", "command", "badge"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "number-range",
@@ -109,7 +117,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/number-range.tsx" }],
     registryDependencies: ["slider", "input"],
-    dependencies: ["@radix-ui/react-slider"],
+    dependencies: [],
   },
   {
     name: "year-picker",
@@ -149,7 +157,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "inputs",
     files: [{ path: "registry/hirael/components/lazy-select.tsx" }],
     registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "password-input",
@@ -532,7 +540,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button", "accordion", "card"],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "faq-02",
@@ -549,7 +557,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["accordion"],
-    dependencies: ["@radix-ui/react-accordion"],
+    dependencies: [],
   },
   {
     name: "faq-03",
@@ -572,7 +580,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "input-group",
       "tabs",
     ],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "faq-04",
@@ -589,7 +597,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["accordion"],
-    dependencies: ["@radix-ui/react-accordion"],
+    dependencies: [],
   },
   {
     name: "login-01",
@@ -1243,6 +1251,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "@tiptap/extension-placeholder",
       "lucide-react",
     ],
+    docs: "Pulls in Tiptap's editor engine (seven @tiptap/* packages) — expect a heavier bundle than the other input components.",
   },
   {
     name: "inline-edit",
@@ -1352,7 +1361,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "display",
     files: [{ path: "registry/hirael/components/audio-player.tsx" }],
     registryDependencies: ["button", "slider"],
-    dependencies: ["@radix-ui/react-slider", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "media-input",
@@ -1478,7 +1487,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dock",
     title: "Dock",
     description:
-      "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.",
+      "macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on motion.",
     category: "navigation",
     files: [{ path: "registry/hirael/components/dock.tsx" }],
     registryDependencies: [],
@@ -1542,7 +1551,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: "navigation",
     files: [{ path: "registry/hirael/components/tenant-switcher.tsx" }],
     registryDependencies: ["popover", "command"],
-    dependencies: ["cmdk", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "kpi-grid",
@@ -1651,7 +1660,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "agency-landing",
@@ -1745,7 +1754,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "hls.js"],
+    dependencies: ["motion", "hls.js"],
   },
   {
     name: "portfolio",
@@ -1804,7 +1813,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["gsap", "framer-motion", "hls.js"],
+    dependencies: ["gsap", "motion", "hls.js"],
   },
   {
     name: "usd-halo",
@@ -1898,7 +1907,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "velorah",
@@ -2012,7 +2021,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ["framer-motion", "lucide-react"],
+    dependencies: ["motion", "lucide-react"],
   },
   {
     name: "nexacore",
@@ -2220,7 +2229,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button"],
-    dependencies: ["lucide-react"],
+    dependencies: [],
   },
   {
     name: "faq-05",
@@ -2323,6 +2332,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ["card", "chart", "empty", "tooltip", "button"],
     dependencies: ["recharts", "lucide-react"],
+    docs: "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
   },
   {
     name: "confirm",
@@ -2434,6 +2444,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "react-day-picker",
       "zod",
     ],
+    docs: "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Each file keeps a \"use no memo\" pragma — required for TanStack Table under the React Compiler, so don't remove it.",
   },
   {
     name: "process-01",
@@ -2531,12 +2542,17 @@ export type DistributionOnlyEntry = {
   name: string;
   title: string;
   description: string;
-  type: "registry:ui" | "registry:block";
+  type: "registry:ui" | "registry:block" | "registry:theme";
   /** Raw registry.json categories. */
   categories: string[];
-  files: RegistryFileMeta[];
+  /**
+   * Optional because a `registry:theme` item ships only `cssVars` — no
+   * source files to install.
+   */
+  files?: RegistryFileMeta[];
   registryDependencies?: string[];
   dependencies?: string[];
+  cssVars?: RegistryCssVars;
 };
 
 export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
@@ -2549,7 +2565,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     categories: ["primitives"],
     files: [{ path: "registry/hirael/ui/accordion.tsx" }],
     registryDependencies: [],
-    dependencies: ["@radix-ui/react-accordion", "lucide-react"],
+    dependencies: ["radix-ui", "lucide-react"],
   },
   {
     name: "calendar-utils",
@@ -2561,6 +2577,28 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     files: [{ path: "registry/hirael/components/calendar-utils.ts" }],
     registryDependencies: [],
     dependencies: [],
+  },
+  {
+    name: "theme-emerald",
+    title: "Emerald theme",
+    description:
+      "Emerald accent preset for the hirael palette — sets --primary, --primary-foreground and --ring for light and dark.",
+    type: "registry:theme",
+    categories: ["themes"],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: {
+      light: {
+        primary: "oklch(0.52 0.14 155)",
+        "primary-foreground": "oklch(0.98 0.01 155)",
+        ring: "oklch(0.58 0.14 155)",
+      },
+      dark: {
+        primary: "oklch(0.72 0.16 155)",
+        "primary-foreground": "oklch(0.14 0.02 155)",
+        ring: "oklch(0.68 0.16 155)",
+      },
+    },
   },
 ];
 

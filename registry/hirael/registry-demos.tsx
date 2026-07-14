@@ -25,6 +25,7 @@ const BLOCK_LOADERS: Record<
   "feature-02": () => import("@/registry/hirael/blocks/feature-02/feature-02"),
   "pricing-01": () => import("@/registry/hirael/blocks/pricing-01/pricing-01"),
   "pricing-02": () => import("@/registry/hirael/blocks/pricing-02/pricing-02"),
+  "pricing-03": () => import("@/registry/hirael/blocks/pricing-03/pricing-03"),
   "testimonial-01": () =>
     import("@/registry/hirael/blocks/testimonial-01/testimonial-01"),
   "testimonial-02": () =>

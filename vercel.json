@@ -307,6 +307,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/pricing-03",
+      "destination": "/blocks/pricing/pricing-03",
+      "permanent": true
+    },
+    {
       "source": "/blocks/process-01",
       "destination": "/blocks/process/process-01",
       "permanent": true

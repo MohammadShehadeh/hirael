@@ -437,6 +437,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "pricing-03",
+    title: "Pricing 3",
+    description:
+      "Three-tier card row with a monthly/yearly billing toggle that tweens the price, a featured plan, per-plan icon, feature checklist and CTA.",
+    blockTagline: "Billing toggle · animated price · featured plan",
+    category: "blocks",
+    blockKind: "pricing",
+    files: [
+      {
+        path: "registry/hirael/blocks/pricing-03/pricing-03.tsx",
+        target: "components/blocks/pricing-03.tsx",
+      },
+    ],
+    registryDependencies: ["animated-number", "badge", "button", "card"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
     name: "testimonial-01",
     title: "Testimonial 1",
     description:

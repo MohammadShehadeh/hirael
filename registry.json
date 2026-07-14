@@ -579,6 +579,33 @@
       ]
     },
     {
+      "name": "pricing-03",
+      "type": "registry:block",
+      "title": "Pricing 3",
+      "description": "Three-tier card row with a monthly/yearly billing toggle that tweens the price, a featured plan, per-plan icon, feature checklist and CTA.",
+      "categories": [
+        "blocks",
+        "pricing"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://hirael.com/r/animated-number.json",
+        "badge",
+        "button",
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/pricing-03/pricing-03.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/pricing-03.tsx"
+        }
+      ]
+    },
+    {
       "name": "testimonial-01",
       "type": "registry:block",
       "title": "Testimonial 1",

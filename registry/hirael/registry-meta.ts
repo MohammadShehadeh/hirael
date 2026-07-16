@@ -8,6 +8,7 @@ export type ComponentCategory =
   | "navigation"
   | "widgets"
   | "saas"
+  | "cloud"
   | "blocks"
   | "templates";
 
@@ -96,6 +97,25 @@ export type RegistryEntryMeta = {
    * beyond the auto-installed `dependencies` — most items need none.
    */
   docs?: string;
+};
+
+/**
+ * The status palette the cloud components rely on (`--success` / `--warning`
+ * / `--info`) — the same values Callout ships. Attached via `cssVars` so an
+ * item stays self-contained: a consumer installing only a cloud component
+ * still gets the status tokens its source references, without needing Callout.
+ */
+const STATUS_CSS_VARS: RegistryCssVars = {
+  light: {
+    success: "oklch(0.527 0.154 150.069)",
+    warning: "oklch(0.555 0.163 48.998)",
+    info: "oklch(0.55 0.2 260)",
+  },
+  dark: {
+    success: "oklch(0.696 0.17 162.48)",
+    warning: "oklch(0.769 0.188 70.08)",
+    info: "oklch(0.62 0.19 260)",
+  },
 };
 
 export const REGISTRY: RegistryEntryMeta[] = [
@@ -2548,6 +2568,137 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["badge"],
     dependencies: ["lucide-react"],
   },
+  {
+    name: "server-card",
+    title: "Server Card",
+    description:
+      "Host summary card with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/server-card.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "vm-table",
+    title: "VM Table",
+    description:
+      "Instance table with live status dots, size, region, IP and uptime. Self-contained compound parts, no table primitive required.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/vm-table.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "k8s-pod-table",
+    title: "K8s Pod Table",
+    description:
+      "Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/k8s-pod-table.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "metric-card",
+    title: "Metric Card",
+    description:
+      "Infrastructure metric card with a value and unit, a tone-aware sparkline and a trend line. CPU, latency, error rate and the like. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/metric-card.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "resource-status",
+    title: "Resource Status",
+    description:
+      "Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state and uptime. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/resource-status.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "cluster-map",
+    title: "Cluster Map",
+    description:
+      "Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/cluster-map.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "network-topology",
+    title: "Network Topology",
+    description:
+      "Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/network-topology.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "storage-browser",
+    title: "Storage Browser",
+    description:
+      "Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/storage-browser.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "log-viewer",
+    title: "Log Viewer",
+    description:
+      "Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/log-viewer.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "terminal",
+    title: "Terminal",
+    description:
+      "Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/terminal.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "yaml-editor",
+    title: "YAML Editor",
+    description:
+      "Editable YAML field with dependency-free syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/yaml-editor.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "deployment-history",
+    title: "Deployment History",
+    description:
+      "Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta. Compound API.",
+    category: "cloud",
+    files: [{ path: "registry/hirael/components/deployment-history.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
 ];
 
 /**
@@ -2633,6 +2784,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   navigation: "Navigation",
   widgets: "Widgets",
   saas: "SaaS",
+  cloud: "Cloud",
   blocks: "Blocks",
   templates: "Templates",
 };
@@ -2648,6 +2800,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     navigation: [],
     widgets: [],
     saas: [],
+    cloud: [],
     blocks: [],
     templates: [],
   };
@@ -2790,6 +2943,7 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "navigation",
   "widgets",
   "saas",
+  "cloud",
 ];
 
 /** One-line, human blurb for each component category landing page. */
@@ -2811,6 +2965,8 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   widgets:
     "Composite dashboard panels: KPI grids, notifications, quick actions.",
   saas: "Billing, plans, API keys and usage panels for product settings.",
+  cloud:
+    "Infrastructure and DevOps UI: servers, VMs, pods, metrics, logs, terminals and topology.",
 };
 
 /**

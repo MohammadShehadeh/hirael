@@ -93,7 +93,7 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
 - **Registry pipeline** — `registry-meta.ts` as the single source of truth,
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
-- **Catalog** — 75 registry UI items (73 components + 2 distribution-only
+- **Catalog** — 87 registry UI items (85 components + 2 distribution-only
   primitives), 61 blocks, and 9 full-page templates (Creative Studio,
   Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah,
   Asme). Full list in [catalog.md](./catalog.md).

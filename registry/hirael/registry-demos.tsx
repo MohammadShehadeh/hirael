@@ -246,6 +246,27 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
   "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
+  "server-card-demo": () =>
+    import("@/registry/hirael/examples/server-card-demo"),
+  "vm-table-demo": () => import("@/registry/hirael/examples/vm-table-demo"),
+  "log-viewer-demo": () => import("@/registry/hirael/examples/log-viewer-demo"),
+  "yaml-editor-demo": () =>
+    import("@/registry/hirael/examples/yaml-editor-demo"),
+  "terminal-demo": () => import("@/registry/hirael/examples/terminal-demo"),
+  "resource-status-demo": () =>
+    import("@/registry/hirael/examples/resource-status-demo"),
+  "cluster-map-demo": () =>
+    import("@/registry/hirael/examples/cluster-map-demo"),
+  "metric-card-demo": () =>
+    import("@/registry/hirael/examples/metric-card-demo"),
+  "storage-browser-demo": () =>
+    import("@/registry/hirael/examples/storage-browser-demo"),
+  "network-topology-demo": () =>
+    import("@/registry/hirael/examples/network-topology-demo"),
+  "k8s-pod-table-demo": () =>
+    import("@/registry/hirael/examples/k8s-pod-table-demo"),
+  "deployment-history-demo": () =>
+    import("@/registry/hirael/examples/deployment-history-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

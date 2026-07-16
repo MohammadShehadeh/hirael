@@ -10,7 +10,7 @@ The catalog spans three tiers: **components** (the composable UI components
 hirael adds, in `registry/hirael/components/`; `ui/` is reserved for the
 shadcn primitives they build on), **blocks** (marketing / app sections), and
 **templates** (full, multi-section
-pages). As of the last update: **75 registry UI items** (73 standalone
+pages). As of the last update: **87 registry UI items** (85 standalone
 components + 2 distribution-only primitives), **61 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
@@ -155,6 +155,30 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 
 > The SaaS "Audit Logs" view is served by the `audit-log` component (Data
 > display) rather than a near-duplicate entry.
+
+#### Cloud (12)
+
+Infrastructure and DevOps UI for consoles, status pages and dashboards.
+Every status-bearing item ships the `--success` / `--warning` / `--info`
+tokens via `cssVars` (the same set Callout ships), so it stays self-contained
+in a consumer repo. All are token-only and RTL-aware; the terminal, YAML
+editor and topology set `dir="ltr"` internally, since that geometry is
+genuinely physical.
+
+| Component            | Registry deps | What it is                                                                                                                                   |
+| -------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `server-card`        | —             | Host summary card with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Compound API.                     |
+| `vm-table`           | —             | Instance table with live status dots, size, region, IP and uptime. Self-contained compound parts, no table primitive required.               |
+| `k8s-pod-table`      | —             | Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods.               |
+| `metric-card`        | —             | Infrastructure metric card with a value and unit, a tone-aware sparkline and a trend line. CPU, latency, error rate and the like.            |
+| `resource-status`    | —             | Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state.        |
+| `cluster-map`        | —             | Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Compound API.                          |
+| `network-topology`   | —             | Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Compound API.            |
+| `storage-browser`    | —             | Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Compound API.                  |
+| `log-viewer`         | —             | Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Compound API.           |
+| `terminal`           | —             | Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Compound API.                   |
+| `yaml-editor`        | —             | Editable YAML field with dependency-free syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.            |
+| `deployment-history` | —             | Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta. |
 
 #### Primitives — distribution-only (2)
 

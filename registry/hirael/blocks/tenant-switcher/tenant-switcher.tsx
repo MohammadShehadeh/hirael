@@ -349,3 +349,39 @@ export {
   TenantSwitcherItem,
   TenantSwitcherCreate,
 };
+
+const TENANT_WORKSPACES: Tenant[] = [
+  { value: "personal", label: "Personal", caption: "Free", group: "Personal" },
+  { value: "acme", label: "Acme Inc", caption: "Pro plan", group: "Teams" },
+  { value: "globex", label: "Globex", caption: "Enterprise", group: "Teams" },
+  { value: "initech", label: "Initech", caption: "Pro plan", group: "Teams" },
+];
+
+export default function TenantSwitcherBlock() {
+  const [workspace, setWorkspace] = React.useState<string | undefined>("acme");
+
+  return (
+    <section
+      data-slot="tenant-switcher-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="grid w-full max-w-sm gap-2">
+        <span className="text-sm font-medium text-foreground">Workspace</span>
+        <TenantSwitcher
+          tenants={TENANT_WORKSPACES}
+          value={workspace}
+          onValueChange={setWorkspace}
+        >
+          <TenantSwitcherTrigger />
+          <TenantSwitcherContent
+            footer={
+              <TenantSwitcherCreate onClick={() => setWorkspace("personal")}>
+                Create workspace
+              </TenantSwitcherCreate>
+            }
+          />
+        </TenantSwitcher>
+      </div>
+    </section>
+  );
+}

@@ -2073,29 +2073,33 @@
     },
     {
       "name": "activity-feed",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Activity Feed",
-      "description": "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
+      "description": "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Ships composable parts.",
       "categories": [
-        "data"
+        "blocks",
+        "widgets"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/activity-feed.tsx",
-          "type": "registry:ui",
-          "target": "components/activity-feed.tsx"
+          "path": "registry/hirael/blocks/activity-feed/activity-feed.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/activity-feed.tsx"
         }
       ]
     },
     {
       "name": "audit-log",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Audit Log",
-      "description": "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
+      "description": "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Composable disclosure parts.",
       "categories": [
-        "data"
+        "blocks",
+        "saas"
       ],
       "dependencies": [
         "class-variance-authority",
@@ -2106,9 +2110,9 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/components/audit-log.tsx",
-          "type": "registry:ui",
-          "target": "components/audit-log.tsx"
+          "path": "registry/hirael/blocks/audit-log/audit-log.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/audit-log.tsx"
         }
       ]
     },
@@ -2370,11 +2374,12 @@
     },
     {
       "name": "inspector-panel",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Inspector Panel",
-      "description": "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
+      "description": "Design-tool inspector with a header, collapsible sections and label/control rows. Composable parts for property panels and sidebars.",
       "categories": [
-        "navigation"
+        "blocks",
+        "widgets"
       ],
       "dependencies": [
         "lucide-react"
@@ -2384,19 +2389,20 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/components/inspector-panel.tsx",
-          "type": "registry:ui",
-          "target": "components/inspector-panel.tsx"
+          "path": "registry/hirael/blocks/inspector-panel/inspector-panel.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/inspector-panel.tsx"
         }
       ]
     },
     {
       "name": "tenant-switcher",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Tenant Switcher",
-      "description": "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
+      "description": "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Ships composable parts.",
       "categories": [
-        "navigation"
+        "blocks",
+        "widgets"
       ],
       "dependencies": [
         "lucide-react"
@@ -2407,18 +2413,19 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/components/tenant-switcher.tsx",
-          "type": "registry:ui",
-          "target": "components/tenant-switcher.tsx"
+          "path": "registry/hirael/blocks/tenant-switcher/tenant-switcher.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/tenant-switcher.tsx"
         }
       ]
     },
     {
       "name": "kpi-grid",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "KPI Grid",
-      "description": "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
+      "description": "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Ships composable parts.",
       "categories": [
+        "blocks",
         "widgets"
       ],
       "dependencies": [
@@ -2427,74 +2434,81 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/kpi-grid.tsx",
-          "type": "registry:ui",
-          "target": "components/kpi-grid.tsx"
+          "path": "registry/hirael/blocks/kpi-grid/kpi-grid.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/kpi-grid.tsx"
         }
       ]
     },
     {
       "name": "quick-actions",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Quick Actions",
-      "description": "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
+      "description": "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Ships composable parts.",
       "categories": [
+        "blocks",
         "widgets"
       ],
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@radix-ui/react-slot",
+        "lucide-react"
       ],
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/quick-actions.tsx",
-          "type": "registry:ui",
-          "target": "components/quick-actions.tsx"
+          "path": "registry/hirael/blocks/quick-actions/quick-actions.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/quick-actions.tsx"
         }
       ]
     },
     {
       "name": "notifications",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Notifications",
-      "description": "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
+      "description": "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Ships composable parts.",
       "categories": [
+        "blocks",
         "widgets"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/notifications.tsx",
-          "type": "registry:ui",
-          "target": "components/notifications.tsx"
+          "path": "registry/hirael/blocks/notifications/notifications.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/notifications.tsx"
         }
       ]
     },
     {
       "name": "billing-card",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Billing Card",
-      "description": "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
+      "description": "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Composable parts for billing settings.",
       "categories": [
+        "blocks",
         "saas"
       ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/billing-card.tsx",
-          "type": "registry:ui",
-          "target": "components/billing-card.tsx"
+          "path": "registry/hirael/blocks/billing-card/billing-card.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/billing-card.tsx"
         }
       ]
     },
     {
       "name": "subscription-plans",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Subscription Plans",
-      "description": "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
+      "description": "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Ships composable parts.",
       "categories": [
+        "blocks",
         "saas"
       ],
       "dependencies": [
@@ -2506,18 +2520,19 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/components/subscription-plans.tsx",
-          "type": "registry:ui",
-          "target": "components/subscription-plans.tsx"
+          "path": "registry/hirael/blocks/subscription-plans/subscription-plans.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/subscription-plans.tsx"
         }
       ]
     },
     {
       "name": "api-keys",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "API Keys",
-      "description": "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
+      "description": "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Ships composable parts.",
       "categories": [
+        "blocks",
         "saas"
       ],
       "dependencies": [
@@ -2528,27 +2543,28 @@
       ],
       "files": [
         {
-          "path": "registry/hirael/components/api-keys.tsx",
-          "type": "registry:ui",
-          "target": "components/api-keys.tsx"
+          "path": "registry/hirael/blocks/api-keys/api-keys.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/api-keys.tsx"
         }
       ]
     },
     {
       "name": "usage-dashboard",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Usage Dashboard",
-      "description": "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
+      "description": "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Ships composable parts.",
       "categories": [
+        "blocks",
         "saas"
       ],
       "dependencies": [],
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/hirael/components/usage-dashboard.tsx",
-          "type": "registry:ui",
-          "target": "components/usage-dashboard.tsx"
+          "path": "registry/hirael/blocks/usage-dashboard/usage-dashboard.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/usage-dashboard.tsx"
         }
       ]
     },

@@ -6,8 +6,6 @@ export type ComponentCategory =
   | "display"
   | "animation"
   | "navigation"
-  | "widgets"
-  | "saas"
   | "blocks"
   | "templates";
 
@@ -34,7 +32,9 @@ export type BlockKind =
   | "integrations"
   | "image-gallery"
   | "app-shell"
-  | "cloud";
+  | "cloud"
+  | "saas"
+  | "widgets";
 
 export type RegistryFileType =
   | "registry:ui"
@@ -1424,19 +1424,33 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "activity-feed",
     title: "Activity Feed",
     description:
-      "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.",
-    category: "data",
-    files: [{ path: "registry/hirael/components/activity-feed.tsx" }],
+      "Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Ships composable parts.",
+    blockTagline: "Event feed · rail · timestamps",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/activity-feed/activity-feed.tsx",
+        target: "components/blocks/activity-feed.tsx",
+      },
+    ],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["lucide-react"],
   },
   {
     name: "audit-log",
     title: "Audit Log",
     description:
-      "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.",
-    category: "data",
-    files: [{ path: "registry/hirael/components/audit-log.tsx" }],
+      "Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Composable disclosure parts.",
+    blockTagline: "Event log · expandable rows",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/audit-log/audit-log.tsx",
+        target: "components/blocks/audit-log.tsx",
+      },
+    ],
     registryDependencies: ["collapsible"],
     dependencies: ["lucide-react", "class-variance-authority"],
   },
@@ -1574,9 +1588,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "inspector-panel",
     title: "Inspector Panel",
     description:
-      "Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.",
-    category: "navigation",
-    files: [{ path: "registry/hirael/components/inspector-panel.tsx" }],
+      "Design-tool inspector with a header, collapsible sections and label/control rows. Composable parts for property panels and sidebars.",
+    blockTagline: "Property panel · sections · rows",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/inspector-panel/inspector-panel.tsx",
+        target: "components/blocks/inspector-panel.tsx",
+      },
+    ],
     registryDependencies: ["collapsible"],
     dependencies: ["lucide-react"],
   },
@@ -1584,9 +1605,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "tenant-switcher",
     title: "Tenant Switcher",
     description:
-      "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Compound API.",
-    category: "navigation",
-    files: [{ path: "registry/hirael/components/tenant-switcher.tsx" }],
+      "Workspace, organization or project switcher for multi-tenant apps. Logo or initials, plan or role caption, grouped and searchable list, and a create action. Ships composable parts.",
+    blockTagline: "Workspace switcher · grouped · search",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/tenant-switcher/tenant-switcher.tsx",
+        target: "components/blocks/tenant-switcher.tsx",
+      },
+    ],
     registryDependencies: ["popover", "command"],
     dependencies: ["lucide-react"],
   },
@@ -1594,9 +1622,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "kpi-grid",
     title: "KPI Grid",
     description:
-      "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Compound API.",
-    category: "widgets",
-    files: [{ path: "registry/hirael/components/kpi-grid.tsx" }],
+      "Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Ships composable parts.",
+    blockTagline: "KPI tiles · delta · sparkline",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/kpi-grid/kpi-grid.tsx",
+        target: "components/blocks/kpi-grid.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -1604,29 +1639,50 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "quick-actions",
     title: "Quick Actions",
     description:
-      "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Compound API.",
-    category: "widgets",
-    files: [{ path: "registry/hirael/components/quick-actions.tsx" }],
+      "Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Ships composable parts.",
+    blockTagline: "Shortcut tiles · icon · label",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/quick-actions/quick-actions.tsx",
+        target: "components/blocks/quick-actions.tsx",
+      },
+    ],
     registryDependencies: [],
-    dependencies: ["@radix-ui/react-slot"],
+    dependencies: ["@radix-ui/react-slot", "lucide-react"],
   },
   {
     name: "notifications",
     title: "Notifications",
     description:
-      "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Compound API.",
-    category: "widgets",
-    files: [{ path: "registry/hirael/components/notifications.tsx" }],
+      "Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Ships composable parts.",
+    blockTagline: "Notification panel · unread marker",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/notifications/notifications.tsx",
+        target: "components/blocks/notifications.tsx",
+      },
+    ],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["lucide-react"],
   },
   {
     name: "billing-card",
     title: "Billing Card",
     description:
-      "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Compound API for billing settings.",
-    category: "saas",
-    files: [{ path: "registry/hirael/components/billing-card.tsx" }],
+      "Current-plan summary with price, a usage meter, billing detail rows and footer actions. Composable parts for billing settings.",
+    blockTagline: "Plan summary · meter · actions",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/billing-card/billing-card.tsx",
+        target: "components/blocks/billing-card.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1634,9 +1690,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "subscription-plans",
     title: "Subscription Plans",
     description:
-      "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Compound API.",
-    category: "saas",
-    files: [{ path: "registry/hirael/components/subscription-plans.tsx" }],
+      "In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. Ships composable parts.",
+    blockTagline: "Plan selector · featured · current",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/subscription-plans/subscription-plans.tsx",
+        target: "components/blocks/subscription-plans.tsx",
+      },
+    ],
     registryDependencies: ["badge", "button"],
     dependencies: ["lucide-react"],
   },
@@ -1644,9 +1707,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "api-keys",
     title: "API Keys",
     description:
-      "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Compound API.",
-    category: "saas",
-    files: [{ path: "registry/hirael/components/api-keys.tsx" }],
+      "API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Ships composable parts.",
+    blockTagline: "Key manager · reveal · copy",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/api-keys/api-keys.tsx",
+        target: "components/blocks/api-keys.tsx",
+      },
+    ],
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
@@ -1654,9 +1724,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "usage-dashboard",
     title: "Usage Dashboard",
     description:
-      "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Compound API.",
-    category: "saas",
-    files: [{ path: "registry/hirael/components/usage-dashboard.tsx" }],
+      "Metered usage panel with per-resource progress bars that tint amber near the limit and red over it. Ships composable parts.",
+    blockTagline: "Metered usage · limit tints",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/usage-dashboard/usage-dashboard.tsx",
+        target: "components/blocks/usage-dashboard.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
   },
@@ -2852,8 +2929,6 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   display: "Display",
   animation: "Animation",
   navigation: "Navigation",
-  widgets: "Widgets",
-  saas: "SaaS",
   blocks: "Blocks",
   templates: "Templates",
 };
@@ -2867,8 +2942,6 @@ export const REGISTRY_BY_CATEGORY = (() => {
     display: [],
     animation: [],
     navigation: [],
-    widgets: [],
-    saas: [],
     blocks: [],
     templates: [],
   };
@@ -2934,6 +3007,8 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   "image-gallery": "Image gallery",
   "app-shell": "App shell",
   cloud: "Cloud",
+  saas: "SaaS",
+  widgets: "Widgets",
 };
 
 export const BLOCKS_BY_KIND = (() => {
@@ -2961,6 +3036,8 @@ export const BLOCKS_BY_KIND = (() => {
     "image-gallery": [],
     "app-shell": [],
     cloud: [],
+    saas: [],
+    widgets: [],
   };
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -2994,6 +3071,8 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "image-gallery",
   "app-shell",
   "cloud",
+  "saas",
+  "widgets",
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -3012,8 +3091,6 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "display",
   "animation",
   "navigation",
-  "widgets",
-  "saas",
 ];
 
 /** One-line, human blurb for each component category landing page. */
@@ -3032,9 +3109,6 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   animation:
     "Scroll reveals, tilts, spotlights and pointer-driven motion. Reduced-motion aware.",
   navigation: "Docks, steppers, toolbars, split views and resizable panels.",
-  widgets:
-    "Composite dashboard panels: KPI grids, notifications, quick actions.",
-  saas: "Billing, plans, API keys and usage panels for product settings.",
 };
 
 /**
@@ -3066,6 +3140,8 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   "image-gallery": "image-gallery",
   "app-shell": "app-shell",
   cloud: "cloud",
+  saas: "saas",
+  widgets: "widgets",
 };
 
 export const BLOCK_KIND_BY_SLUG: Record<string, BlockKind> = Object.fromEntries(

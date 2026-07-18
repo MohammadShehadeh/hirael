@@ -152,3 +152,65 @@ export {
   KpiCardDelta,
   KpiCardSpark,
 };
+
+const KPI_ROWS: {
+  key: string;
+  label: string;
+  value: string;
+  trend: "up" | "down" | "flat";
+  delta: string;
+  spark: number[];
+}[] = [
+  {
+    key: "revenue",
+    label: "Revenue",
+    value: "$48.2k",
+    trend: "up",
+    delta: "+12.4%",
+    spark: [8, 10, 9, 13, 12, 16, 18],
+  },
+  {
+    key: "active-users",
+    label: "Active users",
+    value: "3,914",
+    trend: "up",
+    delta: "+4.1%",
+    spark: [20, 19, 22, 21, 24, 23, 26],
+  },
+  {
+    key: "churn",
+    label: "Churn",
+    value: "1.8%",
+    trend: "down",
+    delta: "-0.3%",
+    spark: [6, 5, 5, 4, 4, 3, 3],
+  },
+  {
+    key: "avg-order",
+    label: "Avg. order",
+    value: "$61.40",
+    trend: "flat",
+    delta: "0.0%",
+    spark: [12, 13, 12, 12, 13, 12, 12],
+  },
+];
+
+export default function KpiGridBlock() {
+  return (
+    <section
+      data-slot="kpi-grid-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <KpiGrid className="w-full max-w-2xl">
+        {KPI_ROWS.map((kpi) => (
+          <KpiCard key={kpi.key}>
+            <KpiCardLabel>{kpi.label}</KpiCardLabel>
+            <KpiCardValue>{kpi.value}</KpiCardValue>
+            <KpiCardDelta trend={kpi.trend}>{kpi.delta}</KpiCardDelta>
+            <KpiCardSpark points={kpi.spark} />
+          </KpiCard>
+        ))}
+      </KpiGrid>
+    </section>
+  );
+}

@@ -10,8 +10,8 @@ The catalog spans three tiers: **components** (the composable UI components
 hirael adds, in `registry/hirael/components/`; `ui/` is reserved for the
 shadcn primitives they build on), **blocks** (marketing / app sections), and
 **templates** (full, multi-section
-pages). As of the last update: **77 registry UI items** (75 standalone
-components + 2 distribution-only primitives), **71 section blocks**, and
+pages). As of the last update: **66 registry UI items** (64 standalone
+components + 2 distribution-only primitives), **83 section blocks**, and
 **9 templates**. Counts come from `registry.json`; the landing page derives
 its counts from `registry-meta.ts`, so treat that file as the truth if these
 drift.
@@ -73,13 +73,11 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `image-cropper` | `slider`      | Pan-and-zoom image cropper with rect or round mask, fixed aspect frame, pinch / wheel / keyboard control and canvas export via ref.          |
 | `media-input`   | `button`      | Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser. |
 
-#### Data display (12)
+#### Data display (10)
 
 | Component          | Registry deps                                                                                                                                | What it is                                                                                                                                                                                                                                                                                                                                        |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activity-feed`    | —                                                                                                                                            | Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Compound API.                                                                                                                                                                                                                  |
 | `animated-number`  | —                                                                                                                                            | Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.                                                                                                                                                                                                    |
-| `audit-log`        | `collapsible`                                                                                                                                | Compliance-style event log with expandable rows that reveal actor, action, status and request metadata. Compound disclosure API.                                                                                                                                                                                                                  |
 | `avatar-stack`     | —                                                                                                                                            | Overlapping avatar group with size and spacing variants, image or fallback, a numeric overflow chip, and `asChild` items so each avatar can be a link or button.                                                                                                                                                                                  |
 | `calendar-heatmap` | `tooltip`                                                                                                                                    | GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.                                                                                                                                                                                                                             |
 | `countdown-timer`  | —                                                                                                                                            | Count-down-to-date timer with boxed / inline / minimal variants, a `useCountdown` hook, digit animation and completion content.                                                                                                                                                                                                                   |
@@ -110,20 +108,18 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `spinner`          | —                                | Loading indicator with circle, dots and bars variants, sm / md / lg sizes. Inherits text color and ships an accessible status label.                                                           |
 | `unsaved-guard`    | `confirm`                        | Unsaved-changes navigation guard from a provider and a `useUnsavedGuard` hook. Warns on reload, tab close and in-app links, with a `guard(proceed)` for programmatic navigation.               |
 
-#### Navigation (10)
+#### Navigation (8)
 
-| Component                | Registry deps        | What it is                                                                                                                                                                                               |
-| ------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tenant-switcher`        | `popover`, `command` | Workspace / organization / project switcher for multi-tenant apps: logo or initials, plan or role caption, grouped searchable list, create action.                                                       |
-| `toc`                    | —                    | On-this-page navigation that tracks the active heading as you scroll and highlights it with a moving border marker. Flat or nested items, or composes from parts. Smooth scroll respects reduced-motion. |
-| `dock`                   | —                    | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.                                                           |
-| `floating-action-button` | —                    | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.                                                                         |
-| `floating-toolbar`       | —                    | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels.                                                                                                 |
-| `inspector-panel`        | `collapsible`        | Design-tool inspector with a header, collapsible sections and label/control rows. Compound API for property panels and sidebars.                                                                         |
-| `resizable-panels`       | —                    | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups.                                                            |
-| `split-view`             | —                    | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation.                                                                          |
-| `stepper`                | —                    | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.                                                        |
-| `tour`                   | `button`             | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.                                                                         |
+| Component                | Registry deps | What it is                                                                                                                                                                                               |
+| ------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `toc`                    | —             | On-this-page navigation that tracks the active heading as you scroll and highlights it with a moving border marker. Flat or nested items, or composes from parts. Smooth scroll respects reduced-motion. |
+| `dock`                   | —             | macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on framer-motion.                                                           |
+| `floating-action-button` | —             | Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.                                                                         |
+| `floating-toolbar`       | —             | Floating pill toolbar for text selection and canvas actions, with toggle buttons, separators and labels.                                                                                                 |
+| `resizable-panels`       | —             | Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups.                                                            |
+| `split-view`             | —             | Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation.                                                                          |
+| `stepper`                | —             | Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.                                                        |
+| `tour`                   | `button`      | Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.                                                                         |
 
 #### Animation (8)
 
@@ -138,29 +134,13 @@ and a breadcrumb trail. Build links with `entryHref(entry)` from
 | `text-reveal`     | —             | Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.                   |
 | `tilt-card`       | —             | 3D pointer tilt with optional cursor-following glare and configurable max angle, scale and perspective. Respects reduced-motion.            |
 
-#### Widgets (3)
-
-| Component       | Registry deps | What it is                                                                                                          |
-| --------------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `kpi-grid`      | —             | Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline.    |
-| `notifications` | —             | Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker.    |
-| `quick-actions` | —             | Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via `asChild`, a link. |
-
-#### SaaS (4)
-
-| Component            | Registry deps | What it is                                                                                             |
-| -------------------- | ------------- | ------------------------------------------------------------------------------------------------------ |
-| `api-keys`           | —             | API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action.                 |
-| `billing-card`       | —             | Current-plan summary with price, a usage meter, billing detail rows and footer actions.                |
-| `subscription-plans` | —             | In-app plan selector with featured and current states, a badge, feature checklist and per-plan action. |
-| `usage-dashboard`    | —             | Metered usage panel with per-resource progress bars that tint amber near the limit and red over it.    |
-
-> The SaaS "Audit Logs" view is served by the `audit-log` component (Data
-> display) rather than a near-duplicate entry.
-
-> The infrastructure widgets that used to be proposed here now live as
-> **Cloud blocks** (see the Blocks section). Only genuinely generic controls
-> stay components: `metric-card` (Data display) and `yaml-editor` (Inputs).
+> The former **Widgets** and **SaaS** component groups are now block kinds
+> (see the Blocks section): dashboard panels (`kpi-grid`, `quick-actions`,
+> `notifications`, `activity-feed`, `inspector-panel`, `tenant-switcher`) and
+> product-account panels (`billing-card`, `subscription-plans`, `api-keys`,
+> `usage-dashboard`, `audit-log`) are single-domain compositions, not generic
+> controls. The genuinely generic ones stayed components: `metric-card` (Data
+> display) and `yaml-editor` (Inputs).
 
 #### Primitives — distribution-only (2)
 
@@ -210,6 +190,8 @@ kind has a category page at `/blocks/<category>` and its blocks at
 | Image gallery  | `image-gallery-01`                                                                                                                                                  | Responsive image gallery.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | App shell      | `app-shell-01`, `app-shell-02`, `app-shell-03`, `app-shell-04`, `app-shell-05`                                                                                      | Sidebar + topbar application shells. `app-shell-05` is an inset collapsible sidebar with grouped nav, an account menu and a breadcrumb header.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | Cloud          | `server-card`, `vm-table`, `k8s-pod-table`, `resource-status`, `cluster-map`, `network-topology`, `storage-browser`, `log-viewer`, `terminal`, `deployment-history` | Infrastructure and DevOps sections built from composable parts: host cards, instance and pod tables, a statuspage, a node heatmap, a topology diagram, an object browser, a log stream, an interactive terminal and a deploy feed. Each block file exports its `data-slot` parts and a ready composition. Token-only and RTL-aware; `terminal` and `network-topology` set `dir="ltr"` internally where the geometry is physical. Status-bearing blocks ship `--success` / `--warning` / `--info` via `cssVars` (as Callout does).                                                                                                                      |
+| SaaS           | `billing-card`, `subscription-plans`, `api-keys`, `usage-dashboard`, `audit-log`                                                                                    | Product-account panels: a plan summary with usage meter, an in-app plan selector, an API-key manager, a metered-usage panel and a compliance audit log. Each block file exports its `data-slot` parts and a ready composition.                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Widgets        | `kpi-grid`, `quick-actions`, `notifications`, `activity-feed`, `inspector-panel`, `tenant-switcher`                                                                 | Composed app-dashboard panels: a KPI tile grid, a shortcut-tile grid, a notifications panel, an event feed, a design-tool inspector and a multi-tenant workspace switcher. Each block file exports its `data-slot` parts and a ready composition.                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 > Block previews render in two places: inline on the block category page and
 > framed inside `app/embed/blocks/[category]/[block]/` (an isolated route so a

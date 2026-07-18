@@ -130,6 +130,25 @@ const BLOCK_LOADERS: Record<
   terminal: () => import("@/registry/hirael/blocks/terminal/terminal"),
   "deployment-history": () =>
     import("@/registry/hirael/blocks/deployment-history/deployment-history"),
+  "billing-card": () =>
+    import("@/registry/hirael/blocks/billing-card/billing-card"),
+  "subscription-plans": () =>
+    import("@/registry/hirael/blocks/subscription-plans/subscription-plans"),
+  "api-keys": () => import("@/registry/hirael/blocks/api-keys/api-keys"),
+  "usage-dashboard": () =>
+    import("@/registry/hirael/blocks/usage-dashboard/usage-dashboard"),
+  "audit-log": () => import("@/registry/hirael/blocks/audit-log/audit-log"),
+  "kpi-grid": () => import("@/registry/hirael/blocks/kpi-grid/kpi-grid"),
+  "quick-actions": () =>
+    import("@/registry/hirael/blocks/quick-actions/quick-actions"),
+  notifications: () =>
+    import("@/registry/hirael/blocks/notifications/notifications"),
+  "activity-feed": () =>
+    import("@/registry/hirael/blocks/activity-feed/activity-feed"),
+  "inspector-panel": () =>
+    import("@/registry/hirael/blocks/inspector-panel/inspector-panel"),
+  "tenant-switcher": () =>
+    import("@/registry/hirael/blocks/tenant-switcher/tenant-switcher"),
 };
 
 /** Component examples, keyed by example slug (file basename in examples/). */
@@ -219,9 +238,6 @@ const EXAMPLE_LOADERS: Record<
   "media-input-demo": () =>
     import("@/registry/hirael/examples/media-input-demo"),
   "tour-demo": () => import("@/registry/hirael/examples/tour-demo"),
-  "activity-feed-demo": () =>
-    import("@/registry/hirael/examples/activity-feed-demo"),
-  "audit-log-demo": () => import("@/registry/hirael/examples/audit-log-demo"),
   "blur-reveal-demo": () =>
     import("@/registry/hirael/examples/blur-reveal-demo"),
   "text-reveal-demo": () =>
@@ -245,22 +261,6 @@ const EXAMPLE_LOADERS: Record<
   "split-view-demo": () => import("@/registry/hirael/examples/split-view-demo"),
   "resizable-panels-demo": () =>
     import("@/registry/hirael/examples/resizable-panels-demo"),
-  "inspector-panel-demo": () =>
-    import("@/registry/hirael/examples/inspector-panel-demo"),
-  "tenant-switcher-demo": () =>
-    import("@/registry/hirael/examples/tenant-switcher-demo"),
-  "kpi-grid-demo": () => import("@/registry/hirael/examples/kpi-grid-demo"),
-  "quick-actions-demo": () =>
-    import("@/registry/hirael/examples/quick-actions-demo"),
-  "notifications-demo": () =>
-    import("@/registry/hirael/examples/notifications-demo"),
-  "billing-card-demo": () =>
-    import("@/registry/hirael/examples/billing-card-demo"),
-  "subscription-plans-demo": () =>
-    import("@/registry/hirael/examples/subscription-plans-demo"),
-  "api-keys-demo": () => import("@/registry/hirael/examples/api-keys-demo"),
-  "usage-dashboard-demo": () =>
-    import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
   "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
   "metric-card-demo": () =>

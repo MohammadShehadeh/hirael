@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
+import { ArrowLeftRight, FilePlus2, UserPlus, Wallet } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -101,3 +102,33 @@ export {
   QuickActionLabel,
   QuickActionDescription,
 };
+
+const QUICK_ACTION_ROWS = [
+  { icon: FilePlus2, label: "New invoice", description: "Bill a customer" },
+  { icon: UserPlus, label: "Invite", description: "Add a teammate" },
+  { icon: Wallet, label: "Payout", description: "Move funds out" },
+  { icon: ArrowLeftRight, label: "Transfer", description: "Between accounts" },
+];
+
+export default function QuickActionsBlock() {
+  return (
+    <section
+      data-slot="quick-actions-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <QuickActions columns={2} className="w-full max-w-md">
+        {QUICK_ACTION_ROWS.map((action) => (
+          <QuickAction key={action.label}>
+            <QuickActionIcon>
+              <action.icon />
+            </QuickActionIcon>
+            <QuickActionLabel>{action.label}</QuickActionLabel>
+            <QuickActionDescription>
+              {action.description}
+            </QuickActionDescription>
+          </QuickAction>
+        ))}
+      </QuickActions>
+    </section>
+  );
+}

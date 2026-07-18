@@ -93,8 +93,8 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
 - **Registry pipeline** — `registry-meta.ts` as the single source of truth,
   generation + drift check + prop extraction + comment stripping wired into
   `pnpm build`.
-- **Catalog** — 77 registry UI items (75 components + 2 distribution-only
-  primitives), 61 blocks, and 9 full-page templates (Creative Studio,
+- **Catalog** — 66 registry UI items (64 components + 2 distribution-only
+  primitives), 83 blocks, and 9 full-page templates (Creative Studio,
   Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah,
   Asme). Full list in [catalog.md](./catalog.md).
 - **Showcase** — landing with live demos, component/block/template indexes,
@@ -158,16 +158,21 @@ clone URL in the top-level `README.md` / `CONTRIBUTING.md` has been corrected.
   `registry-meta.ts` is the source of truth for whether it exists.
 - **Components are generic controls; domain compositions are blocks.** The
   `components/` tier is for controls reusable across unrelated domains (a
-  table, a rating, a metric card, a code editor). A widget that only makes
-  sense for one domain — an infra console, a statuspage, a pod table — is a
-  **block** under a kind that names that domain, and its block file exports
-  both its `data-slot` parts and a ready composition. The `cloud` block kind
-  is the pilot for this split (`server-card`, `vm-table`, `k8s-pod-table`,
-  `resource-status`, `cluster-map`, `network-topology`, `storage-browser`,
-  `log-viewer`, `terminal`, `deployment-history`); `metric-card` and
-  `yaml-editor` stayed components because they're generic. Older composed
-  components (`data-table`, `usage-dashboard`, …) predate the split and haven't
-  been migrated yet.
+  table, a rating, a metric card, a code editor — composing shadcn primitives
+  is fine; being domain-specific is not). A widget that only makes sense for
+  one domain — an infra console, a statuspage, a pod table, a billing panel —
+  is a **block** under a kind that names that domain, and its block file
+  exports both its `data-slot` parts and a ready composition. Three block
+  kinds hold the migrated domain widgets: **`cloud`** (`server-card`,
+  `vm-table`, `k8s-pod-table`, `resource-status`, `cluster-map`,
+  `network-topology`, `storage-browser`, `log-viewer`, `terminal`,
+  `deployment-history`), **`saas`** (`billing-card`, `subscription-plans`,
+  `api-keys`, `usage-dashboard`, `audit-log`) and **`widgets`** (`kpi-grid`,
+  `quick-actions`, `notifications`, `activity-feed`, `inspector-panel`,
+  `tenant-switcher`). Genuinely generic composed items stayed components on
+  purpose — `data-table` (a table is generic), `metric-card`, `yaml-editor`.
+  The old `widgets` and `saas` component _categories_ are gone; those names
+  are now block kinds.
 
 ## Upstream alignment with shadcn/ui
 

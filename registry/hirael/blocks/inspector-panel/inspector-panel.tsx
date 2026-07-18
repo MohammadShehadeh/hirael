@@ -126,3 +126,58 @@ export {
   InspectorPanelSection,
   InspectorPanelRow,
 };
+
+function InspectorField({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex h-7 w-full items-center rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground">
+      {children}
+    </span>
+  );
+}
+
+export default function InspectorPanelBlock() {
+  return (
+    <section
+      data-slot="inspector-panel-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <InspectorPanel>
+        <InspectorPanelHeader>
+          <InspectorPanelTitle>Inspector</InspectorPanelTitle>
+          <span className="text-xs text-muted-foreground">Frame 12</span>
+        </InspectorPanelHeader>
+
+        <InspectorPanelSection title="Layout">
+          <InspectorPanelRow label="Width">
+            <InspectorField>320</InspectorField>
+          </InspectorPanelRow>
+          <InspectorPanelRow label="Height">
+            <InspectorField>192</InspectorField>
+          </InspectorPanelRow>
+          <InspectorPanelRow label="Radius">
+            <InspectorField>12</InspectorField>
+          </InspectorPanelRow>
+        </InspectorPanelSection>
+
+        <InspectorPanelSection title="Appearance">
+          <InspectorPanelRow label="Fill">
+            <span className="size-4 rounded-sm border border-border bg-foreground/80" />
+            <InspectorField>#18181B</InspectorField>
+          </InspectorPanelRow>
+          <InspectorPanelRow label="Opacity">
+            <InspectorField>100%</InspectorField>
+          </InspectorPanelRow>
+        </InspectorPanelSection>
+
+        <InspectorPanelSection title="Typography" defaultOpen={false}>
+          <InspectorPanelRow label="Size">
+            <InspectorField>14</InspectorField>
+          </InspectorPanelRow>
+          <InspectorPanelRow label="Weight">
+            <InspectorField>Medium</InspectorField>
+          </InspectorPanelRow>
+        </InspectorPanelSection>
+      </InspectorPanel>
+    </section>
+  );
+}

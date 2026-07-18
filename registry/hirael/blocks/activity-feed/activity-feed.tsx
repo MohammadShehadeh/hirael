@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { GitMerge, UserPlus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -188,3 +189,63 @@ export {
   ActivityFeedBody,
   ActivityFeedDivider,
 };
+
+export default function ActivityFeedBlock() {
+  return (
+    <section
+      data-slot="activity-feed-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="grid w-full max-w-xl gap-3">
+        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          Team activity
+        </p>
+        <ActivityFeed>
+          <ActivityFeedDivider>Today</ActivityFeedDivider>
+          <ActivityFeedItem>
+            <ActivityFeedAvatar>
+              <GitMerge className="text-foreground" />
+            </ActivityFeedAvatar>
+            <ActivityFeedContent>
+              <ActivityFeedHeader>
+                <ActivityFeedActor>Lena Park</ActivityFeedActor>
+                <ActivityFeedAction>
+                  merged <span className="font-mono">feat/billing</span> into
+                  main
+                </ActivityFeedAction>
+                <ActivityFeedTime className="ms-auto">14:20</ActivityFeedTime>
+              </ActivityFeedHeader>
+            </ActivityFeedContent>
+          </ActivityFeedItem>
+          <ActivityFeedItem>
+            <ActivityFeedAvatar>MS</ActivityFeedAvatar>
+            <ActivityFeedContent>
+              <ActivityFeedHeader>
+                <ActivityFeedActor>Mara Singh</ActivityFeedActor>
+                <ActivityFeedAction>commented on PR #1284</ActivityFeedAction>
+                <ActivityFeedTime className="ms-auto">13:58</ActivityFeedTime>
+              </ActivityFeedHeader>
+              <ActivityFeedBody>
+                Looks good. Can we add a test for the proration edge case before
+                this ships?
+              </ActivityFeedBody>
+            </ActivityFeedContent>
+          </ActivityFeedItem>
+          <ActivityFeedDivider>Yesterday</ActivityFeedDivider>
+          <ActivityFeedItem>
+            <ActivityFeedAvatar>
+              <UserPlus className="text-foreground" />
+            </ActivityFeedAvatar>
+            <ActivityFeedContent>
+              <ActivityFeedHeader>
+                <ActivityFeedActor>Theo Adams</ActivityFeedActor>
+                <ActivityFeedAction>joined the workspace</ActivityFeedAction>
+                <ActivityFeedTime className="ms-auto">17:02</ActivityFeedTime>
+              </ActivityFeedHeader>
+            </ActivityFeedContent>
+          </ActivityFeedItem>
+        </ActivityFeed>
+      </div>
+    </section>
+  );
+}

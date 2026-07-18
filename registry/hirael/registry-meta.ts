@@ -8,7 +8,6 @@ export type ComponentCategory =
   | "navigation"
   | "widgets"
   | "saas"
-  | "cloud"
   | "blocks"
   | "templates";
 
@@ -34,7 +33,8 @@ export type BlockKind =
   | "dashboard"
   | "integrations"
   | "image-gallery"
-  | "app-shell";
+  | "app-shell"
+  | "cloud";
 
 export type RegistryFileType =
   | "registry:ui"
@@ -2569,12 +2569,41 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "metric-card",
+    title: "Metric Card",
+    description:
+      "Compact metric card with a value and unit, a tone-aware sparkline and an up / down trend line. Compound API.",
+    category: "data",
+    files: [{ path: "registry/hirael/components/metric-card.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "yaml-editor",
+    title: "YAML Editor",
+    description:
+      "Editable code field with dependency-free YAML syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/components/yaml-editor.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
     name: "server-card",
     title: "Server Card",
     description:
-      "Host summary card with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/server-card.tsx" }],
+      "Fleet of host cards, each with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Ships composable parts.",
+    blockTagline: "Host cards · status · usage meters",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/server-card/server-card.tsx",
+        target: "components/blocks/server-card.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
@@ -2583,9 +2612,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "vm-table",
     title: "VM Table",
     description:
-      "Instance table with live status dots, size, region, IP and uptime. Self-contained compound parts, no table primitive required.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/vm-table.tsx" }],
+      "Virtual-machine instance table with live status dots, size, region, IP and uptime. Self-contained parts, no table primitive required.",
+    blockTagline: "Instance table · live status · uptime",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/vm-table/vm-table.tsx",
+        target: "components/blocks/vm-table.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
@@ -2594,31 +2630,34 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "k8s-pod-table",
     title: "K8s Pod Table",
     description:
-      "Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/k8s-pod-table.tsx" }],
+      "Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods.",
+    blockTagline: "Pod phases · ready · restarts",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/k8s-pod-table/k8s-pod-table.tsx",
+        target: "components/blocks/k8s-pod-table.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
-    cssVars: STATUS_CSS_VARS,
-  },
-  {
-    name: "metric-card",
-    title: "Metric Card",
-    description:
-      "Infrastructure metric card with a value and unit, a tone-aware sparkline and a trend line. CPU, latency, error rate and the like. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/metric-card.tsx" }],
-    registryDependencies: [],
-    dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
   },
   {
     name: "resource-status",
     title: "Resource Status",
     description:
-      "Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state and uptime. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/resource-status.tsx" }],
+      "Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state and uptime.",
+    blockTagline: "Statuspage · banner · uptime",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/resource-status/resource-status.tsx",
+        target: "components/blocks/resource-status.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
@@ -2627,9 +2666,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "cluster-map",
     title: "Cluster Map",
     description:
-      "Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/cluster-map.tsx" }],
+      "Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Ships composable parts.",
+    blockTagline: "Node heatmap · health · legend",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/cluster-map/cluster-map.tsx",
+        target: "components/blocks/cluster-map.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
@@ -2638,20 +2684,34 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "network-topology",
     title: "Network Topology",
     description:
-      "Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/network-topology.tsx" }],
+      "Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Ships composable parts.",
+    blockTagline: "Nodes · edges · animated links",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/network-topology/network-topology.tsx",
+        target: "components/blocks/network-topology.tsx",
+      },
+    ],
     registryDependencies: [],
-    dependencies: [],
+    dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
   },
   {
     name: "storage-browser",
     title: "Storage Browser",
     description:
-      "Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/storage-browser.tsx" }],
+      "Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Ships composable parts.",
+    blockTagline: "Object store · breadcrumb · rows",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/storage-browser/storage-browser.tsx",
+        target: "components/blocks/storage-browser.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
   },
@@ -2659,9 +2719,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "log-viewer",
     title: "Log Viewer",
     description:
-      "Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/log-viewer.tsx" }],
+      "Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Ships composable parts.",
+    blockTagline: "Log stream · levels · tail-follow",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/log-viewer/log-viewer.tsx",
+        target: "components/blocks/log-viewer.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
@@ -2670,20 +2737,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "terminal",
     title: "Terminal",
     description:
-      "Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/terminal.tsx" }],
-    registryDependencies: [],
-    dependencies: [],
-    cssVars: STATUS_CSS_VARS,
-  },
-  {
-    name: "yaml-editor",
-    title: "YAML Editor",
-    description:
-      "Editable YAML field with dependency-free syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/yaml-editor.tsx" }],
+      "Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Ships composable parts.",
+    blockTagline: "Prompt · output · history recall",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/terminal/terminal.tsx",
+        target: "components/blocks/terminal.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
@@ -2692,9 +2755,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "deployment-history",
     title: "Deployment History",
     description:
-      "Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta. Compound API.",
-    category: "cloud",
-    files: [{ path: "registry/hirael/components/deployment-history.tsx" }],
+      "Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta.",
+    blockTagline: "Deploy feed · status · commits",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/deployment-history/deployment-history.tsx",
+        target: "components/blocks/deployment-history.tsx",
+      },
+    ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
@@ -2784,7 +2854,6 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   navigation: "Navigation",
   widgets: "Widgets",
   saas: "SaaS",
-  cloud: "Cloud",
   blocks: "Blocks",
   templates: "Templates",
 };
@@ -2800,7 +2869,6 @@ export const REGISTRY_BY_CATEGORY = (() => {
     navigation: [],
     widgets: [],
     saas: [],
-    cloud: [],
     blocks: [],
     templates: [],
   };
@@ -2865,6 +2933,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   integrations: "Integrations",
   "image-gallery": "Image gallery",
   "app-shell": "App shell",
+  cloud: "Cloud",
 };
 
 export const BLOCKS_BY_KIND = (() => {
@@ -2891,6 +2960,7 @@ export const BLOCKS_BY_KIND = (() => {
     integrations: [],
     "image-gallery": [],
     "app-shell": [],
+    cloud: [],
   };
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -2923,6 +2993,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "integrations",
   "image-gallery",
   "app-shell",
+  "cloud",
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -2943,7 +3014,6 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<
   "navigation",
   "widgets",
   "saas",
-  "cloud",
 ];
 
 /** One-line, human blurb for each component category landing page. */
@@ -2965,8 +3035,6 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<
   widgets:
     "Composite dashboard panels: KPI grids, notifications, quick actions.",
   saas: "Billing, plans, API keys and usage panels for product settings.",
-  cloud:
-    "Infrastructure and DevOps UI: servers, VMs, pods, metrics, logs, terminals and topology.",
 };
 
 /**
@@ -2997,6 +3065,7 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   integrations: "integrations",
   "image-gallery": "image-gallery",
   "app-shell": "app-shell",
+  cloud: "cloud",
 };
 
 export const BLOCK_KIND_BY_SLUG: Record<string, BlockKind> = Object.fromEntries(

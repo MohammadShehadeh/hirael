@@ -204,3 +204,94 @@ export {
   TerminalPrompt,
   TerminalInput,
 };
+
+type TerminalEntry = { kind: "command" | "output" | "error"; text: string };
+
+const TERMINAL_USER = "deploy@edge";
+
+export default function TerminalBlock() {
+  const [entries, setEntries] = React.useState<TerminalEntry[]>([
+    { kind: "output", text: "hirael cloud shell — type `help` to start" },
+  ]);
+
+  function run(command: string) {
+    const next: TerminalEntry[] = [{ kind: "command", text: command }];
+    const [name, ...args] = command.split(/\s+/);
+
+    switch (name) {
+      case "help":
+        next.push({
+          kind: "output",
+          text: "commands: help  ls  status  whoami  echo  clear",
+        });
+        break;
+      case "ls":
+        next.push({
+          kind: "output",
+          text: "services/  infra/  README.md  deploy.sh",
+        });
+        break;
+      case "status":
+        next.push({
+          kind: "output",
+          text: "api  ok    worker  ok    db  degraded",
+        });
+        break;
+      case "whoami":
+        next.push({ kind: "output", text: TERMINAL_USER });
+        break;
+      case "echo":
+        next.push({ kind: "output", text: args.join(" ") });
+        break;
+      case "clear":
+        setEntries([]);
+        return;
+      default:
+        next.push({ kind: "error", text: `command not found: ${name}` });
+    }
+
+    setEntries((prev) => [...prev, ...next]);
+  }
+
+  return (
+    <section
+      data-slot="terminal-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="w-full max-w-2xl">
+        <Terminal>
+          <TerminalHeader>{TERMINAL_USER}: ~/app</TerminalHeader>
+          <TerminalBody>
+            {entries.map((entry, i) => {
+              if (entry.kind === "command") {
+                return (
+                  <TerminalLine key={i}>
+                    <TerminalPrompt>{TERMINAL_USER}</TerminalPrompt>
+                    {entry.text}
+                  </TerminalLine>
+                );
+              }
+              return (
+                <TerminalLine
+                  key={i}
+                  className={
+                    entry.kind === "error"
+                      ? "text-destructive"
+                      : "text-muted-foreground"
+                  }
+                >
+                  {entry.text}
+                </TerminalLine>
+              );
+            })}
+            <TerminalInput
+              user={TERMINAL_USER}
+              onSubmit={run}
+              aria-label="Terminal command"
+            />
+          </TerminalBody>
+        </Terminal>
+      </div>
+    </section>
+  );
+}

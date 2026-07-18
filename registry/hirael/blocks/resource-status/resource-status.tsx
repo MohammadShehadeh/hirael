@@ -215,3 +215,50 @@ export {
   ResourceStatusDot,
   ResourceStatusIndicator,
 };
+
+export default function ResourceStatusBlock() {
+  return (
+    <section
+      data-slot="resource-status-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <ResourceStatus className="w-full max-w-lg">
+        <ResourceStatusBanner state="degraded">
+          Some systems degraded
+        </ResourceStatusBanner>
+        <ResourceStatusList>
+          <ResourceStatusItem
+            name="API"
+            description="REST + GraphQL"
+            state="operational"
+            uptime="99.98%"
+          />
+          <ResourceStatusItem
+            name="Dashboard"
+            description="app.example.com"
+            state="operational"
+            uptime="99.95%"
+          />
+          <ResourceStatusItem
+            name="Webhooks"
+            description="Elevated delivery latency"
+            state="degraded"
+            uptime="99.10%"
+          />
+          <ResourceStatusItem
+            name="Background jobs"
+            description="Queue backed up"
+            state="partial-outage"
+            uptime="97.40%"
+          />
+          <ResourceStatusItem
+            name="Object storage"
+            description="Scheduled migration"
+            state="maintenance"
+            uptime="99.99%"
+          />
+        </ResourceStatusList>
+      </ResourceStatus>
+    </section>
+  );
+}

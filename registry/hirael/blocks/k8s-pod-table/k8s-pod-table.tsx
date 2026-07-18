@@ -233,3 +233,97 @@ export {
   K8sPodPhase,
   K8sPodRestarts,
 };
+
+const POD_ROWS: {
+  name: string;
+  ns: string;
+  phase: PodPhase;
+  ready: string;
+  restarts: number;
+  age: string;
+  node: string;
+}[] = [
+  {
+    name: "api-7d9f8c-2xk4p",
+    ns: "default",
+    phase: "Running",
+    ready: "2/2",
+    restarts: 0,
+    age: "6d",
+    node: "node-1",
+  },
+  {
+    name: "api-7d9f8c-9m1qz",
+    ns: "default",
+    phase: "Running",
+    ready: "2/2",
+    restarts: 1,
+    age: "6d",
+    node: "node-2",
+  },
+  {
+    name: "worker-5b6a-jj20d",
+    ns: "jobs",
+    phase: "ContainerCreating",
+    ready: "0/1",
+    restarts: 0,
+    age: "12s",
+    node: "node-3",
+  },
+  {
+    name: "cache-0",
+    ns: "data",
+    phase: "CrashLoopBackOff",
+    ready: "0/1",
+    restarts: 7,
+    age: "3h",
+    node: "node-1",
+  },
+  {
+    name: "migrate-28471",
+    ns: "jobs",
+    phase: "Succeeded",
+    ready: "0/1",
+    restarts: 0,
+    age: "1h",
+    node: "node-2",
+  },
+];
+
+export default function K8sPodTableBlock() {
+  return (
+    <section
+      data-slot="k8s-pod-table-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="w-full max-w-3xl">
+        <K8sPodTable caption="kubectl get pods -A">
+          <K8sPodTableHeader>
+            <K8sPodTableRow>
+              <K8sPodTableHead>Pod</K8sPodTableHead>
+              <K8sPodTableHead>Status</K8sPodTableHead>
+              <K8sPodTableHead>Ready</K8sPodTableHead>
+              <K8sPodTableHead>Restarts</K8sPodTableHead>
+              <K8sPodTableHead>Age</K8sPodTableHead>
+              <K8sPodTableHead>Node</K8sPodTableHead>
+            </K8sPodTableRow>
+          </K8sPodTableHeader>
+          <K8sPodTableBody>
+            {POD_ROWS.map((pod) => (
+              <K8sPodTableRow key={pod.name}>
+                <K8sPodName namespace={pod.ns}>{pod.name}</K8sPodName>
+                <K8sPodTableCell>
+                  <K8sPodPhase phase={pod.phase} />
+                </K8sPodTableCell>
+                <K8sPodTableCell>{pod.ready}</K8sPodTableCell>
+                <K8sPodRestarts count={pod.restarts} />
+                <K8sPodTableCell>{pod.age}</K8sPodTableCell>
+                <K8sPodTableCell>{pod.node}</K8sPodTableCell>
+              </K8sPodTableRow>
+            ))}
+          </K8sPodTableBody>
+        </K8sPodTable>
+      </div>
+    </section>
+  );
+}

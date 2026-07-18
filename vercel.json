@@ -62,6 +62,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/cluster-map",
+      "destination": "/blocks/cloud/cluster-map",
+      "permanent": true
+    },
+    {
       "source": "/blocks/comparison-01",
       "destination": "/blocks/comparison/comparison-01",
       "permanent": true
@@ -134,6 +139,11 @@
     {
       "source": "/blocks/dashboard-06",
       "destination": "/blocks/dashboard/dashboard-06",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/deployment-history",
+      "destination": "/blocks/cloud/deployment-history",
       "permanent": true
     },
     {
@@ -262,6 +272,16 @@
       "permanent": true
     },
     {
+      "source": "/blocks/k8s-pod-table",
+      "destination": "/blocks/cloud/k8s-pod-table",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/log-viewer",
+      "destination": "/blocks/cloud/log-viewer",
+      "permanent": true
+    },
+    {
       "source": "/blocks/login-01",
       "destination": "/blocks/auth/login-01",
       "permanent": true
@@ -279,6 +299,11 @@
     {
       "source": "/blocks/logo-cloud-01",
       "destination": "/blocks/logo-cloud/logo-cloud-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/network-topology",
+      "destination": "/blocks/cloud/network-topology",
       "permanent": true
     },
     {
@@ -317,8 +342,28 @@
       "permanent": true
     },
     {
+      "source": "/blocks/resource-status",
+      "destination": "/blocks/cloud/resource-status",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/server-card",
+      "destination": "/blocks/cloud/server-card",
+      "permanent": true
+    },
+    {
       "source": "/blocks/signup-01",
       "destination": "/blocks/auth/signup-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/storage-browser",
+      "destination": "/blocks/cloud/storage-browser",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/terminal",
+      "destination": "/blocks/cloud/terminal",
       "permanent": true
     },
     {
@@ -334,6 +379,11 @@
     {
       "source": "/blocks/testimonial-03",
       "destination": "/blocks/testimonials/testimonial-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/vm-table",
+      "destination": "/blocks/cloud/vm-table",
       "permanent": true
     },
     {
@@ -417,11 +467,6 @@
       "permanent": true
     },
     {
-      "source": "/components/cluster-map",
-      "destination": "/components/cloud/cluster-map",
-      "permanent": true
-    },
-    {
       "source": "/components/code-block",
       "destination": "/components/display/code-block",
       "permanent": true
@@ -477,11 +522,6 @@
       "permanent": true
     },
     {
-      "source": "/components/deployment-history",
-      "destination": "/components/cloud/deployment-history",
-      "permanent": true
-    },
-    {
       "source": "/components/dock",
       "destination": "/components/navigation/dock",
       "permanent": true
@@ -522,11 +562,6 @@
       "permanent": true
     },
     {
-      "source": "/components/k8s-pod-table",
-      "destination": "/components/cloud/k8s-pod-table",
-      "permanent": true
-    },
-    {
       "source": "/components/kbd",
       "destination": "/components/display/kbd",
       "permanent": true
@@ -544,11 +579,6 @@
     {
       "source": "/components/lightbox",
       "destination": "/components/display/lightbox",
-      "permanent": true
-    },
-    {
-      "source": "/components/log-viewer",
-      "destination": "/components/cloud/log-viewer",
       "permanent": true
     },
     {
@@ -578,7 +608,7 @@
     },
     {
       "source": "/components/metric-card",
-      "destination": "/components/cloud/metric-card",
+      "destination": "/components/data/metric-card",
       "permanent": true
     },
     {
@@ -594,11 +624,6 @@
     {
       "source": "/components/multi-select",
       "destination": "/components/inputs/multi-select",
-      "permanent": true
-    },
-    {
-      "source": "/components/network-topology",
-      "destination": "/components/cloud/network-topology",
       "permanent": true
     },
     {
@@ -642,11 +667,6 @@
       "permanent": true
     },
     {
-      "source": "/components/resource-status",
-      "destination": "/components/cloud/resource-status",
-      "permanent": true
-    },
-    {
       "source": "/components/rich-text-editor",
       "destination": "/components/inputs/rich-text-editor",
       "permanent": true
@@ -659,11 +679,6 @@
     {
       "source": "/components/scroll-reveal",
       "destination": "/components/animation/scroll-reveal",
-      "permanent": true
-    },
-    {
-      "source": "/components/server-card",
-      "destination": "/components/cloud/server-card",
       "permanent": true
     },
     {
@@ -702,11 +717,6 @@
       "permanent": true
     },
     {
-      "source": "/components/storage-browser",
-      "destination": "/components/cloud/storage-browser",
-      "permanent": true
-    },
-    {
       "source": "/components/subscription-plans",
       "destination": "/components/saas/subscription-plans",
       "permanent": true
@@ -719,11 +729,6 @@
     {
       "source": "/components/tenant-switcher",
       "destination": "/components/navigation/tenant-switcher",
-      "permanent": true
-    },
-    {
-      "source": "/components/terminal",
-      "destination": "/components/cloud/terminal",
       "permanent": true
     },
     {
@@ -772,13 +777,8 @@
       "permanent": true
     },
     {
-      "source": "/components/vm-table",
-      "destination": "/components/cloud/vm-table",
-      "permanent": true
-    },
-    {
       "source": "/components/yaml-editor",
-      "destination": "/components/cloud/yaml-editor",
+      "destination": "/components/inputs/yaml-editor",
       "permanent": true
     },
     {

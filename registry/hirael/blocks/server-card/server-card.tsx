@@ -211,3 +211,88 @@ export {
   ServerCardSpec,
   ServerCardMeter,
 };
+
+export default function ServerCardBlock() {
+  return (
+    <section
+      data-slot="server-card-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2">
+        <ServerCard>
+          <ServerCardHeader>
+            <ServerCardTitle region="us-east-1 · AWS">
+              web-prod-01
+            </ServerCardTitle>
+            <ServerCardStatus status="online">Online</ServerCardStatus>
+          </ServerCardHeader>
+          <ServerCardSpecs>
+            <ServerCardSpec icon="cpu" label="vCPU">
+              8
+            </ServerCardSpec>
+            <ServerCardSpec icon="memory" label="Memory">
+              32 GB
+            </ServerCardSpec>
+            <ServerCardSpec icon="disk" label="Disk">
+              512 GB
+            </ServerCardSpec>
+          </ServerCardSpecs>
+          <div className="grid gap-3">
+            <ServerCardMeter label="CPU" value={62} />
+            <ServerCardMeter label="Memory" value={81} />
+          </div>
+        </ServerCard>
+
+        <ServerCard>
+          <ServerCardHeader>
+            <ServerCardTitle region="eu-west-2 · AWS">
+              db-replica-03
+            </ServerCardTitle>
+            <ServerCardStatus status="degraded">Degraded</ServerCardStatus>
+          </ServerCardHeader>
+          <ServerCardSpecs>
+            <ServerCardSpec icon="cpu" label="vCPU">
+              16
+            </ServerCardSpec>
+            <ServerCardSpec icon="memory" label="Memory">
+              64 GB
+            </ServerCardSpec>
+            <ServerCardSpec icon="disk" label="Disk">
+              2 TB
+            </ServerCardSpec>
+          </ServerCardSpecs>
+          <div className="grid gap-3">
+            <ServerCardMeter label="CPU" value={94} />
+            <ServerCardMeter label="Disk" value={88} />
+          </div>
+        </ServerCard>
+
+        <ServerCard>
+          <ServerCardHeader>
+            <ServerCardTitle region="ap-south-1 · AWS">
+              cache-02
+            </ServerCardTitle>
+            <ServerCardStatus status="provisioning">
+              Provisioning
+            </ServerCardStatus>
+          </ServerCardHeader>
+          <ServerCardSpecs>
+            <ServerCardSpec icon="cpu" label="vCPU">
+              4
+            </ServerCardSpec>
+            <ServerCardSpec icon="memory" label="Memory">
+              16 GB
+            </ServerCardSpec>
+            <ServerCardSpec icon="disk" label="Disk">
+              128 GB
+            </ServerCardSpec>
+          </ServerCardSpecs>
+          <div className="grid gap-3">
+            <ServerCardMeter label="CPU" value={7} />
+            <ServerCardMeter label="Memory" value={12} />
+          </div>
+        </ServerCard>
+      </div>
+    </section>
+  );
+}

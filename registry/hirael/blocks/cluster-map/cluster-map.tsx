@@ -130,3 +130,57 @@ function ClusterMapLegendItem({
 }
 
 export { ClusterMap, ClusterNode, ClusterMapLegend, ClusterMapLegendItem };
+
+const CLUSTER_COLUMNS = 16;
+const CLUSTER_ROWS = 6;
+
+function clusterHealthFor(i: number): NodeHealth {
+  if (i % 37 === 0) return "critical";
+  if (i % 11 === 0) return "warning";
+  if (i % 9 === 0) return "idle";
+  return "healthy";
+}
+
+export default function ClusterMapBlock() {
+  const nodes = Array.from(
+    { length: CLUSTER_COLUMNS * CLUSTER_ROWS },
+    (_, i) => ({
+      id: i,
+      health: clusterHealthFor(i),
+      load: 0.4 + ((i * 7) % 60) / 100,
+    }),
+  );
+
+  return (
+    <section
+      data-slot="cluster-map-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="flex w-full max-w-2xl flex-col gap-4">
+        <div>
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            prod-cluster · 96 nodes
+          </p>
+          <ClusterMap columns={CLUSTER_COLUMNS}>
+            {nodes.map((node) => (
+              <ClusterNode
+                key={node.id}
+                health={node.health}
+                load={node.load}
+                label={`node-${String(node.id + 1).padStart(3, "0")}`}
+              />
+            ))}
+          </ClusterMap>
+        </div>
+        <ClusterMapLegend>
+          <ClusterMapLegendItem health="healthy">Healthy</ClusterMapLegendItem>
+          <ClusterMapLegendItem health="warning">Warning</ClusterMapLegendItem>
+          <ClusterMapLegendItem health="critical">
+            Critical
+          </ClusterMapLegendItem>
+          <ClusterMapLegendItem health="idle">Idle</ClusterMapLegendItem>
+        </ClusterMapLegend>
+      </div>
+    </section>
+  );
+}

@@ -178,3 +178,65 @@ export {
   DeploymentHistoryMeta,
   DeploymentHistoryCommit,
 };
+
+export default function DeploymentHistoryBlock() {
+  return (
+    <section
+      data-slot="deployment-history-block"
+      className="flex w-full justify-center bg-background p-6 sm:p-10"
+    >
+      <div className="w-full max-w-lg">
+        <DeploymentHistory>
+          <DeploymentHistoryItem
+            state="building"
+            version="v2.4.0"
+            environment="production"
+          >
+            <DeploymentHistoryMeta>
+              <DeploymentHistoryCommit sha="a1b9c4d" />
+              <span>by maya</span>
+              <span>just now</span>
+            </DeploymentHistoryMeta>
+          </DeploymentHistoryItem>
+
+          <DeploymentHistoryItem
+            state="success"
+            version="v2.3.9"
+            environment="production"
+          >
+            <DeploymentHistoryMeta>
+              <DeploymentHistoryCommit sha="7f2e10a" />
+              <span>by omar</span>
+              <span>2h ago · 48s</span>
+            </DeploymentHistoryMeta>
+          </DeploymentHistoryItem>
+
+          <DeploymentHistoryItem
+            state="rolled-back"
+            version="v2.3.8"
+            environment="production"
+          >
+            <DeploymentHistoryMeta>
+              <DeploymentHistoryCommit sha="c03be91" />
+              <span>reverted failing migration</span>
+              <span>5h ago</span>
+            </DeploymentHistoryMeta>
+          </DeploymentHistoryItem>
+
+          <DeploymentHistoryItem
+            state="failed"
+            version="v2.3.7"
+            environment="staging"
+            last
+          >
+            <DeploymentHistoryMeta>
+              <DeploymentHistoryCommit sha="11de4f0" />
+              <span>build step exited 1</span>
+              <span>6h ago</span>
+            </DeploymentHistoryMeta>
+          </DeploymentHistoryItem>
+        </DeploymentHistory>
+      </div>
+    </section>
+  );
+}

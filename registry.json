@@ -3738,104 +3738,12 @@
       ]
     },
     {
-      "name": "server-card",
-      "type": "registry:ui",
-      "title": "Server Card",
-      "description": "Host summary card with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/server-card.tsx",
-          "type": "registry:ui",
-          "target": "components/server-card.tsx"
-        }
-      ]
-    },
-    {
-      "name": "vm-table",
-      "type": "registry:ui",
-      "title": "VM Table",
-      "description": "Instance table with live status dots, size, region, IP and uptime. Self-contained compound parts, no table primitive required.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/vm-table.tsx",
-          "type": "registry:ui",
-          "target": "components/vm-table.tsx"
-        }
-      ]
-    },
-    {
-      "name": "k8s-pod-table",
-      "type": "registry:ui",
-      "title": "K8s Pod Table",
-      "description": "Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/k8s-pod-table.tsx",
-          "type": "registry:ui",
-          "target": "components/k8s-pod-table.tsx"
-        }
-      ]
-    },
-    {
       "name": "metric-card",
       "type": "registry:ui",
       "title": "Metric Card",
-      "description": "Infrastructure metric card with a value and unit, a tone-aware sparkline and a trend line. CPU, latency, error rate and the like. Compound API.",
+      "description": "Compact metric card with a value and unit, a tone-aware sparkline and an up / down trend line. Compound API.",
       "categories": [
-        "cloud"
+        "data"
       ],
       "dependencies": [
         "lucide-react"
@@ -3862,182 +3770,12 @@
       ]
     },
     {
-      "name": "resource-status",
-      "type": "registry:ui",
-      "title": "Resource Status",
-      "description": "Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state and uptime. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/resource-status.tsx",
-          "type": "registry:ui",
-          "target": "components/resource-status.tsx"
-        }
-      ]
-    },
-    {
-      "name": "cluster-map",
-      "type": "registry:ui",
-      "title": "Cluster Map",
-      "description": "Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/cluster-map.tsx",
-          "type": "registry:ui",
-          "target": "components/cluster-map.tsx"
-        }
-      ]
-    },
-    {
-      "name": "network-topology",
-      "type": "registry:ui",
-      "title": "Network Topology",
-      "description": "Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/network-topology.tsx",
-          "type": "registry:ui",
-          "target": "components/network-topology.tsx"
-        }
-      ]
-    },
-    {
-      "name": "storage-browser",
-      "type": "registry:ui",
-      "title": "Storage Browser",
-      "description": "Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/hirael/components/storage-browser.tsx",
-          "type": "registry:ui",
-          "target": "components/storage-browser.tsx"
-        }
-      ]
-    },
-    {
-      "name": "log-viewer",
-      "type": "registry:ui",
-      "title": "Log Viewer",
-      "description": "Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/log-viewer.tsx",
-          "type": "registry:ui",
-          "target": "components/log-viewer.tsx"
-        }
-      ]
-    },
-    {
-      "name": "terminal",
-      "type": "registry:ui",
-      "title": "Terminal",
-      "description": "Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Compound API.",
-      "categories": [
-        "cloud"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "cssVars": {
-        "light": {
-          "success": "oklch(0.527 0.154 150.069)",
-          "warning": "oklch(0.555 0.163 48.998)",
-          "info": "oklch(0.55 0.2 260)"
-        },
-        "dark": {
-          "success": "oklch(0.696 0.17 162.48)",
-          "warning": "oklch(0.769 0.188 70.08)",
-          "info": "oklch(0.62 0.19 260)"
-        }
-      },
-      "files": [
-        {
-          "path": "registry/hirael/components/terminal.tsx",
-          "type": "registry:ui",
-          "target": "components/terminal.tsx"
-        }
-      ]
-    },
-    {
       "name": "yaml-editor",
       "type": "registry:ui",
       "title": "YAML Editor",
-      "description": "Editable YAML field with dependency-free syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.",
+      "description": "Editable code field with dependency-free YAML syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.",
       "categories": [
-        "cloud"
+        "inputs"
       ],
       "dependencies": [],
       "registryDependencies": [],
@@ -4062,11 +3800,12 @@
       ]
     },
     {
-      "name": "deployment-history",
-      "type": "registry:ui",
-      "title": "Deployment History",
-      "description": "Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta. Compound API.",
+      "name": "server-card",
+      "type": "registry:block",
+      "title": "Server Card",
+      "description": "Fleet of host cards, each with a status pill, region, CPU / memory / disk specs and threshold-tinted usage meters. Ships composable parts.",
       "categories": [
+        "blocks",
         "cloud"
       ],
       "dependencies": [
@@ -4087,9 +3826,282 @@
       },
       "files": [
         {
-          "path": "registry/hirael/components/deployment-history.tsx",
-          "type": "registry:ui",
-          "target": "components/deployment-history.tsx"
+          "path": "registry/hirael/blocks/server-card/server-card.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/server-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "vm-table",
+      "type": "registry:block",
+      "title": "VM Table",
+      "description": "Virtual-machine instance table with live status dots, size, region, IP and uptime. Self-contained parts, no table primitive required.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/vm-table/vm-table.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/vm-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "k8s-pod-table",
+      "type": "registry:block",
+      "title": "K8s Pod Table",
+      "description": "Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/k8s-pod-table/k8s-pod-table.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/k8s-pod-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resource-status",
+      "type": "registry:block",
+      "title": "Resource Status",
+      "description": "Statuspage-style panel: an overall banner over a list of resources, each with an operational / degraded / outage / maintenance state and uptime.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/resource-status/resource-status.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/resource-status.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cluster-map",
+      "type": "registry:block",
+      "title": "Cluster Map",
+      "description": "Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cluster-map/cluster-map.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cluster-map.tsx"
+        }
+      ]
+    },
+    {
+      "name": "network-topology",
+      "type": "registry:block",
+      "title": "Network Topology",
+      "description": "Coordinate-placed topology diagram: nodes with status and icons over an SVG edge layer, with animated active links. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/network-topology/network-topology.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/network-topology.tsx"
+        }
+      ]
+    },
+    {
+      "name": "storage-browser",
+      "type": "registry:block",
+      "title": "Storage Browser",
+      "description": "Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/storage-browser/storage-browser.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/storage-browser.tsx"
+        }
+      ]
+    },
+    {
+      "name": "log-viewer",
+      "type": "registry:block",
+      "title": "Log Viewer",
+      "description": "Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/log-viewer/log-viewer.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/log-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:block",
+      "title": "Terminal",
+      "description": "Terminal surface with a title bar, output lines and an interactive prompt input with command-history recall. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/terminal/terminal.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/terminal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "deployment-history",
+      "type": "registry:block",
+      "title": "Deployment History",
+      "description": "Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/deployment-history/deployment-history.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/deployment-history.tsx"
         }
       ]
     },

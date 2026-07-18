@@ -113,6 +113,23 @@ const BLOCK_LOADERS: Record<
   "newsletter-01": () =>
     import("@/registry/hirael/blocks/newsletter-01/newsletter-01"),
   "careers-01": () => import("@/registry/hirael/blocks/careers-01/careers-01"),
+  "server-card": () =>
+    import("@/registry/hirael/blocks/server-card/server-card"),
+  "vm-table": () => import("@/registry/hirael/blocks/vm-table/vm-table"),
+  "k8s-pod-table": () =>
+    import("@/registry/hirael/blocks/k8s-pod-table/k8s-pod-table"),
+  "resource-status": () =>
+    import("@/registry/hirael/blocks/resource-status/resource-status"),
+  "cluster-map": () =>
+    import("@/registry/hirael/blocks/cluster-map/cluster-map"),
+  "network-topology": () =>
+    import("@/registry/hirael/blocks/network-topology/network-topology"),
+  "storage-browser": () =>
+    import("@/registry/hirael/blocks/storage-browser/storage-browser"),
+  "log-viewer": () => import("@/registry/hirael/blocks/log-viewer/log-viewer"),
+  terminal: () => import("@/registry/hirael/blocks/terminal/terminal"),
+  "deployment-history": () =>
+    import("@/registry/hirael/blocks/deployment-history/deployment-history"),
 };
 
 /** Component examples, keyed by example slug (file basename in examples/). */
@@ -246,27 +263,10 @@ const EXAMPLE_LOADERS: Record<
     import("@/registry/hirael/examples/usage-dashboard-demo"),
   "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
   "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
-  "server-card-demo": () =>
-    import("@/registry/hirael/examples/server-card-demo"),
-  "vm-table-demo": () => import("@/registry/hirael/examples/vm-table-demo"),
-  "log-viewer-demo": () => import("@/registry/hirael/examples/log-viewer-demo"),
-  "yaml-editor-demo": () =>
-    import("@/registry/hirael/examples/yaml-editor-demo"),
-  "terminal-demo": () => import("@/registry/hirael/examples/terminal-demo"),
-  "resource-status-demo": () =>
-    import("@/registry/hirael/examples/resource-status-demo"),
-  "cluster-map-demo": () =>
-    import("@/registry/hirael/examples/cluster-map-demo"),
   "metric-card-demo": () =>
     import("@/registry/hirael/examples/metric-card-demo"),
-  "storage-browser-demo": () =>
-    import("@/registry/hirael/examples/storage-browser-demo"),
-  "network-topology-demo": () =>
-    import("@/registry/hirael/examples/network-topology-demo"),
-  "k8s-pod-table-demo": () =>
-    import("@/registry/hirael/examples/k8s-pod-table-demo"),
-  "deployment-history-demo": () =>
-    import("@/registry/hirael/examples/deployment-history-demo"),
+  "yaml-editor-demo": () =>
+    import("@/registry/hirael/examples/yaml-editor-demo"),
 };
 
 // React.lazy defers the import until first render, so building every preview

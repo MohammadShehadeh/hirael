@@ -4665,158 +4665,6 @@
       "extendsNative": true
     }
   ],
-  "activity-feed": [
-    {
-      "name": "ActivityFeed",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedItem",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedAvatar",
-      "props": [
-        {
-          "name": "src",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "alt",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedContent",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedActor",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedAction",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedTime",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedBody",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ActivityFeedDivider",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "audit-log": [
-    {
-      "name": "AuditLog",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogItem",
-      "props": [
-        {
-          "name": "open",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultOpen",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "onOpenChange",
-          "type": "((open: boolean) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogTrigger",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogActor",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogAction",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogTime",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogStatus",
-      "props": [
-        {
-          "name": "tone",
-          "type": "\"default\" | \"success\" | \"warning\" | \"danger\" | null",
-          "required": false,
-          "default": "\"default\"",
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogDetail",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "AuditLogField",
-      "props": [
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    }
-  ],
   "blur-reveal": [
     {
       "name": "BlurReveal",
@@ -5340,650 +5188,6 @@
     {
       "name": "ResizableHandle",
       "props": [],
-      "extendsNative": true
-    }
-  ],
-  "inspector-panel": [
-    {
-      "name": "InspectorPanel",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "InspectorPanelHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "InspectorPanelTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "InspectorPanelSection",
-      "props": [
-        {
-          "name": "title",
-          "type": "string | (string & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>) | (string & Iterable<React.ReactNode>) | (string & React.ReactPortal) | (string & Promise<AwaitedReactNode>) | undefined",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultOpen",
-          "type": "boolean",
-          "required": false,
-          "default": "true",
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "InspectorPanelRow",
-      "props": [
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    }
-  ],
-  "tenant-switcher": [
-    {
-      "name": "TenantSwitcher",
-      "props": [
-        {
-          "name": "value",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultValue",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "onValueChange",
-          "type": "((value: string | undefined) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "tenants",
-          "type": "Tenant[]",
-          "required": false,
-          "default": "[]",
-          "description": null
-        },
-        {
-          "name": "open",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultOpen",
-          "type": "boolean",
-          "required": false,
-          "default": "false",
-          "description": null
-        },
-        {
-          "name": "onOpenChange",
-          "type": "((open: boolean) => void)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "disabled",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": false
-    },
-    {
-      "name": "TenantSwitcherTrigger",
-      "props": [
-        {
-          "name": "placeholder",
-          "type": "string",
-          "required": false,
-          "default": "\"Select workspace\"",
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "TenantSwitcherContent",
-      "props": [
-        {
-          "name": "searchable",
-          "type": "boolean",
-          "required": false,
-          "default": "true",
-          "description": null
-        },
-        {
-          "name": "searchPlaceholder",
-          "type": "string",
-          "required": false,
-          "default": "\"Find workspace…\"",
-          "description": null
-        },
-        {
-          "name": "emptyMessage",
-          "type": "string",
-          "required": false,
-          "default": "\"No workspaces found.\"",
-          "description": null
-        },
-        {
-          "name": "footer",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": "Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>."
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "TenantSwitcherItem",
-      "props": [
-        {
-          "name": "tenant",
-          "type": "Tenant",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "TenantSwitcherCreate",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "kpi-grid": [
-    {
-      "name": "KpiGrid",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "KpiCard",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "KpiCardLabel",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "KpiCardValue",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "KpiCardDelta",
-      "props": [
-        {
-          "name": "trend",
-          "type": "KpiTrend",
-          "required": false,
-          "default": "\"flat\"",
-          "description": null
-        },
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "KpiCardSpark",
-      "props": [
-        {
-          "name": "points",
-          "type": "number[]",
-          "required": true,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    }
-  ],
-  "quick-actions": [
-    {
-      "name": "QuickActions",
-      "props": [
-        {
-          "name": "columns",
-          "type": "number",
-          "required": false,
-          "default": "2",
-          "description": "Number of columns in the action grid."
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "QuickAction",
-      "props": [
-        {
-          "name": "asChild",
-          "type": "boolean",
-          "required": false,
-          "default": "false",
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "QuickActionIcon",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "QuickActionLabel",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "QuickActionDescription",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "notifications": [
-    {
-      "name": "Notifications",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationsHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationsTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationsList",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationItem",
-      "props": [
-        {
-          "name": "unread",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationMedia",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationContent",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationDescription",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "NotificationTime",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "billing-card": [
-    {
-      "name": "BillingCard",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardEyebrow",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardPlan",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardPrice",
-      "props": [
-        {
-          "name": "cycle",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardMeter",
-      "props": [
-        {
-          "name": "value",
-          "type": "number",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "max",
-          "type": "number",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardRow",
-      "props": [
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "BillingCardFooter",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "subscription-plans": [
-    {
-      "name": "SubscriptionPlans",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlan",
-      "props": [
-        {
-          "name": "featured",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "current",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanBadge",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanName",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanPrice",
-      "props": [
-        {
-          "name": "cycle",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanDescription",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanFeatures",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanFeature",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "SubscriptionPlanAction",
-      "props": [
-        {
-          "name": "variant",
-          "type": "\"primary\" | \"outline\"",
-          "required": false,
-          "default": "\"outline\"",
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    }
-  ],
-  "api-keys": [
-    {
-      "name": "ApiKeys",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeysHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeysTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeysList",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeyItem",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeyName",
-      "props": [
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeyValue",
-      "props": [
-        {
-          "name": "value",
-          "type": "string",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "defaultRevealed",
-          "type": "boolean",
-          "required": false,
-          "default": "false",
-          "description": "Whether the key starts revealed."
-        }
-      ],
-      "extendsNative": true
-    },
-    {
-      "name": "ApiKeyMeta",
-      "props": [],
-      "extendsNative": true
-    }
-  ],
-  "usage-dashboard": [
-    {
-      "name": "UsageDashboard",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "UsageDashboardHeader",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "UsageDashboardTitle",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "UsageList",
-      "props": [],
-      "extendsNative": true
-    },
-    {
-      "name": "UsageItem",
-      "props": [
-        {
-          "name": "label",
-          "type": "React.ReactNode",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "value",
-          "type": "number",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "max",
-          "type": "number",
-          "required": true,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "caption",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": "Short value caption, e.g. \"8.2k / 10k\"."
-        },
-        {
-          "name": "unit",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        }
-      ],
       "extendsNative": true
     }
   ],
@@ -7665,6 +6869,148 @@
           "type": "boolean",
           "required": false,
           "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "metric-card": [
+    {
+      "name": "MetricCard",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "MetricCardHeader",
+      "props": [
+        {
+          "name": "icon",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MetricCardValue",
+      "props": [
+        {
+          "name": "unit",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MetricCardTrend",
+      "props": [
+        {
+          "name": "direction",
+          "type": "\"flat\" | \"up\" | \"down\"",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tone",
+          "type": "MetricTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MetricCardSpark",
+      "props": [
+        {
+          "name": "points",
+          "type": "number[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tone",
+          "type": "MetricTone",
+          "required": false,
+          "default": "\"neutral\"",
+          "description": null
+        },
+        {
+          "name": "area",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Fill the area under the line with a faint tint."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "MetricCardFooter",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "yaml-editor": [
+    {
+      "name": "YamlEditor",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false,
+          "default": "12",
+          "description": "Visible rows before the editor scrolls."
+        },
+        {
+          "name": "textareaProps",
+          "type": "React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>",
+          "required": false,
+          "default": null,
           "description": null
         }
       ],

@@ -27,6 +27,16 @@
       "permanent": true
     },
     {
+      "source": "/blocks/activity-feed",
+      "destination": "/blocks/widgets/activity-feed",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/api-keys",
+      "destination": "/blocks/saas/api-keys",
+      "permanent": true
+    },
+    {
       "source": "/blocks/app-shell-01",
       "destination": "/blocks/app-shell/app-shell-01",
       "permanent": true
@@ -52,6 +62,16 @@
       "permanent": true
     },
     {
+      "source": "/blocks/audit-log",
+      "destination": "/blocks/saas/audit-log",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/billing-card",
+      "destination": "/blocks/saas/billing-card",
+      "permanent": true
+    },
+    {
       "source": "/blocks/blog-01",
       "destination": "/blocks/blog/blog-01",
       "permanent": true
@@ -59,6 +79,11 @@
     {
       "source": "/blocks/careers-01",
       "destination": "/blocks/careers/careers-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cluster-map",
+      "destination": "/blocks/cloud/cluster-map",
       "permanent": true
     },
     {
@@ -134,6 +159,11 @@
     {
       "source": "/blocks/dashboard-06",
       "destination": "/blocks/dashboard/dashboard-06",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/deployment-history",
+      "destination": "/blocks/cloud/deployment-history",
       "permanent": true
     },
     {
@@ -257,8 +287,28 @@
       "permanent": true
     },
     {
+      "source": "/blocks/inspector-panel",
+      "destination": "/blocks/widgets/inspector-panel",
+      "permanent": true
+    },
+    {
       "source": "/blocks/integrations-01",
       "destination": "/blocks/integrations/integrations-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/k8s-pod-table",
+      "destination": "/blocks/cloud/k8s-pod-table",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/kpi-grid",
+      "destination": "/blocks/widgets/kpi-grid",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/log-viewer",
+      "destination": "/blocks/cloud/log-viewer",
       "permanent": true
     },
     {
@@ -282,6 +332,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/network-topology",
+      "destination": "/blocks/cloud/network-topology",
+      "permanent": true
+    },
+    {
       "source": "/blocks/newsletter-01",
       "destination": "/blocks/newsletter/newsletter-01",
       "permanent": true
@@ -289,6 +344,11 @@
     {
       "source": "/blocks/not-found-01",
       "destination": "/blocks/not-found/not-found-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/notifications",
+      "destination": "/blocks/widgets/notifications",
       "permanent": true
     },
     {
@@ -317,8 +377,43 @@
       "permanent": true
     },
     {
+      "source": "/blocks/quick-actions",
+      "destination": "/blocks/widgets/quick-actions",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/resource-status",
+      "destination": "/blocks/cloud/resource-status",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/server-card",
+      "destination": "/blocks/cloud/server-card",
+      "permanent": true
+    },
+    {
       "source": "/blocks/signup-01",
       "destination": "/blocks/auth/signup-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/storage-browser",
+      "destination": "/blocks/cloud/storage-browser",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/subscription-plans",
+      "destination": "/blocks/saas/subscription-plans",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/tenant-switcher",
+      "destination": "/blocks/widgets/tenant-switcher",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/terminal",
+      "destination": "/blocks/cloud/terminal",
       "permanent": true
     },
     {
@@ -334,6 +429,16 @@
     {
       "source": "/blocks/testimonial-03",
       "destination": "/blocks/testimonials/testimonial-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/usage-dashboard",
+      "destination": "/blocks/saas/usage-dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/vm-table",
+      "destination": "/blocks/cloud/vm-table",
       "permanent": true
     },
     {
@@ -362,11 +467,6 @@
       "permanent": true
     },
     {
-      "source": "/components/activity-feed",
-      "destination": "/components/data/activity-feed",
-      "permanent": true
-    },
-    {
       "source": "/components/animated-number",
       "destination": "/components/data/animated-number",
       "permanent": true
@@ -377,28 +477,13 @@
       "permanent": true
     },
     {
-      "source": "/components/api-keys",
-      "destination": "/components/saas/api-keys",
-      "permanent": true
-    },
-    {
       "source": "/components/audio-player",
       "destination": "/components/display/audio-player",
       "permanent": true
     },
     {
-      "source": "/components/audit-log",
-      "destination": "/components/data/audit-log",
-      "permanent": true
-    },
-    {
       "source": "/components/avatar-stack",
       "destination": "/components/data/avatar-stack",
-      "permanent": true
-    },
-    {
-      "source": "/components/billing-card",
-      "destination": "/components/saas/billing-card",
       "permanent": true
     },
     {
@@ -507,18 +592,8 @@
       "permanent": true
     },
     {
-      "source": "/components/inspector-panel",
-      "destination": "/components/navigation/inspector-panel",
-      "permanent": true
-    },
-    {
       "source": "/components/kbd",
       "destination": "/components/display/kbd",
-      "permanent": true
-    },
-    {
-      "source": "/components/kpi-grid",
-      "destination": "/components/widgets/kpi-grid",
       "permanent": true
     },
     {
@@ -557,6 +632,11 @@
       "permanent": true
     },
     {
+      "source": "/components/metric-card",
+      "destination": "/components/data/metric-card",
+      "permanent": true
+    },
+    {
       "source": "/components/month-picker",
       "destination": "/components/pickers/month-picker",
       "permanent": true
@@ -569,11 +649,6 @@
     {
       "source": "/components/multi-select",
       "destination": "/components/inputs/multi-select",
-      "permanent": true
-    },
-    {
-      "source": "/components/notifications",
-      "destination": "/components/widgets/notifications",
       "permanent": true
     },
     {
@@ -594,11 +669,6 @@
     {
       "source": "/components/qr-code",
       "destination": "/components/display/qr-code",
-      "permanent": true
-    },
-    {
-      "source": "/components/quick-actions",
-      "destination": "/components/widgets/quick-actions",
       "permanent": true
     },
     {
@@ -662,18 +732,8 @@
       "permanent": true
     },
     {
-      "source": "/components/subscription-plans",
-      "destination": "/components/saas/subscription-plans",
-      "permanent": true
-    },
-    {
       "source": "/components/tag-input",
       "destination": "/components/inputs/tag-input",
-      "permanent": true
-    },
-    {
-      "source": "/components/tenant-switcher",
-      "destination": "/components/navigation/tenant-switcher",
       "permanent": true
     },
     {
@@ -717,8 +777,8 @@
       "permanent": true
     },
     {
-      "source": "/components/usage-dashboard",
-      "destination": "/components/saas/usage-dashboard",
+      "source": "/components/yaml-editor",
+      "destination": "/components/inputs/yaml-editor",
       "permanent": true
     },
     {

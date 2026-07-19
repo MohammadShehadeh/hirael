@@ -167,6 +167,27 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     description:
       "Stat cards, charts, and table-driven views composed into full dashboards.",
   },
+  {
+    slug: "cloud",
+    title: "Cloud",
+    blockKind: "cloud",
+    description:
+      "Infrastructure and DevOps consoles: server cards, VM and pod tables, statuspages, cluster maps, topology, logs, terminals, and deploy feeds.",
+  },
+  {
+    slug: "saas",
+    title: "SaaS",
+    blockKind: "saas",
+    description:
+      "Product-account panels: billing summaries, plan selectors, API-key managers, usage meters, and audit logs.",
+  },
+  {
+    slug: "widgets",
+    title: "Widgets",
+    blockKind: "widgets",
+    description:
+      "Composed dashboard panels: KPI grids, quick actions, notifications, activity feeds, inspectors, and workspace switchers.",
+  },
 ];
 
 export const CATEGORY_BY_SLUG = Object.fromEntries(

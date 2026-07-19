@@ -411,6 +411,75 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
     </div>
   ),
 
+  cloud: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-2 px-4">
+      <Label title={title} count={count} />
+      <div className="grid grid-cols-8 gap-1">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <div
+            key={i}
+            className={cn(
+              "aspect-square rounded-[2px]",
+              i % 7 === 0
+                ? "bg-primary/30"
+                : i % 5 === 0
+                  ? "bg-muted-foreground/25"
+                  : "bg-muted-foreground/12",
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  ),
+
+  saas: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-2 px-5">
+      <Label title={title} count={count} />
+      <div className="flex flex-col gap-1.5 rounded-md border border-border/70 bg-card/40 p-2.5">
+        <div className="flex items-center justify-between">
+          <Bar className="h-1 w-10 bg-primary/20" />
+          <Bar className="h-2 w-6 bg-muted-foreground/20" />
+        </div>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted-foreground/12">
+          <div className="h-full w-2/3 rounded-full bg-primary/30" />
+        </div>
+        <Bar className="h-0.5 w-full bg-muted-foreground/10" />
+        <div className="mt-0.5 h-3 w-full rounded-sm bg-primary/25" />
+      </div>
+    </div>
+  ),
+
+  widgets: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-2 px-4">
+      <Label title={title} count={count} center />
+      <div className="grid grid-cols-2 gap-1.5">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="flex flex-col gap-1 rounded-sm border border-border/60 p-1.5"
+          >
+            <Bar className="h-0.5 w-2/3" />
+            <Bar className="h-1.5 w-1/2 bg-muted-foreground/15" />
+            <svg
+              viewBox="0 0 40 10"
+              className="h-2 w-full text-primary/30"
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <polyline
+                points="0,8 8,5 16,6 24,3 32,4 40,1"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
   process: ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-3 px-4">
       <Label title={title} count={count} center />

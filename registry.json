@@ -3577,7 +3577,7 @@
         "slider",
         "table"
       ],
-      "docs": "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Each file keeps a \"use no memo\" pragma — required for TanStack Table under the React Compiler, so don't remove it.",
+      "docs": "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Built for @tanstack/react-table v9 — the table's features, row models and column meta typing live in data-table-features.ts. Component files keep a \"use no memo\" pragma — required under the React Compiler because column/row getter reads would otherwise be memoized stale — so don't remove it.",
       "files": [
         {
           "path": "registry/hirael/components/data-table/data-table.tsx",
@@ -3628,6 +3628,11 @@
           "path": "registry/hirael/components/data-table/use-data-table.ts",
           "type": "registry:hook",
           "target": "components/data-table/use-data-table.ts"
+        },
+        {
+          "path": "registry/hirael/components/data-table/data-table-features.ts",
+          "type": "registry:lib",
+          "target": "components/data-table/data-table-features.ts"
         },
         {
           "path": "registry/hirael/components/data-table/data-table-parsers.ts",

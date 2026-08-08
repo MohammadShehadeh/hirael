@@ -6650,7 +6650,7 @@
       "props": [
         {
           "name": "table",
-          "type": "TanstackTable<TData>",
+          "type": "ReactTable<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature:…",
           "required": true,
           "default": null,
           "description": null
@@ -6670,7 +6670,7 @@
       "props": [
         {
           "name": "table",
-          "type": "Table<TData>",
+          "type": "ReactTable<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature:…",
           "required": true,
           "default": null,
           "description": null
@@ -6683,7 +6683,7 @@
       "props": [
         {
           "name": "column",
-          "type": "Column<TData, TValue>",
+          "type": "Column<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature: Tab…",
           "required": true,
           "default": null,
           "description": null
@@ -6703,7 +6703,7 @@
       "props": [
         {
           "name": "table",
-          "type": "Table<TData>",
+          "type": "ReactTable<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature:…",
           "required": true,
           "default": null,
           "description": null
@@ -6723,7 +6723,7 @@
       "props": [
         {
           "name": "table",
-          "type": "Table<TData>",
+          "type": "ReactTable<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature:…",
           "required": true,
           "default": null,
           "description": null
@@ -6743,7 +6743,7 @@
       "props": [
         {
           "name": "column",
-          "type": "Column<TData, TValue>",
+          "type": "Column<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature: Tab…",
           "required": false,
           "default": null,
           "description": null
@@ -6777,7 +6777,7 @@
       "props": [
         {
           "name": "column",
-          "type": "Column<TData, unknown>",
+          "type": "Column<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature: Tab…",
           "required": true,
           "default": null,
           "description": null
@@ -6797,7 +6797,7 @@
       "props": [
         {
           "name": "column",
-          "type": "Column<TData, unknown>",
+          "type": "Column<{ columnFacetingFeature: TableFeature; columnFilteringFeature: TableFeature; columnOrderingFeature: TableFeature; columnPinningFeature: TableFeature; columnSizingFeature: TableFeature; columnVisibilityFeature: Tab…",
           "required": true,
           "default": null,
           "description": null

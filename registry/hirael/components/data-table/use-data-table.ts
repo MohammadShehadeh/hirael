@@ -1,26 +1,22 @@
-"use no memo";
 "use client";
 
+import {
+  type DataTableFeatures,
+  dataTableFeatures,
+} from "./data-table-features";
 import { getSortingStateParser } from "./data-table-parsers";
 import type { ExtendedColumnSort, FilterVariant } from "./data-table-utils";
 import type { ColumnDef, FilterFn, RowData } from "@tanstack/react-table";
 import {
   type ColumnFiltersState,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  type ColumnVisibilityState,
   type PaginationState,
   type RowSelectionState,
   type SortingState,
   type TableOptions,
   type TableState,
   type Updater,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table";
 import {
   parseAsArrayOf,
@@ -103,9 +99,9 @@ function isArrayVariant(variant: FilterVariant | undefined): boolean {
 
 // In-memory filter for a column, picked from its `meta.variant`. Used when the
 // table runs client-side (no `pageCount`); manual mode ignores it.
-function getFilterFn<TData>(
+function getFilterFn<TData extends RowData>(
   variant: FilterVariant | undefined,
-): FilterFn<TData> {
+): FilterFn<DataTableFeatures, TData> {
   return (row, columnId, filterValue) => {
     if (filterValue == null || filterValue === "") return true;
     const value = row.getValue(columnId);
@@ -157,7 +153,9 @@ function getFilterFn<TData>(
   };
 }
 
-function getColumnId<TData extends RowData>(column: ColumnDef<TData>): string {
+function getColumnId<TData extends RowData>(
+  column: ColumnDef<DataTableFeatures, TData>,
+): string {
   return (
     column.id ?? ("accessorKey" in column ? String(column.accessorKey) : "")
   );
@@ -189,11 +187,11 @@ const ARRAY_SEPARATOR = ",";
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 
-interface UseDataTableProps<TData> extends Omit<
-  TableOptions<TData>,
+interface UseDataTableProps<TData extends RowData> extends Omit<
+  TableOptions<DataTableFeatures, TData>,
+  | "features"
   | "state"
   | "pageCount"
-  | "getCoreRowModel"
   | "manualFiltering"
   | "manualPagination"
   | "manualSorting"
@@ -207,7 +205,7 @@ interface UseDataTableProps<TData> extends Omit<
   pageCount?: number;
   /** Override the server/client mode. Defaults to `pageCount != null`. */
   manual?: boolean;
-  initialState?: Omit<Partial<TableState>, "sorting"> & {
+  initialState?: Omit<Partial<TableState<DataTableFeatures>>, "sorting"> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
   prefix?: string;
@@ -220,7 +218,9 @@ interface UseDataTableProps<TData> extends Omit<
   startTransition?: React.TransitionStartFunction;
 }
 
-export function useDataTable<TData>(props: UseDataTableProps<TData>) {
+export function useDataTable<TData extends RowData>(
+  props: UseDataTableProps<TData>,
+) {
   const {
     columns,
     pageCount,
@@ -268,7 +268,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     initialState?.rowSelection ?? {},
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(initialState?.columnVisibility ?? {});
+    React.useState<ColumnVisibilityState>(initialState?.columnVisibility ?? {});
 
   const [page, setPage] = useQueryState(
     pageKey,
@@ -330,7 +330,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   // Wire each filterable column an in-memory filterFn from its variant so the
   // table can filter client-side; manual mode ignores these.
-  const tableColumns = React.useMemo<ColumnDef<TData>[]>(() => {
+  const tableColumns = React.useMemo<
+    ColumnDef<DataTableFeatures, TData>[]
+  >(() => {
     return columns.map((column) => {
       if (column.filterFn || !column.enableColumnFilter) return column;
       return { ...column, filterFn: getFilterFn<TData>(column.meta?.variant) };
@@ -422,8 +424,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     [debouncedSetFilterValues, filterableColumns, prefix],
   );
 
-  const table = useReactTable({
+  const table = useTable({
     ...tableProps,
+    features: dataTableFeatures,
     columns: tableColumns,
     initialState,
     pageCount: manual ? (pageCount ?? -1) : undefined,
@@ -444,13 +447,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     onSortingChange,
     onColumnFiltersChange,
     onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
     manualPagination: manual,
     manualSorting: manual,
     manualFiltering: manual,

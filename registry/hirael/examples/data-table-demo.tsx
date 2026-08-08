@@ -10,6 +10,7 @@ import { Badge } from "@/registry/hirael/ui/badge";
 import { Checkbox } from "@/registry/hirael/ui/checkbox";
 import { DataTable } from "@/registry/hirael/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/registry/hirael/components/data-table/data-table-column-header";
+import type { DataTableFeatures } from "@/registry/hirael/components/data-table/data-table-features";
 import { DataTableToolbar } from "@/registry/hirael/components/data-table/data-table-toolbar";
 import { useDataTable } from "@/registry/hirael/components/data-table/use-data-table";
 
@@ -59,10 +60,10 @@ const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
   };
 });
 
-function useColumns(): ColumnDef<Account>[] {
+function useColumns(): ColumnDef<DataTableFeatures, Account>[] {
   const t = useT();
 
-  return React.useMemo<ColumnDef<Account>[]>(() => {
+  return React.useMemo<ColumnDef<DataTableFeatures, Account>[]>(() => {
     const statusLabel: Record<Account["status"], string> = {
       active: t({ en: "Active", ar: "نشط" }),
       trial: t({ en: "Trial", ar: "تجريبي" }),

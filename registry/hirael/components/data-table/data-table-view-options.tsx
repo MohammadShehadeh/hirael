@@ -10,24 +10,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/registry/hirael/ui/command";
+import type { DataTableFeatures } from "./data-table-features";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 import { cn } from "@/lib/utils";
-import type { Table } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Check, Settings2 } from "lucide-react";
 import * as React from "react";
 
-interface DataTableViewOptionsProps<TData> extends React.ComponentProps<
-  typeof PopoverContent
-> {
-  table: Table<TData>;
+interface DataTableViewOptionsProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
+  table: ReactTable<DataTableFeatures, TData>;
   disabled?: boolean;
 }
 
-export function DataTableViewOptions<TData>({
+export function DataTableViewOptions<TData extends RowData>({
   table,
   disabled,
   ...props

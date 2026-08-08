@@ -2,6 +2,7 @@
 "use client";
 
 import { DataTablePagination } from "./data-table-pagination";
+import type { DataTableFeatures } from "./data-table-features";
 import {
   Table,
   TableBody,
@@ -12,15 +13,17 @@ import {
 } from "@/registry/hirael/ui/table";
 import { getColumnPinningStyle } from "./data-table-utils";
 import { cn } from "@/lib/utils";
-import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 import type * as React from "react";
 
-interface DataTableProps<TData> extends React.ComponentProps<"div"> {
-  table: TanstackTable<TData>;
+interface DataTableProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
+  table: ReactTable<DataTableFeatures, TData>;
   actionBar?: React.ReactNode;
 }
 
-export function DataTable<TData>({
+export function DataTable<TData extends RowData>({
   table,
   actionBar,
   children,
@@ -50,12 +53,9 @@ export function DataTable<TData>({
                       ...getColumnPinningStyle({ column: header.column }),
                     }}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                    {header.isPlaceholder ? null : (
+                      <table.FlexRender header={header} />
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -75,10 +75,7 @@ export function DataTable<TData>({
                         ...getColumnPinningStyle({ column: cell.column }),
                       }}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      <table.FlexRender cell={cell} />
                     </TableCell>
                   ))}
                 </TableRow>

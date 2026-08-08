@@ -52,12 +52,25 @@ heading rather than starting a new doc.
   `registry/hirael/components/*`):** it's copied as raw source into consumer
   repos that may not run the compiler, so keep its explicit memoization. The
   compiler only optimizes how this site is built; it never touches what ships.
-- **TanStack Table needs `"use no memo"`.** `useReactTable` returns functions
-  the compiler can't memoize without serving stale rows, so every file that
-  creates or reads a table instance starts with the `"use no memo"` directive —
-  the whole `registry/hirael/components/data-table/*` folder **and the
-  `data-table-demo` example** that demos it. This is the one place demo code
-  keeps explicit `useMemo` and the pragma instead of leaning on the compiler.
+- **TanStack Table is v9** (`@tanstack/react-table@^9`). Differences from
+  the v8 most examples online use: `useTable` (not `useReactTable`) with a
+  `features` object built by `tableFeatures(...)` (see
+  `data-table-features.ts` — row models, filter/sort fn registries and the
+  `columnMeta` type slot live there, replacing module augmentation); generics
+  take the features type first (`ColumnDef<DataTableFeatures, TData>`);
+  `table.state` replaces `table.getState()`; `<table.FlexRender
+header={...} />` replaces `flexRender(...)`; column pinning is logical
+  `"start"`/`"end"`, not `"left"`/`"right"`.
+- **TanStack Table components still need `"use no memo"`.** v9's `useTable`
+  itself is compiler-safe (the hook re-renders via a store subscription and
+  returns a fresh table facade per state change), but `column`/`row` objects
+  stay referentially stable, so the compiler memoizes reads like
+  `column.getFilterValue()` / `row.getIsSelected()` against them and the UI
+  freezes (filter inputs stop echoing, visibility checkmarks go stale). Every
+  component file that reads a table instance keeps the pragma — the
+  `data-table/*` kit components **and the `data-table-demo` example** (its
+  cells read `row.getIsSelected()`). `use-data-table.ts` itself no longer
+  needs it.
 - Server Components by default; mark interactive files `"use client"`. The
   showcase chrome (`site-header`, `topbar`, theme toggles) is client; pages
   are mostly server components that pass data down.

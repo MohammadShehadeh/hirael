@@ -1,6 +1,7 @@
 "use no memo";
 "use client";
 
+import type { DataTableFeatures } from "./data-table-features";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -9,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/registry/hirael/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import type { Column } from "@tanstack/react-table";
+import type { CellData, Column, RowData } from "@tanstack/react-table";
 import {
   ChevronDown,
   ChevronsUpDown,
@@ -19,14 +20,17 @@ import {
 } from "lucide-react";
 
 interface DataTableColumnHeaderProps<
-  TData,
-  TValue,
+  TData extends RowData,
+  TValue extends CellData,
 > extends React.ComponentProps<typeof DropdownMenuTrigger> {
-  column: Column<TData, TValue>;
+  column: Column<DataTableFeatures, TData, TValue>;
   label: string;
 }
 
-export function DataTableColumnHeader<TData, TValue>({
+export function DataTableColumnHeader<
+  TData extends RowData,
+  TValue extends CellData,
+>({
   column,
   label,
   className,

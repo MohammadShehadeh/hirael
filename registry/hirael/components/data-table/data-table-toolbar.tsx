@@ -4,25 +4,28 @@
 import { Button } from "@/registry/hirael/ui/button";
 import { DataTableDateFilter } from "./data-table-date-filter";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import type { DataTableFeatures } from "./data-table-features";
 import { DataTableSliderFilter } from "./data-table-slider-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { Input } from "@/registry/hirael/ui/input";
 import { cn } from "@/lib/utils";
-import type { Column, Table } from "@tanstack/react-table";
+import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import * as React from "react";
 
-interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
-  table: Table<TData>;
+interface DataTableToolbarProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
+  table: ReactTable<DataTableFeatures, TData>;
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData extends RowData>({
   table,
   children,
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const isFiltered = table.state.columnFilters.length > 0;
 
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
@@ -69,11 +72,11 @@ export function DataTableToolbar<TData>({
   );
 }
 
-interface DataTableToolbarFilterProps<TData> {
-  column: Column<TData>;
+interface DataTableToolbarFilterProps<TData extends RowData> {
+  column: Column<DataTableFeatures, TData>;
 }
 
-function DataTableToolbarFilter<TData>({
+function DataTableToolbarFilter<TData extends RowData>({
   column,
 }: DataTableToolbarFilterProps<TData>) {
   const columnMeta = column.columnDef.meta;

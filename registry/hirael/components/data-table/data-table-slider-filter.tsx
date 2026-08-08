@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/registry/hirael/ui/button";
+import type { DataTableFeatures } from "./data-table-features";
 import { Input } from "@/registry/hirael/ui/input";
 import { Label } from "@/registry/hirael/ui/label";
 import {
@@ -12,7 +13,7 @@ import {
 import { Separator } from "@/registry/hirael/ui/separator";
 import { Slider } from "@/registry/hirael/ui/slider";
 import { cn } from "@/lib/utils";
-import type { Column } from "@tanstack/react-table";
+import type { Column, RowData } from "@tanstack/react-table";
 import { PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
 
@@ -48,12 +49,12 @@ function parseValuesAsNumbers(value: unknown): RangeValue | undefined {
   return undefined;
 }
 
-interface DataTableSliderFilterProps<TData> {
-  column: Column<TData, unknown>;
+interface DataTableSliderFilterProps<TData extends RowData> {
+  column: Column<DataTableFeatures, TData>;
   title?: string;
 }
 
-export function DataTableSliderFilter<TData>({
+export function DataTableSliderFilter<TData extends RowData>({
   column,
   title,
 }: DataTableSliderFilterProps<TData>) {

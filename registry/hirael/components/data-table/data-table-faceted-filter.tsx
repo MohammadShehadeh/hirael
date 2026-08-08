@@ -18,20 +18,27 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 import { Separator } from "@/registry/hirael/ui/separator";
+import type { DataTableFeatures } from "./data-table-features";
 import type { Option } from "./data-table-utils";
 import { cn } from "@/lib/utils";
-import type { Column } from "@tanstack/react-table";
+import type { CellData, Column, RowData } from "@tanstack/react-table";
 import { Check, PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
 
-interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>;
+interface DataTableFacetedFilterProps<
+  TData extends RowData,
+  TValue extends CellData,
+> {
+  column?: Column<DataTableFeatures, TData, TValue>;
   title?: string;
   options: Option[];
   multiple?: boolean;
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function DataTableFacetedFilter<
+  TData extends RowData,
+  TValue extends CellData,
+>({
   column,
   title,
   options,

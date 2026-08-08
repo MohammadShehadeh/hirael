@@ -1,3 +1,4 @@
+import type { DataTableFeatures } from "./data-table-features";
 import type { Column, Row, RowData } from "@tanstack/react-table";
 import type * as React from "react";
 
@@ -23,49 +24,46 @@ export interface Option {
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-export interface DataTableRowAction<TData> {
-  row: Row<TData>;
+export interface DataTableRowAction<TData extends RowData> {
+  row: Row<DataTableFeatures, TData>;
   variant: "update" | "delete";
 }
 
-declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ColumnMeta<TData extends RowData, TValue> {
-    label?: string;
-    placeholder?: string;
-    variant?: FilterVariant;
-    options?: Option[];
-    range?: [number, number];
-    unit?: string;
-    icon?: React.FC<React.SVGProps<SVGSVGElement>>;
-  }
+export interface DataTableColumnMeta {
+  label?: string;
+  placeholder?: string;
+  variant?: FilterVariant;
+  options?: Option[];
+  range?: [number, number];
+  unit?: string;
+  icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-export function getColumnPinningStyle<TData>({
+export function getColumnPinningStyle<TData extends RowData>({
   column,
   withBorder = false,
 }: {
-  column: Column<TData>;
+  column: Column<DataTableFeatures, TData>;
   withBorder?: boolean;
 }): React.CSSProperties {
   const isPinned = column.getIsPinned();
-  const isLastLeftPinnedColumn =
-    isPinned === "left" && column.getIsLastColumn("left");
-  const isFirstRightPinnedColumn =
-    isPinned === "right" && column.getIsFirstColumn("right");
+  const isLastStartPinnedColumn =
+    isPinned === "start" && column.getIsLastColumn("start");
+  const isFirstEndPinnedColumn =
+    isPinned === "end" && column.getIsFirstColumn("end");
 
   return {
     boxShadow: withBorder
-      ? isLastLeftPinnedColumn
+      ? isLastStartPinnedColumn
         ? "-4px 0 4px -4px var(--border) inset"
-        : isFirstRightPinnedColumn
+        : isFirstEndPinnedColumn
           ? "4px 0 4px -4px var(--border) inset"
           : undefined
       : undefined,
     insetInlineStart:
-      isPinned === "left" ? `${column.getStart("left")}px` : undefined,
+      isPinned === "start" ? `${column.getStart("start")}px` : undefined,
     insetInlineEnd:
-      isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
+      isPinned === "end" ? `${column.getAfter("end")}px` : undefined,
     opacity: isPinned ? 0.97 : 1,
     position: isPinned ? "sticky" : "relative",
     background: "var(--background)",

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { SITE } from "@/lib/site";
-import { BrandLockup } from "@/components/showcase/logo";
+import { Logo } from "@/components/showcase/logo";
 
 const FOOTER_LINKS: {
   label: string;
@@ -61,7 +61,7 @@ export function SiteFooter({ className }: { className?: string }) {
                   aria-label={`${SITE.name} | home`}
                   className="inline-flex w-fit transition-opacity hover:opacity-80"
                 >
-                  <BrandLockup logoClassName="h-10" />
+                  <Logo className="h-10" />
                 </Link>
                 <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">
                   {SITE.description}

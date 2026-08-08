@@ -3144,10 +3144,6 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   widgets: "widgets",
 };
 
-export const BLOCK_KIND_BY_SLUG: Record<string, BlockKind> = Object.fromEntries(
-  Object.entries(BLOCK_KIND_SLUGS).map(([kind, slug]) => [slug, kind]),
-) as Record<string, BlockKind>;
-
 /** The category segment an entry's detail page sits under. */
 export function entryCategorySlug(entry: RegistryEntryMeta): string {
   if (entry.category === "blocks" && entry.blockKind)

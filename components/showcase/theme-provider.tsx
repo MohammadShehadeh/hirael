@@ -11,14 +11,12 @@ import {
   STORAGE_KEY,
   type Theme,
   type ThemeMode,
-  type ThemeTokens,
 } from "@/lib/theme";
 
 type ThemeContextValue = {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   theme: Theme;
-  setTokens: (mode: ThemeMode, tokens: ThemeTokens) => void;
   mergeTheme: (partial: Partial<Theme>) => void;
   reset: () => void;
 };
@@ -112,13 +110,6 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
 
   const setMode = React.useCallback((m: ThemeMode) => setTheme(m), [setTheme]);
 
-  const setTokens = React.useCallback(
-    (target: ThemeMode, tokens: ThemeTokens) => {
-      setThemeState((prev) => ({ ...prev, [target]: tokens }));
-    },
-    [],
-  );
-
   const mergeTheme = React.useCallback((partial: Partial<Theme>) => {
     setThemeState((prev) => ({
       light: { ...prev.light, ...(partial.light ?? {}) },
@@ -129,8 +120,8 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
   const reset = React.useCallback(() => setThemeState(EMPTY_THEME), []);
 
   const value = React.useMemo<ThemeContextValue>(
-    () => ({ mode, setMode, theme, setTokens, mergeTheme, reset }),
-    [mode, setMode, theme, setTokens, mergeTheme, reset],
+    () => ({ mode, setMode, theme, mergeTheme, reset }),
+    [mode, setMode, theme, mergeTheme, reset],
   );
 
   return (

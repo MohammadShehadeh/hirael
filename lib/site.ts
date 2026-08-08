@@ -9,7 +9,6 @@ import { entryHref } from "@/registry/hirael/registry-meta";
 
 export const SITE = {
   name: "Hirael",
-  fullName: "Hirael",
   description: "The components shadcn/ui doesn't ship.",
   longDescription:
     "A shadcn-compatible registry of the inputs and section blocks most products end up needing. The CLI copies the source into your repo, so there's no package to depend on.",
@@ -17,7 +16,6 @@ export const SITE = {
   version: "0.1",
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
-  githubHandle: "mohammadshehadeh",
   githubUrl: "https://github.com/mohammadshehadeh/",
   keywords: [
     "shadcn",

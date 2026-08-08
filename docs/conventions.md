@@ -218,7 +218,7 @@ demo, a portfolio status dot). Don't mass-rewrite; fix in passing.
 - **Component vs block slugs differ.** A component's category key _is_ its slug
   (`inputs`, `pickers`, …). Block slugs come from `BLOCK_KIND_SLUGS`, which
   reads better in a path than the raw kind (`feature` → `features`, `login` →
-  `auth`, `faq` → `faqs`). `BLOCK_KIND_BY_SLUG` is the reverse.
+  `auth`, `faq` → `faqs`).
 - **Nested dynamic routes are doubly closed.** `generateStaticParams` returns
   `{ category, … }` pairs and the page 404s unless `entryCategorySlug(entry)`
   matches the requested segment, so only the canonical category/name pair

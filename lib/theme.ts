@@ -20,7 +20,7 @@ export type Theme = {
 };
 
 /** Tokens the editor is aware of. Anything outside this list is ignored on paste. */
-export const THEME_TOKEN_KEYS = [
+const THEME_TOKEN_KEYS = [
   "background",
   "foreground",
   "card",
@@ -46,8 +46,6 @@ export const THEME_TOKEN_KEYS = [
   "sidebar-accent-foreground",
   "radius",
 ] as const;
-
-export type ThemeTokenKey = (typeof THEME_TOKEN_KEYS)[number];
 
 const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS);
 

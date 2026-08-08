@@ -7,7 +7,6 @@ export type ChangelogSection = {
 
 export type ChangelogRelease = {
   key: string;
-  version: string;
   label: string;
   isoDate: string | null;
   displayDate: string | null;
@@ -17,7 +16,6 @@ export type ChangelogRelease = {
 
 export type Changelog = {
   releases: ChangelogRelease[];
-  totalReleases: number;
   lastUpdated: string | null;
   latestKey: string | null;
 };
@@ -128,7 +126,6 @@ function releaseToChangelog(release: GitHubRelease): ChangelogRelease | null {
 
     return {
       key: release.tag_name,
-      version: release.tag_name,
       label: release.tag_name.replace(/^v/, ""),
       isoDate,
       displayDate: isoDate
@@ -174,7 +171,7 @@ export async function getChangelog(): Promise<Changelog> {
     releases = [];
   }
 
-  releases.sort((a, b) => compareSemver(a.version, b.version));
+  releases.sort((a, b) => compareSemver(a.key, b.key));
 
   // "Updated" is the most recently shipped release by date, not the highest
   // version — a backported patch can ship after a newer major, and ISO dates
@@ -189,7 +186,6 @@ export async function getChangelog(): Promise<Changelog> {
 
   return {
     releases,
-    totalReleases: releases.length,
     lastUpdated: latest?.displayDate ?? null,
     latestKey: latest?.key ?? null,
   };

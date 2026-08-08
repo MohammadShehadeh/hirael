@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import { CommandMenu } from "@/components/showcase/command-menu";
-import { BrandLockup } from "@/components/showcase/logo";
+import { Logo } from "@/components/showcase/logo";
 import { ThemeToggle } from "@/components/showcase/theme-toggle";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -66,7 +66,7 @@ export function SiteHeader({
               aria-label={`${SITE.name} | home`}
               className="group flex shrink-0 items-center gap-2 rounded-full py-1 transition-opacity hover:opacity-80"
             >
-              <BrandLockup logoClassName="h-8" />
+              <Logo className="h-8" />
             </Link>
           </div>
 
@@ -113,7 +113,7 @@ export function SiteHeader({
               <DrawerContent>
                 <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
                   <DrawerTitle className="flex items-center">
-                    <BrandLockup logoClassName="h-8" />
+                    <Logo className="h-8" />
                     <span className="sr-only">Navigation</span>
                   </DrawerTitle>
                   <DrawerClose asChild>

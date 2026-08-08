@@ -11,7 +11,6 @@ import {
   radiusTheme,
   RADIUS_OPTIONS,
   THEME_PRESETS,
-  type ThemeMode,
 } from "@/lib/theme";
 import { useTheme } from "@/components/showcase/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
@@ -370,6 +369,3 @@ function ModeButton({
     </button>
   );
 }
-
-// Re-export for client mode usage on the mode-helper as needed.
-export type { ThemeMode };

@@ -13,8 +13,6 @@ import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
 
 export function ThemePlayground() {
-  const components = COMPONENTS;
-
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
@@ -86,7 +84,7 @@ export function ThemePlayground() {
         description="Every stable component re-renders against the active theme. Edit it and watch them all update at once."
       >
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-2">
-          {components.map((entry) => {
+          {COMPONENTS.map((entry) => {
             return (
               <article
                 key={entry.name}

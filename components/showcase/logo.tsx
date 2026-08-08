@@ -91,17 +91,11 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
   );
 }
 
-export function Logo({
-  className,
-  title = "Hirael",
-}: {
-  className?: string;
-  title?: string;
-}) {
+export function Logo({ className }: { className?: string }) {
   return (
     <span
       role="img"
-      aria-label={title}
+      aria-label="Hirael"
       className={cn("inline-flex shrink-0 text-foreground", className)}
     >
       <HiraelWordmarkSvg className="h-full w-auto" />
@@ -148,25 +142,6 @@ export function LogoTile({
       )}
     >
       <ArchMarkSvg className={cn("relative size-7.5", markClassName)} />
-    </span>
-  );
-}
-
-export function BrandLockup({
-  className,
-  logoClassName,
-}: {
-  className?: string;
-  logoClassName?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        "inline-block whitespace-nowrap text-foreground",
-        className,
-      )}
-    >
-      <Logo className={cn("inline-block h-6 align-middle", logoClassName)} />
     </span>
   );
 }

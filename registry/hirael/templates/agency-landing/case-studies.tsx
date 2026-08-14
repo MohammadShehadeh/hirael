@@ -25,7 +25,6 @@ export function CaseStudies() {
         </h2>
 
         <div className="grid grid-cols-1 gap-5 px-5 sm:gap-6 sm:px-8 md:grid-cols-2 lg:gap-7 lg:px-12">
-          {/* Card 1: Narrativ */}
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]">
               <video
@@ -56,7 +55,6 @@ export function CaseStudies() {
             </h3>
           </div>
 
-          {/* Card 2: Luminar */}
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#6b6b6b]">
               <video

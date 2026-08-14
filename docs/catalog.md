@@ -10,11 +10,10 @@ The catalog spans three tiers: **components** (the composable UI components
 hirael adds, in `registry/hirael/components/`; `ui/` is reserved for the
 shadcn primitives they build on), **blocks** (marketing / app sections), and
 **templates** (full, multi-section
-pages). As of the last update: **66 registry UI items** (64 standalone
-components + 2 distribution-only primitives), **83 section blocks**, and
-**9 templates**. Counts come from `registry.json`; the landing page derives
-its counts from `registry-meta.ts`, so treat that file as the truth if these
-drift.
+pages): **66 registry UI items** (64 standalone components + 2
+distribution-only primitives), **83 section blocks**, and **9 templates**.
+Counts come from `registry.json`; the landing page derives its counts from
+`registry-meta.ts`, so treat that file as the truth if these drift.
 
 Each component installs with:
 

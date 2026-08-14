@@ -8,7 +8,7 @@ at the repo root.
 ## What this is
 
 **Hirael is a shadcn-compatible component registry** — "the components
-shadcn/ui doesn't ship." It distributes ~70 React components, ~40 section
+shadcn/ui doesn't ship." It distributes ~64 React components, 80+ section
 blocks, and full-page templates through the shadcn registry schema, so a
 consumer runs
 `npx shadcn add https://hirael.com/r/<name>.json` and the **source is copied
@@ -128,12 +128,6 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
   "Upstream alignment" below for the recommended minimal test set.
 - Hosting-specific build/env/domain docs once the deploy pipeline is final.
 
-Resolved since the last pass: `LICENSE` (MIT), `SECURITY.md`,
-`CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, a PR template,
-`.editorconfig`, `.nvmrc`, and conventional-commit enforcement are now
-committed (see "Upstream alignment with shadcn/ui" below). The old `forgecn`
-clone URL in the top-level `README.md` / `CONTRIBUTING.md` has been corrected.
-
 ## Deliberate decisions — do not "fix" these
 
 - **Dark is the default canvas.** `:root` is dark; `.light` is the inverse.
@@ -235,16 +229,16 @@ Component **code** is kept in parity too, not just the repo layout: hirael's
 | Registry source      | `bases/{base,radix}` × style tokens (generated combos; `new-york-v4` legacy) | `registry-meta.ts` → generated `registry.json`                                  |
 | Tests                | vitest workspace                                                             | none (build pipeline is the gate)                                               |
 | Lint / format        | eslint + prettier w/ import sorting                                          | eslint + prettier (no import-order plugin)                                      |
-| Commits              | Conventional Commits + `.commitlintrc.json`                                  | Conventional Commits + `.commitlintrc.json` (now enforced in CI)                |
+| Commits              | Conventional Commits + `.commitlintrc.json`                                  | Conventional Commits + `.commitlintrc.json` (enforced in CI)                    |
 | Release / versioning | changesets → npm publish                                                     | GitHub Release → Vercel prod deploy                                             |
 | CI                   | code-check, test, validate-registries, release                               | `ci.yml` (lint/typecheck/build/check:registry/check:install) + `commitlint.yml` |
 | Agent tooling        | `skills/shadcn`                                                              | `.claude/` skills (`hero`, etc.) + `AGENTS.md`                                  |
-| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE                                            | now mirrored (see below)                                                        |
+| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE                                            | mirrored (see below)                                                            |
 
-### Adopted into hirael (this change)
+### Adopted into hirael
 
-Repo-hygiene conventions shadcn/ui ships that hirael lacked, none of which
-touch the static-export / release-driven architecture:
+Repo-hygiene conventions hirael mirrors from shadcn/ui, none of which touch
+the static-export / release-driven architecture:
 
 - **Conventional-commit enforcement** — `.commitlintrc.json`
   (`@commitlint/config-conventional`) plus a `commitlint.yml` CI job that

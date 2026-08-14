@@ -180,7 +180,6 @@ export default function MentionInputDemo() {
             ar: "اكتب @ للبحث في الدليل…",
           })}
           maxRows={6}
-          onMention={(item) => console.log("mentioned", item)}
         />
       </div>
     </div>

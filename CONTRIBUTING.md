@@ -204,7 +204,7 @@ byte-for-byte against the generators' output.
   Verify with the RTL toggle on the component's preview.
 - **Comments.** Registry source is copied verbatim into consumer repos,
   so keep any comments purposeful and consumer-facing — put internal
-  reasoning in commit messages, PR descriptions, or design docs.
+  reasoning in commit messages or PR descriptions.
 
 ## Component contribution checklist
 
@@ -275,10 +275,8 @@ also expected to:
 
 > **Note** — automated unit and visual-regression tests are not yet set
 > up. A future PR is expected to introduce a test runner (vitest, mirroring
-> shadcn/ui — see
-> [docs/README.md → Upstream alignment](./docs/README.md#upstream-alignment-with-shadcnui));
-> until then, the build pipeline plus the manual checks above are the
-> contract.
+> shadcn/ui); until then, the build pipeline plus the manual checks above are
+> the contract.
 
 ## Pull request process
 

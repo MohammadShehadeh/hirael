@@ -8,22 +8,34 @@ their repo. There is no runtime package. The repo itself is the showcase
 site: a fully static Next.js 16 export that previews every item and serves
 the generated `/r/*.json` files.
 
-This is the brief. Detail lives in [docs/](./docs/README.md) — read it before
-any non-trivial change.
+This is the brief; [CONTRIBUTING.md](./CONTRIBUTING.md) has the full
+contributor workflow and item checklist. Read both before any non-trivial
+change.
 
 ## Stack
 
 **Next.js 16, React 19, Tailwind CSS v4** — APIs and conventions differ from
 older majors and from most training data. Before framework-level code, check
-the matching skill (`nextjs`, `shadcn`, `react-best-practices`) and
-[docs/conventions.md](./docs/conventions.md) for the gotchas already hit
-(async route `params`, `output: "export"`, `@theme inline` tokens, the
-`.dark` / `.light` strategy).
+the matching skill (`nextjs`, `shadcn`, `react-best-practices`). Gotchas
+already hit here:
 
-The site is `output: "export"` — **no server, ISR, or route handlers at
-runtime.** Anything needing data (the `/changelog` fetch, source reads) runs
-once during `next build` and freezes into `out/`. Don't assume a request-time
-server.
+- **`output: "export"` — no server, ISR, or route handlers at runtime.**
+  Anything needing data (the `/changelog` fetch, source reads) runs once
+  during `next build` and freezes into `out/`. Images are `unoptimized`.
+- **Dynamic route `params` are Promises** — `await` them (also in
+  `generateMetadata`). Routes use `dynamicParams = false` +
+  `generateStaticParams()`, so only enumerated paths build; add items to
+  `registry-meta.ts`, not a route table.
+- **The React Compiler is on** (`reactCompiler: true`), so it auto-memoizes
+  showcase code (`app/`, `components/`, `lib/`, `examples/`) — don't
+  hand-write `useMemo`/`useCallback` there. **But shipped registry source
+  (`ui/*`, `components/*`) keeps its explicit memoization** — it's copied into
+  consumer repos that may not run the compiler. TanStack Table is v9 and its
+  table-reading components need `"use no memo"`.
+- **Tailwind v4 is CSS-first** — no `tailwind.config.js`; tokens via `@theme
+  inline` in `app/globals.css`. Theme is two custom variants, `.dark` /
+  `.light`, set on `<html>` by a prehydration script — keep it inline in
+  `app/layout.tsx`.
 
 ## registry-meta.ts is the single source of truth
 
@@ -38,12 +50,14 @@ preview loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx),
 run `pnpm registry:gen`, commit. **Never hand-edit `registry.json`** — it's
 generated. `pnpm check:registry` (CI and `pnpm build`) fails on drift, on
 `registryDependencies` that don't match real imports, or on a showcased entry
-with no preview loader.
+with no preview loader; `pnpm check:install` verifies each item installs
+offline. List `registryDependencies` by bare name — generation rewrites any
+hirael-to-hirael dep into an absolute `/r/<name>.json` URL (bare names resolve
+against `ui.shadcn.com`, which only has the primitives).
 
 ## Every item follows the same shape
 
-Full checklist in [CONTRIBUTING.md](./CONTRIBUTING.md), rules in
-[docs/conventions.md](./docs/conventions.md). The essentials:
+Full checklist in [CONTRIBUTING.md](./CONTRIBUTING.md). The essentials:
 
 - **Compound API first.** Build like shadcn primitives — a flat set of
   composable parts, no namespacing. The bare `Name` holds state;
@@ -55,11 +69,12 @@ Full checklist in [CONTRIBUTING.md](./CONTRIBUTING.md), rules in
   from `@/registry/hirael/components/*` (both aliases rewrite on install).
   Never import across items by relative path — only a multi-file kit's own
   parts may.
-- **Design tokens, never hard-coded colors** (see
-  [docs/design.md](./docs/design.md)). Light is a faithful inverse of dark;
-  both must work. `--warm` (taupe) is the brand tone; `--accent-cool` is
-  reserved for live/active state — don't spend either on decoration or swap
-  them.
+- **Design tokens, never hard-coded colors.** Tokens are defined in
+  `app/globals.css`; light is a faithful inverse of dark and both must work.
+  `--warm` (taupe) is the brand tone; `--accent-cool` is reserved for
+  live/active state — don't spend either on decoration or swap them. Reuse the
+  custom utilities in `globals.css` (`.text-display`, `.glass-panel`,
+  `.ambient-halo`, `.state-dot`, …) rather than re-rolling them.
 - **Compose classes with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
 - **A demo at `examples/<name>-demo.tsx`** (basic + customized compose) with
   every user-facing string through `useT()` — `t({ en, ar })` — so the RTL
@@ -75,26 +90,75 @@ Use logical properties (`ms/me`, `ps/pe`, `start/end`, `text-start/end`,
 `border-s/e`, `rounded-s/e`), flip directional icons with `rtl:rotate-180`,
 and mirror horizontal arrow-key focus movement. Physical geometry stays
 physical (Radix `data-[side]`, the color-picker canvas, Sheet/Sidebar
-`side`). Full detail and the overlay/marquee cases in
-[docs/conventions.md → RTL](./docs/conventions.md#rtl). Verify with the
-toggle.
+`side`). Two things that don't flip themselves: CSS-transform animations
+(the marquee flips its `translateX` sign via a `--marquee-x-dir` CSS var),
+and portaled overlays (each `*Content` reads `Direction.useDirection()` and
+sets `dir` only when it resolves to `rtl`, since Radix portals to `<body>`
+outside any `dir` wrapper). Verify with the preview toggle.
 
-## Read /docs first
+## Where things live
 
-Before any non-trivial change, read [docs/README.md](./docs/README.md) — the
-orientation: what's built, where things live, and what NOT to undo. The four
-docs are load-bearing, not a changelog; if your change makes one wrong, fix
-it in the same change, and don't spawn new doc files.
+```
+app/                      Next.js App Router (output: "export")
+  page.tsx                landing
+  (showcase)/             sidebar + topbar shell; component/block/template pages
+  embed/                  isolated framed previews for blocks/templates
+  globals.css             design tokens + custom utilities
+components/showcase/       site chrome — NOT part of the registry
+registry/hirael/
+  ui/<primitive>.tsx      shadcn primitives only
+  components/<name>.tsx    hirael's added components (multi-file kits as a folder)
+  examples/<name>-demo.tsx per-component demo
+  blocks/<block>/          marketing / app blocks
+  templates/<template>/    full-page templates
+  registry-meta.ts         single source of truth
+  registry-demos.tsx       preview-loader registry
+lib/, hooks/               site.ts, theme.ts, embed.ts, changelog.ts, demo-locale.tsx …
+scripts/                   build-registry, build-redirects, extract-props, check-*
+registry.json              GENERATED — never hand-edit
+vercel.json                GENERATED redirects + main auto-deploy disabled
+```
 
-- `README.md` — file map, done vs pending, deliberate decisions
-- `conventions.md` — Next 16 / React 19 / Tailwind v4 / registry gotchas
-- `design.md` — palette tokens, typography, radius/motion scale
-- `catalog.md` — the full component/block/template catalog
+Browsable items sit under a category segment
+(`/components/<category>/<name>`, `/blocks/<category>/<name>`); build links
+with `entryHref(entry)` from `registry-meta.ts`, never by hand. Old flat URLs
+301 to the nested paths via `vercel.json` redirects, generated by
+`scripts/build-redirects.mjs` (also from `pnpm registry:gen`).
 
-Match: an item → `catalog.md`; palette/type/radius → `design.md`; a framework
-gotcha → `conventions.md`; a moved route → `README.md`'s map. Keep the
-human-facing [README.md](./README.md) / [CONTRIBUTING.md](./CONTRIBUTING.md)
-in sync when the same fact changes.
+## Deliberate decisions — don't undo these
+
+- **Dark is the default canvas** (`:root`); `.light` is the inverse. Never
+  assume light-first.
+- **No em dashes in site copy** — removed site-wide on purpose; use commas or
+  parentheses.
+- **Social link is GitHub, not Twitter/X** — the X link was removed
+  deliberately.
+- **An item's presence in `registry-meta.ts` is the only "published" flag** —
+  don't add a `published`/`playable` field.
+- **Components are generic controls; domain-specific compositions are blocks.**
+  A reusable control (table, rating, metric card) is a component; a
+  single-domain widget (infra console, billing panel, pod table) is a **block**
+  under a kind that names the domain — the `cloud`, `saas`, and `widgets` block
+  kinds hold these.
+- **Auth embeds carry a demo notice.** `/embed/blocks/auth/*` serves
+  full-viewport login forms that Google Safe Browsing flagged as phishing;
+  `BlockEmbedShell` renders a "this form doesn't submit" banner (standalone
+  only, via `html[data-framed]`). Keep the registry components real (native
+  `type="password"`, real `autocomplete`) and don't robots-disallow `/embed/` —
+  fix appearance at the showcase layer, not in shipped source.
+
+## Gating signal
+
+No unit/visual-regression suite yet. Before requesting review, all four must
+pass, plus a manual pass (exercise the demo, both themes, the RTL toggle):
+
+```bash
+pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
+```
+
+Hirael is deliberately a single static-export app — not a monorepo, and it
+ships no npm package. Don't restructure it toward shadcn/ui's
+monorepo/changesets/CLI shape.
 
 ## Changelog & releases
 

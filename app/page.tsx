@@ -175,10 +175,6 @@ function Hero() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Catalog ticker — a slow strip of every component name, dogfooding marquee   */
-/* -------------------------------------------------------------------------- */
-
 function CatalogTicker() {
   return (
     <section aria-hidden className="relative -mt-4 pb-4 sm:pb-8">
@@ -200,10 +196,6 @@ function CatalogTicker() {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* Why Hirael — glass feature cards with icon circles                         */
-/* -------------------------------------------------------------------------- */
 
 const FEATURES: {
   icon: React.ComponentType<{ className?: string }>;

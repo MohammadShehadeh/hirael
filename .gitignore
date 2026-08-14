@@ -43,3 +43,6 @@ next-env.d.ts
 
 # generated registry artifacts
 /public/r/
+
+# claude code local settings (per-machine permissions, kept out of the public repo)
+.claude/settings.local.json

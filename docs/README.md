@@ -32,7 +32,7 @@ registry/hirael/registry-meta.ts   ← single source of truth (you edit this)
         │  pnpm registry:gen
         ▼
 registry.json                      ← GENERATED catalog (never hand-edit)
-        │  pnpm registry:build (shadcn build)  +  scripts/strip-comments.mjs
+        │  pnpm registry:build (shadcn build)
         ▼
 public/r/<name>.json               ← gitignored build output the CLI installs
 ```
@@ -82,7 +82,7 @@ registry/hirael/                  # canonical source for every registry item
   registry-demos.tsx              # demo registry used by the landing/live previews
 hooks/                            # shared client hooks
 lib/                              # site.ts, theme.ts, embed.ts, changelog.ts, highlight.ts, utils.ts, demo-locale.tsx (RTL→Arabic demos) …
-scripts/                          # build-registry, extract-props, check-registry, strip-comments
+scripts/                          # build-registry, build-redirects, extract-props, check-registry, check-install
 registry.json                    # GENERATED — do not hand-edit
 components.json                   # shadcn config; ui alias → registry/hirael/ui
 vercel.json                       # GENERATED redirects (old flat URLs → category-nested) + main auto-deploy disabled
@@ -91,8 +91,7 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
 ## What's done
 
 - **Registry pipeline** — `registry-meta.ts` as the single source of truth,
-  generation + drift check + prop extraction + comment stripping wired into
-  `pnpm build`.
+  generation + drift check + prop extraction wired into `pnpm build`.
 - **Catalog** — 66 registry UI items (64 components + 2 distribution-only
   primitives), 83 blocks, and 9 full-page templates (Creative Studio,
   Agency Landing, Portfolio, USD Halo, Mindloop, Rivr, NexaCore, Velorah,
@@ -130,7 +129,7 @@ vercel.json                       # GENERATED redirects (old flat URLs → categ
 - Hosting-specific build/env/domain docs once the deploy pipeline is final.
 
 Resolved since the last pass: `LICENSE` (MIT), `SECURITY.md`,
-`CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, a PR template, `dependabot`,
+`CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, a PR template,
 `.editorconfig`, `.nvmrc`, and conventional-commit enforcement are now
 committed (see "Upstream alignment with shadcn/ui" below). The old `forgecn`
 clone URL in the top-level `README.md` / `CONTRIBUTING.md` has been corrected.
@@ -145,8 +144,6 @@ clone URL in the top-level `README.md` / `CONTRIBUTING.md` has been corrected.
   don't swap one for the other.
 - **registry.json is generated.** Don't hand-edit it; edit
   `registry-meta.ts` and run `pnpm registry:gen`.
-- **Comments are stripped from `registry/hirael/**` on publish.\*\* Keep
-  reasoning in commits/PRs/docs, not in shipped component source.
 - **No em dashes in site copy.** They were deliberately removed across the
   site; use commas, parentheses, or "—"-free phrasing.
 - **Social link is GitHub, not Twitter/X.** The Twitter/X link and icon were
@@ -242,7 +239,7 @@ Component **code** is kept in parity too, not just the repo layout: hirael's
 | Release / versioning | changesets → npm publish                                                     | GitHub Release → Vercel prod deploy                                             |
 | CI                   | code-check, test, validate-registries, release                               | `ci.yml` (lint/typecheck/build/check:registry/check:install) + `commitlint.yml` |
 | Agent tooling        | `skills/shadcn`                                                              | `.claude/` skills (`hero`, etc.) + `AGENTS.md`                                  |
-| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE, dependabot                                | now mirrored (see below)                                                        |
+| Meta files           | LICENSE, SECURITY, ISSUE_TEMPLATE                                            | now mirrored (see below)                                                        |
 
 ### Adopted into hirael (this change)
 
@@ -255,8 +252,7 @@ touch the static-export / release-driven architecture:
   this enforces it the way shadcn/ui's config does.
 - `.editorconfig` and `.nvmrc` (Node `22`, matching CI).
 - `LICENSE` (MIT), `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant).
-- `.github/ISSUE_TEMPLATE/` (bug + feature + config), a `PULL_REQUEST_TEMPLATE.md`,
-  and `dependabot.yml` (npm + github-actions, weekly).
+- `.github/ISSUE_TEMPLATE/` (bug + feature + config) and a `PULL_REQUEST_TEMPLATE.md`.
 
 ### Deliberately NOT adopted
 

@@ -111,8 +111,7 @@ Edit `registry-meta.ts`, register the loader in `registry-demos.tsx`
 (`"hero-0X": () => import(".../hero-0X")`), then run `pnpm registry:gen` and
 `pnpm build`. `check:registry` enforces that `registryDependencies` exactly
 matches the `@/registry/hirael/ui/*` modules imported (both directions) and
-that every showcased entry has a demo loader. Comments are stripped from
-shipped block source — keep reasoning out of the `.tsx`.
+that every showcased entry has a demo loader.
 
 ## Copy
 

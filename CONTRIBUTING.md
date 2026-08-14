@@ -202,10 +202,9 @@ byte-for-byte against the generators' output.
   physical: Radix `data-[side=…]` animations, canvas-like surfaces
   (color picker), and `side="left|right"` props on Sheet/Sidebar.
   Verify with the RTL toggle on the component's preview.
-- **Comments.** Comments in registry source are stripped by
-  `scripts/strip-comments.mjs` before publishing. Keep helpful
-  reasoning in commit messages, PR descriptions, or design docs —
-  not in shipped source.
+- **Comments.** Registry source is copied verbatim into consumer repos,
+  so keep any comments purposeful and consumer-facing — put internal
+  reasoning in commit messages, PR descriptions, or design docs.
 
 ## Component contribution checklist
 

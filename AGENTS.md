@@ -119,15 +119,6 @@ positioning is fine where the geometry genuinely is physical (Radix
 `side="left|right"` on Sheet/Sidebar). Verify with the toggle before you
 call it done.
 
-## Comments are stripped from shipped registry source
-
-[scripts/strip-comments.mjs](./scripts/strip-comments.mjs) removes comments
-from `registry/hirael/**` source before it is published into the `/r/*.json`
-files, because that source is copied verbatim into a consumer's repo. Keep
-reasoning in commit messages, PR descriptions, or [docs/](./docs/) — not in
-shipped component source. (Comments in the showcase site under
-`components/showcase/`, `app/`, `lib/` are fine; those are never published.)
-
 ## Read /docs first
 
 Before any non-trivial change, read [docs/README.md](./docs/README.md) — the

@@ -139,10 +139,9 @@ header={...} />` replaces `flexRender(...)`; column pinning is logical
   **relative path** (like templates). `check:registry` collects both `ui/*` and
   `components/*` imports and matches them to `registryDependencies`.
 - **Tokens, not colors.** Never hard-code a color in component source.
-- **Comments are stripped on publish** (`scripts/strip-comments.mjs`) because
-  the source is copied into consumer repos. Put reasoning in commits/PRs/docs.
-  Comments in `components/showcase/`, `app/`, `lib/` are fine — those aren't
-  published.
+- **Registry source ships verbatim** — it is copied into consumer repos, so
+  keep comments purposeful and consumer-facing; put internal reasoning in
+  commits/PRs/docs.
 - **The component page renders any multi-file item as a file tree**
   (`component-page.tsx`, `treeView`) — used by the data table and every block /
   template.

@@ -40,7 +40,6 @@ export function Hero() {
           <ShaderBackground />
         </div>
 
-        {/* Navigation */}
         <header className="relative z-20 mx-auto w-full max-w-[1440px] p-2 sm:p-3">
           <nav className="flex items-center justify-between rounded-full bg-white p-[5px]">
             <div className="flex items-center gap-6">
@@ -133,7 +132,6 @@ export function Hero() {
         </div>
       </section>
 
-      {/* Mobile menu overlay */}
       <div
         className={cn(
           "fixed inset-0 z-50 transition-opacity duration-500 md:hidden",

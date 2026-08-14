@@ -95,10 +95,6 @@ function HighlightLine({ line }: { line: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Editor                                                                      */
-/* -------------------------------------------------------------------------- */
-
 type YamlEditorProps = Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"

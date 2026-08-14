@@ -78,10 +78,6 @@ export default function LandingPage() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Hero — full-bleed, cinematic, oversized italic serif                       */
-/* -------------------------------------------------------------------------- */
-
 function Hero() {
   const rise =
     "animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none";

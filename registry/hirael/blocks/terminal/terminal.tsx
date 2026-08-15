@@ -211,7 +211,7 @@ const TERMINAL_USER = "deploy@edge";
 
 export default function TerminalBlock() {
   const [entries, setEntries] = React.useState<TerminalEntry[]>([
-    { kind: "output", text: "hirael cloud shell — type `help` to start" },
+    { kind: "output", text: "hirael cloud shell. Type `help` to start" },
   ]);
 
   function run(command: string) {

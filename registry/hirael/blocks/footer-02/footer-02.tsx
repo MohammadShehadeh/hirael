@@ -100,7 +100,7 @@ export default function Footer02() {
                 Hirael
               </span>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Notes on building for the web — interface patterns, small tools,
+                Notes on building for the web: interface patterns, small tools,
                 and resources worth keeping around.
               </p>
             </div>

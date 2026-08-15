@@ -94,13 +94,8 @@ focused.
 ### Commit messages — Conventional Commits
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/)
-so the history is scannable and ready for tooling. This is **enforced** —
-`.commitlintrc.json` (`@commitlint/config-conventional`) runs against every
-PR's commits via the `commitlint` CI workflow, and your PR title should use
-the same format. Check a message locally with
-`echo "feat: …" | pnpm exec commitlint`; for pre-push feedback you can add an
-optional `.husky/commit-msg` hook running `pnpm exec commitlint --edit "$1"`.
-The format is:
+so the history is scannable and ready for tooling. Your commit messages and
+PR title should use the same format. The format is:
 
 ```
 <type>(<optional scope>): <imperative summary>

@@ -8,7 +8,7 @@ import { Input } from "@/registry/hirael/ui/input";
 import { Label } from "@/registry/hirael/ui/label";
 import { ThemeSheetTrigger } from "@/components/theme-sheet";
 import { PageHeader } from "@/components/page-header";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "@/components/active-theme";
 import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
 

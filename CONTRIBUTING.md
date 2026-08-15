@@ -63,9 +63,14 @@ registry/hirael/
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
-examples/<component>-demo.tsx  # top-level showcase demo per component
+registry/themes.ts           # theme-editor presets
+registry/base-colors.ts      # base-color options (derived from themes)
 registry.json                # GENERATED from registry-meta.ts — do not
                              # edit by hand, run `pnpm registry:gen`
+examples/<component>-demo.tsx  # top-level showcase demo per component
+components/<name>.tsx        # showcase-site UI, flat (not shipped)
+lib/                         # showcase helpers (theme.ts, embed.ts, ...)
+app/                         # Next.js routes + /embed previews
 ```
 
 See the top-level **[README.md](./README.md)** for a full directory

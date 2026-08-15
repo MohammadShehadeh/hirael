@@ -10,9 +10,9 @@ import {
   parseThemeCss,
   radiusTheme,
   RADIUS_OPTIONS,
-  THEME_PRESETS,
 } from "@/lib/theme";
-import { useTheme } from "@/components/theme-provider";
+import { THEME_PRESETS } from "@/registry/themes";
+import { useTheme } from "@/components/active-theme";
 import { Button } from "@/registry/hirael/ui/button";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 import { Textarea } from "@/registry/hirael/ui/textarea";

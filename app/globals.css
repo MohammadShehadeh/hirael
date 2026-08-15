@@ -59,6 +59,13 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Page container — one max-width for every section. */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 1480px;
+}
+
 /* Light: warm near-white canvas (#F4F2EC), slate ink (#161B22) — the faithful
  * inverse of the dark board palette. Primary is slate, warm taupe (#ADA69A) is
  * the brand tone, and a single cool blue stays reserved for live/active. */
@@ -167,41 +174,6 @@
   --halo-warm: oklch(0.72 0.05 82 / 7%);
 }
 
-/* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
-   values; --shiki-light + --shiki-light-bg are CSS vars we swap to in
-   light mode. */
-.shiki {
-  background-color: var(--card) !important;
-  font-family: var(--font-jet-brains-mono), ui-monospace, monospace;
-  font-size: 14px;
-  line-height: 1.65;
-  padding: 14px 16px;
-  tab-size: 2;
-}
-.shiki code {
-  background: transparent !important;
-}
-html.light .shiki {
-  color: var(--shiki-light) !important;
-}
-html.light .shiki span {
-  color: var(--shiki-light) !important;
-  font-style: var(--shiki-light-font-style, inherit) !important;
-  font-weight: var(--shiki-light-font-weight, inherit) !important;
-  text-decoration: var(--shiki-light-text-decoration, inherit) !important;
-}
-
-/* Inline shiki — token spans only (no surface/padding), used to syntax-color
-   short type signatures in the API table. Same dual-theme light swap as the
-   block .shiki above. */
-.shiki-inline span {
-  background: transparent !important;
-}
-html.light .shiki-inline,
-html.light .shiki-inline span {
-  color: var(--shiki-light) !important;
-}
-
 @layer base {
   * {
     border-color: var(--border);
@@ -260,6 +232,17 @@ html.light .shiki-inline span {
   ::selection {
     background-color: color-mix(in oklch, var(--primary) 30%, transparent);
     color: var(--foreground);
+  }
+
+  /* Site chrome sits above the noise overlay so it isn't tinted. Kept in
+   * @layer base so positioning utilities (e.g. `sticky` on the header) still
+   * win over this rule — unlayered CSS would otherwise override them. */
+  header,
+  main,
+  footer,
+  [data-sidebar] {
+    position: relative;
+    z-index: 2;
   }
 }
 
@@ -386,17 +369,6 @@ html.light .shiki-inline span {
       0 8px 24px -18px color-mix(in oklch, var(--foreground) 16%, transparent);
   }
 
-  /* Oversized serif watermark — the footer's clipped "Hirael" backdrop.
-   * Very low contrast so it reads as texture, not text. */
-  .wordmark-watermark {
-    font-family: var(--font-serif), ui-serif, Georgia, serif;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 0.8;
-    color: color-mix(in oklch, var(--foreground) 5%, transparent);
-    user-select: none;
-  }
-
   /* Cutout wordmark — the glyphs are filled with the dot-grid texture (plus
    * a soft top-down falloff) clipped to the type, so the textured layer reads
    * as showing *through* the letters rather than sitting behind them. Pure
@@ -421,21 +393,6 @@ html.light .shiki-inline span {
     -webkit-text-fill-color: transparent;
   }
 
-  /* Hairline gradient rule — fades out at the edges. Replaces solid
-   * border-t between sections for editorial polish. */
-  .rule-gradient {
-    height: 1px;
-    width: 100%;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--border) 12%,
-      var(--border) 88%,
-      transparent
-    );
-    border: 0;
-  }
-
   /* Cool state indicator. Pulses on a 3s cycle — system-feedback
    * pacing, not UI animation. */
   .state-dot {
@@ -446,14 +403,6 @@ html.light .shiki-inline span {
     background-color: var(--accent-cool);
     box-shadow: 0 0 10px 1px var(--accent-cool-glow);
     animation: state-pulse 3s ease-in-out infinite;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
 
   /* Engineering-blueprint texture for the block schematic plates: a faint
@@ -523,6 +472,41 @@ html.light .shiki-inline span {
   }
 }
 
+/* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
+   values; --shiki-light + --shiki-light-bg are CSS vars we swap to in
+   light mode. */
+.shiki {
+  background-color: var(--card) !important;
+  font-family: var(--font-jet-brains-mono), ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 14px 16px;
+  tab-size: 2;
+}
+.shiki code {
+  background: transparent !important;
+}
+html.light .shiki {
+  color: var(--shiki-light) !important;
+}
+html.light .shiki span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style, inherit) !important;
+  font-weight: var(--shiki-light-font-weight, inherit) !important;
+  text-decoration: var(--shiki-light-text-decoration, inherit) !important;
+}
+
+/* Inline shiki — token spans only (no surface/padding), used to syntax-color
+   short type signatures in the API table. Same dual-theme light swap as the
+   block .shiki above. */
+.shiki-inline span {
+  background: transparent !important;
+}
+html.light .shiki-inline,
+html.light .shiki-inline span {
+  color: var(--shiki-light) !important;
+}
+
 /* Freeze the marquee ticker for visitors who ask for less motion — it falls
  * back to a static, readable strip. */
 @media (prefers-reduced-motion: reduce) {
@@ -545,19 +529,6 @@ html[data-static] [data-embed-shell] {
   min-height: 0 !important;
 }
 
-/* Site chrome should sit above the noise overlay so it isn't tinted. Kept in
- * @layer base so positioning utilities (e.g. `sticky` on the header) still
- * win over this rule — unlayered CSS would otherwise override them. */
-@layer base {
-  header,
-  main,
-  footer,
-  [data-sidebar] {
-    position: relative;
-    z-index: 2;
-  }
-}
-
 /* Active sidebar item gets a thin cool-accent rail on the left edge.
  * Only this one place uses --accent-cool in the chrome — it's the
  * "you are here" system signal against the warm canvas. */
@@ -574,10 +545,4 @@ html[data-static] [data-embed-shell] {
   border-radius: 2px;
   background-color: var(--accent-cool);
   box-shadow: 0 0 8px 0 var(--accent-cool-glow);
-}
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 1rem;
-  max-width: 1480px;
 }

@@ -10,6 +10,7 @@ import {
 import { embedDirScript } from "@/lib/embed";
 
 import { BlockEmbedShell } from "./embed-shell";
+import { EmbedStaticMotion } from "./embed-static-motion";
 
 export const dynamicParams = false;
 
@@ -39,7 +40,9 @@ export default async function BlockEmbedRoute({
     <>
       <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
       <BlockEmbedShell demoNotice={entry.blockKind === "login"}>
-        <RegistryDemo name={entry.name} />
+        <EmbedStaticMotion>
+          <RegistryDemo name={entry.name} />
+        </EmbedStaticMotion>
       </BlockEmbedShell>
     </>
   );

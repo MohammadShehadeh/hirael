@@ -6,10 +6,15 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { Changelog } from "@/lib/changelog";
 
-export function ChangelogView({ releases, lastUpdated, latestKey }: Changelog) {
+export function ChangelogView({
+  releases,
+  lastUpdated,
+  latestKey,
+  stars,
+}: Changelog & { stars?: number | null }) {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <SiteHeader />
+      <SiteHeader stars={stars} />
 
       <main id="main-content" className="flex-1">
         <article className="relative container w-full py-16 sm:py-20">

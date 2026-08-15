@@ -17,6 +17,7 @@ import { Pill, SectionHeading } from "@/components/page-header";
 import { InstallBlock } from "@/components/install-block";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getRepoStars } from "@/lib/github";
 import { SITE } from "@/lib/site";
 import { Marquee } from "@/registry/hirael/components/marquee";
 import {
@@ -62,10 +63,11 @@ const blocksTotal = BLOCK_KIND_ORDER.reduce(
   0,
 );
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const stars = await getRepoStars();
   return (
     <div className="flex min-h-svh flex-col">
-      <SiteHeader />
+      <SiteHeader stars={stars} />
       <main className="flex-1">
         <Hero />
         <CatalogTicker />
@@ -129,7 +131,7 @@ function Hero() {
         >
           Multi-select, combobox, tag input, file dropzone, and the section
           blocks most products end up building anyway. Install with the shadcn
-          CLI — the source lands in your repo, yours to keep.
+          CLI, and the source lands in your repo, yours to keep.
         </p>
 
         <div
@@ -215,7 +217,7 @@ const FEATURES: {
   {
     icon: Layers,
     title: "Any React stack",
-    body: "Next, Remix, Vite, Astro — anywhere React and Tailwind already run.",
+    body: "Next, Remix, Vite, Astro: anywhere React and Tailwind already run.",
   },
   {
     icon: SunMoon,
@@ -332,7 +334,7 @@ function WhyHirael() {
         <SectionHeading
           kicker="Why Hirael"
           title="Own the source, not a dependency."
-          blurb="Install with the shadcn CLI and the code lands in your repo, ready to read and change — built the way shadcn ships its primitives."
+          blurb="Install with the shadcn CLI and the code lands in your repo, ready to read and change, built the way shadcn ships its primitives."
         />
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -378,7 +380,7 @@ function SectionBlocks() {
         <SectionHeading
           kicker="Section blocks"
           title="Blocks for whole sections of a page."
-          blurb={`${blocksTotal} drop-in compositions across ${BLOCK_KIND_ORDER.length} categories — heroes, pricing, testimonials, CTAs, auth, and more.`}
+          blurb={`${blocksTotal} drop-in compositions across ${BLOCK_KIND_ORDER.length} categories: heroes, pricing, testimonials, CTAs, auth, and more.`}
         />
 
         <BlockShowcase />
@@ -406,7 +408,7 @@ function ClosingCta() {
           Install one. Keep all of it.
         </h2>
         <p className="max-w-md text-sm text-muted-foreground sm:text-base">
-          One command copies the source into your repo — yours to read, edit,
+          One command copies the source into your repo, yours to read, edit,
           and keep. No package, no lock-in.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">

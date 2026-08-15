@@ -17,6 +17,7 @@ export const SITE = {
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
   githubUrl: "https://github.com/mohammadshehadeh/",
+  githubRepoUrl: "https://github.com/MohammadShehadeh/hirael",
   keywords: [
     "shadcn",
     "shadcn ui",

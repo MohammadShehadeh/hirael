@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
-import { DirectionToggle } from "@/components/showcase/direction-toggle";
-import { SegmentedControl } from "@/components/showcase/segmented-control";
+import { DirectionToggle } from "@/components/direction-toggle";
+import { SegmentedControl } from "@/components/segmented-control";
 
 type Viewport = "mobile" | "tablet" | "desktop";
 

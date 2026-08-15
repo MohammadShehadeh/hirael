@@ -7,18 +7,20 @@ import { REGISTRY, getExamples } from "@/registry/hirael/registry-meta";
 /**
  * Lazy preview registry, derived from the file layout — no hand-kept loader
  * list. Every block/template lives at `<kind>/<name>/<name>.tsx` and every
- * component demo at `examples/<slug>.tsx`, so the import path is computed from
- * the entry's name/category alone.
+ * component demo at the top-level `examples/<slug>.tsx`, so the import path is
+ * computed from the entry's name/category alone.
  *
  * The template-literal `import()`s below compile to bundler context modules
- * over `blocks/`, `templates/` and `examples/`, so adding an item is picked up
- * automatically — the file just has to follow the naming convention (which
- * `pnpm check:registry` enforces). registry-meta.ts stays data-only, so these
- * dynamic imports are what pull component code into the bundle, code-split per
- * preview — a route only loads what it renders.
+ * over `blocks/`, `templates/` and `../../examples/`, so adding an item is
+ * picked up automatically — the file just has to follow the naming convention
+ * (which `pnpm check:registry` enforces). registry-meta.ts stays data-only, so
+ * these dynamic imports are what pull component code into the bundle,
+ * code-split per preview — a route only loads what it renders.
  */
 const loadExample = (slug: string) =>
-  import(`./examples/${slug}`) as Promise<{ default: React.ComponentType }>;
+  import(`../../examples/${slug}`) as Promise<{
+    default: React.ComponentType;
+  }>;
 const loadBlock = (name: string) =>
   import(`./blocks/${name}/${name}`) as Promise<{
     default: React.ComponentType;

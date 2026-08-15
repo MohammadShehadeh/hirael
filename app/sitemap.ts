@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories";
+import { CATEGORY_REGISTRY } from "@/components/block-categories";
 import { SITE } from "@/lib/site";
 import {
   COMPONENT_CATEGORY_ORDER,

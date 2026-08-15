@@ -4,7 +4,7 @@ import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
 import { RefreshCw } from "lucide-react";
 import "./globals.css";
 
-import { LogoMark } from "@/components/showcase/logo";
+import { LogoMark } from "@/components/logo";
 import { Button } from "@/registry/hirael/ui/button";
 
 // global-error replaces the root layout, so it has to bring its own document

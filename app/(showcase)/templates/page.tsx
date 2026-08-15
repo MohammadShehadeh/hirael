@@ -2,8 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
-import { BlockPreview } from "@/components/showcase/block-preview";
-import { PageHeader } from "@/components/showcase/page-header";
+import { BlockPreview } from "@/components/block-preview";
+import { PageHeader } from "@/components/page-header";
 import { SITE } from "@/lib/site";
 import {
   TEMPLATES,

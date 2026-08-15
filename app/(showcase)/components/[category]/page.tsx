@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { ComponentCategoryPage } from "@/components/showcase/component-category-page";
+import { ComponentCategoryPage } from "@/components/component-category-page";
 import { SITE } from "@/lib/site";
 import {
   CATEGORY_LABELS,

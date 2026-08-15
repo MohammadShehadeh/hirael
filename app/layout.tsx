@@ -3,7 +3,7 @@ import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/showcase/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { SITE } from "@/lib/site";
 import { themePrehydrationScript } from "@/lib/theme";
 import { TooltipProvider } from "@/registry/hirael/ui/tooltip";

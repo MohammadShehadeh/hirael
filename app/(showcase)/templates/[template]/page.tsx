@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { ComponentPage } from "@/components/showcase/component-page";
+import { ComponentPage } from "@/components/component-page";
 import { loadSource } from "@/lib/registry-source";
 import { detailMetadata } from "@/lib/site";
 import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta";

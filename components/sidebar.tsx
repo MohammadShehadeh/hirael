@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react";
 
-import { LogoTile } from "@/components/showcase/logo";
-import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
+import { LogoTile } from "@/components/logo";
+import { ThemeSheetTrigger } from "@/components/theme-sheet";
 import { SITE } from "@/lib/site";
 import {
   CATEGORY_LABELS,

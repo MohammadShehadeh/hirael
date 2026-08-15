@@ -60,10 +60,10 @@ host.
 registry/hirael/
   ui/<primitive>.tsx         # shadcn primitives only
   components/<name>.tsx      # hirael's added components (multi-file kits as components/<name>/)
-  examples/<component>-demo.tsx  # showcase demo per component
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
+examples/<component>-demo.tsx  # top-level showcase demo per component
 registry.json                # GENERATED from registry-meta.ts — do not
                              # edit by hand, run `pnpm registry:gen`
 ```
@@ -212,7 +212,7 @@ For each new component:
       wrappers. The bare `Name` is the root primitive and holds state.
       (`registry/hirael/ui/` is reserved for shadcn primitives.)
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `registry/hirael/examples/<name>-demo.tsx` showing a basic compose
+- [ ] `examples/<name>-demo.tsx` showing a basic compose
       **and** a customized compose. To showcase several focused examples
       instead, add `<name>-<variant>.tsx` files, list them (ordered, with
       titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`, and register
@@ -241,7 +241,7 @@ Templates are full-page, multi-section layouts. They live under
 `registry/hirael/templates/<template>/`, use `category: "templates"` in
 `registry-meta.ts`, and ship as a multi-file `registry:block` in
 `registry.json`. Like blocks, they are previewed full-bleed and do not
-need a demo under `registry/hirael/examples/`.
+need a demo under `examples/`.
 
 ## Testing requirements
 

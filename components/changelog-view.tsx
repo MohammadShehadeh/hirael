@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { PageHeader } from "@/components/showcase/page-header";
-import { SiteFooter } from "@/components/showcase/site-footer";
-import { SiteHeader } from "@/components/showcase/site-header";
+import { PageHeader } from "@/components/page-header";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import type { Changelog } from "@/lib/changelog";
 
 export function ChangelogView({ releases, lastUpdated, latestKey }: Changelog) {

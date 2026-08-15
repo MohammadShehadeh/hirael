@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ChangelogView } from "@/components/showcase/changelog-view";
+import { ChangelogView } from "@/components/changelog-view";
 import { getChangelog } from "@/lib/changelog";
 import { SITE } from "@/lib/site";
 

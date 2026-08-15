@@ -12,7 +12,7 @@ import {
   RADIUS_OPTIONS,
   THEME_PRESETS,
 } from "@/lib/theme";
-import { useTheme } from "@/components/showcase/theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 import { Textarea } from "@/registry/hirael/ui/textarea";

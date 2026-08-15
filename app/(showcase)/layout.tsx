@@ -1,6 +1,6 @@
-import { ShowcaseSidebar } from "@/components/showcase/sidebar";
-import { ShowcaseTopbar } from "@/components/showcase/topbar";
-import { SiteFooter } from "@/components/showcase/site-footer";
+import { ShowcaseSidebar } from "@/components/sidebar";
+import { ShowcaseTopbar } from "@/components/topbar";
+import { SiteFooter } from "@/components/site-footer";
 import { SidebarInset, SidebarProvider } from "@/registry/hirael/ui/sidebar";
 
 export default function ShowcaseLayout({

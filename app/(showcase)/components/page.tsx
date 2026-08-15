@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, Layers, Palette } from "lucide-react";
 
-import { InlineCodeBlock } from "@/components/showcase/code-block";
-import { InstallBlock } from "@/components/showcase/install-block";
-import { PageHeader, SectionLabel } from "@/components/showcase/page-header";
+import { InlineCodeBlock } from "@/components/code-block";
+import { InstallBlock } from "@/components/install-block";
+import { PageHeader, SectionLabel } from "@/components/page-header";
 import { highlightCode } from "@/lib/highlight";
 import { SITE } from "@/lib/site";
 import {

@@ -3,12 +3,12 @@ import * as path from "node:path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { ComponentPage } from "@/components/showcase/component-page";
+import { ComponentPage } from "@/components/component-page";
 import type {
   ApiPart,
   ExampleEntry,
   SourceFile,
-} from "@/components/showcase/component-page";
+} from "@/components/component-page";
 import { highlightCode, highlightInline, langFromPath } from "@/lib/highlight";
 import { loadSource } from "@/lib/registry-source";
 import { detailMetadata } from "@/lib/site";
@@ -48,15 +48,15 @@ export async function generateMetadata({
 
 /**
  * A component ships its install source at `registry/hirael/ui/<name>.tsx`
- * (what shadcn distributes) and one or more demos at
- * `registry/hirael/examples/<slug>.tsx`. Returns each example with its
- * pre-highlighted source for the stacked preview/code blocks; the source is
- * null when a file is missing.
+ * (what shadcn distributes) and one or more demos at the top-level
+ * `examples/<slug>.tsx`. Returns each example with its pre-highlighted source
+ * for the stacked preview/code blocks; the source is null when a file is
+ * missing.
  */
 async function loadExamples(name: string): Promise<ExampleEntry[]> {
   return Promise.all(
     getExamples(name).map(async ({ slug, title }) => {
-      const relPath = `registry/hirael/examples/${slug}.tsx`;
+      const relPath = `examples/${slug}.tsx`;
       const abs = path.join(process.cwd(), relPath);
       let source: SourceFile | null = null;
       try {

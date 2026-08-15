@@ -11,7 +11,7 @@ import { KbdDisplay } from "@/registry/hirael/components/kbd";
 // ships to visitors who don't search.
 const CommandPalette = dynamic(
   () =>
-    import("@/components/showcase/command-palette").then(
+    import("@/components/command-palette").then(
       (m) => m.CommandPalette,
     ),
   { ssr: false },

@@ -7,7 +7,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import type { SourceFile } from "@/components/showcase/component-page";
+import type { SourceFile } from "@/components/component-page";
 import { highlightCode, langFromPath } from "@/lib/highlight";
 
 export async function loadSource(

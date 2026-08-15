@@ -4,7 +4,7 @@ import * as React from "react";
 import { ChevronRight, File, Folder } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { SegmentedControl } from "@/components/showcase/segmented-control";
+import { SegmentedControl } from "@/components/segmented-control";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 
 export type CodeBlockTab = {

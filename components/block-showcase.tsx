@@ -2,7 +2,7 @@ import Link from "next/link";
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { CATEGORY_REGISTRY } from "@/components/showcase/block-categories";
+import { CATEGORY_REGISTRY } from "@/components/block-categories";
 import { BLOCKS_BY_KIND } from "@/registry/hirael/registry-meta";
 
 /* -------------------------------------------------------------------------- */

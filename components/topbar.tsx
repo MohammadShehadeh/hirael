@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "@/lib/site";
-import { CommandMenu } from "@/components/showcase/command-menu";
-import { Logo } from "@/components/showcase/logo";
-import { ThemeToggle } from "@/components/showcase/theme-toggle";
+import { CommandMenu } from "@/components/command-menu";
+import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/registry/hirael/ui/separator";
 import { SidebarTrigger } from "@/registry/hirael/ui/sidebar";
 

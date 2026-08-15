@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { SITE } from "@/lib/site";
-import { Logo } from "@/components/showcase/logo";
+import { Logo } from "@/components/logo";
 
 const FOOTER_LINKS: {
   label: string;

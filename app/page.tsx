@@ -12,11 +12,11 @@ import {
   SunMoon,
 } from "lucide-react";
 
-import { BlockShowcase } from "@/components/showcase/block-showcase";
-import { Pill, SectionHeading } from "@/components/showcase/page-header";
-import { InstallBlock } from "@/components/showcase/install-block";
-import { SiteFooter } from "@/components/showcase/site-footer";
-import { SiteHeader } from "@/components/showcase/site-header";
+import { BlockShowcase } from "@/components/block-showcase";
+import { Pill, SectionHeading } from "@/components/page-header";
+import { InstallBlock } from "@/components/install-block";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { SITE } from "@/lib/site";
 import { Marquee } from "@/registry/hirael/components/marquee";
 import {

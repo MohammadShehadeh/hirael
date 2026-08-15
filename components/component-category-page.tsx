@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/showcase/breadcrumbs";
-import { SectionLabel } from "@/components/showcase/page-header";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { SectionLabel } from "@/components/page-header";
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_DESCRIPTIONS,

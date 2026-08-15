@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 
-import type { CategoryMeta } from "@/components/showcase/block-categories";
-import { BlockPreview } from "@/components/showcase/block-preview";
-import { Breadcrumbs } from "@/components/showcase/breadcrumbs";
-import { SectionLabel } from "@/components/showcase/page-header";
+import type { CategoryMeta } from "@/components/block-categories";
+import { BlockPreview } from "@/components/block-preview";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { SectionLabel } from "@/components/page-header";
 import {
   BLOCKS_BY_KIND,
   entryEmbedHref,

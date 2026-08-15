@@ -4,7 +4,7 @@ import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/components/showcase/theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/registry/hirael/ui/button";
 
 export function ThemeToggle() {

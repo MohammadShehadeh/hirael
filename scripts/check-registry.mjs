@@ -125,7 +125,7 @@ for (const entry of entries) {
   // block/template's primary at <category>/<name>/<name>.tsx.
   if (showcased && !isBlock) {
     for (const ex of meta.getExamples(entry.name)) {
-      const demo = `registry/hirael/examples/${ex.slug}.tsx`;
+      const demo = `examples/${ex.slug}.tsx`;
       if (!existsSync(path.join(ROOT, demo))) {
         fail(`component "${entry.name}" → missing example ${demo}`);
       }

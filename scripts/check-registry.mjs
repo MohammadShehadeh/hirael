@@ -1,6 +1,6 @@
 // Registry drift guard. registry-meta.ts is the source of truth; registry.json
-// is generated from it. Fails the build when the two drift, a referenced file
-// or demo loader is missing, declared deps don't match actual imports, or a
+// is generated from it. Fails the build when the two drift, a referenced source
+// or preview file is missing, declared deps don't match actual imports, or a
 // category/block-kind ordering array is incomplete. Run via `pnpm check:registry`.
 
 import { existsSync, readFileSync } from "node:fs";
@@ -96,16 +96,6 @@ const meta = await loadRegistryMeta();
 const generated = buildRegistry(meta);
 const entries = [...meta.REGISTRY, ...meta.DISTRIBUTION_ONLY];
 
-// Loader keys registered in registry-demos.tsx (block names, example slugs).
-const demosSrc = readFileSync(
-  path.join(ROOT, "registry/hirael/registry-demos.tsx"),
-  "utf8",
-);
-const demoLoaderNames = new Set(
-  [...demosSrc.matchAll(/["']?([\w-]+)["']?:\s*\(\)\s*=>/g)].map((m) => m[1]),
-);
-const expectedLoaderNames = new Set();
-
 // registry.json must match the generated output byte-for-byte.
 if (
   readFileSync(path.join(ROOT, "registry.json"), "utf8") !==
@@ -129,26 +119,24 @@ for (const entry of entries) {
     entry.type === "registry:block";
   const showcased = meta.REGISTRY.includes(entry);
 
-  // Components need a source + slug-keyed loader per example, or the preview
-  // renders blank; blocks/templates need a name-keyed loader.
+  // registry-demos.tsx loads previews straight from the file layout, so the
+  // guarantee here is that the file each preview imports exists and follows the
+  // naming convention: a component's example at examples/<slug>.tsx, a
+  // block/template's primary at <category>/<name>/<name>.tsx.
   if (showcased && !isBlock) {
     for (const ex of meta.getExamples(entry.name)) {
-      expectedLoaderNames.add(ex.slug);
       const demo = `registry/hirael/examples/${ex.slug}.tsx`;
       if (!existsSync(path.join(ROOT, demo))) {
         fail(`component "${entry.name}" → missing example ${demo}`);
       }
-      if (!demoLoaderNames.has(ex.slug)) {
-        fail(
-          `component "${entry.name}" → example "${ex.slug}" has no loader in registry-demos.tsx`,
-        );
-      }
     }
   }
   if (showcased && isBlock) {
-    expectedLoaderNames.add(entry.name);
-    if (!demoLoaderNames.has(entry.name)) {
-      fail(`"${entry.name}" → missing preview loader in registry-demos.tsx`);
+    const preview = `registry/hirael/${entry.category}/${entry.name}/${entry.name}.tsx`;
+    if (!existsSync(path.join(ROOT, preview))) {
+      fail(
+        `"${entry.name}" → preview ${preview} missing (registry-demos.tsx loads it by name/category convention)`,
+      );
     }
   }
 
@@ -186,16 +174,6 @@ for (const entry of entries) {
       fail(
         `"${entry.name}" declares npm dependency "${dep}" but never imports it`,
       );
-  }
-}
-
-// Every loader must map to a showcased entry (catches loaders left after a
-// rename or removal).
-for (const name of demoLoaderNames) {
-  if (!expectedLoaderNames.has(name)) {
-    fail(
-      `registry-demos.tsx has orphan loader "${name}" with no showcased entry`,
-    );
   }
 }
 

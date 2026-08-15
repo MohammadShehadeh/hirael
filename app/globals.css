@@ -531,6 +531,20 @@ html.light .shiki-inline span {
   }
 }
 
+/* Static thumbnails (`data-static`) never scroll, so `whileInView` reveals
+ * never fire and motion leaves them at inline `opacity: 0`. Pin them to their
+ * final frame; live embeds omit the flag and still animate. */
+html[data-static] [style*="opacity"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Drop the shell's full-viewport min-height in thumbnails so a compact block
+ * reports its natural height for block-preview.tsx to fit the card to. */
+html[data-static] [data-embed-shell] {
+  min-height: 0 !important;
+}
+
 /* Site chrome should sit above the noise overlay so it isn't tinted. Kept in
  * @layer base so positioning utilities (e.g. `sticky` on the header) still
  * win over this rule — unlayered CSS would otherwise override them. */

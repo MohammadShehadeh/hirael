@@ -59,12 +59,9 @@ async function fetchReleases(): Promise<GitHubRelease[]> {
     headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN_HIRAEL}`;
   }
 
-  // This fetch runs once during `next build` and the rendered page is frozen
-  // into the static export (output: "export" — there is no server or ISR to
-  // refresh it). That's fresh enough: production only deploys when a GitHub
-  // Release is published, and this fetch runs during that very build, so the
-  // page always includes the release that shipped it. Post-publish edits to
-  // release notes show up on the next release.
+  // Runs once at `next build` and freezes into the static export (output:
+  // "export" — no server or ISR). Fresh enough: prod only deploys on a Release
+  // publish, which triggers this very build. Edits show up on the next release.
   const res = await fetch(RELEASES_URL, {
     headers,
     cache: "force-cache",

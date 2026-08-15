@@ -2,18 +2,13 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 /**
- * Background wrapper for statically exported block embeds. Reading
- * direction is set on `<html>` before paint by the inline script in
- * `page.tsx` (see `lib/embed.ts`), so this stays a plain server wrapper
- * with no direction state to flip after mount.
+ * Background wrapper for statically exported block embeds; a plain server
+ * wrapper since reading direction is set pre-paint in `lib/embed.ts`.
  *
- * `demoNotice` renders a banner telling visitors the form is a demo. It is
- * always in the static HTML but hidden pre-paint when the page is framed
- * by the showcase (`html[data-framed]`, set in `lib/embed.ts`), so only
- * direct visits — including Safe Browsing's crawler — see it. Auth block
- * embeds are bare full-page login forms at a hirael.com URL; without the
- * notice Google's phishing classifier can flag them as credential
- * harvesting (Search Console: "Possible phishing detected on user login").
+ * `demoNotice` renders a banner marking the form a demo. It's in the static
+ * HTML but hidden under `html[data-framed]`, so only direct visits (including
+ * Safe Browsing's crawler) see it: auth embeds are bare login forms on a real
+ * URL, which Google's phishing classifier flags without the notice.
  */
 export function BlockEmbedShell({
   children,
@@ -23,7 +18,7 @@ export function BlockEmbedShell({
   demoNotice?: boolean;
 }) {
   return (
-    <div className="min-h-svh bg-background">
+    <div data-embed-shell className="min-h-svh bg-background">
       {demoNotice && (
         <div
           role="note"

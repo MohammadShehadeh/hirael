@@ -1,13 +1,11 @@
 /**
- * Theme token model + CSS parsing / formatting for the live theme settings sheet.
+ * Theme token model + CSS parsing/formatting for the live theme settings sheet.
  *
- * The showcase's globals.css uses `:root` for dark (default) and `.light`
- * for the light variant. On top of that, the mode scripts always mirror the
- * standard shadcn `.dark` class onto <html> in dark mode so that registry
- * components authored with `dark:` variants behave here exactly as they do
- * in a consumer app. The live editor lets users paste CSS that follows
- * either convention — this module reconciles both into a {light, dark}
- * record that the provider applies via inline CSS custom properties.
+ * globals.css uses `:root` for dark (default) and `.light` for light, but the
+ * mode scripts also mirror shadcn's `.dark` class in dark mode so `dark:`
+ * variants behave as in a consumer app. The editor accepts pasted CSS in
+ * either convention; this reconciles both into a {light, dark} record applied
+ * as inline custom properties.
  */
 
 export type ThemeMode = "light" | "dark";

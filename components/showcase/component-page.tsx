@@ -84,18 +84,14 @@ export function ComponentPage({
   const treeView = isComposite || (entry.files ?? []).length > 1;
   const embedHref = entryEmbedHref(entry);
 
-  const codeTabs: CodeBlockTab[] = React.useMemo(
-    () =>
-      (entry.files ?? [])
-        .map((f) => {
-          const file = source[f.path];
-          if (!file) return null;
-          const label = treeView ? (f.target ?? f.path) : f.path;
-          return { label, code: file.code, html: file.html };
-        })
-        .filter((t): t is CodeBlockTab => t !== null),
-    [entry.files, source, treeView],
-  );
+  const codeTabs: CodeBlockTab[] = (entry.files ?? [])
+    .map((f) => {
+      const file = source[f.path];
+      if (!file) return null;
+      const label = treeView ? (f.target ?? f.path) : f.path;
+      return { label, code: file.code, html: file.html };
+    })
+    .filter((t): t is CodeBlockTab => t !== null);
 
   const exampleList = examples ?? [];
   const registryDeps = entry.registryDependencies ?? [];

@@ -57,14 +57,10 @@ function ThemeSheetBody() {
     | { kind: "ok"; msg: string }
     | { kind: "warn"; msg: string }
   >({ kind: "idle" });
-  const exportCss = React.useMemo(() => {
-    // Fall back to a helpful empty hint if no overrides set.
-    const formatted = formatThemeCss(theme);
-    return (
-      formatted ||
-      "/* No overrides yet. Paste a theme below or pick a preset to populate this. */"
-    );
-  }, [theme]);
+  // Fall back to a helpful empty hint if no overrides set.
+  const exportCss =
+    formatThemeCss(theme) ||
+    "/* No overrides yet. Paste a theme below or pick a preset to populate this. */";
 
   function applyPaste() {
     const { theme: parsed, warnings } = parseThemeCss(paste, mode);

@@ -166,7 +166,7 @@ function FileTree({
   onSelect: (path: string) => void;
   maxHeight: string;
 }) {
-  const tree = React.useMemo(() => buildTree(paths), [paths]);
+  const tree = buildTree(paths);
   return (
     <div
       role="tree"

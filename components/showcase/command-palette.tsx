@@ -41,13 +41,10 @@ export function CommandPalette({
 }) {
   const router = useRouter();
 
-  const go = React.useCallback(
-    (href: string) => {
-      onOpenChange(false);
-      router.push(href);
-    },
-    [router, onOpenChange],
-  );
+  const go = (href: string) => {
+    onOpenChange(false);
+    router.push(href);
+  };
 
   const components = COMPONENTS;
   const blocks = REGISTRY.filter((r) => r.category === "blocks");

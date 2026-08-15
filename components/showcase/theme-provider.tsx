@@ -108,21 +108,18 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
     return () => window.clearTimeout(id);
   }, [theme]);
 
-  const setMode = React.useCallback((m: ThemeMode) => setTheme(m), [setTheme]);
+  const setMode = (m: ThemeMode) => setTheme(m);
 
-  const mergeTheme = React.useCallback((partial: Partial<Theme>) => {
+  const mergeTheme = (partial: Partial<Theme>) => {
     setThemeState((prev) => ({
       light: { ...prev.light, ...(partial.light ?? {}) },
       dark: { ...prev.dark, ...(partial.dark ?? {}) },
     }));
-  }, []);
+  };
 
-  const reset = React.useCallback(() => setThemeState(EMPTY_THEME), []);
+  const reset = () => setThemeState(EMPTY_THEME);
 
-  const value = React.useMemo<ThemeContextValue>(
-    () => ({ mode, setMode, theme, mergeTheme, reset }),
-    [mode, setMode, theme, mergeTheme, reset],
-  );
+  const value: ThemeContextValue = { mode, setMode, theme, mergeTheme, reset };
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

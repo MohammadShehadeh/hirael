@@ -127,10 +127,10 @@ export function SiteFooter({ className }: { className?: string }) {
               Hirael
             </span>
             <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                © {year} {SITE.author} · built on shadcn
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                © {year} {SITE.author} - built on shadcn
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 zero runtime deps
               </p>
             </div>

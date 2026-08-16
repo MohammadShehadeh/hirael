@@ -52,15 +52,15 @@ export function CommandMenu({ className }: { className?: string }) {
         onClick={() => setOpen(true)}
         aria-label="Search components and blocks"
         className={cn(
-          "inline-flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "h-8 sm:inline-flex hidden items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
           className,
         )}
       >
         <Search className="size-3.5 shrink-0" />
-        <span className="hidden text-[13px] tracking-tight sm:inline">
+        <span className="text-[13px] tracking-tight">
           Search…
         </span>
-        <KbdDisplay className="ml-2 hidden border border-border bg-background px-1.5 font-mono text-[10px] sm:inline-flex">
+        <KbdDisplay className="ml-2 border border-border bg-background px-1.5 font-mono text-[10px]">
           {isMac ? "⌘" : "Ctrl "}K
         </KbdDisplay>
       </button>

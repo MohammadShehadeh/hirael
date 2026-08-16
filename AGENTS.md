@@ -83,11 +83,13 @@ pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 
 ## Releases
 
-`/changelog` renders GitHub Releases, fetched at build and frozen into the
-export. Production deploys **only when a Release is published** — `main`
-auto-deploy is off in `vercel.json`. Release notes are visitor-facing (new
-components, blocks, fixes; no build/deploy internals); put detail under
-`Highlights:` / `Fixes:` bullets in the tag body, which the parser groups.
+`/changelog` renders MDX entries from `content/changelog/*.mdx` — one file per
+release, compiled at build (`next-mdx-remote`) and frozen into the export.
+Frontmatter is `title`, `date` (YYYY-MM-DD), and optional `version` /
+`description`; the MDX body is visitor-facing (new components, blocks, fixes —
+no build/deploy internals). Production deploys **only when a Release is
+published** — `main` auto-deploy is off in `vercel.json` — so add the changelog
+entry in the same change and cut a Release to ship it.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

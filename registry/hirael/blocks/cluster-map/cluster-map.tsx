@@ -70,7 +70,7 @@ function ClusterNode({
       data-health={health}
       title={title ?? (label ? String(label) : healthLabel[health])}
       aria-label={
-        label ? `${label} — ${healthLabel[health]}` : healthLabel[health]
+        label ? `${label}, ${healthLabel[health]}` : healthLabel[health]
       }
       className={cn(
         "group relative aspect-square rounded-sm outline-none transition-transform",

@@ -1,0 +1,157 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react";
+
+import { LogoTile } from "@/components/logo";
+import { ThemeSheetTrigger } from "@/components/theme-sheet";
+import { SITE } from "@/lib/site";
+import {
+  CATEGORY_LABELS,
+  COMPONENT_CATEGORY_ORDER,
+  REGISTRY_BY_CATEGORY,
+  entryHref,
+} from "@/registry/hirael/registry-meta";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/registry/hirael/ui/sidebar";
+
+export function ShowcaseSidebar() {
+  const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+  const blockCount = REGISTRY_BY_CATEGORY.blocks.length;
+  const templateCount = REGISTRY_BY_CATEGORY.templates.length;
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  // The mobile sidebar is an off-canvas sheet; close it when the route
+  // changes so a tapped link doesn't leave it covering the page.
+  React.useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
+
+  return (
+    <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
+      <SidebarHeader>
+        <Link
+          href="/"
+          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
+          aria-label={`${SITE.name} | home`}
+        >
+          <LogoTile />
+          <span
+            className="truncate whitespace-nowrap text-xl leading-none text-foreground"
+            style={{
+              fontFamily: "var(--font-cormorant), ui-serif, serif",
+              fontWeight: 500,
+              letterSpacing: "0.22em",
+            }}
+          >
+            HIRAEL
+          </span>
+        </Link>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/components")}>
+                  <Link href="/components">
+                    <Boxes />
+                    <span>All components</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/blocks")}>
+                  <Link href="/blocks">
+                    <LayoutTemplate />
+                    <span>Blocks</span>
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
+                      {blockCount}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/templates")}>
+                  <Link href="/templates">
+                    <Frame />
+                    <span>Templates</span>
+                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
+                      {templateCount}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/theme")}>
+                  <Link href="/theme">
+                    <Sparkles />
+                    <span>Theme playground</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {COMPONENT_CATEGORY_ORDER.map((cat) => {
+          const items = REGISTRY_BY_CATEGORY[cat];
+          if (!items.length) return null;
+          return (
+            <SidebarGroup key={cat}>
+              <SidebarGroupLabel asChild>
+                <Link href={`/components/${cat}`}>{CATEGORY_LABELS[cat]}</Link>
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {items.map((entry) => {
+                    const href = entryHref(entry);
+                    const active = isActive(href);
+                    return (
+                      <SidebarMenuItem key={entry.name}>
+                        <SidebarMenuButton asChild isActive={active}>
+                          <Link href={href}>
+                            <span>{entry.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          );
+        })}
+      </SidebarContent>
+
+      <SidebarFooter>
+        <div className="flex items-center justify-between gap-2 bg-sidebar-accent/30 px-1 py-2">
+          <span className="font-mono text-sm uppercase text-muted-foreground">
+            peer of shadcn
+          </span>
+          <ThemeSheetTrigger />
+        </div>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

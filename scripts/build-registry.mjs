@@ -1,11 +1,5 @@
-// Generates registry.json from registry/hirael/registry-meta.ts.
-//
-// registry-meta.ts is the single source of truth for every item: the
-// showcase reads it directly and this script derives the distributable
-// registry.json (consumed by `shadcn build`) from REGISTRY +
-// DISTRIBUTION_ONLY. Never edit registry.json by hand — run
-// `pnpm registry:gen` instead. `scripts/check-registry.mjs` fails the
-// build if the two files drift.
+// Generates registry.json from registry-meta.ts (the single source of truth).
+// Never edit registry.json by hand — run `pnpm registry:gen`.
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -16,20 +10,15 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const META_PATH = path.join(ROOT, "registry/hirael/registry-meta.ts");
 const REGISTRY_JSON_PATH = path.join(ROOT, "registry.json");
 
-// Where the registry is served. Cross-hirael `registryDependencies` are
-// emitted as absolute URLs so the shadcn CLI resolves them against hirael
-// instead of the default ui.shadcn.com registry (bare names only resolve
-// there). Overridable so the install smoke-test can point deps at a local
-// server; production builds use hirael.com.
+// Cross-hirael deps are emitted as absolute URLs so the shadcn CLI resolves
+// them against hirael instead of the default ui.shadcn.com registry. The smoke
+// test overrides this to point at a local server.
 const REGISTRY_BASE_URL = process.env.REGISTRY_BASE_URL ?? "https://hirael.com";
 
-/**
- * registry-meta.ts is data-only TypeScript. Transpile it to ESM in a cache
- * dir and import it so we evaluate the real module instead of regex-parsing.
- */
+// registry-meta.ts is data-only TS; transpile to ESM and import the real module
+// rather than regex-parsing it.
 export async function loadRegistryMeta() {
-  const source = readFileSync(META_PATH, "utf8");
-  const { outputText } = ts.transpileModule(source, {
+  const { outputText } = ts.transpileModule(readFileSync(META_PATH, "utf8"), {
     compilerOptions: {
       module: ts.ModuleKind.ESNext,
       target: ts.ScriptTarget.ES2022,
@@ -39,16 +28,11 @@ export async function loadRegistryMeta() {
   mkdirSync(cacheDir, { recursive: true });
   const outFile = path.join(cacheDir, "registry-meta.mjs");
   writeFileSync(outFile, outputText);
-  // Cache-bust so repeated imports in one process see fresh content.
   return import(`${pathToFileURL(outFile).href}?v=${Date.now()}`);
 }
 
-/**
- * Default install target for a source file. Primitives in `registry/hirael/ui`
- * land in the consumer's `components/ui`; extended components under
- * `registry/hirael/components` keep their sub-path (so a multi-file kit like
- * the data table installs as a folder).
- */
+// Install target: primitives (registry/hirael/ui) land in components/ui;
+// extended components keep their sub-path so multi-file kits install as folders.
 function deriveTarget(p) {
   if (p.startsWith("registry/hirael/components/")) {
     return p.slice("registry/hirael/".length);
@@ -56,18 +40,13 @@ function deriveTarget(p) {
   return `components/ui/${path.basename(p)}`;
 }
 
-/**
- * Resolve a `registryDependencies` entry. Names that are hirael items become
- * absolute `/r/<name>.json` URLs (so the CLI fetches them from hirael); every
- * other name is a shadcn primitive and stays bare (resolved from the consumer's
- * default registry). URLs and `@`-namespaced deps pass through untouched.
- */
+// Hirael items become absolute `/r/<name>.json` URLs; shadcn primitives stay
+// bare; URLs and `@`-namespaced deps pass through.
 function resolveDep(dep, hiraelNames) {
   if (dep.includes("/") || dep.startsWith("@")) return dep;
   return hiraelNames.has(dep) ? `${REGISTRY_BASE_URL}/r/${dep}.json` : dep;
 }
 
-/** Map one meta entry to a registry.json item. */
 function toRegistryItem(entry, hiraelNames) {
   const isBlock =
     entry.type === "registry:block" || entry.category === "blocks";
@@ -91,8 +70,7 @@ function toRegistryItem(entry, hiraelNames) {
     type: file.type ?? type,
     target: file.target ?? (isComposite ? undefined : deriveTarget(file.path)),
   }));
-  // A `registry:theme` item ships only `cssVars` — no files to install — so
-  // it's the one type exempt from the "must have files" rule below.
+  // A registry:theme item ships only cssVars, so it's exempt from needing files.
   if (!files.length && type !== "registry:theme") {
     throw new Error(`"${entry.name}": no files`);
   }
@@ -132,8 +110,7 @@ export function registryJsonText(registry) {
 }
 
 async function main() {
-  const meta = await loadRegistryMeta();
-  const registry = buildRegistry(meta);
+  const registry = buildRegistry(await loadRegistryMeta());
   writeFileSync(REGISTRY_JSON_PATH, registryJsonText(registry));
   console.log(`✓ registry.json generated (${registry.items.length} items)`);
 }

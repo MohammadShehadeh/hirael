@@ -2962,7 +2962,7 @@ export const COMPONENTS = REGISTRY.filter(
 
 /**
  * One demo a component showcases on its page. `slug` is the example file
- * basename under `registry/hirael/examples/<slug>.tsx` and the loader key in
+ * basename under the top-level `examples/<slug>.tsx` and the loader key in
  * registry-demos.tsx; `title` labels the block when a component has more than
  * one. Most components have a single `<name>-demo`; list extra variants here
  * (the first entry is the representative preview used in grids and embeds).

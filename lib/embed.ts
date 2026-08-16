@@ -1,19 +1,13 @@
 /**
- * Inline, pre-paint script for the framed `/embed/*` routes.
- *
- * The embed previews are loaded in an iframe whose `src` carries the
- * reading direction as a `?dir=rtl` query param. Reacting to that param
- * in a client effect flips the layout *after* the first paint, which
- * reads as a flash. Running this synchronously in the document head sets
- * `<html dir>` before anything paints, so RTL previews come up correct on
- * the first frame — the same trick the theme uses in `lib/theme.ts`.
- *
- * It also stamps `data-framed` on `<html>` when the page is inside an
- * iframe (the showcase preview). Standalone-only UI — like the
- * demo-credentials notice on auth block embeds — hides itself under that
- * attribute, so it shows in the static HTML and on direct visits (what
- * Safe Browsing and stray visitors see) but never inside the showcase.
+ * Inline pre-paint script for framed `/embed/*` routes. Sets three things on
+ * `<html>` before first paint, avoiding a post-hydration flash:
+ * - `dir` from `?dir=rtl`, so RTL previews are correct on frame one.
+ * - `data-framed` when inside an iframe — standalone-only UI (the auth
+ *   demo-credentials notice Safe Browsing needs) hides under it.
+ * - `data-static` from `?static=1` on gallery thumbnails — globals.css keys
+ *   off it to show reveals' final frame (the non-scrolling preview never
+ *   triggers `whileInView`) and to fit the card to content.
  */
 export function embedDirScript(): string {
-  return `(()=>{try{var d=new URLSearchParams(location.search).get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';if(window.self!==window.top)document.documentElement.setAttribute('data-framed','');}catch(e){}})();`;
+  return `(()=>{try{var p=new URLSearchParams(location.search);var d=p.get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';if(window.self!==window.top)document.documentElement.setAttribute('data-framed','');if(p.get('static')==='1')document.documentElement.setAttribute('data-static','');}catch(e){}})();`;
 }

@@ -23,7 +23,6 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        {/* Closing call to action */}
         <div className="flex flex-col gap-8 border-b border-white/10 pb-12 sm:pb-16 lg:flex-row lg:items-end lg:justify-between lg:pb-20">
           <div className="max-w-2xl">
             <div className="mb-5 flex items-center gap-3 sm:mb-8">
@@ -52,7 +51,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Brand + navigation */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:py-20">
           <div className="col-span-2 flex flex-col gap-5 lg:col-span-1">
             <a
@@ -105,7 +103,6 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Signature wordmark */}
         <div
           aria-hidden
           className="pointer-events-none select-none overflow-hidden border-t border-white/10 pt-10 sm:pt-12"
@@ -115,7 +112,6 @@ export function Footer() {
           </span>
         </div>
 
-        {/* Legal */}
         <div className="flex flex-col gap-4 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[13px] text-gray-500">
             © 2026 Hirael Studio. All rights reserved.

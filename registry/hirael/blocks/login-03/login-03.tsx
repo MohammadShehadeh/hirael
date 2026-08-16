@@ -95,7 +95,7 @@ export default function Login03() {
   return (
     <section
       data-slot="login"
-      className="relative bg-background md:h-180 md:overflow-hidden lg:grid lg:grid-cols-2"
+      className="relative min-h-svh overflow-hidden bg-background lg:grid lg:grid-cols-2"
     >
       <aside
         data-slot="login-aside"
@@ -140,7 +140,7 @@ export default function Login03() {
 
       <div
         data-slot="login-main"
-        className="relative flex min-h-140 flex-col justify-center px-8 md:min-h-0"
+        className="relative flex min-h-svh flex-col justify-center px-8 lg:min-h-0"
       >
         <div
           aria-hidden

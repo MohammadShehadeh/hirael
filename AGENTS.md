@@ -1,215 +1,93 @@
 # Hirael — a shadcn-compatible component registry
 
-Hirael ships "the components shadcn/ui doesn't ship": ~70 React components,
-~40 section blocks, and full-page templates, distributed through the
-**shadcn registry schema** so consumers install them with
-`npx shadcn add https://hirael.com/r/<name>.json` and the source lands in
-their repo. There is no runtime package. The
-showcase site in this repo is a fully static Next.js 16 export that
-previews every item and serves the generated `/r/*.json` registry files.
+Hirael ships "the components shadcn/ui doesn't ship": ~64 React components,
+80+ section blocks, and full-page templates, distributed through the **shadcn
+registry schema** — consumers run `npx shadcn add
+https://hirael.com/r/<name>.json` and the source lands in their repo. There's
+no runtime package. The repo is the showcase site: a static Next.js 16 export
+that previews every item and serves the generated `/r/*.json` files.
+[CONTRIBUTING.md](./CONTRIBUTING.md) has the full workflow and item checklist.
 
-This file is the load-bearing brief. The deeper detail lives in
-[docs/](./docs/README.md) — read that before any non-trivial change.
+## Stack — not the versions you know
 
-## This is NOT the Next.js / React / Tailwind you know
+**Next.js 16, React 19, Tailwind v4.** Check the `nextjs` / `shadcn` /
+`react-best-practices` skills before framework code. Traps hit here:
 
-This repo runs **Next.js 16, React 19, and Tailwind CSS v4** — APIs,
-defaults, and file conventions differ from older majors and from most
-training data. Before writing framework-level code, check the matching
-skill (`nextjs`, `shadcn`, `react-best-practices`) and
-[docs/conventions.md](./docs/conventions.md), which records the gotchas
-already hit here (async route `params` are Promises, `output: "export"`
-constraints, Tailwind v4 `@theme inline` tokens, the `.dark` / `.light`
-class strategy). Heed deprecation notices rather than reaching for the old
-shape.
+- **`output: "export"` — no server at runtime.** Data (the `/changelog`
+  fetch, source reads) is fetched once at `next build` and frozen into `out/`.
+  Images are `unoptimized`; route `params` are Promises (`await` them);
+  `dynamicParams = false`, so add items to `registry-meta.ts`, not a route
+  table.
+- **The React Compiler is on.** Don't hand-write `useMemo`/`useCallback` in
+  showcase code (`app/`, `components/`, `lib/`, `examples/`) — but **keep
+  explicit memoization in shipped registry source** (`ui/*`, `components/*`),
+  which consumers may run without the compiler. TanStack Table (v9) components
+  need `"use no memo"`.
+- **Tailwind is CSS-first** — no config file; tokens via `@theme inline` in
+  `app/globals.css`; `.dark` / `.light` set on `<html>` by a prehydration
+  script in `app/layout.tsx`.
 
-The whole site is `output: "export"` (see [next.config.ts](./next.config.ts)) —
-**there is no server, no ISR, no route handlers at runtime.** Anything that
-needs data (the `/changelog` GitHub fetch, the component source reads) runs
-once during `next build` and is frozen into `out/`. Do not add code that
-assumes a request-time server.
+## registry-meta.ts is the single source of truth
 
-## registry-meta.ts is the single source of truth — never hand-edit registry.json
+[registry-meta.ts](./registry/hirael/registry-meta.ts) declares every item;
+the sidebar, counts, pages, and sitemap derive from it (its presence is the
+only "published" flag). To change the catalog: edit it, register the preview
+loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), run
+`pnpm registry:gen`, commit. **Never hand-edit `registry.json`** — it's
+generated, and `pnpm check:registry` fails on drift or a missing loader. List
+`registryDependencies` by bare name; generation rewrites hirael-to-hirael deps
+to `/r/<name>.json` URLs.
 
-[registry/hirael/registry-meta.ts](./registry/hirael/registry-meta.ts)
-declares every item: name, title, description, category, `files`
-(each `{ path, target? }`), `registryDependencies`, `dependencies`, and
-(for blocks) `blockKind` / `blockTagline`. From it:
+## Every item follows the same shape
 
-- `pnpm registry:gen` regenerates **registry.json** — it is GENERATED, do
-  not edit it by hand.
-- `pnpm registry:props` extracts the prop tables shown on component pages.
-- `pnpm check:registry` (run in CI and by `pnpm build`) fails if
-  `registry.json` has drifted from `registry-meta.ts`, if a declared
-  `registryDependencies` list doesn't match the component's actual imports,
-  or if a showcased entry has no preview loader in
-  [registry-demos.tsx](./registry/hirael/registry-demos.tsx).
+- **Compound API first** — a flat set of composable parts like shadcn
+  primitives, no namespacing. The bare `Name` holds state; `NameTrigger`,
+  `NameContent`, … are the parts. A single-prop form is optional, never the
+  only API.
+- **`data-slot="<kebab>"` on every rendered slot.**
+- **`ui/` is shadcn primitives only; hirael's own go in `components/`.** Import
+  via `@/registry/hirael/ui/*` and `@/registry/hirael/components/*` (rewritten
+  on install); never import across items by relative path.
+- **Design tokens, never hard-coded colors** (defined in `app/globals.css`);
+  compose classes with `cn()`. Light is a faithful inverse of dark, both must
+  work. `--warm` (taupe) is the brand tone; `--accent-cool` is reserved for
+  live/active state — don't swap or waste them.
+- **A demo at `examples/<name>-demo.tsx`** with user-facing strings through
+  `useT()` — `t({ en, ar })` — so the RTL toggle shows Arabic.
+- **RTL works with no config** — logical properties (`ms/me`, `ps/pe`,
+  `start/end`), `rtl:rotate-180` on directional icons, mirror horizontal
+  arrow-key focus. Physical geometry stays physical (Radix `data-[side]`,
+  Sheet/Sidebar `side`). Verify with the toggle.
+- **Copy reads like a human** — plain and specific, no hype ("Pick a date",
+  not "Effortlessly select your desired date").
 
-So the workflow for any catalog change is: edit `registry-meta.ts`,
-register the item's preview loader in `registry-demos.tsx`, run
-`pnpm registry:gen`, then commit. The sidebar, landing counts,
-component/block/template index pages, and sitemap all derive from this file
-— there is no separate "is it published" flag, the entry's presence is the
-source of truth.
+## Don't undo these
 
-## Every registry item follows the same shape
+- **Dark is the default canvas** (`:root`); `.light` is the inverse.
+- **No em dashes in site copy; social link is GitHub, not X** — both deliberate.
+- **Components are generic controls; single-domain compositions are blocks**
+  (the `cloud` / `saas` / `widgets` block kinds).
+- **Auth embeds (`/embed/blocks/auth/*`) carry a "doesn't submit" notice** —
+  Google Safe Browsing flagged them as phishing. Keep registry components real
+  (native `type="password"`), fix appearance at the showcase layer, and don't
+  robots-disallow `/embed/`.
+- **Single static-export app** — not a monorepo, ships no npm package.
 
-When you add or touch a component, block, or template, keep it consistent
-with the rest of the catalog (the full checklist is in
-[CONTRIBUTING.md](./CONTRIBUTING.md), the conventions in
-[docs/conventions.md](./docs/conventions.md)):
+## Gating
 
-- **Compound API first — always.** Build every component the way shadcn
-  ships primitives: a flat set of composable parts, no namespacing, no
-  convenience wrappers. The bare `Name` is the root primitive and holds the
-  state; `NameTrigger`, `NameContent`, … are the parts. A single-prop
-  "convenience" form is optional and strictly secondary — never the only
-  API, and never a reason to skip the compound parts.
-- **`data-slot` on every rendered slot** (`data-slot="<kebab>"`) so
-  downstream styling and slot-targeting works in a consumer app.
-- **`ui/` is shadcn primitives only; everything hirael adds lives in
-  `components/`.** Import shadcn primitives from `@/registry/hirael/ui/*` and
-  other hirael components from `@/registry/hirael/components/*` — both aliases
-  are rewritten on install based on the consumer's `components.json`. Never
-  import across items by relative path (a single multi-file kit's own parts
-  may import each other relatively). A new extended component goes in
-  `registry/hirael/components/<name>.tsx` (or a `components/<name>/` folder if
-  it's a multi-file kit); never add non-shadcn components to `ui/`.
-- **Design tokens, never hard-coded colors.** Use `--background /
---foreground / --border / --primary / --accent` and friends (see
-  [docs/design.md](./docs/design.md)). The canvas is cool blue-slate under
-  warm cream ink; light is a faithful inverse of dark and both must work.
-  Two non-neutrals: `--warm` (taupe) is the brand tone for sheen and glows,
-  and `--accent-cool` is reserved for live/active state — don't spend either
-  on generic decoration, and don't substitute one for the other.
-- **Compose class names with `cn(...)`** from [lib/utils.ts](./lib/utils.ts).
-- **A demo at `registry/hirael/examples/<name>-demo.tsx`** showing a basic
-  compose and a customized compose, with every user-facing string sourced
-  through `useT()` (`lib/demo-locale.tsx`) — `t({ en: "…", ar: "…" })` — so the
-  preview's RTL toggle renders the demo in Arabic, not mirrored English.
-- **A preview loader in
-  [registry-demos.tsx](./registry/hirael/registry-demos.tsx)** keyed by the
-  entry name — the showcase and `/embed/*` previews render every item
-  through `RegistryDemo`, which returns nothing if the name is unregistered,
-  so the preview iframe silently comes up blank. (Blocks/templates point at
-  the block file; components point at the `examples/<name>-demo.tsx`.) `pnpm
-check:registry` fails when a showcased entry is missing here.
-
-## Copy reads like a human
-
-Every word a visitor or consumer reads — registry `description`s, demo
-content, block and template copy, empty states, prop docs, and showcase site
-text — should sound like a person wrote it: concise, plain, specific. Short
-labels, short sentences. No filler, no hype, no marketing voice (prefer "Pick
-a date" over "Effortlessly select your desired date"; "No results" over "It
-looks like there's nothing here yet"). When in doubt, cut words. Match the
-register of the existing catalog descriptions and the landing copy.
-
-## RTL is not optional
-
-Components and blocks must work under `dir="rtl"` with no extra config, and
-every preview on the site has an RTL toggle. Use **CSS logical properties**
-instead of physical ones — `ms-*`/`me-*` over `ml-*`/`mr-*`, `ps-*`/`pe-*`
-over `pl-*`/`pr-*`, `start-*`/`end-*` over `left-*`/`right-*`,
-`text-start`/`text-end`, `border-s`/`border-e`, `rounded-s-*`/`rounded-e-*`.
-Flip directional icons with `rtl:rotate-180` and mirror horizontal
-arrow-key handlers that move focus through a visual grid. Physical
-positioning is fine where the geometry genuinely is physical (Radix
-`data-[side=…]` animations, canvas surfaces like the color picker,
-`side="left|right"` on Sheet/Sidebar). Verify with the toggle before you
-call it done.
-
-## Comments are stripped from shipped registry source
-
-[scripts/strip-comments.mjs](./scripts/strip-comments.mjs) removes comments
-from `registry/hirael/**` source before it is published into the `/r/*.json`
-files, because that source is copied verbatim into a consumer's repo. Keep
-reasoning in commit messages, PR descriptions, or [docs/](./docs/) — not in
-shipped component source. (Comments in the showcase site under
-`components/showcase/`, `app/`, `lib/` are fine; those are never published.)
-
-## Read /docs first
-
-Before any non-trivial change, read [docs/README.md](./docs/README.md) — the
-canonical orientation: what's built, what isn't, where things live, and what
-NOT to undo. The four files in [docs/](./docs/) are:
-
-- `README.md` — entry point, file map, done vs pending, deliberate decisions
-- `conventions.md` — Next 16 / React 19 / Tailwind v4 / registry gotchas
-- `design.md` — palette tokens, typography, radius/motion scale
-- `catalog.md` — the full component, block, and template catalog and categories
-
-These are for the next agent (and for you next session). If your change
-makes a doc statement wrong, fix the doc in the same change — they are
-load-bearing, not a changelog. Don't add a new `docs/` file per task; extend
-the existing four.
-
-Specifically: adding/renaming a component, block, or template → update `catalog.md`;
-changing palette tokens, typography, or the radius/motion scale →
-`design.md`; hitting a new framework/lint/hydration gotcha → `conventions.md`;
-moving or removing a route/section → `README.md`'s file map. The top-level
-[README.md](./README.md) and [CONTRIBUTING.md](./CONTRIBUTING.md) are the
-human-facing equivalents — keep them in sync when the same fact changes.
-
-## Public changelog is release-tag driven
-
-A `/changelog` page ([app/changelog/page.tsx](./app/changelog/page.tsx))
-renders one visitor-facing note per version from GitHub Releases, read at
-build time via [lib/changelog.ts](./lib/changelog.ts) (which fetches
-`api.github.com/repos/MohammadShehadeh/hirael.com/releases` and parses each
-release's `name` as the title and `body` as `Highlights:` / `Fixes:`
-sections). It does **not** render individual commits, PR links, or
-unreleased branch work. The fetch is frozen into the static export, which is
-fresh enough because production only deploys when a Release is published and
-this fetch runs during that very build.
-
-Production deployments are release-driven. Vercel auto-deploy on push to
-`main` is disabled in [vercel.json](./vercel.json)
-(`git.deploymentEnabled.main = false`); pushing a tag alone does nothing.
-Production ships only when a **GitHub Release is published**, which fires the
-[release-deploy workflow](./.github/workflows/release-deploy.yml) and runs
-`vercel deploy --prebuilt --prod`. PR preview deploys are unaffected. The
-workflow needs `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`
-secrets, plus `RELEASES_TOKEN` (a public-repo-read PAT) so the changelog
-fetch during the production build isn't rate-limited.
-
-When you ship anything user-visible, make the next release note describe it
-before the tag is pushed. A release note is for visitors and consumers, so
-keep it to what they get — new components, blocks, features, and bug fixes.
-Leave out how the site is built, rendered, or deployed (static export, the
-GitHub Releases fetch, Vercel, CI, the registry pipeline) and other
-repo-internal tooling; none of that concerns the reader of a changelog.
-
-- Keep release titles short and visitor-facing, e.g. `RTL across the catalog`.
-- Put detail in the annotated tag/release body under `Highlights:` and
-  `Fixes:` headings, each followed by `- ` bullets — that's exactly what the
-  changelog parser groups.
-- Backdate the annotated tag to the real release date if you're recording
-  history.
-
-To cut a release:
+Before review, all four pass (plus a manual pass in both themes and RTL):
 
 ```bash
-git fetch origin --tags
-git switch main && git pull origin main
-git tag -a v0.7.0 -m "Release title
-
-Highlights:
-- Adds ...
-- Improves ...
-
-Fixes:
-- Fixes ..."
-git push origin main
-git push origin v0.7.0
+pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 ```
 
-Then publish a GitHub Release from the tag (its body should mirror the
-annotated tag message so the in-app `/changelog` and the GitHub Releases UI
-stay in sync) — that is what triggers the production deploy. If a tag was
-created locally but not pushed, delete and recreate it to fix the
-date/message; if it was already pushed, prefer a new patch tag over
-rewriting public history.
+## Releases
+
+`/changelog` renders GitHub Releases, fetched at build and frozen into the
+export. Production deploys **only when a Release is published** — `main`
+auto-deploy is off in `vercel.json`. Release notes are visitor-facing (new
+components, blocks, fixes; no build/deploy internals); put detail under
+`Highlights:` / `Fixes:` bullets in the tag body, which the parser groups.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

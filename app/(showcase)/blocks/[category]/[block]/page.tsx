@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { CATEGORY_BY_SLUG } from "@/components/showcase/block-categories";
-import { ComponentPage } from "@/components/showcase/component-page";
+import { CATEGORY_BY_SLUG } from "@/components/block-categories";
+import { ComponentPage } from "@/components/component-page";
 import { loadSource } from "@/lib/registry-source";
 import { detailMetadata } from "@/lib/site";
 import {

@@ -23,7 +23,7 @@
 - [ ] Registered a preview loader in `registry-demos.tsx` for any new showcased item
 - [ ] Tokens reuse design variables (no hard-coded colors); verified in **both** light and dark
 - [ ] Works under `dir="rtl"` (checked the preview RTL toggle) using CSS logical properties
-- [ ] Copy is concise and human; no comments left in shipped `registry/hirael/**` source
+- [ ] Copy is concise and human; comments in shipped `registry/hirael/**` source are purposeful (it's copied into consumer repos)
 
 ## Test plan
 

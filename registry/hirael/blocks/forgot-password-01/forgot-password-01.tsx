@@ -58,7 +58,7 @@ export default function ForgotPassword01() {
   };
 
   return (
-    <section className="relative isolate flex min-h-[640px] items-center justify-center bg-background py-16 md:py-24">
+    <section className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"

@@ -1,13 +1,11 @@
 /**
- * Theme token model + CSS parsing / formatting for the live theme settings sheet.
+ * Theme token model + CSS parsing/formatting for the live theme settings sheet.
  *
- * The showcase's globals.css uses `:root` for dark (default) and `.light`
- * for the light variant. On top of that, the mode scripts always mirror the
- * standard shadcn `.dark` class onto <html> in dark mode so that registry
- * components authored with `dark:` variants behave here exactly as they do
- * in a consumer app. The live editor lets users paste CSS that follows
- * either convention — this module reconciles both into a {light, dark}
- * record that the provider applies via inline CSS custom properties.
+ * globals.css uses `:root` for dark (default) and `.light` for light, but the
+ * mode scripts also mirror shadcn's `.dark` class in dark mode so `dark:`
+ * variants behave as in a consumer app. The editor accepts pasted CSS in
+ * either convention; this reconciles both into a {light, dark} record applied
+ * as inline custom properties.
  */
 
 export type ThemeMode = "light" | "dark";
@@ -156,88 +154,6 @@ function formatBlock(selector: string, tokens: ThemeTokens): string {
   const lines = keys.map((k) => `  --${k}: ${tokens[k]};`);
   return `${selector} {\n${lines.join("\n")}\n}`;
 }
-
-/**
- * Curated presets. Each only overrides the primary hue + ring, so the rest of
- * the neutral palette stays consistent with the default Hirael look.
- */
-export type ThemePreset = {
-  id: string;
-  label: string;
-  swatch: string;
-  overrides: Partial<Theme>;
-};
-
-export const THEME_PRESETS: ThemePreset[] = [
-  {
-    id: "hirael",
-    label: "Hirael",
-    swatch: "oklch(0.910 0.008 85)",
-    overrides: {
-      dark: {
-        primary: "oklch(0.910 0.008 85)",
-        "primary-foreground": "oklch(0.155 0.013 250)",
-        ring: "oklch(0.710 0.013 80)",
-      },
-      light: {
-        primary: "oklch(0.225 0.018 254)",
-        "primary-foreground": "oklch(0.910 0.008 85)",
-        ring: "oklch(0.430 0.015 260)",
-      },
-    },
-  },
-  {
-    id: "emerald",
-    label: "Emerald",
-    swatch: "oklch(0.72 0.16 155)",
-    overrides: {
-      dark: {
-        primary: "oklch(0.72 0.16 155)",
-        "primary-foreground": "oklch(0.14 0.02 155)",
-        ring: "oklch(0.68 0.16 155)",
-      },
-      light: {
-        primary: "oklch(0.52 0.14 155)",
-        "primary-foreground": "oklch(0.98 0.01 155)",
-        ring: "oklch(0.58 0.14 155)",
-      },
-    },
-  },
-  {
-    id: "indigo",
-    label: "Indigo",
-    swatch: "oklch(0.68 0.18 270)",
-    overrides: {
-      dark: {
-        primary: "oklch(0.68 0.18 270)",
-        "primary-foreground": "oklch(0.14 0.02 270)",
-        ring: "oklch(0.64 0.18 270)",
-      },
-      light: {
-        primary: "oklch(0.52 0.18 270)",
-        "primary-foreground": "oklch(0.98 0.01 270)",
-        ring: "oklch(0.58 0.18 270)",
-      },
-    },
-  },
-  {
-    id: "rose",
-    label: "Rose",
-    swatch: "oklch(0.7 0.18 15)",
-    overrides: {
-      dark: {
-        primary: "oklch(0.7 0.18 15)",
-        "primary-foreground": "oklch(0.14 0.02 15)",
-        ring: "oklch(0.66 0.18 15)",
-      },
-      light: {
-        primary: "oklch(0.56 0.18 15)",
-        "primary-foreground": "oklch(0.98 0.01 15)",
-        ring: "oklch(0.6 0.18 15)",
-      },
-    },
-  },
-];
 
 /**
  * Generator knobs. These produce token overrides that flow through the same

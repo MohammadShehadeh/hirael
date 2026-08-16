@@ -17,6 +17,7 @@ export const SITE = {
   author: "Mohammad Shehadeh",
   authorUrl: "https://mohammadshehadeh.com",
   githubUrl: "https://github.com/mohammadshehadeh/",
+  githubRepoUrl: "https://github.com/MohammadShehadeh/hirael",
   keywords: [
     "shadcn",
     "shadcn ui",
@@ -50,20 +51,13 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
 
 /**
  * Shared `generateMetadata` body for the component/block/template detail
- * routes — same title, OpenGraph article, and Twitter card shape, differing
- * only in the title suffix. Reproduces each route's pre-existing title
- * format exactly (bare title dash-joined with the site name for components;
- * "<suffix> | Hirael" for blocks/templates) so this extraction changes no
- * rendered output.
+ * routes — same shape, differing only in title suffix (matching each route's
+ * existing format, so the extraction changes no output).
  *
- * `ownOgImage` opts out of the site-wide `images` entry so Next's
- * file-convention resolver fills in the route's own `opengraph-image`
- * segment file instead — set by routes that ship a per-item
- * `opengraph-image.tsx` (see the components detail route). We can't
- * construct that URL by hand here: Next appends a content-hash suffix
- * (e.g. `opengraph-image-1x58wt?<hash>`) to per-param generated images that
- * isn't known at `generateMetadata` time, so explicitly setting `images`
- * would point at a URL that doesn't match the emitted file.
+ * `ownOgImage` drops the site-wide `images` entry so Next's file-convention
+ * resolver uses the route's own `opengraph-image.tsx` instead. That URL can't
+ * be set by hand: Next appends a content-hash suffix unknown at
+ * `generateMetadata` time, so an explicit `images` wouldn't match the file.
  */
 export function detailMetadata(
   entry: RegistryEntryMeta,

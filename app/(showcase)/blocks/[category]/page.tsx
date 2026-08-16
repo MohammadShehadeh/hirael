@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { CategoryPage } from "@/components/showcase/category-page";
+import { CategoryPage } from "@/components/category-page";
 import {
   CATEGORY_BY_SLUG,
   CATEGORY_REGISTRY,
-} from "@/components/showcase/block-categories";
+} from "@/components/block-categories";
 import { SITE } from "@/lib/site";
 
 export const dynamicParams = false;

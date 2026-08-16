@@ -60,12 +60,17 @@ host.
 registry/hirael/
   ui/<primitive>.tsx         # shadcn primitives only
   components/<name>.tsx      # hirael's added components (multi-file kits as components/<name>/)
-  examples/<component>-demo.tsx  # showcase demo per component
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
+registry/themes.ts           # theme-editor presets
+registry/base-colors.ts      # base-color options (derived from themes)
 registry.json                # GENERATED from registry-meta.ts — do not
                              # edit by hand, run `pnpm registry:gen`
+examples/<component>-demo.tsx  # top-level showcase demo per component
+components/<name>.tsx        # showcase-site UI, flat (not shipped)
+lib/                         # showcase helpers (theme.ts, embed.ts, ...)
+app/                         # Next.js routes + /embed previews
 ```
 
 See the top-level **[README.md](./README.md)** for a full directory
@@ -94,13 +99,8 @@ focused.
 ### Commit messages — Conventional Commits
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/)
-so the history is scannable and ready for tooling. This is **enforced** —
-`.commitlintrc.json` (`@commitlint/config-conventional`) runs against every
-PR's commits via the `commitlint` CI workflow, and your PR title should use
-the same format. Check a message locally with
-`echo "feat: …" | pnpm exec commitlint`; for pre-push feedback you can add an
-optional `.husky/commit-msg` hook running `pnpm exec commitlint --edit "$1"`.
-The format is:
+so the history is scannable and ready for tooling. Your commit messages and
+PR title should use the same format. The format is:
 
 ```
 <type>(<optional scope>): <imperative summary>
@@ -202,10 +202,9 @@ byte-for-byte against the generators' output.
   physical: Radix `data-[side=…]` animations, canvas-like surfaces
   (color picker), and `side="left|right"` props on Sheet/Sidebar.
   Verify with the RTL toggle on the component's preview.
-- **Comments.** Comments in registry source are stripped by
-  `scripts/strip-comments.mjs` before publishing. Keep helpful
-  reasoning in commit messages, PR descriptions, or design docs —
-  not in shipped source.
+- **Comments.** Registry source is copied verbatim into consumer repos,
+  so keep any comments purposeful and consumer-facing — put internal
+  reasoning in commit messages or PR descriptions.
 
 ## Component contribution checklist
 
@@ -218,7 +217,7 @@ For each new component:
       wrappers. The bare `Name` is the root primitive and holds state.
       (`registry/hirael/ui/` is reserved for shadcn primitives.)
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `registry/hirael/examples/<name>-demo.tsx` showing a basic compose
+- [ ] `examples/<name>-demo.tsx` showing a basic compose
       **and** a customized compose. To showcase several focused examples
       instead, add `<name>-<variant>.tsx` files, list them (ordered, with
       titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`, and register
@@ -247,7 +246,7 @@ Templates are full-page, multi-section layouts. They live under
 `registry/hirael/templates/<template>/`, use `category: "templates"` in
 `registry-meta.ts`, and ship as a multi-file `registry:block` in
 `registry.json`. Like blocks, they are previewed full-bleed and do not
-need a demo under `registry/hirael/examples/`.
+need a demo under `examples/`.
 
 ## Testing requirements
 
@@ -276,10 +275,8 @@ also expected to:
 
 > **Note** — automated unit and visual-regression tests are not yet set
 > up. A future PR is expected to introduce a test runner (vitest, mirroring
-> shadcn/ui — see
-> [docs/README.md → Upstream alignment](./docs/README.md#upstream-alignment-with-shadcnui));
-> until then, the build pipeline plus the manual checks above are the
-> contract.
+> shadcn/ui); until then, the build pipeline plus the manual checks above are
+> the contract.
 
 ## Pull request process
 

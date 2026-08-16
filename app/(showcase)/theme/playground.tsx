@@ -6,9 +6,9 @@ import { Button } from "@/registry/hirael/ui/button";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Input } from "@/registry/hirael/ui/input";
 import { Label } from "@/registry/hirael/ui/label";
-import { ThemeSheetTrigger } from "@/components/showcase/theme-sheet";
-import { PageHeader } from "@/components/showcase/page-header";
-import { useTheme } from "@/components/showcase/theme-provider";
+import { ThemeSheetTrigger } from "@/components/theme-sheet";
+import { PageHeader } from "@/components/page-header";
+import { useTheme } from "@/components/active-theme";
 import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
 

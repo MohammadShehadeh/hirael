@@ -2,284 +2,56 @@
 
 import * as React from "react";
 
-import { getExamples } from "@/registry/hirael/registry-meta";
+import { REGISTRY, getExamples } from "@/registry/hirael/registry-meta";
 
 /**
- * Lazy preview registry. registry-meta.ts stays data-only so importing it
- * (sidebar, server pages, sitemap) never drags component code into a bundle;
- * the actual modules live behind the dynamic imports here and are code-split
- * per preview — a route only loads what it renders.
+ * Lazy preview registry, derived from the file layout — no hand-kept loader
+ * list. Every block/template lives at `<kind>/<name>/<name>.tsx` and every
+ * component demo at the top-level `examples/<slug>.tsx`, so the import path is
+ * computed from the entry's name/category alone.
+ *
+ * The template-literal `import()`s below compile to bundler context modules
+ * over `blocks/`, `templates/` and `../../examples/`, so adding an item is
+ * picked up automatically — the file just has to follow the naming convention
+ * (which `pnpm check:registry` enforces). registry-meta.ts stays data-only, so
+ * these dynamic imports are what pull component code into the bundle,
+ * code-split per preview — a route only loads what it renders.
  */
+const loadExample = (slug: string) =>
+  import(`../../examples/${slug}`) as Promise<{
+    default: React.ComponentType;
+  }>;
+const loadBlock = (name: string) =>
+  import(`./blocks/${name}/${name}`) as Promise<{
+    default: React.ComponentType;
+  }>;
+const loadTemplate = (name: string) =>
+  import(`./templates/${name}/${name}`) as Promise<{
+    default: React.ComponentType;
+  }>;
 
-/** Block & template previews, keyed by registry entry name. */
-const BLOCK_LOADERS: Record<
+// React.lazy identities must stay stable across renders or the preview
+// remounts, so each is built once and cached at module scope by key. A failed
+// import (unknown slug/name) resolves to a null component — a blank preview,
+// matching the old missing-loader behavior instead of throwing.
+const lazyCache = new Map<
   string,
-  () => Promise<{ default: React.ComponentType }>
-> = {
-  "hero-01": () => import("@/registry/hirael/blocks/hero-01/hero-01"),
-  "hero-02": () => import("@/registry/hirael/blocks/hero-02/hero-02"),
-  "hero-03": () => import("@/registry/hirael/blocks/hero-03/hero-03"),
-  "hero-04": () => import("@/registry/hirael/blocks/hero-04/hero-04"),
-  "hero-05": () => import("@/registry/hirael/blocks/hero-05/hero-05"),
-  "feature-01": () => import("@/registry/hirael/blocks/feature-01/feature-01"),
-  "feature-02": () => import("@/registry/hirael/blocks/feature-02/feature-02"),
-  "pricing-01": () => import("@/registry/hirael/blocks/pricing-01/pricing-01"),
-  "pricing-02": () => import("@/registry/hirael/blocks/pricing-02/pricing-02"),
-  "pricing-03": () => import("@/registry/hirael/blocks/pricing-03/pricing-03"),
-  "testimonial-01": () =>
-    import("@/registry/hirael/blocks/testimonial-01/testimonial-01"),
-  "testimonial-02": () =>
-    import("@/registry/hirael/blocks/testimonial-02/testimonial-02"),
-  "cta-01": () => import("@/registry/hirael/blocks/cta-01/cta-01"),
-  "cta-02": () => import("@/registry/hirael/blocks/cta-02/cta-02"),
-  "cta-03": () => import("@/registry/hirael/blocks/cta-03/cta-03"),
-  "faq-01": () => import("@/registry/hirael/blocks/faq-01/faq-01"),
-  "faq-02": () => import("@/registry/hirael/blocks/faq-02/faq-02"),
-  "faq-03": () => import("@/registry/hirael/blocks/faq-03/faq-03"),
-  "faq-04": () => import("@/registry/hirael/blocks/faq-04/faq-04"),
-  "login-01": () => import("@/registry/hirael/blocks/login-01/login-01"),
-  "login-02": () => import("@/registry/hirael/blocks/login-02/login-02"),
-  "signup-01": () => import("@/registry/hirael/blocks/signup-01/signup-01"),
-  "forgot-password-01": () =>
-    import("@/registry/hirael/blocks/forgot-password-01/forgot-password-01"),
-  "otp-verify-01": () =>
-    import("@/registry/hirael/blocks/otp-verify-01/otp-verify-01"),
-  "header-01": () => import("@/registry/hirael/blocks/header-01/header-01"),
-  "footer-01": () => import("@/registry/hirael/blocks/footer-01/footer-01"),
-  "not-found-01": () =>
-    import("@/registry/hirael/blocks/not-found-01/not-found-01"),
-  "logo-cloud-01": () =>
-    import("@/registry/hirael/blocks/logo-cloud-01/logo-cloud-01"),
-  "contact-01": () => import("@/registry/hirael/blocks/contact-01/contact-01"),
-  "blog-01": () => import("@/registry/hirael/blocks/blog-01/blog-01"),
-  "dashboard-01": () =>
-    import("@/registry/hirael/blocks/dashboard-01/dashboard-01"),
-  "dashboard-02": () =>
-    import("@/registry/hirael/blocks/dashboard-02/dashboard-02"),
-  "dashboard-03": () =>
-    import("@/registry/hirael/blocks/dashboard-03/dashboard-03"),
-  "dashboard-04": () =>
-    import("@/registry/hirael/blocks/dashboard-04/dashboard-04"),
-  "dashboard-05": () =>
-    import("@/registry/hirael/blocks/dashboard-05/dashboard-05"),
-  "ecommerce-01": () =>
-    import("@/registry/hirael/blocks/ecommerce-01/ecommerce-01"),
-  "ecommerce-02": () =>
-    import("@/registry/hirael/blocks/ecommerce-02/ecommerce-02"),
-  "integrations-01": () =>
-    import("@/registry/hirael/blocks/integrations-01/integrations-01"),
-  "image-gallery-01": () =>
-    import("@/registry/hirael/blocks/image-gallery-01/image-gallery-01"),
-  "app-shell-01": () =>
-    import("@/registry/hirael/blocks/app-shell-01/app-shell-01"),
-  "app-shell-02": () =>
-    import("@/registry/hirael/blocks/app-shell-02/app-shell-02"),
-  "app-shell-03": () =>
-    import("@/registry/hirael/blocks/app-shell-03/app-shell-03"),
-  "app-shell-04": () =>
-    import("@/registry/hirael/blocks/app-shell-04/app-shell-04"),
-  "creative-studio": () =>
-    import("@/registry/hirael/templates/creative-studio/creative-studio"),
-  "agency-landing": () =>
-    import("@/registry/hirael/templates/agency-landing/agency-landing"),
-  mindloop: () => import("@/registry/hirael/templates/mindloop/mindloop"),
-  portfolio: () => import("@/registry/hirael/templates/portfolio/portfolio"),
-  "usd-halo": () => import("@/registry/hirael/templates/usd-halo/usd-halo"),
-  rivr: () => import("@/registry/hirael/templates/rivr/rivr"),
-  velorah: () => import("@/registry/hirael/templates/velorah/velorah"),
-  nexacore: () => import("@/registry/hirael/templates/nexacore/nexacore"),
-  asme: () => import("@/registry/hirael/templates/asme/asme"),
-  "hero-06": () => import("@/registry/hirael/blocks/hero-06/hero-06"),
-  "hero-07": () => import("@/registry/hirael/blocks/hero-07/hero-07"),
-  "hero-08": () => import("@/registry/hirael/blocks/hero-08/hero-08"),
-  "testimonial-03": () =>
-    import("@/registry/hirael/blocks/testimonial-03/testimonial-03"),
-  "cta-04": () => import("@/registry/hirael/blocks/cta-04/cta-04"),
-  "cta-05": () => import("@/registry/hirael/blocks/cta-05/cta-05"),
-  "cta-06": () => import("@/registry/hirael/blocks/cta-06/cta-06"),
-  "footer-02": () => import("@/registry/hirael/blocks/footer-02/footer-02"),
-  "footer-03": () => import("@/registry/hirael/blocks/footer-03/footer-03"),
-  "faq-05": () => import("@/registry/hirael/blocks/faq-05/faq-05"),
-  "contact-02": () => import("@/registry/hirael/blocks/contact-02/contact-02"),
-  "login-03": () => import("@/registry/hirael/blocks/login-03/login-03"),
-  "app-shell-05": () =>
-    import("@/registry/hirael/blocks/app-shell-05/app-shell-05"),
-  "dashboard-06": () =>
-    import("@/registry/hirael/blocks/dashboard-06/dashboard-06"),
-  "process-01": () => import("@/registry/hirael/blocks/process-01/process-01"),
-  "feature-03": () => import("@/registry/hirael/blocks/feature-03/feature-03"),
-  "comparison-01": () =>
-    import("@/registry/hirael/blocks/comparison-01/comparison-01"),
-  "newsletter-01": () =>
-    import("@/registry/hirael/blocks/newsletter-01/newsletter-01"),
-  "careers-01": () => import("@/registry/hirael/blocks/careers-01/careers-01"),
-  "server-card": () =>
-    import("@/registry/hirael/blocks/server-card/server-card"),
-  "vm-table": () => import("@/registry/hirael/blocks/vm-table/vm-table"),
-  "k8s-pod-table": () =>
-    import("@/registry/hirael/blocks/k8s-pod-table/k8s-pod-table"),
-  "resource-status": () =>
-    import("@/registry/hirael/blocks/resource-status/resource-status"),
-  "cluster-map": () =>
-    import("@/registry/hirael/blocks/cluster-map/cluster-map"),
-  "network-topology": () =>
-    import("@/registry/hirael/blocks/network-topology/network-topology"),
-  "storage-browser": () =>
-    import("@/registry/hirael/blocks/storage-browser/storage-browser"),
-  "log-viewer": () => import("@/registry/hirael/blocks/log-viewer/log-viewer"),
-  terminal: () => import("@/registry/hirael/blocks/terminal/terminal"),
-  "deployment-history": () =>
-    import("@/registry/hirael/blocks/deployment-history/deployment-history"),
-  "billing-card": () =>
-    import("@/registry/hirael/blocks/billing-card/billing-card"),
-  "subscription-plans": () =>
-    import("@/registry/hirael/blocks/subscription-plans/subscription-plans"),
-  "api-keys": () => import("@/registry/hirael/blocks/api-keys/api-keys"),
-  "usage-dashboard": () =>
-    import("@/registry/hirael/blocks/usage-dashboard/usage-dashboard"),
-  "audit-log": () => import("@/registry/hirael/blocks/audit-log/audit-log"),
-  "kpi-grid": () => import("@/registry/hirael/blocks/kpi-grid/kpi-grid"),
-  "quick-actions": () =>
-    import("@/registry/hirael/blocks/quick-actions/quick-actions"),
-  notifications: () =>
-    import("@/registry/hirael/blocks/notifications/notifications"),
-  "activity-feed": () =>
-    import("@/registry/hirael/blocks/activity-feed/activity-feed"),
-  "inspector-panel": () =>
-    import("@/registry/hirael/blocks/inspector-panel/inspector-panel"),
-  "tenant-switcher": () =>
-    import("@/registry/hirael/blocks/tenant-switcher/tenant-switcher"),
+  React.LazyExoticComponent<React.ComponentType>
+>();
+
+const lazyFor = (
+  key: string,
+  load: () => Promise<{ default: React.ComponentType }>,
+) => {
+  let Component = lazyCache.get(key);
+  if (!Component) {
+    Component = React.lazy(() =>
+      load().catch(() => ({ default: () => null })),
+    );
+    lazyCache.set(key, Component);
+  }
+  return Component;
 };
-
-/** Component examples, keyed by example slug (file basename in examples/). */
-const EXAMPLE_LOADERS: Record<
-  string,
-  () => Promise<{ default: React.ComponentType }>
-> = {
-  "multi-select-demo": () =>
-    import("@/registry/hirael/examples/multi-select-demo"),
-  "number-range-demo": () =>
-    import("@/registry/hirael/examples/number-range-demo"),
-  "year-picker-demo": () =>
-    import("@/registry/hirael/examples/year-picker-demo"),
-  "tag-input-demo": () => import("@/registry/hirael/examples/tag-input-demo"),
-  "tag-input-emails": () =>
-    import("@/registry/hirael/examples/tag-input-emails"),
-  "combobox-demo": () => import("@/registry/hirael/examples/combobox-demo"),
-  "lazy-select-demo": () =>
-    import("@/registry/hirael/examples/lazy-select-demo"),
-  "password-input-demo": () =>
-    import("@/registry/hirael/examples/password-input-demo"),
-  "currency-input-demo": () =>
-    import("@/registry/hirael/examples/currency-input-demo"),
-  "phone-input-demo": () =>
-    import("@/registry/hirael/examples/phone-input-demo"),
-  "file-dropzone-demo": () =>
-    import("@/registry/hirael/examples/file-dropzone-demo"),
-  "stat-card-demo": () => import("@/registry/hirael/examples/stat-card-demo"),
-  "rating-demo": () => import("@/registry/hirael/examples/rating-demo"),
-  "timeline-demo": () => import("@/registry/hirael/examples/timeline-demo"),
-  "kbd-demo": () => import("@/registry/hirael/examples/kbd-demo"),
-  "callout-demo": () => import("@/registry/hirael/examples/callout-demo"),
-  "scroll-progress-demo": () =>
-    import("@/registry/hirael/examples/scroll-progress-demo"),
-  "month-picker-demo": () =>
-    import("@/registry/hirael/examples/month-picker-demo"),
-  "time-picker-demo": () =>
-    import("@/registry/hirael/examples/time-picker-demo"),
-  "color-picker-demo": () =>
-    import("@/registry/hirael/examples/color-picker-demo"),
-  "avatar-stack-demo": () =>
-    import("@/registry/hirael/examples/avatar-stack-demo"),
-  "announcement-bar-demo": () =>
-    import("@/registry/hirael/examples/announcement-bar-demo"),
-  "spinner-demo": () => import("@/registry/hirael/examples/spinner-demo"),
-  "copy-button-demo": () =>
-    import("@/registry/hirael/examples/copy-button-demo"),
-  "marquee-demo": () => import("@/registry/hirael/examples/marquee-demo"),
-  "tree-view-demo": () => import("@/registry/hirael/examples/tree-view-demo"),
-  "animated-number-demo": () =>
-    import("@/registry/hirael/examples/animated-number-demo"),
-  "stepper-demo": () => import("@/registry/hirael/examples/stepper-demo"),
-  "sortable-demo": () => import("@/registry/hirael/examples/sortable-demo"),
-  "date-picker-demo": () =>
-    import("@/registry/hirael/examples/date-picker-demo"),
-  "date-range-picker-demo": () =>
-    import("@/registry/hirael/examples/date-range-picker-demo"),
-  "date-range-picker-inline": () =>
-    import("@/registry/hirael/examples/date-range-picker-inline"),
-  "date-range-picker-bounded": () =>
-    import("@/registry/hirael/examples/date-range-picker-bounded"),
-  "mention-input-demo": () =>
-    import("@/registry/hirael/examples/mention-input-demo"),
-  "rich-text-editor-demo": () =>
-    import("@/registry/hirael/examples/rich-text-editor-demo"),
-  "inline-edit-demo": () =>
-    import("@/registry/hirael/examples/inline-edit-demo"),
-  "signature-pad-demo": () =>
-    import("@/registry/hirael/examples/signature-pad-demo"),
-  "image-cropper-demo": () =>
-    import("@/registry/hirael/examples/image-cropper-demo"),
-  "image-compare-demo": () =>
-    import("@/registry/hirael/examples/image-compare-demo"),
-  "lightbox-demo": () => import("@/registry/hirael/examples/lightbox-demo"),
-  "countdown-timer-demo": () =>
-    import("@/registry/hirael/examples/countdown-timer-demo"),
-  "qr-code-demo": () => import("@/registry/hirael/examples/qr-code-demo"),
-  "calendar-heatmap-demo": () =>
-    import("@/registry/hirael/examples/calendar-heatmap-demo"),
-  "code-block-demo": () => import("@/registry/hirael/examples/code-block-demo"),
-  "confirm-demo": () => import("@/registry/hirael/examples/confirm-demo"),
-  "unsaved-guard-demo": () =>
-    import("@/registry/hirael/examples/unsaved-guard-demo"),
-  "masonry-demo": () => import("@/registry/hirael/examples/masonry-demo"),
-  "audio-player-demo": () =>
-    import("@/registry/hirael/examples/audio-player-demo"),
-  "media-input-demo": () =>
-    import("@/registry/hirael/examples/media-input-demo"),
-  "tour-demo": () => import("@/registry/hirael/examples/tour-demo"),
-  "blur-reveal-demo": () =>
-    import("@/registry/hirael/examples/blur-reveal-demo"),
-  "text-reveal-demo": () =>
-    import("@/registry/hirael/examples/text-reveal-demo"),
-  "scroll-reveal-demo": () =>
-    import("@/registry/hirael/examples/scroll-reveal-demo"),
-  "spotlight-card-demo": () =>
-    import("@/registry/hirael/examples/spotlight-card-demo"),
-  "magnetic-button-demo": () =>
-    import("@/registry/hirael/examples/magnetic-button-demo"),
-  "cursor-glow-demo": () =>
-    import("@/registry/hirael/examples/cursor-glow-demo"),
-  "tilt-card-demo": () => import("@/registry/hirael/examples/tilt-card-demo"),
-  "morphing-dialog-demo": () =>
-    import("@/registry/hirael/examples/morphing-dialog-demo"),
-  "dock-demo": () => import("@/registry/hirael/examples/dock-demo"),
-  "floating-action-button-demo": () =>
-    import("@/registry/hirael/examples/floating-action-button-demo"),
-  "floating-toolbar-demo": () =>
-    import("@/registry/hirael/examples/floating-toolbar-demo"),
-  "split-view-demo": () => import("@/registry/hirael/examples/split-view-demo"),
-  "resizable-panels-demo": () =>
-    import("@/registry/hirael/examples/resizable-panels-demo"),
-  "toc-demo": () => import("@/registry/hirael/examples/toc-demo"),
-  "data-table-demo": () => import("@/registry/hirael/examples/data-table-demo"),
-  "metric-card-demo": () =>
-    import("@/registry/hirael/examples/metric-card-demo"),
-  "yaml-editor-demo": () =>
-    import("@/registry/hirael/examples/yaml-editor-demo"),
-};
-
-// React.lazy defers the import until first render, so building every preview
-// eagerly at module scope costs nothing and keeps identities stable.
-const lazyMap = (
-  loaders: Record<string, () => Promise<{ default: React.ComponentType }>>,
-) =>
-  Object.fromEntries(
-    Object.entries(loaders).map(([k, load]) => [k, React.lazy(load)]),
-  ) as Record<string, React.LazyExoticComponent<React.ComponentType>>;
-
-const BLOCKS = lazyMap(BLOCK_LOADERS);
-const EXAMPLES = lazyMap(EXAMPLE_LOADERS);
 
 function Render({
   Component,
@@ -304,7 +76,12 @@ export function RegistryExample({
   name: string;
   fallback?: React.ReactNode;
 }) {
-  return <Render Component={EXAMPLES[name]} fallback={fallback} />;
+  return (
+    <Render
+      Component={lazyFor(`example:${name}`, () => loadExample(name))}
+      fallback={fallback}
+    />
+  );
 }
 
 /**
@@ -319,12 +96,32 @@ export function RegistryDemo({
   name: string;
   fallback?: React.ReactNode;
 }) {
-  const block = BLOCKS[name];
-  if (block) return <Render Component={block} fallback={fallback} />;
+  const entry = REGISTRY.find((e) => e.name === name);
+
+  if (entry?.category === "blocks") {
+    return (
+      <Render
+        Component={lazyFor(`block:${name}`, () => loadBlock(name))}
+        fallback={fallback}
+      />
+    );
+  }
+  if (entry?.category === "templates") {
+    return (
+      <Render
+        Component={lazyFor(`template:${name}`, () => loadTemplate(name))}
+        fallback={fallback}
+      />
+    );
+  }
+
   const primary = getExamples(name)[0];
+  if (!primary) return null;
   return (
     <Render
-      Component={primary ? EXAMPLES[primary.slug] : undefined}
+      Component={lazyFor(`example:${primary.slug}`, () =>
+        loadExample(primary.slug),
+      )}
       fallback={fallback}
     />
   );

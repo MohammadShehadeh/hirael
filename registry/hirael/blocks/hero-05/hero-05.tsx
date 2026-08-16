@@ -90,7 +90,7 @@ export default function Hero05() {
               </h1>
 
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-                A shared canvas for notes, tasks, and docs — so your team always
+                A shared canvas for notes, tasks, and docs, so your team always
                 knows what&apos;s next.
               </p>
 

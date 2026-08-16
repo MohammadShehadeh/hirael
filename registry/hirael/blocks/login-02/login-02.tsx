@@ -38,7 +38,7 @@ export default function Login02() {
   const [password, setPassword] = React.useState("");
 
   return (
-    <section className="grid min-h-[640px] grid-cols-1 bg-background md:grid-cols-2">
+    <section className="grid min-h-svh grid-cols-1 bg-background md:grid-cols-2">
       <div className="flex items-center justify-center px-6 py-16 md:px-10 lg:px-12">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center gap-2">

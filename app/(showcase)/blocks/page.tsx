@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { BlockShowcase } from "@/components/showcase/block-showcase";
-import { PageHeader } from "@/components/showcase/page-header";
+import { BlockShowcase } from "@/components/block-showcase";
+import { PageHeader } from "@/components/page-header";
 import { SITE } from "@/lib/site";
 import { BLOCK_KIND_ORDER, REGISTRY } from "@/registry/hirael/registry-meta";
 

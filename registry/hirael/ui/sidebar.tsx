@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 import { Slot } from "radix-ui";
 
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsBreakpoint } from "@/hooks/use-breakpoint";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 import { Input } from "@/registry/hirael/ui/input";
@@ -66,7 +66,7 @@ function SidebarProvider({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
-  const isMobile = useIsMobile();
+  const isMobile = useIsBreakpoint();
   const [openMobile, setOpenMobile] = React.useState(false);
 
   // This is the internal state of the sidebar.
@@ -207,7 +207,7 @@ function Sidebar({
 
   return (
     <div
-      className="group peer hidden text-sidebar-foreground md:block"
+      className="group peer hidden text-sidebar-foreground lg:block"
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}

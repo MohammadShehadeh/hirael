@@ -68,6 +68,7 @@ registry/base-colors.ts      # base-color options (derived from themes)
 registry.json                # GENERATED from registry-meta.ts — do not
                              # edit by hand, run `pnpm registry:gen`
 examples/<component>-demo.tsx  # top-level showcase demo per component
+content/changelog/*.mdx      # changelog entries (one MDX file per release)
 components/<name>.tsx        # showcase-site UI, flat (not shipped)
 lib/                         # showcase helpers (theme.ts, embed.ts, ...)
 app/                         # Next.js routes + /embed previews

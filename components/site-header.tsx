@@ -44,6 +44,7 @@ export function SiteHeader({
   /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
 }) {
+  stars = stars ?? 5151;
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -67,122 +68,121 @@ export function SiteHeader({
 
   return (
     <header className={cn("fixed top-3 z-40 w-full", className)}>
-      <div className="container w-full">
-        <div
-          className={cn(
-            "relative flex h-14 items-center justify-between gap-3 rounded-full ps-4 pe-2 transition-all duration-300 ease-out sm:ps-5",
-            scrolled
-              ? "glass-panel-strong"
-              : "border border-transparent bg-transparent",
-          )}
-        >
-          <div className="flex shrink-0 items-center gap-2">
-            {withSidebarTrigger}
-            <Link
-              href="/"
-              aria-label={`${SITE.name} | home`}
-              className="group flex shrink-0 items-center gap-2 rounded-full py-1 transition-opacity hover:opacity-80"
-            >
-              <Logo className="h-8" />
-            </Link>
-          </div>
+      <div
+        className={cn(
+          "relative container flex h-14 items-center justify-between gap-3 rounded-full transition-all duration-300 ease-out",
+          scrolled
+            ? "glass-panel-strong"
+            : "border border-transparent bg-transparent",
+        )}
+      >
+        <div className="flex shrink-0 items-center gap-2">
+          {withSidebarTrigger}
+          <Link
+            href="/"
+            aria-label={`${SITE.name} | home`}
+            className="group flex shrink-0 items-center gap-2 rounded-full py-1 transition-opacity hover:opacity-80"
+          >
+            <Logo className="h-8" />
+          </Link>
+        </div>
 
-          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
-            {NAV_LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "rounded-full px-3.5 py-1.5 text-[13px] tracking-tight transition-colors",
-                    active
-                      ? "bg-accent text-foreground"
-                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="flex items-center gap-1.5">
-            {stars ? (
-              <a
-                href={SITE.githubRepoUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Star ${SITE.name} on GitHub, ${stars.toLocaleString()} stars`}
-                className="hidden items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1.5 text-[13px] tracking-tight text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground sm:inline-flex"
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "rounded-full px-3.5 py-1.5 text-[13px] tracking-tight transition-colors",
+                  active
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                )}
               >
-                <GithubIcon className="size-3.5" />
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-1.5">
+          <Button variant="ghost" asChild>
+            <a
+              href={SITE.githubRepoUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Star ${SITE.name} on GitHub, ${stars?.toLocaleString() ?? 0} stars`}
+            >
+              <GithubIcon />
+              {stars && (
                 <span className="inline-flex items-center gap-1 tabular-nums">
                   <Star className="size-3 fill-current" />
                   {formatStars(stars)}
                 </span>
-              </a>
-            ) : null}
-            <CommandMenu />
-            <ThemeToggle />
-            <Drawer
-              direction="bottom"
-              open={mobileOpen}
-              onOpenChange={setMobileOpen}
-            >
-              <DrawerTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Open menu"
-                  className="rounded-full border border-border bg-card/60 text-foreground hover:border-foreground/40 md:hidden"
-                >
-                  <Menu className="size-3.5" />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent>
-                <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
-                  <DrawerTitle className="flex items-center">
-                    <Logo className="h-8" />
-                    <span className="sr-only">Navigation</span>
-                  </DrawerTitle>
-                  <DrawerClose asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      aria-label="Close menu"
-                      className="rounded-full border border-border bg-card text-foreground hover:border-foreground/40"
+              )}
+            </a>
+          </Button>
+          <CommandMenu />
+          <ThemeToggle />
+          <Drawer
+            direction="bottom"
+            open={mobileOpen}
+            onOpenChange={setMobileOpen}
+          >
+            <DrawerTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Open menu"
+                className="rounded-full border border-border bg-card/60 text-foreground hover:border-foreground/40 lg:hidden"
+              >
+                <Menu className="size-3.5" />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
+                <DrawerTitle className="flex items-center">
+                  <Logo className="h-8" />
+                  <span className="sr-only">Navigation</span>
+                </DrawerTitle>
+                <DrawerClose asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Close menu"
+                    className="rounded-full border border-border bg-card text-foreground hover:border-foreground/40"
+                  >
+                    <X className="size-3.5" />
+                  </Button>
+                </DrawerClose>
+              </DrawerHeader>
+              <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                {NAV_LINKS.map((link) => {
+                  const active = isActive(link.href);
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "rounded-xl px-3 py-2.5 text-sm transition-colors",
+                        active
+                          ? "bg-accent text-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                      )}
                     >
-                      <X className="size-3.5" />
-                    </Button>
-                  </DrawerClose>
-                </DrawerHeader>
-                <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-                  {NAV_LINKS.map((link) => {
-                    const active = isActive(link.href);
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        aria-current={active ? "page" : undefined}
-                        className={cn(
-                          "rounded-xl px-3 py-2.5 text-sm transition-colors",
-                          active
-                            ? "bg-accent text-foreground"
-                            : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                        )}
-                      >
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </DrawerContent>
-            </Drawer>
-          </div>
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
     </header>

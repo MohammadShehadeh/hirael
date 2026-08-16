@@ -44,7 +44,6 @@ export function SiteHeader({
   /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
 }) {
-  stars = stars ?? 5151;
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);

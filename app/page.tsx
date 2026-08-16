@@ -106,7 +106,7 @@ function Hero() {
         <div className="bg-dot-grid absolute inset-0 opacity-20 mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent_70%)]" />
       </div>
 
-      <div className="mx-auto flex min-h-[86vh] max-w-5xl flex-col items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
+      <div className="mx-auto flex min-h-[86vh] flex-col max-w-5xl items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
         <Link href="/changelog" className={cn("group text-foreground", rise)}>
           <span className="glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full py-1 px-4 text-sm">
             <span className="group-hover:underline">View Changelog</span>
@@ -119,19 +119,18 @@ function Hero() {
 
         <h1
           style={{ animationDelay: "80ms", animationFillMode: "both" }}
-          className={`text-display w-full text-[clamp(2.5rem,11vw,7rem)] italic leading-[0.9] tracking-[-0.025em] sm:leading-[0.85] ${rise}`}
+          className={`w-full text-pretty text-6xl italic leading-[0.95] tracking-[-0.025em] sm:leading-[0.9] ${rise}`}
         >
-          The components <br className="hidden sm:block" />
-          shadcn/ui doesn&apos;t ship.
+          Components, blocks &amp; templates built on top of shadcn/ui.
         </h1>
 
         <p
           style={{ animationDelay: "160ms", animationFillMode: "both" }}
           className={`max-w-xl text-base text-muted-foreground sm:text-lg ${rise}`}
         >
-          Multi-select, combobox, tag input, file dropzone, and the section
-          blocks most products end up building anyway. Install with the shadcn
-          CLI, and the source lands in your repo, yours to keep.
+          A shadcn-compatible registry of React components, section blocks, and
+          full-page templates most products end up building anyway. Install with
+          the shadcn CLI; the source lands in your repo, yours to keep.
         </p>
 
         <div

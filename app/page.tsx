@@ -13,10 +13,12 @@ import {
 } from "lucide-react";
 
 import { BlockShowcase } from "@/components/block-showcase";
+import { DemoCard } from "@/components/demo-card";
 import { Pill, SectionHeading } from "@/components/page-header";
 import { InstallBlock } from "@/components/install-block";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getChangelog, type ChangelogEntry } from "@/lib/changelog";
 import { getRepoStars } from "@/lib/github";
 import { SITE } from "@/lib/site";
 import { Marquee } from "@/registry/hirael/components/marquee";
@@ -24,7 +26,9 @@ import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
   COMPONENTS,
+  REGISTRY_BY_NAME,
   TEMPLATES,
+  entryHref,
 } from "@/registry/hirael/registry-meta";
 import { Button } from "@/registry/hirael/ui/button";
 import { cn } from "@/lib/utils";
@@ -64,14 +68,18 @@ const blocksTotal = BLOCK_KIND_ORDER.reduce(
 );
 
 export default async function LandingPage() {
-  const stars = await getRepoStars();
+  const [stars, changelog] = await Promise.all([
+    getRepoStars(),
+    getChangelog(),
+  ]);
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader stars={stars} />
       <main className="flex-1">
-        <Hero />
+        <Hero latestRelease={changelog.entries[0] ?? null} />
         <CatalogTicker />
         <WhyHirael />
+        <FeaturedComponents />
         <SectionBlocks />
         <ClosingCta />
       </main>
@@ -80,7 +88,7 @@ export default async function LandingPage() {
   );
 }
 
-function Hero() {
+function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
   const rise =
     "animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none";
 
@@ -107,19 +115,28 @@ function Hero() {
       </div>
 
       <div className="mx-auto flex min-h-[86vh] flex-col max-w-5xl items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
-        <Link href="/changelog" className={cn("group text-foreground", rise)}>
-          <span className="glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full py-1 px-4 text-sm">
-            <span className="group-hover:underline">View Changelog</span>
-            <ArrowRight
-              className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
-              size={16}
-            />
-          </span>
-        </Link>
+        {latestRelease && (
+          <Link href="/changelog" className={cn("group text-foreground", rise)}>
+            <span className="glass-panel glass-panel-lit inline-flex items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
+              {latestRelease.version && (
+                <span className="rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] tracking-[0.08em] text-background">
+                  v{latestRelease.version}
+                </span>
+              )}
+              <span className="group-hover:underline">
+                {latestRelease.title}
+              </span>
+              <ArrowRight
+                className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
+                size={16}
+              />
+            </span>
+          </Link>
+        )}
 
         <h1
           style={{ animationDelay: "80ms", animationFillMode: "both" }}
-          className={`w-full text-pretty text-6xl italic leading-[0.95] tracking-[-0.025em] sm:leading-[0.9] ${rise}`}
+          className={`w-full text-pretty text-4xl italic leading-[0.95] tracking-[-0.025em] sm:text-5xl sm:leading-[0.9] md:text-6xl ${rise}`}
         >
           Components, blocks &amp; templates built on top of shadcn/ui.
         </h1>
@@ -160,16 +177,11 @@ function Hero() {
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             Works anywhere React runs
           </span>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-foreground/55 sm:gap-x-12">
-            {["Next", "Remix", "Vite", "Astro", "shadcn/ui"].map((name) => (
-              <span
-                key={name}
-                className="text-display text-2xl italic sm:text-3xl"
-              >
-                {name}
-              </span>
+          <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm font-medium text-foreground/60 sm:gap-x-10">
+            {["Next.js", "Remix", "Vite", "Astro", "shadcn/ui"].map((name) => (
+              <li key={name}>{name}</li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>
@@ -178,18 +190,23 @@ function Hero() {
 
 function CatalogTicker() {
   return (
-    <section aria-hidden className="relative -mt-4 pb-4 sm:pb-8">
+    <section
+      aria-label="Component catalog"
+      className="relative -mt-4 pb-4 sm:pb-8"
+    >
       <div className="container w-full">
         <div className="relative overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <Marquee pauseOnHover duration={70} gap="0.75rem" repeat={2}>
             {COMPONENTS.map((entry) => (
-              <span
+              <Link
                 key={entry.name}
-                className="glass-panel inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-mono text-[11px] tracking-tight text-muted-foreground"
+                href={entryHref(entry)}
+                title={entry.title}
+                className="glass-panel inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-mono text-[11px] tracking-tight text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
               >
                 <span className="size-1 rounded-full bg-muted-foreground/50" />
                 {entry.name}
-              </span>
+              </Link>
             ))}
           </Marquee>
         </div>
@@ -368,6 +385,42 @@ function WhyHirael() {
   );
 }
 
+const FEATURED_COMPONENTS = [
+  "multi-select",
+  "date-range-picker",
+  "tag-input",
+  "combobox",
+  "currency-input",
+  "rating",
+] as const;
+
+function FeaturedComponents() {
+  return (
+    <section className="relative py-20 sm:py-28">
+      <div className="container w-full">
+        <SectionHeading
+          kicker="Components"
+          title="Try them before you install."
+          blurb={`${COMPONENTS.length} components, each live here and on its own page. These six are the ones most products reach for first.`}
+        />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURED_COMPONENTS.map((name) => (
+            <DemoCard key={name} entry={REGISTRY_BY_NAME[name]} />
+          ))}
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Button variant="outline" className="rounded-full px-5" asChild>
+            <Link href="/components">
+              All {COMPONENTS.length} components
+              <ArrowRight className="size-4 rtl:rotate-180" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /* Section blocks                                                             */
 /* -------------------------------------------------------------------------- */
@@ -403,12 +456,12 @@ function ClosingCta() {
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
         <Pill live>Get started</Pill>
-        <h2 className="text-display text-5xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
+        <h2 className="text-display text-4xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
           Install one. Keep all of it.
         </h2>
         <p className="max-w-md text-sm text-muted-foreground sm:text-base">
-          One command copies the source into your repo, yours to read, edit,
-          and keep. No package, no lock-in.
+          One command copies the source into your repo, yours to read, edit, and
+          keep. No package, no lock-in.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" className="rounded-full px-6" asChild>

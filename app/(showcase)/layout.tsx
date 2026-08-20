@@ -1,6 +1,7 @@
 import { ShowcaseSidebar } from "@/components/sidebar";
 import { ShowcaseTopbar } from "@/components/topbar";
-import { SiteFooter } from "@/components/site-footer";
+import { SiteFooterCompact } from "@/components/site-footer";
+import { getChangelog } from "@/lib/changelog";
 import { getRepoStars } from "@/lib/github";
 import { SidebarInset, SidebarProvider } from "@/registry/hirael/ui/sidebar";
 
@@ -9,14 +10,22 @@ export default async function ShowcaseLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const stars = await getRepoStars();
+  const [stars, changelog] = await Promise.all([
+    getRepoStars(),
+    getChangelog(),
+  ]);
+  const releases = changelog.entries.map((entry) => ({
+    slug: entry.slug,
+    label: entry.version ? `v${entry.version}` : entry.title,
+    date: entry.displayDate,
+  }));
   return (
     <SidebarProvider>
-      <ShowcaseSidebar />
+      <ShowcaseSidebar releases={releases} />
       <SidebarInset className="min-w-0">
         <ShowcaseTopbar stars={stars} />
         <main className="min-w-0 flex-1">{children}</main>
-        <SiteFooter />
+        <SiteFooterCompact />
       </SidebarInset>
     </SidebarProvider>
   );

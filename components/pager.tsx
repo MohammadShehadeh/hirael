@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
+  BLOCK_KIND_LABELS,
+  CATEGORY_LABELS,
   entryHref,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
@@ -72,6 +74,15 @@ function PagerLink({
       <span className="truncate text-sm font-medium tracking-[-0.01em] text-foreground">
         {entry.title}
       </span>
+      <span className="truncate text-[11px] text-muted-foreground">
+        {collectionLabel(entry)}
+      </span>
     </Link>
   );
+}
+
+function collectionLabel(entry: RegistryEntryMeta) {
+  if (entry.blockKind) return `${BLOCK_KIND_LABELS[entry.blockKind]} blocks`;
+  if (entry.category === "templates") return "Template";
+  return CATEGORY_LABELS[entry.category];
 }

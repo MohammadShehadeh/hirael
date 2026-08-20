@@ -18,7 +18,7 @@ export function ThemePlayground() {
       <PageHeader
         kicker="Theme"
         title="Your theme, every component."
-        blurb="Generate an accent and radius, pick a preset, or paste a CSS variable block from your own app — and watch the entire Hirael registry re-skin, then copy the result back out. The active theme is persisted in your browser; reset any time."
+        blurb="Generate an accent and radius, pick a preset, or paste a CSS variable block from your own app, then watch the entire Hirael registry re-skin and copy the result back out. The active theme is persisted in your browser; reset any time."
         live
       >
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">

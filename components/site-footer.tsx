@@ -38,6 +38,54 @@ const FOOTER_LINKS: {
   },
 ];
 
+const COMPACT_LINKS = [
+  { href: "/components", label: "Components" },
+  { href: "/blocks", label: "Blocks" },
+  { href: "/templates", label: "Templates" },
+  { href: "/changelog", label: "Changelog" },
+] as const;
+
+/** One-row footer for pages inside the sidebar shell, where the marketing footer is noise. */
+export function SiteFooterCompact({ className }: { className?: string }) {
+  const year = new Date().getFullYear();
+  return (
+    <footer
+      className={cn(
+        "mt-auto border-t border-border px-4 py-5 sm:px-6 lg:px-8",
+        className,
+      )}
+    >
+      <div className="flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <p>
+          © {year} {SITE.author}. Built on shadcn/ui.
+        </p>
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-center gap-x-5 gap-y-2"
+        >
+          {COMPACT_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href={SITE.githubRepoUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="transition-colors hover:text-foreground"
+          >
+            GitHub
+          </a>
+        </nav>
+      </div>
+    </footer>
+  );
+}
+
 export function SiteFooter({ className }: { className?: string }) {
   const year = new Date().getFullYear();
 

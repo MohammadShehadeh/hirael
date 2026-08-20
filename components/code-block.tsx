@@ -6,6 +6,7 @@ import { ChevronRight, File, Folder } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SegmentedControl } from "@/components/segmented-control";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
+import { Button } from "@/registry/hirael/ui/button";
 
 export type CodeBlockTab = {
   /** Tab label (e.g. filename or install-target path). */
@@ -24,6 +25,7 @@ export function CodeBlock({
   className,
   maxHeight = "max-h-[640px]",
   layout = "tabs",
+  collapsible = false,
 }: {
   tabs: CodeBlockTab[];
   defaultTab?: string;
@@ -32,10 +34,13 @@ export function CodeBlock({
   maxHeight?: string;
   /** "tabs" (horizontal) or "tree" (left sidebar file hierarchy). */
   layout?: CodeBlockLayout;
+  /** Clip to a short preview behind an "Expand" control. */
+  collapsible?: boolean;
 }) {
   const [active, setActive] = React.useState(
     () => defaultTab ?? tabs[0]?.label,
   );
+  const [expanded, setExpanded] = React.useState(false);
   const current = tabs.find((t) => t.label === active) ?? tabs[0];
 
   if (!current) return null;
@@ -69,12 +74,13 @@ export function CodeBlock({
                 aria-label="Copy code"
               />
             </div>
-            <div
-              className={cn(
-                "shiki-scroll overflow-auto border-l border-border",
-                maxHeight,
-              )}
-              dangerouslySetInnerHTML={{ __html: current.html }}
+            <CodePane
+              html={current.html}
+              maxHeight={maxHeight}
+              collapsible={collapsible}
+              expanded={expanded}
+              onExpandedChange={setExpanded}
+              className="border-l border-border"
             />
           </div>
         </div>
@@ -109,10 +115,68 @@ export function CodeBlock({
           className="mr-0.5"
         />
       </div>
-      <div
-        className={cn("shiki-scroll overflow-auto", maxHeight)}
-        dangerouslySetInnerHTML={{ __html: current.html }}
+      <CodePane
+        html={current.html}
+        maxHeight={maxHeight}
+        collapsible={collapsible}
+        expanded={expanded}
+        onExpandedChange={setExpanded}
       />
+    </div>
+  );
+}
+
+function CodePane({
+  html,
+  maxHeight,
+  collapsible,
+  expanded,
+  onExpandedChange,
+  className,
+}: {
+  html: string;
+  maxHeight: string;
+  collapsible: boolean;
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  className?: string;
+}) {
+  const clipped = collapsible && !expanded;
+  return (
+    <div className={cn("relative", className)}>
+      <div
+        className={cn(
+          "shiki-scroll",
+          clipped ? "max-h-72 overflow-hidden" : cn("overflow-auto", maxHeight),
+        )}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {clipped && (
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-linear-to-t from-card via-card/85 to-transparent pb-3 pt-20">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onExpandedChange(true)}
+            className="rounded-full bg-background"
+          >
+            Expand source
+          </Button>
+        </div>
+      )}
+      {collapsible && expanded && (
+        <div className="flex justify-center border-t border-border py-1.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => onExpandedChange(false)}
+            className="text-muted-foreground"
+          >
+            Collapse
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

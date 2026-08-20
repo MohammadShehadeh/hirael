@@ -3,26 +3,24 @@ import type { Metadata } from "next";
 import { ArrowRight, Layers, Palette } from "lucide-react";
 
 import { InlineCodeBlock } from "@/components/code-block";
+import { DemoCard } from "@/components/demo-card";
 import { InstallBlock } from "@/components/install-block";
 import { PageHeader, SectionLabel } from "@/components/page-header";
 import { highlightCode } from "@/lib/highlight";
 import { SITE } from "@/lib/site";
 import {
-  BLOCK_KIND_LABELS,
   BLOCK_KIND_ORDER,
-  BLOCKS_BY_KIND,
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_ORDER,
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
-  entryHref,
 } from "@/registry/hirael/registry-meta";
 
 const COMPOSE_SNIPPET = `import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
-} from "@/components/ui/multi-select"
+} from "@/components/multi-select"
 
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
@@ -62,7 +60,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ComponentsIndex() {
-  const components = COMPONENTS;
   const blocks = REGISTRY_BY_CATEGORY.blocks;
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
 
@@ -71,121 +68,60 @@ export default async function ComponentsIndex() {
       <PageHeader
         kicker="Components"
         title="The full registry."
-        blurb={`The components shadcn/ui doesn't ship: multi-select, combobox, tag input, currency input, file dropzone, plus ${blocks.length} section blocks across ${BLOCK_KIND_ORDER.length} categories. Everything installs through the shadcn CLI, so the source ends up in your repo and stays yours to edit.`}
+        blurb={`${COMPONENTS.length} components shadcn/ui doesn't ship, live below so you can try each one before installing. One command copies the source into your repo.`}
       >
         <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
       </PageHeader>
 
-      <section className="flex flex-col gap-8">
-        <div className="flex items-baseline justify-between">
-          <SectionLabel>Components</SectionLabel>
-          <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-            {components.length} total
-          </span>
-        </div>
-
-        {COMPONENT_CATEGORY_ORDER.map((cat) => {
-          const items = REGISTRY_BY_CATEGORY[cat];
-          if (!items.length) return null;
-          return (
-            <div key={cat} className="flex flex-col gap-3">
-              <div className="flex items-baseline justify-between">
-                <Link
-                  href={`/components/${cat}`}
-                  className="group inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {CATEGORY_LABELS[cat]}
-                  <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-                </Link>
-                <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                  {items.length}
-                </span>
-              </div>
-              <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2">
-                {items.map((entry) => (
-                  <li key={entry.name}>
-                    <Link
-                      href={entryHref(entry)}
-                      className="group flex h-full flex-col justify-between gap-3 bg-card p-4 transition-colors hover:bg-accent"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="text-base font-medium tracking-[-0.01em]">
-                            {entry.title}
-                          </h3>
-                          <span
-                            aria-hidden
-                            className="size-1.5 rounded-full bg-foreground"
-                          />
-                        </div>
-                        <p className="mt-1.5 text-xs text-muted-foreground">
-                          {entry.description}
-                        </p>
-                      </div>
-                      <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-hover:text-foreground">
-                        {entryHref(entry)} →
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </section>
-
-      <section className="flex flex-col gap-8 border-t border-border pt-10">
-        <div className="flex items-baseline justify-between">
-          <SectionLabel>Section blocks</SectionLabel>
-          <Link
-            href="/blocks"
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+      <nav
+        aria-label="Component categories"
+        className="-mt-6 flex flex-wrap justify-center gap-2"
+      >
+        {COMPONENT_CATEGORY_ORDER.map((cat) => (
+          <a
+            key={cat}
+            href={`#${cat}`}
+            className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
-            {blocks.length} blocks · view all
-            <ArrowRight className="size-3" />
-          </Link>
-        </div>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Drop-in section compositions: heroes, features, pricing, testimonials,
-          CTAs, FAQs, auth, navigation, errors. Each block shares the same
-          registry pipeline; copy a block in one command.
-        </p>
-        <div className="flex flex-col gap-px overflow-hidden rounded-md border border-border bg-border">
-          {BLOCK_KIND_ORDER.map((kind) => {
-            const items = BLOCKS_BY_KIND[kind];
-            if (!items.length) return null;
-            return (
-              <div
-                key={kind}
-                className="flex flex-col gap-3 bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+            {CATEGORY_LABELS[cat]}
+            <span className="ms-1.5 tabular-nums text-muted-foreground/60">
+              {REGISTRY_BY_CATEGORY[cat].length}
+            </span>
+          </a>
+        ))}
+      </nav>
+
+      {COMPONENT_CATEGORY_ORDER.map((cat) => {
+        const items = REGISTRY_BY_CATEGORY[cat];
+        if (!items.length) return null;
+        return (
+          <section
+            key={cat}
+            id={cat}
+            className="flex scroll-mt-24 flex-col gap-5"
+          >
+            <div className="flex items-baseline justify-between">
+              <Link
+                href={`/components/${cat}`}
+                className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
               >
-                <div className="flex items-baseline gap-3">
-                  <h3 className="font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
-                    {BLOCK_KIND_LABELS[kind]}
-                  </h3>
-                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                    {items.length}
-                  </span>
-                </div>
-                <ul className="flex flex-wrap gap-2">
-                  {items.map((entry) => (
-                    <li key={entry.name}>
-                      <Link
-                        href={entryHref(entry)}
-                        className="group inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2 py-1 font-mono text-[11px] tracking-tight transition-colors hover:border-foreground/40 hover:bg-accent"
-                        title={entry.title}
-                      >
-                        <span className="text-foreground">{entry.name}</span>
-                        <ArrowRight className="size-3 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+                <SectionLabel className="text-foreground">
+                  {CATEGORY_LABELS[cat]}
+                </SectionLabel>
+                <ArrowRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
+              </Link>
+              <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                {items.length}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {items.map((entry) => (
+                <DemoCard key={entry.name} entry={entry} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
 
       <section className="flex flex-col gap-5 border-t border-border pt-10">
         <SectionLabel>Composition (the shadcn way)</SectionLabel>
@@ -203,6 +139,25 @@ export default async function ComponentsIndex() {
 
       <section className="grid gap-3 border-t border-border pt-10 sm:grid-cols-2">
         <Link
+          href="/blocks"
+          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
+        >
+          <div className="flex items-center gap-3">
+            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
+              <Layers className="size-4 text-foreground" />
+            </span>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-medium">
+                {blocks.length} section blocks
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                {BLOCK_KIND_ORDER.length} categories · preview + install
+              </span>
+            </div>
+          </div>
+          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />
+        </Link>
+        <Link
           href="/theme"
           className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
         >
@@ -217,26 +172,7 @@ export default async function ComponentsIndex() {
               </span>
             </div>
           </div>
-          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
-        </Link>
-        <Link
-          href="/blocks"
-          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
-        >
-          <div className="flex items-center gap-3">
-            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-              <Layers className="size-4 text-foreground" />
-            </span>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">
-                All {blocks.length} blocks
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                {BLOCK_KIND_ORDER.length} categories · preview + install
-              </span>
-            </div>
-          </div>
-          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground" />
+          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />
         </Link>
       </section>
     </div>

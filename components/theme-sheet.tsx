@@ -116,7 +116,7 @@ function ThemeSheetBody() {
         <SheetTitle>Theme settings</SheetTitle>
         <SheetDescription>
           Preview Hirael components against your own theme. Generate an accent
-          and radius, pick a preset, or paste a CSS variable block — then copy
+          and radius, pick a preset, or paste a CSS variable block, then copy
           the result back out.
         </SheetDescription>
       </SheetHeader>

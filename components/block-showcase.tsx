@@ -2,7 +2,8 @@ import Link from "next/link";
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { CATEGORY_REGISTRY } from "@/components/block-categories";
+import { CATEGORIES_BY_GROUP } from "@/components/block-categories";
+import { SectionLabel } from "@/components/page-header";
 import { BLOCKS_BY_KIND } from "@/registry/hirael/registry-meta";
 
 /* -------------------------------------------------------------------------- */
@@ -51,7 +52,7 @@ function Label({
       <h3 className="text-sm font-medium tracking-[-0.01em] md:text-[15px]">
         {title}
       </h3>
-      <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+      <p className="font-mono text-[10px] uppercase tracking-[0.08em] whitespace-nowrap text-muted-foreground">
         {count} block{count === 1 ? "" : "s"}
       </p>
     </div>
@@ -565,21 +566,42 @@ function GenericSchematic({ title, count }: SchematicProps) {
 
 export function BlockShowcase() {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-      {CATEGORY_REGISTRY.map((cat) => {
-        const count = cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind].length : 0;
-        const Schematic = SCHEMATICS[cat.slug] ?? GenericSchematic;
+    <div className="flex flex-col gap-10 sm:gap-12">
+      {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => {
+        const blockCount = categories.reduce(
+          (sum, cat) =>
+            sum + (cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind].length : 0),
+          0,
+        );
         return (
-          <Link
-            key={cat.slug}
-            href={`/blocks/${cat.slug}`}
-            aria-label={`Browse ${cat.title} blocks`}
-            className={CARD_SHELL}
-          >
-            <BlueprintFrame>
-              <Schematic title={cat.title} count={count} />
-            </BlueprintFrame>
-          </Link>
+          <section key={group} className="flex flex-col gap-4">
+            <div className="flex items-baseline justify-between">
+              <SectionLabel>{label}</SectionLabel>
+              <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
+                {blockCount} blocks
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">
+              {categories.map((cat) => {
+                const count = cat.blockKind
+                  ? BLOCKS_BY_KIND[cat.blockKind].length
+                  : 0;
+                const Schematic = SCHEMATICS[cat.slug] ?? GenericSchematic;
+                return (
+                  <Link
+                    key={cat.slug}
+                    href={`/blocks/${cat.slug}`}
+                    aria-label={`Browse ${cat.title} blocks`}
+                    className={CARD_SHELL}
+                  >
+                    <BlueprintFrame>
+                      <Schematic title={cat.title} count={count} />
+                    </BlueprintFrame>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
         );
       })}
     </div>

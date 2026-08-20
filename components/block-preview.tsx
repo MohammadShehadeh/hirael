@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import { cn } from "@/lib/utils";
+
 /**
  * Renders a block in a fixed-width iframe, scaled to fit the card. Card height
  * tracks content: `?static=1` drops the shell's `min-h-svh` (globals.css) so a
@@ -29,6 +31,7 @@ export function BlockPreview({
   const contentRoRef = React.useRef<ResizeObserver | null>(null);
   const [width, setWidth] = React.useState<number | null>(null);
   const [simHeight, setSimHeight] = React.useState(DEFAULT_HEIGHT);
+  const [loaded, setLoaded] = React.useState(false);
 
   React.useLayoutEffect(() => {
     const el = ref.current;
@@ -50,6 +53,7 @@ export function BlockPreview({
 
   // Size the card to the block, tracking late reflow (fonts, images).
   function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
+    setLoaded(true);
     const doc = event.currentTarget.contentDocument;
     if (!doc) return;
     // Measure the shell, not `documentElement.scrollHeight` — the latter never
@@ -73,6 +77,17 @@ export function BlockPreview({
       className="relative w-full overflow-hidden border-b border-border bg-card/30"
       style={{ aspectRatio: `${simWidth} / ${simHeight}` }}
     >
+      <div
+        aria-hidden
+        className={cn(
+          "bg-dot-grid absolute inset-0 flex items-center justify-center transition-opacity duration-500",
+          loaded ? "pointer-events-none opacity-0" : "opacity-100",
+        )}
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
+          {title}
+        </span>
+      </div>
       {scale !== null && (
         <iframe
           src={`${embedHref}?static=1`}
@@ -81,7 +96,10 @@ export function BlockPreview({
           tabIndex={-1}
           aria-hidden
           onLoad={handleLoad}
-          className="pointer-events-none absolute left-0 top-0 origin-top-left border-0"
+          className={cn(
+            "pointer-events-none absolute left-0 top-0 origin-top-left border-0 transition-opacity duration-500",
+            loaded ? "opacity-100" : "opacity-0",
+          )}
           style={{
             width: `${simWidth}px`,
             height: `${simHeight}px`,

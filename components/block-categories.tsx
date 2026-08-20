@@ -4,9 +4,24 @@ import { type BlockKind } from "@/registry/hirael/registry-meta";
 /* Category registry                                                          */
 /* -------------------------------------------------------------------------- */
 
+export type CategoryGroup = keyof typeof CATEGORY_GROUP_LABELS;
+
+export const CATEGORY_GROUP_LABELS = {
+  marketing: "Marketing",
+  site: "Site pages",
+  app: "Product & app",
+} as const;
+
+export const CATEGORY_GROUP_ORDER: CategoryGroup[] = [
+  "marketing",
+  "site",
+  "app",
+];
+
 export type CategoryMeta = {
   slug: string;
   title: string;
+  group: CategoryGroup;
   /** Internal BlockKind — present only for categories that have shipped blocks. */
   blockKind?: BlockKind;
   comingSoon?: boolean;
@@ -16,6 +31,7 @@ export type CategoryMeta = {
 export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "hero",
+    group: "marketing",
     title: "Hero Sections",
     blockKind: "hero",
     description:
@@ -23,6 +39,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "features",
+    group: "marketing",
     title: "Features",
     blockKind: "feature",
     description:
@@ -30,6 +47,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "process",
+    group: "marketing",
     title: "How It Works",
     blockKind: "process",
     description:
@@ -37,6 +55,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "pricing",
+    group: "marketing",
     title: "Pricing",
     blockKind: "pricing",
     description:
@@ -44,6 +63,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "comparison",
+    group: "marketing",
     title: "Comparison",
     blockKind: "comparison",
     description:
@@ -51,6 +71,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "testimonials",
+    group: "marketing",
     title: "Testimonials",
     blockKind: "testimonial",
     description:
@@ -58,6 +79,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "cta",
+    group: "marketing",
     title: "Call to Action",
     blockKind: "cta",
     description:
@@ -65,6 +87,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "newsletter",
+    group: "marketing",
     title: "Newsletter",
     blockKind: "newsletter",
     description:
@@ -72,6 +95,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "faqs",
+    group: "marketing",
     title: "FAQs",
     blockKind: "faq",
     description:
@@ -79,6 +103,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "auth",
+    group: "site",
     title: "Auth",
     blockKind: "login",
     description:
@@ -86,6 +111,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "header",
+    group: "site",
     title: "Header",
     blockKind: "header",
     description:
@@ -93,6 +119,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "footer",
+    group: "site",
     title: "Footer",
     blockKind: "footer",
     description:
@@ -100,12 +127,14 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "not-found",
+    group: "site",
     title: "Not Found",
     blockKind: "not-found",
     description: "Centered 404s with paired CTAs and suggested-route lists.",
   },
   {
     slug: "blog",
+    group: "marketing",
     title: "Blog Sections",
     blockKind: "blog",
     description:
@@ -113,6 +142,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "contact",
+    group: "site",
     title: "Contact",
     blockKind: "contact",
     description:
@@ -120,6 +150,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "careers",
+    group: "site",
     title: "Careers",
     blockKind: "careers",
     description:
@@ -127,6 +158,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "ecommerce",
+    group: "app",
     title: "E-commerce",
     blockKind: "ecommerce",
     description:
@@ -134,6 +166,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "image-gallery",
+    group: "marketing",
     title: "Image Gallery",
     blockKind: "image-gallery",
     description:
@@ -141,6 +174,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "integrations",
+    group: "app",
     title: "Integrations",
     blockKind: "integrations",
     description:
@@ -148,6 +182,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "logo-cloud",
+    group: "marketing",
     title: "Logo Cloud",
     blockKind: "logo-cloud",
     description:
@@ -155,6 +190,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "app-shell",
+    group: "app",
     title: "App Shell",
     blockKind: "app-shell",
     description:
@@ -162,6 +198,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "dashboard",
+    group: "app",
     title: "Dashboard",
     blockKind: "dashboard",
     description:
@@ -169,6 +206,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "cloud",
+    group: "app",
     title: "Cloud",
     blockKind: "cloud",
     description:
@@ -176,6 +214,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "saas",
+    group: "app",
     title: "SaaS",
     blockKind: "saas",
     description:
@@ -183,6 +222,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
   {
     slug: "widgets",
+    group: "app",
     title: "Widgets",
     blockKind: "widgets",
     description:
@@ -193,3 +233,9 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
 export const CATEGORY_BY_SLUG = Object.fromEntries(
   CATEGORY_REGISTRY.map((c) => [c.slug, c]),
 ) as Record<string, CategoryMeta>;
+
+export const CATEGORIES_BY_GROUP = CATEGORY_GROUP_ORDER.map((group) => ({
+  group,
+  label: CATEGORY_GROUP_LABELS[group],
+  categories: CATEGORY_REGISTRY.filter((c) => c.group === group),
+}));

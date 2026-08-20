@@ -4,10 +4,10 @@ import { ArrowRight, ChevronLeft } from "lucide-react";
 import type { CategoryMeta } from "@/components/block-categories";
 import { BlockPreview } from "@/components/block-preview";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { SectionLabel } from "@/components/page-header";
 import {
   BLOCKS_BY_KIND,
   entryEmbedHref,
+  entryFileLabel,
   entryHref,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
@@ -26,17 +26,12 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         ]}
       />
 
-      <header className="flex flex-col gap-5 border-b border-border pb-8 sm:pb-10">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-            ◆ {category.title.toLowerCase()}
+      <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">
+        {category.comingSoon && (
+          <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            Roadmap
           </span>
-          {category.comingSoon && (
-            <span className="rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Roadmap
-            </span>
-          )}
-        </div>
+        )}
         <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
           {category.title}.
         </h1>
@@ -61,14 +56,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
 
 function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
   return (
-    <section className="flex flex-col gap-6">
-      <div className="flex items-baseline justify-between">
-        <SectionLabel>Variants</SectionLabel>
-        <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-          {blocks.length} variant{blocks.length === 1 ? "" : "s"}
-        </span>
-      </div>
-
+    <section>
       <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
         {blocks.map((entry) => (
           <Link
@@ -92,7 +80,7 @@ function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
                 {entry.blockTagline ?? entry.description}
               </p>
               <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                <span className="truncate">{entryHref(entry)}</span>
+                <span>{entryFileLabel(entry)}</span>
                 <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-foreground">
                   view
                   <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />

@@ -8,6 +8,7 @@ import { SITE } from "@/lib/site";
 import {
   TEMPLATES,
   entryEmbedHref,
+  entryFileLabel,
   entryHref,
 } from "@/registry/hirael/registry-meta";
 
@@ -91,7 +92,7 @@ export default function TemplatesIndex() {
                 </div>
               ) : null}
               <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                <span className="truncate">{entryHref(entry)}</span>
+                <span>{entryFileLabel(entry)}</span>
                 <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
                   view
                   <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180" />

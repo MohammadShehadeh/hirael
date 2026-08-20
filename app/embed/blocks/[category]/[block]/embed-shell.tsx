@@ -32,7 +32,7 @@ export function BlockEmbedShell({
           >
             Hirael
           </Link>{" "}
-          component library. This form doesn&apos;t submit — don&apos;t enter
+          component library. This form doesn&apos;t submit; don&apos;t enter
           real credentials.
         </div>
       )}

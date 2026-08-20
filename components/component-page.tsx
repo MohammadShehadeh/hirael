@@ -1,19 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { Hash } from "lucide-react";
+import { ArrowUpRight, Hash } from "lucide-react";
 import { DirectionProvider as BaseDirectionProvider } from "@base-ui/react/direction-provider";
 
 import { cn } from "@/lib/utils";
 import { BlockViewer } from "@/components/block-viewer";
 import { Breadcrumbs, type Crumb } from "@/components/breadcrumbs";
-import { CodeBlock, type CodeBlockTab } from "@/components/code-block";
+import {
+  CodeBlock,
+  InlineCodeBlock,
+  type CodeBlockTab,
+} from "@/components/code-block";
 import { DirectionToggle } from "@/components/direction-toggle";
 import { InstallBlock } from "@/components/install-block";
 import { Pager } from "@/components/pager";
 import { SectionLabel } from "@/components/page-header";
 import { Toc, type TocItem } from "@/components/toc";
 import { DemoLocaleProvider } from "@/lib/demo-locale";
+import { SITE } from "@/lib/site";
 import { DirectionProvider } from "@/registry/hirael/ui/direction";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
 import {
@@ -65,6 +70,7 @@ export function ComponentPage({
   source,
   examples,
   api,
+  usage,
   breadcrumb,
 }: {
   entry: RegistryEntryMeta;
@@ -72,6 +78,8 @@ export function ComponentPage({
   source: Record<string, SourceFile>;
   /** Component examples, each with pre-highlighted source. Composite items pass none. */
   examples?: ExampleEntry[];
+  /** Highlighted import snippet for the installed file. Components only. */
+  usage?: SourceFile | null;
   /** Extracted per-part props tables (registry-props.json). */
   api?: ApiPart[] | null;
   /** Hierarchy trail shown above the header for navigation. */
@@ -132,6 +140,23 @@ export function ComponentPage({
     content: <InstallBlock name={entry.name} />,
   });
 
+  if (!isComposite && usage) {
+    sections.push({
+      id: "usage",
+      label: "Usage",
+      content: (
+        <div className="flex flex-col gap-3">
+          <InlineCodeBlock code={usage.code} html={usage.html} />
+          <p className="text-xs text-muted-foreground">
+            Paths assume the default <code className="font-mono">@/</code> alias
+            from your <code className="font-mono">components.json</code>. The
+            example above shows the parts composed.
+          </p>
+        </div>
+      ),
+    });
+  }
+
   if (!isComposite && api?.length) {
     sections.push({
       id: "api",
@@ -152,7 +177,11 @@ export function ComponentPage({
             id: "component-source",
             label: "Component source",
             content: (
-              <CodeBlock tabs={codeTabs} layout={treeView ? "tree" : "tabs"} />
+              <CodeBlock
+                tabs={codeTabs}
+                layout={treeView ? "tree" : "tabs"}
+                collapsible
+              />
             ),
           },
     );
@@ -175,6 +204,8 @@ export function ComponentPage({
 
   const tocItems: TocItem[] = sections.map(({ id, label }) => ({ id, label }));
   const { prev, next } = entrySiblings(entry);
+  const sourceUrl = githubSourceUrl(entry);
+  const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
     <div className="container py-10 sm:py-12 md:py-16">
@@ -206,6 +237,12 @@ export function ComponentPage({
             <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
               {entry.description}
             </p>
+            <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.12em]">
+              {sourceUrl && (
+                <HeaderLink href={sourceUrl}>Source on GitHub</HeaderLink>
+              )}
+              <HeaderLink href={issueUrl}>Report an issue</HeaderLink>
+            </div>
           </header>
 
           {sections.map((section) => (
@@ -228,6 +265,35 @@ export function ComponentPage({
 }
 
 type PageSection = { id: string; label: string; content: React.ReactNode };
+
+function githubSourceUrl(entry: RegistryEntryMeta) {
+  const files = entry.files ?? [];
+  const primary = files[0]?.path;
+  if (!primary) return null;
+  if (files.length === 1) return `${SITE.githubRepoUrl}/blob/main/${primary}`;
+  const dir = primary.slice(0, primary.lastIndexOf("/"));
+  return `${SITE.githubRepoUrl}/tree/main/${dir}`;
+}
+
+function HeaderLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    >
+      {children}
+      <ArrowUpRight className="size-3 rtl:-rotate-90" aria-hidden />
+    </a>
+  );
+}
 
 function Section({
   id,
@@ -442,7 +508,7 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
           ) : (
             <p className="px-4 py-3 text-xs text-muted-foreground">
               {part.extendsNative
-                ? "No props of its own — forwards everything to the underlying element."
+                ? "No props of its own; forwards everything to the underlying element."
                 : "No configurable props."}
             </p>
           )}

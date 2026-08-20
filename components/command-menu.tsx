@@ -10,10 +10,7 @@ import { KbdDisplay } from "@/registry/hirael/components/kbd";
 // The palette (cmdk + Radix dialog) is loaded on first open, so it never
 // ships to visitors who don't search.
 const CommandPalette = dynamic(
-  () =>
-    import("@/components/command-palette").then(
-      (m) => m.CommandPalette,
-    ),
+  () => import("@/components/command-palette").then((m) => m.CommandPalette),
   { ssr: false },
 );
 
@@ -52,15 +49,16 @@ export function CommandMenu({ className }: { className?: string }) {
         onClick={() => setOpen(true)}
         aria-label="Search components and blocks"
         className={cn(
-          "h-8 sm:inline-flex hidden items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "inline-flex h-8 items-center justify-center gap-2 rounded-md border border-border bg-card text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "w-8 px-0 sm:w-auto sm:px-2.5",
           className,
         )}
       >
         <Search className="size-3.5 shrink-0" />
-        <span className="text-[13px] tracking-tight">
+        <span className="hidden text-[13px] tracking-tight sm:inline">
           Search…
         </span>
-        <KbdDisplay className="ml-2 border border-border bg-background px-1.5 font-mono text-[10px]">
+        <KbdDisplay className="ml-2 hidden border border-border bg-background px-1.5 font-mono text-[10px] sm:inline-flex">
           {isMac ? "⌘" : "Ctrl "}K
         </KbdDisplay>
       </button>

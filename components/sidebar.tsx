@@ -3,21 +3,23 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Boxes, Frame, LayoutTemplate, Sparkles } from "lucide-react";
+import { Boxes, Frame, History, LayoutTemplate, Sparkles } from "lucide-react";
 
+import { CATEGORIES_BY_GROUP } from "@/components/block-categories";
 import { LogoTile } from "@/components/logo";
-import { ThemeSheetTrigger } from "@/components/theme-sheet";
 import { SITE } from "@/lib/site";
 import {
+  BLOCKS_BY_KIND,
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_ORDER,
+  COMPONENTS,
   REGISTRY_BY_CATEGORY,
+  TEMPLATES,
   entryHref,
 } from "@/registry/hirael/registry-meta";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -28,22 +30,38 @@ import {
   useSidebar,
 } from "@/registry/hirael/ui/sidebar";
 
-export function ShowcaseSidebar() {
+type Section = "components" | "blocks" | "templates" | "changelog";
+
+function sectionFor(pathname: string): Section {
+  if (pathname === "/blocks" || pathname.startsWith("/blocks/"))
+    return "blocks";
+  if (pathname === "/templates" || pathname.startsWith("/templates/"))
+    return "templates";
+  if (pathname === "/changelog") return "changelog";
+  return "components";
+}
+
+export type SidebarRelease = { slug: string; label: string; date: string };
+
+export function ShowcaseSidebar({ releases }: { releases: SidebarRelease[] }) {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const section = sectionFor(pathname);
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length;
-  const templateCount = REGISTRY_BY_CATEGORY.templates.length;
+  const templateCount = TEMPLATES.length;
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+  const isExact = (href: string) => pathname === href;
 
-  // The mobile sidebar is an off-canvas sheet; close it when the route
-  // changes so a tapped link doesn't leave it covering the page.
   React.useEffect(() => {
     setOpenMobile(false);
   }, [pathname, setOpenMobile]);
+
+  React.useEffect(() => {
+    if (contentRef.current) revealActiveItem(contentRef.current);
+  }, [pathname]);
 
   return (
     <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
@@ -67,46 +85,52 @@ export function ShowcaseSidebar() {
         </Link>
       </SidebarHeader>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+      <SidebarContent ref={contentRef}>
+        {/* The desktop topbar carries these links; only phones need them here. */}
+        <SidebarGroup className="lg:hidden">
+          <SidebarGroupLabel>Browse</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/components")}>
+                <SidebarMenuButton asChild isActive={isExact("/components")}>
                   <Link href="/components">
                     <Boxes />
-                    <span>All components</span>
+                    <span>Components</span>
+                    <Count n={COMPONENTS.length} />
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/blocks")}>
+                <SidebarMenuButton asChild isActive={isExact("/blocks")}>
                   <Link href="/blocks">
                     <LayoutTemplate />
                     <span>Blocks</span>
-                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
-                      {blockCount}
-                    </span>
+                    <Count n={blockCount} />
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/templates")}>
+                <SidebarMenuButton asChild isActive={isExact("/templates")}>
                   <Link href="/templates">
                     <Frame />
                     <span>Templates</span>
-                    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
-                      {templateCount}
-                    </span>
+                    <Count n={templateCount} />
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/theme")}>
+                <SidebarMenuButton asChild isActive={isExact("/theme")}>
                   <Link href="/theme">
                     <Sparkles />
                     <span>Theme playground</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isExact("/changelog")}>
+                  <Link href="/changelog">
+                    <History />
+                    <span>Changelog</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -114,44 +138,172 @@ export function ShowcaseSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {COMPONENT_CATEGORY_ORDER.map((cat) => {
-          const items = REGISTRY_BY_CATEGORY[cat];
-          if (!items.length) return null;
-          return (
-            <SidebarGroup key={cat}>
-              <SidebarGroupLabel asChild>
-                <Link href={`/components/${cat}`}>{CATEGORY_LABELS[cat]}</Link>
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((entry) => {
-                    const href = entryHref(entry);
-                    const active = isActive(href);
-                    return (
-                      <SidebarMenuItem key={entry.name}>
-                        <SidebarMenuButton asChild isActive={active}>
-                          <Link href={href}>
-                            <span>{entry.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          );
-        })}
+        {section === "components" && <ComponentGroups isActive={isActive} />}
+        {section === "blocks" && <BlockGroups isActive={isActive} />}
+        {section === "templates" && <TemplateGroup isActive={isActive} />}
+        {section === "changelog" && <ReleaseGroup releases={releases} />}
       </SidebarContent>
-
-      <SidebarFooter>
-        <div className="flex items-center justify-between gap-2 bg-sidebar-accent/30 px-1 py-2">
-          <span className="font-mono text-sm uppercase text-muted-foreground">
-            peer of shadcn
-          </span>
-          <ThemeSheetTrigger />
-        </div>
-      </SidebarFooter>
     </Sidebar>
+  );
+}
+
+function revealActiveItem(container: HTMLElement) {
+  const active = container.querySelector<HTMLElement>(
+    '[data-sidebar="menu-button"][data-active="true"]',
+  );
+  if (!active) return;
+  const box = container.getBoundingClientRect();
+  const item = active.getBoundingClientRect();
+  const isHidden = item.top < box.top || item.bottom > box.bottom;
+  if (isHidden) active.scrollIntoView({ block: "center" });
+}
+
+function Count({ n }: { n: number }) {
+  return (
+    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
+      {n}
+    </span>
+  );
+}
+
+type GroupProps = { isActive: (href: string) => boolean };
+
+function ComponentGroups({ isActive }: GroupProps) {
+  return (
+    <>
+      {COMPONENT_CATEGORY_ORDER.map((cat) => {
+        const items = REGISTRY_BY_CATEGORY[cat];
+        if (!items.length) return null;
+        return (
+          <SidebarGroup key={cat}>
+            <SidebarGroupLabel asChild>
+              <Link href={`/components/${cat}`}>{CATEGORY_LABELS[cat]}</Link>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((entry) => {
+                  const href = entryHref(entry);
+                  return (
+                    <SidebarMenuItem key={entry.name}>
+                      <SidebarMenuButton asChild isActive={isActive(href)}>
+                        <Link href={href}>
+                          <span>{entry.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        );
+      })}
+    </>
+  );
+}
+
+function BlockGroups({ isActive }: GroupProps) {
+  return (
+    <>
+      {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => (
+        <SidebarGroup key={group}>
+          <SidebarGroupLabel asChild>
+            <Link href="/blocks">{label}</Link>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {categories.map((cat) => {
+                const href = `/blocks/${cat.slug}`;
+                const blocks = cat.blockKind
+                  ? BLOCKS_BY_KIND[cat.blockKind]
+                  : [];
+                const open = isActive(href);
+                return (
+                  <SidebarMenuItem key={cat.slug}>
+                    <SidebarMenuButton asChild isActive={open}>
+                      <Link href={href}>
+                        <span>{cat.title}</span>
+                        {blocks.length > 0 && <Count n={blocks.length} />}
+                      </Link>
+                    </SidebarMenuButton>
+                    {open && blocks.length > 0 && (
+                      <SidebarMenu className="ms-3 mt-0.5 border-s border-sidebar-border ps-2">
+                        {blocks.map((entry) => {
+                          const entryPath = entryHref(entry);
+                          return (
+                            <SidebarMenuItem key={entry.name}>
+                              <SidebarMenuButton
+                                asChild
+                                size="sm"
+                                isActive={isActive(entryPath)}
+                              >
+                                <Link href={entryPath}>
+                                  <span>{entry.title}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          );
+                        })}
+                      </SidebarMenu>
+                    )}
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      ))}
+    </>
+  );
+}
+
+function TemplateGroup({ isActive }: GroupProps) {
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel asChild>
+        <Link href="/templates">Templates</Link>
+      </SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {TEMPLATES.map((entry) => {
+            const href = entryHref(entry);
+            return (
+              <SidebarMenuItem key={entry.name}>
+                <SidebarMenuButton asChild isActive={isActive(href)}>
+                  <Link href={href}>
+                    <span>{entry.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+function ReleaseGroup({ releases }: { releases: SidebarRelease[] }) {
+  if (!releases.length) return null;
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Releases</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {releases.map((release) => (
+            <SidebarMenuItem key={release.slug}>
+              <SidebarMenuButton asChild>
+                <a href={`#release-${release.slug}`}>
+                  <span>{release.label}</span>
+                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">
+                    {release.date}
+                  </span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 }

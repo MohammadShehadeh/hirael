@@ -1288,7 +1288,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "@tiptap/extension-placeholder",
       "lucide-react",
     ],
-    docs: "Pulls in Tiptap's editor engine (seven @tiptap/* packages) — expect a heavier bundle than the other input components.",
+    docs: "Pulls in Tiptap's editor engine (seven @tiptap/* packages), so expect a heavier bundle than the other input components.",
   },
   {
     name: "inline-edit",
@@ -2472,7 +2472,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "data-table",
     title: "Data Table",
     description:
-      "TanStack-powered data table: faceted, text, range and date filters, sortable columns, column visibility, row selection and pagination, with page, sort and filters kept in the URL. One useDataTable hook drives it — pass pageCount to query server-side, or omit it to sort, filter and page a local array in memory. Ships as a folder of composable parts.",
+      "TanStack-powered data table: faceted, text, range and date filters, sortable columns, column visibility, row selection and pagination, with page, sort and filters kept in the URL. One useDataTable hook drives it: pass pageCount to query server-side, or omit it to sort, filter and page a local array in memory. Ships as a folder of composable parts.",
     category: "data",
     files: [
       {
@@ -2563,7 +2563,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "react-day-picker",
       "zod",
     ],
-    docs: "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Built for @tanstack/react-table v9 — the table's features, row models and column meta typing live in data-table-features.ts. Component files keep a \"use no memo\" pragma — required under the React Compiler because column/row getter reads would otherwise be memoized stale — so don't remove it.",
+    docs: "Needs a NuqsAdapter wrapping your app (nuqs) or the URL-synced page/sort/filter state won't work. Built for @tanstack/react-table v9; the table's features, row models and column meta typing live in data-table-features.ts. Component files keep a \"use no memo\" pragma, required under the React Compiler because column/row getter reads would otherwise be memoized stale, so don't remove it.",
   },
   {
     name: "process-01",
@@ -2902,7 +2902,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     name: "theme-emerald",
     title: "Emerald theme",
     description:
-      "Emerald accent preset for the hirael palette — sets --primary, --primary-foreground and --ring for light and dark.",
+      "Emerald accent preset for the hirael palette. Sets --primary, --primary-foreground and --ring for light and dark.",
     type: "registry:theme",
     categories: ["themes"],
     registryDependencies: [],
@@ -3168,6 +3168,11 @@ export function entryHref(entry: RegistryEntryMeta): string {
 export function entryEmbedHref(entry: RegistryEntryMeta): string {
   if (entry.category === "templates") return `/embed/templates/${entry.name}`;
   return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`;
+}
+
+export function entryFileLabel(entry: RegistryEntryMeta): string {
+  const count = entry.files?.length ?? 0;
+  return `${count} file${count === 1 ? "" : "s"}`;
 }
 
 /* -------------------------------------------------------------------------- */

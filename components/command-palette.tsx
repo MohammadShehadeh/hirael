@@ -61,7 +61,7 @@ export function CommandPalette({
           Search across all components and blocks.
         </DialogDescription>
         <Command loop>
-          <CommandInput placeholder="Search components and blocks…" />
+          <CommandInput placeholder="Search by name or what it does…" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Components">
@@ -69,6 +69,10 @@ export function CommandPalette({
                 <CommandItem
                   key={c.name}
                   value={`${c.title} ${c.name}`}
+                  keywords={[
+                    c.description,
+                    CATEGORY_LABELS[c.category as ComponentCategory],
+                  ]}
                   onSelect={() => go(entryHref(c))}
                 >
                   <Boxes className="text-muted-foreground" />
@@ -84,6 +88,7 @@ export function CommandPalette({
                 <CommandItem
                   key={b.name}
                   value={`${b.title} ${b.name}`}
+                  keywords={[b.description, b.blockKind ?? ""]}
                   onSelect={() => go(entryHref(b))}
                 >
                   <LayoutTemplate className="text-muted-foreground" />
@@ -99,6 +104,7 @@ export function CommandPalette({
                 <CommandItem
                   key={t.name}
                   value={`${t.title} ${t.name}`}
+                  keywords={[t.description]}
                   onSelect={() => go(entryHref(t))}
                 >
                   <Frame className="text-muted-foreground" />

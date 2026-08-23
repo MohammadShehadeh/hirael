@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { ArrowUpRight, Hash } from "lucide-react";
+import { CircleAlert, Hash } from "lucide-react";
 import { DirectionProvider as BaseDirectionProvider } from "@base-ui/react/direction-provider";
 
-import { cn } from "@/lib/utils";
 import { BlockViewer } from "@/components/block-viewer";
 import { Breadcrumbs, type Crumb } from "@/components/breadcrumbs";
 import {
@@ -14,13 +13,17 @@ import {
 } from "@/components/code-block";
 import { DirectionToggle } from "@/components/direction-toggle";
 import { InstallBlock } from "@/components/install-block";
+import { CopyPageButton } from "@/components/copy-page-button";
 import { Pager } from "@/components/pager";
 import { SectionLabel } from "@/components/page-header";
-import { Toc, type TocItem } from "@/components/toc";
+import { SegmentedControl } from "@/components/segmented-control";
+import { Toc, TocChips, type TocItem } from "@/components/toc";
+import { GithubIcon } from "@/components/github-link";
 import { DemoLocaleProvider } from "@/lib/demo-locale";
 import { SITE } from "@/lib/site";
 import { DirectionProvider } from "@/registry/hirael/ui/direction";
 import { RegistryExample } from "@/registry/hirael/registry-demos";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Table,
   TableBody,
@@ -31,6 +34,7 @@ import {
 } from "@/registry/hirael/ui/table";
 import {
   entryEmbedHref,
+  entryHref,
   entrySiblings,
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
@@ -211,39 +215,73 @@ export function ComponentPage({
     <div className="container py-10 sm:py-12 md:py-16">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
-          <header className="flex flex-col gap-3 border-b border-border pb-6">
-            {breadcrumb ? (
-              <Breadcrumbs items={breadcrumb} />
-            ) : (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {entry.category}
-                </span>
-                {entry.blockKind && (
-                  <>
-                    <span className="font-mono text-[10px] text-muted-foreground">
-                      ·
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                      {entry.blockKind}
-                    </span>
-                  </>
-                )}
-              </div>
-            )}
-            <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">
-              {entry.title}
-            </h1>
-            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-              {entry.description}
-            </p>
-            <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.12em]">
-              {sourceUrl && (
-                <HeaderLink href={sourceUrl}>Source on GitHub</HeaderLink>
+      <header className="flex flex-col gap-3 border-b border-border pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          {breadcrumb ? (
+            <Breadcrumbs items={breadcrumb} />
+          ) : (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                {entry.category}
+              </span>
+              {entry.blockKind && (
+                <>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    ·
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                    {entry.blockKind}
+                  </span>
+                </>
               )}
-              <HeaderLink href={issueUrl}>Report an issue</HeaderLink>
             </div>
-          </header>
+          )}
+
+          {/* Page-level actions sit with the breadcrumbs, clear of the
+              description below — a toolbar, not a footnote. */}
+          <div className="flex items-center gap-0.5 flex-wrap justify-start">
+            {sourceUrl && (
+              <HeaderAction
+                href={sourceUrl}
+                title="View source on GitHub"
+                icon={<GithubIcon />}
+              >
+                Source
+              </HeaderAction>
+            )}
+            <HeaderAction
+              href={issueUrl}
+              title="Open a GitHub issue"
+              icon={<CircleAlert />}
+            >
+              Report issue
+            </HeaderAction>
+            <CopyPageButton
+              input={{
+                name: entry.name,
+                title: entry.title,
+                description: entry.description,
+                url: `${SITE.url}${entryHref(entry)}`,
+                isComposite,
+                usage,
+                examples,
+                api,
+                source,
+                files: entry.files ?? [],
+              }}
+            />
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">
+          {entry.title}
+        </h1>
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+          {entry.description}
+        </p>
+      </header>
+
+          <TocChips items={tocItems} className="xl:hidden" />
 
           {sections.map((section) => (
             <Section key={section.id} id={section.id} label={section.label}>
@@ -275,23 +313,28 @@ function githubSourceUrl(entry: RegistryEntryMeta) {
   return `${SITE.githubRepoUrl}/tree/main/${dir}`;
 }
 
-function HeaderLink({
+function HeaderAction({
   href,
+  title,
+  icon,
   children,
 }: {
   href: string;
+  title: string;
+  icon: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    <Button
+      asChild
+      variant="ghost"
+      size="sm"
     >
-      {children}
-      <ArrowUpRight className="size-3 rtl:-rotate-90" aria-hidden />
-    </a>
+      <a href={href} target="_blank" rel="noreferrer noopener" title={title}>
+        {icon}
+        {children}
+      </a>
+    </Button>
   );
 }
 
@@ -343,33 +386,23 @@ function ExampleBlock({
       )}
       <div className="relative overflow-hidden rounded-md border border-border">
         <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
-          <div
-            role="tablist"
-            aria-label="Example view"
-            className="inline-flex items-center gap-0.5 rounded-md border border-border/70 bg-card/30 p-0.5"
-          >
-            {(["preview", "code"] as const).map((v) => {
-              const active = view === v;
-              return (
-                <button
-                  key={v}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  disabled={v === "code" && !hasCode}
-                  onClick={() => setView(v)}
-                  className={cn(
-                    "rounded-sm px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40",
-                    active
-                      ? "bg-background text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {v}
-                </button>
-              );
-            })}
-          </div>
+          <SegmentedControl
+            role="tab"
+            ariaLabel="Example view"
+            value={view}
+            onValueChange={(v) => setView(v as "preview" | "code")}
+            className="rounded-md border border-border/70 bg-card/30 p-0.5"
+            itemClassName="rounded-sm px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em]"
+            items={[
+              { value: "preview", label: "preview" },
+              {
+                value: "code",
+                label: "code",
+                disabled: !hasCode,
+                title: hasCode ? undefined : "No example source for this item",
+              },
+            ]}
+          />
           {view === "preview" && (
             <DirectionToggle rtl={rtl} onToggle={setRtl} />
           )}
@@ -454,7 +487,7 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
           </div>
           {part.props.length ? (
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-14 z-10 bg-card">
                 <TableRow>
                   <TableHead className={API_TH}>Prop</TableHead>
                   <TableHead className={API_TH}>Type</TableHead>

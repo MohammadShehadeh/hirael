@@ -20,15 +20,32 @@ export function DemoCard({
   className?: string;
 }) {
   const href = entryHref(entry);
+  const [engaged, setEngaged] = React.useState(false);
+  const hoverCapable = useHoverCapable();
+
   return (
     <article
       data-slot="demo-card"
+      onPointerEnter={() => setEngaged(true)}
+      onPointerLeave={() => setEngaged(false)}
+      onFocus={() => setEngaged(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          setEngaged(false);
+        }
+      }}
       className={cn(
         "group/card relative flex flex-col overflow-hidden rounded-md border border-border bg-card transition-colors hover:border-foreground/30",
         className,
       )}
     >
-      <LazyDemo name={entry.name} />
+      <LazyDemo
+        name={entry.name}
+        // Demos stay out of the tab order (and the a11y tree) until the card
+        // is hovered or focused, so tabbing through an index of 60+ cards
+        // walks titles instead of every mounted control.
+        inert={!engaged && hoverCapable}
+      />
       <div className="flex flex-col gap-1.5 border-t border-border p-4">
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-sm font-medium tracking-[-0.01em]">
@@ -58,11 +75,37 @@ export function DemoCard({
 const PREVIEW_FRAME =
   "bg-dot-grid relative flex h-60 items-center justify-center overflow-hidden p-5";
 
+const hoverQuery =
+  typeof window !== "undefined"
+    ? window.matchMedia("(hover: hover) and (pointer: fine)")
+    : null;
+
+function subscribeHover(onChange: () => void) {
+  hoverQuery?.addEventListener("change", onChange);
+  return () => hoverQuery?.removeEventListener("change", onChange);
+}
+
+/** True only on devices where hovering is the primary pointer interaction —
+ * touch devices never inert their demos, since a tap should act immediately. */
+function useHoverCapable() {
+  return React.useSyncExternalStore(
+    subscribeHover,
+    () => hoverQuery?.matches ?? false,
+    () => false,
+  );
+}
+
 /**
  * Mounts the demo only once the card is near the viewport, so an index of 60+
  * cards doesn't pull every component chunk on page load.
  */
-function LazyDemo({ name }: { name: string }) {
+function LazyDemo({
+  name,
+  inert,
+}: {
+  name: string;
+  inert: boolean;
+}) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [isNear, setIsNear] = React.useState(false);
 
@@ -80,7 +123,7 @@ function LazyDemo({ name }: { name: string }) {
   }, [isNear]);
 
   return (
-    <div ref={ref} className={PREVIEW_FRAME}>
+    <div ref={ref} inert={inert} className={PREVIEW_FRAME}>
       {/* The title link's ::after overlay covers the card; this layer sits
           above it so the demo itself stays interactive. */}
       <div className="relative z-10 flex max-h-full w-full items-center justify-center">

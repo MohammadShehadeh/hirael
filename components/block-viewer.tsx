@@ -29,6 +29,13 @@ const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
 
 const ORDER: Viewport[] = ["mobile", "tablet", "desktop"];
 
+// Auto-height clamps. The floor keeps a refresh from collapsing to a sliver
+// before the first measurement; the ceiling stops full-page templates from
+// stretching the document thousands of pixels — past it the iframe scrolls
+// internally again.
+const MIN_HEIGHT = 320;
+const MAX_HEIGHT = 1600;
+
 export function BlockViewer({
   title,
   minHeight = 800,
@@ -42,13 +49,42 @@ export function BlockViewer({
   const [viewport, setViewport] = React.useState<Viewport>("desktop");
   const [key, setKey] = React.useState(0);
   const [rtl, setRtl] = React.useState(false);
+  const [height, setHeight] = React.useState<number | null>(null);
+  const contentRoRef = React.useRef<ResizeObserver | null>(null);
 
-  const src = `${embedHref}${rtl ? "?dir=rtl" : ""}`;
+  // `?fit=1` drops the embed shell's viewport min-height (globals.css) so the
+  // iframe can size itself to the block's natural height — no dead space under
+  // short blocks, no nested scrollbar until the ceiling kicks in.
+  const params = new URLSearchParams({ fit: "1" });
+  if (rtl) params.set("dir", "rtl");
+  const src = `${embedHref}?${params.toString()}`;
 
   const sizing =
     viewport === "desktop"
       ? { width: "100%", maxWidth: "100%" }
       : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" };
+
+  // Track late reflow inside the frame (fonts, images, viewport switches).
+  function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
+    const doc = event.currentTarget.contentDocument;
+    const target = doc?.querySelector<HTMLElement>("[data-embed-shell]");
+    if (!target) return;
+    const measureHeight = () => {
+      const h = target.getBoundingClientRect().height;
+      if (h > 0) {
+        setHeight(
+          Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, Math.round(h))),
+        );
+      }
+    };
+    measureHeight();
+    contentRoRef.current?.disconnect();
+    const ro = new ResizeObserver(measureHeight);
+    ro.observe(target);
+    contentRoRef.current = ro;
+  }
+
+  React.useEffect(() => () => contentRoRef.current?.disconnect(), []);
 
   return (
     <div
@@ -121,8 +157,12 @@ export function BlockViewer({
           src={src}
           title={`${title} preview`}
           loading="lazy"
-          className="block border-0 bg-background transition-[width,max-width] duration-300 ease-out"
-          style={{ ...sizing, height: minHeight }}
+          onLoad={handleLoad}
+          className="block border-0 bg-background transition-[width,max-width,height] duration-300 ease-out"
+          style={{
+            ...sizing,
+            height: height ?? minHeight,
+          }}
         />
       </div>
     </div>

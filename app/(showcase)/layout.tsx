@@ -24,7 +24,9 @@ export default async function ShowcaseLayout({
       <ShowcaseSidebar releases={releases} />
       <SidebarInset className="min-w-0">
         <ShowcaseTopbar stars={stars} />
-        <main className="min-w-0 flex-1">{children}</main>
+        <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 outline-none">
+          {children}
+        </main>
         <SiteFooterCompact />
       </SidebarInset>
     </SidebarProvider>

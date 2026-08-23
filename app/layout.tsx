@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/active-theme";
+import { SkipLink } from "@/components/skip-link";
 import { SITE } from "@/lib/site";
 import { themePrehydrationScript } from "@/lib/theme";
 import { TooltipProvider } from "@/registry/hirael/ui/tooltip";
@@ -140,6 +141,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
       >
+        <SkipLink />
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </TooltipProvider>

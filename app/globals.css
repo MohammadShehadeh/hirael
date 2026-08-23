@@ -196,6 +196,15 @@
     cursor: pointer;
   }
 
+  /* Firefox fallback for the webkit scrollbar rules below; these properties
+   * inherit, so setting them on the root styles every scroll container. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color:
+      color-mix(in oklch, var(--muted-foreground) 40%, transparent)
+      transparent;
+  }
+
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -508,9 +517,13 @@ html.light .shiki-inline span {
 }
 
 /* Freeze the marquee ticker for visitors who ask for less motion — it falls
- * back to a static, readable strip. */
+ * back to a static, readable strip. The ambient halos and status dots are
+ * decorative loops too, so they freeze as well. */
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="marquee-track"] {
+  [data-slot="marquee-track"],
+  .ambient-halo,
+  .hero-aurora,
+  .state-dot {
     animation: none !important;
   }
 }
@@ -526,6 +539,13 @@ html[data-static] [style*="opacity"] {
 /* Drop the shell's full-viewport min-height in thumbnails so a compact block
  * reports its natural height for block-preview.tsx to fit the card to. */
 html[data-static] [data-embed-shell] {
+  min-height: 0 !important;
+}
+
+/* Same as data-static but keeps live animations: the detail-page viewer adds
+ * ?fit=1 so a block reports its natural height and the iframe can size to it
+ * (see block-viewer.tsx). */
+html[data-fit] [data-embed-shell] {
   min-height: 0 !important;
 }
 

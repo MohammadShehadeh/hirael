@@ -549,20 +549,3 @@ html[data-fit] [data-embed-shell] {
   min-height: 0 !important;
 }
 
-/* Active sidebar item gets a thin cool-accent rail on the left edge.
- * Only this one place uses --accent-cool in the chrome — it's the
- * "you are here" system signal against the warm canvas. */
-[data-sidebar="menu-button"][data-active="true"] {
-  position: relative;
-}
-[data-sidebar="menu-button"][data-active="true"]::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: -1px;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
-  border-radius: 2px;
-  background-color: var(--accent-cool);
-  box-shadow: 0 0 8px 0 var(--accent-cool-glow);
-}

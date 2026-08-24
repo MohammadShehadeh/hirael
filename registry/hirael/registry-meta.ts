@@ -941,8 +941,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dashboard-01",
     title: "Dashboard 1",
     description:
-      "Operations dashboard with Tabs date-range switcher (1d / 7d / 30d / 90d), 4-up metric strip, weekly bar chart and a recent-activity feed. Data switches live with the range.",
-    blockTagline: "Tabs range · 4 metrics · live data",
+      "Operations dashboard with a Tabs date-range switcher (1d / 7d / 30d / 90d), a 4-up metric strip, a weekly bar chart and a recent-activity feed. Every metric declares which direction is good news, so falling churn reads green; each chart bucket is a focusable control, so the numbers reach the keyboard as well as the mouse.",
+    blockTagline: "Tabs range · intent-aware deltas · keyboard chart",
     category: "blocks",
     blockKind: "dashboard",
     files: [
@@ -966,8 +966,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dashboard-02",
     title: "Dashboard 2",
     description:
-      "Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart, and top-pages and channel-share side cards.",
-    blockTagline: "Area chart · sparkline KPIs · top pages",
+      "Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart and top-pages and channel-share side cards. Deltas carry their own unit (percent vs percentage points) and the direction that counts as good, and the area chart ships a screen-reader data table of the same numbers.",
+    blockTagline: "Area chart · sparkline KPIs · sr data table",
     category: "blocks",
     blockKind: "dashboard",
     files: [
@@ -983,8 +983,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dashboard-03",
     title: "Dashboard 3",
     description:
-      "Revenue dashboard with a month stepper, plan-mix donut and legend, invoice status list and a transactions table with status dots and a pagination footer.",
-    blockTagline: "Donut plan mix · transactions · month stepper",
+      "Revenue dashboard with a month stepper, a plan-mix donut and legend, an invoice status list and a paginated transactions list. Amounts are numbers formatted through Intl, and every colour comes from a lookup keyed by plan or status, so no Tailwind class is stored in the data.",
+    blockTagline: "Donut plan mix · real pagination · month stepper",
     category: "blocks",
     blockKind: "dashboard",
     files: [
@@ -1000,8 +1000,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dashboard-04",
     title: "Dashboard 4",
     description:
-      "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band with an orders bar chart and three sparkline metric cards driven by a range select.",
-    blockTagline: "Inset stat tiles · today band · week band",
+      "Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band driven by a range select. The budget bar is a real progressbar, both charts ship a screen-reader data table, and each panel only shows an action when it has one.",
+    blockTagline: "Inset stat tiles · progressbar budget · sr tables",
     category: "blocks",
     blockKind: "dashboard",
     files: [
@@ -1017,8 +1017,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "dashboard-05",
     title: "Dashboard 5",
     description:
-      "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution and an active-deployments list with ping-dot statuses.",
-    blockTagline: "Bordered lattice · sparkline KPIs · deployments",
+      "Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution measured against a stated target, and an active-deployments list. The deployment taking traffic gets --accent-cool, the reserved live tone, and its pulse respects prefers-reduced-motion.",
+    blockTagline: "Bordered lattice · live accent · latency targets",
     category: "blocks",
     blockKind: "dashboard",
     files: [
@@ -1068,8 +1068,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "app-shell-01",
     title: "App Shell 1",
     description:
-      "Drop-in admin shell layout built on the shadcn Sidebar primitive: collapsible icon-rail sidebar with nav badges and a footer profile row, sticky topbar with breadcrumb, command-palette search and notification button, plus a live-filtering accounts table in the main area.",
-    blockTagline: "Collapsible Sidebar · sticky topbar · live table",
+      "Drop-in admin shell built on the shadcn Sidebar primitive: collapsible icon rail with nav badges and an account menu in the footer, sticky topbar with breadcrumb and a ⌘K search that really focuses, plus an accounts table that filters live and sorts by any column with aria-sort.",
+    blockTagline: "Collapsible Sidebar · ⌘K search · sortable table",
     category: "blocks",
     blockKind: "app-shell",
     files: [
@@ -1082,6 +1082,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "badge",
       "button",
       "card",
+      "dropdown-menu",
+      "empty",
       "input-group",
       "kbd",
       "separator",
@@ -1094,8 +1096,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "app-shell-02",
     title: "App Shell 2",
     description:
-      "Sidebar-free admin shell with a sticky top navigation bar (logo, primary links, search and avatar) over a settings layout: an in-page vertical nav switches a detail card of definition-list fields with per-field edit actions.",
-    blockTagline: "Top nav · in-page settings nav · detail card",
+      "Sidebar-free admin shell with a sticky top bar over a working settings screen: vertical tabs with roving keyboard focus, a header search that filters every section and counts matches per tab, and rows that actually do their thing — inline edit, copy to clipboard, or a switch — with a live save status.",
+    blockTagline: "Top nav · vertical tabs · settings that save",
     category: "blocks",
     blockKind: "app-shell",
     files: [
@@ -1108,8 +1110,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "badge",
       "button",
       "card",
+      "copy-button",
+      "dropdown-menu",
+      "empty",
+      "inline-edit",
       "input-group",
       "separator",
+      "switch",
+      "tabs",
     ],
     dependencies: ["lucide-react"],
   },
@@ -1117,8 +1125,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "app-shell-03",
     title: "App Shell 3",
     description:
-      "Split-pane inbox shell: icon rail with unread indicator, searchable conversation list with an unread filter, and a reading pane with star toggle and a reply composer that appends to the thread.",
-    blockTagline: "Icon rail · inbox list · reading pane",
+      "Split-pane inbox shell: icon rail with unread indicator, a searchable conversation listbox you can walk with the arrow keys, and a reading pane where star, archive and delete all work, with undo. Collapses to one pane on phones with a back button, and the composer sends on ⌘+Enter so Enter still makes a new line.",
+    blockTagline: "Icon rail · arrow-key inbox · reading pane",
     category: "blocks",
     blockKind: "app-shell",
     files: [
@@ -1130,6 +1138,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [
       "badge",
       "button",
+      "empty",
       "input-group",
       "separator",
       "tabs",
@@ -1142,8 +1151,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "app-shell-04",
     title: "App Shell 4",
     description:
-      "Starter shell on the shadcn Sidebar primitive (inset variant): workspace switcher and ⌘K search in the rail, icon-collapsible nav with tooltips, an inset header with trigger, notification count and avatar, and a welcome heading over dashed placeholder slots.",
-    blockTagline: "Inset Sidebar · ⌘K search · slot grid",
+      "Starter shell on the shadcn Sidebar primitive (inset variant): a workspace switcher that switches, a ⌘K field that filters the nav, icon-collapsible items with tooltips, an inset header with an account menu and notification count, and a welcome heading over dashed placeholder slots.",
+    blockTagline: "Inset Sidebar · ⌘K nav filter · slot grid",
     category: "blocks",
     blockKind: "app-shell",
     files: [
@@ -1155,6 +1164,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [
       "badge",
       "button",
+      "dropdown-menu",
       "input-group",
       "kbd",
       "separator",
@@ -2444,7 +2454,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/dashboard-06.tsx",
       },
     ],
-    registryDependencies: ["card", "chart", "empty", "tooltip", "button"],
+    registryDependencies: ["button", "card", "chart", "empty"],
     dependencies: ["recharts", "lucide-react"],
     docs: "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
   },

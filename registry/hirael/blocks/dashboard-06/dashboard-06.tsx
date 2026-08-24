@@ -34,11 +34,6 @@ import {
   EmptyHeader,
   EmptyMedia,
 } from "@/registry/hirael/ui/empty";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/registry/hirael/ui/tooltip";
 
 type RunState = "success" | "failure" | "skipped" | "running";
 
@@ -274,7 +269,7 @@ function StatCard({ stat }: { stat: Stat }) {
         {stat.live ? (
           <span className="relative flex size-2">
             <span
-              className="absolute inline-flex size-full animate-ping rounded-full opacity-70"
+              className="absolute inline-flex size-full rounded-full opacity-70 motion-safe:animate-ping"
               style={{ backgroundColor: stat.accent }}
             />
             <span
@@ -302,10 +297,9 @@ function RunBreakdown({ run }: { run: Run | null }) {
         data-slot="dashboard-breakdown"
         className="gap-1 self-stretch overflow-hidden py-0"
       >
-        <div className="h-1 w-full bg-muted" />
         <CardHeader className="px-4 pt-3">
           <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
-            <Hash className="size-3 shrink-0" />
+            <Hash className="size-3 shrink-0" aria-hidden />
             <span>—</span>
           </div>
           <CardTitle className="text-sm text-muted-foreground">
@@ -333,14 +327,10 @@ function RunBreakdown({ run }: { run: Run | null }) {
       data-slot="dashboard-breakdown"
       className="gap-2 self-stretch overflow-hidden py-0"
     >
-      <div
-        className="h-1 w-full"
-        style={{ backgroundColor: STATE_TOKEN[run.state] }}
-      />
       <CardHeader className="px-4 pt-3">
         <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
           <span className="inline-flex items-center">
-            <Hash className="size-3 shrink-0" />
+            <Hash className="size-3 shrink-0" aria-hidden />
             {run.number}
           </span>
           {run.attempt > 1 && <span>· attempt {run.attempt}</span>}
@@ -361,14 +351,14 @@ function RunBreakdown({ run }: { run: Run | null }) {
           <div className="flex flex-col gap-0.5">
             <dt className="text-muted-foreground">Branch</dt>
             <dd className="inline-flex items-center gap-1 font-mono">
-              <GitBranch className="size-3 shrink-0" />
+              <GitBranch className="size-3 shrink-0" aria-hidden />
               <span className="truncate">{run.branch}</span>
             </dd>
           </div>
           <div className="flex flex-col gap-0.5">
             <dt className="text-muted-foreground">Duration</dt>
             <dd className="inline-flex items-center gap-1 font-mono tabular-nums">
-              <Clock className="size-3 shrink-0" />
+              <Clock className="size-3 shrink-0" aria-hidden />
               {formatSeconds(run.durationSec)}
             </dd>
           </div>
@@ -400,7 +390,7 @@ function RunBreakdown({ run }: { run: Run | null }) {
           className="mt-auto gap-1 px-3 py-1.5 text-[11px]"
         >
           View full log
-          <ChevronRight className="size-3 rtl:rotate-180" />
+          <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
         </Button>
       </CardContent>
     </Card>
@@ -567,6 +557,7 @@ export default function Dashboard06() {
                   <button
                     type="button"
                     onClick={() => setSelectedId(run.id)}
+                    aria-pressed={selectedId === run.id}
                     className={cn(
                       "grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-6 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50",
                       i < RUNS.length - 1 && "border-b border-border",
@@ -579,32 +570,28 @@ export default function Dashboard06() {
                         {run.pipeline}
                       </span>
                       <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
-                        <Hash className="size-3 shrink-0" />
+                        <Hash className="size-3 shrink-0" aria-hidden />
                         {run.number}
                         <span className="inline-flex items-center gap-1">
-                          <GitBranch className="size-3 shrink-0" />
+                          <GitBranch className="size-3 shrink-0" aria-hidden />
                           {run.branch}
                         </span>
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                            {formatSeconds(run.durationSec)}
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          Started {run.startedLabel}
-                        </TooltipContent>
-                      </Tooltip>
+                      <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                        {formatSeconds(run.durationSec)}
+                        <span className="sr-only">
+                          , started {run.startedLabel}
+                        </span>
+                      </span>
                       <span
                         className="hidden font-mono text-[10px] uppercase tracking-[0.08em] sm:inline"
                         style={{ color: STATE_TOKEN[run.state] }}
                       >
                         {STATE_LABEL[run.state]}
                       </span>
-                      <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
+                      <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" aria-hidden />
                     </div>
                   </button>
                 </li>

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ArrowDownRight, ArrowUpRight, Minus, Share2 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -32,8 +33,12 @@ const RANGES: { value: Range; label: string }[] = [
 type Kpi = {
   label: string;
   value: string;
-  delta: string;
-  trend: "up" | "down" | "flat";
+  /** Change against the previous period; the sign carries the direction. */
+  delta: number;
+  /** `pp` is percentage points, so a rate change never reads as a percentage. */
+  unit: "%" | "pp" | "s";
+  /** Which way this metric has to move to be good news. Bounce rate falls. */
+  goodWhen: "up" | "down";
   spark: readonly number[];
 };
 
@@ -42,29 +47,33 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Visitors",
       value: "24,310",
-      delta: "+12.4%",
-      trend: "up",
+      delta: 12.4,
+      unit: "%",
+      goodWhen: "up",
       spark: [12, 18, 14, 22, 19, 26, 31],
     },
     {
       label: "Page views",
       value: "96,482",
-      delta: "+8.1%",
-      trend: "up",
+      delta: 8.1,
+      unit: "%",
+      goodWhen: "up",
       spark: [40, 52, 47, 58, 54, 66, 72],
     },
     {
       label: "Avg. time",
       value: "3m 42s",
-      delta: "+9s",
-      trend: "up",
+      delta: 9,
+      unit: "s",
+      goodWhen: "up",
       spark: [30, 28, 33, 31, 36, 34, 39],
     },
     {
       label: "Bounce rate",
       value: "38.2%",
-      delta: "-1.8%",
-      trend: "down",
+      delta: -1.8,
+      unit: "pp",
+      goodWhen: "down",
       spark: [46, 44, 45, 42, 43, 40, 38],
     },
   ],
@@ -72,29 +81,33 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Visitors",
       value: "46,920",
-      delta: "+9.6%",
-      trend: "up",
+      delta: 9.6,
+      unit: "%",
+      goodWhen: "up",
       spark: [14, 16, 13, 19, 18, 24, 27],
     },
     {
       label: "Page views",
       value: "182,104",
-      delta: "+6.4%",
-      trend: "up",
+      delta: 6.4,
+      unit: "%",
+      goodWhen: "up",
       spark: [44, 49, 46, 55, 52, 61, 67],
     },
     {
       label: "Avg. time",
       value: "3m 31s",
-      delta: "0s",
-      trend: "flat",
+      delta: 0,
+      unit: "s",
+      goodWhen: "up",
       spark: [32, 31, 33, 32, 33, 32, 33],
     },
     {
       label: "Bounce rate",
       value: "39.6%",
-      delta: "-0.9%",
-      trend: "down",
+      delta: -0.9,
+      unit: "pp",
+      goodWhen: "down",
       spark: [45, 44, 46, 43, 44, 41, 40],
     },
   ],
@@ -102,29 +115,33 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Visitors",
       value: "88,475",
-      delta: "+21.2%",
-      trend: "up",
+      delta: 21.2,
+      unit: "%",
+      goodWhen: "up",
       spark: [10, 13, 12, 17, 16, 22, 28],
     },
     {
       label: "Page views",
       value: "351,889",
-      delta: "+17.8%",
-      trend: "up",
+      delta: 17.8,
+      unit: "%",
+      goodWhen: "up",
       spark: [36, 42, 40, 51, 49, 60, 71],
     },
     {
       label: "Avg. time",
       value: "3m 24s",
-      delta: "+18s",
-      trend: "up",
+      delta: 18,
+      unit: "s",
+      goodWhen: "up",
       spark: [27, 29, 28, 32, 31, 35, 38],
     },
     {
       label: "Bounce rate",
       value: "40.4%",
-      delta: "+0.6%",
-      trend: "up",
+      delta: 0.6,
+      unit: "pp",
+      goodWhen: "down",
       spark: [39, 40, 39, 41, 40, 42, 41],
     },
   ],
@@ -163,12 +180,16 @@ const CHART_BY_RANGE: Record<Range, readonly ChartBucket[]> = {
 };
 
 const TOP_PAGES = [
-  { path: "/blocks", views: "18,204", share: 86 },
-  { path: "/components", views: "14,911", share: 70 },
-  { path: "/blocks/hero-01", views: "9,482", share: 45 },
-  { path: "/theme", views: "6,150", share: 29 },
-  { path: "/blocks/faq-02", views: "4,067", share: 19 },
+  { path: "/blocks", views: 18204 },
+  { path: "/components", views: 14911 },
+  { path: "/blocks/hero-01", views: 9482 },
+  { path: "/theme", views: 6150 },
+  { path: "/blocks/faq-02", views: 4067 },
 ] as const;
+
+const TOP_PAGE_PEAK = Math.max(...TOP_PAGES.map((p) => p.views));
+
+const compact = new Intl.NumberFormat("en-US");
 
 const CHANNELS = [
   { label: "Organic search", share: 44 },
@@ -177,19 +198,42 @@ const CHANNELS = [
   { label: "Social", share: 9 },
 ] as const;
 
-function TrendIcon({ trend }: { trend: Kpi["trend"] }) {
-  if (trend === "up") return <ArrowUpRight className="size-3" />;
-  if (trend === "down") return <ArrowDownRight className="size-3" />;
-  return <Minus className="size-3" />;
-}
-
-function deltaTone(kpi: Kpi) {
-  const improving =
-    kpi.label === "Bounce rate" ? kpi.trend === "down" : kpi.trend === "up";
-  if (kpi.trend === "flat") return "bg-accent text-muted-foreground";
+/** Tone follows intent, not sign: a falling bounce rate is good news. */
+function deltaTone({ delta, goodWhen }: Kpi) {
+  if (delta === 0) return "bg-accent text-muted-foreground";
+  const improving = delta > 0 === (goodWhen === "up");
   return improving
     ? "bg-success/10 text-success"
     : "bg-destructive/10 text-destructive";
+}
+
+const UNIT_WORD: Record<Kpi["unit"], string> = {
+  "%": "percent",
+  pp: "percentage points",
+  s: "seconds",
+};
+
+function DeltaChip({ kpi }: { kpi: Kpi }) {
+  const { delta, unit, label } = kpi;
+  const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
+  const direction = delta > 0 ? "up" : delta < 0 ? "down" : "unchanged";
+  const sign = delta > 0 ? "+" : delta < 0 ? "\u2212" : "";
+
+  return (
+    <span
+      dir="ltr"
+      aria-label={`${label} ${direction} ${Math.abs(delta)} ${UNIT_WORD[unit]} against the previous period`}
+      className={cn(
+        "inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums",
+        deltaTone(kpi),
+      )}
+    >
+      <Icon className="size-3" aria-hidden />
+      {sign}
+      {Math.abs(delta)}
+      {unit === "pp" ? "pp" : unit}
+    </span>
+  );
 }
 
 function Sparkline({ points }: { points: readonly number[] }) {
@@ -222,7 +266,8 @@ function Sparkline({ points }: { points: readonly number[] }) {
 }
 
 function linePath(values: number[], max: number) {
-  const step = 100 / (values.length - 1);
+  // A single bucket would divide by zero; draw it flat across instead.
+  const step = values.length > 1 ? 100 / (values.length - 1) : 100;
   return values
     .map(
       (v, i) =>
@@ -276,7 +321,7 @@ export default function Dashboard02() {
               </SelectContent>
             </Select>
             <Button variant="outline" size="sm">
-              <Share2 className="size-3.5" />
+              <Share2 className="size-3.5" aria-hidden />
               <span className="hidden sm:inline">Share report</span>
             </Button>
           </div>
@@ -289,12 +334,7 @@ export default function Dashboard02() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                   {k.label}
                 </span>
-                <span
-                  className={`inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${deltaTone(k)}`}
-                >
-                  <TrendIcon trend={k.trend} />
-                  {k.delta}
-                </span>
+                <DeltaChip kpi={k} />
               </div>
               <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">
                 {k.value}
@@ -318,21 +358,24 @@ export default function Dashboard02() {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    <span className="size-2 rounded-xs bg-foreground/85" />
+                    <span
+                      aria-hidden
+                      className="size-2 rounded-xs bg-foreground/85"
+                    />
                     Views
                   </span>
                   <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    <span className="size-2 rounded-xs bg-muted-foreground/45" />
+                    <span
+                      aria-hidden
+                      className="size-2 rounded-xs bg-muted-foreground/45"
+                    />
                     Visitors
                   </span>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div
-                role="img"
-                aria-label={`Page views and visitors across ${chart.length} buckets`}
-              >
+              <div>
                 <svg
                   viewBox="0 0 100 46"
                   preserveAspectRatio="none"
@@ -375,7 +418,7 @@ export default function Dashboard02() {
                     className="stroke-muted-foreground/60"
                   />
                 </svg>
-                <div className="mt-2 flex justify-between">
+                <div aria-hidden className="mt-2 flex justify-between">
                   {chart.map((b) => (
                     <span
                       key={b.label}
@@ -385,6 +428,31 @@ export default function Dashboard02() {
                     </span>
                   ))}
                 </div>
+
+                {/* The numbers behind the line, for screen readers and
+                    anyone who would rather read than squint. */}
+                <table className="sr-only">
+                  <caption>
+                    Page views and visitors per bucket,{" "}
+                    {RANGES.find((r) => r.value === range)?.label.toLowerCase()}
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Bucket</th>
+                      <th scope="col">Page views</th>
+                      <th scope="col">Visitors</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {chart.map((b) => (
+                      <tr key={b.label}>
+                        <th scope="row">{b.label}</th>
+                        <td>{b.views.toLocaleString("en-US")}</td>
+                        <td>{b.visitors.toLocaleString("en-US")}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
               <Separator className="my-4" />
@@ -423,13 +491,18 @@ export default function Dashboard02() {
                         {p.path}
                       </span>
                       <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
-                        {p.views}
+                        {compact.format(p.views)}
                       </span>
                     </div>
-                    <div className="h-1 w-full overflow-hidden rounded-full bg-accent">
+                    <div
+                      aria-hidden
+                      className="h-1 w-full overflow-hidden rounded-full bg-accent"
+                    >
                       <div
                         className="h-full rounded-full bg-foreground/70"
-                        style={{ width: `${p.share}%` }}
+                        style={{
+                          width: `${Math.round((p.views / TOP_PAGE_PEAK) * 100)}%`,
+                        }}
                       />
                     </div>
                   </div>
@@ -450,7 +523,10 @@ export default function Dashboard02() {
                     <span className="w-28 shrink-0 text-xs text-muted-foreground">
                       {c.label}
                     </span>
-                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
+                    <div
+                      aria-hidden
+                      className="h-1 flex-1 overflow-hidden rounded-full bg-accent"
+                    >
                       <div
                         className="h-full rounded-full bg-foreground/70"
                         style={{ width: `${c.share}%` }}

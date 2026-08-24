@@ -5,11 +5,12 @@ import {
   ArrowDownRight,
   ArrowUpRight,
   GitBranch,
+  Minus,
   MoonStar,
-  MoreHorizontal,
   Sparkles,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -28,12 +29,16 @@ const RANGES: { value: Range; label: string }[] = [
   { value: "7d", label: "Last 7 days" },
 ];
 
+/**
+ * The sign gives the direction and `goodWhen` gives the intent, so falling
+ * errors and falling latency read as wins without a per-metric special case.
+ */
+type Delta = { value: number; unit: "%" | "pp"; goodWhen: "up" | "down" };
+
 type Kpi = {
   label: string;
   value: string;
-  delta: string;
-  up: boolean;
-  good: boolean;
+  delta: Delta;
   spark: readonly number[];
 };
 
@@ -42,33 +47,25 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Requests",
       value: "248.6K",
-      delta: "+8.4%",
-      up: true,
-      good: true,
+      delta: { value: 8.4, unit: "%", goodWhen: "up" },
       spark: [42, 48, 45, 56, 52, 61, 68],
     },
     {
       label: "Errors",
       value: "212",
-      delta: "-22.1%",
-      up: false,
-      good: true,
+      delta: { value: -22.1, unit: "%", goodWhen: "down" },
       spark: [38, 32, 35, 26, 22, 18, 14],
     },
     {
       label: "P95 latency",
       value: "184 ms",
-      delta: "-6.3%",
-      up: false,
-      good: true,
+      delta: { value: -6.3, unit: "%", goodWhen: "down" },
       spark: [52, 49, 50, 46, 44, 45, 41],
     },
     {
       label: "Compute",
       value: "96.4 GB-s",
-      delta: "+3.1%",
-      up: true,
-      good: false,
+      delta: { value: 3.1, unit: "%", goodWhen: "down" },
       spark: [30, 32, 31, 35, 34, 37, 39],
     },
   ],
@@ -76,33 +73,25 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Requests",
       value: "1.42M",
-      delta: "+11.9%",
-      up: true,
-      good: true,
+      delta: { value: 11.9, unit: "%", goodWhen: "up" },
       spark: [36, 44, 41, 52, 49, 58, 66],
     },
     {
       label: "Errors",
       value: "1,894",
-      delta: "-9.6%",
-      up: false,
-      good: true,
+      delta: { value: -9.6, unit: "%", goodWhen: "down" },
       spark: [44, 40, 42, 36, 33, 30, 27],
     },
     {
       label: "P95 latency",
       value: "201 ms",
-      delta: "-2.4%",
-      up: false,
-      good: true,
+      delta: { value: -2.4, unit: "%", goodWhen: "down" },
       spark: [55, 53, 54, 51, 50, 49, 48],
     },
     {
       label: "Compute",
       value: "612 GB-s",
-      delta: "+5.8%",
-      up: true,
-      good: false,
+      delta: { value: 5.8, unit: "%", goodWhen: "down" },
       spark: [26, 29, 28, 33, 32, 36, 40],
     },
   ],
@@ -110,33 +99,25 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
     {
       label: "Requests",
       value: "9.81M",
-      delta: "+19.2%",
-      up: true,
-      good: true,
+      delta: { value: 19.2, unit: "%", goodWhen: "up" },
       spark: [28, 36, 33, 46, 42, 55, 64],
     },
     {
       label: "Errors",
       value: "11.2K",
-      delta: "-14.8%",
-      up: false,
-      good: true,
+      delta: { value: -14.8, unit: "%", goodWhen: "down" },
       spark: [52, 46, 49, 40, 36, 31, 26],
     },
     {
       label: "P95 latency",
       value: "196 ms",
-      delta: "-4.1%",
-      up: false,
-      good: true,
+      delta: { value: -4.1, unit: "%", goodWhen: "down" },
       spark: [58, 55, 56, 52, 50, 48, 46],
     },
     {
       label: "Compute",
       value: "4.1 TB-s",
-      delta: "+9.4%",
-      up: true,
-      good: false,
+      delta: { value: 9.4, unit: "%", goodWhen: "down" },
       spark: [22, 26, 25, 31, 30, 35, 41],
     },
   ],
@@ -145,11 +126,14 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
 const CACHE_SERIES = [88, 91, 90, 93, 92, 95, 96];
 const DURATION_SERIES = [31, 28, 29, 26, 27, 24, 23];
 
+const P95_TARGET_MS = 200;
+
+/** `overTarget` is measured against the stated target, not eyeballed. */
 const LATENCY = [
-  { label: "P50", value: "92 ms", pct: 28 },
-  { label: "P95", value: "184 ms", pct: 58 },
-  { label: "P99", value: "412 ms", pct: 86 },
-] as const;
+  { label: "P50", ms: 92, pct: 28 },
+  { label: "P95", ms: 184, pct: 58 },
+  { label: "P99", ms: 412, pct: 86 },
+].map((row) => ({ ...row, overTarget: row.ms > P95_TARGET_MS }));
 
 type Deploy = {
   version: string;
@@ -200,57 +184,72 @@ const DEPLOYS: readonly Deploy[] = [
   },
 ];
 
+/**
+ * `--accent-cool` is the reserved live/active tone in this theme, so the
+ * deployment actually taking traffic gets it. Canary is a warning, and
+ * stable is simply not noteworthy.
+ */
 const STATUS_META: Record<
   Deploy["status"],
-  { label: string; dot: string; ping: boolean }
+  { label: string; dot: string; pulse: boolean }
 > = {
-  live: { label: "Live", dot: "bg-success", ping: true },
-  stable: { label: "Stable", dot: "bg-muted-foreground/50", ping: false },
-  canary: { label: "Canary", dot: "bg-warning", ping: true },
+  live: { label: "Live", dot: "bg-accent-cool", pulse: true },
+  stable: { label: "Stable", dot: "bg-muted-foreground/50", pulse: false },
+  canary: { label: "Canary", dot: "bg-warning", pulse: true },
 };
 
-function DeltaChip({
-  delta,
-  up,
-  good,
-}: {
-  delta: string;
-  up: boolean;
-  good: boolean;
-}) {
+const UNIT_WORD: Record<Delta["unit"], string> = {
+  "%": "percent",
+  pp: "percentage points",
+};
+
+function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
+  const { value, unit, goodWhen } = delta;
+  const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
+  const direction = value > 0 ? "up" : value < 0 ? "down" : "unchanged";
+  const sign = value > 0 ? "+" : value < 0 ? "−" : "";
+  const tone =
+    value === 0
+      ? "bg-accent text-muted-foreground"
+      : value > 0 === (goodWhen === "up")
+        ? "bg-success/10 text-success"
+        : "bg-destructive/10 text-destructive";
+
   return (
     <span
-      className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
-        good
-          ? "bg-success/10 text-success"
-          : "bg-destructive/10 text-destructive"
-      }`}
-    >
-      {up ? (
-        <ArrowUpRight className="size-3" />
-      ) : (
-        <ArrowDownRight className="size-3" />
+      dir="ltr"
+      aria-label={`${label} ${direction} ${Math.abs(value)} ${UNIT_WORD[unit]}`}
+      className={cn(
+        "inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums",
+        tone,
       )}
-      {delta}
+    >
+      <Icon className="size-3" aria-hidden />
+      {sign}
+      {Math.abs(value)}
+      {unit}
     </span>
   );
 }
 
-function StatusDot({ status }: { status: Deploy["status"] }) {
+function StatusBadge({ status }: { status: Deploy["status"] }) {
   const meta = STATUS_META[status];
   return (
     <Badge
       variant="outline"
       className="w-fit gap-1.5 font-normal text-muted-foreground"
     >
-      <span className="relative flex size-2">
-        {meta.ping && (
+      <span aria-hidden className="relative flex size-2">
+        {meta.pulse && (
           <span
-            className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${meta.dot}`}
+            className={cn(
+              "absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping",
+              meta.dot,
+            )}
           />
         )}
         <span
-          className={`relative inline-flex size-2 rounded-full ${meta.dot}`}
+          className={cn("relative inline-flex size-2 rounded-full", meta.dot)}
         />
       </span>
       {meta.label}
@@ -258,26 +257,36 @@ function StatusDot({ status }: { status: Deploy["status"] }) {
   );
 }
 
-function Spark({ points, h = 28 }: { points: readonly number[]; h?: number }) {
+function Spark({
+  points,
+  className,
+}: {
+  points: readonly number[];
+  className?: string;
+}) {
+  const height = 32;
   const max = Math.max(...points);
   const min = Math.min(...points);
   const span = max - min || 1;
-  const step = 100 / (points.length - 1);
+  const step = points.length > 1 ? 100 / (points.length - 1) : 100;
   const line = points
     .map(
       (v, i) =>
-        `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)} ${(h - 3 - ((v - min) / span) * (h - 8)).toFixed(1)}`,
+        `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)} ${(height - 3 - ((v - min) / span) * (height - 8)).toFixed(1)}`,
     )
     .join(" ");
+
   return (
     <svg
-      viewBox={`0 0 100 ${h}`}
+      viewBox={`0 0 100 ${height}`}
       preserveAspectRatio="none"
       aria-hidden
-      className="w-full"
-      style={{ height: `${h * 2}px` }}
+      className={cn("w-full", className)}
     >
-      <path d={`${line} L100 ${h} L0 ${h} Z`} className="fill-foreground/6" />
+      <path
+        d={`${line} L100 ${height} L0 ${height} Z`}
+        className="fill-foreground/6"
+      />
       <path
         d={line}
         fill="none"
@@ -289,21 +298,11 @@ function Spark({ points, h = 28 }: { points: readonly number[]; h?: number }) {
   );
 }
 
-function CellHeader({ label }: { label: string }) {
+function CellLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-        {label}
-      </span>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="size-6 text-muted-foreground"
-        aria-label={`${label} options`}
-      >
-        <MoreHorizontal className="size-3.5" />
-      </Button>
-    </div>
+    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+      {children}
+    </span>
   );
 }
 
@@ -318,7 +317,7 @@ export default function Dashboard05() {
           <div className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4">
             <div className="flex flex-col gap-1.5">
               <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                <MoonStar className="size-3.5" />
+                <MoonStar className="size-3.5" aria-hidden />
                 good evening
               </span>
               <h2 className="font-serif text-3xl font-medium tracking-tight">
@@ -349,56 +348,59 @@ export default function Dashboard05() {
               className="flex flex-col justify-between gap-3 bg-card p-5"
             >
               <div className="flex flex-col gap-2">
-                <CellHeader label={k.label} />
+                <CellLabel>{k.label}</CellLabel>
                 <div className="flex items-end justify-between gap-2">
                   <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">
                     {k.value}
                   </span>
-                  <DeltaChip delta={k.delta} up={k.up} good={k.good} />
+                  <DeltaChip delta={k.delta} label={k.label} />
                 </div>
               </div>
-              <Spark points={k.spark} h={20} />
+              <Spark points={k.spark} className="h-10" />
             </div>
           ))}
 
           <div className="flex flex-col gap-3 bg-card p-5 md:col-span-2">
-            <CellHeader label="Edge cache hit rate" />
+            <CellLabel>Edge cache hit rate</CellLabel>
             <div className="flex items-end justify-between gap-2">
               <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">
                 96.2%
               </span>
-              <DeltaChip delta="+1.8%" up good />
+              <DeltaChip
+                delta={{ value: 1.8, unit: "pp", goodWhen: "up" }}
+                label="Edge cache hit rate"
+              />
             </div>
-            <Spark points={CACHE_SERIES} h={34} />
+            <Spark points={CACHE_SERIES} className="h-16" />
           </div>
 
           <div className="flex flex-col gap-3 bg-card p-5 md:col-span-2">
-            <CellHeader label="Avg. request duration" />
+            <CellLabel>Avg. request duration</CellLabel>
             <div className="flex items-end justify-between gap-2">
               <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">
                 23.4 ms
               </span>
-              <DeltaChip delta="-6.3%" up={false} good />
+              <DeltaChip
+                delta={{ value: -6.3, unit: "%", goodWhen: "down" }}
+                label="Average request duration"
+              />
             </div>
-            <Spark points={DURATION_SERIES} h={34} />
+            <Spark points={DURATION_SERIES} className="h-16" />
           </div>
 
           <div className="flex flex-col justify-between gap-5 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                <Sparkles className="size-3.5" />
+                <Sparkles className="size-3.5" aria-hidden />
                 insight
               </span>
               <Button variant="outline" size="sm">
                 View traces
               </Button>
             </div>
-            <p className="max-w-md text-lg font-medium leading-snug tracking-[-0.01em] sm:text-xl">
-              Cold starts dropped{" "}
-              <span className="underline decoration-success/60 decoration-2 underline-offset-4">
-                21% this window
-              </span>{" "}
-              after the v4.2.1 cache changes rolled out.
+            <p className="max-w-md text-lg leading-snug font-medium tracking-[-0.01em] sm:text-xl">
+              Cold starts dropped 21% this window after the v4.2.1 cache
+              changes rolled out.
             </p>
             <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
               Generated from 248K spans · confidence high
@@ -411,37 +413,47 @@ export default function Dashboard05() {
                 Latency distribution
                 <Badge
                   variant="outline"
-                  className="font-mono text-[9px] uppercase"
+                  className="font-mono text-[10px] uppercase tabular-nums"
                 >
-                  p95 target · 200ms
+                  p95 target · {P95_TARGET_MS}ms
                 </Badge>
               </span>
               <Button variant="link" size="sm" className="h-auto p-0" asChild>
                 <a href="#">Open metrics</a>
               </Button>
             </div>
-            <div className="flex flex-1 flex-col justify-center gap-3">
+            <ul className="flex flex-1 flex-col justify-center gap-3">
               {LATENCY.map((row) => (
-                <div key={row.label} className="flex items-center gap-3">
+                <li key={row.label} className="flex items-center gap-3">
                   <span className="w-8 shrink-0 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                     {row.label}
                   </span>
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-accent">
+                  <div
+                    aria-hidden
+                    className="h-2 flex-1 overflow-hidden rounded-full bg-accent"
+                  >
                     <div
-                      className={`h-full rounded-full ${
-                        row.label === "P99"
-                          ? "bg-warning/70"
-                          : "bg-foreground/70"
-                      }`}
+                      className={cn(
+                        "h-full rounded-full",
+                        row.overTarget ? "bg-warning/70" : "bg-foreground/70",
+                      )}
                       style={{ width: `${row.pct}%` }}
                     />
                   </div>
-                  <span className="w-14 shrink-0 text-end font-mono text-xs tabular-nums">
-                    {row.value}
+                  <span
+                    className={cn(
+                      "w-14 shrink-0 text-end font-mono text-xs tabular-nums",
+                      row.overTarget && "text-warning",
+                    )}
+                  >
+                    {row.ms} ms
+                    {row.overTarget && (
+                      <span className="sr-only">, over target</span>
+                    )}
                   </span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
             <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
               Sampled across all regions
             </span>
@@ -449,9 +461,7 @@ export default function Dashboard05() {
 
           <div className="flex flex-col bg-card md:col-span-4">
             <div className="flex items-center justify-between gap-2 p-5 pb-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Active deployments
-              </span>
+              <CellLabel>Active deployments</CellLabel>
               <Button variant="link" size="sm" className="h-auto p-0" asChild>
                 <a href="#">View all</a>
               </Button>
@@ -460,9 +470,10 @@ export default function Dashboard05() {
               {DEPLOYS.map((d, i) => (
                 <li
                   key={d.version}
-                  className={`grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-5 py-3 md:grid-cols-[140px_110px_1fr_70px_70px_auto] ${
-                    i < DEPLOYS.length - 1 ? "border-b border-border" : ""
-                  }`}
+                  className={cn(
+                    "grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-5 py-3 md:grid-cols-[140px_110px_1fr_70px_70px]",
+                    i < DEPLOYS.length - 1 && "border-b border-border",
+                  )}
                 >
                   <div className="flex min-w-0 flex-col">
                     <span className="truncate font-mono text-xs font-medium">
@@ -473,11 +484,11 @@ export default function Dashboard05() {
                     </span>
                   </div>
                   <div className="justify-self-end md:justify-self-start">
-                    <StatusDot status={d.status} />
+                    <StatusBadge status={d.status} />
                   </div>
                   <div className="col-span-2 flex min-w-0 flex-col md:col-span-1">
                     <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
-                      <GitBranch className="size-3" />
+                      <GitBranch className="size-3" aria-hidden />
                       {d.branch}
                     </span>
                     <span className="truncate text-xs text-foreground">
@@ -487,23 +498,9 @@ export default function Dashboard05() {
                   <span className="hidden font-mono text-xs tabular-nums text-muted-foreground md:inline">
                     {d.date}
                   </span>
-                  <span
-                    className={`hidden font-mono text-[10px] uppercase tracking-[0.08em] md:inline ${
-                      d.cache === "warm"
-                        ? "text-success"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    {d.cache}
+                  <span className="hidden font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground md:inline">
+                    {d.cache} cache
                   </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="hidden size-7 text-muted-foreground md:inline-flex"
-                    aria-label={`${d.version} actions`}
-                  >
-                    <MoreHorizontal className="size-3.5" />
-                  </Button>
                 </li>
               ))}
             </ul>

@@ -18,8 +18,10 @@ import { Badge } from "@/registry/hirael/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/registry/hirael/ui/breadcrumb";
 import {
   DropdownMenu,
@@ -128,7 +130,10 @@ function AppSidebar() {
                     isActive={item.active}
                     tooltip={item.label}
                   >
-                    <a href={item.href}>
+                    <a
+                      href={item.href}
+                      aria-current={item.active ? "page" : undefined}
+                    >
                       <item.icon className="size-4" />
                       <span>{item.label}</span>
                     </a>
@@ -240,10 +245,9 @@ export default function AppShell05() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage className="text-muted-foreground">
-                  Workspace
-                </BreadcrumbPage>
+                <BreadcrumbLink href="#">Workspace</BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>Overview</BreadcrumbPage>
               </BreadcrumbItem>

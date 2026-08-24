@@ -4,10 +4,12 @@ import * as React from "react";
 import {
   Bell,
   CalendarRange,
+  Check,
   ChartNoAxesColumn,
   ChevronsUpDown,
   LayoutDashboard,
   LifeBuoy,
+  LogOut,
   Megaphone,
   Plug,
   Search,
@@ -16,8 +18,17 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/registry/hirael/ui/dropdown-menu";
 import {
   InputGroup,
   InputGroupAddon,
@@ -37,12 +48,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "@/registry/hirael/ui/sidebar";
-import { cn } from "@/lib/utils";
 
-const NAV: { icon: LucideIcon; label: string; active?: boolean }[] = [
-  { icon: LayoutDashboard, label: "Overview", active: true },
+type NavItem = { icon: LucideIcon; label: string };
+
+const NAV: readonly NavItem[] = [
+  { icon: LayoutDashboard, label: "Overview" },
   { icon: CalendarRange, label: "Planner" },
   { icon: Megaphone, label: "Campaigns" },
   { icon: ChartNoAxesColumn, label: "Reports" },
@@ -50,10 +63,29 @@ const NAV: { icon: LucideIcon; label: string; active?: boolean }[] = [
   { icon: Plug, label: "Connections" },
 ];
 
-const FOOTER_NAV: { icon: LucideIcon; label: string }[] = [
+const FOOTER_NAV: readonly NavItem[] = [
   { icon: LifeBuoy, label: "Support" },
   { icon: Settings, label: "Settings" },
 ];
+
+type Workspace = { name: string; tier: string };
+
+const WORKSPACES: readonly Workspace[] = [
+  { name: "Plinth Labs", tier: "Pro workspace" },
+  { name: "Northbeam", tier: "Team workspace" },
+  { name: "Personal", tier: "Free workspace" },
+];
+
+const SLOTS = [
+  { label: "slot · 01", className: "min-h-28" },
+  { label: "slot · 02", className: "min-h-28" },
+  { label: "slot · 03", className: "min-h-28" },
+  { label: "slot · 04", className: "min-h-28" },
+  { label: "slot · 05", className: "col-span-2 min-h-56 md:col-span-3" },
+  { label: "slot · 06", className: "col-span-2 min-h-56 md:col-span-1" },
+  { label: "slot · 07", className: "col-span-2 min-h-56 md:col-span-1" },
+  { label: "slot · 08", className: "col-span-2 min-h-56 md:col-span-3" },
+] as const;
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -79,6 +111,7 @@ function BrandMark({ className }: { className?: string }) {
 function Slot({ label, className }: { label: string; className?: string }) {
   return (
     <div
+      aria-hidden
       className={cn(
         "flex items-center justify-center rounded-md border border-dashed border-border bg-card/30",
         className,
@@ -92,38 +125,107 @@ function Slot({ label, className }: { label: string; className?: string }) {
 }
 
 export default function AppShell04() {
+  const [workspace, setWorkspace] = React.useState(WORKSPACES[0].name);
+  const [active, setActive] = React.useState(NAV[0].label);
+  const [query, setQuery] = React.useState("");
+  const searchRef = React.useRef<HTMLInputElement>(null);
+
+  // The ⌘K hint next to the field has to focus something, or it is a sticker.
+  React.useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const isSearchShortcut =
+        event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey);
+      if (!isSearchShortcut) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+      searchRef.current?.select();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const normalized = query.trim().toLowerCase();
+  const visibleNav = normalized
+    ? NAV.filter((item) => item.label.toLowerCase().includes(normalized))
+    : NAV;
+
+  const activeWorkspace =
+    WORKSPACES.find((w) => w.name === workspace) ?? WORKSPACES[0];
+
   return (
     <SidebarProvider>
       <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" tooltip="Plinth Labs">
-                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                  <BrandMark className="size-5" />
-                </span>
-                <div className="grid flex-1 text-start leading-tight">
-                  <span className="truncate text-sm font-semibold tracking-[-0.01em]">
-                    Plinth Labs
-                  </span>
-                  <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    Pro workspace
-                  </span>
-                </div>
-                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
-              </SidebarMenuButton>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton
+                    size="lg"
+                    tooltip={activeWorkspace.name}
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  >
+                    <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+                      <BrandMark className="size-5" />
+                    </span>
+                    <div className="grid min-w-0 flex-1 text-start leading-tight">
+                      <span className="truncate text-sm font-semibold tracking-[-0.01em]">
+                        {activeWorkspace.name}
+                      </span>
+                      <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                        {activeWorkspace.tier}
+                      </span>
+                    </div>
+                    <ChevronsUpDown
+                      className="size-3.5 shrink-0 text-muted-foreground"
+                      aria-hidden
+                    />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  <DropdownMenuLabel className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    Workspaces
+                  </DropdownMenuLabel>
+                  {WORKSPACES.map((w) => (
+                    <DropdownMenuItem
+                      key={w.name}
+                      onSelect={() => setWorkspace(w.name)}
+                    >
+                      <span className="flex-1">{w.name}</span>
+                      {w.name === activeWorkspace.name && (
+                        <Check className="size-4" aria-label="Current" />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </SidebarMenuItem>
           </SidebarMenu>
+
           <InputGroup className="h-8 group-data-[collapsible=icon]:hidden">
             <InputGroupAddon align="inline-start">
-              <Search className="size-3.5" />
+              <Search className="size-3.5" aria-hidden />
             </InputGroupAddon>
             <InputGroupInput
-              placeholder="Search…"
-              aria-label="Search"
+              ref={searchRef}
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== "Escape") return;
+                if (query) {
+                  e.preventDefault();
+                  setQuery("");
+                  return;
+                }
+                e.currentTarget.blur();
+              }}
+              placeholder="Filter nav…"
+              aria-label="Filter navigation"
+              aria-keyshortcuts="Meta+K Control+K"
               className="text-sm"
             />
-            <InputGroupAddon align="inline-end">
+            <InputGroupAddon dir="ltr" align="inline-end">
               <KbdGroup>
                 <KbdDisplay>⌘</KbdDisplay>
                 <KbdDisplay>K</KbdDisplay>
@@ -136,21 +238,24 @@ export default function AppShell04() {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
-                {NAV.map((item) => (
+                {visibleNav.map((item) => (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton
-                      asChild
-                      isActive={item.active}
+                      isActive={item.label === active}
                       tooltip={item.label}
+                      onClick={() => setActive(item.label)}
                     >
-                      <a href="#">
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </a>
+                      <item.icon />
+                      <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
+              {visibleNav.length === 0 && (
+                <p className="px-2 py-3 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+                  Nothing matches “{query.trim()}”.
+                </p>
+              )}
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
@@ -169,9 +274,11 @@ export default function AppShell04() {
             ))}
           </SidebarMenu>
           <span className="px-2 pb-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
-            © Plinth Labs
+            © {activeWorkspace.name}
           </span>
         </SidebarFooter>
+
+        <SidebarRail />
       </Sidebar>
 
       <SidebarInset className="min-h-[640px]">
@@ -180,7 +287,7 @@ export default function AppShell04() {
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-4" />
             <span className="truncate text-sm font-medium tracking-[-0.01em]">
-              Overview
+              {active}
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -190,19 +297,49 @@ export default function AppShell04() {
               className="relative size-8"
               aria-label="Notifications · 3 unread"
             >
-              <Bell className="size-4" />
-              <Badge className="absolute -end-1 -top-1 size-4 justify-center rounded-full p-0 font-mono text-[9px]">
+              <Bell className="size-4" aria-hidden />
+              <Badge
+                aria-hidden
+                className="absolute -end-1 -top-1 size-4 justify-center rounded-full p-0 font-mono text-[10px] tabular-nums"
+              >
                 3
               </Badge>
             </Button>
             <Separator orientation="vertical" className="h-4" />
-            <button
-              type="button"
-              aria-label="Account menu"
-              className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card font-mono text-[11px] font-medium transition-colors hover:border-foreground"
-            >
-              MS
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Account menu"
+                  className="size-8 rounded-full font-mono text-[11px] font-medium"
+                >
+                  MS
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <span className="block text-sm font-medium">Maya Renner</span>
+                  <span className="block truncate text-xs text-muted-foreground">
+                    maya@plinth.dev
+                  </span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Settings />
+                  Preferences
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <LifeBuoy />
+                  Support
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive">
+                  <LogOut />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
@@ -217,27 +354,13 @@ export default function AppShell04() {
           </div>
 
           <div className="grid flex-1 grid-cols-2 gap-4 md:grid-cols-4">
-            {["slot · 01", "slot · 02", "slot · 03", "slot · 04"].map(
-              (label) => (
-                <Slot key={label} label={label} className="min-h-28" />
-              ),
-            )}
-            <Slot
-              label="slot · 05"
-              className="col-span-2 min-h-56 md:col-span-3"
-            />
-            <Slot
-              label="slot · 06"
-              className="col-span-2 min-h-56 md:col-span-1"
-            />
-            <Slot
-              label="slot · 07"
-              className="col-span-2 min-h-56 md:col-span-1"
-            />
-            <Slot
-              label="slot · 08"
-              className="col-span-2 min-h-56 md:col-span-3"
-            />
+            {SLOTS.map((slot) => (
+              <Slot
+                key={slot.label}
+                label={slot.label}
+                className={slot.className}
+              />
+            ))}
           </div>
         </div>
       </SidebarInset>

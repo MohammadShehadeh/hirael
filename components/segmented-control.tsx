@@ -10,6 +10,9 @@ export type SegmentedControlItem = {
   label: React.ReactNode | ((active: boolean) => React.ReactNode);
   ariaLabel?: string;
   title?: string;
+  /** Non-interactive item (e.g. a Code tab with no source). Still focusable
+   * for arrow-key roving, but announces as disabled and ignores clicks. */
+  disabled?: boolean;
 };
 
 /**
@@ -74,9 +77,11 @@ export function SegmentedControl({
             data-value={item.value}
             aria-label={item.ariaLabel}
             title={item.title}
+            disabled={item.disabled}
+            aria-disabled={item.disabled || undefined}
             onClick={() => onValueChange(item.value)}
             className={cn(
-              "inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              "inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40 disabled:hover:text-muted-foreground",
               active
                 ? "bg-accent text-foreground"
                 : "text-muted-foreground hover:text-foreground",

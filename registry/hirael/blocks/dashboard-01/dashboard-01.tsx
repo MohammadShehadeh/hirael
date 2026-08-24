@@ -32,8 +32,11 @@ import {
 type Metric = {
   label: string;
   value: string;
-  delta: string;
-  trend: "up" | "down" | "flat";
+  /** Change against the previous period; the sign carries the direction. */
+  delta: number;
+  unit: "%" | "pt" | "s";
+  /** Which way this metric has to move to be good news. Churn falls. */
+  goodWhen: "up" | "down";
 };
 
 type Range = "1d" | "7d" | "30d" | "90d";
@@ -47,28 +50,28 @@ const RANGES: { value: Range; label: string }[] = [
 
 const METRICS_BY_RANGE: Record<Range, readonly Metric[]> = {
   "1d": [
-    { label: "MRR", value: "$48,510", delta: "+0.5%", trend: "up" },
-    { label: "Active orgs", value: "1,289", delta: "+5", trend: "up" },
-    { label: "Churn", value: "1.9%", delta: "0.0%", trend: "flat" },
-    { label: "Avg. session", value: "4m 18s", delta: "+6s", trend: "up" },
+    { label: "MRR", value: "$48,510", delta: 0.5, unit: "%", goodWhen: "up" },
+    { label: "Active orgs", value: "1,289", delta: 0.4, unit: "%", goodWhen: "up" },
+    { label: "Churn", value: "1.9%", delta: 0, unit: "%", goodWhen: "down" },
+    { label: "Avg. session", value: "4m 18s", delta: 6, unit: "s", goodWhen: "up" },
   ],
   "7d": [
-    { label: "MRR", value: "$48,250", delta: "+8.7%", trend: "up" },
-    { label: "Active orgs", value: "1,284", delta: "+4.1%", trend: "up" },
-    { label: "Churn", value: "1.8%", delta: "-0.4%", trend: "down" },
-    { label: "Avg. session", value: "4m 12s", delta: "0.0%", trend: "flat" },
+    { label: "MRR", value: "$48,250", delta: 8.7, unit: "%", goodWhen: "up" },
+    { label: "Active orgs", value: "1,284", delta: 4.1, unit: "%", goodWhen: "up" },
+    { label: "Churn", value: "1.8%", delta: -0.4, unit: "%", goodWhen: "down" },
+    { label: "Avg. session", value: "4m 12s", delta: 0, unit: "s", goodWhen: "up" },
   ],
   "30d": [
-    { label: "MRR", value: "$46,180", delta: "+18.2%", trend: "up" },
-    { label: "Active orgs", value: "1,231", delta: "+12.6%", trend: "up" },
-    { label: "Churn", value: "2.1%", delta: "-0.6%", trend: "down" },
-    { label: "Avg. session", value: "4m 04s", delta: "+14s", trend: "up" },
+    { label: "MRR", value: "$46,180", delta: 18.2, unit: "%", goodWhen: "up" },
+    { label: "Active orgs", value: "1,231", delta: 12.6, unit: "%", goodWhen: "up" },
+    { label: "Churn", value: "2.1%", delta: -0.6, unit: "%", goodWhen: "down" },
+    { label: "Avg. session", value: "4m 04s", delta: 14, unit: "s", goodWhen: "up" },
   ],
   "90d": [
-    { label: "MRR", value: "$41,920", delta: "+34.6%", trend: "up" },
-    { label: "Active orgs", value: "1,096", delta: "+26.3%", trend: "up" },
-    { label: "Churn", value: "2.4%", delta: "-1.1%", trend: "down" },
-    { label: "Avg. session", value: "3m 51s", delta: "+27s", trend: "up" },
+    { label: "MRR", value: "$41,920", delta: 34.6, unit: "%", goodWhen: "up" },
+    { label: "Active orgs", value: "1,096", delta: 26.3, unit: "%", goodWhen: "up" },
+    { label: "Churn", value: "2.4%", delta: -1.1, unit: "%", goodWhen: "down" },
+    { label: "Avg. session", value: "3m 51s", delta: 27, unit: "s", goodWhen: "up" },
   ],
 };
 
@@ -126,7 +129,6 @@ type Activity = {
   name: string;
   action: string;
   time: string;
-  tone: "primary" | "default" | "muted";
 };
 
 const ACTIVITY: readonly Activity[] = [
@@ -135,46 +137,62 @@ const ACTIVITY: readonly Activity[] = [
     name: "Maya Renner",
     action: "upgraded to Pro",
     time: "2m ago",
-    tone: "primary",
   },
   {
     initials: "JT",
     name: "Jules Tanaka",
     action: "invited 3 teammates",
     time: "14m ago",
-    tone: "default",
   },
   {
     initials: "AO",
     name: "Adaeze Okafor",
     action: "exported 412 rows",
     time: "1h ago",
-    tone: "default",
   },
   {
     initials: "SK",
     name: "Soren Kim",
     action: "rotated API keys",
     time: "3h ago",
-    tone: "muted",
   },
 ];
 
-function TrendIcon({ trend }: { trend: Metric["trend"] }) {
-  if (trend === "up") return <ArrowUpRight className="size-3" />;
-  if (trend === "down") return <ArrowDownRight className="size-3" />;
-  return <Minus className="size-3" />;
+/** Tone follows intent, not sign: falling churn is good news, so it is green. */
+function deltaTone({ delta, goodWhen }: Metric) {
+  if (delta === 0) return "bg-accent text-muted-foreground";
+  const improving = delta > 0 === (goodWhen === "up");
+  return improving ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive";
 }
 
-function deltaTone(trend: Metric["trend"]) {
-  if (trend === "up") return "bg-success/10 text-success";
-  if (trend === "down") return "bg-destructive/10 text-destructive";
-  return "bg-accent text-muted-foreground";
+function DeltaChip({ metric }: { metric: Metric }) {
+  const { delta, unit, label } = metric;
+  const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
+  const direction = delta > 0 ? "up" : delta < 0 ? "down" : "unchanged";
+  const measure = unit === "%" ? "percent" : unit === "pt" ? "points" : "seconds";
+  const sign = delta > 0 ? "+" : delta < 0 ? "−" : "";
+
+  return (
+    <Badge
+      dir="ltr"
+      aria-label={`${label} ${direction} ${Math.abs(delta)} ${measure} against the previous period`}
+      className={cn(
+        "rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums",
+        deltaTone(metric),
+      )}
+    >
+      <Icon className="size-3" aria-hidden />
+      {sign}
+      {Math.abs(delta)}
+      {unit}
+    </Badge>
+  );
 }
 
 export default function Dashboard01() {
   const [range, setRange] = React.useState<Range>("7d");
   const [refreshing, setRefreshing] = React.useState(false);
+  const [status, setStatus] = React.useState("");
 
   const metrics = METRICS_BY_RANGE[range];
   const chart = CHART_BY_RANGE[range];
@@ -183,8 +201,10 @@ export default function Dashboard01() {
 
   const onRefresh = async () => {
     setRefreshing(true);
+    setStatus("Refreshing data");
     await new Promise((r) => setTimeout(r, 600));
     setRefreshing(false);
+    setStatus("Data refreshed");
   };
 
   return (
@@ -218,7 +238,7 @@ export default function Dashboard01() {
               size="sm"
               className="hidden sm:inline-flex"
             >
-              <Filter className="size-3.5" />
+              <Filter className="size-3.5" aria-hidden />
               All teams
             </Button>
             <Button
@@ -226,15 +246,22 @@ export default function Dashboard01() {
               size="sm"
               onClick={onRefresh}
               disabled={refreshing}
-              aria-label="Refresh data"
             >
               <RefreshCw
-                className={cn("size-3.5", refreshing && "animate-spin")}
+                aria-hidden
+                className={cn(
+                  "size-3.5",
+                  refreshing && "motion-safe:animate-spin",
+                )}
               />
               <span className="hidden sm:inline">Refresh</span>
             </Button>
           </div>
         </div>
+
+        <p aria-live="polite" className="sr-only">
+          {status}
+        </p>
 
         <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4">
           {metrics.map((m) => (
@@ -245,15 +272,7 @@ export default function Dashboard01() {
               <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">
                 {m.value}
               </span>
-              <Badge
-                className={cn(
-                  "rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none",
-                  deltaTone(m.trend),
-                )}
-              >
-                <TrendIcon trend={m.trend} />
-                {m.delta}
-              </Badge>
+              <DeltaChip metric={m} />
             </div>
           ))}
         </div>
@@ -284,7 +303,7 @@ export default function Dashboard01() {
                     size="sm"
                     aria-label="Export sign-ups"
                   >
-                    <Download className="size-3.5" />
+                    <Download className="size-3.5" aria-hidden />
                     Export
                   </Button>
                 </div>
@@ -292,7 +311,7 @@ export default function Dashboard01() {
             </CardHeader>
             <CardContent>
               <div
-                role="img"
+                role="group"
                 aria-label={`Sign-ups and activations across ${chart.length} buckets`}
                 className="grid h-56 items-end gap-2 sm:gap-3"
                 style={{
@@ -300,31 +319,36 @@ export default function Dashboard01() {
                 }}
               >
                 {chart.map((row) => (
-                  <div key={row.d} className="flex h-full flex-col gap-1.5">
-                    <div className="flex h-full items-end gap-1">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div
-                            className="flex-1 rounded-t-xs bg-foreground/85 transition-all duration-300 ease-out hover:bg-foreground"
+                  <Tooltip key={row.d}>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label={`${row.d}: ${row.a} sign-ups, ${row.b} activated`}
+                        className="group/bar flex h-full cursor-default flex-col gap-1.5 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                      >
+                        <span className="flex h-full items-end gap-1">
+                          <span
+                            aria-hidden
+                            className="flex-1 rounded-t-xs bg-foreground/85 transition-colors group-hover/bar:bg-foreground group-focus-visible/bar:bg-foreground"
                             style={{ height: `${(row.a / chartMax) * 100}%` }}
                           />
-                        </TooltipTrigger>
-                        <TooltipContent>Sign-ups · {row.a}</TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div
-                            className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-all duration-300 ease-out hover:bg-muted-foreground/60"
+                          <span
+                            aria-hidden
+                            className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-colors group-hover/bar:bg-muted-foreground/60 group-focus-visible/bar:bg-muted-foreground/60"
                             style={{ height: `${(row.b / chartMax) * 100}%` }}
                           />
-                        </TooltipTrigger>
-                        <TooltipContent>Activated · {row.b}</TooltipContent>
-                      </Tooltip>
-                    </div>
-                    <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                      {row.d}
-                    </span>
-                  </div>
+                        </span>
+                        <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                          {row.d}
+                        </span>
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <span className="font-mono tabular-nums">
+                        {row.d} · {row.a} sign-ups · {row.b} activated
+                      </span>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
 
@@ -332,11 +356,17 @@ export default function Dashboard01() {
 
               <div className="flex items-center gap-5">
                 <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  <span className="size-2 rounded-xs bg-foreground/85" />
+                  <span
+                    aria-hidden
+                    className="size-2 rounded-xs bg-foreground/85"
+                  />
                   Sign-ups
                 </span>
                 <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  <span className="size-2 rounded-xs bg-muted-foreground/40" />
+                  <span
+                    aria-hidden
+                    className="size-2 rounded-xs bg-muted-foreground/40"
+                  />
                   Activated
                 </span>
               </div>
@@ -365,17 +395,8 @@ export default function Dashboard01() {
                       i < ACTIVITY.length - 1 && "border-b border-border",
                     )}
                   >
-                    <Avatar>
-                      <AvatarFallback
-                        className={cn(
-                          "font-mono text-xs font-medium",
-                          a.tone === "primary"
-                            ? "bg-foreground text-background"
-                            : a.tone === "muted"
-                              ? "border border-border bg-card text-muted-foreground"
-                              : "bg-muted text-foreground",
-                        )}
-                      >
+                    <Avatar aria-hidden>
+                      <AvatarFallback className="bg-muted font-mono text-xs font-medium text-foreground">
                         {a.initials}
                       </AvatarFallback>
                     </Avatar>

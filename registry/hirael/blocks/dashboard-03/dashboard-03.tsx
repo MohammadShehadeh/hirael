@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -14,140 +15,90 @@ import {
 } from "@/registry/hirael/ui/card";
 import { Separator } from "@/registry/hirael/ui/separator";
 
-type PlanSlice = {
-  label: string;
-  share: number;
-  mrr: string;
-  tone: string;
-  dot: string;
+type PlanName = "Pro" | "Team" | "Enterprise";
+type InvoiceState = "Paid" | "Open" | "Overdue";
+
+/**
+ * Colour lives in one lookup per scale, keyed by what the value means.
+ * Nothing in the data below carries a class name.
+ */
+const PLAN_TONE: Record<PlanName, { stroke: string; swatch: string }> = {
+  Pro: { stroke: "stroke-foreground/85", swatch: "bg-foreground/85" },
+  Team: {
+    stroke: "stroke-muted-foreground/50",
+    swatch: "bg-muted-foreground/50",
+  },
+  Enterprise: {
+    stroke: "stroke-muted-foreground/20",
+    swatch: "bg-muted-foreground/20",
+  },
 };
+
+const INVOICE_TONE: Record<InvoiceState, string> = {
+  Paid: "bg-success",
+  Open: "bg-muted-foreground/50",
+  Overdue: "bg-destructive",
+};
+
+type PlanSlice = { plan: PlanName; share: number; mrr: number };
 
 type MonthData = {
   label: string;
-  total: string;
-  delta: string;
+  total: number;
+  /** Percent change against the month before; the sign carries direction. */
+  delta: number;
+  comparedWith: string;
   plans: readonly PlanSlice[];
-  invoices: readonly {
-    label: string;
-    count: number;
-    amount: string;
-    dot: string;
-  }[];
+  invoices: readonly { state: InvoiceState; count: number; amount: number }[];
 };
 
 const MONTHS: readonly MonthData[] = [
   {
     label: "February 2025",
-    total: "$38,410",
-    delta: "+6.1% vs Jan",
+    total: 38410,
+    delta: 6.1,
+    comparedWith: "Jan",
     plans: [
-      {
-        label: "Pro",
-        share: 48,
-        mrr: "$18,436",
-        tone: "stroke-foreground/85",
-        dot: "bg-foreground/85",
-      },
-      {
-        label: "Team",
-        share: 33,
-        mrr: "$12,675",
-        tone: "stroke-muted-foreground/50",
-        dot: "bg-muted-foreground/50",
-      },
-      {
-        label: "Enterprise",
-        share: 19,
-        mrr: "$7,299",
-        tone: "stroke-muted-foreground/20",
-        dot: "bg-muted-foreground/20",
-      },
+      { plan: "Pro", share: 48, mrr: 18436 },
+      { plan: "Team", share: 33, mrr: 12675 },
+      { plan: "Enterprise", share: 19, mrr: 7299 },
     ],
     invoices: [
-      { label: "Paid", count: 212, amount: "$36,180", dot: "bg-success" },
-      {
-        label: "Open",
-        count: 18,
-        amount: "$1,940",
-        dot: "bg-muted-foreground/50",
-      },
-      { label: "Overdue", count: 4, amount: "$290", dot: "bg-destructive" },
+      { state: "Paid", count: 212, amount: 36180 },
+      { state: "Open", count: 18, amount: 1940 },
+      { state: "Overdue", count: 4, amount: 290 },
     ],
   },
   {
     label: "March 2025",
-    total: "$41,260",
-    delta: "+7.4% vs Feb",
+    total: 41260,
+    delta: 7.4,
+    comparedWith: "Feb",
     plans: [
-      {
-        label: "Pro",
-        share: 46,
-        mrr: "$18,980",
-        tone: "stroke-foreground/85",
-        dot: "bg-foreground/85",
-      },
-      {
-        label: "Team",
-        share: 34,
-        mrr: "$14,028",
-        tone: "stroke-muted-foreground/50",
-        dot: "bg-muted-foreground/50",
-      },
-      {
-        label: "Enterprise",
-        share: 20,
-        mrr: "$8,252",
-        tone: "stroke-muted-foreground/20",
-        dot: "bg-muted-foreground/20",
-      },
+      { plan: "Pro", share: 46, mrr: 18980 },
+      { plan: "Team", share: 34, mrr: 14028 },
+      { plan: "Enterprise", share: 20, mrr: 8252 },
     ],
     invoices: [
-      { label: "Paid", count: 231, amount: "$39,410", dot: "bg-success" },
-      {
-        label: "Open",
-        count: 14,
-        amount: "$1,620",
-        dot: "bg-muted-foreground/50",
-      },
-      { label: "Overdue", count: 3, amount: "$230", dot: "bg-destructive" },
+      { state: "Paid", count: 231, amount: 39410 },
+      { state: "Open", count: 14, amount: 1620 },
+      { state: "Overdue", count: 3, amount: 230 },
     ],
   },
   {
     label: "April 2025",
-    total: "$44,892",
-    delta: "+8.8% vs Mar",
+    total: 44892,
+    delta: 8.8,
+    comparedWith: "Mar",
     plans: [
-      {
-        label: "Pro",
-        share: 44,
-        mrr: "$19,752",
-        tone: "stroke-foreground/85",
-        dot: "bg-foreground/85",
-      },
-      {
-        label: "Team",
-        share: 35,
-        mrr: "$15,712",
-        tone: "stroke-muted-foreground/50",
-        dot: "bg-muted-foreground/50",
-      },
-      {
-        label: "Enterprise",
-        share: 21,
-        mrr: "$9,428",
-        tone: "stroke-muted-foreground/20",
-        dot: "bg-muted-foreground/20",
-      },
+      { plan: "Pro", share: 44, mrr: 19752 },
+      { plan: "Team", share: 35, mrr: 15712 },
+      { plan: "Enterprise", share: 21, mrr: 9428 },
     ],
     invoices: [
-      { label: "Paid", count: 247, amount: "$42,950", dot: "bg-success" },
-      {
-        label: "Open",
-        count: 16,
-        amount: "$1,780",
-        dot: "bg-muted-foreground/50",
-      },
-      { label: "Overdue", count: 2, amount: "$162", dot: "bg-destructive" },
+      { state: "Paid", count: 247, amount: 42950 },
+      { state: "Open", count: 16, amount: 1780 },
+      { state: "Overdue", count: 2, amount: 162 },
     ],
   },
 ];
@@ -158,7 +109,8 @@ type Txn = {
   email: string;
   status: "paid" | "open" | "refunded";
   date: string;
-  amount: string;
+  /** Signed, so a refund is negative in the data and not only in the label. */
+  amount: number;
 };
 
 const TRANSACTIONS: readonly Txn[] = [
@@ -168,7 +120,7 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "lena@northbeam.io",
     status: "paid",
     date: "Apr 28",
-    amount: "+$249.00",
+    amount: 249,
   },
   {
     initials: "DR",
@@ -176,7 +128,7 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "dario@quantfold.com",
     status: "paid",
     date: "Apr 27",
-    amount: "+$1,188.00",
+    amount: 1188,
   },
   {
     initials: "PB",
@@ -184,7 +136,7 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "priya@helioslab.dev",
     status: "open",
     date: "Apr 27",
-    amount: "$96.00",
+    amount: 96,
   },
   {
     initials: "TW",
@@ -192,7 +144,7 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "tomas@arcadia.app",
     status: "refunded",
     date: "Apr 26",
-    amount: "−$249.00",
+    amount: -249,
   },
   {
     initials: "AK",
@@ -200,7 +152,7 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "amara@stackline.co",
     status: "paid",
     date: "Apr 25",
-    amount: "+$468.00",
+    amount: 468,
   },
   {
     initials: "HS",
@@ -208,15 +160,45 @@ const TRANSACTIONS: readonly Txn[] = [
     email: "hana@driftwork.com",
     status: "paid",
     date: "Apr 24",
-    amount: "+$96.00",
+    amount: 96,
   },
 ];
 
-const STATUS_META: Record<Txn["status"], { label: string; dot: string }> = {
-  paid: { label: "Paid", dot: "bg-success" },
-  open: { label: "Open", dot: "bg-muted-foreground/50" },
-  refunded: { label: "Refunded", dot: "bg-destructive" },
+const TXN_STATUS: Record<
+  Txn["status"],
+  { label: string; dot: string; amount: string }
+> = {
+  paid: { label: "Paid", dot: "bg-success", amount: "text-foreground" },
+  open: {
+    label: "Open",
+    dot: "bg-muted-foreground/50",
+    amount: "text-muted-foreground",
+  },
+  refunded: {
+    label: "Refunded",
+    dot: "bg-destructive",
+    amount: "text-destructive",
+  },
 };
+
+const PAGE_SIZE = 3;
+
+const usd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+
+const usdCents = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+});
+
+function signedUsd(amount: number) {
+  const sign = amount > 0 ? "+" : amount < 0 ? "−" : "";
+  return `${sign}${usdCents.format(Math.abs(amount))}`;
+}
 
 function Donut({ plans }: { plans: readonly PlanSlice[] }) {
   return (
@@ -236,7 +218,7 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
           25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0);
         return (
           <circle
-            key={p.label}
+            key={p.plan}
             cx="21"
             cy="21"
             r="15.9155"
@@ -244,7 +226,7 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
             strokeWidth="4"
             strokeDasharray={`${p.share - 1} ${100 - p.share + 1}`}
             strokeDashoffset={offset}
-            className={p.tone}
+            className={PLAN_TONE[p.plan].stroke}
           />
         );
       })}
@@ -254,7 +236,12 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
 
 export default function Dashboard03() {
   const [monthIndex, setMonthIndex] = React.useState(MONTHS.length - 1);
+  const [page, setPage] = React.useState(0);
+
   const month = MONTHS[monthIndex];
+  const pageCount = Math.ceil(TRANSACTIONS.length / PAGE_SIZE);
+  const pageStart = page * PAGE_SIZE;
+  const pageRows = TRANSACTIONS.slice(pageStart, pageStart + PAGE_SIZE);
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -278,9 +265,12 @@ export default function Dashboard03() {
                 disabled={monthIndex === 0}
                 aria-label="Previous month"
               >
-                <ChevronLeft className="size-3.5 rtl:rotate-180" />
+                <ChevronLeft className="size-3.5 rtl:rotate-180" aria-hidden />
               </Button>
-              <span className="w-32 text-center font-mono text-xs tabular-nums">
+              <span
+                aria-live="polite"
+                className="w-32 text-center font-mono text-xs tabular-nums"
+              >
                 {month.label}
               </span>
               <Button
@@ -293,11 +283,11 @@ export default function Dashboard03() {
                 disabled={monthIndex === MONTHS.length - 1}
                 aria-label="Next month"
               >
-                <ChevronRight className="size-3.5 rtl:rotate-180" />
+                <ChevronRight className="size-3.5 rtl:rotate-180" aria-hidden />
               </Button>
             </div>
             <Button variant="outline" size="sm">
-              <Download className="size-3.5" />
+              <Download className="size-3.5" aria-hidden />
               <span className="hidden sm:inline">Export</span>
             </Button>
           </div>
@@ -317,27 +307,44 @@ export default function Dashboard03() {
                   <Donut plans={month.plans} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
                     <span className="text-2xl font-semibold tracking-[-0.035em] tabular-nums">
-                      {month.total}
+                      {usd.format(month.total)}
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-success">
-                      {month.delta}
+                    <span
+                      dir="ltr"
+                      className={cn(
+                        "font-mono text-[10px] uppercase tracking-[0.1em]",
+                        month.delta === 0
+                          ? "text-muted-foreground"
+                          : month.delta > 0
+                            ? "text-success"
+                            : "text-destructive",
+                      )}
+                    >
+                      {month.delta > 0 ? "+" : month.delta < 0 ? "−" : ""}
+                      {Math.abs(month.delta)}% vs {month.comparedWith}
                     </span>
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-2.5">
+                <ul className="flex w-full flex-col gap-2.5">
                   {month.plans.map((p) => (
-                    <div key={p.label} className="flex items-center gap-2.5">
-                      <span className={`size-2 rounded-xs ${p.dot}`} />
-                      <span className="text-xs text-foreground">{p.label}</span>
+                    <li key={p.plan} className="flex items-center gap-2.5">
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "size-2 rounded-xs",
+                          PLAN_TONE[p.plan].swatch,
+                        )}
+                      />
+                      <span className="text-xs text-foreground">{p.plan}</span>
                       <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {p.share}%
                       </span>
                       <span className="w-16 text-end font-mono text-xs tabular-nums">
-                        {p.mrr}
+                        {usd.format(p.mrr)}
                       </span>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </CardContent>
             </Card>
 
@@ -350,18 +357,24 @@ export default function Dashboard03() {
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
                 {month.invoices.map((inv, i) => (
-                  <React.Fragment key={inv.label}>
+                  <React.Fragment key={inv.state}>
                     {i > 0 && <Separator />}
                     <div className="flex items-center gap-2.5">
-                      <span className={`size-1.5 rounded-full ${inv.dot}`} />
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          INVOICE_TONE[inv.state],
+                        )}
+                      />
                       <span className="text-xs text-foreground">
-                        {inv.label}
+                        {inv.state}
                       </span>
                       <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">
                         {inv.count}
                       </span>
                       <span className="w-20 text-end font-mono text-xs tabular-nums">
-                        {inv.amount}
+                        {usd.format(inv.amount)}
                       </span>
                     </div>
                   </React.Fragment>
@@ -385,26 +398,31 @@ export default function Dashboard03() {
               </div>
             </CardHeader>
             <CardContent className="px-0">
-              <div className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border px-6 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:grid">
+              <div
+                aria-hidden
+                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border px-6 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:grid"
+              >
                 <span>Customer</span>
                 <span>Status</span>
                 <span>Date</span>
                 <span className="text-end">Amount</span>
               </div>
               <ul className="flex flex-col">
-                {TRANSACTIONS.map((t, i) => {
-                  const status = STATUS_META[t.status];
+                {pageRows.map((t, i) => {
+                  const status = TXN_STATUS[t.status];
                   return (
                     <li
                       key={t.email}
-                      className={`grid grid-cols-[1fr_auto] items-center gap-3 px-6 py-3 sm:grid-cols-[1fr_110px_70px_110px] ${
-                        i < TRANSACTIONS.length - 1
-                          ? "border-b border-border"
-                          : ""
-                      }`}
+                      className={cn(
+                        "grid grid-cols-[1fr_auto] items-center gap-3 px-6 py-3 sm:grid-cols-[1fr_110px_70px_110px]",
+                        i < pageRows.length - 1 && "border-b border-border",
+                      )}
                     >
                       <div className="flex min-w-0 items-center gap-3">
-                        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted font-mono text-xs font-medium">
+                        <span
+                          aria-hidden
+                          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted font-mono text-xs font-medium"
+                        >
                           {t.initials}
                         </span>
                         <div className="flex min-w-0 flex-col">
@@ -421,7 +439,8 @@ export default function Dashboard03() {
                         className="hidden w-fit gap-1.5 font-normal text-muted-foreground sm:inline-flex"
                       >
                         <span
-                          className={`size-1.5 rounded-full ${status.dot}`}
+                          aria-hidden
+                          className={cn("size-1.5 rounded-full", status.dot)}
                         />
                         {status.label}
                       </Badge>
@@ -429,15 +448,14 @@ export default function Dashboard03() {
                         {t.date}
                       </span>
                       <span
-                        className={`text-end font-mono text-sm tabular-nums ${
-                          t.status === "refunded"
-                            ? "text-destructive"
-                            : t.status === "open"
-                              ? "text-muted-foreground"
-                              : "text-foreground"
-                        }`}
+                        dir="ltr"
+                        className={cn(
+                          "text-end font-mono text-sm tabular-nums",
+                          status.amount,
+                        )}
                       >
-                        {t.amount}
+                        <span className="sr-only">{status.label}, </span>
+                        {signedUsd(t.amount)}
                       </span>
                     </li>
                   );
@@ -445,17 +463,37 @@ export default function Dashboard03() {
               </ul>
               <Separator />
               <div className="flex items-center justify-between px-6 pt-4">
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  6 of 248 transactions
+                <span
+                  dir="ltr"
+                  aria-live="polite"
+                  className="font-mono text-[10px] uppercase tracking-[0.1em] tabular-nums text-muted-foreground"
+                >
+                  {pageStart + 1}–{pageStart + pageRows.length} of{" "}
+                  {TRANSACTIONS.length}
                 </span>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" disabled>
-                    <ChevronLeft className="size-3.5 rtl:rotate-180" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPage((p) => Math.max(0, p - 1))}
+                    disabled={page === 0}
+                  >
+                    <ChevronLeft className="size-3.5 rtl:rotate-180" aria-hidden />
                     Prev
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setPage((p) => Math.min(pageCount - 1, p + 1))
+                    }
+                    disabled={page >= pageCount - 1}
+                  >
                     Next
-                    <ChevronRight className="size-3.5 rtl:rotate-180" />
+                    <ChevronRight
+                      className="size-3.5 rtl:rotate-180"
+                      aria-hidden
+                    />
                   </Button>
                 </div>
               </div>

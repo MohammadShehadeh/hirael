@@ -239,6 +239,7 @@ function ThemeSheetBody() {
             onChange={(e) => setPaste(e.target.value)}
             placeholder={`:root {\n  --background: oklch(...);\n  --foreground: oklch(...);\n  --primary: oklch(...);\n  ...\n}\n\n.dark {\n  ...\n}`}
             spellCheck={false}
+            autoComplete="off"
             maxLength={10000}
             className="h-44 resize-y rounded-sm border-border bg-card field-sizing-fixed font-mono text-[11px] leading-relaxed placeholder:text-muted-foreground/60 dark:bg-card md:text-[11px]"
           />

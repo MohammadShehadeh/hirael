@@ -7,5 +7,9 @@ import type { ReactNode } from "react";
  * with no direction state to flip after mount.
  */
 export function TemplateEmbedShell({ children }: { children: ReactNode }) {
-  return <div className="min-h-svh bg-black">{children}</div>;
+  return (
+    <div data-embed-shell className="min-h-svh bg-black">
+      {children}
+    </div>
+  );
 }

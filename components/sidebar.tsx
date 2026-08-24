@@ -217,35 +217,14 @@ function BlockGroups({ isActive }: GroupProps) {
                 const blocks = cat.blockKind
                   ? BLOCKS_BY_KIND[cat.blockKind]
                   : [];
-                const open = isActive(href);
                 return (
                   <SidebarMenuItem key={cat.slug}>
-                    <SidebarMenuButton asChild isActive={open}>
+                    <SidebarMenuButton asChild isActive={isActive(href)}>
                       <Link href={href}>
                         <span>{cat.title}</span>
                         {blocks.length > 0 && <Count n={blocks.length} />}
                       </Link>
                     </SidebarMenuButton>
-                    {open && blocks.length > 0 && (
-                      <SidebarMenu className="ms-3 mt-0.5 border-s border-sidebar-border ps-2">
-                        {blocks.map((entry) => {
-                          const entryPath = entryHref(entry);
-                          return (
-                            <SidebarMenuItem key={entry.name}>
-                              <SidebarMenuButton
-                                asChild
-                                size="sm"
-                                isActive={isActive(entryPath)}
-                              >
-                                <Link href={entryPath}>
-                                  <span>{entry.title}</span>
-                                </Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          );
-                        })}
-                      </SidebarMenu>
-                    )}
                   </SidebarMenuItem>
                 );
               })}

@@ -6,7 +6,7 @@ import {
   ArrowUpRight,
   Clock4,
   CreditCard,
-  MoreHorizontal,
+  Minus,
   Package,
   RotateCcw,
   Settings2,
@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -31,15 +32,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/registry/hirael/ui/select";
-import { cn } from "@/lib/utils";
+
+/**
+ * One delta, one source of truth. The sign gives the direction, `goodWhen`
+ * gives the intent, and both the colour and the spoken label come from those
+ * two fields, so a falling refund rate can never render as bad news.
+ */
+type Delta = {
+  value: number;
+  unit: "%" | "pp";
+  goodWhen: "up" | "down";
+};
 
 type Stat = {
   icon: LucideIcon;
   label: string;
   value: string;
-  delta: string;
-  up: boolean;
-  good: boolean;
+  delta: Delta;
 };
 
 const STATS: readonly Stat[] = [
@@ -47,83 +56,115 @@ const STATS: readonly Stat[] = [
     icon: ShoppingCart,
     label: "Open orders",
     value: "36",
-    delta: "+12.5%",
-    up: true,
-    good: true,
+    delta: { value: 12.5, unit: "%", goodWhen: "up" },
   },
   {
     icon: Package,
     label: "Items sold",
     value: "1,482",
-    delta: "+6.8%",
-    up: true,
-    good: true,
+    delta: { value: 6.8, unit: "%", goodWhen: "up" },
   },
   {
     icon: Users,
     label: "Store sessions",
     value: "9,214",
-    delta: "+4.1%",
-    up: true,
-    good: true,
+    delta: { value: 4.1, unit: "%", goodWhen: "up" },
   },
   {
     icon: RotateCcw,
     label: "Refund rate",
     value: "0.8%",
-    delta: "-0.2%",
-    up: false,
-    good: true,
+    delta: { value: -0.2, unit: "pp", goodWhen: "down" },
   },
 ];
 
-const TODAY_SERIES = [12, 9, 14, 24, 46, 74, 92, 84, 102, 96, 71, 48, 31];
-const YESTERDAY_SERIES = [10, 8, 11, 19, 39, 61, 78, 73, 84, 80, 64, 41, 26];
-const HOUR_TICKS = ["00", "04", "08", "12", "16", "20", "24"] as const;
+/** Revenue every two hours, so the ticks and the data table share one source. */
+const HOURLY: readonly { hour: string; today: number; yesterday: number }[] = [
+  { hour: "00", today: 12, yesterday: 10 },
+  { hour: "02", today: 9, yesterday: 8 },
+  { hour: "04", today: 14, yesterday: 11 },
+  { hour: "06", today: 24, yesterday: 19 },
+  { hour: "08", today: 46, yesterday: 39 },
+  { hour: "10", today: 74, yesterday: 61 },
+  { hour: "12", today: 92, yesterday: 78 },
+  { hour: "14", today: 84, yesterday: 73 },
+  { hour: "16", today: 102, yesterday: 84 },
+  { hour: "18", today: 96, yesterday: 80 },
+  { hour: "20", today: 71, yesterday: 64 },
+  { hour: "22", today: 48, yesterday: 41 },
+  { hour: "24", today: 31, yesterday: 26 },
+];
 
-const PEAK_BARS = [14, 18, 26, 41, 58, 92, 100, 86, 54, 38, 27, 19] as const;
+const REVENUE = {
+  today: 1284.5,
+  yesterday: 1092.2,
+  delta: { value: 17.6, unit: "%", goodWhen: "up" } satisfies Delta,
+};
+
+/** `peak` is a fact about the hour, not a brightness threshold in the markup. */
+const PEAK_HOURS: readonly { hour: string; orders: number; peak?: boolean }[] = [
+  { hour: "07", orders: 14 },
+  { hour: "08", orders: 18 },
+  { hour: "09", orders: 26 },
+  { hour: "10", orders: 41 },
+  { hour: "11", orders: 58 },
+  { hour: "12", orders: 92, peak: true },
+  { hour: "13", orders: 100, peak: true },
+  { hour: "14", orders: 86, peak: true },
+  { hour: "15", orders: 54 },
+  { hour: "16", orders: 38 },
+  { hour: "17", orders: 27 },
+  { hour: "18", orders: 19 },
+];
 
 type WeekRange = "this" | "last";
 
-const WEEK: Record<
-  WeekRange,
-  {
-    orders: { value: string; delta: string; bars: readonly number[] };
-    minis: readonly {
-      label: string;
-      value: string;
-      delta: string;
-      good: boolean;
-      spark: readonly number[];
-    }[];
-  }
-> = {
+type WeekData = {
+  orders: {
+    value: string;
+    delta: Delta;
+    days: readonly { day: string; orders: number }[];
+  };
+  minis: readonly {
+    label: string;
+    value: string;
+    delta: Delta;
+    spark: readonly number[];
+  }[];
+};
+
+const WEEK: Record<WeekRange, WeekData> = {
   this: {
     orders: {
       value: "1,318",
-      delta: "+11.2%",
-      bars: [148, 176, 162, 196, 228, 184, 224],
+      delta: { value: 11.2, unit: "%", goodWhen: "up" },
+      days: [
+        { day: "Mon", orders: 148 },
+        { day: "Tue", orders: 176 },
+        { day: "Wed", orders: 162 },
+        { day: "Thu", orders: 196 },
+        { day: "Fri", orders: 228 },
+        { day: "Sat", orders: 184 },
+        { day: "Sun", orders: 224 },
+      ],
     },
     minis: [
       {
         label: "Gross revenue",
         value: "$24,820",
-        delta: "+9.2%",
-        good: true,
+        delta: { value: 9.2, unit: "%", goodWhen: "up" },
         spark: [30, 34, 31, 38, 44, 41, 48],
       },
       {
         label: "Returning buyers",
         value: "58.4%",
-        delta: "+1.9%",
-        good: true,
+        delta: { value: 1.9, unit: "pp", goodWhen: "up" },
         spark: [52, 54, 53, 55, 56, 57, 58],
       },
       {
         label: "Checkout conversion",
         value: "3.1%",
-        delta: "+0.4%",
-        good: true,
+        delta: { value: 0.4, unit: "pp", goodWhen: "up" },
         spark: [2.5, 2.7, 2.6, 2.9, 3.0, 2.9, 3.1],
       },
     ],
@@ -131,29 +172,34 @@ const WEEK: Record<
   last: {
     orders: {
       value: "1,186",
-      delta: "+4.6%",
-      bars: [132, 158, 149, 171, 198, 166, 212],
+      delta: { value: 4.6, unit: "%", goodWhen: "up" },
+      days: [
+        { day: "Mon", orders: 132 },
+        { day: "Tue", orders: 158 },
+        { day: "Wed", orders: 149 },
+        { day: "Thu", orders: 171 },
+        { day: "Fri", orders: 198 },
+        { day: "Sat", orders: 166 },
+        { day: "Sun", orders: 212 },
+      ],
     },
     minis: [
       {
         label: "Gross revenue",
         value: "$22,730",
-        delta: "+5.8%",
-        good: true,
+        delta: { value: 5.8, unit: "%", goodWhen: "up" },
         spark: [27, 30, 28, 33, 37, 35, 41],
       },
       {
         label: "Returning buyers",
         value: "56.5%",
-        delta: "-0.3%",
-        good: false,
+        delta: { value: -0.3, unit: "pp", goodWhen: "up" },
         spark: [57, 56, 57, 56, 55, 56, 56],
       },
       {
         label: "Checkout conversion",
         value: "2.7%",
-        delta: "+0.1%",
-        good: true,
+        delta: { value: 0.1, unit: "pp", goodWhen: "up" },
         spark: [2.4, 2.5, 2.4, 2.6, 2.7, 2.6, 2.7],
       },
     ],
@@ -162,8 +208,19 @@ const WEEK: Record<
 
 const BUDGET = { spent: 223.1, cap: 400 };
 
+const usd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+});
+
+const UNIT_WORD: Record<Delta["unit"], string> = {
+  "%": "percent",
+  pp: "percentage points",
+};
+
 function linePath(values: readonly number[], max: number, h: number) {
-  const step = 100 / (values.length - 1);
+  const step = values.length > 1 ? 100 / (values.length - 1) : 100;
   return values
     .map(
       (v, i) =>
@@ -172,29 +229,31 @@ function linePath(values: readonly number[], max: number, h: number) {
     .join(" ");
 }
 
-function DeltaChip({
-  delta,
-  up,
-  good,
-}: {
-  delta: string;
-  up: boolean;
-  good: boolean;
-}) {
+function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
+  const { value, unit, goodWhen } = delta;
+  const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
+  const direction = value > 0 ? "up" : value < 0 ? "down" : "unchanged";
+  const sign = value > 0 ? "+" : value < 0 ? "−" : "";
+  const tone =
+    value === 0
+      ? "bg-accent text-muted-foreground"
+      : value > 0 === (goodWhen === "up")
+        ? "bg-success/10 text-success"
+        : "bg-destructive/10 text-destructive";
+
   return (
     <span
-      className={`inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none ${
-        good
-          ? "bg-success/10 text-success"
-          : "bg-destructive/10 text-destructive"
-      }`}
-    >
-      {up ? (
-        <ArrowUpRight className="size-3" />
-      ) : (
-        <ArrowDownRight className="size-3" />
+      dir="ltr"
+      aria-label={`${label} ${direction} ${Math.abs(value)} ${UNIT_WORD[unit]}`}
+      className={cn(
+        "inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums",
+        tone,
       )}
-      {delta}
+    >
+      <Icon className="size-3" aria-hidden />
+      {sign}
+      {Math.abs(value)}
+      {unit}
     </span>
   );
 }
@@ -202,11 +261,14 @@ function DeltaChip({
 function PanelCard({
   icon: Icon,
   label,
+  action,
   children,
   className,
 }: {
   icon: LucideIcon;
   label: string;
+  /** Only pass an action when there is one. An empty menu is not a feature. */
+  action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -214,19 +276,10 @@ function PanelCard({
     <Card className={cn("gap-2 rounded-md py-2.5", className)}>
       <CardHeader className="px-3.5">
         <CardTitle className="flex items-center gap-1.5 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground">
-          <Icon className="size-3.5" />
+          <Icon className="size-3.5" aria-hidden />
           {label}
         </CardTitle>
-        <CardAction>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="-my-1 size-6 text-muted-foreground"
-            aria-label={`${label} options`}
-          >
-            <MoreHorizontal className="size-3.5" />
-          </Button>
-        </CardAction>
+        {action && <CardAction>{action}</CardAction>}
       </CardHeader>
       <CardContent className="flex flex-1 flex-col px-2.5 pb-0">
         <div className="flex flex-1 flex-col rounded-sm border border-border bg-background p-4">
@@ -237,15 +290,55 @@ function PanelCard({
   );
 }
 
+function Sparkline({ points }: { points: readonly number[] }) {
+  const max = Math.max(...points);
+  const min = Math.min(...points);
+  const span = max - min || 1;
+  const step = points.length > 1 ? 100 / (points.length - 1) : 100;
+  const pts = points
+    .map(
+      (v, i) =>
+        `${(i * step).toFixed(1)},${(22 - ((v - min) / span) * 16).toFixed(1)}`,
+    )
+    .join(" ");
+
+  return (
+    <svg
+      viewBox="0 0 100 26"
+      preserveAspectRatio="none"
+      aria-hidden
+      className="mt-3 h-12 w-full"
+    >
+      <polyline
+        points={pts}
+        fill="none"
+        vectorEffect="non-scaling-stroke"
+        strokeWidth="1.5"
+        className="stroke-foreground/45"
+      />
+    </svg>
+  );
+}
+
 export default function Dashboard04() {
   const [range, setRange] = React.useState<WeekRange>("this");
   const week = WEEK[range];
 
-  const chartMax = Math.max(...TODAY_SERIES, ...YESTERDAY_SERIES);
-  const todayLine = linePath(TODAY_SERIES, chartMax, 46);
-  const yesterdayLine = linePath(YESTERDAY_SERIES, chartMax, 46);
-  const barMax = Math.max(...week.orders.bars);
+  const chartMax = Math.max(...HOURLY.flatMap((h) => [h.today, h.yesterday]));
+  const todayLine = linePath(
+    HOURLY.map((h) => h.today),
+    chartMax,
+    46,
+  );
+  const yesterdayLine = linePath(
+    HOURLY.map((h) => h.yesterday),
+    chartMax,
+    46,
+  );
+  const barMax = Math.max(...week.orders.days.map((d) => d.orders));
+  const peakMax = Math.max(...PEAK_HOURS.map((h) => h.orders));
   const budgetPct = Math.round((BUDGET.spent / BUDGET.cap) * 100);
+  const peakWindow = PEAK_HOURS.filter((h) => h.peak);
 
   return (
     <section className="bg-background py-20 sm:py-28">
@@ -260,7 +353,7 @@ export default function Dashboard04() {
             </h2>
           </div>
           <Button variant="outline" size="sm">
-            <Settings2 className="size-3.5" />
+            <Settings2 className="size-3.5" aria-hidden />
             Customize
           </Button>
         </div>
@@ -273,7 +366,7 @@ export default function Dashboard04() {
                   {s.value}
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <DeltaChip delta={s.delta} up={s.up} good={s.good} />
+                  <DeltaChip delta={s.delta} label={s.label} />
                   <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
                     vs yesterday
                   </span>
@@ -286,7 +379,7 @@ export default function Dashboard04() {
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-lg font-semibold tracking-[-0.02em]">Today</h3>
           <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            Live · updates every minute
+            Store time · resets 00:00 UTC
           </span>
         </div>
 
@@ -300,31 +393,36 @@ export default function Dashboard04() {
               <div className="flex gap-8">
                 <div className="flex flex-col gap-1">
                   <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    <span className="size-2 rounded-xs bg-foreground/85" />
+                    <span
+                      aria-hidden
+                      className="size-2 rounded-xs bg-foreground/85"
+                    />
                     Today
                   </span>
-                  <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">
-                    $1,284.50
+                  <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums">
+                    {usd.format(REVENUE.today)}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    <span className="size-2 rounded-xs bg-muted-foreground/45" />
+                    <span
+                      aria-hidden
+                      className="size-2 rounded-xs bg-muted-foreground/45"
+                    />
                     Yesterday
                   </span>
-                  <span className="text-xl font-semibold tabular-nums tracking-[-0.02em] text-muted-foreground">
-                    $1,092.20
+                  <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums text-muted-foreground">
+                    {usd.format(REVENUE.yesterday)}
                   </span>
                 </div>
               </div>
-              <DeltaChip delta="+17.6%" up good />
+              <DeltaChip delta={REVENUE.delta} label="Gross revenue" />
             </div>
             <div className="mt-4 flex flex-1 flex-col justify-end">
               <svg
                 viewBox="0 0 100 46"
                 preserveAspectRatio="none"
-                role="img"
-                aria-label="Revenue by hour, today versus yesterday"
+                aria-hidden
                 className="h-44 w-full sm:h-56"
               >
                 {[11, 22, 33].map((y) => (
@@ -359,16 +457,37 @@ export default function Dashboard04() {
                   className="stroke-muted-foreground/60"
                 />
               </svg>
-              <div className="mt-2 flex justify-between">
-                {HOUR_TICKS.map((t) => (
+              <div aria-hidden className="mt-2 flex justify-between">
+                {HOURLY.filter((_, i) => i % 2 === 0).map((h) => (
                   <span
-                    key={t}
-                    className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground"
+                    key={h.hour}
+                    className="font-mono text-[10px] uppercase tracking-[0.1em] tabular-nums text-muted-foreground"
                   >
-                    {t}
+                    {h.hour}
                   </span>
                 ))}
               </div>
+
+              {/* The chart is pixels; this is the same data as text. */}
+              <table className="sr-only">
+                <caption>Revenue by hour, today versus yesterday</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Hour</th>
+                    <th scope="col">Today</th>
+                    <th scope="col">Yesterday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {HOURLY.map((h) => (
+                    <tr key={h.hour}>
+                      <th scope="row">{h.hour}:00</th>
+                      <td>{h.today}</td>
+                      <td>{h.yesterday}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </PanelCard>
 
@@ -380,23 +499,27 @@ export default function Dashboard04() {
                     <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       Spent today
                     </span>
-                    <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">
-                      ${BUDGET.spent.toFixed(2)}
+                    <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums">
+                      {usd.format(BUDGET.spent)}
                     </span>
                   </div>
                   <div className="flex flex-col gap-0.5 text-end">
                     <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                       Daily cap
                     </span>
-                    <span className="text-xl font-semibold tabular-nums tracking-[-0.02em] text-muted-foreground">
-                      ${BUDGET.cap.toFixed(2)}
+                    <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums text-muted-foreground">
+                      {usd.format(BUDGET.cap)}
                     </span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <div
-                    role="img"
-                    aria-label={`${budgetPct} percent of daily ad budget used`}
+                    role="progressbar"
+                    aria-label="Daily ad budget used"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={budgetPct}
+                    aria-valuetext={`${budgetPct}% of ${usd.format(BUDGET.cap)}`}
                     className="h-2 w-full overflow-hidden rounded-full bg-accent"
                   >
                     <div
@@ -415,27 +538,44 @@ export default function Dashboard04() {
               <div className="flex flex-1 flex-col justify-between gap-3">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xl font-semibold tracking-[-0.02em]">
-                    12 PM – 2 PM
+                    {peakWindow[0]?.hour}:00 – {peakWindow.at(-1)?.hour}:00
                   </span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                     31% of today&apos;s orders
                   </span>
                 </div>
                 <div
-                  role="img"
-                  aria-label="Orders by hour"
+                  aria-hidden
                   className="flex h-16 items-end gap-1"
                 >
-                  {PEAK_BARS.map((h, i) => (
+                  {PEAK_HOURS.map((h) => (
                     <span
-                      key={i}
-                      className={`flex-1 rounded-t-xs ${
-                        h >= 86 ? "bg-foreground/85" : "bg-muted-foreground/30"
-                      }`}
-                      style={{ height: `${h}%` }}
+                      key={h.hour}
+                      className={cn(
+                        "flex-1 rounded-t-xs",
+                        h.peak ? "bg-foreground/85" : "bg-muted-foreground/30",
+                      )}
+                      style={{ height: `${(h.orders / peakMax) * 100}%` }}
                     />
                   ))}
                 </div>
+                <table className="sr-only">
+                  <caption>Orders by hour</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Hour</th>
+                      <th scope="col">Orders</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {PEAK_HOURS.map((h) => (
+                      <tr key={h.hour}>
+                        <th scope="row">{h.hour}:00</th>
+                        <td>{h.orders}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </PanelCard>
           </div>
@@ -464,34 +604,38 @@ export default function Dashboard04() {
           <PanelCard icon={ShoppingCart} label="Orders">
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-0.5">
-                <span className="text-3xl font-semibold tabular-nums tracking-[-0.035em]">
+                <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">
                   {week.orders.value}
                 </span>
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
                   Orders completed
                 </span>
               </div>
-              <DeltaChip delta={week.orders.delta} up good />
+              <DeltaChip delta={week.orders.delta} label="Orders" />
             </div>
             <div
-              role="img"
+              role="group"
               aria-label="Orders per day"
               className="mt-4 grid h-32 items-end gap-2"
               style={{
-                gridTemplateColumns: `repeat(${week.orders.bars.length}, minmax(0, 1fr))`,
+                gridTemplateColumns: `repeat(${week.orders.days.length}, minmax(0, 1fr))`,
               }}
             >
-              {week.orders.bars.map((b, i) => (
+              {week.orders.days.map((d) => (
                 <div
-                  key={i}
+                  key={d.day}
                   className="flex h-full flex-col justify-end gap-1.5"
                 >
                   <div
-                    className="rounded-t-xs bg-foreground/80 transition-all duration-300 ease-out"
-                    style={{ height: `${(b / barMax) * 100}%` }}
+                    aria-hidden
+                    // Capped so seven bars across a wide card stay bars
+                    // rather than slabs.
+                    className="mx-auto w-full max-w-16 rounded-t-xs bg-foreground/80 transition-all duration-300 ease-out"
+                    style={{ height: `${(d.orders / barMax) * 100}%` }}
                   />
                   <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][i]}
+                    {d.day}
+                    <span className="sr-only">: {d.orders} orders</span>
                   </span>
                 </div>
               ))}
@@ -499,46 +643,17 @@ export default function Dashboard04() {
           </PanelCard>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {week.minis.map((m) => {
-              const max = Math.max(...m.spark);
-              const min = Math.min(...m.spark);
-              const span = max - min || 1;
-              const step = 100 / (m.spark.length - 1);
-              const pts = m.spark
-                .map(
-                  (v, i) =>
-                    `${(i * step).toFixed(1)},${(22 - ((v - min) / span) * 16).toFixed(1)}`,
-                )
-                .join(" ");
-              return (
-                <PanelCard key={m.label} icon={CreditCard} label={m.label}>
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="text-2xl font-semibold tabular-nums tracking-[-0.03em]">
-                      {m.value}
-                    </span>
-                    <DeltaChip
-                      delta={m.delta}
-                      up={m.delta.startsWith("+")}
-                      good={m.good}
-                    />
-                  </div>
-                  <svg
-                    viewBox="0 0 100 26"
-                    preserveAspectRatio="none"
-                    aria-hidden
-                    className="mt-3 h-12 w-full"
-                  >
-                    <polyline
-                      points={pts}
-                      fill="none"
-                      vectorEffect="non-scaling-stroke"
-                      strokeWidth="1.5"
-                      className="stroke-foreground/45"
-                    />
-                  </svg>
-                </PanelCard>
-              );
-            })}
+            {week.minis.map((m) => (
+              <PanelCard key={m.label} icon={CreditCard} label={m.label}>
+                <div className="flex items-start justify-between gap-3">
+                  <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">
+                    {m.value}
+                  </span>
+                  <DeltaChip delta={m.delta} label={m.label} />
+                </div>
+                <Sparkline points={m.spark} />
+              </PanelCard>
+            ))}
           </div>
         </div>
       </div>

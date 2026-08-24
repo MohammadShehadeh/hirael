@@ -17,7 +17,7 @@ export default async function NotFound() {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader stars={stars} />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
         <section className="relative overflow-hidden">
           <div aria-hidden className="ambient-halo" />
           <div

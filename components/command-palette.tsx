@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Boxes, Frame, LayoutTemplate } from "lucide-react";
+import { Boxes, Frame, History, LayoutTemplate } from "lucide-react";
+import { useCommandState } from "cmdk";
 
 import {
   Dialog,
@@ -19,6 +20,7 @@ import {
   CommandList,
 } from "@/registry/hirael/ui/command";
 import {
+  BLOCK_KIND_LABELS,
   CATEGORY_LABELS,
   COMPONENTS,
   REGISTRY,
@@ -26,6 +28,11 @@ import {
   entryHref,
   type ComponentCategory,
 } from "@/registry/hirael/registry-meta";
+import {
+  pushRecent,
+  readRecents,
+  type RecentItem,
+} from "@/lib/recents";
 
 /**
  * The heavy half of the ⌘K palette — the project's own `dialog` + `command`
@@ -41,9 +48,10 @@ export function CommandPalette({
 }) {
   const router = useRouter();
 
-  const go = (href: string) => {
+  const go = (item: RecentItem) => {
+    pushRecent(item);
     onOpenChange(false);
-    router.push(href);
+    router.push(item.href);
   };
 
   const components = COMPONENTS;
@@ -64,6 +72,7 @@ export function CommandPalette({
           <CommandInput placeholder="Search by name or what it does…" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
+            <RecentGroup open={open} onSelect={go} />
             <CommandGroup heading="Components">
               {components.map((c) => (
                 <CommandItem
@@ -73,7 +82,14 @@ export function CommandPalette({
                     c.description,
                     CATEGORY_LABELS[c.category as ComponentCategory],
                   ]}
-                  onSelect={() => go(entryHref(c))}
+                  onSelect={() =>
+                    go({
+                      name: c.name,
+                      title: c.title,
+                      href: entryHref(c),
+                      kind: "component",
+                    })
+                  }
                 >
                   <Boxes className="text-muted-foreground" />
                   <span>{c.title}</span>
@@ -89,12 +105,19 @@ export function CommandPalette({
                   key={b.name}
                   value={`${b.title} ${b.name}`}
                   keywords={[b.description, b.blockKind ?? ""]}
-                  onSelect={() => go(entryHref(b))}
+                  onSelect={() =>
+                    go({
+                      name: b.name,
+                      title: b.title,
+                      href: entryHref(b),
+                      kind: "block",
+                    })
+                  }
                 >
                   <LayoutTemplate className="text-muted-foreground" />
                   <span>{b.title}</span>
-                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">
-                    /{b.name}
+                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                    {b.blockKind ? BLOCK_KIND_LABELS[b.blockKind] : "Block"}
                   </span>
                 </CommandItem>
               ))}
@@ -105,19 +128,87 @@ export function CommandPalette({
                   key={t.name}
                   value={`${t.title} ${t.name}`}
                   keywords={[t.description]}
-                  onSelect={() => go(entryHref(t))}
+                  onSelect={() =>
+                    go({
+                      name: t.name,
+                      title: t.title,
+                      href: entryHref(t),
+                      kind: "template",
+                    })
+                  }
                 >
                   <Frame className="text-muted-foreground" />
                   <span>{t.title}</span>
-                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">
-                    /{t.name}
+                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                    Template
                   </span>
                 </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>
         </Command>
+        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Kbd>↑↓</Kbd> navigate
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Kbd>↵</Kbd> open
+          </span>
+          <span className="ml-auto inline-flex items-center gap-1.5">
+            <Kbd>esc</Kbd> close
+          </span>
+        </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function Kbd({ children }: { children: React.ReactNode }) {
+  return (
+    <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">
+      {children}
+    </kbd>
+  );
+}
+
+/** Previously opened items, shown only while the query is empty. Re-reads on
+ * every open so navigation elsewhere in the tab is reflected immediately. */
+function RecentGroup({
+  open,
+  onSelect,
+}: {
+  open: boolean;
+  onSelect: (item: RecentItem) => void;
+}) {
+  const search = useCommandState((state) => state.search);
+  const [recents, setRecents] = React.useState<RecentItem[]>([]);
+
+  React.useEffect(() => {
+    if (open) setRecents(readRecents());
+  }, [open]);
+
+  if (search || recents.length === 0) return null;
+
+  return (
+    <CommandGroup heading="Recent">
+      {recents.map((item) => (
+        <CommandItem
+          key={item.href}
+          value={`${item.title} ${item.name}`}
+          keywords={["recent"]}
+          onSelect={() => onSelect(item)}
+        >
+          <History className="text-muted-foreground" />
+          <span>{item.title}</span>
+          <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+            {item.kind === "component"
+              ? "Component"
+              : item.kind === "block"
+                ? "Block"
+                : "Template"}
+          </span>
+        </CommandItem>
+      ))}
+    </CommandGroup>
   );
 }

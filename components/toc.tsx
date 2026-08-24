@@ -62,6 +62,50 @@ export function Toc({
 }
 
 /**
+ * The same "on this page" navigation as {@link Toc}, as a horizontal chip row
+ * for viewports below xl where the sticky rail is hidden — section jumping
+ * shouldn't be a desktop-only affordance. Shares the scroll-spy hook, so both
+ * highlight the same section.
+ */
+export function TocChips({
+  items,
+  className,
+}: {
+  items: TocItem[];
+  className?: string;
+}) {
+  const active = useActiveSection(items.map((i) => i.id));
+
+  if (items.length < 2) return null;
+
+  return (
+    <nav
+      aria-label="On this page"
+      className={cn("flex items-center gap-1.5 overflow-x-auto pb-0.5", className)}
+    >
+      {items.map((item) => {
+        const isActive = item.id === active;
+        return (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            aria-current={isActive ? "location" : undefined}
+            className={cn(
+              "shrink-0 rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors",
+              isActive
+                ? "border-transparent bg-accent text-foreground"
+                : "border-border bg-card text-muted-foreground hover:border-foreground/40 hover:text-foreground",
+            )}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
+/**
  * Tracks which section is in view. An IntersectionObserver marks sections as
  * they cross the upper band of the viewport; the active one is the first
  * (top-most in document order) currently inside that band. Falls back to the

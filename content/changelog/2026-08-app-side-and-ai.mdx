@@ -1,54 +1,70 @@
 ---
-title: The app side, AI chat, and every item rebuilt on shadcn
+title: The app side, AI chat, and the shadcn rebuild
 version: "5.0.0"
 date: 2026-08-26
-description: "25 new items (kanban, settings and members screens, onboarding, 2FA, AI chat, status pages, new inputs and viewers), a browse-in-place blocks catalog, and every component, block and template rebuilt on shadcn/ui primitives and Field forms."
+description: "25 new registry items, a browse-in-place blocks catalog, and a catalog-wide pass to shadcn/ui primitives and Field forms. The catalog now ships 70+ components and 95+ blocks."
 ---
 
 The biggest release so far. Marketing pages were well covered; the screens
-behind the login weren't, and the source you copied in was styled by hand in
-places where shadcn/ui already had the primitive. Both are fixed.
+behind the login weren't, and much of the source you copied in was styled by
+hand where shadcn/ui already had the primitive. Both are fixed. The catalog
+now ships 70+ components and 95+ blocks.
 
 ## New components
 
 - **Kanban**: columns of cards you can drag across, with pointer and keyboard
-  moves, live announcements, and no dnd-kit.
-- **Sparkline**: tiny inline SVG line, area, and bar charts with a hover
-  tooltip and a reference line. Tints with `text-*`.
-- **JSON Viewer**: collapsible tree with typed value colors, item counts, copy,
-  and expand or collapse all.
-- **Diff Viewer**: unified and split line diffs computed in the component, with
-  collapsed context and a stats chip.
-- **Cron Editor**: visual field builder and raw expression kept in sync, a
-  human-readable preview, and the next three run times.
-- **Country Select**: searchable flag picker with pinned countries, dial codes,
-  and single or multiple selection.
-- **Credit Card Input**: number, expiry, and CVC with brand detection, Luhn
-  validation, and per-brand formatting.
-- **Emoji Picker**: categories, search, skin tones, recents, and a keyboard
-  grid, all self-contained.
-- **Avatar Upload**: pick, crop, and zoom a profile image with a circle or
-  square mask and an initials fallback.
+  moves, a drop placeholder, empty-column hints, live announcements, and no
+  dnd-kit.
+- **Sparkline**: tiny inline SVG line, area, and bar charts with an optional
+  curve, last-point dot, reference line, and hover tooltip. Tints with
+  `currentColor`, no chart library.
+- **JSON Viewer**: collapsible tree with typed value colors, item counts on
+  closed nodes, long-string truncation, expand or collapse all, copy, and
+  arrow-key navigation.
+- **Diff Viewer**: unified or split line diffs computed in-component with an
+  LCS algorithm, +N / -N stats, and expandable context gaps. No dependencies.
+- **Cron Editor**: visual field builder and raw expression kept in sync, with
+  presets, per-field modes, a plain-English preview, and the next three run
+  times.
+- **Country Select**: searchable flag picker with pinned countries, optional
+  dial codes, and single or multiple selection. Search by name or ISO code.
+- **Credit Card Input**: number, expiry, and CVC with brand detection, Luhn and
+  expiry validation, per-brand formatting, and auto-advance between fields.
+- **Emoji Picker**: 560+ emoji in eight categories, keyword search, recents,
+  skin tones, and a keyboard grid. Self-contained, no dependencies.
+- **Avatar Upload**: pick, drop, crop, and zoom a profile image with a circle or
+  square mask, initials fallback, and size or type limits.
 
 ## New blocks
 
-- **SaaS**: Settings 1 (account, preferences, danger zone), Settings 2
-  (security and notifications), Members 1 (team table with roles, invites, and
-  actions), and Onboarding 1 (a four-step setup wizard on the stepper).
-- **Auth**: Two-Factor Setup 1, a scan, verify, and recovery-codes flow built
-  on the QR code and OTP input.
-- **AI**, a new category: Prompt Input (composer with attachments, model
-  select, and stop), Message Thread (streaming bubbles, tool calls, reasoning,
-  and sources), and AI Chat 1, a full chat screen with history.
-- **Status pages**: the 404 category now also holds Coming Soon 1 (countdown
-  and notify form), Maintenance 1 (window, progress, and updates), and Error 1
-  (500 with technical details).
-- **Team 1** and **Stats 1**, two new marketing categories.
-- **Changelog 1**, a release-notes page with a date rail and tag filter.
-- **Env Editor** (cloud): a variables table with secrets, per-environment
-  chips, and `.env` import.
-- **Cookie Consent** (widgets): a banner with per-category switches that
-  remembers the choice.
+Four new block categories: **AI**, **Team**, **Stats**, and **Changelog**.
+
+- **SaaS**: Settings 1 (sticky section nav, label/control rows, dirty-aware
+  Save/Cancel, danger zone confirm), Settings 2 (password strength meter, 2FA
+  toggle, active sessions, notification switches with Pause all), Members 1
+  (live search, inline roles, pending invites with resend/revoke, invite dialog
+  with email tags), and Onboarding 1 (a four-step setup wizard on the stepper
+  with gated Continue).
+- **Auth**: Two-Factor Setup 1, a three-step scan, verify, and recovery-codes
+  flow built on the QR code and OTP input.
+- **AI**: Prompt Input (auto-growing composer with attachments, model picker,
+  and Stop), Message Thread (streaming bubbles, tool calls, reasoning, sources,
+  and a streaming cursor), and AI Chat 1 (history sidebar, model badge,
+  streaming thread, pinned composer).
+- **Status Pages** (renamed from Not Found): Coming Soon 1 (countdown and
+  notify form), Maintenance 1 (window, progress, and update log), and Error 1
+  (500 with collapsible technical details), alongside the existing 404 block.
+- **Team**: Team 1, a bordered member grid with initials placeholders, roles,
+  bios, and a hiring footer.
+- **Stats**: Stats 1, a metrics band with count-up numbers, optional deltas, and
+  a two-column header on large screens.
+- **Changelog**: Changelog 1, a release-notes page with a sticky date rail,
+  version badges, New / Improved / Fixed tags, and a tag filter.
+- **Cloud**: Env Editor, a variables table with masked secrets,
+  per-environment chips, `.env` import, key validation, and unsaved-change
+  tracking.
+- **Widgets**: Cookie Consent, a banner with per-category switches that
+  remembers the choice in localStorage.
 
 ## Browse blocks in place
 
@@ -58,23 +74,24 @@ one-line install command with a package-manager picker, and links to the
 source. A sticky chip row tracks where you are, so an eleven-block category is
 one click to any block.
 
-## Every item rebuilt on shadcn/ui
+## Rebuilt on shadcn/ui
 
 This is why the major version bump. The source that lands in your repo changed
 shape in ways you'll notice when you read or edit it:
 
-- **shadcn primitives everywhere.** Hand-rolled buttons, badges, labels,
+- **shadcn primitives across the catalog.** Hand-rolled buttons, badges, labels,
   textareas, and search boxes across components, blocks, and templates are now
-  `Button`, `Badge`, `Label`, `Textarea`, `InputGroup`, and `ToggleGroup`.
-  Template kits (agency-landing, rivr, usd-halo, nexacore) keep their look but
-  their button primitives wrap `Button`. The CLI installs the extra
-  dependencies for you; expect `button`, `badge`, `field`, `input-group`, or
-  `toggle-group` to be added to your `components/ui` when you add an item.
-- **Forms on `Field`.** Every form (auth, contact, newsletter, settings,
-  members, onboarding, cookie consent, and the demos) uses `FieldGroup`,
-  `Field`, `FieldLabel`, `FieldDescription`, and `FieldError`, with `data-invalid`
-  and `aria-describedby` wired. Errors and helper text look and behave the same
-  in every block.
+  `Button`, `Badge`, `Label`, `Textarea`, `InputGroup`, and `ToggleGroup` where
+  shadcn/ui already had the primitive. Template kits (agency-landing, rivr,
+  usd-halo, nexacore) keep their look but their button primitives wrap
+  `Button`. The CLI installs the extra dependencies for you; expect `button`,
+  `badge`, `field`, `input-group`, or `toggle-group` to be added to your
+  `components/ui` when you add or update an item.
+- **Forms on `Field`.** Form-heavy blocks and demos (auth, contact, newsletter,
+  settings, members, onboarding, cookie consent, and the examples) use
+  `FieldGroup`, `Field`, `FieldLabel`, `FieldDescription`, and `FieldError`,
+  with `data-invalid` and `aria-describedby` wired. Errors and helper text
+  look and behave the same in every block.
 - **One source style.** Components are named arrow-function exports, props are
   `<Name>Props` interfaces, variants are `class-variance-authority`, and prop
   types that used to override native attributes by accident (`title`, `name`,
@@ -88,4 +105,3 @@ shape in ways you'll notice when you read or edit it:
 - Emoji Picker no longer resizes as you hover different emoji names.
 - Page-scale blocks (AI Chat, Settings, Members, Onboarding, status pages)
   fill the viewport instead of collapsing in the preview.
-- Country Select's list drops Israel; Palestine (+970) is included.

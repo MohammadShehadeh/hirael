@@ -9,7 +9,7 @@ import {
   AnnouncementBarLink,
 } from "@/registry/hirael/components/announcement-bar";
 
-export default function AnnouncementBarDemo() {
+const AnnouncementBarDemo = () => {
   const t = useT();
 
   return (
@@ -69,4 +69,6 @@ export default function AnnouncementBarDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default AnnouncementBarDemo;

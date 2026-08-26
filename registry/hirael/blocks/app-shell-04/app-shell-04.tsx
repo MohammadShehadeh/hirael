@@ -52,7 +52,7 @@ import {
   SidebarTrigger,
 } from "@/registry/hirael/ui/sidebar";
 
-type NavItem = { icon: LucideIcon; label: string };
+interface NavItem { icon: LucideIcon; label: string}
 
 const NAV: readonly NavItem[] = [
   { icon: LayoutDashboard, label: "Overview" },
@@ -68,7 +68,7 @@ const FOOTER_NAV: readonly NavItem[] = [
   { icon: Settings, label: "Settings" },
 ];
 
-type Workspace = { name: string; tier: string };
+interface Workspace { name: string; tier: string}
 
 const WORKSPACES: readonly Workspace[] = [
   { name: "Plinth Labs", tier: "Pro workspace" },
@@ -87,7 +87,7 @@ const SLOTS = [
   { label: "slot · 08", className: "col-span-2 min-h-56 md:col-span-3" },
 ] as const;
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -106,9 +106,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-function Slot({ label, className }: { label: string; className?: string }) {
+const Slot = ({ label, className }: { label: string; className?: string }) => {
   return (
     <div
       aria-hidden
@@ -122,9 +122,9 @@ function Slot({ label, className }: { label: string; className?: string }) {
       </span>
     </div>
   );
-}
+};
 
-export default function AppShell04() {
+const AppShell04 = () => {
   const [workspace, setWorkspace] = React.useState(WORKSPACES[0].name);
   const [active, setActive] = React.useState(NAV[0].label);
   const [query, setQuery] = React.useState("");
@@ -366,4 +366,6 @@ export default function AppShell04() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default AppShell04;

@@ -3,16 +3,19 @@
 import * as React from "react";
 import { MapPin, Clock, ArrowRight } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/registry/hirael/ui/toggle-group";
 
-type Role = {
+interface Role {
   title: string;
   department: string;
   location: string;
   type: string;
   href: string;
-};
+}
 
 const ROLES: readonly Role[] = [
   {
@@ -61,7 +64,7 @@ const ROLES: readonly Role[] = [
 
 const DEPARTMENTS = ["All", "Engineering", "Design", "Marketing", "Sales"];
 
-export default function Careers01() {
+const Careers01 = () => {
   const [department, setDepartment] = React.useState("All");
 
   const roles =
@@ -85,27 +88,25 @@ export default function Careers01() {
           </p>
         </div>
 
-        <div data-slot="careers-filter" className="mt-10 flex flex-wrap gap-2">
-          {DEPARTMENTS.map((dept) => {
-            const active = dept === department;
-            return (
-              <button
-                key={dept}
-                type="button"
-                onClick={() => setDepartment(dept)}
-                aria-pressed={active}
-                className={cn(
-                  "rounded-full border px-3.5 py-1.5 text-sm transition-colors duration-150 ease-out",
-                  active
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border bg-card text-muted-foreground hover:bg-accent hover:text-foreground",
-                )}
-              >
-                {dept}
-              </button>
-            );
-          })}
-        </div>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          size="sm"
+          spacing={2}
+          value={department}
+          onValueChange={(next) => {
+            if (next) setDepartment(next);
+          }}
+          aria-label="Filter roles by department"
+          data-slot="careers-filter"
+          className="mt-10 flex-wrap"
+        >
+          {DEPARTMENTS.map((dept) => (
+            <ToggleGroupItem key={dept} value={dept} className="rounded-full">
+              {dept}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
 
         <ul data-slot="careers-list" className="mt-8 border-t border-border">
           {roles.map((role) => (
@@ -146,4 +147,6 @@ export default function Careers01() {
       </div>
     </section>
   );
-}
+};
+
+export default Careers01;

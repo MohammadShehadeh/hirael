@@ -31,7 +31,7 @@ const CARDS: ServiceCardProps[] = [
   },
 ];
 
-export function Trusted() {
+export const Trusted = () => {
   return (
     <section
       id="build"
@@ -80,4 +80,4 @@ export function Trusted() {
       />
     </section>
   );
-}
+};

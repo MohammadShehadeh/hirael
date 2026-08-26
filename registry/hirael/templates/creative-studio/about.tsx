@@ -17,7 +17,7 @@ const HEADING_SEGMENTS = [
 const BODY =
   "Over the last seven years we have partnered with directors, brands and festivals across Berlin, Paris and beyond, crafting cinema and series that have earned acclaim on stages worldwide.";
 
-export function About() {
+export const About = () => {
   return (
     <section className="bg-black px-4 py-20 sm:px-6 sm:py-28 md:py-32">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 rounded-[2rem] bg-[#101010] px-6 py-16 text-center sm:px-10 sm:py-20 md:px-16 md:py-24">
@@ -39,4 +39,4 @@ export function About() {
       </div>
     </section>
   );
-}
+};

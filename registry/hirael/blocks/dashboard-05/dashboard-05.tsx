@@ -33,14 +33,13 @@ const RANGES: { value: Range; label: string }[] = [
  * The sign gives the direction and `goodWhen` gives the intent, so falling
  * errors and falling latency read as wins without a per-metric special case.
  */
-type Delta = { value: number; unit: "%" | "pp"; goodWhen: "up" | "down" };
+interface Delta { value: number; unit: "%" | "pp"; goodWhen: "up" | "down"}
 
-type Kpi = {
+interface Kpi {
   label: string;
   value: string;
   delta: Delta;
-  spark: readonly number[];
-};
+  spark: readonly number[];}
 
 const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
   "4h": [
@@ -135,15 +134,14 @@ const LATENCY = [
   { label: "P99", ms: 412, pct: 86 },
 ].map((row) => ({ ...row, overTarget: row.ms > P95_TARGET_MS }));
 
-type Deploy = {
+interface Deploy {
   version: string;
   env: string;
   branch: string;
   message: string;
   date: string;
   status: "live" | "stable" | "canary";
-  cache: "warm" | "cold";
-};
+  cache: "warm" | "cold";}
 
 const DEPLOYS: readonly Deploy[] = [
   {
@@ -203,7 +201,7 @@ const UNIT_WORD: Record<Delta["unit"], string> = {
   pp: "percentage points",
 };
 
-function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
+const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
   const { value, unit, goodWhen } = delta;
   const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
   const direction = value > 0 ? "up" : value < 0 ? "down" : "unchanged";
@@ -230,9 +228,9 @@ function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
       {unit}
     </span>
   );
-}
+};
 
-function StatusBadge({ status }: { status: Deploy["status"] }) {
+const StatusBadge = ({ status }: { status: Deploy["status"] }) => {
   const meta = STATUS_META[status];
   return (
     <Badge
@@ -255,15 +253,15 @@ function StatusBadge({ status }: { status: Deploy["status"] }) {
       {meta.label}
     </Badge>
   );
-}
+};
 
-function Spark({
+const Spark = ({
   points,
   className,
 }: {
   points: readonly number[];
   className?: string;
-}) {
+}) => {
   const height = 32;
   const max = Math.max(...points);
   const min = Math.min(...points);
@@ -296,17 +294,17 @@ function Spark({
       />
     </svg>
   );
-}
+};
 
-function CellLabel({ children }: { children: React.ReactNode }) {
+const CellLabel = ({ children }: { children: React.ReactNode }) => {
   return (
     <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
       {children}
     </span>
   );
-}
+};
 
-export default function Dashboard05() {
+const Dashboard05 = () => {
   const [range, setRange] = React.useState<Range>("4h");
   const kpis = KPIS_BY_RANGE[range];
 
@@ -509,4 +507,6 @@ export default function Dashboard05() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard05;

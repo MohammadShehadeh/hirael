@@ -2,23 +2,22 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-export type Crumb = {
+export interface Crumb {
   label: string;
   /** Omit on the final, current crumb so it renders as plain text. */
-  href?: string;
-};
+  href?: string;}
 
 /**
  * Hierarchy trail shown above category and detail pages. Slash separators
  * stay neutral under RTL, so there's nothing directional to flip.
  */
-export function Breadcrumbs({
+export const Breadcrumbs = ({
   items,
   className,
 }: {
   items: Crumb[];
   className?: string;
-}) {
+}) => {
   return (
     <nav
       aria-label="Breadcrumb"
@@ -49,4 +48,4 @@ export function Breadcrumbs({
       })}
     </nav>
   );
-}
+};

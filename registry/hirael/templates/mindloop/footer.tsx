@@ -1,6 +1,6 @@
 const FOOTER_LINKS = ["Privacy", "Terms", "Contact"];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer className="border-t border-border/30 px-8 py-12 md:px-28">
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -21,4 +21,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

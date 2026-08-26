@@ -40,17 +40,16 @@ const INVOICE_TONE: Record<InvoiceState, string> = {
   Overdue: "bg-destructive",
 };
 
-type PlanSlice = { plan: PlanName; share: number; mrr: number };
+interface PlanSlice { plan: PlanName; share: number; mrr: number}
 
-type MonthData = {
+interface MonthData {
   label: string;
   total: number;
   /** Percent change against the month before; the sign carries direction. */
   delta: number;
   comparedWith: string;
   plans: readonly PlanSlice[];
-  invoices: readonly { state: InvoiceState; count: number; amount: number }[];
-};
+  invoices: readonly { state: InvoiceState; count: number; amount: number }[];}
 
 const MONTHS: readonly MonthData[] = [
   {
@@ -103,15 +102,14 @@ const MONTHS: readonly MonthData[] = [
   },
 ];
 
-type Txn = {
+interface Txn {
   initials: string;
   name: string;
   email: string;
   status: "paid" | "open" | "refunded";
   date: string;
   /** Signed, so a refund is negative in the data and not only in the label. */
-  amount: number;
-};
+  amount: number;}
 
 const TRANSACTIONS: readonly Txn[] = [
   {
@@ -195,12 +193,12 @@ const usdCents = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
 });
 
-function signedUsd(amount: number) {
+const signedUsd = (amount: number) => {
   const sign = amount > 0 ? "+" : amount < 0 ? "−" : "";
   return `${sign}${usdCents.format(Math.abs(amount))}`;
-}
+};
 
-function Donut({ plans }: { plans: readonly PlanSlice[] }) {
+const Donut = ({ plans }: { plans: readonly PlanSlice[] }) => {
   return (
     <svg viewBox="0 0 42 42" aria-hidden className="size-44">
       <circle
@@ -232,9 +230,9 @@ function Donut({ plans }: { plans: readonly PlanSlice[] }) {
       })}
     </svg>
   );
-}
+};
 
-export default function Dashboard03() {
+const Dashboard03 = () => {
   const [monthIndex, setMonthIndex] = React.useState(MONTHS.length - 1);
   const [page, setPage] = React.useState(0);
 
@@ -503,4 +501,6 @@ export default function Dashboard03() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard03;

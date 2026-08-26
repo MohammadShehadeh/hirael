@@ -10,9 +10,7 @@ import * as path from "node:path";
 import type { SourceFile } from "@/components/component-page";
 import { highlightCode, langFromPath } from "@/lib/highlight";
 
-export async function loadSource(
-  files: string[] | undefined,
-): Promise<Record<string, SourceFile>> {
+export const loadSource = async (files: string[] | undefined,): Promise<Record<string, SourceFile>> => {
   const out: Record<string, SourceFile> = {};
   if (!files) return out;
   await Promise.all(
@@ -35,4 +33,4 @@ export async function loadSource(
     }),
   );
   return out;
-}
+};

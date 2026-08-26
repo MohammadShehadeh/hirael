@@ -39,13 +39,13 @@ export interface DataTableColumnMeta {
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-export function getColumnPinningStyle<TData extends RowData>({
+export const getColumnPinningStyle = <TData extends RowData>({
   column,
   withBorder = false,
 }: {
   column: Column<DataTableFeatures, TData>;
   withBorder?: boolean;
-}): React.CSSProperties {
+}): React.CSSProperties => {
   const isPinned = column.getIsPinned();
   const isLastStartPinnedColumn =
     isPinned === "start" && column.getIsLastColumn("start");
@@ -70,12 +70,10 @@ export function getColumnPinningStyle<TData extends RowData>({
     width: column.getSize(),
     zIndex: isPinned ? 1 : undefined,
   };
-}
+};
 
-export function formatDate(
-  date: Date | string | number | undefined,
-  opts: Intl.DateTimeFormatOptions = {},
-) {
+export const formatDate = (date: Date | string | number | undefined,
+  opts: Intl.DateTimeFormatOptions = {},) => {
   if (!date) return "";
 
   try {
@@ -88,4 +86,4 @@ export function formatDate(
   } catch {
     return "";
   }
-}
+};

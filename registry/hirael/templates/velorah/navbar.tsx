@@ -1,3 +1,5 @@
+import { Button } from "@/registry/hirael/ui/button";
+
 import { Wordmark } from "./primitives";
 
 const NAV_LINKS = [
@@ -8,7 +10,7 @@ const NAV_LINKS = [
   { label: "Reach Us", href: "#" },
 ];
 
-export function Navbar() {
+export const Navbar = () => {
   return (
     <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
       <Wordmark className="text-3xl" />
@@ -25,12 +27,13 @@ export function Navbar() {
         ))}
       </div>
 
-      <button
+      <Button
         type="button"
-        className="liquid-glass rounded-full px-6 py-2.5 text-sm text-foreground transition-transform hover:scale-[1.03]"
+        variant="ghost"
+        className="liquid-glass h-auto rounded-full px-6 py-2.5 font-normal text-foreground transition-transform hover:scale-[1.03]"
       >
         Begin Journey
-      </button>
+      </Button>
     </nav>
   );
-}
+};

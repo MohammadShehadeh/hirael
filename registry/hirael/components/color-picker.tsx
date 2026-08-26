@@ -4,6 +4,7 @@ import * as React from "react";
 import { Pipette } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import { Input } from "@/registry/hirael/ui/input";
 import {
   Popover,
@@ -14,11 +15,23 @@ import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
 export type ColorFormat = "hex" | "rgb" | "hsl";
 
-type RGB = { r: number; g: number; b: number };
-type HSV = { h: number; s: number; v: number };
-type HSL = { h: number; s: number; l: number };
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+interface HSV {
+  h: number;
+  s: number;
+  v: number;
+}
+interface HSL {
+  h: number;
+  s: number;
+  l: number;
+}
 
-type ColorPickerContextValue = {
+interface ColorPickerContextValue {
   hsv: HSV;
   setHsv: (h: HSV) => void;
   hex: string;
@@ -30,13 +43,13 @@ type ColorPickerContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
   disabled?: boolean;
-};
+}
 
 const ColorPickerContext = React.createContext<ColorPickerContextValue | null>(
   null,
 );
 
-function useColorPicker() {
+const useColorPicker = () => {
   const ctx = React.useContext(ColorPickerContext);
   if (!ctx) {
     throw new Error(
@@ -44,13 +57,13 @@ function useColorPicker() {
     );
   }
   return ctx;
-}
+};
 
-function clamp(n: number, lo: number, hi: number) {
+const clamp = (n: number, lo: number, hi: number) => {
   return Math.max(lo, Math.min(hi, n));
-}
+};
 
-function hexToRgb(hex: string): RGB | null {
+const hexToRgb = (hex: string): RGB | null => {
   const m = hex.replace(/^#/, "");
   if (m.length === 3) {
     const r = parseInt(m[0] + m[0], 16);
@@ -67,15 +80,15 @@ function hexToRgb(hex: string): RGB | null {
     return { r, g, b };
   }
   return null;
-}
+};
 
-function rgbToHex({ r, g, b }: RGB): string {
+const rgbToHex = ({ r, g, b }: RGB): string => {
   const h = (n: number) =>
     clamp(Math.round(n), 0, 255).toString(16).padStart(2, "0");
   return `#${h(r)}${h(g)}${h(b)}`;
-}
+};
 
-function rgbToHsv({ r, g, b }: RGB): HSV {
+const rgbToHsv = ({ r, g, b }: RGB): HSV => {
   const rn = r / 255;
   const gn = g / 255;
   const bn = b / 255;
@@ -101,9 +114,9 @@ function rgbToHsv({ r, g, b }: RGB): HSV {
     if (h < 0) h += 360;
   }
   return { h, s: s * 100, v: v * 100 };
-}
+};
 
-function hsvToRgb({ h, s, v }: HSV): RGB {
+const hsvToRgb = ({ h, s, v }: HSV): RGB => {
   const sn = s / 100;
   const vn = v / 100;
   const c = vn * sn;
@@ -124,9 +137,9 @@ function hsvToRgb({ h, s, v }: HSV): RGB {
     g: (g + m) * 255,
     b: (b + m) * 255,
   };
-}
+};
 
-function rgbToHsl({ r, g, b }: RGB): HSL {
+const rgbToHsl = ({ r, g, b }: RGB): HSL => {
   const rn = r / 255;
   const gn = g / 255;
   const bn = b / 255;
@@ -151,7 +164,7 @@ function rgbToHsl({ r, g, b }: RGB): HSL {
     }
   }
   return { h, s: s * 100, l: l * 100 };
-}
+};
 
 const DEFAULT_SWATCHES = [
   "#0ea5e9",
@@ -164,7 +177,7 @@ const DEFAULT_SWATCHES = [
   "#64748b",
 ];
 
-export type ColorPickerProps = {
+export interface ColorPickerProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (hex: string) => void;
@@ -178,9 +191,9 @@ export type ColorPickerProps = {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   children?: React.ReactNode;
-};
+}
 
-function ColorPicker({
+const ColorPicker = ({
   value: valueProp,
   defaultValue = "#0ea5e9",
   onValueChange,
@@ -194,7 +207,7 @@ function ColorPicker({
   defaultOpen = false,
   onOpenChange,
   children,
-}: ColorPickerProps) {
+}: ColorPickerProps) => {
   const [openInternal, setOpenInternal] = React.useState(defaultOpen);
   const open = openProp ?? openInternal;
   const setOpen = React.useCallback(
@@ -322,9 +335,9 @@ function ColorPicker({
       </Popover>
     </ColorPickerContext.Provider>
   );
-}
+};
 
-function ColorPickerTrigger({
+const ColorPickerTrigger = ({
   placeholder = "Pick a color",
   className,
   children,
@@ -332,7 +345,7 @@ function ColorPickerTrigger({
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useColorPicker();
   return (
     <PopoverTrigger asChild>
@@ -362,9 +375,12 @@ function ColorPickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function ColorPickerArea({ className, ...props }: React.ComponentProps<"div">) {
+const ColorPickerArea = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">) => {
   const ctx = useColorPicker();
   const areaRef = React.useRef<HTMLDivElement>(null);
   const draggingRef = React.useRef(false);
@@ -467,12 +483,12 @@ function ColorPickerArea({ className, ...props }: React.ComponentProps<"div">) {
       />
     </div>
   );
-}
+};
 
-function ColorPickerHueSlider({
+const ColorPickerHueSlider = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const ctx = useColorPicker();
   const trackRef = React.useRef<HTMLDivElement>(null);
   const draggingRef = React.useRef(false);
@@ -558,12 +574,12 @@ function ColorPickerHueSlider({
       />
     </div>
   );
-}
+};
 
-function ColorPickerFormatTabs({
+const ColorPickerFormatTabs = ({
   className,
   ...props
-}: Omit<React.ComponentProps<typeof Tabs>, "value" | "onValueChange">) {
+}: Omit<React.ComponentProps<typeof Tabs>, "value" | "onValueChange">) => {
   const ctx = useColorPicker();
   const formats: ColorFormat[] = ["hex", "rgb", "hsl"];
   return (
@@ -587,12 +603,12 @@ function ColorPickerFormatTabs({
       </TabsList>
     </Tabs>
   );
-}
+};
 
-function ColorPickerFormatInputs({
+const ColorPickerFormatInputs = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const ctx = useColorPicker();
   const rgb = hexToRgb(ctx.hex) ?? { r: 0, g: 0, b: 0 };
   const hsl = rgbToHsl(rgb);
@@ -703,15 +719,17 @@ function ColorPickerFormatInputs({
       ))}
     </div>
   );
-}
+};
 
-type EyeDropperResult = { sRGBHex: string };
+interface EyeDropperResult {
+  sRGBHex: string;
+}
 type EyeDropperCtor = new () => { open: () => Promise<EyeDropperResult> };
 
-function ColorPickerEyedropper({
+const ColorPickerEyedropper = ({
   className,
   ...props
-}: Omit<React.ComponentProps<"button">, "onClick" | "children">) {
+}: Omit<React.ComponentProps<"button">, "onClick" | "children">) => {
   const ctx = useColorPicker();
   const [supported, setSupported] = React.useState(false);
 
@@ -722,9 +740,11 @@ function ColorPickerEyedropper({
   if (!supported) return null;
 
   return (
-    <button
+    <Button
       {...props}
       type="button"
+      variant="outline"
+      size="icon-sm"
       data-slot="color-picker-eyedropper"
       aria-label="Pick color from screen"
       onClick={async () => {
@@ -740,20 +760,17 @@ function ColorPickerEyedropper({
           // user cancelled or unsupported
         }
       }}
-      className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-sm border border-input bg-transparent text-muted-foreground transition-colors hover:bg-accent hover:text-foreground",
-        className,
-      )}
+      className={cn("shrink-0", className)}
     >
       <Pipette className="size-3.5" />
-    </button>
+    </Button>
   );
-}
+};
 
-function ColorPickerSwatches({
+const ColorPickerSwatches = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const ctx = useColorPicker();
   if (ctx.swatches.length === 0) return null;
   return (
@@ -787,12 +804,12 @@ function ColorPickerSwatches({
       })}
     </div>
   );
-}
+};
 
-function ColorPickerContent({
+const ColorPickerContent = ({
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent>) {
+}: React.ComponentProps<typeof PopoverContent>) => {
   const ctx = useColorPicker();
   return (
     <PopoverContent
@@ -821,7 +838,7 @@ function ColorPickerContent({
       </div>
     </PopoverContent>
   );
-}
+};
 
 export {
   ColorPicker,

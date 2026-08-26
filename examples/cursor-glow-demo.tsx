@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { CursorGlow } from "@/registry/hirael/components/cursor-glow";
 
-export default function CursorGlowDemo() {
+const CursorGlowDemo = () => {
   const t = useT();
 
   return (
@@ -27,4 +27,6 @@ export default function CursorGlowDemo() {
       </div>
     </CursorGlow>
   );
-}
+};
+
+export default CursorGlowDemo;

@@ -6,7 +6,7 @@ import { QRCode } from "@/registry/hirael/components/qr-code";
 const longPayload =
   "https://hirael.com/components/qr-code?utm_source=showcase&utm_medium=demo&utm_campaign=error-correction";
 
-export default function QrCodeDemo() {
+const QrCodeDemo = () => {
   const t = useT();
 
   return (
@@ -88,4 +88,6 @@ export default function QrCodeDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default QrCodeDemo;

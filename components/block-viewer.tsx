@@ -36,7 +36,7 @@ const ORDER: Viewport[] = ["mobile", "tablet", "desktop"];
 const MIN_HEIGHT = 320;
 const MAX_HEIGHT = 1600;
 
-export function BlockViewer({
+export const BlockViewer = ({
   title,
   minHeight = 800,
   embedHref,
@@ -45,7 +45,7 @@ export function BlockViewer({
   minHeight?: number;
   /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
   embedHref: string;
-}) {
+}) => {
   const [viewport, setViewport] = React.useState<Viewport>("desktop");
   const [key, setKey] = React.useState(0);
   const [rtl, setRtl] = React.useState(false);
@@ -167,4 +167,4 @@ export function BlockViewer({
       </div>
     </div>
   );
-}
+};

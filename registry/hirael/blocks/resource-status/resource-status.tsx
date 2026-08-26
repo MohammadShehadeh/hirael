@@ -37,7 +37,7 @@ const stateLabel: Record<ResourceState, string> = {
 
 type ResourceStatusProps = React.ComponentProps<"div">;
 
-function ResourceStatus({ className, ...props }: ResourceStatusProps) {
+const ResourceStatus = ({ className, ...props }: ResourceStatusProps) => {
   return (
     <div
       data-slot="resource-status"
@@ -48,18 +48,17 @@ function ResourceStatus({ className, ...props }: ResourceStatusProps) {
       {...props}
     />
   );
-}
-
-type ResourceStatusBannerProps = React.ComponentProps<"div"> & {
-  state: ResourceState;
 };
 
-function ResourceStatusBanner({
+interface ResourceStatusBannerProps extends React.ComponentProps<"div"> {
+  state: ResourceState;}
+
+const ResourceStatusBanner = ({
   state,
   className,
   children,
   ...props
-}: ResourceStatusBannerProps) {
+}: ResourceStatusBannerProps) => {
   return (
     <div
       data-slot="resource-status-banner"
@@ -76,11 +75,11 @@ function ResourceStatusBanner({
       </span>
     </div>
   );
-}
+};
 
 type ResourceStatusListProps = React.ComponentProps<"ul">;
 
-function ResourceStatusList({ className, ...props }: ResourceStatusListProps) {
+const ResourceStatusList = ({ className, ...props }: ResourceStatusListProps) => {
   return (
     <ul
       data-slot="resource-status-list"
@@ -88,16 +87,15 @@ function ResourceStatusList({ className, ...props }: ResourceStatusListProps) {
       {...props}
     />
   );
-}
+};
 
-type ResourceStatusItemProps = React.ComponentProps<"li"> & {
+interface ResourceStatusItemProps extends React.ComponentProps<"li"> {
   name: React.ReactNode;
   state: ResourceState;
   description?: React.ReactNode;
-  uptime?: React.ReactNode;
-};
+  uptime?: React.ReactNode;}
 
-function ResourceStatusItem({
+const ResourceStatusItem = ({
   name,
   state,
   description,
@@ -105,7 +103,7 @@ function ResourceStatusItem({
   className,
   children,
   ...props
-}: ResourceStatusItemProps) {
+}: ResourceStatusItemProps) => {
   return (
     <li
       data-slot="resource-status-item"
@@ -136,20 +134,19 @@ function ResourceStatusItem({
       </div>
     </li>
   );
-}
-
-type ResourceStatusDotProps = React.ComponentProps<"span"> & {
-  state: ResourceState;
-  /** Pulse the dot to signal a live/active condition. */
-  pulse?: boolean;
 };
 
-function ResourceStatusDot({
+interface ResourceStatusDotProps extends React.ComponentProps<"span"> {
+  state: ResourceState;
+  /** Pulse the dot to signal a live/active condition. */
+  pulse?: boolean;}
+
+const ResourceStatusDot = ({
   state,
   pulse,
   className,
   ...props
-}: ResourceStatusDotProps) {
+}: ResourceStatusDotProps) => {
   return (
     <span
       data-slot="resource-status-dot"
@@ -174,22 +171,21 @@ function ResourceStatusDot({
       />
     </span>
   );
-}
-
-type ResourceStatusIndicatorProps = Omit<
-  React.ComponentProps<"span">,
-  "children"
-> & {
-  state: ResourceState;
-  children?: React.ReactNode;
 };
 
-function ResourceStatusIndicator({
+interface ResourceStatusIndicatorProps extends Omit<
+  React.ComponentProps<"span">,
+  "children"
+> {
+  state: ResourceState;
+  children?: React.ReactNode;}
+
+const ResourceStatusIndicator = ({
   state,
   className,
   children,
   ...props
-}: ResourceStatusIndicatorProps) {
+}: ResourceStatusIndicatorProps) => {
   return (
     <span
       data-slot="resource-status-indicator"
@@ -205,7 +201,7 @@ function ResourceStatusIndicator({
       {children ?? stateLabel[state]}
     </span>
   );
-}
+};
 
 export {
   ResourceStatus,
@@ -216,7 +212,7 @@ export {
   ResourceStatusIndicator,
 };
 
-export default function ResourceStatusBlock() {
+const ResourceStatusBlock = () => {
   return (
     <section
       data-slot="resource-status-block"
@@ -261,4 +257,6 @@ export default function ResourceStatusBlock() {
       </ResourceStatus>
     </section>
   );
-}
+};
+
+export default ResourceStatusBlock;

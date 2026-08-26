@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type MarqueeProps = React.ComponentProps<"div"> & {
+export interface MarqueeProps extends React.ComponentProps<"div"> {
   /** Scroll the opposite direction. */
   reverse?: boolean;
   /** Pause while the pointer is over the track. */
@@ -14,8 +14,7 @@ export type MarqueeProps = React.ComponentProps<"div"> & {
   /** Seconds for one full loop. Lower is faster. */
   duration?: number;
   /** Gap between items, any CSS length. */
-  gap?: string;
-};
+  gap?: string;}
 
 // Keyframes travel with the component so it works the moment it is copied
 // into a project — no Tailwind config or globals.css edits required.
@@ -39,7 +38,7 @@ const MARQUEE_KEYFRAMES = `
 }
 `;
 
-function Marquee({
+const Marquee = ({
   reverse = false,
   pauseOnHover = false,
   vertical = false,
@@ -50,7 +49,7 @@ function Marquee({
   style,
   children,
   ...props
-}: MarqueeProps) {
+}: MarqueeProps) => {
   const trackStyle: React.CSSProperties = {
     animationName: vertical ? "msh-marquee-y" : "msh-marquee-x",
     animationDuration: "var(--marquee-duration)",
@@ -96,6 +95,6 @@ function Marquee({
       ))}
     </div>
   );
-}
+};
 
 export { Marquee };

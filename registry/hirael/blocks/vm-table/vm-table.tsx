@@ -5,12 +5,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export type VmState =
-  | "running"
-  | "stopped"
-  | "starting"
-  | "stopping"
-  | "error"
-  | "suspended";
+  "running" | "stopped" | "starting" | "stopping" | "error" | "suspended";
 
 const vmStateMeta: Record<
   VmState,
@@ -42,11 +37,11 @@ const vmStateMeta: Record<
   },
 };
 
-type VmTableProps = React.ComponentProps<"table"> & {
+interface VmTableProps extends React.ComponentProps<"table"> {
   caption?: React.ReactNode;
-};
+}
 
-function VmTable({ className, caption, children, ...props }: VmTableProps) {
+const VmTable = ({ className, caption, children, ...props }: VmTableProps) => {
   return (
     <div
       data-slot="vm-table-container"
@@ -66,9 +61,12 @@ function VmTable({ className, caption, children, ...props }: VmTableProps) {
       </table>
     </div>
   );
-}
+};
 
-function VmTableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+const VmTableHeader = ({
+  className,
+  ...props
+}: React.ComponentProps<"thead">) => {
   return (
     <thead
       data-slot="vm-table-header"
@@ -79,9 +77,9 @@ function VmTableHeader({ className, ...props }: React.ComponentProps<"thead">) {
       {...props}
     />
   );
-}
+};
 
-function VmTableHead({ className, ...props }: React.ComponentProps<"th">) {
+const VmTableHead = ({ className, ...props }: React.ComponentProps<"th">) => {
   return (
     <th
       data-slot="vm-table-head"
@@ -93,9 +91,12 @@ function VmTableHead({ className, ...props }: React.ComponentProps<"th">) {
       {...props}
     />
   );
-}
+};
 
-function VmTableBody({ className, ...props }: React.ComponentProps<"tbody">) {
+const VmTableBody = ({
+  className,
+  ...props
+}: React.ComponentProps<"tbody">) => {
   return (
     <tbody
       data-slot="vm-table-body"
@@ -103,9 +104,9 @@ function VmTableBody({ className, ...props }: React.ComponentProps<"tbody">) {
       {...props}
     />
   );
-}
+};
 
-function VmTableRow({ className, ...props }: React.ComponentProps<"tr">) {
+const VmTableRow = ({ className, ...props }: React.ComponentProps<"tr">) => {
   return (
     <tr
       data-slot="vm-table-row"
@@ -113,9 +114,9 @@ function VmTableRow({ className, ...props }: React.ComponentProps<"tr">) {
       {...props}
     />
   );
-}
+};
 
-function VmTableCell({ className, ...props }: React.ComponentProps<"td">) {
+const VmTableCell = ({ className, ...props }: React.ComponentProps<"td">) => {
   return (
     <td
       data-slot="vm-table-cell"
@@ -123,13 +124,18 @@ function VmTableCell({ className, ...props }: React.ComponentProps<"td">) {
       {...props}
     />
   );
-}
-
-type VmTableNameProps = React.ComponentProps<"td"> & {
-  id?: React.ReactNode;
 };
 
-function VmTableName({ id, className, children, ...props }: VmTableNameProps) {
+interface VmTableNameProps extends Omit<React.ComponentProps<"td">, "id"> {
+  id?: React.ReactNode;
+}
+
+const VmTableName = ({
+  id,
+  className,
+  children,
+  ...props
+}: VmTableNameProps) => {
   return (
     <td
       data-slot="vm-table-name"
@@ -144,14 +150,14 @@ function VmTableName({ id, className, children, ...props }: VmTableNameProps) {
       </div>
     </td>
   );
-}
-
-type VmStatusProps = Omit<React.ComponentProps<"span">, "children"> & {
-  state: VmState;
-  children?: React.ReactNode;
 };
 
-function VmStatus({ state, className, children, ...props }: VmStatusProps) {
+interface VmStatusProps extends Omit<React.ComponentProps<"span">, "children"> {
+  state: VmState;
+  children?: React.ReactNode;
+}
+
+const VmStatus = ({ state, className, children, ...props }: VmStatusProps) => {
   const meta = vmStateMeta[state];
   return (
     <span
@@ -182,7 +188,7 @@ function VmStatus({ state, className, children, ...props }: VmStatusProps) {
       {children ?? meta.label}
     </span>
   );
-}
+};
 
 export {
   VmTable,
@@ -251,7 +257,7 @@ const VM_ROWS: {
   },
 ];
 
-export default function VmTableBlock() {
+const VmTableBlock = () => {
   return (
     <section
       data-slot="vm-table-block"
@@ -295,4 +301,6 @@ export default function VmTableBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default VmTableBlock;

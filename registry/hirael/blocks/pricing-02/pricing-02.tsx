@@ -16,21 +16,19 @@ import { cn } from "@/lib/utils";
 
 type Cell = boolean | string;
 
-type Row = {
+interface Row {
   feature: string;
   hobby: Cell;
   pro: Cell;
-  team: Cell;
-};
+  team: Cell;}
 
-type Tier = {
+interface Tier {
   key: "hobby" | "pro" | "team";
   name: string;
   price: string;
   cta: string;
   ctaVariant: "default" | "outline";
-  featured?: boolean;
-};
+  featured?: boolean;}
 
 const TIERS: readonly Tier[] = [
   {
@@ -73,7 +71,7 @@ const ROWS: readonly Row[] = [
   { feature: "Full source ownership", hobby: true, pro: true, team: true },
 ];
 
-function CellContent({ value }: { value: Cell }) {
+const CellContent = ({ value }: { value: Cell }) => {
   if (value === true) {
     return <Check className="size-4 text-foreground" aria-label="Included" />;
   }
@@ -90,9 +88,9 @@ function CellContent({ value }: { value: Cell }) {
       {value}
     </span>
   );
-}
+};
 
-export default function Pricing02() {
+const Pricing02 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
@@ -177,4 +175,6 @@ export default function Pricing02() {
       </div>
     </section>
   );
-}
+};
+
+export default Pricing02;

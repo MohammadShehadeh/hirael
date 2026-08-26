@@ -3,28 +3,28 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   PhoneInput,
   PhoneInputCountrySelect,
   PhoneInputField,
 } from "@/registry/hirael/components/phone-input";
 
-export default function PhoneInputDemo() {
+const PhoneInputDemo = () => {
   const t = useT();
 
   const [basic, setBasic] = React.useState("");
   const [composed, setComposed] = React.useState("+442071838750");
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label htmlFor="ph-basic">
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="ph-basic">
           {t({
             en: "Phone · default US",
             ar: "الهاتف · الولايات المتحدة افتراضيًا",
           })}
-        </Label>
+        </FieldLabel>
         <PhoneInput
           id="ph-basic"
           value={basic}
@@ -39,15 +39,15 @@ export default function PhoneInputDemo() {
         <p className="font-mono text-[11px] text-muted-foreground">
           E.164: {basic || "-"}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label htmlFor="ph-composed">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="ph-composed">
           {t({
             en: "Phone · pre-filled UK number",
             ar: "الهاتف · رقم بريطاني مُعبّأ مسبقًا",
           })}
-        </Label>
+        </FieldLabel>
         <PhoneInput
           id="ph-composed"
           value={composed}
@@ -60,7 +60,9 @@ export default function PhoneInputDemo() {
         <p className="font-mono text-[11px] text-muted-foreground">
           E.164: {composed || "-"}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default PhoneInputDemo;

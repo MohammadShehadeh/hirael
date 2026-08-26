@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 type TerminalProps = React.ComponentProps<"div">;
 
-function Terminal({ className, ...props }: TerminalProps) {
+const Terminal = ({ className, ...props }: TerminalProps) => {
   return (
     <div
       data-slot="terminal"
@@ -18,15 +18,15 @@ function Terminal({ className, ...props }: TerminalProps) {
       {...props}
     />
   );
-}
+};
 
 type TerminalHeaderProps = React.ComponentProps<"div">;
 
-function TerminalHeader({
+const TerminalHeader = ({
   className,
   children,
   ...props
-}: TerminalHeaderProps) {
+}: TerminalHeaderProps) => {
   return (
     <div
       data-slot="terminal-header"
@@ -48,19 +48,18 @@ function TerminalHeader({
       ) : null}
     </div>
   );
-}
-
-type TerminalBodyProps = React.ComponentProps<"div"> & {
-  /** Stay pinned to the newest line as content grows. */
-  follow?: boolean;
 };
 
-function TerminalBody({
+interface TerminalBodyProps extends React.ComponentProps<"div"> {
+  /** Stay pinned to the newest line as content grows. */
+  follow?: boolean;}
+
+const TerminalBody = ({
   follow = true,
   className,
   children,
   ...props
-}: TerminalBodyProps) {
+}: TerminalBodyProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const pinnedRef = React.useRef(true);
 
@@ -90,11 +89,11 @@ function TerminalBody({
       {children}
     </div>
   );
-}
+};
 
 type TerminalLineProps = React.ComponentProps<"div">;
 
-function TerminalLine({ className, ...props }: TerminalLineProps) {
+const TerminalLine = ({ className, ...props }: TerminalLineProps) => {
   return (
     <div
       data-slot="terminal-line"
@@ -105,18 +104,17 @@ function TerminalLine({ className, ...props }: TerminalLineProps) {
       {...props}
     />
   );
-}
-
-type TerminalPromptProps = React.ComponentProps<"span"> & {
-  symbol?: React.ReactNode;
 };
 
-function TerminalPrompt({
+interface TerminalPromptProps extends React.ComponentProps<"span"> {
+  symbol?: React.ReactNode;}
+
+const TerminalPrompt = ({
   symbol = "❯",
   className,
   children,
   ...props
-}: TerminalPromptProps) {
+}: TerminalPromptProps) => {
   return (
     <span
       data-slot="terminal-prompt"
@@ -127,25 +125,24 @@ function TerminalPrompt({
       {symbol}{" "}
     </span>
   );
-}
-
-type TerminalInputProps = Omit<
-  React.ComponentProps<"input">,
-  "onSubmit" | "value" | "defaultValue"
-> & {
-  onSubmit?: (command: string) => void;
-  symbol?: React.ReactNode;
-  user?: React.ReactNode;
 };
 
-function TerminalInput({
+interface TerminalInputProps extends Omit<
+  React.ComponentProps<"input">,
+  "onSubmit" | "value" | "defaultValue"
+> {
+  onSubmit?: (command: string) => void;
+  symbol?: React.ReactNode;
+  user?: React.ReactNode;}
+
+const TerminalInput = ({
   onSubmit,
   symbol,
   user,
   className,
   disabled,
   ...props
-}: TerminalInputProps) {
+}: TerminalInputProps) => {
   const [value, setValue] = React.useState("");
   const historyRef = React.useRef<string[]>([]);
   const cursorRef = React.useRef(-1);
@@ -194,7 +191,7 @@ function TerminalInput({
       />
     </div>
   );
-}
+};
 
 export {
   Terminal,
@@ -205,11 +202,11 @@ export {
   TerminalInput,
 };
 
-type TerminalEntry = { kind: "command" | "output" | "error"; text: string };
+interface TerminalEntry { kind: "command" | "output" | "error"; text: string}
 
 const TERMINAL_USER = "deploy@edge";
 
-export default function TerminalBlock() {
+const TerminalBlock = () => {
   const [entries, setEntries] = React.useState<TerminalEntry[]>([
     { kind: "output", text: "hirael cloud shell. Type `help` to start" },
   ]);
@@ -294,4 +291,6 @@ export default function TerminalBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default TerminalBlock;

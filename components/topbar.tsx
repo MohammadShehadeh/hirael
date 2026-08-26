@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/registry/hirael/ui/separator";
 import { SidebarTrigger } from "@/registry/hirael/ui/sidebar";
 
-export function ShowcaseTopbar({ stars }: { stars?: number | null }) {
+export const ShowcaseTopbar = ({ stars }: { stars?: number | null }) => {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -60,4 +60,4 @@ export function ShowcaseTopbar({ stars }: { stars?: number | null }) {
       </div>
     </header>
   );
-}
+};

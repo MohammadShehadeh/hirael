@@ -22,16 +22,15 @@ const healthLabel: Record<NodeHealth, string> = {
   idle: "Idle",
 };
 
-type ClusterMapProps = React.ComponentProps<"div"> & {
-  columns?: number;
-};
+interface ClusterMapProps extends React.ComponentProps<"div"> {
+  columns?: number;}
 
-function ClusterMap({
+const ClusterMap = ({
   columns = 12,
   className,
   style,
   ...props
-}: ClusterMapProps) {
+}: ClusterMapProps) => {
   return (
     <div
       data-slot="cluster-map"
@@ -43,17 +42,16 @@ function ClusterMap({
       {...props}
     />
   );
-}
+};
 
-type ClusterNodeProps = Omit<React.ComponentProps<"button">, "children"> & {
+interface ClusterNodeProps extends Omit<React.ComponentProps<"button">, "children"> {
   health: NodeHealth;
   label?: React.ReactNode;
   /** Utilization 0–1, drives the fill intensity. */
   load?: number;
-  active?: boolean;
-};
+  active?: boolean;}
 
-function ClusterNode({
+const ClusterNode = ({
   health,
   label,
   load = 1,
@@ -61,7 +59,7 @@ function ClusterNode({
   className,
   title,
   ...props
-}: ClusterNodeProps) {
+}: ClusterNodeProps) => {
   const opacity = 0.25 + Math.max(0, Math.min(1, load)) * 0.75;
   return (
     <button
@@ -87,11 +85,11 @@ function ClusterNode({
       />
     </button>
   );
-}
+};
 
 type ClusterMapLegendProps = React.ComponentProps<"div">;
 
-function ClusterMapLegend({ className, ...props }: ClusterMapLegendProps) {
+const ClusterMapLegend = ({ className, ...props }: ClusterMapLegendProps) => {
   return (
     <div
       data-slot="cluster-map-legend"
@@ -102,18 +100,17 @@ function ClusterMapLegend({ className, ...props }: ClusterMapLegendProps) {
       {...props}
     />
   );
-}
-
-type ClusterMapLegendItemProps = React.ComponentProps<"span"> & {
-  health: NodeHealth;
 };
 
-function ClusterMapLegendItem({
+interface ClusterMapLegendItemProps extends React.ComponentProps<"span"> {
+  health: NodeHealth;}
+
+const ClusterMapLegendItem = ({
   health,
   className,
   children,
   ...props
-}: ClusterMapLegendItemProps) {
+}: ClusterMapLegendItemProps) => {
   return (
     <span
       data-slot="cluster-map-legend-item"
@@ -127,21 +124,21 @@ function ClusterMapLegendItem({
       {children ?? healthLabel[health]}
     </span>
   );
-}
+};
 
 export { ClusterMap, ClusterNode, ClusterMapLegend, ClusterMapLegendItem };
 
 const CLUSTER_COLUMNS = 16;
 const CLUSTER_ROWS = 6;
 
-function clusterHealthFor(i: number): NodeHealth {
+const clusterHealthFor = (i: number): NodeHealth => {
   if (i % 37 === 0) return "critical";
   if (i % 11 === 0) return "warning";
   if (i % 9 === 0) return "idle";
   return "healthy";
-}
+};
 
-export default function ClusterMapBlock() {
+const ClusterMapBlock = () => {
   const nodes = Array.from(
     { length: CLUSTER_COLUMNS * CLUSTER_ROWS },
     (_, i) => ({
@@ -183,4 +180,6 @@ export default function ClusterMapBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default ClusterMapBlock;

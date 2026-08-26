@@ -21,16 +21,16 @@ const PARAGRAPH_1_HIGHLIGHTS = ["curiosity", "meets", "clarity"];
 const PARAGRAPH_2 =
   "A platform where content, community, and insight flow together, with less noise, less friction, and more meaning for everyone involved.";
 
-type Token = { text: string; highlight: boolean };
+interface Token { text: string; highlight: boolean}
 
-function tokenize(text: string, highlights: string[]): Token[] {
+const tokenize = (text: string, highlights: string[]): Token[] => {
   return text.split(" ").map((word) => ({
     text: word,
     highlight: highlights.includes(word.replace(/[^a-zA-Z]/g, "")),
   }));
-}
+};
 
-function Word({
+const Word = ({
   token,
   index,
   total,
@@ -42,7 +42,7 @@ function Word({
   total: number;
   progress: MotionValue<number>;
   reduce: boolean;
-}) {
+}) => {
   const start = index / total;
   const end = (index + 0.9) / total;
   const opacity = useTransform(progress, [start, end], [0.15, 1]);
@@ -54,9 +54,9 @@ function Word({
       {token.text}{" "}
     </motion.span>
   );
-}
+};
 
-export function Mission() {
+export const Mission = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({
@@ -116,4 +116,4 @@ export function Mission() {
       </div>
     </section>
   );
-}
+};

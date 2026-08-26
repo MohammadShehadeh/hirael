@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 import { InstagramIcon, LinkedinIcon, Logo, TwitterIcon } from "./primitives";
 
@@ -19,7 +19,7 @@ const SOCIAL_LINKS = [
   { label: "Twitter", Icon: TwitterIcon },
 ];
 
-export function Navbar() {
+export const Navbar = () => {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-8 py-4 md:px-28">
       <nav className="flex items-center justify-between gap-6">
@@ -50,20 +50,20 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           {SOCIAL_LINKS.map(({ label, Icon }) => (
-            <a
+            <Button
               key={label}
-              href="#"
-              aria-label={label}
-              className={cn(
-                "liquid-glass flex h-10 w-10 items-center justify-center rounded-full",
-                "text-muted-foreground transition-colors hover:text-foreground",
-              )}
+              asChild
+              variant="ghost"
+              size="icon-lg"
+              className="liquid-glass rounded-full text-muted-foreground hover:text-foreground"
             >
-              <Icon className="h-4 w-4" />
-            </a>
+              <a href="#" aria-label={label}>
+                <Icon className="size-4" />
+              </a>
+            </Button>
           ))}
         </div>
       </nav>
     </header>
   );
-}
+};

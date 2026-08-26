@@ -32,18 +32,18 @@ import {
 
 type Section = "components" | "blocks" | "templates" | "changelog";
 
-function sectionFor(pathname: string): Section {
+const sectionFor = (pathname: string): Section => {
   if (pathname === "/blocks" || pathname.startsWith("/blocks/"))
     return "blocks";
   if (pathname === "/templates" || pathname.startsWith("/templates/"))
     return "templates";
   if (pathname === "/changelog") return "changelog";
   return "components";
-}
+};
 
-export type SidebarRelease = { slug: string; label: string; date: string };
+export interface SidebarRelease { slug: string; label: string; date: string}
 
-export function ShowcaseSidebar({ releases }: { releases: SidebarRelease[] }) {
+export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) => {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -145,9 +145,9 @@ export function ShowcaseSidebar({ releases }: { releases: SidebarRelease[] }) {
       </SidebarContent>
     </Sidebar>
   );
-}
+};
 
-function revealActiveItem(container: HTMLElement) {
+const revealActiveItem = (container: HTMLElement) => {
   const active = container.querySelector<HTMLElement>(
     '[data-sidebar="menu-button"][data-active="true"]',
   );
@@ -156,19 +156,19 @@ function revealActiveItem(container: HTMLElement) {
   const item = active.getBoundingClientRect();
   const isHidden = item.top < box.top || item.bottom > box.bottom;
   if (isHidden) active.scrollIntoView({ block: "center" });
-}
+};
 
-function Count({ n }: { n: number }) {
+const Count = ({ n }: { n: number }) => {
   return (
     <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
       {n}
     </span>
   );
-}
+};
 
-type GroupProps = { isActive: (href: string) => boolean };
+interface GroupProps { isActive: (href: string) => boolean}
 
-function ComponentGroups({ isActive }: GroupProps) {
+const ComponentGroups = ({ isActive }: GroupProps) => {
   return (
     <>
       {COMPONENT_CATEGORY_ORDER.map((cat) => {
@@ -200,9 +200,9 @@ function ComponentGroups({ isActive }: GroupProps) {
       })}
     </>
   );
-}
+};
 
-function BlockGroups({ isActive }: GroupProps) {
+const BlockGroups = ({ isActive }: GroupProps) => {
   return (
     <>
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => (
@@ -234,9 +234,9 @@ function BlockGroups({ isActive }: GroupProps) {
       ))}
     </>
   );
-}
+};
 
-function TemplateGroup({ isActive }: GroupProps) {
+const TemplateGroup = ({ isActive }: GroupProps) => {
   return (
     <SidebarGroup>
       <SidebarGroupLabel asChild>
@@ -260,9 +260,9 @@ function TemplateGroup({ isActive }: GroupProps) {
       </SidebarGroupContent>
     </SidebarGroup>
   );
-}
+};
 
-function ReleaseGroup({ releases }: { releases: SidebarRelease[] }) {
+const ReleaseGroup = ({ releases }: { releases: SidebarRelease[] }) => {
   if (!releases.length) return null;
   return (
     <SidebarGroup>
@@ -285,4 +285,4 @@ function ReleaseGroup({ releases }: { releases: SidebarRelease[] }) {
       </SidebarGroupContent>
     </SidebarGroup>
   );
-}
+};

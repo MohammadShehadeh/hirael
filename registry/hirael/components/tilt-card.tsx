@@ -11,7 +11,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-type TiltCardProps = React.ComponentProps<"div"> & {
+interface TiltCardProps extends React.ComponentProps<"div"> {
   /** Maximum tilt on each axis, in degrees. */
   max?: number;
   /** Scale applied while pointing. */
@@ -19,12 +19,11 @@ type TiltCardProps = React.ComponentProps<"div"> & {
   /** Perspective depth, in px. */
   perspective?: number;
   /** Render a cursor-following glare highlight. */
-  glare?: boolean;
-};
+  glare?: boolean;}
 
 const SPRING = { stiffness: 200, damping: 18, mass: 0.3 };
 
-function TiltCard({
+const TiltCard = ({
   className,
   children,
   style,
@@ -33,7 +32,7 @@ function TiltCard({
   perspective = 800,
   glare = false,
   ...props
-}: TiltCardProps) {
+}: TiltCardProps) => {
   const reduced = useReducedMotion();
   const rotateX = useSpring(0, SPRING);
   const rotateY = useSpring(0, SPRING);
@@ -84,6 +83,6 @@ function TiltCard({
       </motion.div>
     </div>
   );
-}
+};
 
 export { TiltCard };

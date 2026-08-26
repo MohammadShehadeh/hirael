@@ -3,6 +3,9 @@
 import * as React from "react";
 import { ArrowRight, Globe } from "lucide-react";
 
+import { Button } from "@/registry/hirael/ui/button";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
+
 import { Navbar } from "./navbar";
 import { InstagramIcon, TwitterIcon } from "./primitives";
 
@@ -21,13 +24,13 @@ const SOCIAL_LINKS: {
   { label: "Website", Icon: Globe },
 ];
 
-export function Hero({
+export const Hero = ({
   videoSrc = HERO_VIDEO_URL,
   posterSrc,
 }: {
   videoSrc?: string;
   posterSrc?: string;
-}) {
+}) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const rafRef = React.useRef<number | null>(null);
   const restartTimerRef = React.useRef<number | null>(null);
@@ -148,22 +151,28 @@ export function Hero({
 
         <form
           onSubmit={(event) => event.preventDefault()}
-          className="liquid-glass flex w-full max-w-xl items-center gap-3 rounded-full py-2 pe-2 ps-6"
+          className="liquid-glass w-full max-w-xl rounded-full py-2 pe-2 ps-6"
         >
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="Enter your email"
-            aria-label="Email address"
-            className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-          />
-          <button
-            type="submit"
-            aria-label="Subscribe"
-            className="shrink-0 rounded-full bg-foreground p-3 text-background transition-colors hover:bg-foreground/90"
-          >
-            <ArrowRight size={20} className="rtl:rotate-180" />
-          </button>
+          <Field orientation="horizontal">
+            <FieldLabel htmlFor="asme-hero-email" className="sr-only">
+              Email address
+            </FieldLabel>
+            <input
+              id="asme-hero-email"
+              type="email"
+              autoComplete="email"
+              placeholder="Enter your email"
+              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
+            />
+            <Button
+              type="submit"
+              size="icon"
+              aria-label="Subscribe"
+              className="size-11 rounded-full"
+            >
+              <ArrowRight className="size-5 rtl:rotate-180" />
+            </Button>
+          </Field>
         </form>
 
         <p className="mt-6 max-w-md px-4 text-sm leading-relaxed text-foreground">
@@ -171,26 +180,30 @@ export function Hero({
           newsletter today and never miss out on exciting updates.
         </p>
 
-        <button
+        <Button
           type="button"
-          className="liquid-glass mt-8 rounded-full px-8 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
+          variant="ghost"
+          className="liquid-glass mt-8 h-auto rounded-full px-8 py-3 text-foreground"
         >
           Manifesto
-        </button>
+        </Button>
       </div>
 
       <footer className="relative z-10 flex justify-center gap-4 pb-12">
         {SOCIAL_LINKS.map(({ label, Icon }) => (
-          <a
+          <Button
             key={label}
-            href="#"
-            aria-label={label}
-            className="liquid-glass rounded-full p-4 text-foreground/80 transition-all hover:bg-foreground/5 hover:text-foreground"
+            asChild
+            variant="ghost"
+            size="icon"
+            className="liquid-glass size-13 rounded-full text-foreground/80 hover:text-foreground"
           >
-            <Icon className="h-5 w-5" />
-          </a>
+            <a href="#" aria-label={label}>
+              <Icon className="size-5" />
+            </a>
+          </Button>
         ))}
       </footer>
     </section>
   );
-}
+};

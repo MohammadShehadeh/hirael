@@ -26,6 +26,6 @@ const RIVR_CSS = `
 }
 `;
 
-export function RivrStyles() {
+export const RivrStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: RIVR_CSS }} />;
-}
+};

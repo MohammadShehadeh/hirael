@@ -15,6 +15,7 @@ import {
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import {
   Card,
@@ -37,7 +38,7 @@ import {
 
 type RunState = "success" | "failure" | "skipped" | "running";
 
-type Run = {
+interface Run {
   id: string;
   number: number;
   attempt: number;
@@ -47,7 +48,7 @@ type Run = {
   durationSec: number;
   startedLabel: string;
   steps: { name: string; state: RunState; durationLabel: string }[];
-};
+}
 
 const STATE_TOKEN: Record<RunState, string> = {
   success: "var(--success)",
@@ -191,7 +192,7 @@ const RUNS: Run[] = [
   },
 ];
 
-type Stat = {
+interface Stat {
   key: string;
   label: string;
   value: string;
@@ -199,7 +200,7 @@ type Stat = {
   icon: React.ElementType;
   accent: string;
   live?: boolean;
-};
+}
 
 const STATS: Stat[] = [
   {
@@ -241,14 +242,14 @@ const chartConfig = {
   duration: { label: "Duration" },
 } satisfies ChartConfig;
 
-function formatSeconds(value: number) {
+const formatSeconds = (value: number) => {
   if (value < 60) return `${value}s`;
   const m = Math.floor(value / 60);
   const s = value % 60;
   return s ? `${m}m ${s}s` : `${m}m`;
-}
+};
 
-function StateDot({ state }: { state: RunState }) {
+const StateDot = ({ state }: { state: RunState }) => {
   return (
     <span
       aria-hidden
@@ -256,9 +257,9 @@ function StateDot({ state }: { state: RunState }) {
       style={{ backgroundColor: STATE_TOKEN[state] }}
     />
   );
-}
+};
 
-function StatCard({ stat }: { stat: Stat }) {
+const StatCard = ({ stat }: { stat: Stat }) => {
   const Icon = stat.icon;
   return (
     <div
@@ -288,9 +289,9 @@ function StatCard({ stat }: { stat: Stat }) {
       <span className="text-[11px] text-muted-foreground">{stat.meta}</span>
     </div>
   );
-}
+};
 
-function RunBreakdown({ run }: { run: Run | null }) {
+const RunBreakdown = ({ run }: { run: Run | null }) => {
   if (!run) {
     return (
       <Card
@@ -337,13 +338,14 @@ function RunBreakdown({ run }: { run: Run | null }) {
         </div>
         <CardTitle className="flex items-center justify-between gap-2">
           <span className="line-clamp-1 text-sm">{run.pipeline}</span>
-          <span
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border px-2 py-0.5 text-[10px] font-medium"
+          <Badge
+            variant="outline"
+            className="gap-1.5 text-[10px]"
             style={{ color: STATE_TOKEN[run.state] }}
           >
             <StateDot state={run.state} />
             {STATE_LABEL[run.state]}
-          </span>
+          </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 px-4 pb-4">
@@ -395,9 +397,9 @@ function RunBreakdown({ run }: { run: Run | null }) {
       </CardContent>
     </Card>
   );
-}
+};
 
-export default function Dashboard06() {
+const Dashboard06 = () => {
   const chartData = React.useMemo(
     () =>
       [...RUNS].reverse().map((run) => ({
@@ -453,8 +455,7 @@ export default function Dashboard06() {
                     const payload = (
                       e as { activePayload?: { payload?: unknown }[] }
                     ).activePayload?.[0]?.payload as
-                      | (typeof chartData)[number]
-                      | undefined;
+                      (typeof chartData)[number] | undefined;
                     if (payload?.run) setSelectedId(payload.run.id);
                   }}
                 >
@@ -591,7 +592,10 @@ export default function Dashboard06() {
                       >
                         {STATE_LABEL[run.state]}
                       </span>
-                      <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" aria-hidden />
+                      <ChevronRight
+                        className="size-4 text-muted-foreground rtl:rotate-180"
+                        aria-hidden
+                      />
                     </div>
                   </button>
                 </li>
@@ -602,4 +606,6 @@ export default function Dashboard06() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard06;

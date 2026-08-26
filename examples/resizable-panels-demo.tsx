@@ -7,13 +7,13 @@ import {
   ResizablePanelGroup,
 } from "@/registry/hirael/components/resizable-panels";
 
-function Pane({
+const Pane = ({
   label,
   children,
 }: {
   label: string;
   children?: React.ReactNode;
-}) {
+}) => {
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -22,9 +22,9 @@ function Pane({
       <div className="flex-1 p-3 text-sm text-muted-foreground">{children}</div>
     </div>
   );
-}
+};
 
-export default function ResizablePanelsDemo() {
+const ResizablePanelsDemo = () => {
   const t = useT();
 
   return (
@@ -61,4 +61,6 @@ export default function ResizablePanelsDemo() {
       </ResizablePanel>
     </ResizablePanelGroup>
   );
-}
+};
+
+export default ResizablePanelsDemo;

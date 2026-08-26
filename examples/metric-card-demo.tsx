@@ -12,7 +12,7 @@ import {
   MetricCardValue,
 } from "@/registry/hirael/components/metric-card";
 
-export default function MetricCardDemo() {
+const MetricCardDemo = () => {
   const t = useT();
 
   return (
@@ -88,4 +88,6 @@ export default function MetricCardDemo() {
       </MetricCard>
     </div>
   );
-}
+};
+
+export default MetricCardDemo;

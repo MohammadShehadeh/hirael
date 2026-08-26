@@ -14,15 +14,14 @@ import type { DataTableFeatures } from "@/registry/hirael/components/data-table/
 import { DataTableToolbar } from "@/registry/hirael/components/data-table/data-table-toolbar";
 import { useDataTable } from "@/registry/hirael/components/data-table/use-data-table";
 
-type Account = {
+interface Account {
   id: string;
   customer: string;
   email: string;
   status: "active" | "trial" | "past_due" | "canceled";
   plan: "free" | "pro" | "enterprise";
   mrr: number;
-  signedUp: number;
-};
+  signedUp: number;}
 
 const DAY = 86_400_000;
 const CUSTOMERS = [
@@ -60,7 +59,7 @@ const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
   };
 });
 
-function useColumns(): ColumnDef<DataTableFeatures, Account>[] {
+const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
   const t = useT();
 
   return React.useMemo<ColumnDef<DataTableFeatures, Account>[]>(() => {
@@ -197,9 +196,9 @@ function useColumns(): ColumnDef<DataTableFeatures, Account>[] {
       },
     ];
   }, [t]);
-}
+};
 
-function AccountsTable() {
+const AccountsTable = () => {
   const columns = useColumns();
   const { table } = useDataTable({
     data: DATA,
@@ -213,9 +212,9 @@ function AccountsTable() {
       <DataTableToolbar table={table} />
     </DataTable>
   );
-}
+};
 
-export default function DataTableDemo() {
+const DataTableDemo = () => {
   // useDataTable keeps page, sort and filters in the URL. In an app the adapter
   // lives at the root; the demo scopes it here.
   return (
@@ -225,4 +224,6 @@ export default function DataTableDemo() {
       </div>
     </NuqsAdapter>
   );
-}
+};
+
+export default DataTableDemo;

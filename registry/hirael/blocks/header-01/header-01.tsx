@@ -20,7 +20,7 @@ import {
   DrawerTrigger,
 } from "@/registry/hirael/ui/drawer";
 
-type NavLink = { label: string; href: string };
+interface NavLink { label: string; href: string}
 type NavItem = NavLink | { label: string; items: NavLink[] };
 
 const NAV: NavItem[] = [
@@ -40,7 +40,7 @@ const NAV: NavItem[] = [
 const navLink =
   "block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -59,9 +59,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function Header01() {
+const Header01 = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
       <div className="container w-full">
@@ -197,4 +197,6 @@ export default function Header01() {
       </div>
     </header>
   );
-}
+};
+
+export default Header01;

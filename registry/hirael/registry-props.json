@@ -87,17 +87,17 @@
       "name": "MultiSelectTrigger",
       "props": [
         {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "placeholder",
           "type": "string",
           "required": false,
           "default": "\"Select…\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
           "description": null
         },
         {
@@ -113,13 +113,6 @@
     {
       "name": "MultiSelectContent",
       "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        },
         {
           "name": "searchPlaceholder",
           "type": "string",
@@ -160,6 +153,13 @@
           "type": "string",
           "required": false,
           "default": "\"Clear\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
           "description": null
         }
       ],
@@ -875,17 +875,17 @@
       "name": "LazySelectTrigger",
       "props": [
         {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "placeholder",
           "type": "string",
           "required": false,
           "default": "\"Select…\"",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
           "description": null
         },
         {
@@ -901,13 +901,6 @@
     {
       "name": "LazySelectContent",
       "props": [
-        {
-          "name": "children",
-          "type": "React.ReactNode",
-          "required": false,
-          "default": null,
-          "description": null
-        },
         {
           "name": "searchPlaceholder",
           "type": "string",
@@ -939,6 +932,13 @@
         {
           "name": "endMessage",
           "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
           "required": false,
           "default": null,
           "description": null
@@ -1027,13 +1027,6 @@
       "name": "PasswordInputField",
       "props": [
         {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "showToggle",
           "type": "boolean",
           "required": false,
@@ -1045,6 +1038,13 @@
           "type": "{ show: string; hide: string; }",
           "required": false,
           "default": "{ show: \"Show password\", hide: \"Hide password\" }",
+          "description": null
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
           "description": null
         }
       ],
@@ -1178,13 +1178,6 @@
       "name": "PhoneInput",
       "props": [
         {
-          "name": "defaultValue",
-          "type": "string | (readonly string[] & string)",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "id",
           "type": "string",
           "required": false,
@@ -1193,6 +1186,13 @@
         },
         {
           "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
           "type": "string",
           "required": false,
           "default": null,
@@ -1383,13 +1383,6 @@
       "name": "Rating",
       "props": [
         {
-          "name": "aria-label",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": "Defines a string value that labels the current element."
-        },
-        {
           "name": "value",
           "type": "number",
           "required": false,
@@ -1451,6 +1444,13 @@
           "required": false,
           "default": null,
           "description": null
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Defines a string value that labels the current element."
         }
       ],
       "extendsNative": true
@@ -1484,17 +1484,17 @@
       "name": "TimelineDot",
       "props": [
         {
-          "name": "tone",
-          "type": "\"default\" | \"muted\" | \"success\" | \"warning\" | \"danger\" | null",
-          "required": false,
-          "default": "\"default\"",
-          "description": null
-        },
-        {
           "name": "children",
           "type": "React.ReactNode",
           "required": false,
           "default": null,
+          "description": null
+        },
+        {
+          "name": "tone",
+          "type": "\"default\" | \"muted\" | \"success\" | \"warning\" | \"danger\" | null",
+          "required": false,
+          "default": "\"default\"",
           "description": null
         }
       ],
@@ -1543,13 +1543,6 @@
       "name": "Callout",
       "props": [
         {
-          "name": "variant",
-          "type": "\"success\" | \"warning\" | \"info\" | \"error\" | \"neutral\" | null",
-          "required": false,
-          "default": "\"info\"",
-          "description": null
-        },
-        {
           "name": "title",
           "type": "React.ReactNode",
           "required": false,
@@ -1561,6 +1554,13 @@
           "type": "false | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ElementType<any, keyof React.JSX.IntrinsicElements>",
           "required": false,
           "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"success\" | \"warning\" | \"info\" | \"error\" | \"neutral\" | null",
+          "required": false,
+          "default": "\"info\"",
           "description": null
         }
       ],
@@ -2065,17 +2065,17 @@
       "name": "AvatarStackOverflow",
       "props": [
         {
-          "name": "prefix",
-          "type": "string",
-          "required": false,
-          "default": "\"+\"",
-          "description": null
-        },
-        {
           "name": "count",
           "type": "number",
           "required": true,
           "default": null,
+          "description": null
+        },
+        {
+          "name": "prefix",
+          "type": "string",
+          "required": false,
+          "default": "\"+\"",
           "description": null
         },
         {
@@ -2100,13 +2100,6 @@
     {
       "name": "AnnouncementBar",
       "props": [
-        {
-          "name": "tone",
-          "type": "\"default\" | \"muted\" | \"primary\" | null",
-          "required": false,
-          "default": "\"default\"",
-          "description": null
-        },
         {
           "name": "dismissible",
           "type": "boolean",
@@ -2134,6 +2127,13 @@
           "required": false,
           "default": null,
           "description": "localStorage key. When set, the dismissed state is persisted across reloads."
+        },
+        {
+          "name": "tone",
+          "type": "\"default\" | \"muted\" | \"primary\" | null",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
         }
       ],
       "extendsNative": true
@@ -2154,13 +2154,6 @@
       "name": "Spinner",
       "props": [
         {
-          "name": "size",
-          "type": "\"sm\" | \"md\" | \"lg\" | null",
-          "required": false,
-          "default": "\"md\"",
-          "description": null
-        },
-        {
           "name": "variant",
           "type": "\"circle\" | \"dots\" | \"bars\"",
           "required": false,
@@ -2173,6 +2166,13 @@
           "required": false,
           "default": "\"Loading\"",
           "description": "Accessible label announced to assistive tech. Defaults to \"Loading\"."
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\" | null",
+          "required": false,
+          "default": "\"md\"",
+          "description": null
         }
       ],
       "extendsNative": true
@@ -2182,13 +2182,6 @@
     {
       "name": "CopyButton",
       "props": [
-        {
-          "name": "onCopy",
-          "type": "(React.ClipboardEventHandler<HTMLButtonElement> & ((value: string) => void))",
-          "required": false,
-          "default": null,
-          "description": null
-        },
         {
           "name": "value",
           "type": "string",
@@ -2216,6 +2209,13 @@
           "required": false,
           "default": "1500",
           "description": "How long the copied state stays, in ms."
+        },
+        {
+          "name": "onCopy",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
         }
       ],
       "extendsNative": true
@@ -2346,13 +2346,6 @@
       "name": "AnimatedNumber",
       "props": [
         {
-          "name": "prefix",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
-        },
-        {
           "name": "value",
           "type": "number",
           "required": true,
@@ -2389,6 +2382,13 @@
         },
         {
           "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "prefix",
           "type": "string",
           "required": false,
           "default": null,
@@ -3486,7 +3486,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -3513,7 +3513,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -3681,7 +3681,7 @@
         },
         {
           "name": "orientation",
-          "type": "\"horizontal\" | \"vertical\"",
+          "type": "\"vertical\" | \"horizontal\"",
           "required": false,
           "default": "\"horizontal\"",
           "description": null
@@ -4299,7 +4299,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4331,7 +4331,7 @@
       "props": [
         {
           "name": "mode",
-          "type": "\"elapsed\" | \"remaining\" | \"duration\"",
+          "type": "\"duration\" | \"elapsed\" | \"remaining\"",
           "required": false,
           "default": "\"elapsed\"",
           "description": null
@@ -4348,8 +4348,15 @@
       "name": "AudioPlayerRate",
       "props": [
         {
+          "name": "rates",
+          "type": "number[]",
+          "required": false,
+          "default": "[1, 1.25, 1.5, 2]",
+          "description": null
+        },
+        {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4366,13 +4373,6 @@
           "type": "boolean",
           "required": false,
           "default": null,
-          "description": null
-        },
-        {
-          "name": "rates",
-          "type": "number[]",
-          "required": false,
-          "default": "[1, 1.25, 1.5, 2]",
           "description": null
         }
       ],
@@ -4382,8 +4382,15 @@
       "name": "AudioPlayerSkip",
       "props": [
         {
+          "name": "seconds",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4399,13 +4406,6 @@
           "name": "asChild",
           "type": "boolean",
           "required": false,
-          "default": null,
-          "description": null
-        },
-        {
-          "name": "seconds",
-          "type": "number",
-          "required": true,
           "default": null,
           "description": null
         }
@@ -4484,7 +4484,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4516,7 +4516,7 @@
       "props": [
         {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4634,8 +4634,15 @@
       "name": "TourTrigger",
       "props": [
         {
+          "name": "at",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Step index to start at, 0-based."
+        },
+        {
           "name": "size",
-          "type": "\"sm\" | \"lg\" | \"default\" | \"xs\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
           "required": false,
           "default": null,
           "description": null
@@ -4653,13 +4660,6 @@
           "required": false,
           "default": null,
           "description": null
-        },
-        {
-          "name": "at",
-          "type": "number",
-          "required": false,
-          "default": null,
-          "description": "Step index to start at, 0-based."
         }
       ],
       "extendsNative": true
@@ -4871,18 +4871,18 @@
       "name": "CursorGlow",
       "props": [
         {
-          "name": "color",
-          "type": "string",
-          "required": false,
-          "default": "\"color-mix(in oklch, var(--foreground) 12%, transparent)\"",
-          "description": "Glow color. Defaults to a soft tint of the foreground token."
-        },
-        {
           "name": "size",
           "type": "number",
           "required": false,
           "default": "400",
           "description": "Diameter of the glow, in px."
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "\"color-mix(in oklch, var(--foreground) 12%, transparent)\"",
+          "description": "Glow color. Defaults to a soft tint of the foreground token."
         }
       ],
       "extendsNative": true
@@ -5429,21 +5429,35 @@
       "name": "OrangeButton",
       "props": [
         {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true,
           "default": null,
           "description": null
-        },
-        {
-          "name": "className",
-          "type": "string",
-          "required": false,
-          "default": null,
-          "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     },
     {
       "name": "LinkIcon",
@@ -5959,9 +5973,37 @@
           "required": false,
           "default": "false",
           "description": "Bumps the label to text-lg on md+ (used by the hero \"Join us\")."
+        },
+        {
+          "name": "inverted",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "White pill with a dark arrow circle, for the #2B2644 footer card."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
         }
       ],
-      "extendsNative": false
+      "extendsNative": true
     },
     {
       "name": "Marquee",
@@ -6599,7 +6641,7 @@
         },
         {
           "name": "defaultOptions",
-          "type": "Pick<ConfirmOptions, \"tone\" | \"confirmText\" | \"cancelText\" | \"dismissible\">",
+          "type": "Pick<ConfirmOptions, \"tone\" | \"dismissible\" | \"confirmText\" | \"cancelText\">",
           "required": false,
           "default": null,
           "description": "Defaults merged under every `confirm()` call."
@@ -7012,6 +7054,1490 @@
           "required": false,
           "default": null,
           "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "kanban": [
+    {
+      "name": "Kanban",
+      "props": [
+        {
+          "name": "value",
+          "type": "KanbanValue",
+          "required": false,
+          "default": null,
+          "description": "Column id to ordered card ids."
+        },
+        {
+          "name": "defaultValue",
+          "type": "KanbanValue",
+          "required": false,
+          "default": "{}",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: KanbanValue) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onCardMove",
+          "type": "((move: KanbanMove) => void)",
+          "required": false,
+          "default": null,
+          "description": "Fires once per completed move with the source and destination."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumn",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Key in the root `value`."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumnHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumnTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumnCount",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanColumnContent",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((cardIds: string[]) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Pass a function to render from the live card ids of this column."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanCard",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Unique card id, listed in one of the root `value` columns."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanCardHandle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "KanbanEmpty",
+      "props": [],
+      "extendsNative": true
+    }
+  ],
+  "sparkline": [
+    {
+      "name": "Sparkline",
+      "props": [
+        {
+          "name": "data",
+          "type": "number[]",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "SparklineVariant",
+          "required": false,
+          "default": "\"line\"",
+          "description": null
+        },
+        {
+          "name": "tone",
+          "type": "SparklineTone",
+          "required": false,
+          "default": "\"default\"",
+          "description": null
+        },
+        {
+          "name": "curve",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Smooth the line through the points."
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Override the value range. Defaults to the data extent."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "inset",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": "Vertical padding in px so strokes and dots are not clipped."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Accessible description. Defaults to a short summary of the data."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineLine",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineArea",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineBars",
+      "props": [
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": "Gap between bars in px."
+        },
+        {
+          "name": "radius",
+          "type": "number",
+          "required": false,
+          "default": "1",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineDot",
+      "props": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Point to mark. Defaults to the last one, or the hovered one while a tooltip is active."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineReference",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Value on the y axis to draw the line at."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "SparklineTooltip",
+      "props": [
+        {
+          "name": "format",
+          "type": "((value: number, index: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Format the hovered value. Defaults to `toLocaleString()`."
+        },
+        {
+          "name": "children",
+          "type": "((value: number, index: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "json-viewer": [
+    {
+      "name": "JsonViewer",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "number | boolean",
+          "required": false,
+          "default": "2",
+          "description": "`true` expands everything, `false` collapses the root, a number expands\nnodes shallower than that depth (`1` opens only the root)."
+        },
+        {
+          "name": "expanded",
+          "type": "string[]",
+          "required": false,
+          "default": null,
+          "description": "Controlled set of expanded paths, e.g. `[\"$\", \"$.user\", \"$.items[0]\"]`."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "((paths: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "maxStringLength",
+          "type": "number",
+          "required": false,
+          "default": "80",
+          "description": "Strings longer than this are truncated with an inline expand control."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerTree",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerNode",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Key or array index. Omit for the root."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "default": "\"$\"",
+          "description": null
+        },
+        {
+          "name": "depth",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "isLast",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerToggle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerKey",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerValue",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerCopy",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": false,
+          "default": null,
+          "description": "Defaults to the whole root value."
+        },
+        {
+          "name": "indent",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": null
+        },
+        {
+          "name": "onCopy",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\"",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"ghost\" | \"outline\"",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "timeout",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "How long the copied state stays, in ms."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerExpandAll",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "JsonViewerCollapseAll",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "diff-viewer": [
+    {
+      "name": "DiffViewer",
+      "props": [
+        {
+          "name": "oldValue",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "newValue",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "oldTitle",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "newTitle",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "mode",
+          "type": "DiffViewerMode",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultMode",
+          "type": "DiffViewerMode",
+          "required": false,
+          "default": "\"unified\"",
+          "description": null
+        },
+        {
+          "name": "onModeChange",
+          "type": "((mode: DiffViewerMode) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "context",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": "Unchanged lines to keep around each change. `Infinity` shows everything."
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerHeader",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerTitle",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerStats",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerModeToggle",
+      "props": [
+        {
+          "name": "unifiedLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Unified\"",
+          "description": null
+        },
+        {
+          "name": "splitLabel",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": "\"Split\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerContent",
+      "props": [
+        {
+          "name": "showLineNumbers",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        },
+        {
+          "name": "gapLabel",
+          "type": "((count: number) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Label for a collapsed run of unchanged lines."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "DiffViewerLine",
+      "props": [
+        {
+          "name": "line",
+          "type": "DiffLine | null",
+          "required": true,
+          "default": null,
+          "description": "`null` renders an empty filler cell (split mode)."
+        },
+        {
+          "name": "side",
+          "type": "\"old\" | \"new\"",
+          "required": false,
+          "default": null,
+          "description": "Which pane this line sits in. Omit for unified."
+        },
+        {
+          "name": "showLineNumbers",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "cron-editor": [
+    {
+      "name": "CronEditor",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "\"0 9 * * 1-5\"",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorPresets",
+      "props": [
+        {
+          "name": "presets",
+          "type": "readonly CronPreset[]",
+          "required": false,
+          "default": "CRON_PRESETS",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorFields",
+      "props": [
+        {
+          "name": "fields",
+          "type": "readonly CronField[]",
+          "required": false,
+          "default": "CRON_FIELDS",
+          "description": null
+        },
+        {
+          "name": "labels",
+          "type": "Partial<Record<CronField, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "modeLabels",
+          "type": "Partial<Record<CronFieldMode, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorField",
+      "props": [
+        {
+          "name": "field",
+          "type": "CronField",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "DEFAULT_FIELD_LABELS[field]",
+          "description": null
+        },
+        {
+          "name": "modeLabels",
+          "type": "Record<CronFieldMode, string>",
+          "required": false,
+          "default": "DEFAULT_MODE_LABELS",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorExpression",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "\"Expression\"",
+          "description": null
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"* * * * *\"",
+          "description": null
+        },
+        {
+          "name": "showError",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorPreview",
+      "props": [
+        {
+          "name": "describe",
+          "type": "((parsed: ParsedCron, expression: string) => React.ReactNode)",
+          "required": false,
+          "default": null,
+          "description": "Override the sentence. Defaults to `describeCron`."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CronEditorNextRuns",
+      "props": [
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": null
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "formatOptions",
+          "type": "Intl.DateTimeFormatOptions",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"No upcoming runs.\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "country-select": [
+    {
+      "name": "CountrySelect",
+      "props": [
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string | string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | string[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void) | ((value: string[]) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "countries",
+          "type": "readonly Country[]",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "priority",
+          "type": "readonly string[]",
+          "required": false,
+          "default": null,
+          "description": "ISO-2 codes pinned to the top of the list."
+        },
+        {
+          "name": "showDialCode",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": false
+    },
+    {
+      "name": "CountrySelectTrigger",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"lg\" | \"default\" | \"icon\" | \"xs\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"ghost\" | \"outline\" | \"destructive\" | \"secondary\" | null",
+          "required": false,
+          "default": "\"outline\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectValue",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Select a country\"",
+          "description": null
+        },
+        {
+          "name": "maxNames",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "How many names to list before collapsing to a count (multiple only)."
+        },
+        {
+          "name": "countLabel",
+          "type": "((count: number) => string)",
+          "required": false,
+          "default": "(n) => `${n} countries`",
+          "description": "Label for the collapsed count, e.g. `(n) => \\`${n} countries\\``."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectContent",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectSearch",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectList",
+      "props": [
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"No country found.\"",
+          "description": null
+        },
+        {
+          "name": "priorityLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Suggested\"",
+          "description": null
+        },
+        {
+          "name": "allLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectItem",
+      "props": [
+        {
+          "name": "country",
+          "type": "Country",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CountrySelectFlag",
+      "props": [
+        {
+          "name": "iso2",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "credit-card-input": [
+    {
+      "name": "CreditCardInput",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "CreditCardValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "type": "CreditCardValue",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: CreditCardChange) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "variant",
+          "type": "\"row\" | \"stack\"",
+          "required": false,
+          "default": "\"row\"",
+          "description": "`row` is one bordered strip; `stack` leaves each field on its own."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CreditCardInputNumber",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Rendered at the end of the field. Defaults to `<CreditCardInputBrand />`."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "CreditCardInputExpiry",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CreditCardInputCvc",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "CreditCardInputBrand",
+      "props": [
+        {
+          "name": "labels",
+          "type": "Partial<Record<CardBrand, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "emoji-picker": [
+    {
+      "name": "EmojiPicker",
+      "props": [
+        {
+          "name": "onEmojiSelect",
+          "type": "((emoji: string, item: EmojiItem) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "recentKey",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "localStorage key for recently used emoji. Omit to disable recents."
+        },
+        {
+          "name": "maxRecent",
+          "type": "number",
+          "required": false,
+          "default": "16",
+          "description": null
+        },
+        {
+          "name": "emojis",
+          "type": "readonly EmojiItem[]",
+          "required": false,
+          "default": "EMOJIS",
+          "description": null
+        },
+        {
+          "name": "skinTone",
+          "type": "EmojiSkinTone",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "defaultSkinTone",
+          "type": "EmojiSkinTone",
+          "required": false,
+          "default": "0",
+          "description": null
+        },
+        {
+          "name": "onSkinToneChange",
+          "type": "((tone: EmojiSkinTone) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "columns",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerSearch",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerCategories",
+      "props": [
+        {
+          "name": "labels",
+          "type": "Partial<Record<EmojiPickerCategoryId, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerList",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerItem",
+      "props": [
+        {
+          "name": "item",
+          "type": "EmojiItem",
+          "required": true,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerEmpty",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerFooter",
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "\"Pick an emoji\"",
+          "description": null
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "EmojiPickerSkinTone",
+      "props": [
+        {
+          "name": "labels",
+          "type": "Partial<Record<EmojiSkinTone, string>>",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    }
+  ],
+  "avatar-upload": [
+    {
+      "name": "AvatarUpload",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "description": "Data URL of the current image."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | null",
+          "required": false,
+          "default": "null",
+          "description": null
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string | null) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "shape",
+          "type": "AvatarUploadShape",
+          "required": false,
+          "default": "\"circle\"",
+          "description": null
+        },
+        {
+          "name": "size",
+          "type": "number",
+          "required": false,
+          "default": "96",
+          "description": "Preview edge in px."
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Max file size in bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "default": "\"image/*\"",
+          "description": null
+        },
+        {
+          "name": "outputSize",
+          "type": "number",
+          "required": false,
+          "default": "512",
+          "description": "Edge of the exported square, in px."
+        },
+        {
+          "name": "crop",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Skip the crop dialog and use the file as-is."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "onError",
+          "type": "((error: AvatarUploadErrorInfo) => void)",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadPreview",
+      "props": [
+        {
+          "name": "fallback",
+          "type": "React.ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Initials or a short label shown when there is no image."
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "default": "\"Avatar\"",
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadTrigger",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"button\" | \"overlay\"",
+          "required": false,
+          "default": "\"overlay\"",
+          "description": "`overlay` sits on top of the preview; `button` is a plain control."
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadInput",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadRemove",
+      "props": [],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadCropDialog",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "\"Adjust your photo\"",
+          "description": null
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "\"Drag to reposition. Scroll or use the slider to zoom.\"",
+          "description": null
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Apply\"",
+          "description": null
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Cancel\"",
+          "description": null
+        },
+        {
+          "name": "zoomLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Zoom\"",
+          "description": null
+        },
+        {
+          "name": "maxZoom",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": null
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "extendsNative": true
+    },
+    {
+      "name": "AvatarUploadError",
+      "props": [
+        {
+          "name": "messages",
+          "type": "Partial<Record<\"type\" | \"size\" | \"read\", string>>",
+          "required": false,
+          "default": null,
+          "description": "Override the message per reason."
         }
       ],
       "extendsNative": true

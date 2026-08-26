@@ -83,7 +83,7 @@ const FAQS: readonly { q: string; a: string; category: Category }[] = [
   },
 ];
 
-export default function Faq03() {
+const Faq03 = () => {
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<Category | "all">("all");
 
@@ -219,4 +219,6 @@ export default function Faq03() {
       </div>
     </section>
   );
-}
+};
+
+export default Faq03;

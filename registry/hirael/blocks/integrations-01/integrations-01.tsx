@@ -16,14 +16,13 @@ import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 import { Card } from "@/registry/hirael/ui/card";
 
-type Spoke = {
+interface Spoke {
   name: string;
   icon: LucideIcon;
   /** Position on the orbit ring, in degrees clockwise from top (0 = 12 o'clock). */
   angle: number;
   category: string;
-  href: string;
-};
+  href: string;}
 
 const SPOKES: readonly Spoke[] = [
   {
@@ -46,7 +45,7 @@ const SPOKES: readonly Spoke[] = [
   { name: "npm", icon: Package, angle: 309, category: "Registry", href: "#" },
 ] as const;
 
-export default function Integrations01() {
+const Integrations01 = () => {
   return (
     <section
       className="relative isolate overflow-hidden bg-background py-20 sm:py-28"
@@ -121,9 +120,9 @@ export default function Integrations01() {
       </div>
     </section>
   );
-}
+};
 
-function Hub() {
+const Hub = () => {
   const orbit = 42;
 
   return (
@@ -230,4 +229,6 @@ function Hub() {
       })}
     </div>
   );
-}
+};
+
+export default Integrations01;

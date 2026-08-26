@@ -10,7 +10,7 @@ import {
   FloatingActionButtonTrigger,
 } from "@/registry/hirael/components/floating-action-button";
 
-export default function FloatingActionButtonDemo() {
+const FloatingActionButtonDemo = () => {
   const t = useT();
 
   return (
@@ -41,4 +41,6 @@ export default function FloatingActionButtonDemo() {
       </FloatingActionButton>
     </div>
   );
-}
+};
+
+export default FloatingActionButtonDemo;

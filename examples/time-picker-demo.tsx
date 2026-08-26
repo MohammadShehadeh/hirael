@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   TimePicker,
   TimePickerContent,
@@ -11,7 +11,7 @@ import {
   type TimeValue,
 } from "@/registry/hirael/components/time-picker";
 
-export default function TimePickerDemo() {
+const TimePickerDemo = () => {
   const t = useT();
   const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 });
   const [t12, setT12] = React.useState<TimeValue>({
@@ -21,29 +21,29 @@ export default function TimePickerDemo() {
   });
 
   return (
-    <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
-      <div className="grid gap-2">
-        <Label>
+    <FieldGroup className="grid max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="tp-meeting">
           {t({ en: "Meeting time (24h)", ar: "وقت الاجتماع (24 ساعة)" })}
-        </Label>
+        </FieldLabel>
         <TimePicker
           value={t24}
           onValueChange={setT24}
           format="24h"
           minuteStep={5}
         >
-          <TimePickerTrigger />
+          <TimePickerTrigger id="tp-meeting" />
           <TimePickerContent />
         </TimePicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           {`${t24.hour}:${t24.minute.toString().padStart(2, "0")}`}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="tp-reminder">
           {t({ en: "Reminder (12h · seconds)", ar: "تذكير (12 ساعة · ثوانٍ)" })}
-        </Label>
+        </FieldLabel>
         <TimePicker
           value={t12}
           onValueChange={setT12}
@@ -51,7 +51,7 @@ export default function TimePickerDemo() {
           showSeconds
           secondStep={15}
         >
-          <TimePickerTrigger />
+          <TimePickerTrigger id="tp-reminder" />
           <TimePickerContent />
         </TimePicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
@@ -61,7 +61,9 @@ export default function TimePickerDemo() {
             .toString()
             .padStart(2, "0")}`}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default TimePickerDemo;

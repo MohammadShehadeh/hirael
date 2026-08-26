@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useT } from "@/lib/demo-locale";
 import { MagneticButton } from "@/registry/hirael/components/magnetic-button";
 
-export default function MagneticButtonDemo() {
+const MagneticButtonDemo = () => {
   const t = useT();
 
   return (
@@ -31,4 +31,6 @@ export default function MagneticButtonDemo() {
       </MagneticButton>
     </div>
   );
-}
+};
+
+export default MagneticButtonDemo;

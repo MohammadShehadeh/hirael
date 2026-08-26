@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type SegmentedControlItem = {
+export interface SegmentedControlItem {
   value: string;
   /** Visible content; pass a function to render against the active state. */
   label: React.ReactNode | ((active: boolean) => React.ReactNode);
@@ -12,15 +12,14 @@ export type SegmentedControlItem = {
   title?: string;
   /** Non-interactive item (e.g. a Code tab with no source). Still focusable
    * for arrow-key roving, but announces as disabled and ignores clicks. */
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
 /**
  * A compact pill strip — the shared shape behind the file tabs, viewport
  * switch, and package-manager picker. Roving tabindex + arrow-key navigation
  * (RTL-aware) come built in, so call sites only supply items and state.
  */
-export function SegmentedControl({
+export const SegmentedControl = ({
   items,
   value,
   onValueChange,
@@ -37,7 +36,7 @@ export function SegmentedControl({
   ariaLabel: string;
   className?: string;
   itemClassName?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -94,4 +93,4 @@ export function SegmentedControl({
       })}
     </div>
   );
-}
+};

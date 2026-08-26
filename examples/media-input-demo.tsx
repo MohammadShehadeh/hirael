@@ -15,7 +15,7 @@ import {
 } from "@/registry/hirael/components/media-input";
 import { AudioPlayer } from "@/registry/hirael/components/audio-player";
 
-function AudioPreview() {
+const AudioPreview = () => {
   const { value } = useMediaInput();
   if (!value) return null;
 
@@ -25,9 +25,9 @@ function AudioPreview() {
       className="rounded-md border border-border bg-card p-3"
     />
   );
-}
+};
 
-function ImagePreview() {
+const ImagePreview = () => {
   const { value } = useMediaInput();
   if (!value) return null;
 
@@ -39,9 +39,9 @@ function ImagePreview() {
       className="max-h-48 w-full rounded-md border border-border object-cover"
     />
   );
-}
+};
 
-export default function MediaInputDemo() {
+const MediaInputDemo = () => {
   const t = useT();
 
   return (
@@ -104,4 +104,6 @@ export default function MediaInputDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default MediaInputDemo;

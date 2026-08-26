@@ -12,7 +12,7 @@ const aspects = [
   "aspect-[2/3]",
 ];
 
-export default function MasonryDemo() {
+const MasonryDemo = () => {
   const t = useT();
 
   const cards = [
@@ -140,4 +140,6 @@ export default function MasonryDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default MasonryDemo;

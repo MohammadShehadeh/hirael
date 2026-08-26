@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 import { Slider } from "@/registry/hirael/ui/slider";
 
-type AudioPlayerCtx = {
+interface AudioPlayerCtx {
   playing: boolean;
   duration: number;
   currentTime: number;
@@ -27,12 +27,11 @@ type AudioPlayerCtx = {
   skip: (seconds: number) => void;
   setVolume: (volume: number) => void;
   toggleMute: () => void;
-  setRate: (rate: number) => void;
-};
+  setRate: (rate: number) => void;}
 
 const AudioPlayerContext = React.createContext<AudioPlayerCtx | null>(null);
 
-function useAudioPlayer() {
+const useAudioPlayer = () => {
   const ctx = React.useContext(AudioPlayerContext);
   if (!ctx) {
     throw new Error(
@@ -40,9 +39,9 @@ function useAudioPlayer() {
     );
   }
   return ctx;
-}
+};
 
-function formatTime(seconds: number) {
+const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds) || seconds < 0) return "--:--";
   const total = Math.floor(seconds);
   const h = Math.floor(total / 3600);
@@ -50,20 +49,19 @@ function formatTime(seconds: number) {
   const s = total % 60;
   const pad = (n: number) => String(n).padStart(2, "0");
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
-}
+};
 
-export type AudioPlayerProps = Omit<
+export interface AudioPlayerProps extends Omit<
   React.ComponentProps<"div">,
   "onPlay" | "onPause" | "onEnded"
-> & {
+> {
   src?: string;
   crossOrigin?: "" | "anonymous" | "use-credentials";
   onPlay?: () => void;
   onPause?: () => void;
-  onEnded?: () => void;
-};
+  onEnded?: () => void;}
 
-function AudioPlayer({
+const AudioPlayer = ({
   src,
   crossOrigin,
   onPlay,
@@ -72,7 +70,7 @@ function AudioPlayer({
   className,
   children,
   ...props
-}: AudioPlayerProps) {
+}: AudioPlayerProps) => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = React.useState(false);
   const [duration, setDuration] = React.useState(Number.NaN);
@@ -246,12 +244,12 @@ function AudioPlayer({
       </div>
     </AudioPlayerContext.Provider>
   );
-}
+};
 
-function AudioPlayerPlay({
+const AudioPlayerPlay = ({
   className,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) => {
   const { playing, toggle } = useAudioPlayer();
 
   return (
@@ -268,9 +266,9 @@ function AudioPlayerPlay({
       {playing ? <Pause /> : <Play />}
     </Button>
   );
-}
+};
 
-function AudioPlayerSeek({ className, ...props }: React.ComponentProps<"div">) {
+const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<"div">) => {
   const { duration, currentTime, buffered, seek } = useAudioPlayer();
   const [scrub, setScrub] = React.useState<number | null>(null);
 
@@ -306,17 +304,16 @@ function AudioPlayerSeek({ className, ...props }: React.ComponentProps<"div">) {
       />
     </div>
   );
-}
-
-export type AudioPlayerTimeProps = React.ComponentProps<"span"> & {
-  mode?: "elapsed" | "remaining" | "duration";
 };
 
-function AudioPlayerTime({
+export interface AudioPlayerTimeProps extends React.ComponentProps<"span"> {
+  mode?: "elapsed" | "remaining" | "duration";}
+
+const AudioPlayerTime = ({
   mode = "elapsed",
   className,
   ...props
-}: AudioPlayerTimeProps) {
+}: AudioPlayerTimeProps) => {
   const { currentTime, duration } = useAudioPlayer();
 
   const value =
@@ -340,12 +337,12 @@ function AudioPlayerTime({
       {mode === "remaining" && label !== "--:--" ? `-${label}` : label}
     </span>
   );
-}
+};
 
-function AudioPlayerVolume({
+const AudioPlayerVolume = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const { volume, muted, setVolume, toggleMute } = useAudioPlayer();
   const silent = muted || volume === 0;
 
@@ -377,17 +374,16 @@ function AudioPlayerVolume({
       />
     </div>
   );
-}
-
-export type AudioPlayerRateProps = React.ComponentProps<typeof Button> & {
-  rates?: number[];
 };
 
-function AudioPlayerRate({
+export interface AudioPlayerRateProps extends React.ComponentProps<typeof Button> {
+  rates?: number[];}
+
+const AudioPlayerRate = ({
   rates = [1, 1.25, 1.5, 2],
   className,
   ...props
-}: AudioPlayerRateProps) {
+}: AudioPlayerRateProps) => {
   const { rate, setRate } = useAudioPlayer();
 
   return (
@@ -407,17 +403,16 @@ function AudioPlayerRate({
       {rate}×
     </Button>
   );
-}
-
-export type AudioPlayerSkipProps = React.ComponentProps<typeof Button> & {
-  seconds: number;
 };
 
-function AudioPlayerSkip({
+export interface AudioPlayerSkipProps extends React.ComponentProps<typeof Button> {
+  seconds: number;}
+
+const AudioPlayerSkip = ({
   seconds,
   className,
   ...props
-}: AudioPlayerSkipProps) {
+}: AudioPlayerSkipProps) => {
   const { skip } = useAudioPlayer();
   const back = seconds < 0;
 
@@ -443,7 +438,7 @@ function AudioPlayerSkip({
       )}
     </Button>
   );
-}
+};
 
 export {
   AudioPlayer,

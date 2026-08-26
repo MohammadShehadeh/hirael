@@ -4,17 +4,18 @@ import { ArrowUpRight } from "lucide-react";
 import type { MotionProps } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
-export function fadeUp(delay = 0): MotionProps {
+export const fadeUp = (delay = 0): MotionProps => {
   return {
     initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: "-80px" },
     transition: { duration: 0.6, delay, ease: "easeOut" },
   };
-}
+};
 
-export function RivrMark({ className }: { className?: string }) {
+export const RivrMark = ({ className }: { className?: string }) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
       <circle
@@ -29,9 +30,9 @@ export function RivrMark({ className }: { className?: string }) {
       <circle cx="12" cy="12" r="1.6" fill="currentColor" />
     </svg>
   );
-}
+};
 
-export function PillButton({
+export const PillButton = ({
   label,
   href = "#",
   variant = "solid",
@@ -41,27 +42,28 @@ export function PillButton({
   href?: string;
   variant?: "solid" | "outline";
   className?: string;
-}) {
+}) => {
   return (
-    <a
-      href={href}
+    <Button
+      asChild
+      variant={variant === "solid" ? "default" : "outline"}
       className={cn(
-        "group inline-flex items-center gap-2.5 rounded-full py-1.5 pe-1.5 ps-5 text-sm font-medium transition-colors",
-        variant === "solid"
-          ? "bg-primary text-primary-foreground hover:bg-primary/90"
-          : "border border-border bg-card/60 text-foreground backdrop-blur-sm hover:bg-card",
+        "group h-auto gap-2.5 rounded-full py-1.5 pe-1.5 ps-5",
+        variant === "outline" && "backdrop-blur-sm",
         className,
       )}
     >
-      <span>{label}</span>
-      <span
-        className={cn(
-          "flex size-7 items-center justify-center rounded-full",
-          variant === "solid" ? "bg-white/20" : "bg-foreground/10",
-        )}
-      >
-        <ArrowUpRight className="size-4 rtl:-scale-x-100" />
-      </span>
-    </a>
+      <a href={href}>
+        <span>{label}</span>
+        <span
+          className={cn(
+            "flex size-7 items-center justify-center rounded-full",
+            variant === "solid" ? "bg-white/20" : "bg-foreground/10",
+          )}
+        >
+          <ArrowUpRight className="size-4 rtl:-scale-x-100" />
+        </span>
+      </a>
+    </Button>
   );
-}
+};

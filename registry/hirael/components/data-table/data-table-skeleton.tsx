@@ -19,7 +19,7 @@ interface DataTableSkeletonProps extends React.ComponentProps<"div"> {
   shrinkZero?: boolean;
 }
 
-export function DataTableSkeleton({
+export const DataTableSkeleton = ({
   columnCount,
   rowCount = 10,
   filterCount = 0,
@@ -29,7 +29,7 @@ export function DataTableSkeleton({
   shrinkZero = false,
   className,
   ...props
-}: DataTableSkeletonProps) {
+}: DataTableSkeletonProps) => {
   const cozyCellWidths = Array.from(
     { length: columnCount },
     (_, index) => cellWidths[index % cellWidths.length] ?? "auto",
@@ -113,4 +113,4 @@ export function DataTableSkeleton({
       ) : null}
     </div>
   );
-}
+};

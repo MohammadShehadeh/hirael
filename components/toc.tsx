@@ -1,10 +1,34 @@
 "use client";
 
 import * as React from "react";
+import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 
-export type TocItem = { id: string; label: string };
+export interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface TocProps {
+  items: TocItem[];
+  className?: string;
+}
+
+const tocLinkVariants = cva(
+  "block border-s py-1 ps-3 text-[13px] leading-snug transition-colors",
+  {
+    variants: {
+      active: {
+        true: "border-s-accent-cool font-medium text-foreground",
+        false:
+          "border-s-border/60 text-muted-foreground hover:border-s-foreground/40 hover:text-foreground",
+      },
+    },
+    defaultVariants: { active: false },
+  },
+);
 
 /**
  * "On this page" rail — the right-column table of contents shadcn/ui's docs
@@ -16,13 +40,7 @@ export type TocItem = { id: string; label: string };
  * Logical properties throughout (`border-s`, `ms`/`ps`) so the rail sits on
  * the inline-start edge under both LTR and RTL.
  */
-export function Toc({
-  items,
-  className,
-}: {
-  items: TocItem[];
-  className?: string;
-}) {
+export const Toc = ({ items, className }: TocProps) => {
   const active = useActiveSection(items.map((i) => i.id));
 
   // One lonely entry isn't a table of contents.
@@ -44,12 +62,7 @@ export function Toc({
               <a
                 href={`#${item.id}`}
                 aria-current={isActive ? "location" : undefined}
-                className={cn(
-                  "block border-s py-1 ps-3 text-[13px] leading-snug transition-colors",
-                  isActive
-                    ? "border-s-accent-cool font-medium text-foreground"
-                    : "border-s-border/60 text-muted-foreground hover:border-s-foreground/40 hover:text-foreground",
-                )}
+                className={tocLinkVariants({ active: isActive })}
               >
                 {item.label}
               </a>
@@ -59,7 +72,7 @@ export function Toc({
       </ul>
     </nav>
   );
-}
+};
 
 /**
  * The same "on this page" navigation as {@link Toc}, as a horizontal chip row
@@ -67,13 +80,7 @@ export function Toc({
  * shouldn't be a desktop-only affordance. Shares the scroll-spy hook, so both
  * highlight the same section.
  */
-export function TocChips({
-  items,
-  className,
-}: {
-  items: TocItem[];
-  className?: string;
-}) {
+export const TocChips = ({ items, className }: TocProps) => {
   const active = useActiveSection(items.map((i) => i.id));
 
   if (items.length < 2) return null;
@@ -81,29 +88,32 @@ export function TocChips({
   return (
     <nav
       aria-label="On this page"
-      className={cn("flex items-center gap-1.5 overflow-x-auto pb-0.5", className)}
+      className={cn(
+        "flex items-center gap-1.5 overflow-x-auto pb-0.5",
+        className,
+      )}
     >
       {items.map((item) => {
         const isActive = item.id === active;
         return (
-          <a
+          <Badge
             key={item.id}
-            href={`#${item.id}`}
-            aria-current={isActive ? "location" : undefined}
-            className={cn(
-              "shrink-0 rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors",
-              isActive
-                ? "border-transparent bg-accent text-foreground"
-                : "border-border bg-card text-muted-foreground hover:border-foreground/40 hover:text-foreground",
-            )}
+            variant={isActive ? "secondary" : "outline"}
+            asChild
+            className="px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em]"
           >
-            {item.label}
-          </a>
+            <a
+              href={`#${item.id}`}
+              aria-current={isActive ? "location" : undefined}
+            >
+              {item.label}
+            </a>
+          </Badge>
         );
       })}
     </nav>
   );
-}
+};
 
 /**
  * Tracks which section is in view. An IntersectionObserver marks sections as
@@ -113,7 +123,7 @@ export function TocChips({
  * `output: "export"` — the static HTML ships without it and it wires up on
  * hydration.
  */
-function useActiveSection(ids: string[]): string | null {
+const useActiveSection = (ids: string[]) => {
   const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
   // Re-run the effect when the *set* of ids changes, not its array identity.
   const key = ids.join("|");
@@ -146,4 +156,4 @@ function useActiveSection(ids: string[]): string | null {
   }, [key]);
 
   return active;
-}
+};

@@ -14,7 +14,7 @@ const FILES = [
   { name: "auth.ts", meta: "5.7 KB" },
 ];
 
-export default function SplitViewDemo() {
+const SplitViewDemo = () => {
   const t = useT();
 
   return (
@@ -66,4 +66,6 @@ export default function SplitViewDemo() {
       </SplitViewPanel>
     </SplitView>
   );
-}
+};
+
+export default SplitViewDemo;

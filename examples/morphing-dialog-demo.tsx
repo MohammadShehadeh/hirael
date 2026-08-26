@@ -12,7 +12,7 @@ import {
   MorphingDialogTrigger,
 } from "@/registry/hirael/components/morphing-dialog";
 
-export default function MorphingDialogDemo() {
+const MorphingDialogDemo = () => {
   const t = useT();
 
   return (
@@ -60,4 +60,6 @@ export default function MorphingDialogDemo() {
       </p>
     </div>
   );
-}
+};
+
+export default MorphingDialogDemo;

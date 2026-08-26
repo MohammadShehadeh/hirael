@@ -5,10 +5,9 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-type Suggestion = {
+interface Suggestion {
   route: string;
-  description: string;
-};
+  description: string;}
 
 const SUGGESTIONS: readonly Suggestion[] = [
   { route: "/registry", description: "Browse every shipped component" },
@@ -16,7 +15,7 @@ const SUGGESTIONS: readonly Suggestion[] = [
   { route: "/docs/install", description: "Get up and running in a minute" },
 ];
 
-export default function NotFound01() {
+const NotFound01 = () => {
   return (
     <section className="flex min-h-[80vh] items-center justify-center bg-background py-20">
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
@@ -69,4 +68,6 @@ export default function NotFound01() {
       </div>
     </section>
   );
-}
+};
+
+export default NotFound01;

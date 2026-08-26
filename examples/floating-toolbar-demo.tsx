@@ -10,7 +10,7 @@ import {
   FloatingToolbarSeparator,
 } from "@/registry/hirael/components/floating-toolbar";
 
-export default function FloatingToolbarDemo() {
+const FloatingToolbarDemo = () => {
   const t = useT();
 
   return (
@@ -45,4 +45,6 @@ export default function FloatingToolbarDemo() {
       </FloatingToolbar>
     </div>
   );
-}
+};
+
+export default FloatingToolbarDemo;

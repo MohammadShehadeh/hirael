@@ -15,7 +15,7 @@ const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
  * all in currentColor so the mark tracks the surrounding text color. The
  * viewBox is cropped to the artwork so it stays legible at favicon size.
  */
-function ArchMarkPaths() {
+const ArchMarkPaths = () => {
   return (
     <>
       <path
@@ -43,9 +43,9 @@ function ArchMarkPaths() {
       />
     </>
   );
-}
+};
 
-function ArchMarkSvg({ className }: { className?: string }) {
+const ArchMarkSvg = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -58,14 +58,14 @@ function ArchMarkSvg({ className }: { className?: string }) {
       <ArchMarkPaths />
     </svg>
   );
-}
+};
 
 /**
  * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
  * the arch mark on its left. ViewBox is tightened so the type fills the
  * vertical room; callers can size with a single h-* utility.
  */
-function HiraelWordmarkSvg({ className }: { className?: string }) {
+const HiraelWordmarkSvg = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -89,9 +89,9 @@ function HiraelWordmarkSvg({ className }: { className?: string }) {
       </text>
     </svg>
   );
-}
+};
 
-export function Logo({ className }: { className?: string }) {
+export const Logo = ({ className }: { className?: string }) => {
   return (
     <span
       role="img"
@@ -101,9 +101,9 @@ export function Logo({ className }: { className?: string }) {
       <HiraelWordmarkSvg className="h-full w-auto" />
     </span>
   );
-}
+};
 
-export function LogoMark({ className }: { className?: string }) {
+export const LogoMark = ({ className }: { className?: string }) => {
   return (
     <span
       role="img"
@@ -113,7 +113,7 @@ export function LogoMark({ className }: { className?: string }) {
       <ArchMarkSvg className="size-full" />
     </span>
   );
-}
+};
 
 /**
  * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
@@ -122,13 +122,13 @@ export function LogoMark({ className }: { className?: string }) {
  * the brand mark reads like a pressable key). Matches the board's ICON / MARK
  * panel. Size with a single `size-*` utility on `className`.
  */
-export function LogoTile({
+export const LogoTile = ({
   className,
   markClassName,
 }: {
   className?: string;
   markClassName?: string;
-}) {
+}) => {
   return (
     <span
       role="img"
@@ -144,4 +144,4 @@ export function LogoTile({
       <ArchMarkSvg className={cn("relative size-7.5", markClassName)} />
     </span>
   );
-}
+};

@@ -15,6 +15,8 @@ export type BlockKind =
   | "process"
   | "pricing"
   | "comparison"
+  | "team"
+  | "stats"
   | "testimonial"
   | "cta"
   | "newsletter"
@@ -34,7 +36,9 @@ export type BlockKind =
   | "app-shell"
   | "cloud"
   | "saas"
-  | "widgets";
+  | "ai"
+  | "widgets"
+  | "changelog";
 
 export type RegistryFileType =
   | "registry:ui"
@@ -51,7 +55,7 @@ export type RegistryFileType =
  * source path removes the parallel-array coupling the old
  * `sourceFiles` + `installTargets` pair required.
  */
-export type RegistryFileMeta = {
+export interface RegistryFileMeta {
   /** Repo-relative source path, e.g. `registry/hirael/components/multi-select.tsx`. */
   path: string;
   /**
@@ -62,20 +66,20 @@ export type RegistryFileMeta = {
   target?: string;
   /** Registry file type. Defaults to the item's type when omitted. */
   type?: RegistryFileType;
-};
+}
 
 /**
  * CSS variables an item ships with (registry-item schema `cssVars`).
  * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
  * them into `@theme inline` for Tailwind v4 consumers.
  */
-export type RegistryCssVars = {
+export interface RegistryCssVars {
   theme?: Record<string, string>;
   light?: Record<string, string>;
   dark?: Record<string, string>;
-};
+}
 
-export type RegistryEntryMeta = {
+export interface RegistryEntryMeta {
   name: string;
   title: string;
   description: string;
@@ -97,7 +101,7 @@ export type RegistryEntryMeta = {
    * beyond the auto-installed `dependencies` — most items need none.
    */
   docs?: string;
-};
+}
 
 /**
  * The status palette the cloud components rely on (`--success` / `--warning`
@@ -216,7 +220,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Drag-drop + click upload zone with previews, accept and max-size validation. Compound and single-prop APIs.",
     category: "files",
     files: [{ path: "registry/hirael/components/file-dropzone.tsx" }],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
   {
@@ -655,7 +659,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "checkbox",
       "field",
       "input",
-      "label",
       "password-input",
     ],
     dependencies: ["lucide-react"],
@@ -674,7 +677,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/login-02.tsx",
       },
     ],
-    registryDependencies: ["button", "input", "label", "password-input"],
+    registryDependencies: ["button", "field", "input", "password-input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -696,7 +699,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "checkbox",
       "field",
       "input",
-      "label",
       "password-input",
     ],
     dependencies: ["lucide-react"],
@@ -715,7 +717,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/forgot-password-01.tsx",
       },
     ],
-    registryDependencies: ["button", "input", "label"],
+    registryDependencies: ["button", "field", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -732,7 +734,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/otp-verify-01.tsx",
       },
     ],
-    registryDependencies: ["button", "input"],
+    registryDependencies: ["button", "field", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -803,7 +805,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.",
     category: "pickers",
     files: [{ path: "registry/hirael/components/time-picker.tsx" }],
-    registryDependencies: ["popover", "tabs"],
+    registryDependencies: ["button", "popover", "tabs"],
     dependencies: ["lucide-react"],
   },
   {
@@ -813,7 +815,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.",
     category: "pickers",
     files: [{ path: "registry/hirael/components/color-picker.tsx" }],
-    registryDependencies: ["popover", "input", "tabs"],
+    registryDependencies: ["button", "input", "popover", "tabs"],
     dependencies: ["lucide-react"],
   },
   {
@@ -1189,7 +1191,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "Click-to-copy button with copied feedback, icon-only or labelled, ghost / outline variants and a non-secure-context clipboard fallback.",
     category: "display",
     files: [{ path: "registry/hirael/components/copy-button.tsx" }],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
   {
@@ -1541,7 +1543,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.",
     category: "animation",
     files: [{ path: "registry/hirael/components/morphing-dialog.tsx" }],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["lucide-react", "motion"],
   },
   {
@@ -1625,7 +1627,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/tenant-switcher.tsx",
       },
     ],
-    registryDependencies: ["popover", "command"],
+    registryDependencies: ["button", "command", "popover"],
     dependencies: ["lucide-react"],
   },
   {
@@ -1676,7 +1678,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/notifications.tsx",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
   {
@@ -1693,7 +1695,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/billing-card.tsx",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: [],
   },
   {
@@ -1822,7 +1824,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/agency-landing/shader-background.tsx",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["badge", "button"],
     dependencies: ["shaders", "lucide-react"],
   },
   {
@@ -1877,7 +1879,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/mindloop/fonts.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button", "field"],
     dependencies: ["motion", "hls.js"],
   },
   {
@@ -1936,7 +1938,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/portfolio/styles.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["gsap", "motion", "hls.js"],
   },
   {
@@ -1983,7 +1985,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/usd-halo/fonts.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["lucide-react"],
   },
   {
@@ -2030,7 +2032,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/rivr/styles.tsx",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button"],
     dependencies: ["motion", "lucide-react"],
   },
   {
@@ -2089,7 +2091,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/velorah/fonts.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button", "toggle-group"],
     dependencies: ["hls.js"],
   },
   {
@@ -2144,7 +2146,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/asme/fonts.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["button", "field"],
     dependencies: ["motion", "lucide-react"],
   },
   {
@@ -2199,7 +2201,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/nexacore/fonts.ts",
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ["badge", "button"],
     dependencies: ["hls.js", "lucide-react"],
   },
   {
@@ -2454,7 +2456,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/dashboard-06.tsx",
       },
     ],
-    registryDependencies: ["button", "card", "chart", "empty"],
+    registryDependencies: ["badge", "button", "card", "chart", "empty"],
     dependencies: ["recharts", "lucide-react"],
     docs: "Charts run on recharts via the shadcn chart primitive. Give ChartContainer's parent an explicit height, and update chartConfig's keys when you swap in real data.",
   },
@@ -2557,8 +2559,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
       "calendar",
       "command",
       "dropdown-menu",
+      "field",
       "input",
-      "label",
       "popover",
       "select",
       "separator",
@@ -2640,7 +2642,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/newsletter-01.tsx",
       },
     ],
-    registryDependencies: ["button", "input"],
+    registryDependencies: ["button", "field", "input"],
     dependencies: ["lucide-react"],
   },
   {
@@ -2657,7 +2659,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/blocks/careers-01.tsx",
       },
     ],
-    registryDependencies: ["badge"],
+    registryDependencies: ["badge", "toggle-group"],
     dependencies: ["lucide-react"],
   },
   {
@@ -2861,6 +2863,442 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
   },
+  {
+    name: "kanban",
+    title: "Kanban",
+    description:
+      "Board of columns and cards with pointer and keyboard drag-and-drop across columns, drop placeholder, empty-column hint and live-region announcements. No dnd-kit.",
+    category: "data",
+    files: [{ path: "registry/hirael/components/kanban.tsx" }],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "sparkline",
+    title: "Sparkline",
+    description:
+      "Tiny inline SVG chart in line, area or bar form with optional curve, last-point dot, reference line and hover tooltip. Tints with currentColor, no chart library.",
+    category: "data",
+    files: [{ path: "registry/hirael/components/sparkline.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "json-viewer",
+    title: "JSON Viewer",
+    description:
+      "Collapsible JSON tree with typed value colors, item counts on closed nodes, long-string truncation, expand or collapse all, copy, and arrow-key navigation.",
+    category: "display",
+    files: [{ path: "registry/hirael/components/json-viewer.tsx" }],
+    registryDependencies: ["button", "copy-button"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "diff-viewer",
+    title: "Diff Viewer",
+    description:
+      "Line diff of two texts computed in-component with an LCS algorithm. Unified or split layout, +N / -N stats, context lines with expandable gaps. No deps.",
+    category: "display",
+    files: [{ path: "registry/hirael/components/diff-viewer.tsx" }],
+    registryDependencies: ["toggle-group"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "cron-editor",
+    title: "Cron Editor",
+    description:
+      "Visual cron builder kept in sync with the raw expression. Presets, per-field modes, validation, a plain-English preview, and the next run times.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/components/cron-editor.tsx" }],
+    registryDependencies: ["button", "field", "input", "native-select"],
+    dependencies: [],
+  },
+  {
+    name: "country-select",
+    title: "Country Select",
+    description:
+      "Searchable country picker with flag emoji, pinned countries, optional dial codes, and single or multiple selection. Search by name or ISO code.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/components/country-select.tsx" }],
+    registryDependencies: ["button", "command", "popover"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "credit-card-input",
+    title: "Credit Card Input",
+    description:
+      "Card number, expiry, and CVC in one row with brand detection, per-brand grouping, Luhn and expiry validation, and auto-advance between fields.",
+    category: "inputs",
+    files: [{ path: "registry/hirael/components/credit-card-input.tsx" }],
+    registryDependencies: ["input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "emoji-picker",
+    title: "Emoji Picker",
+    description:
+      "Self-contained emoji grid with 560+ emoji in 8 categories, keyword search, recents, skin tones, and arrow-key navigation. No dependencies.",
+    category: "pickers",
+    files: [{ path: "registry/hirael/components/emoji-picker.tsx" }],
+    registryDependencies: ["input"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "avatar-upload",
+    title: "Avatar Upload",
+    description:
+      "Click or drop an image, crop it to a circle or square with zoom, and preview the result. Initials fallback, size and type limits, remove control.",
+    category: "files",
+    files: [{ path: "registry/hirael/components/avatar-upload.tsx" }],
+    registryDependencies: ["button", "dialog", "image-cropper"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "settings-01",
+    title: "Settings 1",
+    description:
+      "Account settings page with a sticky section nav, card sections with label/control rows that stack on mobile, dirty-aware Save/Cancel footers, and a Danger zone with an alert-dialog confirm. Ships composable parts.",
+    blockTagline: "Section nav · label/control rows · danger zone confirm",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/settings-01/settings-01.tsx",
+        target: "components/blocks/settings-01.tsx",
+      },
+    ],
+    registryDependencies: [
+      "alert-dialog",
+      "avatar",
+      "badge",
+      "button",
+      "field",
+      "input",
+      "input-group",
+      "select",
+      "textarea",
+    ],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "settings-02",
+    title: "Settings 2",
+    description:
+      "Security and notifications settings in tabs: change password with strength meter, two-factor toggle, revocable session list, and grouped notification switches under a Pause all master. Ships composable parts.",
+    blockTagline: "Password + 2FA · active sessions · pause all switches",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/settings-02/settings-02.tsx",
+        target: "components/blocks/settings-02.tsx",
+      },
+    ],
+    registryDependencies: [
+      "badge",
+      "button",
+      "field",
+      "password-input",
+      "switch",
+      "tabs",
+    ],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "members-01",
+    title: "Members 1",
+    description:
+      "Team members management: live search, inline role select, status badges, row actions menu, a pending-invites list with resend/revoke, and an invite dialog that validates emails as tags. Ships composable parts.",
+    blockTagline: "Live search · inline roles · invite dialog",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/members-01/members-01.tsx",
+        target: "components/blocks/members-01.tsx",
+      },
+    ],
+    registryDependencies: [
+      "avatar",
+      "badge",
+      "button",
+      "dialog",
+      "dropdown-menu",
+      "field",
+      "input-group",
+      "select",
+      "table",
+      "tag-input",
+    ],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "onboarding-01",
+    title: "Onboarding 1",
+    description:
+      "Four-step setup wizard on the Stepper: controlled or uncontrolled step, per-step validation gating Continue, Skip, Back, a Finish that fires onComplete, and a fade between steps. Ships composable parts.",
+    blockTagline: "Stepper header · gated Continue · done state",
+    category: "blocks",
+    blockKind: "saas",
+    files: [
+      {
+        path: "registry/hirael/blocks/onboarding-01/onboarding-01.tsx",
+        target: "components/blocks/onboarding-01.tsx",
+      },
+    ],
+    registryDependencies: [
+      "button",
+      "card",
+      "field",
+      "input",
+      "input-group",
+      "progress",
+      "radio-group",
+      "select",
+      "stepper",
+      "switch",
+    ],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "two-factor-setup-01",
+    title: "Two-Factor Setup 1",
+    description:
+      "Three-step 2FA enrollment card: scan a real otpauth QR or copy the key, confirm a six-digit code, then save recovery codes with copy, download and a checkbox-gated finish. Ships composable parts.",
+    blockTagline: "QR + secret · six-digit verify · recovery codes",
+    category: "blocks",
+    blockKind: "login",
+    files: [
+      {
+        path: "registry/hirael/blocks/two-factor-setup-01/two-factor-setup-01.tsx",
+        target: "components/blocks/two-factor-setup-01.tsx",
+      },
+    ],
+    registryDependencies: [
+      "button",
+      "checkbox",
+      "copy-button",
+      "field",
+      "input-otp",
+      "qr-code",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "coming-soon-01",
+    title: "Coming Soon 1",
+    description:
+      "Full-viewport launch page with a live countdown, an email notify form that shows an inline success state, and a GitHub link in the footer. Ships composable parts.",
+    blockTagline: "Countdown · notify form · inline success",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/coming-soon-01/coming-soon-01.tsx",
+        target: "components/blocks/coming-soon-01.tsx",
+      },
+    ],
+    registryDependencies: ["button", "countdown-timer", "field", "input"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "maintenance-01",
+    title: "Maintenance 1",
+    description:
+      "Scheduled maintenance page with a pulsing status dot, window card showing start, expected return and elapsed progress, paired CTAs and a timestamped updates list. Ships composable parts.",
+    blockTagline: "Pulsing status · window progress · update log",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/maintenance-01/maintenance-01.tsx",
+        target: "components/blocks/maintenance-01.tsx",
+      },
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "error-01",
+    title: "Error 1",
+    description:
+      "500 page with a retry action, home link, collapsible technical details (request id, timestamp, copy button) and a system status line. Ships composable parts.",
+    blockTagline: "Retry + home · collapsible details · status line",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/error-01/error-01.tsx",
+        target: "components/blocks/error-01.tsx",
+      },
+    ],
+    registryDependencies: ["button", "collapsible", "copy-button"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "team-01",
+    title: "Team 1",
+    description:
+      "Team section with serif headline, a bordered grid of members with initials placeholders, roles, bios, GitHub links, and a hiring footer. Ships composable parts.",
+    blockTagline: "Bordered grid · initials placeholders · hiring footer",
+    category: "blocks",
+    blockKind: "team",
+    files: [
+      {
+        path: "registry/hirael/blocks/team-01/team-01.tsx",
+        target: "components/blocks/team-01.tsx",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "stats-01",
+    title: "Stats 1",
+    description:
+      "Metrics band with four large numbers that count up on scroll, labels, optional deltas, and a two-column header on large screens. Ships composable parts.",
+    blockTagline: "Counts up in view · bordered row · two-column on lg",
+    category: "blocks",
+    blockKind: "stats",
+    files: [
+      {
+        path: "registry/hirael/blocks/stats-01/stats-01.tsx",
+        target: "components/blocks/stats-01.tsx",
+      },
+    ],
+    registryDependencies: ["animated-number"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "cookie-consent",
+    title: "Cookie Consent",
+    description:
+      "Floating consent banner with per-category switches, accept, reject, and save actions, and a choice persisted in localStorage. Ships composable parts.",
+    blockTagline: "Per-category switches · persists choice · fixed or absolute",
+    category: "blocks",
+    blockKind: "widgets",
+    files: [
+      {
+        path: "registry/hirael/blocks/cookie-consent/cookie-consent.tsx",
+        target: "components/blocks/cookie-consent.tsx",
+      },
+    ],
+    registryDependencies: ["button", "field", "switch"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "changelog-01",
+    title: "Changelog 1",
+    description:
+      "Release notes with a sticky date rail, version badges, New / Improved / Fixed tags, a subscribe button, and a filter that narrows entries. Ships composable parts.",
+    blockTagline: "Sticky date rail · tag filter · version badges",
+    category: "blocks",
+    blockKind: "changelog",
+    files: [
+      {
+        path: "registry/hirael/blocks/changelog-01/changelog-01.tsx",
+        target: "components/blocks/changelog-01.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "button", "toggle-group"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "env-editor",
+    title: "Env Editor",
+    description:
+      "Environment variables editor with masked secrets, copy, per-environment chips, .env import, key validation, and unsaved-change tracking. Ships composable parts.",
+    blockTagline: "Masked secrets · .env import · key validation",
+    category: "blocks",
+    blockKind: "cloud",
+    files: [
+      {
+        path: "registry/hirael/blocks/env-editor/env-editor.tsx",
+        target: "components/blocks/env-editor.tsx",
+      },
+    ],
+    registryDependencies: [
+      "badge",
+      "button",
+      "copy-button",
+      "dialog",
+      "field",
+      "input",
+      "input-group",
+      "textarea",
+    ],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "prompt-input",
+    title: "Prompt Input",
+    description:
+      "Chat composer with an auto-growing textarea, Enter to send, attachments, a model picker, and a Stop button while streaming. Ships composable parts.",
+    blockTagline: "Auto-grow textarea · attachments · model picker",
+    category: "blocks",
+    blockKind: "ai",
+    files: [
+      {
+        path: "registry/hirael/blocks/prompt-input/prompt-input.tsx",
+        target: "components/blocks/prompt-input.tsx",
+      },
+    ],
+    registryDependencies: ["button", "dropdown-menu", "textarea"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "message-thread",
+    title: "Message Thread",
+    description:
+      "Message list that follows streaming output, with tool calls, reasoning, sources, hover actions, typing dots, and a streaming cursor. Ships composable parts.",
+    blockTagline: "Sticks to bottom · tool calls · streaming cursor",
+    category: "blocks",
+    blockKind: "ai",
+    files: [
+      {
+        path: "registry/hirael/blocks/message-thread/message-thread.tsx",
+        target: "components/blocks/message-thread.tsx",
+      },
+    ],
+    registryDependencies: ["button", "collapsible", "copy-button"],
+    dependencies: ["lucide-react"],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "ai-chat-01",
+    title: "AI Chat 1",
+    description:
+      "Full chat screen: grouped history sidebar that collapses to a sheet, top bar with model badge, streaming thread, and pinned composer. Ships composable parts.",
+    blockTagline: "History sidebar · streaming replies · Stop cancels",
+    category: "blocks",
+    blockKind: "ai",
+    files: [
+      {
+        path: "registry/hirael/blocks/ai-chat-01/ai-chat-01.tsx",
+        target: "components/blocks/ai-chat-01.tsx",
+      },
+    ],
+    registryDependencies: [
+      "badge",
+      "button",
+      "dropdown-menu",
+      "input-group",
+      "sheet",
+      "textarea",
+    ],
+    dependencies: ["lucide-react"],
+  },
 ];
 
 /**
@@ -2868,7 +3306,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
  * (no demo page, no sidebar entry). registry.json is generated from
  * REGISTRY + DISTRIBUTION_ONLY by scripts/build-registry.mjs.
  */
-export type DistributionOnlyEntry = {
+export interface DistributionOnlyEntry {
   name: string;
   title: string;
   description: string;
@@ -2883,7 +3321,7 @@ export type DistributionOnlyEntry = {
   registryDependencies?: string[];
   dependencies?: string[];
   cssVars?: RegistryCssVars;
-};
+}
 
 export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
   {
@@ -2977,7 +3415,10 @@ export const COMPONENTS = REGISTRY.filter(
  * one. Most components have a single `<name>-demo`; list extra variants here
  * (the first entry is the representative preview used in grids and embeds).
  */
-export type ExampleRef = { slug: string; title: string };
+export interface ExampleRef {
+  slug: string;
+  title: string;
+}
 
 const EXAMPLE_OVERRIDES: Record<string, ExampleRef[]> = {
   "tag-input": [
@@ -2992,11 +3433,11 @@ const EXAMPLE_OVERRIDES: Record<string, ExampleRef[]> = {
 };
 
 /** Ordered examples for a component, defaulting to a single `<name>-demo`. */
-export function getExamples(name: string): ExampleRef[] {
+export const getExamples = (name: string): ExampleRef[] => {
   return (
     EXAMPLE_OVERRIDES[name] ?? [{ slug: `${name}-demo`, title: "Example" }]
   );
-}
+};
 
 export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   hero: "Hero sections",
@@ -3004,6 +3445,8 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   process: "How it works",
   pricing: "Pricing",
   comparison: "Comparison",
+  team: "Team",
+  stats: "Stats",
   testimonial: "Testimonials",
   cta: "Call-to-action",
   newsletter: "Newsletter",
@@ -3011,7 +3454,7 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   login: "Auth",
   header: "Headers",
   footer: "Footers",
-  "not-found": "404",
+  "not-found": "Status pages",
   "logo-cloud": "Logo cloud",
   contact: "Contact",
   careers: "Careers",
@@ -3023,7 +3466,9 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   "app-shell": "App shell",
   cloud: "Cloud",
   saas: "SaaS",
+  ai: "AI",
   widgets: "Widgets",
+  changelog: "Changelog",
 };
 
 export const BLOCKS_BY_KIND = (() => {
@@ -3033,6 +3478,8 @@ export const BLOCKS_BY_KIND = (() => {
     process: [],
     pricing: [],
     comparison: [],
+    team: [],
+    stats: [],
     testimonial: [],
     cta: [],
     newsletter: [],
@@ -3052,7 +3499,9 @@ export const BLOCKS_BY_KIND = (() => {
     "app-shell": [],
     cloud: [],
     saas: [],
+    ai: [],
     widgets: [],
+    changelog: [],
   };
   for (const entry of REGISTRY) {
     if (entry.category === "blocks" && entry.blockKind) {
@@ -3068,6 +3517,8 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "process",
   "pricing",
   "comparison",
+  "team",
+  "stats",
   "testimonial",
   "cta",
   "newsletter",
@@ -3087,7 +3538,9 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   "app-shell",
   "cloud",
   "saas",
+  "ai",
   "widgets",
+  "changelog",
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -3137,6 +3590,8 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   process: "process",
   pricing: "pricing",
   comparison: "comparison",
+  team: "team",
+  stats: "stats",
   testimonial: "testimonials",
   cta: "cta",
   newsletter: "newsletter",
@@ -3156,34 +3611,36 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   "app-shell": "app-shell",
   cloud: "cloud",
   saas: "saas",
+  ai: "ai",
   widgets: "widgets",
+  changelog: "changelog",
 };
 
 /** The category segment an entry's detail page sits under. */
-export function entryCategorySlug(entry: RegistryEntryMeta): string {
+export const entryCategorySlug = (entry: RegistryEntryMeta): string => {
   if (entry.category === "blocks" && entry.blockKind)
     return BLOCK_KIND_SLUGS[entry.blockKind];
   return entry.category;
-}
+};
 
 /** Canonical site path for an entry's detail page (category in the URL). */
-export function entryHref(entry: RegistryEntryMeta): string {
+export const entryHref = (entry: RegistryEntryMeta): string => {
   if (entry.category === "templates") return `/templates/${entry.name}`;
   if (entry.category === "blocks")
     return `/blocks/${entryCategorySlug(entry)}/${entry.name}`;
   return `/components/${entry.category}/${entry.name}`;
-}
+};
 
 /** Path of an entry's framed `/embed/*` preview (category in the URL). */
-export function entryEmbedHref(entry: RegistryEntryMeta): string {
+export const entryEmbedHref = (entry: RegistryEntryMeta): string => {
   if (entry.category === "templates") return `/embed/templates/${entry.name}`;
   return `/embed/blocks/${entryCategorySlug(entry)}/${entry.name}`;
-}
+};
 
-export function entryFileLabel(entry: RegistryEntryMeta): string {
+export const entryFileLabel = (entry: RegistryEntryMeta): string => {
   const count = entry.files?.length ?? 0;
   return `${count} file${count === 1 ? "" : "s"}`;
-}
+};
 
 /* -------------------------------------------------------------------------- */
 /* Sibling navigation — a linear walk through each collection                 */
@@ -3208,10 +3665,12 @@ export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap(
  * (components | blocks | templates). Used for the detail-page pager; either
  * side is `null` at a collection boundary.
  */
-export function entrySiblings(entry: RegistryEntryMeta): {
+export const entrySiblings = (
+  entry: RegistryEntryMeta,
+): {
   prev: RegistryEntryMeta | null;
   next: RegistryEntryMeta | null;
-} {
+} => {
   const list =
     entry.category === "templates"
       ? TEMPLATES
@@ -3224,4 +3683,4 @@ export function entrySiblings(entry: RegistryEntryMeta): {
     prev: i > 0 ? list[i - 1] : null,
     next: i < list.length - 1 ? list[i + 1] : null,
   };
-}
+};

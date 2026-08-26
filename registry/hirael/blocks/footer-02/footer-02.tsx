@@ -5,11 +5,10 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type FooterColumn = {
+interface FooterColumn {
   title: string;
   href: string;
-  links: readonly { label: string; href: string }[];
-};
+  links: readonly { label: string; href: string }[];}
 
 const MAX_LINKS = 5;
 
@@ -50,7 +49,7 @@ const COLUMNS: readonly FooterColumn[] = [
   },
 ];
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -66,9 +65,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M24 40 V24 l8 10 8 -10 V40" />
     </svg>
   );
-}
+};
 
-export default function Footer02() {
+const Footer02 = () => {
   return (
     <footer
       data-slot="footer"
@@ -181,4 +180,6 @@ export default function Footer02() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer02;

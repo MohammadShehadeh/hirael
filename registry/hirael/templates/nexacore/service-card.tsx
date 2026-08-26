@@ -1,13 +1,15 @@
 import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 
 /**
  * Escalating orbit glyph: a base ring shared by every card, plus a growing
  * stack of filled accent dots so each stage of the program reads as more
  * built-out than the last.
  */
-function ServiceIcon({ level }: { level: number }) {
+const ServiceIcon = ({ level }: { level: number }) => {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -23,9 +25,9 @@ function ServiceIcon({ level }: { level: number }) {
       {level >= 4 ? <circle cx="12" cy="12" r="4" fill="currentColor" /> : null}
     </svg>
   );
-}
+};
 
-function Bullet() {
+const Bullet = () => {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -37,21 +39,21 @@ function Bullet() {
       <circle cx="8" cy="8" r="2.5" fill="currentColor" />
     </svg>
   );
-}
+};
 
-export type ServiceCardProps = {
+export interface ServiceCardProps {
   label: string;
   level: number;
   title: string;
   bullets: string[];
-};
+}
 
-export function ServiceCard({
+export const ServiceCard = ({
   label,
   level,
   title,
   bullets,
-}: ServiceCardProps) {
+}: ServiceCardProps) => {
   return (
     <div
       data-slot="service-card"
@@ -81,15 +83,15 @@ export function ServiceCard({
           padding: "clamp(16px, 1.94vw, 32px) clamp(18px, 2.36vw, 36px)",
         }}
       >
-        <span
-          className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--nexa-badge)] text-white"
+        <Badge
+          className="gap-2 bg-[var(--nexa-badge)] font-normal text-white [&>svg]:size-[17px]"
           style={{
             padding: "clamp(6px, 0.7vw, 12px) clamp(10px, 1.25vw, 20px)",
           }}
         >
           <ServiceIcon level={level} />
           <span style={{ fontSize: "clamp(12px, 0.97vw, 15px)" }}>{label}</span>
-        </span>
+        </Badge>
 
         <div className="flex-grow" />
 
@@ -119,9 +121,9 @@ export function ServiceCard({
             "group-hover:max-h-20 group-hover:translate-y-0 group-hover:opacity-100",
           )}
         >
-          <button
+          <Button
             type="button"
-            className="nexa-grad-a-bg mt-4 flex w-full items-center justify-center gap-2 rounded-xl font-medium text-white"
+            className="nexa-grad-a-bg mt-4 h-auto w-full rounded-xl"
             style={{
               padding: "clamp(10px, 0.9vw, 14px) 0",
               fontSize: "clamp(13px, 1.1vw, 16px)",
@@ -129,9 +131,9 @@ export function ServiceCard({
           >
             Learn more
             <ArrowRight className="size-4 rtl:-scale-x-100" />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
-}
+};

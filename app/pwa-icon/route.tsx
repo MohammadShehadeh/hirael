@@ -4,7 +4,7 @@ export const dynamic = "force-static";
 
 const SIZE = 512;
 
-export function GET() {
+export const GET = () => {
   return new ImageResponse(
     <div
       style={{
@@ -62,4 +62,4 @@ export function GET() {
     </div>,
     { width: SIZE, height: SIZE },
   );
-}
+};

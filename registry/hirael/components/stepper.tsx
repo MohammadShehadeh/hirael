@@ -8,57 +8,54 @@ import { cn } from "@/lib/utils";
 type Orientation = "horizontal" | "vertical";
 type StepState = "active" | "completed" | "inactive";
 
-type StepperCtx = {
+interface StepperCtx {
   value: number;
   setValue: (step: number) => void;
-  orientation: Orientation;
-};
+  orientation: Orientation;}
 
 const StepperContext = React.createContext<StepperCtx | null>(null);
 
-function useStepper() {
+const useStepper = () => {
   const ctx = React.useContext(StepperContext);
   if (!ctx) {
     throw new Error("Stepper compound parts must be used inside <Stepper>");
   }
   return ctx;
-}
+};
 
-type StepperItemCtx = {
+interface StepperItemCtx {
   step: number;
   state: StepState;
-  disabled: boolean;
-};
+  disabled: boolean;}
 
 const StepperItemContext = React.createContext<StepperItemCtx | null>(null);
 
-function useStepperItem() {
+const useStepperItem = () => {
   const ctx = React.useContext(StepperItemContext);
   if (!ctx) {
     throw new Error("Stepper item parts must be used inside <StepperItem>");
   }
   return ctx;
-}
+};
 
-export type StepperProps = Omit<
+export interface StepperProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
-> & {
+> {
   /** The active step, 1-based. */
   value?: number;
   defaultValue?: number;
   onValueChange?: (step: number) => void;
-  orientation?: Orientation;
-};
+  orientation?: Orientation;}
 
-function Stepper({
+const Stepper = ({
   value: valueProp,
   defaultValue = 1,
   onValueChange,
   orientation = "horizontal",
   className,
   ...props
-}: StepperProps) {
+}: StepperProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
   const value = valueProp ?? internal;
 
@@ -89,23 +86,22 @@ function Stepper({
       />
     </StepperContext.Provider>
   );
-}
+};
 
-export type StepperItemProps = React.ComponentProps<"div"> & {
+export interface StepperItemProps extends React.ComponentProps<"div"> {
   /** This item's position, 1-based. */
   step: number;
   /** Force the completed state regardless of the active step. */
   completed?: boolean;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-function StepperItem({
+const StepperItem = ({
   step,
   completed,
   disabled = false,
   className,
   ...props
-}: StepperItemProps) {
+}: StepperItemProps) => {
   const { value, orientation } = useStepper();
 
   const state: StepState =
@@ -136,12 +132,12 @@ function StepperItem({
       />
     </StepperItemContext.Provider>
   );
-}
+};
 
-function StepperTrigger({
+const StepperTrigger = ({
   className,
   ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button">) => {
   const { setValue } = useStepper();
   const { step, state, disabled } = useStepperItem();
 
@@ -161,13 +157,13 @@ function StepperTrigger({
       {...props}
     />
   );
-}
+};
 
-function StepperIndicator({
+const StepperIndicator = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"span">) => {
   const { step, state } = useStepperItem();
 
   return (
@@ -193,12 +189,12 @@ function StepperIndicator({
         ))}
     </span>
   );
-}
+};
 
-function StepperSeparator({
+const StepperSeparator = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   return (
     <div
       data-slot="stepper-separator"
@@ -212,9 +208,9 @@ function StepperSeparator({
       {...props}
     />
   );
-}
+};
 
-function StepperTitle({ className, ...props }: React.ComponentProps<"span">) {
+const StepperTitle = ({ className, ...props }: React.ComponentProps<"span">) => {
   const { state } = useStepperItem();
   return (
     <span
@@ -227,12 +223,12 @@ function StepperTitle({ className, ...props }: React.ComponentProps<"span">) {
       {...props}
     />
   );
-}
+};
 
-function StepperDescription({
+const StepperDescription = ({
   className,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"span">) => {
   return (
     <span
       data-slot="stepper-description"
@@ -240,7 +236,7 @@ function StepperDescription({
       {...props}
     />
   );
-}
+};
 
 export {
   Stepper,

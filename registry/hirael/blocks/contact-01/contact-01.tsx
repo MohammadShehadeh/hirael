@@ -41,14 +41,13 @@ import { Textarea } from "@/registry/hirael/ui/textarea";
 const MESSAGE_MAX = 1000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type FormState = {
+interface FormState {
   name: string;
   email: string;
   company: string;
   topic: string;
   message: string;
-  consent: boolean;
-};
+  consent: boolean;}
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
@@ -68,12 +67,11 @@ const TOPICS = [
   { value: "support", label: "Technical support" },
 ] as const;
 
-type Channel = {
+interface Channel {
   icon: React.ElementType;
   label: string;
   value: string;
-  href: string;
-};
+  href: string;}
 
 const CHANNELS: readonly Channel[] = [
   {
@@ -90,7 +88,7 @@ const CHANNELS: readonly Channel[] = [
   },
 ];
 
-function validate(state: FormState): FormErrors {
+const validate = (state: FormState): FormErrors => {
   const errors: FormErrors = {};
   if (!state.name.trim()) errors.name = "Tell us who you are.";
   if (!state.email.trim()) errors.email = "We need a way to reply.";
@@ -102,9 +100,9 @@ function validate(state: FormState): FormErrors {
     errors.message = `Keep it under ${MESSAGE_MAX} characters.`;
   if (!state.consent) errors.consent = "Please accept the privacy notice.";
   return errors;
-}
+};
 
-export default function Contact01() {
+const Contact01 = () => {
   const [state, setState] = React.useState<FormState>(INITIAL);
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [touched, setTouched] = React.useState(false);
@@ -431,4 +429,6 @@ export default function Contact01() {
       </div>
     </section>
   );
-}
+};
+
+export default Contact01;

@@ -4,7 +4,7 @@ import * as React from "react";
 
 const LOGOS = ["Linear", "Vercel", "Resend", "Cal.com", "Raycast"] as const;
 
-export default function Testimonial01() {
+const Testimonial01 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
@@ -53,4 +53,6 @@ export default function Testimonial01() {
       </div>
     </section>
   );
-}
+};
+
+export default Testimonial01;

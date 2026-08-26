@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function Testimonial03() {
+const Testimonial03 = () => {
   return (
     <section data-slot="testimonial" className="bg-background py-24 sm:py-32">
       <div
@@ -58,4 +58,6 @@ export default function Testimonial03() {
       </div>
     </section>
   );
-}
+};
+
+export default Testimonial03;

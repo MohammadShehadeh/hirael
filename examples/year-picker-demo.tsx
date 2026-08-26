@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   YearPicker,
   YearPickerContent,
@@ -11,7 +11,7 @@ import {
   type YearRange,
 } from "@/registry/hirael/components/year-picker";
 
-export default function YearPickerDemo() {
+const YearPickerDemo = () => {
   const t = useT();
 
   const [year, setYear] = React.useState<number | undefined>(2026);
@@ -21,25 +21,32 @@ export default function YearPickerDemo() {
   });
 
   return (
-    <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
-      <div className="grid gap-2">
-        <Label>{t({ en: "Founded", ar: "تأسست" })}</Label>
+    <FieldGroup className="grid max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="yp-founded">
+          {t({ en: "Founded", ar: "تأسست" })}
+        </FieldLabel>
         <YearPicker
           value={year}
           onValueChange={setYear}
           minYear={1970}
           maxYear={2035}
         >
-          <YearPickerTrigger placeholder={t({ en: "Year", ar: "السنة" })} />
+          <YearPickerTrigger
+            id="yp-founded"
+            placeholder={t({ en: "Year", ar: "السنة" })}
+          />
           <YearPickerContent />
         </YearPicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           value = {year ?? "-"}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>{t({ en: "Range", ar: "النطاق" })}</Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="yp-range">
+          {t({ en: "Range", ar: "النطاق" })}
+        </FieldLabel>
         <YearPicker
           mode="range"
           value={range}
@@ -48,6 +55,7 @@ export default function YearPickerDemo() {
           maxYear={2030}
         >
           <YearPickerTrigger
+            id="yp-range"
             placeholder={t({ en: "Pick a range", ar: "اختر نطاقًا" })}
           />
           <YearPickerContent />
@@ -55,7 +63,9 @@ export default function YearPickerDemo() {
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           {range?.from ?? "-"} → {range?.to ?? "…"}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default YearPickerDemo;

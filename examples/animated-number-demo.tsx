@@ -3,9 +3,10 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
+import { Button } from "@/registry/hirael/ui/button";
 import { AnimatedNumber } from "@/registry/hirael/components/animated-number";
 
-export default function AnimatedNumberDemo() {
+const AnimatedNumberDemo = () => {
   const t = useT();
   const [revenue, setRevenue] = React.useState(48250);
   const [users, setUsers] = React.useState(12481);
@@ -56,13 +57,15 @@ export default function AnimatedNumberDemo() {
             />
           </div>
         </div>
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={shuffle}
-          className="mt-1 w-fit rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-accent"
+          className="mt-1 w-fit"
         >
           {t({ en: "Randomize", ar: "تغيير عشوائي" })}
-        </button>
+        </Button>
       </div>
 
       <div className="grid gap-2">
@@ -78,4 +81,6 @@ export default function AnimatedNumberDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default AnimatedNumberDemo;

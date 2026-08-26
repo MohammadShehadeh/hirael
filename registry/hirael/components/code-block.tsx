@@ -21,9 +21,9 @@ type TokenType =
   | "punctuation"
   | "plain";
 
-type Token = { type: TokenType; content: string };
+interface Token { type: TokenType; content: string}
 
-type Rule = { type: TokenType; re: string };
+interface Rule { type: TokenType; re: string}
 
 const TOKEN_CLASSES: Record<TokenType, string | undefined> = {
   comment: "italic text-muted-foreground",
@@ -129,7 +129,7 @@ const GRAMMARS: Record<string, Rule[]> = {
   svg: HTML_RULES,
 };
 
-function tokenize(code: string, language?: string): Token[][] | null {
+const tokenize = (code: string, language?: string): Token[][] | null => {
   const rules = language ? GRAMMARS[language.toLowerCase()] : undefined;
   if (!rules) return null;
 
@@ -159,9 +159,9 @@ function tokenize(code: string, language?: string): Token[][] | null {
     });
   }
   return lines;
-}
+};
 
-type CodeBlockContextValue = {
+interface CodeBlockContextValue {
   code: string;
   language?: string;
   filename?: string;
@@ -174,22 +174,21 @@ type CodeBlockContextValue = {
   maxHeight?: number;
   copyable: boolean;
   expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;}
 
 const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(
   null,
 );
 
-function useCodeBlock() {
+const useCodeBlock = () => {
   const context = React.useContext(CodeBlockContext);
   if (!context) {
     throw new Error("useCodeBlock must be used within a <CodeBlock />");
   }
   return context;
-}
+};
 
-export type CodeBlockProps = React.ComponentProps<"div"> & {
+export interface CodeBlockProps extends React.ComponentProps<"div"> {
   /** Raw code to display. A string child is accepted as an alternative. */
   code?: string;
   language?: string;
@@ -202,10 +201,9 @@ export type CodeBlockProps = React.ComponentProps<"div"> & {
   removedLines?: number[];
   wrap?: boolean;
   maxHeight?: number;
-  copyable?: boolean;
-};
+  copyable?: boolean;}
 
-function CodeBlock({
+const CodeBlock = ({
   code,
   language,
   filename,
@@ -220,7 +218,7 @@ function CodeBlock({
   className,
   children,
   ...props
-}: CodeBlockProps) {
+}: CodeBlockProps) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const rawCode = (
@@ -282,13 +280,13 @@ function CodeBlock({
       </div>
     </CodeBlockContext.Provider>
   );
-}
+};
 
-function CodeBlockHeader({
+const CodeBlockHeader = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const { code, language, filename, copyable } = useCodeBlock();
 
   return (
@@ -326,12 +324,12 @@ function CodeBlockHeader({
       )}
     </div>
   );
-}
+};
 
-function CodeBlockContent({
+const CodeBlockContent = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const {
     code,
     language,
@@ -478,6 +476,6 @@ function CodeBlockContent({
       )}
     </div>
   );
-}
+};
 
 export { CodeBlock, CodeBlockHeader, CodeBlockContent };

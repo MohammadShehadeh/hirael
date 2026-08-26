@@ -2,7 +2,11 @@
 
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/registry/hirael/ui/toggle-group";
 
 const FEATURE_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4";
@@ -50,13 +54,13 @@ const FEATURE_TABS = [
   },
 ];
 
-export function Feature({
+export const Feature = ({
   videoSrc = FEATURE_VIDEO,
   posterSrc,
 }: {
   videoSrc?: string;
   posterSrc?: string;
-}) {
+}) => {
   const [activeId, setActiveId] = React.useState(FEATURE_TABS[0].id);
   const [videoFailed, setVideoFailed] = React.useState(false);
 
@@ -78,24 +82,26 @@ export function Feature({
           </div>
 
           <div>
-            <div className="mb-8 flex flex-wrap gap-2">
+            <ToggleGroup
+              type="single"
+              variant="outline"
+              spacing={2}
+              value={active.id}
+              onValueChange={(id) => {
+                if (id) setActiveId(id);
+              }}
+              className="mb-8 flex-wrap"
+            >
               {FEATURE_TABS.map((tab) => (
-                <button
+                <ToggleGroupItem
                   key={tab.id}
-                  type="button"
-                  onClick={() => setActiveId(tab.id)}
-                  aria-pressed={tab.id === active.id}
-                  className={cn(
-                    "rounded-full border px-4 py-2 text-xs transition-colors",
-                    tab.id === active.id
-                      ? "border-foreground bg-foreground text-primary-foreground"
-                      : "border-border text-muted-foreground hover:text-foreground",
-                  )}
+                  value={tab.id}
+                  className="h-auto rounded-full px-4 py-2 text-xs font-normal text-muted-foreground shadow-none data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                 >
                   {tab.label}
-                </button>
+                </ToggleGroupItem>
               ))}
-            </div>
+            </ToggleGroup>
 
             <div className="mb-6 h-0.5 w-full rounded-full bg-border">
               <div
@@ -104,12 +110,13 @@ export function Feature({
               />
             </div>
 
-            <button
+            <Button
               type="button"
-              className="liquid-glass rounded-full px-8 py-3 text-sm text-foreground transition-transform hover:scale-[1.03]"
+              variant="ghost"
+              className="liquid-glass h-auto rounded-full px-8 py-3 font-normal text-foreground transition-transform hover:scale-[1.03]"
             >
               Explore the Velorah Flow
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -140,4 +147,4 @@ export function Feature({
       </div>
     </section>
   );
-}
+};

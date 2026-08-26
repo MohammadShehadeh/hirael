@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { TextReveal } from "@/registry/hirael/components/text-reveal";
 
-export default function TextRevealDemo() {
+const TextRevealDemo = () => {
   const t = useT();
 
   return (
@@ -41,4 +41,6 @@ export default function TextRevealDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default TextRevealDemo;

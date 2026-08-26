@@ -14,7 +14,7 @@ const TRIO = [
 ];
 const QUARTET = [...TRIO, { en: "DL", ar: "نل" }];
 
-export default function AvatarStackDemo() {
+const AvatarStackDemo = () => {
   const t = useT();
 
   return (
@@ -128,4 +128,6 @@ export default function AvatarStackDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default AvatarStackDemo;

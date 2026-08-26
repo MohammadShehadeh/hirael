@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { ArrowRight, Menu, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
+import { Button } from "@/registry/hirael/ui/button";
 
 import {
   EASE,
@@ -22,7 +24,7 @@ const ShaderBackground = dynamic(
 
 const NAV_LINKS = ["Projects", "Studio", "Journal", "Connect"];
 
-export function Hero() {
+export const Hero = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Lock body scroll behind the mobile sheet.
@@ -72,31 +74,35 @@ export function Hero() {
               <span className="hidden text-[13px] text-gray-600 lg:block">
                 Taking on projects for Q1 2026
               </span>
-              <button
+              <Button
                 type="button"
-                className="group flex items-center gap-2 rounded-full bg-gray-900 py-2 ps-5 pe-2 text-[13px] font-medium text-white"
+                className="group h-auto rounded-full bg-gray-900 py-2 ps-5 pe-2 text-[13px] text-white hover:bg-gray-900"
               >
                 <RollText>Book a strategy call</RollText>
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">
                   <ArrowRight
-                    size={14}
                     className={cn(
-                      "text-gray-900 transition-transform duration-500 group-hover:-rotate-45",
+                      "size-3.5 text-gray-900 transition-transform duration-500 group-hover:-rotate-45",
                       EASE,
                     )}
                   />
                 </span>
-              </button>
+              </Button>
             </div>
 
-            <button
+            <Button
               type="button"
+              size="icon-lg"
               onClick={() => setMenuOpen((open) => !open)}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white md:hidden"
+              className="rounded-full bg-gray-900 text-white hover:bg-gray-900 md:hidden"
             >
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+              {menuOpen ? (
+                <X className="size-[18px]" />
+              ) : (
+                <Menu className="size-[18px]" />
+              )}
+            </Button>
           </nav>
         </header>
 
@@ -123,9 +129,9 @@ export function Hero() {
                 <span className="text-[13px] font-medium text-gray-900 sm:text-[14px]">
                   Certified Partner
                 </span>
-                <span className="rounded bg-gray-900 px-1.5 py-0.5 text-[10px] text-white sm:px-2 sm:text-[11px]">
+                <Badge className="rounded bg-gray-900 px-1.5 text-[10px] font-normal text-white sm:px-2 sm:text-[11px]">
                   Featured
-                </span>
+                </Badge>
               </div>
             </div>
           </div>
@@ -168,4 +174,4 @@ export function Hero() {
       </div>
     </>
   );
-}
+};

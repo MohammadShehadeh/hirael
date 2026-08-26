@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -15,9 +15,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -36,9 +36,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-function FloatingPaths({ position }: { position: number }) {
+const FloatingPaths = ({ position }: { position: number }) => {
   const reduceMotion = useReducedMotion();
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
@@ -89,9 +89,9 @@ function FloatingPaths({ position }: { position: number }) {
       </svg>
     </div>
   );
-}
+};
 
-export default function Login03() {
+const Login03 = () => {
   return (
     <section
       data-slot="login"
@@ -226,4 +226,6 @@ export default function Login03() {
       </div>
     </section>
   );
-}
+};
+
+export default Login03;

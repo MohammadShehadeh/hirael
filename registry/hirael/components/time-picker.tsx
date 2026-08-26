@@ -4,6 +4,7 @@ import * as React from "react";
 import { Clock, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -11,15 +12,15 @@ import {
 } from "@/registry/hirael/ui/popover";
 import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
-export type TimeValue = {
+export interface TimeValue {
   hour: number;
   minute: number;
   second?: number;
-};
+}
 
 export type TimeFormat = "12h" | "24h";
 
-type TimePickerContextValue = {
+interface TimePickerContextValue {
   value: TimeValue | null;
   setValue: (v: TimeValue) => void;
   clearValue: () => void;
@@ -31,13 +32,13 @@ type TimePickerContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
   disabled?: boolean;
-};
+}
 
 const TimePickerContext = React.createContext<TimePickerContextValue | null>(
   null,
 );
 
-function useTimePicker() {
+const useTimePicker = () => {
   const ctx = React.useContext(TimePickerContext);
   if (!ctx) {
     throw new Error(
@@ -45,18 +46,18 @@ function useTimePicker() {
     );
   }
   return ctx;
-}
+};
 
-function pad2(n: number) {
+const pad2 = (n: number) => {
   return n.toString().padStart(2, "0");
-}
+};
 
-function clampStep(value: number, step: number, max: number) {
+const clampStep = (value: number, step: number, max: number) => {
   const snapped = Math.round(value / step) * step;
   return Math.max(0, Math.min(max, snapped));
-}
+};
 
-export type TimePickerProps = {
+export interface TimePickerProps {
   value?: TimeValue | null;
   defaultValue?: TimeValue;
   onValueChange?: (v: TimeValue) => void;
@@ -71,9 +72,9 @@ export type TimePickerProps = {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   children?: React.ReactNode;
-};
+}
 
-function TimePicker({
+const TimePicker = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -88,7 +89,7 @@ function TimePicker({
   defaultOpen = false,
   onOpenChange,
   children,
-}: TimePickerProps) {
+}: TimePickerProps) => {
   const [openInternal, setOpenInternal] = React.useState(defaultOpen);
   const open = openProp ?? openInternal;
   const setOpen = React.useCallback(
@@ -153,13 +154,13 @@ function TimePicker({
       </Popover>
     </TimePickerContext.Provider>
   );
-}
+};
 
-function formatTimeValue(
+const formatTimeValue = (
   v: TimeValue,
   format: TimeFormat,
   showSeconds: boolean,
-) {
+) => {
   const tail = showSeconds ? `:${pad2(v.second ?? 0)}` : "";
   if (format === "24h") {
     return `${pad2(v.hour)}:${pad2(v.minute)}${tail}`;
@@ -167,9 +168,9 @@ function formatTimeValue(
   const meridiem = v.hour >= 12 ? "PM" : "AM";
   const h12 = ((v.hour + 11) % 12) + 1;
   return `${pad2(h12)}:${pad2(v.minute)}${tail} ${meridiem}`;
-}
+};
 
-function TimePickerTrigger({
+const TimePickerTrigger = ({
   placeholder = "Pick a time",
   className,
   children,
@@ -177,7 +178,7 @@ function TimePickerTrigger({
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useTimePicker();
   const label = ctx.value
     ? formatTimeValue(ctx.value, ctx.format, ctx.showSeconds)
@@ -205,9 +206,9 @@ function TimePickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function ScrollColumn({
+const ScrollColumn = ({
   values,
   selected,
   onSelect,
@@ -217,7 +218,7 @@ function ScrollColumn({
   selected?: number;
   onSelect: (n: number) => void;
   ariaLabel: string;
-}) {
+}) => {
   const listRef = React.useRef<HTMLDivElement>(null);
 
   const displayValues = React.useMemo(() => {
@@ -307,12 +308,12 @@ function ScrollColumn({
       />
     </div>
   );
-}
+};
 
-function TimePickerContent({
+const TimePickerContent = ({
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent>) {
+}: React.ComponentProps<typeof PopoverContent>) => {
   const ctx = useTimePicker();
   const isAM = (ctx.value?.hour ?? 0) < 12;
   const baseValue: TimeValue = ctx.value ?? {
@@ -442,19 +443,21 @@ function TimePickerContent({
       )}
       {ctx.clearable && ctx.value && (
         <div className="mt-3 flex justify-end">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="xs"
             data-slot="time-picker-clear"
             onClick={() => ctx.clearValue()}
-            className="inline-flex h-7 items-center gap-1 rounded-sm px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            className="font-mono text-[10px] font-normal uppercase tracking-[0.08em]"
           >
             <X className="size-3" />
             Clear
-          </button>
+          </Button>
         </div>
       )}
     </PopoverContent>
   );
-}
+};
 
 export { TimePicker, TimePickerTrigger, TimePickerContent };

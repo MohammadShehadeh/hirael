@@ -6,7 +6,7 @@ import { Button } from "@/registry/hirael/ui/button";
 
 const LOGOS = ["Helix", "Northwind", "Vanta", "Quartz", "Lumen"] as const;
 
-export default function Hero03() {
+const Hero03 = () => {
   return (
     <section
       data-slot="hero"
@@ -88,4 +88,6 @@ export default function Hero03() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero03;

@@ -20,7 +20,7 @@ const CELL_BORDERS = [
   "border-s border-t border-foreground/10 md:border-t-0",
 ];
 
-export function Metrics() {
+export const Metrics = () => {
   return (
     <section
       data-slot="metrics"
@@ -44,4 +44,4 @@ export function Metrics() {
       </div>
     </section>
   );
-}
+};

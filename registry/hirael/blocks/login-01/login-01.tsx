@@ -5,15 +5,19 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 import { Checkbox } from "@/registry/hirael/ui/checkbox";
-import { FieldSeparator } from "@/registry/hirael/ui/field";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+} from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
-import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
 } from "@/registry/hirael/components/password-input";
 
-function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
+const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -22,9 +26,9 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -33,9 +37,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -54,9 +58,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function Login01() {
+const Login01 = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(true);
@@ -92,80 +96,86 @@ export default function Login01() {
             </div>
           </div>
 
-          <form
-            className="flex flex-col gap-5 p-8"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="login01-email"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-              >
-                Email
-              </Label>
-              <Input
-                id="login01-email"
-                type="email"
-                placeholder="you@studio.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </div>
-
-            <div className="grid gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="login01-password"
+          <form className="p-8" onSubmit={(e) => e.preventDefault()}>
+            <FieldGroup className="gap-5">
+              <Field className="gap-1.5">
+                <FieldLabel
+                  htmlFor="login01-email"
                   className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
                 >
-                  Password
-                </Label>
-                <a
-                  href="#"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                  Email
+                </FieldLabel>
+                <Input
+                  id="login01-email"
+                  type="email"
+                  placeholder="you@studio.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
+              </Field>
+
+              <Field className="gap-1.5">
+                <div className="flex items-center justify-between">
+                  <FieldLabel
+                    htmlFor="login01-password"
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+                  >
+                    Password
+                  </FieldLabel>
+                  <a
+                    href="#"
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Forgot?
+                  </a>
+                </div>
+                <PasswordInput
+                  id="login01-password"
+                  value={password}
+                  onValueChange={setPassword}
                 >
-                  Forgot?
-                </a>
-              </div>
-              <PasswordInput
-                id="login01-password"
-                value={password}
-                onValueChange={setPassword}
+                  <PasswordInputField placeholder="••••••••" />
+                </PasswordInput>
+              </Field>
+
+              <Field orientation="horizontal" className="gap-2">
+                <Checkbox
+                  id="login01-remember"
+                  checked={remember}
+                  onCheckedChange={(v) => setRemember(v === true)}
+                />
+                <FieldLabel
+                  htmlFor="login01-remember"
+                  className="cursor-pointer text-xs font-normal text-muted-foreground"
+                >
+                  Keep me signed in
+                </FieldLabel>
+              </Field>
+
+              <Button
+                type="submit"
+                variant="default"
+                size="lg"
+                className="group"
               >
-                <PasswordInputField placeholder="••••••••" />
-              </PasswordInput>
-            </div>
-
-            <Label
-              htmlFor="login01-remember"
-              className="inline-flex cursor-pointer select-none items-center gap-2 text-xs font-normal text-muted-foreground"
-            >
-              <Checkbox
-                id="login01-remember"
-                checked={remember}
-                onCheckedChange={(v) => setRemember(v === true)}
-              />
-              Keep me signed in
-            </Label>
-
-            <Button type="submit" variant="default" size="lg" className="group">
-              Sign in
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-            </Button>
-
-            <FieldSeparator>or continue with</FieldSeparator>
-
-            <div className="grid grid-cols-2 gap-3">
-              <Button type="button" variant="outline">
-                <GithubIcon className="size-4" />
-                GitHub
+                Sign in
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
-              <Button type="button" variant="outline">
-                <GoogleIcon className="size-4" />
-                Google
-              </Button>
-            </div>
+
+              <FieldSeparator>or continue with</FieldSeparator>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Button type="button" variant="outline">
+                  <GithubIcon className="size-4" />
+                  GitHub
+                </Button>
+                <Button type="button" variant="outline">
+                  <GoogleIcon className="size-4" />
+                  Google
+                </Button>
+              </div>
+            </FieldGroup>
           </form>
 
           <div className="border-t border-border px-8 py-4 text-center">
@@ -187,4 +197,6 @@ export default function Login01() {
       </div>
     </section>
   );
-}
+};
+
+export default Login01;

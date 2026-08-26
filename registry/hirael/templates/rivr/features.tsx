@@ -11,7 +11,7 @@ const CARD_BASE =
 const ICON_CHIP =
   "flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground";
 
-export function Features() {
+export const Features = () => {
   return (
     <section
       data-slot="features"
@@ -115,4 +115,4 @@ export function Features() {
       </div>
     </section>
   );
-}
+};

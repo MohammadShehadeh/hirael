@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { BlurReveal } from "@/registry/hirael/components/blur-reveal";
 
-export default function BlurRevealDemo() {
+const BlurRevealDemo = () => {
   const t = useT();
 
   const steps = [
@@ -43,4 +43,6 @@ export default function BlurRevealDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default BlurRevealDemo;

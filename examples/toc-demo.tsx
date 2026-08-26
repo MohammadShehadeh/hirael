@@ -8,7 +8,7 @@ import {
   type TocItem,
 } from "@/registry/hirael/components/toc";
 
-export default function TocDemo() {
+const TocDemo = () => {
   const t = useT();
 
   const flatItems: TocItem[] = [
@@ -66,4 +66,6 @@ export default function TocDemo() {
       </TableOfContents>
     </div>
   );
-}
+};
+
+export default TocDemo;

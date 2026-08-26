@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-export default function Cta01() {
+const Cta01 = () => {
   return (
     <section data-slot="cta" className="bg-background py-20 md:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
@@ -71,4 +71,6 @@ export default function Cta01() {
       </div>
     </section>
   );
-}
+};
+
+export default Cta01;

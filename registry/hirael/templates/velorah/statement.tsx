@@ -1,3 +1,5 @@
+import { Button } from "@/registry/hirael/ui/button";
+
 import { HlsVideo } from "./hls-video";
 
 const STATEMENT_HLS =
@@ -10,7 +12,7 @@ const STATS = [
   { value: "24/7", label: "Remote monitoring" },
 ];
 
-export function Statement() {
+export const Statement = () => {
   return (
     <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6">
       <HlsVideo src={STATEMENT_HLS} />
@@ -45,13 +47,14 @@ export function Statement() {
           ))}
         </div>
 
-        <button
+        <Button
           type="button"
-          className="liquid-glass mt-12 rounded-full px-10 py-4 text-sm text-foreground transition-transform hover:scale-[1.03]"
+          variant="ghost"
+          className="liquid-glass mt-12 h-auto rounded-full px-10 py-4 font-normal text-foreground transition-transform hover:scale-[1.03]"
         >
           Discover the App
-        </button>
+        </Button>
       </div>
     </section>
   );
-}
+};

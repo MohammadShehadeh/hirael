@@ -33,7 +33,7 @@ const SOCIALS = [
   },
 ];
 
-function Marquee() {
+const Marquee = () => {
   const trackRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -71,9 +71,9 @@ function Marquee() {
       </div>
     </div>
   );
-}
+};
 
-export function Contact() {
+export const Contact = () => {
   return (
     <footer
       id="contact"
@@ -148,4 +148,4 @@ export function Contact() {
       </div>
     </footer>
   );
-}
+};

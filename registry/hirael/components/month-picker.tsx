@@ -11,8 +11,8 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 
-export type MonthValue = { year: number; month: number };
-export type MonthRange = { from: MonthValue; to?: MonthValue };
+export interface MonthValue { year: number; month: number}
+export interface MonthRange { from: MonthValue; to?: MonthValue}
 export type MonthPickerMode = "single" | "range";
 
 type MonthPickerContextValue =
@@ -45,7 +45,7 @@ const MonthPickerContext = React.createContext<MonthPickerContextValue | null>(
   null,
 );
 
-function useMonthPicker() {
+const useMonthPicker = () => {
   const ctx = React.useContext(MonthPickerContext);
   if (!ctx) {
     throw new Error(
@@ -53,25 +53,25 @@ function useMonthPicker() {
     );
   }
   return ctx;
-}
+};
 
-function monthLabels(locale: string | undefined, style: "short" | "long") {
+const monthLabels = (locale: string | undefined, style: "short" | "long") => {
   const fmt = new Intl.DateTimeFormat(locale, { month: style });
   return Array.from({ length: 12 }, (_, m) => fmt.format(new Date(2024, m, 1)));
-}
+};
 
-function monthKey(v: MonthValue) {
+const monthKey = (v: MonthValue) => {
   return v.year * 12 + v.month;
-}
+};
 
-function compareMonth(a: MonthValue, b: MonthValue) {
+const compareMonth = (a: MonthValue, b: MonthValue) => {
   return monthKey(a) - monthKey(b);
-}
+};
 
-function monthEq(a: MonthValue | undefined, b: MonthValue | undefined) {
+const monthEq = (a: MonthValue | undefined, b: MonthValue | undefined) => {
   if (!a || !b) return false;
   return a.year === b.year && a.month === b.month;
-}
+};
 
 export type MonthPickerProps =
   | {
@@ -101,7 +101,7 @@ export type MonthPickerProps =
       children?: React.ReactNode;
     };
 
-function MonthPicker(props: MonthPickerProps) {
+const MonthPicker = (props: MonthPickerProps) => {
   const {
     minYear = 1900,
     maxYear = 2100,
@@ -261,13 +261,11 @@ function MonthPicker(props: MonthPickerProps) {
       </Popover>
     </MonthPickerContext.Provider>
   );
-}
+};
 
-function formatMonthValue(
-  ctx: MonthPickerContextValue,
+const formatMonthValue = (ctx: MonthPickerContextValue,
   placeholder: string,
-  locale?: string,
-): string {
+  locale?: string,): string => {
   const fmt = new Intl.DateTimeFormat(locale, {
     month: "short",
     year: "numeric",
@@ -279,9 +277,9 @@ function formatMonthValue(
   if (!ctx.value) return placeholder;
   if (!ctx.value.to) return `${label(ctx.value.from)} – …`;
   return `${label(ctx.value.from)} – ${label(ctx.value.to)}`;
-}
+};
 
-function MonthPickerTrigger({
+const MonthPickerTrigger = ({
   placeholder = "Pick a month",
   locale,
   className,
@@ -291,7 +289,7 @@ function MonthPickerTrigger({
   placeholder?: string;
   locale?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useMonthPicker();
   const empty = ctx.value === undefined;
   return (
@@ -314,25 +312,25 @@ function MonthPickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function isInRange(v: MonthValue, range: MonthRange | undefined) {
+const isInRange = (v: MonthValue, range: MonthRange | undefined) => {
   if (!range || range.to === undefined) return false;
   return compareMonth(v, range.from) > 0 && compareMonth(v, range.to) < 0;
-}
+};
 
-function isEndpoint(v: MonthValue, range: MonthRange | undefined) {
+const isEndpoint = (v: MonthValue, range: MonthRange | undefined) => {
   if (!range) return false;
   return monthEq(v, range.from) || monthEq(v, range.to);
-}
+};
 
-function MonthPickerContent({
+const MonthPickerContent = ({
   locale,
   className,
   ...props
 }: React.ComponentProps<typeof PopoverContent> & {
   locale?: string;
-}) {
+}) => {
   const ctx = useMonthPicker();
   const today = (() => {
     const d = new Date();
@@ -511,6 +509,6 @@ function MonthPickerContent({
       </div>
     </PopoverContent>
   );
-}
+};
 
 export { MonthPicker, MonthPickerTrigger, MonthPickerContent };

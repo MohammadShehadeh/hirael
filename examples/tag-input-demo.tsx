@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   TagInput,
   TagInputContainer,
@@ -12,20 +12,23 @@ import {
   TagInputTag,
 } from "@/registry/hirael/components/tag-input";
 
-export default function TagInputDemo() {
+const TagInputDemo = () => {
   const t = useT();
 
   const [tags, setTags] = React.useState<string[]>(["typescript", "react"]);
 
   return (
-    <div className="grid w-full max-w-md gap-2">
-      <Label>{t({ en: "Tags · max 6", ar: "الوسوم · 6 كحد أقصى" })}</Label>
+    <Field className="max-w-md gap-2">
+      <FieldLabel htmlFor="tags-field">
+        {t({ en: "Tags · max 6", ar: "الوسوم · 6 كحد أقصى" })}
+      </FieldLabel>
       <TagInput value={tags} onValueChange={setTags} maxTags={6}>
         <TagInputContainer>
           {tags.map((_, i) => (
             <TagInputTag key={i} index={i} />
           ))}
           <TagInputField
+            id="tags-field"
             placeholder={t({
               en: "Enter, comma, or paste to split",
               ar: "اضغط Enter أو فاصلة أو ألصق للتقسيم",
@@ -40,6 +43,8 @@ export default function TagInputDemo() {
           ar: <>{tags.length} / 6 · ألصق &ldquo;a, b, c&rdquo; للتقسيم</>,
         })}
       </p>
-    </div>
+    </Field>
   );
-}
+};
+
+export default TagInputDemo;

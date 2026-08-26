@@ -10,24 +10,23 @@ import {
   CollapsibleTrigger,
 } from "@/registry/hirael/ui/collapsible";
 
-type TreeCtx = {
+interface TreeCtx {
   selected: string | undefined;
   setSelected: (value: string) => void;
   tabbable: string | null;
   setTabbable: (value: string) => void;
   registerItem: (value: string, el: HTMLButtonElement) => () => void;
-  getVisibleItems: () => HTMLButtonElement[];
-};
+  getVisibleItems: () => HTMLButtonElement[];}
 
 const TreeViewContext = React.createContext<TreeCtx | null>(null);
 
-function useTreeView() {
+const useTreeView = () => {
   const ctx = React.useContext(TreeViewContext);
   if (!ctx) {
     throw new Error("TreeItem must be used inside <TreeView>");
   }
   return ctx;
-}
+};
 
 const TreeDepthContext = React.createContext(0);
 
@@ -38,23 +37,22 @@ const TreeParentContext =
 const TREE_INDENT_PER_LEVEL = 14;
 const TREE_INDENT_BASE = 8;
 
-export type TreeViewProps = Omit<
+export interface TreeViewProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
-> & {
+> {
   /** Id of the selected leaf. */
   value?: string;
   defaultValue?: string;
-  onValueChange?: (value: string) => void;
-};
+  onValueChange?: (value: string) => void;}
 
-function TreeView({
+const TreeView = ({
   value: valueProp,
   defaultValue,
   onValueChange,
   className,
   ...props
-}: TreeViewProps) {
+}: TreeViewProps) => {
   const [internal, setInternal] = React.useState<string | undefined>(
     defaultValue,
   );
@@ -144,19 +142,18 @@ function TreeView({
       />
     </TreeViewContext.Provider>
   );
-}
+};
 
-export type TreeItemProps = Omit<React.ComponentProps<"div">, "title"> & {
+export interface TreeItemProps extends Omit<React.ComponentProps<"div">, "title"> {
   /** Unique id used for selection. */
   value: string;
   label: React.ReactNode;
   /** Override the leading icon. Pass `null` to hide it entirely. */
   icon?: React.ReactNode;
   defaultExpanded?: boolean;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-function TreeItem({
+const TreeItem = ({
   value,
   label,
   icon,
@@ -165,7 +162,7 @@ function TreeItem({
   className,
   children,
   ...props
-}: TreeItemProps) {
+}: TreeItemProps) => {
   const {
     selected,
     setSelected,
@@ -324,6 +321,6 @@ function TreeItem({
       </button>
     </div>
   );
-}
+};
 
 export { TreeView, TreeItem };

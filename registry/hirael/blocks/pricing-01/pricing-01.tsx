@@ -13,15 +13,14 @@ import {
 import { Separator } from "@/registry/hirael/ui/separator";
 import { cn } from "@/lib/utils";
 
-type Tier = {
+interface Tier {
   name: string;
   price: string;
   blurb: string;
   features: readonly string[];
   cta: string;
   featured?: boolean;
-  ctaVariant: "default" | "outline";
-};
+  ctaVariant: "default" | "outline";}
 
 const TIERS: readonly Tier[] = [
   {
@@ -66,7 +65,7 @@ const TIERS: readonly Tier[] = [
   },
 ];
 
-export default function Pricing01() {
+const Pricing01 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
@@ -157,4 +156,6 @@ export default function Pricing01() {
       </div>
     </section>
   );
-}
+};
+
+export default Pricing01;

@@ -5,7 +5,7 @@ import { Mail } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -14,9 +14,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function XIcon(props: React.SVGProps<SVGSVGElement>) {
+const XIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -25,9 +25,9 @@ function XIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -36,7 +36,7 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
 const socials = [
   { label: "GitHub", href: "#", icon: GithubIcon },
@@ -44,7 +44,7 @@ const socials = [
   { label: "LinkedIn", href: "#", icon: LinkedinIcon },
 ];
 
-export default function Cta04() {
+const Cta04 = () => {
   return (
     <section
       data-slot="cta"
@@ -142,4 +142,6 @@ export default function Cta04() {
       </div>
     </section>
   );
-}
+};
+
+export default Cta04;

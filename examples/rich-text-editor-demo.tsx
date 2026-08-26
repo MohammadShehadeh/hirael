@@ -15,7 +15,7 @@ import {
   useRichTextEditor,
 } from "@/registry/hirael/components/rich-text-editor";
 
-function CompactToolbar() {
+const CompactToolbar = () => {
   const t = useT();
   const editor = useRichTextEditor();
   const state = useEditorState({
@@ -62,9 +62,9 @@ function CompactToolbar() {
       <RichTextEditorLinkPopover />
     </RichTextEditorToolbar>
   );
-}
+};
 
-export default function RichTextEditorDemo() {
+const RichTextEditorDemo = () => {
   const t = useT();
 
   const initialHtml = t({
@@ -125,4 +125,6 @@ export default function RichTextEditorDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default RichTextEditorDemo;

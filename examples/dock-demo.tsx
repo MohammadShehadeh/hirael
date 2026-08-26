@@ -5,7 +5,7 @@ import { Calendar, Folder, Home, Mail, Music, Settings } from "lucide-react";
 import { useT } from "@/lib/demo-locale";
 import { Dock, DockItem, DockLabel } from "@/registry/hirael/components/dock";
 
-export default function DockDemo() {
+const DockDemo = () => {
   const t = useT();
 
   const APPS = [
@@ -37,4 +37,6 @@ export default function DockDemo() {
       </Dock>
     </div>
   );
-}
+};
+
+export default DockDemo;

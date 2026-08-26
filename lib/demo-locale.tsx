@@ -12,23 +12,23 @@ const DemoLocaleContext = React.createContext<DemoLocale>("en");
  * previews render in Arabic so the catalog shows real RTL text, not just
  * mirrored English. Demos read it through `useT`/`useDemoLocale`.
  */
-export function DemoLocaleProvider({
+export const DemoLocaleProvider = ({
   locale,
   children,
 }: {
   locale: DemoLocale;
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <DemoLocaleContext.Provider value={locale}>
       {children}
     </DemoLocaleContext.Provider>
   );
-}
+};
 
-export function useDemoLocale(): DemoLocale {
+export const useDemoLocale = (): DemoLocale => {
   return React.useContext(DemoLocaleContext);
-}
+};
 
 /**
  * Pick the value for the active demo locale. Works for any value — strings,
@@ -37,9 +37,9 @@ export function useDemoLocale(): DemoLocale {
  *   const t = useT();
  *   <Label>{t({ en: "Basic", ar: "أساسي" })}</Label>
  */
-export function useT() {
+export const useT = () => {
   const locale = useDemoLocale();
   return function t<T>(pair: { en: T; ar: T }): T {
     return pair[locale];
   };
-}
+};

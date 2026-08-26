@@ -13,7 +13,7 @@ import {
 
 type AuditLogProps = React.ComponentProps<"ul">;
 
-function AuditLog({ className, ...props }: AuditLogProps) {
+const AuditLog = ({ className, ...props }: AuditLogProps) => {
   return (
     <ul
       data-slot="audit-log"
@@ -24,22 +24,21 @@ function AuditLog({ className, ...props }: AuditLogProps) {
       {...props}
     />
   );
-}
-
-type AuditLogItemProps = Omit<React.ComponentProps<"li">, "onToggle"> & {
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
 };
 
-function AuditLogItem({
+interface AuditLogItemProps extends Omit<React.ComponentProps<"li">, "onToggle"> {
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;}
+
+const AuditLogItem = ({
   open,
   defaultOpen,
   onOpenChange,
   className,
   children,
   ...props
-}: AuditLogItemProps) {
+}: AuditLogItemProps) => {
   return (
     <Collapsible
       asChild
@@ -56,15 +55,15 @@ function AuditLogItem({
       </li>
     </Collapsible>
   );
-}
+};
 
 type AuditLogTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
 
-function AuditLogTrigger({
+const AuditLogTrigger = ({
   className,
   children,
   ...props
-}: AuditLogTriggerProps) {
+}: AuditLogTriggerProps) => {
   return (
     <CollapsibleTrigger
       data-slot="audit-log-trigger"
@@ -81,11 +80,11 @@ function AuditLogTrigger({
       {children}
     </CollapsibleTrigger>
   );
-}
+};
 
 type AuditLogActorProps = React.ComponentProps<"span">;
 
-function AuditLogActor({ className, ...props }: AuditLogActorProps) {
+const AuditLogActor = ({ className, ...props }: AuditLogActorProps) => {
   return (
     <span
       data-slot="audit-log-actor"
@@ -93,11 +92,11 @@ function AuditLogActor({ className, ...props }: AuditLogActorProps) {
       {...props}
     />
   );
-}
+};
 
 type AuditLogActionProps = React.ComponentProps<"span">;
 
-function AuditLogAction({ className, ...props }: AuditLogActionProps) {
+const AuditLogAction = ({ className, ...props }: AuditLogActionProps) => {
   return (
     <span
       data-slot="audit-log-action"
@@ -105,11 +104,11 @@ function AuditLogAction({ className, ...props }: AuditLogActionProps) {
       {...props}
     />
   );
-}
+};
 
 type AuditLogTimeProps = React.ComponentProps<"time">;
 
-function AuditLogTime({ className, ...props }: AuditLogTimeProps) {
+const AuditLogTime = ({ className, ...props }: AuditLogTimeProps) => {
   return (
     <time
       data-slot="audit-log-time"
@@ -120,7 +119,7 @@ function AuditLogTime({ className, ...props }: AuditLogTimeProps) {
       {...props}
     />
   );
-}
+};
 
 const auditLogStatusVariants = cva(
   "inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 font-mono text-[10px] uppercase leading-none tracking-[0.08em]",
@@ -142,11 +141,11 @@ const auditLogStatusVariants = cva(
 type AuditLogStatusProps = React.ComponentProps<"span"> &
   VariantProps<typeof auditLogStatusVariants>;
 
-function AuditLogStatus({
+const AuditLogStatus = ({
   tone = "default",
   className,
   ...props
-}: AuditLogStatusProps) {
+}: AuditLogStatusProps) => {
   return (
     <span
       data-slot="audit-log-status"
@@ -155,15 +154,15 @@ function AuditLogStatus({
       {...props}
     />
   );
-}
+};
 
 type AuditLogDetailProps = React.ComponentProps<"dl">;
 
-function AuditLogDetail({
+const AuditLogDetail = ({
   className,
   children,
   ...props
-}: AuditLogDetailProps) {
+}: AuditLogDetailProps) => {
   return (
     <CollapsibleContent asChild>
       <dl
@@ -178,18 +177,17 @@ function AuditLogDetail({
       </dl>
     </CollapsibleContent>
   );
-}
-
-type AuditLogFieldProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode;
 };
 
-function AuditLogField({
+interface AuditLogFieldProps extends React.ComponentProps<"div"> {
+  label: React.ReactNode;}
+
+const AuditLogField = ({
   label,
   className,
   children,
   ...props
-}: AuditLogFieldProps) {
+}: AuditLogFieldProps) => {
   return (
     <div
       data-slot="audit-log-field"
@@ -204,7 +202,7 @@ function AuditLogField({
       </dd>
     </div>
   );
-}
+};
 
 export {
   AuditLog,
@@ -218,7 +216,7 @@ export {
   AuditLogField,
 };
 
-export default function AuditLogBlock() {
+const AuditLogBlock = () => {
   return (
     <section
       data-slot="audit-log-block"
@@ -283,4 +281,6 @@ export default function AuditLogBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default AuditLogBlock;

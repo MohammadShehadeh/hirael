@@ -6,7 +6,7 @@ import { Archive, FileText, Inbox, Send, Trash2 } from "lucide-react";
 import { useT } from "@/lib/demo-locale";
 import { TreeItem, TreeView } from "@/registry/hirael/components/tree-view";
 
-export default function TreeViewDemo() {
+const TreeViewDemo = () => {
   const t = useT();
   const [selected, setSelected] = React.useState("page");
 
@@ -82,4 +82,6 @@ export default function TreeViewDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default TreeViewDemo;

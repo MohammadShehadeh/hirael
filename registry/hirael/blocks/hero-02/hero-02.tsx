@@ -20,7 +20,7 @@ const WORDMARKS = [
   "Atlas",
 ] as const;
 
-export default function Hero02() {
+const Hero02 = () => {
   const [active, setActive] = React.useState(false);
 
   return (
@@ -107,4 +107,6 @@ export default function Hero02() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero02;

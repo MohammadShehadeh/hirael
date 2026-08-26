@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 type FloatingToolbarProps = React.ComponentProps<"div">;
 
-function FloatingToolbar({ className, ...props }: FloatingToolbarProps) {
+const FloatingToolbar = ({ className, ...props }: FloatingToolbarProps) => {
   return (
     <div
       role="toolbar"
@@ -33,17 +33,16 @@ function FloatingToolbar({ className, ...props }: FloatingToolbarProps) {
       {...props}
     />
   );
-}
-
-type FloatingToolbarButtonProps = React.ComponentProps<"button"> & {
-  active?: boolean;
 };
 
-function FloatingToolbarButton({
+interface FloatingToolbarButtonProps extends React.ComponentProps<"button"> {
+  active?: boolean;}
+
+const FloatingToolbarButton = ({
   className,
   active,
   ...props
-}: FloatingToolbarButtonProps) {
+}: FloatingToolbarButtonProps) => {
   return (
     <button
       type="button"
@@ -57,14 +56,14 @@ function FloatingToolbarButton({
       {...props}
     />
   );
-}
+};
 
 type FloatingToolbarSeparatorProps = React.ComponentProps<"div">;
 
-function FloatingToolbarSeparator({
+const FloatingToolbarSeparator = ({
   className,
   ...props
-}: FloatingToolbarSeparatorProps) {
+}: FloatingToolbarSeparatorProps) => {
   return (
     <div
       aria-hidden
@@ -73,14 +72,14 @@ function FloatingToolbarSeparator({
       {...props}
     />
   );
-}
+};
 
 type FloatingToolbarLabelProps = React.ComponentProps<"span">;
 
-function FloatingToolbarLabel({
+const FloatingToolbarLabel = ({
   className,
   ...props
-}: FloatingToolbarLabelProps) {
+}: FloatingToolbarLabelProps) => {
   return (
     <span
       data-slot="floating-toolbar-label"
@@ -91,7 +90,7 @@ function FloatingToolbarLabel({
       {...props}
     />
   );
-}
+};
 
 export {
   FloatingToolbar,

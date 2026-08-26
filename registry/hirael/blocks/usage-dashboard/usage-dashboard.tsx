@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 type UsageDashboardProps = React.ComponentProps<"div">;
 
-function UsageDashboard({ className, ...props }: UsageDashboardProps) {
+const UsageDashboard = ({ className, ...props }: UsageDashboardProps) => {
   return (
     <div
       data-slot="usage-dashboard"
@@ -17,14 +17,14 @@ function UsageDashboard({ className, ...props }: UsageDashboardProps) {
       {...props}
     />
   );
-}
+};
 
 type UsageDashboardHeaderProps = React.ComponentProps<"div">;
 
-function UsageDashboardHeader({
+const UsageDashboardHeader = ({
   className,
   ...props
-}: UsageDashboardHeaderProps) {
+}: UsageDashboardHeaderProps) => {
   return (
     <div
       data-slot="usage-dashboard-header"
@@ -35,14 +35,14 @@ function UsageDashboardHeader({
       {...props}
     />
   );
-}
+};
 
 type UsageDashboardTitleProps = React.ComponentProps<"h3">;
 
-function UsageDashboardTitle({
+const UsageDashboardTitle = ({
   className,
   ...props
-}: UsageDashboardTitleProps) {
+}: UsageDashboardTitleProps) => {
   return (
     <h3
       data-slot="usage-dashboard-title"
@@ -50,11 +50,11 @@ function UsageDashboardTitle({
       {...props}
     />
   );
-}
+};
 
 type UsageListProps = React.ComponentProps<"div">;
 
-function UsageList({ className, ...props }: UsageListProps) {
+const UsageList = ({ className, ...props }: UsageListProps) => {
   return (
     <div
       data-slot="usage-list"
@@ -62,18 +62,17 @@ function UsageList({ className, ...props }: UsageListProps) {
       {...props}
     />
   );
-}
+};
 
-type UsageItemProps = React.ComponentProps<"div"> & {
+interface UsageItemProps extends React.ComponentProps<"div"> {
   label: React.ReactNode;
   value: number;
   max: number;
   /** Short value caption, e.g. "8.2k / 10k". */
   caption?: React.ReactNode;
-  unit?: React.ReactNode;
-};
+  unit?: React.ReactNode;}
 
-function UsageItem({
+const UsageItem = ({
   label,
   value,
   max,
@@ -81,7 +80,7 @@ function UsageItem({
   unit,
   className,
   ...props
-}: UsageItemProps) {
+}: UsageItemProps) => {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   const tone =
     pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-foreground";
@@ -115,7 +114,7 @@ function UsageItem({
       </div>
     </div>
   );
-}
+};
 
 export {
   UsageDashboard,
@@ -125,7 +124,7 @@ export {
   UsageItem,
 };
 
-export default function UsageDashboardBlock() {
+const UsageDashboardBlock = () => {
   return (
     <section
       data-slot="usage-dashboard-block"
@@ -157,4 +156,6 @@ export default function UsageDashboardBlock() {
       </UsageDashboard>
     </section>
   );
-}
+};
+
+export default UsageDashboardBlock;

@@ -4,16 +4,15 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type TocItem = {
+export interface TocItem {
   id: string;
   text: string;
   level: number;
-  children?: TocItem[];
-};
+  children?: TocItem[];}
 
 type ThrottledFn = (() => void) & { cancel: () => void };
 
-function throttle(fn: () => void, limit: number): ThrottledFn {
+const throttle = (fn: () => void, limit: number): ThrottledFn => {
   let lastRan = 0;
   let timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -45,9 +44,9 @@ function throttle(fn: () => void, limit: number): ThrottledFn {
   };
 
   return throttled;
-}
+};
 
-function flattenTocItems(items: TocItem[]): TocItem[] {
+const flattenTocItems = (items: TocItem[]): TocItem[] => {
   const out: TocItem[] = [];
   const walk = (list: TocItem[]) => {
     for (const item of list) {
@@ -57,16 +56,16 @@ function flattenTocItems(items: TocItem[]): TocItem[] {
   };
   walk(items);
   return out;
-}
+};
 
-function prefersReducedMotion() {
+const prefersReducedMotion = () => {
   if (typeof window === "undefined" || !window.matchMedia) return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
+};
 
 const TOP_OFFSET = 56;
 
-function useActiveHeading(items: TocItem[]) {
+const useActiveHeading = (items: TocItem[]) => {
   const [activeId, setActiveId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -115,30 +114,28 @@ function useActiveHeading(items: TocItem[]) {
   }, [items]);
 
   return activeId;
-}
-
-type TocContextValue = {
-  activeId: string | null;
 };
+
+interface TocContextValue {
+  activeId: string | null;}
 
 const TocContext = React.createContext<TocContextValue | null>(null);
 
-function useTocContext(component: string) {
+const useTocContext = (component: string) => {
   const ctx = React.useContext(TocContext);
   if (!ctx) {
     throw new Error(`${component} must be used within <TableOfContents>.`);
   }
   return ctx;
-}
+};
 
-type TableOfContentsProps = Omit<React.ComponentProps<"nav">, "children"> & {
+interface TableOfContentsProps extends Omit<React.ComponentProps<"nav">, "children"> {
   items?: TocItem[];
   activeId?: string | null;
   label?: React.ReactNode;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function TableOfContents({
+const TableOfContents = ({
   items,
   activeId: controlledActiveId,
   label = "On this page",
@@ -146,7 +143,7 @@ function TableOfContents({
   children,
   "aria-label": ariaLabel,
   ...props
-}: TableOfContentsProps) {
+}: TableOfContentsProps) => {
   const trackedActiveId = useActiveHeading(
     controlledActiveId ? [] : (items ?? []),
   );
@@ -176,14 +173,14 @@ function TableOfContents({
       </nav>
     </TocContext.Provider>
   );
-}
+};
 
 type TableOfContentsLabelProps = React.ComponentProps<"p">;
 
-function TableOfContentsLabel({
+const TableOfContentsLabel = ({
   className,
   ...props
-}: TableOfContentsLabelProps) {
+}: TableOfContentsLabelProps) => {
   return (
     <p
       data-slot="toc-label"
@@ -194,21 +191,20 @@ function TableOfContentsLabel({
       {...props}
     />
   );
-}
-
-type TableOfContentsListProps = Omit<React.ComponentProps<"ul">, "children"> & {
-  items?: TocItem[];
-  level?: number;
-  children?: React.ReactNode;
 };
 
-function TableOfContentsList({
+interface TableOfContentsListProps extends Omit<React.ComponentProps<"ul">, "children"> {
+  items?: TocItem[];
+  level?: number;
+  children?: React.ReactNode;}
+
+const TableOfContentsList = ({
   items,
   level = 0,
   className,
   children,
   ...props
-}: TableOfContentsListProps) {
+}: TableOfContentsListProps) => {
   if (children === undefined && (!items || items.length === 0)) return null;
 
   return (
@@ -228,19 +224,18 @@ function TableOfContentsList({
         ))}
     </ul>
   );
-}
-
-type TableOfContentsItemProps = Omit<React.ComponentProps<"li">, "children"> & {
-  item: TocItem;
-  level?: number;
 };
 
-function TableOfContentsItem({
+interface TableOfContentsItemProps extends Omit<React.ComponentProps<"li">, "children"> {
+  item: TocItem;
+  level?: number;}
+
+const TableOfContentsItem = ({
   item,
   level = 0,
   className,
   ...props
-}: TableOfContentsItemProps) {
+}: TableOfContentsItemProps) => {
   return (
     <li data-slot="toc-item" className={className} {...props}>
       <TableOfContentsLink href={`#${item.id}`} level={item.level}>
@@ -251,20 +246,19 @@ function TableOfContentsItem({
       ) : null}
     </li>
   );
-}
-
-type TableOfContentsLinkProps = React.ComponentProps<"a"> & {
-  level?: number;
 };
 
-function TableOfContentsLink({
+interface TableOfContentsLinkProps extends React.ComponentProps<"a"> {
+  level?: number;}
+
+const TableOfContentsLink = ({
   href = "",
   level = 2,
   className,
   onClick,
   children,
   ...props
-}: TableOfContentsLinkProps) {
+}: TableOfContentsLinkProps) => {
   const { activeId } = useTocContext("TableOfContentsLink");
   const id = href.startsWith("#") ? href.slice(1) : href;
   const isActive = id.length > 0 && activeId === id;
@@ -304,7 +298,7 @@ function TableOfContentsLink({
       {children}
     </a>
   );
-}
+};
 
 export {
   TableOfContents,

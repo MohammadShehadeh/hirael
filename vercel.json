@@ -32,6 +32,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/ai-chat-01",
+      "destination": "/blocks/ai/ai-chat-01",
+      "permanent": true
+    },
+    {
       "source": "/blocks/api-keys",
       "destination": "/blocks/saas/api-keys",
       "permanent": true
@@ -82,8 +87,18 @@
       "permanent": true
     },
     {
+      "source": "/blocks/changelog-01",
+      "destination": "/blocks/changelog/changelog-01",
+      "permanent": true
+    },
+    {
       "source": "/blocks/cluster-map",
       "destination": "/blocks/cloud/cluster-map",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/coming-soon-01",
+      "destination": "/blocks/not-found/coming-soon-01",
       "permanent": true
     },
     {
@@ -99,6 +114,11 @@
     {
       "source": "/blocks/contact-02",
       "destination": "/blocks/contact/contact-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/cookie-consent",
+      "destination": "/blocks/widgets/cookie-consent",
       "permanent": true
     },
     {
@@ -174,6 +194,16 @@
     {
       "source": "/blocks/ecommerce-02",
       "destination": "/blocks/ecommerce/ecommerce-02",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/env-editor",
+      "destination": "/blocks/cloud/env-editor",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/error-01",
+      "destination": "/blocks/not-found/error-01",
       "permanent": true
     },
     {
@@ -332,6 +362,21 @@
       "permanent": true
     },
     {
+      "source": "/blocks/maintenance-01",
+      "destination": "/blocks/not-found/maintenance-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/members-01",
+      "destination": "/blocks/saas/members-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/message-thread",
+      "destination": "/blocks/ai/message-thread",
+      "permanent": true
+    },
+    {
       "source": "/blocks/network-topology",
       "destination": "/blocks/cloud/network-topology",
       "permanent": true
@@ -349,6 +394,11 @@
     {
       "source": "/blocks/notifications",
       "destination": "/blocks/widgets/notifications",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/onboarding-01",
+      "destination": "/blocks/saas/onboarding-01",
       "permanent": true
     },
     {
@@ -377,6 +427,11 @@
       "permanent": true
     },
     {
+      "source": "/blocks/prompt-input",
+      "destination": "/blocks/ai/prompt-input",
+      "permanent": true
+    },
+    {
       "source": "/blocks/quick-actions",
       "destination": "/blocks/widgets/quick-actions",
       "permanent": true
@@ -392,8 +447,23 @@
       "permanent": true
     },
     {
+      "source": "/blocks/settings-01",
+      "destination": "/blocks/saas/settings-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/settings-02",
+      "destination": "/blocks/saas/settings-02",
+      "permanent": true
+    },
+    {
       "source": "/blocks/signup-01",
       "destination": "/blocks/auth/signup-01",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/stats-01",
+      "destination": "/blocks/stats/stats-01",
       "permanent": true
     },
     {
@@ -404,6 +474,11 @@
     {
       "source": "/blocks/subscription-plans",
       "destination": "/blocks/saas/subscription-plans",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/team-01",
+      "destination": "/blocks/team/team-01",
       "permanent": true
     },
     {
@@ -429,6 +504,11 @@
     {
       "source": "/blocks/testimonial-03",
       "destination": "/blocks/testimonials/testimonial-03",
+      "permanent": true
+    },
+    {
+      "source": "/blocks/two-factor-setup-01",
+      "destination": "/blocks/auth/two-factor-setup-01",
       "permanent": true
     },
     {
@@ -487,6 +567,11 @@
       "permanent": true
     },
     {
+      "source": "/components/avatar-upload",
+      "destination": "/components/files/avatar-upload",
+      "permanent": true
+    },
+    {
       "source": "/components/blur-reveal",
       "destination": "/components/animation/blur-reveal",
       "permanent": true
@@ -532,6 +617,21 @@
       "permanent": true
     },
     {
+      "source": "/components/country-select",
+      "destination": "/components/inputs/country-select",
+      "permanent": true
+    },
+    {
+      "source": "/components/credit-card-input",
+      "destination": "/components/inputs/credit-card-input",
+      "permanent": true
+    },
+    {
+      "source": "/components/cron-editor",
+      "destination": "/components/inputs/cron-editor",
+      "permanent": true
+    },
+    {
       "source": "/components/currency-input",
       "destination": "/components/inputs/currency-input",
       "permanent": true
@@ -557,8 +657,18 @@
       "permanent": true
     },
     {
+      "source": "/components/diff-viewer",
+      "destination": "/components/display/diff-viewer",
+      "permanent": true
+    },
+    {
       "source": "/components/dock",
       "destination": "/components/navigation/dock",
+      "permanent": true
+    },
+    {
+      "source": "/components/emoji-picker",
+      "destination": "/components/pickers/emoji-picker",
       "permanent": true
     },
     {
@@ -589,6 +699,16 @@
     {
       "source": "/components/inline-edit",
       "destination": "/components/inputs/inline-edit",
+      "permanent": true
+    },
+    {
+      "source": "/components/json-viewer",
+      "destination": "/components/display/json-viewer",
+      "permanent": true
+    },
+    {
+      "source": "/components/kanban",
+      "destination": "/components/data/kanban",
       "permanent": true
     },
     {
@@ -704,6 +824,11 @@
     {
       "source": "/components/sortable",
       "destination": "/components/data/sortable",
+      "permanent": true
+    },
+    {
+      "source": "/components/sparkline",
+      "destination": "/components/data/sparkline",
       "permanent": true
     },
     {

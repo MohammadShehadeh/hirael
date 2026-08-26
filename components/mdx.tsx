@@ -3,6 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { Separator } from "@/registry/hirael/ui/separator";
 
 /**
  * Prose styling for MDX rendered in the changelog. Kept token-only so it reads
@@ -96,7 +97,7 @@ export const mdxComponents: MDXComponents = {
       {...props}
     />
   ),
-  hr: ({ className, ...props }: React.ComponentProps<"hr">) => (
-    <hr className={cn("my-8 border-border", className)} {...props} />
+  hr: ({ className }: React.ComponentProps<"hr">) => (
+    <Separator className={cn("my-8", className)} />
   ),
 };

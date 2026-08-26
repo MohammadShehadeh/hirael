@@ -11,7 +11,7 @@ import {
   InlineEditTextarea,
 } from "@/registry/hirael/components/inline-edit";
 
-export default function InlineEditDemo() {
+const InlineEditDemo = () => {
   const t = useT();
   const [title, setTitle] = React.useState(
     t({ en: "Quarterly revenue report", ar: "تقرير الإيرادات الفصلي" }),
@@ -108,4 +108,6 @@ export default function InlineEditDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default InlineEditDemo;

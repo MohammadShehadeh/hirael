@@ -45,20 +45,18 @@ const barVariants = cva("animate-pulse rounded-full bg-current", {
   },
 });
 
-export type SpinnerProps = React.ComponentProps<"span"> &
-  VariantProps<typeof circleVariants> & {
+export interface SpinnerProps extends React.ComponentProps<"span">, VariantProps<typeof circleVariants> {
     variant?: "circle" | "dots" | "bars";
     /** Accessible label announced to assistive tech. Defaults to "Loading". */
-    label?: string;
-  };
+    label?: string;}
 
-function Spinner({
+const Spinner = ({
   variant = "circle",
   size = "md",
   label = "Loading",
   className,
   ...props
-}: SpinnerProps) {
+}: SpinnerProps) => {
   return (
     <span
       data-slot="spinner"
@@ -103,6 +101,6 @@ function Spinner({
       <span className="sr-only">{label}</span>
     </span>
   );
-}
+};
 
 export { Spinner };

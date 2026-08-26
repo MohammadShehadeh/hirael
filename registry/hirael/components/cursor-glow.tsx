@@ -5,20 +5,19 @@ import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-type CursorGlowProps = React.ComponentProps<"div"> & {
+interface CursorGlowProps extends React.ComponentProps<"div"> {
   /** Diameter of the glow, in px. */
   size?: number;
   /** Glow color. Defaults to a soft tint of the foreground token. */
-  color?: string;
-};
+  color?: string;}
 
-function CursorGlow({
+const CursorGlow = ({
   className,
   children,
   size = 400,
   color = "color-mix(in oklch, var(--foreground) 12%, transparent)",
   ...props
-}: CursorGlowProps) {
+}: CursorGlowProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`;
@@ -47,6 +46,6 @@ function CursorGlow({
       </div>
     </div>
   );
-}
+};
 
 export { CursorGlow };

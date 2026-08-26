@@ -5,7 +5,7 @@ import { ArrowRight, Orbit } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-export default function Hero04() {
+const Hero04 = () => {
   return (
     <section
       data-slot="hero"
@@ -75,4 +75,6 @@ export default function Hero04() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero04;

@@ -6,41 +6,39 @@ import { cn } from "@/lib/utils";
 
 type SplitOrientation = "horizontal" | "vertical";
 
-type SplitViewContextValue = {
+interface SplitViewContextValue {
   orientation: SplitOrientation;
   size: number;
   dragging: boolean;
   onResizerPointerDown: (event: React.PointerEvent) => void;
-  onResizerKeyDown: (event: React.KeyboardEvent) => void;
-};
+  onResizerKeyDown: (event: React.KeyboardEvent) => void;}
 
 const SplitViewContext = React.createContext<SplitViewContextValue | null>(
   null,
 );
 
-function useSplitView() {
+const useSplitView = () => {
   const ctx = React.useContext(SplitViewContext);
   if (!ctx) {
     throw new Error("SplitView parts must be used within <SplitView>");
   }
   return ctx;
-}
+};
 
-function isRtl(el: HTMLElement | null) {
+const isRtl = (el: HTMLElement | null) => {
   return el ? getComputedStyle(el).direction === "rtl" : false;
-}
+};
 
-type SplitViewProps = React.ComponentProps<"div"> & {
+interface SplitViewProps extends React.ComponentProps<"div"> {
   orientation?: SplitOrientation;
   /** Size of the first panel, as a percentage. */
   defaultSize?: number;
   /** Minimum size of the first panel, as a percentage. */
   minSize?: number;
   /** Maximum size of the first panel, as a percentage. */
-  maxSize?: number;
-};
+  maxSize?: number;}
 
-function SplitView({
+const SplitView = ({
   orientation = "horizontal",
   defaultSize = 50,
   minSize = 15,
@@ -49,7 +47,7 @@ function SplitView({
   style,
   children,
   ...props
-}: SplitViewProps) {
+}: SplitViewProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [size, setSize] = React.useState(defaultSize);
   const [dragging, setDragging] = React.useState(false);
@@ -148,11 +146,11 @@ function SplitView({
       </div>
     </SplitViewContext.Provider>
   );
-}
+};
 
 type SplitViewPanelProps = React.ComponentProps<"div">;
 
-function SplitViewPanel({ className, ...props }: SplitViewPanelProps) {
+const SplitViewPanel = ({ className, ...props }: SplitViewPanelProps) => {
   return (
     <div
       data-slot="split-view-panel"
@@ -160,11 +158,11 @@ function SplitViewPanel({ className, ...props }: SplitViewPanelProps) {
       {...props}
     />
   );
-}
+};
 
 type SplitViewResizerProps = React.ComponentProps<"div">;
 
-function SplitViewResizer({ className, ...props }: SplitViewResizerProps) {
+const SplitViewResizer = ({ className, ...props }: SplitViewResizerProps) => {
   const {
     orientation,
     size,
@@ -196,6 +194,6 @@ function SplitViewResizer({ className, ...props }: SplitViewResizerProps) {
       {...props}
     />
   );
-}
+};
 
 export { SplitView, SplitViewPanel, SplitViewResizer };

@@ -6,7 +6,7 @@ import { Hero } from "./hero";
 const SYSTEM_FONT =
   'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
-export default function AgencyLanding() {
+const AgencyLanding = () => {
   return (
     <div
       className="bg-white text-gray-900 antialiased"
@@ -18,4 +18,6 @@ export default function AgencyLanding() {
       <Footer />
     </div>
   );
-}
+};
+
+export default AgencyLanding;

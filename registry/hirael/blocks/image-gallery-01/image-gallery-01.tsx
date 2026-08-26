@@ -15,13 +15,12 @@ import {
 } from "@/registry/hirael/ui/empty";
 import { Tabs, TabsList, TabsTrigger } from "@/registry/hirael/ui/tabs";
 
-type Tile = {
+interface Tile {
   title: string;
   meta: string;
   tag: string;
   aspect: string;
-  src: string;
-};
+  src: string;}
 
 const FILTERS = ["All", "Web", "Brand", "Editorial", "Motion"] as const;
 type Filter = (typeof FILTERS)[number];
@@ -93,7 +92,7 @@ const TILES: readonly Tile[] = [
   },
 ] as const;
 
-export default function ImageGallery01() {
+const ImageGallery01 = () => {
   const [filter, setFilter] = React.useState<Filter>("All");
   const visible =
     filter === "All" ? TILES : TILES.filter((t) => t.tag === filter);
@@ -206,4 +205,6 @@ export default function ImageGallery01() {
       </div>
     </section>
   );
-}
+};
+
+export default ImageGallery01;

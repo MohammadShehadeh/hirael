@@ -11,8 +11,9 @@ import {
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
-type MorphingDialogContextValue = {
+interface MorphingDialogContextValue {
   isOpen: boolean;
   open: () => void;
   close: () => void;
@@ -24,12 +25,12 @@ type MorphingDialogContextValue = {
   setHasTitle: React.Dispatch<React.SetStateAction<boolean>>;
   setHasDescription: React.Dispatch<React.SetStateAction<boolean>>;
   triggerRef: React.RefObject<HTMLDivElement | null>;
-};
+}
 
 const MorphingDialogContext =
   React.createContext<MorphingDialogContextValue | null>(null);
 
-function useMorphingDialog() {
+const useMorphingDialog = () => {
   const ctx = React.useContext(MorphingDialogContext);
   if (!ctx) {
     throw new Error(
@@ -37,21 +38,21 @@ function useMorphingDialog() {
     );
   }
   return ctx;
-}
+};
 
-type MorphingDialogProps = {
+interface MorphingDialogProps {
   children: React.ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-};
+}
 
-function MorphingDialog({
+const MorphingDialog = ({
   children,
   open: openProp,
   defaultOpen,
   onOpenChange,
-}: MorphingDialogProps) {
+}: MorphingDialogProps) => {
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
   const isOpen = openProp ?? uncontrolled;
   const reactId = React.useId();
@@ -89,16 +90,16 @@ function MorphingDialog({
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </MorphingDialogContext.Provider>
   );
-}
+};
 
 type MorphingDialogTriggerProps = HTMLMotionProps<"div">;
 
-function MorphingDialogTrigger({
+const MorphingDialogTrigger = ({
   className,
   children,
   style,
   ...props
-}: MorphingDialogTriggerProps) {
+}: MorphingDialogTriggerProps) => {
   const { open, isOpen, uniqueId, triggerRef } = useMorphingDialog();
   return (
     <motion.div
@@ -125,24 +126,24 @@ function MorphingDialogTrigger({
       {children}
     </motion.div>
   );
-}
+};
 
-function focusableWithin(container: HTMLElement) {
+const focusableWithin = (container: HTMLElement) => {
   return Array.from(
     container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
     ),
   );
-}
+};
 
 type MorphingDialogContentProps = HTMLMotionProps<"div">;
 
-function MorphingDialogContent({
+const MorphingDialogContent = ({
   className,
   children,
   style,
   ...props
-}: MorphingDialogContentProps) {
+}: MorphingDialogContentProps) => {
   const {
     isOpen,
     close,
@@ -241,14 +242,14 @@ function MorphingDialogContent({
     </AnimatePresence>,
     document.body,
   );
-}
+};
 
 type MorphingDialogTitleProps = React.ComponentProps<"h2">;
 
-function MorphingDialogTitle({
+const MorphingDialogTitle = ({
   className,
   ...props
-}: MorphingDialogTitleProps) {
+}: MorphingDialogTitleProps) => {
   const { titleId, setHasTitle } = useMorphingDialog();
 
   React.useEffect(() => {
@@ -267,14 +268,14 @@ function MorphingDialogTitle({
       {...props}
     />
   );
-}
+};
 
 type MorphingDialogDescriptionProps = React.ComponentProps<"p">;
 
-function MorphingDialogDescription({
+const MorphingDialogDescription = ({
   className,
   ...props
-}: MorphingDialogDescriptionProps) {
+}: MorphingDialogDescriptionProps) => {
   const { descriptionId, setHasDescription } = useMorphingDialog();
 
   React.useEffect(() => {
@@ -290,32 +291,31 @@ function MorphingDialogDescription({
       {...props}
     />
   );
-}
+};
 
 type MorphingDialogCloseProps = React.ComponentProps<"button">;
 
-function MorphingDialogClose({
+const MorphingDialogClose = ({
   className,
   children,
   ...props
-}: MorphingDialogCloseProps) {
+}: MorphingDialogCloseProps) => {
   const { close } = useMorphingDialog();
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-sm"
       data-slot="morphing-dialog-close"
       onClick={close}
       aria-label="Close"
-      className={cn(
-        "absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className,
-      )}
+      className={cn("absolute end-3 top-3", className)}
       {...props}
     >
       {children ?? <X className="size-4" />}
-    </button>
+    </Button>
   );
-}
+};
 
 export {
   MorphingDialog,

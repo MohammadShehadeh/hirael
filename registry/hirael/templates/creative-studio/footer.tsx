@@ -23,7 +23,7 @@ const LINK_COLUMNS = [
   },
 ];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer className="relative overflow-hidden bg-black pb-8 pt-20 sm:pt-28 md:pt-32">
       <NoiseOverlay variant="bg" className="opacity-[0.12]" />
@@ -116,4 +116,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

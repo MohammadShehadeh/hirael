@@ -3,12 +3,15 @@
 import * as React from "react";
 import { motion } from "motion/react";
 
+import { Button } from "@/registry/hirael/ui/button";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
+
 import { AvatarRow, Serif, useFadeUp } from "./primitives";
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4";
 
-export function Hero() {
+export const Hero = () => {
   const fade = useFadeUp();
 
   return (
@@ -60,28 +63,35 @@ export function Hero() {
         <motion.form
           {...fade(0.3)}
           onSubmit={(e) => e.preventDefault()}
-          className="liquid-glass mt-10 flex w-full max-w-lg items-center gap-2 rounded-full p-2"
+          className="liquid-glass mt-10 w-full max-w-lg rounded-full p-2"
         >
-          <label htmlFor="mindloop-hero-email" className="sr-only">
-            Email address
-          </label>
-          <input
-            id="mindloop-hero-email"
-            type="email"
-            required
-            placeholder="Enter your email"
-            className="min-w-0 flex-1 bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
-          />
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            className="shrink-0 rounded-full bg-foreground px-8 py-3 text-sm font-semibold text-background"
-          >
-            SUBSCRIBE
-          </motion.button>
+          <Field orientation="horizontal" className="gap-2">
+            <FieldLabel htmlFor="mindloop-hero-email" className="sr-only">
+              Email address
+            </FieldLabel>
+            <input
+              id="mindloop-hero-email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="Enter your email"
+              className="min-w-0 flex-1 bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            />
+            <Button
+              asChild
+              className="h-auto rounded-full px-8 py-3 font-semibold"
+            >
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                SUBSCRIBE
+              </motion.button>
+            </Button>
+          </Field>
         </motion.form>
       </div>
     </section>
   );
-}
+};

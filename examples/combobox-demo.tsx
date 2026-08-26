@@ -4,7 +4,7 @@ import * as React from "react";
 import { GlobeIcon } from "lucide-react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import { InputGroupAddon } from "@/registry/hirael/ui/input-group";
 import {
   Combobox,
@@ -32,7 +32,7 @@ const FRAMEWORKS = [
   "Gatsby",
 ];
 
-export default function ComboboxDemo() {
+const ComboboxDemo = () => {
   const t = useT();
 
   const TIMEZONES = [
@@ -65,11 +65,14 @@ export default function ComboboxDemo() {
   const anchor = useComboboxAnchor();
 
   return (
-    <div className="grid w-full max-w-xs gap-8">
-      <div className="grid gap-2">
-        <Label>{t({ en: "Single with clear", ar: "مفرد مع مسح" })}</Label>
+    <FieldGroup className="max-w-xs gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="cb-single">
+          {t({ en: "Single with clear", ar: "مفرد مع مسح" })}
+        </FieldLabel>
         <Combobox items={FRAMEWORKS} defaultValue="Next.js">
           <ComboboxInput
+            id="cb-single"
             placeholder={t({ en: "Select a framework", ar: "اختر إطار عمل" })}
             showClear
           />
@@ -86,14 +89,15 @@ export default function ComboboxDemo() {
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="cb-grouped">
           {t({ en: "Grouped with an addon", ar: "مجمّع مع إضافة" })}
-        </Label>
+        </FieldLabel>
         <Combobox items={TIMEZONES}>
           <ComboboxInput
+            id="cb-grouped"
             placeholder={t({
               en: "Select a timezone",
               ar: "اختر منطقة زمنية",
@@ -123,10 +127,12 @@ export default function ComboboxDemo() {
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>{t({ en: "Multiple", ar: "متعدد" })}</Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="cb-multiple">
+          {t({ en: "Multiple", ar: "متعدد" })}
+        </FieldLabel>
         <Combobox multiple items={FRAMEWORKS} defaultValue={["Next.js"]}>
           <ComboboxChips ref={anchor}>
             <ComboboxValue>
@@ -136,6 +142,7 @@ export default function ComboboxDemo() {
                     <ComboboxChip key={value}>{value}</ComboboxChip>
                   ))}
                   <ComboboxChipsInput
+                    id="cb-multiple"
                     placeholder={t({
                       en: "Add framework…",
                       ar: "أضف إطار عمل…",
@@ -158,7 +165,9 @@ export default function ComboboxDemo() {
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default ComboboxDemo;

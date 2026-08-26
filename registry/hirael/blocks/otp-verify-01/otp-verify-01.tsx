@@ -5,13 +5,19 @@ import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
+import {
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FieldSet,
+} from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
 const MASKED_EMAIL = "a•••@studio.com";
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -30,9 +36,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function OtpVerify01() {
+const OtpVerify01 = () => {
   const [code, setCode] = React.useState<string[]>(
     Array.from({ length: CODE_LENGTH }, () => ""),
   );
@@ -193,96 +199,94 @@ export default function OtpVerify01() {
                 </div>
               </div>
 
-              <form
-                noValidate
-                className="flex flex-col gap-5 p-8"
-                onSubmit={onSubmit}
-              >
-                <fieldset className="grid gap-1.5">
-                  <legend className="mb-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    Verification code
-                  </legend>
-                  <div dir="ltr" className="flex justify-between gap-2">
-                    {code.map((digit, i) => (
-                      <Input
-                        key={i}
-                        ref={(el) => {
-                          inputsRef.current[i] = el;
-                        }}
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete={i === 0 ? "one-time-code" : "off"}
-                        aria-label={`Digit ${i + 1}`}
-                        aria-invalid={Boolean(error) || undefined}
-                        aria-describedby={
-                          error ? "otp01-code-error" : undefined
-                        }
-                        value={digit}
-                        onChange={(e) => onChange(i, e)}
-                        onKeyDown={(e) => onKeyDown(i, e)}
-                        onPaste={(e) => onPaste(i, e)}
-                        onFocus={(e) => e.target.select()}
-                        className={cn(
-                          "size-11 px-0 text-center font-mono text-base tabular-nums",
-                          digit && "border-foreground",
-                        )}
-                      />
-                    ))}
-                  </div>
-                  {error ? (
-                    <p
-                      id="otp01-code-error"
-                      className="text-xs text-destructive"
+              <form noValidate className="p-8" onSubmit={onSubmit}>
+                <FieldGroup className="gap-5">
+                  <FieldSet className="gap-1.5">
+                    <FieldLegend
+                      variant="label"
+                      className="mb-1.5 font-mono font-normal uppercase tracking-[0.12em] text-muted-foreground data-[variant=label]:text-[10px]"
                     >
+                      Verification code
+                    </FieldLegend>
+                    <div dir="ltr" className="flex justify-between gap-2">
+                      {code.map((digit, i) => (
+                        <Input
+                          key={i}
+                          ref={(el) => {
+                            inputsRef.current[i] = el;
+                          }}
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete={i === 0 ? "one-time-code" : "off"}
+                          aria-label={`Digit ${i + 1}`}
+                          aria-invalid={Boolean(error) || undefined}
+                          aria-describedby={
+                            error ? "otp01-code-error" : undefined
+                          }
+                          value={digit}
+                          onChange={(e) => onChange(i, e)}
+                          onKeyDown={(e) => onKeyDown(i, e)}
+                          onPaste={(e) => onPaste(i, e)}
+                          onFocus={(e) => e.target.select()}
+                          className={cn(
+                            "size-11 px-0 text-center font-mono text-base tabular-nums",
+                            digit && "border-foreground",
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <FieldError id="otp01-code-error" className="text-xs">
                       {error}
-                    </p>
-                  ) : null}
-                </fieldset>
+                    </FieldError>
+                  </FieldSet>
 
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="lg"
-                  disabled={status === "verifying"}
-                  className="group"
-                >
-                  {status === "verifying" ? (
-                    <>
-                      <Loader2 className="size-4 animate-spin" />
-                      Verifying…
-                    </>
-                  ) : (
-                    <>
-                      Verify code
-                      <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                    </>
-                  )}
-                </Button>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    size="lg"
+                    disabled={status === "verifying"}
+                    className="group"
+                  >
+                    {status === "verifying" ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Verifying…
+                      </>
+                    ) : (
+                      <>
+                        Verify code
+                        <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                      </>
+                    )}
+                  </Button>
 
-                <p
-                  className="text-center text-xs text-muted-foreground"
-                  aria-live="polite"
-                >
-                  {secondsLeft > 0 ? (
-                    <>
-                      Resend code in{" "}
-                      <span className="font-mono tabular-nums text-foreground">
-                        0:{String(secondsLeft).padStart(2, "0")}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Didn&apos;t get it?{" "}
-                      <button
-                        type="button"
-                        onClick={resend}
-                        className="font-medium text-foreground underline-offset-4 hover:underline"
-                      >
-                        Resend code
-                      </button>
-                    </>
-                  )}
-                </p>
+                  <p
+                    className="text-center text-xs text-muted-foreground"
+                    aria-live="polite"
+                  >
+                    {secondsLeft > 0 ? (
+                      <>
+                        Resend code in{" "}
+                        <span className="font-mono tabular-nums text-foreground">
+                          0:{String(secondsLeft).padStart(2, "0")}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        Didn&apos;t get it?{" "}
+                        <Button
+                          type="button"
+                          variant="link"
+                          size="xs"
+                          onClick={resend}
+                          className="h-auto p-0"
+                        >
+                          Resend code
+                        </Button>
+                      </>
+                    )}
+                  </p>
+                </FieldGroup>
               </form>
 
               <div className="border-t border-border px-8 py-4 text-center">
@@ -306,4 +310,6 @@ export default function OtpVerify01() {
       </div>
     </section>
   );
-}
+};
+
+export default OtpVerify01;

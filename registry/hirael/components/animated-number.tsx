@@ -4,10 +4,10 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type AnimatedNumberProps = Omit<
+export interface AnimatedNumberProps extends Omit<
   React.ComponentProps<"span">,
   "children"
-> & {
+> {
   /** Target value to animate toward. */
   value: number;
   /** Value the first animation starts from. Defaults to 0. */
@@ -20,12 +20,11 @@ export type AnimatedNumberProps = Omit<
   format?: Intl.NumberFormatOptions;
   locale?: string;
   prefix?: string;
-  suffix?: string;
-};
+  suffix?: string;}
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
-function AnimatedNumber({
+const AnimatedNumber = ({
   value,
   startValue = 0,
   duration = 700,
@@ -36,7 +35,7 @@ function AnimatedNumber({
   suffix,
   className,
   ...props
-}: AnimatedNumberProps) {
+}: AnimatedNumberProps) => {
   const [display, setDisplay] = React.useState(startValue);
   // Tracks the latest rendered value so an animation interrupted mid-flight
   // resumes from where it visually is, instead of snapping back.
@@ -96,6 +95,6 @@ function AnimatedNumber({
       {suffix}
     </span>
   );
-}
+};
 
 export { AnimatedNumber };

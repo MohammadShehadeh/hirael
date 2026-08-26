@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, ChevronLeft } from "lucide-react";
+import { ArrowRight, ChevronLeft, Code2 } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 import type { CategoryMeta } from "@/components/block-categories";
-import { BlockPreview } from "@/components/block-preview";
+import { BlockViewer } from "@/components/block-viewer";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { InstallBlock } from "@/components/install-block";
+import { TocChips } from "@/components/toc";
 import {
   BLOCKS_BY_KIND,
   entryEmbedHref,
@@ -12,13 +16,30 @@ import {
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
 
-export function CategoryPage({ category }: { category: CategoryMeta }) {
+interface CategoryPageProps {
+  category: CategoryMeta;
+}
+
+const chipStyle =
+  "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0";
+
+/**
+ * A block category as one long browse: every block live and full width in
+ * registry order, each with its number and tagline, title and description,
+ * the framed preview (viewport + RTL controls) and a one-line install command.
+ * A visitor compares variants at real size and copies one in without opening
+ * the detail page, which stays the place for source and dependencies. A
+ * scroll-spied chip row sticks under the topbar so eleven previews are still
+ * one click to any block.
+ */
+export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind
     ? BLOCKS_BY_KIND[category.blockKind]
     : [];
+  const total = blocks.length;
 
   return (
-    <div className="container flex w-full flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
+    <div className="container flex w-full flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
       <Breadcrumbs
         items={[
           { label: "Blocks", href: "/blocks" },
@@ -26,7 +47,7 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         ]}
       />
 
-      <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">
+      <header className="flex flex-col gap-4">
         {category.comingSoon && (
           <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             Roadmap
@@ -41,71 +62,102 @@ export function CategoryPage({ category }: { category: CategoryMeta }) {
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           {category.comingSoon
             ? "Planned · not yet shipped"
-            : `${blocks.length} block${blocks.length === 1 ? "" : "s"}`}
+            : `${total} block${total === 1 ? "" : "s"} · live at full size · install from here`}
         </p>
       </header>
 
       {category.comingSoon ? (
         <RoadmapState category={category} />
       ) : (
-        <BlocksGrid blocks={blocks} />
+        <>
+          <div className="sticky top-14 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md">
+            <TocChips
+              items={blocks.map((b) => ({ id: b.name, label: b.title }))}
+            />
+          </div>
+
+          <section className="flex flex-col gap-14 sm:gap-20">
+            {blocks.map((entry, index) => {
+              const href = entryHref(entry);
+              return (
+                <article
+                  key={entry.name}
+                  id={entry.name}
+                  aria-labelledby={`${entry.name}-title`}
+                  className="flex scroll-mt-28 flex-col gap-5"
+                >
+                  <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
+                    <div className="flex min-w-0 flex-col gap-2">
+                      <p className="flex flex-wrap items-center gap-x-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                        <span className="tabular-nums text-foreground">
+                          {String(index + 1).padStart(2, "0")}
+                          <span className="text-muted-foreground/60">
+                            {" "}
+                            / {String(total).padStart(2, "0")}
+                          </span>
+                        </span>
+                        {entry.blockTagline && (
+                          <>
+                            <span aria-hidden className="text-border">
+                              |
+                            </span>
+                            <span>{entry.blockTagline}</span>
+                          </>
+                        )}
+                      </p>
+                      <h2
+                        id={`${entry.name}-title`}
+                        className="text-2xl font-semibold tracking-[-0.015em] sm:text-3xl"
+                      >
+                        <Link
+                          href={href}
+                          className="rounded-sm outline-none hover:underline hover:underline-offset-6 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        >
+                          {entry.title}
+                        </Link>
+                      </h2>
+                      <p className="max-w-2xl text-sm text-muted-foreground sm:text-[15px]">
+                        {entry.description}
+                      </p>
+                    </div>
+
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className={chipStyle}>{entryFileLabel(entry)}</span>
+                      <Link href={`${href}#code`} className={chipStyle}>
+                        <Code2 />
+                        Code
+                      </Link>
+                      <Link href={href} className={cn(chipStyle, "group")}>
+                        Details
+                        <ArrowRight className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                      </Link>
+                    </div>
+                  </header>
+
+                  <BlockViewer
+                    title={entry.title}
+                    embedHref={entryEmbedHref(entry)}
+                    minHeight={640}
+                  />
+
+                  <InstallBlock name={entry.name} variant="inline" />
+                </article>
+              );
+            })}
+          </section>
+        </>
       )}
     </div>
   );
-}
+};
 
-function BlocksGrid({ blocks }: { blocks: RegistryEntryMeta[] }) {
-  return (
-    <section>
-      <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
-        {blocks.map((entry) => (
-          <Link
-            key={entry.name}
-            href={entryHref(entry)}
-            className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors hover:border-foreground focus-visible:border-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-          >
-            <BlockPreview
-              embedHref={entryEmbedHref(entry)}
-              title={entry.title}
-            />
-
-            <div className="flex flex-col gap-2 p-4 sm:p-5">
-              <div className="flex items-center justify-between gap-2">
-                <h3 className="text-base font-medium tracking-[-0.01em]">
-                  {entry.title}
-                </h3>
-                <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {entry.blockTagline ?? entry.description}
-              </p>
-              <div className="mt-2 flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                <span>{entryFileLabel(entry)}</span>
-                <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground transition-colors group-hover:text-foreground">
-                  view
-                  <ArrowRight className="size-3 transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function RoadmapState({ category }: { category: CategoryMeta }) {
+const RoadmapState = ({ category }: { category: CategoryMeta }) => {
   return (
     <section className="flex flex-col gap-8">
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.04] mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-            backgroundSize: "16px 16px",
-          }}
+          className="bg-dot-grid pointer-events-none absolute inset-0 opacity-50 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
         />
         <div className="relative flex flex-col gap-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
@@ -119,12 +171,9 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
             ships when it&apos;s good enough that we&apos;d copy it into our own
             products.
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-            <Link
-              href="/blocks"
-              className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-3 py-1.5 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-            >
-              <ChevronLeft className="size-3" />
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <Link href="/blocks" className={chipStyle}>
+              <ChevronLeft className="rtl:rotate-180" />
               All categories
             </Link>
           </div>
@@ -132,4 +181,4 @@ function RoadmapState({ category }: { category: CategoryMeta }) {
       </div>
     </section>
   );
-}
+};

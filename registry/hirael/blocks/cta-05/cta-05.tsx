@@ -10,7 +10,7 @@ import { Button } from "@/registry/hirael/ui/button";
 const email = "team@example.com";
 const phone = "+1 (555) 012 3456";
 
-export default function Cta05() {
+const Cta05 = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -110,13 +110,13 @@ export default function Cta05() {
       </div>
     </section>
   );
-}
+};
 
-function AnimatedTitle({
+const AnimatedTitle = ({
   text,
   className,
   ...props
-}: React.ComponentProps<"h2"> & { text: string }) {
+}: React.ComponentProps<"h2"> & { text: string }) => {
   const words = text.split(" ");
 
   return (
@@ -141,4 +141,6 @@ function AnimatedTitle({
       ))}
     </h2>
   );
-}
+};
+
+export default Cta05;

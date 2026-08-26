@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-function Kbd({ className, ...props }: React.ComponentProps<"button">) {
+const Kbd = ({ className, ...props }: React.ComponentProps<"button">) => {
   return (
     <button
       data-slot="kbd"
@@ -24,9 +24,9 @@ function Kbd({ className, ...props }: React.ComponentProps<"button">) {
       {...props}
     />
   );
-}
+};
 
-function KbdDisplay({ className, ...props }: React.ComponentProps<"kbd">) {
+const KbdDisplay = ({ className, ...props }: React.ComponentProps<"kbd">) => {
   return (
     <kbd
       data-slot="kbd-display"
@@ -38,9 +38,9 @@ function KbdDisplay({ className, ...props }: React.ComponentProps<"kbd">) {
       {...props}
     />
   );
-}
+};
 
-function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
+const KbdGroup = ({ className, ...props }: React.ComponentProps<"div">) => {
   return (
     <div
       data-slot="kbd-group"
@@ -48,6 +48,6 @@ function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     />
   );
-}
+};
 
 export { Kbd, KbdDisplay, KbdGroup };

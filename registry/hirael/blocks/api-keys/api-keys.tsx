@@ -8,7 +8,7 @@ import { Button } from "@/registry/hirael/ui/button";
 
 type ApiKeysProps = React.ComponentProps<"div">;
 
-function ApiKeys({ className, ...props }: ApiKeysProps) {
+const ApiKeys = ({ className, ...props }: ApiKeysProps) => {
   return (
     <div
       data-slot="api-keys"
@@ -19,11 +19,11 @@ function ApiKeys({ className, ...props }: ApiKeysProps) {
       {...props}
     />
   );
-}
+};
 
 type ApiKeysHeaderProps = React.ComponentProps<"div">;
 
-function ApiKeysHeader({ className, ...props }: ApiKeysHeaderProps) {
+const ApiKeysHeader = ({ className, ...props }: ApiKeysHeaderProps) => {
   return (
     <div
       data-slot="api-keys-header"
@@ -34,11 +34,11 @@ function ApiKeysHeader({ className, ...props }: ApiKeysHeaderProps) {
       {...props}
     />
   );
-}
+};
 
 type ApiKeysTitleProps = React.ComponentProps<"h3">;
 
-function ApiKeysTitle({ className, ...props }: ApiKeysTitleProps) {
+const ApiKeysTitle = ({ className, ...props }: ApiKeysTitleProps) => {
   return (
     <h3
       data-slot="api-keys-title"
@@ -46,11 +46,11 @@ function ApiKeysTitle({ className, ...props }: ApiKeysTitleProps) {
       {...props}
     />
   );
-}
+};
 
 type ApiKeysListProps = React.ComponentProps<"ul">;
 
-function ApiKeysList({ className, ...props }: ApiKeysListProps) {
+const ApiKeysList = ({ className, ...props }: ApiKeysListProps) => {
   return (
     <ul
       data-slot="api-keys-list"
@@ -58,11 +58,11 @@ function ApiKeysList({ className, ...props }: ApiKeysListProps) {
       {...props}
     />
   );
-}
+};
 
 type ApiKeyItemProps = React.ComponentProps<"li">;
 
-function ApiKeyItem({ className, ...props }: ApiKeyItemProps) {
+const ApiKeyItem = ({ className, ...props }: ApiKeyItemProps) => {
   return (
     <li
       data-slot="api-key-item"
@@ -73,13 +73,18 @@ function ApiKeyItem({ className, ...props }: ApiKeyItemProps) {
       {...props}
     />
   );
-}
-
-type ApiKeyNameProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode;
 };
 
-function ApiKeyName({ label, className, children, ...props }: ApiKeyNameProps) {
+interface ApiKeyNameProps extends React.ComponentProps<"div"> {
+  label: React.ReactNode;
+}
+
+const ApiKeyName = ({
+  label,
+  className,
+  children,
+  ...props
+}: ApiKeyNameProps) => {
   return (
     <div
       data-slot="api-key-name"
@@ -96,20 +101,23 @@ function ApiKeyName({ label, className, children, ...props }: ApiKeyNameProps) {
       ) : null}
     </div>
   );
-}
+};
 
-type ApiKeyValueProps = Omit<React.ComponentProps<"div">, "children"> & {
+interface ApiKeyValueProps extends Omit<
+  React.ComponentProps<"div">,
+  "children"
+> {
   value: string;
   /** Whether the key starts revealed. */
   defaultRevealed?: boolean;
-};
+}
 
-function ApiKeyValue({
+const ApiKeyValue = ({
   value,
   defaultRevealed = false,
   className,
   ...props
-}: ApiKeyValueProps) {
+}: ApiKeyValueProps) => {
   const [revealed, setRevealed] = React.useState(defaultRevealed);
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -166,11 +174,11 @@ function ApiKeyValue({
       </Button>
     </div>
   );
-}
+};
 
 type ApiKeyMetaProps = React.ComponentProps<"span">;
 
-function ApiKeyMeta({ className, ...props }: ApiKeyMetaProps) {
+const ApiKeyMeta = ({ className, ...props }: ApiKeyMetaProps) => {
   return (
     <span
       data-slot="api-key-meta"
@@ -181,7 +189,7 @@ function ApiKeyMeta({ className, ...props }: ApiKeyMetaProps) {
       {...props}
     />
   );
-}
+};
 
 export {
   ApiKeys,
@@ -209,7 +217,7 @@ const API_KEY_ROWS = [
   },
 ];
 
-export default function ApiKeysBlock() {
+const ApiKeysBlock = () => {
   return (
     <section
       data-slot="api-keys-block"
@@ -218,13 +226,10 @@ export default function ApiKeysBlock() {
       <ApiKeys className="w-full max-w-xl">
         <ApiKeysHeader>
           <ApiKeysTitle>API keys</ApiKeysTitle>
-          <button
-            type="button"
-            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg]:size-3.5"
-          >
+          <Button type="button" size="sm">
             <Plus />
             Create key
-          </button>
+          </Button>
         </ApiKeysHeader>
         <ApiKeysList>
           {API_KEY_ROWS.map((key) => (
@@ -238,4 +243,6 @@ export default function ApiKeysBlock() {
       </ApiKeys>
     </section>
   );
-}
+};
+
+export default ApiKeysBlock;

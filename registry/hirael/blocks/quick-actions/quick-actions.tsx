@@ -6,17 +6,16 @@ import { ArrowLeftRight, FilePlus2, UserPlus, Wallet } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type QuickActionsProps = React.ComponentProps<"div"> & {
+interface QuickActionsProps extends React.ComponentProps<"div"> {
   /** Number of columns in the action grid. */
-  columns?: number;
-};
+  columns?: number;}
 
-function QuickActions({
+const QuickActions = ({
   columns = 2,
   className,
   style,
   ...props
-}: QuickActionsProps) {
+}: QuickActionsProps) => {
   return (
     <div
       data-slot="quick-actions"
@@ -28,17 +27,16 @@ function QuickActions({
       {...props}
     />
   );
-}
-
-type QuickActionProps = React.ComponentProps<"button"> & {
-  asChild?: boolean;
 };
 
-function QuickAction({
+interface QuickActionProps extends React.ComponentProps<"button"> {
+  asChild?: boolean;}
+
+const QuickAction = ({
   asChild = false,
   className,
   ...props
-}: QuickActionProps) {
+}: QuickActionProps) => {
   const Comp = asChild ? Slot : "button";
   return (
     <Comp
@@ -51,11 +49,11 @@ function QuickAction({
       {...props}
     />
   );
-}
+};
 
 type QuickActionIconProps = React.ComponentProps<"span">;
 
-function QuickActionIcon({ className, ...props }: QuickActionIconProps) {
+const QuickActionIcon = ({ className, ...props }: QuickActionIconProps) => {
   return (
     <span
       data-slot="quick-action-icon"
@@ -66,11 +64,11 @@ function QuickActionIcon({ className, ...props }: QuickActionIconProps) {
       {...props}
     />
   );
-}
+};
 
 type QuickActionLabelProps = React.ComponentProps<"span">;
 
-function QuickActionLabel({ className, ...props }: QuickActionLabelProps) {
+const QuickActionLabel = ({ className, ...props }: QuickActionLabelProps) => {
   return (
     <span
       data-slot="quick-action-label"
@@ -78,14 +76,14 @@ function QuickActionLabel({ className, ...props }: QuickActionLabelProps) {
       {...props}
     />
   );
-}
+};
 
 type QuickActionDescriptionProps = React.ComponentProps<"span">;
 
-function QuickActionDescription({
+const QuickActionDescription = ({
   className,
   ...props
-}: QuickActionDescriptionProps) {
+}: QuickActionDescriptionProps) => {
   return (
     <span
       data-slot="quick-action-description"
@@ -93,7 +91,7 @@ function QuickActionDescription({
       {...props}
     />
   );
-}
+};
 
 export {
   QuickActions,
@@ -110,7 +108,7 @@ const QUICK_ACTION_ROWS = [
   { icon: ArrowLeftRight, label: "Transfer", description: "Between accounts" },
 ];
 
-export default function QuickActionsBlock() {
+const QuickActionsBlock = () => {
   return (
     <section
       data-slot="quick-actions-block"
@@ -131,4 +129,6 @@ export default function QuickActionsBlock() {
       </QuickActions>
     </section>
   );
-}
+};
+
+export default QuickActionsBlock;

@@ -25,7 +25,7 @@ const SERVICES = [
   },
 ];
 
-function ServiceVideo({ src, posterSrc }: { src: string; posterSrc?: string }) {
+const ServiceVideo = ({ src, posterSrc }: { src: string; posterSrc?: string }) => {
   const [failed, setFailed] = React.useState(false);
 
   if (failed) {
@@ -53,15 +53,15 @@ function ServiceVideo({ src, posterSrc }: { src: string; posterSrc?: string }) {
       onError={() => setFailed(true)}
     />
   );
-}
+};
 
-export function Services({
+export const Services = ({
   videoSrcs,
   posterSrcs,
 }: {
   videoSrcs?: string[];
   posterSrcs?: string[];
-}) {
+}) => {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-28 md:py-40">
       <div aria-hidden className="glow-center absolute inset-0" />
@@ -122,4 +122,4 @@ export function Services({
       </div>
     </section>
   );
-}
+};

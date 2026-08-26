@@ -13,7 +13,7 @@ import { Philosophy } from "./philosophy";
 import { Services } from "./services";
 import { AsmeStyles } from "./styles";
 
-export default function Asme() {
+const Asme = () => {
   return (
     <MotionConfig reducedMotion="user">
       <main
@@ -37,4 +37,6 @@ export default function Asme() {
       </main>
     </MotionConfig>
   );
-}
+};
+
+export default Asme;

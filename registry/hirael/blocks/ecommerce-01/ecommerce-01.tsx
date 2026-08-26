@@ -18,7 +18,7 @@ const FILTERS: { value: Category | "all"; label: string }[] = [
   { value: "everyday", label: "Everyday" },
 ];
 
-type Product = {
+interface Product {
   id: string;
   name: string;
   category: Category;
@@ -28,7 +28,7 @@ type Product = {
   reviews: string;
   badge?: string;
   image: string;
-};
+}
 
 const PRODUCTS: readonly Product[] = [
   {
@@ -127,7 +127,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
   everyday: "Everyday",
 };
 
-export default function Ecommerce01() {
+const Ecommerce01 = () => {
   const [filter, setFilter] = React.useState<Category | "all">("all");
   const [saved, setSaved] = React.useState<readonly string[]>([]);
 
@@ -197,8 +197,10 @@ export default function Ecommerce01() {
                       {p.badge}
                     </Badge>
                   )}
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="icon-sm"
                     onClick={() => toggleSaved(p.id)}
                     aria-pressed={isSaved}
                     aria-label={
@@ -206,12 +208,12 @@ export default function Ecommerce01() {
                         ? `Remove ${p.name} from wishlist`
                         : `Add ${p.name} to wishlist`
                     }
-                    className="absolute end-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-full border border-border bg-background/85 text-foreground backdrop-blur transition-colors hover:border-foreground"
+                    className="absolute end-2.5 top-2.5 size-7 rounded-full backdrop-blur"
                   >
                     <Heart
                       className={`size-3.5 ${isSaved ? "fill-current" : ""}`}
                     />
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="flex flex-col gap-1 pt-3">
@@ -257,4 +259,6 @@ export default function Ecommerce01() {
       </div>
     </section>
   );
-}
+};
+
+export default Ecommerce01;

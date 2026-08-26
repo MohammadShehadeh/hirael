@@ -38,7 +38,7 @@ const HALFTONE = {
   backgroundSize: "4px 4px",
 };
 
-export function SelectedWorks() {
+export const SelectedWorks = () => {
   return (
     <section id="work" className="bg-[hsl(var(--bg))] py-12 md:py-16">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10 lg:px-16">
@@ -102,4 +102,4 @@ export function SelectedWorks() {
       </div>
     </section>
   );
-}
+};

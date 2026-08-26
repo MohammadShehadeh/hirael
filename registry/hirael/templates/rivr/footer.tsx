@@ -9,7 +9,7 @@ const COLUMNS = [
   { heading: "Community", links: ["Discord", "Forum", "Governance", "Blog"] },
 ];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer
       data-slot="footer"
@@ -65,4 +65,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

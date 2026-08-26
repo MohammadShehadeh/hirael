@@ -19,7 +19,7 @@ const TEXT_BLOCKS = [
   },
 ];
 
-export function Philosophy() {
+export const Philosophy = () => {
   return (
     <section className="overflow-hidden bg-background px-6 py-28 md:py-40">
       <div className="mx-auto max-w-6xl">
@@ -75,4 +75,4 @@ export function Philosophy() {
       </div>
     </section>
   );
-}
+};

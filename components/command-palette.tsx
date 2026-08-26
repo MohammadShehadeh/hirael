@@ -39,13 +39,13 @@ import {
  * (cmdk) primitives. Loaded lazily (see command-menu.tsx) so cmdk only ships
  * to visitors who actually open search.
  */
-export function CommandPalette({
+export const CommandPalette = ({
   open,
   onOpenChange,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}) => {
   const router = useRouter();
 
   const go = (item: RecentItem) => {
@@ -161,25 +161,25 @@ export function CommandPalette({
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-function Kbd({ children }: { children: React.ReactNode }) {
+const Kbd = ({ children }: { children: React.ReactNode }) => {
   return (
     <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">
       {children}
     </kbd>
   );
-}
+};
 
 /** Previously opened items, shown only while the query is empty. Re-reads on
  * every open so navigation elsewhere in the tab is reflected immediately. */
-function RecentGroup({
+const RecentGroup = ({
   open,
   onSelect,
 }: {
   open: boolean;
   onSelect: (item: RecentItem) => void;
-}) {
+}) => {
   const search = useCommandState((state) => state.search);
   const [recents, setRecents] = React.useState<RecentItem[]>([]);
 
@@ -211,4 +211,4 @@ function RecentGroup({
       ))}
     </CommandGroup>
   );
-}
+};

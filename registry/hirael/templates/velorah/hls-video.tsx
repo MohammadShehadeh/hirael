@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
  * native HLS (Safari) otherwise. Autoplays muted and loops; defaults to a
  * full-cover backdrop, with positioning overridable via `className`.
  */
-export function HlsVideo({
+export const HlsVideo = ({
   src,
   className,
 }: {
   src: string;
   className?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -59,4 +59,4 @@ export function HlsVideo({
       )}
     />
   );
-}
+};

@@ -7,16 +7,14 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 
-type AnnouncementBarProps = React.ComponentProps<"div"> &
-  VariantProps<typeof announcementBarVariants> & {
+interface AnnouncementBarProps extends React.ComponentProps<"div">, VariantProps<typeof announcementBarVariants> {
     dismissible?: boolean;
     /** Controlled-open. If provided, internal state is bypassed. */
     open?: boolean;
     /** Fires when the user dismisses via the close button. */
     onDismiss?: () => void;
     /** localStorage key. When set, the dismissed state is persisted across reloads. */
-    storageKey?: string;
-  };
+    storageKey?: string;}
 
 const announcementBarVariants = cva(
   "relative isolate flex w-full items-center justify-center gap-3 border-b px-4 py-2 text-sm",
@@ -39,7 +37,7 @@ const noopUnsubscribe = () => () => {};
 // Server render returns false (visible by default) so the SSR HTML and the
 // hydration pass agree without warnings. Once hydration is committed, the
 // real storage value is read — returning users see the bar hide.
-function useStoredDismiss(storageKey?: string) {
+const useStoredDismiss = (storageKey?: string) => {
   const subscribe = React.useCallback(
     (cb: () => void) => {
       if (!storageKey || typeof window === "undefined")
@@ -62,9 +60,9 @@ function useStoredDismiss(storageKey?: string) {
   }, [storageKey]);
   const getServerSnapshot = React.useCallback(() => false, []);
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-}
+};
 
-function AnnouncementBar({
+const AnnouncementBar = ({
   className,
   tone = "default",
   dismissible = false,
@@ -73,7 +71,7 @@ function AnnouncementBar({
   storageKey,
   children,
   ...props
-}: AnnouncementBarProps) {
+}: AnnouncementBarProps) => {
   const storedDismissed = useStoredDismiss(storageKey);
   const [localDismissed, setLocalDismissed] = React.useState(false);
 
@@ -124,14 +122,14 @@ function AnnouncementBar({
       )}
     </div>
   );
-}
+};
 
 type AnnouncementBarBadgeProps = React.ComponentProps<"span">;
 
-function AnnouncementBarBadge({
+const AnnouncementBarBadge = ({
   className,
   ...props
-}: AnnouncementBarBadgeProps) {
+}: AnnouncementBarBadgeProps) => {
   return (
     <span
       data-slot="announcement-bar-badge"
@@ -142,14 +140,14 @@ function AnnouncementBarBadge({
       {...props}
     />
   );
-}
+};
 
 type AnnouncementBarLinkProps = React.ComponentProps<"a">;
 
-function AnnouncementBarLink({
+const AnnouncementBarLink = ({
   className,
   ...props
-}: AnnouncementBarLinkProps) {
+}: AnnouncementBarLinkProps) => {
   return (
     <a
       data-slot="announcement-bar-link"
@@ -160,6 +158,6 @@ function AnnouncementBarLink({
       {...props}
     />
   );
-}
+};
 
 export { AnnouncementBar, AnnouncementBarBadge, AnnouncementBarLink };

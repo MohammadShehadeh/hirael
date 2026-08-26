@@ -19,10 +19,10 @@ import {
   startOfDay,
 } from "@/registry/hirael/components/calendar-utils";
 
-export type DateCalendarProps = Omit<
+export interface DateCalendarProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue"
-> & {
+> {
   value?: Date | null;
   defaultValue?: Date | null;
   onValueChange?: (date: Date | null) => void;
@@ -33,10 +33,9 @@ export type DateCalendarProps = Omit<
   max?: Date;
   disabledDate?: (d: Date) => boolean;
   locale?: string;
-  weekStartsOn?: 0 | 1;
-};
+  weekStartsOn?: 0 | 1;}
 
-function DateCalendar({
+const DateCalendar = ({
   value: valueProp,
   defaultValue = null,
   onValueChange,
@@ -50,7 +49,7 @@ function DateCalendar({
   weekStartsOn = 1,
   className,
   ...props
-}: DateCalendarProps) {
+}: DateCalendarProps) => {
   const [internal, setInternal] = React.useState<Date | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internal;
   const today = startOfDay(new Date());
@@ -268,23 +267,22 @@ function DateCalendar({
       </div>
     </div>
   );
-}
+};
 
-type DatePickerContextValue = {
+interface DatePickerContextValue {
   value: Date | null;
   setValue: (date: Date | null) => void;
   open: boolean;
   setOpen: (open: boolean) => void;
   min?: Date;
   max?: Date;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
 const DatePickerContext = React.createContext<DatePickerContextValue | null>(
   null,
 );
 
-function useDatePicker() {
+const useDatePicker = () => {
   const ctx = React.useContext(DatePickerContext);
   if (!ctx) {
     throw new Error(
@@ -292,9 +290,9 @@ function useDatePicker() {
     );
   }
   return ctx;
-}
+};
 
-export type DatePickerProps = {
+export interface DatePickerProps {
   value?: Date | null;
   defaultValue?: Date | null;
   onValueChange?: (date: Date | null) => void;
@@ -304,10 +302,9 @@ export type DatePickerProps = {
   min?: Date;
   max?: Date;
   disabled?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function DatePicker({
+const DatePicker = ({
   value: valueProp,
   defaultValue = null,
   onValueChange,
@@ -318,7 +315,7 @@ function DatePicker({
   max,
   disabled,
   children,
-}: DatePickerProps) {
+}: DatePickerProps) => {
   const [internalValue, setInternalValue] = React.useState<Date | null>(
     defaultValue,
   );
@@ -353,9 +350,9 @@ function DatePicker({
       </Popover>
     </DatePickerContext.Provider>
   );
-}
+};
 
-function DatePickerTrigger({
+const DatePickerTrigger = ({
   placeholder = "Pick a date",
   locale,
   className,
@@ -365,7 +362,7 @@ function DatePickerTrigger({
   placeholder?: string;
   locale?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useDatePicker();
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   return (
@@ -391,9 +388,9 @@ function DatePickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function DatePickerContent({
+const DatePickerContent = ({
   locale,
   weekStartsOn,
   disabledDate,
@@ -409,7 +406,7 @@ function DatePickerContent({
   month?: Date;
   defaultMonth?: Date;
   onMonthChange?: (month: Date) => void;
-}) {
+}) => {
   const ctx = useDatePicker();
   return (
     <PopoverContent
@@ -455,6 +452,6 @@ function DatePickerContent({
       </div>
     </PopoverContent>
   );
-}
+};
 
 export { DatePicker, DatePickerTrigger, DatePickerContent, DateCalendar };

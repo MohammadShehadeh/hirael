@@ -40,15 +40,15 @@ import {
   TooltipTrigger,
 } from "@/registry/hirael/ui/tooltip";
 
-type Message = {
+interface Message {
   id: string;
   from: string;
   initials: string;
   time: string;
   body: string;
-};
+}
 
-type Conversation = {
+interface Conversation {
   id: string;
   sender: string;
   initials: string;
@@ -58,7 +58,7 @@ type Conversation = {
   time: string;
   unread?: boolean;
   thread: readonly Message[];
-};
+}
 
 const CONVERSATIONS: readonly Conversation[] = [
   {
@@ -213,9 +213,12 @@ const RAIL: { icon: LucideIcon; label: string; current?: boolean }[] = [
   { icon: Trash2, label: "Trash" },
 ];
 
-type Removal = { id: string; kind: "archived" | "deleted" };
+interface Removal {
+  id: string;
+  kind: "archived" | "deleted";
+}
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -234,9 +237,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function AppShell03() {
+const AppShell03 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(
     CONVERSATIONS[0].id,
   );
@@ -379,8 +382,10 @@ export default function AppShell03() {
         {RAIL.map((item) => (
           <Tooltip key={item.label}>
             <TooltipTrigger asChild>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 aria-label={
                   item.current && unreadCount > 0
                     ? `${item.label} · ${unreadCount} unread`
@@ -388,10 +393,10 @@ export default function AppShell03() {
                 }
                 aria-current={item.current ? "page" : undefined}
                 className={cn(
-                  "relative inline-flex size-9 items-center justify-center rounded-md transition-colors",
+                  "relative",
                   item.current
                     ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                    : "text-muted-foreground",
                 )}
               >
                 <item.icon className="size-4" aria-hidden />
@@ -401,7 +406,7 @@ export default function AppShell03() {
                     className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground"
                   />
                 )}
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent side="right">{item.label}</TooltipContent>
           </Tooltip>
@@ -409,13 +414,15 @@ export default function AppShell03() {
         <div className="mt-auto flex flex-col items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 aria-label="Settings"
-                className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className="text-muted-foreground"
               >
                 <Settings className="size-4" aria-hidden />
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent side="right">Settings</TooltipContent>
           </Tooltip>
@@ -736,7 +743,10 @@ export default function AppShell03() {
                 </span>
                 <Button size="sm" onClick={sendReply} disabled={!draft.trim()}>
                   Send
-                  <SendHorizonal className="size-3.5 rtl:rotate-180" aria-hidden />
+                  <SendHorizonal
+                    className="size-3.5 rtl:rotate-180"
+                    aria-hidden
+                  />
                 </Button>
               </div>
             </div>
@@ -765,4 +775,6 @@ export default function AppShell03() {
       </section>
     </div>
   );
-}
+};
+
+export default AppShell03;

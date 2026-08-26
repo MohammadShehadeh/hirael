@@ -3,9 +3,10 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
+import { Button } from "@/registry/hirael/ui/button";
 import { CountdownTimer } from "@/registry/hirael/components/countdown-timer";
 
-export default function CountdownTimerDemo() {
+const CountdownTimerDemo = () => {
   const t = useT();
 
   const labels = t({
@@ -103,17 +104,21 @@ export default function CountdownTimerDemo() {
             })}
           </p>
         ) : null}
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={() => {
             setCompletedAt(null);
             setShortTarget(Date.now() + 10_000);
           }}
-          className="mt-1 w-fit rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-accent"
+          className="mt-1 w-fit"
         >
           {t({ en: "Restart", ar: "إعادة التشغيل" })}
-        </button>
+        </Button>
       </div>
     </div>
   );
-}
+};
+
+export default CountdownTimerDemo;

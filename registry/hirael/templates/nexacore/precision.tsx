@@ -3,12 +3,11 @@ import { BrandMark, GradientText } from "./primitives";
 const PRECISION_BG =
   "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260418_125638_553b96dc-a1fd-4b2b-81a9-ed7daa80006e.png&w=1280&q=85";
 
-type Pillar = {
+interface Pillar {
   label: string;
   start: number;
   bottom: number;
-  items: string[];
-};
+  items: string[];}
 
 const PILLARS: Pillar[] = [
   {
@@ -37,7 +36,7 @@ const PILLARS: Pillar[] = [
   },
 ];
 
-function DeliveryGlyph() {
+const DeliveryGlyph = () => {
   return (
     <svg
       width="19"
@@ -54,9 +53,9 @@ function DeliveryGlyph() {
       <rect x="14" y="7.5" width="3" height="1" fill="rgb(200, 111, 255)" />
     </svg>
   );
-}
+};
 
-function PillarChip({ label, small }: { label: string; small?: boolean }) {
+const PillarChip = ({ label, small }: { label: string; small?: boolean }) => {
   return (
     <span
       className="inline-flex items-center gap-2 font-medium text-[var(--nexa-navy)]"
@@ -83,9 +82,9 @@ function PillarChip({ label, small }: { label: string; small?: boolean }) {
       {label}
     </span>
   );
-}
+};
 
-function DesktopStaircase() {
+const DesktopStaircase = () => {
   return (
     <div
       className="relative hidden sm:block"
@@ -133,9 +132,9 @@ function DesktopStaircase() {
       ))}
     </div>
   );
-}
+};
 
-function MobileStack() {
+const MobileStack = () => {
   return (
     <div className="flex w-full flex-col gap-10 sm:hidden">
       {PILLARS.map((pillar, i) => {
@@ -179,9 +178,9 @@ function MobileStack() {
       })}
     </div>
   );
-}
+};
 
-export function Precision() {
+export const Precision = () => {
   return (
     <section
       id="thinking"
@@ -243,4 +242,4 @@ export function Precision() {
       </div>
     </section>
   );
-}
+};

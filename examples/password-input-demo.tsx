@@ -3,43 +3,43 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
 } from "@/registry/hirael/components/password-input";
 
-export default function PasswordInputDemo() {
+const PasswordInputDemo = () => {
   const t = useT();
 
   const [basic, setBasic] = React.useState("");
   const [composed, setComposed] = React.useState("hunter2");
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label htmlFor="pw-basic">
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="pw-basic">
           {t({
             en: "Password · with strength meter",
             ar: "كلمة المرور · مع مقياس القوة",
           })}
-        </Label>
+        </FieldLabel>
         <PasswordInput id="pw-basic" value={basic} onValueChange={setBasic}>
           <PasswordInputField
             placeholder={t({ en: "Pick a strong one", ar: "اختر كلمة قوية" })}
           />
           <PasswordInputStrength />
         </PasswordInput>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label htmlFor="pw-composed">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="pw-composed">
           {t({
             en: "Password · custom strength hint",
             ar: "كلمة المرور · تلميح قوة مخصص",
           })}
-        </Label>
+        </FieldLabel>
         <PasswordInput
           id="pw-composed"
           value={composed}
@@ -59,7 +59,9 @@ export default function PasswordInputDemo() {
             )}
           />
         </PasswordInput>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default PasswordInputDemo;

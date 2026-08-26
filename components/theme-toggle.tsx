@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/active-theme";
 import { Button } from "@/registry/hirael/ui/button";
 
-export function ThemeToggle() {
+export const ThemeToggle = () => {
   const { mode, setMode } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
@@ -40,4 +40,4 @@ export function ThemeToggle() {
       />
     </Button>
   );
-}
+};

@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-export default function Cta06() {
+const Cta06 = () => {
   return (
     <section data-slot="cta" className="bg-background px-4 py-12 md:px-6">
       <div className="mx-auto w-full max-w-6xl rounded-xl border border-border bg-muted/20 p-2">
@@ -71,4 +71,6 @@ export default function Cta06() {
       </div>
     </section>
   );
-}
+};
+
+export default Cta06;

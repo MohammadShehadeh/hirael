@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   FileDropzone,
   FileDropzoneErrors,
@@ -11,20 +11,20 @@ import {
   FileDropzoneZone,
 } from "@/registry/hirael/components/file-dropzone";
 
-export default function FileDropzoneDemo() {
+const FileDropzoneDemo = () => {
   const t = useT();
   const [basic, setBasic] = React.useState<File[]>([]);
   const [composed, setComposed] = React.useState<File[]>([]);
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label>
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel>
           {t({
             en: "Images & PDFs · up to 5 MB",
             ar: "صور وملفات PDF · حتى 5 ميغابايت",
           })}
-        </Label>
+        </FieldLabel>
         <FileDropzone
           value={basic}
           onValueChange={setBasic}
@@ -36,15 +36,15 @@ export default function FileDropzoneDemo() {
           <FileDropzoneList />
           <FileDropzoneErrors />
         </FileDropzone>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>
+      <Field className="gap-2">
+        <FieldLabel>
           {t({
             en: "Data files · custom layout",
             ar: "ملفات البيانات · تخطيط مخصص",
           })}
-        </Label>
+        </FieldLabel>
         <FileDropzone
           value={composed}
           onValueChange={setComposed}
@@ -62,7 +62,9 @@ export default function FileDropzoneDemo() {
           <FileDropzoneErrors />
           <FileDropzoneList />
         </FileDropzone>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default FileDropzoneDemo;

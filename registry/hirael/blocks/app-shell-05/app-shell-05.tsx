@@ -51,13 +51,12 @@ import {
   SidebarTrigger,
 } from "@/registry/hirael/ui/sidebar";
 
-type NavItem = {
+interface NavItem {
   label: string;
   href: string;
   icon: LucideIcon;
   active?: boolean;
-  badge?: string;
-};
+  badge?: string;}
 
 const WORKSPACE: readonly NavItem[] = [
   { label: "Overview", href: "#", icon: LayoutDashboard, active: true },
@@ -76,7 +75,7 @@ const USER = {
   initials: "LO",
 } as const;
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -93,9 +92,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M22 86 H58" opacity="0.7" />
     </svg>
   );
-}
+};
 
-function AppSidebar() {
+const AppSidebar = () => {
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader>
@@ -232,9 +231,9 @@ function AppSidebar() {
       <SidebarRail />
     </Sidebar>
   );
-}
+};
 
-export default function AppShell05() {
+const AppShell05 = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -293,4 +292,6 @@ export default function AppShell05() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default AppShell05;

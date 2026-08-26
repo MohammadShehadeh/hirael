@@ -43,20 +43,18 @@ const variantIcons: Record<CalloutVariant, React.ElementType> = {
   neutral: AlertCircle,
 };
 
-export type CalloutProps = Omit<React.ComponentProps<"div">, "title"> &
-  VariantProps<typeof calloutVariants> & {
+export interface CalloutProps extends Omit<React.ComponentProps<"div">, "title">, VariantProps<typeof calloutVariants> {
     title?: React.ReactNode;
-    icon?: React.ElementType | React.ReactElement | false;
-  };
+    icon?: React.ElementType | React.ReactElement | false;}
 
-function Callout({
+const Callout = ({
   title,
   icon,
   className,
   variant = "info",
   children,
   ...props
-}: CalloutProps) {
+}: CalloutProps) => {
   const variantKey = (variant ?? "info") as CalloutVariant;
 
   const renderIcon = () => {
@@ -87,6 +85,6 @@ function Callout({
       )}
     </div>
   );
-}
+};
 
 export { Callout, calloutVariants };

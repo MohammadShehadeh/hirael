@@ -30,7 +30,7 @@ const RANGES: { value: Range; label: string }[] = [
   { value: "28d", label: "Last 28 days" },
 ];
 
-type Kpi = {
+interface Kpi {
   label: string;
   value: string;
   /** Change against the previous period; the sign carries the direction. */
@@ -39,8 +39,7 @@ type Kpi = {
   unit: "%" | "pp" | "s";
   /** Which way this metric has to move to be good news. Bounce rate falls. */
   goodWhen: "up" | "down";
-  spark: readonly number[];
-};
+  spark: readonly number[];}
 
 const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
   "7d": [
@@ -147,7 +146,7 @@ const KPIS_BY_RANGE: Record<Range, readonly Kpi[]> = {
   ],
 };
 
-type ChartBucket = { label: string; visitors: number; views: number };
+interface ChartBucket { label: string; visitors: number; views: number}
 
 const CHART_BY_RANGE: Record<Range, readonly ChartBucket[]> = {
   "7d": [
@@ -199,13 +198,13 @@ const CHANNELS = [
 ] as const;
 
 /** Tone follows intent, not sign: a falling bounce rate is good news. */
-function deltaTone({ delta, goodWhen }: Kpi) {
+const deltaTone = ({ delta, goodWhen }: Kpi) => {
   if (delta === 0) return "bg-accent text-muted-foreground";
   const improving = delta > 0 === (goodWhen === "up");
   return improving
     ? "bg-success/10 text-success"
     : "bg-destructive/10 text-destructive";
-}
+};
 
 const UNIT_WORD: Record<Kpi["unit"], string> = {
   "%": "percent",
@@ -213,7 +212,7 @@ const UNIT_WORD: Record<Kpi["unit"], string> = {
   s: "seconds",
 };
 
-function DeltaChip({ kpi }: { kpi: Kpi }) {
+const DeltaChip = ({ kpi }: { kpi: Kpi }) => {
   const { delta, unit, label } = kpi;
   const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
   const direction = delta > 0 ? "up" : delta < 0 ? "down" : "unchanged";
@@ -234,9 +233,9 @@ function DeltaChip({ kpi }: { kpi: Kpi }) {
       {unit === "pp" ? "pp" : unit}
     </span>
   );
-}
+};
 
-function Sparkline({ points }: { points: readonly number[] }) {
+const Sparkline = ({ points }: { points: readonly number[] }) => {
   const max = Math.max(...points);
   const min = Math.min(...points);
   const span = max - min || 1;
@@ -263,9 +262,9 @@ function Sparkline({ points }: { points: readonly number[] }) {
       />
     </svg>
   );
-}
+};
 
-function linePath(values: number[], max: number) {
+const linePath = (values: number[], max: number) => {
   // A single bucket would divide by zero; draw it flat across instead.
   const step = values.length > 1 ? 100 / (values.length - 1) : 100;
   return values
@@ -274,9 +273,9 @@ function linePath(values: number[], max: number) {
         `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(44 - (v / max) * 38).toFixed(2)}`,
     )
     .join(" ");
-}
+};
 
-export default function Dashboard02() {
+const Dashboard02 = () => {
   const [range, setRange] = React.useState<Range>("7d");
 
   const kpis = KPIS_BY_RANGE[range];
@@ -544,4 +543,6 @@ export default function Dashboard02() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard02;

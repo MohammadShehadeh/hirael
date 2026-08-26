@@ -30,7 +30,7 @@ const FEATURES = [
   },
 ];
 
-export function Solution() {
+export const Solution = () => {
   const fade = useFadeUp();
 
   return (
@@ -78,4 +78,4 @@ export function Solution() {
       </div>
     </section>
   );
-}
+};

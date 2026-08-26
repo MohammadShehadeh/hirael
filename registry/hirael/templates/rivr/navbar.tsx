@@ -11,7 +11,7 @@ const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
   { label: "Governance" },
 ];
 
-export function Navbar() {
+export const Navbar = () => {
   return (
     <nav
       data-slot="rivr-nav"
@@ -43,4 +43,4 @@ export function Navbar() {
       <PillButton label="Book Demo" />
     </nav>
   );
-}
+};

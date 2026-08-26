@@ -1,9 +1,10 @@
 "use client";
 
 import { useT } from "@/lib/demo-locale";
+import { Button } from "@/registry/hirael/ui/button";
 import { Spinner } from "@/registry/hirael/components/spinner";
 
-export default function SpinnerDemo() {
+const SpinnerDemo = () => {
   const t = useT();
 
   return (
@@ -59,16 +60,14 @@ export default function SpinnerDemo() {
           <span className="text-destructive">
             <Spinner variant="dots" />
           </span>
-          <button
-            type="button"
-            disabled
-            className="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground opacity-90"
-          >
+          <Button type="button" disabled>
             <Spinner size="sm" />
             {t({ en: "Saving…", ar: "جارٍ الحفظ…" })}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SpinnerDemo;

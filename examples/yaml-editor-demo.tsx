@@ -37,7 +37,7 @@ spec:
               memory: 512Mi
 `;
 
-export default function YamlEditorDemo() {
+const YamlEditorDemo = () => {
   const t = useT();
   const [value, setValue] = React.useState(SAMPLE);
   const lines = value.split("\n").length;
@@ -53,4 +53,6 @@ export default function YamlEditorDemo() {
       </p>
     </div>
   );
-}
+};
+
+export default YamlEditorDemo;

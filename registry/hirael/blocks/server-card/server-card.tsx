@@ -16,7 +16,7 @@ const statusTone: Record<ServerStatus, string> = {
 
 type ServerCardProps = React.ComponentProps<"div">;
 
-function ServerCard({ className, ...props }: ServerCardProps) {
+const ServerCard = ({ className, ...props }: ServerCardProps) => {
   return (
     <div
       data-slot="server-card"
@@ -27,11 +27,11 @@ function ServerCard({ className, ...props }: ServerCardProps) {
       {...props}
     />
   );
-}
+};
 
 type ServerCardHeaderProps = React.ComponentProps<"div">;
 
-function ServerCardHeader({ className, ...props }: ServerCardHeaderProps) {
+const ServerCardHeader = ({ className, ...props }: ServerCardHeaderProps) => {
   return (
     <div
       data-slot="server-card-header"
@@ -39,18 +39,17 @@ function ServerCardHeader({ className, ...props }: ServerCardHeaderProps) {
       {...props}
     />
   );
-}
-
-type ServerCardTitleProps = React.ComponentProps<"div"> & {
-  region?: React.ReactNode;
 };
 
-function ServerCardTitle({
+interface ServerCardTitleProps extends React.ComponentProps<"div"> {
+  region?: React.ReactNode;}
+
+const ServerCardTitle = ({
   region,
   className,
   children,
   ...props
-}: ServerCardTitleProps) {
+}: ServerCardTitleProps) => {
   return (
     <div
       data-slot="server-card-title"
@@ -65,19 +64,18 @@ function ServerCardTitle({
       ) : null}
     </div>
   );
-}
-
-type ServerCardStatusProps = Omit<React.ComponentProps<"span">, "children"> & {
-  status: ServerStatus;
-  children?: React.ReactNode;
 };
 
-function ServerCardStatus({
+interface ServerCardStatusProps extends Omit<React.ComponentProps<"span">, "children"> {
+  status: ServerStatus;
+  children?: React.ReactNode;}
+
+const ServerCardStatus = ({
   status,
   className,
   children,
   ...props
-}: ServerCardStatusProps) {
+}: ServerCardStatusProps) => {
   const live = status === "provisioning";
   return (
     <span
@@ -111,11 +109,11 @@ function ServerCardStatus({
       {children ?? status}
     </span>
   );
-}
+};
 
 type ServerCardSpecsProps = React.ComponentProps<"dl">;
 
-function ServerCardSpecs({ className, ...props }: ServerCardSpecsProps) {
+const ServerCardSpecs = ({ className, ...props }: ServerCardSpecsProps) => {
   return (
     <dl
       data-slot="server-card-specs"
@@ -123,7 +121,7 @@ function ServerCardSpecs({ className, ...props }: ServerCardSpecsProps) {
       {...props}
     />
   );
-}
+};
 
 const specIcon = {
   cpu: Cpu,
@@ -131,18 +129,17 @@ const specIcon = {
   disk: HardDrive,
 } as const;
 
-type ServerCardSpecProps = React.ComponentProps<"div"> & {
+interface ServerCardSpecProps extends React.ComponentProps<"div"> {
   label: React.ReactNode;
-  icon?: keyof typeof specIcon;
-};
+  icon?: keyof typeof specIcon;}
 
-function ServerCardSpec({
+const ServerCardSpec = ({
   label,
   icon,
   className,
   children,
   ...props
-}: ServerCardSpecProps) {
+}: ServerCardSpecProps) => {
   const Icon = icon ? specIcon[icon] : null;
   return (
     <div
@@ -157,22 +154,21 @@ function ServerCardSpec({
       <dd className="font-mono text-sm text-foreground">{children}</dd>
     </div>
   );
-}
+};
 
-type ServerCardMeterProps = React.ComponentProps<"div"> & {
+interface ServerCardMeterProps extends React.ComponentProps<"div"> {
   label: React.ReactNode;
   value: number;
   /** Fraction (0–1) where the bar switches to warning, then destructive. */
-  thresholds?: [warn: number, crit: number];
-};
+  thresholds?: [warn: number, crit: number];}
 
-function ServerCardMeter({
+const ServerCardMeter = ({
   label,
   value,
   thresholds = [0.75, 0.9],
   className,
   ...props
-}: ServerCardMeterProps) {
+}: ServerCardMeterProps) => {
   const pct = Math.max(0, Math.min(100, value));
   const frac = pct / 100;
   const [warn, crit] = thresholds;
@@ -200,7 +196,7 @@ function ServerCardMeter({
       </div>
     </div>
   );
-}
+};
 
 export {
   ServerCard,
@@ -212,7 +208,7 @@ export {
   ServerCardMeter,
 };
 
-export default function ServerCardBlock() {
+const ServerCardBlock = () => {
   return (
     <section
       data-slot="server-card-block"
@@ -295,4 +291,6 @@ export default function ServerCardBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default ServerCardBlock;

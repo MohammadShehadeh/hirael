@@ -9,11 +9,11 @@ import {
 
 type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number];
 
-export function ComponentCategoryPage({
+export const ComponentCategoryPage = ({
   category,
 }: {
   category: ComponentCategory;
-}) {
+}) => {
   const items = REGISTRY_BY_CATEGORY[category];
   const label = CATEGORY_LABELS[category];
 
@@ -42,4 +42,4 @@ export function ComponentCategoryPage({
       </section>
     </div>
   );
-}
+};

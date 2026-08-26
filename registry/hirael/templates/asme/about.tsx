@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 import { reveal, Serif } from "./primitives";
 
-export function About() {
+export const About = () => {
   return (
     <section className="relative overflow-hidden bg-background px-6 pb-10 pt-32 md:pb-14 md:pt-44">
       <div aria-hidden className="glow-top absolute inset-0" />
@@ -31,4 +31,4 @@ export function About() {
       </div>
     </section>
   );
-}
+};

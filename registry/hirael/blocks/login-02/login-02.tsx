@@ -4,15 +4,15 @@ import * as React from "react";
 import { ArrowRight, Quote } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
-import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
 } from "@/registry/hirael/components/password-input";
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -31,9 +31,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function Login02() {
+const Login02 = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -63,71 +63,70 @@ export default function Login02() {
             </p>
           </div>
 
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="login02-email"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-              >
-                Work email
-              </Label>
-              <Input
-                id="login02-email"
-                type="email"
-                placeholder="you@studio.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </div>
-
-            <div className="grid gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="login02-password"
+          <form onSubmit={(e) => e.preventDefault()}>
+            <FieldGroup className="gap-4">
+              <Field className="gap-1.5">
+                <FieldLabel
+                  htmlFor="login02-email"
                   className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
                 >
-                  Password
-                </Label>
+                  Work email
+                </FieldLabel>
+                <Input
+                  id="login02-email"
+                  type="email"
+                  placeholder="you@studio.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
+              </Field>
+
+              <Field className="gap-1.5">
+                <div className="flex items-center justify-between">
+                  <FieldLabel
+                    htmlFor="login02-password"
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+                  >
+                    Password
+                  </FieldLabel>
+                  <a
+                    href="#"
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Reset
+                  </a>
+                </div>
+                <PasswordInput
+                  id="login02-password"
+                  value={password}
+                  onValueChange={setPassword}
+                >
+                  <PasswordInputField placeholder="••••••••" />
+                  <PasswordInputStrength />
+                </PasswordInput>
+              </Field>
+
+              <Button
+                type="submit"
+                variant="default"
+                size="lg"
+                className="group mt-2"
+              >
+                Continue
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+              </Button>
+
+              <p className="mt-2 text-center text-xs text-muted-foreground">
+                No account yet?{" "}
                 <a
                   href="#"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                  className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
                 >
-                  Reset
+                  Start a workspace
                 </a>
-              </div>
-              <PasswordInput
-                id="login02-password"
-                value={password}
-                onValueChange={setPassword}
-              >
-                <PasswordInputField placeholder="••••••••" />
-                <PasswordInputStrength />
-              </PasswordInput>
-            </div>
-
-            <Button
-              type="submit"
-              variant="default"
-              size="lg"
-              className="group mt-2"
-            >
-              Continue
-              <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-            </Button>
-
-            <p className="mt-2 text-center text-xs text-muted-foreground">
-              No account yet?{" "}
-              <a
-                href="#"
-                className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
-              >
-                Start a workspace
-              </a>
-            </p>
+              </p>
+            </FieldGroup>
           </form>
         </div>
       </div>
@@ -191,4 +190,6 @@ export default function Login02() {
       </div>
     </section>
   );
-}
+};
+
+export default Login02;

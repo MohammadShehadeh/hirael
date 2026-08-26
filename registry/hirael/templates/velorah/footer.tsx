@@ -1,3 +1,5 @@
+import { Button } from "@/registry/hirael/ui/button";
+
 import { Wordmark } from "./primitives";
 
 const FOOTER_LINKS = [
@@ -9,7 +11,7 @@ const FOOTER_LINKS = [
   "preorder",
 ];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer className="mx-auto max-w-7xl border-t border-border bg-[hsl(0,0%,0%)] px-6 py-16 md:px-12">
       <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -37,12 +39,13 @@ export function Footer() {
             <br />
             Velorah updates.
           </p>
-          <button
+          <Button
             type="button"
-            className="liquid-glass rounded-full px-6 py-2.5 text-sm text-foreground transition-transform hover:scale-[1.03]"
+            variant="ghost"
+            className="liquid-glass h-auto rounded-full px-6 py-2.5 font-normal text-foreground transition-transform hover:scale-[1.03]"
           >
             Subscribe
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -59,4 +62,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

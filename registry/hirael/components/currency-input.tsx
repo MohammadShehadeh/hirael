@@ -10,7 +10,7 @@ import {
   InputGroupText,
 } from "@/registry/hirael/ui/input-group";
 
-function resolveCurrencySymbol(currency: string, locale: string): string {
+const resolveCurrencySymbol = (currency: string, locale: string): string => {
   try {
     const parts = new Intl.NumberFormat(locale, {
       style: "currency",
@@ -22,9 +22,9 @@ function resolveCurrencySymbol(currency: string, locale: string): string {
   } catch {
     return currency;
   }
-}
+};
 
-function formatNumber(value: number, locale: string, decimals: number): string {
+const formatNumber = (value: number, locale: string, decimals: number): string => {
   try {
     return new Intl.NumberFormat(locale, {
       minimumFractionDigits: decimals,
@@ -33,9 +33,9 @@ function formatNumber(value: number, locale: string, decimals: number): string {
   } catch {
     return value.toFixed(decimals);
   }
-}
+};
 
-function resolveSeparators(locale: string): { decimal: string; group: string } {
+const resolveSeparators = (locale: string): { decimal: string; group: string } => {
   try {
     const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
     return {
@@ -45,13 +45,11 @@ function resolveSeparators(locale: string): { decimal: string; group: string } {
   } catch {
     return { decimal: ".", group: "," };
   }
-}
+};
 
-function sanitizeInput(
-  raw: string,
+const sanitizeInput = (raw: string,
   decimals: number,
-  decimalSeparator: string,
-): string {
+  decimalSeparator: string,): string => {
   if (!raw) return "";
   let str = "";
   for (const ch of raw) {
@@ -78,9 +76,9 @@ function sanitizeInput(
     str = `${whole}${decimalSeparator}${frac.slice(0, decimals)}`;
   }
   return negative ? `-${str}` : str;
-}
+};
 
-function parseToNumber(view: string, decimalSeparator: string): number | null {
+const parseToNumber = (view: string, decimalSeparator: string): number | null => {
   if (!view) return null;
   const normalized = view.split(decimalSeparator).join(".");
   if (normalized === "-" || normalized === "." || normalized === "-.") {
@@ -88,9 +86,9 @@ function parseToNumber(view: string, decimalSeparator: string): number | null {
   }
   const n = Number(normalized);
   return Number.isFinite(n) ? n : null;
-}
+};
 
-type Ctx = {
+interface Ctx {
   id: string;
   value: number | null;
   setValue: (next: number | null) => void;
@@ -102,12 +100,11 @@ type Ctx = {
   disabled?: boolean;
   symbol: string;
   decimalSeparator: string;
-  groupSeparator: string;
-};
+  groupSeparator: string;}
 
 const CurrencyInputContext = React.createContext<Ctx | null>(null);
 
-function useCurrencyInput() {
+const useCurrencyInput = () => {
   const ctx = React.useContext(CurrencyInputContext);
   if (!ctx) {
     throw new Error(
@@ -115,12 +112,12 @@ function useCurrencyInput() {
     );
   }
   return ctx;
-}
+};
 
-export type CurrencyInputProps = Omit<
+export interface CurrencyInputProps extends Omit<
   React.ComponentProps<"div">,
   "children" | "value" | "defaultValue" | "onChange"
-> & {
+> {
   id?: string;
   value?: number | null;
   defaultValue?: number | null;
@@ -129,10 +126,9 @@ export type CurrencyInputProps = Omit<
   locale?: string;
   decimals?: number;
   disabled?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function CurrencyInput({
+const CurrencyInput = ({
   id,
   value: valueProp,
   defaultValue = null,
@@ -144,7 +140,7 @@ function CurrencyInput({
   className,
   children,
   ...props
-}: CurrencyInputProps) {
+}: CurrencyInputProps) => {
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
@@ -231,20 +227,19 @@ function CurrencyInput({
       </InputGroup>
     </CurrencyInputContext.Provider>
   );
-}
-
-type CurrencyInputPrefixProps = Omit<
-  React.ComponentProps<typeof InputGroupAddon>,
-  "align" | "children"
-> & {
-  children?: React.ReactNode;
 };
 
-function CurrencyInputPrefix({
+interface CurrencyInputPrefixProps extends Omit<
+  React.ComponentProps<typeof InputGroupAddon>,
+  "align" | "children"
+> {
+  children?: React.ReactNode;}
+
+const CurrencyInputPrefix = ({
   className,
   children,
   ...props
-}: CurrencyInputPrefixProps) {
+}: CurrencyInputPrefixProps) => {
   const ctx = useCurrencyInput();
   return (
     <InputGroupAddon
@@ -258,20 +253,19 @@ function CurrencyInputPrefix({
       </InputGroupText>
     </InputGroupAddon>
   );
-}
-
-type CurrencyInputSuffixProps = Omit<
-  React.ComponentProps<typeof InputGroupAddon>,
-  "align" | "children"
-> & {
-  children?: React.ReactNode;
 };
 
-function CurrencyInputSuffix({
+interface CurrencyInputSuffixProps extends Omit<
+  React.ComponentProps<typeof InputGroupAddon>,
+  "align" | "children"
+> {
+  children?: React.ReactNode;}
+
+const CurrencyInputSuffix = ({
   className,
   children,
   ...props
-}: CurrencyInputSuffixProps) {
+}: CurrencyInputSuffixProps) => {
   const ctx = useCurrencyInput();
   return (
     <InputGroupAddon
@@ -285,20 +279,20 @@ function CurrencyInputSuffix({
       </InputGroupText>
     </InputGroupAddon>
   );
-}
+};
 
 type CurrencyInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
 >;
 
-function CurrencyInputField({
+const CurrencyInputField = ({
   placeholder = "0",
   onBlur,
   onFocus,
   inputMode = "decimal",
   ...props
-}: CurrencyInputFieldProps) {
+}: CurrencyInputFieldProps) => {
   const ctx = useCurrencyInput();
 
   return (
@@ -343,7 +337,7 @@ function CurrencyInputField({
       {...props}
     />
   );
-}
+};
 
 export {
   CurrencyInput,

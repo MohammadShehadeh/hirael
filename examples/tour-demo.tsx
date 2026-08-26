@@ -11,7 +11,7 @@ import {
   type TourStep,
 } from "@/registry/hirael/components/tour";
 
-export default function TourDemo() {
+const TourDemo = () => {
   const t = useT();
   const [completed, setCompleted] = React.useState(false);
 
@@ -141,4 +141,6 @@ export default function TourDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default TourDemo;

@@ -8,15 +8,14 @@ type ResizableDirection = "horizontal" | "vertical";
 
 const ResizableContext = React.createContext<ResizableDirection>("horizontal");
 
-type ResizablePanelGroupProps = React.ComponentProps<"div"> & {
-  direction?: ResizableDirection;
-};
+interface ResizablePanelGroupProps extends React.ComponentProps<"div"> {
+  direction?: ResizableDirection;}
 
-function ResizablePanelGroup({
+const ResizablePanelGroup = ({
   direction = "horizontal",
   className,
   ...props
-}: ResizablePanelGroupProps) {
+}: ResizablePanelGroupProps) => {
   return (
     <ResizableContext.Provider value={direction}>
       <div
@@ -31,22 +30,21 @@ function ResizablePanelGroup({
       />
     </ResizableContext.Provider>
   );
-}
+};
 
-type ResizablePanelProps = React.ComponentProps<"div"> & {
+interface ResizablePanelProps extends React.ComponentProps<"div"> {
   /** Initial size as a proportion shared across sibling panels. */
   defaultSize?: number;
   /** Minimum size as a percentage of the group. */
-  minSize?: number;
-};
+  minSize?: number;}
 
-function ResizablePanel({
+const ResizablePanel = ({
   defaultSize = 50,
   minSize = 10,
   className,
   style,
   ...props
-}: ResizablePanelProps) {
+}: ResizablePanelProps) => {
   return (
     <div
       data-slot="resizable-panel"
@@ -56,11 +54,11 @@ function ResizablePanel({
       {...props}
     />
   );
-}
+};
 
 type ResizableHandleProps = React.ComponentProps<"div">;
 
-function ResizableHandle({ className, ref, ...props }: ResizableHandleProps) {
+const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => {
   const direction = React.useContext(ResizableContext);
   const isHorizontal = direction === "horizontal";
   const localRef = React.useRef<HTMLDivElement | null>(null);
@@ -175,6 +173,6 @@ function ResizableHandle({ className, ref, ...props }: ResizableHandleProps) {
       {...props}
     />
   );
-}
+};
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle };

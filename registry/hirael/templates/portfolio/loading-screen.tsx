@@ -8,7 +8,7 @@ const DURATION = 2700;
 const WORD_INTERVAL = 900;
 const EXIT_DELAY = 400;
 
-export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
+export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [count, setCount] = React.useState(0);
   const [wordIndex, setWordIndex] = React.useState(0);
   const [exiting, setExiting] = React.useState(false);
@@ -96,4 +96,4 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
       </div>
     </motion.div>
   );
-}
+};

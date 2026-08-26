@@ -38,18 +38,16 @@ import {
  * gives the intent, and both the colour and the spoken label come from those
  * two fields, so a falling refund rate can never render as bad news.
  */
-type Delta = {
+interface Delta {
   value: number;
   unit: "%" | "pp";
-  goodWhen: "up" | "down";
-};
+  goodWhen: "up" | "down";}
 
-type Stat = {
+interface Stat {
   icon: LucideIcon;
   label: string;
   value: string;
-  delta: Delta;
-};
+  delta: Delta;}
 
 const STATS: readonly Stat[] = [
   {
@@ -119,7 +117,7 @@ const PEAK_HOURS: readonly { hour: string; orders: number; peak?: boolean }[] = 
 
 type WeekRange = "this" | "last";
 
-type WeekData = {
+interface WeekData {
   orders: {
     value: string;
     delta: Delta;
@@ -130,8 +128,7 @@ type WeekData = {
     value: string;
     delta: Delta;
     spark: readonly number[];
-  }[];
-};
+  }[];}
 
 const WEEK: Record<WeekRange, WeekData> = {
   this: {
@@ -219,7 +216,7 @@ const UNIT_WORD: Record<Delta["unit"], string> = {
   pp: "percentage points",
 };
 
-function linePath(values: readonly number[], max: number, h: number) {
+const linePath = (values: readonly number[], max: number, h: number) => {
   const step = values.length > 1 ? 100 / (values.length - 1) : 100;
   return values
     .map(
@@ -227,9 +224,9 @@ function linePath(values: readonly number[], max: number, h: number) {
         `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)} ${(h - 2 - (v / max) * (h - 6)).toFixed(2)}`,
     )
     .join(" ");
-}
+};
 
-function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
+const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
   const { value, unit, goodWhen } = delta;
   const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
   const direction = value > 0 ? "up" : value < 0 ? "down" : "unchanged";
@@ -256,9 +253,9 @@ function DeltaChip({ delta, label }: { delta: Delta; label: string }) {
       {unit}
     </span>
   );
-}
+};
 
-function PanelCard({
+const PanelCard = ({
   icon: Icon,
   label,
   action,
@@ -271,7 +268,7 @@ function PanelCard({
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
-}) {
+}) => {
   return (
     <Card className={cn("gap-2 rounded-md py-2.5", className)}>
       <CardHeader className="px-3.5">
@@ -288,9 +285,9 @@ function PanelCard({
       </CardContent>
     </Card>
   );
-}
+};
 
-function Sparkline({ points }: { points: readonly number[] }) {
+const Sparkline = ({ points }: { points: readonly number[] }) => {
   const max = Math.max(...points);
   const min = Math.min(...points);
   const span = max - min || 1;
@@ -318,9 +315,9 @@ function Sparkline({ points }: { points: readonly number[] }) {
       />
     </svg>
   );
-}
+};
 
-export default function Dashboard04() {
+const Dashboard04 = () => {
   const [range, setRange] = React.useState<WeekRange>("this");
   const week = WEEK[range];
 
@@ -659,4 +656,6 @@ export default function Dashboard04() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard04;

@@ -37,7 +37,7 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
   },
 ];
 
-export default function Faq05() {
+const Faq05 = () => {
   return (
     <section data-slot="faq" className="bg-background py-16 md:py-24">
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 border-y border-border md:grid-cols-2 md:border-x">
@@ -75,4 +75,6 @@ export default function Faq05() {
       </div>
     </section>
   );
-}
+};
+
+export default Faq05;

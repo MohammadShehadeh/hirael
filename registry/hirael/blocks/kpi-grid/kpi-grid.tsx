@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type KpiGridProps = React.ComponentProps<"div">;
 
-function KpiGrid({ className, ...props }: KpiGridProps) {
+const KpiGrid = ({ className, ...props }: KpiGridProps) => {
   return (
     <div
       data-slot="kpi-grid"
@@ -18,11 +18,11 @@ function KpiGrid({ className, ...props }: KpiGridProps) {
       {...props}
     />
   );
-}
+};
 
 type KpiCardProps = React.ComponentProps<"div">;
 
-function KpiCard({ className, ...props }: KpiCardProps) {
+const KpiCard = ({ className, ...props }: KpiCardProps) => {
   return (
     <div
       data-slot="kpi-card"
@@ -30,11 +30,11 @@ function KpiCard({ className, ...props }: KpiCardProps) {
       {...props}
     />
   );
-}
+};
 
 type KpiCardLabelProps = React.ComponentProps<"p">;
 
-function KpiCardLabel({ className, ...props }: KpiCardLabelProps) {
+const KpiCardLabel = ({ className, ...props }: KpiCardLabelProps) => {
   return (
     <p
       data-slot="kpi-card-label"
@@ -45,11 +45,11 @@ function KpiCardLabel({ className, ...props }: KpiCardLabelProps) {
       {...props}
     />
   );
-}
+};
 
 type KpiCardValueProps = React.ComponentProps<"p">;
 
-function KpiCardValue({ className, ...props }: KpiCardValueProps) {
+const KpiCardValue = ({ className, ...props }: KpiCardValueProps) => {
   return (
     <p
       data-slot="kpi-card-value"
@@ -60,7 +60,7 @@ function KpiCardValue({ className, ...props }: KpiCardValueProps) {
       {...props}
     />
   );
-}
+};
 
 type KpiTrend = "up" | "down" | "flat";
 
@@ -76,17 +76,16 @@ const trendTone: Record<KpiTrend, string> = {
   flat: "text-muted-foreground",
 };
 
-type KpiCardDeltaProps = Omit<React.ComponentProps<"span">, "children"> & {
+interface KpiCardDeltaProps extends Omit<React.ComponentProps<"span">, "children"> {
   trend?: KpiTrend;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function KpiCardDelta({
+const KpiCardDelta = ({
   trend = "flat",
   className,
   children,
   ...props
-}: KpiCardDeltaProps) {
+}: KpiCardDeltaProps) => {
   const Icon = trendIcon[trend];
   return (
     <span
@@ -103,13 +102,12 @@ function KpiCardDelta({
       {children}
     </span>
   );
-}
-
-type KpiCardSparkProps = Omit<React.ComponentProps<"svg">, "points"> & {
-  points: number[];
 };
 
-function KpiCardSpark({ points, className, ...props }: KpiCardSparkProps) {
+interface KpiCardSparkProps extends Omit<React.ComponentProps<"svg">, "points"> {
+  points: number[];}
+
+const KpiCardSpark = ({ points, className, ...props }: KpiCardSparkProps) => {
   if (!points.length) return null;
   const max = Math.max(...points);
   const min = Math.min(...points);
@@ -142,7 +140,7 @@ function KpiCardSpark({ points, className, ...props }: KpiCardSparkProps) {
       />
     </svg>
   );
-}
+};
 
 export {
   KpiGrid,
@@ -195,7 +193,7 @@ const KPI_ROWS: {
   },
 ];
 
-export default function KpiGridBlock() {
+const KpiGridBlock = () => {
   return (
     <section
       data-slot="kpi-grid-block"
@@ -213,4 +211,6 @@ export default function KpiGridBlock() {
       </KpiGrid>
     </section>
   );
-}
+};
+
+export default KpiGridBlock;

@@ -15,13 +15,13 @@ const NAV_ITEMS = [
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-export function Hero({
+export const Hero = ({
   videoSrc,
   posterSrc,
 }: {
   videoSrc?: string;
   posterSrc?: string;
-}) {
+}) => {
   const reduce = useReducedMotion();
 
   const fade = (delay: number) => ({
@@ -108,4 +108,4 @@ export function Hero({
       </div>
     </section>
   );
-}
+};

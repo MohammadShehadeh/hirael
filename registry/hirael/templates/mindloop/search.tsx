@@ -31,7 +31,7 @@ const PLATFORMS = [
   },
 ];
 
-export function Search() {
+export const Search = () => {
   const fade = useFadeUp();
 
   return (
@@ -82,4 +82,4 @@ export function Search() {
       </div>
     </section>
   );
-}
+};

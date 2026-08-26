@@ -2,11 +2,10 @@ import { Terminal, FileCode2, Rocket, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type Step = {
+interface Step {
   icon: LucideIcon;
   title: string;
-  body: string;
-};
+  body: string;}
 
 const STEPS: readonly Step[] = [
   {
@@ -26,7 +25,7 @@ const STEPS: readonly Step[] = [
   },
 ];
 
-export default function Process01() {
+const Process01 = () => {
   return (
     <section data-slot="process" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
@@ -90,4 +89,6 @@ export default function Process01() {
       </div>
     </section>
   );
-}
+};
+
+export default Process01;

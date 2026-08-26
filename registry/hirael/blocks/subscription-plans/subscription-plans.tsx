@@ -9,7 +9,7 @@ import { Button } from "@/registry/hirael/ui/button";
 
 type SubscriptionPlansProps = React.ComponentProps<"div">;
 
-function SubscriptionPlans({ className, ...props }: SubscriptionPlansProps) {
+const SubscriptionPlans = ({ className, ...props }: SubscriptionPlansProps) => {
   return (
     <div
       data-slot="subscription-plans"
@@ -17,19 +17,18 @@ function SubscriptionPlans({ className, ...props }: SubscriptionPlansProps) {
       {...props}
     />
   );
-}
-
-type SubscriptionPlanProps = React.ComponentProps<"div"> & {
-  featured?: boolean;
-  current?: boolean;
 };
 
-function SubscriptionPlan({
+interface SubscriptionPlanProps extends React.ComponentProps<"div"> {
+  featured?: boolean;
+  current?: boolean;}
+
+const SubscriptionPlan = ({
   featured,
   current,
   className,
   ...props
-}: SubscriptionPlanProps) {
+}: SubscriptionPlanProps) => {
   return (
     <div
       data-slot="subscription-plan"
@@ -43,14 +42,14 @@ function SubscriptionPlan({
       {...props}
     />
   );
-}
+};
 
 type SubscriptionPlanBadgeProps = React.ComponentProps<"span">;
 
-function SubscriptionPlanBadge({
+const SubscriptionPlanBadge = ({
   className,
   ...props
-}: SubscriptionPlanBadgeProps) {
+}: SubscriptionPlanBadgeProps) => {
   return (
     <Badge
       variant="outline"
@@ -62,14 +61,14 @@ function SubscriptionPlanBadge({
       {...props}
     />
   );
-}
+};
 
 type SubscriptionPlanNameProps = React.ComponentProps<"h3">;
 
-function SubscriptionPlanName({
+const SubscriptionPlanName = ({
   className,
   ...props
-}: SubscriptionPlanNameProps) {
+}: SubscriptionPlanNameProps) => {
   return (
     <h3
       data-slot="subscription-plan-name"
@@ -77,18 +76,17 @@ function SubscriptionPlanName({
       {...props}
     />
   );
-}
-
-type SubscriptionPlanPriceProps = React.ComponentProps<"p"> & {
-  cycle?: React.ReactNode;
 };
 
-function SubscriptionPlanPrice({
+interface SubscriptionPlanPriceProps extends React.ComponentProps<"p"> {
+  cycle?: React.ReactNode;}
+
+const SubscriptionPlanPrice = ({
   cycle,
   className,
   children,
   ...props
-}: SubscriptionPlanPriceProps) {
+}: SubscriptionPlanPriceProps) => {
   return (
     <p
       data-slot="subscription-plan-price"
@@ -103,14 +101,14 @@ function SubscriptionPlanPrice({
       ) : null}
     </p>
   );
-}
+};
 
 type SubscriptionPlanDescriptionProps = React.ComponentProps<"p">;
 
-function SubscriptionPlanDescription({
+const SubscriptionPlanDescription = ({
   className,
   ...props
-}: SubscriptionPlanDescriptionProps) {
+}: SubscriptionPlanDescriptionProps) => {
   return (
     <p
       data-slot="subscription-plan-description"
@@ -118,14 +116,14 @@ function SubscriptionPlanDescription({
       {...props}
     />
   );
-}
+};
 
 type SubscriptionPlanFeaturesProps = React.ComponentProps<"ul">;
 
-function SubscriptionPlanFeatures({
+const SubscriptionPlanFeatures = ({
   className,
   ...props
-}: SubscriptionPlanFeaturesProps) {
+}: SubscriptionPlanFeaturesProps) => {
   return (
     <ul
       data-slot="subscription-plan-features"
@@ -133,15 +131,15 @@ function SubscriptionPlanFeatures({
       {...props}
     />
   );
-}
+};
 
 type SubscriptionPlanFeatureProps = React.ComponentProps<"li">;
 
-function SubscriptionPlanFeature({
+const SubscriptionPlanFeature = ({
   className,
   children,
   ...props
-}: SubscriptionPlanFeatureProps) {
+}: SubscriptionPlanFeatureProps) => {
   return (
     <li
       data-slot="subscription-plan-feature"
@@ -152,17 +150,16 @@ function SubscriptionPlanFeature({
       <span>{children}</span>
     </li>
   );
-}
-
-type SubscriptionPlanActionProps = React.ComponentProps<"button"> & {
-  variant?: "primary" | "outline";
 };
 
-function SubscriptionPlanAction({
+interface SubscriptionPlanActionProps extends React.ComponentProps<"button"> {
+  variant?: "primary" | "outline";}
+
+const SubscriptionPlanAction = ({
   variant = "outline",
   className,
   ...props
-}: SubscriptionPlanActionProps) {
+}: SubscriptionPlanActionProps) => {
   return (
     <Button
       type="button"
@@ -172,7 +169,7 @@ function SubscriptionPlanAction({
       {...props}
     />
   );
-}
+};
 
 export {
   SubscriptionPlans,
@@ -186,7 +183,7 @@ export {
   SubscriptionPlanAction,
 };
 
-export default function SubscriptionPlansBlock() {
+const SubscriptionPlansBlock = () => {
   return (
     <section
       data-slot="subscription-plans-block"
@@ -248,4 +245,6 @@ export default function SubscriptionPlansBlock() {
       </SubscriptionPlans>
     </section>
   );
-}
+};
+
+export default SubscriptionPlansBlock;

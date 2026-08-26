@@ -39,7 +39,7 @@ const FAQS = [
   },
 ] as const;
 
-export default function Faq01() {
+const Faq01 = () => {
   return (
     <section className="bg-background py-20 md:py-28">
       <div className="container grid w-full grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
@@ -109,4 +109,6 @@ export default function Faq01() {
       </div>
     </section>
   );
-}
+};
+
+export default Faq01;

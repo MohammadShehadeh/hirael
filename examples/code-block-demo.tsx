@@ -43,7 +43,7 @@ export async function loadUsers() {
   return result.value
 }`;
 
-export default function CodeBlockDemo() {
+const CodeBlockDemo = () => {
   const t = useT();
 
   return (
@@ -101,4 +101,6 @@ export default function CodeBlockDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default CodeBlockDemo;

@@ -20,13 +20,13 @@ const DEFAULT_LEVEL_CLASSES = [
   "bg-primary",
 ];
 
-function defaultClassForLevel(level: number, levels: number) {
+const defaultClassForLevel = (level: number, levels: number) => {
   if (level <= 0 || levels <= 1) return DEFAULT_LEVEL_CLASSES[0];
   const index = Math.max(1, Math.round((level / (levels - 1)) * 4));
   return DEFAULT_LEVEL_CLASSES[Math.min(index, 4)];
-}
+};
 
-function toLocalDate(input: Date | string): Date {
+const toLocalDate = (input: Date | string): Date => {
   if (input instanceof Date) {
     return new Date(input.getFullYear(), input.getMonth(), input.getDate());
   }
@@ -36,35 +36,34 @@ function toLocalDate(input: Date | string): Date {
   }
   const parsed = new Date(input);
   return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-}
+};
 
-function addDays(date: Date, days: number): Date {
+const addDays = (date: Date, days: number): Date => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-}
+};
 
-function addMonthsClamped(date: Date, months: number): Date {
+const addMonthsClamped = (date: Date, months: number): Date => {
   const year = date.getFullYear();
   const month = date.getMonth() + months;
   const lastDay = new Date(year, month + 1, 0).getDate();
   return new Date(year, month, Math.min(date.getDate(), lastDay));
-}
+};
 
-function dayKey(date: Date): number {
+const dayKey = (date: Date): number => {
   return (
     date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
   );
-}
-
-function resolveCellSize(cellSize: "sm" | "md" | "lg" | number): number {
-  return typeof cellSize === "number" ? cellSize : CELL_SIZES[cellSize];
-}
-
-type CalendarHeatmapDatum = {
-  date: Date | string;
-  value: number;
 };
 
-type CalendarHeatmapProps = Omit<React.ComponentProps<"div">, "onSelect"> & {
+const resolveCellSize = (cellSize: "sm" | "md" | "lg" | number): number => {
+  return typeof cellSize === "number" ? cellSize : CELL_SIZES[cellSize];
+};
+
+interface CalendarHeatmapDatum {
+  date: Date | string;
+  value: number;}
+
+interface CalendarHeatmapProps extends Omit<React.ComponentProps<"div">, "onSelect"> {
   data: CalendarHeatmapDatum[];
   endDate?: Date;
   startDate?: Date;
@@ -79,10 +78,9 @@ type CalendarHeatmapProps = Omit<React.ComponentProps<"div">, "onSelect"> & {
   showMonthLabels?: boolean;
   showWeekdayLabels?: boolean;
   tooltipFormatter?: (date: Date, value: number) => React.ReactNode;
-  onSelectDay?: (date: Date, value: number) => void;
-};
+  onSelectDay?: (date: Date, value: number) => void;}
 
-function CalendarHeatmap({
+const CalendarHeatmap = ({
   data,
   endDate,
   startDate,
@@ -100,7 +98,7 @@ function CalendarHeatmap({
   onSelectDay,
   className,
   ...props
-}: CalendarHeatmapProps) {
+}: CalendarHeatmapProps) => {
   const size = resolveCellSize(cellSize);
   const today = React.useMemo(() => toLocalDate(new Date()), []);
 
@@ -407,18 +405,17 @@ function CalendarHeatmap({
       </TooltipProvider>
     </div>
   );
-}
+};
 
-type CalendarHeatmapLegendProps = React.ComponentProps<"div"> & {
+interface CalendarHeatmapLegendProps extends React.ComponentProps<"div"> {
   levels?: number;
   classForLevel?: (level: number) => string;
   cellSize?: "sm" | "md" | "lg" | number;
   gap?: number;
   lessLabel?: React.ReactNode;
-  moreLabel?: React.ReactNode;
-};
+  moreLabel?: React.ReactNode;}
 
-function CalendarHeatmapLegend({
+const CalendarHeatmapLegend = ({
   levels = 5,
   classForLevel,
   cellSize = "md",
@@ -427,7 +424,7 @@ function CalendarHeatmapLegend({
   moreLabel = "More",
   className,
   ...props
-}: CalendarHeatmapLegendProps) {
+}: CalendarHeatmapLegendProps) => {
   const size = resolveCellSize(cellSize);
   const resolveLevelClass =
     classForLevel ?? ((level: number) => defaultClassForLevel(level, levels));
@@ -456,7 +453,7 @@ function CalendarHeatmapLegend({
       <span data-slot="calendar-heatmap-legend-label">{moreLabel}</span>
     </div>
   );
-}
+};
 
 export { CalendarHeatmap, CalendarHeatmapLegend };
 export type { CalendarHeatmapDatum };

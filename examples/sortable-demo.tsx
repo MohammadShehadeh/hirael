@@ -11,7 +11,7 @@ import {
 
 const tags = ["react", "tailwind", "radix", "cmdk", "lucide"];
 
-export default function SortableDemo() {
+const SortableDemo = () => {
   const t = useT();
 
   const tasks = {
@@ -116,4 +116,6 @@ export default function SortableDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default SortableDemo;

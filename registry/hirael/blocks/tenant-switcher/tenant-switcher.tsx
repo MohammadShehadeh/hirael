@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -19,7 +20,7 @@ import {
   CommandSeparator,
 } from "@/registry/hirael/ui/command";
 
-export type Tenant = {
+export interface Tenant {
   value: string;
   label: string;
   /** Logo image URL. Falls back to the label's initials. */
@@ -29,13 +30,13 @@ export type Tenant = {
   /** Group heading, e.g. "Personal" vs "Teams". */
   group?: string;
   disabled?: boolean;
-};
+}
 
-function useControllableState<T>(
+const useControllableState = <T,>(
   controlled: T | undefined,
   defaultValue: T,
   onChange?: (value: T) => void,
-) {
+) => {
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
   const value = controlled === undefined ? uncontrolled : controlled;
   const setValue = React.useCallback(
@@ -46,9 +47,9 @@ function useControllableState<T>(
     [controlled, onChange],
   );
   return [value, setValue] as const;
-}
+};
 
-type TenantSwitcherContextValue = {
+interface TenantSwitcherContextValue {
   value: string | undefined;
   setValue: (value: string | undefined) => void;
   active: Tenant | undefined;
@@ -56,12 +57,12 @@ type TenantSwitcherContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
   disabled?: boolean;
-};
+}
 
 const TenantSwitcherContext =
   React.createContext<TenantSwitcherContextValue | null>(null);
 
-function useTenantSwitcher() {
+const useTenantSwitcher = () => {
   const context = React.useContext(TenantSwitcherContext);
   if (!context) {
     throw new Error(
@@ -69,24 +70,24 @@ function useTenantSwitcher() {
     );
   }
   return context;
-}
+};
 
-function initials(label: string) {
+const initials = (label: string) => {
   return label
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
     .map((word) => word[0]?.toUpperCase())
     .join("");
-}
+};
 
-function TenantLogo({
+const TenantLogo = ({
   tenant,
   className,
 }: {
   tenant?: Tenant;
   className?: string;
-}) {
+}) => {
   return (
     <span
       data-slot="tenant-switcher-logo"
@@ -103,9 +104,9 @@ function TenantLogo({
       ) : null}
     </span>
   );
-}
+};
 
-export type TenantSwitcherProps = {
+export interface TenantSwitcherProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string | undefined) => void;
@@ -115,9 +116,9 @@ export type TenantSwitcherProps = {
   onOpenChange?: (open: boolean) => void;
   disabled?: boolean;
   children?: React.ReactNode;
-};
+}
 
-function TenantSwitcher({
+const TenantSwitcher = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -127,7 +128,7 @@ function TenantSwitcher({
   onOpenChange,
   disabled,
   children,
-}: TenantSwitcherProps) {
+}: TenantSwitcherProps) => {
   const [value, setValue] = useControllableState(
     valueProp,
     defaultValue,
@@ -152,9 +153,9 @@ function TenantSwitcher({
       </Popover>
     </TenantSwitcherContext.Provider>
   );
-}
+};
 
-function TenantSwitcherTrigger({
+const TenantSwitcherTrigger = ({
   placeholder = "Select workspace",
   className,
   children,
@@ -162,13 +163,14 @@ function TenantSwitcherTrigger({
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const { active, open, disabled } = useTenantSwitcher();
 
   return (
     <PopoverTrigger asChild>
-      <button
+      <Button
         type="button"
+        variant="outline"
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
@@ -176,9 +178,7 @@ function TenantSwitcherTrigger({
         data-slot="tenant-switcher-trigger"
         data-state={open ? "open" : "closed"}
         className={cn(
-          "group flex h-12 w-full items-center gap-2.5 rounded-md border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors",
-          "hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring",
-          "disabled:cursor-not-allowed disabled:opacity-50",
+          "group h-12 w-full justify-start gap-2.5 px-2.5 text-start font-normal data-[state=open]:border-ring",
           className,
         )}
         {...props}
@@ -204,12 +204,12 @@ function TenantSwitcherTrigger({
             <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
           </>
         )}
-      </button>
+      </Button>
     </PopoverTrigger>
   );
-}
+};
 
-function TenantSwitcherContent({
+const TenantSwitcherContent = ({
   className,
   searchable = true,
   searchPlaceholder = "Find workspace…",
@@ -223,7 +223,7 @@ function TenantSwitcherContent({
   emptyMessage?: string;
   /** Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>. */
   footer?: React.ReactNode;
-}) {
+}) => {
   const { tenants } = useTenantSwitcher();
   const groups = useGroupedTenants(tenants);
 
@@ -261,9 +261,9 @@ function TenantSwitcherContent({
       </Command>
     </PopoverContent>
   );
-}
+};
 
-function TenantSwitcherItem({
+const TenantSwitcherItem = ({
   tenant,
   children,
   className,
@@ -274,7 +274,7 @@ function TenantSwitcherItem({
 > & {
   tenant: Tenant;
   children?: React.ReactNode;
-}) {
+}) => {
   const { value, setValue, setOpen } = useTenantSwitcher();
   const selected = value === tenant.value;
 
@@ -304,13 +304,13 @@ function TenantSwitcherItem({
       {selected && <Check className="size-4 text-foreground" strokeWidth={3} />}
     </CommandItem>
   );
-}
+};
 
-function TenantSwitcherCreate({
+const TenantSwitcherCreate = ({
   className,
   children = "Create workspace",
   ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button">) => {
   return (
     <button
       type="button"
@@ -327,10 +327,10 @@ function TenantSwitcherCreate({
       <span className="truncate">{children}</span>
     </button>
   );
-}
+};
 
 /** Bucket tenants by their `group`, preserving first-seen order. */
-function useGroupedTenants(tenants: Tenant[]) {
+const useGroupedTenants = (tenants: Tenant[]) => {
   return React.useMemo(() => {
     const groups = new Map<string | undefined, Tenant[]>();
     for (const tenant of tenants) {
@@ -340,7 +340,7 @@ function useGroupedTenants(tenants: Tenant[]) {
     }
     return [...groups];
   }, [tenants]);
-}
+};
 
 export {
   TenantSwitcher,
@@ -357,7 +357,7 @@ const TENANT_WORKSPACES: Tenant[] = [
   { value: "initech", label: "Initech", caption: "Pro plan", group: "Teams" },
 ];
 
-export default function TenantSwitcherBlock() {
+const TenantSwitcherBlock = () => {
   const [workspace, setWorkspace] = React.useState<string | undefined>("acme");
 
   return (
@@ -384,4 +384,6 @@ export default function TenantSwitcherBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default TenantSwitcherBlock;

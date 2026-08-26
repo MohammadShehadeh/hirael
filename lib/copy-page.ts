@@ -6,7 +6,7 @@ import type {
 import { getShadcnAddCommand } from "@/lib/package-managers";
 import { SITE } from "@/lib/site";
 
-export type CopyPageInput = {
+export interface CopyPageInput {
   name: string;
   title: string;
   description: string;
@@ -17,8 +17,7 @@ export type CopyPageInput = {
   examples?: ExampleEntry[];
   api?: ApiPart[] | null;
   source: Record<string, SourceFile>;
-  files: { path: string }[];
-};
+  files: { path: string }[];}
 
 /**
  * Assembles the detail page as a single Markdown document — the payload behind
@@ -26,7 +25,7 @@ export type CopyPageInput = {
  * route passes pre-highlighted sources as props), so no build step or extra
  * fetch is involved.
  */
-export function copyPageMarkdown({
+export const copyPageMarkdown = ({
   name,
   title,
   description,
@@ -37,7 +36,7 @@ export function copyPageMarkdown({
   api,
   source,
   files,
-}: CopyPageInput): string {
+}: CopyPageInput): string => {
   const install = getShadcnAddCommand(
     "npm",
     `${SITE.registry.origin}/r/${name}.json`,
@@ -117,4 +116,4 @@ export function copyPageMarkdown({
   }
 
   return `${out.join("\n").trim()}\n`;
-}
+};

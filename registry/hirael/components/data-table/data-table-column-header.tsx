@@ -27,15 +27,13 @@ interface DataTableColumnHeaderProps<
   label: string;
 }
 
-export function DataTableColumnHeader<
-  TData extends RowData,
-  TValue extends CellData,
->({
+export const DataTableColumnHeader = <TData extends RowData,
+  TValue extends CellData,>({
   column,
   label,
   className,
   ...props
-}: DataTableColumnHeaderProps<TData, TValue>) {
+}: DataTableColumnHeaderProps<TData, TValue>) => {
   if (!column.getCanSort() && !column.getCanHide()) {
     return <div className={cn(className)}>{label}</div>;
   }
@@ -103,4 +101,4 @@ export function DataTableColumnHeader<
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};

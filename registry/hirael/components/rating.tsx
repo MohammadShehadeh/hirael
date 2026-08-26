@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type RatingContextValue = {
+interface RatingContextValue {
   value: number;
   display: number;
   max: number;
@@ -14,23 +14,22 @@ type RatingContextValue = {
   iconSize: string;
   tabStop: number;
   setHover: (next: number | null) => void;
-  commit: (next: number) => void;
-};
+  commit: (next: number) => void;}
 
 const RatingContext = React.createContext<RatingContextValue | null>(null);
 
-function useRating() {
+const useRating = () => {
   const ctx = React.useContext(RatingContext);
   if (!ctx) {
     throw new Error("Rating compound parts must be used inside <Rating>");
   }
   return ctx;
-}
+};
 
-export type RatingProps = Omit<
+export interface RatingProps extends Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
-> & {
+> {
   value?: number;
   defaultValue?: number;
   onValueChange?: (value: number) => void;
@@ -40,8 +39,7 @@ export type RatingProps = Omit<
   disabled?: boolean;
   size?: "sm" | "md" | "lg";
   name?: string;
-  "aria-label"?: string;
-};
+  "aria-label"?: string;}
 
 const sizeMap = {
   sm: "size-4",
@@ -49,7 +47,7 @@ const sizeMap = {
   lg: "size-6",
 } as const;
 
-function Rating({
+const Rating = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -63,7 +61,7 @@ function Rating({
   onKeyDown,
   children,
   ...props
-}: RatingProps) {
+}: RatingProps) => {
   const isControlled = valueProp !== undefined;
   const [internal, setInternal] = React.useState(defaultValue ?? 0);
   const [hover, setHover] = React.useState<number | null>(null);
@@ -165,14 +163,13 @@ function Rating({
       </div>
     </RatingContext.Provider>
   );
-}
-
-type RatingRadioProps = {
-  value: number;
-  className?: string;
 };
 
-function RatingRadio({ value: radioValue, className }: RatingRadioProps) {
+interface RatingRadioProps {
+  value: number;
+  className?: string;}
+
+const RatingRadio = ({ value: radioValue, className }: RatingRadioProps) => {
   const ctx = useRating();
   return (
     <button
@@ -191,13 +188,12 @@ function RatingRadio({ value: radioValue, className }: RatingRadioProps) {
       onClick={() => ctx.commit(ctx.value === radioValue ? 0 : radioValue)}
     />
   );
-}
-
-export type RatingItemProps = Omit<React.ComponentProps<"span">, "children"> & {
-  index: number;
 };
 
-function RatingItem({ index, className, ...props }: RatingItemProps) {
+export interface RatingItemProps extends Omit<React.ComponentProps<"span">, "children"> {
+  index: number;}
+
+const RatingItem = ({ index, className, ...props }: RatingItemProps) => {
   const ctx = useRating();
   const fullValue = index + 1;
   const halfValue = index + 0.5;
@@ -252,6 +248,6 @@ function RatingItem({ index, className, ...props }: RatingItemProps) {
       )}
     </span>
   );
-}
+};
 
 export { Rating, RatingItem };

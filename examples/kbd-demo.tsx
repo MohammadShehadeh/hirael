@@ -5,7 +5,7 @@ import { ArrowUp, Command, Option } from "lucide-react";
 import { useT } from "@/lib/demo-locale";
 import { Kbd, KbdDisplay, KbdGroup } from "@/registry/hirael/components/kbd";
 
-export default function KbdDemo() {
+const KbdDemo = () => {
   const t = useT();
 
   return (
@@ -73,4 +73,6 @@ export default function KbdDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default KbdDemo;

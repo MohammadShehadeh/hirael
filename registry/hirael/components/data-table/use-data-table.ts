@@ -29,9 +29,7 @@ import {
 } from "nuqs";
 import * as React from "react";
 
-function useCallbackRef<T extends (...args: never[]) => unknown>(
-  callback: T | undefined,
-): T {
+const useCallbackRef = <T extends (...args: never[]) => unknown>(callback: T | undefined,): T => {
   const callbackRef = React.useRef(callback);
   React.useEffect(() => {
     callbackRef.current = callback;
@@ -40,12 +38,10 @@ function useCallbackRef<T extends (...args: never[]) => unknown>(
     () => ((...args) => callbackRef.current?.(...args)) as T,
     [],
   );
-}
+};
 
-function useDebouncedCallback<T extends (...args: never[]) => unknown>(
-  callback: T,
-  delay: number,
-) {
+const useDebouncedCallback = <T extends (...args: never[]) => unknown>(callback: T,
+  delay: number,) => {
   const handleCallback = useCallbackRef(callback);
   const debounceTimerRef = React.useRef(0);
   React.useEffect(
@@ -62,9 +58,9 @@ function useDebouncedCallback<T extends (...args: never[]) => unknown>(
     },
     [handleCallback, delay],
   );
-}
+};
 
-function toTime(value: unknown): number | null {
+const toTime = (value: unknown): number | null => {
   if (value instanceof Date) return value.getTime();
   if (typeof value === "number") return value;
   if (typeof value === "string") {
@@ -72,19 +68,19 @@ function toTime(value: unknown): number | null {
     return Number.isNaN(time) ? null : time;
   }
   return null;
-}
+};
 
-function startOfDay(timestamp: number): number {
+const startOfDay = (timestamp: number): number => {
   const date = new Date(timestamp);
   date.setHours(0, 0, 0, 0);
   return date.getTime();
-}
+};
 
-function endOfDay(timestamp: number): number {
+const endOfDay = (timestamp: number): number => {
   const date = new Date(timestamp);
   date.setHours(23, 59, 59, 999);
   return date.getTime();
-}
+};
 
 const ARRAY_VARIANTS = new Set<FilterVariant>([
   "select",
@@ -93,15 +89,13 @@ const ARRAY_VARIANTS = new Set<FilterVariant>([
   "dateRange",
 ]);
 
-function isArrayVariant(variant: FilterVariant | undefined): boolean {
+const isArrayVariant = (variant: FilterVariant | undefined): boolean => {
   return variant ? ARRAY_VARIANTS.has(variant) : false;
-}
+};
 
 // In-memory filter for a column, picked from its `meta.variant`. Used when the
 // table runs client-side (no `pageCount`); manual mode ignores it.
-function getFilterFn<TData extends RowData>(
-  variant: FilterVariant | undefined,
-): FilterFn<DataTableFeatures, TData> {
+const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined,): FilterFn<DataTableFeatures, TData> => {
   return (row, columnId, filterValue) => {
     if (filterValue == null || filterValue === "") return true;
     const value = row.getValue(columnId);
@@ -151,34 +145,30 @@ function getFilterFn<TData extends RowData>(
       }
     }
   };
-}
+};
 
-function getColumnId<TData extends RowData>(
-  column: ColumnDef<DataTableFeatures, TData>,
-): string {
+const getColumnId = <TData extends RowData>(column: ColumnDef<DataTableFeatures, TData>,): string => {
   return (
     column.id ?? ("accessorKey" in column ? String(column.accessorKey) : "")
   );
-}
+};
 
-function serializeFilterValue(value: unknown): string {
+const serializeFilterValue = (value: unknown): string => {
   if (value == null) return "";
   return Array.isArray(value)
     ? value.map(String).join(ARRAY_SEPARATOR)
     : String(value);
-}
+};
 
-function areFiltersEqual(
-  a: ColumnFiltersState,
-  b: ColumnFiltersState,
-): boolean {
+const areFiltersEqual = (a: ColumnFiltersState,
+  b: ColumnFiltersState,): boolean => {
   if (a.length !== b.length) return false;
   const values = new Map(a.map((f) => [f.id, serializeFilterValue(f.value)]));
   return b.every(
     (f) =>
       values.has(f.id) && values.get(f.id) === serializeFilterValue(f.value),
   );
-}
+};
 
 const PAGE_KEY = "page";
 const PER_PAGE_KEY = "perPage";
@@ -218,9 +208,7 @@ interface UseDataTableProps<TData extends RowData> extends Omit<
   startTransition?: React.TransitionStartFunction;
 }
 
-export function useDataTable<TData extends RowData>(
-  props: UseDataTableProps<TData>,
-) {
+export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TData>,) => {
   const {
     columns,
     pageCount,
@@ -456,4 +444,4 @@ export function useDataTable<TData extends RowData>(
     () => ({ table, shallow, debounceMs, throttleMs }),
     [table, shallow, debounceMs, throttleMs],
   );
-}
+};

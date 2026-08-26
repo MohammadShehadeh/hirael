@@ -18,15 +18,14 @@ export const CATEGORY_GROUP_ORDER: CategoryGroup[] = [
   "app",
 ];
 
-export type CategoryMeta = {
+export interface CategoryMeta {
   slug: string;
   title: string;
   group: CategoryGroup;
   /** Internal BlockKind — present only for categories that have shipped blocks. */
   blockKind?: BlockKind;
   comingSoon?: boolean;
-  description: string;
-};
+  description: string;}
 
 export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
@@ -60,6 +59,22 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     blockKind: "pricing",
     description:
       "Three-tier card layouts and feature-comparison tables, each with per-tier CTAs.",
+  },
+  {
+    slug: "team",
+    group: "marketing",
+    title: "Team",
+    blockKind: "team",
+    description:
+      "Team grids with portrait placeholders, roles, short bios, and hiring links.",
+  },
+  {
+    slug: "stats",
+    group: "marketing",
+    title: "Stats",
+    blockKind: "stats",
+    description:
+      "Metric bands with count-up numbers, labels, and deltas in a bordered row.",
   },
   {
     slug: "comparison",
@@ -128,9 +143,18 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   {
     slug: "not-found",
     group: "site",
-    title: "Not Found",
+    title: "Status Pages",
     blockKind: "not-found",
-    description: "Centered 404s with paired CTAs and suggested-route lists.",
+    description:
+      "404, 500, maintenance, and coming-soon pages with paired CTAs, countdowns, and status details.",
+  },
+  {
+    slug: "changelog",
+    group: "site",
+    title: "Changelog",
+    blockKind: "changelog",
+    description:
+      "Release-notes pages with date rails, version badges, and tag filters.",
   },
   {
     slug: "blog",
@@ -219,6 +243,14 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     blockKind: "saas",
     description:
       "Product-account panels: billing summaries, plan selectors, API-key managers, usage meters, and audit logs.",
+  },
+  {
+    slug: "ai",
+    group: "app",
+    title: "AI",
+    blockKind: "ai",
+    description:
+      "Chat surfaces: prompt composers with model pickers, streaming message threads with tool calls, and full chat screens.",
   },
   {
     slug: "widgets",

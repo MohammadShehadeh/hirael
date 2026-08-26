@@ -11,7 +11,7 @@ const REPO_API_URL = `https://api.github.com/repos/${REPO}`;
  * changelog fetch; refreshes on the next release build. Returns null on any
  * failure, so the header omits the badge rather than breaking the build.
  */
-export async function getRepoStars(): Promise<number | null> {
+export const getRepoStars = async (): Promise<number | null> => {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
@@ -33,4 +33,4 @@ export async function getRepoStars(): Promise<number | null> {
   } catch {
     return null;
   }
-}
+};

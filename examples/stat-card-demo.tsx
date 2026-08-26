@@ -8,7 +8,7 @@ import {
   StatCardValue,
 } from "@/registry/hirael/components/stat-card";
 
-export default function StatCardDemo() {
+const StatCardDemo = () => {
   const t = useT();
 
   return (
@@ -75,4 +75,6 @@ export default function StatCardDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default StatCardDemo;

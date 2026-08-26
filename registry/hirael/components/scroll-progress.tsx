@@ -4,18 +4,17 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type ScrollProgressProps = React.ComponentProps<"div"> & {
+export interface ScrollProgressProps extends React.ComponentProps<"div"> {
   target?: React.RefObject<HTMLElement | null>;
-  position?: "top" | "bottom";
-};
+  position?: "top" | "bottom";}
 
-function ScrollProgress({
+const ScrollProgress = ({
   className,
   style,
   target,
   position = "top",
   ...props
-}: ScrollProgressProps) {
+}: ScrollProgressProps) => {
   const barRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
@@ -76,6 +75,6 @@ function ScrollProgress({
       {...props}
     />
   );
-}
+};
 
 export { ScrollProgress };

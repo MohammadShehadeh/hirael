@@ -5,17 +5,15 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/registry/hirael/components/spinner";
 
-export type MentionItem = {
+export interface MentionItem {
   id: string;
   label: string;
-  description?: string;
-};
+  description?: string;}
 
-type ActiveMention = {
+interface ActiveMention {
   start: number;
   trigger: string;
-  query: string;
-};
+  query: string;}
 
 const MIRROR_PROPS = [
   "box-sizing",
@@ -40,18 +38,16 @@ const MIRROR_PROPS = [
   "direction",
 ] as const;
 
-function escapeForCharClass(ch: string) {
+const escapeForCharClass = (ch: string) => {
   return ch.replace(/[\\\]^-]/g, "\\$&");
-}
+};
 
-function triggerCharClass(triggers: string[]) {
+const triggerCharClass = (triggers: string[]) => {
   return triggers.map(escapeForCharClass).join("");
-}
+};
 
-export function getMentions(
-  value: string,
-  trigger: string | string[] = "@",
-): string[] {
+export const getMentions = (value: string,
+  trigger: string | string[] = "@",): string[] => {
   const triggers = Array.isArray(trigger) ? trigger : [trigger];
   const re = new RegExp(
     `(?:^|\\s)[${triggerCharClass(triggers)}]([\\w.\\-]+)`,
@@ -61,13 +57,11 @@ export function getMentions(
   let m: RegExpExecArray | null;
   while ((m = re.exec(value)) !== null) out.push(m[1]);
   return out;
-}
+};
 
-function getActiveMention(
-  text: string,
+const getActiveMention = (text: string,
   caret: number,
-  triggers: string[],
-): ActiveMention | null {
+  triggers: string[],): ActiveMention | null => {
   for (let i = caret - 1; i >= 0; i--) {
     const ch = text[i];
     if (/\s/.test(ch)) return null;
@@ -79,9 +73,9 @@ function getActiveMention(
     }
   }
   return null;
-}
+};
 
-function measureCaret(textarea: HTMLTextAreaElement, index: number) {
+const measureCaret = (textarea: HTMLTextAreaElement, index: number) => {
   const style = window.getComputedStyle(textarea);
   const mirror = document.createElement("div");
   for (const prop of MIRROR_PROPS) {
@@ -108,15 +102,13 @@ function measureCaret(textarea: HTMLTextAreaElement, index: number) {
   };
   mirror.remove();
   return rect;
-}
+};
 
-type Segment = { text: string; mention: boolean };
+interface Segment { text: string; mention: boolean}
 
-function segmentValue(
-  value: string,
+const segmentValue = (value: string,
   triggers: string[],
-  known: Set<string>,
-): Segment[] {
+  known: Set<string>,): Segment[] => {
   const re = new RegExp(
     `(^|\\s)([${triggerCharClass(triggers)}][\\w.\\-]+)`,
     "g",
@@ -136,12 +128,12 @@ function segmentValue(
   if (last < value.length)
     segments.push({ text: value.slice(last), mention: false });
   return segments;
-}
+};
 
-export type MentionInputProps = Omit<
+export interface MentionInputProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
-> & {
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -153,10 +145,9 @@ export type MentionInputProps = Omit<
   maxRows?: number;
   onMention?: (item: MentionItem) => void;
   emptyMessage?: string;
-  name?: string;
-};
+  name?: string;}
 
-function MentionInput({
+const MentionInput = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -171,7 +162,7 @@ function MentionInput({
   name,
   className,
   ...props
-}: MentionInputProps) {
+}: MentionInputProps) => {
   const id = React.useId();
   const listboxId = `${id}-listbox`;
 
@@ -550,6 +541,6 @@ function MentionInput({
       )}
     </div>
   );
-}
+};
 
 export { MentionInput };

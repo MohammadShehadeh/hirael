@@ -422,25 +422,25 @@
     background-image:
       linear-gradient(
         to right,
-        color-mix(in oklch, var(--primary) 30%, transparent) 1px,
+        color-mix(in oklch, var(--warm) 38%, transparent) 1px,
         transparent 1px
       ),
       linear-gradient(
         to bottom,
-        color-mix(in oklch, var(--primary) 30%, transparent) 1px,
+        color-mix(in oklch, var(--warm) 38%, transparent) 1px,
         transparent 1px
       );
-    background-size: 15px 15px;
+    background-size: 16px 16px;
     -webkit-mask-image:
-      radial-gradient(circle at top left, black, transparent 38%),
-      radial-gradient(circle at top right, black, transparent 38%),
-      radial-gradient(circle at bottom left, black, transparent 38%),
-      radial-gradient(circle at bottom right, black, transparent 38%);
+      radial-gradient(circle at top left, black, transparent 31%),
+      radial-gradient(circle at top right, black, transparent 31%),
+      radial-gradient(circle at bottom left, black, transparent 31%),
+      radial-gradient(circle at bottom right, black, transparent 31%);
     mask-image:
-      radial-gradient(circle at top left, black, transparent 38%),
-      radial-gradient(circle at top right, black, transparent 38%),
-      radial-gradient(circle at bottom left, black, transparent 38%),
-      radial-gradient(circle at bottom right, black, transparent 38%);
+      radial-gradient(circle at top left, black, transparent 31%),
+      radial-gradient(circle at top right, black, transparent 31%),
+      radial-gradient(circle at bottom left, black, transparent 31%),
+      radial-gradient(circle at bottom right, black, transparent 31%);
   }
 
   /* Faint dot grid used as a subtle background texture on the hero —

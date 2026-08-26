@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { Callout } from "@/registry/hirael/components/callout";
 
-export default function CalloutDemo() {
+const CalloutDemo = () => {
   const t = useT();
 
   return (
@@ -92,4 +92,6 @@ export default function CalloutDemo() {
       </Callout>
     </div>
   );
-}
+};
+
+export default CalloutDemo;

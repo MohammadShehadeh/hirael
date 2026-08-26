@@ -7,12 +7,11 @@ import type { Theme } from "@/lib/theme";
  * `registry:theme` items (declared in registry-meta.ts, e.g. `theme-emerald`),
  * these drive the live theme editor's preset picker — see `theme-sheet.tsx`.
  */
-export type ThemePreset = {
+export interface ThemePreset {
   id: string;
   label: string;
   swatch: string;
-  overrides: Partial<Theme>;
-};
+  overrides: Partial<Theme>;}
 
 export const THEME_PRESETS: ThemePreset[] = [
   {

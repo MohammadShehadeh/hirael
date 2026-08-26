@@ -2,11 +2,11 @@
 
 import { Shader, Stripes } from "shaders/react";
 
-export default function Hero02Backdrop({
+const Hero02Backdrop = ({
   active = false,
 }: {
   active?: boolean;
-}) {
+}) => {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Stripes
@@ -20,4 +20,6 @@ export default function Hero02Backdrop({
       />
     </Shader>
   );
-}
+};
+
+export default Hero02Backdrop;

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type StorageBrowserProps = React.ComponentProps<"div">;
 
-function StorageBrowser({ className, ...props }: StorageBrowserProps) {
+const StorageBrowser = ({ className, ...props }: StorageBrowserProps) => {
   return (
     <div
       data-slot="storage-browser"
@@ -18,14 +18,14 @@ function StorageBrowser({ className, ...props }: StorageBrowserProps) {
       {...props}
     />
   );
-}
+};
 
 type StorageBrowserHeaderProps = React.ComponentProps<"div">;
 
-function StorageBrowserHeader({
+const StorageBrowserHeader = ({
   className,
   ...props
-}: StorageBrowserHeaderProps) {
+}: StorageBrowserHeaderProps) => {
   return (
     <div
       data-slot="storage-browser-header"
@@ -36,15 +36,15 @@ function StorageBrowserHeader({
       {...props}
     />
   );
-}
+};
 
 type StorageBreadcrumbProps = React.ComponentProps<"nav">;
 
-function StorageBreadcrumb({
+const StorageBreadcrumb = ({
   className,
   children,
   ...props
-}: StorageBreadcrumbProps) {
+}: StorageBreadcrumbProps) => {
   const items = React.Children.toArray(children).filter(Boolean);
   return (
     <nav
@@ -68,17 +68,17 @@ function StorageBreadcrumb({
       ))}
     </nav>
   );
-}
-
-type StorageBreadcrumbItemProps = React.ComponentProps<"button"> & {
-  current?: boolean;
 };
 
-function StorageBreadcrumbItem({
+interface StorageBreadcrumbItemProps extends React.ComponentProps<"button"> {
+  current?: boolean;
+}
+
+const StorageBreadcrumbItem = ({
   current,
   className,
   ...props
-}: StorageBreadcrumbItemProps) {
+}: StorageBreadcrumbItemProps) => {
   return (
     <button
       type="button"
@@ -92,11 +92,14 @@ function StorageBreadcrumbItem({
       {...props}
     />
   );
-}
+};
 
 type StorageBrowserListProps = React.ComponentProps<"ul">;
 
-function StorageBrowserList({ className, ...props }: StorageBrowserListProps) {
+const StorageBrowserList = ({
+  className,
+  ...props
+}: StorageBrowserListProps) => {
   return (
     <ul
       data-slot="storage-browser-list"
@@ -104,17 +107,20 @@ function StorageBrowserList({ className, ...props }: StorageBrowserListProps) {
       {...props}
     />
   );
-}
+};
 
-type StorageItemProps = Omit<React.ComponentProps<"button">, "type"> & {
+interface StorageItemProps extends Omit<
+  React.ComponentProps<"button">,
+  "type" | "name"
+> {
   kind: "folder" | "file";
   name: React.ReactNode;
   size?: React.ReactNode;
   modified?: React.ReactNode;
   icon?: React.ReactNode;
-};
+}
 
-function StorageItem({
+const StorageItem = ({
   kind,
   name,
   size,
@@ -122,7 +128,7 @@ function StorageItem({
   icon,
   className,
   ...props
-}: StorageItemProps) {
+}: StorageItemProps) => {
   const DefaultIcon = kind === "folder" ? Folder : File;
   return (
     <li>
@@ -171,7 +177,7 @@ function StorageItem({
       </button>
     </li>
   );
-}
+};
 
 export {
   StorageBrowser,
@@ -182,12 +188,12 @@ export {
   StorageItem,
 };
 
-type StorageEntry = {
+interface StorageEntry {
   kind: "folder" | "file";
   name: string;
   size?: string;
   modified?: string;
-};
+}
 
 const STORAGE_FS: Record<string, StorageEntry[]> = {
   "": [
@@ -226,7 +232,7 @@ const STORAGE_FS: Record<string, StorageEntry[]> = {
   ],
 };
 
-export default function StorageBrowserBlock() {
+const StorageBrowserBlock = () => {
   const [path, setPath] = React.useState<string[]>([]);
   const key = path.join("/");
   const entries = STORAGE_FS[key] ?? [];
@@ -282,4 +288,6 @@ export default function StorageBrowserBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default StorageBrowserBlock;

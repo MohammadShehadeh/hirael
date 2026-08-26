@@ -16,7 +16,7 @@ const PHOTO =
 const PHOTO_ALT =
   "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop";
 
-function MockPanel({ styled }: { styled?: boolean }) {
+const MockPanel = ({ styled }: { styled?: boolean }) => {
   return (
     <div className="size-full bg-background p-4">
       <div className="grid h-full content-start gap-3 rounded-lg border border-border bg-card p-4">
@@ -60,9 +60,9 @@ function MockPanel({ styled }: { styled?: boolean }) {
       </div>
     </div>
   );
-}
+};
 
-export default function ImageCompareDemo() {
+const ImageCompareDemo = () => {
   const t = useT();
 
   return (
@@ -171,4 +171,6 @@ export default function ImageCompareDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default ImageCompareDemo;

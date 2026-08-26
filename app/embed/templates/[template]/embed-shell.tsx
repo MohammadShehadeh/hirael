@@ -6,10 +6,10 @@ import type { ReactNode } from "react";
  * `page.tsx` (see `lib/embed.ts`), so this stays a plain server wrapper
  * with no direction state to flip after mount.
  */
-export function TemplateEmbedShell({ children }: { children: ReactNode }) {
+export const TemplateEmbedShell = ({ children }: { children: ReactNode }) => {
   return (
     <div data-embed-shell className="min-h-svh bg-black">
       {children}
     </div>
   );
-}
+};

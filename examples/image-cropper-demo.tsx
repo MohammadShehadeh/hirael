@@ -13,7 +13,7 @@ import {
 const IMAGE_URL =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop";
 
-export default function ImageCropperDemo() {
+const ImageCropperDemo = () => {
   const t = useT();
   const avatarRef = React.useRef<ImageCropperRef>(null);
   const [avatar, setAvatar] = React.useState<string | null>(null);
@@ -82,4 +82,6 @@ export default function ImageCropperDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default ImageCropperDemo;

@@ -7,13 +7,13 @@ import * as React from "react";
  * so it never weighs on the initial bundle, pins the top rendition once the
  * manifest parses, and falls back to native HLS on Safari.
  */
-export function HlsVideo({
+export const HlsVideo = ({
   src,
   className,
 }: {
   src: string;
   className?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -73,4 +73,4 @@ export function HlsVideo({
       }}
     />
   );
-}
+};

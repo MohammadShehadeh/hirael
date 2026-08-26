@@ -17,7 +17,7 @@ const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
 const MAX_HEIGHT = 760;
 
-export function BlockPreview({
+export const BlockPreview = ({
   embedHref,
   title,
   simWidth = SIM_WIDTH,
@@ -26,7 +26,7 @@ export function BlockPreview({
   embedHref: string;
   title: string;
   simWidth?: number;
-}) {
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const contentRoRef = React.useRef<ResizeObserver | null>(null);
   const [width, setWidth] = React.useState<number | null>(null);
@@ -109,4 +109,4 @@ export function BlockPreview({
       )}
     </div>
   );
-}
+};

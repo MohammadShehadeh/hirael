@@ -4,28 +4,26 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type MasonryColumns = {
+export interface MasonryColumns {
   base?: number;
   sm?: number;
   md?: number;
   lg?: number;
-  xl?: number;
-};
+  xl?: number;}
 
-export type MasonryProps = React.ComponentProps<"div"> & {
+export interface MasonryProps extends React.ComponentProps<"div"> {
   /** Column count, fixed or responsive per Tailwind breakpoint. */
   columns?: number | MasonryColumns;
   /** Gap in pixels, applied on both axes. */
-  gap?: number;
-};
+  gap?: number;}
 
-function roundRobin(itemCount: number, columnCount: number) {
+const roundRobin = (itemCount: number, columnCount: number) => {
   const next: number[][] = Array.from({ length: columnCount }, () => []);
   for (let i = 0; i < itemCount; i++) next[i % columnCount].push(i);
   return next;
-}
+};
 
-function sameAssignment(a: number[][] | null, b: number[][]) {
+const sameAssignment = (a: number[][] | null, b: number[][]) => {
   if (!a || a.length !== b.length) return false;
   for (let c = 0; c < a.length; c++) {
     if (a[c].length !== b[c].length) return false;
@@ -34,16 +32,16 @@ function sameAssignment(a: number[][] | null, b: number[][]) {
     }
   }
   return true;
-}
+};
 
-function Masonry({
+const Masonry = ({
   columns = { base: 1, sm: 2, lg: 3 },
   gap = 16,
   className,
   style,
   children,
   ...props
-}: MasonryProps) {
+}: MasonryProps) => {
   const base = typeof columns === "number" ? columns : (columns.base ?? 1);
   const sm = typeof columns === "number" ? null : (columns.sm ?? null);
   const md = typeof columns === "number" ? null : (columns.md ?? null);
@@ -198,9 +196,9 @@ function Masonry({
       ))}
     </div>
   );
-}
+};
 
-function MasonryItem({ className, ...props }: React.ComponentProps<"div">) {
+const MasonryItem = ({ className, ...props }: React.ComponentProps<"div">) => {
   return (
     <div
       data-slot="masonry-item"
@@ -208,6 +206,6 @@ function MasonryItem({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     />
   );
-}
+};
 
 export { Masonry, MasonryItem };

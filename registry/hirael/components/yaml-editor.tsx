@@ -18,12 +18,12 @@ const tokenClass = {
   scalar: "text-foreground",
 } as const;
 
-type Token = { className: string; text: string };
+interface Token { className: string; text: string}
 
 const LITERAL = /^(true|false|null|yes|no|on|off|~)$/i;
 const NUMBER = /^-?\d+(\.\d+)?$/;
 
-function classifyValue(raw: string): Token[] {
+const classifyValue = (raw: string): Token[] => {
   const tokens: Token[] = [];
   const hashAt = raw.indexOf(" #");
   let value = raw;
@@ -47,9 +47,9 @@ function classifyValue(raw: string): Token[] {
   }
   if (comment) tokens.push({ className: tokenClass.comment, text: comment });
   return tokens;
-}
+};
 
-function tokenizeLine(line: string): Token[] {
+const tokenizeLine = (line: string): Token[] => {
   const indentMatch = line.match(/^(\s*)/);
   const indent = indentMatch ? indentMatch[1] : "";
   let rest = line.slice(indent.length);
@@ -78,9 +78,9 @@ function tokenizeLine(line: string): Token[] {
 
   if (rest) tokens.push(...classifyValue(rest));
   return tokens;
-}
+};
 
-function HighlightLine({ line }: { line: string }) {
+const HighlightLine = ({ line }: { line: string }) => {
   const tokens = tokenizeLine(line);
   return (
     <span className="block min-h-[1.25rem]">
@@ -93,22 +93,21 @@ function HighlightLine({ line }: { line: string }) {
           ))}
     </span>
   );
-}
+};
 
-type YamlEditorProps = Omit<
+interface YamlEditorProps extends Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
-> & {
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   readOnly?: boolean;
   /** Visible rows before the editor scrolls. */
   rows?: number;
-  textareaProps?: React.ComponentProps<"textarea">;
-};
+  textareaProps?: React.ComponentProps<"textarea">;}
 
-function YamlEditor({
+const YamlEditor = ({
   value,
   defaultValue = "",
   onValueChange,
@@ -117,7 +116,7 @@ function YamlEditor({
   className,
   textareaProps,
   ...props
-}: YamlEditorProps) {
+}: YamlEditorProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
   const isControlled = value !== undefined;
   const text = isControlled ? value : internal;
@@ -208,6 +207,6 @@ function YamlEditor({
       </div>
     </div>
   );
-}
+};
 
 export { YamlEditor };

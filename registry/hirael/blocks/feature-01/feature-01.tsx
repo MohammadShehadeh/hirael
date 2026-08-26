@@ -5,13 +5,12 @@ import { Check, Terminal, GitBranch, Gauge } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type FeatureRow = {
+interface FeatureRow {
   eyebrow: string;
   headline: string;
   body: string;
   bullets: readonly string[];
-  media: "registry" | "branches" | "metrics";
-};
+  media: "registry" | "branches" | "metrics";}
 
 const ROWS: readonly FeatureRow[] = [
   {
@@ -49,7 +48,7 @@ const ROWS: readonly FeatureRow[] = [
   },
 ];
 
-function MediaRegistry() {
+const MediaRegistry = () => {
   return (
     <div
       className="relative w-full rounded-sm border border-border bg-card"
@@ -86,9 +85,9 @@ function MediaRegistry() {
       </pre>
     </div>
   );
-}
+};
 
-function MediaBranches() {
+const MediaBranches = () => {
   return (
     <div
       className="relative w-full rounded-sm border border-border bg-card p-5"
@@ -126,9 +125,9 @@ function MediaBranches() {
       </div>
     </div>
   );
-}
+};
 
-function MediaMetrics() {
+const MediaMetrics = () => {
   const bars = [38, 52, 44, 68, 49, 81, 62, 74, 58, 88];
   return (
     <div
@@ -172,7 +171,7 @@ function MediaMetrics() {
       </div>
     </div>
   );
-}
+};
 
 const MEDIA: Record<FeatureRow["media"], React.ComponentType> = {
   registry: MediaRegistry,
@@ -180,7 +179,7 @@ const MEDIA: Record<FeatureRow["media"], React.ComponentType> = {
   metrics: MediaMetrics,
 };
 
-export default function Feature01() {
+const Feature01 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
@@ -239,4 +238,6 @@ export default function Feature01() {
       </div>
     </section>
   );
-}
+};
+
+export default Feature01;

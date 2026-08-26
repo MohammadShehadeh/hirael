@@ -22,7 +22,7 @@ import {
   MediaInputTrigger,
 } from "@/registry/hirael/components/media-input";
 
-function PlaybackStatus() {
+const PlaybackStatus = () => {
   const t = useT();
   const { playing, rate } = useAudioPlayer();
 
@@ -33,9 +33,9 @@ function PlaybackStatus() {
         : t({ en: "Paused", ar: "متوقف مؤقتًا" })}
     </span>
   );
-}
+};
 
-export default function AudioPlayerDemo() {
+const AudioPlayerDemo = () => {
   const t = useT();
   const [src, setSrc] = React.useState<string>();
 
@@ -111,4 +111,6 @@ export default function AudioPlayerDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default AudioPlayerDemo;

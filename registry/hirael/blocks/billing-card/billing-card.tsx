@@ -3,10 +3,11 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 type BillingCardProps = React.ComponentProps<"div">;
 
-function BillingCard({ className, ...props }: BillingCardProps) {
+const BillingCard = ({ className, ...props }: BillingCardProps) => {
   return (
     <div
       data-slot="billing-card"
@@ -17,11 +18,11 @@ function BillingCard({ className, ...props }: BillingCardProps) {
       {...props}
     />
   );
-}
+};
 
 type BillingCardHeaderProps = React.ComponentProps<"div">;
 
-function BillingCardHeader({ className, ...props }: BillingCardHeaderProps) {
+const BillingCardHeader = ({ className, ...props }: BillingCardHeaderProps) => {
   return (
     <div
       data-slot="billing-card-header"
@@ -29,11 +30,14 @@ function BillingCardHeader({ className, ...props }: BillingCardHeaderProps) {
       {...props}
     />
   );
-}
+};
 
 type BillingCardEyebrowProps = React.ComponentProps<"p">;
 
-function BillingCardEyebrow({ className, ...props }: BillingCardEyebrowProps) {
+const BillingCardEyebrow = ({
+  className,
+  ...props
+}: BillingCardEyebrowProps) => {
   return (
     <p
       data-slot="billing-card-eyebrow"
@@ -44,11 +48,11 @@ function BillingCardEyebrow({ className, ...props }: BillingCardEyebrowProps) {
       {...props}
     />
   );
-}
+};
 
 type BillingCardPlanProps = React.ComponentProps<"p">;
 
-function BillingCardPlan({ className, ...props }: BillingCardPlanProps) {
+const BillingCardPlan = ({ className, ...props }: BillingCardPlanProps) => {
   return (
     <p
       data-slot="billing-card-plan"
@@ -59,18 +63,18 @@ function BillingCardPlan({ className, ...props }: BillingCardPlanProps) {
       {...props}
     />
   );
-}
-
-type BillingCardPriceProps = React.ComponentProps<"p"> & {
-  cycle?: React.ReactNode;
 };
 
-function BillingCardPrice({
+interface BillingCardPriceProps extends React.ComponentProps<"p"> {
+  cycle?: React.ReactNode;
+}
+
+const BillingCardPrice = ({
   cycle,
   className,
   children,
   ...props
-}: BillingCardPriceProps) {
+}: BillingCardPriceProps) => {
   return (
     <p
       data-slot="billing-card-price"
@@ -81,21 +85,21 @@ function BillingCardPrice({
       {cycle ? <span className="text-muted-foreground"> / {cycle}</span> : null}
     </p>
   );
-}
+};
 
-type BillingCardMeterProps = React.ComponentProps<"div"> & {
+interface BillingCardMeterProps extends React.ComponentProps<"div"> {
   value: number;
   max: number;
   label?: React.ReactNode;
-};
+}
 
-function BillingCardMeter({
+const BillingCardMeter = ({
   value,
   max,
   label,
   className,
   ...props
-}: BillingCardMeterProps) {
+}: BillingCardMeterProps) => {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   return (
     <div
@@ -125,18 +129,18 @@ function BillingCardMeter({
       </div>
     </div>
   );
-}
-
-type BillingCardRowProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode;
 };
 
-function BillingCardRow({
+interface BillingCardRowProps extends React.ComponentProps<"div"> {
+  label: React.ReactNode;
+}
+
+const BillingCardRow = ({
   label,
   className,
   children,
   ...props
-}: BillingCardRowProps) {
+}: BillingCardRowProps) => {
   return (
     <div
       data-slot="billing-card-row"
@@ -150,11 +154,11 @@ function BillingCardRow({
       <span className="text-foreground">{children}</span>
     </div>
   );
-}
+};
 
 type BillingCardFooterProps = React.ComponentProps<"div">;
 
-function BillingCardFooter({ className, ...props }: BillingCardFooterProps) {
+const BillingCardFooter = ({ className, ...props }: BillingCardFooterProps) => {
   return (
     <div
       data-slot="billing-card-footer"
@@ -165,7 +169,7 @@ function BillingCardFooter({ className, ...props }: BillingCardFooterProps) {
       {...props}
     />
   );
-}
+};
 
 export {
   BillingCard,
@@ -178,7 +182,7 @@ export {
   BillingCardFooter,
 };
 
-export default function BillingCardBlock() {
+const BillingCardBlock = () => {
   return (
     <section
       data-slot="billing-card-block"
@@ -201,20 +205,16 @@ export default function BillingCardBlock() {
         </div>
 
         <BillingCardFooter>
-          <button
-            type="button"
-            className="inline-flex h-9 flex-1 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
+          <Button type="button" variant="outline" className="flex-1">
             Manage billing
-          </button>
-          <button
-            type="button"
-            className="inline-flex h-9 flex-1 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
+          </Button>
+          <Button type="button" className="flex-1">
             Upgrade
-          </button>
+          </Button>
         </BillingCardFooter>
       </BillingCard>
     </section>
   );
-}
+};
+
+export default BillingCardBlock;

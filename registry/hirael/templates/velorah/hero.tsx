@@ -2,18 +2,20 @@
 
 import * as React from "react";
 
+import { Button } from "@/registry/hirael/ui/button";
+
 import { Navbar } from "./navbar";
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4.mp4";
 
-export function Hero({
+export const Hero = ({
   videoSrc = HERO_VIDEO,
   posterSrc,
 }: {
   videoSrc?: string;
   posterSrc?: string;
-}) {
+}) => {
   const [videoFailed, setVideoFailed] = React.useState(false);
 
   return (
@@ -59,13 +61,14 @@ export function Hero({
           inspired work.
         </p>
 
-        <button
+        <Button
           type="button"
-          className="animate-fade-rise-delay-2 liquid-glass mt-12 cursor-pointer rounded-full px-14 py-5 text-base text-foreground transition-transform hover:scale-[1.03]"
+          variant="ghost"
+          className="animate-fade-rise-delay-2 liquid-glass mt-12 h-auto cursor-pointer rounded-full px-14 py-5 text-base font-normal text-foreground transition-transform hover:scale-[1.03]"
         >
           Begin Journey
-        </button>
+        </Button>
       </div>
     </section>
   );
-}
+};

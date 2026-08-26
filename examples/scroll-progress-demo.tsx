@@ -5,7 +5,7 @@ import * as React from "react";
 import { useT } from "@/lib/demo-locale";
 import { ScrollProgress } from "@/registry/hirael/components/scroll-progress";
 
-export default function ScrollProgressDemo() {
+const ScrollProgressDemo = () => {
   const t = useT();
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -57,4 +57,6 @@ export default function ScrollProgressDemo() {
       </p>
     </div>
   );
-}
+};
+
+export default ScrollProgressDemo;

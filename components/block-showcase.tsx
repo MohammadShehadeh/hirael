@@ -14,24 +14,24 @@ import { BLOCKS_BY_KIND } from "@/registry/hirael/registry-meta";
 /* -------------------------------------------------------------------------- */
 
 const CARD_SHELL =
-  "group relative flex aspect-video size-full overflow-hidden rounded-lg border border-border bg-background transition-[transform,border-color,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-card hover:shadow-[0_14px_34px_-20px_color-mix(in_oklch,var(--foreground)_35%,transparent)] dark:bg-[radial-gradient(80%_100%_at_50%_0%,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)]";
+  "relative flex aspect-video size-full overflow-hidden rounded-md border border-border bg-card/55 shadow-xs outline-none focus-visible:border-warm focus-visible:ring-[3px] focus-visible:ring-ring/40 xl:aspect-[1.8/1] dark:bg-[radial-gradient(90%_120%_at_50%_0%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent)]";
 
 // Hirael's blueprint signature: a faint graph-paper grid masked to the four
-// corners, framing each card like a registration plate. It brightens on hover.
-// Turns the generic wireframe preview into a "spec plate" that reads as ours.
-function BlueprintFrame({ children }: { children: React.ReactNode }) {
+// corners, framing each card like a registration plate. This turns the generic
+// wireframe preview into a static "spec plate" that reads as ours.
+const BlueprintFrame = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <div
         aria-hidden
-        className="blueprint-corners pointer-events-none absolute inset-0 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
+        className="blueprint-corners pointer-events-none absolute inset-0 opacity-20"
       />
       <div className="relative z-10 size-full">{children}</div>
     </>
   );
-}
+};
 
-function Label({
+const Label = ({
   title,
   count,
   center = false,
@@ -41,7 +41,7 @@ function Label({
   count: number;
   center?: boolean;
   className?: string;
-}) {
+}) => {
   return (
     <div
       className={cn(
@@ -49,24 +49,29 @@ function Label({
         className,
       )}
     >
-      <h3 className="text-sm font-medium tracking-[-0.01em] md:text-[15px]">
+      <h3 className="text-sm font-semibold">
         {title}
       </h3>
-      <p className="font-mono text-[10px] uppercase tracking-[0.08em] whitespace-nowrap text-muted-foreground">
+      <p className="font-mono text-xs uppercase whitespace-nowrap text-muted-foreground/90">
         {count} block{count === 1 ? "" : "s"}
       </p>
     </div>
   );
-}
+};
 
 // Faint placeholder bar — the building block of every schematic.
-function Bar({ className }: { className?: string }) {
+const Bar = ({ className }: { className?: string }) => {
   return (
-    <div className={cn("rounded-full bg-muted-foreground/20", className)} />
+    <div
+      className={cn(
+        "rounded-full bg-muted-foreground/35",
+        className,
+      )}
+    />
   );
-}
+};
 
-type SchematicProps = { title: string; count: number };
+interface SchematicProps { title: string; count: number}
 
 const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
   hero: ({ title, count }) => (
@@ -76,7 +81,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
       <Label title={title} count={count} center />
       <div className="mt-1 grid grid-cols-2 gap-2">
         <div className="h-4 w-12 rounded bg-muted-foreground/15" />
-        <div className="h-4 w-12 rounded bg-primary/20" />
+        <div className="h-4 w-12 rounded bg-warm/40" />
       </div>
     </div>
   ),
@@ -93,7 +98,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
               i < 2 && "border-e border-border/60",
             )}
           >
-            <div className="size-2 rounded-sm bg-primary/20" />
+            <div className="size-2 rounded-sm bg-warm/40" />
             <Bar className="h-1 w-6" />
             <Bar className="h-1 w-9 bg-muted-foreground/15" />
           </div>
@@ -111,18 +116,68 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             key={i}
             className={cn(
               "flex flex-col items-center gap-1 rounded-md border p-2",
-              i === 1 ? "border-primary/30 bg-primary/5" : "border-border/70",
+              i === 1 ? "border-warm/50 bg-warm/10" : "border-border/70",
             )}
           >
             <Bar className="h-1 w-5" />
             <div
               className={cn(
                 "h-2.5 w-6 rounded-sm",
-                i === 1 ? "bg-primary/25" : "bg-muted-foreground/15",
+                i === 1 ? "bg-warm/45" : "bg-muted-foreground/15",
               )}
             />
             <Bar className="h-0.5 w-7 bg-muted-foreground/15" />
             <Bar className="h-0.5 w-7 bg-muted-foreground/15" />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
+  team: ({ title, count }) => (
+    <div className="grid size-full grid-cols-[0.8fr_1.2fr] items-center gap-3 px-4">
+      <Label title={title} count={count} />
+      <div aria-hidden className="grid grid-cols-3 gap-1.5">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="flex flex-col items-center gap-1">
+            <div
+              className={cn(
+                "size-7 rounded-full border border-border/80 bg-muted-foreground/12",
+                i === 1 && "border-warm/50 bg-warm/15",
+              )}
+            />
+            <Bar className="h-1 w-8" />
+            <Bar className="h-0.5 w-5 bg-muted-foreground/15" />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
+  stats: ({ title, count }) => (
+    <div className="flex size-full flex-col justify-center gap-2.5 px-4">
+      <Label title={title} count={count} center />
+      <div
+        aria-hidden
+        className="grid grid-cols-3 rounded-md border border-border/70 bg-background/30"
+      >
+        {["48", "12k", "99"].map((value, i) => (
+          <div
+            key={value}
+            className={cn(
+              "flex flex-col items-center gap-1 py-2",
+              i < 2 && "border-e border-border/70",
+            )}
+          >
+            <span
+              className={cn(
+                "font-mono text-xs font-medium text-muted-foreground/65",
+                i === 1 && "text-warm",
+              )}
+            >
+              {value}
+            </span>
+            <Bar className="h-0.5 w-7 bg-muted-foreground/18" />
           </div>
         ))}
       </div>
@@ -136,7 +191,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         <Bar className="h-1 w-full bg-muted-foreground/15" />
         <Bar className="h-1 w-5/6 bg-muted-foreground/15" />
         <div className="mt-1 flex items-center gap-1.5">
-          <div className="size-3 rounded-full bg-primary/20" />
+          <div className="size-3 rounded-full bg-warm/40" />
           <Bar className="h-1 w-10" />
         </div>
       </div>
@@ -153,7 +208,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
           </div>
           <div className="flex items-center gap-2 p-2">
             <div className="h-4 w-full rounded-sm bg-muted-foreground/15" />
-            <div className="h-4 w-full rounded-sm bg-primary/25" />
+            <div className="h-4 w-full rounded-sm bg-warm/45" />
           </div>
         </div>
       </div>
@@ -173,7 +228,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
           <Bar className="h-1 w-1/2" />
         </div>
         <div className="flex flex-col gap-1 border-b border-border/70 bg-card/50 px-2 py-1.5">
-          <Bar className="h-1 w-3/4 bg-primary/25" />
+          <Bar className="h-1 w-3/4 bg-warm/45" />
           <Bar className="h-0.5 w-full bg-muted-foreground/10" />
           <Bar className="h-0.5 w-5/6 bg-muted-foreground/10" />
         </div>
@@ -190,7 +245,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         <div className="mx-auto mb-1 h-1.5 w-12 rounded-full bg-muted-foreground/20" />
         <div className="h-2 w-full rounded-sm bg-muted-foreground/10" />
         <div className="h-2 w-full rounded-sm bg-muted-foreground/10" />
-        <div className="mt-1 h-3 w-full rounded-sm bg-primary/25" />
+        <div className="mt-1 h-3 w-full rounded-sm bg-warm/45" />
       </div>
     </div>
   ),
@@ -198,13 +253,13 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
   header: ({ title, count }) => (
     <div className="flex size-full flex-col gap-2 p-4">
       <div className="flex items-center justify-between gap-4 rounded-md border border-border/70 bg-card p-1.5 shadow-xs">
-        <div className="size-3 rounded-full bg-primary/20" />
+        <div className="size-3 rounded-full bg-warm/40" />
         <div className="flex gap-1">
           <Bar className="h-1.5 w-6" />
           <Bar className="h-1.5 w-6" />
           <Bar className="h-1.5 w-6" />
         </div>
-        <div className="h-3.5 w-10 rounded-sm bg-primary/25" />
+        <div className="h-3.5 w-10 rounded-sm bg-warm/45" />
       </div>
       <div className="flex flex-1 flex-col items-center justify-center">
         <Label title={title} count={count} center />
@@ -221,7 +276,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         <div className="grid grid-cols-4 gap-3 border-x border-border/70 p-3">
           {[4, 4, 3, 1].map((rows, c) => (
             <div key={c} className="flex flex-col gap-1">
-              <Bar className="mb-0.5 h-1 w-4 bg-primary/20" />
+              <Bar className="mb-0.5 h-1 w-4 bg-warm/40" />
               {Array.from({ length: rows }).map((_, r) => (
                 <Bar key={r} className="h-1 w-6" />
               ))}
@@ -240,7 +295,34 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
       <Label title={title} count={count} center />
       <div className="flex gap-2">
         <div className="h-3 w-10 rounded-sm bg-muted-foreground/15" />
-        <div className="h-3 w-10 rounded-sm bg-primary/25" />
+        <div className="h-3 w-10 rounded-sm bg-warm/45" />
+      </div>
+    </div>
+  ),
+
+  changelog: ({ title, count }) => (
+    <div className="grid size-full grid-cols-[0.8fr_1.2fr] items-center gap-3 px-4">
+      <Label title={title} count={count} />
+      <div
+        aria-hidden
+        className="relative flex flex-col gap-2 border-s border-border/80 ps-3"
+      >
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="relative flex items-center gap-2">
+            <span
+              className={cn(
+                "absolute inset-s-[-0.925rem] size-1.5 rounded-full border border-border bg-card",
+                i === 0 && "border-warm bg-warm",
+              )}
+            />
+            <Bar
+              className={cn(
+                "h-1 bg-muted-foreground/18",
+                i === 0 ? "w-full" : i === 1 ? "w-4/5" : "w-3/5",
+              )}
+            />
+          </div>
+        ))}
       </div>
     </div>
   ),
@@ -256,7 +338,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
           >
             <div className="size-6 shrink-0 rounded-sm bg-muted-foreground/15" />
             <div className="flex flex-1 flex-col gap-1">
-              <Bar className="h-1 w-3/4 bg-primary/20" />
+              <Bar className="h-1 w-3/4 bg-warm/40" />
               <Bar className="h-0.5 w-full bg-muted-foreground/12" />
             </div>
           </div>
@@ -277,7 +359,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         <div className="h-2.5 w-full rounded-sm border border-border/70 bg-muted/20" />
         <Bar className="h-1 w-8" />
         <div className="h-2.5 w-full rounded-sm border border-border/70 bg-muted/20" />
-        <div className="mt-auto h-3 w-full rounded-sm bg-primary/25" />
+        <div className="mt-auto h-3 w-full rounded-sm bg-warm/45" />
       </div>
     </div>
   ),
@@ -294,7 +376,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             className="flex flex-col gap-1 rounded-sm border border-border/60 p-1"
           >
             <div className="h-4 rounded-xs bg-muted-foreground/12" />
-            <Bar className="h-0.5 w-2/3 bg-primary/20" />
+            <Bar className="h-0.5 w-2/3 bg-warm/40" />
           </div>
         ))}
       </div>
@@ -422,7 +504,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             className={cn(
               "aspect-square rounded-[2px]",
               i % 7 === 0
-                ? "bg-primary/30"
+                ? "bg-warm/50"
                 : i % 5 === 0
                   ? "bg-muted-foreground/25"
                   : "bg-muted-foreground/12",
@@ -438,15 +520,54 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
       <Label title={title} count={count} />
       <div className="flex flex-col gap-1.5 rounded-md border border-border/70 bg-card/40 p-2.5">
         <div className="flex items-center justify-between">
-          <Bar className="h-1 w-10 bg-primary/20" />
+          <Bar className="h-1 w-10 bg-warm/40" />
           <Bar className="h-2 w-6 bg-muted-foreground/20" />
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted-foreground/12">
-          <div className="h-full w-2/3 rounded-full bg-primary/30" />
+          <div className="h-full w-2/3 rounded-full bg-warm/50" />
         </div>
         <Bar className="h-0.5 w-full bg-muted-foreground/10" />
-        <div className="mt-0.5 h-3 w-full rounded-sm bg-primary/25" />
+        <div className="mt-0.5 h-3 w-full rounded-sm bg-warm/45" />
       </div>
+    </div>
+  ),
+
+  ai: ({ title, count }) => (
+    <div className="grid size-full grid-cols-[0.75fr_1.25fr] items-center gap-3 px-4">
+      <Label title={title} count={count} />
+      <svg
+        viewBox="0 0 96 52"
+        className="h-14 w-full text-muted-foreground/40"
+        aria-hidden
+      >
+        <path
+          d="M8 34C18 34 18 17 29 17S40 40 52 40 65 10 76 10s9 15 12 15"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M8 25H88"
+          fill="none"
+          stroke="var(--border)"
+          strokeDasharray="2 4"
+          strokeWidth="0.75"
+          vectorEffect="non-scaling-stroke"
+        />
+        {[8, 29, 52, 76, 88].map((x, i) => (
+          <circle
+            key={x}
+            cx={x}
+            cy={[34, 17, 40, 10, 25][i]}
+            r={i === 3 ? 3.5 : 2.5}
+            fill={i === 3 ? "var(--warm)" : "var(--card)"}
+            stroke={i === 3 ? "var(--warm)" : "currentColor"}
+            strokeWidth="1"
+          />
+        ))}
+      </svg>
     </div>
   ),
 
@@ -462,18 +583,44 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             <Bar className="h-0.5 w-2/3" />
             <Bar className="h-1.5 w-1/2 bg-muted-foreground/15" />
             <svg
-              viewBox="0 0 40 10"
-              className="h-2 w-full text-primary/30"
+              viewBox="0 0 48 14"
+              className="h-2.5 w-full overflow-visible text-warm/70"
               preserveAspectRatio="none"
               aria-hidden
             >
-              <polyline
-                points="0,8 8,5 16,6 24,3 32,4 40,1"
+              <path
+                d="M0 4.5H48M0 9.5H48"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
+                stroke="var(--border)"
+                strokeWidth="0.5"
                 vectorEffect="non-scaling-stroke"
               />
+              <path
+                d="M0 12 8 8 16 9.5 24 5 32 6.5 40 2.5 48 4V14H0Z"
+                fill="currentColor"
+                opacity="0.12"
+              />
+              <polyline
+                points="0,12 8,8 16,9.5 24,5 32,6.5 40,2.5 48,4"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.25"
+                vectorEffect="non-scaling-stroke"
+              />
+              {[8, 24, 40].map((x, pointIndex) => (
+                <circle
+                  key={x}
+                  cx={x}
+                  cy={[8, 5, 2.5][pointIndex]}
+                  r="1"
+                  fill="var(--background)"
+                  stroke="currentColor"
+                  strokeWidth="0.75"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
             </svg>
           </div>
         ))}
@@ -488,7 +635,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         {[0, 1, 2].map((i) => (
           <div key={i} className={cn("flex items-center", i < 2 && "flex-1")}>
             <span className="flex size-5 items-center justify-center rounded-full border border-border bg-card">
-              <span className="block size-1.5 rounded-full bg-primary/35" />
+              <span className="block size-1.5 rounded-full bg-warm/55" />
             </span>
             {i < 2 ? <span className="h-px flex-1 bg-border" /> : null}
           </div>
@@ -501,10 +648,10 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
     <div className="flex size-full flex-col justify-center gap-3 px-4">
       <Label title={title} count={count} center />
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col gap-1 rounded-md border border-primary/30 bg-primary/5 p-2">
+        <div className="flex flex-col gap-1 rounded-md border border-warm/50 bg-warm/10 p-2">
           {[0, 1, 2].map((i) => (
             <div key={i} className="flex items-center gap-1.5">
-              <span className="size-1.5 shrink-0 rounded-full bg-primary/40" />
+              <span className="size-1.5 shrink-0 rounded-full bg-warm/60" />
               <Bar className="h-1 w-full" />
             </div>
           ))}
@@ -526,7 +673,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
       <Label title={title} count={count} center />
       <div className="flex w-3/4 items-center gap-1.5">
         <div className="h-4 flex-1 rounded-sm border border-border/70 bg-muted/20" />
-        <div className="h-4 w-10 rounded-sm bg-primary/25" />
+        <div className="h-4 w-10 rounded-sm bg-warm/45" />
       </div>
     </div>
   ),
@@ -541,7 +688,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             className="flex items-center justify-between gap-2 rounded-md border border-border/60 px-2 py-1.5"
           >
             <div className="flex flex-col gap-1">
-              <Bar className="h-1 w-16 bg-primary/20" />
+              <Bar className="h-1 w-16 bg-warm/40" />
               <Bar className="h-0.5 w-10 bg-muted-foreground/12" />
             </div>
             <span className="size-2.5 rounded-full border border-border/70" />
@@ -552,7 +699,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
   ),
 };
 
-function GenericSchematic({ title, count }: SchematicProps) {
+const GenericSchematic = ({ title, count }: SchematicProps) => {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2 px-4">
       <Label title={title} count={count} center />
@@ -562,9 +709,9 @@ function GenericSchematic({ title, count }: SchematicProps) {
       </div>
     </div>
   );
-}
+};
 
-export function BlockShowcase() {
+export const BlockShowcase = () => {
   return (
     <div className="flex flex-col gap-10 sm:gap-12">
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => {
@@ -581,7 +728,7 @@ export function BlockShowcase() {
                 {blockCount} blocks
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
               {categories.map((cat) => {
                 const count = cat.blockKind
                   ? BLOCKS_BY_KIND[cat.blockKind].length
@@ -606,4 +753,4 @@ export function BlockShowcase() {
       })}
     </div>
   );
-}
+};

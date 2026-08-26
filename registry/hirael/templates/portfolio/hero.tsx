@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const ROLES = ["Creative", "Developer", "Founder", "Scholar"];
 const ROLE_INTERVAL = 2000;
 
-function Logo() {
+const Logo = () => {
   return (
     <a
       href="#home"
@@ -37,9 +37,9 @@ function Logo() {
       </span>
     </a>
   );
-}
+};
 
-function Navbar() {
+const Navbar = () => {
   const [scrolled, setScrolled] = React.useState(false);
   const [active, setActive] = React.useState("home");
 
@@ -108,9 +108,9 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
-export function Hero({ start = true }: { start?: boolean }) {
+export const Hero = ({ start = true }: { start?: boolean }) => {
   const rootRef = React.useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = React.useState(0);
 
@@ -223,4 +223,4 @@ export function Hero({ start = true }: { start?: boolean }) {
       </div>
     </section>
   );
-}
+};

@@ -46,7 +46,7 @@ const COMPACT_LINKS = [
 ] as const;
 
 /** One-row footer for pages inside the sidebar shell, where the marketing footer is noise. */
-export function SiteFooterCompact({ className }: { className?: string }) {
+export const SiteFooterCompact = ({ className }: { className?: string }) => {
   const year = new Date().getFullYear();
   return (
     <footer
@@ -84,9 +84,9 @@ export function SiteFooterCompact({ className }: { className?: string }) {
       </div>
     </footer>
   );
-}
+};
 
-export function SiteFooter({ className }: { className?: string }) {
+export const SiteFooter = ({ className }: { className?: string }) => {
   const year = new Date().getFullYear();
 
   return (
@@ -187,4 +187,4 @@ export function SiteFooter({ className }: { className?: string }) {
       </div>
     </footer>
   );
-}
+};

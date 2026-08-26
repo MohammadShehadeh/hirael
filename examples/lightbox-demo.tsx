@@ -14,7 +14,7 @@ const full = (id: string) =>
 const thumb = (id: string) =>
   `https://images.unsplash.com/${id}?q=80&w=400&auto=format&fit=crop`;
 
-export default function LightboxDemo() {
+const LightboxDemo = () => {
   const t = useT();
 
   const photos = [
@@ -132,4 +132,6 @@ export default function LightboxDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default LightboxDemo;

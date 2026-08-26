@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import { useT } from "@/lib/demo-locale";
 import { Button } from "@/registry/hirael/ui/button";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
 import {
   UnsavedGuardProvider,
@@ -13,8 +13,9 @@ import {
 
 type Tab = "profile" | "billing";
 
-function UnsavedGuardDemoInner() {
+const UnsavedGuardDemoInner = () => {
   const t = useT();
+  const nameId = React.useId();
   const [tab, setTab] = React.useState<Tab>("profile");
   const [name, setName] = React.useState("Mohammad Shehadeh");
   const [savedName, setSavedName] = React.useState("Mohammad Shehadeh");
@@ -48,21 +49,17 @@ function UnsavedGuardDemoInner() {
     <div className="grid w-full max-w-sm gap-4">
       <div role="tablist" className="flex gap-1">
         {tabs.map((item) => (
-          <button
+          <Button
             key={item.id}
             type="button"
             role="tab"
             aria-selected={tab === item.id}
+            variant={tab === item.id ? "secondary" : "ghost"}
+            size="sm"
             onClick={() => goTo(item.id)}
-            className={cn(
-              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-              tab === item.id
-                ? "bg-secondary text-secondary-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
           >
             {item.label}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -74,15 +71,16 @@ function UnsavedGuardDemoInner() {
           }}
           className="grid gap-3"
         >
-          <label className="grid gap-1.5">
-            <span className="text-sm font-medium">
+          <Field className="gap-1.5">
+            <FieldLabel htmlFor={nameId}>
               {t({ en: "Display name", ar: "الاسم الظاهر" })}
-            </span>
+            </FieldLabel>
             <Input
+              id={nameId}
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
-          </label>
+          </Field>
           <div className="flex items-center gap-3">
             <Button type="submit" size="sm" disabled={!dirty}>
               {t({ en: "Save", ar: "حفظ" })}
@@ -104,12 +102,14 @@ function UnsavedGuardDemoInner() {
       )}
     </div>
   );
-}
+};
 
-export default function UnsavedGuardDemo() {
+const UnsavedGuardDemo = () => {
   return (
     <UnsavedGuardProvider beforeUnload={false}>
       <UnsavedGuardDemoInner />
     </UnsavedGuardProvider>
   );
-}
+};
+
+export default UnsavedGuardDemo;

@@ -13,7 +13,7 @@ import {
   TimelineTitle,
 } from "@/registry/hirael/components/timeline";
 
-export default function TimelineDemo() {
+const TimelineDemo = () => {
   const t = useT();
 
   return (
@@ -188,4 +188,6 @@ export default function TimelineDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default TimelineDemo;

@@ -11,7 +11,7 @@ export type TagValidator = (
   current: string[],
 ) => true | string;
 
-type Ctx = {
+interface Ctx {
   value: string[];
   setValue: (next: string[]) => void;
   draft: string;
@@ -28,20 +28,19 @@ type Ctx = {
   validate?: TagValidator;
   commitKeys: string[];
   splitOn: RegExp;
-  inputRef: React.RefObject<HTMLInputElement | null>;
-};
+  inputRef: React.RefObject<HTMLInputElement | null>;}
 
 const TagInputContext = React.createContext<Ctx | null>(null);
 
-function useTagInput() {
+const useTagInput = () => {
   const ctx = React.useContext(TagInputContext);
   if (!ctx) {
     throw new Error("TagInput compound parts must be used inside <TagInput>");
   }
   return ctx;
-}
+};
 
-export type TagInputProps = {
+export interface TagInputProps {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -53,10 +52,9 @@ export type TagInputProps = {
   validate?: TagValidator;
   commitKeys?: string[];
   splitOn?: RegExp;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function TagInput({
+const TagInput = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -69,7 +67,7 @@ function TagInput({
   commitKeys = ["Enter", ","],
   splitOn = /[,\n\t]+/,
   children,
-}: TagInputProps) {
+}: TagInputProps) => {
   const [internalValue, setInternalValue] = React.useState<string[]>(
     defaultValue ?? [],
   );
@@ -182,16 +180,16 @@ function TagInput({
   return (
     <TagInputContext.Provider value={ctx}>{children}</TagInputContext.Provider>
   );
-}
+};
 
 type TagInputContainerProps = React.ComponentProps<"div">;
 
-function TagInputContainer({
+const TagInputContainer = ({
   className,
   children,
   onMouseDown,
   ...props
-}: TagInputContainerProps) {
+}: TagInputContainerProps) => {
   const ctx = useTagInput();
   return (
     <div
@@ -218,19 +216,18 @@ function TagInputContainer({
       {children}
     </div>
   );
-}
-
-type TagInputTagProps = Omit<React.ComponentProps<"span">, "children"> & {
-  index: number;
-  children?: React.ReactNode;
 };
 
-function TagInputTag({
+interface TagInputTagProps extends Omit<React.ComponentProps<"span">, "children"> {
+  index: number;
+  children?: React.ReactNode;}
+
+const TagInputTag = ({
   index,
   children,
   className,
   ...props
-}: TagInputTagProps) {
+}: TagInputTagProps) => {
   const ctx = useTagInput();
   const tag = ctx.value[index];
   if (tag === undefined) return null;
@@ -255,9 +252,9 @@ function TagInputTag({
       )}
     </Badge>
   );
-}
+};
 
-function TagInputTags() {
+const TagInputTags = () => {
   const ctx = useTagInput();
   return (
     <>
@@ -266,21 +263,21 @@ function TagInputTags() {
       ))}
     </>
   );
-}
+};
 
 type TagInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "value" | "defaultValue" | "onChange" | "type"
 >;
 
-function TagInputField({
+const TagInputField = ({
   placeholder = "Add tag…",
   className,
   onKeyDown,
   onPaste,
   onBlur,
   ...props
-}: TagInputFieldProps) {
+}: TagInputFieldProps) => {
   const ctx = useTagInput();
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -346,9 +343,9 @@ function TagInputField({
       {...props}
     />
   );
-}
+};
 
-function TagInputError({ className, ...props }: React.ComponentProps<"p">) {
+const TagInputError = ({ className, ...props }: React.ComponentProps<"p">) => {
   const ctx = useTagInput();
   if (!ctx.error) return null;
   return (
@@ -362,7 +359,7 @@ function TagInputError({ className, ...props }: React.ComponentProps<"p">) {
       {ctx.error}
     </p>
   );
-}
+};
 
 export {
   TagInput,

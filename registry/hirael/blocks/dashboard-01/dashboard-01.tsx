@@ -29,15 +29,14 @@ import {
   TooltipTrigger,
 } from "@/registry/hirael/ui/tooltip";
 
-type Metric = {
+interface Metric {
   label: string;
   value: string;
   /** Change against the previous period; the sign carries the direction. */
   delta: number;
   unit: "%" | "pt" | "s";
   /** Which way this metric has to move to be good news. Churn falls. */
-  goodWhen: "up" | "down";
-};
+  goodWhen: "up" | "down";}
 
 type Range = "1d" | "7d" | "30d" | "90d";
 
@@ -124,12 +123,11 @@ const SIGNUPS_BY_RANGE: Record<Range, { count: string; conversion: string }> = {
   "90d": { count: "6,820", conversion: "2.94%" },
 };
 
-type Activity = {
+interface Activity {
   initials: string;
   name: string;
   action: string;
-  time: string;
-};
+  time: string;}
 
 const ACTIVITY: readonly Activity[] = [
   {
@@ -159,13 +157,13 @@ const ACTIVITY: readonly Activity[] = [
 ];
 
 /** Tone follows intent, not sign: falling churn is good news, so it is green. */
-function deltaTone({ delta, goodWhen }: Metric) {
+const deltaTone = ({ delta, goodWhen }: Metric) => {
   if (delta === 0) return "bg-accent text-muted-foreground";
   const improving = delta > 0 === (goodWhen === "up");
   return improving ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive";
-}
+};
 
-function DeltaChip({ metric }: { metric: Metric }) {
+const DeltaChip = ({ metric }: { metric: Metric }) => {
   const { delta, unit, label } = metric;
   const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
   const direction = delta > 0 ? "up" : delta < 0 ? "down" : "unchanged";
@@ -187,9 +185,9 @@ function DeltaChip({ metric }: { metric: Metric }) {
       {unit}
     </Badge>
   );
-}
+};
 
-export default function Dashboard01() {
+const Dashboard01 = () => {
   const [range, setRange] = React.useState<Range>("7d");
   const [refreshing, setRefreshing] = React.useState(false);
   const [status, setStatus] = React.useState("");
@@ -422,4 +420,6 @@ export default function Dashboard01() {
       </div>
     </section>
   );
-}
+};
+
+export default Dashboard01;

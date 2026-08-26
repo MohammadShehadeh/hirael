@@ -15,7 +15,7 @@ import { SelectedWorks } from "./selected-works";
 import { Stats } from "./stats";
 import { PORTFOLIO_STYLES } from "./styles";
 
-export default function Portfolio() {
+const Portfolio = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   return (
@@ -43,4 +43,6 @@ export default function Portfolio() {
       </MotionConfig>
     </div>
   );
-}
+};
+
+export default Portfolio;

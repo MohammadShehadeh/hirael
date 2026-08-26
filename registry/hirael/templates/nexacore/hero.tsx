@@ -3,7 +3,7 @@ import { GradientText } from "./primitives";
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_115655_b4d9cd77-feed-43cd-a198-af78ebdf1f7a.mp4";
 
-export function Hero() {
+export const Hero = () => {
   return (
     <section
       id="home"
@@ -50,4 +50,4 @@ export function Hero() {
       </div>
     </section>
   );
-}
+};

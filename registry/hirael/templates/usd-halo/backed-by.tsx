@@ -76,7 +76,7 @@ const BACKERS: MarqueeBrand[] = [
   },
 ];
 
-export function BackedBySection() {
+export const BackedBySection = () => {
   return (
     <section className="bg-[#F5F5F5] px-6">
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-center gap-8 md:grid-cols-4">
@@ -97,4 +97,4 @@ export function BackedBySection() {
       </div>
     </section>
   );
-}
+};

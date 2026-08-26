@@ -2,12 +2,11 @@
 
 import * as React from "react";
 
-type Quote = {
+interface Quote {
   body: string;
   initials: string;
   name: string;
-  role: string;
-};
+  role: string;}
 
 const QUOTES: readonly Quote[] = [
   {
@@ -48,7 +47,7 @@ const QUOTES: readonly Quote[] = [
   },
 ];
 
-export default function Testimonial02() {
+const Testimonial02 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
@@ -97,4 +96,6 @@ export default function Testimonial02() {
       </div>
     </section>
   );
-}
+};
+
+export default Testimonial02;

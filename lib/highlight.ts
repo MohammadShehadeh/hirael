@@ -29,7 +29,7 @@ const SUPPORTED_LANGS: BundledLanguage[] = [
 
 let highlighterPromise: Promise<Highlighter> | undefined;
 
-async function getHighlighter(): Promise<Highlighter> {
+const getHighlighter = async (): Promise<Highlighter> => {
   if (!highlighterPromise) {
     const { createHighlighter } = await import("shiki");
     highlighterPromise = createHighlighter({
@@ -38,14 +38,12 @@ async function getHighlighter(): Promise<Highlighter> {
     });
   }
   return highlighterPromise;
-}
+};
 
 export type HighlightLang = BundledLanguage | "plaintext";
 
-export async function highlightCode(
-  code: string,
-  lang: HighlightLang,
-): Promise<string> {
+export const highlightCode = async (code: string,
+  lang: HighlightLang,): Promise<string> => {
   const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage)
     ? (lang as BundledLanguage)
     : "tsx";
@@ -55,17 +53,15 @@ export async function highlightCode(
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: "dark",
   });
-}
+};
 
 /**
  * Inline highlight — token `<span>`s only, no `<pre>`/`<code>` wrapper or
  * surface — for syntax-coloring short type signatures inside the API table.
  * Defaults to `ts` so prop types and defaults read like editor code.
  */
-export async function highlightInline(
-  code: string,
-  lang: HighlightLang = "ts",
-): Promise<string> {
+export const highlightInline = async (code: string,
+  lang: HighlightLang = "ts",): Promise<string> => {
   const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage)
     ? (lang as BundledLanguage)
     : "ts";
@@ -76,10 +72,10 @@ export async function highlightInline(
     defaultColor: "dark",
     structure: "inline",
   });
-}
+};
 
 /** Infer a shiki lang from a filename. */
-export function langFromPath(filePath: string): HighlightLang {
+export const langFromPath = (filePath: string): HighlightLang => {
   const ext = filePath.split(".").pop()?.toLowerCase();
   switch (ext) {
     case "tsx":
@@ -106,4 +102,4 @@ export function langFromPath(filePath: string): HighlightLang {
     default:
       return "tsx";
   }
-}
+};

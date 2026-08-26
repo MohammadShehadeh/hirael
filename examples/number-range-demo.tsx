@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   NumberRange,
   NumberRangeInputs,
@@ -14,17 +14,19 @@ const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n);
 const parseNum = (s: string) => Number(s.replace(/[^\d.-]/g, "")) || 0;
 
-export default function NumberRangeDemo() {
+const NumberRangeDemo = () => {
   const t = useT();
 
   const [price, setPrice] = React.useState<[number, number]>([200, 1400]);
   const [age, setAge] = React.useState<[number, number]>([18, 65]);
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-3">
+    <FieldGroup className="max-w-md gap-8">
+      <Field>
         <div className="flex items-baseline justify-between">
-          <Label>{t({ en: "Price (USD)", ar: "السعر (دولار)" })}</Label>
+          <FieldLabel>
+            {t({ en: "Price (USD)", ar: "السعر (دولار)" })}
+          </FieldLabel>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             ${usd(price[0])} – ${usd(price[1])}
           </span>
@@ -42,11 +44,11 @@ export default function NumberRangeDemo() {
           <NumberRangeSlider />
           <NumberRangeInputs />
         </NumberRange>
-      </div>
+      </Field>
 
-      <div className="grid gap-3">
+      <Field>
         <div className="flex items-baseline justify-between">
-          <Label>{t({ en: "Age", ar: "العمر" })}</Label>
+          <FieldLabel>{t({ en: "Age", ar: "العمر" })}</FieldLabel>
           <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
             {age[0]}–{age[1]} {t({ en: "yrs", ar: "سنة" })}
           </span>
@@ -62,7 +64,9 @@ export default function NumberRangeDemo() {
           <NumberRangeSlider />
           <NumberRangeInputs separator="→" />
         </NumberRange>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default NumberRangeDemo;

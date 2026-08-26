@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/registry/hirael/ui/badge";
 
 import { EASE, HiraelMark, OrangeButton } from "./primitives";
 
@@ -19,7 +20,7 @@ const LINK_COLUMNS = [
   },
 ];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
@@ -29,9 +30,12 @@ export function Footer() {
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-gray-900 sm:h-7 sm:w-7">
                 <HiraelMark className="h-3.5 w-3 sm:h-4 sm:w-3.5" />
               </span>
-              <span className="rounded-full border border-white/15 px-3 py-1 text-[12px] font-medium text-white sm:px-4 sm:py-1.5 sm:text-[13px]">
+              <Badge
+                variant="outline"
+                className="border-white/15 px-3 py-1 text-[12px] text-white sm:px-4 sm:py-1.5 sm:text-[13px]"
+              >
                 Work with us
-              </span>
+              </Badge>
             </div>
             <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] sm:text-[clamp(2.5rem,5vw,4.2rem)]">
               Ready to dominate
@@ -69,10 +73,13 @@ export function Footer() {
               A strategy-led studio crafting digital experiences for growing
               brands.
             </p>
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 text-[13px] text-gray-300">
+            <Badge
+              variant="outline"
+              className="gap-2 border-white/15 px-3 py-1.5 text-[13px] font-normal text-gray-300"
+            >
               <span className="flex h-2 w-2 rounded-full bg-[#F26522]" />
               Taking on projects for Q1 2026
-            </span>
+            </Badge>
           </div>
 
           {LINK_COLUMNS.map((col) => (
@@ -134,4 +141,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

@@ -11,7 +11,7 @@ import { Statement } from "./statement";
 import { Tagline } from "./tagline";
 import { VelorahStyles } from "./styles";
 
-export default function Velorah() {
+const Velorah = () => {
   return (
     <div
       className={cn(
@@ -33,4 +33,6 @@ export default function Velorah() {
       <Footer />
     </div>
   );
-}
+};
+
+export default Velorah;

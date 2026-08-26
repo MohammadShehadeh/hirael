@@ -3,8 +3,13 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx";
 import { PageHeader } from "@/components/page-header";
 import type { Changelog } from "@/lib/changelog";
+import { Badge } from "@/registry/hirael/ui/badge";
 
-export function ChangelogView({ entries, lastUpdated, latestSlug }: Changelog) {
+export const ChangelogView = ({
+  entries,
+  lastUpdated,
+  latestSlug,
+}: Changelog) => {
   return (
     <article className="relative container w-full py-16 sm:py-20">
       <div className="relative">
@@ -42,10 +47,13 @@ export function ChangelogView({ entries, lastUpdated, latestSlug }: Changelog) {
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
                 {entry.slug === latestSlug ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <Badge
+                    variant="outline"
+                    className="gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em]"
+                  >
                     <span className="state-dot" />
                     Latest
-                  </span>
+                  </Badge>
                 ) : null}
               </div>
 
@@ -71,4 +79,4 @@ export function ChangelogView({ entries, lastUpdated, latestSlug }: Changelog) {
       )}
     </article>
   );
-}
+};

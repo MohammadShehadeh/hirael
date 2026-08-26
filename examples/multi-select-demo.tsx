@@ -3,14 +3,14 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   MultiSelect,
   MultiSelectContent,
   MultiSelectTrigger,
 } from "@/registry/hirael/components/multi-select";
 
-export default function MultiSelectDemo() {
+const MultiSelectDemo = () => {
   const t = useT();
 
   const groups = {
@@ -38,9 +38,11 @@ export default function MultiSelectDemo() {
   const [composed, setComposed] = React.useState<string[]>([]);
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label htmlFor="ms-basic">{t({ en: "Basic", ar: "أساسي" })}</Label>
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="ms-basic">
+          {t({ en: "Basic", ar: "أساسي" })}
+        </FieldLabel>
         <MultiSelect
           options={FRAMEWORKS}
           value={basic}
@@ -59,12 +61,12 @@ export default function MultiSelectDemo() {
             ar: `${basic.length} من ${FRAMEWORKS.length} محدد`,
           })}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label htmlFor="ms-composed">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="ms-composed">
           {t({ en: "Composed", ar: "مركّب" })}
-        </Label>
+        </FieldLabel>
         <MultiSelect
           options={FRAMEWORKS}
           value={composed}
@@ -85,7 +87,9 @@ export default function MultiSelectDemo() {
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           value = [{composed.map((v) => `"${v}"`).join(", ")}]
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default MultiSelectDemo;

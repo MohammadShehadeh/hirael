@@ -11,10 +11,8 @@ const SECTION_EASE: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
  * Smooth-scroll in-page anchors within the iframe/document. External and
  * mailto links fall through to default navigation.
  */
-export function onAnchorClick(
-  event: React.MouseEvent<HTMLAnchorElement>,
-  href: string,
-) {
+export const onAnchorClick = (event: React.MouseEvent<HTMLAnchorElement>,
+  href: string,) => {
   if (!href.startsWith("#") || href.length < 2) return;
   const target = document.getElementById(href.slice(1));
   if (!target) return;
@@ -26,9 +24,9 @@ export function onAnchorClick(
     behavior: reduce ? "auto" : "smooth",
     block: "start",
   });
-}
+};
 
-export function ArrowUpRight({ className }: { className?: string }) {
+export const ArrowUpRight = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -43,9 +41,9 @@ export function ArrowUpRight({ className }: { className?: string }) {
       <path d="M7 17 17 7M9 7h8v8" />
     </svg>
   );
-}
+};
 
-export function ArrowRight({ className }: { className?: string }) {
+export const ArrowRight = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -60,14 +58,14 @@ export function ArrowRight({ className }: { className?: string }) {
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   );
-}
+};
 
 /**
  * Pill / button with the accent-gradient ring that fades in on hover. The
  * ring sits 2px behind an opaque inner surface, so only a hairline gradient
  * border shows through.
  */
-export function RingLink({
+export const RingLink = ({
   href,
   children,
   ariaLabel,
@@ -83,7 +81,7 @@ export function RingLink({
   rel?: string;
   outerClassName?: string;
   innerClassName?: string;
-}) {
+}) => {
   return (
     <a
       href={href}
@@ -107,10 +105,10 @@ export function RingLink({
       </span>
     </a>
   );
-}
+};
 
 /** Desktop-only "View all" pill used by the section headers. */
-export function ViewAllButton({
+export const ViewAllButton = ({
   label,
   href,
   className,
@@ -118,7 +116,7 @@ export function ViewAllButton({
   label: string;
   href: string;
   className?: string;
-}) {
+}) => {
   return (
     <RingLink
       href={href}
@@ -129,14 +127,14 @@ export function ViewAllButton({
       <ArrowRight className="size-3" />
     </RingLink>
   );
-}
+};
 
 /**
  * Eyebrow + heading + subtext header shared by the Work, Journal and
  * Explorations sections. The emphasized word renders in the serif display
  * face. Reveals on scroll with Framer Motion.
  */
-export function SectionHeader({
+export const SectionHeader = ({
   eyebrow,
   lead,
   accent,
@@ -152,7 +150,7 @@ export function SectionHeader({
   subtext: string;
   viewAll?: { label: string; href: string };
   className?: string;
-}) {
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -184,4 +182,4 @@ export function SectionHeader({
       </div>
     </motion.div>
   );
-}
+};

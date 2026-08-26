@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/registry/hirael/ui/popover";
 
-export type YearRange = { from: number; to?: number };
+export interface YearRange { from: number; to?: number}
 export type YearPickerMode = "single" | "range";
 
 type YearPickerContextValue =
@@ -44,7 +44,7 @@ const YearPickerContext = React.createContext<YearPickerContextValue | null>(
   null,
 );
 
-function useYearPicker() {
+const useYearPicker = () => {
   const ctx = React.useContext(YearPickerContext);
   if (!ctx) {
     throw new Error(
@@ -52,14 +52,14 @@ function useYearPicker() {
     );
   }
   return ctx;
-}
+};
 
 const YEARS_PER_VIEW = 12;
 
-function viewStartFor(year: number) {
+const viewStartFor = (year: number) => {
   const base = year - (year % 10);
   return base - 1;
-}
+};
 
 export type YearPickerProps =
   | {
@@ -89,7 +89,7 @@ export type YearPickerProps =
       children?: React.ReactNode;
     };
 
-function YearPicker(props: YearPickerProps) {
+const YearPicker = (props: YearPickerProps) => {
   const {
     minYear = 1900,
     maxYear = 2100,
@@ -247,16 +247,16 @@ function YearPicker(props: YearPickerProps) {
       </Popover>
     </YearPickerContext.Provider>
   );
-}
+};
 
-function formatYearValue(ctx: YearPickerContextValue, placeholder: string) {
+const formatYearValue = (ctx: YearPickerContextValue, placeholder: string) => {
   if (ctx.mode === "single") return ctx.value ? String(ctx.value) : placeholder;
   if (!ctx.value) return placeholder;
   if (ctx.value.to === undefined) return `${ctx.value.from} – …`;
   return `${ctx.value.from} – ${ctx.value.to}`;
-}
+};
 
-function YearPickerTrigger({
+const YearPickerTrigger = ({
   placeholder = "Pick a year",
   className,
   children,
@@ -264,7 +264,7 @@ function YearPickerTrigger({
 }: Omit<React.ComponentProps<"button">, "children"> & {
   placeholder?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useYearPicker();
   const empty = ctx.value === undefined;
   return (
@@ -287,22 +287,22 @@ function YearPickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function isInRange(year: number, range: YearRange | undefined) {
+const isInRange = (year: number, range: YearRange | undefined) => {
   if (!range || range.to === undefined) return false;
   return year > range.from && year < range.to;
-}
+};
 
-function isEndpoint(year: number, range: YearRange | undefined) {
+const isEndpoint = (year: number, range: YearRange | undefined) => {
   if (!range) return false;
   return year === range.from || year === range.to;
-}
+};
 
-function YearPickerContent({
+const YearPickerContent = ({
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent>) {
+}: React.ComponentProps<typeof PopoverContent>) => {
   const ctx = useYearPicker();
   const years = Array.from(
     { length: YEARS_PER_VIEW },
@@ -463,6 +463,6 @@ function YearPickerContent({
       </div>
     </PopoverContent>
   );
-}
+};
 
 export { YearPicker, YearPickerTrigger, YearPickerContent };

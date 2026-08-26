@@ -4,12 +4,17 @@ import * as React from "react";
 import { ArrowRight, Loader2, MailCheck } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
-import { Label } from "@/registry/hirael/ui/label";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -28,9 +33,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function ForgotPassword01() {
+const ForgotPassword01 = () => {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<"idle" | "sending" | "sent">(
@@ -96,13 +101,15 @@ export default function ForgotPassword01() {
               <div className="mt-2 flex flex-col items-center gap-2">
                 <p className="text-xs text-muted-foreground">
                   Didn&apos;t get it?{" "}
-                  <button
+                  <Button
                     type="button"
+                    variant="link"
+                    size="xs"
                     onClick={send}
-                    className="font-medium text-foreground underline-offset-4 hover:underline"
+                    className="h-auto p-0"
                   >
                     Resend
-                  </button>
+                  </Button>
                 </p>
                 <a
                   href="#"
@@ -128,59 +135,55 @@ export default function ForgotPassword01() {
                 </div>
               </div>
 
-              <form
-                noValidate
-                className="flex flex-col gap-5 p-8"
-                onSubmit={onSubmit}
-              >
-                <div className="grid gap-1.5">
-                  <Label
-                    htmlFor="forgot01-email"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+              <form noValidate className="p-8" onSubmit={onSubmit}>
+                <FieldGroup className="gap-5">
+                  <Field
+                    className="gap-1.5"
+                    data-invalid={Boolean(error) || undefined}
                   >
-                    Email
-                  </Label>
-                  <Input
-                    id="forgot01-email"
-                    type="email"
-                    placeholder="you@studio.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    aria-invalid={Boolean(error) || undefined}
-                    aria-describedby={
-                      error ? "forgot01-email-error" : undefined
-                    }
-                  />
-                  {error ? (
-                    <p
-                      id="forgot01-email-error"
-                      className="text-xs text-destructive"
+                    <FieldLabel
+                      htmlFor="forgot01-email"
+                      className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
                     >
+                      Email
+                    </FieldLabel>
+                    <Input
+                      id="forgot01-email"
+                      type="email"
+                      placeholder="you@studio.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      autoComplete="email"
+                      aria-invalid={Boolean(error) || undefined}
+                      aria-describedby={
+                        error ? "forgot01-email-error" : undefined
+                      }
+                    />
+                    <FieldError id="forgot01-email-error" className="text-xs">
                       {error}
-                    </p>
-                  ) : null}
-                </div>
+                    </FieldError>
+                  </Field>
 
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="lg"
-                  disabled={status === "sending"}
-                  className="group"
-                >
-                  {status === "sending" ? (
-                    <>
-                      <Loader2 className="size-4 animate-spin" />
-                      Sending link…
-                    </>
-                  ) : (
-                    <>
-                      Send reset link
-                      <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                    </>
-                  )}
-                </Button>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    size="lg"
+                    disabled={status === "sending"}
+                    className="group"
+                  >
+                    {status === "sending" ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Sending link…
+                      </>
+                    ) : (
+                      <>
+                        Send reset link
+                        <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                      </>
+                    )}
+                  </Button>
+                </FieldGroup>
               </form>
 
               <div className="border-t border-border px-8 py-4 text-center">
@@ -204,4 +207,6 @@ export default function ForgotPassword01() {
       </div>
     </section>
   );
-}
+};
+
+export default ForgotPassword01;

@@ -9,7 +9,7 @@ import {
   type CalendarHeatmapDatum,
 } from "@/registry/hirael/components/calendar-heatmap";
 
-function generateActivity(seed: number, days: number): CalendarHeatmapDatum[] {
+const generateActivity = (seed: number, days: number): CalendarHeatmapDatum[] => {
   let state = seed;
   const next = () => {
     state = (state * 1664525 + 1013904223) % 4294967296;
@@ -26,7 +26,7 @@ function generateActivity(seed: number, days: number): CalendarHeatmapDatum[] {
     const value = roll < 0.3 ? 0 : Math.floor(next() * 14);
     return { date, value };
   });
-}
+};
 
 const customScale = (level: number) => {
   const scale = [
@@ -39,7 +39,7 @@ const customScale = (level: number) => {
   return scale[Math.min(level, scale.length - 1)];
 };
 
-export default function CalendarHeatmapDemo() {
+const CalendarHeatmapDemo = () => {
   const t = useT();
   const yearData = generateActivity(42, 366);
   const halfYearData = generateActivity(7, 184);
@@ -139,4 +139,6 @@ export default function CalendarHeatmapDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default CalendarHeatmapDemo;

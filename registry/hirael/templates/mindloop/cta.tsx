@@ -8,13 +8,13 @@ import { Logo, Serif, useFadeUp } from "./primitives";
 const CTA_HLS =
   "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8";
 
-function HlsBackgroundVideo({
+const HlsBackgroundVideo = ({
   src,
   className,
 }: {
   src: string;
   className?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -53,9 +53,9 @@ function HlsBackgroundVideo({
       aria-hidden
     />
   );
-}
+};
 
-export function Cta() {
+export const Cta = () => {
   const fade = useFadeUp();
 
   return (
@@ -102,4 +102,4 @@ export function Cta() {
       </motion.div>
     </section>
   );
-}
+};

@@ -4,8 +4,9 @@ import * as React from "react";
 import { File as FileIcon, FileText, UploadCloud, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
-function formatBytes(bytes: number): string {
+const formatBytes = (bytes: number): string => {
   if (!Number.isFinite(bytes) || bytes < 0) return "0 B";
   const units = ["B", "KB", "MB", "GB", "TB"] as const;
   let i = 0;
@@ -16,9 +17,9 @@ function formatBytes(bytes: number): string {
   }
   const fixed = i === 0 ? n.toFixed(0) : n.toFixed(1);
   return `${fixed} ${units[i]}`;
-}
+};
 
-function matchesAccept(file: File, accept?: string): boolean {
+const matchesAccept = (file: File, accept?: string): boolean => {
   if (!accept) return true;
   const tokens = accept
     .split(",")
@@ -38,15 +39,15 @@ function matchesAccept(file: File, accept?: string): boolean {
     }
   }
   return false;
-}
+};
 
-export type FileDropzoneError = {
+export interface FileDropzoneError {
   file: File;
   reason: "size" | "type";
   message: string;
-};
+}
 
-type Ctx = {
+interface Ctx {
   files: File[];
   setFiles: (next: File[]) => void;
   accept?: string;
@@ -58,11 +59,11 @@ type Ctx = {
   addFiles: (incoming: FileList | File[]) => void;
   removeAt: (index: number) => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
-};
+}
 
 const FileDropzoneContext = React.createContext<Ctx | null>(null);
 
-function useFileDropzone() {
+const useFileDropzone = () => {
   const ctx = React.useContext(FileDropzoneContext);
   if (!ctx) {
     throw new Error(
@@ -70,9 +71,9 @@ function useFileDropzone() {
     );
   }
   return ctx;
-}
+};
 
-export type FileDropzoneProps = {
+export interface FileDropzoneProps {
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
@@ -81,9 +82,9 @@ export type FileDropzoneProps = {
   multiple?: boolean;
   disabled?: boolean;
   children?: React.ReactNode;
-};
+}
 
-function FileDropzone({
+const FileDropzone = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -92,7 +93,7 @@ function FileDropzone({
   multiple = false,
   disabled,
   children,
-}: FileDropzoneProps) {
+}: FileDropzoneProps) => {
   const [internalFiles, setInternalFiles] = React.useState<File[]>(
     defaultValue ?? [],
   );
@@ -183,24 +184,24 @@ function FileDropzone({
       {children}
     </FileDropzoneContext.Provider>
   );
-}
+};
 
-type FileDropzoneZoneProps = Omit<
+interface FileDropzoneZoneProps extends Omit<
   React.ComponentProps<"div">,
   "onDrop" | "onDragEnter" | "onDragLeave" | "onDragOver" | "children"
-> & {
+> {
   headline?: string;
   subline?: React.ReactNode;
   children?: React.ReactNode;
-};
+}
 
-function FileDropzoneZone({
+const FileDropzoneZone = ({
   className,
   headline = "Drop files here, or click to browse",
   subline,
   children,
   ...props
-}: FileDropzoneZoneProps) {
+}: FileDropzoneZoneProps) => {
   const ctx = useFileDropzone();
   const [isDragging, setIsDragging] = React.useState(false);
   const dragCounter = React.useRef(0);
@@ -302,9 +303,9 @@ function FileDropzoneZone({
       )}
     </div>
   );
-}
+};
 
-function iconForFile(file: File) {
+const iconForFile = (file: File) => {
   if (
     file.type.startsWith("text/") ||
     /\.(md|txt|csv|json)$/i.test(file.name)
@@ -312,11 +313,11 @@ function iconForFile(file: File) {
     return FileText;
   }
   return FileIcon;
-}
+};
 
 type FileDropzoneListProps = React.ComponentProps<"ul">;
 
-function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
+const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
   const ctx = useFileDropzone();
   if (ctx.files.length === 0) return null;
   return (
@@ -343,25 +344,30 @@ function FileDropzoneList({ className, ...props }: FileDropzoneListProps) {
               {formatBytes(file.size)}
             </span>
             {!ctx.disabled && (
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-xs"
                 aria-label={`Remove ${file.name}`}
                 onClick={() => ctx.removeAt(index)}
-                className="inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="shrink-0"
               >
                 <X className="size-3" />
-              </button>
+              </Button>
             )}
           </li>
         );
       })}
     </ul>
   );
-}
+};
 
 type FileDropzoneErrorsProps = React.ComponentProps<"ul">;
 
-function FileDropzoneErrors({ className, ...props }: FileDropzoneErrorsProps) {
+const FileDropzoneErrors = ({
+  className,
+  ...props
+}: FileDropzoneErrorsProps) => {
   const ctx = useFileDropzone();
   if (ctx.errors.length === 0) return null;
   return (
@@ -381,6 +387,6 @@ function FileDropzoneErrors({ className, ...props }: FileDropzoneErrorsProps) {
       ))}
     </ul>
   );
-}
+};
 
 export { FileDropzone, FileDropzoneZone, FileDropzoneList, FileDropzoneErrors };

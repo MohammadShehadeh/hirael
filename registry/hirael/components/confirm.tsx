@@ -17,7 +17,7 @@ import { Button } from "@/registry/hirael/ui/button";
 
 export type ConfirmTone = "default" | "destructive";
 
-export type ConfirmOptions = {
+export interface ConfirmOptions {
   /** Dialog heading. */
   title?: React.ReactNode;
   /** Supporting line under the title. */
@@ -39,8 +39,7 @@ export type ConfirmOptions = {
    * can retry, so handle the error inside `onConfirm`. When omitted,
    * confirming closes immediately.
    */
-  onConfirm?: () => void | Promise<void>;
-};
+  onConfirm?: () => void | Promise<void>;}
 
 /** Opens the dialog and resolves `true` on confirm, `false` on cancel/dismiss. */
 export type ConfirmFn = (options?: ConfirmOptions) => Promise<boolean>;
@@ -52,27 +51,25 @@ const ConfirmContext = React.createContext<ConfirmFn | null>(null);
  * resolves to `true` when the user confirms or `false` when they cancel or
  * dismiss it. Must be called under a `<ConfirmProvider>`.
  */
-function useConfirm(): ConfirmFn {
+const useConfirm = (): ConfirmFn => {
   const ctx = React.useContext(ConfirmContext);
   if (!ctx) {
     throw new Error("useConfirm must be used inside <ConfirmProvider>");
   }
   return ctx;
-}
-
-type ConfirmRequest = {
-  options: ConfirmOptions;
-  resolve: (value: boolean) => void;
 };
 
-export type ConfirmProviderProps = {
+interface ConfirmRequest {
+  options: ConfirmOptions;
+  resolve: (value: boolean) => void;}
+
+export interface ConfirmProviderProps {
   children: React.ReactNode;
   /** Defaults merged under every `confirm()` call. */
   defaultOptions?: Pick<
     ConfirmOptions,
     "confirmText" | "cancelText" | "tone" | "dismissible"
-  >;
-};
+  >;}
 
 const CLOSE_DURATION = 200;
 
@@ -81,7 +78,7 @@ const CLOSE_DURATION = 200;
  * exposes `useConfirm()` to any descendant. Re-entrant `confirm()` calls queue
  * behind the open one.
  */
-function ConfirmProvider({ children, defaultOptions }: ConfirmProviderProps) {
+const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => {
   const [open, setOpen] = React.useState(false);
   const [pending, setPending] = React.useState(false);
   const [active, setActive] = React.useState<ConfirmRequest | null>(null);
@@ -206,9 +203,9 @@ function ConfirmProvider({ children, defaultOptions }: ConfirmProviderProps) {
       </AlertDialog>
     </ConfirmContext.Provider>
   );
-}
+};
 
-function ConfirmSpinner() {
+const ConfirmSpinner = () => {
   return (
     <span
       data-slot="confirm-spinner"
@@ -216,6 +213,6 @@ function ConfirmSpinner() {
       className="size-4 animate-spin rounded-full border-2 border-current border-e-transparent"
     />
   );
-}
+};
 
 export { ConfirmProvider, useConfirm };

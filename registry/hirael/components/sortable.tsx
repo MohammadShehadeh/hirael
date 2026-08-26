@@ -7,12 +7,11 @@ import { cn } from "@/lib/utils";
 
 type Orientation = "vertical" | "horizontal";
 
-type ItemEntry = {
+interface ItemEntry {
   node: HTMLElement;
-  disabled: boolean;
-};
+  disabled: boolean;}
 
-type SortableCtx = {
+interface SortableCtx {
   order: string[];
   orientation: Orientation;
   disabled: boolean;
@@ -27,52 +26,48 @@ type SortableCtx = {
     cancel: boolean,
   ) => void;
   handleKeyDown: (e: React.KeyboardEvent, id: string) => void;
-  handleBlur: (id: string) => void;
-};
+  handleBlur: (id: string) => void;}
 
 const SortableContext = React.createContext<SortableCtx | null>(null);
 
-function useSortable() {
+const useSortable = () => {
   const ctx = React.useContext(SortableContext);
   if (!ctx) {
     throw new Error("Sortable compound parts must be used inside <Sortable>");
   }
   return ctx;
-}
+};
 
-type SortableItemCtx = {
+interface SortableItemCtx {
   id: string;
   disabled: boolean;
   hasHandle: boolean;
   setHasHandle: (has: boolean) => void;
-  state: "idle" | "grabbed";
-};
+  state: "idle" | "grabbed";}
 
 const SortableItemContext = React.createContext<SortableItemCtx | null>(null);
 
-function useSortableItem() {
+const useSortableItem = () => {
   const ctx = React.useContext(SortableItemContext);
   if (!ctx) {
     throw new Error("Sortable item parts must be used inside <SortableItem>");
   }
   return ctx;
-}
+};
 
 const DRAG_THRESHOLD = 5;
 
-function arrayMove(arr: string[], from: number, to: number) {
+const arrayMove = (arr: string[], from: number, to: number) => {
   const next = arr.slice();
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
   return next;
-}
+};
 
-function reorderPinned(
-  order: string[],
+const reorderPinned = (order: string[],
   isDisabled: (id: string) => boolean,
   id: string,
-  toMovablePos: number,
-) {
+  toMovablePos: number,) => {
   const movable = order.filter((v) => !isDisabled(v));
   const from = movable.indexOf(id);
   if (from === -1) return order;
@@ -81,21 +76,20 @@ function reorderPinned(
   const nextMovable = arrayMove(movable, from, to);
   let m = 0;
   return order.map((v) => (isDisabled(v) ? v : nextMovable[m++]));
-}
+};
 
-export type SortableProps = Omit<
+export interface SortableProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
-> & {
+> {
   /** Ordered item ids. */
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   orientation?: Orientation;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-function Sortable({
+const Sortable = ({
   value: valueProp,
   defaultValue = [],
   onValueChange,
@@ -104,7 +98,7 @@ function Sortable({
   className,
   children,
   ...props
-}: SortableProps) {
+}: SortableProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
   const [preview, setPreview] = React.useState<string[] | null>(null);
   const [dragId, setDragId] = React.useState<string | null>(null);
@@ -403,21 +397,20 @@ function Sortable({
       </div>
     </SortableContext.Provider>
   );
-}
-
-export type SortableItemProps = React.ComponentProps<"div"> & {
-  /** Unique id matching an entry in the root `value`. */
-  value: string;
-  disabled?: boolean;
 };
 
-function SortableItem({
+export interface SortableItemProps extends React.ComponentProps<"div"> {
+  /** Unique id matching an entry in the root `value`. */
+  value: string;
+  disabled?: boolean;}
+
+const SortableItem = ({
   value,
   disabled: disabledProp = false,
   className,
   style,
   ...props
-}: SortableItemProps) {
+}: SortableItemProps) => {
   const {
     order,
     disabled: rootDisabled,
@@ -491,13 +484,13 @@ function SortableItem({
       />
     </SortableItemContext.Provider>
   );
-}
+};
 
-function SortableHandle({
+const SortableHandle = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button">) => {
   const {
     startPress,
     handlePointerMove,
@@ -538,6 +531,6 @@ function SortableHandle({
       {children ?? <GripVertical aria-hidden className="size-4" />}
     </button>
   );
-}
+};
 
 export { Sortable, SortableItem, SortableHandle };

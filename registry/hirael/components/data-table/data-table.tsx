@@ -23,13 +23,13 @@ interface DataTableProps<
   actionBar?: React.ReactNode;
 }
 
-export function DataTable<TData extends RowData>({
+export const DataTable = <TData extends RowData>({
   table,
   actionBar,
   children,
   className,
   ...props
-}: DataTableProps<TData>) {
+}: DataTableProps<TData>) => {
   return (
     <div
       data-slot="data-table"
@@ -101,4 +101,4 @@ export function DataTable<TData extends RowData>({
       </div>
     </div>
   );
-}
+};

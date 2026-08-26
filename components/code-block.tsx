@@ -8,18 +8,17 @@ import { SegmentedControl } from "@/components/segmented-control";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 import { Button } from "@/registry/hirael/ui/button";
 
-export type CodeBlockTab = {
+export interface CodeBlockTab {
   /** Tab label (e.g. filename or install-target path). */
   label: string;
   /** Raw source — used for copy + clipboard. */
   code: string;
   /** Pre-highlighted shiki HTML for `code`. */
-  html: string;
-};
+  html: string;}
 
 export type CodeBlockLayout = "tabs" | "tree";
 
-export function CodeBlock({
+export const CodeBlock = ({
   tabs,
   defaultTab,
   className,
@@ -36,7 +35,7 @@ export function CodeBlock({
   layout?: CodeBlockLayout;
   /** Clip to a short preview behind an "Expand" control. */
   collapsible?: boolean;
-}) {
+}) => {
   const [active, setActive] = React.useState(
     () => defaultTab ?? tabs[0]?.label,
   );
@@ -124,9 +123,9 @@ export function CodeBlock({
       />
     </div>
   );
-}
+};
 
-function CodePane({
+const CodePane = ({
   html,
   maxHeight,
   collapsible,
@@ -140,7 +139,7 @@ function CodePane({
   expanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   className?: string;
-}) {
+}) => {
   const clipped = collapsible && !expanded;
   return (
     <div className={cn("relative", className)}>
@@ -179,16 +178,15 @@ function CodePane({
       )}
     </div>
   );
-}
+};
 
-type TreeNode = {
+interface TreeNode {
   name: string;
   /** Full path when this node is a file; undefined for folders. */
   filePath?: string;
-  children: TreeNode[];
-};
+  children: TreeNode[];}
 
-function buildTree(paths: string[]): TreeNode[] {
+const buildTree = (paths: string[]): TreeNode[] => {
   const roots: TreeNode[] = [];
   for (const path of paths) {
     const parts = path.split("/").filter(Boolean);
@@ -217,9 +215,9 @@ function buildTree(paths: string[]): TreeNode[] {
   };
   sort(roots);
   return roots;
-}
+};
 
-function FileTree({
+const FileTree = ({
   paths,
   active,
   onSelect,
@@ -229,7 +227,7 @@ function FileTree({
   active: string;
   onSelect: (path: string) => void;
   maxHeight: string;
-}) {
+}) => {
   const tree = buildTree(paths);
   return (
     <div
@@ -251,9 +249,9 @@ function FileTree({
       ))}
     </div>
   );
-}
+};
 
-function TreeRow({
+const TreeRow = ({
   node,
   depth,
   active,
@@ -263,7 +261,7 @@ function TreeRow({
   depth: number;
   active: string;
   onSelect: (path: string) => void;
-}) {
+}) => {
   const isFolder = node.children.length > 0;
   const [open, setOpen] = React.useState(true);
   const indent = { paddingLeft: 8 + depth * 12 };
@@ -329,9 +327,9 @@ function TreeRow({
       <span className="truncate">{node.name}</span>
     </button>
   );
-}
+};
 
-export function InlineCodeBlock({
+export const InlineCodeBlock = ({
   html,
   code,
   className,
@@ -341,7 +339,7 @@ export function InlineCodeBlock({
   code: string;
   className?: string;
   maxHeight?: string;
-}) {
+}) => {
   return (
     <div
       className={cn(
@@ -361,4 +359,4 @@ export function InlineCodeBlock({
       />
     </div>
   );
-}
+};

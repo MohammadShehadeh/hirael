@@ -9,7 +9,7 @@ import { Input } from "@/registry/hirael/ui/input";
 import { Spinner } from "@/registry/hirael/components/spinner";
 import { Textarea } from "@/registry/hirael/ui/textarea";
 
-type InlineEditCtx = {
+interface InlineEditCtx {
   value: string;
   draft: string;
   setDraft: (draft: string) => void;
@@ -23,12 +23,11 @@ type InlineEditCtx = {
   submitOnBlur: boolean;
   startEditing: () => void;
   submit: () => void;
-  cancel: () => void;
-};
+  cancel: () => void;}
 
 const InlineEditContext = React.createContext<InlineEditCtx | null>(null);
 
-function useInlineEdit() {
+const useInlineEdit = () => {
   const ctx = React.useContext(InlineEditContext);
   if (!ctx) {
     throw new Error(
@@ -36,12 +35,12 @@ function useInlineEdit() {
     );
   }
   return ctx;
-}
+};
 
-export type InlineEditProps = Omit<
+export interface InlineEditProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onSubmit" | "onCancel"
-> & {
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -57,10 +56,9 @@ export type InlineEditProps = Omit<
   validate?: (value: string) => string | null;
   required?: boolean;
   disabled?: boolean;
-  placeholder?: string;
-};
+  placeholder?: string;}
 
-function InlineEdit({
+const InlineEdit = ({
   value: valueProp,
   defaultValue = "",
   onValueChange,
@@ -78,7 +76,7 @@ function InlineEdit({
   className,
   children,
   ...props
-}: InlineEditProps) {
+}: InlineEditProps) => {
   const errorId = React.useId();
 
   const [internalValue, setInternalValue] = React.useState(defaultValue);
@@ -221,18 +219,17 @@ function InlineEdit({
       </div>
     </InlineEditContext.Provider>
   );
-}
-
-export type InlineEditPreviewProps = React.ComponentProps<"span"> & {
-  asChild?: boolean;
 };
 
-function InlineEditPreview({
+export interface InlineEditPreviewProps extends React.ComponentProps<"span"> {
+  asChild?: boolean;}
+
+const InlineEditPreview = ({
   asChild = false,
   className,
   children,
   ...props
-}: InlineEditPreviewProps) {
+}: InlineEditPreviewProps) => {
   const { value, editing, disabled, placeholder, startEditing } =
     useInlineEdit();
 
@@ -289,14 +286,14 @@ function InlineEditPreview({
       {content}
     </span>
   );
-}
+};
 
-function InlineEditInput({
+const InlineEditInput = ({
   className,
   onKeyDown,
   onBlur,
   ...props
-}: React.ComponentProps<typeof Input>) {
+}: React.ComponentProps<typeof Input>) => {
   const {
     draft,
     setDraft,
@@ -355,14 +352,14 @@ function InlineEditInput({
       ref={focusOnMount}
     />
   );
-}
+};
 
-function InlineEditTextarea({
+const InlineEditTextarea = ({
   className,
   onKeyDown,
   onBlur,
   ...props
-}: React.ComponentProps<typeof Textarea>) {
+}: React.ComponentProps<typeof Textarea>) => {
   const {
     draft,
     setDraft,
@@ -421,20 +418,19 @@ function InlineEditTextarea({
       ref={focusOnMount}
     />
   );
-}
-
-export type InlineEditControlsProps = React.ComponentProps<"div"> & {
-  submitLabel?: string;
-  cancelLabel?: string;
 };
 
-function InlineEditControls({
+export interface InlineEditControlsProps extends React.ComponentProps<"div"> {
+  submitLabel?: string;
+  cancelLabel?: string;}
+
+const InlineEditControls = ({
   submitLabel = "Save",
   cancelLabel = "Cancel",
   className,
   children,
   ...props
-}: InlineEditControlsProps) {
+}: InlineEditControlsProps) => {
   const { editing, pending, submit, cancel } = useInlineEdit();
 
   if (!editing) return null;
@@ -475,7 +471,7 @@ function InlineEditControls({
       )}
     </div>
   );
-}
+};
 
 export {
   InlineEdit,

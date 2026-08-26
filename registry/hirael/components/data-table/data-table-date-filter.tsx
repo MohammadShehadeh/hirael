@@ -19,19 +19,19 @@ import type { DateRange } from "react-day-picker";
 
 type DateSelection = Date[] | DateRange;
 
-function getIsDateRange(value: DateSelection): value is DateRange {
+const getIsDateRange = (value: DateSelection): value is DateRange => {
   return value && typeof value === "object" && !Array.isArray(value);
-}
+};
 
-function parseAsDate(timestamp: number | string | undefined): Date | undefined {
+const parseAsDate = (timestamp: number | string | undefined): Date | undefined => {
   if (!timestamp) return undefined;
   const numericTimestamp =
     typeof timestamp === "string" ? Number(timestamp) : timestamp;
   const date = new Date(numericTimestamp);
   return !Number.isNaN(date.getTime()) ? date : undefined;
-}
+};
 
-function parseColumnFilterValue(value: unknown) {
+const parseColumnFilterValue = (value: unknown) => {
   if (value === null || value === undefined) {
     return [];
   }
@@ -50,7 +50,7 @@ function parseColumnFilterValue(value: unknown) {
   }
 
   return [];
-}
+};
 
 interface DataTableDateFilterProps<TData extends RowData> {
   column: Column<DataTableFeatures, TData>;
@@ -58,11 +58,11 @@ interface DataTableDateFilterProps<TData extends RowData> {
   multiple?: boolean;
 }
 
-export function DataTableDateFilter<TData extends RowData>({
+export const DataTableDateFilter = <TData extends RowData>({
   column,
   title,
   multiple,
-}: DataTableDateFilterProps<TData>) {
+}: DataTableDateFilterProps<TData>) => {
   const columnFilterValue = column.getFilterValue();
 
   const selectedDates = React.useMemo<DateSelection>(() => {
@@ -226,4 +226,4 @@ export function DataTableDateFilter<TData extends RowData>({
       </PopoverContent>
     </Popover>
   );
-}
+};

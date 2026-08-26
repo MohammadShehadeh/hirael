@@ -6,39 +6,37 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 
-export type MediaInputValue = {
+export interface MediaInputValue {
   file: File;
-  url: string;
-};
+  url: string;}
 
-type MediaInputContextValue = {
+interface MediaInputContextValue {
   value: MediaInputValue | null;
   error: string | null;
   disabled: boolean;
   open: () => void;
-  clear: () => void;
-};
+  clear: () => void;}
 
 const MediaInputContext = React.createContext<MediaInputContextValue | null>(
   null,
 );
 
-function useMediaInput() {
+const useMediaInput = () => {
   const ctx = React.useContext(MediaInputContext);
   if (!ctx) throw new Error("useMediaInput must be used within <MediaInput>");
   return ctx;
-}
+};
 
-function formatSize(bytes: number) {
+const formatSize = (bytes: number) => {
   if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   if (bytes >= 1024) return `${Math.round(bytes / 1024)} KB`;
   return `${bytes} B`;
-}
+};
 
-export type MediaInputProps = Omit<
+export interface MediaInputProps extends Omit<
   React.ComponentProps<"div">,
   "onError" | "defaultValue"
-> & {
+> {
   /** Native accept filter, e.g. "audio/*" or "image/png,image/webp". */
   accept?: string;
   /** Maximum file size in bytes. Larger picks are rejected with an error. */
@@ -47,10 +45,9 @@ export type MediaInputProps = Omit<
   value?: MediaInputValue | null;
   defaultValue?: MediaInputValue | null;
   onValueChange?: (value: MediaInputValue | null) => void;
-  onError?: (message: string) => void;
-};
+  onError?: (message: string) => void;}
 
-function MediaInput({
+const MediaInput = ({
   accept,
   maxSize,
   disabled = false,
@@ -61,7 +58,7 @@ function MediaInput({
   className,
   children,
   ...props
-}: MediaInputProps) {
+}: MediaInputProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [internalValue, setInternalValue] =
     React.useState<MediaInputValue | null>(defaultValue);
@@ -142,13 +139,13 @@ function MediaInput({
       </div>
     </MediaInputContext.Provider>
   );
-}
+};
 
-function MediaInputEmpty({
+const MediaInputEmpty = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const { value, error } = useMediaInput();
   if (value) return null;
 
@@ -173,13 +170,13 @@ function MediaInputEmpty({
       )}
     </div>
   );
-}
+};
 
-function MediaInputContent({
+const MediaInputContent = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const { value, error } = useMediaInput();
   if (!value) return null;
 
@@ -201,13 +198,13 @@ function MediaInputContent({
       )}
     </div>
   );
-}
+};
 
-function MediaInputTrigger({
+const MediaInputTrigger = ({
   variant = "outline",
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) => {
   const { open, disabled } = useMediaInput();
 
   return (
@@ -222,9 +219,9 @@ function MediaInputTrigger({
       {...props}
     />
   );
-}
+};
 
-function MediaInputFile({ className, ...props }: React.ComponentProps<"p">) {
+const MediaInputFile = ({ className, ...props }: React.ComponentProps<"p">) => {
   const { value } = useMediaInput();
   if (!value) return null;
 
@@ -244,14 +241,14 @@ function MediaInputFile({ className, ...props }: React.ComponentProps<"p">) {
       </span>
     </p>
   );
-}
+};
 
-function MediaInputClear({
+const MediaInputClear = ({
   onClick,
   className,
   children,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) => {
   const { clear, disabled } = useMediaInput();
 
   return (
@@ -271,7 +268,7 @@ function MediaInputClear({
       {children ?? <X aria-hidden className="size-3.5" />}
     </Button>
   );
-}
+};
 
 export {
   MediaInput,

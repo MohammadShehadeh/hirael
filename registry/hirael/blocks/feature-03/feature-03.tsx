@@ -10,12 +10,11 @@ import {
 
 import { cn } from "@/lib/utils";
 
-type Tile = {
+interface Tile {
   icon: LucideIcon;
   title: string;
   body: string;
-  swatches?: boolean;
-};
+  swatches?: boolean;}
 
 const TILES: readonly Tile[] = [
   {
@@ -55,7 +54,7 @@ const SWATCHES = [
   "bg-foreground",
 ] as const;
 
-export default function Feature03() {
+const Feature03 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
@@ -170,4 +169,6 @@ export default function Feature03() {
       </div>
     </section>
   );
-}
+};
+
+export default Feature03;

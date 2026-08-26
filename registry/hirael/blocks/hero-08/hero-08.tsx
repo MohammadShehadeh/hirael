@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -17,9 +17,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-export default function Hero08() {
+const Hero08 = () => {
   const reduceMotion = useReducedMotion();
 
   const item = {
@@ -130,4 +130,6 @@ export default function Hero08() {
       </motion.div>
     </section>
   );
-}
+};
+
+export default Hero08;

@@ -14,42 +14,40 @@ import {
 
 import { cn } from "@/lib/utils";
 
-type DockContextValue = {
+interface DockContextValue {
   mouseX: MotionValue<number>;
   baseSize: number;
   magnification: number;
-  distance: number;
-};
+  distance: number;}
 
 const DockContext = React.createContext<DockContextValue | null>(null);
 
-function useDock() {
+const useDock = () => {
   const ctx = React.useContext(DockContext);
   if (!ctx) throw new Error("Dock parts must be used within <Dock>");
   return ctx;
-}
+};
 
 const DockItemContext = React.createContext<{ hovered: boolean }>({
   hovered: false,
 });
 
-type DockProps = React.ComponentProps<"div"> & {
+interface DockProps extends React.ComponentProps<"div"> {
   /** Resting icon size, in px. */
   baseSize?: number;
   /** Peak icon size at the cursor, in px. */
   magnification?: number;
   /** Falloff radius of the magnification, in px. */
-  distance?: number;
-};
+  distance?: number;}
 
-function Dock({
+const Dock = ({
   baseSize = 44,
   magnification = 72,
   distance = 140,
   className,
   children,
   ...props
-}: DockProps) {
+}: DockProps) => {
   const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
   const value = React.useMemo<DockContextValue>(
     () => ({ mouseX, baseSize, magnification, distance }),
@@ -89,11 +87,11 @@ function Dock({
       </div>
     </DockContext.Provider>
   );
-}
+};
 
 type DockItemProps = HTMLMotionProps<"button">;
 
-function DockItem({ className, children, ...props }: DockItemProps) {
+const DockItem = ({ className, children, ...props }: DockItemProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const { mouseX, baseSize, magnification, distance } = useDock();
   const [hovered, setHovered] = React.useState(false);
@@ -140,11 +138,11 @@ function DockItem({ className, children, ...props }: DockItemProps) {
       </motion.button>
     </DockItemContext.Provider>
   );
-}
+};
 
 type DockLabelProps = HTMLMotionProps<"div">;
 
-function DockLabel({ className, children, ...props }: DockLabelProps) {
+const DockLabel = ({ className, children, ...props }: DockLabelProps) => {
   const { hovered } = React.useContext(DockItemContext);
   return (
     <AnimatePresence>
@@ -166,6 +164,6 @@ function DockLabel({ className, children, ...props }: DockLabelProps) {
       ) : null}
     </AnimatePresence>
   );
-}
+};
 
 export { Dock, DockItem, DockLabel };

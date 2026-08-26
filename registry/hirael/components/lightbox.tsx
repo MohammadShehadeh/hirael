@@ -6,14 +6,13 @@ import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export type LightboxItem = {
+export interface LightboxItem {
   src: string;
   alt?: string;
   caption?: string;
-  thumbnail?: string;
-};
+  thumbnail?: string;}
 
-type LightboxContextValue = {
+interface LightboxContextValue {
   items: LightboxItem[];
   index: number;
   loop: boolean;
@@ -23,12 +22,11 @@ type LightboxContextValue = {
   next: () => void;
   prev: () => void;
   canPrev: boolean;
-  canNext: boolean;
-};
+  canNext: boolean;}
 
 const LightboxContext = React.createContext<LightboxContextValue | null>(null);
 
-function useLightbox() {
+const useLightbox = () => {
   const ctx = React.useContext(LightboxContext);
   if (!ctx) {
     throw new Error(
@@ -36,9 +34,9 @@ function useLightbox() {
     );
   }
   return ctx;
-}
+};
 
-export type LightboxProps = {
+export interface LightboxProps {
   items: LightboxItem[];
   open?: boolean;
   defaultOpen?: boolean;
@@ -47,10 +45,9 @@ export type LightboxProps = {
   defaultIndex?: number;
   onIndexChange?: (index: number) => void;
   loop?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function Lightbox({
+const Lightbox = ({
   items,
   open: openProp,
   defaultOpen = false,
@@ -60,7 +57,7 @@ function Lightbox({
   onIndexChange,
   loop = true,
   children,
-}: LightboxProps) {
+}: LightboxProps) => {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
@@ -141,19 +138,18 @@ function Lightbox({
       </DialogPrimitive.Root>
     </LightboxContext.Provider>
   );
-}
-
-type LightboxTriggerProps = React.ComponentProps<
-  typeof DialogPrimitive.Trigger
-> & {
-  index?: number;
 };
 
-function LightboxTrigger({
+interface LightboxTriggerProps extends React.ComponentProps<
+  typeof DialogPrimitive.Trigger
+> {
+  index?: number;}
+
+const LightboxTrigger = ({
   index = 0,
   onClick,
   ...props
-}: LightboxTriggerProps) {
+}: LightboxTriggerProps) => {
   const { goTo } = useLightbox();
   return (
     <DialogPrimitive.Trigger
@@ -165,24 +161,20 @@ function LightboxTrigger({
       {...props}
     />
   );
-}
+};
 
-function LightboxClose(
-  props: React.ComponentProps<typeof DialogPrimitive.Close>,
-) {
+const LightboxClose = (props: React.ComponentProps<typeof DialogPrimitive.Close>,) => {
   return <DialogPrimitive.Close data-slot="lightbox-close" {...props} />;
-}
+};
 
-function LightboxPortal(
-  props: React.ComponentProps<typeof DialogPrimitive.Portal>,
-) {
+const LightboxPortal = (props: React.ComponentProps<typeof DialogPrimitive.Portal>,) => {
   return <DialogPrimitive.Portal data-slot="lightbox-portal" {...props} />;
-}
+};
 
-function LightboxOverlay({
+const LightboxOverlay = ({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: React.ComponentProps<typeof DialogPrimitive.Overlay>) => {
   return (
     <DialogPrimitive.Overlay
       data-slot="lightbox-overlay"
@@ -195,17 +187,17 @@ function LightboxOverlay({
       {...props}
     />
   );
-}
+};
 
 const chromeButtonClass =
   "inline-flex items-center justify-center rounded-md bg-black/50 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
 
-function LightboxContent({
+const LightboxContent = ({
   className,
   children,
   onKeyDown,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) {
+}: React.ComponentProps<typeof DialogPrimitive.Content>) => {
   const {
     items,
     index,
@@ -438,12 +430,12 @@ function LightboxContent({
       </DialogPrimitive.Content>
     </LightboxPortal>
   );
-}
+};
 
-function LightboxThumbnails({
+const LightboxThumbnails = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const { items, index, goTo } = useLightbox();
   const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -495,7 +487,7 @@ function LightboxThumbnails({
       ))}
     </div>
   );
-}
+};
 
 export {
   Lightbox,

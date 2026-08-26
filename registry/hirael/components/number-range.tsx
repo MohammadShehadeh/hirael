@@ -11,7 +11,7 @@ export type NumberRangeValue = [number, number];
 export type NumberFormatter = (n: number) => string;
 export type NumberParser = (s: string) => number;
 
-type NumberRangeContextValue = {
+interface NumberRangeContextValue {
   value: NumberRangeValue;
   setValue: (v: NumberRangeValue) => void;
   min: number;
@@ -21,14 +21,13 @@ type NumberRangeContextValue = {
   format: NumberFormatter;
   parse: NumberParser;
   prefix?: string;
-  suffix?: string;
-};
+  suffix?: string;}
 
 const NumberRangeContext = React.createContext<NumberRangeContextValue | null>(
   null,
 );
 
-function useNumberRange() {
+const useNumberRange = () => {
   const ctx = React.useContext(NumberRangeContext);
   if (!ctx) {
     throw new Error(
@@ -36,21 +35,19 @@ function useNumberRange() {
     );
   }
   return ctx;
-}
+};
 
-function clamp(n: number, lo: number, hi: number) {
+const clamp = (n: number, lo: number, hi: number) => {
   return Math.min(hi, Math.max(lo, n));
-}
+};
 
-function clampPair(
-  [lo, hi]: NumberRangeValue,
+const clampPair = ([lo, hi]: NumberRangeValue,
   min: number,
-  max: number,
-): NumberRangeValue {
+  max: number,): NumberRangeValue => {
   const a = clamp(lo, min, max);
   const b = clamp(hi, min, max);
   return a <= b ? [a, b] : [b, a];
-}
+};
 
 const defaultFormat: NumberFormatter = (n) => String(n);
 const defaultParse: NumberParser = (s) => {
@@ -59,10 +56,10 @@ const defaultParse: NumberParser = (s) => {
   return Number.isFinite(n) ? n : 0;
 };
 
-export type NumberRangeProps = Omit<
+export interface NumberRangeProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "prefix"
-> & {
+> {
   value?: NumberRangeValue;
   defaultValue?: NumberRangeValue;
   onValueChange?: (value: NumberRangeValue) => void;
@@ -73,10 +70,9 @@ export type NumberRangeProps = Omit<
   format?: NumberFormatter;
   parse?: NumberParser;
   prefix?: string;
-  suffix?: string;
-};
+  suffix?: string;}
 
-function NumberRange({
+const NumberRange = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -91,7 +87,7 @@ function NumberRange({
   className,
   children,
   ...props
-}: NumberRangeProps) {
+}: NumberRangeProps) => {
   const [internal, setInternal] = React.useState<NumberRangeValue>(
     defaultValue ?? [min, max],
   );
@@ -132,15 +128,15 @@ function NumberRange({
       </div>
     </NumberRangeContext.Provider>
   );
-}
+};
 
-function NumberRangeSlider({
+const NumberRangeSlider = ({
   className,
   ...props
 }: Omit<
   React.ComponentProps<typeof Slider>,
   "value" | "onValueChange" | "min" | "max" | "step" | "defaultValue"
->) {
+>) => {
   const ctx = useNumberRange();
   return (
     <Slider
@@ -155,20 +151,19 @@ function NumberRangeSlider({
       {...props}
     />
   );
-}
-
-type NumberRangeInputProps = Omit<
-  React.ComponentProps<typeof Input>,
-  "value" | "onChange" | "type"
-> & {
-  bound: "min" | "max";
 };
 
-function NumberRangeInput({
+interface NumberRangeInputProps extends Omit<
+  React.ComponentProps<typeof Input>,
+  "value" | "onChange" | "type"
+> {
+  bound: "min" | "max";}
+
+const NumberRangeInput = ({
   bound,
   className,
   ...props
-}: NumberRangeInputProps) {
+}: NumberRangeInputProps) => {
   const ctx = useNumberRange();
   const i = bound === "min" ? 0 : 1;
   const current = ctx.value[i];
@@ -240,17 +235,16 @@ function NumberRangeInput({
       )}
     </div>
   );
-}
-
-type NumberRangeInputsProps = React.ComponentProps<"div"> & {
-  separator?: React.ReactNode;
 };
 
-function NumberRangeInputs({
+interface NumberRangeInputsProps extends React.ComponentProps<"div"> {
+  separator?: React.ReactNode;}
+
+const NumberRangeInputs = ({
   className,
   separator = "–",
   ...props
-}: NumberRangeInputsProps) {
+}: NumberRangeInputsProps) => {
   return (
     <div
       data-slot="number-range-inputs"
@@ -267,6 +261,6 @@ function NumberRangeInputs({
       <NumberRangeInput bound="max" aria-label="Maximum value" />
     </div>
   );
-}
+};
 
 export { NumberRange, NumberRangeSlider, NumberRangeInput, NumberRangeInputs };

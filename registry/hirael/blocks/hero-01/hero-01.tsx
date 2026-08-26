@@ -19,7 +19,7 @@ const STATS = [
   { value: "99.9%", label: "Uptime" },
 ] as const;
 
-export default function Hero01() {
+const Hero01 = () => {
   const [active, setActive] = React.useState(false);
 
   return (
@@ -126,4 +126,6 @@ export default function Hero01() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero01;

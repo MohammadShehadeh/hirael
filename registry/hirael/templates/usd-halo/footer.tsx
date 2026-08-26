@@ -1,6 +1,4 @@
-import { ArrowRight } from "lucide-react";
-
-import { LogoIcon } from "./primitives";
+import { LogoIcon, PillButton } from "./primitives";
 
 const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: "Product", links: ["Wallet", "Rewards", "Network", "Security"] },
@@ -14,7 +12,7 @@ const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
  * echoes the hero and info cards: brand lockup and an inverted Open Wallet
  * pill up top, four link columns, then a legal bar.
  */
-export function FooterSection() {
+export const FooterSection = () => {
   const year = new Date().getFullYear();
 
   return (
@@ -35,15 +33,11 @@ export function FooterSection() {
               </p>
             </div>
 
-            <button
-              type="button"
-              className="group inline-flex items-center gap-3 self-start rounded-full bg-white py-2 ps-8 pe-2 text-base font-medium text-[#2B2644] transition-colors duration-200 hover:bg-white/90 md:self-auto"
-            >
-              <span>Open Wallet</span>
-              <span className="rounded-full bg-[#2B2644] p-2">
-                <ArrowRight className="h-5 w-5 text-white rtl:rotate-180" />
-              </span>
-            </button>
+            <PillButton
+              label="Open Wallet"
+              inverted
+              className="self-start md:self-auto"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
@@ -80,4 +74,4 @@ export function FooterSection() {
       </div>
     </footer>
   );
-}
+};

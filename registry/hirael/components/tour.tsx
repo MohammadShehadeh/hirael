@@ -6,50 +6,45 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 
-export type TourStep = {
+export interface TourStep {
   target: string | React.RefObject<HTMLElement | null>;
   title: React.ReactNode;
   description?: React.ReactNode;
-  side?: "top" | "bottom" | "left" | "right";
-};
+  side?: "top" | "bottom" | "left" | "right";}
 
-export type TourLabels = {
+export interface TourLabels {
   next?: React.ReactNode;
   back?: React.ReactNode;
   skip?: React.ReactNode;
-  finish?: React.ReactNode;
-};
+  finish?: React.ReactNode;}
 
-type TourContextValue = {
+interface TourContextValue {
   open: boolean;
   step: number;
   start: (at?: number) => void;
   stop: () => void;
   next: () => void;
-  back: () => void;
-};
+  back: () => void;}
 
 const TourContext = React.createContext<TourContextValue | null>(null);
 
-function useTour() {
+const useTour = () => {
   const ctx = React.useContext(TourContext);
   if (!ctx) {
     throw new Error("Tour compound parts must be used inside <Tour>");
   }
   return ctx;
-}
+};
 
-function resolveTarget(
-  target: TourStep["target"] | undefined,
-): HTMLElement | null {
+const resolveTarget = (target: TourStep["target"] | undefined,): HTMLElement | null => {
   if (!target) return null;
   if (typeof target === "string") {
     return document.querySelector<HTMLElement>(target);
   }
   return target.current;
-}
+};
 
-export type TourProps = {
+export interface TourProps {
   steps: TourStep[];
   open?: boolean;
   defaultOpen?: boolean;
@@ -61,10 +56,9 @@ export type TourProps = {
   scrollIntoView?: boolean;
   spotlightPadding?: number;
   labels?: TourLabels;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function Tour({
+const Tour = ({
   steps,
   open: openProp,
   defaultOpen = false,
@@ -77,7 +71,7 @@ function Tour({
   spotlightPadding = 8,
   labels,
   children,
-}: TourProps) {
+}: TourProps) => {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
@@ -186,11 +180,11 @@ function Tour({
         )}
     </TourContext.Provider>
   );
-}
+};
 
-type Rect = { top: number; left: number; width: number; height: number };
+interface Rect { top: number; left: number; width: number; height: number}
 
-type TourOverlayProps = {
+interface TourOverlayProps {
   steps: TourStep[];
   step: number;
   stop: () => void;
@@ -198,10 +192,9 @@ type TourOverlayProps = {
   back: () => void;
   scrollIntoView: boolean;
   padding: number;
-  labels?: TourLabels;
-};
+  labels?: TourLabels;}
 
-function TourOverlay({
+const TourOverlay = ({
   steps,
   step,
   stop,
@@ -210,7 +203,7 @@ function TourOverlay({
   scrollIntoView,
   padding,
   labels,
-}: TourOverlayProps) {
+}: TourOverlayProps) => {
   const current = steps[step];
   const side = current?.side ?? "bottom";
   const target = current?.target;
@@ -491,14 +484,13 @@ function TourOverlay({
       </div>
     </div>
   );
-}
-
-export type TourTriggerProps = React.ComponentProps<typeof Button> & {
-  /** Step index to start at, 0-based. */
-  at?: number;
 };
 
-function TourTrigger({ at, onClick, ...props }: TourTriggerProps) {
+export interface TourTriggerProps extends React.ComponentProps<typeof Button> {
+  /** Step index to start at, 0-based. */
+  at?: number;}
+
+const TourTrigger = ({ at, onClick, ...props }: TourTriggerProps) => {
   const { start } = useTour();
   return (
     <Button
@@ -510,6 +502,6 @@ function TourTrigger({ at, onClick, ...props }: TourTriggerProps) {
       }}
     />
   );
-}
+};
 
 export { Tour, TourTrigger, useTour };

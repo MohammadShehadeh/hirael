@@ -23,7 +23,7 @@ const POSITIVES = [
   "Centralized context and clear records accelerate every decision",
 ];
 
-function ControlGlyph() {
+const ControlGlyph = () => {
   return (
     <svg
       width="19"
@@ -39,15 +39,15 @@ function ControlGlyph() {
       />
     </svg>
   );
-}
+};
 
-function PointRow({
+const PointRow = ({
   children,
   positive,
 }: {
   children: ReactNode;
   positive?: boolean;
-}) {
+}) => {
   return (
     <div
       className="nexa-soft-shadow flex items-center gap-3 rounded-[18px] bg-white"
@@ -82,9 +82,9 @@ function PointRow({
       </span>
     </div>
   );
-}
+};
 
-export function Freedom() {
+export const Freedom = () => {
   return (
     <section
       id="method"
@@ -163,4 +163,4 @@ export function Freedom() {
       </div>
     </section>
   );
-}
+};

@@ -5,7 +5,7 @@ import { ChevronsLeftRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type ImageCompareContextValue = {
+interface ImageCompareContextValue {
   position: number;
   setPosition: (next: number) => void;
   orientation: "horizontal" | "vertical";
@@ -13,13 +13,12 @@ type ImageCompareContextValue = {
   dragging: boolean;
   setDragging: (dragging: boolean) => void;
   rtl: boolean;
-  positionFromPointer: (event: React.PointerEvent) => number | null;
-};
+  positionFromPointer: (event: React.PointerEvent) => number | null;}
 
 const ImageCompareContext =
   React.createContext<ImageCompareContextValue | null>(null);
 
-function useImageCompare() {
+const useImageCompare = () => {
   const context = React.useContext(ImageCompareContext);
   if (!context) {
     throw new Error(
@@ -27,16 +26,16 @@ function useImageCompare() {
     );
   }
   return context;
-}
+};
 
-function clamp(value: number) {
+const clamp = (value: number) => {
   return Math.min(100, Math.max(0, value));
-}
+};
 
-export type ImageCompareProps = Omit<
+export interface ImageCompareProps extends Omit<
   React.ComponentProps<"div">,
   "onPointerMove"
-> & {
+> {
   /** Controlled position of the boundary, 0–100 from the reading start. */
   position?: number;
   defaultPosition?: number;
@@ -44,10 +43,9 @@ export type ImageCompareProps = Omit<
   orientation?: "horizontal" | "vertical";
   /** Follow the hovering pointer instead of requiring a drag. */
   followPointer?: boolean;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-function ImageCompare({
+const ImageCompare = ({
   position: positionProp,
   defaultPosition = 50,
   onPositionChange,
@@ -57,7 +55,7 @@ function ImageCompare({
   className,
   children,
   ...props
-}: ImageCompareProps) {
+}: ImageCompareProps) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [rtl, setRtl] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
@@ -144,15 +142,15 @@ function ImageCompare({
       </div>
     </ImageCompareContext.Provider>
   );
-}
+};
 
 export type ImageCompareBeforeProps = React.ComponentProps<"div">;
 
-function ImageCompareBefore({
+const ImageCompareBefore = ({
   className,
   children,
   ...props
-}: ImageCompareBeforeProps) {
+}: ImageCompareBeforeProps) => {
   return (
     <div
       data-slot="image-compare-before"
@@ -162,16 +160,16 @@ function ImageCompareBefore({
       {children}
     </div>
   );
-}
+};
 
 export type ImageCompareAfterProps = React.ComponentProps<"div">;
 
-function ImageCompareAfter({
+const ImageCompareAfter = ({
   className,
   style,
   children,
   ...props
-}: ImageCompareAfterProps) {
+}: ImageCompareAfterProps) => {
   const { position, orientation, dragging, rtl } = useImageCompare();
 
   const clipPath =
@@ -195,18 +193,17 @@ function ImageCompareAfter({
       {children}
     </div>
   );
-}
-
-export type ImageCompareHandleProps = React.ComponentProps<"div"> & {
-  "aria-label"?: string;
 };
 
-function ImageCompareHandle({
+export interface ImageCompareHandleProps extends React.ComponentProps<"div"> {
+  "aria-label"?: string;}
+
+const ImageCompareHandle = ({
   className,
   style,
   children,
   ...props
-}: ImageCompareHandleProps) {
+}: ImageCompareHandleProps) => {
   const {
     position,
     setPosition,
@@ -339,18 +336,17 @@ function ImageCompareHandle({
       )}
     </div>
   );
-}
-
-export type ImageCompareLabelProps = React.ComponentProps<"span"> & {
-  side: "before" | "after";
 };
 
-function ImageCompareLabel({
+export interface ImageCompareLabelProps extends React.ComponentProps<"span"> {
+  side: "before" | "after";}
+
+const ImageCompareLabel = ({
   side,
   className,
   children,
   ...props
-}: ImageCompareLabelProps) {
+}: ImageCompareLabelProps) => {
   const { orientation, dragging } = useImageCompare();
 
   return (
@@ -374,7 +370,7 @@ function ImageCompareLabel({
       {children}
     </span>
   );
-}
+};
 
 export {
   ImageCompare,

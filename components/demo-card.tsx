@@ -12,13 +12,13 @@ import {
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
 
-export function DemoCard({
+export const DemoCard = ({
   entry,
   className,
 }: {
   entry: RegistryEntryMeta;
   className?: string;
-}) {
+}) => {
   const href = entryHref(entry);
   const [engaged, setEngaged] = React.useState(false);
   const hoverCapable = useHoverCapable();
@@ -70,7 +70,7 @@ export function DemoCard({
       </div>
     </article>
   );
-}
+};
 
 const PREVIEW_FRAME =
   "bg-dot-grid relative flex h-60 items-center justify-center overflow-hidden p-5";
@@ -80,32 +80,32 @@ const hoverQuery =
     ? window.matchMedia("(hover: hover) and (pointer: fine)")
     : null;
 
-function subscribeHover(onChange: () => void) {
+const subscribeHover = (onChange: () => void) => {
   hoverQuery?.addEventListener("change", onChange);
   return () => hoverQuery?.removeEventListener("change", onChange);
-}
+};
 
 /** True only on devices where hovering is the primary pointer interaction —
  * touch devices never inert their demos, since a tap should act immediately. */
-function useHoverCapable() {
+const useHoverCapable = () => {
   return React.useSyncExternalStore(
     subscribeHover,
     () => hoverQuery?.matches ?? false,
     () => false,
   );
-}
+};
 
 /**
  * Mounts the demo only once the card is near the viewport, so an index of 60+
  * cards doesn't pull every component chunk on page load.
  */
-function LazyDemo({
+const LazyDemo = ({
   name,
   inert,
 }: {
   name: string;
   inert: boolean;
-}) {
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [isNear, setIsNear] = React.useState(false);
 
@@ -131,13 +131,13 @@ function LazyDemo({
       </div>
     </div>
   );
-}
+};
 
-function DemoSkeleton() {
+const DemoSkeleton = () => {
   return (
     <div
       aria-hidden
       className="h-9 w-2/3 animate-pulse rounded-md bg-muted-foreground/10"
     />
   );
-}
+};

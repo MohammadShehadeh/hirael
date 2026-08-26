@@ -3,7 +3,7 @@ import { PillButton } from "./primitives";
 const CARD_IMAGE =
   "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38XZzbokvIgWjottwiXH07Lwa1P%2FHF_20260423_164207_F243351D-ED59-48EC-83A0-A5E996BDBE3C.PNG&w=1280&q=85";
 
-export function InfoSection() {
+export const InfoSection = () => {
   return (
     <section className="bg-[#F5F5F5] px-6 py-24">
       <div className="mx-auto max-w-[88rem]">
@@ -81,4 +81,4 @@ export function InfoSection() {
       </div>
     </section>
   );
-}
+};

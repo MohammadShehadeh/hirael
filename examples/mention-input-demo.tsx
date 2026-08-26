@@ -9,7 +9,7 @@ import {
   type MentionItem,
 } from "@/registry/hirael/components/mention-input";
 
-export default function MentionInputDemo() {
+const MentionInputDemo = () => {
   const t = useT();
 
   const TEAM: MentionItem[] = [
@@ -184,4 +184,6 @@ export default function MentionInputDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default MentionInputDemo;

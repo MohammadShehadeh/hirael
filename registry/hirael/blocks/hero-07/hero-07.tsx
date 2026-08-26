@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 const HEADLINE = "Build the page once, ship it everywhere";
 
-function Headline() {
+const Headline = () => {
   const reduce = useReducedMotion();
   const words = HEADLINE.split(" ");
 
@@ -42,15 +42,15 @@ function Headline() {
       })}
     </h1>
   );
-}
+};
 
-function Beam({
+const Beam = ({
   className,
   reduce,
 }: {
   className?: string;
   reduce: boolean | null;
-}) {
+}) => {
   const verticals = [
     "M141.338 232.625V5.075",
     "M200.338 232.625V5.075",
@@ -126,15 +126,15 @@ function Beam({
       </defs>
     </svg>
   );
-}
+};
 
-function SideBeam({
+const SideBeam = ({
   className,
   reduce,
 }: {
   className?: string;
   reduce: boolean | null;
-}) {
+}) => {
   const paths = [
     "M0 442.957L209.048 442.957C212.366 442.957 215.508 441.458 217.596 438.879L321.802 310.196",
     "M0 1.19531L209.048 1.19557C212.366 1.19558 215.508 2.69391 217.596 5.27302L321.802 133.956",
@@ -204,9 +204,9 @@ function SideBeam({
       </defs>
     </svg>
   );
-}
+};
 
-export default function Hero07() {
+const Hero07 = () => {
   const reduce = useReducedMotion();
 
   return (
@@ -296,4 +296,6 @@ export default function Hero07() {
       </motion.div>
     </section>
   );
-}
+};
+
+export default Hero07;

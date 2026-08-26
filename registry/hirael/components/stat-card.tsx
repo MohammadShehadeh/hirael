@@ -9,7 +9,7 @@ export type StatCardTrend = "up" | "down" | "flat";
 
 type StatCardProps = React.ComponentProps<"div">;
 
-function StatCard({ className, ...props }: StatCardProps) {
+const StatCard = ({ className, ...props }: StatCardProps) => {
   return (
     <div
       data-slot="stat-card"
@@ -20,11 +20,11 @@ function StatCard({ className, ...props }: StatCardProps) {
       {...props}
     />
   );
-}
+};
 
 type StatCardLabelProps = React.ComponentProps<"p">;
 
-function StatCardLabel({ className, ...props }: StatCardLabelProps) {
+const StatCardLabel = ({ className, ...props }: StatCardLabelProps) => {
   return (
     <p
       data-slot="stat-card-label"
@@ -35,11 +35,11 @@ function StatCardLabel({ className, ...props }: StatCardLabelProps) {
       {...props}
     />
   );
-}
+};
 
 type StatCardValueProps = React.ComponentProps<"p">;
 
-function StatCardValue({ className, ...props }: StatCardValueProps) {
+const StatCardValue = ({ className, ...props }: StatCardValueProps) => {
   return (
     <p
       data-slot="stat-card-value"
@@ -50,19 +50,18 @@ function StatCardValue({ className, ...props }: StatCardValueProps) {
       {...props}
     />
   );
-}
-
-type StatCardDeltaProps = Omit<React.ComponentProps<"span">, "children"> & {
-  trend: StatCardTrend;
-  children?: React.ReactNode;
 };
 
-function StatCardDelta({
+interface StatCardDeltaProps extends Omit<React.ComponentProps<"span">, "children"> {
+  trend: StatCardTrend;
+  children?: React.ReactNode;}
+
+const StatCardDelta = ({
   trend,
   className,
   children,
   ...props
-}: StatCardDeltaProps) {
+}: StatCardDeltaProps) => {
   const Icon =
     trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
   const tone = trend === "flat" ? "text-muted-foreground" : "text-foreground";
@@ -81,6 +80,6 @@ function StatCardDelta({
       {children}
     </span>
   );
-}
+};
 
 export { StatCard, StatCardLabel, StatCardValue, StatCardDelta };

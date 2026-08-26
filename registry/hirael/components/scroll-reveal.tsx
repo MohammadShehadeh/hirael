@@ -4,7 +4,7 @@ import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
 type ScrollRevealDirection = "up" | "down" | "left" | "right";
 
-type ScrollRevealProps = HTMLMotionProps<"div"> & {
+interface ScrollRevealProps extends HTMLMotionProps<"div"> {
   /** Direction the content travels in from. */
   direction?: ScrollRevealDirection;
   /** Travel distance, in px. */
@@ -16,10 +16,9 @@ type ScrollRevealProps = HTMLMotionProps<"div"> & {
   /** Reveal once and stay, or replay every time it re-enters the viewport. */
   once?: boolean;
   /** Visible fraction (0–1) that triggers the reveal. */
-  amount?: number;
-};
+  amount?: number;}
 
-function offsetFor(direction: ScrollRevealDirection, distance: number) {
+const offsetFor = (direction: ScrollRevealDirection, distance: number) => {
   switch (direction) {
     case "up":
       return { y: distance };
@@ -30,9 +29,9 @@ function offsetFor(direction: ScrollRevealDirection, distance: number) {
     case "right":
       return { x: -distance };
   }
-}
+};
 
-function ScrollReveal({
+const ScrollReveal = ({
   direction = "up",
   distance = 24,
   delay = 0,
@@ -40,7 +39,7 @@ function ScrollReveal({
   once = true,
   amount = 0.3,
   ...props
-}: ScrollRevealProps) {
+}: ScrollRevealProps) => {
   const reduced = useReducedMotion();
 
   if (reduced) {
@@ -61,6 +60,6 @@ function ScrollReveal({
       {...props}
     />
   );
-}
+};
 
 export { ScrollReveal };

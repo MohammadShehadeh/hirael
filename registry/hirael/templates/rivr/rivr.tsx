@@ -9,7 +9,7 @@ import { Hero } from "./hero";
 import { Metrics } from "./metrics";
 import { RivrStyles } from "./styles";
 
-export default function Rivr() {
+const Rivr = () => {
   return (
     <div className="rivr relative min-h-svh bg-background text-foreground antialiased">
       <RivrStyles />
@@ -22,4 +22,6 @@ export default function Rivr() {
       </MotionConfig>
     </div>
   );
-}
+};
+
+export default Rivr;

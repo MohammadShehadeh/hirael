@@ -12,15 +12,14 @@ import { cn } from "@/lib/utils";
 
 type FabSide = "top" | "bottom" | "left" | "right";
 
-type FabContextValue = {
+interface FabContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
-  side: FabSide;
-};
+  side: FabSide;}
 
 const FabContext = React.createContext<FabContextValue | null>(null);
 
-function useFab() {
+const useFab = () => {
   const ctx = React.useContext(FabContext);
   if (!ctx) {
     throw new Error(
@@ -28,7 +27,7 @@ function useFab() {
     );
   }
   return ctx;
-}
+};
 
 const listSideClasses: Record<FabSide, string> = {
   top: "bottom-full left-1/2 mb-3 -translate-x-1/2 flex-col-reverse",
@@ -49,14 +48,13 @@ const listVariants: Variants = {
   closed: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
 
-type FloatingActionButtonProps = React.ComponentProps<"div"> & {
+interface FloatingActionButtonProps extends React.ComponentProps<"div"> {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  side?: FabSide;
-};
+  side?: FabSide;}
 
-function FloatingActionButton({
+const FloatingActionButton = ({
   open: openProp,
   defaultOpen,
   onOpenChange,
@@ -64,7 +62,7 @@ function FloatingActionButton({
   className,
   children,
   ...props
-}: FloatingActionButtonProps) {
+}: FloatingActionButtonProps) => {
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
   const open = openProp ?? uncontrolled;
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -125,15 +123,15 @@ function FloatingActionButton({
       </MotionConfig>
     </FabContext.Provider>
   );
-}
+};
 
 type FloatingActionButtonTriggerProps = HTMLMotionProps<"button">;
 
-function FloatingActionButtonTrigger({
+const FloatingActionButtonTrigger = ({
   className,
   children,
   ...props
-}: FloatingActionButtonTriggerProps) {
+}: FloatingActionButtonTriggerProps) => {
   const { open, setOpen } = useFab();
   return (
     <motion.button
@@ -154,14 +152,14 @@ function FloatingActionButtonTrigger({
       {children}
     </motion.button>
   );
-}
+};
 
 type FloatingActionButtonListProps = HTMLMotionProps<"div">;
 
-function FloatingActionButtonList({
+const FloatingActionButtonList = ({
   className,
   ...props
-}: FloatingActionButtonListProps) {
+}: FloatingActionButtonListProps) => {
   const { open, side } = useFab();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -210,14 +208,14 @@ function FloatingActionButtonList({
       {...props}
     />
   );
-}
+};
 
 type FloatingActionButtonItemProps = HTMLMotionProps<"button">;
 
-function FloatingActionButtonItem({
+const FloatingActionButtonItem = ({
   className,
   ...props
-}: FloatingActionButtonItemProps) {
+}: FloatingActionButtonItemProps) => {
   const { open, side } = useFab();
   const itemVariants: Variants = {
     open: { opacity: 1, x: 0, y: 0, visibility: "visible" },
@@ -243,7 +241,7 @@ function FloatingActionButtonItem({
       {...props}
     />
   );
-}
+};
 
 export {
   FloatingActionButton,

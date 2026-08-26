@@ -1,5 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
+import { Badge } from "@/registry/hirael/ui/badge";
+
 import { LinkIcon } from "./primitives";
 
 const NARRATIV_VIDEO =
@@ -7,7 +9,7 @@ const NARRATIV_VIDEO =
 const LUMINAR_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_123323_f909c2b8-ff6c-4edf-882b-8ebcdbe389b5.mp4";
 
-export function CaseStudies() {
+export const CaseStudies = () => {
   return (
     <section className="bg-[#F5F5F5] pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px]">
@@ -15,9 +17,12 @@ export function CaseStudies() {
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
             2
           </span>
-          <span className="rounded-full border border-gray-300 px-3 py-1 text-[12px] font-medium text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]">
+          <Badge
+            variant="outline"
+            className="border-gray-300 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]"
+          >
             Featured client work
-          </span>
+          </Badge>
         </div>
 
         <h2 className="mb-10 px-5 text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12">
@@ -91,4 +96,4 @@ export function CaseStudies() {
       </div>
     </section>
   );
-}
+};

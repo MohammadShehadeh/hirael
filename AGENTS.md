@@ -1,7 +1,7 @@
 # Hirael — a shadcn-compatible component registry
 
-Hirael ships "the components shadcn/ui doesn't ship": ~64 React components,
-80+ section blocks, and full-page templates, distributed through the **shadcn
+Hirael ships "the components shadcn/ui doesn't ship": 70+ React components,
+95+ section blocks, and full-page templates, distributed through the **shadcn
 registry schema** — consumers run `npx shadcn add
 https://hirael.com/r/<name>.json` and the source lands in their repo. There's
 no runtime package. The repo is the showcase site: a static Next.js 16 export

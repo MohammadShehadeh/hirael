@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-export function DirectionToggle({
+export const DirectionToggle = ({
   rtl,
   onToggle,
   className,
@@ -10,7 +10,7 @@ export function DirectionToggle({
   rtl: boolean;
   onToggle: (rtl: boolean) => void;
   className?: string;
-}) {
+}) => {
   return (
     <button
       type="button"
@@ -28,4 +28,4 @@ export function DirectionToggle({
       RTL
     </button>
   );
-}
+};

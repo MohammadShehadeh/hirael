@@ -16,13 +16,13 @@ import {
  * through every component, block, or template in order. RTL-safe: the cards
  * sit on the inline edges and the chevrons flip with `rtl:rotate-180`.
  */
-export function Pager({
+export const Pager = ({
   prev,
   next,
 }: {
   prev: RegistryEntryMeta | null;
   next: RegistryEntryMeta | null;
-}) {
+}) => {
   if (!prev && !next) return null;
 
   return (
@@ -42,15 +42,15 @@ export function Pager({
       )}
     </nav>
   );
-}
+};
 
-function PagerLink({
+const PagerLink = ({
   entry,
   direction,
 }: {
   entry: RegistryEntryMeta;
   direction: "prev" | "next";
-}) {
+}) => {
   const isPrev = direction === "prev";
   const Chevron = isPrev ? ChevronLeft : ChevronRight;
   const chevron = (
@@ -79,10 +79,10 @@ function PagerLink({
       </span>
     </Link>
   );
-}
+};
 
-function collectionLabel(entry: RegistryEntryMeta) {
+const collectionLabel = (entry: RegistryEntryMeta) => {
   if (entry.blockKind) return `${BLOCK_KIND_LABELS[entry.blockKind]} blocks`;
   if (entry.category === "templates") return "Template";
   return CATEGORY_LABELS[entry.category];
-}
+};

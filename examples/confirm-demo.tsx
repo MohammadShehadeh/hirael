@@ -10,7 +10,7 @@ import {
   useConfirm,
 } from "@/registry/hirael/components/confirm";
 
-function ConfirmDemoInner() {
+const ConfirmDemoInner = () => {
   const t = useT();
   const confirm = useConfirm();
   const [status, setStatus] = React.useState<React.ReactNode>(
@@ -67,12 +67,14 @@ function ConfirmDemoInner() {
       </p>
     </div>
   );
-}
+};
 
-export default function ConfirmDemo() {
+const ConfirmDemo = () => {
   return (
     <ConfirmProvider>
       <ConfirmDemoInner />
     </ConfirmProvider>
   );
-}
+};
+
+export default ConfirmDemo;

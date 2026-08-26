@@ -39,13 +39,12 @@ import {
   type RegistryEntryMeta,
 } from "@/registry/hirael/registry-meta";
 
-export type SourceFile = {
+export interface SourceFile {
   code: string;
   html: string;
-  lang: string;
-};
+  lang: string;}
 
-export type ApiProp = {
+export interface ApiProp {
   name: string;
   type: string;
   required: boolean;
@@ -53,23 +52,20 @@ export type ApiProp = {
   description: string | null;
   /** Pre-highlighted inline HTML (VSCode token colors) for `type` / `default`. */
   typeHtml?: string;
-  defaultHtml?: string | null;
-};
+  defaultHtml?: string | null;}
 
-export type ApiPart = {
+export interface ApiPart {
   name: string;
   props: ApiProp[];
-  extendsNative: boolean;
-};
+  extendsNative: boolean;}
 
 /** A single example a component showcases — its slug, label and source. */
-export type ExampleEntry = {
+export interface ExampleEntry {
   slug: string;
   title: string;
-  source: SourceFile | null;
-};
+  source: SourceFile | null;}
 
-export function ComponentPage({
+export const ComponentPage = ({
   entry,
   source,
   examples,
@@ -88,7 +84,7 @@ export function ComponentPage({
   api?: ApiPart[] | null;
   /** Hierarchy trail shown above the header for navigation. */
   breadcrumb?: Crumb[];
-}) {
+}) => {
   const isComposite =
     entry.category === "blocks" || entry.category === "templates";
   // Multi-file items (composites, or a component that ships a folder of parts
@@ -300,20 +296,20 @@ export function ComponentPage({
       </div>
     </div>
   );
-}
+};
 
-type PageSection = { id: string; label: string; content: React.ReactNode };
+interface PageSection { id: string; label: string; content: React.ReactNode}
 
-function githubSourceUrl(entry: RegistryEntryMeta) {
+const githubSourceUrl = (entry: RegistryEntryMeta) => {
   const files = entry.files ?? [];
   const primary = files[0]?.path;
   if (!primary) return null;
   if (files.length === 1) return `${SITE.githubRepoUrl}/blob/main/${primary}`;
   const dir = primary.slice(0, primary.lastIndexOf("/"));
   return `${SITE.githubRepoUrl}/tree/main/${dir}`;
-}
+};
 
-function HeaderAction({
+const HeaderAction = ({
   href,
   title,
   icon,
@@ -323,7 +319,7 @@ function HeaderAction({
   title: string;
   icon: React.ReactNode;
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <Button
       asChild
@@ -336,9 +332,9 @@ function HeaderAction({
       </a>
     </Button>
   );
-}
+};
 
-function Section({
+const Section = ({
   id,
   label,
   children,
@@ -346,7 +342,7 @@ function Section({
   id: string;
   label: string;
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <section id={id} className="flex scroll-mt-24 flex-col gap-4">
       <a
@@ -363,16 +359,16 @@ function Section({
       {children}
     </section>
   );
-}
+};
 
 /** One example: a preview ↔ code toggle (with an RTL toggle on the preview). */
-function ExampleBlock({
+const ExampleBlock = ({
   example,
   showTitle,
 }: {
   example: ExampleEntry;
   showTitle: boolean;
-}) {
+}) => {
   const [view, setView] = React.useState<"preview" | "code">("preview");
   const [rtl, setRtl] = React.useState(false);
   const hasCode = !!example.source;
@@ -442,9 +438,9 @@ function ExampleBlock({
       </div>
     </section>
   );
-}
+};
 
-function DepGroup({ title, deps }: { title: string; deps: string[] }) {
+const DepGroup = ({ title, deps }: { title: string; deps: string[] }) => {
   return (
     <div className="rounded-sm border border-border bg-card p-4">
       <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -462,12 +458,12 @@ function DepGroup({ title, deps }: { title: string; deps: string[] }) {
       </div>
     </div>
   );
-}
+};
 
 const API_TH =
   "px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground";
 
-function ApiPanel({ parts }: { parts: ApiPart[] }) {
+const ApiPanel = ({ parts }: { parts: ApiPart[] }) => {
   return (
     <div className="flex flex-col gap-4">
       {parts.map((part) => (
@@ -549,4 +545,4 @@ function ApiPanel({ parts }: { parts: ApiPart[] }) {
       ))}
     </div>
   );
-}
+};

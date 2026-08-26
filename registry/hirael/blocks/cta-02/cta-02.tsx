@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 
-export default function Cta02() {
+const Cta02 = () => {
   return (
     <section
       data-slot="cta"
@@ -92,4 +92,6 @@ export default function Cta02() {
       </div>
     </section>
   );
-}
+};
+
+export default Cta02;

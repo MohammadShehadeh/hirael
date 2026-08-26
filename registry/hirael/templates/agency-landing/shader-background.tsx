@@ -14,7 +14,7 @@ import {
  * light film grain. WebGL only, so it loads client-side via the dynamic
  * import in hero.tsx and never runs during server render.
  */
-export function ShaderBackground() {
+export const ShaderBackground = () => {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Swirl colorA="#ffffff" colorB="#f0f0f0" detail={1.7} />
@@ -42,4 +42,4 @@ export function ShaderBackground() {
       <FilmGrain strength={0.05} />
     </Shader>
   );
-}
+};

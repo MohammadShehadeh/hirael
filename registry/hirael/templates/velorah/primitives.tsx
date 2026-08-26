@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
  * Instrument Serif. The mark scales with the wrapper font size, so the same
  * component serves the navbar (text-3xl) and the footer (text-xl).
  */
-export function Wordmark({ className }: { className?: string }) {
+export const Wordmark = ({ className }: { className?: string }) => {
   return (
     <span
       className={cn(
@@ -17,4 +17,4 @@ export function Wordmark({ className }: { className?: string }) {
       <sup className="text-[0.4em]">&reg;</sup>
     </span>
   );
-}
+};

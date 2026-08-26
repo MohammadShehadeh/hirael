@@ -9,7 +9,7 @@ const STATS = [
   { value: 200, suffix: "%", label: "Satisfied Clients" },
 ];
 
-function useCountUp(target: number, active: boolean, duration = 1400) {
+const useCountUp = (target: number, active: boolean, duration = 1400) => {
   const [value, setValue] = React.useState(0);
 
   React.useEffect(() => {
@@ -34,9 +34,9 @@ function useCountUp(target: number, active: boolean, duration = 1400) {
   }, [active, target, duration]);
 
   return value;
-}
+};
 
-function Stat({
+const Stat = ({
   value,
   suffix,
   label,
@@ -46,7 +46,7 @@ function Stat({
   suffix: string;
   label: string;
   active: boolean;
-}) {
+}) => {
   const count = useCountUp(value, active);
   return (
     <div className="flex flex-col items-center border-t border-[hsl(var(--stroke))] pt-8 text-center sm:items-start sm:text-start">
@@ -59,9 +59,9 @@ function Stat({
       </span>
     </div>
   );
-}
+};
 
-export function Stats() {
+export const Stats = () => {
   const [active, setActive] = React.useState(false);
   return (
     <section id="stats" className="bg-[hsl(var(--bg))] py-16 md:py-24">
@@ -76,4 +76,4 @@ export function Stats() {
       </motion.div>
     </section>
   );
-}
+};

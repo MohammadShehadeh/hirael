@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { ScrollReveal } from "@/registry/hirael/components/scroll-reveal";
 
-export default function ScrollRevealDemo() {
+const ScrollRevealDemo = () => {
   const t = useT();
 
   const items = [
@@ -39,4 +39,6 @@ export default function ScrollRevealDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default ScrollRevealDemo;

@@ -12,7 +12,7 @@ import {
 
 type InspectorPanelProps = React.ComponentProps<"aside">;
 
-function InspectorPanel({ className, ...props }: InspectorPanelProps) {
+const InspectorPanel = ({ className, ...props }: InspectorPanelProps) => {
   return (
     <aside
       data-slot="inspector-panel"
@@ -23,14 +23,14 @@ function InspectorPanel({ className, ...props }: InspectorPanelProps) {
       {...props}
     />
   );
-}
+};
 
 type InspectorPanelHeaderProps = React.ComponentProps<"div">;
 
-function InspectorPanelHeader({
+const InspectorPanelHeader = ({
   className,
   ...props
-}: InspectorPanelHeaderProps) {
+}: InspectorPanelHeaderProps) => {
   return (
     <div
       data-slot="inspector-panel-header"
@@ -41,14 +41,14 @@ function InspectorPanelHeader({
       {...props}
     />
   );
-}
+};
 
 type InspectorPanelTitleProps = React.ComponentProps<"p">;
 
-function InspectorPanelTitle({
+const InspectorPanelTitle = ({
   className,
   ...props
-}: InspectorPanelTitleProps) {
+}: InspectorPanelTitleProps) => {
   return (
     <p
       data-slot="inspector-panel-title"
@@ -59,20 +59,23 @@ function InspectorPanelTitle({
       {...props}
     />
   );
-}
-
-type InspectorPanelSectionProps = React.ComponentProps<"div"> & {
-  title: React.ReactNode;
-  defaultOpen?: boolean;
 };
 
-function InspectorPanelSection({
+interface InspectorPanelSectionProps extends Omit<
+  React.ComponentProps<"div">,
+  "title"
+> {
+  title: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+const InspectorPanelSection = ({
   title,
   defaultOpen = true,
   className,
   children,
   ...props
-}: InspectorPanelSectionProps) {
+}: InspectorPanelSectionProps) => {
   return (
     <Collapsible
       defaultOpen={defaultOpen}
@@ -92,18 +95,18 @@ function InspectorPanelSection({
       </CollapsibleContent>
     </Collapsible>
   );
-}
-
-type InspectorPanelRowProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode;
 };
 
-function InspectorPanelRow({
+interface InspectorPanelRowProps extends React.ComponentProps<"div"> {
+  label: React.ReactNode;
+}
+
+const InspectorPanelRow = ({
   label,
   className,
   children,
   ...props
-}: InspectorPanelRowProps) {
+}: InspectorPanelRowProps) => {
   return (
     <div
       data-slot="inspector-panel-row"
@@ -117,7 +120,7 @@ function InspectorPanelRow({
       <div className="flex items-center justify-end gap-1.5">{children}</div>
     </div>
   );
-}
+};
 
 export {
   InspectorPanel,
@@ -127,15 +130,15 @@ export {
   InspectorPanelRow,
 };
 
-function InspectorField({ children }: { children: React.ReactNode }) {
+const InspectorField = ({ children }: { children: React.ReactNode }) => {
   return (
     <span className="inline-flex h-7 w-full items-center rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground">
       {children}
     </span>
   );
-}
+};
 
-export default function InspectorPanelBlock() {
+const InspectorPanelBlock = () => {
   return (
     <section
       data-slot="inspector-panel-block"
@@ -180,4 +183,6 @@ export default function InspectorPanelBlock() {
       </InspectorPanel>
     </section>
   );
-}
+};
+
+export default InspectorPanelBlock;

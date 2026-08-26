@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 import { ArrowUpRight, RingLink } from "./primitives";
 
@@ -42,7 +43,7 @@ const ITEMS = [
   },
 ];
 
-function Card({
+const Card = ({
   image,
   rotate,
   onOpen,
@@ -50,7 +51,7 @@ function Card({
   image: string;
   rotate: number;
   onOpen: () => void;
-}) {
+}) => {
   return (
     <button
       type="button"
@@ -67,9 +68,9 @@ function Card({
       />
     </button>
   );
-}
+};
 
-export function Explorations() {
+export const Explorations = () => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
   const pinRef = React.useRef<HTMLDivElement>(null);
   const col1Ref = React.useRef<HTMLDivElement>(null);
@@ -202,11 +203,13 @@ export function Explorations() {
               "fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6",
             )}
           >
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-lg"
               aria-label="Close"
               onClick={() => setActive(null)}
-              className="absolute end-6 top-6 flex size-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors hover:text-white"
+              className="absolute end-6 top-6 rounded-full border border-white/15 text-white/80 hover:text-white"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -219,7 +222,7 @@ export function Explorations() {
               >
                 <path d="M6 6l12 12M18 6 6 18" />
               </svg>
-            </button>
+            </Button>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={active}
@@ -232,4 +235,4 @@ export function Explorations() {
       </AnimatePresence>
     </section>
   );
-}
+};

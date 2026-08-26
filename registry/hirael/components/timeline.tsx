@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 type TimelineProps = React.ComponentProps<"ol">;
 
-function Timeline({ className, ...props }: TimelineProps) {
+const Timeline = ({ className, ...props }: TimelineProps) => {
   return (
     <ol
       data-slot="timeline"
@@ -13,11 +13,11 @@ function Timeline({ className, ...props }: TimelineProps) {
       {...props}
     />
   );
-}
+};
 
 type TimelineItemProps = React.ComponentProps<"li">;
 
-function TimelineItem({ className, ...props }: TimelineItemProps) {
+const TimelineItem = ({ className, ...props }: TimelineItemProps) => {
   return (
     <li
       data-slot="timeline-item"
@@ -30,7 +30,7 @@ function TimelineItem({ className, ...props }: TimelineItemProps) {
       {...props}
     />
   );
-}
+};
 
 const timelineDotVariants = cva(
   "relative z-10 mt-1.5 inline-flex size-[15px] shrink-0 items-center justify-center rounded-full ring-2 ring-background",
@@ -50,17 +50,15 @@ const timelineDotVariants = cva(
   },
 );
 
-type TimelineDotProps = Omit<React.ComponentProps<"span">, "children"> &
-  VariantProps<typeof timelineDotVariants> & {
-    children?: React.ReactNode;
-  };
+interface TimelineDotProps extends Omit<React.ComponentProps<"span">, "children">, VariantProps<typeof timelineDotVariants> {
+    children?: React.ReactNode;}
 
-function TimelineDot({
+const TimelineDot = ({
   className,
   tone = "default",
   children,
   ...props
-}: TimelineDotProps) {
+}: TimelineDotProps) => {
   if (children) {
     return (
       <span
@@ -84,11 +82,11 @@ function TimelineDot({
       {...props}
     />
   );
-}
+};
 
 type TimelineContentProps = React.ComponentProps<"div">;
 
-function TimelineContent({ className, ...props }: TimelineContentProps) {
+const TimelineContent = ({ className, ...props }: TimelineContentProps) => {
   return (
     <div
       data-slot="timeline-content"
@@ -96,11 +94,11 @@ function TimelineContent({ className, ...props }: TimelineContentProps) {
       {...props}
     />
   );
-}
+};
 
 type TimelineTitleProps = React.ComponentProps<"p">;
 
-function TimelineTitle({ className, ...props }: TimelineTitleProps) {
+const TimelineTitle = ({ className, ...props }: TimelineTitleProps) => {
   return (
     <p
       data-slot="timeline-title"
@@ -108,11 +106,11 @@ function TimelineTitle({ className, ...props }: TimelineTitleProps) {
       {...props}
     />
   );
-}
+};
 
 type TimelineTimeProps = React.ComponentProps<"time">;
 
-function TimelineTime({ className, ...props }: TimelineTimeProps) {
+const TimelineTime = ({ className, ...props }: TimelineTimeProps) => {
   return (
     <time
       data-slot="timeline-time"
@@ -123,14 +121,14 @@ function TimelineTime({ className, ...props }: TimelineTimeProps) {
       {...props}
     />
   );
-}
+};
 
 type TimelineDescriptionProps = React.ComponentProps<"p">;
 
-function TimelineDescription({
+const TimelineDescription = ({
   className,
   ...props
-}: TimelineDescriptionProps) {
+}: TimelineDescriptionProps) => {
   return (
     <p
       data-slot="timeline-description"
@@ -138,7 +136,7 @@ function TimelineDescription({
       {...props}
     />
   );
-}
+};
 
 export {
   Timeline,

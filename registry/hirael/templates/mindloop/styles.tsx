@@ -49,6 +49,6 @@ const MINDLOOP_CSS = `
 }
 `;
 
-export function MindloopStyles() {
+export const MindloopStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: MINDLOOP_CSS }} />;
-}
+};

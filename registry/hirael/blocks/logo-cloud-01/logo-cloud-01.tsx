@@ -6,11 +6,10 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/registry/hirael/ui/badge";
 import { Button } from "@/registry/hirael/ui/button";
 
-type Logo = {
+interface Logo {
   name: string;
   href: string;
-  mark: React.ReactNode;
-};
+  mark: React.ReactNode;}
 
 const LOGOS: readonly Logo[] = [
   {
@@ -126,7 +125,7 @@ const STATS = [
   { value: "0", label: "runtime deps" },
 ] as const;
 
-export default function LogoCloud01() {
+const LogoCloud01 = () => {
   return (
     <section
       className="bg-background py-20 sm:py-28"
@@ -189,4 +188,6 @@ export default function LogoCloud01() {
       </div>
     </section>
   );
-}
+};
+
+export default LogoCloud01;

@@ -20,14 +20,13 @@ import {
   CommandSeparator,
 } from "@/registry/hirael/ui/command";
 
-export type MultiSelectOption = {
+export interface MultiSelectOption {
   value: string;
   label: string;
   group?: string;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-type MultiSelectContextValue = {
+interface MultiSelectContextValue {
   value: string[];
   setValue: (next: string[]) => void;
   options: MultiSelectOption[];
@@ -41,14 +40,13 @@ type MultiSelectContextValue = {
   loading?: boolean;
   toggle: (v: string) => void;
   remove: (v: string) => void;
-  clear: () => void;
-};
+  clear: () => void;}
 
 const MultiSelectContext = React.createContext<MultiSelectContextValue | null>(
   null,
 );
 
-function useMultiSelect() {
+const useMultiSelect = () => {
   const ctx = React.useContext(MultiSelectContext);
   if (!ctx) {
     throw new Error(
@@ -56,9 +54,9 @@ function useMultiSelect() {
     );
   }
   return ctx;
-}
+};
 
-export type MultiSelectProps = {
+export interface MultiSelectProps {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -69,10 +67,9 @@ export type MultiSelectProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function MultiSelect({
+const MultiSelect = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -84,7 +81,7 @@ function MultiSelect({
   defaultOpen = false,
   onOpenChange,
   children,
-}: MultiSelectProps) {
+}: MultiSelectProps) => {
   const [internalValue, setInternalValue] = React.useState<string[]>(
     defaultValue ?? [],
   );
@@ -177,25 +174,24 @@ function MultiSelect({
       </Popover>
     </MultiSelectContext.Provider>
   );
-}
+};
 
-type MultiSelectTriggerProps = Omit<
+interface MultiSelectTriggerProps extends Omit<
   React.ComponentProps<"button">,
   "children"
-> & {
+> {
   placeholder?: string;
   className?: string;
   children?:
     | React.ReactNode
-    | ((ctx: MultiSelectContextValue) => React.ReactNode);
-};
+    | ((ctx: MultiSelectContextValue) => React.ReactNode);}
 
-function MultiSelectTrigger({
+const MultiSelectTrigger = ({
   placeholder = "Select…",
   className,
   children,
   ...props
-}: MultiSelectTriggerProps) {
+}: MultiSelectTriggerProps) => {
   const ctx = useMultiSelect();
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
 
@@ -271,19 +267,18 @@ function MultiSelectTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-type MultiSelectContentProps = React.ComponentProps<typeof PopoverContent> & {
+interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverContent> {
   searchPlaceholder?: string;
   emptyMessage?: string;
   showSelectAll?: boolean;
   showClear?: boolean;
   selectAllLabel?: string;
   clearLabel?: string;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function MultiSelectContent({
+const MultiSelectContent = ({
   className,
   searchPlaceholder = "Search…",
   emptyMessage = "Nothing found.",
@@ -293,7 +288,7 @@ function MultiSelectContent({
   clearLabel = "Clear",
   children,
   ...props
-}: MultiSelectContentProps) {
+}: MultiSelectContentProps) => {
   const ctx = useMultiSelect();
 
   const enabled = ctx.options.filter((o) => !o.disabled);
@@ -394,22 +389,21 @@ function MultiSelectContent({
       </Command>
     </PopoverContent>
   );
-}
-
-type MultiSelectItemProps = Omit<
-  React.ComponentProps<typeof CommandItem>,
-  "value" | "onSelect" | "children"
-> & {
-  option: MultiSelectOption;
-  children?: React.ReactNode;
 };
 
-function MultiSelectItem({
+interface MultiSelectItemProps extends Omit<
+  React.ComponentProps<typeof CommandItem>,
+  "value" | "onSelect" | "children"
+> {
+  option: MultiSelectOption;
+  children?: React.ReactNode;}
+
+const MultiSelectItem = ({
   option,
   children,
   className,
   ...props
-}: MultiSelectItemProps) {
+}: MultiSelectItemProps) => {
   const ctx = useMultiSelect();
   const selected = ctx.value.includes(option.value);
   const atCap =
@@ -436,13 +430,11 @@ function MultiSelectItem({
       </span>
     </CommandItem>
   );
-}
+};
 
-export function useAsyncOptions<T>(
-  loader: (query: string) => Promise<T[]>,
+export const useAsyncOptions = <T,>(loader: (query: string) => Promise<T[]>,
   map: (item: T) => MultiSelectOption,
-  { debounce = 200 }: { debounce?: number } = {},
-) {
+  { debounce = 200 }: { debounce?: number } = {},) => {
   const [query, setQuery] = React.useState("");
   const [options, setOptions] = React.useState<MultiSelectOption[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -474,6 +466,6 @@ export function useAsyncOptions<T>(
   }, [query, debounce]);
 
   return { query, setQuery, options, loading, error };
-}
+};
 
 export { MultiSelect, MultiSelectTrigger, MultiSelectContent, MultiSelectItem };

@@ -8,7 +8,7 @@ import { Navbar } from "./navbar";
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4";
 
-function HeroBadge() {
+const HeroBadge = () => {
   return (
     <motion.div
       data-slot="hero-badge"
@@ -21,9 +21,9 @@ function HeroBadge() {
       <span className="text-sm font-medium text-foreground">Fluid Staking</span>
     </motion.div>
   );
-}
+};
 
-function BottomLeftCard() {
+const BottomLeftCard = () => {
   return (
     <motion.div
       data-slot="hero-stat"
@@ -54,9 +54,9 @@ function BottomLeftCard() {
       </a>
     </motion.div>
   );
-}
+};
 
-function BottomRightCorner() {
+const BottomRightCorner = () => {
   return (
     <motion.div
       data-slot="hero-docs"
@@ -115,9 +115,9 @@ function BottomRightCorner() {
       </div>
     </motion.div>
   );
-}
+};
 
-export function Hero() {
+export const Hero = () => {
   return (
     <section
       id="home"
@@ -173,4 +173,4 @@ export function Hero() {
       </div>
     </section>
   );
-}
+};

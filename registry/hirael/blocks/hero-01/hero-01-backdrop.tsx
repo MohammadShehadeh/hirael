@@ -2,11 +2,11 @@
 
 import { Beam, Shader, Swirl } from "shaders/react";
 
-export default function Hero01Backdrop({
+const Hero01Backdrop = ({
   active = false,
 }: {
   active?: boolean;
-}) {
+}) => {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Swirl speed={active ? 0.5 : 0.16} detail={1.5} />
@@ -32,4 +32,6 @@ export default function Hero01Backdrop({
       />
     </Shader>
   );
-}
+};
+
+export default Hero01Backdrop;

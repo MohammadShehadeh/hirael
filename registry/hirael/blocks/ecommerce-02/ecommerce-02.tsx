@@ -28,14 +28,14 @@ import {
 } from "@/registry/hirael/ui/input-group";
 import { Separator } from "@/registry/hirael/ui/separator";
 
-type LineItem = {
+interface LineItem {
   id: string;
   name: string;
   variant: string;
   price: number;
   qty: number;
   image: string;
-};
+}
 
 const INITIAL_ITEMS: readonly LineItem[] = [
   {
@@ -75,7 +75,7 @@ const SHIPPING_FLAT = 12;
 const usd = (n: number) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
-export default function Ecommerce02() {
+const Ecommerce02 = () => {
   const [items, setItems] = React.useState<readonly LineItem[]>(INITIAL_ITEMS);
   const [code, setCode] = React.useState("");
   const [promoApplied, setPromoApplied] = React.useState(false);
@@ -250,14 +250,16 @@ export default function Ecommerce02() {
                   <div className="flex items-center justify-between text-sm">
                     <span className="inline-flex items-center gap-1.5 text-muted-foreground">
                       Discount · {PROMO_CODE}
-                      <button
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="icon-xs"
                         onClick={() => setPromoApplied(false)}
                         aria-label="Remove promo code"
-                        className="inline-flex size-4 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                        className="size-4 rounded-sm text-muted-foreground"
                       >
                         <X className="size-2.5" />
-                      </button>
+                      </Button>
                     </span>
                     <span className="font-mono tabular-nums text-success">
                       −{usd(discount)}
@@ -329,4 +331,6 @@ export default function Ecommerce02() {
       </div>
     </section>
   );
-}
+};
+
+export default Ecommerce02;

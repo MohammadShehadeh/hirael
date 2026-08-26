@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   MonthPicker,
   MonthPickerContent,
@@ -12,7 +12,7 @@ import {
   type MonthValue,
 } from "@/registry/hirael/components/month-picker";
 
-export default function MonthPickerDemo() {
+const MonthPickerDemo = () => {
   const t = useT();
   const [month, setMonth] = React.useState<MonthValue | undefined>({
     year: 2026,
@@ -24,9 +24,11 @@ export default function MonthPickerDemo() {
   });
 
   return (
-    <div className="grid w-full max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
-      <div className="grid gap-2">
-        <Label>{t({ en: "Launch month", ar: "شهر الإطلاق" })}</Label>
+    <FieldGroup className="grid max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="mp-launch">
+          {t({ en: "Launch month", ar: "شهر الإطلاق" })}
+        </FieldLabel>
         <MonthPicker
           value={month}
           onValueChange={setMonth}
@@ -34,6 +36,7 @@ export default function MonthPickerDemo() {
           maxYear={2030}
         >
           <MonthPickerTrigger
+            id="mp-launch"
             placeholder={t({ en: "Pick a month", ar: "اختر شهرًا" })}
           />
           <MonthPickerContent />
@@ -41,10 +44,12 @@ export default function MonthPickerDemo() {
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
           {month ? `${month.month + 1}/${month.year}` : "-"}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>{t({ en: "Quarter range", ar: "نطاق ربع السنة" })}</Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="mp-quarter">
+          {t({ en: "Quarter range", ar: "نطاق ربع السنة" })}
+        </FieldLabel>
         <MonthPicker
           mode="range"
           value={range}
@@ -53,6 +58,7 @@ export default function MonthPickerDemo() {
           maxYear={2028}
         >
           <MonthPickerTrigger
+            id="mp-quarter"
             placeholder={t({ en: "Pick a range", ar: "اختر نطاقًا" })}
           />
           <MonthPickerContent />
@@ -64,7 +70,9 @@ export default function MonthPickerDemo() {
               }`
             : "-"}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default MonthPickerDemo;

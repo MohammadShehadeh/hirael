@@ -2,17 +2,16 @@
 
 export type RecentKind = "component" | "block" | "template";
 
-export type RecentItem = {
+export interface RecentItem {
   name: string;
   title: string;
   href: string;
-  kind: RecentKind;
-};
+  kind: RecentKind;}
 
 const STORAGE_KEY = "hirael:recent-items";
 const MAX_RECENTS = 5;
 
-export function readRecents(): RecentItem[] {
+export const readRecents = (): RecentItem[] => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
@@ -28,10 +27,10 @@ export function readRecents(): RecentItem[] {
   } catch {
     return [];
   }
-}
+};
 
 /** Most-recent-first, deduped by href, capped at MAX_RECENTS. */
-export function pushRecent(item: RecentItem): RecentItem[] {
+export const pushRecent = (item: RecentItem): RecentItem[] => {
   const next = [item, ...readRecents().filter((r) => r.href !== item.href)];
   const capped = next.slice(0, MAX_RECENTS);
   try {
@@ -40,4 +39,4 @@ export function pushRecent(item: RecentItem): RecentItem[] {
     // localStorage unavailable; the session still gets in-memory recency
   }
   return capped;
-}
+};

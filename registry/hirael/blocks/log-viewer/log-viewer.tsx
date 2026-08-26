@@ -22,17 +22,16 @@ const levelLabel: Record<LogLevel, string> = {
   success: "OK ",
 };
 
-type LogViewerProps = React.ComponentProps<"div"> & {
+interface LogViewerProps extends React.ComponentProps<"div"> {
   /** Keep the view pinned to the newest line as content grows (tail -f). */
-  follow?: boolean;
-};
+  follow?: boolean;}
 
-function LogViewer({
+const LogViewer = ({
   follow = true,
   className,
   children,
   ...props
-}: LogViewerProps) {
+}: LogViewerProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const pinnedRef = React.useRef(true);
 
@@ -62,22 +61,21 @@ function LogViewer({
       {children}
     </div>
   );
-}
-
-type LogLineProps = React.ComponentProps<"div"> & {
-  level?: LogLevel;
-  time?: React.ReactNode;
-  source?: React.ReactNode;
 };
 
-function LogLine({
+interface LogLineProps extends React.ComponentProps<"div"> {
+  level?: LogLevel;
+  time?: React.ReactNode;
+  source?: React.ReactNode;}
+
+const LogLine = ({
   level = "info",
   time,
   source,
   className,
   children,
   ...props
-}: LogLineProps) {
+}: LogLineProps) => {
   return (
     <div
       data-slot="log-line"
@@ -106,11 +104,11 @@ function LogLine({
       <span className="min-w-0 text-foreground">{children}</span>
     </div>
   );
-}
+};
 
 export { LogViewer, LogLine };
 
-export default function LogViewerBlock() {
+const LogViewerBlock = () => {
   return (
     <section
       data-slot="log-viewer-block"
@@ -152,4 +150,6 @@ export default function LogViewerBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default LogViewerBlock;

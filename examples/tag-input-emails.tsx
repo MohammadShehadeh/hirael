@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   TagInput,
   TagInputContainer,
@@ -14,16 +14,16 @@ import {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function TagInputEmails() {
+const TagInputEmails = () => {
   const t = useT();
 
   const [emails, setEmails] = React.useState<string[]>(["jane@hirael.com"]);
 
   return (
-    <div className="grid w-full max-w-md gap-2">
-      <Label>
+    <Field className="max-w-md gap-2">
+      <FieldLabel htmlFor="email-tags-field">
         {t({ en: "Email tags · validated", ar: "وسوم بريد · مُتحقق منها" })}
-      </Label>
+      </FieldLabel>
       <TagInput
         value={emails}
         onValueChange={setEmails}
@@ -41,10 +41,12 @@ export default function TagInputEmails() {
           {emails.map((_, i) => (
             <TagInputTag key={i} index={i} />
           ))}
-          <TagInputField placeholder="you@example.com" />
+          <TagInputField id="email-tags-field" placeholder="you@example.com" />
         </TagInputContainer>
         <TagInputError className="mt-1" />
       </TagInput>
-    </div>
+    </Field>
   );
-}
+};
+
+export default TagInputEmails;

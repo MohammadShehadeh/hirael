@@ -58,6 +58,6 @@ const ASME_CSS = `
 }
 `;
 
-export function AsmeStyles() {
+export const AsmeStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: ASME_CSS }} />;
-}
+};

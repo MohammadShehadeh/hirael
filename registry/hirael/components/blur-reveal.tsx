@@ -2,7 +2,7 @@
 
 import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 
-type BlurRevealProps = HTMLMotionProps<"div"> & {
+interface BlurRevealProps extends HTMLMotionProps<"div"> {
   /** Delay before the reveal starts, in ms. */
   delay?: number;
   /** Reveal duration, in ms. */
@@ -14,10 +14,9 @@ type BlurRevealProps = HTMLMotionProps<"div"> & {
   /** Starting blur, in px. */
   blur?: number;
   /** Starting vertical offset, in px. */
-  y?: number;
-};
+  y?: number;}
 
-function BlurReveal({
+const BlurReveal = ({
   delay = 0,
   duration = 600,
   once = true,
@@ -25,7 +24,7 @@ function BlurReveal({
   blur = 8,
   y = 8,
   ...props
-}: BlurRevealProps) {
+}: BlurRevealProps) => {
   const reduced = useReducedMotion();
 
   if (reduced) {
@@ -46,6 +45,6 @@ function BlurReveal({
       {...props}
     />
   );
-}
+};
 
 export { BlurReveal };

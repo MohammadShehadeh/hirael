@@ -72,7 +72,7 @@ const HERO_BRANDS: MarqueeBrand[] = [
   },
 ];
 
-export function HeroSection() {
+export const HeroSection = () => {
   return (
     <section className="flex flex-1 items-end px-6 pb-6 pt-20">
       <div
@@ -132,4 +132,4 @@ export function HeroSection() {
       </div>
     </section>
   );
-}
+};

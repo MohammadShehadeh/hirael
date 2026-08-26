@@ -2,11 +2,11 @@
 
 import { Aurora, FilmGrain, Shader } from "shaders/react";
 
-export default function Hero05Backdrop({
+const Hero05Backdrop = ({
   active = false,
 }: {
   active?: boolean;
-}) {
+}) => {
   return (
     <Shader style={{ width: "100%", height: "100%" }}>
       <Aurora
@@ -23,4 +23,6 @@ export default function Hero05Backdrop({
       <FilmGrain strength={0.05} animated />
     </Shader>
   );
-}
+};
+
+export default Hero05Backdrop;

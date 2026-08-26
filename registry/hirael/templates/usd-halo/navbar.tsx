@@ -1,8 +1,10 @@
+import { Button } from "@/registry/hirael/ui/button";
+
 import { LogoIcon } from "./primitives";
 
 const NAV_LINKS = ["Network", "Ecosystem", "Rewards", "Help", "News"];
 
-export function Navbar() {
+export const Navbar = () => {
   return (
     <nav className="absolute inset-x-0 top-0 z-20 px-6 py-5">
       <div className="mx-auto flex max-w-[88rem] items-center justify-between">
@@ -29,13 +31,13 @@ export function Navbar() {
           ))}
         </div>
 
-        <button
+        <Button
           type="button"
-          className="rounded-full bg-black px-7 py-2.5 text-base font-medium text-white transition-colors duration-200 hover:bg-gray-800"
+          className="h-auto rounded-full bg-black px-7 py-2.5 text-base text-white duration-200 hover:bg-gray-800"
         >
           Open Wallet
-        </button>
+        </Button>
       </div>
     </nav>
   );
-}
+};

@@ -9,10 +9,9 @@ import {
   AccordionTrigger,
 } from "@/registry/hirael/ui/accordion";
 
-type Group = {
+interface Group {
   label: string;
-  faqs: readonly { q: string; a: string }[];
-};
+  faqs: readonly { q: string; a: string }[];}
 
 const GROUPS: readonly Group[] = [
   {
@@ -102,7 +101,7 @@ const GROUPS: readonly Group[] = [
   },
 ];
 
-export default function Faq04() {
+const Faq04 = () => {
   return (
     <section className="bg-background py-16 md:py-24">
       <div className="relative mx-auto w-full max-w-2xl border-border md:border-x">
@@ -166,4 +165,6 @@ export default function Faq04() {
       </div>
     </section>
   );
-}
+};
+
+export default Faq04;

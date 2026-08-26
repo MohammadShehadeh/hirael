@@ -11,7 +11,7 @@ const Cta03Backdrop = dynamic(() => import("./cta-03-backdrop"), {
   loading: () => <div className="size-full bg-muted/20" />,
 });
 
-export default function Cta03() {
+const Cta03 = () => {
   const [active, setActive] = React.useState(false);
 
   return (
@@ -61,4 +61,6 @@ export default function Cta03() {
       </div>
     </section>
   );
-}
+};
+
+export default Cta03;

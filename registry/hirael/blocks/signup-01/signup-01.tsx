@@ -5,9 +5,15 @@ import { ArrowRight, Loader2 } from "lucide-react";
 
 import { Button } from "@/registry/hirael/ui/button";
 import { Checkbox } from "@/registry/hirael/ui/checkbox";
-import { FieldSeparator } from "@/registry/hirael/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+} from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
-import { Label } from "@/registry/hirael/ui/label";
 import {
   PasswordInput,
   PasswordInputField,
@@ -16,7 +22,7 @@ import {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
+const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -25,9 +31,9 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -36,9 +42,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -57,7 +63,7 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
 type Errors = Partial<{
   name: string;
@@ -66,7 +72,7 @@ type Errors = Partial<{
   terms: string;
 }>;
 
-export default function Signup01() {
+const Signup01 = () => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -127,104 +133,95 @@ export default function Signup01() {
             </div>
           </div>
 
-          <form
-            noValidate
-            className="flex flex-col gap-5 p-8"
-            onSubmit={onSubmit}
-          >
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="signup01-name"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+          <form noValidate className="p-8" onSubmit={onSubmit}>
+            <FieldGroup className="gap-5">
+              <Field
+                className="gap-1.5"
+                data-invalid={Boolean(errors.name) || undefined}
               >
-                Name
-              </Label>
-              <Input
-                id="signup01-name"
-                placeholder="Ada Lovelace"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-                aria-invalid={Boolean(errors.name) || undefined}
-                aria-describedby={
-                  errors.name ? "signup01-name-error" : undefined
-                }
-              />
-              {errors.name ? (
-                <p
-                  id="signup01-name-error"
-                  className="text-xs text-destructive"
+                <FieldLabel
+                  htmlFor="signup01-name"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
                 >
-                  {errors.name}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="signup01-email"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-              >
-                Email
-              </Label>
-              <Input
-                id="signup01-email"
-                type="email"
-                placeholder="you@studio.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                aria-invalid={Boolean(errors.email) || undefined}
-                aria-describedby={
-                  errors.email ? "signup01-email-error" : undefined
-                }
-              />
-              {errors.email ? (
-                <p
-                  id="signup01-email-error"
-                  className="text-xs text-destructive"
-                >
-                  {errors.email}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="signup01-password"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-              >
-                Password
-              </Label>
-              <PasswordInput
-                id="signup01-password"
-                value={password}
-                onValueChange={setPassword}
-              >
-                <PasswordInputField
-                  placeholder="••••••••"
-                  autoComplete="new-password"
-                  aria-invalid={Boolean(errors.password) || undefined}
+                  Name
+                </FieldLabel>
+                <Input
+                  id="signup01-name"
+                  placeholder="Ada Lovelace"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  autoComplete="name"
+                  aria-invalid={Boolean(errors.name) || undefined}
                   aria-describedby={
-                    errors.password ? "signup01-password-error" : undefined
+                    errors.name ? "signup01-name-error" : undefined
                   }
                 />
-                <PasswordInputStrength />
-              </PasswordInput>
-              {errors.password ? (
-                <p
-                  id="signup01-password-error"
-                  className="text-xs text-destructive"
-                >
-                  {errors.password}
-                </p>
-              ) : null}
-            </div>
+                <FieldError id="signup01-name-error" className="text-xs">
+                  {errors.name}
+                </FieldError>
+              </Field>
 
-            <div className="grid gap-1.5">
-              <Label
-                htmlFor="signup01-terms"
-                className="inline-flex cursor-pointer select-none items-center gap-2 text-xs font-normal text-muted-foreground"
+              <Field
+                className="gap-1.5"
+                data-invalid={Boolean(errors.email) || undefined}
+              >
+                <FieldLabel
+                  htmlFor="signup01-email"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+                >
+                  Email
+                </FieldLabel>
+                <Input
+                  id="signup01-email"
+                  type="email"
+                  placeholder="you@studio.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  aria-invalid={Boolean(errors.email) || undefined}
+                  aria-describedby={
+                    errors.email ? "signup01-email-error" : undefined
+                  }
+                />
+                <FieldError id="signup01-email-error" className="text-xs">
+                  {errors.email}
+                </FieldError>
+              </Field>
+
+              <Field
+                className="gap-1.5"
+                data-invalid={Boolean(errors.password) || undefined}
+              >
+                <FieldLabel
+                  htmlFor="signup01-password"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+                >
+                  Password
+                </FieldLabel>
+                <PasswordInput
+                  id="signup01-password"
+                  value={password}
+                  onValueChange={setPassword}
+                >
+                  <PasswordInputField
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                    aria-invalid={Boolean(errors.password) || undefined}
+                    aria-describedby={
+                      errors.password ? "signup01-password-error" : undefined
+                    }
+                  />
+                  <PasswordInputStrength />
+                </PasswordInput>
+                <FieldError id="signup01-password-error" className="text-xs">
+                  {errors.password}
+                </FieldError>
+              </Field>
+
+              <Field
+                orientation="horizontal"
+                className="gap-2"
+                data-invalid={Boolean(errors.terms) || undefined}
               >
                 <Checkbox
                   id="signup01-terms"
@@ -235,59 +232,61 @@ export default function Signup01() {
                     errors.terms ? "signup01-terms-error" : undefined
                   }
                 />
-                <span>
-                  I agree to the{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-foreground underline-offset-4 hover:underline"
+                <FieldContent className="gap-1">
+                  <FieldLabel
+                    htmlFor="signup01-terms"
+                    className="cursor-pointer text-xs font-normal text-muted-foreground"
                   >
-                    terms of service
-                  </a>
-                  .
-                </span>
-              </Label>
-              {errors.terms ? (
-                <p
-                  id="signup01-terms-error"
-                  className="text-xs text-destructive"
-                >
-                  {errors.terms}
-                </p>
-              ) : null}
-            </div>
+                    <span>
+                      I agree to the{" "}
+                      <a
+                        href="#"
+                        className="font-medium text-foreground underline-offset-4 hover:underline"
+                      >
+                        terms of service
+                      </a>
+                      .
+                    </span>
+                  </FieldLabel>
+                  <FieldError id="signup01-terms-error" className="text-xs">
+                    {errors.terms}
+                  </FieldError>
+                </FieldContent>
+              </Field>
 
-            <Button
-              type="submit"
-              variant="default"
-              size="lg"
-              disabled={pending}
-              className="group"
-            >
-              {pending ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" />
-                  Creating account…
-                </>
-              ) : (
-                <>
-                  Create account
-                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                </>
-              )}
-            </Button>
-
-            <FieldSeparator>or continue with</FieldSeparator>
-
-            <div className="grid grid-cols-2 gap-3">
-              <Button type="button" variant="outline">
-                <GithubIcon className="size-4" />
-                GitHub
+              <Button
+                type="submit"
+                variant="default"
+                size="lg"
+                disabled={pending}
+                className="group"
+              >
+                {pending ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Creating account…
+                  </>
+                ) : (
+                  <>
+                    Create account
+                    <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                  </>
+                )}
               </Button>
-              <Button type="button" variant="outline">
-                <GoogleIcon className="size-4" />
-                Google
-              </Button>
-            </div>
+
+              <FieldSeparator>or continue with</FieldSeparator>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Button type="button" variant="outline">
+                  <GithubIcon className="size-4" />
+                  GitHub
+                </Button>
+                <Button type="button" variant="outline">
+                  <GoogleIcon className="size-4" />
+                  Google
+                </Button>
+              </div>
+            </FieldGroup>
           </form>
 
           <div className="border-t border-border px-8 py-4 text-center">
@@ -309,4 +308,6 @@ export default function Signup01() {
       </div>
     </section>
   );
-}
+};
+
+export default Signup01;

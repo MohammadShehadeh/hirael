@@ -2,9 +2,11 @@
 
 import { Globe } from "lucide-react";
 
+import { Button } from "@/registry/hirael/ui/button";
+
 const NAV_LINKS = ["Features", "Pricing", "About"];
 
-export function Navbar() {
+export const Navbar = () => {
   return (
     <header className="relative z-20 px-6 py-6">
       <nav className="liquid-glass mx-auto flex max-w-5xl items-center justify-between rounded-full px-6 py-3">
@@ -32,17 +34,18 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button type="button" className="text-sm font-medium text-foreground">
+          <Button type="button" variant="link" className="h-auto p-0">
             Sign Up
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="liquid-glass rounded-full px-6 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
+            variant="ghost"
+            className="liquid-glass h-auto rounded-full px-6 py-2 text-foreground"
           >
             Login
-          </button>
+          </Button>
         </div>
       </nav>
     </header>
   );
-}
+};

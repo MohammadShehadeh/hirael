@@ -13,13 +13,12 @@ import {
   type ThemeMode,
 } from "@/lib/theme";
 
-type ThemeContextValue = {
+interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   theme: Theme;
   mergeTheme: (partial: Partial<Theme>) => void;
-  reset: () => void;
-};
+  reset: () => void;}
 
 const EMPTY_THEME: Theme = { light: {}, dark: {} };
 
@@ -29,7 +28,7 @@ const EMPTY_THEME: Theme = { light: {}, dark: {} };
 // EMPTY_THEME back to storage, wiping a saved theme — and the framed `/embed/*`
 // block previews (which re-run the same pre-paint script from the root layout)
 // would load against the default palette instead of the active theme.
-function readPersistedTheme(): Theme {
+const readPersistedTheme = (): Theme => {
   if (typeof window === "undefined") return EMPTY_THEME;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -39,7 +38,7 @@ function readPersistedTheme(): Theme {
   } catch {
     return EMPTY_THEME;
   }
-}
+};
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
@@ -47,7 +46,7 @@ const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 // mode into the context shape the showcase already consumes. next-themes
 // handles the `.light` / `.dark` class on <html>, persistence, and the
 // pre-paint mode script; this layer only manages the custom CSS variables.
-function TokenProvider({ children }: { children: React.ReactNode }) {
+const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
   // Falls back to dark to match the SSR default before next-themes mounts.
   const mode: ThemeMode =
@@ -124,9 +123,9 @@ function TokenProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
-}
+};
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // `.dark` mirrors the standard shadcn convention so registry components
   // authored with `dark:` variants resolve here exactly as in a consumer app;
   // `.light` carries this site's token overrides. enableSystem is off — the
@@ -143,10 +142,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       <TokenProvider>{children}</TokenProvider>
     </NextThemesProvider>
   );
-}
+};
 
-export function useTheme(): ThemeContextValue {
+export const useTheme = (): ThemeContextValue => {
   const ctx = React.useContext(ThemeContext);
   if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>");
   return ctx;
-}
+};

@@ -23,7 +23,7 @@ const toneStroke: Record<MetricTone, string> = {
 
 type MetricCardProps = React.ComponentProps<"div">;
 
-function MetricCard({ className, ...props }: MetricCardProps) {
+const MetricCard = ({ className, ...props }: MetricCardProps) => {
   return (
     <div
       data-slot="metric-card"
@@ -34,18 +34,17 @@ function MetricCard({ className, ...props }: MetricCardProps) {
       {...props}
     />
   );
-}
-
-type MetricCardHeaderProps = React.ComponentProps<"div"> & {
-  icon?: React.ReactNode;
 };
 
-function MetricCardHeader({
+interface MetricCardHeaderProps extends React.ComponentProps<"div"> {
+  icon?: React.ReactNode;}
+
+const MetricCardHeader = ({
   icon,
   className,
   children,
   ...props
-}: MetricCardHeaderProps) {
+}: MetricCardHeaderProps) => {
   return (
     <div
       data-slot="metric-card-header"
@@ -58,18 +57,17 @@ function MetricCardHeader({
       </span>
     </div>
   );
-}
-
-type MetricCardValueProps = React.ComponentProps<"div"> & {
-  unit?: React.ReactNode;
 };
 
-function MetricCardValue({
+interface MetricCardValueProps extends React.ComponentProps<"div"> {
+  unit?: React.ReactNode;}
+
+const MetricCardValue = ({
   unit,
   className,
   children,
   ...props
-}: MetricCardValueProps) {
+}: MetricCardValueProps) => {
   return (
     <div
       data-slot="metric-card-value"
@@ -87,21 +85,20 @@ function MetricCardValue({
       ) : null}
     </div>
   );
-}
-
-type MetricCardTrendProps = Omit<React.ComponentProps<"span">, "children"> & {
-  direction: "up" | "down" | "flat";
-  tone?: MetricTone;
-  children?: React.ReactNode;
 };
 
-function MetricCardTrend({
+interface MetricCardTrendProps extends Omit<React.ComponentProps<"span">, "children"> {
+  direction: "up" | "down" | "flat";
+  tone?: MetricTone;
+  children?: React.ReactNode;}
+
+const MetricCardTrend = ({
   direction,
   tone = "neutral",
   className,
   children,
   ...props
-}: MetricCardTrendProps) {
+}: MetricCardTrendProps) => {
   const Icon =
     direction === "up"
       ? TrendingUp
@@ -123,22 +120,21 @@ function MetricCardTrend({
       {children}
     </span>
   );
-}
+};
 
-type MetricCardSparkProps = Omit<React.ComponentProps<"svg">, "points"> & {
+interface MetricCardSparkProps extends Omit<React.ComponentProps<"svg">, "points"> {
   points: number[];
   tone?: MetricTone;
   /** Fill the area under the line with a faint tint. */
-  area?: boolean;
-};
+  area?: boolean;}
 
-function MetricCardSpark({
+const MetricCardSpark = ({
   points,
   tone = "neutral",
   area = true,
   className,
   ...props
-}: MetricCardSparkProps) {
+}: MetricCardSparkProps) => {
   if (!points.length) return null;
   const max = Math.max(...points);
   const min = Math.min(...points);
@@ -175,11 +171,11 @@ function MetricCardSpark({
       />
     </svg>
   );
-}
+};
 
 type MetricCardFooterProps = React.ComponentProps<"p">;
 
-function MetricCardFooter({ className, ...props }: MetricCardFooterProps) {
+const MetricCardFooter = ({ className, ...props }: MetricCardFooterProps) => {
   return (
     <p
       data-slot="metric-card-footer"
@@ -187,7 +183,7 @@ function MetricCardFooter({ className, ...props }: MetricCardFooterProps) {
       {...props}
     />
   );
-}
+};
 
 export {
   MetricCard,

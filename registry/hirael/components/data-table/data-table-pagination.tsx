@@ -26,12 +26,12 @@ interface DataTablePaginationProps<
   pageSizeOptions?: number[];
 }
 
-export function DataTablePagination<TData extends RowData>({
+export const DataTablePagination = <TData extends RowData>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
   className,
   ...props
-}: DataTablePaginationProps<TData>) {
+}: DataTablePaginationProps<TData>) => {
   const pageSize = table.state.pagination.pageSize;
   const sizes = pageSizeOptions.includes(pageSize)
     ? pageSizeOptions
@@ -119,4 +119,4 @@ export function DataTablePagination<TData extends RowData>({
       </div>
     </div>
   );
-}
+};

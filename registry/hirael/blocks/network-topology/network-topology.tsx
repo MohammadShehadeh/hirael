@@ -34,11 +34,11 @@ const TOPOLOGY_KEYFRAMES = `
 
 type NetworkTopologyProps = React.ComponentProps<"div">;
 
-function NetworkTopology({
+const NetworkTopology = ({
   className,
   children,
   ...props
-}: NetworkTopologyProps) {
+}: NetworkTopologyProps) => {
   return (
     <div
       data-slot="network-topology"
@@ -53,14 +53,14 @@ function NetworkTopology({
       {children}
     </div>
   );
-}
+};
 
 type NetworkTopologyEdgesProps = React.ComponentProps<"svg">;
 
-function NetworkTopologyEdges({
+const NetworkTopologyEdges = ({
   className,
   ...props
-}: NetworkTopologyEdgesProps) {
+}: NetworkTopologyEdgesProps) => {
   return (
     <svg
       data-slot="network-topology-edges"
@@ -71,19 +71,18 @@ function NetworkTopologyEdges({
       {...props}
     />
   );
-}
+};
 
-type NetworkEdgeProps = Omit<
+interface NetworkEdgeProps extends Omit<
   React.ComponentProps<"line">,
   "x1" | "y1" | "x2" | "y2" | "from" | "to"
-> & {
+> {
   from: Point;
   to: Point;
   status?: EdgeStatus;
-  animated?: boolean;
-};
+  animated?: boolean;}
 
-function NetworkEdge({
+const NetworkEdge = ({
   from,
   to,
   status = "idle",
@@ -91,7 +90,7 @@ function NetworkEdge({
   className,
   style,
   ...props
-}: NetworkEdgeProps) {
+}: NetworkEdgeProps) => {
   const isAnimated = animated && status !== "down";
   return (
     <line
@@ -125,19 +124,18 @@ function NetworkEdge({
       {...props}
     />
   );
-}
+};
 
-type NetworkNodeProps = React.ComponentProps<"div"> & {
+interface NetworkNodeProps extends React.ComponentProps<"div"> {
   x: number;
   y: number;
   status?: NodeStatus;
   icon?: React.ReactNode;
   label?: React.ReactNode;
   sublabel?: React.ReactNode;
-  variant?: "node" | "hub";
-};
+  variant?: "node" | "hub";}
 
-function NetworkNode({
+const NetworkNode = ({
   x,
   y,
   status = "online",
@@ -148,7 +146,7 @@ function NetworkNode({
   className,
   style,
   ...props
-}: NetworkNodeProps) {
+}: NetworkNodeProps) => {
   return (
     <div
       data-slot="network-node"
@@ -198,11 +196,11 @@ function NetworkNode({
       <span className="sr-only">{status}</span>
     </div>
   );
-}
+};
 
 export { NetworkTopology, NetworkTopologyEdges, NetworkEdge, NetworkNode };
 
-export default function NetworkTopologyBlock() {
+const NetworkTopologyBlock = () => {
   return (
     <section
       data-slot="network-topology-block"
@@ -297,4 +295,6 @@ export default function NetworkTopologyBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default NetworkTopologyBlock;

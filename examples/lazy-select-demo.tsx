@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   LazySelect,
   LazySelectContent,
@@ -12,7 +12,10 @@ import {
   type LazyPage,
 } from "@/registry/hirael/components/lazy-select";
 
-type User = { id: string; name: string };
+interface User {
+  id: string;
+  name: string;
+}
 
 const PAGE_SIZE = 20;
 
@@ -47,7 +50,7 @@ const LAST_NAMES = {
   ar: ["خان", "رييس", "أوكافور", "بارك", "فانس", "ساتو", "ديالو", "كوستا"],
 };
 
-export default function LazySelectDemo() {
+const LazySelectDemo = () => {
   const t = useT();
 
   const firstNames = t(FIRST_NAMES);
@@ -88,13 +91,13 @@ export default function LazySelectDemo() {
     useLazySelectOptions(fetchUsers, mapUser, { enabled: open });
 
   return (
-    <div className="grid w-full max-w-md gap-2">
-      <Label>
+    <Field className="max-w-md gap-2">
+      <FieldLabel htmlFor="lazy-assignee">
         {t({
           en: "Assignee · lazy-loaded on open, paged on scroll",
           ar: "المسؤول · يُحمّل عند الفتح، ويُقسّم صفحات عند التمرير",
         })}
-      </Label>
+      </FieldLabel>
       <LazySelect
         value={value}
         onValueChange={setValue}
@@ -108,6 +111,7 @@ export default function LazySelectDemo() {
         onLoadMore={loadMore}
       >
         <LazySelectTrigger
+          id="lazy-assignee"
           placeholder={t({ en: "Select a teammate…", ar: "اختر زميلًا…" })}
         />
         <LazySelectContent
@@ -133,6 +137,8 @@ export default function LazySelectDemo() {
       <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
         value = {value ? `"${value}"` : "-"} · loaded = {options.length}
       </p>
-    </div>
+    </Field>
   );
-}
+};
+
+export default LazySelectDemo;

@@ -173,9 +173,9 @@ const RS_BLOCKS: number[][] = [
   [20, 45, 15, 61, 46, 16],
 ];
 
-type RSBlock = { total: number; data: number };
+interface RSBlock { total: number; data: number}
 
-function getRSBlocks(version: number, level: QRCodeLevel): RSBlock[] {
+const getRSBlocks = (version: number, level: QRCodeLevel): RSBlock[] => {
   const row = RS_BLOCKS[(version - 1) * 4 + LEVEL_INDEX[level]];
   const blocks: RSBlock[] = [];
   for (let i = 0; i < row.length; i += 3) {
@@ -184,7 +184,7 @@ function getRSBlocks(version: number, level: QRCodeLevel): RSBlock[] {
     }
   }
   return blocks;
-}
+};
 
 const GF_EXP = new Uint8Array(512);
 const GF_LOG = new Uint8Array(256);
@@ -196,11 +196,11 @@ for (let i = 0, x = 1; i < 255; i++) {
   if (x & 0x100) x ^= 0x11d;
 }
 
-function gfMul(a: number, b: number): number {
+const gfMul = (a: number, b: number): number => {
   return a === 0 || b === 0 ? 0 : GF_EXP[GF_LOG[a] + GF_LOG[b]];
-}
+};
 
-function rsGeneratorPoly(degree: number): number[] {
+const rsGeneratorPoly = (degree: number): number[] => {
   let poly = [1];
   for (let i = 0; i < degree; i++) {
     const next = new Array<number>(poly.length + 1).fill(0);
@@ -211,9 +211,9 @@ function rsGeneratorPoly(degree: number): number[] {
     poly = next;
   }
   return poly;
-}
+};
 
-function rsRemainder(data: number[], degree: number): Uint8Array {
+const rsRemainder = (data: number[], degree: number): Uint8Array => {
   const gen = rsGeneratorPoly(degree);
   const rem = new Uint8Array(degree);
   for (const b of data) {
@@ -225,15 +225,15 @@ function rsRemainder(data: number[], degree: number): Uint8Array {
     }
   }
   return rem;
-}
+};
 
-function dataCapacityBytes(version: number, level: QRCodeLevel): number {
+const dataCapacityBytes = (version: number, level: QRCodeLevel): number => {
   let total = 0;
   for (const block of getRSBlocks(version, level)) total += block.data;
   return total;
-}
+};
 
-function pickVersion(byteLength: number, level: QRCodeLevel): number {
+const pickVersion = (byteLength: number, level: QRCodeLevel): number => {
   for (let version = 1; version <= 40; version++) {
     const countBits = version < 10 ? 8 : 16;
     if (
@@ -246,13 +246,11 @@ function pickVersion(byteLength: number, level: QRCodeLevel): number {
   throw new Error(
     "QRCode: value too long for the chosen error correction level",
   );
-}
+};
 
-function buildCodewords(
-  bytes: Uint8Array,
+const buildCodewords = (bytes: Uint8Array,
   version: number,
-  level: QRCodeLevel,
-): number[] {
+  level: QRCodeLevel,): number[] => {
   const capacity = dataCapacityBytes(version, level);
   const bits: number[] = [];
   const push = (value: number, length: number) => {
@@ -293,9 +291,9 @@ function buildCodewords(
     for (const block of blocks) if (i < block.ec.length) out.push(block.ec[i]);
   }
   return out;
-}
+};
 
-function alignmentPositions(version: number): number[] {
+const alignmentPositions = (version: number): number[] => {
   if (version === 1) return [];
   const count = Math.floor(version / 7) + 2;
   const step =
@@ -305,13 +303,13 @@ function alignmentPositions(version: number): number[] {
     positions.splice(1, 0, pos);
   }
   return positions;
-}
+};
 
-function getBit(value: number, index: number): boolean {
+const getBit = (value: number, index: number): boolean => {
   return ((value >>> index) & 1) === 1;
-}
+};
 
-function maskBit(mask: number, x: number, y: number): boolean {
+const maskBit = (mask: number, x: number, y: number): boolean => {
   switch (mask) {
     case 0:
       return (x + y) % 2 === 0;
@@ -330,11 +328,11 @@ function maskBit(mask: number, x: number, y: number): boolean {
     default:
       return (((x + y) % 2) + ((x * y) % 3)) % 2 === 0;
   }
-}
+};
 
 const FINDER_RUN = [true, false, true, true, true, false, true];
 
-function linePenalty(line: boolean[]): number {
+const linePenalty = (line: boolean[]): number => {
   let score = 0;
   let runColor = line[0];
   let runLength = 1;
@@ -362,9 +360,9 @@ function linePenalty(line: boolean[]): number {
     }
   }
   return score;
-}
+};
 
-function penaltyScore(modules: boolean[][]): number {
+const penaltyScore = (modules: boolean[][]): number => {
   const size = modules.length;
   let score = 0;
   for (let y = 0; y < size; y++) score += linePenalty(modules[y]);
@@ -387,9 +385,9 @@ function penaltyScore(modules: boolean[][]): number {
   for (const row of modules) for (const m of row) if (m) dark++;
   score += Math.floor(Math.abs((dark * 100) / (size * size) - 50) / 5) * 10;
   return score;
-}
+};
 
-function encodeQR(value: string, level: QRCodeLevel = "M"): boolean[][] {
+const encodeQR = (value: string, level: QRCodeLevel = "M"): boolean[][] => {
   const bytes = new TextEncoder().encode(value);
   const version = pickVersion(bytes.length, level);
   const size = version * 4 + 17;
@@ -521,9 +519,9 @@ function encodeQR(value: string, level: QRCodeLevel = "M"): boolean[][] {
   drawFormat(bestMask);
 
   return modules;
-}
+};
 
-export type QRCodeProps = Omit<React.ComponentProps<"svg">, "children"> & {
+export interface QRCodeProps extends Omit<React.ComponentProps<"svg">, "children"> {
   /** Text encoded into the QR symbol. */
   value: string;
   /** Error correction level. */
@@ -533,10 +531,9 @@ export type QRCodeProps = Omit<React.ComponentProps<"svg">, "children"> & {
   /** Quiet zone width, in modules. */
   margin?: number;
   /** Accessible title announced by screen readers. */
-  title?: string;
-};
+  title?: string;}
 
-function QRCode({
+const QRCode = ({
   value,
   level = "M",
   size = 128,
@@ -544,7 +541,7 @@ function QRCode({
   title,
   className,
   ...props
-}: QRCodeProps) {
+}: QRCodeProps) => {
   const { d, dim } = React.useMemo(() => {
     try {
       const matrix = encodeQR(value, level);
@@ -580,6 +577,6 @@ function QRCode({
       />
     </svg>
   );
-}
+};
 
 export { QRCode, encodeQR };

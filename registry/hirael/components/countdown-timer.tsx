@@ -6,18 +6,16 @@ import { cn } from "@/lib/utils";
 
 export type CountdownUnit = "days" | "hours" | "minutes" | "seconds";
 
-export type CountdownState = {
+export interface CountdownState {
   days: number;
   hours: number;
   minutes: number;
   seconds: number;
   totalMs: number;
-  isComplete: boolean;
-};
+  isComplete: boolean;}
 
-export type UseCountdownOptions = {
-  onComplete?: () => void;
-};
+export interface UseCountdownOptions {
+  onComplete?: () => void;}
 
 const toTimestamp = (target: Date | string | number) =>
   target instanceof Date ? target.getTime() : new Date(target).getTime();
@@ -45,10 +43,8 @@ const getCountdownState = (targetMs: number): CountdownState => {
   };
 };
 
-function useCountdown(
-  target: Date | string | number,
-  options: UseCountdownOptions = {},
-): CountdownState {
+const useCountdown = (target: Date | string | number,
+  options: UseCountdownOptions = {},): CountdownState => {
   const targetMs = toTimestamp(target);
   const [state, setState] = React.useState<CountdownState>(() =>
     getCountdownState(targetMs),
@@ -84,7 +80,7 @@ function useCountdown(
   }, [targetMs]);
 
   return state;
-}
+};
 
 const useMounted = () => {
   const [mounted, setMounted] = React.useState(false);
@@ -104,11 +100,11 @@ const useReducedMotion = () => {
   return reduced;
 };
 
-function CountdownTimerValue({
+const CountdownTimerValue = ({
   value,
   className,
   ...props
-}: React.ComponentProps<"span"> & { value: string }) {
+}: React.ComponentProps<"span"> & { value: string }) => {
   const reduceMotion = useReducedMotion();
   return (
     <span
@@ -130,22 +126,21 @@ function CountdownTimerValue({
       </span>
     </span>
   );
-}
-
-export type CountdownTimerUnitProps = Omit<
-  React.ComponentProps<"div">,
-  "children"
-> & {
-  value: number | null;
-  label?: string;
 };
 
-function CountdownTimerUnit({
+export interface CountdownTimerUnitProps extends Omit<
+  React.ComponentProps<"div">,
+  "children"
+> {
+  value: number | null;
+  label?: string;}
+
+const CountdownTimerUnit = ({
   value,
   label,
   className,
   ...props
-}: CountdownTimerUnitProps) {
+}: CountdownTimerUnitProps) => {
   const display = value === null ? "--" : String(value).padStart(2, "0");
   return (
     <div
@@ -164,7 +159,7 @@ function CountdownTimerUnit({
       ) : null}
     </div>
   );
-}
+};
 
 const defaultLabels: Record<CountdownUnit, string> = {
   days: "Days",
@@ -175,20 +170,19 @@ const defaultLabels: Record<CountdownUnit, string> = {
 
 const unitOrder: CountdownUnit[] = ["days", "hours", "minutes", "seconds"];
 
-export type CountdownTimerProps = Omit<
+export interface CountdownTimerProps extends Omit<
   React.ComponentProps<"div">,
   "children"
-> & {
+> {
   target: Date | string | number;
   variant?: "boxed" | "inline" | "minimal";
   hideZeroDays?: boolean;
   labels?: Partial<Record<CountdownUnit, string>>;
   onComplete?: () => void;
   completeContent?: React.ReactNode;
-  children?: (state: CountdownState) => React.ReactNode;
-};
+  children?: (state: CountdownState) => React.ReactNode;}
 
-function CountdownTimer({
+const CountdownTimer = ({
   target,
   variant = "boxed",
   hideZeroDays = false,
@@ -198,7 +192,7 @@ function CountdownTimer({
   children,
   className,
   ...props
-}: CountdownTimerProps) {
+}: CountdownTimerProps) => {
   const state = useCountdown(target, { onComplete });
   const mounted = useMounted();
 
@@ -277,6 +271,6 @@ function CountdownTimer({
       {content}
     </div>
   );
-}
+};
 
 export { CountdownTimer, CountdownTimerUnit, useCountdown };

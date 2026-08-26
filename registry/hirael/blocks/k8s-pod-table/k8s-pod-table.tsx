@@ -35,16 +35,15 @@ const phaseMeta: Record<PodPhase, { className: string; live?: boolean }> = {
   },
 };
 
-type K8sPodTableProps = React.ComponentProps<"table"> & {
-  caption?: React.ReactNode;
-};
+interface K8sPodTableProps extends React.ComponentProps<"table"> {
+  caption?: React.ReactNode;}
 
-function K8sPodTable({
+const K8sPodTable = ({
   className,
   caption,
   children,
   ...props
-}: K8sPodTableProps) {
+}: K8sPodTableProps) => {
   return (
     <div
       data-slot="k8s-pod-table-container"
@@ -64,12 +63,12 @@ function K8sPodTable({
       </table>
     </div>
   );
-}
+};
 
-function K8sPodTableHeader({
+const K8sPodTableHeader = ({
   className,
   ...props
-}: React.ComponentProps<"thead">) {
+}: React.ComponentProps<"thead">) => {
   return (
     <thead
       data-slot="k8s-pod-table-header"
@@ -80,9 +79,9 @@ function K8sPodTableHeader({
       {...props}
     />
   );
-}
+};
 
-function K8sPodTableHead({ className, ...props }: React.ComponentProps<"th">) {
+const K8sPodTableHead = ({ className, ...props }: React.ComponentProps<"th">) => {
   return (
     <th
       data-slot="k8s-pod-table-head"
@@ -93,12 +92,12 @@ function K8sPodTableHead({ className, ...props }: React.ComponentProps<"th">) {
       {...props}
     />
   );
-}
+};
 
-function K8sPodTableBody({
+const K8sPodTableBody = ({
   className,
   ...props
-}: React.ComponentProps<"tbody">) {
+}: React.ComponentProps<"tbody">) => {
   return (
     <tbody
       data-slot="k8s-pod-table-body"
@@ -106,9 +105,9 @@ function K8sPodTableBody({
       {...props}
     />
   );
-}
+};
 
-function K8sPodTableRow({ className, ...props }: React.ComponentProps<"tr">) {
+const K8sPodTableRow = ({ className, ...props }: React.ComponentProps<"tr">) => {
   return (
     <tr
       data-slot="k8s-pod-table-row"
@@ -116,9 +115,9 @@ function K8sPodTableRow({ className, ...props }: React.ComponentProps<"tr">) {
       {...props}
     />
   );
-}
+};
 
-function K8sPodTableCell({ className, ...props }: React.ComponentProps<"td">) {
+const K8sPodTableCell = ({ className, ...props }: React.ComponentProps<"td">) => {
   return (
     <td
       data-slot="k8s-pod-table-cell"
@@ -129,18 +128,17 @@ function K8sPodTableCell({ className, ...props }: React.ComponentProps<"td">) {
       {...props}
     />
   );
-}
-
-type K8sPodNameProps = React.ComponentProps<"td"> & {
-  namespace?: React.ReactNode;
 };
 
-function K8sPodName({
+interface K8sPodNameProps extends React.ComponentProps<"td"> {
+  namespace?: React.ReactNode;}
+
+const K8sPodName = ({
   namespace,
   className,
   children,
   ...props
-}: K8sPodNameProps) {
+}: K8sPodNameProps) => {
   return (
     <td
       data-slot="k8s-pod-name"
@@ -159,19 +157,18 @@ function K8sPodName({
       </div>
     </td>
   );
-}
-
-type K8sPodPhaseProps = Omit<React.ComponentProps<"span">, "children"> & {
-  phase: PodPhase;
-  children?: React.ReactNode;
 };
 
-function K8sPodPhase({
+interface K8sPodPhaseProps extends Omit<React.ComponentProps<"span">, "children"> {
+  phase: PodPhase;
+  children?: React.ReactNode;}
+
+const K8sPodPhase = ({
   phase,
   className,
   children,
   ...props
-}: K8sPodPhaseProps) {
+}: K8sPodPhaseProps) => {
   const meta = phaseMeta[phase];
   return (
     <span
@@ -193,20 +190,19 @@ function K8sPodPhase({
       {children ?? phase}
     </span>
   );
-}
-
-type K8sPodRestartsProps = React.ComponentProps<"td"> & {
-  count: number;
-  /** Count at or above which restarts read as unhealthy. */
-  warnAt?: number;
 };
 
-function K8sPodRestarts({
+interface K8sPodRestartsProps extends React.ComponentProps<"td"> {
+  count: number;
+  /** Count at or above which restarts read as unhealthy. */
+  warnAt?: number;}
+
+const K8sPodRestarts = ({
   count,
   warnAt = 3,
   className,
   ...props
-}: K8sPodRestartsProps) {
+}: K8sPodRestartsProps) => {
   return (
     <td
       data-slot="k8s-pod-restarts"
@@ -220,7 +216,7 @@ function K8sPodRestarts({
       {count}
     </td>
   );
-}
+};
 
 export {
   K8sPodTable,
@@ -290,7 +286,7 @@ const POD_ROWS: {
   },
 ];
 
-export default function K8sPodTableBlock() {
+const K8sPodTableBlock = () => {
   return (
     <section
       data-slot="k8s-pod-table-block"
@@ -326,4 +322,6 @@ export default function K8sPodTableBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default K8sPodTableBlock;

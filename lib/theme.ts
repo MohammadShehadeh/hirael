@@ -12,10 +12,9 @@ export type ThemeMode = "light" | "dark";
 
 export type ThemeTokens = Record<string, string>;
 
-export type Theme = {
+export interface Theme {
   light: ThemeTokens;
-  dark: ThemeTokens;
-};
+  dark: ThemeTokens;}
 
 /** Tokens the editor is aware of. Anything outside this list is ignored on paste. */
 const THEME_TOKEN_KEYS = [
@@ -56,10 +55,8 @@ const TOKEN_SET = new Set<string>(THEME_TOKEN_KEYS);
  *   - A single `:root { ... }` block      (applied to currentMode)
  *   - Bare `--token: value;` lines        (applied to currentMode)
  */
-export function parseThemeCss(
-  css: string,
-  currentMode: ThemeMode = "dark",
-): { theme: Partial<Theme>; warnings: string[] } {
+export const parseThemeCss = (css: string,
+  currentMode: ThemeMode = "dark",): { theme: Partial<Theme>; warnings: string[] } => {
   const warnings: string[] = [];
   const blocks = extractBlocks(css);
 
@@ -107,11 +104,11 @@ export function parseThemeCss(
     warnings.push("No matching tokens found in the pasted CSS.");
   }
   return { theme: result, warnings };
-}
+};
 
-type CssBlock = { selector: string; body: string };
+interface CssBlock { selector: string; body: string}
 
-function extractBlocks(css: string): CssBlock[] {
+const extractBlocks = (css: string): CssBlock[] => {
   // Strip comments first.
   const cleaned = css.replace(/\/\*[\s\S]*?\*\//g, "");
   const blocks: CssBlock[] = [];
@@ -126,9 +123,9 @@ function extractBlocks(css: string): CssBlock[] {
     }
   }
   return blocks;
-}
+};
 
-function extractDeclarations(body: string): ThemeTokens {
+const extractDeclarations = (body: string): ThemeTokens => {
   const out: ThemeTokens = {};
   // Match `--token: value;` (value may contain parens / spaces).
   const re = /--([a-z0-9-]+)\s*:\s*([^;]+?)\s*(?:;|$)/gi;
@@ -139,21 +136,21 @@ function extractDeclarations(body: string): ThemeTokens {
     out[key] = m[2].trim();
   }
   return out;
-}
+};
 
 /** Serialize a {light, dark} theme back into a paste-able CSS string. */
-export function formatThemeCss(theme: Theme): string {
+export const formatThemeCss = (theme: Theme): string => {
   const dark = formatBlock(":root", theme.dark);
   const light = formatBlock(".light", theme.light);
   return [dark, light].filter(Boolean).join("\n\n");
-}
+};
 
-function formatBlock(selector: string, tokens: ThemeTokens): string {
+const formatBlock = (selector: string, tokens: ThemeTokens): string => {
   const keys = Object.keys(tokens).sort();
   if (!keys.length) return "";
   const lines = keys.map((k) => `  --${k}: ${tokens[k]};`);
   return `${selector} {\n${lines.join("\n")}\n}`;
-}
+};
 
 /**
  * Generator knobs. These produce token overrides that flow through the same
@@ -171,16 +168,16 @@ export const RADIUS_OPTIONS = [
 ] as const;
 
 /** Radius applies to both modes equally. */
-export function radiusTheme(value: string): Theme {
+export const radiusTheme = (value: string): Theme => {
   return { light: { radius: value }, dark: { radius: value } };
-}
+};
 
 /**
  * A coherent primary / ring / primary-foreground accent generated from a hue,
  * mirroring the lightness/chroma the curated presets use so a generated accent
  * sits naturally next to them in both modes.
  */
-export function accentTheme(hue: number): Theme {
+export const accentTheme = (hue: number): Theme => {
   const h = Math.round(((hue % 360) + 360) % 360);
   return {
     dark: {
@@ -194,7 +191,7 @@ export function accentTheme(hue: number): Theme {
       ring: `oklch(0.6 0.16 ${h})`,
     },
   };
-}
+};
 
 export const STORAGE_KEY = "hirael.theme.v1";
 export const MODE_STORAGE_KEY = "hirael.theme.mode.v1";
@@ -206,7 +203,7 @@ export const MODE_STORAGE_KEY = "hirael.theme.mode.v1";
  * own pre-paint script); this only reads the persisted mode to pick which set
  * of token overrides to apply.
  */
-export function themePrehydrationScript(): string {
+export const themePrehydrationScript = (): string => {
   return `(()=>{try{
     var modeKey=${JSON.stringify(MODE_STORAGE_KEY)};
     var themeKey=${JSON.stringify(STORAGE_KEY)};
@@ -219,4 +216,4 @@ export function themePrehydrationScript(): string {
     var html=document.documentElement;
     for(var k in active){html.style.setProperty('--'+k,active[k]);}
   }catch(e){}})();`;
-}
+};

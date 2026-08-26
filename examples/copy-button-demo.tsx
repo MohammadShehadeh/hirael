@@ -3,7 +3,7 @@
 import { useT } from "@/lib/demo-locale";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 
-export default function CopyButtonDemo() {
+const CopyButtonDemo = () => {
   const t = useT();
 
   return (
@@ -44,4 +44,6 @@ export default function CopyButtonDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default CopyButtonDemo;

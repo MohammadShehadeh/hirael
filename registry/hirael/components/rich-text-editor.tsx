@@ -99,23 +99,23 @@ const SelectionHighlight = Extension.create({
   },
 });
 
-function showFakeSelection(editor: Editor) {
+const showFakeSelection = (editor: Editor) => {
   const { from, to } = editor.state.selection;
   if (from === to) return;
   editor.view.dispatch(
     editor.state.tr.setMeta(fakeSelectionPluginKey, { from, to }),
   );
-}
+};
 
-function clearFakeSelection(editor: Editor) {
+const clearFakeSelection = (editor: Editor) => {
   editor.view.dispatch(
     editor.state.tr.setMeta(fakeSelectionPluginKey, "clear"),
   );
-}
+};
 
 const RichTextEditorContext = React.createContext<Editor | null>(null);
 
-function useRichTextEditor(): Editor {
+const useRichTextEditor = (): Editor => {
   const editor = React.useContext(RichTextEditorContext);
   if (!editor) {
     throw new Error(
@@ -123,7 +123,7 @@ function useRichTextEditor(): Editor {
     );
   }
   return editor;
-}
+};
 
 const contentClassName = cn(
   "text-foreground selection:bg-primary/20",
@@ -144,7 +144,7 @@ const contentClassName = cn(
   "[&_.ProseMirror_p.is-editor-empty:first-child]:before:pointer-events-none [&_.ProseMirror_p.is-editor-empty:first-child]:before:float-start [&_.ProseMirror_p.is-editor-empty:first-child]:before:h-0 [&_.ProseMirror_p.is-editor-empty:first-child]:before:text-muted-foreground [&_.ProseMirror_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]",
 );
 
-export type RichTextEditorProps = {
+export interface RichTextEditorProps {
   value?: string;
   onChange?: (value: string) => void;
   defaultValue?: string;
@@ -154,10 +154,9 @@ export type RichTextEditorProps = {
   onFocus?: () => void;
   onBlur?: () => void;
   className?: string;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function RichTextEditor({
+const RichTextEditor = ({
   value,
   onChange,
   defaultValue = "",
@@ -168,7 +167,7 @@ function RichTextEditor({
   onBlur,
   className,
   children,
-}: RichTextEditorProps) {
+}: RichTextEditorProps) => {
   const isEditable = editable && !disabled;
 
   const onChangeRef = React.useRef(onChange);
@@ -280,12 +279,12 @@ function RichTextEditor({
       </div>
     </RichTextEditorContext.Provider>
   );
-}
+};
 
-function RichTextEditorContent({
+const RichTextEditorContent = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const editor = useRichTextEditor();
   return (
     <div
@@ -296,13 +295,13 @@ function RichTextEditorContent({
       <EditorContent editor={editor} />
     </div>
   );
-}
+};
 
-function RichTextEditorToolbar({
+const RichTextEditorToolbar = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   return (
     <TooltipProvider>
       <div
@@ -317,25 +316,24 @@ function RichTextEditorToolbar({
       </div>
     </TooltipProvider>
   );
-}
+};
 
-export type RichTextEditorButtonProps = {
+export interface RichTextEditorButtonProps {
   tooltip: string;
   pressed?: boolean;
   onPressedChange?: () => void;
   disabled?: boolean;
   className?: string;
-  children: React.ReactNode;
-};
+  children: React.ReactNode;}
 
-function RichTextEditorButton({
+const RichTextEditorButton = ({
   tooltip,
   pressed = false,
   onPressedChange,
   disabled,
   className,
   children,
-}: RichTextEditorButtonProps) {
+}: RichTextEditorButtonProps) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -353,12 +351,12 @@ function RichTextEditorButton({
       <TooltipContent side="top">{tooltip}</TooltipContent>
     </Tooltip>
   );
-}
+};
 
-function RichTextEditorSeparator({
+const RichTextEditorSeparator = ({
   className,
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: React.ComponentProps<typeof Separator>) => {
   return (
     <Separator
       data-slot="rich-text-editor-separator"
@@ -367,9 +365,9 @@ function RichTextEditorSeparator({
       {...props}
     />
   );
-}
+};
 
-function RichTextEditorLinkPopover() {
+const RichTextEditorLinkPopover = () => {
   const editor = useRichTextEditor();
   const [open, setOpen] = React.useState(false);
   const [url, setUrl] = React.useState("");
@@ -471,11 +469,11 @@ function RichTextEditorLinkPopover() {
       </PopoverContent>
     </Popover>
   );
-}
+};
 
-type LinkTarget = { el: HTMLAnchorElement; href: string };
+interface LinkTarget { el: HTMLAnchorElement; href: string}
 
-function RichTextEditorLinkBubble() {
+const RichTextEditorLinkBubble = () => {
   const editor = useRichTextEditor();
   const [target, setTarget] = React.useState<LinkTarget | null>(null);
   const [editing, setEditing] = React.useState(false);
@@ -728,9 +726,9 @@ function RichTextEditorLinkBubble() {
     </div>,
     document.body,
   );
-}
+};
 
-function DefaultToolbar() {
+const DefaultToolbar = () => {
   const editor = useRichTextEditor();
   const state = useEditorState({
     editor,
@@ -930,7 +928,7 @@ function DefaultToolbar() {
       </RichTextEditorButton>
     </>
   );
-}
+};
 
 export {
   RichTextEditor,

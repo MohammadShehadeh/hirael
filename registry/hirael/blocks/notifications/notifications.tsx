@@ -4,10 +4,11 @@ import * as React from "react";
 import { CreditCard, GitPullRequest, UserPlus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 type NotificationsProps = React.ComponentProps<"div">;
 
-function Notifications({ className, ...props }: NotificationsProps) {
+const Notifications = ({ className, ...props }: NotificationsProps) => {
   return (
     <div
       data-slot="notifications"
@@ -18,14 +19,14 @@ function Notifications({ className, ...props }: NotificationsProps) {
       {...props}
     />
   );
-}
+};
 
 type NotificationsHeaderProps = React.ComponentProps<"div">;
 
-function NotificationsHeader({
+const NotificationsHeader = ({
   className,
   ...props
-}: NotificationsHeaderProps) {
+}: NotificationsHeaderProps) => {
   return (
     <div
       data-slot="notifications-header"
@@ -36,11 +37,14 @@ function NotificationsHeader({
       {...props}
     />
   );
-}
+};
 
 type NotificationsTitleProps = React.ComponentProps<"h3">;
 
-function NotificationsTitle({ className, ...props }: NotificationsTitleProps) {
+const NotificationsTitle = ({
+  className,
+  ...props
+}: NotificationsTitleProps) => {
   return (
     <h3
       data-slot="notifications-title"
@@ -48,11 +52,11 @@ function NotificationsTitle({ className, ...props }: NotificationsTitleProps) {
       {...props}
     />
   );
-}
+};
 
 type NotificationsListProps = React.ComponentProps<"ul">;
 
-function NotificationsList({ className, ...props }: NotificationsListProps) {
+const NotificationsList = ({ className, ...props }: NotificationsListProps) => {
   return (
     <ul
       data-slot="notifications-list"
@@ -60,18 +64,18 @@ function NotificationsList({ className, ...props }: NotificationsListProps) {
       {...props}
     />
   );
-}
-
-type NotificationItemProps = React.ComponentProps<"li"> & {
-  unread?: boolean;
 };
 
-function NotificationItem({
+interface NotificationItemProps extends React.ComponentProps<"li"> {
+  unread?: boolean;
+}
+
+const NotificationItem = ({
   unread,
   className,
   children,
   ...props
-}: NotificationItemProps) {
+}: NotificationItemProps) => {
   return (
     <li
       data-slot="notification-item"
@@ -91,11 +95,11 @@ function NotificationItem({
       {children}
     </li>
   );
-}
+};
 
 type NotificationMediaProps = React.ComponentProps<"span">;
 
-function NotificationMedia({ className, ...props }: NotificationMediaProps) {
+const NotificationMedia = ({ className, ...props }: NotificationMediaProps) => {
   return (
     <span
       data-slot="notification-media"
@@ -106,14 +110,14 @@ function NotificationMedia({ className, ...props }: NotificationMediaProps) {
       {...props}
     />
   );
-}
+};
 
 type NotificationContentProps = React.ComponentProps<"div">;
 
-function NotificationContent({
+const NotificationContent = ({
   className,
   ...props
-}: NotificationContentProps) {
+}: NotificationContentProps) => {
   return (
     <div
       data-slot="notification-content"
@@ -121,11 +125,11 @@ function NotificationContent({
       {...props}
     />
   );
-}
+};
 
 type NotificationTitleProps = React.ComponentProps<"p">;
 
-function NotificationTitle({ className, ...props }: NotificationTitleProps) {
+const NotificationTitle = ({ className, ...props }: NotificationTitleProps) => {
   return (
     <p
       data-slot="notification-title"
@@ -133,14 +137,14 @@ function NotificationTitle({ className, ...props }: NotificationTitleProps) {
       {...props}
     />
   );
-}
+};
 
 type NotificationDescriptionProps = React.ComponentProps<"p">;
 
-function NotificationDescription({
+const NotificationDescription = ({
   className,
   ...props
-}: NotificationDescriptionProps) {
+}: NotificationDescriptionProps) => {
   return (
     <p
       data-slot="notification-description"
@@ -148,11 +152,11 @@ function NotificationDescription({
       {...props}
     />
   );
-}
+};
 
 type NotificationTimeProps = React.ComponentProps<"time">;
 
-function NotificationTime({ className, ...props }: NotificationTimeProps) {
+const NotificationTime = ({ className, ...props }: NotificationTimeProps) => {
   return (
     <time
       data-slot="notification-time"
@@ -163,7 +167,7 @@ function NotificationTime({ className, ...props }: NotificationTimeProps) {
       {...props}
     />
   );
-}
+};
 
 export {
   Notifications,
@@ -178,7 +182,7 @@ export {
   NotificationTime,
 };
 
-export default function NotificationsBlock() {
+const NotificationsBlock = () => {
   return (
     <section
       data-slot="notifications-block"
@@ -187,12 +191,14 @@ export default function NotificationsBlock() {
       <Notifications className="w-full max-w-sm">
         <NotificationsHeader>
           <NotificationsTitle>Notifications</NotificationsTitle>
-          <button
+          <Button
             type="button"
-            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+            variant="ghost"
+            size="xs"
+            className="-me-2 text-muted-foreground"
           >
             Mark all read
-          </button>
+          </Button>
         </NotificationsHeader>
         <NotificationsList>
           <NotificationItem unread>
@@ -240,4 +246,6 @@ export default function NotificationsBlock() {
       </Notifications>
     </section>
   );
-}
+};
+
+export default NotificationsBlock;

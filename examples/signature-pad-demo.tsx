@@ -12,7 +12,7 @@ import {
   type SignaturePadRef,
 } from "@/registry/hirael/components/signature-pad";
 
-export default function SignaturePadDemo() {
+const SignaturePadDemo = () => {
   const t = useT();
   const padRef = React.useRef<SignaturePadRef>(null);
   const [dataUrl, setDataUrl] = React.useState<string | null>(null);
@@ -90,4 +90,6 @@ export default function SignaturePadDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default SignaturePadDemo;

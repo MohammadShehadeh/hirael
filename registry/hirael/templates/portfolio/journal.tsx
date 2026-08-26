@@ -35,7 +35,7 @@ const ENTRIES = [
   },
 ];
 
-export function Journal() {
+export const Journal = () => {
   return (
     <section id="journal" className="bg-[hsl(var(--bg))] py-16 md:py-24">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10 lg:px-16">
@@ -88,4 +88,4 @@ export function Journal() {
       </div>
     </section>
   );
-}
+};

@@ -17,6 +17,10 @@ import { Button } from "@/registry/hirael/ui/button";
 import { CopyButton } from "@/registry/hirael/components/copy-button";
 import { Textarea } from "@/registry/hirael/ui/textarea";
 import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/registry/hirael/ui/toggle-group";
+import {
   Sheet,
   SheetBody,
   SheetContent,
@@ -27,7 +31,7 @@ import {
   SheetTrigger,
 } from "@/registry/hirael/ui/sheet";
 
-export function ThemeSheetTrigger({ className }: { className?: string }) {
+export const ThemeSheetTrigger = ({ className }: { className?: string }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -46,9 +50,9 @@ export function ThemeSheetTrigger({ className }: { className?: string }) {
       </SheetContent>
     </Sheet>
   );
-}
+};
 
-function ThemeSheetBody() {
+const ThemeSheetBody = () => {
   const { mode, setMode, theme, mergeTheme, reset } = useTheme();
   const [paste, setPaste] = React.useState("");
   const [accentHue, setAccentHue] = React.useState(250);
@@ -123,38 +127,47 @@ function ThemeSheetBody() {
 
       <SheetBody className="flex flex-col gap-7">
         <Section title="Mode">
-          <div className="grid grid-cols-2 gap-2">
-            <ModeButton
-              active={mode === "dark"}
-              onClick={() => setMode("dark")}
-              icon={<Moon className="size-3.5" />}
-              label="Dark"
-            />
-            <ModeButton
-              active={mode === "light"}
-              onClick={() => setMode("light")}
-              icon={<Sun className="size-3.5" />}
-              label="Light"
-            />
-          </div>
+          <ToggleGroup
+            type="single"
+            variant="outline"
+            spacing={2}
+            value={mode}
+            onValueChange={(value) => {
+              if (value === "dark" || value === "light") setMode(value);
+            }}
+            aria-label="Mode"
+            className="grid w-full grid-cols-2"
+          >
+            <ToggleGroupItem value="dark">
+              <Moon className="size-3.5" />
+              Dark
+              {mode === "dark" && <ActiveDot />}
+            </ToggleGroupItem>
+            <ToggleGroupItem value="light">
+              <Sun className="size-3.5" />
+              Light
+              {mode === "light" && <ActiveDot />}
+            </ToggleGroupItem>
+          </ToggleGroup>
         </Section>
 
         <Section title="Presets">
           <div className="grid grid-cols-2 gap-2">
             {THEME_PRESETS.map((p) => (
-              <button
+              <Button
                 key={p.id}
                 type="button"
+                variant="outline"
                 onClick={() => applyPreset(p.id)}
-                className="group flex items-center gap-2 rounded-sm border border-border bg-card px-3 py-2 text-left transition-colors hover:border-foreground"
+                className="justify-start"
               >
                 <span
                   aria-hidden
                   className="size-3.5 shrink-0 rounded-full border border-border"
                   style={{ background: p.swatch }}
                 />
-                <span className="text-sm">{p.label}</span>
-              </button>
+                {p.label}
+              </Button>
             ))}
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground">
@@ -309,9 +322,9 @@ function ThemeSheetBody() {
       </SheetFooter>
     </>
   );
-}
+};
 
-function Section({
+const Section = ({
   title,
   hint,
   children,
@@ -319,7 +332,7 @@ function Section({
   title: string;
   hint?: string;
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <section>
       <div className="mb-2 flex items-baseline justify-between">
@@ -335,34 +348,8 @@ function Section({
       {children}
     </section>
   );
-}
+};
 
-function ModeButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "flex items-center justify-center gap-2 rounded-sm border px-3 py-2 text-sm transition-colors",
-        active
-          ? "border-foreground bg-accent text-foreground"
-          : "border-border bg-card text-muted-foreground hover:text-foreground",
-      )}
-    >
-      {icon}
-      {label}
-      {active && <span className="ml-1 size-1.5 rounded-full bg-foreground" />}
-    </button>
-  );
-}
+const ActiveDot = () => (
+  <span aria-hidden className="ms-1 size-1.5 rounded-full bg-foreground" />
+);

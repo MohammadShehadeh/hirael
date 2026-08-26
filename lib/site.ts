@@ -60,10 +60,8 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
  * be set by hand: Next appends a content-hash suffix unknown at
  * `generateMetadata` time, so an explicit `images` wouldn't match the file.
  */
-export function detailMetadata(
-  entry: RegistryEntryMeta,
-  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},
-): Metadata {
+export const detailMetadata = (entry: RegistryEntryMeta,
+  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},): Metadata => {
   const { titleSuffix, ownOgImage } = opts;
   const href = entryHref(entry);
   const url = `${SITE.url}${href}`;
@@ -103,4 +101,4 @@ export function detailMetadata(
       ...(ownOgImage ? {} : { images: ["/opengraph-image"] }),
     },
   };
-}
+};

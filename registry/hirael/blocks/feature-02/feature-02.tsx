@@ -11,11 +11,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-type Feature = {
+interface Feature {
   icon: LucideIcon;
   title: string;
-  body: string;
-};
+  body: string;}
 
 const FEATURES: readonly Feature[] = [
   {
@@ -50,7 +49,7 @@ const FEATURES: readonly Feature[] = [
   },
 ];
 
-export default function Feature02() {
+const Feature02 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
@@ -91,4 +90,6 @@ export default function Feature02() {
       </div>
     </section>
   );
-}
+};
+
+export default Feature02;

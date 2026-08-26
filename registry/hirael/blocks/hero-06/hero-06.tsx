@@ -32,7 +32,7 @@ const STACK = [
   { name: "Data", icon: Database },
 ] as const;
 
-function GeometricAccent() {
+const GeometricAccent = () => {
   const reduceMotion = useReducedMotion();
   const reveal = (delay: number) =>
     reduceMotion
@@ -68,9 +68,9 @@ function GeometricAccent() {
       </motion.div>
     </div>
   );
-}
+};
 
-export default function Hero06() {
+const Hero06 = () => {
   return (
     <section
       data-slot="hero"
@@ -187,4 +187,6 @@ export default function Hero06() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero06;

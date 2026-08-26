@@ -11,11 +11,10 @@ import {
   InputGroupInput,
 } from "@/registry/hirael/ui/input-group";
 
-export type PasswordStrength = {
+export interface PasswordStrength {
   score: number;
   label: string;
-  hint?: string;
-};
+  hint?: string;}
 
 export type PasswordScorer = (value: string) => PasswordStrength;
 
@@ -43,19 +42,18 @@ export const defaultPasswordScorer: PasswordScorer = (value) => {
   return { score, label: labels[score], hint: hints[score] };
 };
 
-type Ctx = {
+interface Ctx {
   id: string;
   value: string;
   setValue: (v: string) => void;
   visible: boolean;
   setVisible: (v: boolean) => void;
   disabled?: boolean;
-  strength: PasswordStrength;
-};
+  strength: PasswordStrength;}
 
 const PasswordContext = React.createContext<Ctx | null>(null);
 
-function usePasswordContext() {
+const usePasswordContext = () => {
   const ctx = React.useContext(PasswordContext);
   if (!ctx) {
     throw new Error(
@@ -63,19 +61,18 @@ function usePasswordContext() {
     );
   }
   return ctx;
-}
+};
 
-export type PasswordInputProps = {
+export interface PasswordInputProps {
   id?: string;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
   scorer?: PasswordScorer;
-  children: React.ReactNode;
-};
+  children: React.ReactNode;}
 
-function PasswordInput({
+const PasswordInput = ({
   id,
   value: valueProp,
   defaultValue = "",
@@ -83,7 +80,7 @@ function PasswordInput({
   disabled,
   scorer = defaultPasswordScorer,
   children,
-}: PasswordInputProps) {
+}: PasswordInputProps) => {
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
@@ -117,27 +114,26 @@ function PasswordInput({
   return (
     <PasswordContext.Provider value={ctx}>{children}</PasswordContext.Provider>
   );
-}
+};
 
-type PasswordInputFieldProps = Omit<
+interface PasswordInputFieldProps extends Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
-> & {
+> {
   showToggle?: boolean;
   toggleLabel?: { show: string; hide: string };
-  className?: string;
-};
+  className?: string;}
 
 /**
  * Defaults to `autoComplete="current-password"`; pass
  * `autoComplete="new-password"` for signup / change-password forms.
  */
-function PasswordInputField({
+const PasswordInputField = ({
   showToggle = true,
   toggleLabel = { show: "Show password", hide: "Hide password" },
   className,
   ...props
-}: PasswordInputFieldProps) {
+}: PasswordInputFieldProps) => {
   const ctx = usePasswordContext();
   return (
     <InputGroup
@@ -170,7 +166,7 @@ function PasswordInputField({
       )}
     </InputGroup>
   );
-}
+};
 
 const STRENGTH_COLORS = [
   "bg-destructive",
@@ -180,17 +176,16 @@ const STRENGTH_COLORS = [
   "bg-success",
 ] as const;
 
-type PasswordInputStrengthProps = React.ComponentProps<"div"> & {
+interface PasswordInputStrengthProps extends React.ComponentProps<"div"> {
   showLabel?: boolean;
-  renderMeta?: (strength: PasswordStrength) => React.ReactNode;
-};
+  renderMeta?: (strength: PasswordStrength) => React.ReactNode;}
 
-function PasswordInputStrength({
+const PasswordInputStrength = ({
   showLabel = true,
   renderMeta,
   className,
   ...props
-}: PasswordInputStrengthProps) {
+}: PasswordInputStrengthProps) => {
   const ctx = usePasswordContext();
   const s = ctx.strength;
   const bar = STRENGTH_COLORS[s.score] ?? STRENGTH_COLORS[0];
@@ -239,6 +234,6 @@ function PasswordInputStrength({
         ))}
     </div>
   );
-}
+};
 
 export { PasswordInput, PasswordInputField, PasswordInputStrength };

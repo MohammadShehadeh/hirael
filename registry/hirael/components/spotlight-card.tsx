@@ -5,17 +5,16 @@ import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-type SpotlightCardProps = React.ComponentProps<"div"> & {
+interface SpotlightCardProps extends React.ComponentProps<"div"> {
   /** Diameter of the spotlight, in px. */
-  size?: number;
-};
+  size?: number;}
 
-function SpotlightCard({
+const SpotlightCard = ({
   className,
   children,
   size = 350,
   ...props
-}: SpotlightCardProps) {
+}: SpotlightCardProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, color-mix(in oklch, var(--foreground) 10%, transparent), transparent 70%)`;
@@ -47,6 +46,6 @@ function SpotlightCard({
       </div>
     </div>
   );
-}
+};
 
 export { SpotlightCard };

@@ -12,7 +12,7 @@ import { Search } from "./search";
 import { Solution } from "./solution";
 import { MindloopStyles } from "./styles";
 
-export default function Mindloop() {
+const Mindloop = () => {
   return (
     <div
       className={cn(
@@ -35,4 +35,6 @@ export default function Mindloop() {
       <Footer />
     </div>
   );
-}
+};
+
+export default Mindloop;

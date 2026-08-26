@@ -6,27 +6,25 @@ import { Eraser, Undo2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 
-type Point = { x: number; y: number; w: number };
+interface Point { x: number; y: number; w: number}
 type Stroke = Point[];
 
-export type SignaturePadRef = {
+export interface SignaturePadRef {
   clear: () => void;
   undo: () => void;
   isEmpty: () => boolean;
-  toDataURL: (type?: string, opts?: { backgroundColor?: string }) => string;
-};
+  toDataURL: (type?: string, opts?: { backgroundColor?: string }) => string;}
 
-type SignaturePadContextValue = {
+interface SignaturePadContextValue {
   clear: () => void;
   undo: () => void;
   empty: boolean;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
 const SignaturePadContext =
   React.createContext<SignaturePadContextValue | null>(null);
 
-function useSignaturePad() {
+const useSignaturePad = () => {
   const ctx = React.useContext(SignaturePadContext);
   if (!ctx) {
     throw new Error(
@@ -34,13 +32,13 @@ function useSignaturePad() {
     );
   }
   return ctx;
-}
+};
 
-function midpoint(a: Point, b: Point) {
+const midpoint = (a: Point, b: Point) => {
   return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-}
+};
 
-function drawSegment(ctx: CanvasRenderingContext2D, points: Stroke, i: number) {
+const drawSegment = (ctx: CanvasRenderingContext2D, points: Stroke, i: number) => {
   const prev = points[i - 1];
   const curr = points[i];
   const start = i > 1 ? midpoint(points[i - 2], prev) : prev;
@@ -50,9 +48,9 @@ function drawSegment(ctx: CanvasRenderingContext2D, points: Stroke, i: number) {
   ctx.quadraticCurveTo(prev.x, prev.y, end.x, end.y);
   ctx.lineWidth = curr.w;
   ctx.stroke();
-}
+};
 
-function drawStroke(ctx: CanvasRenderingContext2D, points: Stroke) {
+const drawStroke = (ctx: CanvasRenderingContext2D, points: Stroke) => {
   if (points.length === 0) return;
   if (points.length === 1) {
     const p = points[0];
@@ -64,12 +62,12 @@ function drawStroke(ctx: CanvasRenderingContext2D, points: Stroke) {
   for (let i = 1; i < points.length; i++) {
     drawSegment(ctx, points, i);
   }
-}
+};
 
-export type SignaturePadProps = Omit<
+export interface SignaturePadProps extends Omit<
   React.ComponentProps<"div">,
   "onChange" | "ref"
-> & {
+> {
   penColor?: string;
   minStrokeWidth?: number;
   maxStrokeWidth?: number;
@@ -77,10 +75,9 @@ export type SignaturePadProps = Omit<
   onStrokeEnd?: () => void;
   disabled?: boolean;
   placeholder?: React.ReactNode;
-  ref?: React.Ref<SignaturePadRef>;
-};
+  ref?: React.Ref<SignaturePadRef>;}
 
-function SignaturePad({
+const SignaturePad = ({
   penColor,
   minStrokeWidth = 1.5,
   maxStrokeWidth = 3.5,
@@ -92,7 +89,7 @@ function SignaturePad({
   children,
   ref,
   ...props
-}: SignaturePadProps) {
+}: SignaturePadProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const strokesRef = React.useRef<Stroke[]>([]);
   const drawingRef = React.useRef(false);
@@ -331,13 +328,13 @@ function SignaturePad({
       </div>
     </SignaturePadContext.Provider>
   );
-}
+};
 
-function SignaturePadClear({
+const SignaturePadClear = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) => {
   const ctx = useSignaturePad();
   return (
     <Button
@@ -354,13 +351,13 @@ function SignaturePadClear({
       {children ?? "Clear"}
     </Button>
   );
-}
+};
 
-function SignaturePadUndo({
+const SignaturePadUndo = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) => {
   const ctx = useSignaturePad();
   return (
     <Button
@@ -377,6 +374,6 @@ function SignaturePadUndo({
       {children ?? "Undo"}
     </Button>
   );
-}
+};
 
 export { SignaturePad, SignaturePadClear, SignaturePadUndo };

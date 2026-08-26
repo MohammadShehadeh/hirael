@@ -26,12 +26,12 @@ const avatarStackVariants = cva("flex items-center", {
 type AvatarStackProps = React.ComponentProps<"div"> &
   VariantProps<typeof avatarStackVariants>;
 
-function AvatarStack({
+const AvatarStack = ({
   className,
   size = "md",
   spacing = "normal",
   ...props
-}: AvatarStackProps) {
+}: AvatarStackProps) => {
   return (
     <div
       data-slot="avatar-stack"
@@ -40,18 +40,17 @@ function AvatarStack({
       {...props}
     />
   );
-}
+};
 
-type AvatarStackItemProps = Omit<React.ComponentProps<"span">, "children"> & {
+interface AvatarStackItemProps extends Omit<React.ComponentProps<"span">, "children"> {
   src?: string;
   alt?: string;
   fallback?: React.ReactNode;
   /** When true, renders as the child element (e.g. an anchor or button) via Radix Slot. */
   asChild?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function AvatarStackItem({
+const AvatarStackItem = ({
   className,
   src,
   alt,
@@ -59,7 +58,7 @@ function AvatarStackItem({
   asChild = false,
   children,
   ...props
-}: AvatarStackItemProps) {
+}: AvatarStackItemProps) => {
   const Comp = asChild ? Slot : "span";
   const content = src ? (
     // eslint-disable-next-line @next/next/no-img-element
@@ -87,26 +86,25 @@ function AvatarStackItem({
       {asChild ? children : content}
     </Comp>
   );
-}
+};
 
-type AvatarStackOverflowProps = Omit<
+interface AvatarStackOverflowProps extends Omit<
   React.ComponentProps<"span">,
   "children"
-> & {
+> {
   count: number;
   prefix?: string;
   asChild?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function AvatarStackOverflow({
+const AvatarStackOverflow = ({
   className,
   count,
   prefix = "+",
   asChild = false,
   children,
   ...props
-}: AvatarStackOverflowProps) {
+}: AvatarStackOverflowProps) => {
   const Comp = asChild ? Slot : "span";
   return (
     <Comp
@@ -130,6 +128,6 @@ function AvatarStackOverflow({
       )}
     </Comp>
   );
-}
+};
 
 export { AvatarStack, AvatarStackItem, AvatarStackOverflow };

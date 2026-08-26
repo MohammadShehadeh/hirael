@@ -5,7 +5,7 @@ import * as React from "react";
 import { useT } from "@/lib/demo-locale";
 import { Rating } from "@/registry/hirael/components/rating";
 
-export default function RatingDemo() {
+const RatingDemo = () => {
   const t = useT();
   const [value, setValue] = React.useState(3.5);
 
@@ -74,4 +74,6 @@ export default function RatingDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default RatingDemo;

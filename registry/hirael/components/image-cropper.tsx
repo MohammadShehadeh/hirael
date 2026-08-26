@@ -5,31 +5,29 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/registry/hirael/ui/slider";
 
-export type ImageCropperCrop = { x: number; y: number };
+export interface ImageCropperCrop { x: number; y: number}
 
-export type ImageCropperRef = {
+export interface ImageCropperRef {
   getCroppedDataUrl: (opts?: {
     size?: number;
     type?: string;
     quality?: number;
   }) => string | null;
-  reset: () => void;
-};
+  reset: () => void;}
 
-type Size = { w: number; h: number };
+interface Size { w: number; h: number}
 
-type ImageCropperContextValue = {
+interface ImageCropperContextValue {
   zoom: number;
   setZoom: (next: number) => void;
   minZoom: number;
   maxZoom: number;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
 const ImageCropperContext =
   React.createContext<ImageCropperContextValue | null>(null);
 
-function useImageCropper() {
+const useImageCropper = () => {
   const ctx = React.useContext(ImageCropperContext);
   if (!ctx) {
     throw new Error(
@@ -37,33 +35,31 @@ function useImageCropper() {
     );
   }
   return ctx;
-}
+};
 
-function clamp(n: number, lo: number, hi: number) {
+const clamp = (n: number, lo: number, hi: number) => {
   return Math.max(lo, Math.min(hi, n));
-}
+};
 
-function coverScale(frame: Size, natural: Size) {
+const coverScale = (frame: Size, natural: Size) => {
   return Math.max(frame.w / natural.w, frame.h / natural.h);
-}
+};
 
-function clampCrop(
-  crop: ImageCropperCrop,
+const clampCrop = (crop: ImageCropperCrop,
   zoom: number,
   frame: Size | null,
-  natural: Size | null,
-): ImageCropperCrop {
+  natural: Size | null,): ImageCropperCrop => {
   if (!frame || !natural || frame.w === 0 || frame.h === 0) return crop;
   const scale = coverScale(frame, natural) * zoom;
   const maxX = Math.max(0, (natural.w * scale - frame.w) / 2);
   const maxY = Math.max(0, (natural.h * scale - frame.h) / 2);
   return { x: clamp(crop.x, -maxX, maxX), y: clamp(crop.y, -maxY, maxY) };
-}
+};
 
-export type ImageCropperProps = Omit<
+export interface ImageCropperProps extends Omit<
   React.ComponentProps<"div">,
   "ref" | "onWheel" | "onDoubleClick"
-> & {
+> {
   src: string;
   alt?: string;
   aspect?: number;
@@ -78,10 +74,9 @@ export type ImageCropperProps = Omit<
   grid?: boolean;
   disabled?: boolean;
   crossOrigin?: "" | "anonymous" | "use-credentials";
-  ref?: React.Ref<ImageCropperRef>;
-};
+  ref?: React.Ref<ImageCropperRef>;}
 
-function ImageCropper({
+const ImageCropper = ({
   src,
   alt = "",
   aspect = 1,
@@ -100,7 +95,7 @@ function ImageCropper({
   className,
   children,
   ...props
-}: ImageCropperProps) {
+}: ImageCropperProps) => {
   const frameRef = React.useRef<HTMLDivElement | null>(null);
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
@@ -452,14 +447,14 @@ function ImageCropper({
       </div>
     </ImageCropperContext.Provider>
   );
-}
+};
 
 type ImageCropperZoomProps = Omit<
   React.ComponentProps<typeof Slider>,
   "value" | "defaultValue" | "min" | "max" | "onValueChange"
 >;
 
-function ImageCropperZoom({ className, ...props }: ImageCropperZoomProps) {
+const ImageCropperZoom = ({ className, ...props }: ImageCropperZoomProps) => {
   const ctx = useImageCropper();
   return (
     <Slider
@@ -475,6 +470,6 @@ function ImageCropperZoom({ className, ...props }: ImageCropperZoomProps) {
       {...props}
     />
   );
-}
+};
 
 export { ImageCropper, ImageCropperZoom };

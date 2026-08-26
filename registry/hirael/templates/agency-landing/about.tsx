@@ -1,3 +1,5 @@
+import { Badge } from "@/registry/hirael/ui/badge";
+
 import { OrangeButton } from "./primitives";
 
 const SMALL_IMAGE =
@@ -8,7 +10,7 @@ const LARGE_IMAGE =
 const PARAGRAPH =
   "Through research, creative thinking and iteration we help growing brands realize their digital full potential.";
 
-export function About() {
+export const About = () => {
   return (
     <section className="overflow-hidden bg-white pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32">
       <div className="mx-auto w-full max-w-[1440px]">
@@ -16,9 +18,12 @@ export function About() {
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
             1
           </span>
-          <span className="rounded-full border border-gray-200 px-3 py-1 text-[12px] font-medium text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]">
+          <Badge
+            variant="outline"
+            className="border-gray-200 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]"
+          >
             Introducing Hirael
-          </span>
+          </Badge>
         </div>
 
         <h2 className="mb-12 px-5 text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 sm:mb-16 sm:px-8 lg:mb-28 lg:px-12">
@@ -75,4 +80,4 @@ export function About() {
       </div>
     </section>
   );
-}
+};

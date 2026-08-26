@@ -24,11 +24,10 @@ import {
   InputGroupInput,
 } from "@/registry/hirael/ui/input-group";
 
-export type Country = {
+export interface Country {
   iso2: string;
   name: string;
-  dialCode: string;
-};
+  dialCode: string;}
 
 export const COUNTRIES: readonly Country[] = [
   { iso2: "US", name: "United States", dialCode: "+1" },
@@ -58,18 +57,16 @@ export const COUNTRIES: readonly Country[] = [
   { iso2: "NZ", name: "New Zealand", dialCode: "+64" },
 ] as const;
 
-function findCountry(iso2: string): Country | undefined {
+const findCountry = (iso2: string): Country | undefined => {
   return COUNTRIES.find((c) => c.iso2 === iso2.toUpperCase());
-}
+};
 
-function digitsOnly(input: string): string {
+const digitsOnly = (input: string): string => {
   return input.replace(/\D/g, "");
-}
+};
 
-function parseE164(
-  value: string | undefined,
-  fallback: Country,
-): { country: Country; national: string } {
+const parseE164 = (value: string | undefined,
+  fallback: Country,): { country: Country; national: string } => {
   if (!value) return { country: fallback, national: "" };
   const trimmed = value.trim();
   if (!trimmed.startsWith("+")) {
@@ -87,9 +84,9 @@ function parseE164(
     }
   }
   return { country: fallback, national: digitsOnly(trimmed) };
-}
+};
 
-type Ctx = {
+interface Ctx {
   id: string;
   country: Country;
   setCountry: (next: Country) => void;
@@ -97,12 +94,11 @@ type Ctx = {
   setNational: (next: string) => void;
   disabled?: boolean;
   open: boolean;
-  setOpen: (next: boolean) => void;
-};
+  setOpen: (next: boolean) => void;}
 
 const PhoneInputContext = React.createContext<Ctx | null>(null);
 
-function usePhoneInput() {
+const usePhoneInput = () => {
   const ctx = React.useContext(PhoneInputContext);
   if (!ctx) {
     throw new Error(
@@ -110,19 +106,18 @@ function usePhoneInput() {
     );
   }
   return ctx;
-}
+};
 
-export type PhoneInputProps = Omit<React.ComponentProps<"div">, "children"> & {
+export interface PhoneInputProps extends Omit<React.ComponentProps<"div">, "children"> {
   id?: string;
   value?: string;
   defaultValue?: string;
   onValueChange?: (e164: string) => void;
   defaultCountry?: string;
   disabled?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function PhoneInput({
+const PhoneInput = ({
   id,
   value: valueProp,
   defaultValue,
@@ -132,7 +127,7 @@ function PhoneInput({
   className,
   children,
   ...props
-}: PhoneInputProps) {
+}: PhoneInputProps) => {
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
@@ -213,17 +208,17 @@ function PhoneInput({
       </InputGroup>
     </PhoneInputContext.Provider>
   );
-}
+};
 
 type PhoneInputCountrySelectProps = Omit<
   React.ComponentProps<"button">,
   "children" | "type"
 >;
 
-function PhoneInputCountrySelect({
+const PhoneInputCountrySelect = ({
   className,
   ...props
-}: PhoneInputCountrySelectProps) {
+}: PhoneInputCountrySelectProps) => {
   const ctx = usePhoneInput();
 
   return (
@@ -309,20 +304,20 @@ function PhoneInputCountrySelect({
       </Popover>
     </InputGroupAddon>
   );
-}
+};
 
 type PhoneInputFieldProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange" | "id"
 >;
 
-function PhoneInputField({
+const PhoneInputField = ({
   placeholder = "Phone number",
   onBlur,
   inputMode = "tel",
   className,
   ...props
-}: PhoneInputFieldProps) {
+}: PhoneInputFieldProps) => {
   const ctx = usePhoneInput();
   return (
     <InputGroupInput
@@ -348,6 +343,6 @@ function PhoneInputField({
       {...props}
     />
   );
-}
+};
 
 export { PhoneInput, PhoneInputCountrySelect, PhoneInputField };

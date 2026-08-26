@@ -10,13 +10,13 @@ import Link from "next/link";
  * Safe Browsing's crawler) see it: auth embeds are bare login forms on a real
  * URL, which Google's phishing classifier flags without the notice.
  */
-export function BlockEmbedShell({
+export const BlockEmbedShell = ({
   children,
   demoNotice = false,
 }: {
   children: ReactNode;
   demoNotice?: boolean;
-}) {
+}) => {
   return (
     <div data-embed-shell className="min-h-svh bg-background">
       {demoNotice && (
@@ -39,4 +39,4 @@ export function BlockEmbedShell({
       {children}
     </div>
   );
-}
+};

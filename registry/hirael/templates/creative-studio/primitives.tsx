@@ -14,14 +14,14 @@ import { cn } from "@/lib/utils";
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function noiseDataUri(baseFrequency: number, numOctaves: number) {
+const noiseDataUri = (baseFrequency: number, numOctaves: number) => {
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>` +
     `<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${baseFrequency}' numOctaves='${numOctaves}' stitchTiles='stitch'/>` +
     `<feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/></filter>` +
     `<rect width='100%' height='100%' filter='url(#n)'/></svg>`;
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
-}
+};
 
 const OVERLAY_NOISE = noiseDataUri(0.85, 3);
 const BG_NOISE = noiseDataUri(0.9, 4);
@@ -40,13 +40,13 @@ const CARD_GRADIENT =
 const VIGNETTE =
   "radial-gradient(125% 120% at 50% 0%, transparent 52%, rgba(0,0,0,0.55) 100%)";
 
-export function NoiseOverlay({
+export const NoiseOverlay = ({
   variant = "overlay",
   className,
 }: {
   variant?: "overlay" | "bg";
   className?: string;
-}) {
+}) => {
   return (
     <div
       aria-hidden
@@ -57,15 +57,15 @@ export function NoiseOverlay({
       }}
     />
   );
-}
+};
 
-export function CinematicBackground({
+export const CinematicBackground = ({
   variant = "hero",
   className,
 }: {
   variant?: "hero" | "card";
   className?: string;
-}) {
+}) => {
   const reduce = useReducedMotion();
   return (
     <div
@@ -98,9 +98,9 @@ export function CinematicBackground({
       <div className="absolute inset-0" style={{ background: VIGNETTE }} />
     </div>
   );
-}
+};
 
-function WithAsterisk({ word }: { word: string }) {
+const WithAsterisk = ({ word }: { word: string }) => {
   const chars = Array.from(word);
   const last = chars.pop() ?? "";
   return (
@@ -114,9 +114,9 @@ function WithAsterisk({ word }: { word: string }) {
       </span>
     </>
   );
-}
+};
 
-export function WordsPullUp({
+export const WordsPullUp = ({
   text,
   className,
   wordClassName,
@@ -130,7 +130,7 @@ export function WordsPullUp({
   showAsterisk?: boolean;
   startDelay?: number;
   stagger?: number;
-}) {
+}) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
@@ -163,11 +163,11 @@ export function WordsPullUp({
       })}
     </span>
   );
-}
+};
 
-export type StyledSegment = { text: string; className?: string };
+export interface StyledSegment { text: string; className?: string}
 
-export function WordsPullUpMultiStyle({
+export const WordsPullUpMultiStyle = ({
   segments,
   className,
   startDelay = 0,
@@ -177,7 +177,7 @@ export function WordsPullUpMultiStyle({
   className?: string;
   startDelay?: number;
   stagger?: number;
-}) {
+}) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
@@ -213,9 +213,9 @@ export function WordsPullUpMultiStyle({
       ))}
     </span>
   );
-}
+};
 
-function AnimatedLetter({
+const AnimatedLetter = ({
   char,
   index,
   total,
@@ -225,7 +225,7 @@ function AnimatedLetter({
   index: number;
   total: number;
   progress: MotionValue<number>;
-}) {
+}) => {
   const reduce = useReducedMotion();
   const charProgress = index / total;
   const opacity = useTransform(
@@ -242,15 +242,15 @@ function AnimatedLetter({
       {char}
     </motion.span>
   );
-}
+};
 
-export function ScrollRevealText({
+export const ScrollRevealText = ({
   text,
   className,
 }: {
   text: string;
   className?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -286,4 +286,4 @@ export function ScrollRevealText({
       })}
     </p>
   );
-}
+};

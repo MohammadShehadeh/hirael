@@ -57,7 +57,7 @@ const stateMeta: Record<
 
 type DeploymentHistoryProps = React.ComponentProps<"ol">;
 
-function DeploymentHistory({ className, ...props }: DeploymentHistoryProps) {
+const DeploymentHistory = ({ className, ...props }: DeploymentHistoryProps) => {
   return (
     <ol
       data-slot="deployment-history"
@@ -65,17 +65,16 @@ function DeploymentHistory({ className, ...props }: DeploymentHistoryProps) {
       {...props}
     />
   );
-}
+};
 
-type DeploymentHistoryItemProps = React.ComponentProps<"li"> & {
+interface DeploymentHistoryItemProps extends React.ComponentProps<"li"> {
   state: DeploymentState;
   version: React.ReactNode;
   environment?: React.ReactNode;
   /** Hide the connecting rail below (pass on the last item). */
-  last?: boolean;
-};
+  last?: boolean;}
 
-function DeploymentHistoryItem({
+const DeploymentHistoryItem = ({
   state,
   version,
   environment,
@@ -83,7 +82,7 @@ function DeploymentHistoryItem({
   className,
   children,
   ...props
-}: DeploymentHistoryItemProps) {
+}: DeploymentHistoryItemProps) => {
   const meta = stateMeta[state];
   const Icon = meta.icon;
   return (
@@ -129,14 +128,14 @@ function DeploymentHistoryItem({
       </div>
     </li>
   );
-}
+};
 
 type DeploymentHistoryMetaProps = React.ComponentProps<"div">;
 
-function DeploymentHistoryMeta({
+const DeploymentHistoryMeta = ({
   className,
   ...props
-}: DeploymentHistoryMetaProps) {
+}: DeploymentHistoryMetaProps) => {
   return (
     <div
       data-slot="deployment-history-meta"
@@ -147,18 +146,17 @@ function DeploymentHistoryMeta({
       {...props}
     />
   );
-}
-
-type DeploymentHistoryCommitProps = React.ComponentProps<"span"> & {
-  sha: React.ReactNode;
 };
 
-function DeploymentHistoryCommit({
+interface DeploymentHistoryCommitProps extends React.ComponentProps<"span"> {
+  sha: React.ReactNode;}
+
+const DeploymentHistoryCommit = ({
   sha,
   className,
   children,
   ...props
-}: DeploymentHistoryCommitProps) {
+}: DeploymentHistoryCommitProps) => {
   return (
     <span
       data-slot="deployment-history-commit"
@@ -170,7 +168,7 @@ function DeploymentHistoryCommit({
       {children}
     </span>
   );
-}
+};
 
 export {
   DeploymentHistory,
@@ -179,7 +177,7 @@ export {
   DeploymentHistoryCommit,
 };
 
-export default function DeploymentHistoryBlock() {
+const DeploymentHistoryBlock = () => {
   return (
     <section
       data-slot="deployment-history-block"
@@ -239,4 +237,6 @@ export default function DeploymentHistoryBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default DeploymentHistoryBlock;

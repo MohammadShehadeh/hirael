@@ -9,13 +9,13 @@ import Hls from "hls.js";
  * sizing come from `className` so the same player serves the hero and the
  * vertically flipped footer.
  */
-export function HlsVideo({
+export const HlsVideo = ({
   src,
   className,
 }: {
   src: string;
   className?: string;
-}) {
+}) => {
   const ref = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ export function HlsVideo({
       className={className}
     />
   );
-}
+};
 
 export const HLS_STREAM =
   "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";

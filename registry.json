@@ -216,7 +216,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/components/file-dropzone.tsx",
@@ -829,7 +831,6 @@
         "checkbox",
         "field",
         "input",
-        "label",
         "https://hirael.com/r/password-input.json"
       ],
       "files": [
@@ -854,8 +855,8 @@
       ],
       "registryDependencies": [
         "button",
+        "field",
         "input",
-        "label",
         "https://hirael.com/r/password-input.json"
       ],
       "files": [
@@ -883,7 +884,6 @@
         "checkbox",
         "field",
         "input",
-        "label",
         "https://hirael.com/r/password-input.json"
       ],
       "files": [
@@ -908,8 +908,8 @@
       ],
       "registryDependencies": [
         "button",
-        "input",
-        "label"
+        "field",
+        "input"
       ],
       "files": [
         {
@@ -933,6 +933,7 @@
       ],
       "registryDependencies": [
         "button",
+        "field",
         "input"
       ],
       "files": [
@@ -1047,6 +1048,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "button",
         "popover",
         "tabs"
       ],
@@ -1070,6 +1072,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "button",
         "input",
         "popover",
         "tabs"
@@ -1598,7 +1601,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/components/copy-button.tsx",
@@ -2279,7 +2284,9 @@
         "lucide-react",
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/components/morphing-dialog.tsx",
@@ -2418,6 +2425,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "button",
         "command",
         "popover"
       ],
@@ -2484,7 +2492,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/notifications/notifications.tsx",
@@ -2503,7 +2513,9 @@
         "saas"
       ],
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/blocks/billing-card/billing-card.tsx",
@@ -2641,7 +2653,10 @@
         "lucide-react",
         "shaders"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/agency-landing/agency-landing.tsx",
@@ -2692,7 +2707,10 @@
         "hls.js",
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button",
+        "field"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/mindloop/mindloop.tsx",
@@ -2764,7 +2782,9 @@
         "hls.js",
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/portfolio/portfolio.tsx",
@@ -2839,7 +2859,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/usd-halo/usd-halo.tsx",
@@ -2900,7 +2922,9 @@
         "lucide-react",
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/rivr/rivr.tsx",
@@ -2960,7 +2984,10 @@
       "dependencies": [
         "hls.js"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button",
+        "toggle-group"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/velorah/velorah.tsx",
@@ -3036,7 +3063,10 @@
         "lucide-react",
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "button",
+        "field"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/asme/asme.tsx",
@@ -3107,7 +3137,10 @@
         "hls.js",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "badge",
+        "button"
+      ],
       "files": [
         {
           "path": "registry/hirael/templates/nexacore/nexacore.tsx",
@@ -3501,6 +3534,7 @@
         "recharts"
       ],
       "registryDependencies": [
+        "badge",
         "button",
         "card",
         "chart",
@@ -3577,8 +3611,8 @@
         "calendar",
         "command",
         "dropdown-menu",
+        "field",
         "input",
-        "label",
         "popover",
         "select",
         "separator",
@@ -3734,6 +3768,7 @@
       ],
       "registryDependencies": [
         "button",
+        "field",
         "input"
       ],
       "files": [
@@ -3757,7 +3792,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "badge"
+        "badge",
+        "toggle-group"
       ],
       "files": [
         {
@@ -4132,6 +4168,775 @@
           "path": "registry/hirael/blocks/deployment-history/deployment-history.tsx",
           "type": "registry:block",
           "target": "components/blocks/deployment-history.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kanban",
+      "type": "registry:ui",
+      "title": "Kanban",
+      "description": "Board of columns and cards with pointer and keyboard drag-and-drop across columns, drop placeholder, empty-column hint and live-region announcements. No dnd-kit.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/components/kanban.tsx",
+          "type": "registry:ui",
+          "target": "components/kanban.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "Sparkline",
+      "description": "Tiny inline SVG chart in line, area or bar form with optional curve, last-point dot, reference line and hover tooltip. Tints with currentColor, no chart library.",
+      "categories": [
+        "data"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/components/sparkline.tsx",
+          "type": "registry:ui",
+          "target": "components/sparkline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "json-viewer",
+      "type": "registry:ui",
+      "title": "JSON Viewer",
+      "description": "Collapsible JSON tree with typed value colors, item counts on closed nodes, long-string truncation, expand or collapse all, copy, and arrow-key navigation.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "https://hirael.com/r/copy-button.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/components/json-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/json-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "diff-viewer",
+      "type": "registry:ui",
+      "title": "Diff Viewer",
+      "description": "Line diff of two texts computed in-component with an LCS algorithm. Unified or split layout, +N / -N stats, context lines with expandable gaps. No deps.",
+      "categories": [
+        "display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "toggle-group"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/components/diff-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/diff-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cron-editor",
+      "type": "registry:ui",
+      "title": "Cron Editor",
+      "description": "Visual cron builder kept in sync with the raw expression. Presets, per-field modes, validation, a plain-English preview, and the next run times.",
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "button",
+        "field",
+        "input",
+        "native-select"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/cron-editor.tsx",
+          "type": "registry:ui",
+          "target": "components/cron-editor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "country-select",
+      "type": "registry:ui",
+      "title": "Country Select",
+      "description": "Searchable country picker with flag emoji, pinned countries, optional dial codes, and single or multiple selection. Search by name or ISO code.",
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "command",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/country-select.tsx",
+          "type": "registry:ui",
+          "target": "components/country-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "credit-card-input",
+      "type": "registry:ui",
+      "title": "Credit Card Input",
+      "description": "Card number, expiry, and CVC in one row with brand detection, per-brand grouping, Luhn and expiry validation, and auto-advance between fields.",
+      "categories": [
+        "inputs"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/credit-card-input.tsx",
+          "type": "registry:ui",
+          "target": "components/credit-card-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "emoji-picker",
+      "type": "registry:ui",
+      "title": "Emoji Picker",
+      "description": "Self-contained emoji grid with 560+ emoji in 8 categories, keyword search, recents, skin tones, and arrow-key navigation. No dependencies.",
+      "categories": [
+        "pickers"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/emoji-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/emoji-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "avatar-upload",
+      "type": "registry:ui",
+      "title": "Avatar Upload",
+      "description": "Click or drop an image, crop it to a circle or square with zoom, and preview the result. Initials fallback, size and type limits, remove control.",
+      "categories": [
+        "files"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "https://hirael.com/r/image-cropper.json"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/components/avatar-upload.tsx",
+          "type": "registry:ui",
+          "target": "components/avatar-upload.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-01",
+      "type": "registry:block",
+      "title": "Settings 1",
+      "description": "Account settings page with a sticky section nav, card sections with label/control rows that stack on mobile, dirty-aware Save/Cancel footers, and a Danger zone with an alert-dialog confirm. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "alert-dialog",
+        "avatar",
+        "badge",
+        "button",
+        "field",
+        "input",
+        "input-group",
+        "select",
+        "textarea"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/settings-01/settings-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/settings-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-02",
+      "type": "registry:block",
+      "title": "Settings 2",
+      "description": "Security and notifications settings in tabs: change password with strength meter, two-factor toggle, revocable session list, and grouped notification switches under a Pause all master. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "field",
+        "https://hirael.com/r/password-input.json",
+        "switch",
+        "tabs"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/settings-02/settings-02.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/settings-02.tsx"
+        }
+      ]
+    },
+    {
+      "name": "members-01",
+      "type": "registry:block",
+      "title": "Members 1",
+      "description": "Team members management: live search, inline role select, status badges, row actions menu, a pending-invites list with resend/revoke, and an invite dialog that validates emails as tags. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "field",
+        "input-group",
+        "select",
+        "table",
+        "https://hirael.com/r/tag-input.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/members-01/members-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/members-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "onboarding-01",
+      "type": "registry:block",
+      "title": "Onboarding 1",
+      "description": "Four-step setup wizard on the Stepper: controlled or uncontrolled step, per-step validation gating Continue, Skip, Back, a Finish that fires onComplete, and a fade between steps. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "saas"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "card",
+        "field",
+        "input",
+        "input-group",
+        "progress",
+        "radio-group",
+        "select",
+        "https://hirael.com/r/stepper.json",
+        "switch"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/onboarding-01/onboarding-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/onboarding-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "two-factor-setup-01",
+      "type": "registry:block",
+      "title": "Two-Factor Setup 1",
+      "description": "Three-step 2FA enrollment card: scan a real otpauth QR or copy the key, confirm a six-digit code, then save recovery codes with copy, download and a checkbox-gated finish. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "login"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "https://hirael.com/r/copy-button.json",
+        "field",
+        "input-otp",
+        "https://hirael.com/r/qr-code.json"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/two-factor-setup-01/two-factor-setup-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/two-factor-setup-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "coming-soon-01",
+      "type": "registry:block",
+      "title": "Coming Soon 1",
+      "description": "Full-viewport launch page with a live countdown, an email notify form that shows an inline success state, and a GitHub link in the footer. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "not-found"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "https://hirael.com/r/countdown-timer.json",
+        "field",
+        "input"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/coming-soon-01/coming-soon-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/coming-soon-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "maintenance-01",
+      "type": "registry:block",
+      "title": "Maintenance 1",
+      "description": "Scheduled maintenance page with a pulsing status dot, window card showing start, expected return and elapsed progress, paired CTAs and a timestamped updates list. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "not-found"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/maintenance-01/maintenance-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/maintenance-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "error-01",
+      "type": "registry:block",
+      "title": "Error 1",
+      "description": "500 page with a retry action, home link, collapsible technical details (request id, timestamp, copy button) and a system status line. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "not-found"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "collapsible",
+        "https://hirael.com/r/copy-button.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/error-01/error-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/error-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "team-01",
+      "type": "registry:block",
+      "title": "Team 1",
+      "description": "Team section with serif headline, a bordered grid of members with initials placeholders, roles, bios, GitHub links, and a hiring footer. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "team"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/team-01/team-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/team-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stats-01",
+      "type": "registry:block",
+      "title": "Stats 1",
+      "description": "Metrics band with four large numbers that count up on scroll, labels, optional deltas, and a two-column header on large screens. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "stats"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://hirael.com/r/animated-number.json"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/stats-01/stats-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/stats-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cookie-consent",
+      "type": "registry:block",
+      "title": "Cookie Consent",
+      "description": "Floating consent banner with per-category switches, accept, reject, and save actions, and a choice persisted in localStorage. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "widgets"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "field",
+        "switch"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/cookie-consent/cookie-consent.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cookie-consent.tsx"
+        }
+      ]
+    },
+    {
+      "name": "changelog-01",
+      "type": "registry:block",
+      "title": "Changelog 1",
+      "description": "Release notes with a sticky date rail, version badges, New / Improved / Fixed tags, a subscribe button, and a filter that narrows entries. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "changelog"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "toggle-group"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/changelog-01/changelog-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/changelog-01.tsx"
+        }
+      ]
+    },
+    {
+      "name": "env-editor",
+      "type": "registry:block",
+      "title": "Env Editor",
+      "description": "Environment variables editor with masked secrets, copy, per-environment chips, .env import, key validation, and unsaved-change tracking. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "cloud"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "https://hirael.com/r/copy-button.json",
+        "dialog",
+        "field",
+        "input",
+        "input-group",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/env-editor/env-editor.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/env-editor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "prompt-input",
+      "type": "registry:block",
+      "title": "Prompt Input",
+      "description": "Chat composer with an auto-growing textarea, Enter to send, attachments, a model picker, and a Stop button while streaming. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "ai"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/prompt-input/prompt-input.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/prompt-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-thread",
+      "type": "registry:block",
+      "title": "Message Thread",
+      "description": "Message list that follows streaming output, with tool calls, reasoning, sources, hover actions, typing dots, and a streaming cursor. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "ai"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "collapsible",
+        "https://hirael.com/r/copy-button.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.154 150.069)",
+          "warning": "oklch(0.555 0.163 48.998)",
+          "info": "oklch(0.55 0.2 260)"
+        },
+        "dark": {
+          "success": "oklch(0.696 0.17 162.48)",
+          "warning": "oklch(0.769 0.188 70.08)",
+          "info": "oklch(0.62 0.19 260)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/hirael/blocks/message-thread/message-thread.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/message-thread.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ai-chat-01",
+      "type": "registry:block",
+      "title": "AI Chat 1",
+      "description": "Full chat screen: grouped history sidebar that collapses to a sheet, top bar with model badge, streaming thread, and pinned composer. Ships composable parts.",
+      "categories": [
+        "blocks",
+        "ai"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "dropdown-menu",
+        "input-group",
+        "sheet",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/hirael/blocks/ai-chat-01/ai-chat-01.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ai-chat-01.tsx"
         }
       ]
     },

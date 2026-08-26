@@ -5,11 +5,12 @@ import { Check, Mail } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
+import { Field, FieldError, FieldLabel } from "@/registry/hirael/ui/field";
 import { Input } from "@/registry/hirael/ui/input";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function Newsletter01() {
+const Newsletter01 = () => {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [subscribed, setSubscribed] = React.useState(false);
@@ -81,10 +82,13 @@ export default function Newsletter01() {
                 noValidate
                 className="flex w-full max-w-md flex-col gap-3 sm:flex-row"
               >
-                <div className="flex w-full flex-col gap-1.5 text-start">
-                  <label htmlFor="newsletter-email" className="sr-only">
+                <Field
+                  className="gap-1.5 text-start"
+                  data-invalid={error ? true : undefined}
+                >
+                  <FieldLabel htmlFor="newsletter-email" className="sr-only">
                     Email address
-                  </label>
+                  </FieldLabel>
                   <Input
                     id="newsletter-email"
                     type="email"
@@ -100,15 +104,10 @@ export default function Newsletter01() {
                     aria-describedby={error ? "newsletter-error" : undefined}
                     className={cn(error && "border-destructive")}
                   />
-                  {error ? (
-                    <p
-                      id="newsletter-error"
-                      className="text-xs text-destructive"
-                    >
-                      {error}
-                    </p>
-                  ) : null}
-                </div>
+                  <FieldError id="newsletter-error" className="text-xs">
+                    {error}
+                  </FieldError>
+                </Field>
                 <Button type="submit" className="shrink-0">
                   Subscribe
                 </Button>
@@ -139,4 +138,6 @@ export default function Newsletter01() {
       </div>
     </section>
   );
-}
+};
+
+export default Newsletter01;

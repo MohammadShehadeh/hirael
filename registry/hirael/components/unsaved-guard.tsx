@@ -7,7 +7,7 @@ import {
   useConfirm,
 } from "@/registry/hirael/components/confirm";
 
-export type UnsavedGuardOptions = {
+export interface UnsavedGuardOptions {
   /** Whether there are unsaved changes to guard. */
   when: boolean;
   /** Leave-dialog heading. */
@@ -17,8 +17,7 @@ export type UnsavedGuardOptions = {
   /** Leave (proceed) button label. */
   confirmText?: React.ReactNode;
   /** Stay (cancel) button label. */
-  cancelText?: React.ReactNode;
-};
+  cancelText?: React.ReactNode;}
 
 /**
  * Runs `proceed` once it is safe to navigate. With no unsaved changes it runs
@@ -29,11 +28,10 @@ export type GuardNavigation = (
   proceed?: () => void | Promise<void>,
 ) => Promise<boolean>;
 
-type UnsavedGuardContextValue = {
+interface UnsavedGuardContextValue {
   register: (id: string, options: UnsavedGuardOptions) => void;
   unregister: (id: string) => void;
-  confirmLeave: (options?: Partial<UnsavedGuardOptions>) => Promise<boolean>;
-};
+  confirmLeave: (options?: Partial<UnsavedGuardOptions>) => Promise<boolean>;}
 
 const UnsavedGuardContext =
   React.createContext<UnsavedGuardContextValue | null>(null);
@@ -44,7 +42,7 @@ const UnsavedGuardContext =
  * Returns a `guard(proceed)` to wrap programmatic navigation. Must be used
  * under an `<UnsavedGuardProvider>`.
  */
-function useUnsavedGuard(options: UnsavedGuardOptions): GuardNavigation {
+const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
   const ctx = React.useContext(UnsavedGuardContext);
   if (!ctx) {
     throw new Error(
@@ -77,9 +75,9 @@ function useUnsavedGuard(options: UnsavedGuardOptions): GuardNavigation {
     },
     [ctx],
   );
-}
+};
 
-export type UnsavedGuardProviderProps = {
+export interface UnsavedGuardProviderProps {
   children: React.ReactNode;
   /** Warn on reload / tab close via the browser's native prompt. Default true. */
   beforeUnload?: boolean;
@@ -90,15 +88,14 @@ export type UnsavedGuardProviderProps = {
    */
   onProceed?: (href: string) => void;
   /** Default leave-dialog copy, overridden per `useUnsavedGuard` call. */
-  defaultOptions?: Omit<UnsavedGuardOptions, "when">;
-};
+  defaultOptions?: Omit<UnsavedGuardOptions, "when">;}
 
-function UnsavedGuardProvider({
+const UnsavedGuardProvider = ({
   children,
   beforeUnload = true,
   onProceed,
   defaultOptions,
-}: UnsavedGuardProviderProps) {
+}: UnsavedGuardProviderProps) => {
   return (
     <ConfirmProvider>
       <UnsavedGuardInner
@@ -110,9 +107,9 @@ function UnsavedGuardProvider({
       </UnsavedGuardInner>
     </ConfirmProvider>
   );
-}
+};
 
-function UnsavedGuardInner({
+const UnsavedGuardInner = ({
   children,
   beforeUnload,
   onProceed,
@@ -121,7 +118,7 @@ function UnsavedGuardInner({
   Pick<
     UnsavedGuardProviderProps,
     "onProceed" | "defaultOptions" | "children"
-  >) {
+  >) => {
   const confirm = useConfirm();
   const guardsRef = React.useRef(new Map<string, UnsavedGuardOptions>());
   const blockedRef = React.useRef(false);
@@ -249,6 +246,6 @@ function UnsavedGuardInner({
       </div>
     </UnsavedGuardContext.Provider>
   );
-}
+};
 
 export { UnsavedGuardProvider, useUnsavedGuard };

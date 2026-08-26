@@ -16,7 +16,7 @@ const CREATIVE_STUDIO_CSS = `
 }
 `;
 
-export default function CreativeStudio() {
+const CreativeStudio = () => {
   return (
     <div
       className={cn(
@@ -36,4 +36,6 @@ export default function CreativeStudio() {
       <Footer />
     </div>
   );
-}
+};
+
+export default CreativeStudio;

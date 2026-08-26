@@ -21,7 +21,7 @@ import {
   DrawerTrigger,
 } from "@/registry/hirael/ui/drawer";
 
-export function SiteHeader({
+export const SiteHeader = ({
   className,
   withSidebarTrigger,
   stars,
@@ -30,7 +30,7 @@ export function SiteHeader({
   withSidebarTrigger?: React.ReactNode;
   /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
-}) {
+}) => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -158,4 +158,4 @@ export function SiteHeader({
       </div>
     </header>
   );
-}
+};

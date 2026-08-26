@@ -21,7 +21,7 @@ const AVATARS = [
 
 const NAV_LINKS = ["Product", "Docs", "Pricing"] as const;
 
-export default function Hero05() {
+const Hero05 = () => {
   const [active, setActive] = React.useState(false);
 
   return (
@@ -138,4 +138,6 @@ export default function Hero05() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero05;

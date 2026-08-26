@@ -12,7 +12,7 @@ import { useTheme } from "@/components/active-theme";
 import { RegistryDemo } from "@/registry/hirael/registry-demos";
 import { COMPONENTS } from "@/registry/hirael/registry-meta";
 
-export function ThemePlayground() {
+export const ThemePlayground = () => {
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <PageHeader
@@ -123,12 +123,12 @@ export function ThemePlayground() {
       </Section>
     </div>
   );
-}
+};
 
 // Only this slice reads the live theme, so a token edit re-renders these three
 // lines of header text — not the ~70-component preview grid below, which
 // re-skins through the CSS custom properties the provider writes to <html>.
-function ThemeStatus() {
+const ThemeStatus = () => {
   const { mode, theme } = useTheme();
   const overrideCount =
     Object.keys(theme.dark).length + Object.keys(theme.light).length;
@@ -146,9 +146,9 @@ function ThemeStatus() {
       </span>
     </>
   );
-}
+};
 
-function Section({
+const Section = ({
   eyebrow,
   title,
   description,
@@ -158,7 +158,7 @@ function Section({
   title: string;
   description: string;
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -171,9 +171,9 @@ function Section({
       {children}
     </section>
   );
-}
+};
 
-function Surface({ label, className }: { label: string; className: string }) {
+const Surface = ({ label, className }: { label: string; className: string }) => {
   return (
     <div className={`flex flex-col gap-1 p-5 ${className}`}>
       <span className="font-mono text-[10px] uppercase tracking-widest opacity-70">
@@ -183,9 +183,9 @@ function Surface({ label, className }: { label: string; className: string }) {
       <span className="text-xs opacity-60">Muted line of secondary copy.</span>
     </div>
   );
-}
+};
 
-function Swatch({ label, varName }: { label: string; varName: string }) {
+const Swatch = ({ label, varName }: { label: string; varName: string }) => {
   return (
     <div className="inline-flex items-center gap-2 rounded-sm border border-border bg-background px-2.5 py-1.5">
       <span
@@ -198,4 +198,4 @@ function Swatch({ label, varName }: { label: string; varName: string }) {
       </span>
     </div>
   );
-}
+};

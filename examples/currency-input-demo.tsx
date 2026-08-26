@@ -3,23 +3,23 @@
 import * as React from "react";
 
 import { useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   CurrencyInput,
   CurrencyInputField,
   CurrencyInputPrefix,
 } from "@/registry/hirael/components/currency-input";
 
-export default function CurrencyInputDemo() {
+const CurrencyInputDemo = () => {
   const t = useT();
 
   const [basic, setBasic] = React.useState<number | null>(1499.5);
   const [composed, setComposed] = React.useState<number | null>(12480);
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label htmlFor="cur-basic">USD</Label>
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="cur-basic">USD</FieldLabel>
         <CurrencyInput
           id="cur-basic"
           value={basic}
@@ -35,10 +35,10 @@ export default function CurrencyInputDemo() {
           {t({ en: "parsed:", ar: "المُحلَّل:" })}{" "}
           {basic === null ? "null" : basic}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label htmlFor="cur-composed">EUR (de-DE)</Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="cur-composed">EUR (de-DE)</FieldLabel>
         <CurrencyInput
           id="cur-composed"
           value={composed}
@@ -54,7 +54,9 @@ export default function CurrencyInputDemo() {
           {t({ en: "parsed:", ar: "المُحلَّل:" })}{" "}
           {composed === null ? "null" : composed}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default CurrencyInputDemo;

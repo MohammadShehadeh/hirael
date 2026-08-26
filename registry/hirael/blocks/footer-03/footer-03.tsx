@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/hirael/ui/button";
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -14,9 +14,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -25,9 +25,9 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -36,12 +36,11 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
-
-type FooterColumn = {
-  label: string;
-  links: readonly { label: string; href: string }[];
 };
+
+interface FooterColumn {
+  label: string;
+  links: readonly { label: string; href: string }[];}
 
 const COLUMNS: readonly FooterColumn[] = [
   {
@@ -72,7 +71,7 @@ const SOCIALS = [
   { label: "Instagram", href: "#", icon: InstagramIcon },
 ] as const;
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -99,9 +98,9 @@ function BrandMark({ className }: { className?: string }) {
       />
     </svg>
   );
-}
+};
 
-export default function Footer03() {
+const Footer03 = () => {
   return (
     <footer
       data-slot="footer"
@@ -168,4 +167,6 @@ export default function Footer03() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer03;

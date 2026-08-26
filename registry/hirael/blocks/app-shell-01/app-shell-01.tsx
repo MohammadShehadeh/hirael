@@ -76,13 +76,12 @@ import {
   SidebarTrigger,
 } from "@/registry/hirael/ui/sidebar";
 
-type NavLink = {
+interface NavLink {
   label: string;
   icon: LucideIcon;
   href: string;
   active?: boolean;
-  badge?: string;
-};
+  badge?: string;}
 
 const PRIMARY: readonly NavLink[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "#", active: true },
@@ -100,14 +99,13 @@ const SECONDARY: readonly NavLink[] = [
 type Plan = "Hobby" | "Pro" | "Team";
 type Status = "Active" | "Trial" | "Past due";
 
-type Account = {
+interface Account {
   name: string;
   plan: Plan;
   /** Whole dollars, so the column can be sorted and formatted in one place. */
   mrr: number;
   status: Status;
-  initials: string;
-};
+  initials: string;}
 
 const ROWS: readonly Account[] = [
   {
@@ -152,15 +150,14 @@ const STATUS_TONE: Record<Status, { dot: string; text: string }> = {
   "Past due": { dot: "bg-destructive", text: "text-destructive" },
 };
 
-type Metric = {
+interface Metric {
   label: string;
   value: string;
   /** Change against the previous period; the sign carries the direction. */
   delta: number;
   unit: "%" | "pt";
   /** Which direction counts as an improvement for this metric. */
-  goodWhen: "up" | "down";
-};
+  goodWhen: "up" | "down";}
 
 const METRICS: readonly Metric[] = [
   { label: "Customers", value: "1,284", delta: 4.1, unit: "%", goodWhen: "up" },
@@ -190,33 +187,33 @@ const COLUMNS: readonly {
   { key: "status", label: "Status", align: "start" },
 ];
 
-function compareBy(a: Account, b: Account, key: SortKey) {
+const compareBy = (a: Account, b: Account, key: SortKey) => {
   if (key === "mrr") return a.mrr - b.mrr;
   if (key === "plan") return PLAN_RANK[a.plan] - PLAN_RANK[b.plan];
   if (key === "status") return STATUS_RANK[a.status] - STATUS_RANK[b.status];
   return a.name.localeCompare(b.name);
-}
+};
 
 /** Signed delta, e.g. `+8.7%` or `−0.4%`. */
-function formatDelta({ delta, unit }: Pick<Metric, "delta" | "unit">) {
+const formatDelta = ({ delta, unit }: Pick<Metric, "delta" | "unit">) => {
   const sign = delta > 0 ? "+" : delta < 0 ? "−" : "";
   return `${sign}${Math.abs(delta)}${unit}`;
-}
+};
 
 /** A falling number is an improvement for churn, so tone follows intent. */
-function deltaTone({ delta, goodWhen }: Pick<Metric, "delta" | "goodWhen">) {
+const deltaTone = ({ delta, goodWhen }: Pick<Metric, "delta" | "goodWhen">) => {
   if (delta === 0) return "text-muted-foreground";
   const improving = delta > 0 === (goodWhen === "up");
   return improving ? "text-success" : "text-destructive";
-}
+};
 
-function deltaLabel({ label, delta, unit }: Metric) {
+const deltaLabel = ({ label, delta, unit }: Metric) => {
   const direction = delta > 0 ? "up" : delta < 0 ? "down" : "unchanged";
   const measure = unit === "%" ? "percent" : "points";
   return `${label} ${direction} ${Math.abs(delta)} ${measure} against the previous 30 days`;
-}
+};
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 80 100"
@@ -235,9 +232,9 @@ function BrandMark({ className }: { className?: string }) {
       <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
-}
+};
 
-export default function AppShell01() {
+const AppShell01 = () => {
   const [query, setQuery] = React.useState("");
   const [sortKey, setSortKey] = React.useState<SortKey>("mrr");
   const [sortDirection, setSortDirection] =
@@ -711,4 +708,6 @@ export default function AppShell01() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default AppShell01;

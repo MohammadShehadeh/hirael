@@ -16,7 +16,7 @@ import {
 } from "@/registry/hirael/ui/card";
 import { Separator } from "@/registry/hirael/ui/separator";
 
-type Post = {
+interface Post {
   category: string;
   title: string;
   excerpt: string;
@@ -25,8 +25,7 @@ type Post = {
   readMin: number;
   href: string;
   /** Optional cover image URL. If absent, a stylized placeholder renders. */
-  cover?: string;
-};
+  cover?: string;}
 
 // Free-to-use photos from Unsplash. Swap for your own assets — and remember
 // to add the image host to `images.remotePatterns` in next.config.
@@ -95,7 +94,7 @@ const POSTS: readonly Post[] = [
   },
 ];
 
-function PostCover({
+const PostCover = ({
   cover,
   alt,
   category,
@@ -105,7 +104,7 @@ function PostCover({
   alt: string;
   category: string;
   featured?: boolean;
-}) {
+}) => {
   if (cover) {
     return (
       <div className="relative size-full overflow-hidden">
@@ -150,9 +149,9 @@ function PostCover({
       </div>
     </div>
   );
-}
+};
 
-export default function Blog01() {
+const Blog01 = () => {
   return (
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
@@ -312,4 +311,6 @@ export default function Blog01() {
       </div>
     </section>
   );
-}
+};
+
+export default Blog01;

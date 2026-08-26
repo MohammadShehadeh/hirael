@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { useDemoLocale, useT } from "@/lib/demo-locale";
-import { Label } from "@/registry/hirael/ui/label";
+import { Field, FieldGroup, FieldLabel } from "@/registry/hirael/ui/field";
 import {
   DateRangePicker,
   DateRangePickerContent,
@@ -12,14 +12,14 @@ import {
   type DateRangePreset,
 } from "@/registry/hirael/components/date-range-picker";
 
-function daysAgo(days: number) {
+const daysAgo = (days: number) => {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   d.setDate(d.getDate() - days);
   return d;
-}
+};
 
-export default function DateRangePickerDemo() {
+const DateRangePickerDemo = () => {
   const t = useT();
   const locale = useDemoLocale();
 
@@ -45,26 +45,31 @@ export default function DateRangePickerDemo() {
   ];
 
   return (
-    <div className="grid w-full max-w-md gap-8">
-      <div className="grid gap-2">
-        <Label>{t({ en: "Basic", ar: "أساسي" })}</Label>
+    <FieldGroup className="max-w-md gap-8">
+      <Field className="gap-2">
+        <FieldLabel htmlFor="drp-basic">
+          {t({ en: "Basic", ar: "أساسي" })}
+        </FieldLabel>
         <DateRangePicker value={basic} onValueChange={setBasic}>
-          <DateRangePickerTrigger locale={locale} />
+          <DateRangePickerTrigger id="drp-basic" locale={locale} />
           <DateRangePickerContent locale={locale} />
         </DateRangePicker>
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {print(basic)}
         </p>
-      </div>
+      </Field>
 
-      <div className="grid gap-2">
-        <Label>{t({ en: "Composed", ar: "مركّب" })}</Label>
+      <Field className="gap-2">
+        <FieldLabel htmlFor="drp-composed">
+          {t({ en: "Composed", ar: "مركّب" })}
+        </FieldLabel>
         <DateRangePicker
           value={composed}
           onValueChange={setComposed}
           max={new Date()}
         >
           <DateRangePickerTrigger
+            id="drp-composed"
             locale={locale}
             placeholder={t({
               en: "Pick a reporting period",
@@ -80,7 +85,9 @@ export default function DateRangePickerDemo() {
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           {print(composed)}
         </p>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   );
-}
+};
+
+export default DateRangePickerDemo;

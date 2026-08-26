@@ -21,11 +21,14 @@ import {
   startOfDay,
 } from "@/registry/hirael/components/calendar-utils";
 
-export type DateRange = { from?: Date; to?: Date };
-export type DateRangePreset = {
+export interface DateRange {
+  from?: Date;
+  to?: Date;
+}
+export interface DateRangePreset {
   label: string;
   range: () => { from: Date; to: Date };
-};
+}
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
   {
@@ -78,7 +81,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
   },
 ];
 
-export type DateRangeCalendarProps = {
+export interface DateRangeCalendarProps {
   value?: DateRange;
   defaultValue?: DateRange;
   onValueChange?: (range: DateRange | undefined) => void;
@@ -89,9 +92,9 @@ export type DateRangeCalendarProps = {
   weekStartsOn?: 0 | 1;
   numberOfMonths?: 1 | 2;
   className?: string;
-};
+}
 
-function DateRangeCalendar({
+const DateRangeCalendar = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -102,7 +105,7 @@ function DateRangeCalendar({
   weekStartsOn = 1,
   numberOfMonths = 2,
   className,
-}: DateRangeCalendarProps) {
+}: DateRangeCalendarProps) => {
   const [internal, setInternal] = React.useState<DateRange | undefined>(
     defaultValue,
   );
@@ -385,9 +388,9 @@ function DateRangeCalendar({
       })}
     </div>
   );
-}
+};
 
-type DateRangePickerContextValue = {
+interface DateRangePickerContextValue {
   range: DateRange | undefined;
   setRange: (range: DateRange | undefined) => void;
   open: boolean;
@@ -395,12 +398,12 @@ type DateRangePickerContextValue = {
   min?: Date;
   max?: Date;
   disabled?: boolean;
-};
+}
 
 const DateRangePickerContext =
   React.createContext<DateRangePickerContextValue | null>(null);
 
-function useDateRangePicker() {
+const useDateRangePicker = () => {
   const ctx = React.useContext(DateRangePickerContext);
   if (!ctx) {
     throw new Error(
@@ -408,9 +411,9 @@ function useDateRangePicker() {
     );
   }
   return ctx;
-}
+};
 
-export type DateRangePickerProps = {
+export interface DateRangePickerProps {
   value?: DateRange;
   defaultValue?: DateRange;
   onValueChange?: (range: DateRange | undefined) => void;
@@ -421,9 +424,9 @@ export type DateRangePickerProps = {
   max?: Date;
   disabled?: boolean;
   children?: React.ReactNode;
-};
+}
 
-function DateRangePicker({
+const DateRangePicker = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -434,7 +437,7 @@ function DateRangePicker({
   max,
   disabled,
   children,
-}: DateRangePickerProps) {
+}: DateRangePickerProps) => {
   const [internalRange, setInternalRange] = React.useState<
     DateRange | undefined
   >(defaultValue);
@@ -469,9 +472,9 @@ function DateRangePicker({
       </Popover>
     </DateRangePickerContext.Provider>
   );
-}
+};
 
-function DateRangePickerTrigger({
+const DateRangePickerTrigger = ({
   placeholder = "Pick a date range",
   locale,
   className,
@@ -481,7 +484,7 @@ function DateRangePickerTrigger({
   placeholder?: string;
   locale?: string;
   children?: React.ReactNode;
-}) {
+}) => {
   const ctx = useDateRangePicker();
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   const label = ctx.range?.from
@@ -515,9 +518,9 @@ function DateRangePickerTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-function DateRangePickerContent({
+const DateRangePickerContent = ({
   presets = DEFAULT_PRESETS,
   showPresets = true,
   locale,
@@ -534,7 +537,7 @@ function DateRangePickerContent({
   weekStartsOn?: 0 | 1;
   numberOfMonths?: 1 | 2;
   disabledDate?: (d: Date) => boolean;
-}) {
+}) => {
   const ctx = useDateRangePicker();
 
   const isDayDisabled = (d: Date) => {
@@ -582,9 +585,11 @@ function DateRangePickerContent({
               {presets.map((preset) => {
                 const resolved = resolvePreset(preset);
                 return (
-                  <button
+                  <Button
                     key={preset.label}
                     type="button"
+                    variant="ghost"
+                    size="xs"
                     data-slot="date-range-picker-preset"
                     disabled={!resolved}
                     onClick={() => {
@@ -592,15 +597,10 @@ function DateRangePickerContent({
                       ctx.setRange(resolved);
                       ctx.setOpen(false);
                     }}
-                    className={cn(
-                      "rounded-sm px-2 py-1.5 text-start text-xs outline-none transition-colors",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:ring-2 focus-visible:ring-ring",
-                      "disabled:opacity-30 disabled:hover:bg-transparent",
-                    )}
+                    className="justify-start font-normal"
                   >
                     {preset.label}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -647,7 +647,7 @@ function DateRangePickerContent({
       </div>
     </PopoverContent>
   );
-}
+};
 
 export {
   DateRangePicker,

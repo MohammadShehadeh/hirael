@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 
 type Frequency = "monthly" | "yearly";
 
-type Plan = {
+interface Plan {
   id: string;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -28,8 +28,7 @@ type Plan = {
   features: readonly string[];
   cta: string;
   ctaVariant: "default" | "outline";
-  popular?: boolean;
-};
+  popular?: boolean;}
 
 const PLANS: readonly Plan[] = [
   {
@@ -80,7 +79,7 @@ const PLANS: readonly Plan[] = [
   },
 ];
 
-export default function Pricing03() {
+const Pricing03 = () => {
   const reduceMotion = useReducedMotion();
   const [frequency, setFrequency] = React.useState<Frequency>("monthly");
 
@@ -256,4 +255,6 @@ export default function Pricing03() {
       </div>
     </section>
   );
-}
+};
+
+export default Pricing03;

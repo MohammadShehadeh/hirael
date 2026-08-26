@@ -9,13 +9,13 @@ import { CopyButton } from "@/registry/hirael/components/copy-button";
  * ready to paste into an AI agent or notes. Renders as a ghost toolbar button
  * matching its Source / Report issue siblings.
  */
-export function CopyPageButton({
+export const CopyPageButton = ({
   input,
   className,
 }: {
   input: CopyPageInput;
   className?: string;
-}) {
+}) => {
   return (
     <CopyButton
       value={copyPageMarkdown(input)}
@@ -28,4 +28,4 @@ export function CopyPageButton({
       Copy page
     </CopyButton>
   );
-}
+};

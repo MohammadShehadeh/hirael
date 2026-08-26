@@ -11,6 +11,6 @@
  *   viewport min-height (keeping animations live) so the iframe can size
  *   itself to the block's natural height.
  */
-export function embedDirScript(): string {
+export const embedDirScript = (): string => {
   return `(()=>{try{var p=new URLSearchParams(location.search);var d=p.get('dir');document.documentElement.dir=d==='rtl'?'rtl':'ltr';if(window.self!==window.top)document.documentElement.setAttribute('data-framed','');if(p.get('static')==='1')document.documentElement.setAttribute('data-static','');if(p.get('fit')==='1')document.documentElement.setAttribute('data-fit','');}catch(e){}})();`;
-}
+};

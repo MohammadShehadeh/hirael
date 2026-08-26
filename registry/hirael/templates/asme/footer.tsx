@@ -28,7 +28,7 @@ const SOCIAL_LINKS: {
   { label: "Website", Icon: Globe },
 ];
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer className="relative overflow-hidden border-t border-foreground/10 bg-background px-6 pb-12 pt-20 md:pt-28">
       <div aria-hidden className="glow-top absolute inset-0" />
@@ -122,4 +122,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};

@@ -8,7 +8,7 @@ import { NexacoreStyles } from "./styles";
 import { Precision } from "./precision";
 import { Trusted } from "./trusted";
 
-export default function Nexacore() {
+const Nexacore = () => {
   return (
     <div
       className={cn(
@@ -31,4 +31,6 @@ export default function Nexacore() {
       </main>
     </div>
   );
-}
+};
+
+export default Nexacore;

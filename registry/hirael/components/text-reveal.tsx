@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type TextRevealBy = "word" | "char" | "line";
 
-type TextRevealProps = Omit<React.ComponentProps<"span">, "children"> & {
+interface TextRevealProps extends Omit<React.ComponentProps<"span">, "children"> {
   children: string;
   /** Element to render the text as. */
   as?: React.ElementType;
@@ -22,12 +22,11 @@ type TextRevealProps = Omit<React.ComponentProps<"span">, "children"> & {
   /** Reveal once and stay, or replay every time it re-enters the viewport. */
   once?: boolean;
   /** Visible fraction (0–1) that triggers the reveal. */
-  amount?: number;
-};
+  amount?: number;}
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function TextReveal({
+const TextReveal = ({
   children,
   as,
   by = "word",
@@ -38,7 +37,7 @@ function TextReveal({
   amount = 0.5,
   className,
   ...props
-}: TextRevealProps) {
+}: TextRevealProps) => {
   const reduced = useReducedMotion();
   const ref = React.useRef<HTMLElement>(null);
   // Observe the unclipped container, never the units. Each unit sits in an
@@ -100,6 +99,6 @@ function TextReveal({
       ))}
     </Tag>
   );
-}
+};
 
 export { TextReveal };

@@ -9,7 +9,7 @@ import { CinematicBackground, NoiseOverlay, WordsPullUp } from "./primitives";
 
 const EASE_CARD: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function IconStoryboard({ className }: { className?: string }) {
+const IconStoryboard = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -26,9 +26,9 @@ function IconStoryboard({ className }: { className?: string }) {
       <path d="M3 9.5h6M3 14.5h6M15 9.5h6M15 14.5h6" />
     </svg>
   );
-}
+};
 
-function IconCritique({ className }: { className?: string }) {
+const IconCritique = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -44,9 +44,9 @@ function IconCritique({ className }: { className?: string }) {
       <path d="m13 7 1 2.2 2.2 1-2.2 1L13 13.5 12 11.2 9.8 10.2 12 9.2Z" />
     </svg>
   );
-}
+};
 
-function IconImmersion({ className }: { className?: string }) {
+const IconImmersion = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -63,15 +63,14 @@ function IconImmersion({ className }: { className?: string }) {
       <path d="M4.5 4.5a11 11 0 0 0 0 15M19.5 4.5a11 11 0 0 1 0 15" />
     </svg>
   );
-}
+};
 
-type InfoCard = {
+interface InfoCard {
   index: number;
   number: string;
   title: string;
   Icon: (props: { className?: string }) => React.ReactElement;
-  items: string[];
-};
+  items: string[];}
 
 const INFO_CARDS: InfoCard[] = [
   {
@@ -110,7 +109,7 @@ const INFO_CARDS: InfoCard[] = [
   },
 ];
 
-function FeatureCard({
+const FeatureCard = ({
   index,
   className,
   children,
@@ -118,7 +117,7 @@ function FeatureCard({
   index: number;
   className?: string;
   children: React.ReactNode;
-}) {
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const reduce = useReducedMotion();
@@ -134,9 +133,9 @@ function FeatureCard({
       {children}
     </motion.div>
   );
-}
+};
 
-export function Features({ videoSrc }: { videoSrc?: string }) {
+export const Features = ({ videoSrc }: { videoSrc?: string }) => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-28 md:py-32">
       <NoiseOverlay variant="bg" className="opacity-[0.15]" />
@@ -224,4 +223,4 @@ export function Features({ videoSrc }: { videoSrc?: string }) {
       </div>
     </section>
   );
-}
+};

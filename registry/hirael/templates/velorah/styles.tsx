@@ -79,6 +79,6 @@ const VELORAH_CSS = `
 }
 `;
 
-export function VelorahStyles() {
+export const VelorahStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: VELORAH_CSS }} />;
-}
+};

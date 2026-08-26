@@ -8,7 +8,7 @@ import { InfoSection } from "./info";
 import { Navbar } from "./navbar";
 import { UseCasesSection } from "./use-cases";
 
-export default function UsdHalo() {
+const UsdHalo = () => {
   return (
     <div
       className={cn(
@@ -30,4 +30,6 @@ export default function UsdHalo() {
       <FooterSection />
     </div>
   );
-}
+};
+
+export default UsdHalo;

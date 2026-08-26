@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * kicker pill + oversized italic serif heading read the same everywhere.
  */
 
-export function Pill({
+export const Pill = ({
   children,
   live = false,
   className,
@@ -16,7 +16,7 @@ export function Pill({
   children: React.ReactNode;
   live?: boolean;
   className?: string;
-}) {
+}) => {
   return (
     <span
       className={cn(
@@ -28,10 +28,10 @@ export function Pill({
       {children}
     </span>
   );
-}
+};
 
 /** Top-of-page header (h1). Centered glass pill + oversized italic serif. */
-export function PageHeader({
+export const PageHeader = ({
   kicker,
   title,
   blurb,
@@ -43,7 +43,7 @@ export function PageHeader({
   blurb?: string;
   live?: boolean;
   children?: React.ReactNode;
-}) {
+}) => {
   return (
     <header className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
       <Pill live={live}>{kicker}</Pill>
@@ -58,20 +58,20 @@ export function PageHeader({
       {children}
     </header>
   );
-}
+};
 
 /**
  * Small mono-uppercase heading that labels a content section (an h2). Shared so
  * these section eyebrows read identically across the index, category, and
  * detail pages instead of drifting per file.
  */
-export function SectionLabel({
+export const SectionLabel = ({
   children,
   className,
 }: {
   children: React.ReactNode;
   className?: string;
-}) {
+}) => {
   return (
     <h2
       className={cn(
@@ -82,10 +82,10 @@ export function SectionLabel({
       {children}
     </h2>
   );
-}
+};
 
 /** In-page section header (h2). Same language, one step smaller than PageHeader. */
-export function SectionHeading({
+export const SectionHeading = ({
   kicker,
   title,
   blurb,
@@ -95,7 +95,7 @@ export function SectionHeading({
   title: React.ReactNode;
   blurb?: string;
   live?: boolean;
-}) {
+}) => {
   return (
     <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center gap-5 text-center sm:mb-16">
       <Pill live={live}>{kicker}</Pill>
@@ -109,4 +109,4 @@ export function SectionHeading({
       )}
     </div>
   );
-}
+};

@@ -4,8 +4,12 @@ import * as React from "react";
 import { Check, Copy } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
-export type CopyButtonProps = Omit<React.ComponentProps<"button">, "value"> & {
+export interface CopyButtonProps extends Omit<
+  React.ComponentProps<"button">,
+  "value" | "onCopy"
+> {
   /** Text written to the clipboard on click. */
   value: string;
   variant?: "ghost" | "outline";
@@ -13,9 +17,9 @@ export type CopyButtonProps = Omit<React.ComponentProps<"button">, "value"> & {
   /** How long the copied state stays, in ms. */
   timeout?: number;
   onCopy?: (value: string) => void;
-};
+}
 
-async function writeClipboard(text: string) {
+const writeClipboard = async (text: string) => {
   if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);
     return;
@@ -29,9 +33,9 @@ async function writeClipboard(text: string) {
   ta.select();
   document.execCommand("copy");
   document.body.removeChild(ta);
-}
+};
 
-function CopyButton({
+const CopyButton = ({
   value,
   variant = "ghost",
   size = "md",
@@ -40,7 +44,7 @@ function CopyButton({
   className,
   children,
   ...props
-}: CopyButtonProps) {
+}: CopyButtonProps) => {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -63,25 +67,16 @@ function CopyButton({
   const hasLabel = children != null;
 
   return (
-    <button
+    <Button
       type="button"
+      variant={variant}
+      size={hasLabel ? "sm" : size === "sm" ? "icon-xs" : "icon-sm"}
       data-slot="copy-button"
       data-state={copied ? "copied" : "idle"}
       aria-label={copied ? "Copied" : "Copy to clipboard"}
       onClick={handleCopy}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium outline-none transition-colors",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        variant === "ghost" &&
-          "text-muted-foreground hover:bg-accent hover:text-foreground",
-        variant === "outline" &&
-          "border border-border bg-transparent text-foreground hover:bg-accent",
-        hasLabel
-          ? "h-8 px-2.5"
-          : size === "sm"
-            ? "size-7 [&_svg]:size-3.5"
-            : "size-8 [&_svg]:size-4",
-        hasLabel && (size === "sm" ? "[&_svg]:size-3.5" : "[&_svg]:size-4"),
+        size === "sm" ? "[&_svg]:size-3.5" : "[&_svg]:size-4",
         className,
       )}
       {...props}
@@ -103,8 +98,8 @@ function CopyButton({
         />
       </span>
       {hasLabel && <span>{copied ? "Copied" : children}</span>}
-    </button>
+    </Button>
   );
-}
+};
 
 export { CopyButton };

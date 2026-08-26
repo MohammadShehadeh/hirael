@@ -4,6 +4,7 @@ import * as React from "react";
 import { Menu, Search, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/registry/hirael/ui/button";
 
 import { ContactButton, Logo, useScrolled } from "./primitives";
 
@@ -14,7 +15,7 @@ const NAV_LINKS = [
   { label: "Thinking", href: "#thinking" },
 ];
 
-export function Navbar() {
+export const Navbar = () => {
   const scrolled = useScrolled(20);
   const [open, setOpen] = React.useState(false);
 
@@ -66,25 +67,29 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-lg"
               aria-label="Search"
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-[var(--nexa-navy)] transition-colors hover:bg-foreground/5"
+              className="rounded-xl text-[var(--nexa-navy)]"
             >
-              <Search size={20} />
-            </button>
+              <Search className="size-5" />
+            </Button>
             <div className="hidden md:block">
               <ContactButton />
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-lg"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-[var(--nexa-navy)] transition-colors hover:bg-foreground/5 md:hidden"
+              className="rounded-xl text-[var(--nexa-navy)] md:hidden"
             >
-              {open ? <X size={20} /> : <Menu size={20} />}
-            </button>
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            </Button>
           </div>
         </div>
 
@@ -101,13 +106,15 @@ export function Navbar() {
               </a>
             ))}
             <div className="mt-1 flex w-full items-center gap-2">
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-lg"
                 aria-label="Search"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--nexa-navy)] transition-colors hover:bg-foreground/5"
+                className="rounded-xl text-[var(--nexa-navy)]"
               >
-                <Search size={20} />
-              </button>
+                <Search className="size-5" />
+              </Button>
               <ContactButton className="flex-1" />
             </div>
           </div>
@@ -115,4 +122,4 @@ export function Navbar() {
       </nav>
     </header>
   );
-}
+};

@@ -15,19 +15,18 @@ const MotionSlot = motion.create(Slot);
 
 const SPRING = { stiffness: 200, damping: 15, mass: 0.1 };
 
-type MagneticButtonProps = HTMLMotionProps<"button"> & {
+interface MagneticButtonProps extends HTMLMotionProps<"button"> {
   /** Pull strength as a fraction of the cursor's distance from center. */
   strength?: number;
   /** Render the child element instead of a button (e.g. a link). */
-  asChild?: boolean;
-};
+  asChild?: boolean;}
 
-function MagneticButton({
+const MagneticButton = ({
   className,
   strength = 0.4,
   asChild = false,
   ...props
-}: MagneticButtonProps) {
+}: MagneticButtonProps) => {
   const reduced = useReducedMotion();
   const x = useSpring(0, SPRING);
   const y = useSpring(0, SPRING);
@@ -60,6 +59,6 @@ function MagneticButton({
       {...props}
     />
   );
-}
+};
 
 export { MagneticButton };

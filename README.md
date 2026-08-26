@@ -30,9 +30,9 @@ is present at runtime.
 
 ## What's inside
 
-- **~64 components** — inputs (multi-select, tag input, phone, currency),
+- **70+ components** — inputs (multi-select, tag input, phone, currency),
   pickers (year, month, time, color), data display, editors, and more.
-- **80+ section blocks** — hero, feature, pricing, testimonial, CTA, FAQ,
+- **95+ section blocks** — hero, feature, pricing, testimonial, CTA, FAQ,
   auth, dashboard, and app-shell blocks.
 - **9 full-page templates** — finished multi-section layouts.
 

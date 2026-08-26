@@ -35,15 +35,13 @@ interface DataTableFacetedFilterProps<
   multiple?: boolean;
 }
 
-export function DataTableFacetedFilter<
-  TData extends RowData,
-  TValue extends CellData,
->({
+export const DataTableFacetedFilter = <TData extends RowData,
+  TValue extends CellData,>({
   column,
   title,
   options,
   multiple,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: DataTableFacetedFilterProps<TData, TValue>) => {
   const [open, setOpen] = React.useState(false);
 
   const columnFilterValue = column?.getFilterValue();
@@ -195,4 +193,4 @@ export function DataTableFacetedFilter<
       </PopoverContent>
     </Popover>
   );
-}
+};

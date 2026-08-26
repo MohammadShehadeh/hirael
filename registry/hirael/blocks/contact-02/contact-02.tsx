@@ -4,7 +4,7 @@ import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/registry/hirael/ui/separator";
 
-function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -13,9 +13,9 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
-function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
@@ -24,7 +24,7 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};
 
 const EMAIL = "hello@example.com";
 
@@ -33,7 +33,7 @@ const SOCIAL_LINKS = [
   { icon: GithubIcon, href: "#", label: "GitHub" },
 ] as const;
 
-export default function Contact02() {
+const Contact02 = () => {
   return (
     <section
       data-slot="contact"
@@ -120,22 +120,21 @@ export default function Contact02() {
       </div>
     </section>
   );
-}
-
-type ContactBoxProps = React.ComponentProps<"div"> & {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
 };
 
-function Box({
+interface ContactBoxProps extends React.ComponentProps<"div"> {
+  icon: React.ReactNode;
+  title: string;
+  description: string;}
+
+const Box = ({
   title,
   description,
   className,
   children,
   icon,
   ...props
-}: ContactBoxProps) {
+}: ContactBoxProps) => {
   return (
     <div
       data-slot="contact-box"
@@ -171,4 +170,6 @@ function Box({
       </div>
     </div>
   );
-}
+};
+
+export default Contact02;

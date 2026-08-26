@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type ActivityFeedProps = React.ComponentProps<"ul">;
 
-function ActivityFeed({ className, ...props }: ActivityFeedProps) {
+const ActivityFeed = ({ className, ...props }: ActivityFeedProps) => {
   return (
     <ul
       data-slot="activity-feed"
@@ -15,11 +15,11 @@ function ActivityFeed({ className, ...props }: ActivityFeedProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedItemProps = React.ComponentProps<"li">;
 
-function ActivityFeedItem({ className, ...props }: ActivityFeedItemProps) {
+const ActivityFeedItem = ({ className, ...props }: ActivityFeedItemProps) => {
   return (
     <li
       data-slot="activity-feed-item"
@@ -32,20 +32,19 @@ function ActivityFeedItem({ className, ...props }: ActivityFeedItemProps) {
       {...props}
     />
   );
-}
-
-type ActivityFeedAvatarProps = React.ComponentProps<"span"> & {
-  src?: string;
-  alt?: string;
 };
 
-function ActivityFeedAvatar({
+interface ActivityFeedAvatarProps extends React.ComponentProps<"span"> {
+  src?: string;
+  alt?: string;}
+
+const ActivityFeedAvatar = ({
   src,
   alt,
   className,
   children,
   ...props
-}: ActivityFeedAvatarProps) {
+}: ActivityFeedAvatarProps) => {
   return (
     <span
       data-slot="activity-feed-avatar"
@@ -68,14 +67,14 @@ function ActivityFeedAvatar({
       )}
     </span>
   );
-}
+};
 
 type ActivityFeedContentProps = React.ComponentProps<"div">;
 
-function ActivityFeedContent({
+const ActivityFeedContent = ({
   className,
   ...props
-}: ActivityFeedContentProps) {
+}: ActivityFeedContentProps) => {
   return (
     <div
       data-slot="activity-feed-content"
@@ -83,11 +82,11 @@ function ActivityFeedContent({
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedHeaderProps = React.ComponentProps<"div">;
 
-function ActivityFeedHeader({ className, ...props }: ActivityFeedHeaderProps) {
+const ActivityFeedHeader = ({ className, ...props }: ActivityFeedHeaderProps) => {
   return (
     <div
       data-slot="activity-feed-header"
@@ -98,11 +97,11 @@ function ActivityFeedHeader({ className, ...props }: ActivityFeedHeaderProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedActorProps = React.ComponentProps<"span">;
 
-function ActivityFeedActor({ className, ...props }: ActivityFeedActorProps) {
+const ActivityFeedActor = ({ className, ...props }: ActivityFeedActorProps) => {
   return (
     <span
       data-slot="activity-feed-actor"
@@ -110,11 +109,11 @@ function ActivityFeedActor({ className, ...props }: ActivityFeedActorProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedActionProps = React.ComponentProps<"span">;
 
-function ActivityFeedAction({ className, ...props }: ActivityFeedActionProps) {
+const ActivityFeedAction = ({ className, ...props }: ActivityFeedActionProps) => {
   return (
     <span
       data-slot="activity-feed-action"
@@ -122,11 +121,11 @@ function ActivityFeedAction({ className, ...props }: ActivityFeedActionProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedTimeProps = React.ComponentProps<"time">;
 
-function ActivityFeedTime({ className, ...props }: ActivityFeedTimeProps) {
+const ActivityFeedTime = ({ className, ...props }: ActivityFeedTimeProps) => {
   return (
     <time
       data-slot="activity-feed-time"
@@ -137,11 +136,11 @@ function ActivityFeedTime({ className, ...props }: ActivityFeedTimeProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedBodyProps = React.ComponentProps<"div">;
 
-function ActivityFeedBody({ className, ...props }: ActivityFeedBodyProps) {
+const ActivityFeedBody = ({ className, ...props }: ActivityFeedBodyProps) => {
   return (
     <div
       data-slot="activity-feed-body"
@@ -152,15 +151,15 @@ function ActivityFeedBody({ className, ...props }: ActivityFeedBodyProps) {
       {...props}
     />
   );
-}
+};
 
 type ActivityFeedDividerProps = React.ComponentProps<"li">;
 
-function ActivityFeedDivider({
+const ActivityFeedDivider = ({
   className,
   children,
   ...props
-}: ActivityFeedDividerProps) {
+}: ActivityFeedDividerProps) => {
   return (
     <li
       data-slot="activity-feed-divider"
@@ -175,7 +174,7 @@ function ActivityFeedDivider({
       <span aria-hidden className="h-px flex-1 bg-border" />
     </li>
   );
-}
+};
 
 export {
   ActivityFeed,
@@ -190,7 +189,7 @@ export {
   ActivityFeedDivider,
 };
 
-export default function ActivityFeedBlock() {
+const ActivityFeedBlock = () => {
   return (
     <section
       data-slot="activity-feed-block"
@@ -248,4 +247,6 @@ export default function ActivityFeedBlock() {
       </div>
     </section>
   );
-}
+};
+
+export default ActivityFeedBlock;

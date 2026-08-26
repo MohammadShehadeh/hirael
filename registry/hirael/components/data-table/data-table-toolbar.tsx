@@ -19,12 +19,12 @@ interface DataTableToolbarProps<
   table: ReactTable<DataTableFeatures, TData>;
 }
 
-export function DataTableToolbar<TData extends RowData>({
+export const DataTableToolbar = <TData extends RowData>({
   table,
   children,
   className,
   ...props
-}: DataTableToolbarProps<TData>) {
+}: DataTableToolbarProps<TData>) => {
   const isFiltered = table.state.columnFilters.length > 0;
 
   const columns = React.useMemo(
@@ -70,15 +70,15 @@ export function DataTableToolbar<TData extends RowData>({
       </div>
     </div>
   );
-}
+};
 
 interface DataTableToolbarFilterProps<TData extends RowData> {
   column: Column<DataTableFeatures, TData>;
 }
 
-function DataTableToolbarFilter<TData extends RowData>({
+const DataTableToolbarFilter = <TData extends RowData>({
   column,
-}: DataTableToolbarFilterProps<TData>) {
+}: DataTableToolbarFilterProps<TData>) => {
   const columnMeta = column.columnDef.meta;
 
   const onFilterRender = React.useCallback(() => {
@@ -149,4 +149,4 @@ function DataTableToolbarFilter<TData extends RowData>({
   }, [column, columnMeta]);
 
   return onFilterRender();
-}
+};

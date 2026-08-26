@@ -52,6 +52,6 @@ const NEXACORE_CSS = `
 }
 `;
 
-export function NexacoreStyles() {
+export const NexacoreStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: NEXACORE_CSS }} />;
-}
+};

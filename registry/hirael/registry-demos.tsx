@@ -53,49 +53,49 @@ const lazyFor = (
   return Component;
 };
 
-function Render({
+const Render = ({
   Component,
   fallback,
 }: {
   Component?: React.LazyExoticComponent<React.ComponentType>;
   fallback: React.ReactNode;
-}) {
+}) => {
   if (!Component) return null;
   return (
     <React.Suspense fallback={fallback}>
       <Component />
     </React.Suspense>
   );
-}
+};
 
 /** Render one component example by its slug (e.g. `tag-input-demo`). */
-export function RegistryExample({
+export const RegistryExample = ({
   name,
   fallback = null,
 }: {
   name: string;
   fallback?: React.ReactNode;
-}) {
+}) => {
   return (
     <Render
       Component={lazyFor(`example:${name}`, () => loadExample(name))}
       fallback={fallback}
     />
   );
-}
+};
 
 /**
  * Render the representative preview for an entry: a block/template by its
  * name, or a component's primary (first) example. Used by grids, the theme
  * playground and `/embed/*`.
  */
-export function RegistryDemo({
+export const RegistryDemo = ({
   name,
   fallback = null,
 }: {
   name: string;
   fallback?: React.ReactNode;
-}) {
+}) => {
   const entry = REGISTRY.find((e) => e.name === name);
 
   if (entry?.category === "blocks") {
@@ -125,4 +125,4 @@ export function RegistryDemo({
       fallback={fallback}
     />
   );
-}
+};

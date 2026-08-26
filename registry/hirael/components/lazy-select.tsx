@@ -17,13 +17,12 @@ import {
   CommandList,
 } from "@/registry/hirael/ui/command";
 
-export type LazySelectOption = {
+export interface LazySelectOption {
   value: string;
   label: string;
-  disabled?: boolean;
-};
+  disabled?: boolean;}
 
-type Ctx = {
+interface Ctx {
   value: string | undefined;
   setValue: (next: string | undefined, option?: LazySelectOption) => void;
   selectedLabel: string | undefined;
@@ -37,12 +36,11 @@ type Ctx = {
   hasMore?: boolean;
   onLoadMore?: () => void;
   disabled?: boolean;
-  clearable: boolean;
-};
+  clearable: boolean;}
 
 const LazySelectContext = React.createContext<Ctx | null>(null);
 
-function useLazySelect() {
+const useLazySelect = () => {
   const ctx = React.useContext(LazySelectContext);
   if (!ctx) {
     throw new Error(
@@ -50,9 +48,9 @@ function useLazySelect() {
     );
   }
   return ctx;
-}
+};
 
-export type LazySelectProps = {
+export interface LazySelectProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string | undefined) => void;
@@ -71,10 +69,9 @@ export type LazySelectProps = {
   hasMore?: boolean;
   disabled?: boolean;
   clearable?: boolean;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function LazySelect({
+const LazySelect = ({
   value: valueProp,
   defaultValue,
   onValueChange,
@@ -90,7 +87,7 @@ function LazySelect({
   disabled,
   clearable = true,
   children,
-}: LazySelectProps) {
+}: LazySelectProps) => {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(
     defaultValue,
   );
@@ -196,23 +193,22 @@ function LazySelect({
       </Popover>
     </LazySelectContext.Provider>
   );
-}
-
-type LazySelectTriggerProps = Omit<
-  React.ComponentProps<"button">,
-  "children"
-> & {
-  placeholder?: string;
-  className?: string;
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
 };
 
-function LazySelectTrigger({
+interface LazySelectTriggerProps extends Omit<
+  React.ComponentProps<"button">,
+  "children"
+> {
+  placeholder?: string;
+  className?: string;
+  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);}
+
+const LazySelectTrigger = ({
   placeholder = "Select…",
   className,
   children,
   ...props
-}: LazySelectTriggerProps) {
+}: LazySelectTriggerProps) => {
   const ctx = useLazySelect();
 
   return (
@@ -274,18 +270,17 @@ function LazySelectTrigger({
       </button>
     </PopoverTrigger>
   );
-}
+};
 
-type LazySelectContentProps = React.ComponentProps<typeof PopoverContent> & {
+interface LazySelectContentProps extends React.ComponentProps<typeof PopoverContent> {
   searchPlaceholder?: string;
   emptyMessage?: string;
   loadingMessage?: string;
   loadingMoreMessage?: string;
   endMessage?: string;
-  children?: React.ReactNode;
-};
+  children?: React.ReactNode;}
 
-function LazySelectContent({
+const LazySelectContent = ({
   className,
   searchPlaceholder = "Search…",
   emptyMessage = "Nothing found.",
@@ -294,7 +289,7 @@ function LazySelectContent({
   endMessage,
   children,
   ...props
-}: LazySelectContentProps) {
+}: LazySelectContentProps) => {
   const ctx = useLazySelect();
   const sentinelRef = React.useRef<HTMLDivElement>(null);
   const onLoadMore = ctx.onLoadMore;
@@ -380,22 +375,21 @@ function LazySelectContent({
       </Command>
     </PopoverContent>
   );
-}
-
-type LazySelectItemProps = Omit<
-  React.ComponentProps<typeof CommandItem>,
-  "value" | "onSelect" | "children"
-> & {
-  option: LazySelectOption;
-  children?: React.ReactNode;
 };
 
-function LazySelectItem({
+interface LazySelectItemProps extends Omit<
+  React.ComponentProps<typeof CommandItem>,
+  "value" | "onSelect" | "children"
+> {
+  option: LazySelectOption;
+  children?: React.ReactNode;}
+
+const LazySelectItem = ({
   option,
   children,
   className,
   ...props
-}: LazySelectItemProps) {
+}: LazySelectItemProps) => {
   const ctx = useLazySelect();
   const selected = ctx.value === option.value;
 
@@ -417,7 +411,7 @@ function LazySelectItem({
       )}
     </CommandItem>
   );
-}
+};
 
 export type LazyPage<T> = {
   items: T[];
@@ -430,14 +424,12 @@ export type LazyPage<T> = {
  * lazy-on-open loading); changing the query resets to the first page, and
  * `loadMore` appends the next one.
  */
-export function useLazySelectOptions<T>(
-  loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
+export const useLazySelectOptions = <T,>(loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
   map: (item: T) => LazySelectOption,
   {
     debounce = 250,
     enabled = true,
-  }: { debounce?: number; enabled?: boolean } = {},
-) {
+  }: { debounce?: number; enabled?: boolean } = {},) => {
   const [query, setQuery] = React.useState("");
   const [options, setOptions] = React.useState<LazySelectOption[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -525,6 +517,6 @@ export function useLazySelectOptions<T>(
     error,
     loadMore,
   };
-}
+};
 
 export { LazySelect, LazySelectTrigger, LazySelectContent, LazySelectItem };

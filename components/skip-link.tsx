@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
  * sidebar/header chrome straight to `<main id="main-content">`. Visually
  * hidden until focused.
  */
-export function SkipLink({ className }: { className?: string }) {
+export const SkipLink = ({ className }: { className?: string }) => {
   return (
     <a
       href="#main-content"
@@ -21,4 +21,4 @@ export function SkipLink({ className }: { className?: string }) {
       Skip to content
     </a>
   );
-}
+};

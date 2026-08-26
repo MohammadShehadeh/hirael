@@ -14,7 +14,7 @@ export const PACKAGE_MANAGERS: readonly PackageManager[] = [
 const STORAGE_KEY = "hirael:pm";
 const CHANGE_EVENT = "hirael:pm-change";
 
-export function getShadcnAddCommand(pm: PackageManager, url: string): string {
+export const getShadcnAddCommand = (pm: PackageManager, url: string): string => {
   switch (pm) {
     case "npm":
       return `npx shadcn@latest add ${url}`;
@@ -25,18 +25,18 @@ export function getShadcnAddCommand(pm: PackageManager, url: string): string {
     case "bun":
       return `bunx --bun shadcn@latest add ${url}`;
   }
-}
+};
 
-function isPackageManager(value: string | null): value is PackageManager {
+const isPackageManager = (value: string | null): value is PackageManager => {
   return (
     value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value)
   );
-}
+};
 
-export function usePackageManager(): [
+export const usePackageManager = (): [
   PackageManager,
   (pm: PackageManager) => void,
-] {
+] => {
   const [pm, setPmState] = React.useState<PackageManager>("npm");
 
   React.useEffect(() => {
@@ -77,4 +77,4 @@ export function usePackageManager(): [
   }, []);
 
   return [pm, setPm];
-}
+};

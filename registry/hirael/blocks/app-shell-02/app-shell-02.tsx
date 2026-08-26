@@ -59,12 +59,11 @@ type SectionId =
   | "billing"
   | "integrations";
 
-type Section = {
+interface Section {
   id: SectionId;
   label: string;
   icon: LucideIcon;
-  desc: string;
-};
+  desc: string;}
 
 const SECTIONS: readonly Section[] = [
   { id: "profile", label: "Profile", icon: User, desc: "Your personal details" },
@@ -231,7 +230,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
   ],
 };
 
-function fieldMatches(field: Field, query: string) {
+const fieldMatches = (field: Field, query: string) => {
   const haystack = [
     field.label,
     field.hint ?? "",
@@ -240,9 +239,9 @@ function fieldMatches(field: Field, query: string) {
     .join(" ")
     .toLowerCase();
   return haystack.includes(query);
-}
+};
 
-function BrandMark({ className }: { className?: string }) {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <span
       role="img"
@@ -270,11 +269,11 @@ function BrandMark({ className }: { className?: string }) {
       </svg>
     </span>
   );
-}
+};
 
 type SaveState = "idle" | "saving" | "saved";
 
-function FieldRow({
+const FieldRow = ({
   field,
   values,
   toggles,
@@ -286,7 +285,7 @@ function FieldRow({
   toggles: Record<string, boolean>;
   onCommit: (id: string, value: string) => Promise<void>;
   onToggle: (id: string, next: boolean) => void;
-}) {
+}) => {
   const hintId = field.hint ? `${field.id}-hint` : undefined;
 
   return (
@@ -371,9 +370,9 @@ function FieldRow({
       )}
     </div>
   );
-}
+};
 
-export default function AppShell02() {
+const AppShell02 = () => {
   const [section, setSection] = React.useState<SectionId>("profile");
   const [query, setQuery] = React.useState("");
   const [values, setValues] = React.useState<Record<string, string>>({});
@@ -706,4 +705,6 @@ export default function AppShell02() {
       </div>
     </div>
   );
-}
+};
+
+export default AppShell02;

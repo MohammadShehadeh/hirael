@@ -275,7 +275,7 @@ const ComingSoon01 = () => {
               Preview only, nothing is submitted.
             </span>
             <a
-              href="https://github.com/mohammadshehadeh/hirael.com"
+              href="https://github.com/MohammadShehadeh/hirael"
               target="_blank"
               rel="noreferrer"
               aria-label="Hirael on GitHub"

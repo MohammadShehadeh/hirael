@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         #### If you aren't sure this is a bug, please open a discussion instead:
-        - [Discussions](https://github.com/MohammadShehadeh/hirael.com/discussions/new?category=general)
+        - [Discussions](https://github.com/MohammadShehadeh/hirael/discussions/new?category=general)
 
   - type: textarea
     id: bug-description
@@ -89,7 +89,7 @@ body:
     id: terms
     attributes:
       label: Before submitting
-      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael.com/blob/main/CONTRIBUTING.md).
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael/blob/main/CONTRIBUTING.md).
       options:
         - label: I've searched the documentation and existing issues
           required: true

@@ -34,14 +34,15 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
-# generated registry artifacts
+# generated registry artifacts (rebuilt by `pnpm registry:gen` / `registry:props`
+# / `registry:build` on install and build; never committed)
+/registry.json
+/registry/hirael/registry-props.json
+/public/llms.txt
 /public/r/
 
 # claude code local settings (per-machine permissions, kept out of the public repo)

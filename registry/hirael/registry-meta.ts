@@ -755,6 +755,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["lucide-react"],
   },
   {
+    name: "header-02",
+    title: "Header 2",
+    description:
+      "Floating nav that runs full width at the top of the page and shrinks into a blurred pill once you scroll past 100px, with a spring-animated width change. Links share a sliding hover highlight; on mobile a toggle opens an animated dropdown menu. Ships composable parts and a scroll-container prop for embedded layouts.",
+    blockTagline: "Shrinks on scroll · sliding hover pill · mobile dropdown",
+    category: "blocks",
+    blockKind: "header",
+    files: [
+      {
+        path: "registry/hirael/blocks/header-02/header-02.tsx",
+        target: "components/blocks/header-02.tsx",
+      },
+    ],
+    registryDependencies: ["button"],
+    dependencies: ["lucide-react", "motion"],
+  },
+  {
     name: "footer-01",
     title: "Footer 1",
     description:
@@ -1527,6 +1544,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ["motion"],
   },
   {
+    name: "sparkles",
+    title: "Sparkles",
+    description:
+      "Canvas particle field that drifts and twinkles behind any container. Density scales with size, colors resolve from tokens, and it pauses offscreen and under reduced-motion. No dependencies.",
+    category: "animation",
+    files: [{ path: "registry/hirael/components/sparkles.tsx" }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: "tilt-card",
     title: "Tilt Card",
     description:
@@ -2273,6 +2300,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "testimonial-04",
+    title: "Testimonial 4",
+    description:
+      "Three-column quote grid under a centered pill badge and word-by-word headline. Each card opens with a quote icon inside a ring lit by an orbiting glow, then the quote in serif marks and an author line. Cards rise in with staggered motion.",
+    blockTagline: "Quote grid · orbiting glow ring · staggered rise",
+    category: "blocks",
+    blockKind: "testimonial",
+    files: [
+      {
+        path: "registry/hirael/blocks/testimonial-04/testimonial-04.tsx",
+        target: "components/blocks/testimonial-04.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react", "motion"],
+  },
+  {
     name: "cta-04",
     title: "CTA 4",
     description:
@@ -2358,6 +2402,27 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "footer-04",
+    title: "Footer 4",
+    description:
+      "Four-column footer lit by slow light rays falling from the top edge: brand mark and blurb, a contact column with WhatsApp and email links, a location column, and a subscribe form whose placeholder cycles through prompts. Columns and links rise in with staggered motion; a divided copyright row closes it. Rays hold still under reduced-motion.",
+    blockTagline: "Light rays · contact columns · rotating placeholder",
+    category: "blocks",
+    blockKind: "footer",
+    files: [
+      {
+        path: "registry/hirael/blocks/footer-04/footer-04.tsx",
+        target: "components/blocks/footer-04.tsx",
+      },
+      {
+        path: "registry/hirael/blocks/footer-04/footer-04-beams.tsx",
+        target: "components/blocks/footer-04-beams.tsx",
+      },
+    ],
+    registryDependencies: ["button", "input", "separator"],
+    dependencies: ["lucide-react", "motion"],
+  },
+  {
     name: "faq-05",
     title: "FAQ 5",
     description:
@@ -2375,6 +2440,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: "faq-06",
+    title: "FAQ 6",
+    description:
+      "Centered FAQ with a pill badge, a word-by-word headline reveal and a short intro above a multi-open accordion where each question is its own bordered card that rises in with a staggered delay and tints slightly when open. Ships composable parts.",
+    blockTagline: "Card accordion · staggered rise · multi-open",
+    category: "blocks",
+    blockKind: "faq",
+    files: [
+      {
+        path: "registry/hirael/blocks/faq-06/faq-06.tsx",
+        target: "components/blocks/faq-06.tsx",
+      },
+    ],
+    registryDependencies: ["accordion", "badge"],
+    dependencies: ["motion"],
+  },
+  {
     name: "contact-02",
     title: "Contact 2",
     description:
@@ -2390,6 +2472,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ["separator"],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "contact-03",
+    title: "Contact 3",
+    description:
+      "Centered contact panel whose bottom glow widens as the section scrolls into view, with a pill badge, a word-by-word headline reveal, two short paragraphs, and a two-column CTA grid: an email button with the address beneath it and an outline call button that opens a WhatsApp chat. Ships composable parts.",
+    blockTagline: "Scroll-driven glow · word reveal · email + chat CTAs",
+    category: "blocks",
+    blockKind: "contact",
+    files: [
+      {
+        path: "registry/hirael/blocks/contact-03/contact-03.tsx",
+        target: "components/blocks/contact-03.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react", "motion"],
   },
   {
     name: "login-03",
@@ -2610,6 +2709,57 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "feature-04",
+    title: "Feature 4",
+    description:
+      "Services grid: a pill badge, word-by-word animated title and intro over a three-column set of cards, each with a large thin icon, title, blurb and a three-point bullet list, lit by two pulsing warm radial glows. Cards rise in with staggered motion that respects reduced-motion.",
+    blockTagline: "Icon cards · warm glow · bullet list",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-04/feature-04.tsx",
+        target: "components/blocks/feature-04.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react", "motion"],
+  },
+  {
+    name: "feature-05",
+    title: "Feature 5",
+    description:
+      "Values section: a centered animated header over a two-column, offset grid of six glass cards, each backed by a canvas dot grid that shimmers dot by dot in the brand warm tone. Pauses off-screen and renders a single static frame under reduced-motion.",
+    blockTagline: "Offset columns · dotted glow canvas · glass cards",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-05/feature-05.tsx",
+        target: "components/blocks/feature-05.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["motion"],
+  },
+  {
+    name: "feature-06",
+    title: "Feature 6",
+    description:
+      "About section: a centered animated header over two equal story cards, each decorated with a fading SVG grid pattern and a token-lit gradient, with a heading and two paragraphs that rise in after the card. Reduced-motion renders everything in place.",
+    blockTagline: "Two story cards · grid pattern · staggered copy",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-06/feature-06.tsx",
+        target: "components/blocks/feature-06.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["motion"],
   },
   {
     name: "comparison-01",
@@ -3110,6 +3260,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     cssVars: STATUS_CSS_VARS,
   },
   {
+    name: "coming-soon-02",
+    title: "Coming Soon 2",
+    description:
+      "Full-viewport launch teaser: a pill badge, a word-by-word serif headline, sub-copy and a disabled pill CTA above a glowing horizon of sparkles with a rounded planet edge. Motion respects reduced-motion.",
+    blockTagline: "Word reveal · sparkle horizon · disabled CTA",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/coming-soon-02/coming-soon-02.tsx",
+        target: "components/blocks/coming-soon-02.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "button", "sparkles"],
+    dependencies: ["motion"],
+  },
+  {
     name: "maintenance-01",
     title: "Maintenance 1",
     description:
@@ -3126,6 +3293,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ["button"],
     dependencies: ["lucide-react"],
     cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: "maintenance-02",
+    title: "Maintenance 2",
+    description:
+      "Full-viewport offline page with a blurred primary glow and a sparkle field behind a pill badge, a word-by-word serif headline, a short status message and a spinner line. Message area is a live region.",
+    blockTagline: "Sparkle backdrop · word reveal · spinner status",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/maintenance-02/maintenance-02.tsx",
+        target: "components/blocks/maintenance-02.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "sparkles"],
+    dependencies: ["lucide-react", "motion"],
   },
   {
     name: "error-01",
@@ -3161,6 +3345,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: [],
     dependencies: ["lucide-react"],
+  },
+  {
+    name: "team-02",
+    title: "Team 2",
+    description:
+      "Single-profile experience section: a four-up metric strip, a bio card with a grid-pattern backdrop, and a competencies card that ends in three pause-on-hover marquee rows of skill chips with edge fades. Every element rises in on scroll and respects reduced-motion.",
+    blockTagline: "Metric strip · profile card · skills marquee",
+    category: "blocks",
+    blockKind: "team",
+    files: [
+      {
+        path: "registry/hirael/blocks/team-02/team-02.tsx",
+        target: "components/blocks/team-02.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "marquee"],
+    dependencies: ["motion"],
   },
   {
     name: "stats-01",
@@ -3310,7 +3511,8 @@ export interface DistributionOnlyEntry {
   name: string;
   title: string;
   description: string;
-  type: "registry:ui" | "registry:block" | "registry:theme";
+  type:
+    "registry:ui" | "registry:component" | "registry:block" | "registry:theme";
   /** Raw registry.json categories. */
   categories: string[];
   /**
@@ -3340,7 +3542,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     title: "Calendar Utils",
     description:
       "Dependency-free date helpers (month grids, day math, keyboard-grid navigation) shared by date-picker and date-range-picker.",
-    type: "registry:ui",
+    type: "registry:component",
     categories: ["primitives"],
     files: [{ path: "registry/hirael/components/calendar-utils.ts" }],
     registryDependencies: [],

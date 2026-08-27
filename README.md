@@ -62,7 +62,7 @@ item and serves the generated `/r/*.json` registry files. Requires Node 22
 (see `.nvmrc`) and pnpm 10.
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.com.git
+git clone https://github.com/MohammadShehadeh/hirael.git
 cd hirael.com
 pnpm install
 pnpm dev            # showcase at http://localhost:3000
@@ -75,7 +75,8 @@ pnpm dev            # showcase at http://localhost:3000
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit`                               |
 
 Every item is declared in `registry/hirael/registry-meta.ts`, the single source
-of truth; `registry.json` is generated from it — never hand-edit it.
+of truth; `registry.json` and the `/r/*.json` payloads are generated from it on
+install and build, and are never committed or hand-edited.
 
 ## Contributing
 

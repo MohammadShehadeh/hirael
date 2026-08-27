@@ -32,9 +32,11 @@ that previews every item and serves the generated `/r/*.json` files.
 [registry-meta.ts](./registry/hirael/registry-meta.ts) declares every item;
 the sidebar, counts, pages, and sitemap derive from it (its presence is the
 only "published" flag). To change the catalog: edit it, register the preview
-loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), run
-`pnpm registry:gen`, commit. **Never hand-edit `registry.json`** — it's
-generated, and `pnpm check:registry` fails on drift or a missing loader. List
+loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), commit.
+`registry.json`, `registry-props.json`, `llms.txt` and `/r/*.json` are
+generated on install and build (`pnpm registry:gen` / `registry:props` /
+`registry:build`) and are git-ignored, never committed or hand-edited;
+`pnpm check:registry` fails on a missing file or loader. List
 `registryDependencies` by bare name; generation rewrites hirael-to-hirael deps
 to `/r/<name>.json` URLs.
 
@@ -87,9 +89,8 @@ pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 release, compiled at build (`next-mdx-remote`) and frozen into the export.
 Frontmatter is `title`, `date` (YYYY-MM-DD), and optional `version` /
 `description`; the MDX body is visitor-facing (new components, blocks, fixes —
-no build/deploy internals). Production deploys **only when a Release is
-published** — `main` auto-deploy is off in `vercel.json` — so add the changelog
-entry in the same change and cut a Release to ship it.
+no build/deploy internals). The site deploys to Cloudflare Pages; add the
+changelog entry in the same change and cut a Release to ship it.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

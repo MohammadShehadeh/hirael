@@ -60,8 +60,10 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] =
  * be set by hand: Next appends a content-hash suffix unknown at
  * `generateMetadata` time, so an explicit `images` wouldn't match the file.
  */
-export const detailMetadata = (entry: RegistryEntryMeta,
-  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},): Metadata => {
+export const detailMetadata = (
+  entry: RegistryEntryMeta,
+  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},
+): Metadata => {
   const { titleSuffix, ownOgImage } = opts;
   const href = entryHref(entry);
   const url = `${SITE.url}${href}`;
@@ -69,6 +71,7 @@ export const detailMetadata = (entry: RegistryEntryMeta,
   const ogTitle = titleSuffix
     ? `${pageTitle} | ${SITE.name}`
     : `${pageTitle} - ${SITE.name}`;
+
   return {
     title: pageTitle,
     description: entry.description,

@@ -32,7 +32,7 @@ By participating you agree to abide by the project's
 ### First-time setup
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.com.git
+git clone https://github.com/MohammadShehadeh/hirael.git
 cd hirael.com
 pnpm install
 pnpm dev          # showcase site at http://localhost:3000
@@ -65,8 +65,8 @@ registry/hirael/
   registry-meta.ts           # single source of truth for every item
 registry/themes.ts           # theme-editor presets
 registry/base-colors.ts      # base-color options (derived from themes)
-registry.json                # GENERATED from registry-meta.ts — do not
-                             # edit by hand, run `pnpm registry:gen`
+registry.json                # generated from registry-meta.ts on install
+                             # and build (git-ignored, never hand-edited)
 examples/<component>-demo.tsx  # top-level showcase demo per component
 content/changelog/*.mdx      # changelog entries (one MDX file per release)
 components/<name>.tsx        # showcase-site UI, flat (not shipped)
@@ -167,9 +167,11 @@ Formatting is Prettier with its default config (`.prettierrc` is `{}`):
 2-space indent, double-quoted strings, semicolons. It runs automatically on
 staged files via the husky pre-commit hook (`lint-staged`), so you rarely need
 to think about it — just don't fight it with a different editor formatter.
-Generated files (`registry.json`, `vercel.json`, `registry-props.json`) are
-excluded via `.prettierignore` because `check:registry` verifies them
-byte-for-byte against the generators' output.
+Generated files (`registry.json`, `registry-props.json`, `llms.txt`,
+`public/r/`) are git-ignored and rebuilt by `pnpm install` and `pnpm build`;
+run `pnpm registry:gen && pnpm registry:props` to refresh them by hand.
+[scripts/README.md](./scripts/README.md) maps each command to what it reads
+and writes.
 
 ### Component conventions
 
@@ -184,6 +186,10 @@ byte-for-byte against the generators' output.
   user-facing text are concise, plain, and specific — short labels and
   sentences, no filler or marketing voice. Prefer "Pick a date" over
   "Effortlessly select your desired date."
+- **Item types follow shadcn/ui's registry.** `ui/` primitives ship as
+  `registry:ui`, hirael's own components as `registry:component`, blocks and
+  templates as `registry:block`; the generator derives this from the file
+  location and validates the output against `shadcn/schema`.
 - **Imports** go through aliases rewritten on install from the consumer's
   `components.json`: shadcn primitives from `@/registry/hirael/ui/*`, other
   hirael components from `@/registry/hirael/components/*`. `ui/` holds only
@@ -227,10 +233,9 @@ For each new component:
       representative preview used in grids and embeds).
 - [ ] Entry in `registry/hirael/registry-meta.ts` with category,
       description, `dependencies`, `registryDependencies` and source
-      file list, then `pnpm registry:gen` to regenerate `registry.json`
-      (never edit it by hand — `pnpm check:registry` fails if it
-      drifts or if declared `registryDependencies` don't match the
-      component's actual imports).
+      file list (`registry.json` is generated from it, never hand-edited;
+      `pnpm check:registry` fails if declared `registryDependencies`
+      don't match the component's actual imports).
 - [ ] Imports go through `@/registry/hirael/ui/*` (shadcn primitives) and
       `@/registry/hirael/components/*` (other hirael components) — both
       aliases are rewritten on install.
@@ -245,8 +250,7 @@ Marketing blocks follow the same shape but live under
 
 Templates are full-page, multi-section layouts. They live under
 `registry/hirael/templates/<template>/`, use `category: "templates"` in
-`registry-meta.ts`, and ship as a multi-file `registry:block` in
-`registry.json`. Like blocks, they are previewed full-bleed and do not
+`registry-meta.ts`, and ship as a multi-file `registry:block`. Like blocks, they are previewed full-bleed and do not
 need a demo under `examples/`.
 
 ## Testing requirements

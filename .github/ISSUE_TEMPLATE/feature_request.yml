@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         #### If this is more of a question than a request, please open a discussion instead:
-        - [Discussions](https://github.com/MohammadShehadeh/hirael.com/discussions/new?category=general)
+        - [Discussions](https://github.com/MohammadShehadeh/hirael/discussions/new?category=general)
 
   - type: textarea
     id: feature-description
@@ -60,7 +60,7 @@ body:
     id: terms
     attributes:
       label: Before submitting
-      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael.com/blob/main/CONTRIBUTING.md).
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/MohammadShehadeh/hirael/blob/main/CONTRIBUTING.md).
       options:
         - label: I've searched the documentation and existing issues/PRs
           required: true

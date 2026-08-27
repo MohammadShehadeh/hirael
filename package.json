@@ -2,19 +2,28 @@
   "name": "hirael",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Mohammad Shehadeh",
+    "url": "https://hirael.com"
+  },
+  "homepage": "https://hirael.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MohammadShehadeh/hirael"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm registry:gen && pnpm registry:props && node scripts/check-registry.mjs && pnpm registry:build && next build",
+    "build": "pnpm registry:gen && pnpm registry:props && pnpm check:registry && pnpm registry:build && next build",
     "start": "npx serve out",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "registry:gen": "node scripts/build-registry.mjs && node scripts/build-redirects.mjs && node scripts/build-llms.mjs",
-    "redirects:gen": "node scripts/build-redirects.mjs",
-    "registry:props": "node scripts/extract-props.mjs",
-    "registry:build": "shadcn build",
-    "check:registry": "node scripts/check-registry.mjs",
-    "check:install": "node scripts/check-install.mjs",
-    "prepare": "husky"
+    "registry:gen": "tsx scripts/build-registry.mts && tsx scripts/build-llms.mts",
+    "registry:props": "tsx scripts/extract-props.mts",
+    "registry:build": "shadcn build && tsx scripts/stamp-source.mts",
+    "check:registry": "tsx scripts/check-registry.mts",
+    "check:install": "tsx scripts/check-install.mts",
+    "prepare": "husky && pnpm registry:gen && pnpm registry:props"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -74,6 +83,7 @@
     "lint-staged": "^17.3.0",
     "prettier": "3.9.6",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.12",
     "typescript": "^6.0.3"
   },
   "pnpm": {

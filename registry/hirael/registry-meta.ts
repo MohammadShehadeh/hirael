@@ -1907,7 +1907,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button", "field"],
-    dependencies: ["motion", "hls.js"],
+    dependencies: ["motion"],
   },
   {
     name: "portfolio",
@@ -1949,8 +1949,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/portfolio/contact.tsx",
       },
       {
-        path: "registry/hirael/templates/portfolio/hls-video.tsx",
-        target: "components/templates/portfolio/hls-video.tsx",
+        path: "registry/hirael/templates/portfolio/background-video.tsx",
+        target: "components/templates/portfolio/background-video.tsx",
       },
       {
         path: "registry/hirael/templates/portfolio/primitives.tsx",
@@ -1966,7 +1966,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button"],
-    dependencies: ["gsap", "motion", "hls.js"],
+    dependencies: ["gsap", "motion"],
   },
   {
     name: "usd-halo",
@@ -2102,10 +2102,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/velorah/footer.tsx",
       },
       {
-        path: "registry/hirael/templates/velorah/hls-video.tsx",
-        target: "components/templates/velorah/hls-video.tsx",
-      },
-      {
         path: "registry/hirael/templates/velorah/primitives.tsx",
         target: "components/templates/velorah/primitives.tsx",
       },
@@ -2119,7 +2115,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["button", "toggle-group"],
-    dependencies: ["hls.js"],
   },
   {
     name: "asme",
@@ -2180,7 +2175,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: "nexacore",
     title: "NexaCore",
     description:
-      "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by hls.js and lucide-react.",
+      "Light enterprise-infrastructure landing page: a floating pill navbar that shrinks on scroll, a full-screen video hero, a dark service-card grid that unfolds on hover, a chaos-versus-control split around a circular streaming video, and a four-pillar delivery staircase. Self-contained navy-and-lavender palette with multi-stop brand gradients, driven by lucide-react.",
     category: "templates",
     files: [
       {
@@ -2208,10 +2203,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: "components/templates/nexacore/freedom.tsx",
       },
       {
-        path: "registry/hirael/templates/nexacore/hls-video.tsx",
-        target: "components/templates/nexacore/hls-video.tsx",
-      },
-      {
         path: "registry/hirael/templates/nexacore/precision.tsx",
         target: "components/templates/nexacore/precision.tsx",
       },
@@ -2229,7 +2220,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["badge", "button"],
-    dependencies: ["hls.js", "lucide-react"],
+    dependencies: ["lucide-react"],
   },
   {
     name: "hero-06",
@@ -2810,6 +2801,159 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ["badge", "toggle-group"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "hero-09",
+    title: "Hero 9",
+    description:
+      "Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a step-type strip, a sparkle-and-glow backdrop, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.",
+    blockTagline: "Zoom-out card · sparkle backdrop · carved stats",
+    category: "blocks",
+    blockKind: "hero",
+    files: [
+      {
+        path: "registry/hirael/blocks/hero-09/hero-09.tsx",
+        target: "components/blocks/hero-09.tsx",
+      },
+    ],
+    registryDependencies: ["button", "sparkles"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
+    name: "feature-07",
+    title: "Feature 7",
+    description:
+      "Problem-framing trio: a badge and serif headline with a muted second half above three cards, each an orb icon in concentric rings with a soft radial glow, a title and a short description. Cards fade up in sequence, stilled under reduced motion.",
+    blockTagline: "Orb icons · concentric rings · staggered reveal",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-07/feature-07.tsx",
+        target: "components/blocks/feature-07.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
+    name: "feature-08",
+    title: "Feature 8",
+    description:
+      "Six-card feature grid on hairline rails: each card carries an icon tile, a title and a description, corner crosshair marks, and a radial spotlight that follows the pointer on hover. Warm-tinted top glow per card.",
+    blockTagline: "Pointer spotlight · hairline rails · crosshair corners",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-08/feature-08.tsx",
+        target: "components/blocks/feature-08.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "feature-09",
+    title: "Feature 9",
+    description:
+      "Catalog bento on a hairline grid: a wide opening cell, four single cells and a full-width closing cell, each with a large faded icon that warms on hover, a title, a clamped description and a crosshair frame that clips at the cell edge.",
+    blockTagline: "Bento grid · crosshair frames · hover-warm icons",
+    category: "blocks",
+    blockKind: "feature",
+    files: [
+      {
+        path: "registry/hirael/blocks/feature-09/feature-09.tsx",
+        target: "components/blocks/feature-09.tsx",
+      },
+    ],
+    registryDependencies: ["badge"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "pricing-04",
+    title: "Pricing 4",
+    description:
+      "Three-tier pricing row with an uppercase plan label, a large price, a tagline, a full-width CTA and a check-marked quota list per tier; the featured tier gets a warm border, a top radial glow and a most-popular badge.",
+    blockTagline: "Three tiers · featured glow · quota checklist",
+    category: "blocks",
+    blockKind: "pricing",
+    files: [
+      {
+        path: "registry/hirael/blocks/pricing-04/pricing-04.tsx",
+        target: "components/blocks/pricing-04.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["lucide-react"],
+  },
+  {
+    name: "faq-07",
+    title: "FAQ 7",
+    description:
+      "Split FAQ: a serif heading and lead on the start side, a single-open accordion of five questions on the end side, divided by a hairline rule and framed by section borders.",
+    blockTagline: "Split layout · hairline divide · single-open accordion",
+    category: "blocks",
+    blockKind: "faq",
+    files: [
+      {
+        path: "registry/hirael/blocks/faq-07/faq-07.tsx",
+        target: "components/blocks/faq-07.tsx",
+      },
+    ],
+    registryDependencies: ["accordion"],
+    dependencies: [],
+  },
+  {
+    name: "cta-07",
+    title: "CTA 7",
+    description:
+      "Closing CTA panel wrapped in a scroll-reactive warm rim glow that widens as the section moves through the viewport, with an eyebrow badge, a two-tone serif headline, sub-copy and dual CTAs. Static glow under reduced motion.",
+    blockTagline: "Scroll-lit rim · two-tone headline · dual CTA",
+    category: "blocks",
+    blockKind: "cta",
+    files: [
+      {
+        path: "registry/hirael/blocks/cta-07/cta-07.tsx",
+        target: "components/blocks/cta-07.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "button"],
+    dependencies: ["motion", "lucide-react"],
+  },
+  {
+    name: "footer-05",
+    title: "Footer 5",
+    description:
+      "Floating card footer inset from the page edge: a brand block with mark and tagline, three link columns, and a hairline-divided legal row with copyright and a sign-off line.",
+    blockTagline: "Inset card · three columns · legal row",
+    category: "blocks",
+    blockKind: "footer",
+    files: [
+      {
+        path: "registry/hirael/blocks/footer-05/footer-05.tsx",
+        target: "components/blocks/footer-05.tsx",
+      },
+    ],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: "status-01",
+    title: "Status 1",
+    description:
+      "Service status page: an operational banner with a green check, a 90-day uptime grid of tooltip-backed day bars per service with a status legend, and a dated incident history where each update carries a tone-colored badge, a timestamp and a note.",
+    blockTagline: "Uptime bars · day tooltips · incident timeline",
+    category: "blocks",
+    blockKind: "not-found",
+    files: [
+      {
+        path: "registry/hirael/blocks/status-01/status-01.tsx",
+        target: "components/blocks/status-01.tsx",
+      },
+    ],
+    registryDependencies: ["badge", "tooltip"],
     dependencies: ["lucide-react"],
   },
   {

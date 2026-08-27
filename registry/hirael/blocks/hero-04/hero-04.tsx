@@ -12,7 +12,7 @@ const Hero04 = () => {
       className="dark relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-background text-foreground"
     >
       <Image
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop"
+        src="/media/blocks/hero-04/earth.jpg"
         alt="Earth seen from orbit against deep space"
         fill
         priority

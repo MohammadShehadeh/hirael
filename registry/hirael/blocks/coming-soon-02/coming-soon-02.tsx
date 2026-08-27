@@ -110,7 +110,7 @@ const ComingSoon02 = () => {
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,color-mix(in_oklch,var(--primary)_40%,transparent),transparent_70%)] opacity-40"
         />
         <Sparkles
-          density={0.04}
+          density={4}
           size={1.4}
           className="[mask-image:radial-gradient(50%_50%,black,transparent_85%)]"
         />

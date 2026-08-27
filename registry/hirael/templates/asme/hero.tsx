@@ -10,7 +10,7 @@ import { Navbar } from "./navbar";
 import { InstagramIcon, TwitterIcon } from "./primitives";
 
 const HERO_VIDEO_URL =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4";
+  "/media/templates/asme/hero.mp4";
 const FADE_MS = 500;
 const FADE_OUT_LEAD_S = 0.55;
 const RESTART_DELAY_MS = 100;

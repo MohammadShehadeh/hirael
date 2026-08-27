@@ -50,6 +50,7 @@ const FloatingPaths = ({ position }: { position: number }) => {
       684 - i * 5 * position
     } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
     width: 0.5 + i * 0.03,
+    duration: 22 + (i % 6) * 2,
   }));
 
   return (
@@ -70,7 +71,9 @@ const FloatingPaths = ({ position }: { position: number }) => {
               reduceMotion
                 ? { pathLength: 1, opacity: 0.4 }
                 : {
-                    pathLength: 1,
+                    // Every keyframe loops back to its start — a one-way
+                    // value here snaps visibly on each repeat.
+                    pathLength: [0.3, 1, 0.3],
                     opacity: [0.2, 0.5, 0.2],
                     pathOffset: [0, 1, 0],
                   }
@@ -79,7 +82,10 @@ const FloatingPaths = ({ position }: { position: number }) => {
               reduceMotion
                 ? { duration: 0 }
                 : {
-                    duration: 22 + (path.id % 6) * 2,
+                    duration: path.duration,
+                    // Negative delay starts each path mid-cycle; in unison
+                    // the whole fan drifts offscreen and blanks the panel.
+                    delay: (-path.id / 36) * path.duration,
                     repeat: Number.POSITIVE_INFINITY,
                     ease: "linear",
                   }

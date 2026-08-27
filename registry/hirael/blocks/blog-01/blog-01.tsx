@@ -27,12 +27,12 @@ interface Post {
   /** Optional cover image URL. If absent, a stylized placeholder renders. */
   cover?: string;}
 
-// Free-to-use photos from Unsplash. Swap for your own assets — and remember
-// to add the image host to `images.remotePatterns` in next.config.
+// Placeholder photos served from hirael.com. Swap them for your own assets, or
+// add the host to `images.remotePatterns` in next.config to keep them.
 const IMG = {
-  a: "https://images.unsplash.com/photo-1502447533750-9860c1269ae3?q=80&w=687&auto=format&fit=crop",
-  b: "https://images.unsplash.com/photo-1571832194445-4480b617ee01?q=80&w=880&auto=format&fit=crop",
-  c: "https://images.unsplash.com/photo-1678769435037-2de940e13c89?q=80&w=750&auto=format&fit=crop",
+  a: "/media/blocks/blog-01/cover-a.jpg",
+  b: "/media/blocks/blog-01/cover-b.jpg",
+  c: "/media/blocks/blog-01/cover-c.jpg",
 } as const;
 
 const FEATURED: Post = {

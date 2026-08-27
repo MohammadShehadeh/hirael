@@ -13,32 +13,32 @@ import { ArrowUpRight, RingLink } from "./primitives";
 const ITEMS = [
   {
     image:
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-1.jpg",
     rotate: -4,
   },
   {
     image:
-      "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-2.jpg",
     rotate: 3,
   },
   {
     image:
-      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-3.jpg",
     rotate: -2,
   },
   {
     image:
-      "https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-4.jpg",
     rotate: 4,
   },
   {
     image:
-      "https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-5.jpg",
     rotate: -3,
   },
   {
     image:
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80",
+      "/media/templates/portfolio/exploration-6.jpg",
     rotate: 2,
   },
 ];

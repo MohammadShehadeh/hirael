@@ -2,10 +2,8 @@ import type { ReactNode } from "react";
 import { Check, X } from "lucide-react";
 
 import { GradientText } from "./primitives";
-import { HlsVideo } from "./hls-video";
 
-const FREEDOM_HLS =
-  "https://stream.mux.com/bnYL6x5cAX6WiJv2pOKpITehZd3NVdXpj3ylJFpX5Lk.m3u8";
+const FREEDOM_VIDEO = "/media/templates/nexacore/freedom.mp4";
 
 const NEGATIVES = [
   "Reactive firefighting when foundational issues surface too late",
@@ -146,7 +144,23 @@ export const Freedom = () => {
               height: "clamp(200px, 22vw, 400px)",
             }}
           >
-            <HlsVideo src={FREEDOM_HLS} />
+            <video
+              src={FREEDOM_VIDEO}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden
+              style={{
+                width: "160%",
+                height: "160%",
+                objectFit: "cover",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            />
           </div>
         </div>
 

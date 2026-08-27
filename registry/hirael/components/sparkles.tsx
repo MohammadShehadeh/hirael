@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 
 interface SparklesProps extends React.ComponentProps<"div"> {
   /**
-   * Particles per 10,000 px² of canvas. The default (0.02) puts about 200
-   * particles on a 1000×1000 area and scales with the container size.
+   * Particles per 10,000 px² (a 100×100 tile) of canvas. The default (2) puts
+   * about 200 particles on a 1000×1000 area and scales with the container size.
    */
   density?: number;
   /** Largest particle radius, in px. Each particle picks a size up to this. */
@@ -37,7 +37,7 @@ const resolveColor = (el: HTMLElement, color: string) => {
 };
 
 const Sparkles = ({
-  density = 0.02,
+  density = 2,
   size = 1.2,
   speed = 0.4,
   color = "var(--foreground)",

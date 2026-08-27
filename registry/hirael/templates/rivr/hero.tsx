@@ -6,7 +6,7 @@ import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 import { Navbar } from "./navbar";
 
 const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4";
+  "/media/templates/rivr/hero.mp4";
 
 const HeroBadge = () => {
   return (

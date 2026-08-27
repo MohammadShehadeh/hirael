@@ -12,9 +12,9 @@ import {
 } from "@/registry/hirael/components/image-compare";
 
 const PHOTO =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop";
+  "/media/components/image-compare/valley.jpg";
 const PHOTO_ALT =
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop";
+  "/media/components/image-compare/ridge.jpg";
 
 const MockPanel = ({ styled }: { styled?: boolean }) => {
   return (

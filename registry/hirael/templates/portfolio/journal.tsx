@@ -8,28 +8,28 @@ const ENTRIES = [
   {
     title: "Designing for motion and meaning",
     image:
-      "https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=400&q=80",
+      "/media/templates/portfolio/journal-motion-and-meaning.jpg",
     readTime: "6 min read",
     date: "May 2026",
   },
   {
     title: "The quiet power of constraints",
     image:
-      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&w=400&q=80",
+      "/media/templates/portfolio/journal-quiet-constraints.jpg",
     readTime: "4 min read",
     date: "Apr 2026",
   },
   {
     title: "Systems that scale with the team",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+      "/media/templates/portfolio/journal-systems-that-scale.jpg",
     readTime: "8 min read",
     date: "Mar 2026",
   },
   {
     title: "Notes on color and contrast",
     image:
-      "https://images.unsplash.com/photo-1502691876148-a84978e59af8?auto=format&fit=crop&w=400&q=80",
+      "/media/templates/portfolio/journal-color-and-contrast.jpg",
     readTime: "5 min read",
     date: "Feb 2026",
   },

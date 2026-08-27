@@ -40,7 +40,7 @@ const PRODUCTS: readonly Product[] = [
     reviews: "1,204",
     badge: "Bestseller",
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/atlas-headphones.jpg",
   },
   {
     id: "meridian-watch",
@@ -52,7 +52,7 @@ const PRODUCTS: readonly Product[] = [
     reviews: "318",
     badge: "−15%",
     image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/meridian-watch.jpg",
   },
   {
     id: "volt-runners",
@@ -63,7 +63,7 @@ const PRODUCTS: readonly Product[] = [
     reviews: "942",
     badge: "New",
     image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/volt-runners.jpg",
   },
   {
     id: "carryall-pack",
@@ -73,7 +73,7 @@ const PRODUCTS: readonly Product[] = [
     rating: 4.7,
     reviews: "566",
     image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/carryall-pack.jpg",
   },
   {
     id: "horizon-sunglasses",
@@ -85,7 +85,7 @@ const PRODUCTS: readonly Product[] = [
     reviews: "211",
     badge: "−20%",
     image:
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/horizon-sunglasses.jpg",
   },
   {
     id: "hydra-bottle",
@@ -95,7 +95,7 @@ const PRODUCTS: readonly Product[] = [
     rating: 4.4,
     reviews: "1,870",
     image:
-      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/hydra-bottle.jpg",
   },
   {
     id: "field-cap",
@@ -105,7 +105,7 @@ const PRODUCTS: readonly Product[] = [
     rating: 4.3,
     reviews: "404",
     image:
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/field-cap.jpg",
   },
   {
     id: "pioneer-camera",
@@ -116,7 +116,7 @@ const PRODUCTS: readonly Product[] = [
     reviews: "689",
     badge: "New",
     image:
-      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=800&auto=format&fit=crop",
+      "/media/blocks/ecommerce-01/pioneer-camera.jpg",
   },
 ];
 

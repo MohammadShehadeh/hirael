@@ -23,7 +23,7 @@ const SparklesDemo = () => {
       <div className="relative isolate overflow-hidden rounded-xl border border-border bg-card">
         <Sparkles
           color="var(--warm)"
-          density={0.05}
+          density={5}
           size={1.8}
           speed={0.8}
           className="-z-10"

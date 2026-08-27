@@ -13,10 +13,10 @@ const Hero05Backdrop = dynamic(() => import("./hero-05-backdrop"), {
 });
 
 const AVATARS = [
-  "photo-1500648767791-00dcc994a43e",
-  "photo-1494790108377-be9c29b29330",
-  "photo-1507003211169-0a1dd7228f2d",
-  "photo-1438761681033-6461ffad8d80",
+  "/media/blocks/hero-05/avatar-1.jpg",
+  "/media/blocks/hero-05/avatar-2.jpg",
+  "/media/blocks/hero-05/avatar-3.jpg",
+  "/media/blocks/hero-05/avatar-4.jpg",
 ] as const;
 
 const NAV_LINKS = ["Product", "Docs", "Pricing"] as const;
@@ -117,10 +117,10 @@ const Hero05 = () => {
 
               <div className="mt-10 flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  {AVATARS.map((id) => (
+                  {AVATARS.map((src) => (
                     <Image
-                      key={id}
-                      src={`https://images.unsplash.com/${id}?q=80&w=80&h=80&auto=format&fit=crop&crop=faces`}
+                      key={src}
+                      src={src}
                       alt=""
                       width={32}
                       height={32}

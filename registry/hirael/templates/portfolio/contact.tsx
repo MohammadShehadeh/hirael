@@ -5,7 +5,7 @@ import gsap from "gsap";
 
 import { cn } from "@/lib/utils";
 
-import { HLS_STREAM, HlsVideo } from "./hls-video";
+import { BACKGROUND_VIDEO, BackgroundVideo } from "./background-video";
 import { ArrowUpRight, RingLink } from "./primitives";
 
 const EMAIL = "hello@johndoe.com";
@@ -80,8 +80,8 @@ export const Contact = () => {
       className="relative overflow-hidden bg-[hsl(var(--bg))] pb-8 pt-16 md:pb-12 md:pt-20"
     >
       <div className="absolute inset-0 -z-10">
-        <HlsVideo
-          src={HLS_STREAM}
+        <BackgroundVideo
+          src={BACKGROUND_VIDEO}
           className="absolute left-1/2 top-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 -scale-y-100 object-cover"
         />
         <div className="absolute inset-0 bg-black/60" />

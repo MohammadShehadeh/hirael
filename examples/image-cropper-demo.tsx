@@ -11,7 +11,7 @@ import {
 } from "@/registry/hirael/components/image-cropper";
 
 const IMAGE_URL =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop";
+  "/media/components/image-cropper/valley.jpg";
 
 const ImageCropperDemo = () => {
   const t = useT();

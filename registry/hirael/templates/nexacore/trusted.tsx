@@ -2,7 +2,7 @@ import { GradientText } from "./primitives";
 import { ServiceCard, type ServiceCardProps } from "./service-card";
 
 const TRUSTED_BG =
-  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260418_120332_3b24257a-afe6-48ca-875f-78147370f403.png&w=1280&q=85";
+  "/media/templates/nexacore/trusted-bg.webp";
 
 const CARDS: ServiceCardProps[] = [
   {

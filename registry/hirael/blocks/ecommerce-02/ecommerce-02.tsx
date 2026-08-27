@@ -45,7 +45,7 @@ const INITIAL_ITEMS: readonly LineItem[] = [
     price: 249,
     qty: 1,
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400&auto=format&fit=crop",
+      "/media/blocks/ecommerce-02/atlas-headphones.jpg",
   },
   {
     id: "meridian-watch",
@@ -54,7 +54,7 @@ const INITIAL_ITEMS: readonly LineItem[] = [
     price: 389,
     qty: 1,
     image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400&auto=format&fit=crop",
+      "/media/blocks/ecommerce-02/meridian-watch.jpg",
   },
   {
     id: "hydra-bottle",
@@ -63,7 +63,7 @@ const INITIAL_ITEMS: readonly LineItem[] = [
     price: 32,
     qty: 2,
     image:
-      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=400&auto=format&fit=crop",
+      "/media/blocks/ecommerce-02/hydra-bottle.jpg",
   },
 ];
 

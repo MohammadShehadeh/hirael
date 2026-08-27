@@ -1,67 +1,23 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "motion/react";
 
 import { Logo, Serif, useFadeUp } from "./primitives";
 
-const CTA_HLS =
-  "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8";
-
-const HlsBackgroundVideo = ({
-  src,
-  className,
-}: {
-  src: string;
-  className?: string;
-}) => {
-  const ref = React.useRef<HTMLVideoElement>(null);
-
-  React.useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    let hls: InstanceType<(typeof import("hls.js"))["default"]> | undefined;
-    let cancelled = false;
-
-    import("hls.js").then(({ default: Hls }) => {
-      if (cancelled) return;
-      const el = ref.current;
-      if (!el) return;
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(src);
-        hls.attachMedia(el);
-      } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
-        el.src = src;
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      hls?.destroy();
-    };
-  }, [src]);
-
-  return (
-    <video
-      ref={ref}
-      className={className}
-      autoPlay
-      loop
-      muted
-      playsInline
-      aria-hidden
-    />
-  );
-};
+const CTA_VIDEO = "/media/templates/mindloop/cta.mp4";
 
 export const Cta = () => {
   const fade = useFadeUp();
 
   return (
     <section className="relative overflow-hidden border-t border-border/30 px-8 py-32 md:px-28 md:py-44">
-      <HlsBackgroundVideo
-        src={CTA_HLS}
+      <video
+        src={CTA_VIDEO}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden
         className="absolute inset-0 z-0 h-full w-full object-cover"
       />
       <div aria-hidden className="absolute inset-0 z-[1] bg-background/45" />

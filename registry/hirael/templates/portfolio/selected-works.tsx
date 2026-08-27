@@ -10,25 +10,25 @@ const PROJECTS = [
   {
     title: "Automotive Motion",
     image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+      "/media/templates/portfolio/work-automotive-motion.jpg",
     span: "md:col-span-7",
   },
   {
     title: "Urban Architecture",
     image:
-      "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1000&q=80",
+      "/media/templates/portfolio/work-urban-architecture.jpg",
     span: "md:col-span-5",
   },
   {
     title: "Human Perspective",
     image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1000&q=80",
+      "/media/templates/portfolio/work-human-perspective.jpg",
     span: "md:col-span-5",
   },
   {
     title: "Brand Identity",
     image:
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80",
+      "/media/templates/portfolio/work-brand-identity.jpg",
     span: "md:col-span-7",
   },
 ];

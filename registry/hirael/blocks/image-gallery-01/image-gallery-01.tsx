@@ -25,12 +25,12 @@ interface Tile {
 const FILTERS = ["All", "Web", "Brand", "Editorial", "Motion"] as const;
 type Filter = (typeof FILTERS)[number];
 
-// Free-to-use photos from Unsplash. Swap these for your own assets — and
-// remember to add the image host to `images.remotePatterns` in next.config.
+// Placeholder photos served from hirael.com. Swap them for your own assets, or
+// add the host to `images.remotePatterns` in next.config to keep them.
 const IMG = {
-  a: "https://images.unsplash.com/photo-1502447533750-9860c1269ae3?q=80&w=687&auto=format&fit=crop",
-  b: "https://images.unsplash.com/photo-1571832194445-4480b617ee01?q=80&w=880&auto=format&fit=crop",
-  c: "https://images.unsplash.com/photo-1678769435037-2de940e13c89?q=80&w=750&auto=format&fit=crop",
+  a: "/media/blocks/image-gallery-01/tile-a.jpg",
+  b: "/media/blocks/image-gallery-01/tile-b.jpg",
+  c: "/media/blocks/image-gallery-01/tile-c.jpg",
 } as const;
 
 const TILES: readonly Tile[] = [

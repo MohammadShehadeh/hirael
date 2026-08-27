@@ -9,18 +9,17 @@ import {
   LightboxTrigger,
 } from "@/registry/hirael/components/lightbox";
 
-const full = (id: string) =>
-  `https://images.unsplash.com/${id}?q=80&w=1600&auto=format&fit=crop`;
-const thumb = (id: string) =>
-  `https://images.unsplash.com/${id}?q=80&w=400&auto=format&fit=crop`;
+const full = (name: string) => `/media/components/lightbox/${name}.jpg`;
+const thumb = (name: string) =>
+  `/media/components/lightbox/${name}-thumb.jpg`;
 
 const LightboxDemo = () => {
   const t = useT();
 
   const photos = [
     {
-      src: full("photo-1506744038136-46273834b3fb"),
-      thumbnail: thumb("photo-1506744038136-46273834b3fb"),
+      src: full("valley"),
+      thumbnail: thumb("valley"),
       alt: t({
         en: "River winding through a forested valley",
         ar: "نهر يتعرّج عبر وادٍ مكسوّ بالأشجار",
@@ -31,8 +30,8 @@ const LightboxDemo = () => {
       }),
     },
     {
-      src: full("photo-1469474968028-56623f02e42e"),
-      thumbnail: thumb("photo-1469474968028-56623f02e42e"),
+      src: full("ridge"),
+      thumbnail: thumb("ridge"),
       alt: t({
         en: "Sunlit mountain ridge under clouds",
         ar: "قمة جبلية مشمسة تحت الغيوم",
@@ -43,8 +42,8 @@ const LightboxDemo = () => {
       }),
     },
     {
-      src: full("photo-1501785888041-af3ef285b470"),
-      thumbnail: thumb("photo-1501785888041-af3ef285b470"),
+      src: full("lake"),
+      thumbnail: thumb("lake"),
       alt: t({
         en: "Lake reflecting mountains at sunset",
         ar: "بحيرة تعكس الجبال عند الغروب",
@@ -55,8 +54,8 @@ const LightboxDemo = () => {
       }),
     },
     {
-      src: full("photo-1441974231531-c6227db76b6e"),
-      thumbnail: thumb("photo-1441974231531-c6227db76b6e"),
+      src: full("forest"),
+      thumbnail: thumb("forest"),
       alt: t({
         en: "Sunbeams falling through a green forest",
         ar: "أشعة الشمس تتسلّل عبر غابة خضراء",
@@ -70,7 +69,7 @@ const LightboxDemo = () => {
 
   const single = [
     {
-      src: full("photo-1469474968028-56623f02e42e"),
+      src: full("ridge"),
       alt: t({
         en: "Sunlit mountain ridge under clouds",
         ar: "قمة جبلية مشمسة تحت الغيوم",

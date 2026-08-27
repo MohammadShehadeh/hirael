@@ -1,9 +1,6 @@
 import { Button } from "@/registry/hirael/ui/button";
 
-import { HlsVideo } from "./hls-video";
-
-const STATEMENT_HLS =
-  "https://stream.mux.com/9njY8qDfS02Uvbll018C8CK39p5EksK7mn02DDC1zYvppI.m3u8";
+const STATEMENT_VIDEO = "/media/templates/velorah/statement.mp4";
 
 const STATS = [
   { value: "OTA", label: "Over-the-air updates" },
@@ -15,7 +12,15 @@ const STATS = [
 export const Statement = () => {
   return (
     <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6">
-      <HlsVideo src={STATEMENT_HLS} />
+      <video
+        src={STATEMENT_VIDEO}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+      />
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center text-center">
         <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">

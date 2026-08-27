@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
 const USE_CASES_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38XZzbokvIgWjottwiXH07Lwa1P/HF_20260423_183428_AB5E672A-F608-4DCB-B319-F3E040F02E2D.mp4";
+  "/media/templates/usd-halo/use-cases.mp4";
 
 export const UseCasesSection = () => {
   return (

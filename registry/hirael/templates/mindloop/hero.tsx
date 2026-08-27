@@ -9,7 +9,7 @@ import { Field, FieldLabel } from "@/registry/hirael/ui/field";
 import { AvatarRow, Serif, useFadeUp } from "./primitives";
 
 const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4";
+  "/media/templates/mindloop/hero.mp4";
 
 export const Hero = () => {
   const fade = useFadeUp();

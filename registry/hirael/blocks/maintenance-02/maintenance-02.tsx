@@ -54,7 +54,7 @@ const Maintenance02 = () => {
         className="pointer-events-none absolute inset-0 -z-10 scale-[0.8] rounded-full bg-[radial-gradient(circle_at_50%_50%,color-mix(in_oklch,var(--primary)_14%,transparent),transparent_70%)] blur-[120px] md:blur-[220px]"
       />
       <Sparkles
-        density={0.03}
+        density={3}
         className="-z-10 [mask-image:radial-gradient(50%_50%,black,transparent_85%)]"
       />
 

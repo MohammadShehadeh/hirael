@@ -69,6 +69,7 @@ registry.json                # generated from registry-meta.ts on install
                              # and build (git-ignored, never hand-edited)
 examples/<component>-demo.tsx  # top-level showcase demo per component
 content/changelog/*.mdx      # changelog entries (one MDX file per release)
+public/media/<kind>/<name>/  # placeholder images and videos, grouped per item
 components/<name>.tsx        # showcase-site UI, flat (not shipped)
 lib/                         # showcase helpers (theme.ts, embed.ts, ...)
 app/                         # Next.js routes + /embed previews
@@ -209,6 +210,12 @@ and writes.
   physical: Radix `data-[side=…]` animations, canvas-like surfaces
   (color picker), and `side="left|right"` props on Sheet/Sidebar.
   Verify with the RTL toggle on the component's preview.
+- **Media.** Placeholder images and videos are self-hosted under
+  `public/media/{blocks,components,templates}/<item>/` and referenced
+  root-relative (`/media/blocks/hero-04/earth.jpg`). `registry:build`
+  rewrites those paths to absolute `https://hirael.com/media/...` URLs in
+  the shipped payloads so installed items render out of the box. Compress
+  before committing; no third-party image or streaming hosts.
 - **Comments.** Registry source is copied verbatim into consumer repos,
   so keep any comments purposeful and consumer-facing — put internal
   reasoning in commit messages or PR descriptions.

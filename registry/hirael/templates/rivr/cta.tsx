@@ -6,7 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { fadeUp } from "./primitives";
 
 const CTA_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260427_104731_bfd355f7-1f84-4f81-ad88-52c2bca70bad.mp4";
+  "/media/templates/rivr/cta.mp4";
 
 export const Cta = () => {
   return (

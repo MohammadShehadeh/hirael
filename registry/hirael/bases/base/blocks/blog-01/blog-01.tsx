@@ -166,7 +166,7 @@ const Blog01 = () => {
               posts.
             </p>
           </div>
-          <Button variant="link" className="group h-auto p-0" render={<a href="#" />}>
+          <Button variant="link" className="group h-auto p-0" render={<a href="#" />} nativeButton={false}>
             All posts
             <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
@@ -204,6 +204,7 @@ const Blog01 = () => {
               </div>
               <Button
                 render={<a href={FEATURED.href} />}
+                nativeButton={false}
                 variant="default"
                 className="group/cta relative z-10 mt-2 w-fit"
               >

@@ -207,7 +207,7 @@ const Maintenance01 = () => {
               <Bell className="size-4" />
               Get notified
             </Button>
-            <Button render={<a href="#" />} variant="outline" size="lg" className="group">
+            <Button render={<a href="#" />} nativeButton={false} variant="outline" size="lg" className="group">
               Check status page
               <ArrowUpRight className="size-4 transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
             </Button>

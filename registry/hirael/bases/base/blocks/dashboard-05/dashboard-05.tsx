@@ -349,7 +349,7 @@ const Dashboard05 = () => {
                   p95 target · {P95_TARGET_MS}ms
                 </Badge>
               </span>
-              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />}>
+              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
                 Open metrics
               </Button>
             </div>
@@ -385,7 +385,7 @@ const Dashboard05 = () => {
           <div className="flex flex-col bg-card md:col-span-4">
             <div className="flex items-center justify-between gap-2 p-5 pb-3">
               <CellLabel>Active deployments</CellLabel>
-              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />}>
+              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
                 View all
               </Button>
             </div>

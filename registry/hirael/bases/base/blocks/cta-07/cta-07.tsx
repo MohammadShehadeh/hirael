@@ -77,11 +77,11 @@ const Cta07 = () => {
           </p>
 
           <div data-slot="cta-actions" className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row">
-            <Button size="lg" render={<a href="#" />}>
+            <Button size="lg" render={<a href="#" />} nativeButton={false}>
               Get started
               <ArrowRight aria-hidden className="rtl:-rotate-180" />
             </Button>
-            <Button size="lg" variant="outline" render={<a href="#" />}>
+            <Button size="lg" variant="outline" render={<a href="#" />} nativeButton={false}>
               Read the docs
             </Button>
           </div>

@@ -118,10 +118,10 @@ const Header01 = () => {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button render={<a href="#" />} variant="ghost" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm" className="rounded-full">
               Sign in
             </Button>
-            <Button render={<a href="#" />} variant="default" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="default" size="sm" className="rounded-full">
               Get started
             </Button>
           </div>
@@ -165,10 +165,20 @@ const Header01 = () => {
                 </ul>
               </nav>
               <DrawerFooter className="gap-2">
-                <Button render={<a href="#" />} variant="ghost" className="w-full justify-center rounded-full">
+                <Button
+                  render={<a href="#" />}
+                  nativeButton={false}
+                  variant="ghost"
+                  className="w-full justify-center rounded-full"
+                >
                   Sign in
                 </Button>
-                <Button render={<a href="#" />} variant="default" className="w-full justify-center rounded-full">
+                <Button
+                  render={<a href="#" />}
+                  nativeButton={false}
+                  variant="default"
+                  className="w-full justify-center rounded-full"
+                >
                   Get started
                 </Button>
               </DrawerFooter>

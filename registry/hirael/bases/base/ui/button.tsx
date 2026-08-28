@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -41,22 +40,14 @@ function Button({
   className,
   variant = 'default',
   size = 'default',
-  render,
-  nativeButton,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  // When `render` swaps the element for a non-button (e.g. a link), Base UI
-  // needs `nativeButton={false}` to wire up keyboard and ARIA semantics.
-  const renderedTagIsButton = !React.isValidElement(render) || render.type === 'button';
-
   return (
     <ButtonPrimitive
       data-slot="button"
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
-      render={render}
-      nativeButton={nativeButton ?? renderedTagIsButton}
       {...props}
     />
   );

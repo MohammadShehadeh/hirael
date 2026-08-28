@@ -68,9 +68,7 @@ const IconStackDemo = () => {
                 <Server className="size-6" strokeWidth={1.5} />
               </IconStackContent>
             </IconStack>
-            <p className="text-sm font-medium text-foreground">
-              {t({ en: 'Live regions', ar: 'مناطق نشطة' })}
-            </p>
+            <p className="text-sm font-medium text-foreground">{t({ en: 'Live regions', ar: 'مناطق نشطة' })}</p>
             <p className="text-sm text-muted-foreground">
               {t({
                 en: 'Deploy close to the people using it.',

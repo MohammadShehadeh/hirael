@@ -64,11 +64,22 @@ const Hero03 = () => {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Button render={<a href="#" />} size="lg" className="group h-12 rounded-full px-7 text-base">
+          <Button
+            render={<a href="#" />}
+            nativeButton={false}
+            size="lg"
+            className="group h-12 rounded-full px-7 text-base"
+          >
             Start free
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
-          <Button render={<a href="#" />} size="lg" variant="outline" className="h-12 rounded-full px-7 text-base">
+          <Button
+            render={<a href="#" />}
+            nativeButton={false}
+            size="lg"
+            variant="outline"
+            className="h-12 rounded-full px-7 text-base"
+          >
             Book a demo
           </Button>
         </div>

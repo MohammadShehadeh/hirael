@@ -87,6 +87,7 @@ export const ContactButton = ({
   return (
     <Button
       render={<a href={href} data-slot="contact-button" />}
+      nativeButton={false}
       variant="ghost"
       className={cn('nexa-grad-a-bg group relative h-auto rounded-xl p-px font-normal', className)}
     >

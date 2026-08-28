@@ -42,6 +42,7 @@ const Cta01 = () => {
             <div className="flex flex-col gap-3 lg:col-span-5 lg:items-end">
               <Button
                 render={<a href="#" />}
+                nativeButton={false}
                 size="lg"
                 className="group w-full justify-between rounded-full px-7 lg:w-auto"
               >
@@ -50,6 +51,7 @@ const Cta01 = () => {
               </Button>
               <Button
                 render={<a href="#" />}
+                nativeButton={false}
                 variant="outline"
                 size="lg"
                 className="w-full rounded-full px-7 lg:w-auto"

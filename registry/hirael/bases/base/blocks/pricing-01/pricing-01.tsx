@@ -111,7 +111,13 @@ const Pricing01 = () => {
               </CardContent>
 
               <CardFooter className="mt-auto px-0 pt-2">
-                <Button render={<a href="#" />} variant={tier.ctaVariant} size="lg" className="w-full rounded-full">
+                <Button
+                  render={<a href="#" />}
+                  nativeButton={false}
+                  variant={tier.ctaVariant}
+                  size="lg"
+                  className="w-full rounded-full"
+                >
                   {tier.cta}
                 </Button>
               </CardFooter>

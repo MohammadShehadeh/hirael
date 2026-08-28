@@ -48,6 +48,7 @@ const Cta03 = () => {
 
             <Button
               render={<a href="#" />}
+              nativeButton={false}
               size="lg"
               className="group h-14 rounded-full px-10 text-base transition-transform duration-300 hover:scale-105 hover:ring-4 hover:ring-primary/20 active:scale-95"
             >

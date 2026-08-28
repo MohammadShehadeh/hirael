@@ -619,7 +619,7 @@ const AppShell02 = () => {
                             ? 'all changes saved'
                             : 'changes save automatically'}
                       </span>
-                      <Button variant="outline" size="sm" render={<a href="#" />}>
+                      <Button variant="outline" size="sm" render={<a href="#" />} nativeButton={false}>
                         Audit log
                       </Button>
                     </div>

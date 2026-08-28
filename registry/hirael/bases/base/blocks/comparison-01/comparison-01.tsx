@@ -75,7 +75,7 @@ const Comparison01 = () => {
                   </li>
                 ))}
               </ul>
-              <Button render={<a href="#" />} className="mt-1 w-full sm:w-auto">
+              <Button render={<a href="#" />} nativeButton={false} className="mt-1 w-full sm:w-auto">
                 Browse the registry
               </Button>
             </div>

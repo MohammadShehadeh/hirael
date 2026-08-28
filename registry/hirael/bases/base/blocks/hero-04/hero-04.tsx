@@ -30,7 +30,7 @@ const Hero04 = () => {
             <Orbit className="size-5 text-primary" />
             Orbit
           </span>
-          <Button render={<a href="#" />} size="sm" className="rounded-full">
+          <Button render={<a href="#" />} nativeButton={false} size="sm" className="rounded-full">
             Get started
           </Button>
         </nav>
@@ -51,11 +51,22 @@ const Hero04 = () => {
           </p>
 
           <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-            <Button render={<a href="#" />} size="lg" className="group h-12 rounded-full px-7 text-base">
+            <Button
+              render={<a href="#" />}
+              nativeButton={false}
+              size="lg"
+              className="group h-12 rounded-full px-7 text-base"
+            >
               Start your trial
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Button>
-            <Button render={<a href="#" />} size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
+            <Button
+              render={<a href="#" />}
+              nativeButton={false}
+              size="lg"
+              variant="ghost"
+              className="h-12 rounded-full px-7 text-base"
+            >
               Talk to sales
             </Button>
           </div>

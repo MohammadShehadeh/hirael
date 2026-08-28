@@ -69,7 +69,7 @@ const Hero05 = () => {
                 </a>
               ))}
             </div>
-            <Button render={<a href="#" />} variant="outline" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm" className="rounded-full">
               Get started
             </Button>
           </nav>
@@ -99,11 +99,22 @@ const Hero05 = () => {
               </p>
 
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                <Button render={<a href="#" />} size="lg" className="group h-12 rounded-full px-7 text-base">
+                <Button
+                  render={<a href="#" />}
+                  nativeButton={false}
+                  size="lg"
+                  className="group h-12 rounded-full px-7 text-base"
+                >
                   Try it free
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </Button>
-                <Button render={<a href="#" />} size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
+                <Button
+                  render={<a href="#" />}
+                  nativeButton={false}
+                  size="lg"
+                  variant="ghost"
+                  className="h-12 rounded-full px-7 text-base"
+                >
                   See how it works
                 </Button>
               </div>

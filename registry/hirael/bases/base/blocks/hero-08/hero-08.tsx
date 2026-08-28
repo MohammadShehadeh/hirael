@@ -87,11 +87,16 @@ const Hero08 = () => {
             variants={item}
             transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
           >
-            <Button render={<a className="flex items-center gap-2" href="#" />} size="lg">
+            <Button render={<a className="flex items-center gap-2" href="#" />} nativeButton={false} size="lg">
               <GithubIcon className="size-4" />
               Connect repository
             </Button>
-            <Button render={<a className="flex items-center gap-2" href="#features" />} variant="secondary" size="lg">
+            <Button
+              render={<a className="flex items-center gap-2" href="#features" />}
+              nativeButton={false}
+              variant="secondary"
+              size="lg"
+            >
               <Play className="size-3.5 fill-current" />
               See how it works
             </Button>

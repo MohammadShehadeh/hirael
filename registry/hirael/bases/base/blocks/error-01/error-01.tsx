@@ -94,7 +94,7 @@ const ErrorPageActions = ({
         )}
         {retryLabel}
       </Button>
-      <Button render={<a href={homeHref} />} variant="outline" size="lg">
+      <Button render={<a href={homeHref} />} nativeButton={false} variant="outline" size="lg">
         {homeLabel}
       </Button>
       {children}

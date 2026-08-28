@@ -50,6 +50,7 @@ export const Navbar = () => {
             <Button
               key={label}
               render={<a href="#" aria-label={label} />}
+              nativeButton={false}
               variant="ghost"
               size="icon-lg"
               className="liquid-glass rounded-full text-muted-foreground hover:text-foreground"

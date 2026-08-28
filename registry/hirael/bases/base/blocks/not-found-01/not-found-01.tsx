@@ -28,10 +28,10 @@ const NotFound01 = () => {
             existed.
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <Button render={<a href="#" />} variant="default" size="lg">
+            <Button render={<a href="#" />} nativeButton={false} variant="default" size="lg">
               Go home
             </Button>
-            <Button render={<a href="#" />} variant="outline" size="lg">
+            <Button render={<a href="#" />} nativeButton={false} variant="outline" size="lg">
               Browse docs
             </Button>
           </div>

@@ -66,7 +66,7 @@ const Faq01 = () => {
                   </span>
                 </div>
                 <p className="text-sm">Drop a question in the repo. Responses usually within a day.</p>
-                <Button render={<a href="#" />} variant="outline" size="sm" className="w-fit">
+                <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm" className="w-fit">
                   Open an issue
                   <ArrowUpRight className="size-3.5" />
                 </Button>

@@ -249,10 +249,10 @@ const Header02 = () => {
           <Brand />
           <HeaderNav items={NAV} />
           <div className="flex items-center gap-1.5">
-            <Button render={<a href="#" />} variant="ghost" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm" className="rounded-full">
               Sign in
             </Button>
-            <Button render={<a href="#" />} size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} size="sm" className="rounded-full">
               Get started
             </Button>
           </div>
@@ -287,10 +287,10 @@ const Header02 = () => {
               </a>
             ))}
             <div className="mt-2 flex gap-2">
-              <Button render={<a href="#" />} variant="outline" className="flex-1 rounded-full">
+              <Button render={<a href="#" />} nativeButton={false} variant="outline" className="flex-1 rounded-full">
                 Sign in
               </Button>
-              <Button render={<a href="#" />} className="flex-1 rounded-full">
+              <Button render={<a href="#" />} nativeButton={false} className="flex-1 rounded-full">
                 Get started
               </Button>
             </div>

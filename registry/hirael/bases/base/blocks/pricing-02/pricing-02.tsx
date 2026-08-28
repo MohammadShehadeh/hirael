@@ -110,7 +110,13 @@ const Pricing02 = () => {
                           <span className="text-muted-foreground">/mo</span>
                         </span>
                       </div>
-                      <Button render={<a href="#" />} variant={t.ctaVariant} size="sm" className="w-full">
+                      <Button
+                        render={<a href="#" />}
+                        nativeButton={false}
+                        variant={t.ctaVariant}
+                        size="sm"
+                        className="w-full"
+                      >
                         {t.cta}
                       </Button>
                     </div>

@@ -180,11 +180,11 @@ const Faq03 = () => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="outline" size="sm" render={<a href="mailto:support@hirael.com" />}>
+            <Button variant="outline" size="sm" render={<a href="mailto:support@hirael.com" />} nativeButton={false}>
               <Mail className="size-3.5" />
               Email support
             </Button>
-            <Button size="sm" render={<a href="#" />}>
+            <Button size="sm" render={<a href="#" />} nativeButton={false}>
               Open an issue
               <ArrowUpRight className="size-3.5" />
             </Button>

@@ -180,6 +180,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
           <Button
             key={label}
             render={<a href="#" aria-label={label} />}
+            nativeButton={false}
             variant="ghost"
             size="icon"
             className="liquid-glass size-13 rounded-full text-foreground/80 hover:text-foreground"

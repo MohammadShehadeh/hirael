@@ -83,7 +83,12 @@ const Pricing04 = () => {
               <p className="text-sm text-muted-foreground">{tier.tagline}</p>
             </div>
 
-            <Button variant={tier.featured ? 'default' : 'outline'} className="w-full" render={<a href="#" />}>
+            <Button
+              variant={tier.featured ? 'default' : 'outline'}
+              className="w-full"
+              render={<a href="#" />}
+              nativeButton={false}
+            >
               {tier.cta}
             </Button>
 

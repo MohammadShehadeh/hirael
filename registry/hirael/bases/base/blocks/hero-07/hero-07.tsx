@@ -221,11 +221,17 @@ const Hero07 = () => {
         </p>
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-          <Button render={<a href="#" />} size="lg" className="group rounded-full px-7">
+          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group rounded-full px-7">
             <span>Get started</span>
             <ArrowRight className="size-4 -rotate-45 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-[135deg] rtl:group-hover:-translate-x-0.5" />
           </Button>
-          <Button render={<a href="#" />} size="lg" variant="outline" className="rounded-full px-7">
+          <Button
+            render={<a href="#" />}
+            nativeButton={false}
+            size="lg"
+            variant="outline"
+            className="rounded-full px-7"
+          >
             <span>Read the docs</span>
           </Button>
         </div>

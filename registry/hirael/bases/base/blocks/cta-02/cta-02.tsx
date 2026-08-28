@@ -48,7 +48,7 @@ const Cta02 = () => {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Button render={<a href="#" />} size="lg" className="group rounded-full px-7">
+          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group rounded-full px-7">
             Browse the registry
             <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>

@@ -194,7 +194,12 @@ const Contact03 = () => {
               className="mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2"
             >
               <ContactAction detail={CONTACT.email}>
-                <Button render={<a href={`mailto:${CONTACT.email}`} />} size="lg" className="w-full rounded-full">
+                <Button
+                  render={<a href={`mailto:${CONTACT.email}`} />}
+                  nativeButton={false}
+                  size="lg"
+                  className="w-full rounded-full"
+                >
                   <Mail />
                   Send an email
                 </Button>
@@ -202,6 +207,7 @@ const Contact03 = () => {
               <ContactAction detail={CONTACT.phone}>
                 <Button
                   render={<a href={`https://wa.me/${digits(CONTACT.phone)}`} target="_blank" rel="noreferrer" />}
+                  nativeButton={false}
                   size="lg"
                   variant="outline"
                   className="w-full rounded-full"

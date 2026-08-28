@@ -145,8 +145,7 @@ const buildPalette = (): Palette | null => {
   // Lightness alone decides the theme, so this works under `.dark`, `.light`,
   // a media query, or a token override — no theme context needed.
   const shades = background.l < 0.5 ? SHADES.dark : SHADES.light;
-  const shade = (accent: Oklch, amount: number) =>
-    oklchToSrgb(mixOklab(background, accent, amount));
+  const shade = (accent: Oklch, amount: number) => oklchToSrgb(mixOklab(background, accent, amount));
 
   return {
     base: backgroundRgb,

@@ -90,7 +90,7 @@ const Integrations01 = () => {
               ))}
             </ul>
 
-            <Button render={<a href="#" />} variant="link" className="group mt-4 h-auto w-fit p-0">
+            <Button render={<a href="#" />} nativeButton={false} variant="link" className="group mt-4 h-auto w-fit p-0">
               Browse all 40+ integrations
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Button>

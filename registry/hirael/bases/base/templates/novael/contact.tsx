@@ -58,6 +58,7 @@ export const Contact = ({ lang }: { lang: Lang }) => {
           <div className="mt-10">
             <Button
               render={<a href={`mailto:${CONTACT.email}`} />}
+              nativeButton={false}
               size="lg"
               className={cn('h-12 px-8', lang === 'en' ? 'text-xs uppercase tracking-[0.2em]' : 'text-sm')}
             >

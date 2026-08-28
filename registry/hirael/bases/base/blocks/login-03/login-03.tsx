@@ -152,7 +152,7 @@ const Login03 = () => {
           />
         </div>
 
-        <Button render={<a href="#" />} variant="ghost" className="absolute start-5 top-7 gap-1.5">
+        <Button render={<a href="#" />} nativeButton={false} variant="ghost" className="absolute start-5 top-7 gap-1.5">
           <ChevronLeft className="size-4 rtl:rotate-180" />
           Home
         </Button>

@@ -143,10 +143,10 @@ const Hero09 = () => {
               ))}
             </nav>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" render={<a href="#" />}>
+              <Button variant="ghost" size="sm" render={<a href="#" />} nativeButton={false}>
                 Sign in
               </Button>
-              <Button size="sm" variant="outline" render={<a href="#" />}>
+              <Button size="sm" variant="outline" render={<a href="#" />} nativeButton={false}>
                 Get started
               </Button>
             </div>
@@ -169,10 +169,10 @@ const Hero09 = () => {
             </p>
 
             <div data-slot="hero-actions" className="flex flex-col gap-3 pt-1 sm:flex-row">
-              <Button size="lg" render={<a href="#" />}>
+              <Button size="lg" render={<a href="#" />} nativeButton={false}>
                 Start building
               </Button>
-              <Button size="lg" variant="outline" render={<a href="#features" />}>
+              <Button size="lg" variant="outline" render={<a href="#features" />} nativeButton={false}>
                 See the features
               </Button>
             </div>

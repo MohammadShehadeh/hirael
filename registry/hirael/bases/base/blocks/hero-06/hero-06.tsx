@@ -113,11 +113,22 @@ const Hero06 = () => {
         </div>
 
         <div className="mt-2 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-4">
-          <Button render={<a href="#" />} size="lg" className="group w-full rounded-full sm:w-auto">
+          <Button
+            render={<a href="#" />}
+            nativeButton={false}
+            size="lg"
+            className="group w-full rounded-full sm:w-auto"
+          >
             View experience
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
           </Button>
-          <Button render={<a href="#" />} variant="outline" size="lg" className="group w-full rounded-full sm:w-auto">
+          <Button
+            render={<a href="#" />}
+            nativeButton={false}
+            variant="outline"
+            size="lg"
+            className="group w-full rounded-full sm:w-auto"
+          >
             View projects
             <Sparkles className="size-4 transition-transform group-hover:rotate-12" />
           </Button>

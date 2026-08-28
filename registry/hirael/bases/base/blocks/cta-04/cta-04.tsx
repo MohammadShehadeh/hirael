@@ -70,7 +70,7 @@ const Cta04 = () => {
           want to compare notes, I would like to hear from you.
         </p>
 
-        <Button render={<a href="#" />} size="lg" className="mt-7 rounded-full px-7">
+        <Button render={<a href="#" />} nativeButton={false} size="lg" className="mt-7 rounded-full px-7">
           <Mail className="size-4" />
           Get in touch
         </Button>
@@ -84,6 +84,7 @@ const Cta04 = () => {
             <Button
               key={social.label}
               render={<a href={social.href} aria-label={social.label} />}
+              nativeButton={false}
               variant="outline"
               size="icon"
               className="size-11 rounded-full"

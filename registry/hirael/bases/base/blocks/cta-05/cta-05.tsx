@@ -78,7 +78,12 @@ const Cta05 = () => {
               className="mt-10 grid w-full max-w-md grid-cols-1 gap-5 md:grid-cols-2"
             >
               <div className="flex flex-col items-center gap-2">
-                <Button render={<a href={`mailto:${email}`} />} size="lg" className="w-full rounded-full">
+                <Button
+                  render={<a href={`mailto:${email}`} />}
+                  nativeButton={false}
+                  size="lg"
+                  className="w-full rounded-full"
+                >
                   <Mail className="size-4" />
                   Send email
                 </Button>
@@ -87,6 +92,7 @@ const Cta05 = () => {
               <div className="flex flex-col items-center gap-2">
                 <Button
                   render={<a href={`tel:${phone.replace(/[^\d+]/g, '')}`} />}
+                  nativeButton={false}
                   size="lg"
                   variant="outline"
                   className="w-full rounded-full"

@@ -206,6 +206,7 @@ const Pricing03 = () => {
                   <CardFooter className="mt-auto px-0 pt-2">
                     <Button
                       render={<a href="#" />}
+                      nativeButton={false}
                       variant={plan.ctaVariant}
                       size="lg"
                       className="group w-full rounded-full"

@@ -484,7 +484,7 @@ const AppShell01 = () => {
                   </span>
                 )}
               </span>
-              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />}>
+              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
                 View all
               </Button>
             </div>

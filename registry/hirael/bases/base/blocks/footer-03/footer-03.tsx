@@ -109,7 +109,13 @@ const Footer03 = () => {
               </p>
               <div className="flex gap-1">
                 {SOCIALS.map(({ label, href, icon: Icon }) => (
-                  <Button key={label} variant="ghost" size="icon" render={<a href={href} aria-label={label} />}>
+                  <Button
+                    key={label}
+                    variant="ghost"
+                    size="icon"
+                    render={<a href={href} aria-label={label} />}
+                    nativeButton={false}
+                  >
                     <Icon className="size-5" />
                   </Button>
                 ))}

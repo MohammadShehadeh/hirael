@@ -91,7 +91,7 @@ const LogoCloud01 = () => {
               </div>
             ))}
           </dl>
-          <Button variant="link" className="group h-auto p-0" render={<a href="#" />}>
+          <Button variant="link" className="group h-auto p-0" render={<a href="#" />} nativeButton={false}>
             See the case studies
             <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>

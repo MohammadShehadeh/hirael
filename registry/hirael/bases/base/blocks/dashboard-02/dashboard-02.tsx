@@ -421,7 +421,7 @@ const Dashboard02 = () => {
                   <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
                     top pages
                   </CardDescription>
-                  <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />}>
+                  <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
                     View all
                   </Button>
                 </div>

@@ -7,6 +7,9 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
+// Repeated across the three footer columns.
+const FOOTER_HEADING = 'mb-4 text-base font-semibold text-foreground';
+
 const CONTACT = {
   email: 'hello@novael.example',
   linkedin: '#',
@@ -67,7 +70,7 @@ export const Contact = ({ lang }: { lang: Lang }) => {
         <footer className="mt-24">
           <div className="grid gap-10 border-t border-border/60 pt-12 sm:grid-cols-2 lg:grid-cols-3">
             <div>
-              <h3 data-slot="novael-display" className="mb-4 text-base font-semibold text-foreground">
+              <h3 data-slot="novael-display" className={FOOTER_HEADING}>
                 {c.findUs}
               </h3>
               <address className="font-light not-italic leading-relaxed text-muted-foreground">
@@ -80,10 +83,10 @@ export const Contact = ({ lang }: { lang: Lang }) => {
             </div>
 
             <div>
-              <h3 data-slot="novael-display" className="mb-4 text-base font-semibold text-foreground">
+              <h3 data-slot="novael-display" className={FOOTER_HEADING}>
                 {c.followUs}
               </h3>
-              <ul className="space-y-1">
+              <ul className="flex flex-col gap-1">
                 <li>
                   <a href={CONTACT.linkedin} className="text-foreground transition-colors hover:text-primary">
                     {c.linkedin}
@@ -93,10 +96,10 @@ export const Contact = ({ lang }: { lang: Lang }) => {
             </div>
 
             <div>
-              <h3 data-slot="novael-display" className="mb-4 text-base font-semibold text-foreground">
+              <h3 data-slot="novael-display" className={FOOTER_HEADING}>
                 {c.contactUs}
               </h3>
-              <ul className="space-y-1">
+              <ul className="flex flex-col gap-1">
                 <li>
                   <a href={`mailto:${CONTACT.email}`} className="text-foreground transition-colors hover:text-primary">
                     {CONTACT.email}

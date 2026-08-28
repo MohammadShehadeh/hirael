@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
-import { SCENE_IMAGE } from './hero';
-import { LOREM, Accent, Band, Lead, Reveal, type Lang } from './primitives';
+import { LOREM, SCENE_IMAGE, Accent, Band, Lead, Reveal, type Lang } from './primitives';
 
 const COPY = {
   en: {
@@ -58,7 +57,7 @@ export const Cases = ({ lang }: { lang: Lang }) => {
         </Lead>
       </Reveal>
 
-      <div className="mt-12 space-y-10">
+      <div className="mt-12 flex flex-col gap-10">
         {c.cases.map((item, i) => (
           <Reveal key={item.title} delay={i * 0.05}>
             <figure>

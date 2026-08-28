@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import { ArrowDown } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-
 import { LOREM, CountUp, Reveal, type Lang } from './primitives';
 
 const BACKDROP = '/media/templates/novael/intro-bg.jpg';
@@ -73,9 +71,7 @@ export const Hero = ({ lang }: { lang: Lang }) => {
 
           <h1
             data-slot="novael-display"
-            className={cn(
-              'text-balance text-center text-3xl font-medium leading-[1.15] text-foreground sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
-            )}
+            className="text-balance text-center text-3xl font-medium leading-[1.15] text-foreground sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
           >
             {c.headline}
             <span className="text-primary">.</span>

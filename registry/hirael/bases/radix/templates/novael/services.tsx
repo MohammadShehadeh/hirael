@@ -12,16 +12,16 @@ import {
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
-type ServiceId = 'frontend' | 'backend' | 'mobile' | 'qa' | 'devops' | 'infra';
-
-const SERVICES: { id: ServiceId; icon: LucideIcon }[] = [
+const SERVICES = [
   { id: 'frontend', icon: CodeXml },
   { id: 'backend', icon: Server },
   { id: 'mobile', icon: Smartphone },
   { id: 'qa', icon: TestTubeDiagonal },
   { id: 'devops', icon: InfinityIcon },
   { id: 'infra', icon: Network },
-];
+] as const satisfies readonly { id: string; icon: LucideIcon }[];
+
+type ServiceId = (typeof SERVICES)[number]['id'];
 
 const COPY = {
   en: {

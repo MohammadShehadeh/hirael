@@ -6,18 +6,9 @@ import { cn } from '@/lib/utils';
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
-type ProjectId = 'northwind' | 'pipeline' | 'cascade' | 'bazaar' | 'meridian' | 'ledger' | 'atlas' | 'playfield';
+const PROJECT_IDS = ['northwind', 'pipeline', 'cascade', 'bazaar', 'meridian', 'ledger', 'atlas', 'playfield'] as const;
 
-const PROJECT_IDS: readonly ProjectId[] = [
-  'northwind',
-  'pipeline',
-  'cascade',
-  'bazaar',
-  'meridian',
-  'ledger',
-  'atlas',
-  'playfield',
-];
+type ProjectId = (typeof PROJECT_IDS)[number];
 
 const COPY = {
   en: {

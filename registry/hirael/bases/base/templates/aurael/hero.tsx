@@ -8,12 +8,7 @@ import { motion, useAnimationControls, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-import { LOREM, SECTION_IDS, type Lang, type Scene } from './primitives';
-
-export const SCENE_IMAGE: Record<Scene, string> = {
-  morning: '/media/templates/aurael/morning.jpg',
-  night: '/media/templates/aurael/night.jpg',
-};
+import { LOREM, SCENE_IMAGE, SECTION_IDS, type Lang, type Scene } from './primitives';
 
 const SCENES: Scene[] = ['morning', 'night'];
 

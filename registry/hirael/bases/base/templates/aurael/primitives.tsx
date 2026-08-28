@@ -11,6 +11,13 @@ export type Scene = 'morning' | 'night';
 
 export const SECTION_IDS = ['how-it-works', 'cases', 'about', 'careers', 'resources', 'customers'] as const;
 
+/** The same site at both times of day — the hero cross-fades between them and
+ * the cases section shows the pair side by side. */
+export const SCENE_IMAGE: Record<Scene, string> = {
+  morning: '/media/templates/aurael/morning.jpg',
+  night: '/media/templates/aurael/night.jpg',
+};
+
 /**
  * Placeholder body copy. Every paragraph in the template reads from here, so
  * the filler is easy to spot and swap for real writing in one pass. The Arabic

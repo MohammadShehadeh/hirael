@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* Tokens: `:root` is dark (the default canvas) and `.light` swaps the
  * palette. Mode scripts always set a class on <html> — `.dark` in dark
@@ -76,8 +76,8 @@
   --card-foreground: oklch(0.22 0.016 256.8);
   --popover: oklch(0.985 0.005 95.1);
   --popover-foreground: oklch(0.22 0.016 256.8);
-  --primary: oklch(0.239 0.021 264.1);
-  --primary-foreground: oklch(0.961 0.008 91.5);
+  --primary: oklch(0.78 0.14 78);
+  --primary-foreground: oklch(0.24 0.045 70);
   --secondary: oklch(0.934 0.011 89.7);
   --secondary-foreground: oklch(0.239 0.021 264.1);
   --muted: oklch(0.934 0.011 89.7);
@@ -90,8 +90,8 @@
   --info: oklch(0.55 0.2 260);
   --border: oklch(0.901 0.014 88.7);
   --input: oklch(0.901 0.014 88.7);
-  --ring: oklch(0.667 0.023 259.2);
-  --chart-1: oklch(0.728 0.019 81.3);
+  --ring: oklch(0.7 0.13 75);
+  --chart-1: oklch(0.72 0.14 75);
   --chart-2: oklch(0.5 0.2 260);
   --chart-3: oklch(0.656 0.024 256.8);
   --chart-4: oklch(0.61 0.021 80.1);
@@ -99,12 +99,12 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0.005 95.1);
   --sidebar-foreground: oklch(0.22 0.016 256.8);
-  --sidebar-primary: oklch(0.239 0.021 264.1);
-  --sidebar-primary-foreground: oklch(0.961 0.008 91.5);
+  --sidebar-primary: oklch(0.78 0.14 78);
+  --sidebar-primary-foreground: oklch(0.24 0.045 70);
   --sidebar-accent: oklch(0.934 0.011 89.7);
   --sidebar-accent-foreground: oklch(0.239 0.021 264.1);
   --sidebar-border: oklch(0.901 0.014 88.7);
-  --sidebar-ring: oklch(0.667 0.023 259.2);
+  --sidebar-ring: oklch(0.7 0.13 75);
 
   /* Warm brand tone — taupe (#ADA69A). Decoration, glows, wordmark sheen. */
   --warm: oklch(0.728 0.019 81.3);
@@ -118,7 +118,8 @@
 }
 
 /* Brand palette — cool blue-slate canvas (#0D1117 / #1A1F29 / #2E3440), warm
- * cream ink (#E7E4DE), warm taupe (#ADA69A) as the brand tone, and a single
+ * cream ink (#E7E4DE), warm taupe (#ADA69A) as the brand tone, a dawn-gold
+ * primary (--primary, amber at first light) for actions, and a single
  * cool blue (--accent-cool) reserved for live/active state. Dark is the
  * primary canvas. The dark values live on both `:root` and `.dark` so a nested
  * `.dark` region (an always-dark image hero, say) forces dark tokens even
@@ -133,8 +134,8 @@
   --card-foreground: oklch(0.92 0.009 84.6);
   --popover: oklch(0.239 0.021 264.1);
   --popover-foreground: oklch(0.92 0.009 84.6);
-  --primary: oklch(0.937 0.01 87.5);
-  --primary-foreground: oklch(0.176 0.014 258.4);
+  --primary: oklch(0.82 0.135 78);
+  --primary-foreground: oklch(0.2 0.04 70);
   --secondary: oklch(0.324 0.023 264.2);
   --secondary-foreground: oklch(0.92 0.009 84.6);
   --muted: oklch(0.277 0.023 267.2);
@@ -143,24 +144,24 @@
   --accent-foreground: oklch(0.92 0.009 84.6);
   --destructive: oklch(0.704 0.191 22.216);
   --success: oklch(0.696 0.17 162.48);
-  --warning: oklch(0.769 0.188 70.08);
+  --warning: oklch(0.74 0.17 52);
   --info: oklch(0.62 0.19 260);
   --border: oklch(0.92 0.01 90 / 9%);
   --input: oklch(0.92 0.01 90 / 14%);
-  --ring: oklch(0.567 0.027 262);
-  --chart-1: oklch(0.728 0.019 81.3);
+  --ring: oklch(0.74 0.12 78);
+  --chart-1: oklch(0.82 0.135 78);
   --chart-2: oklch(0.62 0.19 260);
   --chart-3: oklch(0.656 0.024 256.8);
   --chart-4: oklch(0.61 0.021 80.1);
   --chart-5: oklch(0.434 0.023 262.9);
   --sidebar: oklch(0.239 0.021 264.1);
   --sidebar-foreground: oklch(0.92 0.009 84.6);
-  --sidebar-primary: oklch(0.937 0.01 87.5);
-  --sidebar-primary-foreground: oklch(0.176 0.014 258.4);
+  --sidebar-primary: oklch(0.82 0.135 78);
+  --sidebar-primary-foreground: oklch(0.2 0.04 70);
   --sidebar-accent: oklch(0.324 0.023 264.2);
   --sidebar-accent-foreground: oklch(0.92 0.009 84.6);
   --sidebar-border: oklch(0.92 0.01 90 / 9%);
-  --sidebar-ring: oklch(0.567 0.027 262);
+  --sidebar-ring: oklch(0.74 0.12 78);
 
   /* Warm brand tone — taupe (#ADA69A). Decoration, glows, wordmark sheen. */
   --warm: oklch(0.728 0.019 81.3);
@@ -184,15 +185,15 @@
     background-color: var(--background);
     color: var(--foreground);
     font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+      'rlig' 1,
+      'calt' 1;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     position: relative;
   }
 
   button:not(:disabled),
-  [role="button"]:not(:disabled) {
+  [role='button']:not(:disabled) {
     cursor: pointer;
   }
 
@@ -200,9 +201,7 @@
    * inherit, so setting them on the root styles every scroll container. */
   html {
     scrollbar-width: thin;
-    scrollbar-color:
-      color-mix(in oklch, var(--muted-foreground) 40%, transparent)
-      transparent;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent) transparent;
   }
 
   ::-webkit-scrollbar {
@@ -216,26 +215,14 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: color-mix(
-      in oklch,
-      var(--muted-foreground) 40%,
-      transparent
-    );
+    background-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
     border-radius: 6px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(
-      in oklch,
-      var(--muted-foreground) 60%,
-      transparent
-    );
+    background-color: color-mix(in oklch, var(--muted-foreground) 60%, transparent);
   }
   ::-webkit-scrollbar-thumb:active {
-    background-color: color-mix(
-      in oklch,
-      var(--muted-foreground) 80%,
-      transparent
-    );
+    background-color: color-mix(in oklch, var(--muted-foreground) 80%, transparent);
   }
 
   ::selection {
@@ -264,16 +251,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(
-        ellipse 55% 45% at 50% 0%,
-        var(--halo-cool),
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 75% 50% at 50% 35%,
-        var(--halo-warm),
-        transparent 75%
-      );
+      radial-gradient(ellipse 55% 45% at 50% 0%, var(--halo-cool), transparent 70%),
+      radial-gradient(ellipse 75% 50% at 50% 35%, var(--halo-warm), transparent 75%);
     animation: ambient-drift 42s ease-in-out infinite;
   }
 
@@ -285,11 +264,7 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(
-        120% 85% at 50% -15%,
-        color-mix(in oklch, var(--foreground) 10%, transparent),
-        transparent 55%
-      ),
+      radial-gradient(120% 85% at 50% -15%, color-mix(in oklch, var(--foreground) 10%, transparent), transparent 55%),
       radial-gradient(70% 60% at 50% 0%, var(--halo-cool), transparent 72%),
       radial-gradient(90% 60% at 50% 110%, var(--halo-warm), transparent 70%);
     animation: ambient-drift 42s ease-in-out infinite;
@@ -319,7 +294,7 @@
     position: relative;
   }
   .glass-panel-lit::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
@@ -364,8 +339,8 @@
     font-weight: 500;
     letter-spacing: -0.015em;
     font-feature-settings:
-      "liga" 1,
-      "calt" 1;
+      'liga' 1,
+      'calt' 1;
   }
 
   /* Token-only elevation — soft, colorless depth for focal cards and the
@@ -420,16 +395,8 @@
      both themes. */
   .blueprint-corners {
     background-image:
-      linear-gradient(
-        to right,
-        color-mix(in oklch, var(--warm) 38%, transparent) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        color-mix(in oklch, var(--warm) 38%, transparent) 1px,
-        transparent 1px
-      );
+      linear-gradient(to right, color-mix(in oklch, var(--warm) 38%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, var(--warm) 38%, transparent) 1px, transparent 1px);
     background-size: 16px 16px;
     -webkit-mask-image:
       radial-gradient(circle at top left, black, transparent 31%),
@@ -446,11 +413,7 @@
   /* Faint dot grid used as a subtle background texture on the hero —
      reads as monochrome zinc dots in both themes. */
   .bg-dot-grid {
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      var(--border) 1px,
-      transparent 0
-    );
+    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
     background-size: 22px 22px;
   }
 }
@@ -520,7 +483,7 @@ html.light .shiki-inline span {
  * back to a static, readable strip. The ambient halos and status dots are
  * decorative loops too, so they freeze as well. */
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="marquee-track"],
+  [data-slot='marquee-track'],
   .ambient-halo,
   .hero-aurora,
   .state-dot {
@@ -531,7 +494,7 @@ html.light .shiki-inline span {
 /* Static thumbnails (`data-static`) never scroll, so `whileInView` reveals
  * never fire and motion leaves them at inline `opacity: 0`. Pin them to their
  * final frame; live embeds omit the flag and still animate. */
-html[data-static] [style*="opacity"] {
+html[data-static] [style*='opacity'] {
   opacity: 1 !important;
   transform: none !important;
 }
@@ -548,4 +511,3 @@ html[data-static] [data-embed-shell] {
 html[data-fit] [data-embed-shell] {
   min-height: 0 !important;
 }
-

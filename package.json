@@ -17,10 +17,11 @@
     "build": "pnpm registry:gen && pnpm registry:props && pnpm check:registry && pnpm registry:build && next build",
     "start": "npx serve out",
     "lint": "eslint .",
+    "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "registry:gen": "tsx scripts/build-registry.mts && tsx scripts/build-llms.mts",
     "registry:props": "tsx scripts/extract-props.mts",
-    "registry:build": "shadcn build && tsx scripts/stamp-source.mts",
+    "registry:build": "shadcn build && shadcn build registry.base.json -o public/r/base && tsx scripts/stamp-source.mts",
     "check:registry": "tsx scripts/check-registry.mts",
     "check:install": "tsx scripts/check-install.mts",
     "prepare": "husky && pnpm registry:gen && pnpm registry:props"
@@ -82,6 +83,7 @@
     "lint-staged": "^17.4.1",
     "prettier": "3.9.6",
     "tailwindcss": "^4.3.3",
+    "ts-morph": "^28.0.0",
     "tsx": "^4.23.12",
     "typescript": "^6.0.3"
   },

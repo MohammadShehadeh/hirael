@@ -2,15 +2,9 @@
 // attribution header to every source file in the built /r/*.json payloads and
 // points placeholder media at the showcase host; repo source stays untouched.
 
-import { writeFileSync } from "node:fs";
+import { writeFileSync } from 'node:fs';
 
-import {
-  REGISTRY_BASE_URL,
-  STAMPABLE_FILE,
-  jsonText,
-  readBuiltItems,
-  sourceHeader,
-} from "./shared.mts";
+import { REGISTRY_BASE_URL, STAMPABLE_FILE, jsonText, readAllBuiltItems, sourceHeader } from './shared.mts';
 
 // Placeholder images and videos live in public/media and are referenced
 // root-relative in source. Installed items would 404 on those paths, so the
@@ -20,15 +14,12 @@ const MEDIA_PATH = /(["'`])\/media\//g;
 let stampedFiles = 0;
 let mediaFiles = 0;
 let touchedItems = 0;
-for (const { file: itemJson, item } of readBuiltItems()) {
+for (const { file: itemJson, item } of readAllBuiltItems()) {
   const header = sourceHeader(item);
   let isTouched = false;
   for (const file of item.files ?? []) {
-    if (typeof file.content !== "string") continue;
-    const withMedia = file.content.replace(
-      MEDIA_PATH,
-      `$1${REGISTRY_BASE_URL}/media/`,
-    );
+    if (typeof file.content !== 'string') continue;
+    const withMedia = file.content.replace(MEDIA_PATH, `$1${REGISTRY_BASE_URL}/media/`);
     if (withMedia !== file.content) {
       file.content = withMedia;
       mediaFiles++;

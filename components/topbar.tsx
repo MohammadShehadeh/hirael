@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { NAV_LINKS } from "@/lib/site";
-import { CommandMenu } from "@/components/command-menu";
-import { GithubLink } from "@/components/github-link";
-import { Logo } from "@/components/logo";
-import { CustomizerTrigger } from "@/components/customizer-sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Separator } from "@/registry/hirael/ui/separator";
-import { SidebarTrigger } from "@/registry/hirael/ui/sidebar";
+import { cn } from '@/lib/utils';
+import { NAV_LINKS } from '@/lib/site';
+import { CommandMenu } from '@/components/command-menu';
+import { GithubLink } from '@/components/github-link';
+import { Logo } from '@/components/logo';
+import { CustomizerTrigger } from '@/components/customizer-sheet';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
+import { SidebarTrigger } from '@/registry/hirael/bases/radix/ui/sidebar';
 
 export const ShowcaseTopbar = ({ stars }: { stars?: number | null }) => {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === '/') return pathname === '/';
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
@@ -40,12 +40,10 @@ export const ShowcaseTopbar = ({ stars }: { stars?: number | null }) => {
             <Link
               key={link.href}
               href={link.href}
-              aria-current={active ? "page" : undefined}
+              aria-current={active ? 'page' : undefined}
               className={cn(
-                "rounded-full px-3 py-1.5 text-[13px] tracking-tight transition-colors",
-                active
-                  ? "bg-accent text-foreground"
-                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                'rounded-full px-3 py-1.5 text-[13px] tracking-tight transition-colors',
+                active ? 'bg-accent text-foreground' : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
               )}
             >
               {link.label}

@@ -1,19 +1,12 @@
-import { ShowcaseSidebar } from "@/components/sidebar";
-import { ShowcaseTopbar } from "@/components/topbar";
-import { SiteFooterCompact } from "@/components/site-footer";
-import { getChangelog } from "@/lib/changelog";
-import { getRepoStars } from "@/lib/github";
-import { SidebarInset, SidebarProvider } from "@/registry/hirael/ui/sidebar";
+import { ShowcaseSidebar } from '@/components/sidebar';
+import { ShowcaseTopbar } from '@/components/topbar';
+import { SiteFooterCompact } from '@/components/site-footer';
+import { getChangelog } from '@/lib/changelog';
+import { getRepoStars } from '@/lib/github';
+import { SidebarInset, SidebarProvider } from '@/registry/hirael/bases/radix/ui/sidebar';
 
-export default async function ShowcaseLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [stars, changelog] = await Promise.all([
-    getRepoStars(),
-    getChangelog(),
-  ]);
+export default async function ShowcaseLayout({ children }: { children: React.ReactNode }) {
+  const [stars, changelog] = await Promise.all([getRepoStars(), getChangelog()]);
   const releases = changelog.entries.map((entry) => ({
     slug: entry.slug,
     label: entry.version ? `v${entry.version}` : entry.title,

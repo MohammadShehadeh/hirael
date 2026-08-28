@@ -1,24 +1,15 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import * as React from 'react';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { RegistryDemo } from "@/registry/hirael/registry-demos";
-import {
-  CATEGORY_LABELS,
-  entryHref,
-  type RegistryEntryMeta,
-} from "@/registry/hirael/registry-meta";
+import { cn } from '@/lib/utils';
+import { useRegistryBase } from '@/components/active-theme';
+import { RegistryDemo } from '@/registry/hirael/registry-demos';
+import { CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-export const DemoCard = ({
-  entry,
-  className,
-}: {
-  entry: RegistryEntryMeta;
-  className?: string;
-}) => {
+export const DemoCard = ({ entry, className }: { entry: RegistryEntryMeta; className?: string }) => {
   const href = entryHref(entry);
   const [engaged, setEngaged] = React.useState(false);
   const hoverCapable = useHoverCapable();
@@ -36,7 +27,7 @@ export const DemoCard = ({
         }
       }}
       className={cn(
-        "group/card relative flex flex-col overflow-hidden rounded-md border border-border bg-card transition-colors hover:border-foreground/30",
+        'group/card relative flex flex-col overflow-hidden rounded-md border border-border bg-card transition-colors hover:border-foreground/30',
         className,
       )}
     >
@@ -61,9 +52,7 @@ export const DemoCard = ({
             {CATEGORY_LABELS[entry.category]}
           </span>
         </div>
-        <p className="line-clamp-2 text-xs text-muted-foreground">
-          {entry.description}
-        </p>
+        <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
         <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
           View
           <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
@@ -73,17 +62,13 @@ export const DemoCard = ({
   );
 };
 
-const PREVIEW_FRAME =
-  "bg-dot-grid relative flex h-60 items-center justify-center overflow-hidden p-5";
+const PREVIEW_FRAME = 'bg-dot-grid relative flex h-60 items-center justify-center overflow-hidden p-5';
 
-const hoverQuery =
-  typeof window !== "undefined"
-    ? window.matchMedia("(hover: hover) and (pointer: fine)")
-    : null;
+const hoverQuery = typeof window !== 'undefined' ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
 
 const subscribeHover = (onChange: () => void) => {
-  hoverQuery?.addEventListener("change", onChange);
-  return () => hoverQuery?.removeEventListener("change", onChange);
+  hoverQuery?.addEventListener('change', onChange);
+  return () => hoverQuery?.removeEventListener('change', onChange);
 };
 
 /** True only on devices where hovering is the primary pointer interaction —
@@ -100,13 +85,7 @@ const useHoverCapable = () => {
  * Mounts the demo only once the card is near the viewport, so an index of 60+
  * cards doesn't pull every component chunk on page load.
  */
-const LazyDemo = ({
-  name,
-  inert,
-}: {
-  name: string;
-  inert: boolean;
-}) => {
+const LazyDemo = ({ name, inert }: { name: string; inert: boolean }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [isNear, setIsNear] = React.useState(false);
 
@@ -117,28 +96,25 @@ const LazyDemo = ({
       ([entry]) => {
         if (entry.isIntersecting) setIsNear(true);
       },
-      { rootMargin: "240px" },
+      { rootMargin: '240px' },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [isNear]);
+
+  const base = useRegistryBase();
 
   return (
     <div ref={ref} inert={inert} className={PREVIEW_FRAME}>
       {/* The title link's ::after overlay covers the card; this layer sits
           above it so the demo itself stays interactive. */}
       <div className="relative z-10 flex max-h-full w-full items-center justify-center">
-        {isNear && <RegistryDemo name={name} fallback={<DemoSkeleton />} />}
+        {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>
     </div>
   );
 };
 
 const DemoSkeleton = () => {
-  return (
-    <div
-      aria-hidden
-      className="h-9 w-2/3 animate-pulse rounded-md bg-muted-foreground/10"
-    />
-  );
+  return <div aria-hidden className="h-9 w-2/3 animate-pulse rounded-md bg-muted-foreground/10" />;
 };

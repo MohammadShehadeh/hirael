@@ -1,11 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { usePathname } from "next/navigation";
-import {
-  ThemeProvider as NextThemesProvider,
-  useTheme as useNextTheme,
-} from "next-themes";
+import * as React from 'react';
+import { usePathname } from 'next/navigation';
+import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from 'next-themes';
 
 import {
   CONFIG_STORAGE_KEY,
@@ -21,12 +18,15 @@ import {
   type CustomizerConfig,
   type ResolvedTokens,
   type ThemeMode,
-} from "@/lib/customizer";
+} from '@/lib/customizer';
+import type { RegistryBase } from '@/registry/hirael/registry-meta';
 
 interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   config: CustomizerConfig;
+  /** Hydration-safe base: the default until mounted, then `config.base`. */
+  base: RegistryBase;
   tokens: ResolvedTokens;
   isDefault: boolean;
   setConfig: (patch: Partial<CustomizerConfig>) => void;
@@ -39,7 +39,7 @@ interface ThemeContextValue {
 // (which re-run the same pre-paint script) would open against the default
 // palette instead of the active one.
 const readPersistedConfig = (): CustomizerConfig => {
-  if (typeof window === "undefined") return DEFAULT_CONFIG;
+  if (typeof window === 'undefined') return DEFAULT_CONFIG;
   try {
     const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
     return normalizeConfig(raw ? JSON.parse(raw) : null);
@@ -57,14 +57,19 @@ const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
   // Falls back to dark to match the SSR default before next-themes mounts.
-  const mode: ThemeMode =
-    (resolvedTheme ?? activeMode) === "light" ? "light" : "dark";
+  const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
 
   const pathname = usePathname();
-  const isEmbed = isEmbedPath(pathname ?? "");
+  const isEmbed = isEmbedPath(pathname ?? '');
 
-  const [config, setConfigState] =
-    React.useState<CustomizerConfig>(readPersistedConfig);
+  const [config, setConfigState] = React.useState<CustomizerConfig>(readPersistedConfig);
+
+  // Markup that depends on the config (install URLs, source tabs, framed
+  // preview paths) must hydrate against the static HTML, which was rendered
+  // with the defaults; the persisted base takes over after mount. Tokens are
+  // unaffected: they reach the page as a stylesheet, never as markup.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
 
   // Keep already-mounted documents in sync when another same-origin document
   // changes the config: the sheet lives in the site header, so a visitor can
@@ -74,12 +79,10 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     function onStorage(e: StorageEvent) {
       if (e.key !== CONFIG_STORAGE_KEY) return;
       const next = readPersistedConfig();
-      setConfigState((prev) =>
-        JSON.stringify(next) === JSON.stringify(prev) ? prev : next,
-      );
+      setConfigState((prev) => (JSON.stringify(next) === JSON.stringify(prev) ? prev : next));
     }
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
   const tokens = resolveTokens(config);
@@ -97,7 +100,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     if (!el) {
-      el = document.createElement("style");
+      el = document.createElement('style');
       el.id = STYLE_ELEMENT_ID;
       document.head.appendChild(el);
     }
@@ -110,10 +113,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     const id = window.setTimeout(() => {
       try {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
-        localStorage.setItem(
-          CSS_STORAGE_KEY,
-          JSON.stringify({ main: mainCss, embed: embedCss }),
-        );
+        localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
         // ignore
       }
@@ -128,7 +128,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const setConfig = (patch: Partial<CustomizerConfig>) => {
     setConfigState((prev) => {
       const next: Partial<CustomizerConfig> = { ...prev, ...patch };
-      if ("theme" in patch && !("chartColor" in patch)) {
+      if ('theme' in patch && !('chartColor' in patch)) {
         next.chartColor = patch.theme;
       }
       return normalizeConfig(next);
@@ -141,15 +141,14 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     mode,
     setMode,
     config,
+    base: mounted ? config.base : DEFAULT_CONFIG.base,
     tokens,
     isDefault: isDefaultConfig(config),
     setConfig,
     reset,
   };
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -161,7 +160,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     <NextThemesProvider
       attribute="class"
       defaultTheme="dark"
-      themes={["light", "dark"]}
+      themes={['light', 'dark']}
       enableSystem={false}
       storageKey={MODE_STORAGE_KEY}
       disableTransitionOnChange
@@ -173,6 +172,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useTheme = (): ThemeContextValue => {
   const ctx = React.useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>");
+  if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
   return ctx;
 };
+
+/** The registry tree the showcase previews, shows and installs from. */
+export const useRegistryBase = (): RegistryBase => useTheme().base;

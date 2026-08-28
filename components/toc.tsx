@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { cva } from "class-variance-authority";
+import * as React from 'react';
+import { cva } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils";
-import { Badge } from "@/registry/hirael/ui/badge";
+import { cn } from '@/lib/utils';
+import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
 export interface TocItem {
   id: string;
@@ -16,19 +16,15 @@ interface TocProps {
   className?: string;
 }
 
-const tocLinkVariants = cva(
-  "block border-s py-1 ps-3 text-[13px] leading-snug transition-colors",
-  {
-    variants: {
-      active: {
-        true: "border-s-accent-cool font-medium text-foreground",
-        false:
-          "border-s-border/60 text-muted-foreground hover:border-s-foreground/40 hover:text-foreground",
-      },
+const tocLinkVariants = cva('block border-s py-1 ps-3 text-[13px] leading-snug transition-colors', {
+  variants: {
+    active: {
+      true: 'border-s-accent-cool font-medium text-foreground',
+      false: 'border-s-border/60 text-muted-foreground hover:border-s-foreground/40 hover:text-foreground',
     },
-    defaultVariants: { active: false },
   },
-);
+  defaultVariants: { active: false },
+});
 
 /**
  * "On this page" rail — the right-column table of contents shadcn/ui's docs
@@ -47,13 +43,8 @@ export const Toc = ({ items, className }: TocProps) => {
   if (items.length < 2) return null;
 
   return (
-    <nav
-      aria-label="On this page"
-      className={cn("flex flex-col gap-3", className)}
-    >
-      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-        On this page
-      </p>
+    <nav aria-label="On this page" className={cn('flex flex-col gap-3', className)}>
+      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">On this page</p>
       <ul className="flex flex-col">
         {items.map((item) => {
           const isActive = item.id === active;
@@ -61,7 +52,7 @@ export const Toc = ({ items, className }: TocProps) => {
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                aria-current={isActive ? "location" : undefined}
+                aria-current={isActive ? 'location' : undefined}
                 className={tocLinkVariants({ active: isActive })}
               >
                 {item.label}
@@ -86,26 +77,17 @@ export const TocChips = ({ items, className }: TocProps) => {
   if (items.length < 2) return null;
 
   return (
-    <nav
-      aria-label="On this page"
-      className={cn(
-        "flex items-center gap-1.5 overflow-x-auto pb-0.5",
-        className,
-      )}
-    >
+    <nav aria-label="On this page" className={cn('flex items-center gap-1.5 overflow-x-auto pb-0.5', className)}>
       {items.map((item) => {
         const isActive = item.id === active;
         return (
           <Badge
             key={item.id}
-            variant={isActive ? "secondary" : "outline"}
+            variant={isActive ? 'secondary' : 'outline'}
             asChild
             className="px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em]"
           >
-            <a
-              href={`#${item.id}`}
-              aria-current={isActive ? "location" : undefined}
-            >
+            <a href={`#${item.id}`} aria-current={isActive ? 'location' : undefined}>
               {item.label}
             </a>
           </Badge>
@@ -126,10 +108,10 @@ export const TocChips = ({ items, className }: TocProps) => {
 const useActiveSection = (ids: string[]) => {
   const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
   // Re-run the effect when the *set* of ids changes, not its array identity.
-  const key = ids.join("|");
+  const key = ids.join('|');
 
   React.useEffect(() => {
-    const sectionIds = key ? key.split("|") : [];
+    const sectionIds = key ? key.split('|') : [];
     if (sectionIds.length === 0) return;
 
     const visible = new Set<string>();
@@ -144,7 +126,7 @@ const useActiveSection = (ids: string[]) => {
       },
       // Activate a heading once it passes the topbar and before it leaves the
       // top third — keeps the highlight one step ahead of the reading line.
-      { rootMargin: "-88px 0px -66% 0px", threshold: 0 },
+      { rootMargin: '-88px 0px -66% 0px', threshold: 0 },
     );
 
     for (const id of sectionIds) {

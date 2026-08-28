@@ -1,4 +1,4 @@
-import { THEMES, type ThemeItem } from "@/registry/themes";
+import { THEMES, type ThemeItem } from '@/registry/themes';
 
 /**
  * Base color options, shadcn's `registry/base-colors.ts` analog: the neutral
@@ -6,23 +6,13 @@ import { THEMES, type ThemeItem } from "@/registry/themes";
  * canvas from `app/globals.css`; the rest are shadcn's neutrals. Accent
  * themes (red, emerald, ...) layer on top of whichever base is active.
  */
-export const BASE_COLOR_NAMES = [
-  "hirael",
-  "neutral",
-  "stone",
-  "zinc",
-  "mauve",
-  "olive",
-  "mist",
-  "taupe",
-] as const;
+export const BASE_COLOR_NAMES = ['hirael', 'neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'] as const;
 
 export type BaseColorName = (typeof BASE_COLOR_NAMES)[number];
 
 const BASE_COLOR_SET: ReadonlySet<string> = new Set(BASE_COLOR_NAMES);
 
-export const isBaseColor = (name: string): name is BaseColorName =>
-  BASE_COLOR_SET.has(name);
+export const isBaseColor = (name: string): name is BaseColorName => BASE_COLOR_SET.has(name);
 
 export const BASE_COLORS: ThemeItem[] = BASE_COLOR_NAMES.map((name) => {
   const theme = THEMES.find((t) => t.name === name);

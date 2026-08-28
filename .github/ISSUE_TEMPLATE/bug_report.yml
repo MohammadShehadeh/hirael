@@ -1,7 +1,7 @@
-name: "Bug report"
+name: 'Bug report'
 description: Report an issue with a Hirael component, block, template, or the showcase site
-title: "[bug]: "
-labels: ["bug"]
+title: '[bug]: '
+labels: ['bug']
 body:
   - type: markdown
     attributes:
@@ -72,7 +72,7 @@ body:
     id: logs
     attributes:
       label: Logs
-      description: "Browser console and/or server logs around the time the bug occurred. Optional if a reproduction is provided. Please paste text rather than screenshots."
+      description: 'Browser console and/or server logs around the time the bug occurred. Optional if a reproduction is provided. Please paste text rather than screenshots.'
       render: bash
 
   - type: textarea

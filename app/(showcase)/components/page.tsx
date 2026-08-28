@@ -1,13 +1,13 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { ArrowRight, Frame, Layers } from "lucide-react";
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ArrowRight, Frame, Layers } from 'lucide-react';
 
-import { InlineCodeBlock } from "@/components/code-block";
-import { DemoCard } from "@/components/demo-card";
-import { InstallBlock } from "@/components/install-block";
-import { PageHeader, SectionLabel } from "@/components/page-header";
-import { highlightCode } from "@/lib/highlight";
-import { SITE } from "@/lib/site";
+import { InlineCodeBlock } from '@/components/code-block';
+import { DemoCard } from '@/components/demo-card';
+import { InstallBlock } from '@/components/install-block';
+import { PageHeader, SectionLabel } from '@/components/page-header';
+import { highlightCode } from '@/lib/highlight';
+import { SITE } from '@/lib/site';
 import {
   BLOCK_KIND_ORDER,
   CATEGORY_LABELS,
@@ -15,7 +15,7 @@ import {
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
   TEMPLATES,
-} from "@/registry/hirael/registry-meta";
+} from '@/registry/hirael/registry-meta';
 
 const COMPOSE_SNIPPET = `import {
   MultiSelect,
@@ -29,23 +29,23 @@ const COMPOSE_SNIPPET = `import {
 </MultiSelect>`;
 
 const COMPONENTS_DESCRIPTION =
-  "Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.";
+  'Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.';
 
 export const metadata: Metadata = {
-  title: "Components",
+  title: 'Components',
   description: COMPONENTS_DESCRIPTION,
   alternates: {
-    canonical: "/components",
+    canonical: '/components',
   },
   openGraph: {
-    type: "website",
+    type: 'website',
     url: `${SITE.url}/components`,
     siteName: SITE.name,
     title: `Components | ${SITE.name}`,
     description: COMPONENTS_DESCRIPTION,
     images: [
       {
-        url: "/opengraph-image",
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: `Components | ${SITE.name}`,
@@ -53,16 +53,16 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: `Components | ${SITE.name}`,
     description: COMPONENTS_DESCRIPTION,
-    images: ["/opengraph-image"],
+    images: ['/opengraph-image'],
   },
 };
 
 export default async function ComponentsIndex() {
   const blocks = REGISTRY_BY_CATEGORY.blocks;
-  const composeHtml = await highlightCode(COMPOSE_SNIPPET, "tsx");
+  const composeHtml = await highlightCode(COMPOSE_SNIPPET, 'tsx');
 
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
@@ -74,10 +74,7 @@ export default async function ComponentsIndex() {
         <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
       </PageHeader>
 
-      <nav
-        aria-label="Component categories"
-        className="-mt-6 flex flex-wrap justify-center gap-2"
-      >
+      <nav aria-label="Component categories" className="-mt-6 flex flex-wrap justify-center gap-2">
         {COMPONENT_CATEGORY_ORDER.map((cat) => (
           <a
             key={cat}
@@ -85,9 +82,7 @@ export default async function ComponentsIndex() {
             className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
             {CATEGORY_LABELS[cat]}
-            <span className="ms-1.5 tabular-nums text-muted-foreground/60">
-              {REGISTRY_BY_CATEGORY[cat].length}
-            </span>
+            <span className="ms-1.5 tabular-nums text-muted-foreground/60">{REGISTRY_BY_CATEGORY[cat].length}</span>
           </a>
         ))}
       </nav>
@@ -96,24 +91,16 @@ export default async function ComponentsIndex() {
         const items = REGISTRY_BY_CATEGORY[cat];
         if (!items.length) return null;
         return (
-          <section
-            key={cat}
-            id={cat}
-            className="flex scroll-mt-24 flex-col gap-5"
-          >
+          <section key={cat} id={cat} className="flex scroll-mt-24 flex-col gap-5">
             <div className="flex items-baseline justify-between">
               <Link
                 href={`/components/${cat}`}
                 className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
               >
-                <SectionLabel className="text-foreground">
-                  {CATEGORY_LABELS[cat]}
-                </SectionLabel>
+                <SectionLabel className="text-foreground">{CATEGORY_LABELS[cat]}</SectionLabel>
                 <ArrowRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
               </Link>
-              <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                {items.length}
-              </span>
+              <span className="font-mono text-[10px] tabular-nums text-muted-foreground">{items.length}</span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {items.map((entry) => (
@@ -127,12 +114,9 @@ export default async function ComponentsIndex() {
       <section className="flex flex-col gap-5 border-t border-border pt-10">
         <SectionLabel>Composition (the shadcn way)</SectionLabel>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Every compound component ships as flat top-level exports, no
-          namespacing, no convenience wrappers. The bare name is the root
-          primitive and holds state; every rendered piece carries a
-          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground">
-            data-slot
-          </code>
+          Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare
+          name is the root primitive and holds state; every rendered piece carries a
+          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground">data-slot</code>
           attribute for downstream styling.
         </p>
         <InlineCodeBlock code={COMPOSE_SNIPPET} html={composeHtml} />
@@ -148,11 +132,9 @@ export default async function ComponentsIndex() {
               <Layers className="size-4 text-foreground" />
             </span>
             <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">
-                {blocks.length} section blocks
-              </span>
+              <span className="text-sm font-medium">{blocks.length} section blocks</span>
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                {BLOCK_KIND_ORDER.length} categories · preview + install
+                {BLOCK_KIND_ORDER.length} categories, preview and install
               </span>
             </div>
           </div>
@@ -167,11 +149,9 @@ export default async function ComponentsIndex() {
               <Frame className="size-4 text-foreground" />
             </span>
             <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">
-                {TEMPLATES.length} full-page templates
-              </span>
+              <span className="text-sm font-medium">{TEMPLATES.length} full-page templates</span>
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                landing pages · preview + install
+                landing pages, preview and install
               </span>
             </div>
           </div>

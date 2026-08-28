@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export interface SegmentedControlItem {
   value: string;
@@ -12,7 +12,8 @@ export interface SegmentedControlItem {
   title?: string;
   /** Non-interactive item (e.g. a Code tab with no source). Still focusable
    * for arrow-key roving, but announces as disabled and ignores clicks. */
-  disabled?: boolean;}
+  disabled?: boolean;
+}
 
 /**
  * A compact pill strip — the shared shape behind the file tabs, viewport
@@ -23,7 +24,7 @@ export const SegmentedControl = ({
   items,
   value,
   onValueChange,
-  role = "tab",
+  role = 'tab',
   ariaLabel,
   className,
   itemClassName,
@@ -32,7 +33,7 @@ export const SegmentedControl = ({
   value: string;
   onValueChange: (value: string) => void;
   /** "tab" renders a tablist; "radio" renders a radiogroup. */
-  role?: "tab" | "radio";
+  role?: 'tab' | 'radio';
   ariaLabel: string;
   className?: string;
   itemClassName?: string;
@@ -40,28 +41,26 @@ export const SegmentedControl = ({
   const ref = React.useRef<HTMLDivElement>(null);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
     e.preventDefault();
     // Mirror the arrow direction under RTL so focus follows visual order.
-    const rtl = getComputedStyle(e.currentTarget).direction === "rtl";
-    const forward = e.key === "ArrowRight" ? !rtl : rtl;
+    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
+    const forward = e.key === 'ArrowRight' ? !rtl : rtl;
     const dir = forward ? 1 : -1;
     const i = items.findIndex((it) => it.value === value);
     if (i === -1) return;
     const next = items[(i + dir + items.length) % items.length];
     onValueChange(next.value);
-    ref.current
-      ?.querySelector<HTMLButtonElement>(`[data-value="${next.value}"]`)
-      ?.focus();
+    ref.current?.querySelector<HTMLButtonElement>(`[data-value="${next.value}"]`)?.focus();
   };
 
   return (
     <div
       ref={ref}
-      role={role === "tab" ? "tablist" : "radiogroup"}
+      role={role === 'tab' ? 'tablist' : 'radiogroup'}
       aria-label={ariaLabel}
       onKeyDown={onKeyDown}
-      className={cn("flex items-center gap-0.5", className)}
+      className={cn('flex items-center gap-0.5', className)}
     >
       {items.map((item) => {
         const active = item.value === value;
@@ -70,8 +69,8 @@ export const SegmentedControl = ({
             key={item.value}
             type="button"
             role={role}
-            aria-selected={role === "tab" ? active : undefined}
-            aria-checked={role === "radio" ? active : undefined}
+            aria-selected={role === 'tab' ? active : undefined}
+            aria-checked={role === 'radio' ? active : undefined}
             tabIndex={active ? 0 : -1}
             data-value={item.value}
             aria-label={item.ariaLabel}
@@ -80,14 +79,12 @@ export const SegmentedControl = ({
             aria-disabled={item.disabled || undefined}
             onClick={() => onValueChange(item.value)}
             className={cn(
-              "inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40 disabled:hover:text-muted-foreground",
-              active
-                ? "bg-accent text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+              'inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40 disabled:hover:text-muted-foreground',
+              active ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
               itemClassName,
             )}
           >
-            {typeof item.label === "function" ? item.label(active) : item.label}
+            {typeof item.label === 'function' ? item.label(active) : item.label}
           </button>
         );
       })}

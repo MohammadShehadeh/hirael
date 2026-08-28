@@ -1,7 +1,7 @@
-name: "Feature request"
+name: 'Feature request'
 description: Suggest a new component, block, template, or improvement for Hirael
-title: "[feat]: "
-labels: ["area: request"]
+title: '[feat]: '
+labels: ['area: request']
 body:
   - type: markdown
     attributes:
@@ -19,8 +19,8 @@ body:
     attributes:
       label: Feature description
       description: Describe the user problem first, then the component or API you have in mind. Reference existing shadcn or Radix conventions where relevant.
-      placeholder: "I think this would be useful because..."
-      value: "Describe your feature request..."
+      placeholder: 'I think this would be useful because...'
+      value: 'Describe your feature request...'
     validations:
       required: true
 

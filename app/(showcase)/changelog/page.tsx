@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { ChangelogView } from "@/components/changelog-view";
-import { getChangelog } from "@/lib/changelog";
-import { SITE } from "@/lib/site";
+import { ChangelogView } from '@/components/changelog-view';
+import { getChangelog } from '@/lib/changelog';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: "Changelog",
+  title: 'Changelog',
   description: `Release notes for ${SITE.name}: new components, blocks, fixes, and polish.`,
-  alternates: { canonical: "/changelog" },
+  alternates: { canonical: '/changelog' },
 };
 
 export default async function ChangelogPage() {

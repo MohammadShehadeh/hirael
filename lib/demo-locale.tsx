@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-export type DemoLocale = "en" | "ar";
+export type DemoLocale = 'en' | 'ar';
 
-const DemoLocaleContext = React.createContext<DemoLocale>("en");
+const DemoLocaleContext = React.createContext<DemoLocale>('en');
 
 /**
  * Sets the language for the demos rendered inside a component preview. The
@@ -12,18 +12,8 @@ const DemoLocaleContext = React.createContext<DemoLocale>("en");
  * previews render in Arabic so the catalog shows real RTL text, not just
  * mirrored English. Demos read it through `useT`/`useDemoLocale`.
  */
-export const DemoLocaleProvider = ({
-  locale,
-  children,
-}: {
-  locale: DemoLocale;
-  children: React.ReactNode;
-}) => {
-  return (
-    <DemoLocaleContext.Provider value={locale}>
-      {children}
-    </DemoLocaleContext.Provider>
-  );
+export const DemoLocaleProvider = ({ locale, children }: { locale: DemoLocale; children: React.ReactNode }) => {
+  return <DemoLocaleContext.Provider value={locale}>{children}</DemoLocaleContext.Provider>;
 };
 
 export const useDemoLocale = (): DemoLocale => {

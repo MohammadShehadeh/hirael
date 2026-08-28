@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { ChevronRight, File, Folder } from "lucide-react";
+import * as React from 'react';
+import { ChevronRight, File, Folder } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { SegmentedControl } from "@/components/segmented-control";
-import { CopyButton } from "@/registry/hirael/components/copy-button";
-import { Button } from "@/registry/hirael/ui/button";
+import { cn } from '@/lib/utils';
+import { SegmentedControl } from '@/components/segmented-control';
+import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export interface CodeBlockTab {
   /** Tab label (e.g. filename or install-target path). */
@@ -14,16 +14,17 @@ export interface CodeBlockTab {
   /** Raw source — used for copy + clipboard. */
   code: string;
   /** Pre-highlighted shiki HTML for `code`. */
-  html: string;}
+  html: string;
+}
 
-export type CodeBlockLayout = "tabs" | "tree";
+export type CodeBlockLayout = 'tabs' | 'tree';
 
 export const CodeBlock = ({
   tabs,
   defaultTab,
   className,
-  maxHeight = "max-h-[640px]",
-  layout = "tabs",
+  maxHeight = 'max-h-[640px]',
+  layout = 'tabs',
   collapsible = false,
 }: {
   tabs: CodeBlockTab[];
@@ -36,22 +37,15 @@ export const CodeBlock = ({
   /** Clip to a short preview behind an "Expand" control. */
   collapsible?: boolean;
 }) => {
-  const [active, setActive] = React.useState(
-    () => defaultTab ?? tabs[0]?.label,
-  );
+  const [active, setActive] = React.useState(() => defaultTab ?? tabs[0]?.label);
   const [expanded, setExpanded] = React.useState(false);
   const current = tabs.find((t) => t.label === active) ?? tabs[0];
 
   if (!current) return null;
 
-  if (layout === "tree") {
+  if (layout === 'tree') {
     return (
-      <div
-        className={cn(
-          "overflow-hidden rounded-md border border-border bg-card",
-          className,
-        )}
-      >
+      <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
         <div className="flex min-h-0">
           <FileTree
             paths={tabs.map((t) => t.label)}
@@ -61,17 +55,10 @@ export const CodeBlock = ({
           />
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
-              <span
-                title={current.label}
-                className="truncate font-mono text-[11px] text-muted-foreground"
-              >
+              <span title={current.label} className="truncate font-mono text-[11px] text-muted-foreground">
                 {current.label}
               </span>
-              <CopyButton
-                value={current.code}
-                size="sm"
-                aria-label="Copy code"
-              />
+              <CopyButton value={current.code} size="sm" aria-label="Copy code" />
             </div>
             <CodePane
               html={current.html}
@@ -88,12 +75,7 @@ export const CodeBlock = ({
   }
 
   return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-md border border-border bg-card",
-        className,
-      )}
-    >
+    <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
       <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
         <SegmentedControl
           role="tab"
@@ -103,16 +85,11 @@ export const CodeBlock = ({
           className="min-w-0 overflow-x-auto"
           items={tabs.map((t) => ({
             value: t.label,
-            label: t.label.split("/").slice(-1)[0],
+            label: t.label.split('/').slice(-1)[0],
             title: t.label,
           }))}
         />
-        <CopyButton
-          value={current.code}
-          size="sm"
-          aria-label="Copy code"
-          className="mr-0.5"
-        />
+        <CopyButton value={current.code} size="sm" aria-label="Copy code" className="mr-0.5" />
       </div>
       <CodePane
         html={current.html}
@@ -142,12 +119,9 @@ const CodePane = ({
 }) => {
   const clipped = collapsible && !expanded;
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       <div
-        className={cn(
-          "shiki-scroll",
-          clipped ? "max-h-72 overflow-hidden" : cn("overflow-auto", maxHeight),
-        )}
+        className={cn('shiki-scroll', clipped ? 'max-h-72 overflow-hidden' : cn('overflow-auto', maxHeight))}
         dangerouslySetInnerHTML={{ __html: html }}
       />
       {clipped && (
@@ -184,12 +158,13 @@ interface TreeNode {
   name: string;
   /** Full path when this node is a file; undefined for folders. */
   filePath?: string;
-  children: TreeNode[];}
+  children: TreeNode[];
+}
 
 const buildTree = (paths: string[]): TreeNode[] => {
   const roots: TreeNode[] = [];
   for (const path of paths) {
-    const parts = path.split("/").filter(Boolean);
+    const parts = path.split('/').filter(Boolean);
     let level = roots;
     parts.forEach((segment, i) => {
       const isLeaf = i === parts.length - 1;
@@ -233,19 +208,10 @@ const FileTree = ({
     <div
       role="tree"
       aria-label="Files"
-      className={cn(
-        "w-56 shrink-0 overflow-auto py-2 pl-1 pr-1 text-[12px]",
-        maxHeight,
-      )}
+      className={cn('w-56 shrink-0 overflow-auto py-2 pl-1 pr-1 text-[12px]', maxHeight)}
     >
       {tree.map((node) => (
-        <TreeRow
-          key={node.name}
-          node={node}
-          depth={0}
-          active={active}
-          onSelect={onSelect}
-        />
+        <TreeRow key={node.name} node={node} depth={0} active={active} onSelect={onSelect} />
       ))}
     </div>
   );
@@ -274,30 +240,18 @@ const TreeRow = ({
           onClick={() => setOpen((v) => !v)}
           style={indent}
           className={cn(
-            "flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono text-muted-foreground transition-colors hover:text-foreground",
-            "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+            'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono text-muted-foreground transition-colors hover:text-foreground',
+            'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
           )}
         >
-          <ChevronRight
-            className={cn(
-              "size-3 shrink-0 transition-transform",
-              open && "rotate-90",
-            )}
-            aria-hidden
-          />
+          <ChevronRight className={cn('size-3 shrink-0 transition-transform', open && 'rotate-90')} aria-hidden />
           <Folder className="size-3 shrink-0" aria-hidden />
           <span className="truncate">{node.name}</span>
         </button>
         {open && (
           <div role="group">
             {node.children.map((child) => (
-              <TreeRow
-                key={child.name}
-                node={child}
-                depth={depth + 1}
-                active={active}
-                onSelect={onSelect}
-              />
+              <TreeRow key={child.name} node={child} depth={depth + 1} active={active} onSelect={onSelect} />
             ))}
           </div>
         )}
@@ -315,11 +269,9 @@ const TreeRow = ({
       style={indent}
       title={node.filePath}
       className={cn(
-        "flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        isActive
-          ? "bg-accent text-foreground"
-          : "text-muted-foreground hover:text-foreground",
+        'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        isActive ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
       )}
     >
       <span className="size-3 shrink-0" aria-hidden />
@@ -333,7 +285,7 @@ export const InlineCodeBlock = ({
   html,
   code,
   className,
-  maxHeight = "max-h-[640px]",
+  maxHeight = 'max-h-[640px]',
 }: {
   html: string;
   code: string;
@@ -341,22 +293,14 @@ export const InlineCodeBlock = ({
   maxHeight?: string;
 }) => {
   return (
-    <div
-      className={cn(
-        "group relative overflow-hidden rounded-md border border-border bg-card",
-        className,
-      )}
-    >
+    <div className={cn('group relative overflow-hidden rounded-md border border-border bg-card', className)}>
       <CopyButton
         value={code}
         size="sm"
         aria-label="Copy code"
         className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
       />
-      <div
-        className={cn("shiki-scroll overflow-auto", maxHeight)}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <div className={cn('shiki-scroll overflow-auto', maxHeight)} dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 };

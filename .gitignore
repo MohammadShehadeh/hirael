@@ -41,6 +41,7 @@ next-env.d.ts
 # generated registry artifacts (rebuilt by `pnpm registry:gen` / `registry:props`
 # / `registry:build` on install and build; never committed)
 /registry.json
+/registry.base.json
 /registry/hirael/registry-props.json
 /public/llms.txt
 /public/r/

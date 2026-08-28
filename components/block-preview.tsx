@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { useRegistryBase } from '@/components/active-theme';
+import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 /**
  * Renders a block in a fixed-width iframe, scaled to fit the card. Card height
@@ -18,15 +20,15 @@ const MIN_HEIGHT = 360;
 const MAX_HEIGHT = 760;
 
 export const BlockPreview = ({
-  embedHref,
-  title,
+  entry,
   simWidth = SIM_WIDTH,
 }: {
-  /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
-  embedHref: string;
-  title: string;
+  /** The block or template to frame; the path follows the active base. */
+  entry: RegistryEntryMeta;
   simWidth?: number;
 }) => {
+  const title = entry.title;
+  const embedHref = entryEmbedHref(entry, useRegistryBase());
   const ref = React.useRef<HTMLDivElement>(null);
   const contentRoRef = React.useRef<ResizeObserver | null>(null);
   const [width, setWidth] = React.useState<number | null>(null);
@@ -58,7 +60,7 @@ export const BlockPreview = ({
     if (!doc) return;
     // Measure the shell, not `documentElement.scrollHeight` — the latter never
     // drops below the iframe viewport, so it always reads the full sim height.
-    const target = doc.querySelector<HTMLElement>("[data-embed-shell]");
+    const target = doc.querySelector<HTMLElement>('[data-embed-shell]');
     if (!target) return;
     const measureHeight = () => {
       const h = target.getBoundingClientRect().height;
@@ -80,13 +82,11 @@ export const BlockPreview = ({
       <div
         aria-hidden
         className={cn(
-          "bg-dot-grid absolute inset-0 flex items-center justify-center transition-opacity duration-500",
-          loaded ? "pointer-events-none opacity-0" : "opacity-100",
+          'bg-dot-grid absolute inset-0 flex items-center justify-center transition-opacity duration-500',
+          loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
-          {title}
-        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">{title}</span>
       </div>
       {scale !== null && (
         <iframe
@@ -97,8 +97,8 @@ export const BlockPreview = ({
           aria-hidden
           onLoad={handleLoad}
           className={cn(
-            "pointer-events-none absolute left-0 top-0 origin-top-left border-0 transition-opacity duration-500",
-            loaded ? "opacity-100" : "opacity-0",
+            'pointer-events-none absolute left-0 top-0 origin-top-left border-0 transition-opacity duration-500',
+            loaded ? 'opacity-100' : 'opacity-0',
           )}
           style={{
             width: `${simWidth}px`,

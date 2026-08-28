@@ -1,14 +1,14 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { getRepoStars } from "@/lib/github";
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+import { getRepoStars } from '@/lib/github';
 
 export const metadata: Metadata = {
-  title: "Page not found",
-  description: "The page you were looking for could not be found.",
+  title: 'Page not found',
+  description: 'The page you were looking for could not be found.',
   robots: { index: false, follow: false },
 };
 
@@ -26,11 +26,8 @@ export default async function NotFound() {
           />
           <div className="relative container flex w-full flex-col items-center gap-6 py-24 text-center sm:py-28 lg:py-36">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-sm">
-              <span
-                aria-hidden
-                className="size-1 rounded-full bg-muted-foreground"
-              />
-              404 · Not found
+              <span aria-hidden className="size-1 rounded-full bg-muted-foreground" />
+              Error 404
             </span>
 
             <h1 className="text-display text-4xl leading-[1.04] sm:text-6xl md:text-7xl">
@@ -38,8 +35,7 @@ export default async function NotFound() {
             </h1>
 
             <p className="max-w-md text-base text-muted-foreground sm:text-lg">
-              The link may be broken, or the page may have moved. Everything
-              Hirael ships is still a click away.
+              The link may be broken, or the page may have moved. Everything Hirael ships is still a click away.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1">

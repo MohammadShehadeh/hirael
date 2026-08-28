@@ -43,11 +43,7 @@ is driven entirely by design tokens so light and dark both work.
 ## Usage
 
 ```tsx
-import {
-  MultiSelect,
-  MultiSelectContent,
-  MultiSelectTrigger,
-} from "@/components/ui/multi-select";
+import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/ui/multi-select';
 
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
@@ -75,7 +71,9 @@ pnpm dev            # showcase at http://localhost:3000
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit`                               |
 
 Every item is declared in `registry/hirael/registry-meta.ts`, the single source
-of truth; `registry.json` and the `/r/*.json` payloads are generated from it on
+of truth, and ships from two parallel trees like shadcn/ui's `registry/bases`:
+Radix UI (`/r/<name>.json`) and Base UI (`/r/base/<name>.json`). The
+`registry*.json` inputs and `/r/**/*.json` payloads are generated from it on
 install and build, and are never committed or hand-edited.
 
 ## Contributing

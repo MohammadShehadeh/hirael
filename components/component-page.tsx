@@ -407,6 +407,7 @@ const ExampleBlock = ({
         {view === "preview" ? (
           <div
             dir={rtl ? "rtl" : undefined}
+            data-customizer-scope=""
             className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
           >
             {/* Radix + Base UI direction providers cross React portals, so

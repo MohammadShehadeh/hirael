@@ -8,6 +8,7 @@ import { NAV_LINKS } from "@/lib/site";
 import { CommandMenu } from "@/components/command-menu";
 import { GithubLink } from "@/components/github-link";
 import { Logo } from "@/components/logo";
+import { CustomizerTrigger } from "@/components/customizer-sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/registry/hirael/ui/separator";
 import { SidebarTrigger } from "@/registry/hirael/ui/sidebar";
@@ -56,6 +57,7 @@ export const ShowcaseTopbar = ({ stars }: { stars?: number | null }) => {
       <div className="ml-auto flex items-center gap-1.5">
         <GithubLink stars={stars} />
         <CommandMenu />
+        <CustomizerTrigger />
         <ThemeToggle />
       </div>
     </header>

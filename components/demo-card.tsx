@@ -26,6 +26,7 @@ export const DemoCard = ({
   return (
     <article
       data-slot="demo-card"
+      data-customizer-scope=""
       onPointerEnter={() => setEngaged(true)}
       onPointerLeave={() => setEngaged(false)}
       onFocus={() => setEngaged(true)}

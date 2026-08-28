@@ -15,7 +15,6 @@ const FOOTER_LINKS: {
       { href: "/components", label: "Components" },
       { href: "/blocks", label: "Blocks" },
       { href: "/templates", label: "Templates" },
-      { href: "/theme", label: "Theme playground" },
     ],
   },
   {

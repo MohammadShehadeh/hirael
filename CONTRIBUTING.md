@@ -63,7 +63,7 @@ registry/hirael/
   blocks/<block>/            # marketing blocks
   templates/<template>/      # full-page templates
   registry-meta.ts           # single source of truth for every item
-registry/themes.ts           # theme-editor presets
+registry/themes.ts           # Customizer palettes (base colors + accents)
 registry/base-colors.ts      # base-color options (derived from themes)
 registry.json                # generated from registry-meta.ts on install
                              # and build (git-ignored, never hand-edited)

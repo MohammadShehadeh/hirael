@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Boxes, Frame, History, LayoutTemplate, Sparkles } from "lucide-react";
+import { Boxes, Frame, History, LayoutTemplate } from "lucide-react";
 
 import { CATEGORIES_BY_GROUP } from "@/components/block-categories";
 import { LogoTile } from "@/components/logo";
@@ -115,14 +115,6 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
                     <Frame />
                     <span>Templates</span>
                     <Count n={templateCount} />
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/theme")}>
-                  <Link href="/theme">
-                    <Sparkles />
-                    <span>Theme playground</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

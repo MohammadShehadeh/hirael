@@ -10,6 +10,7 @@ import { NAV_LINKS, SITE } from "@/lib/site";
 import { CommandMenu } from "@/components/command-menu";
 import { GithubLink } from "@/components/github-link";
 import { Logo } from "@/components/logo";
+import { CustomizerTrigger } from "@/components/customizer-sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/registry/hirael/ui/button";
 import {
@@ -97,6 +98,7 @@ export const SiteHeader = ({
         <div className="flex items-center gap-1.5">
           <GithubLink stars={stars} />
           <CommandMenu />
+          <CustomizerTrigger />
           <ThemeToggle />
           <Drawer
             direction="bottom"

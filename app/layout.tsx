@@ -1,18 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/active-theme";
 import { SkipLink } from "@/components/skip-link";
 import { SITE } from "@/lib/site";
-import { themePrehydrationScript } from "@/lib/theme";
+import { customizerPrehydrationScript } from "@/lib/customizer";
+import { inter } from "@/lib/fonts";
 import { TooltipProvider } from "@/registry/hirael/ui/tooltip";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-jet-brains-mono",
@@ -100,7 +96,7 @@ export default function RootLayout({
     >
       <head>
         <script
-          dangerouslySetInnerHTML={{ __html: themePrehydrationScript() }}
+          dangerouslySetInnerHTML={{ __html: customizerPrehydrationScript() }}
         />
 
         <Script
@@ -139,7 +135,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
+        className={`${inter.variable} ${jetBrainsMono.variable} ${cormorant.variable} font-sans antialiased`}
       >
         <SkipLink />
         <TooltipProvider>

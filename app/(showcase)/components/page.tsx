@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Layers, Palette } from "lucide-react";
+import { ArrowRight, Frame, Layers } from "lucide-react";
 
 import { InlineCodeBlock } from "@/components/code-block";
 import { DemoCard } from "@/components/demo-card";
@@ -14,6 +14,7 @@ import {
   COMPONENT_CATEGORY_ORDER,
   COMPONENTS,
   REGISTRY_BY_CATEGORY,
+  TEMPLATES,
 } from "@/registry/hirael/registry-meta";
 
 const COMPOSE_SNIPPET = `import {
@@ -158,17 +159,19 @@ export default async function ComponentsIndex() {
           <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />
         </Link>
         <Link
-          href="/theme"
+          href="/templates"
           className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
         >
           <div className="flex items-center gap-3">
             <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-              <Palette className="size-4 text-foreground" />
+              <Frame className="size-4 text-foreground" />
             </span>
             <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">Theme playground</span>
+              <span className="text-sm font-medium">
+                {TEMPLATES.length} full-page templates
+              </span>
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                preset switcher · token swatches
+                landing pages · preview + install
               </span>
             </div>
           </div>

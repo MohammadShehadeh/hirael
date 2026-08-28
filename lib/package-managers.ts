@@ -14,18 +14,18 @@ export const PACKAGE_MANAGERS: readonly PackageManager[] = [
 const STORAGE_KEY = "hirael:pm";
 const CHANGE_EVENT = "hirael:pm-change";
 
-export const getShadcnAddCommand = (pm: PackageManager, url: string): string => {
-  switch (pm) {
-    case "npm":
-      return `npx shadcn@latest add ${url}`;
-    case "pnpm":
-      return `pnpm dlx shadcn@latest add ${url}`;
-    case "yarn":
-      return `yarn dlx shadcn@latest add ${url}`;
-    case "bun":
-      return `bunx --bun shadcn@latest add ${url}`;
-  }
+const RUNNERS: Record<PackageManager, string> = {
+  npm: "npx",
+  pnpm: "pnpm dlx",
+  yarn: "yarn dlx",
+  bun: "bunx --bun",
 };
+
+export const getShadcnAddCommand = (pm: PackageManager, url: string): string =>
+  `${RUNNERS[pm]} shadcn@latest add ${url}`;
+
+export const getShadcnInitCommand = (pm: PackageManager, flags: string): string =>
+  `${RUNNERS[pm]} shadcn@latest init ${flags}`.trim();
 
 const isPackageManager = (value: string | null): value is PackageManager => {
   return (

@@ -1,8 +1,8 @@
-import "server-only";
+import 'server-only';
 
 // Public repo behind the header star count. Distinct from the changelog's
 // release source (lib/changelog.ts) — update both if the canonical repo moves.
-const REPO = "MohammadShehadeh/hirael";
+const REPO = 'MohammadShehadeh/hirael';
 const REPO_API_URL = `https://api.github.com/repos/${REPO}`;
 
 /**
@@ -13,8 +13,8 @@ const REPO_API_URL = `https://api.github.com/repos/${REPO}`;
  */
 export const getRepoStars = async (): Promise<number | null> => {
   const headers: Record<string, string> = {
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
   };
 
   // Same CI/preview token as the changelog fetch; keeps builds off the
@@ -24,12 +24,10 @@ export const getRepoStars = async (): Promise<number | null> => {
   }
 
   try {
-    const res = await fetch(REPO_API_URL, { headers, cache: "force-cache" });
+    const res = await fetch(REPO_API_URL, { headers, cache: 'force-cache' });
     if (!res.ok) return null;
     const data = (await res.json()) as { stargazers_count?: number };
-    return typeof data.stargazers_count === "number"
-      ? data.stargazers_count
-      : null;
+    return typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
   } catch {
     return null;
   }

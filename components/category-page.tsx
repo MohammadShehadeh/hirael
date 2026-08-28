@@ -1,27 +1,21 @@
-import Link from "next/link";
-import { ArrowRight, ChevronLeft, Code2 } from "lucide-react";
+import Link from 'next/link';
+import { ArrowRight, ChevronLeft, Code2 } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-import type { CategoryMeta } from "@/components/block-categories";
-import { BlockViewer } from "@/components/block-viewer";
-import { Breadcrumbs } from "@/components/breadcrumbs";
-import { InstallBlock } from "@/components/install-block";
-import { TocChips } from "@/components/toc";
-import {
-  BLOCKS_BY_KIND,
-  entryEmbedHref,
-  entryFileLabel,
-  entryHref,
-  type RegistryEntryMeta,
-} from "@/registry/hirael/registry-meta";
+import type { CategoryMeta } from '@/components/block-categories';
+import { BlockViewer } from '@/components/block-viewer';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { InstallBlock } from '@/components/install-block';
+import { TocChips } from '@/components/toc';
+import { BLOCKS_BY_KIND, entryFileLabel, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 interface CategoryPageProps {
   category: CategoryMeta;
 }
 
 const chipStyle =
-  "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0";
+  'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
 
 /**
  * A block category as one long browse: every block live and full width in
@@ -33,19 +27,12 @@ const chipStyle =
  * one click to any block.
  */
 export const CategoryPage = ({ category }: CategoryPageProps) => {
-  const blocks: RegistryEntryMeta[] = category.blockKind
-    ? BLOCKS_BY_KIND[category.blockKind]
-    : [];
+  const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
   const total = blocks.length;
 
   return (
     <div className="container flex w-full flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
-      <Breadcrumbs
-        items={[
-          { label: "Blocks", href: "/blocks" },
-          { label: category.title },
-        ]}
-      />
+      <Breadcrumbs items={[{ label: 'Blocks', href: '/blocks' }, { label: category.title }]} />
 
       <header className="flex flex-col gap-4">
         {category.comingSoon && (
@@ -53,16 +40,12 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
             Roadmap
           </span>
         )}
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-          {category.title}.
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          {category.description}
-        </p>
+        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">{category.title}.</h1>
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{category.description}</p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           {category.comingSoon
-            ? "Planned · not yet shipped"
-            : `${total} block${total === 1 ? "" : "s"} · live at full size · install from here`}
+            ? 'Planned, not shipped yet'
+            : `${total} block${total === 1 ? '' : 's'}, live at full size, install from here`}
         </p>
       </header>
 
@@ -71,9 +54,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
       ) : (
         <>
           <div className="sticky top-14 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md">
-            <TocChips
-              items={blocks.map((b) => ({ id: b.name, label: b.title }))}
-            />
+            <TocChips items={blocks.map((b) => ({ id: b.name, label: b.title }))} />
           </div>
 
           <section className="flex flex-col gap-14 sm:gap-20">
@@ -90,11 +71,8 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                     <div className="flex min-w-0 flex-col gap-2">
                       <p className="flex flex-wrap items-center gap-x-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                         <span className="tabular-nums text-foreground">
-                          {String(index + 1).padStart(2, "0")}
-                          <span className="text-muted-foreground/60">
-                            {" "}
-                            / {String(total).padStart(2, "0")}
-                          </span>
+                          {String(index + 1).padStart(2, '0')}
+                          <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
                         </span>
                         {entry.blockTagline && (
                           <>
@@ -105,10 +83,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                           </>
                         )}
                       </p>
-                      <h2
-                        id={`${entry.name}-title`}
-                        className="text-2xl font-semibold tracking-[-0.015em] sm:text-3xl"
-                      >
+                      <h2 id={`${entry.name}-title`} className="text-2xl font-semibold tracking-[-0.015em] sm:text-3xl">
                         <Link
                           href={href}
                           className="rounded-sm outline-none hover:underline hover:underline-offset-6 focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -116,9 +91,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                           {entry.title}
                         </Link>
                       </h2>
-                      <p className="max-w-2xl text-sm text-muted-foreground sm:text-[15px]">
-                        {entry.description}
-                      </p>
+                      <p className="max-w-2xl text-sm text-muted-foreground sm:text-[15px]">{entry.description}</p>
                     </div>
 
                     <div className="flex shrink-0 items-center gap-2">
@@ -127,18 +100,14 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                         <Code2 />
                         Code
                       </Link>
-                      <Link href={href} className={cn(chipStyle, "group")}>
+                      <Link href={href} className={cn(chipStyle, 'group')}>
                         Details
                         <ArrowRight className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                       </Link>
                     </div>
                   </header>
 
-                  <BlockViewer
-                    title={entry.title}
-                    embedHref={entryEmbedHref(entry)}
-                    minHeight={640}
-                  />
+                  <BlockViewer entry={entry} minHeight={640} />
 
                   <InstallBlock name={entry.name} variant="inline" />
                 </article>
@@ -160,16 +129,13 @@ const RoadmapState = ({ category }: { category: CategoryMeta }) => {
           className="bg-dot-grid pointer-events-none absolute inset-0 opacity-50 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
         />
         <div className="relative flex flex-col gap-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            In design
-          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">In design</span>
           <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
             {category.title} blocks are on the roadmap.
           </h3>
           <p className="max-w-xl text-sm text-muted-foreground">
-            {category.description} We&apos;re drafting variants now, first one
-            ships when it&apos;s good enough that we&apos;d copy it into our own
-            products.
+            {category.description} We&apos;re drafting variants now, first one ships when it&apos;s good enough that
+            we&apos;d copy it into our own products.
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-3">
             <Link href="/blocks" className={chipStyle}>

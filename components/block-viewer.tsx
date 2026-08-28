@@ -1,24 +1,20 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import {
-  ExternalLink,
-  Monitor,
-  RefreshCw,
-  Smartphone,
-  Tablet,
-} from "lucide-react";
+import * as React from 'react';
+import { ExternalLink, Monitor, RefreshCw, Smartphone, Tablet } from 'lucide-react';
 
-import { Button } from "@/registry/hirael/ui/button";
-import { DirectionToggle } from "@/components/direction-toggle";
-import { SegmentedControl } from "@/components/segmented-control";
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { useRegistryBase } from '@/components/active-theme';
+import { DirectionToggle } from '@/components/direction-toggle';
+import { SegmentedControl } from '@/components/segmented-control';
+import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-type Viewport = "mobile" | "tablet" | "desktop";
+type Viewport = 'mobile' | 'tablet' | 'desktop';
 
 const SIZES: Record<Viewport, { width: number; label: string }> = {
-  mobile: { width: 380, label: "Mobile" },
-  tablet: { width: 768, label: "Tablet" },
-  desktop: { width: 0, label: "Desktop" },
+  mobile: { width: 380, label: 'Mobile' },
+  tablet: { width: 768, label: 'Tablet' },
+  desktop: { width: 0, label: 'Desktop' },
 };
 
 const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
@@ -27,7 +23,7 @@ const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
   desktop: Monitor,
 };
 
-const ORDER: Viewport[] = ["mobile", "tablet", "desktop"];
+const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 
 // Auto-height clamps. The floor keeps a refresh from collapsing to a sliver
 // before the first measurement; the ceiling stops full-page templates from
@@ -37,16 +33,16 @@ const MIN_HEIGHT = 320;
 const MAX_HEIGHT = 1600;
 
 export const BlockViewer = ({
-  title,
+  entry,
   minHeight = 800,
-  embedHref,
 }: {
-  title: string;
+  /** The block or template to frame; the path follows the active base. */
+  entry: RegistryEntryMeta;
   minHeight?: number;
-  /** Path of the framed preview, e.g. `/embed/blocks/hero/hero-01`. */
-  embedHref: string;
 }) => {
-  const [viewport, setViewport] = React.useState<Viewport>("desktop");
+  const title = entry.title;
+  const embedHref = entryEmbedHref(entry, useRegistryBase());
+  const [viewport, setViewport] = React.useState<Viewport>('desktop');
   const [key, setKey] = React.useState(0);
   const [rtl, setRtl] = React.useState(false);
   const [height, setHeight] = React.useState<number | null>(null);
@@ -55,26 +51,24 @@ export const BlockViewer = ({
   // `?fit=1` drops the embed shell's viewport min-height (globals.css) so the
   // iframe can size itself to the block's natural height — no dead space under
   // short blocks, no nested scrollbar until the ceiling kicks in.
-  const params = new URLSearchParams({ fit: "1" });
-  if (rtl) params.set("dir", "rtl");
+  const params = new URLSearchParams({ fit: '1' });
+  if (rtl) params.set('dir', 'rtl');
   const src = `${embedHref}?${params.toString()}`;
 
   const sizing =
-    viewport === "desktop"
-      ? { width: "100%", maxWidth: "100%" }
-      : { width: `${SIZES[viewport].width}px`, maxWidth: "100%" };
+    viewport === 'desktop'
+      ? { width: '100%', maxWidth: '100%' }
+      : { width: `${SIZES[viewport].width}px`, maxWidth: '100%' };
 
   // Track late reflow inside the frame (fonts, images, viewport switches).
   function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
     const doc = event.currentTarget.contentDocument;
-    const target = doc?.querySelector<HTMLElement>("[data-embed-shell]");
+    const target = doc?.querySelector<HTMLElement>('[data-embed-shell]');
     if (!target) return;
     const measureHeight = () => {
       const h = target.getBoundingClientRect().height;
       if (h > 0) {
-        setHeight(
-          Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, Math.round(h))),
-        );
+        setHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, Math.round(h))));
       }
     };
     measureHeight();
@@ -87,10 +81,7 @@ export const BlockViewer = ({
   React.useEffect(() => () => contentRoRef.current?.disconnect(), []);
 
   return (
-    <div
-      data-slot="block-viewer"
-      className="overflow-hidden rounded-sm border border-border bg-background"
-    >
+    <div data-slot="block-viewer" className="overflow-hidden rounded-sm border border-border bg-background">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/50 px-3 py-2">
         <SegmentedControl
           role="tab"
@@ -103,17 +94,13 @@ export const BlockViewer = ({
             const Icon = ICONS[v];
             return {
               value: v,
-              ariaLabel: `${SIZES[v].label} viewport${
-                v === "desktop" ? "" : ` (${SIZES[v].width}px)`
-              }`,
+              ariaLabel: `${SIZES[v].label} viewport${v === 'desktop' ? '' : ` (${SIZES[v].width}px)`}`,
               label: (active: boolean) => (
                 <>
                   <Icon className="size-3" />
                   <span className="hidden sm:inline">{SIZES[v].label}</span>
-                  {v !== "desktop" && active && (
-                    <span className="tabular-nums text-muted-foreground">
-                      {SIZES[v].width}
-                    </span>
+                  {v !== 'desktop' && active && (
+                    <span className="tabular-nums text-muted-foreground">{SIZES[v].width}</span>
                   )}
                 </>
               ),
@@ -133,18 +120,8 @@ export const BlockViewer = ({
           >
             <RefreshCw className="size-3.5" />
           </Button>
-          <Button
-            asChild
-            variant="ghost"
-            size="icon-sm"
-            className="size-7 rounded-sm text-muted-foreground"
-          >
-            <a
-              href={src}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open preview in new tab"
-            >
+          <Button asChild variant="ghost" size="icon-sm" className="size-7 rounded-sm text-muted-foreground">
+            <a href={src} target="_blank" rel="noopener noreferrer" aria-label="Open preview in new tab">
               <ExternalLink className="size-3.5" />
             </a>
           </Button>

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 /**
  * Background wrapper for statically exported template embeds. Reading

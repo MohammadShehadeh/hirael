@@ -1,15 +1,11 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { MDXRemote } from 'next-mdx-remote/rsc';
 
-import { mdxComponents } from "@/components/mdx";
-import { PageHeader } from "@/components/page-header";
-import type { Changelog } from "@/lib/changelog";
-import { Badge } from "@/registry/hirael/ui/badge";
+import { mdxComponents } from '@/components/mdx';
+import { PageHeader } from '@/components/page-header';
+import type { Changelog } from '@/lib/changelog';
+import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
-export const ChangelogView = ({
-  entries,
-  lastUpdated,
-  latestSlug,
-}: Changelog) => {
+export const ChangelogView = ({ entries, lastUpdated, latestSlug }: Changelog) => {
   return (
     <article className="relative container w-full py-16 sm:py-20">
       <div className="relative">
@@ -31,9 +27,7 @@ export const ChangelogView = ({
       </div>
 
       {entries.length === 0 ? (
-        <p className="mt-16 text-sm text-muted-foreground">
-          No releases recorded yet.
-        </p>
+        <p className="mt-16 text-sm text-muted-foreground">No releases recorded yet.</p>
       ) : (
         <div className="mt-14 space-y-5">
           {entries.map((entry) => (
@@ -47,27 +41,19 @@ export const ChangelogView = ({
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
                 {entry.slug === latestSlug ? (
-                  <Badge
-                    variant="outline"
-                    className="gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em]"
-                  >
+                  <Badge variant="outline" className="gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em]">
                     <span className="state-dot" />
                     Latest
                   </Badge>
                 ) : null}
               </div>
 
-              <h2
-                id={`release-${entry.slug}`}
-                className="text-display mt-2 text-2xl sm:text-3xl"
-              >
+              <h2 id={`release-${entry.slug}`} className="text-display mt-2 text-2xl sm:text-3xl">
                 {entry.version ?? entry.title}
               </h2>
 
               {entry.version && entry.title ? (
-                <p className="mt-2 text-base text-muted-foreground">
-                  {entry.title}
-                </p>
+                <p className="mt-2 text-base text-muted-foreground">{entry.title}</p>
               ) : null}
 
               <div className="mt-6">

@@ -1,128 +1,154 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import {
-  ThemeProvider as NextThemesProvider,
-  useTheme as useNextTheme,
-} from "next-themes";
+import * as React from 'react';
+import { usePathname } from 'next/navigation';
+import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from 'next-themes';
 
 import {
+  CONFIG_STORAGE_KEY,
+  CSS_STORAGE_KEY,
+  DEFAULT_CONFIG,
   MODE_STORAGE_KEY,
-  STORAGE_KEY,
-  type Theme,
+  STYLE_ELEMENT_ID,
+  buildCustomizerCss,
+  isDefaultConfig,
+  isEmbedPath,
+  normalizeConfig,
+  resolveTokens,
+  type CustomizerConfig,
+  type ResolvedTokens,
   type ThemeMode,
-} from "@/lib/theme";
+} from '@/lib/customizer';
+import type { RegistryBase } from '@/registry/hirael/registry-meta';
 
 interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
-  theme: Theme;
-  mergeTheme: (partial: Partial<Theme>) => void;
-  reset: () => void;}
+  config: CustomizerConfig;
+  /** Hydration-safe base: the default until mounted, then `config.base`. */
+  base: RegistryBase;
+  tokens: ResolvedTokens;
+  isDefault: boolean;
+  setConfig: (patch: Partial<CustomizerConfig>) => void;
+  reset: () => void;
+}
 
-const EMPTY_THEME: Theme = { light: {}, dark: {} };
-
-// Read the persisted token overrides synchronously so the editor state, the
-// applied CSS variables, and the pre-paint script agree on the very first
-// render. Without this the provider would mount empty and immediately write
-// EMPTY_THEME back to storage, wiping a saved theme — and the framed `/embed/*`
-// block previews (which re-run the same pre-paint script from the root layout)
-// would load against the default palette instead of the active theme.
-const readPersistedTheme = (): Theme => {
-  if (typeof window === "undefined") return EMPTY_THEME;
+// Read the persisted config synchronously so the first render, the injected
+// stylesheet and the pre-paint script agree. Mounting empty and writing the
+// defaults back would wipe a saved config, and the framed `/embed/*` previews
+// (which re-run the same pre-paint script) would open against the default
+// palette instead of the active one.
+const readPersistedConfig = (): CustomizerConfig => {
+  if (typeof window === 'undefined') return DEFAULT_CONFIG;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return EMPTY_THEME;
-    const parsed = JSON.parse(raw) as Partial<Theme>;
-    return { light: parsed.light ?? {}, dark: parsed.dark ?? {} };
+    const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
+    return normalizeConfig(raw ? JSON.parse(raw) : null);
   } catch {
-    return EMPTY_THEME;
+    return DEFAULT_CONFIG;
   }
 };
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
-// Owns the live token-editor overrides and bridges next-themes' light/dark
-// mode into the context shape the showcase already consumes. next-themes
-// handles the `.light` / `.dark` class on <html>, persistence, and the
-// pre-paint mode script; this layer only manages the custom CSS variables.
+// Owns the Customizer config and bridges next-themes' light/dark mode into the
+// context shape the showcase consumes. next-themes handles the `.light` /
+// `.dark` class on <html>, its persistence and pre-paint script; this layer
+// resolves the config to tokens and keeps one <style> element in sync.
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
   // Falls back to dark to match the SSR default before next-themes mounts.
-  const mode: ThemeMode =
-    (resolvedTheme ?? activeMode) === "light" ? "light" : "dark";
+  const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
 
-  const [theme, setThemeState] = React.useState<Theme>(readPersistedTheme);
+  const pathname = usePathname();
+  const isEmbed = isEmbedPath(pathname ?? '');
+
+  const [config, setConfigState] = React.useState<CustomizerConfig>(readPersistedConfig);
+
+  // Markup that depends on the config (install URLs, source tabs, framed
+  // preview paths) must hydrate against the static HTML, which was rendered
+  // with the defaults; the persisted base takes over after mount. Tokens are
+  // unaffected: they reach the page as a stylesheet, never as markup.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
 
   // Keep already-mounted documents in sync when another same-origin document
-  // changes the theme. The theme sheet lives in the global nav, so a user can
-  // re-skin while a block's `/embed/*` preview iframe is already on screen;
-  // next-themes mirrors the light/dark mode across frames itself, this carries
-  // the custom token overrides the same way. `storage` only fires in *other*
-  // documents, so the writer never hears its own change.
+  // changes the config: the sheet lives in the site header, so a visitor can
+  // re-skin while a block's `/embed/*` iframe is on screen. `storage` only
+  // fires in *other* documents, so the writer never hears its own change.
   React.useEffect(() => {
     function onStorage(e: StorageEvent) {
-      if (e.key !== STORAGE_KEY) return;
-      const next = readPersistedTheme();
-      setThemeState((prev) =>
-        JSON.stringify(next) === JSON.stringify(prev) ? prev : next,
-      );
+      if (e.key !== CONFIG_STORAGE_KEY) return;
+      const next = readPersistedConfig();
+      setConfigState((prev) => (JSON.stringify(next) === JSON.stringify(prev) ? prev : next));
     }
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
-  // Apply tokens for the active mode. Clearing a token requires removeProperty.
-  // This stays synchronous on every change so the live preview tracks the hue
-  // slider in real time. Setting a handful of custom properties on <html> is
-  // cheap; the page repaint the browser does off the back of it is rAF-batched.
-  const appliedKeysRef = React.useRef<Set<string>>(new Set());
-  React.useEffect(() => {
-    const html = document.documentElement;
-    const active = mode === "light" ? theme.light : theme.dark;
-    const next = new Set<string>();
-    for (const [k, v] of Object.entries(active)) {
-      html.style.setProperty(`--${k}`, v);
-      next.add(k);
-    }
-    // Remove anything previously applied that's now gone.
-    for (const k of appliedKeysRef.current) {
-      if (!next.has(k)) html.style.removeProperty(`--${k}`);
-    }
-    appliedKeysRef.current = next;
-  }, [mode, theme]);
+  const tokens = resolveTokens(config);
+  const mainCss = buildCustomizerCss(tokens, config.previewOnly);
+  const embedCss = buildCustomizerCss(tokens, false);
 
-  // Persistence is debounced so dragging the hue slider doesn't run a
-  // JSON.stringify + synchronous localStorage write on every pointer-move tick.
-  // It also drives the cross-frame `storage` sync, which doesn't need to be
-  // frame-accurate. Mode isn't a dependency — the full theme is persisted.
+  // Swap the stylesheet synchronously on every change so a pick in the sheet
+  // repaints the page in the same frame. Reuses the element the pre-paint
+  // script created when there is one.
+  React.useLayoutEffect(() => {
+    const css = isEmbed ? embedCss : mainCss;
+    let el = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
+    if (!css) {
+      el?.remove();
+      return;
+    }
+    if (!el) {
+      el = document.createElement('style');
+      el.id = STYLE_ELEMENT_ID;
+      document.head.appendChild(el);
+    }
+    if (el.textContent !== css) el.textContent = css;
+  }, [isEmbed, mainCss, embedCss]);
+
+  // Persist the config for the sheet and both stylesheet flavours for the
+  // pre-paint script, debounced so rapid picks don't thrash localStorage.
   React.useEffect(() => {
     const id = window.setTimeout(() => {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(theme));
+        localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+        localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
         // ignore
       }
     }, 200);
     return () => window.clearTimeout(id);
-  }, [theme]);
+  }, [config, mainCss, embedCss]);
 
   const setMode = (m: ThemeMode) => setTheme(m);
 
-  const mergeTheme = (partial: Partial<Theme>) => {
-    setThemeState((prev) => ({
-      light: { ...prev.light, ...(partial.light ?? {}) },
-      dark: { ...prev.dark, ...(partial.dark ?? {}) },
-    }));
+  // Chart color follows the theme unless picked on its own, and a theme that
+  // belongs to another base color snaps back through normalizeConfig.
+  const setConfig = (patch: Partial<CustomizerConfig>) => {
+    setConfigState((prev) => {
+      const next: Partial<CustomizerConfig> = { ...prev, ...patch };
+      if ('theme' in patch && !('chartColor' in patch)) {
+        next.chartColor = patch.theme;
+      }
+      return normalizeConfig(next);
+    });
   };
 
-  const reset = () => setThemeState(EMPTY_THEME);
+  const reset = () => setConfigState(DEFAULT_CONFIG);
 
-  const value: ThemeContextValue = { mode, setMode, theme, mergeTheme, reset };
+  const value: ThemeContextValue = {
+    mode,
+    setMode,
+    config,
+    base: mounted ? config.base : DEFAULT_CONFIG.base,
+    tokens,
+    isDefault: isDefaultConfig(config),
+    setConfig,
+    reset,
+  };
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -134,7 +160,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     <NextThemesProvider
       attribute="class"
       defaultTheme="dark"
-      themes={["light", "dark"]}
+      themes={['light', 'dark']}
       enableSystem={false}
       storageKey={MODE_STORAGE_KEY}
       disableTransitionOnChange
@@ -146,6 +172,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useTheme = (): ThemeContextValue => {
   const ctx = React.useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>");
+  if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
   return ctx;
 };
+
+/** The registry tree the showcase previews, shows and installs from. */
+export const useRegistryBase = (): RegistryBase => useTheme().base;

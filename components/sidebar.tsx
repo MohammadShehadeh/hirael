@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Boxes, Frame, History, LayoutTemplate, Sparkles } from "lucide-react";
+import * as React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Boxes, Frame, History, LayoutTemplate } from 'lucide-react';
 
-import { CATEGORIES_BY_GROUP } from "@/components/block-categories";
-import { LogoTile } from "@/components/logo";
-import { SITE } from "@/lib/site";
+import { CATEGORIES_BY_GROUP } from '@/components/block-categories';
+import { LogoTile } from '@/components/logo';
+import { SITE } from '@/lib/site';
 import {
   BLOCKS_BY_KIND,
   CATEGORY_LABELS,
@@ -16,7 +16,7 @@ import {
   REGISTRY_BY_CATEGORY,
   TEMPLATES,
   entryHref,
-} from "@/registry/hirael/registry-meta";
+} from '@/registry/hirael/registry-meta';
 import {
   Sidebar,
   SidebarContent,
@@ -28,20 +28,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/registry/hirael/ui/sidebar";
+} from '@/registry/hirael/bases/radix/ui/sidebar';
 
-type Section = "components" | "blocks" | "templates" | "changelog";
+type Section = 'components' | 'blocks' | 'templates' | 'changelog';
 
 const sectionFor = (pathname: string): Section => {
-  if (pathname === "/blocks" || pathname.startsWith("/blocks/"))
-    return "blocks";
-  if (pathname === "/templates" || pathname.startsWith("/templates/"))
-    return "templates";
-  if (pathname === "/changelog") return "changelog";
-  return "components";
+  if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
+  if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
+  if (pathname === '/changelog') return 'changelog';
+  return 'components';
 };
 
-export interface SidebarRelease { slug: string; label: string; date: string}
+export interface SidebarRelease {
+  slug: string;
+  label: string;
+  date: string;
+}
 
 export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) => {
   const pathname = usePathname();
@@ -51,8 +53,7 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
   const blockCount = REGISTRY_BY_CATEGORY.blocks.length;
   const templateCount = TEMPLATES.length;
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const isExact = (href: string) => pathname === href;
 
   React.useEffect(() => {
@@ -75,9 +76,9 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
           <span
             className="truncate whitespace-nowrap text-xl leading-none text-foreground"
             style={{
-              fontFamily: "var(--font-cormorant), ui-serif, serif",
+              fontFamily: 'var(--font-cormorant), ui-serif, serif',
               fontWeight: 500,
-              letterSpacing: "0.22em",
+              letterSpacing: '0.22em',
             }}
           >
             HIRAEL
@@ -92,7 +93,7 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/components")}>
+                <SidebarMenuButton asChild isActive={isExact('/components')}>
                   <Link href="/components">
                     <Boxes />
                     <span>Components</span>
@@ -101,7 +102,7 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/blocks")}>
+                <SidebarMenuButton asChild isActive={isExact('/blocks')}>
                   <Link href="/blocks">
                     <LayoutTemplate />
                     <span>Blocks</span>
@@ -110,7 +111,7 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/templates")}>
+                <SidebarMenuButton asChild isActive={isExact('/templates')}>
                   <Link href="/templates">
                     <Frame />
                     <span>Templates</span>
@@ -119,15 +120,7 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/theme")}>
-                  <Link href="/theme">
-                    <Sparkles />
-                    <span>Theme playground</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact("/changelog")}>
+                <SidebarMenuButton asChild isActive={isExact('/changelog')}>
                   <Link href="/changelog">
                     <History />
                     <span>Changelog</span>
@@ -138,35 +131,31 @@ export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) =>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {section === "components" && <ComponentGroups isActive={isActive} />}
-        {section === "blocks" && <BlockGroups isActive={isActive} />}
-        {section === "templates" && <TemplateGroup isActive={isActive} />}
-        {section === "changelog" && <ReleaseGroup releases={releases} />}
+        {section === 'components' && <ComponentGroups isActive={isActive} />}
+        {section === 'blocks' && <BlockGroups isActive={isActive} />}
+        {section === 'templates' && <TemplateGroup isActive={isActive} />}
+        {section === 'changelog' && <ReleaseGroup releases={releases} />}
       </SidebarContent>
     </Sidebar>
   );
 };
 
 const revealActiveItem = (container: HTMLElement) => {
-  const active = container.querySelector<HTMLElement>(
-    '[data-sidebar="menu-button"][data-active="true"]',
-  );
+  const active = container.querySelector<HTMLElement>('[data-sidebar="menu-button"][data-active="true"]');
   if (!active) return;
   const box = container.getBoundingClientRect();
   const item = active.getBoundingClientRect();
   const isHidden = item.top < box.top || item.bottom > box.bottom;
-  if (isHidden) active.scrollIntoView({ block: "center" });
+  if (isHidden) active.scrollIntoView({ block: 'center' });
 };
 
 const Count = ({ n }: { n: number }) => {
-  return (
-    <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
-      {n}
-    </span>
-  );
+  return <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">{n}</span>;
 };
 
-interface GroupProps { isActive: (href: string) => boolean}
+interface GroupProps {
+  isActive: (href: string) => boolean;
+}
 
 const ComponentGroups = ({ isActive }: GroupProps) => {
   return (
@@ -214,9 +203,7 @@ const BlockGroups = ({ isActive }: GroupProps) => {
             <SidebarMenu>
               {categories.map((cat) => {
                 const href = `/blocks/${cat.slug}`;
-                const blocks = cat.blockKind
-                  ? BLOCKS_BY_KIND[cat.blockKind]
-                  : [];
+                const blocks = cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind] : [];
                 return (
                   <SidebarMenuItem key={cat.slug}>
                     <SidebarMenuButton asChild isActive={isActive(href)}>
@@ -274,9 +261,7 @@ const ReleaseGroup = ({ releases }: { releases: SidebarRelease[] }) => {
               <SidebarMenuButton asChild>
                 <a href={`#release-${release.slug}`}>
                   <span>{release.label}</span>
-                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">
-                    {release.date}
-                  </span>
+                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">{release.date}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>

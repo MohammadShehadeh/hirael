@@ -1,12 +1,9 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
-import { CategoryPage } from "@/components/category-page";
-import {
-  CATEGORY_BY_SLUG,
-  CATEGORY_REGISTRY,
-} from "@/components/block-categories";
-import { SITE } from "@/lib/site";
+import { CategoryPage } from '@/components/category-page';
+import { CATEGORY_BY_SLUG, CATEGORY_REGISTRY } from '@/components/block-categories';
+import { SITE } from '@/lib/site';
 
 export const dynamicParams = false;
 
@@ -14,11 +11,7 @@ export function generateStaticParams() {
   return CATEGORY_REGISTRY.map((c) => ({ category: c.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
   const { category } = await params;
   const meta = CATEGORY_BY_SLUG[category];
   if (!meta) return {};
@@ -31,14 +24,14 @@ export async function generateMetadata({
       canonical: `/blocks/${meta.slug}`,
     },
     openGraph: {
-      type: "website",
+      type: 'website',
       url,
       siteName: SITE.name,
       title: `${title} - ${SITE.name}`,
       description: meta.description,
       images: [
         {
-          url: "/opengraph-image",
+          url: '/opengraph-image',
           width: 1200,
           height: 630,
           alt: `${title} - ${SITE.name}`,
@@ -46,19 +39,15 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: `${title} - ${SITE.name}`,
       description: meta.description,
-      images: ["/opengraph-image"],
+      images: ['/opengraph-image'],
     },
   };
 }
 
-export default async function BlockCategoryRoute({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
+export default async function BlockCategoryRoute({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
   const meta = CATEGORY_BY_SLUG[category];
   if (!meta) notFound();

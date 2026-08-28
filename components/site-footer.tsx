@@ -1,74 +1,61 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { SITE } from "@/lib/site";
-import { Logo } from "@/components/logo";
+import { cn } from '@/lib/utils';
+import { SITE } from '@/lib/site';
+import { Logo } from '@/components/logo';
 
 const FOOTER_LINKS: {
   label: string;
   links: { href: string; label: string; external?: boolean }[];
 }[] = [
   {
-    label: "Library",
+    label: 'Library',
     links: [
-      { href: "/components", label: "Components" },
-      { href: "/blocks", label: "Blocks" },
-      { href: "/templates", label: "Templates" },
-      { href: "/theme", label: "Theme playground" },
+      { href: '/components', label: 'Components' },
+      { href: '/blocks', label: 'Blocks' },
+      { href: '/templates', label: 'Templates' },
     ],
   },
   {
-    label: "Resources",
+    label: 'Resources',
     links: [
-      { href: "/changelog", label: "Changelog" },
+      { href: '/changelog', label: 'Changelog' },
       {
-        href: "https://ui.shadcn.com",
-        label: "shadcn/ui",
+        href: 'https://ui.shadcn.com',
+        label: 'shadcn/ui',
         external: true,
       },
     ],
   },
   {
-    label: "Author",
+    label: 'Author',
     links: [
-      { href: SITE.authorUrl, label: "Portfolio", external: true },
-      { href: SITE.githubUrl, label: "GitHub", external: true },
+      { href: SITE.authorUrl, label: 'Portfolio', external: true },
+      { href: SITE.githubUrl, label: 'GitHub', external: true },
     ],
   },
 ];
 
 const COMPACT_LINKS = [
-  { href: "/components", label: "Components" },
-  { href: "/blocks", label: "Blocks" },
-  { href: "/templates", label: "Templates" },
-  { href: "/changelog", label: "Changelog" },
+  { href: '/components', label: 'Components' },
+  { href: '/blocks', label: 'Blocks' },
+  { href: '/templates', label: 'Templates' },
+  { href: '/changelog', label: 'Changelog' },
 ] as const;
 
 /** One-row footer for pages inside the sidebar shell, where the marketing footer is noise. */
 export const SiteFooterCompact = ({ className }: { className?: string }) => {
   const year = new Date().getFullYear();
   return (
-    <footer
-      className={cn(
-        "mt-auto border-t border-border px-4 py-5 sm:px-6 lg:px-8",
-        className,
-      )}
-    >
+    <footer className={cn('mt-auto border-t border-border px-4 py-5 sm:px-6 lg:px-8', className)}>
       <div className="flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {year} {SITE.author}. Built on shadcn/ui.
         </p>
-        <nav
-          aria-label="Footer"
-          className="flex flex-wrap items-center gap-x-5 gap-y-2"
-        >
+        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {COMPACT_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-foreground"
-            >
+            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
               {link.label}
             </Link>
           ))}
@@ -90,7 +77,7 @@ export const SiteFooter = ({ className }: { className?: string }) => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={cn("mt-auto pb-4 sm:pb-6", className)}>
+    <footer className={cn('mt-auto pb-4 sm:pb-6', className)}>
       <div className="container w-full">
         <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-elevated sm:rounded-[2rem]">
           {/* Texture: a soft halo and a masked dot grid, contained in the panel. */}
@@ -111,12 +98,8 @@ export const SiteFooter = ({ className }: { className?: string }) => {
                 >
                   <Logo className="h-10" />
                 </Link>
-                <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">
-                  {SITE.description}
-                </p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {SITE.longDescription}
-                </p>
+                <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">{SITE.description}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{SITE.longDescription}</p>
               </div>
 
               <Link
@@ -178,9 +161,7 @@ export const SiteFooter = ({ className }: { className?: string }) => {
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 © {year} {SITE.author} - built on shadcn
               </p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                zero runtime deps
-              </p>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">zero runtime deps</p>
             </div>
           </div>
         </div>

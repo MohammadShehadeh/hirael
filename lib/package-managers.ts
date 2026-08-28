@@ -1,43 +1,33 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
+export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
 
-export const PACKAGE_MANAGERS: readonly PackageManager[] = [
-  "npm",
-  "pnpm",
-  "yarn",
-  "bun",
-] as const;
+export const PACKAGE_MANAGERS: readonly PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun'] as const;
 
-const STORAGE_KEY = "hirael:pm";
-const CHANGE_EVENT = "hirael:pm-change";
+const STORAGE_KEY = 'hirael:pm';
+const CHANGE_EVENT = 'hirael:pm-change';
 
-export const getShadcnAddCommand = (pm: PackageManager, url: string): string => {
-  switch (pm) {
-    case "npm":
-      return `npx shadcn@latest add ${url}`;
-    case "pnpm":
-      return `pnpm dlx shadcn@latest add ${url}`;
-    case "yarn":
-      return `yarn dlx shadcn@latest add ${url}`;
-    case "bun":
-      return `bunx --bun shadcn@latest add ${url}`;
-  }
+const RUNNERS: Record<PackageManager, string> = {
+  npm: 'npx',
+  pnpm: 'pnpm dlx',
+  yarn: 'yarn dlx',
+  bun: 'bunx --bun',
 };
+
+export const getShadcnAddCommand = (pm: PackageManager, url: string): string =>
+  `${RUNNERS[pm]} shadcn@latest add ${url}`;
+
+export const getShadcnInitCommand = (pm: PackageManager, flags: string): string =>
+  `${RUNNERS[pm]} shadcn@latest init ${flags}`.trim();
 
 const isPackageManager = (value: string | null): value is PackageManager => {
-  return (
-    value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value)
-  );
+  return value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value);
 };
 
-export const usePackageManager = (): [
-  PackageManager,
-  (pm: PackageManager) => void,
-] => {
-  const [pm, setPmState] = React.useState<PackageManager>("npm");
+export const usePackageManager = (): [PackageManager, (pm: PackageManager) => void] => {
+  const [pm, setPmState] = React.useState<PackageManager>('npm');
 
   React.useEffect(() => {
     try {
@@ -56,10 +46,10 @@ export const usePackageManager = (): [
       const detail = (e as CustomEvent<PackageManager>).detail;
       if (isPackageManager(detail)) setPmState(detail);
     };
-    window.addEventListener("storage", onStorage);
+    window.addEventListener('storage', onStorage);
     window.addEventListener(CHANGE_EVENT, onSameTab);
     return () => {
-      window.removeEventListener("storage", onStorage);
+      window.removeEventListener('storage', onStorage);
       window.removeEventListener(CHANGE_EVENT, onSameTab);
     };
   }, []);
@@ -68,9 +58,7 @@ export const usePackageManager = (): [
     setPmState(next);
     try {
       window.localStorage.setItem(STORAGE_KEY, next);
-      window.dispatchEvent(
-        new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }),
-      );
+      window.dispatchEvent(new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }));
     } catch {
       // ignore
     }

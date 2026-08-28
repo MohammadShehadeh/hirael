@@ -1,36 +1,18 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { RegistryDemo } from "@/registry/hirael/registry-demos";
-import { REGISTRY, REGISTRY_BY_NAME } from "@/registry/hirael/registry-meta";
-import { embedDirScript } from "@/lib/embed";
+import { DEFAULT_BASE } from '@/registry/hirael/registry-meta';
 
-import { TemplateEmbedShell } from "./embed-shell";
+import { TemplateEmbed, templateEmbedParams } from '../../embed-routes';
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return REGISTRY.filter((entry) => entry.category === "templates").map(
-    (entry) => ({ template: entry.name }),
-  );
+  return templateEmbedParams();
 }
 
 export const metadata: Metadata = { robots: { index: false } };
 
-export default async function TemplateEmbedRoute({
-  params,
-}: {
-  params: Promise<{ template: string }>;
-}) {
+export default async function TemplateEmbedRoute({ params }: { params: Promise<{ template: string }> }) {
   const { template } = await params;
-  const entry = REGISTRY_BY_NAME[template];
-  if (!entry || entry.category !== "templates") notFound();
-  return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
-      <TemplateEmbedShell>
-        <RegistryDemo name={entry.name} />
-      </TemplateEmbedShell>
-    </>
-  );
+  return <TemplateEmbed base={DEFAULT_BASE} template={template} />;
 }

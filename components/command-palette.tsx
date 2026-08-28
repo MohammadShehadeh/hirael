@@ -1,16 +1,11 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Boxes, Frame, History, LayoutTemplate } from "lucide-react";
-import { useCommandState } from "cmdk";
+import * as React from 'react';
+import { useRouter } from 'next/navigation';
+import { Boxes, Frame, History, LayoutTemplate } from 'lucide-react';
+import { useCommandState } from 'cmdk';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/registry/hirael/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/registry/hirael/bases/radix/ui/dialog';
 import {
   Command,
   CommandEmpty,
@@ -18,7 +13,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/registry/hirael/ui/command";
+} from '@/registry/hirael/bases/radix/ui/command';
 import {
   BLOCK_KIND_LABELS,
   CATEGORY_LABELS,
@@ -27,25 +22,15 @@ import {
   TEMPLATES,
   entryHref,
   type ComponentCategory,
-} from "@/registry/hirael/registry-meta";
-import {
-  pushRecent,
-  readRecents,
-  type RecentItem,
-} from "@/lib/recents";
+} from '@/registry/hirael/registry-meta';
+import { pushRecent, readRecents, type RecentItem } from '@/lib/recents';
 
 /**
  * The heavy half of the ⌘K palette — the project's own `dialog` + `command`
  * (cmdk) primitives. Loaded lazily (see command-menu.tsx) so cmdk only ships
  * to visitors who actually open search.
  */
-export const CommandPalette = ({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) => {
+export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
   const router = useRouter();
 
   const go = (item: RecentItem) => {
@@ -55,7 +40,7 @@ export const CommandPalette = ({
   };
 
   const components = COMPONENTS;
-  const blocks = REGISTRY.filter((r) => r.category === "blocks");
+  const blocks = REGISTRY.filter((r) => r.category === 'blocks');
   const templates = TEMPLATES;
 
   return (
@@ -65,9 +50,7 @@ export const CommandPalette = ({
         className="top-[14vh] w-[calc(100%-2rem)] max-w-lg translate-y-0 gap-0 overflow-hidden rounded-md border-border bg-popover p-0 shadow-2xl"
       >
         <DialogTitle className="sr-only">Search</DialogTitle>
-        <DialogDescription className="sr-only">
-          Search across all components and blocks.
-        </DialogDescription>
+        <DialogDescription className="sr-only">Search across all components and blocks.</DialogDescription>
         <Command loop>
           <CommandInput placeholder="Search by name or what it does…" />
           <CommandList>
@@ -78,16 +61,13 @@ export const CommandPalette = ({
                 <CommandItem
                   key={c.name}
                   value={`${c.title} ${c.name}`}
-                  keywords={[
-                    c.description,
-                    CATEGORY_LABELS[c.category as ComponentCategory],
-                  ]}
+                  keywords={[c.description, CATEGORY_LABELS[c.category as ComponentCategory]]}
                   onSelect={() =>
                     go({
                       name: c.name,
                       title: c.title,
                       href: entryHref(c),
-                      kind: "component",
+                      kind: 'component',
                     })
                   }
                 >
@@ -104,20 +84,20 @@ export const CommandPalette = ({
                 <CommandItem
                   key={b.name}
                   value={`${b.title} ${b.name}`}
-                  keywords={[b.description, b.blockKind ?? ""]}
+                  keywords={[b.description, b.blockKind ?? '']}
                   onSelect={() =>
                     go({
                       name: b.name,
                       title: b.title,
                       href: entryHref(b),
-                      kind: "block",
+                      kind: 'block',
                     })
                   }
                 >
                   <LayoutTemplate className="text-muted-foreground" />
                   <span>{b.title}</span>
                   <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    {b.blockKind ? BLOCK_KIND_LABELS[b.blockKind] : "Block"}
+                    {b.blockKind ? BLOCK_KIND_LABELS[b.blockKind] : 'Block'}
                   </span>
                 </CommandItem>
               ))}
@@ -133,7 +113,7 @@ export const CommandPalette = ({
                       name: t.name,
                       title: t.title,
                       href: entryHref(t),
-                      kind: "template",
+                      kind: 'template',
                     })
                   }
                 >
@@ -164,22 +144,12 @@ export const CommandPalette = ({
 };
 
 const Kbd = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">
-      {children}
-    </kbd>
-  );
+  return <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">{children}</kbd>;
 };
 
 /** Previously opened items, shown only while the query is empty. Re-reads on
  * every open so navigation elsewhere in the tab is reflected immediately. */
-const RecentGroup = ({
-  open,
-  onSelect,
-}: {
-  open: boolean;
-  onSelect: (item: RecentItem) => void;
-}) => {
+const RecentGroup = ({ open, onSelect }: { open: boolean; onSelect: (item: RecentItem) => void }) => {
   const search = useCommandState((state) => state.search);
   const [recents, setRecents] = React.useState<RecentItem[]>([]);
 
@@ -195,17 +165,13 @@ const RecentGroup = ({
         <CommandItem
           key={item.href}
           value={`${item.title} ${item.name}`}
-          keywords={["recent"]}
+          keywords={['recent']}
           onSelect={() => onSelect(item)}
         >
           <History className="text-muted-foreground" />
           <span>{item.title}</span>
           <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-            {item.kind === "component"
-              ? "Component"
-              : item.kind === "block"
-                ? "Block"
-                : "Template"}
+            {item.kind === 'component' ? 'Component' : item.kind === 'block' ? 'Block' : 'Template'}
           </span>
         </CommandItem>
       ))}

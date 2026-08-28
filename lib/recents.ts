@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-export type RecentKind = "component" | "block" | "template";
+export type RecentKind = 'component' | 'block' | 'template';
 
 export interface RecentItem {
   name: string;
   title: string;
   href: string;
-  kind: RecentKind;}
+  kind: RecentKind;
+}
 
-const STORAGE_KEY = "hirael:recent-items";
+const STORAGE_KEY = 'hirael:recent-items';
 const MAX_RECENTS = 5;
 
 export const readRecents = (): RecentItem[] => {
@@ -20,9 +21,9 @@ export const readRecents = (): RecentItem[] => {
     return parsed.filter(
       (item): item is RecentItem =>
         !!item &&
-        typeof item === "object" &&
-        typeof (item as RecentItem).href === "string" &&
-        typeof (item as RecentItem).title === "string",
+        typeof item === 'object' &&
+        typeof (item as RecentItem).href === 'string' &&
+        typeof (item as RecentItem).title === 'string',
     );
   } catch {
     return [];

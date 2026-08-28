@@ -1,8 +1,8 @@
-import "server-only";
+import 'server-only';
 
-import fs from "node:fs";
-import path from "node:path";
-import matter from "gray-matter";
+import fs from 'node:fs';
+import path from 'node:path';
+import matter from 'gray-matter';
 
 export interface ChangelogEntry {
   /** File basename without extension, e.g. `2026-08-initial-release`. */
@@ -14,20 +14,22 @@ export interface ChangelogEntry {
   displayDate: string;
   description: string | null;
   /** Raw MDX body, compiled by the view. */
-  body: string;}
+  body: string;
+}
 
 export interface Changelog {
   entries: ChangelogEntry[];
   lastUpdated: string | null;
-  latestSlug: string | null;}
+  latestSlug: string | null;
+}
 
-const CHANGELOG_DIR = path.join(process.cwd(), "content", "changelog");
+const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
 
-const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-  timeZone: "UTC",
+const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
 });
 
 /**
@@ -39,22 +41,22 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
 export const getChangelog = async (): Promise<Changelog> => {
   let files: string[] = [];
   try {
-    files = fs.readdirSync(CHANGELOG_DIR).filter((f) => f.endsWith(".mdx"));
+    files = fs.readdirSync(CHANGELOG_DIR).filter((f) => f.endsWith('.mdx'));
   } catch {
     return { entries: [], lastUpdated: null, latestSlug: null };
   }
 
   const entries: ChangelogEntry[] = files
     .flatMap((file) => {
-      const raw = fs.readFileSync(path.join(CHANGELOG_DIR, file), "utf8");
+      const raw = fs.readFileSync(path.join(CHANGELOG_DIR, file), 'utf8');
       const { data, content } = matter(raw);
       const parsed = data.date ? new Date(data.date) : null;
       if (!parsed || Number.isNaN(parsed.getTime())) return [];
       const isoDate = parsed.toISOString();
       return [
         {
-          slug: file.replace(/\.mdx$/, ""),
-          title: String(data.title ?? file.replace(/\.mdx$/, "")),
+          slug: file.replace(/\.mdx$/, ''),
+          title: String(data.title ?? file.replace(/\.mdx$/, '')),
           version: data.version != null ? String(data.version) : null,
           isoDate,
           displayDate: DATE_FORMATTER.format(parsed),

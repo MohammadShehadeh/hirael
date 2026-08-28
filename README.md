@@ -43,11 +43,7 @@ is driven entirely by design tokens so light and dark both work.
 ## Usage
 
 ```tsx
-import {
-  MultiSelect,
-  MultiSelectContent,
-  MultiSelectTrigger,
-} from "@/components/ui/multi-select";
+import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/ui/multi-select';
 
 <MultiSelect value={value} onValueChange={setValue} options={options}>
   <MultiSelectTrigger placeholder="Pick…" />
@@ -62,7 +58,7 @@ item and serves the generated `/r/*.json` registry files. Requires Node 22
 (see `.nvmrc`) and pnpm 10.
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.com.git
+git clone https://github.com/MohammadShehadeh/hirael.git
 cd hirael.com
 pnpm install
 pnpm dev            # showcase at http://localhost:3000
@@ -75,7 +71,10 @@ pnpm dev            # showcase at http://localhost:3000
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit`                               |
 
 Every item is declared in `registry/hirael/registry-meta.ts`, the single source
-of truth; `registry.json` is generated from it — never hand-edit it.
+of truth, and ships from two parallel trees like shadcn/ui's `registry/bases`:
+Radix UI (`/r/<name>.json`) and Base UI (`/r/base/<name>.json`). The
+`registry*.json` inputs and `/r/**/*.json` payloads are generated from it on
+install and build, and are never committed or hand-edited.
 
 ## Contributing
 

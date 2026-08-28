@@ -32,7 +32,7 @@ By participating you agree to abide by the project's
 ### First-time setup
 
 ```bash
-git clone https://github.com/MohammadShehadeh/hirael.com.git
+git clone https://github.com/MohammadShehadeh/hirael.git
 cd hirael.com
 pnpm install
 pnpm dev          # showcase site at http://localhost:3000
@@ -58,17 +58,20 @@ host.
 
 ```
 registry/hirael/
-  ui/<primitive>.tsx         # shadcn primitives only
-  components/<name>.tsx      # hirael's added components (multi-file kits as components/<name>/)
-  blocks/<block>/            # marketing blocks
-  templates/<template>/      # full-page templates
-  registry-meta.ts           # single source of truth for every item
-registry/themes.ts           # theme-editor presets
+  bases/<base>/              # one full tree per primitive library: radix (default), base (Base UI)
+    ui/<primitive>.tsx       # shadcn primitives only
+    components/<name>.tsx    # hirael's added components (multi-file kits as components/<name>/)
+    blocks/<block>/          # marketing blocks
+    templates/<template>/    # full-page templates
+    examples/<name>-demo.tsx # showcase demo per component
+  registry-meta.ts           # single source of truth for every item (paths are base-relative)
+  registry-demos.tsx         # lazy preview loader, per base
+registry/themes.ts           # Customizer palettes (base colors + accents)
 registry/base-colors.ts      # base-color options (derived from themes)
-registry.json                # GENERATED from registry-meta.ts — do not
-                             # edit by hand, run `pnpm registry:gen`
-examples/<component>-demo.tsx  # top-level showcase demo per component
+registry.json                # generated from registry-meta.ts on install and
+registry.base.json           # build, one per base (git-ignored, never hand-edited)
 content/changelog/*.mdx      # changelog entries (one MDX file per release)
+public/media/<kind>/<name>/  # placeholder images and videos, grouped per item
 components/<name>.tsx        # showcase-site UI, flat (not shipped)
 lib/                         # showcase helpers (theme.ts, embed.ts, ...)
 app/                         # Next.js routes + /embed previews
@@ -167,9 +170,11 @@ Formatting is Prettier with its default config (`.prettierrc` is `{}`):
 2-space indent, double-quoted strings, semicolons. It runs automatically on
 staged files via the husky pre-commit hook (`lint-staged`), so you rarely need
 to think about it — just don't fight it with a different editor formatter.
-Generated files (`registry.json`, `vercel.json`, `registry-props.json`) are
-excluded via `.prettierignore` because `check:registry` verifies them
-byte-for-byte against the generators' output.
+Generated files (`registry.json`, `registry-props.json`, `llms.txt`,
+`public/r/`) are git-ignored and rebuilt by `pnpm install` and `pnpm build`;
+run `pnpm registry:gen && pnpm registry:props` to refresh them by hand.
+[scripts/README.md](./scripts/README.md) maps each command to what it reads
+and writes.
 
 ### Component conventions
 
@@ -184,10 +189,22 @@ byte-for-byte against the generators' output.
   user-facing text are concise, plain, and specific — short labels and
   sentences, no filler or marketing voice. Prefer "Pick a date" over
   "Effortlessly select your desired date."
+- **Item types follow shadcn/ui's registry.** `ui/` primitives ship as
+  `registry:ui`, hirael's own components as `registry:component`, blocks and
+  templates as `registry:block`; the generator derives this from the file
+  location and validates the output against `shadcn/schema`.
 - **Imports** go through aliases rewritten on install from the consumer's
-  `components.json`: shadcn primitives from `@/registry/hirael/ui/*`, other
-  hirael components from `@/registry/hirael/components/*`. `ui/` holds only
-  shadcn primitives; everything hirael adds lives in `components/`.
+  `components.json`: shadcn primitives from
+  `@/registry/hirael/bases/<base>/ui/*`, other hirael components from
+  `@/registry/hirael/bases/<base>/components/*`, always within the same base.
+  `ui/` holds only shadcn primitives; everything hirael adds lives in
+  `components/`.
+- **Two bases, kept in parity.** Every item exists in `bases/radix/` and
+  `bases/base/` (Base UI). Author the Radix version first, then port: identical
+  files where no primitive is touched; otherwise `asChild` → `render`, Radix
+  `data-[state=…]` selectors → Base UI attributes, anchored content as
+  Positioner + Popup, menu `onSelect` → `onClick`. `pnpm check:registry`
+  verifies both trees; the Customizer's Base picker previews either.
 - **Tokens.** Use `--background / --foreground / --border / --primary /
 --accent` and the rest of the design tokens — never hard-code a
   color. Light is a faithful inverse of dark; both must work.
@@ -203,6 +220,12 @@ byte-for-byte against the generators' output.
   physical: Radix `data-[side=…]` animations, canvas-like surfaces
   (color picker), and `side="left|right"` props on Sheet/Sidebar.
   Verify with the RTL toggle on the component's preview.
+- **Media.** Placeholder images and videos are self-hosted under
+  `public/media/{blocks,components,templates}/<item>/` and referenced
+  root-relative (`/media/blocks/hero-04/earth.jpg`). `registry:build`
+  rewrites those paths to absolute `https://hirael.com/media/...` URLs in
+  the shipped payloads so installed items render out of the box. Compress
+  before committing; no third-party image or streaming hosts.
 - **Comments.** Registry source is copied verbatim into consumer repos,
   so keep any comments purposeful and consumer-facing — put internal
   reasoning in commit messages or PR descriptions.
@@ -211,14 +234,16 @@ byte-for-byte against the generators' output.
 
 For each new component:
 
-- [ ] Source file at `registry/hirael/components/<name>.tsx` (or a
+- [ ] Source file at `registry/hirael/bases/radix/components/<name>.tsx` (or a
       `components/<name>/` folder for a multi-file kit) exporting the
       compound parts as flat top-level named exports (`Name`,
       `NameTrigger`, `NameContent`, …). No namespacing, no convenience
       wrappers. The bare `Name` is the root primitive and holds state.
-      (`registry/hirael/ui/` is reserved for shadcn primitives.)
+      (`ui/` is reserved for shadcn primitives.)
+- [ ] The same file ported under `registry/hirael/bases/base/` for Base UI
+      (see "Two bases" above).
 - [ ] Every rendered slot carries `data-slot="<kebab>"`.
-- [ ] `examples/<name>-demo.tsx` showing a basic compose
+- [ ] `bases/<base>/examples/<name>-demo.tsx` (both bases) showing a basic compose
       **and** a customized compose. To showcase several focused examples
       instead, add `<name>-<variant>.tsx` files, list them (ordered, with
       titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`, and register
@@ -227,26 +252,24 @@ For each new component:
       representative preview used in grids and embeds).
 - [ ] Entry in `registry/hirael/registry-meta.ts` with category,
       description, `dependencies`, `registryDependencies` and source
-      file list, then `pnpm registry:gen` to regenerate `registry.json`
-      (never edit it by hand — `pnpm check:registry` fails if it
-      drifts or if declared `registryDependencies` don't match the
-      component's actual imports).
-- [ ] Imports go through `@/registry/hirael/ui/*` (shadcn primitives) and
-      `@/registry/hirael/components/*` (other hirael components) — both
-      aliases are rewritten on install.
+      file list (`registry.json` is generated from it, never hand-edited;
+      `pnpm check:registry` fails if declared `registryDependencies`
+      don't match the component's actual imports).
+- [ ] Imports go through `@/registry/hirael/bases/<base>/ui/*` (shadcn
+      primitives) and `@/registry/hirael/bases/<base>/components/*` (other
+      hirael components) — both aliases are rewritten on install.
 - [ ] Tokens reuse `--background / --foreground / --border /
 --primary / --accent` and friends — never hard-code colors.
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
 Marketing blocks follow the same shape but live under
-`registry/hirael/blocks/<block>/` and have a `blockKind` plus
+`bases/<base>/blocks/<block>/` and have a `blockKind` plus
 `blockTagline` in `registry-meta.ts`.
 
 Templates are full-page, multi-section layouts. They live under
-`registry/hirael/templates/<template>/`, use `category: "templates"` in
-`registry-meta.ts`, and ship as a multi-file `registry:block` in
-`registry.json`. Like blocks, they are previewed full-bleed and do not
+`bases/<base>/templates/<template>/`, use `category: "templates"` in
+`registry-meta.ts`, and ship as a multi-file `registry:block`. Like blocks, they are previewed full-bleed and do not
 need a demo under `examples/`.
 
 ## Testing requirements

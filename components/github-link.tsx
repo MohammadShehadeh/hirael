@@ -1,8 +1,8 @@
-import type * as React from "react";
-import { Star } from "lucide-react";
+import type * as React from 'react';
+import { Star } from 'lucide-react';
 
-import { SITE } from "@/lib/site";
-import { Button } from "@/registry/hirael/ui/button";
+import { SITE } from '@/lib/site';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (

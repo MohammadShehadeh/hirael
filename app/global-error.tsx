@@ -1,39 +1,37 @@
-"use client";
+'use client';
 
-import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
-import { RefreshCw } from "lucide-react";
-import "./globals.css";
+import { Cormorant_Garamond, JetBrains_Mono, Inter } from 'next/font/google';
+import { RefreshCw } from 'lucide-react';
+import './globals.css';
 
-import { LogoMark } from "@/components/logo";
-import { Button } from "@/registry/hirael/ui/button";
+import { LogoMark } from '@/components/logo';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 // global-error replaces the root layout, so it has to bring its own document
 // and fonts. We mirror the root layout's setup so the fallback still reads as
 // Hirael instead of falling back to the browser's default serif.
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  variable: '--font-inter',
+  subsets: ['latin'],
 });
 
 const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jet-brains-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  variable: '--font-jet-brains-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 });
 
 const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  variable: '--font-cormorant',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
-      >
+      <body className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}>
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />
           <div
@@ -48,12 +46,9 @@ export default function GlobalError() {
               <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                 Something went wrong
               </span>
-              <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">
-                This page failed to load.
-              </h1>
+              <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">This page failed to load.</h1>
               <p className="max-w-sm text-sm text-muted-foreground">
-                An unexpected error occurred. Try refreshing the page or come
-                back in a moment.
+                An unexpected error occurred. Try refreshing the page or come back in a moment.
               </p>
             </div>
 

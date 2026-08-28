@@ -19,7 +19,7 @@ that previews every item and serves the generated `/r/*.json` files.
   `dynamicParams = false`, so add items to `registry-meta.ts`, not a route
   table.
 - **The React Compiler is on.** Don't hand-write `useMemo`/`useCallback` in
-  showcase code (`app/`, `components/`, `lib/`, `examples/`) — but **keep
+  showcase code (`app/`, `components/`, `lib/`, the registry's `examples/`) — but **keep
   explicit memoization in shipped registry source** (`ui/*`, `components/*`),
   which consumers may run without the compiler. TanStack Table (v9) components
   need `"use no memo"`.
@@ -32,11 +32,31 @@ that previews every item and serves the generated `/r/*.json` files.
 [registry-meta.ts](./registry/hirael/registry-meta.ts) declares every item;
 the sidebar, counts, pages, and sitemap derive from it (its presence is the
 only "published" flag). To change the catalog: edit it, register the preview
-loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), run
-`pnpm registry:gen`, commit. **Never hand-edit `registry.json`** — it's
-generated, and `pnpm check:registry` fails on drift or a missing loader. List
-`registryDependencies` by bare name; generation rewrites hirael-to-hirael deps
-to `/r/<name>.json` URLs.
+loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), commit.
+`registry.json`, `registry.base.json`, `registry-props.json`, `llms.txt` and
+`/r/**/*.json` are generated on install and build (`pnpm registry:gen` /
+`registry:props` / `registry:build`) and are git-ignored, never committed or
+hand-edited; `pnpm check:registry` fails on a missing file or loader in either
+base. List `registryDependencies` by bare name; generation rewrites
+hirael-to-hirael deps to `/r/<name>.json` (Radix) or `/r/base/<name>.json`
+(Base UI) URLs.
+
+## Two bases: Radix UI and Base UI
+
+Like shadcn/ui's `registry/bases`, every item exists in two parallel trees:
+`registry/hirael/bases/radix/` (the default, `/r/<name>.json`) and
+`registry/hirael/bases/base/` (Base UI, `/r/base/<name>.json`). Each tree
+holds `ui/`, `components/`, `blocks/`, `templates/` and `examples/`;
+`registry-meta.ts` file paths are base-relative (`ui/button.tsx`) and resolve
+through `registryFilePath(base, path)`. Author in `radix/` first, then apply
+the same change to `base/`: identical files where the item touches no
+primitive, otherwise `asChild` → `render`, Radix `data-[state=…]` selectors →
+Base UI attributes (`data-open`, `data-popup-open`, `data-panel-open`,
+`data-pressed`, `data-checked`, `data-active`), anchored content as
+Positioner + Popup, menu item `onSelect` → `onClick`. Never edit only one tree
+unless the change is deliberately base-specific. The Customizer's Base picker
+switches previews, source tabs, framed embeds (`/embed/base/...`) and install
+commands between the two.
 
 ## Every item follows the same shape
 
@@ -46,13 +66,14 @@ to `/r/<name>.json` URLs.
   only API.
 - **`data-slot="<kebab>"` on every rendered slot.**
 - **`ui/` is shadcn primitives only; hirael's own go in `components/`.** Import
-  via `@/registry/hirael/ui/*` and `@/registry/hirael/components/*` (rewritten
-  on install); never import across items by relative path.
+  via `@/registry/hirael/bases/<base>/ui/*` and
+  `@/registry/hirael/bases/<base>/components/*` within the same base (rewritten
+  on install); never import across bases or across items by relative path.
 - **Design tokens, never hard-coded colors** (defined in `app/globals.css`);
   compose classes with `cn()`. Light is a faithful inverse of dark, both must
   work. `--warm` (taupe) is the brand tone; `--accent-cool` is reserved for
   live/active state — don't swap or waste them.
-- **A demo at `examples/<name>-demo.tsx`** with user-facing strings through
+- **A demo at `bases/<base>/examples/<name>-demo.tsx`** (in both bases) with user-facing strings through
   `useT()` — `t({ en, ar })` — so the RTL toggle shows Arabic.
 - **RTL works with no config** — logical properties (`ms/me`, `ps/pe`,
   `start/end`), `rtl:rotate-180` on directional icons, mirror horizontal
@@ -87,9 +108,8 @@ pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build
 release, compiled at build (`next-mdx-remote`) and frozen into the export.
 Frontmatter is `title`, `date` (YYYY-MM-DD), and optional `version` /
 `description`; the MDX body is visitor-facing (new components, blocks, fixes —
-no build/deploy internals). Production deploys **only when a Release is
-published** — `main` auto-deploy is off in `vercel.json` — so add the changelog
-entry in the same change and cut a Release to ship it.
+no build/deploy internals). The site deploys to Cloudflare Pages; add the
+changelog entry in the same change and cut a Release to ship it.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

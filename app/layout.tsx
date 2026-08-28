@@ -1,30 +1,26 @@
-import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Inter } from "next/font/google";
-import Script from "next/script";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next';
+import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
 
-import { ThemeProvider } from "@/components/active-theme";
-import { SkipLink } from "@/components/skip-link";
-import { SITE } from "@/lib/site";
-import { themePrehydrationScript } from "@/lib/theme";
-import { TooltipProvider } from "@/registry/hirael/ui/tooltip";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+import { ThemeProvider } from '@/components/active-theme';
+import { SkipLink } from '@/components/skip-link';
+import { SITE } from '@/lib/site';
+import { customizerPrehydrationScript } from '@/lib/customizer';
+import { inter } from '@/lib/fonts';
+import { TooltipProvider } from '@/registry/hirael/bases/radix/ui/tooltip';
 
 const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jet-brains-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  variable: '--font-jet-brains-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 });
 
 const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  variable: '--font-cormorant',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +36,7 @@ export const metadata: Metadata = {
   creator: SITE.author,
   publisher: SITE.author,
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   robots: {
     index: true,
@@ -48,21 +44,21 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    type: 'website',
+    locale: 'en_US',
     url: SITE.url,
     title: `${SITE.description} - ${SITE.name}`,
     description: SITE.longDescription,
     siteName: SITE.name,
     images: [
       {
-        url: "/opengraph-image",
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: `${SITE.description} - ${SITE.name}`,
@@ -70,20 +66,20 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: `${SITE.description} - ${SITE.name}`,
     description: SITE.longDescription,
-    images: ["/opengraph-image"],
+    images: ['/opengraph-image'],
   },
-  category: "technology",
+  category: 'technology',
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F4F2EC" },
-    { media: "(prefers-color-scheme: dark)", color: "#0D1117" },
+    { media: '(prefers-color-scheme: light)', color: '#F4F2EC' },
+    { media: '(prefers-color-scheme: dark)', color: '#0D1117' },
   ],
-  colorScheme: "light dark",
+  colorScheme: 'light dark',
 };
 
 export default function RootLayout({
@@ -92,44 +88,37 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      data-scroll-behavior="smooth"
-      className="scroll-smooth"
-      suppressHydrationWarning
-    >
+    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{ __html: themePrehydrationScript() }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: customizerPrehydrationScript() }} />
 
         <Script
           id="hirael-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
               name: SITE.name,
-              alternateName: ["Hirael", "shadcn registry"],
+              alternateName: ['Hirael', 'shadcn registry'],
               description: SITE.longDescription,
               url: SITE.url,
-              applicationCategory: "DeveloperApplication",
-              operatingSystem: "Any",
+              applicationCategory: 'DeveloperApplication',
+              operatingSystem: 'Any',
               softwareVersion: SITE.version,
               isAccessibleForFree: true,
               offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
               },
               author: {
-                "@type": "Person",
+                '@type': 'Person',
                 name: SITE.author,
                 url: SITE.authorUrl,
               },
               creator: {
-                "@type": "Person",
+                '@type': 'Person',
                 name: SITE.author,
                 url: SITE.authorUrl,
               },
@@ -138,9 +127,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${jetBrainsMono.variable} ${cormorant.variable} font-sans antialiased`}>
         <SkipLink />
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

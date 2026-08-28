@@ -1,6 +1,6 @@
-import type * as React from "react";
+import type * as React from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 /**
  * Shared header language for the showcase. The landing and every index page
@@ -20,7 +20,7 @@ export const Pill = ({
   return (
     <span
       className={cn(
-        "glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground",
+        'glass-panel glass-panel-lit inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground',
         className,
       )}
     >
@@ -50,11 +50,7 @@ export const PageHeader = ({
       <h1 className="text-display text-4xl italic leading-[0.92] tracking-[-0.02em] sm:text-5xl md:text-6xl">
         {title}
       </h1>
-      {blurb && (
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          {blurb}
-        </p>
-      )}
+      {blurb && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{blurb}</p>}
       {children}
     </header>
   );
@@ -65,22 +61,9 @@ export const PageHeader = ({
  * these section eyebrows read identically across the index, category, and
  * detail pages instead of drifting per file.
  */
-export const SectionLabel = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+export const SectionLabel = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   return (
-    <h2
-      className={cn(
-        "font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground",
-        className,
-      )}
-    >
-      {children}
-    </h2>
+    <h2 className={cn('font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground', className)}>{children}</h2>
   );
 };
 
@@ -102,11 +85,7 @@ export const SectionHeading = ({
       <h2 className="text-display text-3xl italic leading-[0.95] tracking-[-0.01em] sm:text-5xl lg:text-6xl">
         {title}
       </h2>
-      {blurb && (
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          {blurb}
-        </p>
-      )}
+      {blurb && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{blurb}</p>}
     </div>
   );
 };

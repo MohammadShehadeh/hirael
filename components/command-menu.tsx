@@ -1,19 +1,18 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import dynamic from "next/dynamic";
-import { Search } from "lucide-react";
+import * as React from 'react';
+import dynamic from 'next/dynamic';
+import { Search } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { KbdDisplay } from "@/registry/hirael/components/kbd";
-import { Button } from "@/registry/hirael/ui/button";
+import { cn } from '@/lib/utils';
+import { KbdDisplay } from '@/registry/hirael/bases/radix/components/kbd';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 // The palette (cmdk + Radix dialog) is loaded on first open, so it never
 // ships to visitors who don't search.
-const CommandPalette = dynamic(
-  () => import("@/components/command-palette").then((m) => m.CommandPalette),
-  { ssr: false },
-);
+const CommandPalette = dynamic(() => import('@/components/command-palette').then((m) => m.CommandPalette), {
+  ssr: false,
+});
 
 /**
  * ⌘K trigger. Lightweight on its own — owns the button, the keyboard
@@ -26,17 +25,16 @@ export const CommandMenu = ({ className }: { className?: string }) => {
 
   React.useEffect(() => {
     setIsMac(
-      typeof navigator !== "undefined" &&
-        /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent),
+      typeof navigator !== 'undefined' && /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent),
     );
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((prev) => !prev);
       }
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
   React.useEffect(() => {
@@ -51,14 +49,12 @@ export const CommandMenu = ({ className }: { className?: string }) => {
         size="icon-sm"
         onClick={() => setOpen(true)}
         aria-label="Search components and blocks"
-        className={cn("sm:w-auto sm:px-2.5", className)}
+        className={cn('sm:w-auto sm:px-2.5', className)}
       >
         <Search className="size-3.5 shrink-0" />
-        <span className="hidden text-[13px] tracking-tight sm:inline">
-          Search…
-        </span>
+        <span className="hidden text-[13px] tracking-tight sm:inline">Search…</span>
         <KbdDisplay className="ms-2 hidden border border-border bg-background px-1.5 font-mono text-[10px] sm:inline-flex">
-          {isMac ? "⌘" : "Ctrl "}K
+          {isMac ? '⌘' : 'Ctrl '}K
         </KbdDisplay>
       </Button>
 

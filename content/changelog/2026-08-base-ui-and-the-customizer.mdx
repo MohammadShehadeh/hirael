@@ -1,0 +1,91 @@
+---
+title: Two bases, a Customizer, and 20 new sections
+version: '6.0.0'
+date: 2026-08-28
+description: 'Every item now ships for Radix UI and Base UI, the theme sheet became a Customizer, and the catalog gains a glow-styled section family, a developer-tool landing set, and two bilingual templates.'
+---
+
+The registry now speaks to both of the bases people build on. Pick yours once
+and every preview, source tab and install command follows.
+
+Site:
+
+- **Base UI**: every component, block and template ships in two trees, Radix UI
+  at `/r/<name>.json` and Base UI at `/r/base/<name>.json`. Same API, same
+  markup, primitives swapped underneath.
+- **Customizer**: the theme sheet is now a Customizer. Pick the base and icon
+  library your project uses to get the matching setup, then re-skin every
+  preview with a base color, theme, chart color, font and radius, site-wide or
+  previews only. It replaces the theme playground page.
+- **Dawn gold**: the primary color is a warm gold now, luminous in dark and
+  amber in light, so buttons, rings and the first chart series stand out
+  instead of reading as plain black and white.
+- Placeholder images and videos are served from hirael.com instead of
+  third-party hosts, so previews and installed items stop depending on links
+  that can expire.
+
+A family of sections that share one look: a pill badge, a word-by-word
+headline, cards on a soft glow, and motion that stays out of the way and
+respects reduced-motion. Drop several on one page and they read as a set.
+
+- **Footer 4**: light-ray beams behind a brand, contact, location and subscribe
+  layout with a rotating placeholder in the email field.
+- **Header 2**: floating pill nav that shrinks and blurs after you scroll, with
+  a sliding hover highlight and an animated mobile menu.
+- **Contact 3**: a glow panel whose gradient grows as it scrolls in, with email
+  and call actions side by side.
+- **FAQ 6**: multi-open accordion where each question is its own card that
+  rises into view.
+- **Feature 4, 5, 6**: icon service cards on pulsing glows, a two-column values
+  grid on a dotted glow canvas, and a two-card about section on a grid pattern.
+- **Team 2**: a metric strip, a profile card, and three marquee rows of
+  competencies.
+- **Testimonial 4**: quote cards with an orbiting glow ring.
+- **Coming Soon 2** and **Maintenance 2**: full-viewport pages with a sparkles
+  horizon and a sparkles backdrop.
+
+A second set for a developer-tool landing page, drawn on hairline rails and
+crosshair marks:
+
+- **Hero 9**: a full-viewport card that zooms out as you scroll, with an inline
+  nav, a sparkle backdrop and a carved stat corner.
+- **Feature 7, 8, 9**: orb-icon problem cards, a pointer-spotlight feature
+  grid, and a step-catalog bento with crosshair frames.
+- **Pricing 4**: three tiers with a glowing featured plan and quota checklists.
+- **FAQ 7**: a split layout with a single-open accordion.
+- **CTA 7**: a closing panel inside a scroll-reactive rim glow.
+- **Footer 5**: an inset card footer with three link columns.
+- **Status 1**: a service status page with a 90-day uptime grid, day-by-day
+  tooltips and an incident timeline.
+
+New components:
+
+- **Sparkles**: a canvas particle field with drift and twinkle. No dependency,
+  pauses offscreen, renders one still frame under reduced-motion.
+- **Icon Stack**: overlapping icon tiles that fan out on hover, for showing a
+  toolchain or an integration set in a single row.
+
+Two new templates, and the first that ship bilingual. Both open in whatever
+direction the surrounding page reads, then follow an in-page switcher, with
+Cairo leading for Arabic so right-to-left copy is set in its own typeface:
+
+- **Aurael**: a landing page for a home-solar brand, built around a day and
+  night control in the hero. Picking a scene cross-fades the photograph and
+  swaps the palette for the whole page, so both are real themes rather than a
+  filter. Below it, hairline-ruled bands with a sticky meta rail carry how it
+  works, cases, about, careers, resources and customers.
+- **Novael**: a landing page for a technology services firm. A fixed scroll-spy
+  navbar over a headline that runs onto a photographic band, an overlapping
+  intro card and count-up stats, a marquee of past employers, a teal service
+  slab, a project grid whose captions expand on hover, and a contact section
+  that doubles as the footer.
+
+Fixes:
+
+- **Login 3**: the floating background paths start staggered and loop cleanly
+  now, instead of drifting offscreen together and blanking the panel.
+- The Hirael mark reads monochrome everywhere it appears in a block. The tiles
+  behind it in App Shell 1, 4 and 5 and in Hero 9 were tinted with the accent
+  color; they are black on white or white on black now.
+
+The catalog is at 75 components, 119 blocks and 11 templates.

@@ -1133,6 +1133,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'icon-stack',
+    title: 'Icon Stack',
+    description:
+      'Isometric stack of plates with an icon skewed onto the front face, for feature headers and empty states. Layer count is a prop, and the plates take their color from the surrounding text.',
+    category: 'display',
+    files: [{ path: 'components/icon-stack.tsx' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: 'marquee',
     title: 'Marquee',
     description:
@@ -2136,6 +2146,116 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'aurael',
+    title: 'Aurael',
+    description:
+      'Bilingual (EN/AR) landing page for a home-solar brand, built around a day/night control that re-themes the whole page: a full-height photographic hero that cross-fades between morning and night, then hairline-ruled bands with a sticky meta rail for how it works, cases, about, careers, resources and customers. Self-contained morning/night palettes, Inter + Manrope with Cairo for Arabic, and RTL that follows the surrounding document.',
+    category: 'templates',
+    files: [
+      {
+        path: 'templates/aurael/aurael.tsx',
+        target: 'components/templates/aurael/aurael.tsx',
+      },
+      {
+        path: 'templates/aurael/hero.tsx',
+        target: 'components/templates/aurael/hero.tsx',
+      },
+      {
+        path: 'templates/aurael/how-it-works.tsx',
+        target: 'components/templates/aurael/how-it-works.tsx',
+      },
+      {
+        path: 'templates/aurael/cases.tsx',
+        target: 'components/templates/aurael/cases.tsx',
+      },
+      {
+        path: 'templates/aurael/about.tsx',
+        target: 'components/templates/aurael/about.tsx',
+      },
+      {
+        path: 'templates/aurael/careers.tsx',
+        target: 'components/templates/aurael/careers.tsx',
+      },
+      {
+        path: 'templates/aurael/resources.tsx',
+        target: 'components/templates/aurael/resources.tsx',
+      },
+      {
+        path: 'templates/aurael/customers.tsx',
+        target: 'components/templates/aurael/customers.tsx',
+      },
+      {
+        path: 'templates/aurael/footer.tsx',
+        target: 'components/templates/aurael/footer.tsx',
+      },
+      {
+        path: 'templates/aurael/primitives.tsx',
+        target: 'components/templates/aurael/primitives.tsx',
+      },
+      {
+        path: 'templates/aurael/styles.tsx',
+        target: 'components/templates/aurael/styles.tsx',
+      },
+      {
+        path: 'templates/aurael/fonts.ts',
+        target: 'components/templates/aurael/fonts.ts',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['motion', 'lucide-react'],
+  },
+  {
+    name: 'novael',
+    title: 'Novael',
+    description:
+      'Bilingual (EN/AR) landing page for a technology services firm: a fixed scroll-spy navbar over a headline that sits on a photographic band, an overlapping intro card and count-up stats, a marquee of past employers, a teal service slab, a project grid whose captions expand on hover, and a contact section that doubles as the footer. Self-contained dark palette, Inter + Manrope with Cairo for Arabic, and RTL that follows the surrounding document.',
+    category: 'templates',
+    files: [
+      {
+        path: 'templates/novael/novael.tsx',
+        target: 'components/templates/novael/novael.tsx',
+      },
+      {
+        path: 'templates/novael/navbar.tsx',
+        target: 'components/templates/novael/navbar.tsx',
+      },
+      {
+        path: 'templates/novael/hero.tsx',
+        target: 'components/templates/novael/hero.tsx',
+      },
+      {
+        path: 'templates/novael/team.tsx',
+        target: 'components/templates/novael/team.tsx',
+      },
+      {
+        path: 'templates/novael/services.tsx',
+        target: 'components/templates/novael/services.tsx',
+      },
+      {
+        path: 'templates/novael/works.tsx',
+        target: 'components/templates/novael/works.tsx',
+      },
+      {
+        path: 'templates/novael/contact.tsx',
+        target: 'components/templates/novael/contact.tsx',
+      },
+      {
+        path: 'templates/novael/primitives.tsx',
+        target: 'components/templates/novael/primitives.tsx',
+      },
+      {
+        path: 'templates/novael/styles.tsx',
+        target: 'components/templates/novael/styles.tsx',
+      },
+      {
+        path: 'templates/novael/fonts.ts',
+        target: 'components/templates/novael/fonts.ts',
+      },
+    ],
+    registryDependencies: ['button', 'marquee'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'hero-06',
     title: 'Hero 6',
     description:
@@ -2707,8 +2827,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'hero-09',
     title: 'Hero 9',
     description:
-      'Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a step-type strip, a sparkle-and-glow backdrop, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.',
-    blockTagline: 'Zoom-out card · sparkle backdrop · carved stats',
+      'Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a step-type strip, a drifting WebGL gradient mixed from the theme tokens, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.',
+    blockTagline: 'Zoom-out card · fluid gradient · carved stats',
     category: 'blocks',
     blockKind: 'hero',
     files: [
@@ -2716,8 +2836,12 @@ export const REGISTRY: RegistryEntryMeta[] = [
         path: 'blocks/hero-09/hero-09.tsx',
         target: 'components/blocks/hero-09.tsx',
       },
+      {
+        path: 'blocks/hero-09/hero-09-backdrop.tsx',
+        target: 'components/blocks/hero-09-backdrop.tsx',
+      },
     ],
-    registryDependencies: ['button', 'sparkles'],
+    registryDependencies: ['button'],
     dependencies: ['motion', 'lucide-react'],
   },
   {

@@ -161,7 +161,7 @@ const AppShell04 = () => {
                     tooltip={activeWorkspace.name}
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
-                    <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+                    <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-foreground text-sidebar">
                       <BrandMark className="size-5" />
                     </span>
                     <div className="grid min-w-0 flex-1 text-start leading-tight">

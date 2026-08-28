@@ -1,11 +1,18 @@
 'use client';
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { Bell, CalendarClock, ChevronDown, Container, FlaskConical, Hammer, Rocket } from 'lucide-react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { Sparkles } from '@/registry/hirael/bases/base/components/sparkles';
+
+// WebGL can't paint before hydration, so the shader stays out of the initial
+// bundle and the CSS wash below carries the first frame until it arrives.
+const Hero09Backdrop = dynamic(() => import('./hero-09-backdrop'), {
+  ssr: false,
+  loading: () => null,
+});
 
 const NAV_LINKS = ['Features', 'Pipeline', 'Pricing', 'FAQ'];
 
@@ -27,21 +34,20 @@ const STATS = [
 const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg
-      viewBox="0 0 24 24"
+      viewBox="0 0 80 100"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="2.2"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
       className={className}
     >
-      <circle cx="5" cy="6" r="2.2" />
-      <circle cx="19" cy="6" r="2.2" />
-      <circle cx="12" cy="18" r="2.2" />
-      <path d="M6.5 7.8 10.5 16" />
-      <path d="M17.5 7.8 13.5 16" />
-      <path d="M7.2 6h9.6" opacity="0.5" />
+      <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
+      <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
+      <path d="M22 86 H58" opacity="0.7" />
+      <path d="M28 92 H52" opacity="0.45" />
+      <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
 };
@@ -89,20 +95,38 @@ const Hero09 = () => {
     <section data-slot="hero" className="relative min-h-svh bg-background pt-2.5">
       <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,var(--warm-glow),transparent_70%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_100%,color-mix(in_oklch,var(--warm)_10%,transparent),transparent_70%)]" />
-          <Sparkles
-            density={1.5}
-            size={1.1}
-            speed={0.3}
-            className="mask-[radial-gradient(70%_70%_at_50%_40%,black,transparent)]"
+          {/* First frame, and the fallback wherever WebGL is unavailable: amber
+              overhead, cool blue from the lower start corner, a violet
+              counterweight opposite it, a warm floor. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: [
+                'radial-gradient(95% 65% at 50% -12%, color-mix(in oklch, var(--primary) 34%, transparent), transparent 62%)',
+                'radial-gradient(70% 60% at 8% 104%, color-mix(in oklch, var(--accent-cool) 30%, transparent), transparent 66%)',
+                'radial-gradient(60% 55% at 96% 26%, color-mix(in oklch, var(--chart-2) 20%, transparent), transparent 68%)',
+                'radial-gradient(80% 50% at 50% 108%, color-mix(in oklch, var(--warm) 18%, transparent), transparent 70%)',
+              ].join(', '),
+            }}
+          />
+          {/* Fluid-noise gradient, its stops mixed from --background, --primary
+              and --accent-cool, so it drifts on-palette in either theme. */}
+          <Hero09Backdrop className="absolute inset-0 size-full" />
+
+          {/* Grain keeps the wide gradients from banding on large displays. */}
+          <div
+            className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            }}
           />
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-between gap-10 p-6 pb-28 text-foreground md:p-10 md:pt-7">
           <div data-slot="hero-nav" className="relative flex items-center justify-between">
             <a href="#" data-slot="hero-brand" className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-sm border border-border bg-background text-foreground">
+              <span className="flex size-7 items-center justify-center rounded-sm border border-foreground/20 bg-foreground/10 text-foreground">
                 <BrandMark className="size-5" />
               </span>
               <span className="text-base font-semibold tracking-tight">Hirael Flow</span>
@@ -133,7 +157,7 @@ const Hero09 = () => {
               data-slot="hero-title"
               className="font-serif text-balance text-5xl font-medium leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
             >
-              Pipelines you can see, <span className="text-muted-foreground">not just read</span>
+              Pipelines you can see, <span className="text-primary">not just read</span>
             </h1>
 
             <p
@@ -163,7 +187,7 @@ const Hero09 = () => {
                     key={step.label}
                     className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <step.icon aria-hidden className="size-4" />
+                    <step.icon aria-hidden className="size-4 text-primary/70" />
                     <span className="hidden sm:inline">{step.label}</span>
                   </span>
                 ))}
@@ -186,7 +210,7 @@ const Hero09 = () => {
         >
           {STATS.map((stat) => (
             <div key={stat.label}>
-              <div className="font-serif text-2xl font-medium leading-tight md:text-3xl">{stat.value}</div>
+              <div className="font-serif text-2xl font-medium leading-tight text-primary md:text-3xl">{stat.value}</div>
               <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                 {stat.label}
               </div>

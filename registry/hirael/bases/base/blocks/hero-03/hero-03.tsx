@@ -28,13 +28,25 @@ const Hero03 = () => {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px"
         style={{
-          background: 'linear-gradient(to right, transparent, var(--foreground) 50%, transparent)',
+          background: 'linear-gradient(to right, transparent, var(--primary) 50%, transparent)',
         }}
+      />
+      {/* Three orbs rather than one grey one: the grid alone left the section
+          reading as bare background in both themes. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 -z-10 size-130 -translate-x-1/2 rounded-full opacity-25 blur-3xl"
+        style={{ background: 'var(--primary)' }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 -z-10 size-[520px] -translate-x-1/2 rounded-full opacity-[0.08] blur-3xl"
-        style={{ background: 'var(--foreground)' }}
+        className="pointer-events-none absolute -start-24 top-40 -z-10 size-96 rounded-full opacity-20 blur-3xl"
+        style={{ background: 'var(--accent-cool)' }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -end-24 bottom-0 -z-10 size-96 rounded-full opacity-15 blur-3xl"
+        style={{ background: 'var(--warm)' }}
       />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">

@@ -91,6 +91,8 @@ const BrandMark = ({ className }: { className?: string }) => {
       <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
       <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
       <path d="M22 86 H58" opacity="0.7" />
+      <path d="M28 92 H52" opacity="0.45" />
+      <path d="M34 96 H46" opacity="0.25" />
     </svg>
   );
 };
@@ -102,7 +104,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" tooltip="Hirael">
-              <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+              <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-foreground text-sidebar">
                 <BrandMark className="size-5" />
               </span>
               <div className="grid flex-1 text-start leading-tight">

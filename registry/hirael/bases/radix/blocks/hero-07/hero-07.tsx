@@ -167,8 +167,11 @@ const Hero07 = () => {
         data-slot="hero-backdrop"
         className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
         style={{
-          background:
-            'radial-gradient(120% 120% at 50% 30%, color-mix(in oklch, var(--primary) 8%, transparent), transparent 60%)',
+          backgroundImage: [
+            'radial-gradient(120% 120% at 50% 26%, color-mix(in oklch, var(--primary) 26%, transparent), transparent 60%)',
+            'radial-gradient(80% 70% at 6% 96%, color-mix(in oklch, var(--accent-cool) 24%, transparent), transparent 64%)',
+            'radial-gradient(80% 70% at 94% 92%, color-mix(in oklch, var(--warm) 20%, transparent), transparent 64%)',
+          ].join(', '),
         }}
       />
 

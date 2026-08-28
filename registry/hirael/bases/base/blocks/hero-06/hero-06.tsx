@@ -34,16 +34,21 @@ const GeometricAccent = () => {
 
   return (
     <div data-slot="hero-accent" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* A glow behind each nest of squares, so the corners carry color and not
+          just a hairline that all but disappears on a light canvas. */}
+      <div className="absolute -top-40 start-[-10rem] size-120 rounded-full bg-primary opacity-20 blur-3xl" />
+      <div className="absolute -bottom-40 end-[-10rem] size-120 rounded-full bg-accent-cool opacity-15 blur-3xl" />
+
       <motion.div {...reveal(0.4)} className="absolute -top-20 start-[-5rem] size-80">
-        <div className="absolute inset-0 rotate-45 border border-primary/10" />
-        <div className="absolute inset-4 rotate-45 border border-primary/[0.08]" />
-        <div className="absolute inset-8 rotate-45 border border-primary/5" />
+        <div className="absolute inset-0 rotate-45 border border-primary/40" />
+        <div className="absolute inset-4 rotate-45 border border-primary/25" />
+        <div className="absolute inset-8 rotate-45 border border-primary/15" />
       </motion.div>
 
       <motion.div {...reveal(0.6)} className="absolute -bottom-20 end-[-5rem] size-80">
-        <div className="absolute inset-0 rotate-12 border border-primary/10" />
-        <div className="absolute inset-4 rotate-12 border border-primary/[0.08]" />
-        <div className="absolute inset-8 rotate-12 border border-primary/5" />
+        <div className="absolute inset-0 rotate-12 border border-accent-cool/40" />
+        <div className="absolute inset-4 rotate-12 border border-accent-cool/25" />
+        <div className="absolute inset-8 rotate-12 border border-accent-cool/15" />
       </motion.div>
     </div>
   );

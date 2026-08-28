@@ -34,6 +34,18 @@ const Hero05 = () => {
         <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
           <div
             aria-hidden
+            data-slot="hero-wash"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: [
+                'linear-gradient(160deg, color-mix(in oklch, var(--accent-cool) 26%, transparent), transparent 48%)',
+                'radial-gradient(70% 60% at 84% 2%, color-mix(in oklch, var(--primary) 32%, transparent), transparent 62%)',
+                'radial-gradient(85% 60% at 38% 110%, color-mix(in oklch, var(--warm) 22%, transparent), transparent 70%)',
+              ].join(', '),
+            }}
+          />
+          <div
+            aria-hidden
             data-slot="hero-backdrop"
             className="pointer-events-none absolute inset-0 opacity-70 mix-blend-multiply dark:opacity-50 dark:mix-blend-screen"
           >

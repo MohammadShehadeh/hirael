@@ -276,7 +276,7 @@ const AppShell01 = () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip="Hirael">
-                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-foreground text-sidebar">
                   <BrandMark className="size-5" />
                 </span>
                 <div className="grid flex-1 text-start leading-tight">

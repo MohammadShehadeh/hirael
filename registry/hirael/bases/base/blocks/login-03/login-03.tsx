@@ -39,8 +39,8 @@ const BrandMark = ({ className }: { className?: string }) => {
 };
 
 const jitter = (i: number) => {
-  const x = Math.sin(i * 12.9898) * 43758.5453;
-  return x - Math.floor(x);
+  const value = Math.sin(i + 1) * 10_000;
+  return value - Math.floor(value);
 };
 
 const FloatingPaths = ({ position }: { position: number }) => {
@@ -126,7 +126,7 @@ const Login03 = () => {
       </aside>
 
       <div data-slot="login-main" className="relative flex min-h-svh flex-col justify-center px-8 lg:min-h-0">
-        <div aria-hidden className="pointer-events-none absolute inset-0 isolate -z-10 opacity-60 contain-strict">
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-60">
           <div
             className="absolute end-0 top-0 h-320 w-140 -translate-y-88 rounded-full"
             style={{
@@ -147,13 +147,13 @@ const Login03 = () => {
           render={<a href="#" />}
           nativeButton={false}
           variant="ghost"
-          className="absolute start-5 top-7 gap-1.5"
+          className="absolute start-5 top-7 z-10 gap-1.5"
         >
           <ChevronLeft className="size-4 rtl:rotate-180" />
           Home
         </Button>
 
-        <div className="mx-auto w-full space-y-6 sm:max-w-sm">
+        <div className="relative z-10 mx-auto w-full space-y-6 sm:max-w-sm">
           <div className="flex items-center gap-2 lg:hidden">
             <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card text-foreground">
               <BrandMark className="size-5" />

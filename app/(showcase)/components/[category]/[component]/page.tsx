@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { ComponentPage } from '@/components/component-page';
-import type { ApiPart, ExampleEntry, ExampleSources, SourceFile } from '@/components/component-page';
+import type { ApiPart, ExampleSources, SourceFile } from '@/components/component-page';
 import { highlightCode, highlightInline, langFromPath } from '@/lib/highlight';
 import { loadSources } from '@/lib/registry-source';
 import { detailMetadata } from '@/lib/site';

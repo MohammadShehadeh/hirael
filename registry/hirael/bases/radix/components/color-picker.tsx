@@ -390,6 +390,9 @@ const ColorPickerArea = ({ className, ...props }: React.ComponentProps<'div'>) =
       role="slider"
       aria-label="Saturation and brightness"
       aria-valuetext={`saturation ${Math.round(ctx.hsv.s)}%, brightness ${Math.round(ctx.hsv.v)}%`}
+      aria-valuenow={Math.round(ctx.hsv.s)}
+      aria-valuemin={0}
+      aria-valuemax={100}
       tabIndex={0}
       onPointerDown={(e) => {
         e.preventDefault();

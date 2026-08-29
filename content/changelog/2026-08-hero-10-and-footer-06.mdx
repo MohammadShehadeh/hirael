@@ -1,0 +1,32 @@
+---
+title: A new hero, a new footer, and a login that sits still
+version: '6.1.0'
+date: 2026-08-29
+description: 'Hero 10 and Footer 6 join the catalog, both built on a blurred full-bleed image, and Login 3 stops flickering.'
+---
+
+Two new blocks and one overdue fix.
+
+New:
+
+- **Hero 10**: a bordered hero card over a blurred full-bleed image. A badge, a
+  large centered headline, sub-copy, and two CTAs that rise into place on load.
+  Stilled under reduced motion.
+- **Footer 6**: a two-part footer. On top, a bordered CTA panel over the same
+  image rotated 180 degrees, with a headline and a wide sign-up button. Below
+  it, a brand block with social icons, two link columns, and a hairline
+  copyright row.
+
+Fixed:
+
+- **Login 3 no longer flickers.** The animated paths in the sidebar were
+  animating their length and their offset at the same time, on an infinite
+  repeat with a negative start delay. The negative delay only applies to the
+  first pass, so every path snapped back to its starting position at the end of
+  its first cycle. The paths now use a single one-way length target, which is
+  what the effect was always meant to be.
+- **Login 3 works in the light theme.** A decorative glow layer behind the form
+  was positioned with a negative z-index inside a container that was not its own
+  stacking context, which pushed the sign-in heading, the button, and the
+  back-to-home link out of view. The layer now sits behind the form the ordinary
+  way.

@@ -1,0 +1,19 @@
+# Cloudflare Pages response headers. Everything under /r is the machine-facing
+# side of the registry, so it is served open and kept out of search.
+
+/r/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+
+# The generated Markdown twin of each detail page. Served as text/plain so a
+# browser renders it inline instead of downloading it; agents read it either
+# way. Noindex keeps it from competing with the HTML page it mirrors, which is
+# the canonical one.
+/r/*.md
+  Content-Type: text/plain; charset=utf-8
+  X-Robots-Tag: noindex
+  Access-Control-Allow-Origin: *
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Access-Control-Allow-Origin: *

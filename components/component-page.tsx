@@ -11,19 +11,21 @@ import { useRegistryBase } from '@/components/active-theme';
 import { DirectionToggle } from '@/components/direction-toggle';
 import { InstallBlock } from '@/components/install-block';
 import { CopyPageButton } from '@/components/copy-page-button';
+import { NewBadge } from '@/components/new-badge';
 import { Pager } from '@/components/pager';
 import { SectionLabel } from '@/components/page-header';
+import { ItemCards } from '@/components/item-cards';
 import { SegmentedControl } from '@/components/segmented-control';
 import { Toc, TocChips, type TocItem } from '@/components/toc';
 import { GithubIcon } from '@/components/github-link';
 import { DemoLocaleProvider } from '@/lib/demo-locale';
+import { formatDay, type DetailExtras } from '@/lib/freshness';
 import { SITE } from '@/lib/site';
 import { DirectionProvider } from '@/registry/hirael/bases/radix/ui/direction';
 import { RegistryExample } from '@/registry/hirael/registry-demos';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/radix/ui/table';
 import {
-  entryHref,
   entrySiblings,
   registryFilePath,
   type RegistryBase,
@@ -74,6 +76,7 @@ export const ComponentPage = ({
   api,
   usage,
   breadcrumb,
+  extras,
 }: {
   entry: RegistryEntryMeta;
   /** Pre-highlighted install source files per base, keyed by base-relative path. */
@@ -86,6 +89,8 @@ export const ComponentPage = ({
   api?: ApiPart[] | null;
   /** Hierarchy trail shown above the header for navigation. */
   breadcrumb?: Crumb[];
+  /** Ship date and related items, resolved on the server from the changelog. */
+  extras?: DetailExtras;
 }) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
   // Multi-file items (composites, or a component that ships a folder of parts
@@ -197,6 +202,15 @@ export const ComponentPage = ({
     });
   }
 
+  const related = extras?.related ?? [];
+  if (related.length > 0) {
+    sections.push({
+      id: 'related',
+      label: 'Related',
+      content: <ItemCards items={related} />,
+    });
+  }
+
   const tocItems: TocItem[] = sections.map(({ id, label }) => ({ id, label }));
   const { prev, next } = entrySiblings(entry);
   const sourceUrl = githubSourceUrl(entry, base);
@@ -237,24 +251,14 @@ export const ComponentPage = ({
                 <HeaderAction href={issueUrl} title="Open a GitHub issue" icon={<CircleAlert />}>
                   Report issue
                 </HeaderAction>
-                <CopyPageButton
-                  input={{
-                    name: entry.name,
-                    title: entry.title,
-                    description: entry.description,
-                    url: `${SITE.url}${entryHref(entry)}`,
-                    isComposite,
-                    usage,
-                    examples: exampleList,
-                    api,
-                    source,
-                    files: entry.files ?? [],
-                  }}
-                />
+                <CopyPageButton name={entry.name} title={entry.title} />
               </div>
             </div>
 
-            <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">{entry.title}</h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">{entry.title}</h1>
+              <NewBadge addedAt={extras?.addedAt} />
+            </div>
             <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{entry.description}</p>
           </header>
 
@@ -267,6 +271,12 @@ export const ComponentPage = ({
           ))}
 
           <Pager prev={prev} next={next} />
+
+          {extras?.addedAt && (
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              Shipped <time dateTime={extras.addedAt}>{formatDay(extras.addedAt)}</time>
+            </p>
+          )}
         </div>
 
         <aside className="hidden xl:block">

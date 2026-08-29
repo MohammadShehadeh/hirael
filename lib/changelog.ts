@@ -13,6 +13,12 @@ export interface ChangelogEntry {
   isoDate: string;
   displayDate: string;
   description: string | null;
+  /**
+   * Registry item names the release added, e.g. `['hero-10', 'footer-06']`.
+   * Optional in frontmatter; drives the "New" badge and the landing page's
+   * recently-added rail through {@link getReleaseDates}.
+   */
+  added: string[];
   /** Raw MDX body, compiled by the view. */
   body: string;
 }
@@ -22,6 +28,10 @@ export interface Changelog {
   lastUpdated: string | null;
   latestSlug: string | null;
 }
+
+/** Registry item names a release shipped, from its `added` frontmatter. */
+const addedNames = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((name): name is string => typeof name === 'string') : [];
 
 const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
 
@@ -61,6 +71,7 @@ export const getChangelog = async (): Promise<Changelog> => {
           isoDate,
           displayDate: DATE_FORMATTER.format(parsed),
           description: data.description != null ? String(data.description) : null,
+          added: addedNames(data.added),
           body: content.trim(),
         },
       ];
@@ -72,4 +83,29 @@ export const getChangelog = async (): Promise<Changelog> => {
     lastUpdated: entries[0]?.displayDate ?? null,
     latestSlug: entries[0]?.slug ?? null,
   };
+};
+
+/**
+ * When each registry item shipped, as an ISO `YYYY-MM-DD`, read from the
+ * `added` list in each release's frontmatter.
+ *
+ * The changelog is already the record of what shipped when, and writing an
+ * entry is already part of cutting a release, so listing the item names there
+ * keeps this to one line per release instead of a per-item table that has to
+ * be regenerated. An item no release claims simply has no date: it wears no
+ * badge and stays out of the recently-added rail, which is the right answer
+ * for everything that predates the practice.
+ */
+export const getReleaseDates = async (): Promise<Record<string, string>> => {
+  const { entries } = await getChangelog();
+  const dates: Record<string, string> = {};
+
+  // Oldest release first, so an item listed twice keeps the date it first
+  // shipped rather than the date it was last mentioned.
+  for (const entry of [...entries].reverse()) {
+    const day = entry.isoDate.slice(0, 10);
+    for (const name of entry.added) dates[name] ??= day;
+  }
+
+  return dates;
 };

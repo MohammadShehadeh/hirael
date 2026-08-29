@@ -39,7 +39,11 @@ loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), commit.
 hand-edited; `pnpm check:registry` fails on a missing file or loader in either
 base. List `registryDependencies` by bare name; generation rewrites
 hirael-to-hirael deps to `/r/<name>.json` (Radix) or `/r/base/<name>.json`
-(Base UI) URLs.
+(Base UI) URLs. `registry:md` writes each item's page as Markdown beside its
+payload (`/r/<name>.md`, `/r/base/<name>.md`): install command, usage, demos,
+full source and API in one document, with in-repo imports rewritten to the
+paths the CLI installs to. It is what "Copy page" copies and what an agent
+handed the URL reads, so the two can never drift.
 
 ## Two bases: Radix UI and Base UI
 
@@ -110,6 +114,13 @@ Frontmatter is `title`, `date` (YYYY-MM-DD), and optional `version` /
 `description`; the MDX body is visitor-facing (new components, blocks, fixes —
 no build/deploy internals). The site deploys to Cloudflare Pages; add the
 changelog entry in the same change and cut a Release to ship it.
+
+**A release that adds items lists their names under `added:`** — the one place
+the catalog records what shipped when. `lib/changelog.ts` reads it into
+`getReleaseDates()`, which drives the "New" badge (7 days, `lib/freshness.ts`),
+the landing page's recently-added rail, and each detail page's `Shipped` line
+and `datePublished`. An item no release claims simply has no date and wears no
+badge, so an omitted list degrades quietly rather than dating things wrongly.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

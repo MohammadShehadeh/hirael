@@ -4,10 +4,13 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { ComponentPage } from '@/components/component-page';
+import { EntryJsonLd } from '@/components/entry-json-ld';
 import type { ApiPart, ExampleSources, SourceFile } from '@/components/component-page';
 import { highlightCode, highlightInline, langFromPath } from '@/lib/highlight';
+import { getDetailExtras } from '@/lib/detail-extras';
+import { buildUsageCode } from '@/lib/registry-usage';
 import { loadSources } from '@/lib/registry-source';
-import { detailMetadata } from '@/lib/site';
+import { detailMetadata } from '@/lib/seo';
 import {
   CATEGORY_LABELS,
   COMPONENTS,
@@ -73,67 +76,21 @@ async function loadExamples(name: string): Promise<ExampleSources[]> {
   );
 }
 
-/** Value exports only; regex-based, which hand-written registry source keeps reliable. */
-function exportedNames(code: string): string[] {
-  const names = new Set<string>();
-  for (const m of code.matchAll(/^export\s+(?:async\s+)?(?:function|const|let|class)\s+([A-Za-z_$][\w$]*)/gm)) {
-    names.add(m[1]);
-  }
-  for (const m of code.matchAll(/^export\s*\{([^}]*)\}/gm)) {
-    for (const raw of m[1].split(',')) {
-      const spec = raw.trim();
-      if (!spec || spec.startsWith('type ')) continue;
-      const local = spec.split(/\s+as\s+/).pop();
-      if (local) names.add(local);
-    }
-  }
-  return [...names];
-}
-
-/** Mirrors `deriveTarget` in scripts/build-registry.mjs. */
-function installTarget(file: { path: string; target?: string }): string {
-  if (file.target) return file.target;
-  if (file.path.startsWith('registry/hirael/components/')) {
-    return file.path.slice('registry/hirael/'.length);
-  }
-  return `components/ui/${path.basename(file.path)}`;
-}
-
-function buildUsage(entry: (typeof COMPONENTS)[number], source: Record<string, SourceFile>, api: ApiPart[] | null) {
-  const documented = new Set((api ?? []).map((part) => part.name));
-  const isHook = (name: string) => /^use[A-Z]/.test(name);
-  const isComponent = (name: string) => /^[A-Z]/.test(name);
-  const statements: string[] = [];
-  for (const file of entry.files ?? []) {
-    const code = source[file.path]?.code;
-    if (!code) continue;
-    const exported = exportedNames(code);
-    const components = exported.filter((name) => (documented.size ? documented.has(name) : isComponent(name)));
-    const hooks = exported.filter(isHook);
-    const names = [...components, ...hooks];
-    if (!names.length) continue;
-    const specifier = `@/${installTarget(file).replace(/\.tsx?$/, '')}`;
-    statements.push(
-      names.length > 3
-        ? `import {\n  ${names.join(',\n  ')},\n} from "${specifier}"`
-        : `import { ${names.join(', ')} } from "${specifier}"`,
-    );
-  }
-  return statements.length ? statements.join('\n\n') : null;
-}
-
 export default async function ComponentRoute({ params }: { params: Promise<{ category: string; component: string }> }) {
   const { category, component } = await params;
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || entry.category === 'blocks' || entry.category === 'templates' || entry.category !== category)
     notFound();
-  const [sources, examples] = await Promise.all([
+  const [sources, examples, extras] = await Promise.all([
     loadSources(entry.files?.map((f) => f.path)),
     loadExamples(entry.name),
+    getDetailExtras(entry),
   ]);
   const api = (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null;
-  // Import statements are identical across bases; derive them once.
-  const usageCode = buildUsage(entry, sources[DEFAULT_BASE], api);
+  // Import statements are identical across bases; derive them once. The same
+  // helper writes the Usage block into the generated Markdown, so the page and
+  // the file an agent fetches show one import.
+  const usageCode = buildUsageCode(entry.files, (file) => sources[DEFAULT_BASE][file]?.code, api);
   const usage = usageCode
     ? {
         code: usageCode,
@@ -157,21 +114,23 @@ export default async function ComponentRoute({ params }: { params: Promise<{ cat
         })),
       )
     : null;
+  const breadcrumb = [
+    { label: 'Components', href: '/components' },
+    { label: CATEGORY_LABELS[entry.category], href: `/components/${entry.category}` },
+    { label: entry.title },
+  ];
   return (
-    <ComponentPage
-      entry={entry}
-      sources={sources}
-      examples={examples}
-      api={apiHighlighted}
-      usage={usage}
-      breadcrumb={[
-        { label: 'Components', href: '/components' },
-        {
-          label: CATEGORY_LABELS[entry.category],
-          href: `/components/${entry.category}`,
-        },
-        { label: entry.title },
-      ]}
-    />
+    <>
+      <EntryJsonLd entry={entry} breadcrumb={breadcrumb} addedAt={extras.addedAt} />
+      <ComponentPage
+        entry={entry}
+        sources={sources}
+        examples={examples}
+        api={apiHighlighted}
+        usage={usage}
+        breadcrumb={breadcrumb}
+        extras={extras}
+      />
+    </>
   );
 }

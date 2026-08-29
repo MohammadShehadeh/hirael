@@ -29,10 +29,12 @@ const importSpecifiers = (source: string) =>
   [...source.matchAll(/(?:import|export)[^"']*?["']([^"']+)["']/g)].map((match) => match[1]);
 
 // `shadcn build` writes but never prunes, so start from an empty /r to avoid
-// validating stale payloads. `shell: true` resolves pnpm's Windows shim; the
-// static args carry no injection risk.
+// validating stale payloads. That also clears the generated `.md` pages, which
+// share the directory but not the builder — `registry:md` puts them back, so a
+// run leaves /r as the build would, not missing half of it. `shell: true`
+// resolves pnpm's Windows shim; the static args carry no injection risk.
 rmSync(R_DIR, { recursive: true, force: true });
-for (const script of ['registry:gen', 'registry:build']) {
+for (const script of ['registry:gen', 'registry:build', 'registry:md']) {
   execFileSync('pnpm', [script], { stdio: 'inherit', cwd: ROOT, shell: true });
 }
 

@@ -28,7 +28,7 @@ const itemLine = (entry: RegistryEntryMeta, prefix = '') =>
   line(
     entry.title,
     `${REGISTRY_BASE_URL}${entryHref(entry)}`,
-    `${prefix}${entry.description} Registry JSON: ${REGISTRY_BASE_URL}/r/${entry.name}.json`,
+    `${prefix}${entry.description} Markdown: ${REGISTRY_BASE_URL}/r/${entry.name}.md. Registry JSON: ${REGISTRY_BASE_URL}/r/${entry.name}.json`,
   );
 
 const components = COMPONENT_CATEGORY_ORDER.flatMap((category) =>
@@ -42,14 +42,19 @@ const blocks = BLOCK_KIND_ORDER.flatMap((kind) =>
 const templates = TEMPLATES.map((entry) => itemLine(entry, 'Full-page template. '));
 
 const docs = [
-  line('Full catalog JSON', `${REGISTRY_BASE_URL}/r/registry.json`, 'Every item in one shadcn registry document'),
+  line(
+    'Full catalog JSON (Radix UI)',
+    `${REGISTRY_BASE_URL}/r/registry.json`,
+    'Every item in one shadcn registry document',
+  ),
+  line(
+    'Full catalog JSON (Base UI)',
+    `${REGISTRY_BASE_URL}/r/base/registry.json`,
+    'The same catalog built on Base UI primitives',
+  ),
   line('Components overview', `${REGISTRY_BASE_URL}/components`, 'All components with live previews'),
   line('Blocks overview', `${REGISTRY_BASE_URL}/blocks`, 'Block categories and schematic index'),
-  line(
-    'Theme playground',
-    `${REGISTRY_BASE_URL}/theme`,
-    'Live token editor and component gallery against custom themes',
-  ),
+  line('Templates overview', `${REGISTRY_BASE_URL}/templates`, 'Full-page templates with framed previews'),
   line('Changelog', `${REGISTRY_BASE_URL}/changelog`, 'Release notes'),
   line('GitHub', BRAND.repoUrl, 'Source repository'),
 ];
@@ -63,7 +68,7 @@ const output = [
   '',
   `> The components shadcn/ui doesn't ship: React components, section blocks, and full-page templates distributed through the shadcn registry schema. Install any item with \`npx shadcn@latest add ${REGISTRY_BASE_URL}/r/<name>.json\` (Radix UI) or \`${REGISTRY_BASE_URL}/r/base/<name>.json\` (Base UI); the source copies into the consumer's repo.`,
   '',
-  'Every item below has a machine-readable registry JSON at `/r/<name>.json` (Radix UI) and `/r/base/<name>.json` (Base UI) containing its full source files, dependencies, and install targets. Human-facing pages embed live demos of each item.',
+  'Every item below has a machine-readable registry JSON at `/r/<name>.json` (Radix UI) and `/r/base/<name>.json` (Base UI) containing its full source files, dependencies, and install targets, plus a Markdown version of its documentation page at `/r/<name>.md` (and `/r/base/<name>.md`) carrying the install command, usage, examples, full source, and API tables in one document. Human-facing pages embed live demos of each item.',
   '',
   '## Components',
   ...components,

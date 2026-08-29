@@ -21,28 +21,38 @@ const FOOTER_LINKS: {
     label: 'Resources',
     links: [
       { href: '/changelog', label: 'Changelog' },
-      {
-        href: 'https://ui.shadcn.com',
-        label: 'shadcn/ui',
-        external: true,
-      },
+      { href: `${SITE.githubRepoUrl}/blob/main/CONTRIBUTING.md`, label: 'Contributing', external: true },
+      { href: `${SITE.githubRepoUrl}/blob/main/LICENSE`, label: 'License', external: true },
+    ],
+  },
+  {
+    // The machine-facing half of the registry. It has no page of its own, so
+    // without this column the only way to find it is to already know it exists.
+    // `external` on the static files keeps them out of the client router,
+    // which would otherwise try to navigate to a text file as if it were a route.
+    label: 'For agents',
+    links: [
+      { href: '/llms.txt', label: 'llms.txt', external: true },
+      { href: '/r/registry.json', label: 'Registry JSON', external: true },
     ],
   },
   {
     label: 'Author',
     links: [
+      { href: SITE.githubRepoUrl, label: 'Repository', external: true },
       { href: SITE.authorUrl, label: 'Portfolio', external: true },
       { href: SITE.githubUrl, label: 'GitHub', external: true },
     ],
   },
 ];
 
-const COMPACT_LINKS = [
+const COMPACT_LINKS: { href: string; label: string; external?: boolean }[] = [
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },
   { href: '/changelog', label: 'Changelog' },
-] as const;
+  { href: '/llms.txt', label: 'llms.txt', external: true },
+];
 
 /** One-row footer for pages inside the sidebar shell, where the marketing footer is noise. */
 export const SiteFooterCompact = ({ className }: { className?: string }) => {
@@ -54,11 +64,23 @@ export const SiteFooterCompact = ({ className }: { className?: string }) => {
           © {year} {SITE.author}. Built on shadcn/ui.
         </p>
         <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          {COMPACT_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
-              {link.label}
-            </Link>
-          ))}
+          {COMPACT_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
+                {link.label}
+              </Link>
+            ),
+          )}
           <a
             href={SITE.githubRepoUrl}
             target="_blank"
@@ -114,7 +136,7 @@ export const SiteFooter = ({ className }: { className?: string }) => {
             </div>
 
             {/* Link columns. */}
-            <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
               {FOOTER_LINKS.map((group) => (
                 <div key={group.label} className="flex flex-col gap-3.5">
                   <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground/70">

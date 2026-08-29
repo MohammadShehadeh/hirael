@@ -2,11 +2,6 @@
  * Site-wide brand constants. One source of truth for name, URLs, social links.
  */
 
-import type { Metadata } from 'next';
-
-import type { RegistryEntryMeta } from '@/registry/hirael/registry-meta';
-import { entryHref } from '@/registry/hirael/registry-meta';
-
 export const SITE = {
   name: 'Hirael',
   description: "The components shadcn/ui doesn't ship.",
@@ -47,57 +42,3 @@ export const NAV_LINKS: { href: string; label: string; external?: boolean }[] = 
   { href: '/templates', label: 'Templates' },
   { href: '/changelog', label: 'Changelog' },
 ];
-
-/**
- * Shared `generateMetadata` body for the component/block/template detail
- * routes — same shape, differing only in title suffix (matching each route's
- * existing format, so the extraction changes no output).
- *
- * `ownOgImage` drops the site-wide `images` entry so Next's file-convention
- * resolver uses the route's own `opengraph-image.tsx` instead. That URL can't
- * be set by hand: Next appends a content-hash suffix unknown at
- * `generateMetadata` time, so an explicit `images` wouldn't match the file.
- */
-export const detailMetadata = (
-  entry: RegistryEntryMeta,
-  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},
-): Metadata => {
-  const { titleSuffix, ownOgImage } = opts;
-  const href = entryHref(entry);
-  const url = `${SITE.url}${href}`;
-  const pageTitle = titleSuffix ? `${entry.title} ${titleSuffix}` : entry.title;
-  const ogTitle = titleSuffix ? `${pageTitle} | ${SITE.name}` : `${pageTitle} - ${SITE.name}`;
-
-  return {
-    title: pageTitle,
-    description: entry.description,
-    alternates: {
-      canonical: href,
-    },
-    openGraph: {
-      type: 'article',
-      url,
-      siteName: SITE.name,
-      title: ogTitle,
-      description: entry.description,
-      ...(ownOgImage
-        ? {}
-        : {
-            images: [
-              {
-                url: '/opengraph-image',
-                width: 1200,
-                height: 630,
-                alt: ogTitle,
-              },
-            ],
-          }),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: ogTitle,
-      description: entry.description,
-      ...(ownOgImage ? {} : { images: ['/opengraph-image'] }),
-    },
-  };
-};

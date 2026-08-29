@@ -3,13 +3,16 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight, Boxes, Download, Languages, Layers, MonitorSmartphone, SunMoon } from 'lucide-react';
 
+import { BlockPreview } from '@/components/block-preview';
 import { BlockShowcase } from '@/components/block-showcase';
 import { DemoCard } from '@/components/demo-card';
+import { ItemCards } from '@/components/item-cards';
 import { Pill, SectionHeading } from '@/components/page-header';
 import { InstallBlock } from '@/components/install-block';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { getChangelog, type ChangelogEntry } from '@/lib/changelog';
+import { getRecentlyAdded } from '@/lib/detail-extras';
 import { getRepoStars } from '@/lib/github';
 import { SITE } from '@/lib/site';
 import { Marquee } from '@/registry/hirael/bases/radix/components/marquee';
@@ -66,6 +69,8 @@ export default async function LandingPage() {
         <WhyHirael />
         <FeaturedComponents />
         <SectionBlocks />
+        <FullTemplates />
+        <RecentlyAdded />
         <ClosingCta />
       </main>
       <SiteFooter />
@@ -374,6 +379,106 @@ function SectionBlocks() {
         />
 
         <BlockShowcase />
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Full templates                                                             */
+/* -------------------------------------------------------------------------- */
+
+/** The two the catalog leads with; the rest are one click away on /templates. */
+const FEATURED_TEMPLATES = ['agency-landing', 'mindloop'] as const;
+
+/**
+ * Components and blocks each get a section that shows the real thing; templates
+ * were the one item type the page only named, in a button at the very bottom.
+ * They are the largest thing the registry ships, so they get the same framed
+ * preview the templates index uses.
+ */
+function FullTemplates() {
+  return (
+    <section className="relative py-20 sm:py-28">
+      <div className="container w-full">
+        <SectionHeading
+          kicker="Templates"
+          title="Whole pages, not just parts."
+          blurb={`${TEMPLATES.length} complete layouts composed from the same blocks and components. One command copies the whole page into your repo.`}
+        />
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {FEATURED_TEMPLATES.map((name) => {
+            const entry = REGISTRY_BY_NAME[name];
+            return (
+              <Link
+                key={name}
+                href={entryHref(entry)}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-background outline-none transition-colors hover:border-foreground/40 focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              >
+                <BlockPreview entry={entry} />
+                <div className="flex flex-col gap-1.5 p-5">
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="text-base font-medium tracking-[-0.01em]">{entry.title}</span>
+                    <ArrowUpRight
+                      className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 rtl:-scale-x-100"
+                      aria-hidden
+                    />
+                  </span>
+                  <span className="line-clamp-2 text-sm text-muted-foreground">{entry.description}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Button variant="outline" className="rounded-full px-5" asChild>
+            <Link href="/templates">
+              All {TEMPLATES.length} templates
+              <ArrowRight className="size-4 rtl:rotate-180" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Recently added                                                             */
+/* -------------------------------------------------------------------------- */
+
+const RECENT_COUNT = 6;
+
+/**
+ * What shipped last. The changelog tells the story of a release; this points
+ * at the items themselves, so a returning visitor lands on something new in
+ * one click instead of reading release notes to find its name.
+ */
+async function RecentlyAdded() {
+  const recent = await getRecentlyAdded(RECENT_COUNT);
+  if (recent.length === 0) return null;
+
+  return (
+    <section className="relative py-20 sm:py-28">
+      <div className="container w-full">
+        <SectionHeading
+          kicker="Recently added"
+          title="The newest of the catalog."
+          blurb="The last few items to land, newest first. Every release is written up in the changelog."
+        />
+
+        <ItemCards items={recent} withDate />
+
+        <div className="mt-8 flex justify-center">
+          <Button variant="outline" className="rounded-full px-5" asChild>
+            <Link href="/changelog">
+              Read the changelog
+              <ArrowRight className="size-4 rtl:rotate-180" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

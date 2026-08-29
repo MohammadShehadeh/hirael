@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google';
-import Script from 'next/script';
 import './globals.css';
 
 import { ThemeProvider } from '@/components/active-theme';
+import { JsonLd } from '@/components/json-ld';
 import { SkipLink } from '@/components/skip-link';
+import { siteJsonLd } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 import { customizerPrehydrationScript } from '@/lib/customizer';
 import { inter } from '@/lib/fonts';
@@ -92,40 +93,12 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: customizerPrehydrationScript() }} />
 
-        <Script
-          id="hirael-jsonld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
-              name: SITE.name,
-              alternateName: ['Hirael', 'shadcn registry'],
-              description: SITE.longDescription,
-              url: SITE.url,
-              applicationCategory: 'DeveloperApplication',
-              operatingSystem: 'Any',
-              softwareVersion: SITE.version,
-              isAccessibleForFree: true,
-              offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'USD',
-              },
-              author: {
-                '@type': 'Person',
-                name: SITE.author,
-                url: SITE.authorUrl,
-              },
-              creator: {
-                '@type': 'Person',
-                name: SITE.author,
-                url: SITE.authorUrl,
-              },
-              sameAs: [SITE.githubUrl],
-            }),
-          }}
-        />
+        <JsonLd id="hirael-jsonld" data={siteJsonLd()} />
+
+        {/* Machine-readable twins of the catalog, so an agent that lands on any
+            page can find the registry without scraping it. */}
+        <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
+        <link rel="alternate" type="application/json" title="Registry catalog" href="/r/registry.json" />
       </head>
       <body className={`${inter.variable} ${jetBrainsMono.variable} ${cormorant.variable} font-sans antialiased`}>
         <SkipLink />

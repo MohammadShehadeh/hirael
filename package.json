@@ -14,17 +14,18 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm registry:gen && pnpm registry:props && pnpm check:registry && pnpm registry:build && next build",
+    "build": "pnpm registry:gen && pnpm registry:props && pnpm check:registry && pnpm registry:build && pnpm registry:md && next build",
     "start": "npx serve out",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "registry:gen": "tsx scripts/build-registry.mts && tsx scripts/build-llms.mts",
     "registry:props": "tsx scripts/extract-props.mts",
+    "registry:md": "tsx scripts/build-markdown.mts",
     "registry:build": "shadcn build && shadcn build registry.base.json -o public/r/base && tsx scripts/stamp-source.mts",
     "check:registry": "tsx scripts/check-registry.mts",
     "check:install": "tsx scripts/check-install.mts",
-    "prepare": "husky && pnpm registry:gen && pnpm registry:props"
+    "prepare": "husky && pnpm registry:gen && pnpm registry:props && pnpm registry:md"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

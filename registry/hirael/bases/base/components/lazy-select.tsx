@@ -28,6 +28,7 @@ interface Ctx {
   onLoadMore?: () => void;
   disabled?: boolean;
   clearable: boolean;
+  listboxId: string;
 }
 
 const LazySelectContext = React.createContext<Ctx | null>(null);
@@ -133,6 +134,8 @@ const LazySelect = ({
     [onSearchChange],
   );
 
+  const listboxId = React.useId();
+
   const selectedLabel = value !== undefined ? (labelCache[value] ?? value) : undefined;
 
   const ctx = React.useMemo<Ctx>(
@@ -151,6 +154,7 @@ const LazySelect = ({
       onLoadMore,
       disabled,
       clearable,
+      listboxId,
     }),
     [
       value,
@@ -167,6 +171,7 @@ const LazySelect = ({
       onLoadMore,
       disabled,
       clearable,
+      listboxId,
     ],
   );
 
@@ -194,6 +199,7 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...
         <button
           type="button"
           role="combobox"
+          aria-controls={ctx.listboxId}
           aria-expanded={ctx.open}
           aria-haspopup="listbox"
           disabled={ctx.disabled}
@@ -293,7 +299,7 @@ const LazySelectContent = ({
     >
       <Command shouldFilter={false} loop>
         <CommandInput placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
-        <CommandList>
+        <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" />

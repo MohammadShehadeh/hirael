@@ -2947,6 +2947,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['motion', 'lucide-react'],
   },
   {
+    name: 'hero-10',
+    title: 'Hero 10',
+    description:
+      'Bordered hero card over a blurred full-bleed image: a rocket badge, a large centered headline, sub-copy and dual CTAs that rise into place on load. Reduced-motion aware.',
+    blockTagline: 'Blurred image card · centered stack · rise-in',
+    category: 'blocks',
+    blockKind: 'hero',
+    files: [
+      {
+        path: 'blocks/hero-10/hero-10.tsx',
+        target: 'components/blocks/hero-10.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button'],
+    dependencies: ['motion', 'lucide-react'],
+  },
+  {
+    name: 'footer-06',
+    title: 'Footer 6',
+    description:
+      'Two-part footer: a bordered CTA panel over a rotated, blurred image with a headline, sub-copy and a wide sign-up button, above a brand block with social icons, two link columns and a hairline copyright row.',
+    blockTagline: 'Image CTA panel · brand block · link columns',
+    category: 'blocks',
+    blockKind: 'footer',
+    files: [
+      {
+        path: 'blocks/footer-06/footer-06.tsx',
+        target: 'components/blocks/footer-06.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['motion'],
+  },
+  {
     name: 'footer-05',
     title: 'Footer 5',
     description:

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ChevronLeft } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
@@ -38,8 +38,12 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
+const jitter = (i: number) => {
+  const value = Math.sin(i + 1) * 10_000;
+  return value - Math.floor(value);
+};
+
 const FloatingPaths = ({ position }: { position: number }) => {
-  const reduceMotion = useReducedMotion();
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -49,44 +53,31 @@ const FloatingPaths = ({ position }: { position: number }) => {
     } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
       684 - i * 5 * position
     } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
+    color: `rgba(15,23,42,${0.1 + i * 0.03})`,
     width: 0.5 + i * 0.03,
-    duration: 22 + (i % 6) * 2,
   }));
 
   return (
-    <div data-slot="login-paths" className="pointer-events-none absolute inset-0 text-foreground dark:text-primary">
-      <svg className="size-full" fill="none" viewBox="0 0 696 316" aria-hidden>
+    <div className="pointer-events-none absolute inset-0">
+      <svg className="h-full w-full text-primary" fill="none" viewBox="0 0 696 316">
         {paths.map((path) => (
           <motion.path
-            key={path.id}
+            animate={{
+              pathLength: 1,
+              pathOffset: [0, 1, 0],
+            }}
             d={path.d}
+            initial={{ pathLength: 0.3 }}
+            key={path.id}
             stroke="currentColor"
-            strokeOpacity={0.18 + path.id * 0.02}
+            className="opacity-60"
+            strokeOpacity={0.1 + path.id * 0.03}
             strokeWidth={path.width}
-            initial={{ pathLength: 0.3, opacity: 0.5 }}
-            animate={
-              reduceMotion
-                ? { pathLength: 1, opacity: 0.4 }
-                : {
-                    // Every keyframe loops back to its start — a one-way
-                    // value here snaps visibly on each repeat.
-                    pathLength: [0.3, 1, 0.3],
-                    opacity: [0.2, 0.5, 0.2],
-                    pathOffset: [0, 1, 0],
-                  }
-            }
-            transition={
-              reduceMotion
-                ? { duration: 0 }
-                : {
-                    duration: path.duration,
-                    // Negative delay starts each path mid-cycle; in unison
-                    // the whole fan drifts offscreen and blanks the panel.
-                    delay: (-path.id / 36) * path.duration,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: 'linear',
-                  }
-            }
+            transition={{
+              duration: 20 + jitter(path.id) * 10,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: 'linear',
+            }}
           />
         ))}
       </svg>
@@ -109,7 +100,7 @@ const Login03 = () => {
           }}
         />
 
-        <div className="absolute inset-0 opacity-70">
+        <div className="absolute inset-0">
           <FloatingPaths position={1} />
           <FloatingPaths position={-1} />
         </div>
@@ -135,7 +126,7 @@ const Login03 = () => {
       </aside>
 
       <div data-slot="login-main" className="relative flex min-h-svh flex-col justify-center px-8 lg:min-h-0">
-        <div aria-hidden className="pointer-events-none absolute inset-0 isolate -z-10 opacity-60 contain-strict">
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-60">
           <div
             className="absolute end-0 top-0 h-320 w-140 -translate-y-88 rounded-full"
             style={{
@@ -152,14 +143,14 @@ const Login03 = () => {
           />
         </div>
 
-        <Button asChild variant="ghost" className="absolute start-5 top-7 gap-1.5">
+        <Button asChild variant="ghost" className="absolute start-5 top-7 z-10 gap-1.5">
           <a href="#">
             <ChevronLeft className="size-4 rtl:rotate-180" />
             Home
           </a>
         </Button>
 
-        <div className="mx-auto w-full space-y-6 sm:max-w-sm">
+        <div className="relative z-10 mx-auto w-full space-y-6 sm:max-w-sm">
           <div className="flex items-center gap-2 lg:hidden">
             <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card text-foreground">
               <BrandMark className="size-5" />

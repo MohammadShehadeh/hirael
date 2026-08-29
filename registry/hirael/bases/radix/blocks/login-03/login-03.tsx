@@ -38,7 +38,12 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
-export const FloatingPaths = ({ position }: { position: number }) => {
+const jitter = (i: number) => {
+  const x = Math.sin(i * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+const FloatingPaths = ({ position }: { position: number }) => {
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -69,7 +74,7 @@ export const FloatingPaths = ({ position }: { position: number }) => {
             strokeOpacity={0.1 + path.id * 0.03}
             strokeWidth={path.width}
             transition={{
-              duration: 20 + Math.random() * 10,
+              duration: 20 + jitter(path.id) * 10,
               repeat: Number.POSITIVE_INFINITY,
               ease: 'linear',
             }}

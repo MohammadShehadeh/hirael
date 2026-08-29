@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -38,7 +38,12 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
-export const FloatingPaths = ({ position }: { position: number }) => {
+const jitter = (i: number) => {
+  const x = Math.sin(i * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+const FloatingPaths = ({ position }: { position: number }) => {
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -69,7 +74,7 @@ export const FloatingPaths = ({ position }: { position: number }) => {
             strokeOpacity={0.1 + path.id * 0.03}
             strokeWidth={path.width}
             transition={{
-              duration: 20 + Math.random() * 10,
+              duration: 20 + jitter(path.id) * 10,
               repeat: Number.POSITIVE_INFINITY,
               ease: 'linear',
             }}
@@ -138,11 +143,14 @@ const Login03 = () => {
           />
         </div>
 
-        <Button asChild variant="ghost" className="absolute start-5 top-7 gap-1.5">
-          <a href="#">
-            <ChevronLeft className="size-4 rtl:rotate-180" />
-            Home
-          </a>
+        <Button
+          render={<a href="#" />}
+          nativeButton={false}
+          variant="ghost"
+          className="absolute start-5 top-7 gap-1.5"
+        >
+          <ChevronLeft className="size-4 rtl:rotate-180" />
+          Home
         </Button>
 
         <div className="mx-auto w-full space-y-6 sm:max-w-sm">

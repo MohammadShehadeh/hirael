@@ -498,7 +498,7 @@ const encodeQR = (value: string, level: QRCodeLevel = 'M'): boolean[][] => {
   return modules;
 };
 
-export interface QRCodeProps extends Omit<React.ComponentProps<'svg'>, 'children'> {
+export interface QRCodeProps extends Omit<React.ComponentProps<'svg'>, 'children' | 'onError'> {
   /** Text encoded into the QR symbol. */
   value: string;
   /** Error correction level. */
@@ -509,10 +509,12 @@ export interface QRCodeProps extends Omit<React.ComponentProps<'svg'>, 'children
   margin?: number;
   /** Accessible title announced by screen readers. */
   title?: string;
+  /** Called when the value fails to encode; an empty svg is still rendered. */
+  onError?: (error: unknown) => void;
 }
 
-const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, className, ...props }: QRCodeProps) => {
-  const { d, dim } = React.useMemo(() => {
+const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, onError, className, ...props }: QRCodeProps) => {
+  const { d, dim, error } = React.useMemo(() => {
     try {
       const matrix = encodeQR(value, level);
       let path = '';
@@ -521,24 +523,34 @@ const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, className, 
           if (matrix[y][x]) path += `M${x + margin} ${y + margin}h1v1h-1z`;
         }
       }
-      return { d: path, dim: matrix.length + margin * 2 };
-    } catch {
-      return { d: '', dim: margin * 2 };
+      return { d: path, dim: matrix.length + margin * 2, error: null };
+    } catch (err) {
+      return { d: '', dim: margin * 2, error: err };
     }
   }, [value, level, margin]);
+
+  // Latest-ref: an inline `onError` changes identity every parent render and
+  // must not re-report the same failure each time.
+  const onErrorRef = React.useRef(onError);
+  React.useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
+  React.useEffect(() => {
+    if (error !== null) onErrorRef.current?.(error);
+  }, [error]);
 
   return (
     <svg
       data-slot="qr-code"
       role="img"
-      aria-label={title ?? value}
+      data-error={error !== null || undefined}
       viewBox={`0 0 ${dim} ${dim}`}
       width={size}
       height={size}
       className={cn('shrink-0 text-foreground', className)}
       {...props}
     >
-      {title ? <title>{title}</title> : null}
+      <title>{title ?? `QR code for ${value}`}</title>
       <path data-slot="qr-code-path" d={d} fill="currentColor" shapeRendering="crispEdges" />
     </svg>
   );

@@ -447,7 +447,7 @@ const ApiPanel = ({ parts }: { parts: ApiPart[] }) => {
           </div>
           {part.props.length ? (
             <Table>
-              <TableHeader className="sticky top-14 z-10 bg-card">
+              <TableHeader className="bg-card">
                 <TableRow>
                   <TableHead className={API_TH}>Prop</TableHead>
                   <TableHead className={API_TH}>Type</TableHead>

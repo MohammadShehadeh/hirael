@@ -55,11 +55,14 @@ const MorphingDialog = ({ children, open: openProp, defaultOpen, onOpenChange }:
     [openProp, onOpenChange],
   );
 
+  const open = React.useCallback(() => setOpen(true), [setOpen]);
+  const close = React.useCallback(() => setOpen(false), [setOpen]);
+
   const value = React.useMemo<MorphingDialogContextValue>(
     () => ({
       isOpen,
-      open: () => setOpen(true),
-      close: () => setOpen(false),
+      open,
+      close,
       uniqueId: reactId,
       titleId: `${reactId}-title`,
       descriptionId: `${reactId}-description`,
@@ -69,7 +72,7 @@ const MorphingDialog = ({ children, open: openProp, defaultOpen, onOpenChange }:
       setHasDescription,
       triggerRef,
     }),
-    [isOpen, setOpen, reactId, hasTitle, hasDescription],
+    [isOpen, open, close, reactId, hasTitle, hasDescription],
   );
 
   return (

@@ -80,7 +80,7 @@ const tokenizeLine = (line: string): Token[] => {
   return tokens;
 };
 
-const HighlightLine = ({ line }: { line: string }) => {
+const HighlightLine = React.memo(function HighlightLine({ line }: { line: string }) {
   const tokens = tokenizeLine(line);
   return (
     <span className="block min-h-[1.25rem]">
@@ -93,7 +93,7 @@ const HighlightLine = ({ line }: { line: string }) => {
           ))}
     </span>
   );
-};
+});
 
 interface YamlEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'defaultValue'> {
   value?: string;
@@ -121,6 +121,9 @@ const YamlEditor = ({
 
   const preRef = React.useRef<HTMLPreElement>(null);
   const gutterRef = React.useRef<HTMLDivElement>(null);
+  const caretRafRef = React.useRef(0);
+
+  React.useEffect(() => () => cancelAnimationFrame(caretRafRef.current), []);
 
   const lines = text.split('\n');
 
@@ -148,7 +151,7 @@ const YamlEditor = ({
     const next = text.slice(0, start) + '  ' + text.slice(end);
     if (!isControlled) setInternal(next);
     onValueChange?.(next);
-    requestAnimationFrame(() => {
+    caretRafRef.current = requestAnimationFrame(() => {
       el.selectionStart = el.selectionEnd = start + 2;
     });
   };
@@ -190,6 +193,7 @@ const YamlEditor = ({
         </pre>
         <textarea
           data-slot="yaml-editor-input"
+          aria-label="YAML editor"
           spellCheck={false}
           autoComplete="off"
           autoCapitalize="off"

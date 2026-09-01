@@ -121,7 +121,7 @@ const contentClassName = cn(
   '[&_.ProseMirror_p.is-editor-empty:first-child]:before:pointer-events-none [&_.ProseMirror_p.is-editor-empty:first-child]:before:float-start [&_.ProseMirror_p.is-editor-empty:first-child]:before:h-0 [&_.ProseMirror_p.is-editor-empty:first-child]:before:text-muted-foreground [&_.ProseMirror_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]',
 );
 
-export interface RichTextEditorProps {
+export interface RichTextEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   value?: string;
   onChange?: (value: string) => void;
   defaultValue?: string;
@@ -145,6 +145,7 @@ const RichTextEditor = ({
   onBlur,
   className,
   children,
+  ...props
 }: RichTextEditorProps) => {
   const isEditable = editable && !disabled;
 
@@ -241,6 +242,7 @@ const RichTextEditor = ({
           disabled && 'cursor-not-allowed opacity-50',
           className,
         )}
+        {...props}
       >
         {children ?? (
           <>
@@ -303,6 +305,7 @@ const RichTextEditorButton = ({
           pressed={pressed}
           onPressedChange={onPressedChange}
           disabled={disabled}
+          aria-label={tooltip}
           className={className}
         >
           {children}
@@ -372,6 +375,7 @@ const RichTextEditorLinkPopover = () => {
               size="sm"
               pressed={isLink}
               onPressedChange={() => handleOpen(!open)}
+              aria-label="Link"
             >
               <LinkIcon className="size-4" />
             </Toggle>
@@ -516,11 +520,17 @@ const RichTextEditorLinkBubble = () => {
 
   React.useEffect(() => {
     if (!target) return;
-    window.addEventListener('scroll', reposition, true);
-    window.addEventListener('resize', reposition);
+    let raf = 0;
+    const scheduleReposition = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(reposition);
+    };
+    window.addEventListener('scroll', scheduleReposition, true);
+    window.addEventListener('resize', scheduleReposition);
     return () => {
-      window.removeEventListener('scroll', reposition, true);
-      window.removeEventListener('resize', reposition);
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', scheduleReposition, true);
+      window.removeEventListener('resize', scheduleReposition);
     };
   }, [target]);
 

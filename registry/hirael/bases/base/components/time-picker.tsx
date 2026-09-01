@@ -52,7 +52,9 @@ const clampStep = (value: number, step: number, max: number) => {
 export interface TimePickerProps {
   value?: TimeValue | null;
   defaultValue?: TimeValue;
-  onValueChange?: (v: TimeValue) => void;
+  /** Reports every change, including `null` when the value is cleared. */
+  onValueChange?: (v: TimeValue | null) => void;
+  /** Side-effect hook for the clear button. State still arrives via `onValueChange`. */
   onClear?: () => void;
   clearable?: boolean;
   format?: TimeFormat;
@@ -83,7 +85,7 @@ const TimePicker = ({
   children,
 }: TimePickerProps) => {
   const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp ?? openInternal;
+  const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = React.useCallback(
     (next: boolean) => {
       if (openProp === undefined) setOpenInternal(next);
@@ -105,8 +107,9 @@ const TimePicker = ({
 
   const clearValue = React.useCallback(() => {
     if (valueProp === undefined) setInternal(null);
+    onValueChange?.(null);
     onClear?.();
-  }, [valueProp, onClear]);
+  }, [valueProp, onValueChange, onClear]);
 
   const ctx = React.useMemo<TimePickerContextValue>(
     () => ({
@@ -175,7 +178,9 @@ const TimePickerTrigger = ({
       }
     >
       <Clock className="size-3.5 shrink-0 text-muted-foreground" />
-      <span className="flex-1 truncate">{children ?? label ?? placeholder}</span>
+      <span data-slot="time-picker-trigger-label" className="flex-1 truncate">
+        {children ?? label ?? placeholder}
+      </span>
     </PopoverTrigger>
   );
 };
@@ -334,7 +339,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
 
   return (
     <PopoverContent align="start" data-slot="time-picker-content" className={cn('w-auto p-3', className)} {...props}>
-      <div className="flex items-stretch gap-2">
+      <div data-slot="time-picker-columns" className="flex items-stretch gap-2">
         <ScrollColumn values={hourValues} selected={displayHour} onSelect={setHour} ariaLabel="Hour" />
         <span aria-hidden className="flex items-center font-mono text-sm text-muted-foreground">
           :
@@ -367,7 +372,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         </Tabs>
       )}
       {ctx.clearable && ctx.value && (
-        <div className="mt-3 flex justify-end">
+        <div data-slot="time-picker-content-footer" className="mt-3 flex justify-end">
           <Button
             type="button"
             variant="ghost"

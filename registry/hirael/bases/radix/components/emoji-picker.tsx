@@ -17,6 +17,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                      */
@@ -676,9 +677,7 @@ interface EmojiPickerContextValue {
   hasRecent: boolean;
   skinTone: EmojiSkinTone;
   setSkinTone: (next: EmojiSkinTone) => void;
-  hovered: EmojiItem | null;
   setHovered: (next: EmojiItem | null) => void;
-  activeIndex: number;
   setActiveIndex: (next: number) => void;
   columns: number;
   select: (item: EmojiItem) => void;
@@ -696,6 +695,13 @@ const useEmojiPicker = () => {
   }
   return ctx;
 };
+
+const EmojiPickerHoverContext = React.createContext<EmojiItem | null>(null);
+
+// Its own context, not the main one: activeIndex changes on every arrow key. The
+// list reads it and hands each item a boolean `active`, so the memoized items
+// re-render only when their own flag flips.
+const EmojiPickerActiveIndexContext = React.createContext(-1);
 
 const readRecent = (key: string): string[] => {
   try {
@@ -830,9 +836,7 @@ const EmojiPicker = ({
       hasRecent: Boolean(recentKey),
       skinTone,
       setSkinTone,
-      hovered,
       setHovered,
-      activeIndex,
       setActiveIndex,
       columns,
       select,
@@ -852,8 +856,6 @@ const EmojiPicker = ({
       recentKey,
       skinTone,
       setSkinTone,
-      hovered,
-      activeIndex,
       columns,
       select,
       display,
@@ -864,16 +866,20 @@ const EmojiPicker = ({
 
   return (
     <EmojiPickerContext.Provider value={ctx}>
-      <div
-        data-slot="emoji-picker"
-        className={cn(
-          'flex w-80 max-w-full flex-col gap-2 rounded-md border border-border bg-popover p-2 text-popover-foreground',
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
+      <EmojiPickerHoverContext.Provider value={hovered}>
+        <EmojiPickerActiveIndexContext.Provider value={activeIndex}>
+          <div
+            data-slot="emoji-picker"
+            className={cn(
+              'flex w-80 max-w-full flex-col gap-2 rounded-md border border-border bg-popover p-2 text-popover-foreground',
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </div>
+        </EmojiPickerActiveIndexContext.Provider>
+      </EmojiPickerHoverContext.Provider>
     </EmojiPickerContext.Provider>
   );
 };
@@ -891,6 +897,7 @@ const EmojiPickerSearch = ({
   ...props
 }: EmojiPickerSearchProps) => {
   const ctx = useEmojiPicker();
+  const activeIndex = React.useContext(EmojiPickerActiveIndexContext);
   return (
     <div data-slot="emoji-picker-search" className="relative">
       <Search
@@ -910,7 +917,7 @@ const EmojiPickerSearch = ({
         onKeyDown={(e) => {
           if (e.key === 'ArrowDown') {
             e.preventDefault();
-            ctx.focusItem(ctx.activeIndex);
+            ctx.focusItem(activeIndex);
           } else if (e.key === 'Enter' && ctx.visible[0]) {
             e.preventDefault();
             ctx.select(ctx.visible[0]);
@@ -941,7 +948,7 @@ const EmojiPickerCategories = ({ labels, className, ...props }: EmojiPickerCateg
 
   return (
     <div
-      role="tablist"
+      role="group"
       aria-label="Emoji categories"
       data-slot="emoji-picker-categories"
       className={cn('flex items-center gap-0.5', className)}
@@ -965,8 +972,7 @@ const EmojiPickerCategories = ({ labels, className, ...props }: EmojiPickerCateg
           <button
             key={tab.id}
             type="button"
-            role="tab"
-            aria-selected={active}
+            aria-pressed={active}
             aria-label={label}
             title={label}
             tabIndex={active ? 0 : -1}
@@ -997,9 +1003,10 @@ interface EmojiPickerListProps extends Omit<React.ComponentProps<'div'>, 'childr
   children?: React.ReactNode;
 }
 
-const EmojiPickerList = ({ className, children, ...props }: EmojiPickerListProps) => {
+const EmojiPickerList = ({ className, children, ref, ...props }: EmojiPickerListProps) => {
   const ctx = useEmojiPicker();
-  const { visible, columns, activeIndex } = ctx;
+  const { visible, columns, registerList } = ctx;
+  const activeIndex = React.useContext(EmojiPickerActiveIndexContext);
 
   const focusIndex = (index: number) => {
     const clamped = Math.max(0, Math.min(visible.length - 1, index));
@@ -1041,9 +1048,11 @@ const EmojiPickerList = ({ className, children, ...props }: EmojiPickerListProps
     e.preventDefault();
   };
 
+  const listRef = React.useMemo(() => composeRefs(registerList, ref), [registerList, ref]);
+
   return (
     <div
-      ref={(el) => ctx.registerList(el)}
+      ref={listRef}
       id={`${ctx.id}-grid`}
       role="group"
       aria-label="Emoji"
@@ -1062,7 +1071,7 @@ const EmojiPickerList = ({ className, children, ...props }: EmojiPickerListProps
             }}
           >
             {visible.map((item, index) => (
-              <EmojiPickerItem key={item.emoji} item={item} index={index} />
+              <EmojiPickerItem key={item.emoji} item={item} index={index} active={index === activeIndex} />
             ))}
           </div>
           <EmojiPickerEmpty />
@@ -1075,19 +1084,21 @@ const EmojiPickerList = ({ className, children, ...props }: EmojiPickerListProps
 interface EmojiPickerItemProps extends Omit<React.ComponentProps<'button'>, 'children' | 'type'> {
   item: EmojiItem;
   index: number;
+  /** Roving-tabindex target. `EmojiPickerList` passes it; custom lists should too. */
+  active?: boolean;
 }
 
-const EmojiPickerItem = ({
+const EmojiPickerItem = React.memo(function EmojiPickerItem({
   item,
   index,
+  active = false,
   className,
   onClick,
   onFocus,
   onMouseEnter,
   ...props
-}: EmojiPickerItemProps) => {
+}: EmojiPickerItemProps) {
   const ctx = useEmojiPicker();
-  const active = ctx.activeIndex === index;
   return (
     <button
       type="button"
@@ -1121,7 +1132,7 @@ const EmojiPickerItem = ({
       {ctx.display(item)}
     </button>
   );
-};
+});
 
 /* -------------------------------------------------------------------------- */
 /*  Empty, footer, skin tone                                                  */
@@ -1158,7 +1169,7 @@ const EmojiPickerFooter = ({
   ...props
 }: EmojiPickerFooterProps) => {
   const ctx = useEmojiPicker();
-  const item = ctx.hovered;
+  const item = React.useContext(EmojiPickerHoverContext);
   return (
     <div
       data-slot="emoji-picker-footer"

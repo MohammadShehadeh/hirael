@@ -65,10 +65,7 @@ const IconStack = ({ className, children, style, layers = 3, ...props }: IconSta
   return (
     <div
       data-slot="icon-stack"
-      className={cn(
-        'relative aspect-9/10 w-18 text-foreground **:data-[slot=icon-stack-layer]:fill-muted',
-        className,
-      )}
+      className={cn('relative aspect-9/10 w-18 text-foreground **:data-[slot=icon-stack-layer]:fill-muted', className)}
       style={
         {
           '--icon-stack-face-x': `${(faceX / VIEW_WIDTH) * 100}%`,

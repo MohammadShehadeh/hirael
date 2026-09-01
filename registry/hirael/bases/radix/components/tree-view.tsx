@@ -118,7 +118,10 @@ export interface TreeItemProps extends Omit<React.ComponentProps<'div'>, 'title'
   label: React.ReactNode;
   /** Override the leading icon. Pass `null` to hide it entirely. */
   icon?: React.ReactNode;
+  /** Controlled expanded state. Pair with `onExpandedChange`. */
+  expanded?: boolean;
   defaultExpanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
   disabled?: boolean;
 }
 
@@ -126,7 +129,9 @@ const TreeItem = ({
   value,
   label,
   icon,
+  expanded: expandedProp,
   defaultExpanded = false,
+  onExpandedChange,
   disabled = false,
   className,
   children,
@@ -136,7 +141,16 @@ const TreeItem = ({
   const depth = React.useContext(TreeDepthContext);
   const parentTriggerRef = React.useContext(TreeParentContext);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = React.useState(defaultExpanded);
+  const [internalOpen, setInternalOpen] = React.useState(defaultExpanded);
+  const open = expandedProp ?? internalOpen;
+
+  const setOpen = React.useCallback(
+    (next: boolean) => {
+      if (expandedProp === undefined) setInternalOpen(next);
+      onExpandedChange?.(next);
+    },
+    [expandedProp, onExpandedChange],
+  );
 
   const hasChildren = React.Children.count(children) > 0;
   const isSelected = !hasChildren && selected === value;
@@ -146,6 +160,18 @@ const TreeItem = ({
     if (!el) return;
     return registerItem(value, el);
   }, [registerItem, value]);
+
+  // An unmounting item that holds focus (e.g. an ancestor collapsed) hands it
+  // to the parent trigger instead of dropping it to <body>. Kept apart from the
+  // registration effect, which re-runs on `value` changes while the item stays mounted.
+  React.useLayoutEffect(() => {
+    const el = triggerRef.current;
+    const parentTrigger = parentTriggerRef?.current ?? null;
+    return () => {
+      const holdsFocus = el?.closest('[data-slot="tree-item"]')?.contains(document.activeElement) ?? false;
+      if (holdsFocus) parentTrigger?.focus();
+    };
+  }, [parentTriggerRef]);
 
   const onTriggerKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const { key } = event;
@@ -237,7 +263,14 @@ const TreeItem = ({
   if (hasChildren) {
     return (
       <Collapsible asChild open={open} onOpenChange={setOpen}>
-        <div data-slot="tree-item" role="treeitem" aria-selected={isSelected} aria-expanded={open} {...props}>
+        <div
+          data-slot="tree-item"
+          role="treeitem"
+          aria-selected={isSelected}
+          aria-expanded={open}
+          aria-level={depth + 1}
+          {...props}
+        >
           <CollapsibleTrigger asChild>
             <button {...triggerProps}>{labelRow}</button>
           </CollapsibleTrigger>
@@ -254,7 +287,7 @@ const TreeItem = ({
   }
 
   return (
-    <div data-slot="tree-item" role="treeitem" aria-selected={isSelected} {...props}>
+    <div data-slot="tree-item" role="treeitem" aria-selected={isSelected} aria-level={depth + 1} {...props}>
       <button {...triggerProps} data-state={isSelected ? 'selected' : undefined} onClick={() => setSelected(value)}>
         {labelRow}
       </button>

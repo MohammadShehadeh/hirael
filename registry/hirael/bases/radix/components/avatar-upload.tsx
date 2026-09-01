@@ -5,6 +5,7 @@ import { Camera, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import {
   Dialog,
   DialogContent,
@@ -438,11 +439,12 @@ const AvatarUploadTrigger = ({
 
 type AvatarUploadInputProps = Omit<React.ComponentProps<'input'>, 'type' | 'accept' | 'onChange' | 'multiple'>;
 
-const AvatarUploadInput = ({ className, ...props }: AvatarUploadInputProps) => {
+const AvatarUploadInput = ({ className, ref, ...props }: AvatarUploadInputProps) => {
   const ctx = useAvatarUpload();
+  const composedRef = React.useMemo(() => composeRefs(ctx.registerInput, ref), [ctx.registerInput, ref]);
   return (
     <input
-      ref={(el) => ctx.registerInput(el)}
+      ref={composedRef}
       id={`${ctx.id}-input`}
       type="file"
       accept={ctx.accept}
@@ -508,6 +510,8 @@ const AvatarUploadCropDialog = ({
   ...props
 }: AvatarUploadCropDialogProps) => {
   const ctx = useAvatarUpload();
+  // Destructured: `ctx.registerCropper` at a ref site makes the compiler read every ctx.* as a ref.
+  const { registerCropper } = ctx;
   return (
     <Dialog
       open={ctx.pending !== null}
@@ -522,7 +526,7 @@ const AvatarUploadCropDialog = ({
         </DialogHeader>
         {ctx.pending && (
           <ImageCropper
-            ref={(ref) => ctx.registerCropper(ref)}
+            ref={registerCropper}
             src={ctx.pending}
             alt={title}
             aspect={1}

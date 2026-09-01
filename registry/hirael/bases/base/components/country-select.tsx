@@ -117,6 +117,7 @@ interface CountrySelectContextValue {
   open: boolean;
   setOpen: (next: boolean) => void;
   find: (iso2: string) => Country | undefined;
+  listboxId: string;
 }
 
 const CountrySelectContext = React.createContext<CountrySelectContextValue | null>(null);
@@ -143,6 +144,7 @@ interface CountrySelectBaseProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  name?: string;
   children?: React.ReactNode;
 }
 
@@ -179,6 +181,7 @@ const CountrySelect = (props: CountrySelectProps) => {
     open: openProp,
     defaultOpen = false,
     onOpenChange,
+    name,
     children,
     multiple = false,
     value: valueProp,
@@ -187,6 +190,7 @@ const CountrySelect = (props: CountrySelectProps) => {
 
   const reactId = React.useId();
   const selectId = id ?? reactId;
+  const listboxId = React.useId();
 
   const [internal, setInternal] = React.useState<string[]>(() => toList(defaultValue));
   const selected = React.useMemo(() => (valueProp === undefined ? internal : toList(valueProp)), [valueProp, internal]);
@@ -248,8 +252,22 @@ const CountrySelect = (props: CountrySelectProps) => {
       open,
       setOpen,
       find: (iso2) => countries.find((c) => c.iso2 === iso2.toUpperCase()),
+      listboxId,
     }),
-    [selectId, countries, priorityList, rest, selected, select, multiple, showDialCode, disabled, open, setOpen],
+    [
+      selectId,
+      countries,
+      priorityList,
+      rest,
+      selected,
+      select,
+      multiple,
+      showDialCode,
+      disabled,
+      open,
+      setOpen,
+      listboxId,
+    ],
   );
 
   return (
@@ -257,6 +275,7 @@ const CountrySelect = (props: CountrySelectProps) => {
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
+      {name && <input type="hidden" name={name} value={selected.join(',')} />}
     </CountrySelectContext.Provider>
   );
 };
@@ -298,6 +317,7 @@ const CountrySelectTrigger = ({ className, children, variant = 'outline', ...pro
           variant={variant}
           role="combobox"
           id={ctx.id}
+          aria-controls={ctx.listboxId}
           aria-expanded={ctx.open}
           aria-haspopup="listbox"
           disabled={ctx.disabled}
@@ -430,7 +450,7 @@ const CountrySelectList = ({
 }: CountrySelectListProps) => {
   const ctx = useCountrySelect();
   return (
-    <CommandList data-slot="country-select-list" className={cn('max-h-64', className)} {...props}>
+    <CommandList id={ctx.listboxId} data-slot="country-select-list" className={cn('max-h-64', className)} {...props}>
       <CommandEmpty>{emptyLabel}</CommandEmpty>
       {ctx.priority.length > 0 && (
         <>

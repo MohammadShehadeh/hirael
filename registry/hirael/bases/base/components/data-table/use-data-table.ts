@@ -161,6 +161,10 @@ interface UseDataTableProps<TData extends RowData> extends Omit<
   initialState?: Omit<Partial<TableState<DataTableFeatures>>, 'sorting'> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
+  /** Controlled row selection. Pair with `onRowSelectionChange`. */
+  rowSelection?: RowSelectionState;
+  /** Controlled column visibility. Pair with `onColumnVisibilityChange`. */
+  columnVisibility?: ColumnVisibilityState;
   prefix?: string;
   history?: 'push' | 'replace';
   debounceMs?: number;
@@ -177,6 +181,10 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     pageCount,
     manual = pageCount != null,
     initialState,
+    rowSelection: rowSelectionProp,
+    columnVisibility: columnVisibilityProp,
+    onRowSelectionChange: onRowSelectionChangeProp,
+    onColumnVisibilityChange: onColumnVisibilityChangeProp,
     prefix = '',
     history = 'replace',
     debounceMs = DEBOUNCE_MS,
@@ -205,9 +213,30 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     [history, scroll, shallow, throttleMs, debounceMs, clearOnDefault, startTransition],
   );
 
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialState?.rowSelection ?? {});
-  const [columnVisibility, setColumnVisibility] = React.useState<ColumnVisibilityState>(
+  const [internalRowSelection, setInternalRowSelection] = React.useState<RowSelectionState>(
+    initialState?.rowSelection ?? {},
+  );
+  const rowSelection = rowSelectionProp ?? internalRowSelection;
+
+  const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<ColumnVisibilityState>(
     initialState?.columnVisibility ?? {},
+  );
+  const columnVisibility = columnVisibilityProp ?? internalColumnVisibility;
+
+  const onRowSelectionChange = React.useCallback(
+    (updaterOrValue: Updater<RowSelectionState>) => {
+      if (rowSelectionProp === undefined) setInternalRowSelection(updaterOrValue);
+      onRowSelectionChangeProp?.(updaterOrValue);
+    },
+    [rowSelectionProp, onRowSelectionChangeProp],
+  );
+
+  const onColumnVisibilityChange = React.useCallback(
+    (updaterOrValue: Updater<ColumnVisibilityState>) => {
+      if (columnVisibilityProp === undefined) setInternalColumnVisibility(updaterOrValue);
+      onColumnVisibilityChangeProp?.(updaterOrValue);
+    },
+    [columnVisibilityProp, onColumnVisibilityChangeProp],
   );
 
   const [page, setPage] = useQueryState(pageKey, parseAsInteger.withOptions(queryStateOptions).withDefault(1));
@@ -304,7 +333,9 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(queryColumnFilters);
 
   const columnFiltersRef = React.useRef(columnFilters);
-  columnFiltersRef.current = columnFilters;
+  React.useEffect(() => {
+    columnFiltersRef.current = columnFilters;
+  }, [columnFilters]);
 
   React.useEffect(() => {
     setColumnFilters((prev) => (areFiltersEqual(prev, queryColumnFilters) ? prev : queryColumnFilters));
@@ -353,11 +384,11 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
       enableColumnFilter: false,
     },
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange,
     onPaginationChange,
     onSortingChange,
     onColumnFiltersChange,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange,
     manualPagination: manual,
     manualSorting: manual,
     manualFiltering: manual,

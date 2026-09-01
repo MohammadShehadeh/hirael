@@ -71,7 +71,7 @@ const useFileDropzone = () => {
   return ctx;
 };
 
-export interface FileDropzoneProps {
+export interface FileDropzoneProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
@@ -79,7 +79,6 @@ export interface FileDropzoneProps {
   maxSize?: number;
   multiple?: boolean;
   disabled?: boolean;
-  children?: React.ReactNode;
 }
 
 const FileDropzone = ({
@@ -90,7 +89,9 @@ const FileDropzone = ({
   maxSize,
   multiple = false,
   disabled,
+  className,
   children,
+  ...props
 }: FileDropzoneProps) => {
   const [internalFiles, setInternalFiles] = React.useState<File[]>(defaultValue ?? []);
   const files = valueProp ?? internalFiles;
@@ -165,7 +166,13 @@ const FileDropzone = ({
     [files, setFiles, accept, maxSize, multiple, disabled, errors, addFiles, removeAt],
   );
 
-  return <FileDropzoneContext.Provider value={ctx}>{children}</FileDropzoneContext.Provider>;
+  return (
+    <FileDropzoneContext.Provider value={ctx}>
+      <div data-slot="file-dropzone" className={className} {...props}>
+        {children}
+      </div>
+    </FileDropzoneContext.Provider>
+  );
 };
 
 interface FileDropzoneZoneProps extends Omit<
@@ -265,6 +272,8 @@ const FileDropzoneZone = ({
         multiple={ctx.multiple}
         disabled={ctx.disabled}
         className="sr-only"
+        tabIndex={-1}
+        aria-hidden
         onChange={(e) => {
           const list = e.target.files;
           if (list && list.length > 0) ctx.addFiles(list);
@@ -303,6 +312,7 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
         return (
           <li
             key={`${file.name}-${file.lastModified}-${index}`}
+            data-slot="file-dropzone-item"
             className="flex min-w-0 items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1.5 text-sm"
           >
             <Icon className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
@@ -344,7 +354,11 @@ const FileDropzoneErrors = ({ className, ...props }: FileDropzoneErrorsProps) =>
       {...props}
     >
       {ctx.errors.map((err, i) => (
-        <li key={`${err.file.name}-${i}`} className="break-words text-[11px] text-destructive">
+        <li
+          key={`${err.file.name}-${i}`}
+          data-slot="file-dropzone-error"
+          className="break-words text-[11px] text-destructive"
+        >
           {err.message}
         </li>
       ))}

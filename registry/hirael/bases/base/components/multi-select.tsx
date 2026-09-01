@@ -5,7 +5,7 @@ import { Check, ChevronDown, X, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
-import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -38,6 +38,7 @@ interface MultiSelectContextValue {
   toggle: (v: string) => void;
   remove: (v: string) => void;
   clear: () => void;
+  listboxId: string;
 }
 
 const MultiSelectContext = React.createContext<MultiSelectContextValue | null>(null);
@@ -61,6 +62,7 @@ export interface MultiSelectProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  name?: string;
   children?: React.ReactNode;
 }
 
@@ -75,6 +77,7 @@ const MultiSelect = ({
   open: openProp,
   defaultOpen = false,
   onOpenChange,
+  name,
   children,
 }: MultiSelectProps) => {
   const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue ?? []);
@@ -119,6 +122,8 @@ const MultiSelect = ({
 
   const clear = React.useCallback(() => setValue([]), [setValue]);
 
+  const listboxId = React.useId();
+
   const ctx = React.useMemo<MultiSelectContextValue>(
     () => ({
       value,
@@ -135,8 +140,9 @@ const MultiSelect = ({
       toggle,
       remove,
       clear,
+      listboxId,
     }),
-    [value, setValue, options, open, setOpen, search, maxCount, disabled, loading, toggle, remove, clear],
+    [value, setValue, options, open, setOpen, search, maxCount, disabled, loading, toggle, remove, clear, listboxId],
   );
 
   return (
@@ -144,10 +150,16 @@ const MultiSelect = ({
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
+      {name && <input type="hidden" name={name} value={value.join(',')} />}
     </MultiSelectContext.Provider>
   );
 };
 
+/**
+ * Chips carry remove buttons, so they cannot sit inside the trigger button. The
+ * bordered box is a wrapper (`multi-select-trigger`) taking `className`; the
+ * button inside it (`multi-select-trigger-button`) takes every other prop.
+ */
 interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   className?: string;
@@ -158,68 +170,80 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ..
   const ctx = useMultiSelect();
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
 
+  // The popover anchors to the whole box, not the inner button that shrinks as chips fill the row.
   return (
-    <PopoverTrigger
-      render={
-        <button
-          type="button"
-          role="combobox"
-          aria-expanded={ctx.open}
-          aria-haspopup="listbox"
-          disabled={ctx.disabled}
-          data-slot="multi-select-trigger"
-          data-state={ctx.open ? 'open' : 'closed'}
-          className={cn(
-            'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm outline-none transition-colors',
-            'hover:border-ring/60 focus-visible:border-ring',
-            'data-open:border-ring',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            className,
-          )}
-          {...props}
-        />
-      }
-    >
-      {typeof children === 'function' ? (
-        children(ctx)
-      ) : children ? (
-        children
-      ) : (
-        <>
-          <span className="flex flex-1 flex-wrap items-center gap-1">
-            {selected.length === 0 ? (
-              <span className="px-1 text-muted-foreground">{placeholder}</span>
-            ) : (
-              selected.map((opt) => (
-                <Badge key={opt.value} variant="default" className="gap-1 pe-1">
-                  {opt.label}
-                  <span
-                    aria-hidden
-                    onPointerDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      ctx.remove(opt.value);
-                    }}
-                    className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
-                  >
-                    <X className="size-2.5" />
-                  </span>
-                </Badge>
-              ))
-            )}
-          </span>
-          <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
-            {selected.length > 0 && (
-              <span className="font-mono text-[10px] tabular-nums">
-                {selected.length}
-                {ctx.maxCount ? `/${ctx.maxCount}` : ''}
-              </span>
-            )}
-            <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-          </span>
-        </>
+    <PopoverAnchor
+      data-slot="multi-select-trigger"
+      data-open={ctx.open || undefined}
+      className={cn(
+        'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors',
+        'hover:border-ring/60 focus-within:border-ring',
+        'data-open:border-ring',
+        ctx.disabled && 'cursor-not-allowed opacity-50',
+        className,
       )}
-    </PopoverTrigger>
+    >
+      {!children && selected.length > 0 && (
+        <span data-slot="multi-select-chips" className="flex flex-wrap items-center gap-1">
+          {selected.map((opt) => (
+            <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
+              {opt.label}
+              {!ctx.disabled && (
+                <button
+                  type="button"
+                  data-slot="multi-select-chip-remove"
+                  aria-label={`Remove ${opt.label}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    ctx.remove(opt.value);
+                  }}
+                  className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
+                >
+                  <X className="size-2.5" />
+                </button>
+              )}
+            </Badge>
+          ))}
+        </span>
+      )}
+      <PopoverTrigger
+        render={
+          <button
+            type="button"
+            role="combobox"
+            aria-controls={ctx.listboxId}
+            aria-expanded={ctx.open}
+            aria-haspopup="listbox"
+            disabled={ctx.disabled}
+            data-slot="multi-select-trigger-button"
+            data-state={ctx.open ? 'open' : 'closed'}
+            className="flex grow items-center justify-between gap-2 self-stretch text-start outline-none disabled:cursor-not-allowed"
+            {...props}
+          />
+        }
+      >
+        {typeof children === 'function' ? (
+          children(ctx)
+        ) : children ? (
+          children
+        ) : (
+          <>
+            <span className="flex flex-1 flex-wrap items-center gap-1">
+              {selected.length === 0 && <span className="px-1 text-muted-foreground">{placeholder}</span>}
+            </span>
+            <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
+              {selected.length > 0 && (
+                <span className="font-mono text-[10px] tabular-nums">
+                  {selected.length}
+                  {ctx.maxCount ? `/${ctx.maxCount}` : ''}
+                </span>
+              )}
+              <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
+            </span>
+          </>
+        )}
+      </PopoverTrigger>
+    </PopoverAnchor>
   );
 };
 
@@ -245,6 +269,7 @@ const MultiSelectContent = ({
   ...props
 }: MultiSelectContentProps) => {
   const ctx = useMultiSelect();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const enabled = ctx.options.filter((o) => !o.disabled);
   const allSelected = enabled.length > 0 && enabled.every((o) => ctx.value.includes(o.value));
@@ -267,12 +292,12 @@ const MultiSelectContent = ({
       sideOffset={6}
       data-slot="multi-select-content"
       className={cn('w-(--anchor-width) min-w-[14rem] p-0', className)}
-      initialFocus={false}
+      initialFocus={() => inputRef.current}
       {...props}
     >
       <Command shouldFilter loop>
-        <CommandInput placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
-        <CommandList>
+        <CommandInput ref={inputRef} placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
+        <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" />

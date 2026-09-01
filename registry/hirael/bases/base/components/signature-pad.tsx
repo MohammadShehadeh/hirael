@@ -89,6 +89,7 @@ const SignaturePad = ({
   className,
   children,
   ref,
+  'aria-label': ariaLabel,
   ...props
 }: SignaturePadProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -289,7 +290,8 @@ const SignaturePad = ({
           ref={canvasRef}
           data-slot="signature-pad-canvas"
           role="img"
-          aria-label="Signature pad"
+          aria-roledescription="signature pad"
+          aria-label={ariaLabel ?? 'Signature pad. Draw using a mouse or touch.'}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endStroke}
@@ -335,7 +337,7 @@ const SignaturePadClear = ({ className, children, ...props }: React.ComponentPro
       data-slot="signature-pad-clear"
       disabled={ctx.disabled || ctx.empty}
       onClick={() => ctx.clear()}
-      className={cn(className)}
+      className={className}
       {...props}
     >
       <Eraser aria-hidden />
@@ -354,7 +356,7 @@ const SignaturePadUndo = ({ className, children, ...props }: React.ComponentProp
       data-slot="signature-pad-undo"
       disabled={ctx.disabled || ctx.empty}
       onClick={() => ctx.undo()}
-      className={cn(className)}
+      className={className}
       {...props}
     >
       <Undo2 aria-hidden />

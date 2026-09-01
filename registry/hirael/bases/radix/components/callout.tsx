@@ -44,23 +44,32 @@ const Callout = ({ title, icon, className, variant = 'info', children, ...props 
     if (icon === false) return null;
     if (React.isValidElement(icon)) return icon;
     const IconComponent = (icon as React.ElementType | undefined) ?? variantIcons[variantKey];
-    return <IconComponent className="size-5 shrink-0" aria-hidden />;
+    return <IconComponent data-slot="callout-icon" className="size-5 shrink-0" aria-hidden />;
   };
 
   return (
     <div
       data-slot="callout"
       data-variant={variantKey}
+      role={variantKey === 'error' ? 'alert' : undefined}
       className={cn(calloutVariants({ variant }), className)}
       {...props}
     >
       {(title || icon !== false) && (
         <div className="flex items-start gap-2">
           {renderIcon()}
-          {title && <span className="font-semibold leading-5">{title}</span>}
+          {title && (
+            <span data-slot="callout-title" className="font-semibold leading-5">
+              {title}
+            </span>
+          )}
         </div>
       )}
-      {children && <div className="text-sm leading-relaxed [&_a]:underline [&_a]:underline-offset-2">{children}</div>}
+      {children && (
+        <div data-slot="callout-content" className="text-sm leading-relaxed [&_a]:underline [&_a]:underline-offset-2">
+          {children}
+        </div>
+      )}
     </div>
   );
 };

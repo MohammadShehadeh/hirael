@@ -169,6 +169,7 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
       )}
       <Input
         inputMode="decimal"
+        dir="ltr"
         value={draft}
         disabled={ctx.disabled}
         onFocus={() => setEditing(true)}
@@ -189,8 +190,10 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
                 ? ([ctx.value[0] + delta * mult, ctx.value[1]] as NumberRangeValue)
                 : ([ctx.value[0], ctx.value[1] + delta * mult] as NumberRangeValue);
             ctx.setValue(next);
+            setDraft(format(next[i]));
           }
         }}
+        data-slot="number-range-field"
         className={cn('font-mono tabular-nums', ctx.prefix && 'ps-6', ctx.suffix && 'pe-8', className)}
         {...props}
       />

@@ -38,6 +38,7 @@ const CopyButton = ({
   size = 'md',
   timeout = 1500,
   onCopy,
+  onClick,
   className,
   children,
   ...props
@@ -47,17 +48,22 @@ const CopyButton = ({
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  const handleCopy = async () => {
-    try {
-      await writeClipboard(value);
-      setCopied(true);
-      onCopy?.(value);
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => setCopied(false), timeout);
-    } catch {
-      setCopied(false);
-    }
-  };
+  const handleCopy = React.useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event);
+      if (event.defaultPrevented) return;
+      try {
+        await writeClipboard(value);
+        setCopied(true);
+        onCopy?.(value);
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => setCopied(false), timeout);
+      } catch {
+        setCopied(false);
+      }
+    },
+    [value, onCopy, timeout, onClick],
+  );
 
   const hasLabel = children != null;
 

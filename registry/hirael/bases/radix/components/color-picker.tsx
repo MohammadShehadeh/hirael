@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Pipette } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
@@ -315,6 +316,8 @@ const ColorPickerTrigger = ({
         disabled={ctx.disabled}
         data-slot="color-picker-trigger"
         data-state={ctx.open ? 'open' : 'closed'}
+        aria-haspopup="dialog"
+        aria-expanded={ctx.open}
         className={cn(
           'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums uppercase outline-none transition-colors',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
@@ -338,9 +341,10 @@ const ColorPickerTrigger = ({
   );
 };
 
-const ColorPickerArea = ({ className, ...props }: React.ComponentProps<'div'>) => {
+const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
   const areaRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(areaRef, ref), [ref]);
   const draggingRef = React.useRef(false);
 
   const updateFromPointer = (clientX: number, clientY: number) => {
@@ -384,23 +388,27 @@ const ColorPickerArea = ({ className, ...props }: React.ComponentProps<'div'>) =
 
   return (
     <div
-      {...props}
-      ref={areaRef}
+      ref={composedRef}
       data-slot="color-picker-area"
       role="slider"
-      aria-label="Saturation and brightness"
       aria-valuetext={`saturation ${Math.round(ctx.hsv.s)}%, brightness ${Math.round(ctx.hsv.v)}%`}
       aria-valuenow={Math.round(ctx.hsv.s)}
       aria-valuemin={0}
       aria-valuemax={100}
       tabIndex={0}
+      {...props}
+      aria-label={props['aria-label'] ?? 'Saturation and brightness'}
       onPointerDown={(e) => {
+        props.onPointerDown?.(e);
+        if (e.defaultPrevented) return;
         e.preventDefault();
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX, e.clientY);
       }}
       onKeyDown={(e) => {
+        props.onKeyDown?.(e);
+        if (e.defaultPrevented) return;
         const step = e.shiftKey ? 10 : 2;
         let { s, v } = ctx.hsv;
         switch (e.key) {
@@ -446,9 +454,10 @@ const ColorPickerArea = ({ className, ...props }: React.ComponentProps<'div'>) =
   );
 };
 
-const ColorPickerHueSlider = ({ className, ...props }: React.ComponentProps<'div'>) => {
+const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
   const trackRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(trackRef, ref), [ref]);
   const draggingRef = React.useRef(false);
 
   const updateFromPointer = (clientX: number) => {
@@ -489,22 +498,26 @@ const ColorPickerHueSlider = ({ className, ...props }: React.ComponentProps<'div
 
   return (
     <div
-      {...props}
-      ref={trackRef}
+      ref={composedRef}
       data-slot="color-picker-hue-slider"
       role="slider"
-      aria-label="Hue"
       aria-valuemin={0}
       aria-valuemax={360}
       aria-valuenow={Math.round(ctx.hsv.h)}
       tabIndex={0}
+      {...props}
+      aria-label={props['aria-label'] ?? 'Hue'}
       onPointerDown={(e) => {
+        props.onPointerDown?.(e);
+        if (e.defaultPrevented) return;
         e.preventDefault();
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX);
       }}
       onKeyDown={(e) => {
+        props.onKeyDown?.(e);
+        if (e.defaultPrevented) return;
         const step = e.shiftKey ? 24 : 6;
         let h = ctx.hsv.h;
         if (e.key === 'ArrowLeft') h -= step;

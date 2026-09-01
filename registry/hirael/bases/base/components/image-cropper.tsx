@@ -431,7 +431,9 @@ const ImageCropperZoom = ({ className, ...props }: ImageCropperZoomProps) => {
       max={ctx.maxZoom}
       step={0.01}
       value={[ctx.zoom]}
-      onValueChange={([v]) => ctx.setZoom(v)}
+      onValueChange={([v]) => {
+        if (v !== undefined) ctx.setZoom(v);
+      }}
       disabled={ctx.disabled}
       data-slot="image-cropper-zoom"
       className={cn('w-full', className)}

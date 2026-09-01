@@ -38,6 +38,8 @@ export interface MediaInputProps extends Omit<React.ComponentProps<'div'>, 'onEr
   accept?: string;
   /** Maximum file size in bytes. Larger picks are rejected with an error. */
   maxSize?: number;
+  /** Field name for the native input, so the picked file can join form submission. */
+  name?: string;
   disabled?: boolean;
   value?: MediaInputValue | null;
   defaultValue?: MediaInputValue | null;
@@ -48,6 +50,7 @@ export interface MediaInputProps extends Omit<React.ComponentProps<'div'>, 'onEr
 const MediaInput = ({
   accept,
   maxSize,
+  name,
   disabled = false,
   value: valueProp,
   defaultValue = null,
@@ -123,6 +126,7 @@ const MediaInput = ({
           ref={inputRef}
           data-slot="media-input-input"
           type="file"
+          name={name}
           accept={accept}
           disabled={disabled}
           className="sr-only"
@@ -182,6 +186,7 @@ const MediaInputTrigger = ({ variant = 'outline', onClick, ...props }: React.Com
 
   return (
     <Button
+      type="button"
       data-slot="media-input-trigger"
       variant={variant}
       disabled={disabled || props.disabled}
@@ -218,6 +223,7 @@ const MediaInputClear = ({ onClick, className, children, ...props }: React.Compo
 
   return (
     <Button
+      type="button"
       data-slot="media-input-clear"
       variant="ghost"
       size="icon"

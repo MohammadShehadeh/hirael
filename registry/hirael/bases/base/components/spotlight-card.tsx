@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useMotionTemplate, useMotionValue } from 'motion/react';
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
@@ -11,11 +11,13 @@ interface SpotlightCardProps extends React.ComponentProps<'div'> {
 }
 
 const SpotlightCard = ({ className, children, size = 350, ...props }: SpotlightCardProps) => {
+  const reduced = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, color-mix(in oklch, var(--foreground) 10%, transparent), transparent 70%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (reduced) return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);

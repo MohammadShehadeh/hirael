@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Spinner } from '@/registry/hirael/bases/base/components/spinner';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 export interface MentionItem {
   id: string;
@@ -121,6 +122,47 @@ const segmentValue = (value: string, triggers: string[], known: Set<string>): Se
   return segments;
 };
 
+const metrics = 'min-h-16 w-full rounded-sm border px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words';
+
+interface MentionInputCtx {
+  id: string;
+  listboxId: string;
+  open: boolean;
+  loading: boolean;
+  filteredItems: MentionItem[];
+  activeIndex: number;
+  activeTrigger: string | undefined;
+  pos: { top: number; left: number };
+  value: string;
+  segments: Segment[];
+  disabled?: boolean;
+  placeholder?: string;
+  name?: string;
+  emptyMessage: string;
+  loadingMessage: string;
+  listLabel: string;
+  popupRef: React.RefObject<HTMLDivElement | null>;
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+  backdropRef: React.RefObject<HTMLDivElement | null>;
+  select: (item: MentionItem) => void;
+  setActiveIndex: (index: number) => void;
+  /**
+   * Caret, scroll sync and suggestion keys all read state from here, so the
+   * handlers stay put and travel as one bundle for the textarea to spread.
+   */
+  textareaProps: Pick<React.ComponentProps<'textarea'>, 'onChange' | 'onSelect' | 'onScroll' | 'onKeyDown' | 'onBlur'>;
+}
+
+const MentionInputContext = React.createContext<MentionInputCtx | null>(null);
+
+export const useMentionInput = () => {
+  const ctx = React.useContext(MentionInputContext);
+  if (!ctx) {
+    throw new Error('MentionInput compound parts must be used inside <MentionInput>');
+  }
+  return ctx;
+};
+
 export interface MentionInputProps extends Omit<React.ComponentProps<'div'>, 'defaultValue' | 'onChange'> {
   value?: string;
   defaultValue?: string;
@@ -133,6 +175,8 @@ export interface MentionInputProps extends Omit<React.ComponentProps<'div'>, 'de
   maxRows?: number;
   onMention?: (item: MentionItem) => void;
   emptyMessage?: string;
+  loadingMessage?: string;
+  listLabel?: string;
   name?: string;
 }
 
@@ -148,8 +192,12 @@ const MentionInput = ({
   maxRows,
   onMention,
   emptyMessage = 'No results.',
+  loadingMessage = 'Searching…',
+  listLabel = 'Mention suggestions',
   name,
   className,
+  children,
+  ref,
   ...props
 }: MentionInputProps) => {
   const id = React.useId();
@@ -178,6 +226,7 @@ const MentionInput = ({
   });
 
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+  const composedWrapperRef = React.useMemo(() => composeRefs(wrapperRef, ref), [ref]);
   const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
   const backdropRef = React.useRef<HTMLDivElement | null>(null);
   const popupRef = React.useRef<HTMLDivElement | null>(null);
@@ -337,43 +386,188 @@ const MentionInput = ({
     [mention, value, setValue, onMention],
   );
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (!open) return;
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setActiveIndex(filtered.length ? (active + 1) % filtered.length : 0);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setActiveIndex(filtered.length ? (active - 1 + filtered.length) % filtered.length : 0);
-    } else if (e.key === 'Enter' || e.key === 'Tab') {
-      const item = filtered[active];
-      if (item) {
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (!open) return;
+      if (e.key === 'ArrowDown') {
         e.preventDefault();
-        select(item);
+        setActiveIndex(filtered.length ? (active + 1) % filtered.length : 0);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setActiveIndex(filtered.length ? (active - 1 + filtered.length) % filtered.length : 0);
+      } else if (e.key === 'Enter' || e.key === 'Tab') {
+        const item = filtered[active];
+        if (item) {
+          e.preventDefault();
+          select(item);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        dismissedRef.current = true;
+        setMention(null);
       }
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      dismissedRef.current = true;
-      setMention(null);
-    }
-  };
+    },
+    [open, filtered, active, select],
+  );
 
-  const metrics = 'min-h-16 w-full rounded-sm border px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words';
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      dismissedRef.current = false;
+      setValue(e.target.value);
+      detect(e.target.value, e.target.selectionStart);
+    },
+    [setValue, detect],
+  );
+
+  const handleSelect = React.useCallback(
+    (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+      detect(e.currentTarget.value, e.currentTarget.selectionStart);
+    },
+    [detect],
+  );
+
+  const handleScroll = React.useCallback(
+    (e: React.UIEvent<HTMLTextAreaElement>) => {
+      const backdrop = backdropRef.current;
+      if (backdrop) {
+        backdrop.scrollTop = e.currentTarget.scrollTop;
+        backdrop.scrollLeft = e.currentTarget.scrollLeft;
+      }
+      if (open) setMention(null);
+    },
+    [open],
+  );
+
+  const handleBlur = React.useCallback(() => setMention(null), []);
+
+  const textareaProps = React.useMemo<MentionInputCtx['textareaProps']>(
+    () => ({
+      onChange: handleChange,
+      onSelect: handleSelect,
+      onScroll: handleScroll,
+      onKeyDown: handleKeyDown,
+      onBlur: handleBlur,
+    }),
+    [handleChange, handleSelect, handleScroll, handleKeyDown, handleBlur],
+  );
+
+  const ctx = React.useMemo<MentionInputCtx>(
+    () => ({
+      id,
+      listboxId,
+      open,
+      loading,
+      filteredItems: filtered,
+      activeIndex: active,
+      activeTrigger,
+      pos,
+      value,
+      segments,
+      disabled,
+      placeholder,
+      name,
+      emptyMessage,
+      loadingMessage,
+      listLabel,
+      popupRef,
+      textareaRef,
+      backdropRef,
+      select,
+      setActiveIndex,
+      textareaProps,
+    }),
+    [
+      id,
+      listboxId,
+      open,
+      loading,
+      filtered,
+      active,
+      activeTrigger,
+      pos,
+      value,
+      segments,
+      disabled,
+      placeholder,
+      name,
+      emptyMessage,
+      loadingMessage,
+      listLabel,
+      select,
+      textareaProps,
+    ],
+  );
 
   return (
-    <div
-      ref={wrapperRef}
-      data-slot="mention-input"
-      data-disabled={disabled || undefined}
-      className={cn('relative w-full', className)}
-      {...props}
-    >
+    <MentionInputContext.Provider value={ctx}>
+      <div
+        ref={composedWrapperRef}
+        data-slot="mention-input"
+        data-disabled={disabled || undefined}
+        className={cn('relative w-full', className)}
+        {...props}
+      >
+        {children ?? (
+          <>
+            <MentionInputTextarea />
+            <MentionInputList />
+          </>
+        )}
+      </div>
+    </MentionInputContext.Provider>
+  );
+};
+
+type MentionInputTextareaProps = Omit<
+  React.ComponentProps<'textarea'>,
+  'value' | 'defaultValue' | 'name' | 'placeholder' | 'disabled'
+>;
+
+/** The consumer's handler runs first; the part's own is skipped once the event is default-prevented. */
+const chainHandlers =
+  <E extends React.SyntheticEvent>(theirs: ((event: E) => void) | undefined, ours: ((event: E) => void) | undefined) =>
+  (event: E) => {
+    theirs?.(event);
+    if (!event.defaultPrevented) ours?.(event);
+  };
+
+const MentionInputTextarea = ({
+  className,
+  ref,
+  onChange,
+  onSelect,
+  onScroll,
+  onKeyDown,
+  onBlur,
+  ...props
+}: MentionInputTextareaProps) => {
+  const {
+    id,
+    listboxId,
+    open,
+    filteredItems,
+    activeIndex,
+    value,
+    segments,
+    disabled,
+    placeholder,
+    name,
+    backdropRef,
+    textareaRef,
+    textareaProps,
+  } = useMentionInput();
+  const composedRef = React.useMemo(() => composeRefs(textareaRef, ref), [textareaRef, ref]);
+  return (
+    <>
       <div
         ref={backdropRef}
         aria-hidden
         data-slot="mention-input-backdrop"
+        // The consumer's className lands on both layers so padding and font metrics
+        // stay aligned; the transparent overrides come last and win.
         className={cn(
           metrics,
+          className,
           'pointer-events-none absolute inset-0 overflow-hidden border-transparent text-transparent',
         )}
       >
@@ -393,7 +587,7 @@ const MentionInput = ({
         {'​'}
       </div>
       <textarea
-        ref={textareaRef}
+        ref={composedRef}
         rows={1}
         name={name}
         value={value}
@@ -404,85 +598,127 @@ const MentionInput = ({
         aria-haspopup="listbox"
         aria-autocomplete="list"
         aria-controls={listboxId}
-        aria-activedescendant={open && filtered[active] ? `${id}-option-${active}` : undefined}
+        aria-activedescendant={open && filteredItems[activeIndex] ? `${id}-option-${activeIndex}` : undefined}
         data-slot="mention-input-textarea"
-        onChange={(e) => {
-          dismissedRef.current = false;
-          setValue(e.target.value);
-          detect(e.target.value, e.target.selectionStart);
-        }}
-        onSelect={(e) => {
-          detect(e.currentTarget.value, e.currentTarget.selectionStart);
-        }}
-        onScroll={(e) => {
-          const backdrop = backdropRef.current;
-          if (backdrop) {
-            backdrop.scrollTop = e.currentTarget.scrollTop;
-            backdrop.scrollLeft = e.currentTarget.scrollLeft;
-          }
-          if (open) setMention(null);
-        }}
-        onKeyDown={handleKeyDown}
-        onBlur={() => setMention(null)}
+        {...props}
+        onChange={chainHandlers(onChange, textareaProps.onChange)}
+        onSelect={chainHandlers(onSelect, textareaProps.onSelect)}
+        onScroll={chainHandlers(onScroll, textareaProps.onScroll)}
+        onKeyDown={chainHandlers(onKeyDown, textareaProps.onKeyDown)}
+        onBlur={chainHandlers(onBlur, textareaProps.onBlur)}
         className={cn(
           metrics,
           'relative resize-none border-input bg-transparent outline-none transition-colors',
           'placeholder:text-muted-foreground',
           'focus-visible:border-ring',
           'disabled:cursor-not-allowed disabled:opacity-50',
+          className,
         )}
       />
-      {open && (
-        <div
-          ref={popupRef}
-          id={listboxId}
-          role="listbox"
-          aria-label="Mention suggestions"
-          data-slot="mention-input-list"
-          style={{ top: pos.top, left: pos.left }}
-          className="absolute z-50 max-h-60 w-64 overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
-        >
-          {loading ? (
-            <div
-              data-slot="mention-input-loading"
-              className="flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground"
-            >
-              <Spinner size="sm" />
-              Searching…
-            </div>
-          ) : filtered.length === 0 ? (
-            <div data-slot="mention-input-empty" className="px-2 py-2 text-xs text-muted-foreground">
-              {emptyMessage}
-            </div>
-          ) : (
-            filtered.map((item, i) => (
-              <div
-                key={item.id}
-                id={`${id}-option-${i}`}
-                role="option"
-                aria-selected={i === active}
-                data-slot="mention-input-item"
-                data-active={i === active || undefined}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => select(item)}
-                onMouseMove={() => setActiveIndex(i)}
-                className={cn(
-                  'flex cursor-default flex-col gap-0.5 rounded-sm px-2 py-1.5',
-                  i === active && 'bg-accent text-accent-foreground',
-                )}
-              >
-                <span className="text-sm leading-none">
-                  {mention?.trigger}
-                  {item.label}
-                </span>
-                {item.description && <span className="truncate text-xs text-muted-foreground">{item.description}</span>}
-              </div>
-            ))
-          )}
-        </div>
+    </>
+  );
+};
+
+const MentionInputList = ({ className, style, children, ref, ...props }: React.ComponentProps<'div'>) => {
+  const ctx = useMentionInput();
+  const composedRef = React.useMemo(() => composeRefs(ctx.popupRef, ref), [ctx.popupRef, ref]);
+
+  if (!ctx.open) return null;
+
+  return (
+    <div
+      ref={composedRef}
+      id={ctx.listboxId}
+      role="listbox"
+      aria-label={ctx.listLabel}
+      data-slot="mention-input-list"
+      style={{ ...style, top: ctx.pos.top, left: ctx.pos.left }}
+      className={cn(
+        'absolute z-50 max-h-60 w-64 overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+        className,
+      )}
+      {...props}
+    >
+      {children ??
+        (ctx.loading ? (
+          <div
+            data-slot="mention-input-loading"
+            className="flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground"
+          >
+            <Spinner size="sm" />
+            {ctx.loadingMessage}
+          </div>
+        ) : ctx.filteredItems.length === 0 ? (
+          <div data-slot="mention-input-empty" className="px-2 py-2 text-xs text-muted-foreground">
+            {ctx.emptyMessage}
+          </div>
+        ) : (
+          ctx.filteredItems.map((item, i) => <MentionInputItem key={item.id} item={item} index={i} />)
+        ))}
+    </div>
+  );
+};
+
+interface MentionInputItemProps extends Omit<React.ComponentProps<'div'>, 'children'> {
+  item: MentionItem;
+  index: number;
+  children?: React.ReactNode;
+}
+
+const MentionInputItem = ({
+  item,
+  index,
+  className,
+  children,
+  onMouseDown,
+  onClick,
+  onMouseMove,
+  ...props
+}: MentionInputItemProps) => {
+  const ctx = useMentionInput();
+  const active = index === ctx.activeIndex;
+  return (
+    <div
+      id={`${ctx.id}-option-${index}`}
+      role="option"
+      aria-selected={active}
+      data-slot="mention-input-item"
+      data-active={active || undefined}
+      onMouseDown={(e) => {
+        onMouseDown?.(e);
+        if (e.defaultPrevented) return;
+        // Keep focus in the textarea so the caret position survives the click.
+        e.preventDefault();
+      }}
+      onClick={(e) => {
+        onClick?.(e);
+        if (e.defaultPrevented) return;
+        ctx.select(item);
+      }}
+      onMouseMove={(e) => {
+        onMouseMove?.(e);
+        if (e.defaultPrevented) return;
+        ctx.setActiveIndex(index);
+      }}
+      className={cn(
+        'flex cursor-default flex-col gap-0.5 rounded-sm px-2 py-1.5',
+        active && 'bg-accent text-accent-foreground',
+        className,
+      )}
+      {...props}
+    >
+      {children ?? (
+        <>
+          {/* bdi keeps the trigger glued to the handle in RTL text */}
+          <bdi className="text-sm leading-none">
+            {ctx.activeTrigger}
+            {item.label}
+          </bdi>
+          {item.description && <span className="truncate text-xs text-muted-foreground">{item.description}</span>}
+        </>
       )}
     </div>
   );
 };
 
-export { MentionInput };
+export { MentionInput, MentionInputTextarea, MentionInputList, MentionInputItem };

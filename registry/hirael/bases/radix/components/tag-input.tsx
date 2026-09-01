@@ -38,7 +38,7 @@ const useTagInput = () => {
   return ctx;
 };
 
-export interface TagInputProps {
+export interface TagInputProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -65,7 +65,9 @@ const TagInput = ({
   validate,
   commitKeys = ['Enter', ','],
   splitOn = /[,\n\t]+/,
+  className,
   children,
+  ...props
 }: TagInputProps) => {
   const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue ?? []);
   const value = valueProp ?? internalValue;
@@ -171,7 +173,13 @@ const TagInput = ({
     ],
   );
 
-  return <TagInputContext.Provider value={ctx}>{children}</TagInputContext.Provider>;
+  return (
+    <TagInputContext.Provider value={ctx}>
+      <div data-slot="tag-input" className={cn('flex flex-col gap-2', className)} {...props}>
+        {children}
+      </div>
+    </TagInputContext.Provider>
+  );
 };
 
 type TagInputContainerProps = React.ComponentProps<'div'>;

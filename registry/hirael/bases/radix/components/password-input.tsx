@@ -63,7 +63,7 @@ const usePasswordContext = () => {
   return ctx;
 };
 
-export interface PasswordInputProps {
+export interface PasswordInputProps extends React.ComponentProps<'div'> {
   id?: string;
   value?: string;
   defaultValue?: string;
@@ -80,7 +80,9 @@ const PasswordInput = ({
   onValueChange,
   disabled,
   scorer = defaultPasswordScorer,
+  className,
   children,
+  ...props
 }: PasswordInputProps) => {
   const reactId = React.useId();
   const fieldId = id ?? reactId;
@@ -112,7 +114,13 @@ const PasswordInput = ({
     [fieldId, value, setValue, visible, disabled, strength],
   );
 
-  return <PasswordContext.Provider value={ctx}>{children}</PasswordContext.Provider>;
+  return (
+    <PasswordContext.Provider value={ctx}>
+      <div data-slot="password-input" className={cn('flex flex-col gap-2', className)} {...props}>
+        {children}
+      </div>
+    </PasswordContext.Provider>
+  );
 };
 
 interface PasswordInputFieldProps extends Omit<

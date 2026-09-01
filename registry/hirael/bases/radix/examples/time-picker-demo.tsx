@@ -13,8 +13,8 @@ import {
 
 const TimePickerDemo = () => {
   const t = useT();
-  const [t24, setT24] = React.useState<TimeValue>({ hour: 14, minute: 30 });
-  const [t12, setT12] = React.useState<TimeValue>({
+  const [t24, setT24] = React.useState<TimeValue | null>({ hour: 14, minute: 30 });
+  const [t12, setT12] = React.useState<TimeValue | null>({
     hour: 9,
     minute: 15,
     second: 0,
@@ -29,7 +29,7 @@ const TimePickerDemo = () => {
           <TimePickerContent />
         </TimePicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {`${t24.hour}:${t24.minute.toString().padStart(2, '0')}`}
+          {t24 ? `${t24.hour}:${t24.minute.toString().padStart(2, '0')}` : t({ en: 'Not set', ar: 'غير محدد' })}
         </p>
       </Field>
 
@@ -42,7 +42,9 @@ const TimePickerDemo = () => {
           <TimePickerContent />
         </TimePicker>
         <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {`${t12.hour}:${t12.minute.toString().padStart(2, '0')}:${(t12.second ?? 0).toString().padStart(2, '0')}`}
+          {t12
+            ? `${t12.hour}:${t12.minute.toString().padStart(2, '0')}:${(t12.second ?? 0).toString().padStart(2, '0')}`
+            : t({ en: 'Not set', ar: 'غير محدد' })}
         </p>
       </Field>
     </FieldGroup>

@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import {
   addDays,
   clampDate,
@@ -77,7 +78,9 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
   },
 ];
 
-export interface DateRangeCalendarProps {
+const EMPTY_RANGE: DateRange = {};
+
+export interface DateRangeCalendarProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: DateRange;
   defaultValue?: DateRange;
   onValueChange?: (range: DateRange | undefined) => void;
@@ -87,7 +90,6 @@ export interface DateRangeCalendarProps {
   locale?: string;
   weekStartsOn?: 0 | 1;
   numberOfMonths?: 1 | 2;
-  className?: string;
 }
 
 const DateRangeCalendar = ({
@@ -101,6 +103,8 @@ const DateRangeCalendar = ({
   weekStartsOn = 1,
   numberOfMonths = 2,
   className,
+  ref: refProp,
+  ...props
 }: DateRangeCalendarProps) => {
   const [internal, setInternal] = React.useState<DateRange | undefined>(defaultValue);
   const range = valueProp !== undefined ? valueProp : internal;
@@ -171,6 +175,7 @@ const DateRangeCalendar = ({
   const stepMonth = (n: number) => setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1));
 
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(rootRef, refProp), [refProp]);
   const focusDay = (d: Date) => {
     const doFocus = () => {
       rootRef.current?.querySelector<HTMLButtonElement>(`[data-day="${d.getTime()}"]`)?.focus();
@@ -209,7 +214,12 @@ const DateRangeCalendar = ({
     range?.from && isMonthVisible(range.from) ? startOfDay(range.from) : isMonthVisible(today) ? today : viewMonth;
 
   return (
-    <div ref={rootRef} data-slot="date-range-calendar" className={cn('flex gap-4', className)}>
+    <div
+      ref={composedRef}
+      data-slot="date-range-calendar"
+      className={cn('flex gap-4', className)}
+      {...props}
+    >
       {months.map((month, mi) => {
         const last = mi === numberOfMonths - 1;
         const cells = monthCells(month, weekStartsOn);
@@ -538,7 +548,7 @@ const DateRangePickerContent = ({
         )}
         <div data-slot="date-range-picker-content-calendar" className="flex flex-col gap-2">
           <DateRangeCalendar
-            value={ctx.range ?? {}}
+            value={ctx.range ?? EMPTY_RANGE}
             onValueChange={ctx.setRange}
             min={ctx.min}
             max={ctx.max}

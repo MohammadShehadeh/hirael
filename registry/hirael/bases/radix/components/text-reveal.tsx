@@ -61,9 +61,12 @@ const TextReveal = ({
 
   return (
     <Tag ref={ref} data-slot="text-reveal" className={cn(by === 'line' && 'flex flex-col', className)} {...props}>
+      {/* The split units are decorative, and a role-less element ignores aria-label. */}
+      <span className="sr-only">{children}</span>
       {units.map((unit, i) => (
         <React.Fragment key={i}>
           <span
+            aria-hidden
             data-slot="text-reveal-unit"
             className={cn('overflow-hidden pb-[0.12em]', by === 'line' ? 'flex' : 'inline-flex align-bottom')}
           >

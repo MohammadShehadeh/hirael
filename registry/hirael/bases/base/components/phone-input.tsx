@@ -108,6 +108,7 @@ export interface PhoneInputProps extends Omit<React.ComponentProps<'div'>, 'chil
   onValueChange?: (e164: string) => void;
   defaultCountry?: string;
   disabled?: boolean;
+  name?: string;
   children?: React.ReactNode;
 }
 
@@ -118,6 +119,7 @@ const PhoneInput = ({
   onValueChange,
   defaultCountry = 'US',
   disabled,
+  name,
   className,
   children,
   ...props
@@ -187,6 +189,9 @@ const PhoneInput = ({
     [fieldId, country, setCountry, national, setNational, disabled, open],
   );
 
+  const nationalDigits = digitsOnly(national);
+  const e164 = nationalDigits ? `${country.dialCode}${nationalDigits}` : '';
+
   return (
     <PhoneInputContext.Provider value={ctx}>
       <InputGroup
@@ -196,6 +201,7 @@ const PhoneInput = ({
         {...props}
       >
         {children}
+        {name && <input type="hidden" name={name} value={e164} />}
       </InputGroup>
     </PhoneInputContext.Provider>
   );
@@ -205,6 +211,7 @@ type PhoneInputCountrySelectProps = Omit<React.ComponentProps<'button'>, 'childr
 
 const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelectProps) => {
   const ctx = usePhoneInput();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <InputGroupAddon align="inline-start" data-slot="phone-input-country-select" className="cursor-pointer">
@@ -231,9 +238,9 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
             className={cn('size-3 text-muted-foreground transition-transform duration-150', ctx.open && 'rotate-180')}
           />
         </PopoverTrigger>
-        <PopoverContent align="start" sideOffset={6} className="w-64 p-0" initialFocus={false}>
+        <PopoverContent align="start" sideOffset={6} className="w-64 p-0" initialFocus={() => inputRef.current}>
           <Command loop>
-            <CommandInput placeholder="Search countries…" />
+            <CommandInput ref={inputRef} placeholder="Search countries…" />
             <CommandList>
               <CommandEmpty>No country found.</CommandEmpty>
               <CommandGroup>

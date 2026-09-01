@@ -103,9 +103,11 @@ const Sortable = ({
   const order = preview ?? committed;
 
   const orderRef = React.useRef(order);
-  orderRef.current = order;
   const committedRef = React.useRef(committed);
-  committedRef.current = committed;
+  React.useLayoutEffect(() => {
+    orderRef.current = order;
+    committedRef.current = committed;
+  }, [order, committed]);
 
   const itemsRef = React.useRef(new Map<string, ItemEntry>());
   const pressRef = React.useRef<{

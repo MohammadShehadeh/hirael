@@ -10,6 +10,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Spinner } from '@/registry/hirael/bases/base/components/spinner';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 interface InlineEditCtx {
   value: string;
@@ -26,6 +27,7 @@ interface InlineEditCtx {
   startEditing: () => void;
   submit: () => void;
   cancel: () => void;
+  previewRef: React.RefObject<HTMLSpanElement | null>;
 }
 
 const InlineEditContext = React.createContext<InlineEditCtx | null>(null);
@@ -154,6 +156,21 @@ const InlineEdit = ({
     onCancel?.();
   }, [pending, value, setEditing, onCancel]);
 
+  const previewRef = React.useRef<HTMLSpanElement | null>(null);
+  const wasEditingRef = React.useRef(editing);
+
+  // The editor unmounts when editing ends, dropping focus to <body>; return it
+  // to the preview unless the user already moved focus elsewhere (blur-submit).
+  React.useEffect(() => {
+    const wasEditing = wasEditingRef.current;
+    wasEditingRef.current = editing;
+    if (!wasEditing || editing) return;
+    const active = document.activeElement;
+    if (active === null || active === document.body) {
+      previewRef.current?.focus({ preventScroll: true });
+    }
+  }, [editing]);
+
   const ctx = React.useMemo<InlineEditCtx>(
     () => ({
       value,
@@ -170,6 +187,7 @@ const InlineEdit = ({
       startEditing,
       submit,
       cancel,
+      previewRef,
     }),
     [
       value,
@@ -211,8 +229,8 @@ const InlineEdit = ({
 /** Content is always the current value; swap the element with `render` (e.g. `render={<h2 />}`). */
 export type InlineEditPreviewProps = Omit<useRender.ComponentProps<'span'>, 'children'>;
 
-const InlineEditPreview = ({ render, className, ...props }: InlineEditPreviewProps) => {
-  const { value, editing, disabled, placeholder, startEditing } = useInlineEdit();
+const InlineEditPreview = ({ render, className, ref, ...props }: InlineEditPreviewProps) => {
+  const { value, editing, disabled, placeholder, startEditing, previewRef } = useInlineEdit();
 
   const content = (
     <>
@@ -228,6 +246,7 @@ const InlineEditPreview = ({ render, className, ...props }: InlineEditPreviewPro
   const element = useRender({
     defaultTagName: 'span',
     render,
+    ref: [previewRef, ref ?? null],
     props: mergeProps<'span'>(
       {
         role: 'button',
@@ -258,7 +277,14 @@ const InlineEditPreview = ({ render, className, ...props }: InlineEditPreviewPro
   return element;
 };
 
-const InlineEditInput = ({ className, onKeyDown, onBlur, ...props }: React.ComponentProps<typeof Input>) => {
+const InlineEditInput = ({
+  className,
+  onKeyDown,
+  onBlur,
+  onChange,
+  ref,
+  ...props
+}: React.ComponentProps<typeof Input>) => {
   const {
     draft,
     setDraft,
@@ -274,17 +300,21 @@ const InlineEditInput = ({ className, onKeyDown, onBlur, ...props }: React.Compo
     cancel,
   } = useInlineEdit();
 
-  // Stable callback ref: focus/select run once when the input mounts. An inline
-  // ref would be re-invoked on every render, re-selecting the text mid-typing.
+  // Focus/select once per mounted node. A consumer's inline callback ref gives
+  // the composed ref a new identity every render, so React re-invokes it, and
+  // re-selecting mid-typing would swallow the next keystroke.
+  const focusedRef = React.useRef<HTMLInputElement | null>(null);
   const focusOnMount = React.useCallback(
     (node: HTMLInputElement | null) => {
-      if (node) {
-        node.focus();
-        if (selectOnFocus) node.select();
-      }
+      if (!node || node === focusedRef.current) return;
+      focusedRef.current = node;
+      node.focus();
+      if (selectOnFocus) node.select();
     },
     [selectOnFocus],
   );
+
+  const composedRef = React.useMemo(() => composeRefs(focusOnMount, ref), [focusOnMount, ref]);
 
   if (!editing) return null;
 
@@ -296,7 +326,11 @@ const InlineEditInput = ({ className, onKeyDown, onBlur, ...props }: React.Compo
       disabled={disabled || pending}
       aria-invalid={error ? true : undefined}
       aria-describedby={error ? errorId : undefined}
-      onChange={(event) => setDraft(event.target.value)}
+      onChange={(event) => {
+        onChange?.(event);
+        if (event.defaultPrevented) return;
+        setDraft(event.target.value);
+      }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
         if (event.key === 'Enter') {
@@ -314,12 +348,19 @@ const InlineEditInput = ({ className, onKeyDown, onBlur, ...props }: React.Compo
       }}
       className={cn('h-8', className)}
       {...props}
-      ref={focusOnMount}
+      ref={composedRef}
     />
   );
 };
 
-const InlineEditTextarea = ({ className, onKeyDown, onBlur, ...props }: React.ComponentProps<typeof Textarea>) => {
+const InlineEditTextarea = ({
+  className,
+  onKeyDown,
+  onBlur,
+  onChange,
+  ref,
+  ...props
+}: React.ComponentProps<typeof Textarea>) => {
   const {
     draft,
     setDraft,
@@ -335,17 +376,19 @@ const InlineEditTextarea = ({ className, onKeyDown, onBlur, ...props }: React.Co
     cancel,
   } = useInlineEdit();
 
-  // Stable callback ref: focus/select run once when the textarea mounts. An
-  // inline ref would re-run every render, re-selecting the text mid-typing.
+  // Focus/select once per mounted node; see InlineEditInput.
+  const focusedRef = React.useRef<HTMLTextAreaElement | null>(null);
   const focusOnMount = React.useCallback(
     (node: HTMLTextAreaElement | null) => {
-      if (node) {
-        node.focus();
-        if (selectOnFocus) node.select();
-      }
+      if (!node || node === focusedRef.current) return;
+      focusedRef.current = node;
+      node.focus();
+      if (selectOnFocus) node.select();
     },
     [selectOnFocus],
   );
+
+  const composedRef = React.useMemo(() => composeRefs(focusOnMount, ref), [focusOnMount, ref]);
 
   if (!editing) return null;
 
@@ -357,7 +400,11 @@ const InlineEditTextarea = ({ className, onKeyDown, onBlur, ...props }: React.Co
       disabled={disabled || pending}
       aria-invalid={error ? true : undefined}
       aria-describedby={error ? errorId : undefined}
-      onChange={(event) => setDraft(event.target.value)}
+      onChange={(event) => {
+        onChange?.(event);
+        if (event.defaultPrevented) return;
+        setDraft(event.target.value);
+      }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
         if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
@@ -375,7 +422,7 @@ const InlineEditTextarea = ({ className, onKeyDown, onBlur, ...props }: React.Co
       }}
       className={className}
       {...props}
-      ref={focusOnMount}
+      ref={composedRef}
     />
   );
 };

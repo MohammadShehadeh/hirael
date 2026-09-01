@@ -60,6 +60,7 @@ export interface LazySelectProps {
   hasMore?: boolean;
   disabled?: boolean;
   clearable?: boolean;
+  name?: string;
   children?: React.ReactNode;
 }
 
@@ -78,6 +79,7 @@ const LazySelect = ({
   hasMore,
   disabled,
   clearable = true,
+  name,
   children,
 }: LazySelectProps) => {
   const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
@@ -180,6 +182,7 @@ const LazySelect = ({
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
+      {name && <input type="hidden" name={name} value={value ?? ''} />}
     </LazySelectContext.Provider>
   );
 };
@@ -192,58 +195,70 @@ interface LazySelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'c
 
 const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...props }: LazySelectTriggerProps) => {
   const ctx = useLazySelect();
+  const showClear = !children && ctx.clearable && ctx.value !== undefined && !ctx.disabled;
 
   return (
-    <PopoverTrigger
-      render={
+    <div data-slot="lazy-select-trigger-wrapper" className="relative w-full">
+      <PopoverTrigger
+        render={
+          <button
+            type="button"
+            role="combobox"
+            aria-controls={ctx.listboxId}
+            aria-expanded={ctx.open}
+            aria-haspopup="listbox"
+            disabled={ctx.disabled}
+            data-slot="lazy-select-trigger"
+            data-state={ctx.open ? 'open' : 'closed'}
+            className={cn(
+              'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors',
+              'hover:border-ring/60 focus-visible:border-ring',
+              'data-open:border-ring',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              className,
+            )}
+            {...props}
+          />
+        }
+      >
+        {typeof children === 'function' ? (
+          children(ctx)
+        ) : children ? (
+          children
+        ) : (
+          <>
+            <span
+              className={cn(
+                'min-w-0 flex-1 truncate',
+                ctx.selectedLabel === undefined && 'text-muted-foreground',
+                // Reserve room for the overlaid clear button.
+                showClear && 'pe-5',
+              )}
+            >
+              {ctx.selectedLabel ?? placeholder}
+            </span>
+            <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
+              <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
+            </span>
+          </>
+        )}
+      </PopoverTrigger>
+      {showClear && (
         <button
           type="button"
-          role="combobox"
-          aria-controls={ctx.listboxId}
-          aria-expanded={ctx.open}
-          aria-haspopup="listbox"
-          disabled={ctx.disabled}
-          data-slot="lazy-select-trigger"
-          data-state={ctx.open ? 'open' : 'closed'}
-          className={cn(
-            'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors',
-            'hover:border-ring/60 focus-visible:border-ring',
-            'data-open:border-ring',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            className,
-          )}
-          {...props}
-        />
-      }
-    >
-      {typeof children === 'function' ? (
-        children(ctx)
-      ) : children ? (
-        children
-      ) : (
-        <>
-          <span className={cn('min-w-0 flex-1 truncate', ctx.selectedLabel === undefined && 'text-muted-foreground')}>
-            {ctx.selectedLabel ?? placeholder}
-          </span>
-          <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-            {ctx.clearable && ctx.value !== undefined && !ctx.disabled && (
-              <span
-                aria-hidden
-                onPointerDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  ctx.setValue(undefined);
-                }}
-                className="inline-flex size-4 items-center justify-center rounded-[2px] hover:bg-accent hover:text-foreground"
-              >
-                <X className="size-3" />
-              </span>
-            )}
-            <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-          </span>
-        </>
+          aria-label="Clear"
+          data-slot="lazy-select-clear"
+          onClick={(e) => {
+            e.stopPropagation();
+            ctx.setValue(undefined);
+          }}
+          // Overlaid because a button cannot nest a button; `end-7` sits it inside the chevron.
+          className="absolute end-7 top-1/2 inline-flex size-4 -translate-y-1/2 items-center justify-center rounded-[2px] text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          <X className="size-3" />
+        </button>
       )}
-    </PopoverTrigger>
+    </div>
   );
 };
 
@@ -268,6 +283,7 @@ const LazySelectContent = ({
 }: LazySelectContentProps) => {
   const ctx = useLazySelect();
   const sentinelRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const onLoadMore = ctx.onLoadMore;
 
   // Lazy-load the next page when the bottom sentinel scrolls into view. Re-run
@@ -294,11 +310,11 @@ const LazySelectContent = ({
       sideOffset={6}
       data-slot="lazy-select-content"
       className={cn('w-(--anchor-width) min-w-[14rem] p-0', className)}
-      initialFocus={false}
+      initialFocus={() => inputRef.current}
       {...props}
     >
       <Command shouldFilter={false} loop>
-        <CommandInput placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
+        <CommandInput ref={inputRef} placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">

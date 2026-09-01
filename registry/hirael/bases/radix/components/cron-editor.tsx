@@ -680,7 +680,10 @@ const CronEditorField = ({
 /*  Expression                                                                */
 /* -------------------------------------------------------------------------- */
 
-interface CronEditorExpressionProps extends Omit<React.ComponentProps<'div'>, 'children'> {
+interface CronEditorExpressionProps extends Omit<
+  React.ComponentProps<'input'>,
+  'children' | 'value' | 'defaultValue' | 'onChange' | 'id'
+> {
   label?: string;
   placeholder?: string;
   showError?: boolean;
@@ -699,12 +702,7 @@ const CronEditorExpression = ({
   const invalid = !ctx.parsed.valid;
 
   return (
-    <Field
-      data-slot="cron-editor-expression"
-      data-invalid={invalid || undefined}
-      className={cn('gap-1.5', className)}
-      {...props}
-    >
+    <Field data-slot="cron-editor-expression" data-invalid={invalid || undefined} className={cn('gap-1.5', className)}>
       <FieldLabel
         htmlFor={inputId}
         className="font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground"
@@ -725,6 +723,7 @@ const CronEditorExpression = ({
         data-slot="cron-editor-expression-input"
         className="font-mono tracking-[0.08em]"
         onChange={(e) => ctx.setValue(e.target.value)}
+        {...props}
       />
       {showError && invalid && (
         <FieldError id={errorId} data-slot="cron-editor-expression-error" className="text-[11px]">

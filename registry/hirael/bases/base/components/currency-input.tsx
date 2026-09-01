@@ -250,6 +250,7 @@ const CurrencyInputField = ({
       id={ctx.id}
       type="text"
       inputMode={inputMode}
+      dir="ltr"
       value={ctx.view}
       disabled={ctx.disabled}
       placeholder={placeholder}

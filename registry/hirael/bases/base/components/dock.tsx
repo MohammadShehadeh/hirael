@@ -13,6 +13,7 @@ import {
 } from 'motion/react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 interface DockContextValue {
   mouseX: MotionValue<number>;
@@ -84,8 +85,9 @@ const Dock = ({ baseSize = 44, magnification = 72, distance = 140, className, ch
 
 type DockItemProps = HTMLMotionProps<'button'>;
 
-const DockItem = ({ className, children, ...props }: DockItemProps) => {
+const DockItem = ({ className, children, ref: consumerRef, ...props }: DockItemProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(ref, consumerRef), [consumerRef]);
   const { mouseX, baseSize, magnification, distance } = useDock();
   const [hovered, setHovered] = React.useState(false);
   const reducedMotion = useReducedMotion();
@@ -102,11 +104,13 @@ const DockItem = ({ className, children, ...props }: DockItemProps) => {
     damping: 14,
   });
 
+  const itemCtx = React.useMemo(() => ({ hovered }), [hovered]);
+
   return (
-    <DockItemContext.Provider value={{ hovered }}>
+    <DockItemContext.Provider value={itemCtx}>
       <motion.button
         {...props}
-        ref={ref}
+        ref={composedRef}
         type="button"
         data-slot="dock-item"
         style={reducedMotion ? { width: baseSize, height: baseSize } : { width, height: width }}

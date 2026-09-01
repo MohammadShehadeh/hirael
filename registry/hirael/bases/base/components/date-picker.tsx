@@ -6,6 +6,7 @@ import { CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import {
   clampDate,
   gridKeyToDate,
@@ -42,6 +43,7 @@ const DateCalendar = ({
   locale,
   weekStartsOn = 1,
   className,
+  ref: refProp,
   ...props
 }: DateCalendarProps) => {
   const [internal, setInternal] = React.useState<Date | null>(defaultValue);
@@ -97,6 +99,7 @@ const DateCalendar = ({
   const stepMonth = (n: number) => setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1));
 
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(rootRef, refProp), [refProp]);
   const focusDay = (d: Date) => {
     const doFocus = () => {
       rootRef.current?.querySelector<HTMLButtonElement>(`[data-day="${d.getTime()}"]`)?.focus();
@@ -121,12 +124,9 @@ const DateCalendar = ({
     focusDay(clampDate(next, min, max));
   };
 
-  const monthFmt = new Intl.DateTimeFormat(locale, {
-    month: 'long',
-    year: 'numeric',
-  });
-  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: 'short' });
-  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: 'full' });
+  const monthFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }), [locale]);
+  const weekdayFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { weekday: 'short' }), [locale]);
+  const dayLabelFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { dateStyle: 'full' }), [locale]);
   const weekdays = Array.from({ length: 7 }, (_, i) =>
     weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
   );
@@ -140,7 +140,12 @@ const DateCalendar = ({
   const tabbable = selected && isMonthVisible(selected) ? selected : isMonthVisible(today) ? today : viewMonth;
 
   return (
-    <div ref={rootRef} data-slot="date-picker-calendar" className={cn('w-60', className)} {...props}>
+    <div
+      ref={composedRef}
+      data-slot="date-picker-calendar"
+      className={cn('w-60', className)}
+      {...props}
+    >
       <div data-slot="date-picker-calendar-header" className="mb-2 flex items-center justify-between">
         <Button
           type="button"

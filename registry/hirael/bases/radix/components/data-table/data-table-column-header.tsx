@@ -27,7 +27,11 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
   ...props
 }: DataTableColumnHeaderProps<TData, TValue>) => {
   if (!column.getCanSort() && !column.getCanHide()) {
-    return <div className={cn(className)}>{label}</div>;
+    return (
+      <div data-slot="data-table-column-header" className={cn(className)} {...(props as React.ComponentProps<'div'>)}>
+        {label}
+      </div>
+    );
   }
 
   return (

@@ -85,6 +85,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
   const activeRef = React.useRef<ConfirmRequest | null>(null);
   const queueRef = React.useRef<ConfirmRequest[]>([]);
   const closingRef = React.useRef(false);
+  const closeTimerRef = React.useRef<number | undefined>(undefined);
 
   const confirm = React.useCallback<ConfirmFn>((options = {}) => {
     return new Promise<boolean>((resolve) => {
@@ -106,7 +107,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
     current.resolve(value);
     setPending(false);
     setOpen(false);
-    window.setTimeout(() => {
+    closeTimerRef.current = window.setTimeout(() => {
       closingRef.current = false;
       const next = queueRef.current.shift() ?? null;
       activeRef.current = next;
@@ -114,6 +115,16 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       setOpen(next !== null);
     }, CLOSE_DURATION);
   }, []);
+
+  React.useEffect(
+    () => () => {
+      window.clearTimeout(closeTimerRef.current);
+      activeRef.current?.resolve(false);
+      for (const queued of queueRef.current) queued.resolve(false);
+      queueRef.current = [];
+    },
+    [],
+  );
 
   const handleConfirm = React.useCallback(() => {
     if (closingRef.current) return;
@@ -127,10 +138,8 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       .then(onConfirm)
       .then(
         () => settle(true),
-        (error) => {
-          setPending(false);
-          throw error;
-        },
+        // Back to idle so the user can retry; per onConfirm's contract the error is theirs to surface.
+        () => setPending(false),
       );
   }, [settle]);
 

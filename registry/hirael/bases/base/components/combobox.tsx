@@ -20,7 +20,7 @@ const Combobox = <Value, Multiple extends boolean | undefined = false>(
 };
 
 const ComboboxValue = (props: ComboboxPrimitive.Value.Props) => {
-  return <ComboboxPrimitive.Value {...props} />;
+  return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;
 };
 
 /**
@@ -34,10 +34,11 @@ const useComboboxAnchor = () => {
 
 const ComboboxInput = ({
   className,
+  inputClassName,
   children,
   showClear = false,
   ...props
-}: WithClassName<ComboboxPrimitive.Input.Props> & { showClear?: boolean }) => {
+}: WithClassName<ComboboxPrimitive.Input.Props> & { showClear?: boolean; inputClassName?: string }) => {
   return (
     <InputGroup
       className={cn(
@@ -48,12 +49,16 @@ const ComboboxInput = ({
       {children}
       <ComboboxPrimitive.Input
         data-slot="combobox-input"
-        className="flex-1 rounded-none border-0 bg-transparent px-2 text-sm shadow-none outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+        className={cn(
+          'flex-1 rounded-none border-0 bg-transparent px-2 text-sm shadow-none outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+          inputClassName,
+        )}
         {...props}
       />
       <InputGroupAddon align="inline-end">
         {showClear && <ComboboxClear />}
         <ComboboxPrimitive.Trigger
+          data-slot="combobox-trigger"
           aria-label="Toggle"
           className="flex size-6 shrink-0 items-center justify-center rounded-[calc(var(--radius)-5px)] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         >
@@ -112,6 +117,7 @@ const ComboboxChip = ({ className, children, ...props }: WithClassName<ComboboxP
     >
       {children}
       <ComboboxPrimitive.ChipRemove
+        data-slot="combobox-chip-remove"
         aria-label="Remove"
         className="flex size-3.5 items-center justify-center rounded-[3px] text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
       >
@@ -219,7 +225,7 @@ const ComboboxItem = ({ className, children, ...props }: WithClassName<ComboboxP
       {...props}
     >
       <span className="min-w-0 flex-1 truncate">{children}</span>
-      <ComboboxPrimitive.ItemIndicator className="flex shrink-0 items-center">
+      <ComboboxPrimitive.ItemIndicator data-slot="combobox-item-indicator" className="flex shrink-0 items-center">
         <CheckIcon className="size-4" strokeWidth={3} />
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>

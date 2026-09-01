@@ -121,8 +121,9 @@ const YearPicker = (props: YearPickerProps) => {
   const [singleInternal, setSingleInternal] = React.useState<number | undefined>(singleDefaultValue);
   const [rangeInternal, setRangeInternal] = React.useState<YearRange | undefined>(rangeDefaultValue);
 
-  const singleValue = mode === 'single' ? (singleValueProp ?? singleInternal) : undefined;
-  const rangeValue = mode === 'range' ? (rangeValueProp ?? rangeInternal) : undefined;
+  const singleValue =
+    mode === 'single' ? (singleValueProp !== undefined ? singleValueProp : singleInternal) : undefined;
+  const rangeValue = mode === 'range' ? (rangeValueProp !== undefined ? rangeValueProp : rangeInternal) : undefined;
 
   const anchorYear = (mode === 'single' ? singleValue : rangeValue?.from) ?? new Date().getFullYear();
   const [decadeStart, setDecadeStart] = React.useState<number>(viewStartFor(anchorYear));
@@ -315,10 +316,10 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         next = year + (3 - ((year - ctx.decadeStart) % 4));
         break;
       case 'PageUp':
-        ctx.setDecadeStart(ctx.decadeStart - YEARS_PER_VIEW);
+        ctx.setDecadeStart(Math.max(ctx.minYear - 1, ctx.decadeStart - YEARS_PER_VIEW));
         return;
       case 'PageDown':
-        ctx.setDecadeStart(ctx.decadeStart + YEARS_PER_VIEW);
+        ctx.setDecadeStart(Math.min(ctx.maxYear + 1 - YEARS_PER_VIEW, ctx.decadeStart + YEARS_PER_VIEW));
         return;
       default:
         return;

@@ -72,6 +72,7 @@ const Stepper = ({
   return (
     <StepperContext.Provider value={ctx}>
       <div
+        role="list"
         data-slot="stepper"
         data-orientation={orientation}
         className={cn(
@@ -103,6 +104,7 @@ const StepperItem = ({ step, completed, disabled = false, className, ...props }:
   return (
     <StepperItemContext.Provider value={ctx}>
       <div
+        role="listitem"
         data-slot="stepper-item"
         data-state={state}
         className={cn(

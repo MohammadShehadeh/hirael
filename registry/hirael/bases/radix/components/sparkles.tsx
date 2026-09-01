@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
 interface SparklesProps extends React.ComponentProps<'div'> {
   /**
@@ -43,19 +44,21 @@ const Sparkles = ({
   color = 'var(--foreground)',
   opacity = 1,
   className,
+  ref,
   ...props
 }: SparklesProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!container || !canvas || !ctx) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const fill = resolveColor(container, color);
+    let fill = resolveColor(container, color);
     let particles: Particle[] = [];
     let width = 0;
     let height = 0;
@@ -119,6 +122,7 @@ const Sparkles = ({
     };
 
     const resize = () => {
+      fill = resolveColor(container, color);
       const rect = container.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       width = rect.width;
@@ -133,6 +137,14 @@ const Sparkles = ({
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(container);
+    const mo = new MutationObserver(() => {
+      fill = resolveColor(container, color);
+      if (reduced) draw(0, 0);
+    });
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'style'],
+    });
     const io = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting;
       sync();
@@ -144,6 +156,7 @@ const Sparkles = ({
     return () => {
       stop();
       ro.disconnect();
+      mo.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', sync);
     };
@@ -151,7 +164,7 @@ const Sparkles = ({
 
   return (
     <div
-      ref={containerRef}
+      ref={composedRef}
       data-slot="sparkles"
       aria-hidden
       className={cn('pointer-events-none absolute inset-0', className)}

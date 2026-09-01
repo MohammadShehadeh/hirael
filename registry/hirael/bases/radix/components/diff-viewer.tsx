@@ -420,6 +420,7 @@ export interface DiffViewerContentProps extends Omit<React.ComponentProps<'div'>
 const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...props }: DiffViewerContentProps) => {
   const { items, mode, expandGap } = useDiffViewer();
   const label = gapLabel ?? ((count: number) => `Expand ${count} lines`);
+  const rows = React.useMemo(() => (mode === 'split' ? toSplitRows(items) : []), [items, mode]);
 
   const gap = (item: GapItem) => (
     <button
@@ -438,7 +439,6 @@ const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...pro
   );
 
   if (mode === 'split') {
-    const rows = toSplitRows(items);
     return (
       <div
         dir="ltr"

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChevronsLeftRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 interface ImageCompareContextValue {
   position: number;
@@ -50,6 +51,7 @@ const ImageCompare = ({
   disabled = false,
   className,
   children,
+  ref,
   ...props
 }: ImageCompareProps) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -106,21 +108,26 @@ const ImageCompare = ({
     if (next !== null) setPosition(next);
   };
 
+  const ctx = React.useMemo<ImageCompareContextValue>(
+    () => ({
+      position,
+      setPosition,
+      orientation,
+      disabled,
+      dragging,
+      setDragging,
+      rtl,
+      positionFromPointer,
+    }),
+    [position, setPosition, orientation, disabled, dragging, rtl, positionFromPointer],
+  );
+
+  const composedRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
+
   return (
-    <ImageCompareContext.Provider
-      value={{
-        position,
-        setPosition,
-        orientation,
-        disabled,
-        dragging,
-        setDragging,
-        rtl,
-        positionFromPointer,
-      }}
-    >
+    <ImageCompareContext.Provider value={ctx}>
       <div
-        ref={containerRef}
+        ref={composedRef}
         data-slot="image-compare"
         data-orientation={orientation}
         data-dragging={dragging || undefined}

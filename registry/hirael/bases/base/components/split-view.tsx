@@ -3,12 +3,15 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 type SplitOrientation = 'horizontal' | 'vertical';
 
 interface SplitViewContextValue {
   orientation: SplitOrientation;
   size: number;
+  minSize: number;
+  maxSize: number;
   dragging: boolean;
   onResizerPointerDown: (event: React.PointerEvent) => void;
   onResizerKeyDown: (event: React.KeyboardEvent) => void;
@@ -46,9 +49,11 @@ const SplitView = ({
   className,
   style,
   children,
+  ref: consumerRef,
   ...props
 }: SplitViewProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(ref, consumerRef), [consumerRef]);
   const [size, setSize] = React.useState(defaultSize);
   const [dragging, setDragging] = React.useState(false);
 
@@ -82,10 +87,12 @@ const SplitView = ({
         }
         handle.removeEventListener('pointermove', onMove);
         handle.removeEventListener('pointerup', onUp);
+        handle.removeEventListener('pointercancel', onUp);
         setDragging(false);
       };
       handle.addEventListener('pointermove', onMove);
       handle.addEventListener('pointerup', onUp);
+      handle.addEventListener('pointercancel', onUp);
     },
     [resizeToPointer],
   );
@@ -114,17 +121,19 @@ const SplitView = ({
     () => ({
       orientation,
       size,
+      minSize,
+      maxSize,
       dragging,
       onResizerPointerDown,
       onResizerKeyDown,
     }),
-    [orientation, size, dragging, onResizerPointerDown, onResizerKeyDown],
+    [orientation, size, minSize, maxSize, dragging, onResizerPointerDown, onResizerKeyDown],
   );
 
   return (
     <SplitViewContext.Provider value={value}>
       <div
-        ref={ref}
+        ref={composedRef}
         data-slot="split-view"
         data-orientation={orientation}
         className={cn(
@@ -153,15 +162,15 @@ const SplitViewPanel = ({ className, ...props }: SplitViewPanelProps) => {
 type SplitViewResizerProps = React.ComponentProps<'div'>;
 
 const SplitViewResizer = ({ className, ...props }: SplitViewResizerProps) => {
-  const { orientation, size, dragging, onResizerPointerDown, onResizerKeyDown } = useSplitView();
+  const { orientation, size, minSize, maxSize, dragging, onResizerPointerDown, onResizerKeyDown } = useSplitView();
   return (
     <div
       role="separator"
       tabIndex={0}
       aria-orientation={orientation === 'horizontal' ? 'vertical' : 'horizontal'}
       aria-valuenow={Math.round(size)}
-      aria-valuemin={0}
-      aria-valuemax={100}
+      aria-valuemin={minSize}
+      aria-valuemax={maxSize}
       data-slot="split-view-resizer"
       data-dragging={dragging ? '' : undefined}
       onPointerDown={onResizerPointerDown}

@@ -348,10 +348,11 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     const first = focusables[0];
     const last = focusables[focusables.length - 1];
     const active = document.activeElement;
-    if (e.shiftKey && (active === first || active === card)) {
+    const outside = active === null || !Array.from(focusables).includes(active as HTMLElement);
+    if (e.shiftKey && (active === first || outside)) {
       e.preventDefault();
       last.focus();
-    } else if (!e.shiftKey && active === last) {
+    } else if (!e.shiftKey && (active === last || outside)) {
       e.preventDefault();
       first.focus();
     }

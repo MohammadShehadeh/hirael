@@ -794,7 +794,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'SV gradient + hue slider with HEX / RGB / HSL tabs, eyedropper (where supported) and recent swatches.',
     category: 'pickers',
     files: [{ path: 'components/color-picker.tsx' }],
-    registryDependencies: ['button', 'input', 'popover', 'tabs'],
+    registryDependencies: ['button', 'input', 'popover', 'tabs', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1199,7 +1199,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Single-date picker with month grid, keyboard nav, min/max bounds and disabled dates. Includes an inline DateCalendar, no date library.',
     category: 'pickers',
     files: [{ path: 'components/date-picker.tsx' }],
-    registryDependencies: ['button', 'popover', 'calendar-utils'],
+    registryDependencies: ['button', 'popover', 'calendar-utils', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1209,7 +1209,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Dual-month range picker with hover preview, presets, min/max bounds and keyboard nav. Includes an inline DateRangeCalendar, no date library.',
     category: 'pickers',
     files: [{ path: 'components/date-range-picker.tsx' }],
-    registryDependencies: ['button', 'popover', 'separator', 'calendar-utils'],
+    registryDependencies: ['button', 'popover', 'separator', 'calendar-utils', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1219,7 +1219,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       '@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.',
     category: 'inputs',
     files: [{ path: 'components/mention-input.tsx' }],
-    registryDependencies: ['spinner'],
+    registryDependencies: ['spinner', 'compose-refs'],
     dependencies: [],
   },
   {
@@ -1249,7 +1249,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.',
     category: 'inputs',
     files: [{ path: 'components/inline-edit.tsx' }],
-    registryDependencies: ['button', 'input', 'spinner', 'textarea'],
+    registryDependencies: ['button', 'input', 'spinner', 'textarea', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1279,7 +1279,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Before/after comparison slider with a draggable, keyboard-accessible divider, horizontal or vertical orientation and hover-follow mode.',
     category: 'display',
     files: [{ path: 'components/image-compare.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1473,7 +1473,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Canvas particle field that drifts and twinkles behind any container. Density scales with size, colors resolve from tokens, and it pauses offscreen and under reduced-motion. No dependencies.',
     category: 'animation',
     files: [{ path: 'components/sparkles.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
   },
   {
@@ -1503,7 +1503,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'macOS-style dock with cursor magnification: icons scale and spring as the pointer passes, with hover and focus labels. Built on motion.',
     category: 'navigation',
     files: [{ path: 'components/dock.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: ['motion'],
   },
   {
@@ -1533,7 +1533,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Two-pane master/detail layout with a draggable divider, keyboard resize, min/max bounds and horizontal or vertical orientation. RTL-aware.',
     category: 'navigation',
     files: [{ path: 'components/split-view.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
   },
   {
@@ -1543,7 +1543,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Composable resizable panel groups with draggable, keyboard-accessible handles, per-panel minimums and nestable horizontal or vertical groups. RTL-aware.',
     category: 'navigation',
     files: [{ path: 'components/resizable-panels.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
   },
   {
@@ -3295,7 +3295,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Self-contained emoji grid with 560+ emoji in 8 categories, keyword search, recents, skin tones, and arrow-key navigation. No dependencies.',
     category: 'pickers',
     files: [{ path: 'components/emoji-picker.tsx' }],
-    registryDependencies: ['input'],
+    registryDependencies: ['input', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3305,7 +3305,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Click or drop an image, crop it to a circle or square with zoom, and preview the result. Initials fallback, size and type limits, remove control.',
     category: 'files',
     files: [{ path: 'components/avatar-upload.tsx' }],
-    registryDependencies: ['button', 'dialog', 'image-cropper'],
+    registryDependencies: ['button', 'dialog', 'image-cropper', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3706,6 +3706,17 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     files: [{ path: 'ui/accordion.tsx' }],
     registryDependencies: [],
     dependencies: ['radix-ui', 'lucide-react'],
+  },
+  {
+    name: 'compose-refs',
+    title: 'Compose Refs',
+    description:
+      'Fans one node out to several refs, so a part can keep its own internal ref while still forwarding the element to the consumer.',
+    type: 'registry:component',
+    categories: ['primitives'],
+    files: [{ path: 'components/compose-refs.ts' }],
+    registryDependencies: [],
+    dependencies: [],
   },
   {
     name: 'calendar-utils',

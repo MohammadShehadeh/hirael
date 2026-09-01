@@ -66,10 +66,11 @@ const prefersReducedMotion = () => {
 
 const TOP_OFFSET = 56;
 
-const useActiveHeading = (items: TocItem[]) => {
+const useActiveHeading = (items: TocItem[], enabled: boolean) => {
   const [activeId, setActiveId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
+    if (!enabled) return;
     const headings = flattenTocItems(items);
 
     const update = () => {
@@ -106,7 +107,7 @@ const useActiveHeading = (items: TocItem[]) => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [items]);
+  }, [items, enabled]);
 
   return activeId;
 };
@@ -141,8 +142,9 @@ const TableOfContents = ({
   'aria-label': ariaLabel,
   ...props
 }: TableOfContentsProps) => {
-  const trackedActiveId = useActiveHeading(controlledActiveId ? [] : (items ?? []));
+  const trackedActiveId = useActiveHeading(items ?? [], controlledActiveId === undefined);
   const activeId = controlledActiveId !== undefined ? controlledActiveId : trackedActiveId;
+  const contextValue = React.useMemo(() => ({ activeId }), [activeId]);
 
   const content =
     children ??
@@ -156,7 +158,7 @@ const TableOfContents = ({
   if (!content) return null;
 
   return (
-    <TocContext.Provider value={{ activeId }}>
+    <TocContext.Provider value={contextValue}>
       <nav
         data-slot="toc"
         aria-label={ariaLabel ?? 'On this page'}
@@ -256,7 +258,7 @@ const TableOfContentsLink = ({
       data-slot="toc-link"
       data-active={isActive ? '' : undefined}
       href={href}
-      aria-current={isActive ? 'true' : undefined}
+      aria-current={isActive ? 'location' : undefined}
       onClick={handleClick}
       className={cn(
         '-ms-px block border-s py-1 ps-4 text-sm transition-colors duration-150 ease-out',

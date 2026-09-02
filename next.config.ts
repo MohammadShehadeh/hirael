@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  typescript: {
+    // We do our own typechecking in CI.
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

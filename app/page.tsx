@@ -14,6 +14,7 @@ import { SiteHeader } from '@/components/site-header';
 import { getChangelog, type ChangelogEntry } from '@/lib/changelog';
 import { getRecentlyAdded } from '@/lib/detail-extras';
 import { getRepoStars } from '@/lib/github';
+import { listingMetadata } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 import { Marquee } from '@/registry/hirael/bases/radix/components/marquee';
 import {
@@ -27,34 +28,14 @@ import {
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { cn } from '@/lib/utils';
 
-export const metadata: Metadata = {
-  title: `${SITE.description} - ${SITE.name}`,
+export const metadata: Metadata = listingMetadata({
+  path: '/',
+  // `title.template` applies to child segments, not to the page in the same
+  // one, so the home page names the site itself.
+  title: `${SITE.tagline} - ${SITE.name}`,
   description: SITE.longDescription,
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    url: SITE.url,
-    siteName: SITE.name,
-    title: `${SITE.description} - ${SITE.name}`,
-    description: SITE.longDescription,
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: `${SITE.description} - ${SITE.name}`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${SITE.description} - ${SITE.name}`,
-    description: SITE.longDescription,
-    images: ['/opengraph-image'],
-  },
-};
+  keywords: [...SITE.keywords],
+});
 
 const blocksTotal = BLOCK_KIND_ORDER.reduce((sum, k) => sum + BLOCKS_BY_KIND[k].length, 0);
 

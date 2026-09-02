@@ -5,6 +5,11 @@
 export const SITE = {
   name: 'Hirael',
   description: "The components shadcn/ui doesn't ship.",
+  /**
+   * The tagline as a page title. `description` keeps its full stop for display
+   * copy; one right before " - Hirael" reads as a typo in a search result.
+   */
+  tagline: "Components, blocks and templates shadcn/ui doesn't ship",
   longDescription:
     "A shadcn-compatible registry of React components, section blocks, and full-page templates most products end up building anyway. The shadcn CLI copies the source into your repo, so there's no package to depend on.",
   url: 'https://hirael.com',

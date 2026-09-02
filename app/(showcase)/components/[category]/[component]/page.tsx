@@ -40,7 +40,7 @@ export async function generateMetadata({
   const { category, component } = await params;
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || entry.category === 'blocks' || entry.category === 'templates' || entry.category !== category) return {};
-  return detailMetadata(entry, { ownOgImage: true });
+  return detailMetadata(entry, { titleSuffix: 'component' });
 }
 
 /**

@@ -1,1 +1,5 @@
+# Cloudflare Pages redirects, followed whether or not an asset exists there.
+#
+# www -> apex is deliberately not here: a Pages source is a path, not a URL, so
+# a host rule never fires. It lives on the zone, as a dashboard Bulk Redirect.
 /theme / 301

@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
 import { embedDirScript } from '@/lib/embed';
+import { embedMetadata } from '@/lib/seo';
 import { RegistryDemo } from '@/registry/hirael/registry-demos';
 import {
   DEFAULT_BASE,
@@ -33,6 +35,24 @@ export const templateEmbedParams = () =>
 
 /** Bases that get their own `/embed/<base>/` tree. */
 export const nestedEmbedBases = (): RegistryBase[] => REGISTRY_BASES.filter((base) => base !== DEFAULT_BASE);
+
+/**
+ * Titles for the framed previews. Without them every embed inherits the root
+ * layout's, so ~300 frames all claim to be the home page.
+ */
+export const blockEmbedMetadata = async ({ params }: { params: Promise<{ block: string }> }): Promise<Metadata> => {
+  const { block } = await params;
+  return embedMetadata(`${REGISTRY_BY_NAME[block]?.title ?? 'Block'} preview`);
+};
+
+export const templateEmbedMetadata = async ({
+  params,
+}: {
+  params: Promise<{ template: string }>;
+}): Promise<Metadata> => {
+  const { template } = await params;
+  return embedMetadata(`${REGISTRY_BY_NAME[template]?.title ?? 'Template'} preview`);
+};
 
 export const BlockEmbed = ({ base, category, block }: { base: RegistryBase; category: string; block: string }) => {
   const entry = REGISTRY_BY_NAME[block];

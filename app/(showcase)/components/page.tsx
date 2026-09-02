@@ -3,11 +3,12 @@ import type { Metadata } from 'next';
 import { ArrowRight, Frame, Layers } from 'lucide-react';
 
 import { InlineCodeBlock } from '@/components/code-block';
+import { CollectionJsonLd } from '@/components/collection-json-ld';
 import { DemoCard } from '@/components/demo-card';
 import { InstallBlock } from '@/components/install-block';
 import { PageHeader, SectionLabel } from '@/components/page-header';
 import { highlightCode } from '@/lib/highlight';
-import { SITE } from '@/lib/site';
+import { listingMetadata } from '@/lib/seo';
 import {
   BLOCK_KIND_ORDER,
   CATEGORY_LABELS,
@@ -31,34 +32,20 @@ const COMPOSE_SNIPPET = `import {
 const COMPONENTS_DESCRIPTION =
   'Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.';
 
-export const metadata: Metadata = {
-  title: 'Components',
+export const metadata: Metadata = listingMetadata({
+  path: '/components',
+  title: 'React components for shadcn/ui',
   description: COMPONENTS_DESCRIPTION,
-  alternates: {
-    canonical: '/components',
-  },
-  openGraph: {
-    type: 'website',
-    url: `${SITE.url}/components`,
-    siteName: SITE.name,
-    title: `Components | ${SITE.name}`,
-    description: COMPONENTS_DESCRIPTION,
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: `Components | ${SITE.name}`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `Components | ${SITE.name}`,
-    description: COMPONENTS_DESCRIPTION,
-    images: ['/opengraph-image'],
-  },
-};
+  keywords: [
+    'react components',
+    'shadcn components',
+    'shadcn registry',
+    'multi-select react',
+    'combobox react',
+    'tag input react',
+    'tailwind components',
+  ],
+});
 
 export default async function ComponentsIndex() {
   const blocks = REGISTRY_BY_CATEGORY.blocks;
@@ -66,6 +53,13 @@ export default async function ComponentsIndex() {
 
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+      <CollectionJsonLd
+        id="components-index"
+        path="/components"
+        name="Components"
+        description={COMPONENTS_DESCRIPTION}
+        entries={COMPONENTS}
+      />
       <PageHeader
         kicker="Components"
         title="The full registry."

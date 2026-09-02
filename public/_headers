@@ -1,19 +1,32 @@
-# Cloudflare Pages response headers. Everything under /r is the machine-facing
-# side of the registry, so it is served open and kept out of search.
+# Cloudflare Pages response headers.
+#
+# A request inherits the headers of every rule it matches, and a header set by
+# two matching rules has its values joined with a comma. Fine for X-Robots-Tag,
+# broken for anything single-valued: two rules setting `Access-Control-Allow-
+# Origin: *` produce `*, *`, which browsers reject. So each header is set on
+# exactly one rule. Patterns allow one splat, matched greedily across slashes.
 
+# The machine-facing side of the registry: the install payloads the shadcn CLI
+# fetches and their Markdown twins, both read cross-origin.
 /r/*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, OPTIONS
 
-# The generated Markdown twin of each detail page. Served as text/plain so a
-# browser renders it inline instead of downloading it; agents read it either
-# way. Noindex keeps it from competing with the HTML page it mirrors, which is
-# the canonical one.
+# The Markdown twin of each detail page. text/plain so a browser renders it
+# inline; noindex so it doesn't compete with the HTML page it mirrors. CORS
+# comes from /r/* above and must not be repeated.
 /r/*.md
   Content-Type: text/plain; charset=utf-8
   X-Robots-Tag: noindex
-  Access-Control-Allow-Origin: *
 
 /llms.txt
   Content-Type: text/plain; charset=utf-8
   Access-Control-Allow-Origin: *
+
+# Next writes an RSC payload beside every exported page (/components.txt next
+# to /components) and the client fetches them on navigation, so they stay
+# reachable: noindex, not a robots disallow, for the same reason as /embed.
+# One splat per pattern means this also covers /llms.txt and /robots.txt,
+# which is right for both.
+/*.txt
+  X-Robots-Tag: noindex

@@ -3,6 +3,9 @@
  * reads a component page as an article about a piece of source code, so each
  * detail page ships a TechArticle wrapping a SoftwareSourceCode, sitting under
  * the site-wide WebSite/Organization nodes declared in the root layout.
+ *
+ * Every page's metadata is built here rather than inline, so canonical shape,
+ * title separator and card format can't drift between the routes.
  */
 
 import type { Metadata } from 'next';
@@ -22,7 +25,13 @@ import {
 export const WEBSITE_ID = `${SITE.url}/#website`;
 export const ORGANIZATION_ID = `${SITE.url}/#person`;
 
+/** Matches the root layout's `%s - Hirael` template, for titles built by hand. */
+const titled = (text: string) => `${text} - ${SITE.name}`;
+
 const absolute = (path: string) => (path.startsWith('http') ? path : `${SITE.url}${path}`);
+
+/** The site-wide social card, used wherever a route has no image of its own. */
+const SITE_OG_IMAGE = '/opengraph-image';
 
 const author = {
   '@type': 'Person',
@@ -84,6 +93,25 @@ const collectionName = (entry: RegistryEntryMeta) =>
   entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : CATEGORY_LABELS[entry.category];
 
 /**
+ * Long-tail keywords for one item: how people actually search for it, plus the
+ * hand-written words already on the entry. Deduped, order-stable, and capped —
+ * a keyword list that reads as a wall of permutations is spam, not metadata.
+ */
+const KEYWORD_SHAPES = [
+  (title: string) => `${title} react component`,
+  (title: string) => `shadcn ${title.toLowerCase()}`,
+  (title: string) => `react ${title.toLowerCase()} example`,
+  (title: string) => `tailwind ${title.toLowerCase()}`,
+];
+
+export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
+  const shapes = KEYWORD_SHAPES.map((shape) => shape(entry.title));
+  return [
+    ...new Set([entry.title, entry.name, ...shapes, collectionName(entry), 'shadcn registry', SITE.name.toLowerCase()]),
+  ];
+};
+
+/**
  * A detail page: a TechArticle documenting a SoftwareSourceCode. `codeSampleType`
  * says the listing is the whole thing rather than an excerpt, which is exactly
  * what a registry item is.
@@ -99,8 +127,13 @@ export const entryJsonLd = (entry: RegistryEntryMeta, addedAt?: string): object 
     name: entry.title,
     description: entry.description,
     url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     inLanguage: 'en',
     isPartOf: { '@id': WEBSITE_ID },
+    articleSection: collectionName(entry),
+    keywords: entryKeywords(entry).join(', '),
+    // The route's own card carries a build hash, so it can't be named here.
+    image: absolute(SITE_OG_IMAGE),
     // Only releases that list their items in the changelog have a date; an
     // absent property is better than a guessed one.
     ...(addedAt ? { datePublished: addedAt, dateModified: addedAt } : {}),
@@ -140,10 +173,12 @@ export const collectionJsonLd = ({
     name,
     description,
     url,
+    inLanguage: 'en',
     isPartOf: { '@id': WEBSITE_ID },
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: entries.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
       itemListElement: entries.map((entry, index) => ({
         '@type': 'ListItem',
         position: index + 1,
@@ -154,44 +189,48 @@ export const collectionJsonLd = ({
   };
 };
 
-/**
- * Long-tail keywords for one item: how people actually search for it, plus the
- * hand-written words already on the entry. Deduped, order-stable, and capped —
- * a keyword list that reads as a wall of permutations is spam, not metadata.
- */
-const KEYWORD_SHAPES = [
-  (title: string) => `${title} react component`,
-  (title: string) => `shadcn ${title.toLowerCase()}`,
-  (title: string) => `react ${title.toLowerCase()} example`,
-  (title: string) => `tailwind ${title.toLowerCase()}`,
-];
+/** The Open Graph and Twitter halves of a page's card, from one description. */
+const cards = ({
+  url,
+  title,
+  description,
+  ownOgImage,
+  type = 'website',
+}: {
+  url: string;
+  title: string;
+  description: string;
+  /**
+   * Drops the site-wide `images` so Next's file-convention resolver fills it
+   * in; that URL carries a content hash unknown at `generateMetadata` time.
+   */
+  ownOgImage?: boolean;
+  type?: 'website' | 'article';
+}): Pick<Metadata, 'openGraph' | 'twitter'> => ({
+  openGraph: {
+    type,
+    url,
+    siteName: SITE.name,
+    title,
+    description,
+    ...(ownOgImage ? {} : { images: [{ url: SITE_OG_IMAGE, width: 1200, height: 630, alt: title }] }),
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    ...(ownOgImage ? {} : { images: [SITE_OG_IMAGE] }),
+  },
+});
 
-export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
-  const shapes = KEYWORD_SHAPES.map((shape) => shape(entry.title));
-  return [
-    ...new Set([entry.title, entry.name, ...shapes, collectionName(entry), 'shadcn registry', SITE.name.toLowerCase()]),
-  ];
-};
-
 /**
- * Shared `generateMetadata` body for the component/block/template detail
- * routes — same shape, differing only in title suffix (matching each route's
- * existing format, so the extraction changes no output).
- *
- * `ownOgImage` drops the site-wide `images` entry so Next's file-convention
- * resolver uses the route's own `opengraph-image.tsx` instead. That URL can't
- * be set by hand: Next appends a content-hash suffix unknown at
- * `generateMetadata` time, so an explicit `images` wouldn't match the file.
+ * The component/block/template detail routes, differing only in the noun after
+ * the title, which is the phrase people search for alongside the name.
  */
-export const detailMetadata = (
-  entry: RegistryEntryMeta,
-  opts: { titleSuffix?: string; ownOgImage?: boolean } = {},
-): Metadata => {
-  const { titleSuffix, ownOgImage } = opts;
+export const detailMetadata = (entry: RegistryEntryMeta, opts: { titleSuffix?: string } = {}): Metadata => {
+  const { titleSuffix } = opts;
   const href = entryHref(entry);
-  const url = `${SITE.url}${href}`;
   const pageTitle = titleSuffix ? `${entry.title} ${titleSuffix}` : entry.title;
-  const ogTitle = titleSuffix ? `${pageTitle} | ${SITE.name}` : `${pageTitle} - ${SITE.name}`;
 
   return {
     title: pageTitle,
@@ -206,30 +245,47 @@ export const detailMetadata = (
         'text/markdown': registryMarkdownPath(DEFAULT_BASE, entry.name),
       },
     },
-    openGraph: {
+    ...cards({
+      url: `${SITE.url}${href}`,
+      title: titled(pageTitle),
+      description: entry.description,
       type: 'article',
-      url,
-      siteName: SITE.name,
-      title: ogTitle,
-      description: entry.description,
-      ...(ownOgImage
-        ? {}
-        : {
-            images: [
-              {
-                url: '/opengraph-image',
-                width: 1200,
-                height: 630,
-                alt: ogTitle,
-              },
-            ],
-          }),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: ogTitle,
-      description: entry.description,
-      ...(ownOgImage ? {} : { images: ['/opengraph-image'] }),
-    },
+      // Every detail route ships an `opengraph-image.tsx` of its own.
+      ownOgImage: true,
+    }),
   };
 };
+
+/** The catalog indexes and category pages, in the shape detail pages use. */
+export const listingMetadata = ({
+  path,
+  title,
+  description,
+  keywords,
+  index = true,
+}: {
+  path: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  /** Off for a page with no items yet. */
+  index?: boolean;
+}): Metadata => ({
+  title,
+  description,
+  ...(keywords?.length ? { keywords } : {}),
+  alternates: { canonical: path },
+  ...(index ? {} : { robots: { index: false, follow: true } }),
+  ...cards({ url: path === '/' ? SITE.url : `${SITE.url}${path}`, title: titled(title), description }),
+});
+
+/**
+ * The framed `/embed/*` previews: crawlable on purpose (see `app/robots.ts`)
+ * but never ranked. The null canonical matters: inheriting the root layout's
+ * `/` would ask Google to fold every frame into the home page.
+ */
+export const embedMetadata = (title: string): Metadata => ({
+  title,
+  robots: { index: false, follow: false },
+  alternates: { canonical: null },
+});

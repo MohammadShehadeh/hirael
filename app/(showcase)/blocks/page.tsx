@@ -1,47 +1,41 @@
 import type { Metadata } from 'next';
 
 import { BlockShowcase } from '@/components/block-showcase';
+import { CollectionJsonLd } from '@/components/collection-json-ld';
 import { PageHeader } from '@/components/page-header';
-import { SITE } from '@/lib/site';
+import { listingMetadata } from '@/lib/seo';
 import { BLOCK_KIND_ORDER, REGISTRY } from '@/registry/hirael/registry-meta';
 
 const BLOCKS_DESCRIPTION =
   'Section blocks for heroes, FAQs, pricing, login screens and dashboards, all in the Hirael style. Copy them into your repo with the shadcn CLI.';
 
-export const metadata: Metadata = {
-  title: 'Blocks',
+export const metadata: Metadata = listingMetadata({
+  path: '/blocks',
+  title: 'Blocks and page sections for shadcn/ui',
   description: BLOCKS_DESCRIPTION,
-  alternates: {
-    canonical: '/blocks',
-  },
-  openGraph: {
-    type: 'website',
-    url: `${SITE.url}/blocks`,
-    siteName: SITE.name,
-    title: `Blocks | ${SITE.name}`,
-    description: BLOCKS_DESCRIPTION,
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: `Blocks | ${SITE.name}`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `Blocks | ${SITE.name}`,
-    description: BLOCKS_DESCRIPTION,
-    images: ['/opengraph-image'],
-  },
-};
+  keywords: [
+    'shadcn blocks',
+    'react hero section',
+    'tailwind pricing section',
+    'react faq section',
+    'login page block',
+    'dashboard blocks',
+  ],
+});
 
 export default function BlocksIndex() {
-  const blockCount = REGISTRY.filter((r) => r.category === 'blocks').length;
+  const blocks = REGISTRY.filter((r) => r.category === 'blocks');
+  const blockCount = blocks.length;
 
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+      <CollectionJsonLd
+        id="blocks-index"
+        path="/blocks"
+        name="Blocks"
+        description={BLOCKS_DESCRIPTION}
+        entries={blocks}
+      />
       <PageHeader
         kicker="Blocks"
         title="Page sections, ready to copy."

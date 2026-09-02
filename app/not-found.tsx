@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: 'Page not found',
   description: 'The page you were looking for could not be found.',
   robots: { index: false, follow: false },
+  // Otherwise the root layout's `canonical: '/'` folds every 404 into home.
+  alternates: { canonical: null },
 };
 
 export default async function NotFound() {

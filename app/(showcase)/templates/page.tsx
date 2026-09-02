@@ -3,45 +3,37 @@ import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
 import { BlockPreview } from '@/components/block-preview';
+import { CollectionJsonLd } from '@/components/collection-json-ld';
 import { PageHeader } from '@/components/page-header';
-import { SITE } from '@/lib/site';
+import { listingMetadata } from '@/lib/seo';
 import { TEMPLATES, entryFileLabel, entryHref } from '@/registry/hirael/registry-meta';
 
 const TEMPLATES_DESCRIPTION =
   'Full-page templates built in the Hirael style: complete, multi-section layouts you can copy into your repo with the shadcn CLI and edit like any other file.';
 
-export const metadata: Metadata = {
-  title: 'Templates',
+export const metadata: Metadata = listingMetadata({
+  path: '/templates',
+  title: 'Full-page React templates',
   description: TEMPLATES_DESCRIPTION,
-  alternates: {
-    canonical: '/templates',
-  },
-  openGraph: {
-    type: 'website',
-    url: `${SITE.url}/templates`,
-    siteName: SITE.name,
-    title: `Templates | ${SITE.name}`,
-    description: TEMPLATES_DESCRIPTION,
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: `Templates | ${SITE.name}`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `Templates | ${SITE.name}`,
-    description: TEMPLATES_DESCRIPTION,
-    images: ['/opengraph-image'],
-  },
-};
+  keywords: [
+    'react page templates',
+    'shadcn templates',
+    'tailwind landing page template',
+    'next.js landing page',
+    'free react templates',
+  ],
+});
 
 export default function TemplatesIndex() {
   return (
     <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+      <CollectionJsonLd
+        id="templates-index"
+        path="/templates"
+        name="Templates"
+        description={TEMPLATES_DESCRIPTION}
+        entries={TEMPLATES}
+      />
       <PageHeader
         kicker="Templates"
         title="Full pages, ready to copy."

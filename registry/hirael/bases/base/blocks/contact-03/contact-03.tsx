@@ -27,10 +27,6 @@ const EASE = 'easeOut' as const;
 /** Digits only, ready for a wa.me link. */
 const digits = (phone: string) => phone.replace(/\D/g, '');
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 /**
  * Rounded panel whose bottom glow grows as the section scrolls through the
  * viewport. Wrap the section content in it.
@@ -153,10 +149,6 @@ const ContactAction = ({ detail, className, children, ...props }: ContactActionP
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const Contact03 = () => {
   const reduce = useReducedMotion();

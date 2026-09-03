@@ -60,7 +60,7 @@ export const usePackageManager = (): [PackageManager, (pm: PackageManager) => vo
       window.localStorage.setItem(STORAGE_KEY, next);
       window.dispatchEvent(new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }));
     } catch {
-      // ignore
+      // Storage may be unavailable (private mode, quota); the pick still holds for this page.
     }
   }, []);
 

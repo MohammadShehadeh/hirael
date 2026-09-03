@@ -31,10 +31,6 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                     */
-/* -------------------------------------------------------------------------- */
-
 type SettingsProps = React.ComponentProps<'div'>;
 
 /** Page container: side nav on md+, stacked on mobile. */
@@ -194,10 +190,6 @@ export {
   SettingsRow,
   SettingsFooter,
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                   */
-/* -------------------------------------------------------------------------- */
 
 const SECTIONS = [
   { id: 'profile', label: 'Profile' },

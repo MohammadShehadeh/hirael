@@ -3969,9 +3969,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   'changelog',
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Routing — every browsable item lives under its category segment            */
-/* -------------------------------------------------------------------------- */
+// Routing — every browsable item lives under its category segment.
 
 /** Component categories in display order. Drives the index, sidebar, sitemap. */
 export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'templates'>[] = [
@@ -4045,7 +4043,6 @@ export const entryHref = (entry: RegistryEntryMeta): string => {
   return `/components/${entry.category}/${entry.name}`;
 };
 
-/** Path of an entry's framed `/embed/*` preview (category in the URL). */
 /** Framed preview path; non-default bases nest under `/embed/<base>/`. */
 export const entryEmbedHref = (entry: RegistryEntryMeta, base: RegistryBase = DEFAULT_BASE): string => {
   const prefix = base === DEFAULT_BASE ? '/embed' : `/embed/${base}`;
@@ -4058,9 +4055,7 @@ export const entryFileLabel = (entry: RegistryEntryMeta): string => {
   return `${count} file${count === 1 ? '' : 's'}`;
 };
 
-/* -------------------------------------------------------------------------- */
-/* Sibling navigation — a linear walk through each collection                 */
-/* -------------------------------------------------------------------------- */
+// Sibling navigation — a linear walk through each collection.
 
 /**
  * Every component flattened into display order: category by category (the

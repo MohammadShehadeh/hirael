@@ -19,10 +19,6 @@ import { cn } from '@/lib/utils';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
-/* -------------------------------------------------------------------------- */
-/*  Data                                                                      */
-/* -------------------------------------------------------------------------- */
-
 export type EmojiCategory = 'smileys' | 'people' | 'animals' | 'food' | 'activities' | 'travel' | 'objects' | 'symbols';
 
 export interface EmojiItem {
@@ -659,10 +655,6 @@ export const EMOJI_CATEGORIES: readonly {
   { id: 'symbols', label: 'Symbols', icon: Heart },
 ];
 
-/* -------------------------------------------------------------------------- */
-/*  Context                                                                   */
-/* -------------------------------------------------------------------------- */
-
 type EmojiPickerCategoryId = EmojiCategory | 'recent';
 
 interface EmojiPickerContextValue {
@@ -721,10 +713,6 @@ const writeRecent = (key: string, list: string[]) => {
     // Storage may be unavailable (private mode, quota). Recents are a nicety.
   }
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Root                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export interface EmojiPickerProps extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
   onEmojiSelect?: (emoji: string, item: EmojiItem) => void;
@@ -884,10 +872,6 @@ const EmojiPicker = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Search                                                                    */
-/* -------------------------------------------------------------------------- */
-
 type EmojiPickerSearchProps = Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'type'>;
 
 const EmojiPickerSearch = ({
@@ -929,10 +913,6 @@ const EmojiPickerSearch = ({
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Categories                                                                */
-/* -------------------------------------------------------------------------- */
 
 interface EmojiPickerCategoriesProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   labels?: Partial<Record<EmojiPickerCategoryId, string>>;
@@ -994,10 +974,6 @@ const EmojiPickerCategories = ({ labels, className, ...props }: EmojiPickerCateg
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  List + item                                                               */
-/* -------------------------------------------------------------------------- */
 
 interface EmojiPickerListProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   children?: React.ReactNode;
@@ -1133,10 +1109,6 @@ const EmojiPickerItem = React.memo(function EmojiPickerItem({
     </button>
   );
 });
-
-/* -------------------------------------------------------------------------- */
-/*  Empty, footer, skin tone                                                  */
-/* -------------------------------------------------------------------------- */
 
 type EmojiPickerEmptyProps = React.ComponentProps<'p'>;
 

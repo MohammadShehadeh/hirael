@@ -11,10 +11,6 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/r
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 import { QRCode } from '@/registry/hirael/bases/radix/components/qr-code';
 
-/* -------------------------------------------------------------------------- */
-/*  Root + context                                                            */
-/* -------------------------------------------------------------------------- */
-
 interface TwoFactorSetupContextValue {
   step: number;
   setStep: (step: number) => void;
@@ -77,10 +73,6 @@ const TwoFactorSetup = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Step indicator + step container                                           */
-/* -------------------------------------------------------------------------- */
-
 export interface TwoFactorSetupStepsProps extends React.ComponentProps<'ol'> {
   labels?: string[];
 }
@@ -141,10 +133,6 @@ const TwoFactorSetupStep = ({ index, className, ...props }: TwoFactorSetupStepPr
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Text                                                                       */
-/* -------------------------------------------------------------------------- */
-
 const TwoFactorSetupTitle = ({ className, ...props }: React.ComponentProps<'h2'>) => {
   return (
     <h2
@@ -160,10 +148,6 @@ const TwoFactorSetupDescription = ({ className, ...props }: React.ComponentProps
     <p data-slot="two-factor-setup-description" className={cn('text-xs text-muted-foreground', className)} {...props} />
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  QR + secret                                                                */
-/* -------------------------------------------------------------------------- */
 
 export interface TwoFactorSetupQrProps extends React.ComponentProps<'div'> {
   /** otpauth:// URI encoded into the QR symbol. */
@@ -215,10 +199,6 @@ const TwoFactorSetupSecret = ({
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Code entry                                                                 */
-/* -------------------------------------------------------------------------- */
 
 export interface TwoFactorSetupCodeProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   value: string;
@@ -282,10 +262,6 @@ const TwoFactorSetupCode = ({
     </Field>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Recovery codes                                                             */
-/* -------------------------------------------------------------------------- */
 
 export interface TwoFactorSetupRecoveryCodesProps extends React.ComponentProps<'div'> {
   codes: readonly string[];
@@ -366,10 +342,6 @@ const TwoFactorSetupRecoveryCodes = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Footer                                                                     */
-/* -------------------------------------------------------------------------- */
-
 const TwoFactorSetupFooter = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div
@@ -379,10 +351,6 @@ const TwoFactorSetupFooter = ({ className, ...props }: React.ComponentProps<'div
     />
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const ACCOUNT = 'ada@studio.com';
 const ISSUER = 'Hirael';

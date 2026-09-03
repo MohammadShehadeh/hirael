@@ -31,10 +31,6 @@ import {
   StepperTrigger,
 } from '@/registry/hirael/bases/base/components/stepper';
 
-/* -------------------------------------------------------------------------- */
-/*  Context                                                                   */
-/* -------------------------------------------------------------------------- */
-
 interface OnboardingStepMeta {
   title: string;
   description?: string;
@@ -62,10 +58,6 @@ const useOnboarding = () => {
   }
   return ctx;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                     */
-/* -------------------------------------------------------------------------- */
 
 interface OnboardingProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   /** Titles (and optional descriptions) for the indicator, in order. */
@@ -307,10 +299,6 @@ export {
   useOnboarding,
   type OnboardingStepMeta,
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                   */
-/* -------------------------------------------------------------------------- */
 
 const STEPS: readonly OnboardingStepMeta[] = [
   { title: 'Workspace' },

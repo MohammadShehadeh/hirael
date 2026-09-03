@@ -6,12 +6,10 @@ import { CATEGORIES_BY_GROUP } from '@/components/block-categories';
 import { SectionLabel } from '@/components/page-header';
 import { BLOCKS_BY_KIND } from '@/registry/hirael/registry-meta';
 
-/* -------------------------------------------------------------------------- */
-/* Schematic wireframe cards — each card previews the shape of its category.   */
-/* Token-only (muted-foreground / primary / border at low opacity) so it       */
-/* stays on the near-monochrome palette and works in both themes; RTL-safe     */
-/* via logical properties.                                                     */
-/* -------------------------------------------------------------------------- */
+// Schematic wireframe cards — each card previews the shape of its category.
+// Token-only (muted-foreground / primary / border at low opacity) so it
+// stays on the near-monochrome palette and works in both themes; RTL-safe
+// via logical properties.
 
 const CARD_SHELL =
   'relative flex aspect-video size-full overflow-hidden rounded-md border border-border bg-card/55 shadow-xs outline-none focus-visible:border-warm focus-visible:ring-[3px] focus-visible:ring-ring/40 xl:aspect-[1.8/1] dark:bg-[radial-gradient(90%_120%_at_50%_0%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent)]';

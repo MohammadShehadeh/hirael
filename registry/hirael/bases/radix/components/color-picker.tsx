@@ -707,7 +707,7 @@ const ColorPickerEyedropper = ({
           ctx.setHex(next);
           ctx.pushSwatch(next);
         } catch {
-          // user cancelled or unsupported
+          // Cancelled, or EyeDropper is unsupported; the current color stays.
         }
       }}
       className={cn('shrink-0', className)}

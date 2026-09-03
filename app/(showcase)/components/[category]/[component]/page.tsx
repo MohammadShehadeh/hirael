@@ -46,9 +46,9 @@ export async function generateMetadata({
 /**
  * A component ships its install source at `<base>/components/<name>.tsx`
  * (what shadcn distributes) and one or more demos at
- * `<base>/examples/<slug>.tsx`. Returns each example with its pre-highlighted source
- * for the stacked preview/code blocks; the source is null when a file is
- * missing.
+ * `<base>/examples/<slug>.tsx`. Returns each example with its pre-highlighted
+ * source for the stacked preview/code blocks; the source is null when a file
+ * is missing.
  */
 async function loadExampleSource(base: RegistryBase, slug: string): Promise<SourceFile | null> {
   const relPath = registryFilePath(base, `examples/${slug}.tsx`);

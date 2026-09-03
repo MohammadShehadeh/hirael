@@ -54,10 +54,6 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 interface HeaderContextValue {
   isShrunk: boolean;
   reduce: boolean;
@@ -214,10 +210,6 @@ const HeaderMobileMenu = ({ open, className, children, ...props }: HeaderMobileM
     </AnimatePresence>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const Brand = () => {
   return (

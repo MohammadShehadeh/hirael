@@ -8,10 +8,6 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/radix/ui/collapsible';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 const ErrorPage = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
     <section
@@ -181,10 +177,6 @@ const ErrorPageStatus = ({ tone = 'success', className, children, ...props }: Er
     </a>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const REQUEST_ID = 'req_8f2a1c9e4b7d';
 const TIMESTAMP = '2026-08-26T14:32:07.412Z';

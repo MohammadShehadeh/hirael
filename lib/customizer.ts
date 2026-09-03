@@ -5,9 +5,9 @@
  * Config: `base` picks which registry tree the site previews, shows source
  * for and installs from (Radix UI or Base UI, see `REGISTRY_BASES`); the icon
  * library only feeds the setup snippet, since every tree ships lucide icons.
- * Styles (base color, theme, chart color, font, radius) re-skin the site live: they resolve to `.light` / `.dark` token
- * blocks injected as a <style> element, mirroring how a consumer's
- * globals.css would carry the same values. "Preview only" scopes those blocks
+ * Styles (base color, theme, chart color, font, radius) re-skin the site
+ * live: they resolve to `.light` / `.dark` token blocks injected as a <style>
+ * element, mirroring how a consumer's globals.css would carry the same values. "Preview only" scopes those blocks
  * to `[data-customizer-scope]` surfaces (demo cards, component previews) and
  * the framed `/embed/*` documents, leaving the site chrome alone.
  */

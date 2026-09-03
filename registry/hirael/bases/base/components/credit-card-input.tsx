@@ -6,10 +6,6 @@ import { CreditCard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 
-/* -------------------------------------------------------------------------- */
-/*  Brand detection + helpers                                                 */
-/* -------------------------------------------------------------------------- */
-
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unknown';
 
 export interface CardBrandSpec {
@@ -150,10 +146,6 @@ const isExpiryValid = (expiry: string, now: Date): boolean => {
   return year - nowYear <= 20;
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Types + context                                                           */
-/* -------------------------------------------------------------------------- */
-
 export type CreditCardField = 'number' | 'expiry' | 'cvc';
 
 export interface CreditCardValue {
@@ -195,10 +187,6 @@ const useCreditCardInput = () => {
   }
   return ctx;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Root                                                                      */
-/* -------------------------------------------------------------------------- */
 
 const EMPTY_VALUE: CreditCardValue = { number: '', expiry: '', cvc: '' };
 
@@ -337,10 +325,6 @@ const CreditCardInput = ({
     </CreditCardInputContext.Provider>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Fields                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const ROW_INPUT =
   'h-10 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent aria-invalid:ring-0';
@@ -489,10 +473,6 @@ const CreditCardInputCvc = ({
     />
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Brand badge                                                               */
-/* -------------------------------------------------------------------------- */
 
 interface CreditCardInputBrandProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   labels?: Partial<Record<CardBrand, string>>;

@@ -16,10 +16,6 @@ import {
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 
-/* -------------------------------------------------------------------------- */
-/*  Data                                                                      */
-/* -------------------------------------------------------------------------- */
-
 export interface Country {
   iso2: string;
   name: string;
@@ -99,10 +95,6 @@ export const countryFlag = (iso2: string): string => {
   return String.fromCodePoint(...Array.from(code, (c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Context                                                                   */
-/* -------------------------------------------------------------------------- */
-
 interface CountrySelectContextValue {
   id: string;
   countries: readonly Country[];
@@ -129,10 +121,6 @@ const useCountrySelect = () => {
   }
   return ctx;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Root                                                                      */
-/* -------------------------------------------------------------------------- */
 
 interface CountrySelectBaseProps {
   id?: string;
@@ -280,10 +268,6 @@ const CountrySelect = (props: CountrySelectProps) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Flag                                                                      */
-/* -------------------------------------------------------------------------- */
-
 interface CountrySelectFlagProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   iso2: string;
 }
@@ -300,10 +284,6 @@ const CountrySelectFlag = ({ iso2, className, ...props }: CountrySelectFlagProps
     </span>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Trigger + value                                                           */
-/* -------------------------------------------------------------------------- */
 
 type CountrySelectTriggerProps = Omit<React.ComponentProps<typeof Button>, 'type' | 'role'>;
 
@@ -393,10 +373,6 @@ const CountrySelectValue = ({
     </span>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Content                                                                   */
-/* -------------------------------------------------------------------------- */
 
 type CountrySelectContentProps = React.ComponentProps<typeof PopoverContent>;
 

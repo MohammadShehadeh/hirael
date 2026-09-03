@@ -1,7 +1,7 @@
 // Runs as `pnpm registry:props`. Generates registry/hirael/registry-props.json,
-// the per-component API tables on the showcase's API tab: each exported component's own props (declared in
-// registry source, not inherited HTML/React attributes) with type,
-// optionality, destructured default and JSDoc.
+// the per-component API tables on the showcase's API tab: each exported
+// component's own props (declared in registry source, not inherited HTML/React
+// attributes) with type, optionality, destructured default and JSDoc.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

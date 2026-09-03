@@ -8,10 +8,6 @@ import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { NativeSelect, NativeSelectOption } from '@/registry/hirael/bases/radix/ui/native-select';
 
-/* -------------------------------------------------------------------------- */
-/*  Cron parsing                                                              */
-/* -------------------------------------------------------------------------- */
-
 export type CronField = 'minute' | 'hour' | 'dayOfMonth' | 'month' | 'dayOfWeek';
 
 export type CronFieldMode = 'every' | 'specific' | 'step';
@@ -206,10 +202,6 @@ export const formatCron = (fields: Record<CronField, Pick<CronFieldValue, 'mode'
   return CRON_FIELDS.map((f) => formatCronField(fields[f])).join(' ');
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Describe                                                                  */
-/* -------------------------------------------------------------------------- */
-
 const joinList = (items: string[]): string => {
   if (items.length <= 1) return items.join('');
   if (items.length === 2) return `${items[0]} and ${items[1]}`;
@@ -233,7 +225,6 @@ export const describeCron = (expression: string): string => {
   const { minute, hour, dayOfMonth, month, dayOfWeek } = parsed.fields;
   const parts: string[] = [];
 
-  // Time
   if (minute.mode === 'specific' && hour.mode === 'specific') {
     const times: string[] = [];
     for (const h of hour.values) {
@@ -259,14 +250,12 @@ export const describeCron = (expression: string): string => {
     parts.push('Every minute');
   }
 
-  // Day of month
   if (dayOfMonth.mode === 'specific') {
     parts.push(`on day ${joinList(dayOfMonth.values.map(String))} of the month`);
   } else if (dayOfMonth.mode === 'step') {
     parts.push(`every ${ordinal(dayOfMonth.step)} day of the month`);
   }
 
-  // Day of week
   if (dayOfWeek.mode === 'specific') {
     const names = dayOfWeek.values.map((d) => DAY_NAMES[d]);
     const isWeekdays = dayOfWeek.values.join(',') === '1,2,3,4,5';
@@ -276,7 +265,6 @@ export const describeCron = (expression: string): string => {
     parts.push(`every ${ordinal(dayOfWeek.step)} day of the week`);
   }
 
-  // Month
   if (month.mode === 'specific') {
     parts.push(`in ${joinList(month.values.map((m) => MONTH_NAMES[m - 1]))}`);
   } else if (month.mode === 'step') {
@@ -285,10 +273,6 @@ export const describeCron = (expression: string): string => {
 
   return parts.join(' ');
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Next runs                                                                 */
-/* -------------------------------------------------------------------------- */
 
 /**
  * Compute the next `count` times the expression fires after `from`, in local
@@ -347,10 +331,6 @@ export const nextCronRuns = (expression: string, count = 3, from: Date = new Dat
   return out;
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Context                                                                   */
-/* -------------------------------------------------------------------------- */
-
 interface CronEditorContextValue {
   id: string;
   value: string;
@@ -369,10 +349,6 @@ const useCronEditor = () => {
   }
   return ctx;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Root                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export interface CronEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'defaultValue'> {
   id?: string;
@@ -438,10 +414,6 @@ const CronEditor = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Presets                                                                   */
-/* -------------------------------------------------------------------------- */
-
 export interface CronPreset {
   label: string;
   value: string;
@@ -492,10 +464,6 @@ const CronEditorPresets = ({ presets = CRON_PRESETS, className, ...props }: Cron
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Fields                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const DEFAULT_FIELD_LABELS: Record<CronField, string> = {
   minute: 'Minute',
@@ -676,10 +644,6 @@ const CronEditorField = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Expression                                                                */
-/* -------------------------------------------------------------------------- */
-
 interface CronEditorExpressionProps extends Omit<
   React.ComponentProps<'input'>,
   'children' | 'value' | 'defaultValue' | 'onChange' | 'id'
@@ -734,10 +698,6 @@ const CronEditorExpression = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                   */
-/* -------------------------------------------------------------------------- */
-
 interface CronEditorPreviewProps extends Omit<React.ComponentProps<'p'>, 'children'> {
   /** Override the sentence. Defaults to `describeCron`. */
   describe?: (parsed: ParsedCron, expression: string) => React.ReactNode;
@@ -757,10 +717,6 @@ const CronEditorPreview = ({ describe, className, ...props }: CronEditorPreviewP
     </p>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Next runs                                                                 */
-/* -------------------------------------------------------------------------- */
 
 const subscribeMinute = (onChange: () => void) => {
   const id = window.setInterval(onChange, 30_000);

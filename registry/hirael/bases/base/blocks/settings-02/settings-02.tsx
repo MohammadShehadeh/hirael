@@ -23,10 +23,6 @@ import {
   PasswordInputStrength,
 } from '@/registry/hirael/bases/base/components/password-input';
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                     */
-/* -------------------------------------------------------------------------- */
-
 type SettingsPanelProps = React.ComponentProps<'section'>;
 
 const SettingsPanel = ({ className, ...props }: SettingsPanelProps) => {
@@ -236,10 +232,6 @@ export {
   SettingsPanelSession,
   SettingsPanelFooter,
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                   */
-/* -------------------------------------------------------------------------- */
 
 interface Session {
   id: string;

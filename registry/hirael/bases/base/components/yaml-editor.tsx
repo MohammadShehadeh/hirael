@@ -4,10 +4,8 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-/* -------------------------------------------------------------------------- */
-/* Dependency-free YAML tokenizer — enough to read config at a glance, not a   */
-/* full parser. Each line becomes a list of classed spans.                     */
-/* -------------------------------------------------------------------------- */
+// Dependency-free YAML tokenizer — enough to read config at a glance, not a
+// full parser. Each line becomes a list of classed spans.
 
 const tokenClass = {
   comment: 'text-muted-foreground italic',

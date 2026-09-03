@@ -20,10 +20,6 @@ import {
   type ImageCropperRef,
 } from '@/registry/hirael/bases/base/components/image-cropper';
 
-/* -------------------------------------------------------------------------- */
-/*  Helpers                                                                   */
-/* -------------------------------------------------------------------------- */
-
 const formatBytes = (bytes: number): string => {
   if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
   const units = ['B', 'KB', 'MB', 'GB'] as const;
@@ -59,10 +55,6 @@ const readAsDataUrl = (file: File): Promise<string> => {
     reader.readAsDataURL(file);
   });
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Context                                                                   */
-/* -------------------------------------------------------------------------- */
 
 export type AvatarUploadShape = 'circle' | 'square';
 
@@ -102,10 +94,6 @@ const useAvatarUpload = () => {
   }
   return ctx;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Root                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export interface AvatarUploadProps extends Omit<
   React.ComponentProps<'div'>,
@@ -311,10 +299,6 @@ const AvatarUpload = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Preview + trigger + input + remove                                        */
-/* -------------------------------------------------------------------------- */
-
 interface AvatarUploadPreviewProps extends React.ComponentProps<'div'> {
   /** Initials or a short label shown when there is no image. */
   fallback?: React.ReactNode;
@@ -486,10 +470,6 @@ const AvatarUploadRemove = ({ className, children, onClick, ...props }: AvatarUp
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Crop dialog                                                               */
-/* -------------------------------------------------------------------------- */
-
 interface AvatarUploadCropDialogProps extends Omit<React.ComponentProps<typeof DialogContent>, 'children'> {
   title?: string;
   description?: string;
@@ -554,10 +534,6 @@ const AvatarUploadCropDialog = ({
     </Dialog>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Error                                                                     */
-/* -------------------------------------------------------------------------- */
 
 interface AvatarUploadErrorProps extends Omit<React.ComponentProps<'p'>, 'children'> {
   /** Override the message per reason. */

@@ -44,10 +44,6 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
 
 const EASE = 'easeOut' as const;
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   const reduce = useReducedMotion();
   return (
@@ -144,10 +140,6 @@ const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
     </motion.div>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const Faq06 = () => {
   return (

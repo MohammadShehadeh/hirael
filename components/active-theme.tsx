@@ -115,7 +115,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
         localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
-        // ignore
+        // Storage may be unavailable (private mode, quota); the in-memory config still applies.
       }
     }, 200);
     return () => window.clearTimeout(id);

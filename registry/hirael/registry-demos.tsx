@@ -32,8 +32,8 @@ const loadTemplate = (base: RegistryBase, name: string) =>
 
 // React.lazy identities must stay stable across renders or the preview
 // remounts, so each is built once and cached at module scope by key. A failed
-// import (unknown slug/name) resolves to a null component — a blank preview,
-// matching the old missing-loader behavior instead of throwing.
+// import (unknown slug/name) resolves to a null component, so the preview
+// goes blank instead of throwing.
 const lazyCache = new Map<string, React.LazyExoticComponent<React.ComponentType>>();
 
 const lazyFor = (key: string, load: () => Promise<{ default: React.ComponentType }>) => {

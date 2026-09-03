@@ -9,10 +9,6 @@ import { Field, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { CountdownTimer } from '@/registry/hirael/bases/base/components/countdown-timer';
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 const ComingSoon = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
     <section
@@ -167,10 +163,6 @@ const ComingSoonFooter = ({ className, ...props }: React.ComponentProps<'div'>) 
     />
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

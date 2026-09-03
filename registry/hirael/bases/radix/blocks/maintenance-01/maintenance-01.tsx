@@ -6,10 +6,6 @@ import { ArrowUpRight, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 const Maintenance = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
     <section
@@ -157,10 +153,6 @@ const MaintenanceActions = ({ className, ...props }: React.ComponentProps<'div'>
     <div data-slot="maintenance-actions" className={cn('flex flex-wrap items-center gap-3', className)} {...props} />
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 interface Update {
   time: string;

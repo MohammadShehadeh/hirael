@@ -1,9 +1,5 @@
 import { type BlockKind } from '@/registry/hirael/registry-meta';
 
-/* -------------------------------------------------------------------------- */
-/* Category registry                                                          */
-/* -------------------------------------------------------------------------- */
-
 export type CategoryGroup = keyof typeof CATEGORY_GROUP_LABELS;
 
 export const CATEGORY_GROUP_LABELS = {

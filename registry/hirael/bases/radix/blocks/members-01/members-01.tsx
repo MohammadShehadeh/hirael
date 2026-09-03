@@ -40,10 +40,6 @@ import {
   TagInputTags,
 } from '@/registry/hirael/bases/radix/components/tag-input';
 
-/* -------------------------------------------------------------------------- */
-/*  Types                                                                     */
-/* -------------------------------------------------------------------------- */
-
 type MemberRole = 'Owner' | 'Admin' | 'Member' | 'Viewer';
 type MemberStatus = 'Active' | 'Pending' | 'Suspended';
 
@@ -92,10 +88,6 @@ const initialsOf = (name: string) => {
     .map((part) => part[0]?.toUpperCase() ?? '')
     .join('');
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                     */
-/* -------------------------------------------------------------------------- */
 
 type MembersProps = React.ComponentProps<'div'>;
 
@@ -581,10 +573,6 @@ export {
   type MemberStatus,
   type PendingInvite,
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                   */
-/* -------------------------------------------------------------------------- */
 
 const MEMBERS: readonly Member[] = [
   {

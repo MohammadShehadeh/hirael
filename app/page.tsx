@@ -345,10 +345,6 @@ function FeaturedComponents() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Section blocks                                                             */
-/* -------------------------------------------------------------------------- */
-
 function SectionBlocks() {
   return (
     <section className="relative py-20 sm:py-28">
@@ -364,10 +360,6 @@ function SectionBlocks() {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* Full templates                                                             */
-/* -------------------------------------------------------------------------- */
 
 /** The two the catalog leads with; the rest are one click away on /templates. */
 const FEATURED_TEMPLATES = ['agency-landing', 'mindloop'] as const;
@@ -426,10 +418,6 @@ function FullTemplates() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Recently added                                                             */
-/* -------------------------------------------------------------------------- */
-
 const RECENT_COUNT = 6;
 
 /**
@@ -464,10 +452,6 @@ async function RecentlyAdded() {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* Closing CTA                                                                */
-/* -------------------------------------------------------------------------- */
 
 function ClosingCta() {
   return (

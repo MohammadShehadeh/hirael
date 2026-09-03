@@ -411,7 +411,7 @@ const CookieConsentBlock = () => {
     try {
       window.localStorage.removeItem(PREVIEW_STORAGE_KEY);
     } catch {
-      // ignore
+      // Storage may be unavailable (private mode, quota); the preview resets regardless.
     }
     setChoice(null);
     setOpen(true);

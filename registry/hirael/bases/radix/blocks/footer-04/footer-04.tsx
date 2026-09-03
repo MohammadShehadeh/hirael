@@ -52,10 +52,6 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Parts                                                                      */
-/* -------------------------------------------------------------------------- */
-
 interface RevealProps extends HTMLMotionProps<'div'> {
   /** Seconds to wait before the reveal starts. */
   delay?: number;
@@ -235,10 +231,6 @@ const FooterSubscribe = ({
     </form>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Preview                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const Footer04 = () => {
   return (

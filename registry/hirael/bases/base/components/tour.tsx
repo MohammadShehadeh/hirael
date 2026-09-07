@@ -29,6 +29,8 @@ interface TourContextValue {
   back: () => void;
 }
 
+const NEVER_CHANGES = () => () => {};
+
 const TourContext = React.createContext<TourContextValue | null>(null);
 
 const useTour = () => {
@@ -147,14 +149,18 @@ const Tour = ({
     if (resolveTarget(steps[step]?.target)) return;
     const idx = findResolvable(step + 1, 1);
     if (idx === -1) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(false);
     } else {
       setStep(idx);
     }
   }, [open, step, steps, findResolvable, setOpen, setStep]);
 
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = React.useSyncExternalStore(
+    NEVER_CHANGES,
+    () => true,
+    () => false,
+  );
 
   const ctx = React.useMemo<TourContextValue>(
     () => ({ open, step, start, stop, next, back }),
@@ -230,6 +236,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
   React.useLayoutEffect(() => {
     const el = resolveTarget(target);
     if (el && scrollIntoView) el.scrollIntoView({ block: 'center' });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     measure();
   }, [target, scrollIntoView, measure]);
 

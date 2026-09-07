@@ -68,7 +68,6 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
         }
         return;
       }
-      // Align the next tick to the upcoming second boundary.
       timeout = setTimeout(tick, 1000 - (Date.now() % 1000));
     };
 
@@ -81,23 +80,28 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
   return state;
 };
 
-const useMounted = () => {
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
-  return mounted;
-};
+const NEVER_CHANGES = () => () => {};
 
-const useReducedMotion = () => {
-  const [reduced, setReduced] = React.useState(false);
-  React.useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(query.matches);
-    const onChange = (event: MediaQueryListEvent) => setReduced(event.matches);
-    query.addEventListener('change', onChange);
-    return () => query.removeEventListener('change', onChange);
-  }, []);
-  return reduced;
-};
+/** False through the server render and hydration, true from then on. */
+const useMounted = () =>
+  React.useSyncExternalStore(
+    NEVER_CHANGES,
+    () => true,
+    () => false,
+  );
+
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+
+const useReducedMotion = () =>
+  React.useSyncExternalStore(
+    (onStoreChange) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener('change', onStoreChange);
+      return () => query.removeEventListener('change', onStoreChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
 
 const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProps<'span'> & { value: string }) => {
   const reduceMotion = useReducedMotion();

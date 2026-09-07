@@ -19,6 +19,7 @@ import {
   type ResolvedTokens,
   type ThemeMode,
 } from '@/lib/customizer';
+import { useMounted } from '@/hooks/use-mounted';
 import type { RegistryBase } from '@/registry/hirael/registry-meta';
 
 interface ThemeContextValue {
@@ -33,11 +34,6 @@ interface ThemeContextValue {
   reset: () => void;
 }
 
-// Read the persisted config synchronously so the first render, the injected
-// stylesheet and the pre-paint script agree. Mounting empty and writing the
-// defaults back would wipe a saved config, and the framed `/embed/*` previews
-// (which re-run the same pre-paint script) would open against the default
-// palette instead of the active one.
 const readPersistedConfig = (): CustomizerConfig => {
   if (typeof window === 'undefined') return DEFAULT_CONFIG;
   try {
@@ -50,13 +46,8 @@ const readPersistedConfig = (): CustomizerConfig => {
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
-// Owns the Customizer config and bridges next-themes' light/dark mode into the
-// context shape the showcase consumes. next-themes handles the `.light` /
-// `.dark` class on <html>, its persistence and pre-paint script; this layer
-// resolves the config to tokens and keeps one <style> element in sync.
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
-  // Falls back to dark to match the SSR default before next-themes mounts.
   const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
 
   const pathname = usePathname();
@@ -64,17 +55,8 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [config, setConfigState] = React.useState<CustomizerConfig>(readPersistedConfig);
 
-  // Markup that depends on the config (install URLs, source tabs, framed
-  // preview paths) must hydrate against the static HTML, which was rendered
-  // with the defaults; the persisted base takes over after mount. Tokens are
-  // unaffected: they reach the page as a stylesheet, never as markup.
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
-  // Keep already-mounted documents in sync when another same-origin document
-  // changes the config: the sheet lives in the site header, so a visitor can
-  // re-skin while a block's `/embed/*` iframe is on screen. `storage` only
-  // fires in *other* documents, so the writer never hears its own change.
   React.useEffect(() => {
     function onStorage(e: StorageEvent) {
       if (e.key !== CONFIG_STORAGE_KEY) return;
@@ -89,9 +71,6 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const mainCss = buildCustomizerCss(tokens, config.previewOnly);
   const embedCss = buildCustomizerCss(tokens, false);
 
-  // Swap the stylesheet synchronously on every change so a pick in the sheet
-  // repaints the page in the same frame. Reuses the element the pre-paint
-  // script created when there is one.
   React.useLayoutEffect(() => {
     const css = isEmbed ? embedCss : mainCss;
     let el = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
@@ -107,15 +86,12 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     if (el.textContent !== css) el.textContent = css;
   }, [isEmbed, mainCss, embedCss]);
 
-  // Persist the config for the sheet and both stylesheet flavours for the
-  // pre-paint script, debounced so rapid picks don't thrash localStorage.
   React.useEffect(() => {
     const id = window.setTimeout(() => {
       try {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
         localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
-        // Storage may be unavailable (private mode, quota); the in-memory config still applies.
       }
     }, 200);
     return () => window.clearTimeout(id);
@@ -123,8 +99,6 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setMode = (m: ThemeMode) => setTheme(m);
 
-  // Chart color follows the theme unless picked on its own, and a theme that
-  // belongs to another base color snaps back through normalizeConfig.
   const setConfig = (patch: Partial<CustomizerConfig>) => {
     setConfigState((prev) => {
       const next: Partial<CustomizerConfig> = { ...prev, ...patch };
@@ -152,10 +126,6 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  // `.dark` mirrors the standard shadcn convention so registry components
-  // authored with `dark:` variants resolve here exactly as in a consumer app;
-  // `.light` carries this site's token overrides. enableSystem is off — the
-  // showcase defaults to dark and the toggle is explicit.
   return (
     <NextThemesProvider
       attribute="class"

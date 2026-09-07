@@ -5,7 +5,6 @@ import { ArrowRight, Frame, Layers } from 'lucide-react';
 import { InlineCodeBlock } from '@/components/code-block';
 import { CollectionJsonLd } from '@/components/collection-json-ld';
 import { DemoCard } from '@/components/demo-card';
-import { InstallBlock } from '@/components/install-block';
 import { PageHeader, SectionLabel } from '@/components/page-header';
 import { highlightCode } from '@/lib/highlight';
 import { listingMetadata } from '@/lib/seo';
@@ -64,9 +63,7 @@ export default async function ComponentsIndex() {
         kicker="Components"
         title="The full registry."
         blurb={`${COMPONENTS.length} components shadcn/ui doesn't ship, live below so you can try each one before installing. One command copies the source into your repo.`}
-      >
-        <InstallBlock name="multi-select" className="mt-2 w-full max-w-md" />
-      </PageHeader>
+      />
 
       <nav aria-label="Component categories" className="-mt-6 flex flex-wrap justify-center gap-2">
         {COMPONENT_CATEGORY_ORDER.map((cat) => (

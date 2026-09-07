@@ -1,0 +1,42 @@
+---
+title: Docs your agent can read
+version: '6.2.0'
+date: 2026-09-06
+description: 'Every component, block and template now has a Markdown twin holding its install command, usage, demos, source and API in one file. Detail pages gained related items and a shipped date, and links to the site finally preview properly.'
+---
+
+No new components this time. Instead, everything already in the catalog got
+easier to read, both for you and for whatever you have reading the docs on your
+behalf.
+
+New:
+
+- **Copy page.** A button on every component, block and template page that
+  copies the whole page as Markdown: install command, usage, every demo, the
+  full source and the API table. Paste it into an agent and it has the same
+  picture you do.
+- **The same page at a URL.** That Markdown lives at `/r/<name>.md` next to the
+  payload the CLI installs from, so you can hand over a link instead of a
+  paste. Base UI items are at `/r/base/<name>.md`. Imports in the source are
+  rewritten to the paths the CLI actually installs to, so what you read is what
+  you get.
+- **Related items** at the bottom of each detail page, and a **Shipped** line
+  saying which release an item arrived in. Anything from the last week wears a
+  New badge.
+- **Recently added** on the home page, so the newest items are the first thing
+  you see.
+
+Changed:
+
+- **Links preview.** Paste a component, block or template URL into Slack,
+  Discord or anywhere else and you get that item's own preview image and
+  description, not the same site-wide card every time.
+- **Search results carry structure**, so a component page shows up as a
+  component rather than an untitled page.
+
+Fixed:
+
+- **Refs reach the element you expect.** Components that keep an internal ref
+  used to quietly drop the one you passed. They now compose the two, so
+  measuring, focusing or scrolling a component from your own code works the way
+  it does with a plain element.

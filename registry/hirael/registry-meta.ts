@@ -154,6 +154,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'duration-input',
+    title: 'Duration Input',
+    description:
+      'Segmented duration field over days, hours, minutes and seconds. Digits auto-advance, arrows step, and the value stays a plain number of seconds.',
+    category: 'inputs',
+    files: [{ path: 'components/duration-input.tsx' }],
+    registryDependencies: [],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'combobox',
     title: 'Combobox',
     description:
@@ -835,6 +845,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'logo-cloud-02',
+    title: 'Logo Cloud 2',
+    description:
+      'Two full-bleed marquee rows of wordmarks running in opposite directions, edges faded into the page, each row holding still on hover.',
+    blockTagline: 'Two marquee rows · opposite directions · pauses on hover',
+    category: 'blocks',
+    blockKind: 'logo-cloud',
+    files: [
+      {
+        path: 'blocks/logo-cloud-02/logo-cloud-02.tsx',
+        target: 'components/blocks/logo-cloud-02.tsx',
+      },
+    ],
+    registryDependencies: ['marquee'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'logo-cloud-03',
+    title: 'Logo Cloud 3',
+    description:
+      'Quiet single-row wordmark strip that brightens on hover, a rule, then a pull quote with an avatar and attribution.',
+    blockTagline: 'Single row · muted wordmarks · pull quote',
+    category: 'blocks',
+    blockKind: 'logo-cloud',
+    files: [
+      {
+        path: 'blocks/logo-cloud-03/logo-cloud-03.tsx',
+        target: 'components/blocks/logo-cloud-03.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'separator'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'contact-01',
     title: 'Contact 1',
     description:
@@ -1002,6 +1046,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button', 'card'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-02',
+    title: 'Integrations 2',
+    description:
+      'Filterable connector grid: category chips above a card grid, each card showing an icon, a summary and a connect or connected state.',
+    blockTagline: 'Card grid · category filter · connected state',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-02/integrations-02.tsx',
+        target: 'components/blocks/integrations-02.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-03',
+    title: 'Integrations 3',
+    description:
+      'Two-column integrations page: a sticky intro with a request card beside a ruled list of connectors and their status.',
+    blockTagline: 'Sticky intro · ruled list · request card',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-03/integrations-03.tsx',
+        target: 'components/blocks/integrations-03.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button', 'separator'],
     dependencies: ['lucide-react'],
   },
   {
@@ -2790,6 +2868,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'comparison-02',
+    title: 'Comparison 2',
+    description:
+      'Three-column feature matrix with a highlighted middle column, mixed tick and text cells, and a call to action in the footer row.',
+    blockTagline: 'Three columns · feature matrix · highlighted column',
+    category: 'blocks',
+    blockKind: 'comparison',
+    files: [
+      {
+        path: 'blocks/comparison-02/comparison-02.tsx',
+        target: 'components/blocks/comparison-02.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'comparison-03',
+    title: 'Comparison 3',
+    description:
+      'Before and after panels side by side, the old way struck through and the new way ticked, closing on an outcome strip.',
+    blockTagline: 'Before and after · two panels · outcome strip',
+    category: 'blocks',
+    blockKind: 'comparison',
+    files: [
+      {
+        path: 'blocks/comparison-03/comparison-03.tsx',
+        target: 'components/blocks/comparison-03.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'newsletter-01',
     title: 'Newsletter 1',
     description:
@@ -3279,6 +3391,26 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'command-palette',
+    title: 'Command Palette',
+    description:
+      'Keyboard-first command menu with a platform shortcut, nested pages, remembered recents and shortcut hints on each row.',
+    category: 'navigation',
+    files: [{ path: 'components/command-palette.tsx' }],
+    registryDependencies: ['command'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'address-input',
+    title: 'Address Input',
+    description:
+      'Postal address field group that follows the selected country: which fields appear, the order they sit in, and what they are called.',
+    category: 'inputs',
+    files: [{ path: 'components/address-input.tsx' }],
+    registryDependencies: ['field', 'input', 'country-select'],
+    dependencies: [],
+  },
+  {
     name: 'credit-card-input',
     title: 'Credit Card Input',
     description:
@@ -3567,6 +3699,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ['animated-number'],
     dependencies: ['lucide-react'],
+  },
+  {
+    name: 'stats-02',
+    title: 'Stats 2',
+    description:
+      'Four bordered metric tiles, each with a big figure, a trend chip and its own twelve-week sparkline underneath.',
+    blockTagline: 'Four tiles · sparkline each · trend chips',
+    category: 'blocks',
+    blockKind: 'stats',
+    files: [
+      {
+        path: 'blocks/stats-02/stats-02.tsx',
+        target: 'components/blocks/stats-02.tsx',
+      },
+    ],
+    registryDependencies: ['sparkline'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'cookie-consent',
@@ -3969,8 +4119,6 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   'changelog',
 ];
 
-// Routing — every browsable item lives under its category segment.
-
 /** Component categories in display order. Drives the index, sidebar, sitemap. */
 export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'templates'>[] = [
   'inputs',
@@ -4054,8 +4202,6 @@ export const entryFileLabel = (entry: RegistryEntryMeta): string => {
   const count = entry.files?.length ?? 0;
   return `${count} file${count === 1 ? '' : 's'}`;
 };
-
-// Sibling navigation — a linear walk through each collection.
 
 /**
  * Every component flattened into display order: category by category (the

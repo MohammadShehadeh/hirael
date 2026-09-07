@@ -1,0 +1,60 @@
+---
+title: Three components, seven sections
+version: '6.3.0'
+date: 2026-09-07
+description: 'Address, duration and command palette join the catalog, seven blocks fill out the thinner categories, and a pass over hooks clears a long tail of stale-frame bugs.'
+added:
+  - address-input
+  - command-palette
+  - duration-input
+  - comparison-02
+  - comparison-03
+  - integrations-02
+  - integrations-03
+  - logo-cloud-02
+  - logo-cloud-03
+  - stats-02
+---
+
+The biggest batch since the Base UI split: three new components, seven new
+sections, and a quiet pass over how the whole catalog handles state.
+
+New components:
+
+- **Address Input**: a postal address that follows the country you pick. Choose
+  the United States and you get City, State and ZIP code. Choose Germany and
+  the postcode moves in front of the city and the region field disappears
+  entirely. Twelve countries are described out of the box, and you can add
+  your own.
+- **Duration Input**: hours and minutes as separate segments you can type
+  through, with digits that carry into the next segment on their own. Arrows
+  step, Shift and arrows step by ten, and the value stays a plain number of
+  seconds.
+- **Command Palette**: the search dialog the `command` primitive stops short of.
+  A platform shortcut, nested pages you can back out of with Backspace,
+  remembered recents, and a shortcut hint on each row.
+
+New sections, filling out the thinnest categories:
+
+- **Logo clouds**: Logo Cloud 2, two marquee rows running opposite ways, and
+  Logo Cloud 3, a quiet single row over a pull quote.
+- **Stats**: Stats 2, four tiles each with their own sparkline.
+- **Comparison**: Comparison 2, a three-column feature matrix with one column
+  highlighted, and Comparison 3, before and after side by side.
+- **Integrations**: Integrations 2, a filterable connector grid, and
+  Integrations 3, a ruled connector list beside a sticky intro.
+
+Fixed, across the catalog:
+
+- **No more stale frames.** A handful of components used to correct themselves
+  one frame late: the audio player kept the previous track's progress for an
+  instant, the lightbox opened a new image at the last one's pan offset, the
+  mention field showed the previous highlight for a beat. They now settle
+  before they paint.
+- **Refs behave.** Components that keep an internal ref no longer look like
+  they are reading it while rendering, which is what React's own lint has been
+  warning about. Copy any of them into a project with those rules on and the
+  file is quiet.
+- **Lazy Select stops rebuilding its label cache.** Labels are folded in by
+  content rather than by array identity, so passing a freshly built `options`
+  array on every render no longer matters.

@@ -4,12 +4,11 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { Search } from 'lucide-react';
 
+import { useIsApple } from '@/hooks/use-is-apple';
 import { cn } from '@/lib/utils';
 import { KbdDisplay } from '@/registry/hirael/bases/radix/components/kbd';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-// The palette (cmdk + Radix dialog) is loaded on first open, so it never
-// ships to visitors who don't search.
 const CommandPalette = dynamic(() => import('@/components/command-palette').then((m) => m.CommandPalette), {
   ssr: false,
 });
@@ -21,25 +20,23 @@ const CommandPalette = dynamic(() => import('@/components/command-palette').then
 export const CommandMenu = ({ className }: { className?: string }) => {
   const [open, setOpen] = React.useState(false);
   const [armed, setArmed] = React.useState(false);
-  const [isMac, setIsMac] = React.useState(false);
+  const isMac = useIsApple();
 
   React.useEffect(() => {
-    setIsMac(
-      typeof navigator !== 'undefined' && /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent),
-    );
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((prev) => !prev);
-      }
+      if (e.key.toLowerCase() !== 'k' || !(e.metaKey || e.ctrlKey)) return;
+      e.preventDefault();
+      setArmed(true);
+      setOpen((prev) => !prev);
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  React.useEffect(() => {
-    if (open) setArmed(true);
-  }, [open]);
+  const openPalette = () => {
+    setArmed(true);
+    setOpen(true);
+  };
 
   return (
     <>
@@ -47,7 +44,7 @@ export const CommandMenu = ({ className }: { className?: string }) => {
         type="button"
         variant="outline"
         size="icon-sm"
-        onClick={() => setOpen(true)}
+        onClick={openPalette}
         aria-label="Search components and blocks"
         className={cn('sm:w-auto sm:px-2.5', className)}
       >

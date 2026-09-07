@@ -85,24 +85,14 @@ const LazySelect = ({
   const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internalValue;
 
-  // The selected option may live on a page that is no longer loaded (the user
-  // searched or scrolled past it), so cache labels by value to keep the
-  // trigger label stable across queries.
   const [labelCache, setLabelCache] = React.useState<Record<string, string>>({});
-  React.useEffect(() => {
-    if (options.length === 0) return;
-    setLabelCache((prev) => {
-      let changed = false;
-      const next = { ...prev };
-      for (const o of options) {
-        if (next[o.value] !== o.label) {
-          next[o.value] = o.label;
-          changed = true;
-        }
-      }
-      return changed ? next : prev;
-    });
-  }, [options]);
+  let pendingLabels: Record<string, string> | null = null;
+  for (const option of options) {
+    if (labelCache[option.value] === option.label) continue;
+    pendingLabels ??= { ...labelCache };
+    pendingLabels[option.value] = option.label;
+  }
+  if (pendingLabels) setLabelCache(pendingLabels);
 
   const setValue = React.useCallback(
     (next: string | undefined, option?: LazySelectOption) => {
@@ -231,7 +221,6 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...
               className={cn(
                 'min-w-0 flex-1 truncate',
                 ctx.selectedLabel === undefined && 'text-muted-foreground',
-                // Reserve room for the overlaid clear button.
                 showClear && 'pe-5',
               )}
             >
@@ -252,7 +241,6 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...
             e.stopPropagation();
             ctx.setValue(undefined);
           }}
-          // Overlaid because a button cannot nest a button; `end-7` sits it inside the chevron.
           className="absolute end-7 top-1/2 inline-flex size-4 -translate-y-1/2 items-center justify-center rounded-[2px] text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           <X className="size-3" />
@@ -286,10 +274,6 @@ const LazySelectContent = ({
   const inputRef = React.useRef<HTMLInputElement>(null);
   const onLoadMore = ctx.onLoadMore;
 
-  // Lazy-load the next page when the bottom sentinel scrolls into view. Re-run
-  // when the loaded set changes so a sentinel that is still in view (list
-  // shorter than the viewport) keeps paging; the loader guards against
-  // overlapping requests.
   React.useEffect(() => {
     const el = sentinelRef.current;
     if (!el || !ctx.open || !ctx.hasMore || !onLoadMore) return;

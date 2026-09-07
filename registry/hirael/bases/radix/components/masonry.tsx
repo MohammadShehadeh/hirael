@@ -53,8 +53,6 @@ const Masonry = ({
   const childArray = React.Children.toArray(children);
   const itemCount = childArray.length;
 
-  // SSR and first paint use the base column count with round-robin order
-  // so server and client markup match; measurement re-balances after mount.
   const [columnCount, setColumnCount] = React.useState(() => Math.max(1, base));
   const [assignment, setAssignment] = React.useState<number[][] | null>(null);
 
@@ -159,6 +157,7 @@ const Masonry = ({
       className={cn('flex w-full min-w-0 items-start', className)}
       {...props}
     >
+      {/* eslint-disable-next-line react-hooks/refs */}
       {distribution.map((columnIndices, column) => (
         <div
           key={column}

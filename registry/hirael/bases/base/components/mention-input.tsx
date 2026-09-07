@@ -260,9 +260,12 @@ const MentionInput = ({
     onSearchRef.current = onSearch;
   });
 
-  React.useEffect(() => {
+  const queryKey = `${activeTrigger ?? ''}\u0000${activeQuery ?? ''}`;
+  const [lastQueryKey, setLastQueryKey] = React.useState(queryKey);
+  if (lastQueryKey !== queryKey) {
+    setLastQueryKey(queryKey);
     setActiveIndex(0);
-  }, [activeQuery, activeTrigger]);
+  }
 
   React.useEffect(() => {
     if (!onSearchRef.current || activeQuery === undefined || activeTrigger === undefined) {
@@ -343,14 +346,16 @@ const MentionInput = ({
     el?.scrollIntoView({ block: 'nearest' });
   }, [open, active, id]);
 
-  React.useEffect(() => {
+  const [lastText, setLastText] = React.useState(value);
+  if (value !== lastText) {
+    setLastText(value);
     setSelectedLabels((prev) => {
       if (prev.length === 0) return prev;
       const present = new Set(getMentions(value, triggers).map((m) => m.toLowerCase()));
       const next = prev.filter((label) => present.has(label.toLowerCase()));
       return next.length === prev.length ? prev : next;
     });
-  }, [value, triggers]);
+  }
 
   const detect = React.useCallback(
     (text: string, caret: number) => {
@@ -563,8 +568,6 @@ const MentionInputTextarea = ({
         ref={backdropRef}
         aria-hidden
         data-slot="mention-input-backdrop"
-        // The consumer's className lands on both layers so padding and font metrics
-        // stay aligned; the transparent overrides come last and win.
         className={cn(
           metrics,
           className,
@@ -687,7 +690,6 @@ const MentionInputItem = ({
       onMouseDown={(e) => {
         onMouseDown?.(e);
         if (e.defaultPrevented) return;
-        // Keep focus in the textarea so the caret position survives the click.
         e.preventDefault();
       }}
       onClick={(e) => {
@@ -709,7 +711,6 @@ const MentionInputItem = ({
     >
       {children ?? (
         <>
-          {/* bdi keeps the trigger glued to the handle in RTL text */}
           <bdi className="text-sm leading-none">
             {ctx.activeTrigger}
             {item.label}

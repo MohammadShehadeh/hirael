@@ -22,6 +22,19 @@ export interface AnimatedNumberProps extends Omit<React.ComponentProps<'span'>, 
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+
+const useReducedMotion = () =>
+  React.useSyncExternalStore(
+    (onStoreChange) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener('change', onStoreChange);
+      return () => query.removeEventListener('change', onStoreChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+
 const AnimatedNumber = ({
   value,
   startValue = 0,
@@ -35,8 +48,6 @@ const AnimatedNumber = ({
   ...props
 }: AnimatedNumberProps) => {
   const [display, setDisplay] = React.useState(startValue);
-  // Tracks the latest rendered value so an animation interrupted mid-flight
-  // resumes from where it visually is, instead of snapping back.
   const displayRef = React.useRef(startValue);
   const frameRef = React.useRef<number | undefined>(undefined);
 
@@ -50,15 +61,14 @@ const AnimatedNumber = ({
     [locale, decimals, format],
   );
 
-  React.useEffect(() => {
-    const reduceMotion =
-      typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const animated = !useReducedMotion() && duration > 0;
 
-    if (reduceMotion || duration <= 0) {
-      displayRef.current = value;
-      setDisplay(value);
-      return;
-    }
+  React.useLayoutEffect(() => {
+    if (!animated) displayRef.current = value;
+  });
+
+  React.useEffect(() => {
+    if (!animated) return;
 
     const from = displayRef.current;
     const start = performance.now();
@@ -75,9 +85,9 @@ const AnimatedNumber = ({
     return () => {
       if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current);
     };
-  }, [value, duration]);
+  }, [value, duration, animated]);
 
-  const formatted = formatter.format(display);
+  const formatted = formatter.format(animated ? display : value);
 
   return (
     <span

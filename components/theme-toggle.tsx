@@ -5,12 +5,12 @@ import { Moon, Sun } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/components/active-theme';
+import { useMounted } from '@/hooks/use-mounted';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export const ThemeToggle = () => {
   const { mode, setMode } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   const isLight = mode === 'light';
 

@@ -75,8 +75,6 @@ const isArrayVariant = (variant: FilterVariant | undefined): boolean => {
   return variant ? ARRAY_VARIANTS.has(variant) : false;
 };
 
-// In-memory filter for a column, picked from its `meta.variant`. Used when the
-// table runs client-side (no `pageCount`); manual mode ignores it.
 const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined): FilterFn<DataTableFeatures, TData> => {
   return (row, columnId, filterValue) => {
     if (filterValue == null || filterValue === '') return true;
@@ -290,8 +288,6 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     return columns.filter((column) => column.enableColumnFilter);
   }, [columns]);
 
-  // Wire each filterable column an in-memory filterFn from its variant so the
-  // table can filter client-side; manual mode ignores these.
   const tableColumns = React.useMemo<ColumnDef<DataTableFeatures, TData>[]>(() => {
     return columns.map((column) => {
       if (column.filterFn || !column.enableColumnFilter) return column;
@@ -337,9 +333,11 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     columnFiltersRef.current = columnFilters;
   }, [columnFilters]);
 
-  React.useEffect(() => {
+  const [lastQueryFilters, setLastQueryFilters] = React.useState(queryColumnFilters);
+  if (queryColumnFilters !== lastQueryFilters) {
+    setLastQueryFilters(queryColumnFilters);
     setColumnFilters((prev) => (areFiltersEqual(prev, queryColumnFilters) ? prev : queryColumnFilters));
-  }, [queryColumnFilters]);
+  }
 
   const onColumnFiltersChange = React.useCallback(
     (updaterOrValue: Updater<ColumnFiltersState>) => {

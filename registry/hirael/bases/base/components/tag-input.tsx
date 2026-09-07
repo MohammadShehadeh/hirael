@@ -262,6 +262,7 @@ const TagInputField = ({
   ...props
 }: TagInputFieldProps) => {
   const ctx = useTagInput();
+  const { inputRef } = ctx;
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e);
@@ -298,7 +299,7 @@ const TagInputField = ({
 
   return (
     <input
-      ref={ctx.inputRef}
+      ref={inputRef}
       type="text"
       value={ctx.draft}
       onChange={(e) => {

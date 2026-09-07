@@ -77,12 +77,14 @@ const AudioPlayer = ({
     else audio.pause();
   }, []);
 
-  React.useEffect(() => {
+  const [lastSrc, setLastSrc] = React.useState(src);
+  if (src !== lastSrc) {
+    setLastSrc(src);
     setPlaying(false);
     setDuration(Number.NaN);
     setCurrentTime(0);
     setBuffered(0);
-  }, [src]);
+  }
 
   const seek = React.useCallback((time: number) => {
     const audio = audioRef.current;

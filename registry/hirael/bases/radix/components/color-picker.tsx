@@ -218,21 +218,24 @@ const ColorPicker = ({
 
   const [hsv, setHsv] = React.useState<HSV>(() => rgbToHsv(hexToRgb(value) ?? { r: 14, g: 165, b: 233 }));
 
-  React.useEffect(() => {
+  const [lastValue, setLastValue] = React.useState(value);
+  if (value !== lastValue) {
+    setLastValue(value);
     const rgb = hexToRgb(value);
-    if (!rgb) return;
-    const parsed = rgbToHsv(rgb);
-    setHsv((prev) => {
-      const next = {
-        h: parsed.s === 0 || parsed.v === 0 ? prev.h : parsed.h,
-        s: parsed.v === 0 ? prev.s : parsed.s,
-        v: parsed.v,
-      };
-      return Math.abs(prev.h - next.h) < 0.5 && Math.abs(prev.s - next.s) < 0.5 && Math.abs(prev.v - next.v) < 0.5
-        ? prev
-        : next;
-    });
-  }, [value]);
+    if (rgb) {
+      const parsed = rgbToHsv(rgb);
+      setHsv((prev) => {
+        const next = {
+          h: parsed.s === 0 || parsed.v === 0 ? prev.h : parsed.h,
+          s: parsed.v === 0 ? prev.s : parsed.s,
+          v: parsed.v,
+        };
+        return Math.abs(prev.h - next.h) < 0.5 && Math.abs(prev.s - next.s) < 0.5 && Math.abs(prev.v - next.v) < 0.5
+          ? prev
+          : next;
+      });
+    }
+  }
 
   const setValue = React.useCallback(
     (hex: string) => {
@@ -682,11 +685,11 @@ const ColorPickerEyedropper = ({
   ...props
 }: Omit<React.ComponentProps<'button'>, 'onClick' | 'children'>) => {
   const ctx = useColorPicker();
-  const [supported, setSupported] = React.useState(false);
-
-  React.useEffect(() => {
-    setSupported(typeof window !== 'undefined' && 'EyeDropper' in window);
-  }, []);
+  const supported = React.useSyncExternalStore(
+    () => () => {},
+    () => 'EyeDropper' in window,
+    () => false,
+  );
 
   if (!supported) return null;
 
@@ -707,7 +710,6 @@ const ColorPickerEyedropper = ({
           ctx.setHex(next);
           ctx.pushSwatch(next);
         } catch {
-          // Cancelled, or EyeDropper is unsupported; the current color stays.
         }
       }}
       className={cn('shrink-0', className)}

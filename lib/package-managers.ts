@@ -26,43 +26,52 @@ const isPackageManager = (value: string | null): value is PackageManager => {
   return value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value);
 };
 
+/**
+ * Held in the module rather than in any one component, so every install block
+ * on the page agrees without one of them owning the state. localStorage is
+ * where it persists, not where it lives: a browser that refuses to store it
+ * still gets a working picker for the visit.
+ */
+let current: PackageManager | null = null;
+
+const fromStorage = (): PackageManager => {
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    return isPackageManager(stored) ? stored : 'npm';
+  } catch {
+    return 'npm';
+  }
+};
+
+/** Resolved from storage on first read, then kept in memory. */
+const snapshot = (): PackageManager => (current ??= fromStorage());
+
+/** `storage` covers other tabs; the custom event covers this one, which
+ * `storage` never fires in. */
+const subscribe = (onStoreChange: () => void) => {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== STORAGE_KEY) return;
+    current = isPackageManager(event.newValue) ? event.newValue : 'npm';
+    onStoreChange();
+  };
+  window.addEventListener('storage', onStorage);
+  window.addEventListener(CHANGE_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener('storage', onStorage);
+    window.removeEventListener(CHANGE_EVENT, onStoreChange);
+  };
+};
+
+export const setPackageManager = (next: PackageManager) => {
+  current = next;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, next);
+  } catch {
+  }
+  window.dispatchEvent(new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }));
+};
+
 export const usePackageManager = (): [PackageManager, (pm: PackageManager) => void] => {
-  const [pm, setPmState] = React.useState<PackageManager>('npm');
-
-  React.useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (isPackageManager(stored)) setPmState(stored);
-    } catch {
-      // localStorage unavailable; fall back to default
-    }
-
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY && isPackageManager(e.newValue)) {
-        setPmState(e.newValue);
-      }
-    };
-    const onSameTab = (e: Event) => {
-      const detail = (e as CustomEvent<PackageManager>).detail;
-      if (isPackageManager(detail)) setPmState(detail);
-    };
-    window.addEventListener('storage', onStorage);
-    window.addEventListener(CHANGE_EVENT, onSameTab);
-    return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener(CHANGE_EVENT, onSameTab);
-    };
-  }, []);
-
-  const setPm = React.useCallback((next: PackageManager) => {
-    setPmState(next);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, next);
-      window.dispatchEvent(new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }));
-    } catch {
-      // Storage may be unavailable (private mode, quota); the pick still holds for this page.
-    }
-  }, []);
-
-  return [pm, setPm];
+  const pm = React.useSyncExternalStore(subscribe, snapshot, () => 'npm' as PackageManager);
+  return [pm, setPackageManager];
 };

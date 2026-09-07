@@ -128,13 +128,15 @@ const ImageCropper = ({
   );
 
   const zoomRef = React.useRef(zoom);
-  zoomRef.current = zoom;
   const cropRef = React.useRef(crop);
-  cropRef.current = crop;
   const frameSizeRef = React.useRef(frameSize);
-  frameSizeRef.current = frameSize;
   const naturalSizeRef = React.useRef(naturalSize);
-  naturalSizeRef.current = naturalSize;
+  React.useLayoutEffect(() => {
+    zoomRef.current = zoom;
+    cropRef.current = crop;
+    frameSizeRef.current = frameSize;
+    naturalSizeRef.current = naturalSize;
+  });
 
   const panBy = React.useCallback(
     (dx: number, dy: number) => {
@@ -191,23 +193,26 @@ const ImageCropper = ({
 
   React.useEffect(() => {
     const clamped = clampCrop(crop, zoom, frameSize, naturalSize);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (clamped.x !== crop.x || clamped.y !== crop.y) setCrop(clamped);
   }, [crop, zoom, frameSize, naturalSize, setCrop]);
 
   const wheelHandlerRef = React.useRef<(e: WheelEvent) => void>(() => {});
-  wheelHandlerRef.current = (e: WheelEvent) => {
-    if (disabled) return;
-    e.preventDefault();
-    const el = frameRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const focal = {
-      x: e.clientX - rect.left - rect.width / 2,
-      y: e.clientY - rect.top - rect.height / 2,
+  React.useLayoutEffect(() => {
+    wheelHandlerRef.current = (e: WheelEvent) => {
+      if (disabled) return;
+      e.preventDefault();
+      const el = frameRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const focal = {
+        x: e.clientX - rect.left - rect.width / 2,
+        y: e.clientY - rect.top - rect.height / 2,
+      };
+      const factor = Math.exp(-e.deltaY * 0.002);
+      zoomAt(zoomRef.current * factor, focal);
     };
-    const factor = Math.exp(-e.deltaY * 0.002);
-    zoomAt(zoomRef.current * factor, focal);
-  };
+  });
 
   React.useEffect(() => {
     const el = frameRef.current;

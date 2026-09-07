@@ -31,13 +31,15 @@ that previews every item and serves the generated `/r/*.json` files.
 
 [registry-meta.ts](./registry/hirael/registry-meta.ts) declares every item;
 the sidebar, counts, pages, and sitemap derive from it (its presence is the
-only "published" flag). To change the catalog: edit it, register the preview
-loader in [registry-demos.tsx](./registry/hirael/registry-demos.tsx), commit.
+only "published" flag). To change the catalog: edit it, add the files, commit.
+[registry-demos.tsx](./registry/hirael/registry-demos.tsx) needs no edit —
+preview loaders are derived from the file layout, so an item is picked up as
+long as it follows the naming convention (`<kind>/<name>/<name>.tsx` for blocks
+and templates, `examples/<name>-demo.tsx` for component demos).
 `registry.json`, `registry.base.json`, `registry-props.json`, `llms.txt` and
 `/r/**/*.json` are generated on install and build (`pnpm registry:gen` /
 `registry:props` / `registry:build`) and are git-ignored, never committed or
-hand-edited; `pnpm check:registry` fails on a missing file or loader in either
-base. List `registryDependencies` by bare name; generation rewrites
+hand-edited; `pnpm check:registry` fails on a missing file in either base. List `registryDependencies` by bare name; generation rewrites
 hirael-to-hirael deps to `/r/<name>.json` (Radix) or `/r/base/<name>.json`
 (Base UI) URLs. `registry:md` writes each item's page as Markdown beside its
 payload (`/r/<name>.md`, `/r/base/<name>.md`): install command, usage, demos,

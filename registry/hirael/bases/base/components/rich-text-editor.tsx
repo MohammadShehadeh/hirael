@@ -150,12 +150,14 @@ const RichTextEditor = ({
   const isEditable = editable && !disabled;
 
   const onChangeRef = React.useRef(onChange);
-  onChangeRef.current = onChange;
   const onFocusRef = React.useRef(onFocus);
-  onFocusRef.current = onFocus;
   const onBlurRef = React.useRef(onBlur);
-  onBlurRef.current = onBlur;
   const placeholderRef = React.useRef(placeholder);
+  React.useLayoutEffect(() => {
+    onChangeRef.current = onChange;
+    onFocusRef.current = onFocus;
+    onBlurRef.current = onBlur;
+  });
 
   const editor = useEditor({
     extensions: [
@@ -174,6 +176,7 @@ const RichTextEditor = ({
       }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Highlight.configure({ multicolor: false }),
+      // eslint-disable-next-line react-hooks/refs
       Placeholder.configure({
         placeholder: () => placeholderRef.current,
         emptyEditorClass: 'is-editor-empty',

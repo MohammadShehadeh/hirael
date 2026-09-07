@@ -199,9 +199,12 @@ const LightboxContent = ({
     moved: boolean;
   } | null>(null);
 
-  React.useEffect(() => {
+  const panKey = `${index}:${zoomed}`;
+  const [lastPanKey, setLastPanKey] = React.useState(panKey);
+  if (lastPanKey !== panKey) {
+    setLastPanKey(panKey);
     setPan({ x: 0, y: 0 });
-  }, [index, zoomed]);
+  }
 
   function isRtl(el: HTMLElement) {
     return getComputedStyle(el).direction === 'rtl';

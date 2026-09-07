@@ -194,17 +194,18 @@ const FileDropzoneZone = ({
   const ctx = useFileDropzone();
   const [isDragging, setIsDragging] = React.useState(false);
   const dragCounter = React.useRef(0);
+  const { inputRef } = ctx;
 
   const handleClick = () => {
     if (ctx.disabled) return;
-    ctx.inputRef.current?.click();
+    inputRef.current?.click();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (ctx.disabled) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      ctx.inputRef.current?.click();
+      inputRef.current?.click();
     }
   };
 
@@ -266,7 +267,7 @@ const FileDropzoneZone = ({
       {...props}
     >
       <input
-        ref={ctx.inputRef}
+        ref={inputRef}
         type="file"
         accept={ctx.accept}
         multiple={ctx.multiple}

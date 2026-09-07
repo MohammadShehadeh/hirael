@@ -41,11 +41,12 @@ export const SiteHeader = ({
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  React.useEffect(() => {
+  const [lastPathname, setLastPathname] = React.useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
-  // Condense the bar into a tighter glass pill once the page leaves the top.
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();

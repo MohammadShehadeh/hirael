@@ -147,12 +147,9 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
   const current = ctx.value[i];
   const format = ctx.format;
 
-  const [draft, setDraft] = React.useState<string>(format(current));
+  const [draft, setDraft] = React.useState<string | null>(null);
   const [editing, setEditing] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!editing) setDraft(format(current));
-  }, [current, format, editing]);
+  const shown = editing && draft !== null ? draft : format(current);
 
   const commit = (raw: string) => {
     const parsed = ctx.parse(raw);
@@ -170,12 +167,16 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
       <Input
         inputMode="decimal"
         dir="ltr"
-        value={draft}
+        value={shown}
         disabled={ctx.disabled}
-        onFocus={() => setEditing(true)}
+        onFocus={() => {
+          setEditing(true);
+          setDraft(format(current));
+        }}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={(e) => {
           setEditing(false);
+          setDraft(null);
           commit(e.target.value);
         }}
         onKeyDown={(e) => {

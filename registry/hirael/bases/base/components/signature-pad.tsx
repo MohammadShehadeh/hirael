@@ -101,9 +101,11 @@ const SignaturePad = ({
   const emptyRef = React.useRef(true);
 
   const onChangeRef = React.useRef(onChange);
-  onChangeRef.current = onChange;
   const onStrokeEndRef = React.useRef(onStrokeEnd);
-  onStrokeEndRef.current = onStrokeEnd;
+  React.useLayoutEffect(() => {
+    onChangeRef.current = onChange;
+    onStrokeEndRef.current = onStrokeEnd;
+  });
 
   const setEmptyState = React.useCallback((next: boolean) => {
     if (emptyRef.current === next) return;

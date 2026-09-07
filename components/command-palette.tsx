@@ -23,7 +23,7 @@ import {
   entryHref,
   type ComponentCategory,
 } from '@/registry/hirael/registry-meta';
-import { pushRecent, readRecents, type RecentItem } from '@/lib/recents';
+import { pushRecent, recentsSnapshot, serverRecents, subscribeRecents, type RecentItem } from '@/lib/recents';
 
 /**
  * The heavy half of the ⌘K palette — the project's own `dialog` + `command`
@@ -55,7 +55,7 @@ export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenCh
           <CommandInput placeholder="Search by name or what it does…" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <RecentGroup open={open} onSelect={go} />
+            <RecentGroup onSelect={go} />
             <CommandGroup heading="Components">
               {components.map((c) => (
                 <CommandItem
@@ -147,15 +147,11 @@ const Kbd = ({ children }: { children: React.ReactNode }) => {
   return <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">{children}</kbd>;
 };
 
-/** Previously opened items, shown only while the query is empty. Re-reads on
- * every open so navigation elsewhere in the tab is reflected immediately. */
-const RecentGroup = ({ open, onSelect }: { open: boolean; onSelect: (item: RecentItem) => void }) => {
+/** Previously opened items, shown only while the query is empty. Subscribed to
+ * the store, so anything opened elsewhere in the tab shows up immediately. */
+const RecentGroup = ({ onSelect }: { onSelect: (item: RecentItem) => void }) => {
   const search = useCommandState((state) => state.search);
-  const [recents, setRecents] = React.useState<RecentItem[]>([]);
-
-  React.useEffect(() => {
-    if (open) setRecents(readRecents());
-  }, [open]);
+  const recents = React.useSyncExternalStore(subscribeRecents, recentsSnapshot, serverRecents);
 
   if (search || recents.length === 0) return null;
 

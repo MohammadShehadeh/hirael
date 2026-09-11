@@ -57,7 +57,7 @@ const HiraelWordmarkSvg = ({ className }: { className?: string }) => {
       <svg x="6" y="6" width="46" height="46" viewBox="80 104 352 352">
         <ArchMarkPaths />
       </svg>
-      <text x="56" y="44" fill="currentColor" fontSize="42" style={CORMORANT_WORDMARK_STYLE}>
+      <text x="56" y="42" fill="currentColor" fontSize="42" style={CORMORANT_WORDMARK_STYLE}>
         HIRAEL
       </text>
     </svg>

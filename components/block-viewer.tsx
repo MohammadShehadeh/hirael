@@ -30,7 +30,7 @@ const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 // stretching the document thousands of pixels — past it the iframe scrolls
 // internally again.
 const MIN_HEIGHT = 320;
-const MAX_HEIGHT = 1600;
+const MAX_HEIGHT = 700;
 
 export const BlockViewer = ({
   entry,

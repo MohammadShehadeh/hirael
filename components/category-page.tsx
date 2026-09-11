@@ -53,7 +53,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
         <RoadmapState category={category} />
       ) : (
         <>
-          <div className="sticky top-14 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md">
+          <div className="sticky top-11 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md">
             <TocChips items={blocks.map((b) => ({ id: b.name, label: b.title }))} />
           </div>
 
@@ -65,7 +65,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                   key={entry.name}
                   id={entry.name}
                   aria-labelledby={`${entry.name}-title`}
-                  className="flex scroll-mt-28 flex-col gap-5"
+                  className="flex scroll-mt-24 flex-col gap-5"
                 >
                   <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
                     <div className="flex min-w-0 flex-col gap-2">

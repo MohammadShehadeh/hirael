@@ -217,32 +217,38 @@ export const ComponentPage = ({
   const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
-    <div className="container py-10 sm:py-12 md:py-16">
+    <div className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:py-12 md:px-6 md:py-14 xl:px-8">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
-          <header className="flex flex-col gap-3 border-b border-border pb-6">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              {breadcrumb ? (
-                <Breadcrumbs items={breadcrumb} />
-              ) : (
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {entry.category}
-                  </span>
-                  {entry.blockKind && (
-                    <>
-                      <span className="font-mono text-[10px] text-muted-foreground">·</span>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                        {entry.blockKind}
-                      </span>
-                    </>
-                  )}
-                </div>
-              )}
+          <header className="flex flex-col gap-4">
+            {breadcrumb ? (
+              <Breadcrumbs items={breadcrumb} />
+            ) : (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {entry.category}
+                </span>
+                {entry.blockKind && (
+                  <>
+                    <span className="font-mono text-[10px] text-muted-foreground">·</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                      {entry.blockKind}
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
 
-              {/* Page-level actions sit with the breadcrumbs, clear of the
-              description below — a toolbar, not a footnote. */}
-              <div className="flex items-center gap-0.5 flex-wrap justify-start">
+            {/* Title row: the name on the left, the page's actions on the
+                right, clear of the description below. */}
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-balance md:text-4xl">
+                  {entry.title}
+                </h1>
+                <NewBadge addedAt={extras?.addedAt} />
+              </div>
+              <div className="flex flex-wrap items-center gap-0.5">
                 {sourceUrl && (
                   <HeaderAction href={sourceUrl} title="View source on GitHub" icon={<GithubIcon />}>
                     Source
@@ -255,11 +261,7 @@ export const ComponentPage = ({
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">{entry.title}</h1>
-              <NewBadge addedAt={extras?.addedAt} />
-            </div>
-            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{entry.description}</p>
+            <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{entry.description}</p>
           </header>
 
           <TocChips items={tocItems} className="xl:hidden" />
@@ -280,7 +282,7 @@ export const ComponentPage = ({
         </div>
 
         <aside className="hidden xl:block">
-          <div className="sticky top-24">
+          <div className="sticky top-16">
             <Toc items={tocItems} />
           </div>
         </aside>
@@ -328,7 +330,7 @@ const HeaderAction = ({
 
 const Section = ({ id, label, children }: { id: string; label: string; children: React.ReactNode }) => {
   return (
-    <section id={id} className="flex scroll-mt-24 flex-col gap-4">
+    <section id={id} className="flex scroll-mt-16 flex-col gap-4">
       <a
         href={`#${id}`}
         className="group/anchor inline-flex w-fit items-center gap-1.5"
@@ -381,7 +383,7 @@ const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle
           <div
             dir={rtl ? 'rtl' : undefined}
             data-customizer-scope=""
-            className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
+            className="bg-dot-grid flex min-h-90 items-center justify-center px-8 py-6 sm:min-h-105 sm:px-12 sm:py-8 md:px-16 md:py-10"
           >
             {/* Radix + Base UI direction providers cross React portals, so
                 dropdown/popover content (which portals to <body>, outside this

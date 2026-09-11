@@ -124,9 +124,10 @@ const useActiveSection = (ids: string[]) => {
         const current = sectionIds.find((id) => visible.has(id));
         if (current) setActive(current);
       },
-      // Activate a heading once it passes the topbar and before it leaves the
-      // top third — keeps the highlight one step ahead of the reading line.
-      { rootMargin: '-88px 0px -66% 0px', threshold: 0 },
+      // Activate a heading once it passes the sticky tabs bar and before it
+      // leaves the top third — keeps the highlight one step ahead of the
+      // reading line.
+      { rootMargin: '-72px 0px -66% 0px', threshold: 0 },
     );
 
     for (const id of sectionIds) {

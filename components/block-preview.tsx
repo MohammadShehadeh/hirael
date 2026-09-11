@@ -13,6 +13,11 @@ import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/regist
  * card — no dead space under short blocks. The iframe mounts only once the
  * width is known, so it never flashes and its content mounts visible (which
  * `whileInView` reveals need).
+ *
+ * With `fill` the parent owns the box instead: the block renders at
+ * `simWidth` × `DEFAULT_HEIGHT` (16:9) scaled to the parent's width and the
+ * rest is cropped, so the parent should be `aspect-video` for the crop to
+ * land on the block's top edge.
  */
 const SIM_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
@@ -22,10 +27,15 @@ const MAX_HEIGHT = 760;
 export const BlockPreview = ({
   entry,
   simWidth = SIM_WIDTH,
+  className,
+  fill = false,
 }: {
   /** The block or template to frame; the path follows the active base. */
   entry: RegistryEntryMeta;
   simWidth?: number;
+  className?: string;
+  /** Fill the parent and crop overflow instead of sizing the card to the block. */
+  fill?: boolean;
 }) => {
   const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
@@ -56,6 +66,7 @@ export const BlockPreview = ({
   // Size the card to the block, tracking late reflow (fonts, images).
   function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
     setLoaded(true);
+    if (fill) return;
     const doc = event.currentTarget.contentDocument;
     if (!doc) return;
     // Measure the shell, not `documentElement.scrollHeight` — the latter never
@@ -76,8 +87,12 @@ export const BlockPreview = ({
   return (
     <div
       ref={ref}
-      className="relative w-full overflow-hidden border-b border-border bg-card/30"
-      style={{ aspectRatio: `${simWidth} / ${simHeight}` }}
+      className={cn(
+        'relative overflow-hidden bg-card/30',
+        fill ? 'size-full' : 'w-full border-b border-border',
+        className,
+      )}
+      style={fill ? undefined : { aspectRatio: `${simWidth} / ${simHeight}` }}
     >
       <div
         aria-hidden

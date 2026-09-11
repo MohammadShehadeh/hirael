@@ -34,7 +34,6 @@ export const SiteHeader = ({
 }) => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -47,21 +46,11 @@ export const SiteHeader = ({
     setMobileOpen(false);
   }
 
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
-    <header className={cn('fixed top-3 z-40 w-full', className)}>
-      <div
-        className={cn(
-          'relative container flex h-14 items-center justify-between gap-3 rounded-full transition-all duration-300 ease-out',
-          scrolled ? 'glass-panel-strong' : 'border border-transparent bg-transparent',
-        )}
-      >
+    <header
+      className={cn('sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md', className)}
+    >
+      <div className="relative container flex h-14 items-center justify-between gap-3">
         <div className="flex shrink-0 items-center gap-2">
           {withSidebarTrigger}
           <Link

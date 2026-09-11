@@ -69,7 +69,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                             <span aria-hidden className="text-border">
                               |
                             </span>
-                            <span>{entry.blockTagline}</span>
+                            <span className="tracking-wide">{entry.blockTagline}</span>
                           </>
                         )}
                       </p>

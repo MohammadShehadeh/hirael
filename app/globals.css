@@ -125,7 +125,7 @@
 
 /* Dark tokens live on `.dark` (not only `:root`) so a nested `.dark` region stays dark while the site is light. */
 .dark {
-  --radius: 10.4px;
+  --radius: 10px;
 
   --background: oklch(0.176 0.014 258.4);
   --foreground: oklch(0.92 0.009 84.6);

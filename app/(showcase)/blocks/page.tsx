@@ -7,7 +7,7 @@ import { listingMetadata } from '@/lib/seo';
 import { BLOCK_KIND_ORDER, REGISTRY } from '@/registry/hirael/registry-meta';
 
 const BLOCKS_DESCRIPTION =
-  'Section blocks for heroes, FAQs, pricing, login screens and dashboards, all in the Hirael style. Copy them into your repo with the shadcn CLI.';
+  'Hero, pricing, testimonial, FAQ, login and dashboard sections built on shadcn/ui and Tailwind CSS. Preview each block live, then install it with the shadcn CLI.';
 
 export const metadata: Metadata = listingMetadata({
   path: '/blocks',
@@ -39,7 +39,7 @@ export default function BlocksIndex() {
       <PageHeader
         kicker="Blocks"
         title="Page sections, ready to copy."
-        blurb="Heroes, CTAs, FAQs, auth screens and dashboards, all built from the same Hirael components. Copy one in with a single command and edit it like any other file in your repo."
+        blurb="Hero, pricing, testimonial, FAQ, auth and dashboard sections built on shadcn/ui and Tailwind CSS, each composed from the components in this registry so it matches what you already installed. Preview any block at full width, then copy it in with one command and edit it like a file you wrote."
       >
         <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
           {blockCount} blocks in {BLOCK_KIND_ORDER.length} categories

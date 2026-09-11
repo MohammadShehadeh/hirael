@@ -1,9 +1,9 @@
 export const SITE = {
   name: 'Hirael',
-  description: "The components shadcn/ui doesn't ship.",
-  tagline: "Components, blocks and templates shadcn/ui doesn't ship",
+  description: 'The components, blocks and templates shadcn/ui leaves out.',
+  tagline: 'Components, blocks and templates for shadcn/ui',
   longDescription:
-    "A shadcn-compatible registry of React components, section blocks, and full-page templates most products end up building anyway. The shadcn CLI copies the source into your repo, so there's no package to depend on.",
+    'Multi-select, combobox, date pickers, file dropzone and other components shadcn/ui leaves out, plus section blocks and full-page templates on Tailwind CSS. The shadcn CLI copies the source into your repo, styled for light, dark and RTL.',
   url: 'https://hirael.com',
   version: '0.1',
   author: 'Mohammad Shehadeh',

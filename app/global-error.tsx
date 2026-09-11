@@ -1,6 +1,6 @@
 'use client';
 
-import { Cormorant_Garamond, JetBrains_Mono, Inter } from 'next/font/google';
+import { Cormorant_Garamond, JetBrains_Mono, Outfit } from 'next/font/google';
 import { RefreshCw } from 'lucide-react';
 import './globals.css';
 
@@ -9,8 +9,8 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 // global-error replaces the root layout, so it has to bring its own document and fonts.
-const inter = Inter({
-  variable: '--font-inter',
+const outfit = Outfit({
+  variable: '--font-outfit',
   subsets: ['latin'],
 });
 
@@ -30,7 +30,7 @@ const cormorant = Cormorant_Garamond({
 export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, jetBrainsMono.variable, cormorant.variable, 'antialiased')}>
+      <body className={cn(outfit.className, jetBrainsMono.variable, cormorant.variable, 'antialiased')}>
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />
           <div

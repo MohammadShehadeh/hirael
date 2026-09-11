@@ -18,7 +18,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
         <PageHeader
           kicker="Changelog"
           title="Release notes"
-          blurb="Every shipped version of Hirael: new components, blocks, fixes, and polish."
+          blurb="Every Hirael release, newest first, with the components and blocks it added and the fixes it shipped."
         >
           {lastUpdated ? (
             <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">

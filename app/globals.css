@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-sans-active, var(--font-inter));
+  --font-sans: var(--font-sans-active, var(--font-outfit));
   --font-mono: var(--font-jet-brains-mono);
   --font-serif: var(--font-cormorant);
 

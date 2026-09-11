@@ -8,7 +8,7 @@ import { SkipLink } from '@/components/skip-link';
 import { siteJsonLd } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 import { customizerPrehydrationScript } from '@/lib/customizer';
-import { inter } from '@/lib/fonts';
+import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/registry/hirael/bases/radix/ui/tooltip';
 
@@ -99,7 +99,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <link rel="alternate" type="application/json" title="Registry catalog" href="/r/registry.json" />
       </head>
-      <body className={cn(inter.variable, jetBrainsMono.variable, cormorant.variable, 'font-sans antialiased')}>
+      <body className={cn(outfit.variable, jetBrainsMono.variable, cormorant.variable, 'font-sans antialiased')}>
         <SkipLink />
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

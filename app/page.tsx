@@ -104,8 +104,8 @@ function Hero({ latestRelease }: HeroProps) {
           style={{ animationDelay: '160ms', animationFillMode: 'both' }}
           className={cn('max-w-2xl text-base text-muted-foreground sm:text-lg', rise)}
         >
-          A collection of React components, section blocks, and full-page templates you can copy into any project with
-          the shadcn CLI.
+          The inputs, pickers and page sections shadcn/ui leaves out, built on the same primitives and your Tailwind
+          tokens. Install with the shadcn CLI and the source lands in your repo, styled for light, dark and RTL.
         </p>
 
         <div
@@ -135,32 +135,32 @@ const FEATURES: {
   {
     icon: Download,
     title: 'Copies into your repo',
-    body: 'The CLI writes the source into your project. Nothing in node_modules, no version to bump.',
+    body: 'The shadcn CLI writes the files into your project. Nothing in node_modules, no version to bump, and every line is yours to change.',
   },
   {
     icon: Boxes,
     title: 'Built on shadcn',
-    body: 'Radix primitives, shadcn conventions, your components.json. A peer, not a replacement.',
+    body: 'Radix or Base UI primitives, shadcn conventions and your components.json. It sits beside the shadcn components you already have and looks like them.',
   },
   {
     icon: Layers,
-    title: 'Any React stack',
-    body: 'Next, Remix, Vite, Astro: anywhere React and Tailwind already run.',
+    title: 'Any framework',
+    body: 'Next.js, Remix, Vite or Astro: anywhere shadcn/ui and Tailwind CSS already run, with no runtime package to add.',
   },
   {
     icon: SunMoon,
     title: 'Light and dark',
-    body: 'Theme-aware through CSS variables, so every item inherits your tokens in both modes.',
+    body: 'Every item reads your CSS variables, so it takes on your palette in both themes with nothing to restyle.',
   },
   {
     icon: Languages,
     title: 'RTL, no config',
-    body: 'Logical properties throughout, so dir=rtl works with nothing extra to wire up.',
+    body: 'Logical properties throughout, mirrored icons and arrow keys, so setting dir=rtl is the whole job.',
   },
   {
     icon: MonitorSmartphone,
     title: 'Responsive by default',
-    body: 'Built to hold their shape from small phones to ultra-wide displays.',
+    body: 'Each item is checked from phone width to ultra-wide, so it looks right at whatever size you ship.',
   },
 ];
 
@@ -231,7 +231,7 @@ function WhyHirael() {
         <SectionHeading
           kicker="Why Hirael"
           title="Own the source, not a dependency."
-          blurb="Install with the shadcn CLI and the code lands in your repo, ready to read and change, built the way shadcn ships its primitives."
+          blurb="Every item follows shadcn conventions: compound parts, data-slot attributes, your components.json and theme tokens. The CLI writes the files into your repo, so you edit them like code you wrote."
         />
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -275,7 +275,7 @@ function FeaturedComponents() {
         <SectionHeading
           kicker="Components"
           title="Try them before you install."
-          blurb={`${COMPONENTS.length} components, each live here and on its own page. These six are the ones most products reach for first.`}
+          blurb={`${COMPONENTS.length} components, each running live here and on its own page, so you can test keyboard, RTL and both themes before you install. These six are the ones most products reach for first.`}
         />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_COMPONENTS.map((name) => (
@@ -302,7 +302,7 @@ function SectionBlocks() {
         <SectionHeading
           kicker="Section blocks"
           title="Blocks for whole sections of a page."
-          blurb={`${blocksTotal} drop-in compositions across ${BLOCK_KIND_ORDER.length} categories: heroes, pricing, testimonials, CTAs, auth, and more.`}
+          blurb={`${blocksTotal} sections in ${BLOCK_KIND_ORDER.length} categories: heroes, pricing, testimonials, FAQs, auth and dashboards. Each is built from the same components, so a block you install matches the ones you already have.`}
         />
 
         <BlockShowcase />
@@ -320,7 +320,7 @@ function FullTemplates() {
         <SectionHeading
           kicker="Templates"
           title="Whole pages, not just parts."
-          blurb={`${TEMPLATES.length} complete layouts composed from the same blocks and components. One command copies the whole page into your repo.`}
+          blurb={`${TEMPLATES.length} complete pages assembled from the blocks and components above, with light, dark and RTL already handled. One command copies the whole page, sections and all, into your repo.`}
         />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -351,7 +351,7 @@ function FullTemplates() {
         <div className="mt-8 flex justify-center">
           <Button variant="outline" className="rounded-full px-5" asChild>
             <Link href="/templates">
-              All {TEMPLATES.length} templates
+              All templates
               <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
           </Button>
@@ -376,7 +376,8 @@ function ClosingCta() {
           Install one. Keep all of it.
         </h2>
         <p className="max-w-md text-sm text-muted-foreground sm:text-base">
-          One command copies the source into your repo, yours to read, edit, and keep. No package, no lock-in.
+          One command copies the source into your repo, where you can read it, change it and keep it. No package to
+          update, nothing to lock you in.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" className="rounded-full px-6" asChild>

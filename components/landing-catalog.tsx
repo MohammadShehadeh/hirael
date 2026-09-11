@@ -61,7 +61,7 @@ const CatalogColumn = ({ title, href, items, preview }: CatalogColumnProps) => {
         <h2 className="text-sm font-medium tracking-tight">{title}</h2>
         <Link
           href={href}
-          className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
         >
           View all
           <ArrowRight className="size-3 rtl:rotate-180" />

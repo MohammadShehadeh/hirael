@@ -9,11 +9,11 @@ import { listingMetadata } from '@/lib/seo';
 import { TEMPLATES, entryFileLabel, entryHref } from '@/registry/hirael/registry-meta';
 
 const TEMPLATES_DESCRIPTION =
-  'Full-page templates built in the Hirael style: complete, multi-section layouts you can copy into your repo with the shadcn CLI and edit like any other file.';
+  'Full-page templates built on shadcn/ui and Tailwind CSS: complete landing pages with hero, pricing, FAQ and footer sections. Install one with the shadcn CLI and edit it in your repo.';
 
 export const metadata: Metadata = listingMetadata({
   path: '/templates',
-  title: 'Full-page React templates',
+  title: 'Full-page templates for shadcn/ui',
   description: TEMPLATES_DESCRIPTION,
   keywords: [
     'react page templates',
@@ -37,7 +37,7 @@ export default function TemplatesIndex() {
       <PageHeader
         kicker="Templates"
         title="Full pages, ready to copy."
-        blurb="Complete, multi-section layouts that compose Hirael blocks and components into a finished page. Copy one in with a single command and make it yours."
+        blurb="Complete pages assembled from the blocks and components in this registry with light, dark and RTL already handled. One command copies the whole page into your repo, then you swap in your copy and brand."
       >
         <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
           {TEMPLATES.length} template{TEMPLATES.length === 1 ? '' : 's'}

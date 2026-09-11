@@ -60,7 +60,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
         {!compact && (
           <>
             <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
-            <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
+            <span className="mt-1 inline-flex items-center gap-1 text-xs uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
               View
               <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
             </span>

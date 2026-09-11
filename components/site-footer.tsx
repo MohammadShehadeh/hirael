@@ -113,7 +113,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
   return (
     <footer className={cn('mt-auto pb-4 sm:pb-6', className)}>
       <div className="container w-full">
-        <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-elevated sm:rounded-[2rem]">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card sm:rounded-3xl">
           <div aria-hidden className="ambient-halo opacity-70" />
           <div
             aria-hidden
@@ -131,7 +131,10 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
                   <Logo className="h-10" />
                 </Link>
                 <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">{SITE.description}</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">{SITE.longDescription}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Install any item with the shadcn CLI and the source lands in your repo, styled for light, dark and
+                  RTL. There is no package to depend on and nothing to keep up to date.
+                </p>
               </div>
 
               <Link
@@ -188,9 +191,9 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
             </span>
             <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                © {year} {SITE.author} - built on shadcn
+                © {year} {SITE.author}. Built on shadcn/ui.
               </p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">zero runtime deps</p>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">Source, not a package</p>
             </div>
           </div>
         </div>

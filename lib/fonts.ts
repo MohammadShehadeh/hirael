@@ -11,11 +11,12 @@ import {
   Space_Grotesk,
 } from 'next/font/google';
 
-export const inter = Inter({
-  variable: '--font-inter',
+export const outfit = Outfit({
+  variable: '--font-outfit',
   subsets: ['latin'],
 });
 
+const inter = Inter({ subsets: ['latin'], preload: false });
 const geist = Geist({ subsets: ['latin'], preload: false });
 const manrope = Manrope({ subsets: ['latin'], preload: false });
 const figtree = Figtree({ subsets: ['latin'], preload: false });
@@ -26,7 +27,6 @@ const ibmPlexSans = IBM_Plex_Sans({
   preload: false,
 });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], preload: false });
-const outfit = Outfit({ subsets: ['latin'], preload: false });
 const instrumentSans = Instrument_Sans({ subsets: ['latin'], preload: false });
 const notoSans = Noto_Sans({
   subsets: ['latin'],
@@ -41,6 +41,7 @@ export interface FontOption {
 }
 
 export const FONTS: FontOption[] = [
+  { name: 'outfit', title: 'Outfit', family: outfit.style.fontFamily },
   { name: 'inter', title: 'Inter', family: inter.style.fontFamily },
   { name: 'geist', title: 'Geist', family: geist.style.fontFamily },
   { name: 'manrope', title: 'Manrope', family: manrope.style.fontFamily },
@@ -56,7 +57,6 @@ export const FONTS: FontOption[] = [
     title: 'Space Grotesk',
     family: spaceGrotesk.style.fontFamily,
   },
-  { name: 'outfit', title: 'Outfit', family: outfit.style.fontFamily },
   {
     name: 'instrument-sans',
     title: 'Instrument Sans',

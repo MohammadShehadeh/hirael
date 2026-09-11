@@ -25,175 +25,196 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     group: 'marketing',
     title: 'Hero Sections',
     blockKind: 'hero',
-    description: 'Above-the-fold openers: split layouts, centered editorials, stat strips, wordmark trust rows.',
+    description:
+      'Above-the-fold openers for a landing page: split layouts, centered editorial, stat strips and trust rows, each with headline, supporting copy and paired CTAs in place.',
   },
   {
     slug: 'features',
     group: 'marketing',
     title: 'Features',
     blockKind: 'feature',
-    description: 'Alternating rows, three-up icon grids, bordered feature cards, and bento layouts.',
+    description:
+      'Feature sections that explain a product: alternating rows, three-up icon grids, bordered cards and bento layouts, laid out to hold real copy and screenshots.',
   },
   {
     slug: 'process',
     group: 'marketing',
     title: 'How It Works',
     blockKind: 'process',
-    description: 'Numbered step rows and onboarding flows that walk through how a product works.',
+    description:
+      'How-it-works sections: numbered step rows and onboarding flows that walk a visitor through a product in three or four steps.',
   },
   {
     slug: 'pricing',
     group: 'marketing',
     title: 'Pricing',
     blockKind: 'pricing',
-    description: 'Three-tier card layouts and feature-comparison tables, each with per-tier CTAs.',
+    description:
+      'Pricing sections with three-tier cards and feature comparison tables, a highlighted plan and a call to action on every tier.',
   },
   {
     slug: 'team',
     group: 'marketing',
     title: 'Team',
     blockKind: 'team',
-    description: 'Team grids with portrait placeholders, roles, short bios, and hiring links.',
+    description: 'Team sections with portrait grids, roles, short bios and a link to open roles.',
   },
   {
     slug: 'stats',
     group: 'marketing',
     title: 'Stats',
     blockKind: 'stats',
-    description: 'Metric bands with count-up numbers, labels, and deltas in a bordered row.',
+    description:
+      'Stat bands for proof numbers under a hero or above a CTA: metric, label and delta in a bordered row, with count-up on scroll.',
   },
   {
     slug: 'comparison',
     group: 'marketing',
     title: 'Comparison',
     blockKind: 'comparison',
-    description: 'Us-and-them panels and side-by-side tables that frame the difference.',
+    description:
+      'Comparison sections that put your product beside the alternative: us-and-them panels and side-by-side tables with per-row checks.',
   },
   {
     slug: 'testimonials',
     group: 'marketing',
     title: 'Testimonials',
     blockKind: 'testimonial',
-    description: 'Single-quote spotlights and masonry quote grids with author rows.',
+    description:
+      'Testimonial sections: single-quote spotlights and masonry quote grids with author name, role and avatar.',
   },
   {
     slug: 'cta',
     group: 'marketing',
     title: 'Call to Action',
     blockKind: 'cta',
-    description: 'Framed bands and centered announce blocks with inline install hints.',
+    description:
+      'Call-to-action bands that close a page: framed panels and centered announcements with a headline, a primary button and an inline install command.',
   },
   {
     slug: 'newsletter',
     group: 'marketing',
     title: 'Newsletter',
     blockKind: 'newsletter',
-    description: 'Inline subscribe sections with email capture, validation, and a success state.',
+    description:
+      'Newsletter sections with an email field, validation and a success state, ready to point at your subscribe endpoint.',
   },
   {
     slug: 'faqs',
     group: 'marketing',
     title: 'FAQs',
     blockKind: 'faq',
-    description: 'Sticky split layouts and centered accordion grids with numbered indices.',
+    description:
+      'FAQ sections built on the Accordion: sticky split layouts and centered grids with numbered questions that stay scannable on mobile.',
   },
   {
     slug: 'auth',
     group: 'site',
     title: 'Auth',
     blockKind: 'login',
-    description: 'Centered login cards and split testimonial panes with OAuth providers and strength meters.',
+    description:
+      'Login and sign-up screens: centered cards and split panes with OAuth buttons, a password strength meter and real form fields to wire to your auth provider.',
   },
   {
     slug: 'header',
     group: 'site',
     title: 'Header',
     blockKind: 'header',
-    description: 'Sticky navs with backdrop blur, mobile menus, and dual-CTA layouts.',
+    description:
+      'Site headers with sticky positioning, backdrop blur, a mobile menu and dual CTAs, collapsing cleanly on small screens.',
   },
   {
     slug: 'footer',
     group: 'site',
     title: 'Footer',
     blockKind: 'footer',
-    description: 'Multi-column link layouts with brand block, social row, and copyright rule.',
+    description:
+      'Site footers with multi-column link groups, a brand block, social links and a copyright rule, in light and dark.',
   },
   {
     slug: 'not-found',
     group: 'site',
     title: 'Status Pages',
     blockKind: 'not-found',
-    description: '404, 500, maintenance, and coming-soon pages with paired CTAs, countdowns, and status details.',
+    description:
+      '404, 500, maintenance and coming-soon pages with paired CTAs, countdowns and status details, so an error page still looks like your product.',
   },
   {
     slug: 'changelog',
     group: 'site',
     title: 'Changelog',
     blockKind: 'changelog',
-    description: 'Release-notes pages with date rails, version badges, and tag filters.',
+    description:
+      'Release-notes pages with a date rail, version badges and tag filters, for shipping product updates without a CMS.',
   },
   {
     slug: 'blog',
     group: 'marketing',
     title: 'Blog Sections',
     blockKind: 'blog',
-    description: 'Article grids, featured-post heroes, and editorial card layouts.',
+    description:
+      'Blog sections: article grids, featured-post heroes and editorial cards with cover image, category and author.',
   },
   {
     slug: 'contact',
     group: 'site',
     title: 'Contact',
     blockKind: 'contact',
-    description: 'Split form-and-info layouts, map embeds, and inline support panels.',
+    description: 'Contact sections with split form-and-info layouts, map embeds and inline support panels.',
   },
   {
     slug: 'careers',
     group: 'site',
     title: 'Careers',
     blockKind: 'careers',
-    description: 'Open-roles lists with department filters and linked job rows.',
+    description: 'Careers sections with an open-roles list, department filters and linked job rows.',
   },
   {
     slug: 'ecommerce',
     group: 'app',
     title: 'E-commerce',
     blockKind: 'ecommerce',
-    description: 'Product grids, carts, and checkout-ready layouts with wishlists, promo codes, and live totals.',
+    description:
+      'E-commerce sections: product grids, carts and checkout layouts with wishlists, promo codes and live totals.',
   },
   {
     slug: 'image-gallery',
     group: 'marketing',
     title: 'Image Gallery',
     blockKind: 'image-gallery',
-    description: 'Masonry, grid, and carousel gallery layouts with optional lightbox.',
+    description: 'Image galleries in masonry, grid and carousel layouts that keep their rhythm as images change.',
   },
   {
     slug: 'integrations',
     group: 'app',
     title: 'Integrations',
     blockKind: 'integrations',
-    description: 'Hub-and-spoke diagrams, integration cards, and connector showcases.',
+    description:
+      'Integration sections: hub-and-spoke diagrams, integration cards and connector showcases for listing what your product connects to.',
   },
   {
     slug: 'logo-cloud',
     group: 'marketing',
     title: 'Logo Cloud',
     blockKind: 'logo-cloud',
-    description: 'Trusted-by wordmark rows, marquee strips, and bordered logo grids.',
+    description:
+      'Logo clouds for social proof: trusted-by wordmark rows, marquee strips and bordered logo grids that hold their spacing as logos change.',
   },
   {
     slug: 'app-shell',
     group: 'app',
     title: 'App Shell',
     blockKind: 'app-shell',
-    description: 'Sidebar + topbar layouts with command-palette and breadcrumb chrome.',
+    description:
+      'App shells with sidebar and topbar, command palette and breadcrumbs: the frame a dashboard or admin tool starts from.',
   },
   {
     slug: 'dashboard',
     group: 'app',
     title: 'Dashboard',
     blockKind: 'dashboard',
-    description: 'Stat cards, charts, and table-driven views composed into full dashboards.',
+    description:
+      'Dashboard screens composed from stat cards, charts and data tables, built with real components rather than static images.',
   },
   {
     slug: 'cloud',
@@ -201,7 +222,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: 'Cloud',
     blockKind: 'cloud',
     description:
-      'Infrastructure and DevOps consoles: server cards, VM and pod tables, statuspages, cluster maps, topology, logs, terminals, and deploy feeds.',
+      'Infrastructure and DevOps consoles: server cards, VM and pod tables, status pages, cluster maps, topology views, logs, terminals and deploy feeds.',
   },
   {
     slug: 'saas',
@@ -209,7 +230,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: 'SaaS',
     blockKind: 'saas',
     description:
-      'Product-account panels: billing summaries, plan selectors, API-key managers, usage meters, and audit logs.',
+      'Account and billing panels for a SaaS product: billing summaries, plan selectors, API key managers, usage meters and audit logs.',
   },
   {
     slug: 'ai',
@@ -217,7 +238,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: 'AI',
     blockKind: 'ai',
     description:
-      'Chat surfaces: prompt composers with model pickers, streaming message threads with tool calls, and full chat screens.',
+      'AI chat surfaces: prompt composers with model pickers, streaming message threads with tool calls and complete chat screens.',
   },
   {
     slug: 'widgets',
@@ -225,7 +246,7 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     title: 'Widgets',
     blockKind: 'widgets',
     description:
-      'Composed dashboard panels: KPI grids, quick actions, notifications, activity feeds, inspectors, and workspace switchers.',
+      'Dashboard widgets that slot into any app shell: KPI grids, quick actions, notifications, activity feeds, inspectors and workspace switchers.',
   },
 ];
 

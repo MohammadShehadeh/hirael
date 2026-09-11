@@ -54,7 +54,7 @@ export const DEFAULT_CONFIG: CustomizerConfig = {
   baseColor: 'hirael',
   theme: 'hirael',
   chartColor: 'hirael',
-  font: 'inter',
+  font: 'outfit',
   radius: 'default',
 };
 

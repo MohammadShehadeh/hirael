@@ -32,7 +32,7 @@ export const GithubLink = ({ stars }: GithubLinkProps) => {
       >
         <GithubIcon />
         {stars ? (
-          <span className="inline-flex items-center gap-1 tabular-nums text-xs">
+          <span className="hidden items-center gap-1 tabular-nums text-xs sm:inline-flex">
             <Star className="size-3 fill-current" />
             {formatStars(stars)}
           </span>

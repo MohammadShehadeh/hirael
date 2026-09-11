@@ -1,0 +1,34 @@
+---
+title: A new layout, and cn support
+version: '6.4.0'
+date: 2026-09-11
+description: 'The docs have a new layout with section tabs, the home page opens on the newest templates, blocks and components, and Outfit is now the default font. Everything in the catalog also works unchanged with the new cn package.'
+---
+
+No new items this time. The site around them got rebuilt, and the catalog is
+ready for shadcn's new class-merging package.
+
+Changed:
+
+- **A new docs layout.** A slim header holds the Customizer, the theme toggle
+  and GitHub, and tabs for each part of the site stay pinned below it as you
+  scroll. On a phone, the sidebar opens from the menu button.
+- **The home page shows the catalog first.** Three columns hold the latest
+  templates, blocks and components, each with a preview and a link to the rest.
+- **Outfit is the default font.** Inter is still in the Customizer's Font
+  picker if you prefer it.
+- **Category pages say what's in them.** Each component category now names the
+  controls it holds, so Inputs lists multi-select, combobox, phone, currency,
+  address and the rest instead of a vague summary.
+
+Works with `cn`:
+
+- shadcn's new [`cn`](https://github.com/shadcn-ui/cn) package replaces `clsx`
+  and `tailwind-merge` with one faster function. Hirael items import `cn` from
+  your own `lib/utils`, so after `npx shadcn@latest migrate cn` everything you
+  have installed keeps working with no edits. This site runs on it too.
+
+Fixed:
+
+- **The header fits small phones.** The logo and header buttons shrink a step
+  on narrow screens instead of crowding the menu button.

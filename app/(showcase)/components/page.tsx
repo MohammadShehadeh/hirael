@@ -29,11 +29,11 @@ const COMPOSE_SNIPPET = `import {
 </MultiSelect>`;
 
 const COMPONENTS_DESCRIPTION =
-  'Every component in the Hirael registry: multi-select, combobox, tag input, currency input, file dropzone, and the rest shadcn/ui leaves out.';
+  'Components shadcn/ui leaves out: multi-select, combobox, date and time pickers, tag input, currency input, file dropzone and more. Try each one live, then install it with the shadcn CLI.';
 
 export const metadata: Metadata = listingMetadata({
   path: '/components',
-  title: 'React components for shadcn/ui',
+  title: 'Components for shadcn/ui',
   description: COMPONENTS_DESCRIPTION,
   keywords: [
     'react components',
@@ -62,7 +62,7 @@ export default async function ComponentsIndex() {
       <PageHeader
         kicker="Components"
         title="The full registry."
-        blurb={`${COMPONENTS.length} components shadcn/ui doesn't ship, live below so you can try each one before installing. One command copies the source into your repo.`}
+        blurb={`${COMPONENTS.length} components shadcn/ui leaves out: multi-select, combobox, date and time pickers, tag and currency inputs, file dropzones, data views and more. Each one runs live below, so you can test it before the shadcn CLI copies its source into your repo.`}
       />
 
       <nav aria-label="Component categories" className="-mt-6 flex flex-wrap justify-center gap-2">

@@ -46,13 +46,13 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
     <header
       className={cn('sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md', className)}
     >
-      <div className="relative container flex h-14 items-center justify-between gap-3">
+      <div className="relative container flex h-14 min-w-0 items-center justify-between gap-2 sm:gap-3">
         <Link
           href="/"
           aria-label={`${SITE.name} | home`}
-          className="flex shrink-0 items-center rounded-full py-1 transition-opacity hover:opacity-80"
+          className="flex min-w-0 shrink-0 items-center rounded-full py-1 transition-opacity hover:opacity-80"
         >
-          <Logo className="h-8" />
+          <Logo className="h-7 sm:h-8" />
         </Link>
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
@@ -76,7 +76,7 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
           })}
         </nav>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
           <GithubLink stars={stars} />
           <CommandMenu />
           <CustomizerTrigger />
@@ -86,7 +86,7 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
               <Button
                 type="button"
                 variant="ghost"
-                size="icon"
+                size="icon-sm"
                 aria-label="Open menu"
                 className="rounded-full border border-border bg-card/60 text-foreground hover:border-foreground/40 lg:hidden"
               >

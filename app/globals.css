@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-sans-active, var(--font-inter));
+  --font-sans: var(--font-sans-active, var(--font-outfit));
   --font-mono: var(--font-jet-brains-mono);
   --font-serif: var(--font-cormorant);
 
@@ -73,6 +73,29 @@
 
   @media (width >= 1024px) {
     padding-inline: 32px;
+  }
+}
+
+/* Vertical 1px rails that continue through the sticky header (h-14). Logical, so RTL mirrors. */
+@utility page-rails {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset-block: -3.5rem 0;
+    width: 1px;
+    background-color: var(--border);
+  }
+
+  &::before {
+    inset-inline-start: -1px;
+  }
+
+  &::after {
+    inset-inline-end: -1px;
   }
 }
 

@@ -4132,13 +4132,19 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'te
 
 /** One-line, human blurb for each component category landing page. */
 export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], string> = {
-  inputs: 'Text fields, selects, chip and tag inputs, and the form controls shadcn/ui leaves out.',
-  pickers: 'Date, time, month, year and color pickers with keyboard navigation and no date library.',
-  files: 'Upload zones, image croppers and local media pickers.',
-  data: 'Feeds, timelines, trees, heatmaps and other ways to show structured data.',
-  display: 'Callouts, code blocks, marquees, lightboxes and other visual helpers.',
-  animation: 'Scroll reveals, tilts, spotlights and pointer-driven motion. Reduced-motion aware.',
-  navigation: 'Docks, steppers, toolbars, split views and resizable panels.',
+  inputs:
+    'Multi-select, combobox, tag, phone, currency, address and credit card inputs, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
+  pickers:
+    'Date, date range, time, month, year, color and emoji pickers with full keyboard navigation and no date library to add.',
+  files:
+    'Drag-and-drop upload zones, an image cropper, an avatar uploader and a local media picker, with previews, size limits and clear controls already wired.',
+  data: 'Data tables, kanban boards, sortable lists, tree views, timelines, calendar heatmaps, sparklines and stat cards for showing structured data.',
+  display:
+    'Callouts, code blocks, diff and JSON viewers, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
+  animation:
+    'Scroll and text reveals, spotlight and tilt cards, magnetic buttons, cursor glow and a morphing dialog. Every effect honors prefers-reduced-motion.',
+  navigation:
+    'Steppers, product tours, a command palette, a dock, floating toolbars and action buttons, split views, resizable panels and a table of contents, with keyboard focus that mirrors in RTL.',
 };
 
 /**

@@ -3,11 +3,15 @@
 import { useT } from '@/lib/demo-locale';
 import { CodeBlock } from '@/registry/hirael/bases/base/components/code-block';
 
-const utilsSnippet = `import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+const buttonSnippet = `import { cn } from "cn"
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+export function Button({ className, active, ...props }: ButtonProps) {
+  return (
+    <button
+      className={cn("rounded-md px-4 py-2", active && "bg-primary", className)}
+      {...props}
+    />
+  )
 }`;
 
 const diffSnippet = `const config = {
@@ -55,7 +59,7 @@ const CodeBlockDemo = () => {
             ar: 'اسم الملف واللغة والأسطر المظلَّلة',
           })}
         </p>
-        <CodeBlock code={utilsSnippet} filename="lib/utils.ts" language="ts" highlightLines={[4, 5]} />
+        <CodeBlock code={buttonSnippet} filename="components/button.tsx" language="tsx" highlightLines={[1, 6]} />
       </div>
 
       <div className="grid gap-3">

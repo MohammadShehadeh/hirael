@@ -14,15 +14,17 @@ const CommandPalette = dynamic(() => import('@/components/command-palette').then
   ssr: false,
 });
 
+export interface CommandMenuProps {
+  className?: string;
+  /** `button` is the compact header trigger; `field` is the full-width search row at the top of the sidebar. */
+  variant?: 'button' | 'field';
+}
+
 /**
  * ⌘K trigger. Lightweight on its own — owns the button, the keyboard
  * shortcut, and open state; mounts the heavy palette only once opened.
- *
- * `button` is the compact header trigger; `field` is the full-width search
- * row at the top of the docs sidebar, which also says how much there is to
- * search.
  */
-export const CommandMenu = ({ className, variant = 'button' }: { className?: string; variant?: 'button' | 'field' }) => {
+export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps) => {
   const [open, setOpen] = React.useState(false);
   const [armed, setArmed] = React.useState(false);
   const isMac = useIsApple();

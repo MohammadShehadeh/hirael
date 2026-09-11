@@ -5,13 +5,17 @@ import { SiteFooterCompact } from '@/components/site-footer';
 import { getChangelog } from '@/lib/changelog';
 import { getRepoStars } from '@/lib/github';
 
+interface ShowcaseLayoutProps {
+  children: React.ReactNode;
+}
+
 /**
  * The docs shell: a static header, the sticky section tabs, then a sidebar
  * column beside the article. Everything shares one centered block
  * (`--docs-layout-width`) and one sidebar column (`--docs-sidebar-width`), so
  * the header's logo, the tabs and the tree all sit on the same vertical.
  */
-export default async function ShowcaseLayout({ children }: { children: React.ReactNode }) {
+export default async function ShowcaseLayout({ children }: ShowcaseLayoutProps) {
   const [stars, changelog] = await Promise.all([getRepoStars(), getChangelog()]);
   const releases = changelog.entries.map((entry) => ({
     slug: entry.slug,
@@ -25,8 +29,6 @@ export default async function ShowcaseLayout({ children }: { children: React.Rea
       <div className="mx-auto flex w-full max-w-(--docs-layout-width) flex-1">
         <DocsSidebar releases={releases} />
         <div className="relative flex min-w-0 flex-1 flex-col">
-          {/* Dotted backdrop fading out under the article's head, for
-              continuity with the landing hero. */}
           <div
             aria-hidden
             className="bg-dot-grid pointer-events-none absolute inset-x-0 top-0 h-90 mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_75%)]"

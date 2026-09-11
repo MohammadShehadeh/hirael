@@ -36,7 +36,11 @@ const ArchMarkPaths = () => {
   );
 };
 
-const ArchMarkSvg = ({ className }: { className?: string }) => {
+interface ArchMarkSvgProps {
+  className?: string;
+}
+
+const ArchMarkSvg = ({ className }: ArchMarkSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="80 104 352 352" role="img" aria-hidden className={className}>
       <title>Hirael</title>
@@ -45,12 +49,16 @@ const ArchMarkSvg = ({ className }: { className?: string }) => {
   );
 };
 
+interface HiraelWordmarkSvgProps {
+  className?: string;
+}
+
 /**
  * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
  * the arch mark on its left. ViewBox is tightened so the type fills the
  * vertical room; callers can size with a single h-* utility.
  */
-const HiraelWordmarkSvg = ({ className }: { className?: string }) => {
+const HiraelWordmarkSvg = ({ className }: HiraelWordmarkSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" role="img" aria-hidden className={className}>
       <title>Hirael</title>
@@ -64,7 +72,11 @@ const HiraelWordmarkSvg = ({ className }: { className?: string }) => {
   );
 };
 
-export const Logo = ({ className }: { className?: string }) => {
+export interface LogoProps {
+  className?: string;
+}
+
+export const Logo = ({ className }: LogoProps) => {
   return (
     <span role="img" aria-label="Hirael" className={cn('inline-flex shrink-0 text-foreground', className)}>
       <HiraelWordmarkSvg className="h-full w-auto" />
@@ -72,13 +84,22 @@ export const Logo = ({ className }: { className?: string }) => {
   );
 };
 
-export const LogoMark = ({ className }: { className?: string }) => {
+export interface LogoMarkProps {
+  className?: string;
+}
+
+export const LogoMark = ({ className }: LogoMarkProps) => {
   return (
     <span role="img" aria-label="Hirael" className={cn('inline-flex size-6 shrink-0 text-foreground', className)}>
       <ArchMarkSvg className="size-full" />
     </span>
   );
 };
+
+export interface LogoTileProps {
+  className?: string;
+  markClassName?: string;
+}
 
 /**
  * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
@@ -87,7 +108,7 @@ export const LogoMark = ({ className }: { className?: string }) => {
  * the brand mark reads like a pressable key). Matches the board's ICON / MARK
  * panel. Size with a single `size-*` utility on `className`.
  */
-export const LogoTile = ({ className, markClassName }: { className?: string; markClassName?: string }) => {
+export const LogoTile = ({ className, markClassName }: LogoTileProps) => {
   return (
     <span
       role="img"

@@ -26,7 +26,13 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/registry/hirael
  * same line as the search field and tree below it. Below `md` the sidebar
  * column is gone and the tree opens from the menu button in a sheet.
  */
-export const DocsHeader = ({ stars, releases }: { stars?: number | null; releases: SidebarRelease[] }) => {
+export interface DocsHeaderProps {
+  /** Build-time GitHub star count; omit or pass null to hide the badge. */
+  stars?: number | null;
+  releases: SidebarRelease[];
+}
+
+export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = React.useState(false);
 

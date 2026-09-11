@@ -22,10 +22,7 @@ export const DocsTabsBar = () => {
 
   return (
     <div className="sticky top-0 z-30 h-11 w-full border-b border-border bg-background/70 backdrop-blur-xl">
-      <nav
-        aria-label="Sections"
-        className="mx-auto flex h-full w-full max-w-(--docs-layout-width) items-stretch px-4"
-      >
+      <nav aria-label="Sections" className="mx-auto flex h-full w-full max-w-(--docs-layout-width) items-stretch px-4">
         <div className="-ms-3 flex items-stretch gap-1">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
@@ -40,7 +37,9 @@ export const DocsTabsBar = () => {
                 )}
               >
                 {link.label}
-                {active && <span aria-hidden className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-foreground" />}
+                {active && (
+                  <span aria-hidden className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-foreground" />
+                )}
               </Link>
             );
           })}

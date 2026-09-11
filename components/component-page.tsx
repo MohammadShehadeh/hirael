@@ -69,15 +69,7 @@ export interface ExampleSources {
   sources: Record<RegistryBase, SourceFile | null>;
 }
 
-export const ComponentPage = ({
-  entry,
-  sources,
-  examples,
-  api,
-  usage,
-  breadcrumb,
-  extras,
-}: {
+export interface ComponentPageProps {
   entry: RegistryEntryMeta;
   /** Pre-highlighted install source files per base, keyed by base-relative path. */
   sources: Record<RegistryBase, Record<string, SourceFile>>;
@@ -91,7 +83,9 @@ export const ComponentPage = ({
   breadcrumb?: Crumb[];
   /** Ship date and related items, resolved on the server from the changelog. */
   extras?: DetailExtras;
-}) => {
+}
+
+export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
   // Multi-file items (composites, or a component that ships a folder of parts
   // like the data table) show their install tree; single files stay flat.
@@ -230,7 +224,7 @@ export const ComponentPage = ({
                 </span>
                 {entry.blockKind && (
                   <>
-                    <span className="font-mono text-[10px] text-muted-foreground">·</span>
+                    <span className="font-mono text-[10px] text-muted-foreground">/</span>
                     <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
                       {entry.blockKind}
                     </span>
@@ -239,8 +233,6 @@ export const ComponentPage = ({
               </div>
             )}
 
-            {/* Title row: the name on the left, the page's actions on the
-                right, clear of the description below. */}
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
               <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-balance md:text-4xl">
@@ -307,17 +299,14 @@ const githubSourceUrl = (entry: RegistryEntryMeta, base: RegistryBase) => {
   return `${SITE.githubRepoUrl}/tree/main/${dir}`;
 };
 
-const HeaderAction = ({
-  href,
-  title,
-  icon,
-  children,
-}: {
+interface HeaderActionProps {
   href: string;
   title: string;
   icon: React.ReactNode;
   children: React.ReactNode;
-}) => {
+}
+
+const HeaderAction = ({ href, title, icon, children }: HeaderActionProps) => {
   return (
     <Button asChild variant="ghost" size="sm">
       <a href={href} target="_blank" rel="noreferrer noopener" title={title}>
@@ -328,7 +317,13 @@ const HeaderAction = ({
   );
 };
 
-const Section = ({ id, label, children }: { id: string; label: string; children: React.ReactNode }) => {
+interface SectionProps {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+}
+
+const Section = ({ id, label, children }: SectionProps) => {
   return (
     <section id={id} className="flex scroll-mt-16 flex-col gap-4">
       <a
@@ -347,8 +342,13 @@ const Section = ({ id, label, children }: { id: string; label: string; children:
   );
 };
 
-/** One example: a preview ↔ code toggle (with an RTL toggle on the preview). */
-const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle: boolean }) => {
+interface ExampleBlockProps {
+  example: ExampleEntry;
+  /** Off when the page has a single example, whose title would repeat the page's. */
+  showTitle: boolean;
+}
+
+const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
   const [view, setView] = React.useState<'preview' | 'code'>('preview');
   const [rtl, setRtl] = React.useState(false);
   const base = useRegistryBase();
@@ -413,7 +413,12 @@ const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle
   );
 };
 
-const DepGroup = ({ title, deps }: { title: string; deps: string[] }) => {
+interface DepGroupProps {
+  title: string;
+  deps: string[];
+}
+
+const DepGroup = ({ title, deps }: DepGroupProps) => {
   return (
     <div className="rounded-sm border border-border bg-card p-4">
       <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{title}</h3>
@@ -434,7 +439,11 @@ const DepGroup = ({ title, deps }: { title: string; deps: string[] }) => {
 const API_TH =
   'px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground';
 
-const ApiPanel = ({ parts }: { parts: ApiPart[] }) => {
+interface ApiPanelProps {
+  parts: ApiPart[];
+}
+
+const ApiPanel = ({ parts }: ApiPanelProps) => {
   return (
     <div className="flex flex-col gap-4">
       {parts.map((part) => (

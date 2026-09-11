@@ -4,46 +4,44 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { BlockPreview } from '@/components/block-preview';
 import { DemoCard } from '@/components/demo-card';
 import { NewBadge } from '@/components/new-badge';
-import type { LatestCatalog } from '@/lib/detail-extras';
+import type { CatalogKind, LatestCatalog } from '@/lib/detail-extras';
 import type { DatedEntry } from '@/lib/freshness';
 import { entryHref } from '@/registry/hirael/registry-meta';
 
-const COLUMNS = [
-  {
-    kind: 'templates',
-    title: 'Templates',
-    href: '/templates',
-    variant: 'frame',
-  },
-  {
-    kind: 'blocks',
-    title: 'Blocks',
-    href: '/blocks',
-    variant: 'frame',
-  },
-  {
-    kind: 'components',
-    title: 'Components',
-    href: '/components',
-    variant: 'demo',
-  },
-] as const;
+type PreviewStyle = 'framed' | 'live';
+
+interface CatalogColumnDefinition {
+  kind: CatalogKind;
+  title: string;
+  href: string;
+  preview: PreviewStyle;
+}
+
+const CATALOG_COLUMNS: readonly CatalogColumnDefinition[] = [
+  { kind: 'templates', title: 'Templates', href: '/templates', preview: 'framed' },
+  { kind: 'blocks', title: 'Blocks', href: '/blocks', preview: 'framed' },
+  { kind: 'components', title: 'Components', href: '/components', preview: 'live' },
+];
+
+export interface LandingCatalogProps {
+  items: LatestCatalog;
+}
 
 /**
  * First-screen catalog: two live previews per collection, so templates, blocks
  * and components are all visible without leaving the landing page.
  */
-export const LandingCatalog = ({ items }: { items: LatestCatalog }) => {
+export const LandingCatalog = ({ items }: LandingCatalogProps) => {
   return (
     <section aria-label="Latest from the catalog" className="pb-16 sm:pb-20">
       <div className="container grid w-full gap-10 lg:grid-cols-3 lg:gap-8">
-        {COLUMNS.map((column) => (
+        {CATALOG_COLUMNS.map((column) => (
           <CatalogColumn
             key={column.kind}
             title={column.title}
             href={column.href}
             items={items[column.kind]}
-            variant={column.variant}
+            preview={column.preview}
           />
         ))}
       </div>
@@ -51,17 +49,14 @@ export const LandingCatalog = ({ items }: { items: LatestCatalog }) => {
   );
 };
 
-const CatalogColumn = ({
-  title,
-  href,
-  items,
-  variant,
-}: {
+interface CatalogColumnProps {
   title: string;
   href: string;
   items: DatedEntry[];
-  variant: 'frame' | 'demo';
-}) => {
+  preview: PreviewStyle;
+}
+
+const CatalogColumn = ({ title, href, items, preview }: CatalogColumnProps) => {
   if (items.length === 0) return null;
 
   return (
@@ -79,10 +74,10 @@ const CatalogColumn = ({
 
       <div className="flex flex-col gap-3">
         {items.map((item) =>
-          variant === 'demo' ? (
+          preview === 'live' ? (
             <DemoCard key={item.entry.name} entry={item.entry} addedAt={item.addedAt} compact className="rounded-sm" />
           ) : (
-            <FrameCard key={item.entry.name} item={item} />
+            <FramedPreviewCard key={item.entry.name} item={item} />
           ),
         )}
       </div>
@@ -90,9 +85,11 @@ const CatalogColumn = ({
   );
 };
 
-const FrameCard = ({ item }: { item: DatedEntry }) => {
-  const { entry, addedAt } = item;
+interface FramedPreviewCardProps {
+  item: DatedEntry;
+}
 
+const FramedPreviewCard = ({ item: { entry, addedAt } }: FramedPreviewCardProps) => {
   return (
     <Link
       href={entryHref(entry)}

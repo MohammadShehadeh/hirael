@@ -22,16 +22,13 @@ import {
   DrawerTrigger,
 } from '@/registry/hirael/bases/radix/ui/drawer';
 
-export const SiteHeader = ({
-  className,
-  withSidebarTrigger,
-  stars,
-}: {
+export interface SiteHeaderProps {
   className?: string;
-  withSidebarTrigger?: React.ReactNode;
   /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
-}) => {
+}
+
+export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -51,16 +48,13 @@ export const SiteHeader = ({
       className={cn('sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md', className)}
     >
       <div className="relative container flex h-14 items-center justify-between gap-3">
-        <div className="flex shrink-0 items-center gap-2">
-          {withSidebarTrigger}
-          <Link
-            href="/"
-            aria-label={`${SITE.name} | home`}
-            className="group flex shrink-0 items-center gap-2 rounded-full py-1 transition-opacity hover:opacity-80"
-          >
-            <Logo className="h-8" />
-          </Link>
-        </div>
+        <Link
+          href="/"
+          aria-label={`${SITE.name} | home`}
+          className="flex shrink-0 items-center rounded-full py-1 transition-opacity hover:opacity-80"
+        >
+          <Logo className="h-8" />
+        </Link>
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => {

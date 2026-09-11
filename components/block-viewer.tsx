@@ -27,19 +27,18 @@ const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 
 // Auto-height clamps. The floor keeps a refresh from collapsing to a sliver
 // before the first measurement; the ceiling stops full-page templates from
-// stretching the document thousands of pixels — past it the iframe scrolls
-// internally again.
+// stretching the document — past it the iframe scrolls internally again.
 const MIN_HEIGHT = 320;
 const MAX_HEIGHT = 700;
 
-export const BlockViewer = ({
-  entry,
-  minHeight = 800,
-}: {
+export interface BlockViewerProps {
   /** The block or template to frame; the path follows the active base. */
   entry: RegistryEntryMeta;
-  minHeight?: number;
-}) => {
+  /** Frame height until the block's own height is measured. */
+  initialHeight?: number;
+}
+
+export const BlockViewer = ({ entry, initialHeight = MAX_HEIGHT }: BlockViewerProps) => {
   const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const [viewport, setViewport] = React.useState<Viewport>('desktop');
@@ -138,7 +137,7 @@ export const BlockViewer = ({
           className="block border-0 bg-background transition-[width,max-width,height] duration-300 ease-out"
           style={{
             ...sizing,
-            height: height ?? minHeight,
+            height: height ?? initialHeight,
           }}
         />
       </div>

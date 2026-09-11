@@ -59,7 +59,7 @@ export const getLatestCatalog = async (limit: number): Promise<LatestCatalog> =>
   const dates = await getReleaseDates();
   const dated = recentlyAdded(dates);
 
-  const pick = (kind: CatalogKind): DatedEntry[] => {
+  const latestOfKind = (kind: CatalogKind): DatedEntry[] => {
     const names = new Set(COLLECTION_BY_KIND[kind].map((entry) => entry.name));
     const fromDates = dated.filter(({ entry }) => names.has(entry.name)).slice(0, limit);
     if (fromDates.length >= limit) return fromDates;
@@ -75,8 +75,8 @@ export const getLatestCatalog = async (limit: number): Promise<LatestCatalog> =>
   };
 
   return {
-    templates: pick('templates'),
-    blocks: pick('blocks'),
-    components: pick('components'),
+    templates: latestOfKind('templates'),
+    blocks: latestOfKind('blocks'),
+    components: latestOfKind('components'),
   };
 };

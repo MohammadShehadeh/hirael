@@ -23,8 +23,8 @@ const chipStyle =
  * the framed preview (viewport + RTL controls) and a one-line install command.
  * A visitor compares variants at real size and copies one in without opening
  * the detail page, which stays the place for source and dependencies. A
- * scroll-spied chip row sticks under the topbar so eleven previews are still
- * one click to any block.
+ * scroll-spied chip row sticks under the section tabs so eleven previews are
+ * still one click to any block.
  */
 export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
@@ -107,7 +107,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                     </div>
                   </header>
 
-                  <BlockViewer entry={entry} minHeight={640} />
+                  <BlockViewer entry={entry} initialHeight={640} />
 
                   <InstallBlock name={entry.name} variant="inline" />
                 </article>
@@ -120,7 +120,11 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
   );
 };
 
-const RoadmapState = ({ category }: { category: CategoryMeta }) => {
+interface RoadmapStateProps {
+  category: CategoryMeta;
+}
+
+const RoadmapState = ({ category }: RoadmapStateProps) => {
   return (
     <section className="flex flex-col gap-8">
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">

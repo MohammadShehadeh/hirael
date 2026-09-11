@@ -24,19 +24,17 @@ const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
 const MAX_HEIGHT = 760;
 
-export const BlockPreview = ({
-  entry,
-  simWidth = SIM_WIDTH,
-  className,
-  fill = false,
-}: {
+export interface BlockPreviewProps {
   /** The block or template to frame; the path follows the active base. */
   entry: RegistryEntryMeta;
+  /** Width the block is laid out at inside the frame before scaling. */
   simWidth?: number;
   className?: string;
   /** Fill the parent and crop overflow instead of sizing the card to the block. */
   fill?: boolean;
-}) => {
+}
+
+export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = false }: BlockPreviewProps) => {
   const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const ref = React.useRef<HTMLDivElement>(null);

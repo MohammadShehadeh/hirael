@@ -19,12 +19,14 @@ import {
 
 type Section = 'components' | 'blocks' | 'templates' | 'changelog';
 
-const sectionFor = (pathname: string): Section => {
+const sectionForPath = (pathname: string): Section => {
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
   if (pathname === '/changelog') return 'changelog';
   return 'components';
 };
+
+const isCurrentPath = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
 export interface SidebarRelease {
   slug: string;
@@ -32,12 +34,15 @@ export interface SidebarRelease {
   date: string;
 }
 
+export interface DocsSidebarProps {
+  releases: SidebarRelease[];
+}
+
 /**
  * The docs sidebar column: sticky under the tabs bar and scrolling on its
- * own, so the tree stays put while the article scrolls. Hidden below `md`,
- * where `DocsHeader` opens the same tree in a sheet.
+ * own. Hidden below `md`, where `DocsHeader` opens the same tree in a sheet.
  */
-export const DocsSidebar = ({ releases }: { releases: SidebarRelease[] }) => {
+export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
   return (
     <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-(--docs-sidebar-width) shrink-0 overflow-y-auto border-e border-border md:block">
       <DocsSidebarNav releases={releases} className="p-4" />
@@ -45,19 +50,19 @@ export const DocsSidebar = ({ releases }: { releases: SidebarRelease[] }) => {
   );
 };
 
-/**
- * The tree itself: a search field, then the active section's pages. The
- * desktop column and the mobile sheet both render it. Each section reads
- * like a docs tree: an overview page at the root, then folders whose
- * children hang off a rail, the active one marked on the rail.
- */
-export const DocsSidebarNav = ({ releases, className }: { releases: SidebarRelease[]; className?: string }) => {
+export interface DocsSidebarNavProps {
+  releases: SidebarRelease[];
+  className?: string;
+}
+
+/** The search field and the active section's page tree; rendered by the desktop column and the mobile sheet. */
+export const DocsSidebarNav = ({ releases, className }: DocsSidebarNavProps) => {
   const pathname = usePathname();
   const ref = React.useRef<HTMLElement>(null);
-  const section = sectionFor(pathname);
+  const section = sectionForPath(pathname);
 
   React.useEffect(() => {
-    if (ref.current) revealActiveItem(ref.current);
+    if (ref.current) scrollCurrentPageIntoView(ref.current);
   }, [pathname]);
 
   return (
@@ -73,27 +78,30 @@ export const DocsSidebarNav = ({ releases, className }: { releases: SidebarRelea
   );
 };
 
-const revealActiveItem = (container: HTMLElement) => {
-  const active = container.querySelector<HTMLElement>('[aria-current="page"]');
-  if (!active) return;
-  const scroller = container.parentElement ?? container;
+const scrollCurrentPageIntoView = (tree: HTMLElement) => {
+  const current = tree.querySelector<HTMLElement>('[aria-current="page"]');
+  if (!current) return;
+  const scroller = tree.parentElement ?? tree;
   const box = scroller.getBoundingClientRect();
-  const item = active.getBoundingClientRect();
-  const isHidden = item.top < box.top || item.bottom > box.bottom;
-  if (isHidden) active.scrollIntoView({ block: 'center' });
+  const row = current.getBoundingClientRect();
+  const isOutOfSight = row.top < box.top || row.bottom > box.bottom;
+  if (isOutOfSight) current.scrollIntoView({ block: 'center' });
 };
 
-const isUnder = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
+interface RootPageLinkProps {
+  href: string;
+  isCurrent: boolean;
+  children: React.ReactNode;
+}
 
-/** A root-level page row (the section's overview). */
-const PageLink = ({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) => {
+const RootPageLink = ({ href, isCurrent, children }: RootPageLinkProps) => {
   return (
     <Link
       href={href}
-      aria-current={active ? 'page' : undefined}
+      aria-current={isCurrent ? 'page' : undefined}
       className={cn(
         'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
-        active
+        isCurrent
           ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-start-2 before:w-0.5 before:rounded-full before:bg-foreground'
           : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
       )}
@@ -103,19 +111,15 @@ const PageLink = ({ href, active, children }: { href: string; active: boolean; c
   );
 };
 
-/** A folder: a labelled header with its pages hanging off a rail beneath it. */
-const Folder = ({
-  icon: Icon,
-  label,
-  href,
-  children,
-}: {
+interface FolderProps {
   icon: LucideIcon;
   label: string;
-  /** Folders whose label is itself a page (a category index) link there. */
+  /** Set when the label is itself a page, such as a category index. */
   href?: string;
   children: React.ReactNode;
-}) => {
+}
+
+const Folder = ({ icon: Icon, label, href, children }: FolderProps) => {
   const header = (
     <>
       <Icon className="size-4 text-muted-foreground" aria-hidden />
@@ -138,26 +142,22 @@ const Folder = ({
   );
 };
 
-/** A page inside a folder; the active one carries a marker on the rail. */
-const FolderLink = ({
-  href,
-  active,
-  count,
-  children,
-}: {
+interface FolderPageLinkProps {
   href: string;
-  active: boolean;
+  isCurrent: boolean;
   count?: number;
   children: React.ReactNode;
-}) => {
+}
+
+const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProps) => {
   return (
     <li>
       <Link
         href={href}
-        aria-current={active ? 'page' : undefined}
+        aria-current={isCurrent ? 'page' : undefined}
         className={cn(
           'relative flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm transition-colors',
-          active
+          isCurrent
             ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-start-[calc(0.5rem+1px)] before:w-0.5 before:rounded-full before:bg-foreground'
             : 'text-muted-foreground hover:text-foreground',
         )}
@@ -171,23 +171,27 @@ const FolderLink = ({
   );
 };
 
-const ComponentTree = ({ pathname }: { pathname: string }) => {
+interface SectionTreeProps {
+  pathname: string;
+}
+
+const ComponentTree = ({ pathname }: SectionTreeProps) => {
   return (
     <>
-      <PageLink href="/components" active={pathname === '/components'}>
+      <RootPageLink href="/components" isCurrent={pathname === '/components'}>
         Overview
-      </PageLink>
+      </RootPageLink>
       {COMPONENT_CATEGORY_ORDER.map((category) => {
-        const items = REGISTRY_BY_CATEGORY[category];
-        if (!items.length) return null;
+        const components = REGISTRY_BY_CATEGORY[category];
+        if (!components.length) return null;
         return (
           <Folder key={category} icon={Boxes} label={CATEGORY_LABELS[category]} href={`/components/${category}`}>
-            {items.map((entry) => {
+            {components.map((entry) => {
               const href = entryHref(entry);
               return (
-                <FolderLink key={entry.name} href={href} active={isUnder(pathname, href)}>
+                <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
                   {entry.title}
-                </FolderLink>
+                </FolderPageLink>
               );
             })}
           </Folder>
@@ -197,26 +201,26 @@ const ComponentTree = ({ pathname }: { pathname: string }) => {
   );
 };
 
-const BlockTree = ({ pathname }: { pathname: string }) => {
+const BlockTree = ({ pathname }: SectionTreeProps) => {
   return (
     <>
-      <PageLink href="/blocks" active={pathname === '/blocks'}>
+      <RootPageLink href="/blocks" isCurrent={pathname === '/blocks'}>
         Overview
-      </PageLink>
+      </RootPageLink>
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => (
         <Folder key={group} icon={LayoutTemplate} label={label}>
           {categories.map((category) => {
             const href = `/blocks/${category.slug}`;
-            const blocks = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
+            const blockCount = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
             return (
-              <FolderLink
+              <FolderPageLink
                 key={category.slug}
                 href={href}
-                active={isUnder(pathname, href)}
-                count={blocks.length > 0 ? blocks.length : undefined}
+                isCurrent={isCurrentPath(pathname, href)}
+                count={blockCount > 0 ? blockCount : undefined}
               >
                 {category.title}
-              </FolderLink>
+              </FolderPageLink>
             );
           })}
         </Folder>
@@ -225,19 +229,19 @@ const BlockTree = ({ pathname }: { pathname: string }) => {
   );
 };
 
-const TemplateTree = ({ pathname }: { pathname: string }) => {
+const TemplateTree = ({ pathname }: SectionTreeProps) => {
   return (
     <>
-      <PageLink href="/templates" active={pathname === '/templates'}>
+      <RootPageLink href="/templates" isCurrent={pathname === '/templates'}>
         Overview
-      </PageLink>
+      </RootPageLink>
       <Folder icon={Frame} label="Templates">
         {TEMPLATES.map((entry) => {
           const href = entryHref(entry);
           return (
-            <FolderLink key={entry.name} href={href} active={isUnder(pathname, href)}>
+            <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
               {entry.title}
-            </FolderLink>
+            </FolderPageLink>
           );
         })}
       </Folder>
@@ -245,7 +249,11 @@ const TemplateTree = ({ pathname }: { pathname: string }) => {
   );
 };
 
-const ReleaseTree = ({ releases }: { releases: SidebarRelease[] }) => {
+interface ReleaseTreeProps {
+  releases: SidebarRelease[];
+}
+
+const ReleaseTree = ({ releases }: ReleaseTreeProps) => {
   if (!releases.length) return null;
   return (
     <Folder icon={History} label="Releases">

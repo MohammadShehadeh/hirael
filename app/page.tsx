@@ -62,7 +62,11 @@ export default async function LandingPage() {
   );
 }
 
-function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
+interface HeroProps {
+  latestRelease: ChangelogEntry | null;
+}
+
+function Hero({ latestRelease }: HeroProps) {
   const rise = 'animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
 
   return (
@@ -202,7 +206,12 @@ const CARD_GRID_SQUARES: [number, number][][] = [
  * near-monochrome palette and works in both themes; masked so it glows at the
  * top and fades out.
  */
-function CardGrid({ id, squares }: { id: string; squares: [number, number][] }) {
+interface CardGridProps {
+  id: string;
+  squares: [number, number][];
+}
+
+function CardGrid({ id, squares }: CardGridProps) {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 mask-[linear-gradient(white,transparent)]">
       <div className="absolute inset-0 bg-linear-to-br from-primary/8 to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
@@ -373,8 +382,8 @@ function ClosingCta() {
     <section className="relative isolate overflow-hidden py-24 sm:py-32">
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="hero-aurora" />
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-background to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-background to-transparent" />
       </div>
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">

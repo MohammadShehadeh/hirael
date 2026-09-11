@@ -10,18 +10,16 @@ import { NewBadge } from '@/components/new-badge';
 import { RegistryDemo } from '@/registry/hirael/registry-demos';
 import { CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-export const DemoCard = ({
-  entry,
-  className,
-  compact = false,
-  addedAt,
-}: {
+export interface DemoCardProps {
   entry: RegistryEntryMeta;
   className?: string;
-  /** Cropped preview and a single title row. Used on the landing first screen. */
+  /** Cropped 16:9 preview and a single title row instead of the full card. */
   compact?: boolean;
+  /** Ship date from the changelog; drives the "New" badge in compact cards. */
   addedAt?: string;
-}) => {
+}
+
+export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCardProps) => {
   const href = entryHref(entry);
   const [engaged, setEngaged] = React.useState(false);
   const hoverCapable = useHoverCapable();
@@ -105,7 +103,13 @@ const useHoverCapable = () => {
  * Mounts the demo only once the card is near the viewport, so an index of 60+
  * cards doesn't pull every component chunk on page load.
  */
-const LazyDemo = ({ name, inert, compact }: { name: string; inert: boolean; compact: boolean }) => {
+interface LazyDemoProps {
+  name: string;
+  inert: boolean;
+  compact: boolean;
+}
+
+const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [isNear, setIsNear] = React.useState(false);
 

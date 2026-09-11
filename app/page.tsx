@@ -79,7 +79,7 @@ function Hero({ latestRelease }: HeroProps) {
                   v{latestRelease.version}
                 </span>
               )}
-              <span className="group-hover:underline">{latestRelease.title}</span>
+              <span className="group-hover:underline line-clamp-1 text-start">{latestRelease.title}</span>
               <ArrowRight
                 className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
                 size={16}

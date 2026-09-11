@@ -23,7 +23,7 @@ export interface GithubLinkProps {
 
 export const GithubLink = ({ stars }: GithubLinkProps) => {
   return (
-    <Button variant="ghost" asChild>
+    <Button variant="ghost" size="sm" asChild>
       <a
         href={SITE.githubRepoUrl}
         target="_blank"
@@ -32,7 +32,7 @@ export const GithubLink = ({ stars }: GithubLinkProps) => {
       >
         <GithubIcon />
         {stars ? (
-          <span className="inline-flex items-center gap-1 tabular-nums">
+          <span className="inline-flex items-center gap-1 tabular-nums text-xs">
             <Star className="size-3 fill-current" />
             {formatStars(stars)}
           </span>

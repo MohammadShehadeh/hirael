@@ -95,9 +95,9 @@ const RootPageLink = ({ href, isCurrent, children }: RootPageLinkProps) => {
       href={href}
       aria-current={isCurrent ? 'page' : undefined}
       className={cn(
-        'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+        'relative flex items-center gap-2 px-2 py-1.5 text-sm transition-colors',
         isCurrent
-          ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-inset-s-2 before:w-0.5 before:rounded-full before:bg-foreground'
+          ? 'bg-accent text-foreground before:absolute before:inset-y-0 before:-inset-s-2 before:w-0.5 before:bg-foreground'
           : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
       )}
     >
@@ -120,6 +120,7 @@ const Folder = ({ icon: Icon, label, href, children }: FolderProps) => {
       <span>{label}</span>
     </>
   );
+
   const headerClass = 'flex items-center gap-2 px-2 py-1.5 text-sm text-foreground/80';
 
   return (
@@ -150,9 +151,9 @@ const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProp
         href={href}
         aria-current={isCurrent ? 'page' : undefined}
         className={cn(
-          'relative flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm transition-colors',
+          'relative flex items-center gap-2 px-2.5 py-1.5 text-sm transition-colors',
           isCurrent
-            ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-inset-s-2.25 before:w-0.5 before:rounded-full before:bg-foreground'
+            ? 'bg-accent text-foreground before:absolute before:inset-y-0 before:-inset-s-2.25 before:w-0.5 before:bg-foreground'
             : 'text-muted-foreground hover:text-foreground',
         )}
       >

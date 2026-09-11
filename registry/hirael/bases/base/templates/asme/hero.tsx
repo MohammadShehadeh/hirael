@@ -40,8 +40,6 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
       if (attempt) attempt.catch(() => {});
     };
 
-    // Honor reduced motion: hold the frame visible and loop natively, with no
-    // crossfade animation.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       video.loop = true;
       video.style.opacity = '1';
@@ -96,7 +94,6 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleEnded);
-    // The first `canplay` may have already fired before this effect ran.
     if (video.readyState >= 3) handleCanPlay();
 
     return () => {

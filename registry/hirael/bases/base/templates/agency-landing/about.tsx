@@ -31,7 +31,6 @@ export const About = () => {
         </h2>
 
         <div className="px-5 sm:px-8 lg:px-12">
-          {/* Mobile / tablet: copy, button, then images side by side */}
           <div className="lg:hidden">
             <p className="text-[15px] font-medium leading-[1.6] text-gray-900 sm:text-[17px]">{PARAGRAPH}</p>
             <OrangeButton label="About our studio" className="mt-6" />
@@ -51,7 +50,6 @@ export const About = () => {
             </div>
           </div>
 
-          {/* Desktop: copy and both images on one bottom-aligned baseline */}
           <div className="hidden lg:grid lg:grid-cols-[24%_minmax(0,1fr)_44%] lg:items-end lg:gap-6 xl:gap-8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={SMALL_IMAGE} alt="" className="aspect-[438/346] w-full rounded-2xl object-cover" />

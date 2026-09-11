@@ -134,7 +134,20 @@ export interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
+const readEmbedForcedTheme = (): ThemeMode | undefined => {
+  if (typeof window === 'undefined') return undefined;
+  if (!isEmbedPath(window.location.pathname)) return undefined;
+  const theme = new URLSearchParams(window.location.search).get('theme');
+  return theme === 'light' || theme === 'dark' ? theme : undefined;
+};
+
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  const [forcedTheme, setForcedTheme] = React.useState<ThemeMode | undefined>();
+
+  React.useLayoutEffect(() => {
+    setForcedTheme(readEmbedForcedTheme());
+  }, []);
+
   return (
     <NextThemesProvider
       attribute="class"
@@ -143,6 +156,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       enableSystem={false}
       storageKey={MODE_STORAGE_KEY}
       disableTransitionOnChange
+      forcedTheme={forcedTheme}
     >
       <TokenProvider>{children}</TokenProvider>
     </NextThemesProvider>

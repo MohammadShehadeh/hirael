@@ -15,10 +15,6 @@ import { Team } from './team';
 import { Works } from './works';
 
 const Novael = () => {
-  // The page opens in whatever direction the surrounding document reads, then
-  // follows the in-page switcher. The choice stays on this root — nothing is
-  // written to `<html>`, so the template is safe to drop into a page that
-  // already owns the document's direction.
   const [langOverride, setLangOverride] = React.useState<Lang | null>(null);
   const docIsRtl = useDocumentRtl();
   const lang: Lang = langOverride ?? (docIsRtl ? 'ar' : 'en');

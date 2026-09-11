@@ -7,11 +7,6 @@ const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
   { heading: 'Legal', links: ['Terms', 'Privacy', 'Disclosures', 'Cookies'] },
 ];
 
-/**
- * Dark anchor footer. The off-white page resolves onto a #2B2644 card that
- * echoes the hero and info cards: brand lockup and an inverted Open Wallet
- * pill up top, four link columns, then a legal bar.
- */
 export const FooterSection = () => {
   const year = new Date().getFullYear();
 

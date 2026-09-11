@@ -64,8 +64,6 @@ export const Hero = ({
   scene: Scene;
   setScene: (scene: Scene) => void;
 }) => {
-  // `displayScene` only differs from the selected scene mid-transition, holding
-  // the outgoing image in place until the cross-fade swaps it in.
   const [displayScene, setDisplayScene] = React.useState<Scene | null>(null);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const reduced = useReducedMotion();

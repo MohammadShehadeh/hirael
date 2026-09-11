@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import type { CategoryMeta } from '@/components/block-categories';
 import { BlockViewer } from '@/components/block-viewer';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { InstallBlock } from '@/components/install-block';
 import { TocChips } from '@/components/toc';
 import { BLOCKS_BY_KIND, entryFileLabel, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
@@ -99,8 +98,6 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                   </header>
 
                   <BlockViewer entry={entry} initialHeight={640} />
-
-                  <InstallBlock name={entry.name} variant="inline" />
                 </article>
               );
             })}

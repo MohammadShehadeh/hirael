@@ -1,7 +1,5 @@
-// Self-contained design system for the template. Scoped to the root
-// `[data-slot="portfolio"]` so the palette, fonts and keyframes never leak
-// into the consuming app. Tailwind reads the `--bg`/`--surface`/… channels
-// through `hsl(var(--token))` arbitrary values; the rest is plain CSS.
+// Palette, fonts and keyframes, scoped to the template root. Colors are HSL
+// channels, read in class names as `hsl(var(--token))`.
 export const PORTFOLIO_STYLES = `
 [data-slot="portfolio"] {
   --bg: 0 0% 4%;

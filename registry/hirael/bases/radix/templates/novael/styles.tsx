@@ -1,9 +1,4 @@
 const NOVAEL_CSS = `
-/*
- * Novael runs as an always-dark surface, so one token set covers the page.
- * \`--novael-panel\` is the teal slab the services section sits on — the one
- * place the accent fills a whole band rather than a detail.
- */
 .novael {
   --radius: 0.375rem;
   --background: hsl(210 5% 7%);
@@ -30,11 +25,6 @@ const NOVAEL_CSS = `
   --novael-panel-muted: hsl(0 0% 0% / 55%);
 }
 
-/*
- * Arabic leads with Cairo so RTL copy is set in its own typeface rather than
- * only falling back for the glyphs the Latin faces can't draw. The stack
- * follows the \`lang\` on the template root, so it switches with the toggle.
- */
 .novael {
   --novael-sans: var(--font-novael-sans), ui-sans-serif, system-ui, sans-serif;
   --novael-display: var(--font-novael-display), ui-sans-serif, system-ui, sans-serif;
@@ -51,10 +41,6 @@ const NOVAEL_CSS = `
 }
 `;
 
-/**
- * Scoped palette and type stacks for the template, injected alongside it so
- * the page is self-contained — nothing to add to `globals.css`.
- */
 export const NovaelStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: NOVAEL_CSS }} />;
 };

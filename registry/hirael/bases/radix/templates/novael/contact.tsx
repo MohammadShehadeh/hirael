@@ -7,7 +7,6 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
-// Repeated across the three footer columns.
 const FOOTER_HEADING = 'mb-4 text-base font-semibold text-foreground';
 
 const CONTACT = {

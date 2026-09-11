@@ -10,12 +10,7 @@ export const SECTION_IDS = ['intro', 'services', 'works', 'contact'] as const;
 
 export type SectionId = (typeof SECTION_IDS)[number];
 
-/**
- * Placeholder body copy. Every paragraph in the template reads from here, so
- * the filler is easy to spot and swap for real writing in one pass. The Arabic
- * side is Arabic filler rather than the Latin text, so RTL still shows real
- * glyphs, line-breaking, and the Cairo face.
- */
+/** Placeholder copy. Every paragraph reads from here, so swap in real writing in one place. */
 export const LOREM: Record<Lang, { short: string; medium: string; long: string }> = {
   en: {
     short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -31,11 +26,6 @@ export const LOREM: Record<Lang, { short: string; medium: string; long: string }
   },
 };
 
-/**
- * Reading direction of the surrounding document, so the template opens in
- * Arabic when the page is already RTL. Once the visitor uses the in-page
- * switcher their choice wins — nothing is written back to `<html>`.
- */
 export const useDocumentRtl = () => {
   const subscribe = React.useCallback(() => () => {}, []);
   return React.useSyncExternalStore(
@@ -45,7 +35,6 @@ export const useDocumentRtl = () => {
   );
 };
 
-/** The section currently crossing the middle of the viewport. */
 export const useActiveSection = (ids: readonly string[]) => {
   const [active, setActive] = React.useState<string>(ids[0]);
 
@@ -69,7 +58,6 @@ export const useActiveSection = (ids: readonly string[]) => {
   return active;
 };
 
-/** Fades and lifts its children into view the first time they are scrolled to. */
 export const Reveal = ({
   className,
   delay = 0,
@@ -116,7 +104,6 @@ export const Reveal = ({
   );
 };
 
-/** Counts up from zero once it is scrolled into view. */
 export const CountUp = ({
   to,
   suffix = '',
@@ -175,10 +162,6 @@ export const CountUp = ({
   );
 };
 
-/**
- * Centered eyebrow + heading with a hairline beneath it. `tone="panel"` sits
- * on the teal services slab, where the same rule has to read against color.
- */
 export const SectionHeader = ({
   pretitle,
   title,
@@ -199,7 +182,6 @@ export const SectionHeader = ({
       <p
         data-slot="novael-display"
         className={cn(
-          // Arabic has no case and breaks up under Latin-style tracking.
           'text-sm font-semibold',
           lang === 'en' ? 'uppercase tracking-[0.3em]' : 'tracking-normal',
           onPanel ? 'text-(--novael-panel-muted)' : 'text-primary',

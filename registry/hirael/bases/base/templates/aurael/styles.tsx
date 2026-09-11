@@ -22,11 +22,6 @@ const AURAEL_CSS = `
   --ring: hsl(28 88% 46%);
 }
 
-/*
- * Night is a real theme, not a filter: the hero's day / night control swaps
- * \`data-scene\` on the template root, which switches the whole token set
- * below. Every section reads from the tokens, so the page turns with it.
- */
 .aurael[data-scene='night'] {
   --background: hsl(220 9% 7%);
   --foreground: hsl(0 0% 91%);
@@ -49,11 +44,6 @@ const AURAEL_CSS = `
   --ring: hsl(36 92% 62%);
 }
 
-/*
- * Arabic leads with Cairo so RTL copy is set in its own typeface rather than
- * only falling back for the glyphs the Latin faces can't draw. The stack
- * follows the \`lang\` on the template root, so it switches with the toggle.
- */
 .aurael {
   --aurael-sans: var(--font-aurael-sans), ui-sans-serif, system-ui, sans-serif;
   --aurael-display: var(--font-aurael-display), ui-sans-serif, system-ui, sans-serif;
@@ -70,10 +60,6 @@ const AURAEL_CSS = `
 }
 `;
 
-/**
- * Scoped palette and type stacks for the template, injected alongside it so
- * the page is self-contained — nothing to add to `globals.css`.
- */
 export const AuraelStyles = () => {
   return <style dangerouslySetInnerHTML={{ __html: AURAEL_CSS }} />;
 };

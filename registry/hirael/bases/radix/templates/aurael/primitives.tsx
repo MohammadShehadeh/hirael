@@ -11,19 +11,12 @@ export type Scene = 'morning' | 'night';
 
 export const SECTION_IDS = ['how-it-works', 'cases', 'about', 'careers', 'resources', 'customers'] as const;
 
-/** The same site at both times of day — the hero cross-fades between them and
- * the cases section shows the pair side by side. */
 export const SCENE_IMAGE: Record<Scene, string> = {
   morning: '/media/templates/aurael/morning.jpg',
   night: '/media/templates/aurael/night.jpg',
 };
 
-/**
- * Placeholder body copy. Every paragraph in the template reads from here, so
- * the filler is easy to spot and swap for real writing in one pass. The Arabic
- * side is Arabic filler rather than the Latin text, so RTL still shows real
- * glyphs, line-breaking, and the Cairo face.
- */
+/** Placeholder copy. Every paragraph reads from here, so swap in real writing in one place. */
 export const LOREM: Record<Lang, { short: string; medium: string; long: string }> = {
   en: {
     short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -39,17 +32,26 @@ export const LOREM: Record<Lang, { short: string; medium: string; long: string }
   },
 };
 
-/**
- * Reading direction of the surrounding document, so the template opens in
- * Arabic when the page is already RTL. Once the visitor uses the in-page
- * switcher their choice wins — nothing is written back to `<html>`.
- */
 export const useDocumentRtl = () => {
   const subscribe = React.useCallback(() => () => {}, []);
   return React.useSyncExternalStore(
     subscribe,
     () => document.documentElement.getAttribute('dir') === 'rtl',
     () => false,
+  );
+};
+
+const subscribeToDocumentClass = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  return () => observer.disconnect();
+};
+
+export const useDocumentScene = () => {
+  return React.useSyncExternalStore<Scene>(
+    subscribeToDocumentClass,
+    () => (document.documentElement.classList.contains('light') ? 'morning' : 'night'),
+    () => 'night',
   );
 };
 
@@ -76,10 +78,6 @@ export const Reveal = ({
   );
 };
 
-/**
- * The page's structural motif: a hairline-ruled band with a sticky meta rail
- * (index · label · note) on the start side and content on the end side.
- */
 export const Band = ({
   id,
   index,

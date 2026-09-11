@@ -19,7 +19,7 @@ const MarqueeDemo = () => {
   return (
     <div className="grid w-full min-w-0 max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Pause on hover · edge fade',
             ar: 'إيقاف عند المرور · تلاشٍ عند الحواف',
@@ -37,9 +37,7 @@ const MarqueeDemo = () => {
       </div>
 
       <div className="grid min-w-0 gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Reverse direction', ar: 'اتجاه معكوس' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Reverse direction', ar: 'اتجاه معكوس' })}</p>
         <div className="relative w-full min-w-0 overflow-hidden">
           <Marquee reverse pauseOnHover duration={28} className="py-1">
             {brands.map((b) => (

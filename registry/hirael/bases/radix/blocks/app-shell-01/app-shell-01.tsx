@@ -281,9 +281,7 @@ const AppShell01 = () => {
                 </span>
                 <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
-                  <span className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    plinth labs · pro
-                  </span>
+                  <span className="truncate text-xs uppercase text-muted-foreground">plinth labs · pro</span>
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -351,9 +349,7 @@ const AppShell01 = () => {
                     </span>
                     <div className="grid min-w-0 flex-1 text-start leading-tight">
                       <span className="truncate text-xs font-medium">Mohammad Shehadeh</span>
-                      <span className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                        admin · plinth labs
-                      </span>
+                      <span className="truncate text-xs uppercase text-muted-foreground">admin · plinth labs</span>
                     </div>
                     <ChevronsUpDown className="ms-auto size-3.5 shrink-0 text-muted-foreground" />
                   </SidebarMenuButton>
@@ -392,7 +388,7 @@ const AppShell01 = () => {
           <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
           <nav
             aria-label="Breadcrumb"
-            className="hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex"
+            className="hidden items-center gap-1.5 text-xs uppercase text-muted-foreground sm:flex"
           >
             <span>Workspace</span>
             <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
@@ -454,9 +450,7 @@ const AppShell01 = () => {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {METRICS.map((m) => (
               <Card key={m.label} className="gap-1 p-3">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {m.label}
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
                 <span className="text-lg font-semibold tabular-nums">{m.value}</span>
                 <span
                   dir="ltr"
@@ -471,10 +465,7 @@ const AppShell01 = () => {
 
           <Card className="gap-0 overflow-hidden p-0">
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-              <span
-                aria-live="polite"
-                className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-              >
+              <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
                 recent accounts
                 {query.trim() && (
                   <span className="ms-2 text-foreground">
@@ -531,7 +522,7 @@ const AppShell01 = () => {
                             type="button"
                             onClick={() => toggleSort(column.key)}
                             className={cn(
-                              'flex w-full items-center gap-1 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:outline-none',
+                              'flex w-full items-center gap-1 px-4 py-2 text-xs uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:outline-none',
                               column.align === 'end' && 'justify-end',
                               isSorted ? 'text-foreground' : 'text-muted-foreground',
                             )}
@@ -580,7 +571,7 @@ const AppShell01 = () => {
                           {usd.format(r.mrr)}
                         </TableCell>
                         <TableCell className="px-4 py-2.5">
-                          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]">
+                          <span className="inline-flex items-center gap-1.5 text-xs uppercase">
                             <span aria-hidden className={cn('size-1.5 rounded-full', tone.dot)} />
                             <span className={tone.text}>{r.status}</span>
                           </span>

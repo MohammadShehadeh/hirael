@@ -41,7 +41,7 @@ const Faq02 = () => {
     <section className="bg-background py-20 md:py-28">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-12 px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">frequently asked</span>
+          <span className="text-xs uppercase text-foreground">frequently asked</span>
           <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Everything you&apos;d ask in the first ten minutes.
           </h2>
@@ -63,9 +63,7 @@ const Faq02 = () => {
                 <AccordionItem key={f.q} value={`item-${ci}-${i}`} className="px-1">
                   <AccordionTrigger>
                     <span className="flex items-baseline gap-3">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                        Q{ci * 3 + i + 1}
-                      </span>
+                      <span className="text-xs uppercase text-muted-foreground">Q{ci * 3 + i + 1}</span>
                       <span>{f.q}</span>
                     </span>
                   </AccordionTrigger>

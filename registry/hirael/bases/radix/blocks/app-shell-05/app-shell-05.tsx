@@ -109,9 +109,7 @@ const AppSidebar = () => {
               </span>
               <div className="grid flex-1 text-start leading-tight">
                 <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
-                <span className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  workspace
-                </span>
+                <span className="truncate text-xs uppercase text-muted-foreground">workspace</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -253,9 +251,7 @@ const AppShell05 = () => {
               { label: 'This week', value: '8' },
             ].map((item) => (
               <div key={item.label} className="rounded-lg border border-border bg-card p-4">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {item.label}
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">{item.label}</span>
                 <p className="mt-1 text-2xl font-semibold tabular-nums">{item.value}</p>
               </div>
             ))}

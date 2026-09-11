@@ -178,9 +178,7 @@ const Hero09 = () => {
             </div>
 
             <div data-slot="hero-steps" className="mt-4 flex flex-col items-center gap-3.5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                Every step in one graph
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">Every step in one graph</span>
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
                 {STEP_TYPES.map((step) => (
                   <span
@@ -211,9 +209,7 @@ const Hero09 = () => {
           {STATS.map((stat) => (
             <div key={stat.label}>
               <div className="font-serif text-2xl font-medium leading-tight text-primary md:text-3xl">{stat.value}</div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                {stat.label}
-              </div>
+              <div className="text-xs uppercase text-muted-foreground">{stat.label}</div>
             </div>
           ))}
         </div>

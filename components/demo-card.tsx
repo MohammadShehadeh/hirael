@@ -52,9 +52,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
             {compact && <NewBadge addedAt={addedAt} />}
           </h3>
           {!compact && (
-            <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-              {CATEGORY_LABELS[entry.category]}
-            </span>
+            <span className="shrink-0 text-xs uppercase text-muted-foreground">{CATEGORY_LABELS[entry.category]}</span>
           )}
         </div>
         {!compact && (

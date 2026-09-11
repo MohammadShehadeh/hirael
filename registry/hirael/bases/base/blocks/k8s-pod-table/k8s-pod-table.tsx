@@ -58,10 +58,7 @@ const K8sPodTableHead = ({ className, ...props }: React.ComponentProps<'th'>) =>
   return (
     <th
       data-slot="k8s-pod-table-head"
-      className={cn(
-        'h-9 px-3 text-start align-middle whitespace-nowrap font-mono text-[10px] font-medium uppercase tracking-[0.1em]',
-        className,
-      )}
+      className={cn('h-9 px-3 text-start align-middle whitespace-nowrap text-xs font-medium uppercase', className)}
       {...props}
     />
   );

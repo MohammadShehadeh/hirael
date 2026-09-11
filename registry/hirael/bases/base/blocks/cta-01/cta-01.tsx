@@ -26,7 +26,7 @@ const Cta01 = () => {
 
           <div className="relative grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:items-center lg:gap-16 lg:p-14">
             <div className="flex flex-col gap-5 lg:col-span-7">
-              <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+              <span className="inline-flex w-fit items-center gap-2 text-xs uppercase text-foreground">
                 <span className="size-1 rounded-full bg-foreground" />
                 Get started
               </span>
@@ -58,9 +58,7 @@ const Cta01 = () => {
               >
                 Browse blocks
               </Button>
-              <p className="text-end font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                No runtime dependency
-              </p>
+              <p className="text-end text-xs uppercase text-muted-foreground">No runtime dependency</p>
             </div>
           </div>
         </div>

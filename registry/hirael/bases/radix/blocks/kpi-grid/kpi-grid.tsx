@@ -30,11 +30,7 @@ type KpiCardLabelProps = React.ComponentProps<'p'>;
 
 const KpiCardLabel = ({ className, ...props }: KpiCardLabelProps) => {
   return (
-    <p
-      data-slot="kpi-card-label"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
-      {...props}
-    />
+    <p data-slot="kpi-card-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 

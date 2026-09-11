@@ -192,10 +192,7 @@ const Contact01 = () => {
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                       <Field>
                         <FieldLabel htmlFor="contact-company">
-                          Company{' '}
-                          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                            optional
-                          </span>
+                          Company <span className="text-xs uppercase text-muted-foreground">optional</span>
                         </FieldLabel>
                         <Input
                           id="contact-company"
@@ -276,9 +273,7 @@ const Contact01 = () => {
                     <Separator />
 
                     <div className="flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                        Routed to the right team automatically.
-                      </p>
+                      <p className="text-xs uppercase text-muted-foreground">Routed to the right team automatically.</p>
                       <Button type="submit" size="lg" disabled={status === 'sending'} className="group sm:w-fit">
                         {status === 'sending' ? (
                           <>
@@ -302,9 +297,7 @@ const Contact01 = () => {
           <aside className="flex flex-col gap-6 lg:col-span-5">
             <Card>
               <CardHeader>
-                <CardTitle className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  other ways to reach us
-                </CardTitle>
+                <CardTitle className="text-xs uppercase text-muted-foreground">other ways to reach us</CardTitle>
               </CardHeader>
               <CardContent className="px-0">
                 <ul className="flex flex-col">
@@ -321,9 +314,7 @@ const Contact01 = () => {
                               <Icon className="size-3.5" />
                             </span>
                             <span className="flex flex-col">
-                              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                                {c.label}
-                              </span>
+                              <span className="text-xs uppercase text-muted-foreground">{c.label}</span>
                               <span className="text-sm font-medium text-foreground">{c.value}</span>
                             </span>
                           </span>
@@ -343,9 +334,7 @@ const Contact01 = () => {
                     <MapPin className="size-3.5" />
                   </span>
                   <div className="flex flex-col gap-1">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                      Remote, mostly
-                    </p>
+                    <p className="text-xs uppercase text-muted-foreground">Remote, mostly</p>
                     <p className="text-sm text-foreground">Distributed across UTC-5 → UTC+3.</p>
                     <p className="text-sm text-muted-foreground">Office hours 09:00–17:00 local time.</p>
                   </div>

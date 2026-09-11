@@ -86,7 +86,7 @@ const DiffViewerDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Config change, unified', ar: 'تغيير الإعدادات، موحّد' })}
         </p>
         <DiffViewer
@@ -111,7 +111,7 @@ const DiffViewerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Split, controlled mode', ar: 'مقسّم، وضع متحكّم به' })}
         </p>
         <DiffViewer

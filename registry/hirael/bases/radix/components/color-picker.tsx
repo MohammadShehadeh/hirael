@@ -322,7 +322,7 @@ const ColorPickerTrigger = ({
         aria-haspopup="dialog"
         aria-expanded={ctx.open}
         className={cn(
-          'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums uppercase outline-none transition-colors',
+          'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums uppercase outline-none transition-colors',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
@@ -565,7 +565,7 @@ const ColorPickerFormatTabs = ({
     >
       <TabsList className="w-full">
         {formats.map((f) => (
-          <TabsTrigger key={f} value={f} className="font-mono text-[10px] uppercase tracking-[0.12em]">
+          <TabsTrigger key={f} value={f} className="text-xs uppercase">
             {f}
           </TabsTrigger>
         ))}
@@ -623,7 +623,7 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
             if (e.key === 'Enter') commitHexDraft();
           }}
           aria-label="Hex color"
-          className="h-8 font-mono text-xs tabular-nums uppercase"
+          className="h-8 text-xs tabular-nums uppercase"
         />
       </div>
     );
@@ -709,8 +709,7 @@ const ColorPickerEyedropper = ({
           const next = res.sRGBHex.toLowerCase();
           ctx.setHex(next);
           ctx.pushSwatch(next);
-        } catch {
-        }
+        } catch {}
       }}
       className={cn('shrink-0', className)}
     >

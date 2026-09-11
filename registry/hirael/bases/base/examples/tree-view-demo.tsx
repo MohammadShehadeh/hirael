@@ -13,7 +13,7 @@ const TreeViewDemo = () => {
   return (
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'File explorer · selected', ar: 'مستعرض الملفات · المحدد' })}{' '}
           <span className="text-foreground">{selected}</span>
         </p>
@@ -37,9 +37,7 @@ const TreeViewDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Custom icons', ar: 'أيقونات مخصصة' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Custom icons', ar: 'أيقونات مخصصة' })}</p>
         <div className="rounded-md border border-border bg-card/40 p-2">
           <TreeView defaultValue="inbox">
             <TreeItem value="mail" label={t({ en: 'Mail', ar: 'البريد' })} icon={null} defaultExpanded>

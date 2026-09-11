@@ -26,7 +26,7 @@ export const ComponentCategoryPage = ({ category }: ComponentCategoryPageProps) 
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {COMPONENT_CATEGORY_DESCRIPTIONS[category]}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {items.length} component{items.length === 1 ? '' : 's'}
         </p>
       </header>

@@ -45,7 +45,7 @@ const MultiSelectDemo = () => {
           <MultiSelectTrigger id="ms-basic" placeholder={t({ en: 'Pick frameworks', ar: 'اختر أطر العمل' })} />
           <MultiSelectContent />
         </MultiSelect>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: `${basic.length} of ${FRAMEWORKS.length} selected`,
             ar: `${basic.length} من ${FRAMEWORKS.length} محدد`,
@@ -65,9 +65,7 @@ const MultiSelectDemo = () => {
             emptyMessage={t({ en: 'No matches.', ar: 'لا نتائج.' })}
           />
         </MultiSelect>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          value = [{composed.map((v) => `"${v}"`).join(', ')}]
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">value = [{composed.map((v) => `"${v}"`).join(', ')}]</p>
       </Field>
     </FieldGroup>
   );

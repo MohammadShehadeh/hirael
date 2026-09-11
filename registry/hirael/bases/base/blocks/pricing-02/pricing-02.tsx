@@ -81,7 +81,7 @@ const Pricing02 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div className="flex flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">compare plans</span>
+          <span className="text-xs uppercase text-muted-foreground">compare plans</span>
           <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Every feature, side by side.
           </h2>
@@ -95,7 +95,7 @@ const Pricing02 = () => {
             <TableHeader className="bg-card">
               <TableRow className="border-b border-border hover:bg-transparent">
                 <TableHead className="w-2/5 px-5 pt-6 pb-5 align-top text-start">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">plan</span>
+                  <span className="text-xs uppercase text-muted-foreground">plan</span>
                 </TableHead>
                 {TIERS.map((t) => (
                   <TableHead
@@ -127,9 +127,7 @@ const Pricing02 = () => {
             <TableBody>
               {ROWS.map((r) => (
                 <TableRow key={r.feature} className="border-b border-border last:border-b-0 hover:bg-transparent">
-                  <TableCell className="px-5 py-4 font-mono text-xs uppercase tracking-[0.08em] text-foreground">
-                    {r.feature}
-                  </TableCell>
+                  <TableCell className="px-5 py-4 text-xs uppercase text-foreground">{r.feature}</TableCell>
                   {TIERS.map((t) => (
                     <TableCell key={t.key} className={cn('px-5 py-4', t.featured && 'bg-primary/5')}>
                       <CellContent value={r[t.key]} />

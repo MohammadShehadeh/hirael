@@ -9,7 +9,7 @@ const CopyButtonDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Icon only · ghost & outline',
             ar: 'أيقونة فقط · شفاف ومحدّد',
@@ -23,16 +23,14 @@ const CopyButtonDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'With label', ar: 'مع نص' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'With label', ar: 'مع نص' })}</p>
         <CopyButton value="hirael@latest" variant="outline" className="w-fit">
           {t({ en: 'Copy version', ar: 'نسخ الإصدار' })}
         </CopyButton>
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'In a code snippet', ar: 'ضمن مقتطف شيفرة' })}
         </p>
         <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">

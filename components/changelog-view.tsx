@@ -20,11 +20,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
           title="Release notes"
           blurb="Every Hirael release, newest first, with the components and blocks it added and the fixes it shipped."
         >
-          {lastUpdated ? (
-            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              Updated {lastUpdated}
-            </p>
-          ) : null}
+          {lastUpdated ? <p className="text-xs uppercase text-muted-foreground">Updated {lastUpdated}</p> : null}
         </PageHeader>
       </div>
 
@@ -39,11 +35,11 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
               className="glass-panel-lit relative scroll-mt-24 rounded-2xl border border-border bg-card/40 p-6 backdrop-blur-sm transition-colors hover:bg-card/60 sm:p-8"
             >
               <div className="flex flex-wrap items-center gap-3">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                <p className="text-xs uppercase text-muted-foreground">
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
                 {entry.slug === latestSlug ? (
-                  <Badge variant="outline" className="gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em]">
+                  <Badge variant="outline" className="gap-1.5 text-xs uppercase">
                     <span className="state-dot" />
                     Latest
                   </Badge>

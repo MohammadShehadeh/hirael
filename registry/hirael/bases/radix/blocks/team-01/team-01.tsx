@@ -36,11 +36,7 @@ type TeamEyebrowProps = React.ComponentProps<'span'>;
 
 const TeamEyebrow = ({ className, ...props }: TeamEyebrowProps) => {
   return (
-    <span
-      data-slot="team-eyebrow"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
-      {...props}
-    />
+    <span data-slot="team-eyebrow" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 
@@ -140,11 +136,7 @@ type TeamMemberRoleProps = React.ComponentProps<'p'>;
 
 const TeamMemberRole = ({ className, ...props }: TeamMemberRoleProps) => {
   return (
-    <p
-      data-slot="team-member-role"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
-      {...props}
-    />
+    <p data-slot="team-member-role" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 

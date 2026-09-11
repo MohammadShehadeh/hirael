@@ -121,7 +121,7 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
         )}
       >
         {icon}
-        <h3 className="font-mono text-sm font-medium uppercase tracking-wider">{title}</h3>
+        <h3 className="text-sm font-medium uppercase tracking-wider">{title}</h3>
       </div>
       <div data-slot="contact-box-body" className="flex items-center gap-x-2 p-4 py-12">
         {children}

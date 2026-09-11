@@ -80,10 +80,7 @@ interface FooterColumnProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
 const FooterColumn = ({ title, delay = 0, className, children, ...props }: FooterColumnProps) => {
   return (
     <Reveal data-slot="footer-column" delay={delay} className={cn('flex flex-col gap-4', className)} {...props}>
-      <h4
-        data-slot="footer-column-title"
-        className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
-      >
+      <h4 data-slot="footer-column-title" className="text-xs uppercase text-muted-foreground">
         {title}
       </h4>
       {children}
@@ -272,9 +269,7 @@ const Footer04 = () => {
 
             <FooterColumn title="Subscribe for updates" delay={0.3} className="col-span-2 lg:col-span-1">
               <FooterSubscribe />
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Preview only, nothing is submitted.
-              </p>
+              <p className="text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</p>
             </FooterColumn>
           </div>
 

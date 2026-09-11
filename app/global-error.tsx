@@ -42,7 +42,7 @@ export default function GlobalError() {
             <LogoMark className="relative size-8" />
 
             <div className="relative flex flex-col items-center gap-3">
-              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="text-xs uppercase text-muted-foreground">
                 Something went wrong
               </span>
               <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">This page failed to load.</h1>

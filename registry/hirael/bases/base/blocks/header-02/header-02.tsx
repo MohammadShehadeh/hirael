@@ -291,9 +291,7 @@ const Header02 = () => {
       </Header>
 
       <div className="container flex flex-col gap-6 py-20 md:py-28">
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          Scroll to see the bar shrink
-        </span>
+        <span className="text-xs uppercase text-muted-foreground">Scroll to see the bar shrink</span>
         <h1 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl">
           A nav that gets out of the way once you start reading.
         </h1>

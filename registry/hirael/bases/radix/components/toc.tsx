@@ -174,13 +174,7 @@ const TableOfContents = ({
 type TableOfContentsLabelProps = React.ComponentProps<'p'>;
 
 const TableOfContentsLabel = ({ className, ...props }: TableOfContentsLabelProps) => {
-  return (
-    <p
-      data-slot="toc-label"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground', className)}
-      {...props}
-    />
-  );
+  return <p data-slot="toc-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />;
 };
 
 interface TableOfContentsListProps extends Omit<React.ComponentProps<'ul'>, 'children'> {

@@ -39,7 +39,7 @@ const InspectorPanelTitle = ({ className, ...props }: InspectorPanelTitleProps) 
   return (
     <p
       data-slot="inspector-panel-title"
-      className={cn('font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground', className)}
+      className={cn('text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );

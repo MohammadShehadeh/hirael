@@ -28,7 +28,7 @@ const YearPickerDemo = () => {
           <YearPickerTrigger id="yp-founded" placeholder={t({ en: 'Year', ar: 'السنة' })} />
           <YearPickerContent />
         </YearPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">value = {year ?? '-'}</p>
+        <p className="text-xs text-muted-foreground uppercase">value = {year ?? '-'}</p>
       </Field>
 
       <Field className="gap-2">
@@ -37,7 +37,7 @@ const YearPickerDemo = () => {
           <YearPickerTrigger id="yp-range" placeholder={t({ en: 'Pick a range', ar: 'اختر نطاقًا' })} />
           <YearPickerContent />
         </YearPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <p className="text-xs text-muted-foreground uppercase">
           {range?.from ?? '-'} → {range?.to ?? '…'}
         </p>
       </Field>

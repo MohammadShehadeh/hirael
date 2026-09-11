@@ -39,9 +39,7 @@ export const ItemCards = ({ items, className }: ItemCardsProps) => {
             />
           </span>
 
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {collectionLabel(entry)}
-          </span>
+          <span className="text-xs uppercase text-muted-foreground">{collectionLabel(entry)}</span>
 
           <span className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">{entry.description}</span>
         </Link>

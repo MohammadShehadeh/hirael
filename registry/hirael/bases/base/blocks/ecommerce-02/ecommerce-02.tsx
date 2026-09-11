@@ -96,12 +96,12 @@ const Ecommerce02 = () => {
       <div className="container flex w-full flex-col gap-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="flex flex-col gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">cart</span>
+            <span className="text-xs uppercase text-foreground">cart</span>
             <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
               Almost yours.
             </h2>
           </div>
-          <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="text-xs tabular-nums uppercase text-muted-foreground">
             {count} item{count === 1 ? '' : 's'}
           </span>
         </div>
@@ -134,9 +134,7 @@ const Ecommerce02 = () => {
 
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <h3 className="truncate text-sm font-medium tracking-[-0.01em]">{item.name}</h3>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                      {item.variant}
-                    </span>
+                    <span className="text-xs uppercase text-muted-foreground">{item.variant}</span>
                     <div className="mt-2 inline-flex w-fit items-center rounded-sm border border-border">
                       <Button
                         variant="ghost"
@@ -184,9 +182,7 @@ const Ecommerce02 = () => {
 
             <Card className="h-fit lg:sticky lg:top-6">
               <CardHeader>
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  order summary
-                </CardDescription>
+                <CardDescription className="text-xs uppercase">order summary</CardDescription>
                 <CardTitle className="sr-only">Order summary</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
@@ -197,7 +193,7 @@ const Ecommerce02 = () => {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Shipping</span>
                   {shipping === 0 ? (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-success">Free</span>
+                    <span className="text-xs uppercase text-success">Free</span>
                   ) : (
                     <span className="font-mono tabular-nums">{usd(shipping)}</span>
                   )}
@@ -221,7 +217,7 @@ const Ecommerce02 = () => {
                   </div>
                 )}
                 {shipping > 0 && (
-                  <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <p className="text-xs uppercase text-muted-foreground">
                     {usd(FREE_SHIPPING_OVER - (subtotal - discount))} away from free shipping
                   </p>
                 )}
@@ -248,7 +244,7 @@ const Ecommerce02 = () => {
                         placeholder="Promo code"
                         aria-label="Promo code"
                         aria-invalid={promoError}
-                        className="font-mono text-xs uppercase"
+                        className="text-xs uppercase"
                       />
                       <InputGroupAddon align="inline-end">
                         <InputGroupButton size="sm" onClick={applyPromo}>
@@ -259,9 +255,7 @@ const Ecommerce02 = () => {
                     {promoError ? (
                       <p className="text-xs text-destructive">That code isn&apos;t recognized. Try {PROMO_CODE}.</p>
                     ) : (
-                      <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                        Hint · {PROMO_CODE} takes 10% off
-                      </p>
+                      <p className="text-xs uppercase text-muted-foreground">Hint · {PROMO_CODE} takes 10% off</p>
                     )}
                   </div>
                 )}
@@ -270,7 +264,7 @@ const Ecommerce02 = () => {
                   Checkout · {usd(total)}
                   <ArrowRight className="size-4 rtl:rotate-180" />
                 </Button>
-                <p className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                <p className="text-center text-xs uppercase text-muted-foreground">
                   Free returns · 2-year warranty · secure checkout
                 </p>
               </CardContent>

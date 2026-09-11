@@ -46,7 +46,7 @@ const Feature03 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div className="flex max-w-2xl flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">why hirael</span>
+          <span className="text-xs uppercase text-muted-foreground">why hirael</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             One system, every surface.
           </h2>
@@ -69,9 +69,7 @@ const Feature03 = () => {
               }}
             />
             <div className="relative z-10 flex flex-col gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                source you own
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">source you own</span>
               <h3 className="max-w-md text-2xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-3xl">
                 Installed as plain TSX, never a black box.
               </h3>
@@ -86,9 +84,7 @@ const Feature03 = () => {
               className="relative z-10 mt-8 overflow-hidden rounded-md border border-border bg-background"
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  components/ui
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">components/ui</span>
                 <div className="flex gap-1">
                   <span className="size-1.5 rounded-full bg-border" />
                   <span className="size-1.5 rounded-full bg-border" />

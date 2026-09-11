@@ -285,9 +285,7 @@ const FileDropzoneZone = ({
         <>
           <UploadCloud className="size-6 text-muted-foreground" aria-hidden />
           <p className="text-sm text-foreground">{headline}</p>
-          {resolvedSubline && (
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{resolvedSubline}</p>
-          )}
+          {resolvedSubline && <p className="text-xs uppercase text-muted-foreground">{resolvedSubline}</p>}
         </>
       )}
     </div>
@@ -320,9 +318,7 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
             <span className="min-w-0 flex-1 truncate" title={file.name}>
               {file.name}
             </span>
-            <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-              {formatBytes(file.size)}
-            </span>
+            <span className="shrink-0 text-xs uppercase text-muted-foreground">{formatBytes(file.size)}</span>
             {!ctx.disabled && (
               <Button
                 type="button"

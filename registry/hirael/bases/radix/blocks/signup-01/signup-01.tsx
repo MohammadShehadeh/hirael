@@ -128,10 +128,7 @@ const Signup01 = () => {
           <form noValidate className="p-8" onSubmit={onSubmit}>
             <FieldGroup className="gap-5">
               <Field className="gap-1.5" data-invalid={Boolean(errors.name) || undefined}>
-                <FieldLabel
-                  htmlFor="signup01-name"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
+                <FieldLabel htmlFor="signup01-name" className="text-xs uppercase text-muted-foreground">
                   Name
                 </FieldLabel>
                 <Input
@@ -149,10 +146,7 @@ const Signup01 = () => {
               </Field>
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.email) || undefined}>
-                <FieldLabel
-                  htmlFor="signup01-email"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
+                <FieldLabel htmlFor="signup01-email" className="text-xs uppercase text-muted-foreground">
                   Email
                 </FieldLabel>
                 <Input
@@ -171,10 +165,7 @@ const Signup01 = () => {
               </Field>
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.password) || undefined}>
-                <FieldLabel
-                  htmlFor="signup01-password"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
+                <FieldLabel htmlFor="signup01-password" className="text-xs uppercase text-muted-foreground">
                   Password
                 </FieldLabel>
                 <PasswordInput id="signup01-password" value={password} onValueChange={setPassword}>
@@ -262,7 +253,7 @@ const Signup01 = () => {
           </div>
         </div>
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">
           Free forever tier · No credit card required
         </p>
       </div>

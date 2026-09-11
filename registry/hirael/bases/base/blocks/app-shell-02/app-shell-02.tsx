@@ -335,12 +335,7 @@ const FieldRow = ({
 
       {field.kind === 'toggle' && (
         <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              'font-mono text-[11px] uppercase tracking-[0.08em]',
-              toggles[field.id] ? 'text-success' : 'text-muted-foreground',
-            )}
-          >
+          <span className={cn('text-xs uppercase', toggles[field.id] ? 'text-success' : 'text-muted-foreground')}>
             {toggles[field.id] ? field.onLabel : field.offLabel}
           </span>
           <Switch
@@ -494,9 +489,7 @@ const AppShell02 = () => {
 
       <div className="container w-full py-6 sm:py-8">
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            workspace · plinth labs
-          </span>
+          <span className="text-xs uppercase text-muted-foreground">workspace · plinth labs</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Settings</h1>
           <p className="text-sm text-muted-foreground">
             Manage your account, security, and workspace integrations. Changes save as you make them.
@@ -609,7 +602,7 @@ const AppShell02 = () => {
                       <span
                         aria-live="polite"
                         className={cn(
-                          'font-mono text-[10px] uppercase tracking-[0.1em]',
+                          'text-xs uppercase',
                           saveState === 'saved' ? 'text-success' : 'text-muted-foreground',
                         )}
                       >

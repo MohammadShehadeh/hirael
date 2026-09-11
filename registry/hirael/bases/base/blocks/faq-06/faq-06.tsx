@@ -57,7 +57,7 @@ const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) =
         data-slot="faq-badge"
         variant="outline"
         className={cn(
-          'rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm',
+          'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
           className,
         )}
         {...props}

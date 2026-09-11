@@ -140,12 +140,7 @@ const DateCalendar = ({
   const tabbable = selected && isMonthVisible(selected) ? selected : isMonthVisible(today) ? today : viewMonth;
 
   return (
-    <div
-      ref={composedRef}
-      data-slot="date-picker-calendar"
-      className={cn('w-60', className)}
-      {...props}
-    >
+    <div ref={composedRef} data-slot="date-picker-calendar" className={cn('w-60', className)} {...props}>
       <div data-slot="date-picker-calendar-header" className="mb-2 flex items-center justify-between">
         <Button
           type="button"
@@ -158,10 +153,7 @@ const DateCalendar = ({
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span
-          data-slot="date-picker-calendar-caption"
-          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
-        >
+        <span data-slot="date-picker-calendar-caption" className="text-xs tabular-nums uppercase text-muted-foreground">
           {monthFmt.format(viewMonth)}
         </span>
         <Button
@@ -188,7 +180,7 @@ const DateCalendar = ({
               key={i}
               role="columnheader"
               data-slot="date-picker-calendar-weekday"
-              className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
+              className="flex h-7 items-center justify-center text-xs uppercase text-muted-foreground"
             >
               {label}
             </span>
@@ -398,7 +390,7 @@ const DatePickerContent = ({
               size="sm"
               data-slot="date-picker-clear"
               onClick={() => ctx.setValue(null)}
-              className="h-7 gap-1 px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
+              className="h-7 gap-1 px-2 text-xs uppercase text-muted-foreground"
             >
               <X className="size-3" />
               Clear

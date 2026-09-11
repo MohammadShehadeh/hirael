@@ -56,7 +56,7 @@ const Integrations01 = () => {
           <div className="flex flex-col gap-5 lg:col-span-5">
             <Badge
               variant="outline"
-              className="w-fit rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+              className="w-fit rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
             >
               Integrations
             </Badge>
@@ -169,7 +169,7 @@ const Hub = () => {
       >
         <div className="flex flex-col items-center gap-1.5">
           <Boxes className="size-7 text-foreground" aria-hidden />
-          <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-foreground">Hirael</span>
+          <span className="text-[10px] font-semibold uppercase text-foreground">Hirael</span>
         </div>
         <span
           aria-hidden
@@ -198,7 +198,7 @@ const Hub = () => {
               <s.icon className="size-5" aria-hidden />
             </span>
             <span
-              className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover:text-foreground"
+              className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-xs uppercase text-muted-foreground transition-colors group-hover:text-foreground"
               style={{ width: 'max-content' }}
             >
               {s.name}

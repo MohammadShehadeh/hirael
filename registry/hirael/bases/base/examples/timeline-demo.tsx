@@ -19,9 +19,7 @@ const TimelineDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Activity feed', ar: 'موجز النشاط' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Activity feed', ar: 'موجز النشاط' })}</p>
         <Timeline>
           <TimelineItem>
             <TimelineDot tone="success" />
@@ -109,9 +107,7 @@ const TimelineDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'With icons', ar: 'مع أيقونات' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'With icons', ar: 'مع أيقونات' })}</p>
         <Timeline>
           <TimelineItem>
             <TimelineDot>

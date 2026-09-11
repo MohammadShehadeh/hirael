@@ -82,7 +82,7 @@ const DeploymentHistoryItem = ({
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-sm font-medium text-foreground">{version}</span>
           {environment ? (
-            <span className="rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+            <span className="rounded-sm bg-accent px-1.5 py-0.5 text-xs uppercase text-muted-foreground">
               {environment}
             </span>
           ) : null}

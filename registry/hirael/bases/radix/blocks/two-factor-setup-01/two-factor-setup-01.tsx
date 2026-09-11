@@ -189,7 +189,7 @@ const TwoFactorSetupSecret = ({
   );
   return (
     <div data-slot="two-factor-setup-secret" className={cn('flex flex-col gap-1.5', className)} {...props}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
+      <span className="text-xs uppercase text-muted-foreground">{label}</span>
       <div className="flex items-center justify-between gap-2 rounded-sm border border-border bg-background ps-3 pe-1">
         <code dir="ltr" className="select-all font-mono text-sm tracking-[0.08em] text-foreground">
           {grouped}
@@ -228,7 +228,7 @@ const TwoFactorSetupCode = ({
       className={cn('gap-1.5', className)}
       {...props}
     >
-      <FieldLabel htmlFor={id} className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+      <FieldLabel htmlFor={id} className="text-xs uppercase text-muted-foreground">
         {label}
       </FieldLabel>
       <div dir="ltr">
@@ -445,7 +445,7 @@ const TwoFactorSetup01 = () => {
               </div>
               <a
                 href="#"
-                className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                className="mt-2 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
               >
                 Back to security settings
               </a>
@@ -518,7 +518,7 @@ const TwoFactorSetup01 = () => {
                   <>
                     <a
                       href="#"
-                      className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
                     >
                       Cancel
                     </a>
@@ -549,7 +549,7 @@ const TwoFactorSetup01 = () => {
                   </>
                 ) : (
                   <>
-                    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                       <ShieldCheck className="size-3.5" />
                       Code verified
                     </span>
@@ -563,9 +563,7 @@ const TwoFactorSetup01 = () => {
           )}
         </TwoFactorSetup>
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          Preview only, nothing is submitted.
-        </p>
+        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</p>
       </div>
     </section>
   );

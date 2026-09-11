@@ -39,7 +39,7 @@ const Label = ({ title, count, className, ...props }: LabelProps) => {
       {...props}
     >
       <h3 className="text-sm font-semibold">{title}</h3>
-      <p className="font-mono text-xs uppercase whitespace-nowrap text-muted-foreground/90">
+      <p className="text-xs uppercase whitespace-nowrap text-muted-foreground/90">
         {count} block{count === 1 ? '' : 's'}
       </p>
     </div>
@@ -141,9 +141,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
             key={value}
             className={cn('flex flex-col items-center gap-1 py-2', i < 2 && 'border-e border-border/70')}
           >
-            <span className={cn('font-mono text-xs font-medium text-muted-foreground/65', i === 1 && 'text-warm')}>
-              {value}
-            </span>
+            <span className={cn('text-xs font-medium text-muted-foreground/65', i === 1 && 'text-warm')}>{value}</span>
             <Bar className="h-0.5 w-7 bg-muted-foreground/18" />
           </div>
         ))}
@@ -647,9 +645,7 @@ export const BlockShowcase = () => {
           <section key={group} className="flex flex-col gap-4">
             <div className="flex items-baseline justify-between">
               <SectionLabel>{label}</SectionLabel>
-              <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground">
-                {blockCount} blocks
-              </span>
+              <span className="text-xs tabular-nums uppercase text-muted-foreground">{blockCount} blocks</span>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
               {categories.map((category) => {

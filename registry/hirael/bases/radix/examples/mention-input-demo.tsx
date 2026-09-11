@@ -105,7 +105,7 @@ const MentionInputDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Team mentions · controlled',
             ar: 'إشارات الفريق · متحكَّم بها',
@@ -121,14 +121,14 @@ const MentionInputDemo = () => {
           })}
           maxRows={6}
         />
-        <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'mentioned:', ar: 'أُشير إلى:' })}{' '}
           {mentions.length ? mentions.join(', ') : t({ en: 'nobody yet', ar: 'لا أحد بعد' })}
         </p>
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Multiple triggers · @ people + # channels',
             ar: 'محفّزات متعددة · @ للأشخاص + # للقنوات',
@@ -147,7 +147,7 @@ const MentionInputDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Async search · debounced with spinner',
             ar: 'بحث غير متزامن · مؤجَّل مع مؤشر تحميل',

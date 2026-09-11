@@ -271,7 +271,7 @@ const Settings01 = () => {
     <section data-slot="settings-01-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-8 flex flex-col gap-1">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Account</span>
+          <span className="text-xs uppercase text-muted-foreground">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Account settings</h1>
           <p className="text-sm text-muted-foreground">Your profile, contact email, and how the app behaves for you.</p>
         </div>

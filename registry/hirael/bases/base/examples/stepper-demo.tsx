@@ -44,7 +44,7 @@ const StepperDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-10">
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Horizontal · interactive', ar: 'أفقي · تفاعلي' })}
         </p>
         <Stepper value={current} onValueChange={setCurrent}>
@@ -68,7 +68,7 @@ const StepperDemo = () => {
           >
             {t({ en: 'Back', ar: 'رجوع' })}
           </Button>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="text-xs uppercase text-muted-foreground">
             {t({
               en: `Step ${current} of ${steps.length}`,
               ar: `خطوة ${current} من ${steps.length}`,
@@ -86,7 +86,7 @@ const StepperDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Vertical · with descriptions', ar: 'عمودي · مع أوصاف' })}
         </p>
         <Stepper value={current} onValueChange={setCurrent} orientation="vertical">

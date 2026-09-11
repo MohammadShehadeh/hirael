@@ -41,7 +41,7 @@ const DateRangePickerBounded = () => {
           disabledDate={(d) => d.getDay() === 0 || d.getDay() === 6}
         />
       </DateRangePicker>
-      <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{print(bounded)}</p>
+      <p className="text-xs uppercase text-muted-foreground">{print(bounded)}</p>
     </Field>
   );
 };

@@ -108,12 +108,7 @@ export const Band = ({
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs text-muted-foreground">{index}</span>
             <span aria-hidden className="h-px w-6 bg-border" />
-            <span
-              className={cn(
-                'text-xs text-muted-foreground',
-                lang === 'en' ? 'font-mono uppercase tracking-[0.18em]' : 'font-medium',
-              )}
-            >
+            <span className={cn('text-xs text-muted-foreground', lang === 'en' ? 'uppercase' : 'font-medium')}>
               {label}
             </span>
           </div>

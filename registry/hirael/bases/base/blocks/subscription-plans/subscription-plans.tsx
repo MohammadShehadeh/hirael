@@ -41,10 +41,7 @@ const SubscriptionPlanBadge = ({ className, ...props }: SubscriptionPlanBadgePro
     <Badge
       variant="outline"
       data-slot="subscription-plan-badge"
-      className={cn(
-        'absolute -top-2.5 end-4 bg-background font-mono text-[10px] font-normal uppercase tracking-[0.1em]',
-        className,
-      )}
+      className={cn('absolute -top-2.5 end-4 bg-background text-xs font-normal uppercase', className)}
       {...props}
     />
   );

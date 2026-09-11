@@ -29,7 +29,7 @@ export const NewBadge = ({ addedAt, className }: NewBadgeProps) => {
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center rounded-full border border-warm/45 bg-warm/12 px-1.5 py-0.5 font-mono text-[9px] uppercase leading-none tracking-[0.14em] text-foreground',
+        'inline-flex shrink-0 items-center rounded-full border border-warm/45 bg-warm/12 px-1.5 py-0.5 text-[10px] uppercase leading-none text-foreground',
         className,
       )}
     >

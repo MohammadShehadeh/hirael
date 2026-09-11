@@ -248,7 +248,7 @@ const StatCard = ({ stat }: { stat: Stat }) => {
   const Icon = stat.icon;
   return (
     <div data-slot="dashboard-stat" className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4">
-      <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+      <div className="flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
         {stat.live ? (
           <span className="relative flex size-2">
             <span
@@ -330,7 +330,7 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
         </dl>
 
         <div className="flex flex-col gap-1 border-t border-border pt-2">
-          <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">Steps</p>
+          <p className="text-xs uppercase text-muted-foreground">Steps</p>
           <ul className="flex flex-col gap-1">
             {run.steps.map((step) => (
               <li key={step.name} className="flex items-center gap-2 text-[11px]">
@@ -370,7 +370,7 @@ const Dashboard06 = () => {
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container flex w-full flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <span className="inline-flex w-fit items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="inline-flex w-fit items-center gap-1.5 text-xs uppercase text-muted-foreground">
             <span className="size-1 rounded-full bg-foreground" />
             Pipelines
           </span>
@@ -510,10 +510,7 @@ const Dashboard06 = () => {
                         {formatSeconds(run.durationSec)}
                         <span className="sr-only">, started {run.startedLabel}</span>
                       </span>
-                      <span
-                        className="hidden font-mono text-[10px] uppercase tracking-[0.08em] sm:inline"
-                        style={{ color: STATE_TOKEN[run.state] }}
-                      >
+                      <span className="hidden text-xs uppercase sm:inline" style={{ color: STATE_TOKEN[run.state] }}>
                         {STATE_LABEL[run.state]}
                       </span>
                       <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" aria-hidden />

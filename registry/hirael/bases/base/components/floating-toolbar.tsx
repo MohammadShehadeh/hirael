@@ -72,7 +72,7 @@ const FloatingToolbarLabel = ({ className, ...props }: FloatingToolbarLabelProps
   return (
     <span
       data-slot="floating-toolbar-label"
-      className={cn('px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground', className)}
+      className={cn('px-2 text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );

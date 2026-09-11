@@ -186,7 +186,7 @@ const Blog01 = () => {
             </a>
 
             <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="text-xs uppercase text-muted-foreground">
                 {FEATURED.date} · {FEATURED.readMin} min read
               </span>
               <h3
@@ -231,7 +231,7 @@ const Blog01 = () => {
                   <CardHeader className="px-5 pt-5">
                     <div className="flex items-center justify-between">
                       {!p.cover ? <Badge variant="outline">{p.category}</Badge> : <span aria-hidden />}
-                      <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      <span className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground">
                         <Clock className="size-2.5" />
                         {p.readMin}m
                       </span>
@@ -254,9 +254,7 @@ const Blog01 = () => {
                         </span>
                         <span className="truncate text-xs text-foreground">{p.author.name}</span>
                       </div>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                        {p.date}
-                      </span>
+                      <span className="text-xs uppercase text-muted-foreground">{p.date}</span>
                     </div>
                   </CardFooter>
                 </article>

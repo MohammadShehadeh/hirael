@@ -40,7 +40,7 @@ const Feature10 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div data-slot="feature-header" className="flex max-w-2xl flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">overview</span>
+          <span className="text-xs uppercase text-muted-foreground">overview</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             What the catalog is doing.
           </h2>
@@ -56,9 +56,7 @@ const Feature10 = () => {
         >
           <Card data-slot="feature-quote" className={cn(CELL, 'col-span-6 lg:col-span-4 lg:row-span-2')}>
             <CardHeader>
-              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                from the field
-              </CardDescription>
+              <CardDescription className="text-xs uppercase">from the field</CardDescription>
               <CardTitle className="sr-only">What teams say</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col">
@@ -72,9 +70,7 @@ const Feature10 = () => {
               </Avatar>
               <div className="flex min-w-0 flex-col">
                 <cite className="text-sm font-medium not-italic">Priya Banerjee</cite>
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  Design systems · Helios Lab
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">Design systems · Helios Lab</span>
               </div>
             </CardFooter>
           </Card>
@@ -82,9 +78,7 @@ const Feature10 = () => {
           {METRICS.map((metric) => (
             <Card key={metric.label} data-slot="feature-metric" className={cn(CELL, 'col-span-3 lg:col-span-2')}>
               <CardHeader>
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  {metric.label}
-                </CardDescription>
+                <CardDescription className="text-xs uppercase">{metric.label}</CardDescription>
                 <CardTitle className="font-mono text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
                   {metric.value}
                 </CardTitle>
@@ -97,9 +91,7 @@ const Feature10 = () => {
 
           <Card data-slot="feature-work" className={cn(CELL, 'col-span-6 lg:col-span-4')}>
             <CardHeader>
-              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                latest drop
-              </CardDescription>
+              <CardDescription className="text-xs uppercase">latest drop</CardDescription>
               <CardTitle className="text-lg">Command Palette</CardTitle>
               <CardAction>
                 <Button variant="outline" size="sm" render={<a href="#" />} nativeButton={false}>
@@ -117,9 +109,7 @@ const Feature10 = () => {
 
           <Card data-slot="feature-list" className={cn(CELL, 'col-span-6 lg:col-span-2')}>
             <CardHeader>
-              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                what it does
-              </CardDescription>
+              <CardDescription className="text-xs uppercase">what it does</CardDescription>
               <CardTitle className="sr-only">What the registry does</CardTitle>
             </CardHeader>
             <CardContent>

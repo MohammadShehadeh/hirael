@@ -50,7 +50,7 @@ const LogoCloud01 = () => {
         <div className="flex flex-col items-center gap-4 text-center">
           <Badge
             variant="outline"
-            className="rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+            className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
           >
             Trusted by teams shipping at scale
           </Badge>
@@ -82,7 +82,7 @@ const LogoCloud01 = () => {
         </ul>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <dl className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:gap-6">
+          <dl className="flex items-center gap-4 text-xs uppercase text-muted-foreground sm:gap-6">
             {STATS.map((s) => (
               <div key={s.label} className="flex items-baseline gap-1.5">
                 <dt className="sr-only">{s.label}</dt>

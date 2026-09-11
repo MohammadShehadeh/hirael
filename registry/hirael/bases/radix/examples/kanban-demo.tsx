@@ -84,7 +84,7 @@ const KanbanDemo = () => {
   return (
     <div className="grid w-full max-w-4xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Three-column board', ar: 'لوحة من ثلاثة أعمدة' })}
         </p>
         <Kanban value={board} onValueChange={setBoard} className="pb-2">
@@ -125,7 +125,7 @@ const KanbanDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Compact, handle only', ar: 'مضغوط، بالمقبض فقط' })}
         </p>
         <Kanban
@@ -136,7 +136,7 @@ const KanbanDemo = () => {
         >
           <KanbanColumn id="backlog" className="w-56 bg-transparent">
             <KanbanColumnHeader className="pt-2 pb-1">
-              <KanbanColumnTitle className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <KanbanColumnTitle className="text-xs uppercase text-muted-foreground">
                 {t({ en: 'Backlog', ar: 'قائمة الانتظار' })}
               </KanbanColumnTitle>
               <KanbanColumnCount />
@@ -153,7 +153,7 @@ const KanbanDemo = () => {
           </KanbanColumn>
           <KanbanColumn id="review" className="w-56 bg-transparent">
             <KanbanColumnHeader className="pt-2 pb-1">
-              <KanbanColumnTitle className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <KanbanColumnTitle className="text-xs uppercase text-muted-foreground">
                 {t({ en: 'In review', ar: 'قيد المراجعة' })}
               </KanbanColumnTitle>
               <KanbanColumnCount />

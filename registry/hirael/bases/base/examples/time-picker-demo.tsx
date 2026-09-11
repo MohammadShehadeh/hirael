@@ -28,7 +28,7 @@ const TimePickerDemo = () => {
           <TimePickerTrigger id="tp-meeting" />
           <TimePickerContent />
         </TimePicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <p className="text-xs text-muted-foreground uppercase">
           {t24 ? `${t24.hour}:${t24.minute.toString().padStart(2, '0')}` : t({ en: 'Not set', ar: 'غير محدد' })}
         </p>
       </Field>
@@ -41,7 +41,7 @@ const TimePickerDemo = () => {
           <TimePickerTrigger id="tp-reminder" />
           <TimePickerContent />
         </TimePicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <p className="text-xs text-muted-foreground uppercase">
           {t12
             ? `${t12.hour}:${t12.minute.toString().padStart(2, '0')}:${(t12.second ?? 0).toString().padStart(2, '0')}`
             : t({ en: 'Not set', ar: 'غير محدد' })}

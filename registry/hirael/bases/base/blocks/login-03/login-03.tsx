@@ -118,9 +118,7 @@ const Login03 = () => {
               We wired up auth in an afternoon and <span className="italic text-foreground">never looked back</span>.
               The source lives in our repo, so it bends to us.
             </p>
-            <footer className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-              Platform team · Northwind
-            </footer>
+            <footer className="text-xs uppercase text-muted-foreground">Platform team · Northwind</footer>
           </blockquote>
         </div>
       </aside>
@@ -162,7 +160,7 @@ const Login03 = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">sign in</span>
+            <span className="text-xs uppercase text-foreground">sign in</span>
             <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Sign in or join.</h1>
             <p className="text-sm text-muted-foreground">
               One click with GitHub. No password to remember, no form to fill.

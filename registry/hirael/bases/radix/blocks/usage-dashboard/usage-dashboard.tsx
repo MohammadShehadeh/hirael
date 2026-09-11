@@ -87,7 +87,7 @@ const UsageDashboardBlock = () => {
       <UsageDashboard className="w-full max-w-md">
         <UsageDashboardHeader>
           <UsageDashboardTitle>Usage this month</UsageDashboardTitle>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">Resets Jul 1</span>
+          <span className="text-xs uppercase text-muted-foreground">Resets Jul 1</span>
         </UsageDashboardHeader>
         <UsageList>
           <UsageItem label="API requests" value={82000} max={100000} caption="82k / 100k" />

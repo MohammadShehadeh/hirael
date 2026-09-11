@@ -28,11 +28,7 @@ type StatsEyebrowProps = React.ComponentProps<'span'>;
 
 const StatsEyebrow = ({ className, ...props }: StatsEyebrowProps) => {
   return (
-    <span
-      data-slot="stats-eyebrow"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
-      {...props}
-    />
+    <span data-slot="stats-eyebrow" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 
@@ -177,7 +173,7 @@ const StatsDelta = ({ trend = 'up', className, children, ...props }: StatsDeltaP
       data-slot="stats-delta"
       data-trend={trend}
       className={cn(
-        'inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.12em] whitespace-nowrap text-muted-foreground',
+        'inline-flex items-center gap-1 text-xs uppercase whitespace-nowrap text-muted-foreground',
         className,
       )}
       {...props}

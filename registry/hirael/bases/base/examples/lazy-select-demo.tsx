@@ -100,7 +100,7 @@ const LazySelectDemo = () => {
           endMessage={t({ en: 'End of list', ar: 'نهاية القائمة' })}
         />
       </LazySelect>
-      <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+      <p className="text-xs uppercase text-muted-foreground">
         value = {value ? `"${value}"` : '-'} · loaded = {options.length}
       </p>
     </Field>

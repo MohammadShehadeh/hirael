@@ -11,7 +11,7 @@ const ScrollProgressDemo = () => {
 
   return (
     <div className="grid w-full max-w-3xl gap-3">
-      <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+      <p className="text-xs uppercase text-muted-foreground">
         {t({
           en: 'Scoped to container · pinned to the top of this preview',
           ar: 'محصور في الحاوية · مثبّت أعلى هذه المعاينة',

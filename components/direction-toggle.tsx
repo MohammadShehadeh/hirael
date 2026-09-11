@@ -18,7 +18,7 @@ export const DirectionToggle = ({ pressed, onPressedChange, className }: Directi
       aria-label="Toggle right-to-left preview"
       onClick={() => onPressedChange(!pressed)}
       className={cn(
-        'inline-flex h-6 items-center rounded-sm border border-border bg-background px-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground data-[state=on]:bg-accent data-[state=on]:text-foreground',
+        'inline-flex h-6 items-center rounded-sm border border-border bg-background px-2 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground data-[state=on]:bg-accent data-[state=on]:text-foreground',
         className,
       )}
     >

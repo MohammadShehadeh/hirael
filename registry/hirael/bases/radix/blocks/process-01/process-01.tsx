@@ -31,7 +31,7 @@ const Process01 = () => {
     <section data-slot="process" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div className="flex max-w-2xl flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">how it works</span>
+          <span className="text-xs uppercase text-muted-foreground">how it works</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             From install to shipped in three steps.
           </h2>

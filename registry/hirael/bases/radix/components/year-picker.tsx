@@ -348,10 +348,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span
-          data-slot="year-picker-caption"
-          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
-        >
+        <span data-slot="year-picker-caption" className="text-xs tabular-nums uppercase text-muted-foreground">
           {years[0]} – {years[years.length - 1]}
         </span>
         <Button

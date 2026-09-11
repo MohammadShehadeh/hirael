@@ -214,12 +214,7 @@ const DateRangeCalendar = ({
     range?.from && isMonthVisible(range.from) ? startOfDay(range.from) : isMonthVisible(today) ? today : viewMonth;
 
   return (
-    <div
-      ref={composedRef}
-      data-slot="date-range-calendar"
-      className={cn('flex gap-4', className)}
-      {...props}
-    >
+    <div ref={composedRef} data-slot="date-range-calendar" className={cn('flex gap-4', className)} {...props}>
       {months.map((month, mi) => {
         const last = mi === numberOfMonths - 1;
         const cells = monthCells(month, weekStartsOn);
@@ -247,7 +242,7 @@ const DateRangeCalendar = ({
               </Button>
               <span
                 data-slot="date-range-calendar-caption"
-                className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
+                className="text-xs tabular-nums uppercase text-muted-foreground"
               >
                 {monthFmt.format(month)}
               </span>
@@ -276,7 +271,7 @@ const DateRangeCalendar = ({
                     key={i}
                     role="columnheader"
                     data-slot="date-range-calendar-weekday"
-                    className="flex h-7 items-center justify-center font-mono text-[10px] uppercase text-muted-foreground"
+                    className="flex h-7 items-center justify-center text-xs uppercase text-muted-foreground"
                   >
                     {label}
                   </span>
@@ -565,7 +560,7 @@ const DateRangePickerContent = ({
                 size="sm"
                 data-slot="date-range-picker-clear"
                 onClick={() => ctx.setRange(undefined)}
-                className="h-7 gap-1 px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
+                className="h-7 gap-1 px-2 text-xs uppercase text-muted-foreground"
               >
                 <X className="size-3" />
                 Clear

@@ -50,7 +50,7 @@ const Cta05 = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               <span className="size-1.5 rounded-full bg-primary" />
               Get in touch

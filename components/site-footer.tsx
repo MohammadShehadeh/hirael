@@ -151,9 +151,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
             <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
               {FOOTER_LINKS.map((group) => (
                 <div key={group.label} className="flex flex-col gap-3.5">
-                  <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground/70">
-                    {group.label}
-                  </h3>
+                  <h3 className="text-xs uppercase text-foreground/70">{group.label}</h3>
                   <ul className="flex flex-col gap-2.5">
                     {group.links.map((link) => (
                       <li key={link.href}>

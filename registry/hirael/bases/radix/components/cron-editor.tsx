@@ -544,10 +544,7 @@ const CronEditorField = ({
       {...props}
     >
       <div className="flex items-center justify-between gap-2">
-        <FieldLabel
-          htmlFor={selectId}
-          className="font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground"
-        >
+        <FieldLabel htmlFor={selectId} className="text-xs font-normal uppercase text-muted-foreground">
           {label}
         </FieldLabel>
         <span className="font-mono text-[11px] text-foreground">{state.raw}</span>
@@ -667,10 +664,7 @@ const CronEditorExpression = ({
 
   return (
     <Field data-slot="cron-editor-expression" data-invalid={invalid || undefined} className={cn('gap-1.5', className)}>
-      <FieldLabel
-        htmlFor={inputId}
-        className="font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground"
-      >
+      <FieldLabel htmlFor={inputId} className="text-xs font-normal uppercase text-muted-foreground">
         {label}
       </FieldLabel>
       <Input

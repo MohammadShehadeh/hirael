@@ -12,14 +12,14 @@ const RatingDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Interactive · whole stars', ar: 'تفاعلي · نجوم كاملة' })}
         </p>
         <Rating defaultValue={4} aria-label={t({ en: 'Overall rating', ar: 'التقييم العام' })} />
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Controlled · half steps', ar: 'متحكَّم به · أنصاف خطوات' })}
         </p>
         <div className="flex items-center gap-3">
@@ -34,7 +34,7 @@ const RatingDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Read-only display', ar: 'عرض للقراءة فقط' })}
         </p>
         <div className="flex items-center gap-2">
@@ -46,9 +46,7 @@ const RatingDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Sizes', ar: 'الأحجام' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-center gap-6">
           <Rating defaultValue={3} size="sm" aria-label={t({ en: 'Small', ar: 'صغير' })} />
           <Rating defaultValue={3} size="md" aria-label={t({ en: 'Medium', ar: 'متوسط' })} />

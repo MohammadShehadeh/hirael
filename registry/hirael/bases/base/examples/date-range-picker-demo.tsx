@@ -52,7 +52,7 @@ const DateRangePickerDemo = () => {
           <DateRangePickerTrigger id="drp-basic" locale={locale} />
           <DateRangePickerContent locale={locale} />
         </DateRangePicker>
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{print(basic)}</p>
+        <p className="text-xs uppercase text-muted-foreground">{print(basic)}</p>
       </Field>
 
       <Field className="gap-2">
@@ -68,7 +68,7 @@ const DateRangePickerDemo = () => {
           />
           <DateRangePickerContent locale={locale} presets={presets} numberOfMonths={1} />
         </DateRangePicker>
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{print(composed)}</p>
+        <p className="text-xs uppercase text-muted-foreground">{print(composed)}</p>
       </Field>
     </FieldGroup>
   );

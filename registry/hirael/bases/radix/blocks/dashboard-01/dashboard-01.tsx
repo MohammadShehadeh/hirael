@@ -285,7 +285,7 @@ const Dashboard01 = () => {
         <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4">
           {metrics.map((m) => (
             <div key={m.label} className="flex flex-col gap-2 bg-card p-5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{m.label}</span>
+              <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
               <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{m.value}</span>
               <DeltaChip metric={m} />
             </div>
@@ -295,9 +295,7 @@ const Dashboard01 = () => {
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                sign-ups
-              </CardDescription>
+              <CardDescription className="text-xs uppercase">sign-ups</CardDescription>
               <CardTitle className="text-lg">{signups.count} new sign-ups</CardTitle>
               <CardAction>
                 <Button variant="outline" size="sm">
@@ -335,9 +333,7 @@ const Dashboard01 = () => {
                             style={{ height: `${(row.b / chartMax) * 100}%` }}
                           />
                         </span>
-                        <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                          {row.d}
-                        </span>
+                        <span className="text-center text-xs uppercase text-muted-foreground">{row.d}</span>
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -353,18 +349,18 @@ const Dashboard01 = () => {
 
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-5">
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                     Sign-ups
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/40" />
                     Activated
                   </span>
                 </div>
-                <p className="flex items-baseline gap-2 font-mono tabular-nums">
-                  <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Conversion</span>
-                  <span className="text-sm font-semibold">{signups.conversion}</span>
+                <p className="flex items-baseline gap-2">
+                  <span className="text-xs uppercase text-muted-foreground">Conversion</span>
+                  <span className="font-mono text-sm font-semibold tabular-nums">{signups.conversion}</span>
                 </p>
               </div>
             </CardContent>
@@ -372,9 +368,7 @@ const Dashboard01 = () => {
 
           <Card>
             <CardHeader>
-              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                recent activity
-              </CardDescription>
+              <CardDescription className="text-xs uppercase">recent activity</CardDescription>
               <CardTitle className="sr-only">Recent activity</CardTitle>
               <CardAction>
                 <Button variant="link" size="sm" className="h-auto p-0" asChild>
@@ -402,9 +396,7 @@ const Dashboard01 = () => {
                         <span className="font-medium text-foreground">{a.name}</span>{' '}
                         <span className="text-muted-foreground">{a.action}</span>
                       </p>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                        {a.time}
-                      </span>
+                      <span className="text-xs uppercase text-muted-foreground">{a.time}</span>
                     </div>
                   </li>
                 ))}

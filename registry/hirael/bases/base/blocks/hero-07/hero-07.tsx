@@ -201,7 +201,7 @@ const Hero07 = () => {
       >
         <span
           data-slot="hero-badge"
-          className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm"
+          className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
         >
           <span className="relative flex size-1.5">
             <span

@@ -88,10 +88,7 @@ const ForgotPassword01 = () => {
                     Resend
                   </Button>
                 </p>
-                <a
-                  href="#"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
-                >
+                <a href="#" className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground">
                   Back to sign in
                 </a>
               </div>
@@ -113,10 +110,7 @@ const ForgotPassword01 = () => {
               <form noValidate className="p-8" onSubmit={onSubmit}>
                 <FieldGroup className="gap-5">
                   <Field className="gap-1.5" data-invalid={Boolean(error) || undefined}>
-                    <FieldLabel
-                      htmlFor="forgot01-email"
-                      className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                    >
+                    <FieldLabel htmlFor="forgot01-email" className="text-xs uppercase text-muted-foreground">
                       Email
                     </FieldLabel>
                     <Input
@@ -165,9 +159,7 @@ const ForgotPassword01 = () => {
           )}
         </div>
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          Reset links expire after 15 minutes
-        </p>
+        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">Reset links expire after 15 minutes</p>
       </div>
     </section>
   );

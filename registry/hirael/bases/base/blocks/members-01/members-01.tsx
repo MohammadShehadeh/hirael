@@ -181,11 +181,7 @@ const MembersStatus = ({ status, className, ...props }: MembersStatusProps) => {
     <span
       data-slot="members-status"
       data-status={status.toLowerCase()}
-      className={cn(
-        'inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]',
-        tone.text,
-        className,
-      )}
+      className={cn('inline-flex items-center gap-1.5 text-xs uppercase', tone.text, className)}
       {...props}
     >
       <span aria-hidden className={cn('size-1.5 rounded-full', tone.dot)} />
@@ -206,16 +202,14 @@ const MembersTable = ({ className, children, ...props }: MembersTableProps) => {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="h-auto px-4 py-2 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground">
+            <TableHead className="h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground">
               Member
             </TableHead>
-            <TableHead className="h-auto px-4 py-2 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground">
-              Role
-            </TableHead>
-            <TableHead className="hidden h-auto px-4 py-2 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground sm:table-cell">
+            <TableHead className="h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground">Role</TableHead>
+            <TableHead className="hidden h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground sm:table-cell">
               Status
             </TableHead>
-            <TableHead className="hidden h-auto px-4 py-2 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground md:table-cell">
+            <TableHead className="hidden h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground md:table-cell">
               Joined
             </TableHead>
             <TableHead className="h-auto px-4 py-2">
@@ -259,9 +253,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
           <span className="flex min-w-0 flex-col">
             <span className="flex items-center gap-1.5 truncate font-medium text-foreground">
               {member.name}
-              {isYou ? (
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">you</span>
-              ) : null}
+              {isYou ? <span className="text-xs uppercase text-muted-foreground">you</span> : null}
             </span>
             <span className="truncate text-xs text-muted-foreground">{member.email}</span>
           </span>
@@ -447,7 +439,7 @@ const MembersPending = ({ count, className, children, ...props }: MembersPending
       {...props}
     >
       <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <span className="text-xs uppercase text-muted-foreground">
           Pending invites
           {typeof count === 'number' ? <span className="ms-2 text-foreground">({count})</span> : null}
         </span>
@@ -486,7 +478,7 @@ const MembersPendingItem = ({
       </Avatar>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium text-foreground">{invite.email}</span>
-        <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <span className="truncate text-xs uppercase text-muted-foreground">
           {invite.role} · Invited {invite.invited}
         </span>
       </span>

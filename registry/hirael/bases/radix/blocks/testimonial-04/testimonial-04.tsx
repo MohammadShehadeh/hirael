@@ -116,7 +116,7 @@ const Testimonial04 = () => {
             <Badge
               variant="outline"
               data-slot="testimonial-badge"
-              className="rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm"
+              className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               Testimonials
             </Badge>

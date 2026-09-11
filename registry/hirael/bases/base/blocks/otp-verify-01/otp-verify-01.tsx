@@ -146,7 +146,7 @@ const OtpVerify01 = () => {
               </div>
               <a
                 href="#"
-                className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                className="mt-2 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
               >
                 Continue to dashboard
               </a>
@@ -171,7 +171,7 @@ const OtpVerify01 = () => {
                   <FieldSet className="gap-1.5">
                     <FieldLegend
                       variant="label"
-                      className="mb-1.5 font-mono font-normal uppercase tracking-[0.12em] text-muted-foreground data-[variant=label]:text-[10px]"
+                      className="mb-1.5 font-normal uppercase text-muted-foreground data-[variant=label]:text-xs"
                     >
                       Verification code
                     </FieldLegend>
@@ -254,7 +254,7 @@ const OtpVerify01 = () => {
           )}
         </div>
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">
           One-time codes · Never shared with anyone
         </p>
       </div>

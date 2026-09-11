@@ -16,10 +16,7 @@ export const Breadcrumbs = ({ items, className }: BreadcrumbsProps) => {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn(
-        'flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground',
-        className,
-      )}
+      className={cn('flex flex-wrap items-center gap-2 text-xs uppercase text-muted-foreground', className)}
     >
       {items.map((item, index) => {
         const isLast = index === items.length - 1;

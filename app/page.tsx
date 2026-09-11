@@ -105,7 +105,7 @@ function Hero({ latestRelease }: HeroProps) {
           <Link href="/changelog" className={cn('group max-w-full text-foreground', rise)}>
             <span className="glass-panel glass-panel-lit inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
               {latestRelease.version && (
-                <span className="rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] tracking-[0.08em] text-background">
+                <span className="rounded-full bg-foreground px-2 py-0.5 text-xs text-background">
                   v{latestRelease.version}
                 </span>
               )}

@@ -21,7 +21,7 @@ const NotFound01 = () => {
     <section className="flex min-h-[80vh] items-center justify-center bg-background py-20">
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">404</span>
+          <span className="text-xs uppercase text-muted-foreground">404</span>
           <h1 className="font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl">Page not found.</h1>
           <p className="max-w-md text-base text-muted-foreground sm:text-lg">
             The route you tried doesn&apos;t resolve to anything we ship. It may have moved, or it may have never
@@ -37,9 +37,7 @@ const NotFound01 = () => {
           </div>
 
           <div className="mt-6 w-full border-t border-border pt-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              Try one of these
-            </span>
+            <span className="text-xs uppercase text-muted-foreground">Try one of these</span>
             <ul className="mt-3 flex flex-col">
               {SUGGESTIONS.map((s) => (
                 <li key={s.route}>

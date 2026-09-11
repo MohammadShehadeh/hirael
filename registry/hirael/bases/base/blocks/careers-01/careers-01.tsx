@@ -70,7 +70,7 @@ const Careers01 = () => {
     <section data-slot="careers" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col gap-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">careers</span>
+          <span className="text-xs uppercase text-muted-foreground">careers</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">Open roles.</h2>
           <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
             We are a small, remote-first team building the components shadcn/ui leaves out. {ROLES.length} roles open
@@ -113,10 +113,7 @@ const Careers01 = () => {
                 <div className="flex flex-col gap-2">
                   <h3 className="text-base font-medium tracking-[-0.01em] sm:text-lg">{role.title}</h3>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm">
-                    <Badge
-                      variant="outline"
-                      className="bg-card font-mono text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground"
-                    >
+                    <Badge variant="outline" className="bg-card text-xs font-normal uppercase text-muted-foreground">
                       {role.department}
                     </Badge>
                     <span className="inline-flex items-center gap-1.5">

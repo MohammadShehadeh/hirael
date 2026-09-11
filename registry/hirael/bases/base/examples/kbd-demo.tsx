@@ -11,9 +11,7 @@ const KbdDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Pressable', ar: 'قابل للضغط' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Pressable', ar: 'قابل للضغط' })}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Kbd>A</Kbd>
           <Kbd>Esc</Kbd>
@@ -26,9 +24,7 @@ const KbdDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Chords', ar: 'تركيبات المفاتيح' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Chords', ar: 'تركيبات المفاتيح' })}</p>
         <div className="flex flex-wrap items-center gap-4">
           <KbdGroup>
             <Kbd>
@@ -50,9 +46,7 @@ const KbdDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Inline display', ar: 'عرض ضمن النص' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Inline display', ar: 'عرض ضمن النص' })}</p>
         <p className="text-sm text-muted-foreground">
           {t({
             en: (

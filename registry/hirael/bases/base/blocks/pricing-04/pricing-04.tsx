@@ -39,7 +39,7 @@ const Pricing04 = () => {
       <div data-slot="pricing-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
         <Badge
           variant="outline"
-          className="rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+          className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
         >
           Pricing
         </Badge>
@@ -68,14 +68,12 @@ const Pricing04 = () => {
                   aria-hidden
                   className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,var(--warm-glow),transparent_70%)]"
                 />
-                <Badge className="absolute end-5 top-5 font-mono text-[10px] uppercase tracking-[0.12em]">
-                  Most popular
-                </Badge>
+                <Badge className="absolute end-5 top-5 text-xs uppercase">Most popular</Badge>
               </>
             ) : null}
 
             <div className="flex flex-col gap-2">
-              <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">{tier.name}</h3>
+              <h3 className="text-xs uppercase text-muted-foreground">{tier.name}</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-5xl font-semibold tracking-tight">{tier.price}</span>
                 <span className="text-sm text-muted-foreground">/month</span>

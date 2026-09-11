@@ -82,7 +82,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
           loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">{title}</span>
+        <span className="text-xs uppercase text-muted-foreground/70">{title}</span>
       </div>
       {scale !== null && (
         <iframe

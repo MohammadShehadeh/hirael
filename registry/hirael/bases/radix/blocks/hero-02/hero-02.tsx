@@ -50,7 +50,7 @@ const Hero02 = () => {
         <Hero02Backdrop active={active} />
       </div>
 
-      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-sm">
+      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm">
         <span className="relative flex size-1.5">
           <span
             className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
@@ -88,9 +88,7 @@ const Hero02 = () => {
       </div>
 
       <div className="mt-16 flex flex-col items-center gap-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          Trusted by teams shipping at scale
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">Trusted by teams shipping at scale</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {WORDMARKS.map((w) => (
             <span

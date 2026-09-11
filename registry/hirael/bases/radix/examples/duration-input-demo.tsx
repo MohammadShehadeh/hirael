@@ -56,7 +56,7 @@ const DurationInputDemo = () => {
         </DurationInput>
       </Field>
 
-      <dl className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+      <dl className="flex flex-col gap-1 text-xs uppercase text-muted-foreground">
         <div className="flex gap-2">
           <dt>{t({ en: 'Timeout', ar: 'المهلة' })}</dt>
           <dd className="tabular-nums">

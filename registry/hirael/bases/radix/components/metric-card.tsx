@@ -40,7 +40,7 @@ interface MetricCardHeaderProps extends React.ComponentProps<'div'> {
 const MetricCardHeader = ({ icon, className, children, ...props }: MetricCardHeaderProps) => {
   return (
     <div data-slot="metric-card-header" className={cn('flex items-center justify-between gap-2', className)} {...props}>
-      <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+      <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
         {icon}
         {children}
       </span>

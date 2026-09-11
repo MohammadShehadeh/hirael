@@ -402,10 +402,7 @@ const MonthPickerContent = ({
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span
-          data-slot="month-picker-caption"
-          className="font-mono text-[11px] tabular-nums uppercase tracking-[0.08em] text-muted-foreground"
-        >
+        <span data-slot="month-picker-caption" className="text-xs tabular-nums uppercase text-muted-foreground">
           {ctx.displayYear}
         </span>
         <Button

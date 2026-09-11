@@ -51,7 +51,7 @@ const Pricing01 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+          <span className="inline-flex items-center gap-2 text-xs uppercase text-foreground">
             <span className="size-1 rounded-full bg-foreground" />
             Pricing
           </span>
@@ -81,15 +81,13 @@ const Pricing01 = () => {
               )}
             >
               {tier.featured && (
-                <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
                   Most popular
                 </span>
               )}
 
               <CardHeader className="flex flex-col gap-2 px-0">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {tier.name}
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">{tier.name}</span>
                 <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-semibold tracking-[-0.04em]">{tier.price}</span>
                   <span className="font-mono text-xs text-muted-foreground">/mo</span>

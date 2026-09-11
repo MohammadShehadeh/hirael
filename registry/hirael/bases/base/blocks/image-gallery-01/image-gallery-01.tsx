@@ -98,7 +98,7 @@ const ImageGallery01 = () => {
           <div className="flex max-w-xl flex-col gap-4">
             <Badge
               variant="outline"
-              className="w-fit rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+              className="w-fit rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
             >
               Selected work 2025-2026
             </Badge>
@@ -117,7 +117,7 @@ const ImageGallery01 = () => {
           <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)} aria-label="Filter gallery by category">
             <TabsList variant="line" className="flex-wrap">
               {FILTERS.map((f) => (
-                <TabsTrigger key={f} value={f} className="font-mono uppercase">
+                <TabsTrigger key={f} value={f} className="uppercase">
                   {f}
                 </TabsTrigger>
               ))}
@@ -175,9 +175,7 @@ const ImageGallery01 = () => {
                 </div>
                 <div className="flex items-center justify-between gap-3 px-4 py-3">
                   <span className="truncate text-sm font-medium tracking-[-0.01em] text-foreground">{t.title}</span>
-                  <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {t.meta}
-                  </span>
+                  <span className="shrink-0 text-xs uppercase text-muted-foreground">{t.meta}</span>
                 </div>
               </a>
             ))}

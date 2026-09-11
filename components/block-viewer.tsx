@@ -170,7 +170,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
           value={viewport}
           onValueChange={(v) => setViewport(v as Viewport)}
           className="rounded-sm border border-border bg-background p-0.5"
-          itemClassName="h-6 rounded-[2px] px-2 text-[10px] uppercase tracking-widest"
+          itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
           items={ORDER.map((v) => {
             const Icon = ICONS[v];
             return {
@@ -244,7 +244,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
                 </a>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuLabel className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <DropdownMenuLabel className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
                 <Package className="size-3" />
                 Dependencies
               </DropdownMenuLabel>
@@ -266,7 +266,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
                     ) : null;
                   })}
                   {registryDeps.some((name) => !REGISTRY_BY_NAME[name]) && (
-                    <p className="px-2 py-1.5 font-mono text-[10px] leading-relaxed text-muted-foreground">
+                    <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
                       {registryDeps.filter((name) => !REGISTRY_BY_NAME[name]).join(', ')}
                     </p>
                   )}

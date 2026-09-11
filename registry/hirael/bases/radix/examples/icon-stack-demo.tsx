@@ -11,9 +11,7 @@ const IconStackDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-10">
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Default stack', ar: 'الكومة الافتراضية' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Default stack', ar: 'الكومة الافتراضية' })}</p>
         <div className="flex flex-wrap items-end gap-8">
           {[Database, Server, Boxes].map((Icon, index) => (
             <IconStack key={index}>
@@ -26,7 +24,7 @@ const IconStackDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'One to four layers', ar: 'من طبقة إلى أربع طبقات' })}
         </p>
         <div className="flex flex-wrap items-end gap-8">
@@ -41,7 +39,7 @@ const IconStackDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Tinted, above a caption', ar: 'ملوّنة، فوق تعليق' })}
         </p>
         <div className="flex flex-wrap gap-8">
@@ -68,9 +66,7 @@ const IconStackDemo = () => {
                 <Server className="size-6" strokeWidth={1.5} />
               </IconStackContent>
             </IconStack>
-            <p className="text-sm font-medium text-foreground">
-              {t({ en: 'Live regions', ar: 'مناطق نشطة' })}
-            </p>
+            <p className="text-sm font-medium text-foreground">{t({ en: 'Live regions', ar: 'مناطق نشطة' })}</p>
             <p className="text-sm text-muted-foreground">
               {t({
                 en: 'Deploy close to the people using it.',

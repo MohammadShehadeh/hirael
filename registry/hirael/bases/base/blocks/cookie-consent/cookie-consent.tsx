@@ -307,9 +307,7 @@ const CookieConsentCategory = ({
       <FieldContent className="min-w-0 gap-0.5">
         <FieldLabel htmlFor={switchId} className="items-center">
           {name}
-          {required ? (
-            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">Always on</span>
-          ) : null}
+          {required ? <span className="text-xs uppercase text-muted-foreground">Always on</span> : null}
         </FieldLabel>
         {description ? <FieldDescription className="text-xs">{description}</FieldDescription> : null}
       </FieldContent>
@@ -430,7 +428,7 @@ const CookieConsentBlock = () => {
       className="relative flex min-h-svh w-full flex-col items-center justify-center gap-3 overflow-hidden bg-background p-6 sm:p-10"
     >
       <div className="flex flex-col items-center gap-2 text-center">
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <span className="text-xs uppercase text-muted-foreground">
           {summary ? `Saved · ${summary}` : 'Waiting for a choice'}
         </span>
         {!open ? (

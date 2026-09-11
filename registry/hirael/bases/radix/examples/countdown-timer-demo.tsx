@@ -32,14 +32,14 @@ const CountdownTimerDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Boxed · product launch', ar: 'صناديق · إطلاق منتج' })}
         </p>
         <CountdownTimer target={launchTarget} labels={labels} />
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Inline · hideZeroDays',
             ar: 'بالسطر · إخفاء الأيام الصفرية',
@@ -49,7 +49,7 @@ const CountdownTimerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Minimal · inside a sentence', ar: 'مبسّط · داخل جملة' })}
         </p>
         <div className="text-sm text-muted-foreground">
@@ -67,7 +67,7 @@ const CountdownTimerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'onComplete · 10 second countdown',
             ar: 'onComplete · عدّ تنازلي 10 ثوانٍ',

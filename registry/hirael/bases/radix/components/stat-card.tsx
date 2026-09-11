@@ -23,11 +23,7 @@ type StatCardLabelProps = React.ComponentProps<'p'>;
 
 const StatCardLabel = ({ className, ...props }: StatCardLabelProps) => {
   return (
-    <p
-      data-slot="stat-card-label"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
-      {...props}
-    />
+    <p data-slot="stat-card-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 

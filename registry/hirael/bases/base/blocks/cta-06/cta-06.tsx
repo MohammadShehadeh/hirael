@@ -31,7 +31,7 @@ const Cta06 = () => {
 
           <div className="relative z-10 grid h-full content-center gap-6 px-4 py-6 md:grid-cols-[1fr_auto] md:items-center md:gap-10 md:px-8">
             <div className="flex flex-col items-start">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
                 <span className="size-1 rounded-full bg-foreground" />
                 Get started
               </span>
@@ -59,7 +59,7 @@ const Cta06 = () => {
                 <GitBranch className="size-4" />
                 Get started
               </Button>
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Free to try</p>
+              <p className="text-xs uppercase text-muted-foreground">Free to try</p>
             </motion.div>
           </div>
         </div>

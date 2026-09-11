@@ -128,7 +128,7 @@ const AnnouncementBarBadge = ({ className, ...props }: AnnouncementBarBadgeProps
     <span
       data-slot="announcement-bar-badge"
       className={cn(
-        'inline-flex items-center rounded-sm border border-current/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] opacity-80',
+        'inline-flex items-center rounded-sm border border-current/20 px-1.5 py-0.5 text-xs uppercase opacity-80',
         className,
       )}
       {...props}

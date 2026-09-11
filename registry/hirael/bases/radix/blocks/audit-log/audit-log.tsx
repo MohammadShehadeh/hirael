@@ -82,17 +82,14 @@ const AuditLogTime = ({ className, ...props }: AuditLogTimeProps) => {
   return (
     <time
       data-slot="audit-log-time"
-      className={cn(
-        'ms-auto shrink-0 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground',
-        className,
-      )}
+      className={cn('ms-auto shrink-0 text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );
 };
 
 const auditLogStatusVariants = cva(
-  'inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 font-mono text-[10px] uppercase leading-none tracking-[0.08em]',
+  'inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 text-xs uppercase leading-none',
   {
     variants: {
       tone: {
@@ -147,7 +144,7 @@ interface AuditLogFieldProps extends React.ComponentProps<'div'> {
 const AuditLogField = ({ label, className, children, ...props }: AuditLogFieldProps) => {
   return (
     <div data-slot="audit-log-field" className={cn('contents', className)} {...props}>
-      <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">{label}</dt>
+      <dt className="text-xs uppercase text-muted-foreground">{label}</dt>
       <dd className="min-w-0 break-words font-mono text-[12px] text-foreground">{children}</dd>
     </div>
   );
@@ -169,7 +166,7 @@ const AuditLogBlock = () => {
   return (
     <section data-slot="audit-log-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="grid w-full max-w-2xl gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">Recent events</p>
+        <p className="text-xs uppercase text-muted-foreground">Recent events</p>
         <AuditLog>
           <AuditLogItem defaultOpen>
             <AuditLogTrigger>

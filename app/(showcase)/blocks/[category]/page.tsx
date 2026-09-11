@@ -13,7 +13,11 @@ export function generateStaticParams() {
   return CATEGORY_REGISTRY.map((c) => ({ category: c.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+interface BlockCategoryRouteProps {
+  params: Promise<{ category: string }>;
+}
+
+export async function generateMetadata({ params }: BlockCategoryRouteProps): Promise<Metadata> {
   const { category } = await params;
   const meta = CATEGORY_BY_SLUG[category];
   if (!meta) return {};
@@ -24,12 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     title: `${meta.title} blocks`,
     description: meta.description,
     keywords: [`${label} blocks`, `react ${label}`, `tailwind ${label}`, 'shadcn blocks'],
-    // A category with nothing shipped is roadmap copy, not an index entry.
-    index: !meta.comingSoon,
+    shouldIndex: !meta.isComingSoon,
   });
 }
 
-export default async function BlockCategoryRoute({ params }: { params: Promise<{ category: string }> }) {
+export default async function BlockCategoryRoute({ params }: BlockCategoryRouteProps) {
   const { category } = await params;
   const meta = CATEGORY_BY_SLUG[category];
   if (!meta) notFound();

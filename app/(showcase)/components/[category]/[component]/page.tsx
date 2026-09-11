@@ -32,24 +32,17 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
+interface ComponentRouteProps {
   params: Promise<{ category: string; component: string }>;
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({ params }: ComponentRouteProps): Promise<Metadata> {
   const { category, component } = await params;
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || entry.category === 'blocks' || entry.category === 'templates' || entry.category !== category) return {};
   return detailMetadata(entry, { titleSuffix: 'component' });
 }
 
-/**
- * A component ships its install source at `<base>/components/<name>.tsx`
- * (what shadcn distributes) and one or more demos at
- * `<base>/examples/<slug>.tsx`. Returns each example with its pre-highlighted
- * source for the stacked preview/code blocks; the source is null when a file
- * is missing.
- */
 async function loadExampleSource(base: RegistryBase, slug: string): Promise<SourceFile | null> {
   const relPath = registryFilePath(base, `examples/${slug}.tsx`);
   try {
@@ -76,7 +69,7 @@ async function loadExamples(name: string): Promise<ExampleSources[]> {
   );
 }
 
-export default async function ComponentRoute({ params }: { params: Promise<{ category: string; component: string }> }) {
+export default async function ComponentRoute({ params }: ComponentRouteProps) {
   const { category, component } = await params;
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || entry.category === 'blocks' || entry.category === 'templates' || entry.category !== category)
@@ -87,9 +80,6 @@ export default async function ComponentRoute({ params }: { params: Promise<{ cat
     getDetailExtras(entry),
   ]);
   const api = (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null;
-  // Import statements are identical across bases; derive them once. The same
-  // helper writes the Usage block into the generated Markdown, so the page and
-  // the file an agent fetches show one import.
   const usageCode = buildUsageCode(entry.files, (file) => sources[DEFAULT_BASE][file]?.code, api);
   const usage = usageCode
     ? {
@@ -98,17 +88,15 @@ export default async function ComponentRoute({ params }: { params: Promise<{ cat
         lang: 'tsx',
       }
     : null;
-  // Pre-highlight each prop's type and default as inline TS so the API table
-  // gets the same VSCode token colors as the code blocks.
   const apiHighlighted = api
     ? await Promise.all(
         api.map(async (part) => ({
           ...part,
           props: await Promise.all(
-            part.props.map(async (p) => ({
-              ...p,
-              typeHtml: await highlightInline(p.type, 'ts'),
-              defaultHtml: p.default ? await highlightInline(p.default, 'ts') : null,
+            part.props.map(async (prop) => ({
+              ...prop,
+              typeHtml: await highlightInline(prop.type, 'ts'),
+              defaultHtml: prop.default ? await highlightInline(prop.default, 'ts') : null,
             })),
           ),
         })),

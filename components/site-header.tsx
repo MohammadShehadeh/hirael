@@ -24,7 +24,6 @@ import {
 
 export interface SiteHeaderProps {
   className?: string;
-  /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
 }
 

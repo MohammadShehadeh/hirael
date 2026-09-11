@@ -12,18 +12,16 @@ export const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-// Compact star count: 1234 -> "1.2k", 12345 -> "12k".
-const formatStars = (n: number): string => {
-  if (n < 1000) return `${n}`;
-  return `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k`;
+const formatStars = (count: number): string => {
+  if (count < 1000) return `${count}`;
+  return `${(count / 1000).toFixed(count >= 10000 ? 0 : 1)}k`;
 };
 
-/**
- * Header GitHub link — icon-only, with the build-time star count appended when
- * available. Shared by the marketing `SiteHeader` and the showcase topbar so
- * the control reads identically across every page.
- */
-export const GithubLink = ({ stars }: { stars?: number | null }) => {
+export interface GithubLinkProps {
+  stars?: number | null;
+}
+
+export const GithubLink = ({ stars }: GithubLinkProps) => {
   return (
     <Button variant="ghost" asChild>
       <a

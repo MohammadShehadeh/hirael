@@ -1,13 +1,3 @@
-/**
- * schema.org payloads and search metadata derived from the registry. Google
- * reads a component page as an article about a piece of source code, so each
- * detail page ships a TechArticle wrapping a SoftwareSourceCode, sitting under
- * the site-wide WebSite/Organization nodes declared in the root layout.
- *
- * Every page's metadata is built here rather than inline, so canonical shape,
- * title separator and card format can't drift between the routes.
- */
-
 import type { Metadata } from 'next';
 
 import { SITE } from '@/lib/site';
@@ -21,16 +11,13 @@ import {
   type RegistryEntryMeta,
 } from '@/registry/hirael/registry-meta';
 
-/** Stable `@id` anchors so nodes on different pages reference one graph. */
 export const WEBSITE_ID = `${SITE.url}/#website`;
 export const ORGANIZATION_ID = `${SITE.url}/#person`;
 
-/** Matches the root layout's `%s - Hirael` template, for titles built by hand. */
 const titled = (text: string) => `${text} - ${SITE.name}`;
 
 const absolute = (path: string) => (path.startsWith('http') ? path : `${SITE.url}${path}`);
 
-/** The site-wide social card, used wherever a route has no image of its own. */
 const SITE_OG_IMAGE = '/opengraph-image';
 
 const author = {
@@ -41,7 +28,6 @@ const author = {
   sameAs: [SITE.githubUrl],
 } as const;
 
-/** WebSite + Person + SoftwareApplication. Rendered once, in the root layout. */
 export const siteJsonLd = (): object[] => [
   {
     '@context': 'https://schema.org',
@@ -88,15 +74,9 @@ export const breadcrumbJsonLd = (crumbs: Crumb[]): object => ({
   })),
 });
 
-/** The human label for the collection an entry belongs to. */
 const collectionName = (entry: RegistryEntryMeta) =>
   entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : CATEGORY_LABELS[entry.category];
 
-/**
- * Long-tail keywords for one item: how people actually search for it, plus the
- * hand-written words already on the entry. Deduped, order-stable, and capped —
- * a keyword list that reads as a wall of permutations is spam, not metadata.
- */
 const KEYWORD_SHAPES = [
   (title: string) => `${title} react component`,
   (title: string) => `shadcn ${title.toLowerCase()}`,
@@ -111,11 +91,6 @@ export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
   ];
 };
 
-/**
- * A detail page: a TechArticle documenting a SoftwareSourceCode. `codeSampleType`
- * says the listing is the whole thing rather than an excerpt, which is exactly
- * what a registry item is.
- */
 export const entryJsonLd = (entry: RegistryEntryMeta, addedAt?: string): object => {
   const url = absolute(entryHref(entry));
 
@@ -134,8 +109,6 @@ export const entryJsonLd = (entry: RegistryEntryMeta, addedAt?: string): object 
     keywords: entryKeywords(entry).join(', '),
     // The route's own card carries a build hash, so it can't be named here.
     image: absolute(SITE_OG_IMAGE),
-    // Only releases that list their items in the changelog have a date; an
-    // absent property is better than a guessed one.
     ...(addedAt ? { datePublished: addedAt, dateModified: addedAt } : {}),
     author,
     publisher: { '@id': ORGANIZATION_ID },
@@ -152,18 +125,14 @@ export const entryJsonLd = (entry: RegistryEntryMeta, addedAt?: string): object 
   };
 };
 
-/** An index page: the collection plus the items it lists, in display order. */
-export const collectionJsonLd = ({
-  path,
-  name,
-  description,
-  entries,
-}: {
+export interface CollectionJsonLdOptions {
   path: string;
   name: string;
   description: string;
   entries: RegistryEntryMeta[];
-}): object => {
+}
+
+export const collectionJsonLd = ({ path, name, description, entries }: CollectionJsonLdOptions): object => {
   const url = absolute(path);
 
   return {
@@ -189,46 +158,44 @@ export const collectionJsonLd = ({
   };
 };
 
-/** The Open Graph and Twitter halves of a page's card, from one description. */
+interface SocialCardOptions {
+  url: string;
+  title: string;
+  description: string;
+  /** Drops the site-wide `images` so Next's file-convention resolver fills in the route's own hashed URL, which is unknown at `generateMetadata` time. */
+  hasOwnOgImage?: boolean;
+  type?: 'website' | 'article';
+}
+
 const cards = ({
   url,
   title,
   description,
-  ownOgImage,
+  hasOwnOgImage,
   type = 'website',
-}: {
-  url: string;
-  title: string;
-  description: string;
-  /**
-   * Drops the site-wide `images` so Next's file-convention resolver fills it
-   * in; that URL carries a content hash unknown at `generateMetadata` time.
-   */
-  ownOgImage?: boolean;
-  type?: 'website' | 'article';
-}): Pick<Metadata, 'openGraph' | 'twitter'> => ({
+}: SocialCardOptions): Pick<Metadata, 'openGraph' | 'twitter'> => ({
   openGraph: {
     type,
     url,
     siteName: SITE.name,
     title,
     description,
-    ...(ownOgImage ? {} : { images: [{ url: SITE_OG_IMAGE, width: 1200, height: 630, alt: title }] }),
+    ...(hasOwnOgImage ? {} : { images: [{ url: SITE_OG_IMAGE, width: 1200, height: 630, alt: title }] }),
   },
   twitter: {
     card: 'summary_large_image',
     title,
     description,
-    ...(ownOgImage ? {} : { images: [SITE_OG_IMAGE] }),
+    ...(hasOwnOgImage ? {} : { images: [SITE_OG_IMAGE] }),
   },
 });
 
-/**
- * The component/block/template detail routes, differing only in the noun after
- * the title, which is the phrase people search for alongside the name.
- */
-export const detailMetadata = (entry: RegistryEntryMeta, opts: { titleSuffix?: string } = {}): Metadata => {
-  const { titleSuffix } = opts;
+export interface DetailMetadataOptions {
+  titleSuffix?: string;
+}
+
+export const detailMetadata = (entry: RegistryEntryMeta, options: DetailMetadataOptions = {}): Metadata => {
+  const { titleSuffix } = options;
   const href = entryHref(entry);
   const pageTitle = titleSuffix ? `${entry.title} ${titleSuffix}` : entry.title;
 
@@ -238,8 +205,6 @@ export const detailMetadata = (entry: RegistryEntryMeta, opts: { titleSuffix?: s
     keywords: entryKeywords(entry),
     alternates: {
       canonical: href,
-      // Both machine reads of this page: the install payload and the Markdown
-      // an agent handed the URL fetches instead of parsing the HTML.
       types: {
         'application/json': registryItemPath(DEFAULT_BASE, entry.name),
         'text/markdown': registryMarkdownPath(DEFAULT_BASE, entry.name),
@@ -250,40 +215,35 @@ export const detailMetadata = (entry: RegistryEntryMeta, opts: { titleSuffix?: s
       title: titled(pageTitle),
       description: entry.description,
       type: 'article',
-      // Every detail route ships an `opengraph-image.tsx` of its own.
-      ownOgImage: true,
+      hasOwnOgImage: true,
     }),
   };
 };
 
-/** The catalog indexes and category pages, in the shape detail pages use. */
+export interface ListingMetadataOptions {
+  path: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  shouldIndex?: boolean;
+}
+
 export const listingMetadata = ({
   path,
   title,
   description,
   keywords,
-  index = true,
-}: {
-  path: string;
-  title: string;
-  description: string;
-  keywords?: string[];
-  /** Off for a page with no items yet. */
-  index?: boolean;
-}): Metadata => ({
+  shouldIndex = true,
+}: ListingMetadataOptions): Metadata => ({
   title,
   description,
   ...(keywords?.length ? { keywords } : {}),
   alternates: { canonical: path },
-  ...(index ? {} : { robots: { index: false, follow: true } }),
+  ...(shouldIndex ? {} : { robots: { index: false, follow: true } }),
   ...cards({ url: path === '/' ? SITE.url : `${SITE.url}${path}`, title: titled(title), description }),
 });
 
-/**
- * The framed `/embed/*` previews: crawlable on purpose (see `app/robots.ts`)
- * but never ranked. The null canonical matters: inheriting the root layout's
- * `/` would ask Google to fold every frame into the home page.
- */
+/** The null canonical matters: inheriting the root layout's `/` would ask Google to fold every frame into the home page. */
 export const embedMetadata = (title: string): Metadata => ({
   title,
   robots: { index: false, follow: false },

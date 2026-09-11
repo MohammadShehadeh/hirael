@@ -6,16 +6,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { NAV_LINKS } from '@/lib/site';
 
-/**
- * Thin bar under the docs header holding the section switcher (Components,
- * Blocks, Templates, Changelog). It is the only sticky chrome: the header
- * scrolls away above it and the bar pins as it goes, so the sidebar and the
- * "On this page" rail start `top-11`, just below it.
- *
- * The tabs sit flush with the sidebar content: the block carries the sidebar's
- * `px-4` and `-ms-3` cancels the first tab's own padding so its label lands on
- * the same 16px line as the search field and tree below it.
- */
 export const DocsTabsBar = () => {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);

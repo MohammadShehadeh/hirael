@@ -27,10 +27,6 @@ export interface LandingCatalogProps {
   items: LatestCatalog;
 }
 
-/**
- * First-screen catalog: two live previews per collection, so templates, blocks
- * and components are all visible without leaving the landing page.
- */
 export const LandingCatalog = ({ items }: LandingCatalogProps) => {
   return (
     <section aria-label="Latest from the catalog" className="pb-16 sm:pb-20">

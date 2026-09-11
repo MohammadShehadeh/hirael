@@ -6,31 +6,17 @@ import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
 import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/**
- * Renders a block in a fixed-width iframe, scaled to fit the card. Card height
- * tracks content: `?static=1` drops the shell's `min-h-svh` (globals.css) so a
- * block reports its natural height, which is measured and clamped to size the
- * card — no dead space under short blocks. The iframe mounts only once the
- * width is known, so it never flashes and its content mounts visible (which
- * `whileInView` reveals need).
- *
- * With `fill` the parent owns the box instead: the block renders at
- * `simWidth` × `DEFAULT_HEIGHT` (16:9) scaled to the parent's width and the
- * rest is cropped, so the parent should be `aspect-video` for the crop to
- * land on the block's top edge.
- */
+// `?static=1` drops the embed shell's `min-h-svh` (globals.css) so the block reports its natural height.
+// The iframe mounts only once the width is known so its content mounts visible, which `whileInView` reveals need.
 const SIM_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
 const MAX_HEIGHT = 760;
 
 export interface BlockPreviewProps {
-  /** The block or template to frame; the path follows the active base. */
   entry: RegistryEntryMeta;
-  /** Width the block is laid out at inside the frame before scaling. */
   simWidth?: number;
   className?: string;
-  /** Fill the parent and crop overflow instead of sizing the card to the block. */
   fill?: boolean;
 }
 
@@ -56,19 +42,16 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
     return () => ro.disconnect();
   }, []);
 
-  // Disconnect the content observer when the card unmounts.
   React.useEffect(() => () => contentRoRef.current?.disconnect(), []);
 
   const scale = width === null ? null : width / simWidth;
 
-  // Size the card to the block, tracking late reflow (fonts, images).
   function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
     setLoaded(true);
     if (fill) return;
     const doc = event.currentTarget.contentDocument;
     if (!doc) return;
-    // Measure the shell, not `documentElement.scrollHeight` — the latter never
-    // drops below the iframe viewport, so it always reads the full sim height.
+    // Not `documentElement.scrollHeight`: it never drops below the iframe viewport, so it always reads the full sim height.
     const target = doc.querySelector<HTMLElement>('[data-embed-shell]');
     if (!target) return;
     const measureHeight = () => {

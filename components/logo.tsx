@@ -8,13 +8,6 @@ const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
   letterSpacing: '0.18em',
 };
 
-/**
- * Arch-and-star mark — a squared doorway with a 4-point star inside and three
- * stacked reflection lenses below the base, reading as light on water (the
- * brand mark). The arch is stroked and the star and reflections are filled,
- * all in currentColor so the mark tracks the surrounding text color. The
- * viewBox is cropped to the artwork so it stays legible at favicon size.
- */
 const ArchMarkPaths = () => {
   return (
     <>
@@ -53,11 +46,6 @@ interface HiraelWordmarkSvgProps {
   className?: string;
 }
 
-/**
- * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
- * the arch mark on its left. ViewBox is tightened so the type fills the
- * vertical room; callers can size with a single h-* utility.
- */
 const HiraelWordmarkSvg = ({ className }: HiraelWordmarkSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" role="img" aria-hidden className={className}>
@@ -101,13 +89,6 @@ export interface LogoTileProps {
   markClassName?: string;
 }
 
-/**
- * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
- * surface with a top-lit gradient, a hairline edge, a layered drop shadow, and
- * a glossy top bevel (the same physical-key treatment as the Kbd component, so
- * the brand mark reads like a pressable key). Matches the board's ICON / MARK
- * panel. Size with a single `size-*` utility on `className`.
- */
 export const LogoTile = ({ className, markClassName }: LogoTileProps) => {
   return (
     <span

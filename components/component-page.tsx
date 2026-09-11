@@ -44,7 +44,6 @@ export interface ApiProp {
   required: boolean;
   default: string | null;
   description: string | null;
-  /** Pre-highlighted inline HTML (VSCode token colors) for `type` / `default`. */
   typeHtml?: string;
   defaultHtml?: string | null;
 }
@@ -55,14 +54,12 @@ export interface ApiPart {
   extendsNative: boolean;
 }
 
-/** A single example a component showcases — its slug, label and source. */
 export interface ExampleEntry {
   slug: string;
   title: string;
   source: SourceFile | null;
 }
 
-/** An example with its source from every base; the page picks the active one. */
 export interface ExampleSources {
   slug: string;
   title: string;
@@ -71,27 +68,17 @@ export interface ExampleSources {
 
 export interface ComponentPageProps {
   entry: RegistryEntryMeta;
-  /** Pre-highlighted install source files per base, keyed by base-relative path. */
   sources: Record<RegistryBase, Record<string, SourceFile>>;
-  /** Component examples, each with pre-highlighted source per base. Composite items pass none. */
   examples?: ExampleSources[];
-  /** Highlighted import snippet for the installed file. Components only. */
   usage?: SourceFile | null;
-  /** Extracted per-part props tables (registry-props.json). */
   api?: ApiPart[] | null;
-  /** Hierarchy trail shown above the header for navigation. */
   breadcrumb?: Crumb[];
-  /** Ship date and related items, resolved on the server from the changelog. */
   extras?: DetailExtras;
 }
 
 export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
-  // Multi-file items (composites, or a component that ships a folder of parts
-  // like the data table) show their install tree; single files stay flat.
   const treeView = isComposite || (entry.files ?? []).length > 1;
-  // Everything below reads from the active base: source tabs, examples, the
-  // framed preview and the install command all switch together.
   const base = useRegistryBase();
   const source = sources[base];
 
@@ -112,9 +99,6 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
   const registryDeps = entry.registryDependencies ?? [];
   const npmDeps = entry.dependencies ?? [];
 
-  // One descriptor list drives both the rendered sections and the "On this
-  // page" rail, so the two can never drift. Order mirrors shadcn/ui's docs:
-  // the showcase first, then how to install it, then the reference material.
   const sections: PageSection[] = [];
 
   if (isComposite) {
@@ -211,7 +195,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
   const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-4 py-10 sm:py-12 md:px-6 md:py-14 xl:px-8">
+    <div className="docs-container py-10 sm:py-12 md:py-14">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
           <header className="flex flex-col gap-4">
@@ -344,13 +328,12 @@ const Section = ({ id, label, children }: SectionProps) => {
 
 interface ExampleBlockProps {
   example: ExampleEntry;
-  /** Off when the page has a single example, whose title would repeat the page's. */
   showTitle: boolean;
 }
 
 const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
   const [view, setView] = React.useState<'preview' | 'code'>('preview');
-  const [rtl, setRtl] = React.useState(false);
+  const [isRtl, setIsRtl] = React.useState(false);
   const base = useRegistryBase();
   const hasCode = !!example.source;
 
@@ -376,23 +359,21 @@ const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
               },
             ]}
           />
-          {view === 'preview' && <DirectionToggle rtl={rtl} onToggle={setRtl} />}
+          {view === 'preview' && <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} />}
         </div>
 
         {view === 'preview' ? (
           <div
-            dir={rtl ? 'rtl' : undefined}
+            dir={isRtl ? 'rtl' : undefined}
             data-customizer-scope=""
             className="bg-dot-grid flex min-h-90 items-center justify-center px-8 py-6 sm:min-h-105 sm:px-12 sm:py-8 md:px-16 md:py-10"
           >
-            {/* Radix + Base UI direction providers cross React portals, so
-                dropdown/popover content (which portals to <body>, outside this
-                dir wrapper) still renders RTL. Remount on direction change so
-                locale-derived initial state re-seeds in the active language. */}
-            <DirectionProvider dir={rtl ? 'rtl' : 'ltr'}>
-              <BaseDirectionProvider direction={rtl ? 'rtl' : 'ltr'}>
-                <DemoLocaleProvider locale={rtl ? 'ar' : 'en'}>
-                  <RegistryExample key={`${base}-${rtl ? 'ar' : 'en'}`} name={example.slug} base={base} />
+            {/* Both direction providers must wrap here: portalled content renders outside this dir wrapper.
+                The key remounts on direction change so locale-derived initial state re-seeds. */}
+            <DirectionProvider dir={isRtl ? 'rtl' : 'ltr'}>
+              <BaseDirectionProvider direction={isRtl ? 'rtl' : 'ltr'}>
+                <DemoLocaleProvider locale={isRtl ? 'ar' : 'en'}>
+                  <RegistryExample key={`${base}-${isRtl ? 'ar' : 'en'}`} name={example.slug} base={base} />
                 </DemoLocaleProvider>
               </BaseDirectionProvider>
             </DirectionProvider>

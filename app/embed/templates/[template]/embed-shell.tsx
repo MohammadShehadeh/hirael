@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react';
 
-/**
- * Background wrapper for statically exported template embeds. Reading
- * direction is set on `<html>` before paint by the inline script in
- * `page.tsx` (see `lib/embed.ts`), so this stays a plain server wrapper
- * with no direction state to flip after mount.
- */
-export const TemplateEmbedShell = ({ children }: { children: ReactNode }) => {
+export interface TemplateEmbedShellProps {
+  children: ReactNode;
+}
+
+export const TemplateEmbedShell = ({ children }: TemplateEmbedShellProps) => {
   return (
     <div data-embed-shell className="min-h-svh bg-black">
       {children}

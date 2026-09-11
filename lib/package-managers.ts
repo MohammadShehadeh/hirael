@@ -16,22 +16,16 @@ const RUNNERS: Record<PackageManager, string> = {
   bun: 'bunx --bun',
 };
 
-export const getShadcnAddCommand = (pm: PackageManager, url: string): string =>
-  `${RUNNERS[pm]} shadcn@latest add ${url}`;
+export const getShadcnAddCommand = (packageManager: PackageManager, url: string): string =>
+  `${RUNNERS[packageManager]} shadcn@latest add ${url}`;
 
-export const getShadcnInitCommand = (pm: PackageManager, flags: string): string =>
-  `${RUNNERS[pm]} shadcn@latest init ${flags}`.trim();
+export const getShadcnInitCommand = (packageManager: PackageManager, flags: string): string =>
+  `${RUNNERS[packageManager]} shadcn@latest init ${flags}`.trim();
 
 const isPackageManager = (value: string | null): value is PackageManager => {
   return value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value);
 };
 
-/**
- * Held in the module rather than in any one component, so every install block
- * on the page agrees without one of them owning the state. localStorage is
- * where it persists, not where it lives: a browser that refuses to store it
- * still gets a working picker for the visit.
- */
 let current: PackageManager | null = null;
 
 const fromStorage = (): PackageManager => {
@@ -43,21 +37,19 @@ const fromStorage = (): PackageManager => {
   }
 };
 
-/** Resolved from storage on first read, then kept in memory. */
 const snapshot = (): PackageManager => (current ??= fromStorage());
 
-/** `storage` covers other tabs; the custom event covers this one, which
- * `storage` never fires in. */
+/** `storage` fires only in other tabs, so the custom event covers this one. */
 const subscribe = (onStoreChange: () => void) => {
-  const onStorage = (event: StorageEvent) => {
+  const handleStorage = (event: StorageEvent) => {
     if (event.key !== STORAGE_KEY) return;
     current = isPackageManager(event.newValue) ? event.newValue : 'npm';
     onStoreChange();
   };
-  window.addEventListener('storage', onStorage);
+  window.addEventListener('storage', handleStorage);
   window.addEventListener(CHANGE_EVENT, onStoreChange);
   return () => {
-    window.removeEventListener('storage', onStorage);
+    window.removeEventListener('storage', handleStorage);
     window.removeEventListener(CHANGE_EVENT, onStoreChange);
   };
 };
@@ -66,12 +58,11 @@ export const setPackageManager = (next: PackageManager) => {
   current = next;
   try {
     window.localStorage.setItem(STORAGE_KEY, next);
-  } catch {
-  }
+  } catch {}
   window.dispatchEvent(new CustomEvent<PackageManager>(CHANGE_EVENT, { detail: next }));
 };
 
-export const usePackageManager = (): [PackageManager, (pm: PackageManager) => void] => {
-  const pm = React.useSyncExternalStore(subscribe, snapshot, () => 'npm' as PackageManager);
-  return [pm, setPackageManager];
+export const usePackageManager = () => {
+  const packageManager = React.useSyncExternalStore(subscribe, snapshot, () => 'npm' as PackageManager);
+  return { packageManager, setPackageManager };
 };

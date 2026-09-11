@@ -38,10 +38,6 @@ export interface DocsSidebarProps {
   releases: SidebarRelease[];
 }
 
-/**
- * The docs sidebar column: sticky under the tabs bar and scrolling on its
- * own. Hidden below `md`, where `DocsHeader` opens the same tree in a sheet.
- */
 export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
   return (
     <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-(--docs-sidebar-width) shrink-0 overflow-y-auto border-e border-border md:block">
@@ -55,7 +51,6 @@ export interface DocsSidebarNavProps {
   className?: string;
 }
 
-/** The search field and the active section's page tree; rendered by the desktop column and the mobile sheet. */
 export const DocsSidebarNav = ({ releases, className }: DocsSidebarNavProps) => {
   const pathname = usePathname();
   const ref = React.useRef<HTMLElement>(null);
@@ -102,7 +97,7 @@ const RootPageLink = ({ href, isCurrent, children }: RootPageLinkProps) => {
       className={cn(
         'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
         isCurrent
-          ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-start-2 before:w-0.5 before:rounded-full before:bg-foreground'
+          ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-inset-s-2 before:w-0.5 before:rounded-full before:bg-foreground'
           : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
       )}
     >
@@ -114,7 +109,6 @@ const RootPageLink = ({ href, isCurrent, children }: RootPageLinkProps) => {
 interface FolderProps {
   icon: LucideIcon;
   label: string;
-  /** Set when the label is itself a page, such as a category index. */
   href?: string;
   children: React.ReactNode;
 }
@@ -158,7 +152,7 @@ const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProp
         className={cn(
           'relative flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm transition-colors',
           isCurrent
-            ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-start-[calc(0.5rem+1px)] before:w-0.5 before:rounded-full before:bg-foreground'
+            ? 'bg-accent text-foreground before:absolute before:inset-y-1.5 before:-inset-s-2.25 before:w-0.5 before:rounded-full before:bg-foreground'
             : 'text-muted-foreground hover:text-foreground',
         )}
       >

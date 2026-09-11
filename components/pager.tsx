@@ -4,14 +4,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BLOCK_KIND_LABELS, CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/**
- * Previous / next navigation at the foot of a detail page, the way the
- * shadcn/ui docs let you walk the catalog. Siblings come from
- * `entrySiblings` (a linear walk of the item's collection), so this steps
- * through every component, block, or template in order. RTL-safe: the cards
- * sit on the inline edges and the chevrons flip with `rtl:rotate-180`.
- */
-export const Pager = ({ prev, next }: { prev: RegistryEntryMeta | null; next: RegistryEntryMeta | null }) => {
+export interface PagerProps {
+  prev: RegistryEntryMeta | null;
+  next: RegistryEntryMeta | null;
+}
+
+export const Pager = ({ prev, next }: PagerProps) => {
   if (!prev && !next) return null;
 
   return (
@@ -22,7 +20,12 @@ export const Pager = ({ prev, next }: { prev: RegistryEntryMeta | null; next: Re
   );
 };
 
-const PagerLink = ({ entry, direction }: { entry: RegistryEntryMeta; direction: 'prev' | 'next' }) => {
+interface PagerLinkProps {
+  entry: RegistryEntryMeta;
+  direction: 'prev' | 'next';
+}
+
+const PagerLink = ({ entry, direction }: PagerLinkProps) => {
   const isPrev = direction === 'prev';
   const Chevron = isPrev ? ChevronLeft : ChevronRight;
   const chevron = <Chevron className="size-3.5 shrink-0 rtl:rotate-180" aria-hidden />;

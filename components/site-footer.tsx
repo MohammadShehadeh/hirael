@@ -5,10 +5,18 @@ import { cn } from '@/lib/utils';
 import { SITE } from '@/lib/site';
 import { Logo } from '@/components/logo';
 
-const FOOTER_LINKS: {
+interface FooterLink {
+  href: string;
   label: string;
-  links: { href: string; label: string; external?: boolean }[];
-}[] = [
+  isExternal?: boolean;
+}
+
+interface FooterLinkGroup {
+  label: string;
+  links: FooterLink[];
+}
+
+const FOOTER_LINKS: FooterLinkGroup[] = [
   {
     label: 'Library',
     links: [
@@ -21,41 +29,41 @@ const FOOTER_LINKS: {
     label: 'Resources',
     links: [
       { href: '/changelog', label: 'Changelog' },
-      { href: `${SITE.githubRepoUrl}/blob/main/CONTRIBUTING.md`, label: 'Contributing', external: true },
-      { href: `${SITE.githubRepoUrl}/blob/main/LICENSE`, label: 'License', external: true },
+      { href: `${SITE.githubRepoUrl}/blob/main/CONTRIBUTING.md`, label: 'Contributing', isExternal: true },
+      { href: `${SITE.githubRepoUrl}/blob/main/LICENSE`, label: 'License', isExternal: true },
     ],
   },
   {
-    // The machine-facing half of the registry. It has no page of its own, so
-    // without this column the only way to find it is to already know it exists.
-    // `external` on the static files keeps them out of the client router,
-    // which would otherwise try to navigate to a text file as if it were a route.
+    // isExternal keeps these static files out of the client router, which would otherwise treat them as routes.
     label: 'For agents',
     links: [
-      { href: '/llms.txt', label: 'llms.txt', external: true },
-      { href: '/r/registry.json', label: 'Registry JSON', external: true },
+      { href: '/llms.txt', label: 'llms.txt', isExternal: true },
+      { href: '/r/registry.json', label: 'Registry JSON', isExternal: true },
     ],
   },
   {
     label: 'Author',
     links: [
-      { href: SITE.githubRepoUrl, label: 'Repository', external: true },
-      { href: SITE.authorUrl, label: 'Portfolio', external: true },
-      { href: SITE.githubUrl, label: 'GitHub', external: true },
+      { href: SITE.githubRepoUrl, label: 'Repository', isExternal: true },
+      { href: SITE.authorUrl, label: 'Portfolio', isExternal: true },
+      { href: SITE.githubUrl, label: 'GitHub', isExternal: true },
     ],
   },
 ];
 
-const COMPACT_LINKS: { href: string; label: string; external?: boolean }[] = [
+const COMPACT_LINKS: FooterLink[] = [
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },
   { href: '/changelog', label: 'Changelog' },
-  { href: '/llms.txt', label: 'llms.txt', external: true },
+  { href: '/llms.txt', label: 'llms.txt', isExternal: true },
 ];
 
-/** One-row footer for pages inside the sidebar shell, where the marketing footer is noise. */
-export const SiteFooterCompact = ({ className }: { className?: string }) => {
+export interface SiteFooterCompactProps {
+  className?: string;
+}
+
+export const SiteFooterCompact = ({ className }: SiteFooterCompactProps) => {
   const year = new Date().getFullYear();
   return (
     <footer className={cn('mt-auto border-t border-border px-4 py-5 sm:px-6 lg:px-8', className)}>
@@ -65,7 +73,7 @@ export const SiteFooterCompact = ({ className }: { className?: string }) => {
         </p>
         <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {COMPACT_LINKS.map((link) =>
-            link.external ? (
+            link.isExternal ? (
               <a
                 key={link.href}
                 href={link.href}
@@ -95,14 +103,17 @@ export const SiteFooterCompact = ({ className }: { className?: string }) => {
   );
 };
 
-export const SiteFooter = ({ className }: { className?: string }) => {
+export interface SiteFooterProps {
+  className?: string;
+}
+
+export const SiteFooter = ({ className }: SiteFooterProps) => {
   const year = new Date().getFullYear();
 
   return (
     <footer className={cn('mt-auto pb-4 sm:pb-6', className)}>
       <div className="container w-full">
         <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-elevated sm:rounded-[2rem]">
-          {/* Texture: a soft halo and a masked dot grid, contained in the panel. */}
           <div aria-hidden className="ambient-halo opacity-70" />
           <div
             aria-hidden
@@ -110,7 +121,6 @@ export const SiteFooter = ({ className }: { className?: string }) => {
           />
 
           <div className="relative px-6 pt-12 sm:px-10 sm:pt-14 lg:px-14">
-            {/* Top row: brand + tagline, and a primary call to action. */}
             <div className="flex flex-col gap-8 border-b border-border/70 pb-10 md:flex-row md:items-end md:justify-between">
               <div className="flex max-w-sm flex-col gap-4">
                 <Link
@@ -135,7 +145,6 @@ export const SiteFooter = ({ className }: { className?: string }) => {
               </Link>
             </div>
 
-            {/* Link columns. */}
             <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
               {FOOTER_LINKS.map((group) => (
                 <div key={group.label} className="flex flex-col gap-3.5">
@@ -145,7 +154,7 @@ export const SiteFooter = ({ className }: { className?: string }) => {
                   <ul className="flex flex-col gap-2.5">
                     {group.links.map((link) => (
                       <li key={link.href}>
-                        {link.external ? (
+                        {link.isExternal ? (
                           <a
                             href={link.href}
                             target="_blank"
@@ -170,8 +179,6 @@ export const SiteFooter = ({ className }: { className?: string }) => {
             </div>
           </div>
 
-          {/* Oversized serif wordmark, clipped by the panel as a backdrop for
-              the legal bar. */}
           <div className="relative">
             <span
               aria-hidden

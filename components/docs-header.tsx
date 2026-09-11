@@ -15,19 +15,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/registry/hirael/bases/radix/ui/sheet';
 
-/**
- * Static, content-aligned header for the showcase. Unlike `SiteHeader` on the
- * landing page it never sticks: the thin `DocsTabsBar` below it is the only
- * pinned chrome, so the header scrolls away and the bar pins as it goes.
- *
- * Its cells mirror the docs grid so the chrome shares one vertical with the
- * content: the logo cell is the sidebar column (`--docs-sidebar-width`, set on
- * the layout root) with the sidebar's own `px-4`, so the wordmark lands on the
- * same line as the search field and tree below it. Below `md` the sidebar
- * column is gone and the tree opens from the menu button in a sheet.
- */
 export interface DocsHeaderProps {
-  /** Build-time GitHub star count; omit or pass null to hide the badge. */
   stars?: number | null;
   releases: SidebarRelease[];
 }

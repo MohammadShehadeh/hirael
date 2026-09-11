@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { RotateCcw, SlidersHorizontal } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { BASES, ICON_LIBRARIES, RADII, formatThemeCss, type CustomizerConfig } from '@/lib/customizer';
 import { FONTS } from '@/lib/fonts';
 import { getShadcnInitCommand, usePackageManager } from '@/lib/package-managers';
@@ -32,10 +31,14 @@ import {
 } from '@/registry/hirael/bases/radix/ui/sheet';
 import { Switch } from '@/registry/hirael/bases/radix/ui/switch';
 
-export const CustomizerTrigger = ({ className }: { className?: string }) => {
-  const [open, setOpen] = React.useState(false);
+export interface CustomizerTriggerProps {
+  className?: string;
+}
+
+export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon-sm" aria-label="Open customizer" className={className}>
           <SlidersHorizontal className="size-3.5" />
@@ -50,20 +53,19 @@ export const CustomizerTrigger = ({ className }: { className?: string }) => {
 
 const CustomizerBody = () => {
   const { config, tokens, isDefault, setConfig, reset } = useTheme();
-  const [pm] = usePackageManager();
+  const { packageManager } = usePackageManager();
 
   const themes = getThemesForBaseColor(config.baseColor);
   const css = formatThemeCss(tokens);
-  const initCommand = getShadcnInitCommand(pm, `--base ${config.base}`);
+  const initCommand = getShadcnInitCommand(packageManager, `--base ${config.base}`);
   const setup = `${initCommand}\n\n// components.json\n"iconLibrary": "${config.iconLibrary}"`;
 
-  const themeItems = (swatch: (theme: ThemeItem) => string): PickerItem[] =>
-    themes.map((theme, i) => ({
+  const buildThemeItems = (getSwatch: (theme: ThemeItem) => string): PickerItem[] =>
+    themes.map((theme, index) => ({
       value: theme.name,
       label: theme.title,
-      swatch: swatch(theme),
-      // The base color's own neutral sits above the accents.
-      separatorAfter: i === 0 && isBaseColor(theme.name),
+      swatch: getSwatch(theme),
+      separatorAfter: index === 0 && isBaseColor(theme.name),
     }));
 
   return (
@@ -84,7 +86,7 @@ const CustomizerBody = () => {
                 ariaLabel="Base"
                 value={config.base}
                 onValueChange={(base) => setConfig({ base: base as CustomizerConfig['base'] })}
-                items={BASES.map((b) => ({ value: b.name, label: b.title }))}
+                items={BASES.map((base) => ({ value: base.name, label: base.title }))}
               />
             </Row>
             <Row label="Icon Library">
@@ -96,9 +98,9 @@ const CustomizerBody = () => {
                     iconLibrary: iconLibrary as CustomizerConfig['iconLibrary'],
                   })
                 }
-                items={ICON_LIBRARIES.map((i) => ({
-                  value: i.name,
-                  label: i.title,
+                items={ICON_LIBRARIES.map((library) => ({
+                  value: library.name,
+                  label: library.title,
                 }))}
               />
             </Row>
@@ -135,10 +137,10 @@ const CustomizerBody = () => {
                     baseColor: baseColor as CustomizerConfig['baseColor'],
                   })
                 }
-                items={BASE_COLORS.map((t) => ({
-                  value: t.name,
-                  label: t.title,
-                  swatch: t.cssVars.light.background ?? 'var(--background)',
+                items={BASE_COLORS.map((baseColor) => ({
+                  value: baseColor.name,
+                  label: baseColor.title,
+                  swatch: baseColor.cssVars.light.background ?? 'var(--background)',
                 }))}
               />
             </Row>
@@ -147,7 +149,7 @@ const CustomizerBody = () => {
                 ariaLabel="Theme"
                 value={config.theme}
                 onValueChange={(theme) => setConfig({ theme })}
-                items={themeItems((t) => t.cssVars.light.primary ?? 'var(--primary)')}
+                items={buildThemeItems((theme) => theme.cssVars.light.primary ?? 'var(--primary)')}
               />
             </Row>
             <Row label="Chart Color">
@@ -155,7 +157,7 @@ const CustomizerBody = () => {
                 ariaLabel="Chart color"
                 value={config.chartColor}
                 onValueChange={(chartColor) => setConfig({ chartColor })}
-                items={themeItems((t) => t.cssVars.light['chart-1'] ?? 'var(--chart-1)')}
+                items={buildThemeItems((theme) => theme.cssVars.light['chart-1'] ?? 'var(--chart-1)')}
               />
             </Row>
             <Row label="Font">
@@ -163,10 +165,10 @@ const CustomizerBody = () => {
                 ariaLabel="Font"
                 value={config.font}
                 onValueChange={(font) => setConfig({ font })}
-                items={FONTS.map((f) => ({
-                  value: f.name,
-                  label: f.title,
-                  style: { fontFamily: f.family },
+                items={FONTS.map((font) => ({
+                  value: font.name,
+                  label: font.title,
+                  style: { fontFamily: font.family },
                 }))}
               />
             </Row>
@@ -175,11 +177,11 @@ const CustomizerBody = () => {
                 ariaLabel="Radius"
                 value={config.radius}
                 onValueChange={(radius) => setConfig({ radius: radius as CustomizerConfig['radius'] })}
-                items={RADII.map((r, i) => ({
-                  value: r.name,
-                  label: r.title,
-                  radius: r.value || 'var(--radius)',
-                  separatorAfter: i === 0,
+                items={RADII.map((radius, index) => ({
+                  value: radius.name,
+                  label: radius.title,
+                  radius: radius.value || 'var(--radius)',
+                  separatorAfter: index === 0,
                 }))}
               />
             </Row>
@@ -222,17 +224,14 @@ interface PickerItem {
   separatorAfter?: boolean;
 }
 
-const Picker = ({
-  value,
-  onValueChange,
-  items,
-  ariaLabel,
-}: {
+interface PickerProps {
   value: string;
   onValueChange: (value: string) => void;
   items: PickerItem[];
   ariaLabel: string;
-}) => {
+}
+
+const Picker = ({ value, onValueChange, items, ariaLabel }: PickerProps) => {
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger size="sm" aria-label={ariaLabel} className="w-40">
@@ -266,11 +265,21 @@ const Picker = ({
   );
 };
 
-const Rows = ({ children }: { children: React.ReactNode }) => (
+interface RowsProps {
+  children: React.ReactNode;
+}
+
+const Rows = ({ children }: RowsProps) => (
   <div className="divide-y divide-border rounded-md border border-border bg-card px-3">{children}</div>
 );
 
-const Row = ({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) => (
+interface RowProps {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}
+
+const Row = ({ label, hint, children }: RowProps) => (
   <div className="flex min-h-11 items-center justify-between gap-3 py-1.5">
     <div className="flex flex-col">
       <span className="text-xs text-foreground">{label}</span>
@@ -280,19 +289,15 @@ const Row = ({ label, hint, children }: { label: string; hint?: string; children
   </div>
 );
 
-const Section = ({
-  title,
-  hint,
-  children,
-  className,
-}: {
+interface SectionProps {
   title: string;
   hint?: string;
   children: React.ReactNode;
-  className?: string;
-}) => {
+}
+
+const Section = ({ title, hint, children }: SectionProps) => {
   return (
-    <section className={cn(className)}>
+    <section>
       <div className="mb-2 flex items-baseline justify-between">
         <h3 className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{title}</h3>
         {hint && (

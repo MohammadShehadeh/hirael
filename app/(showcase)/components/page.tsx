@@ -51,7 +51,7 @@ export default async function ComponentsIndex() {
   const composeHtml = await highlightCode(COMPOSE_SNIPPET, 'tsx');
 
   return (
-    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+    <div className="docs-container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <CollectionJsonLd
         id="components-index"
         path="/components"
@@ -66,29 +66,31 @@ export default async function ComponentsIndex() {
       />
 
       <nav aria-label="Component categories" className="-mt-6 flex flex-wrap justify-center gap-2">
-        {COMPONENT_CATEGORY_ORDER.map((cat) => (
+        {COMPONENT_CATEGORY_ORDER.map((category) => (
           <a
-            key={cat}
-            href={`#${cat}`}
+            key={category}
+            href={`#${category}`}
             className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
-            {CATEGORY_LABELS[cat]}
-            <span className="ms-1.5 tabular-nums text-muted-foreground/60">{REGISTRY_BY_CATEGORY[cat].length}</span>
+            {CATEGORY_LABELS[category]}
+            <span className="ms-1.5 tabular-nums text-muted-foreground/60">
+              {REGISTRY_BY_CATEGORY[category].length}
+            </span>
           </a>
         ))}
       </nav>
 
-      {COMPONENT_CATEGORY_ORDER.map((cat) => {
-        const items = REGISTRY_BY_CATEGORY[cat];
+      {COMPONENT_CATEGORY_ORDER.map((category) => {
+        const items = REGISTRY_BY_CATEGORY[category];
         if (!items.length) return null;
         return (
-          <section key={cat} id={cat} className="flex scroll-mt-24 flex-col gap-5">
+          <section key={category} id={category} className="flex scroll-mt-24 flex-col gap-5">
             <div className="flex items-baseline justify-between">
               <Link
-                href={`/components/${cat}`}
+                href={`/components/${category}`}
                 className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
               >
-                <SectionLabel className="text-foreground">{CATEGORY_LABELS[cat]}</SectionLabel>
+                <SectionLabel className="text-foreground">{CATEGORY_LABELS[category]}</SectionLabel>
                 <ArrowRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
               </Link>
               <span className="font-mono text-[10px] tabular-nums text-muted-foreground">{items.length}</span>

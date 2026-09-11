@@ -28,8 +28,7 @@ import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = listingMetadata({
   path: '/',
-  // `title.template` applies to child segments, not to the page in the same
-  // one, so the home page names the site itself.
+  // `title.template` applies to child segments, not the page in the same one, so the home page names the site itself.
   title: `${SITE.tagline} - ${SITE.name}`,
   description: SITE.longDescription,
   keywords: [...SITE.keywords],
@@ -103,7 +102,7 @@ function Hero({ latestRelease }: HeroProps) {
 
         <p
           style={{ animationDelay: '160ms', animationFillMode: 'both' }}
-          className={`max-w-2xl text-base text-muted-foreground sm:text-lg ${rise}`}
+          className={cn('max-w-2xl text-base text-muted-foreground sm:text-lg', rise)}
         >
           A collection of React components, section blocks, and full-page templates you can copy into any project with
           the shadcn CLI.
@@ -111,7 +110,7 @@ function Hero({ latestRelease }: HeroProps) {
 
         <div
           style={{ animationDelay: '240ms', animationFillMode: 'both' }}
-          className={`flex flex-wrap items-center justify-center gap-3 ${rise}`}
+          className={cn('flex flex-wrap items-center justify-center gap-3', rise)}
         >
           <Button size="lg" className="rounded-full px-6" asChild>
             <Link href="/components">
@@ -165,8 +164,6 @@ const FEATURES: {
   },
 ];
 
-// A few lit cells per card so the blueprint grid reads differently on each.
-// Coordinates are [column, row] in 20px grid units.
 const CARD_GRID_SQUARES: [number, number][][] = [
   [
     [8, 1],
@@ -200,12 +197,6 @@ const CARD_GRID_SQUARES: [number, number][][] = [
   ],
 ];
 
-/**
- * Faint blueprint grid with a few lit cells — adapted from the Tailwind UI
- * "GridPattern". Token-only (foreground at low opacity) so it stays on the
- * near-monochrome palette and works in both themes; masked so it glows at the
- * top and fades out.
- */
 interface CardGridProps {
   id: string;
   squares: [number, number][];
@@ -320,15 +311,8 @@ function SectionBlocks() {
   );
 }
 
-/** The two the catalog leads with; the rest are one click away on /templates. */
 const FEATURED_TEMPLATES = ['agency-landing', 'mindloop'] as const;
 
-/**
- * Components and blocks each get a section that shows the real thing; templates
- * were the one item type the page only named, in a button at the very bottom.
- * They are the largest thing the registry ships, so they get the same framed
- * preview the templates index uses.
- */
 function FullTemplates() {
   return (
     <section className="relative py-20 sm:py-28">
@@ -387,7 +371,7 @@ function ClosingCta() {
       </div>
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
-        <Pill live>Get started</Pill>
+        <Pill data-live>Get started</Pill>
         <h2 className="text-display text-4xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
           Install one. Keep all of it.
         </h2>

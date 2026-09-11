@@ -66,6 +66,20 @@
   max-width: 1480px;
 }
 
+/* Docs pages (components, blocks, templates, changelog) share one article width and gutter. */
+@utility docs-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
 /* Light: warm near-white canvas (#F4F2EC), slate ink (#161B22) — the faithful
  * inverse of the dark board palette. Primary is slate, warm taupe (#ADA69A) is
  * the brand tone, and a single cool blue stays reserved for live/active. */
@@ -510,4 +524,12 @@ html[data-static] [data-embed-shell] {
  * (see block-viewer.tsx). */
 html[data-fit] [data-embed-shell] {
   min-height: 0 !important;
+}
+
+/* The frame grows a beat behind its content, so a visible scrollbar would flash and shift the block sideways. */
+html[data-fit] {
+  scrollbar-width: none;
+}
+html[data-fit]::-webkit-scrollbar {
+  display: none;
 }

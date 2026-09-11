@@ -25,33 +25,43 @@ const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
 
 const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 
-// Auto-height clamps. The floor keeps a refresh from collapsing to a sliver
-// before the first measurement; the ceiling stops full-page templates from
-// stretching the document — past it the iframe scrolls internally again.
+// Floor keeps a refresh from collapsing before the first measurement. Blocks get their natural height; full-page templates are capped and scroll internally instead of stretching the page.
 const MIN_HEIGHT = 320;
-const MAX_HEIGHT = 700;
+const BLOCK_MAX_HEIGHT = 1200;
+const TEMPLATE_MAX_HEIGHT = 700;
+
+const observeShellHeight = (frame: HTMLIFrameElement, onHeight: (shellHeight: number) => void) => {
+  const shell = frame.contentDocument?.querySelector<HTMLElement>('[data-embed-shell]');
+  if (!shell) return null;
+  const measure = () => {
+    const shellHeight = Math.round(shell.getBoundingClientRect().height);
+    if (shellHeight > 0) onHeight(shellHeight);
+  };
+  measure();
+  const observer = new ResizeObserver(measure);
+  observer.observe(shell);
+  return observer;
+};
 
 export interface BlockViewerProps {
-  /** The block or template to frame; the path follows the active base. */
   entry: RegistryEntryMeta;
-  /** Frame height until the block's own height is measured. */
   initialHeight?: number;
 }
 
-export const BlockViewer = ({ entry, initialHeight = MAX_HEIGHT }: BlockViewerProps) => {
+export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: BlockViewerProps) => {
   const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
+  const maxHeight = entry.category === 'templates' ? TEMPLATE_MAX_HEIGHT : BLOCK_MAX_HEIGHT;
   const [viewport, setViewport] = React.useState<Viewport>('desktop');
   const [key, setKey] = React.useState(0);
-  const [rtl, setRtl] = React.useState(false);
+  const [isRtl, setIsRtl] = React.useState(false);
   const [height, setHeight] = React.useState<number | null>(null);
-  const contentRoRef = React.useRef<ResizeObserver | null>(null);
+  const frameRef = React.useRef<HTMLIFrameElement>(null);
+  const shellObserverRef = React.useRef<ResizeObserver | null>(null);
 
-  // `?fit=1` drops the embed shell's viewport min-height (globals.css) so the
-  // iframe can size itself to the block's natural height — no dead space under
-  // short blocks, no nested scrollbar until the ceiling kicks in.
+  // `?fit=1` drops the embed shell's viewport min-height (globals.css) so the iframe can size to the block's natural height.
   const params = new URLSearchParams({ fit: '1' });
-  if (rtl) params.set('dir', 'rtl');
+  if (isRtl) params.set('dir', 'rtl');
   const src = `${embedHref}?${params.toString()}`;
 
   const sizing =
@@ -59,25 +69,23 @@ export const BlockViewer = ({ entry, initialHeight = MAX_HEIGHT }: BlockViewerPr
       ? { width: '100%', maxWidth: '100%' }
       : { width: `${SIZES[viewport].width}px`, maxWidth: '100%' };
 
-  // Track late reflow inside the frame (fonts, images, viewport switches).
-  function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
-    const doc = event.currentTarget.contentDocument;
-    const target = doc?.querySelector<HTMLElement>('[data-embed-shell]');
-    if (!target) return;
-    const measureHeight = () => {
-      const h = target.getBoundingClientRect().height;
-      if (h > 0) {
-        setHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, Math.round(h))));
-      }
-    };
-    measureHeight();
-    contentRoRef.current?.disconnect();
-    const ro = new ResizeObserver(measureHeight);
-    ro.observe(target);
-    contentRoRef.current = ro;
-  }
+  const followShellHeight = (frame: HTMLIFrameElement) => {
+    shellObserverRef.current?.disconnect();
+    shellObserverRef.current = observeShellHeight(frame, (shellHeight) => {
+      setHeight(Math.min(maxHeight, Math.max(MIN_HEIGHT, shellHeight)));
+    });
+  };
 
-  React.useEffect(() => () => contentRoRef.current?.disconnect(), []);
+  // The frame can finish loading before React attaches `onLoad`, so also pick up an already-loaded frame after mount.
+  React.useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    shellObserverRef.current?.disconnect();
+    shellObserverRef.current = observeShellHeight(frame, (shellHeight) => {
+      setHeight(Math.min(maxHeight, Math.max(MIN_HEIGHT, shellHeight)));
+    });
+    return () => shellObserverRef.current?.disconnect();
+  }, [key, src, maxHeight]);
 
   return (
     <div data-slot="block-viewer" className="overflow-hidden rounded-sm border border-border bg-background">
@@ -108,7 +116,7 @@ export const BlockViewer = ({ entry, initialHeight = MAX_HEIGHT }: BlockViewerPr
         />
 
         <div className="flex items-center gap-1">
-          <DirectionToggle rtl={rtl} onToggle={setRtl} className="me-1" />
+          <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
           <Button
             type="button"
             variant="ghost"
@@ -130,11 +138,12 @@ export const BlockViewer = ({ entry, initialHeight = MAX_HEIGHT }: BlockViewerPr
       <div className="bg-dot-grid flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
         <iframe
           key={key}
+          ref={frameRef}
           src={src}
           title={`${title} preview`}
           loading="lazy"
-          onLoad={handleLoad}
-          className="block border-0 bg-background transition-[width,max-width,height] duration-300 ease-out"
+          onLoad={(event) => followShellHeight(event.currentTarget)}
+          className="block border-0 bg-background transition-[width,max-width] duration-300 ease-out"
           style={{
             ...sizing,
             height: height ?? initialHeight,

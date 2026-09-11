@@ -9,12 +9,6 @@ interface ShowcaseLayoutProps {
   children: React.ReactNode;
 }
 
-/**
- * The docs shell: a static header, the sticky section tabs, then a sidebar
- * column beside the article. Everything shares one centered block
- * (`--docs-layout-width`) and one sidebar column (`--docs-sidebar-width`), so
- * the header's logo, the tabs and the tree all sit on the same vertical.
- */
 export default async function ShowcaseLayout({ children }: ShowcaseLayoutProps) {
   const [stars, changelog] = await Promise.all([getRepoStars(), getChangelog()]);
   const releases = changelog.entries.map((entry) => ({

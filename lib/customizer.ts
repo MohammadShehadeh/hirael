@@ -1,17 +1,3 @@
-/**
- * Customizer model: the choices the sheet offers, how they resolve to CSS
- * tokens, and how those tokens reach the page.
- *
- * Config: `base` picks which registry tree the site previews, shows source
- * for and installs from (Radix UI or Base UI, see `REGISTRY_BASES`); the icon
- * library only feeds the setup snippet, since every tree ships lucide icons.
- * Styles (base color, theme, chart color, font, radius) re-skin the site
- * live: they resolve to `.light` / `.dark` token blocks injected as a <style>
- * element, mirroring how a consumer's globals.css would carry the same values. "Preview only" scopes those blocks
- * to `[data-customizer-scope]` surfaces (demo cards, component previews) and
- * the framed `/embed/*` documents, leaving the site chrome alone.
- */
-
 import { BASE_COLOR_NAMES, getThemesForBaseColor, type BaseColorName } from '@/registry/base-colors';
 import { THEME_BY_NAME, type ThemeTokens } from '@/registry/themes';
 import { BASE_LABELS, DEFAULT_BASE, REGISTRY_BASES, type RegistryBase } from '@/registry/hirael/registry-meta';
@@ -75,12 +61,6 @@ export const DEFAULT_CONFIG: CustomizerConfig = {
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
   typeof value === 'string' && (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
 
-/**
- * Coerce anything (persisted JSON, a partial patch) into a valid config. A
- * theme or chart color that belongs to another base color falls back the way
- * shadcn's customizer does: theme to the base color's own neutral, chart color
- * to the theme.
- */
 export const normalizeConfig = (raw: Partial<CustomizerConfig> | null | undefined): CustomizerConfig => {
   const baseColor = pick(raw?.baseColor, BASE_COLOR_NAMES, DEFAULT_CONFIG.baseColor);
   const themeNames = getThemesForBaseColor(baseColor).map((t) => t.name);
@@ -120,13 +100,11 @@ export const isDefaultConfig = (config: CustomizerConfig) =>
 export interface ResolvedTokens {
   light: ThemeTokens;
   dark: ThemeTokens;
-  /** next/font family string for the chosen font, null for the site default. */
   fontFamily: string | null;
 }
 
 const CHART_KEYS = ['chart-1', 'chart-2', 'chart-3', 'chart-4', 'chart-5'];
 
-/** Base color, then the accent theme on top, then chart and radius knobs. */
 export const resolveTokens = (config: CustomizerConfig): ResolvedTokens => {
   const light: ThemeTokens = {};
   const dark: ThemeTokens = {};
@@ -169,26 +147,18 @@ const declarations = (vars: ThemeTokens) =>
 
 const rule = (selector: string, body: string) => (body ? `${selector}{${body}}` : '');
 
-/**
- * The stylesheet that applies resolved tokens. Mode blocks target `.light` /
- * `.dark` so the same text is right whichever class next-themes sets, and so
- * an always-dark region nested in a light page keeps its dark values. Scoped
- * output confines everything to `[data-customizer-scope]` surfaces; the font
- * is re-applied there since `body` set it from the site default.
- */
-export const buildCustomizerCss = (tokens: ResolvedTokens, scoped: boolean): string => {
-  const scope = scoped ? ` ${SCOPE_SELECTOR}` : '';
+export const buildCustomizerCss = (tokens: ResolvedTokens, isScoped: boolean): string => {
+  const scope = isScoped ? ` ${SCOPE_SELECTOR}` : '';
   const font = tokens.fontFamily ? `--font-sans-active:${tokens.fontFamily};` : '';
   return [
     rule(`.light${scope}`, declarations(tokens.light)),
     rule(`.dark${scope}`, declarations(tokens.dark)),
-    scoped ? rule(SCOPE_SELECTOR, font ? `${font}font-family:var(--font-sans-active);` : '') : rule(':root', font),
+    isScoped ? rule(SCOPE_SELECTOR, font ? `${font}font-family:var(--font-sans-active);` : '') : rule(':root', font),
   ]
     .filter(Boolean)
     .join('\n');
 };
 
-/** Copy-out form: shadcn's `:root` (light) + `.dark` convention. */
 export const formatThemeCss = (tokens: ResolvedTokens): string => {
   const block = (selector: string, vars: ThemeTokens) => {
     const keys = Object.keys(vars);
@@ -200,12 +170,7 @@ export const formatThemeCss = (tokens: ResolvedTokens): string => {
 
 export const isEmbedPath = (pathname: string) => pathname.startsWith('/embed/');
 
-/**
- * Inline script (stringified) that runs before hydration and injects the
- * stylesheet the provider last persisted, so a re-skinned page paints right on
- * frame one. Framed `/embed/*` documents always get the unscoped sheet: they
- * are previews in their entirety, whatever "preview only" says.
- */
+/** Runs before hydration so a re-skinned page paints right on the first frame; framed `/embed/*` documents always get the unscoped sheet. */
 export const customizerPrehydrationScript = (): string => {
   return `(()=>{try{
     var raw=localStorage.getItem(${JSON.stringify(CSS_STORAGE_KEY)});

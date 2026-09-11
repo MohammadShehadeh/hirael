@@ -14,9 +14,8 @@ export interface CategoryMeta {
   slug: string;
   title: string;
   group: CategoryGroup;
-  /** Internal BlockKind — present only for categories that have shipped blocks. */
   blockKind?: BlockKind;
-  comingSoon?: boolean;
+  isComingSoon?: boolean;
   description: string;
 }
 
@@ -230,13 +229,12 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
 ];
 
-export const CATEGORY_BY_SLUG = Object.fromEntries(CATEGORY_REGISTRY.map((c) => [c.slug, c])) as Record<
-  string,
-  CategoryMeta
->;
+export const CATEGORY_BY_SLUG = Object.fromEntries(
+  CATEGORY_REGISTRY.map((category) => [category.slug, category]),
+) as Record<string, CategoryMeta>;
 
 export const CATEGORIES_BY_GROUP = CATEGORY_GROUP_ORDER.map((group) => ({
   group,
   label: CATEGORY_GROUP_LABELS[group],
-  categories: CATEGORY_REGISTRY.filter((c) => c.group === group),
+  categories: CATEGORY_REGISTRY.filter((category) => category.group === group),
 }));

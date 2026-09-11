@@ -2,24 +2,23 @@
 
 import { cn } from '@/lib/utils';
 
-export const DirectionToggle = ({
-  rtl,
-  onToggle,
-  className,
-}: {
-  rtl: boolean;
-  onToggle: (rtl: boolean) => void;
+export interface DirectionToggleProps {
+  pressed: boolean;
+  onPressedChange: (pressed: boolean) => void;
   className?: string;
-}) => {
+}
+
+export const DirectionToggle = ({ pressed, onPressedChange, className }: DirectionToggleProps) => {
   return (
     <button
       type="button"
-      aria-pressed={rtl}
+      data-slot="direction-toggle"
+      data-state={pressed ? 'on' : 'off'}
+      aria-pressed={pressed}
       aria-label="Toggle right-to-left preview"
-      onClick={() => onToggle(!rtl)}
+      onClick={() => onPressedChange(!pressed)}
       className={cn(
-        'inline-flex h-6 items-center rounded-sm border border-border px-2 font-mono text-[10px] uppercase tracking-widest transition-colors',
-        rtl ? 'bg-accent text-foreground' : 'bg-background text-muted-foreground hover:text-foreground',
+        'inline-flex h-6 items-center rounded-sm border border-border bg-background px-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground data-[state=on]:bg-accent data-[state=on]:text-foreground',
         className,
       )}
     >

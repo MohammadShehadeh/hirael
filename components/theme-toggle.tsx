@@ -10,7 +10,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export const ThemeToggle = () => {
   const { mode, setMode } = useTheme();
-  const mounted = useMounted();
+  const isMounted = useMounted();
 
   const isLight = mode === 'light';
 
@@ -25,13 +25,13 @@ export const ThemeToggle = () => {
       <Sun
         className={cn(
           'size-3.5 transition-all duration-200',
-          mounted && isLight ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
+          isMounted && isLight ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
         )}
       />
       <Moon
         className={cn(
           'absolute size-3.5 transition-all duration-200',
-          mounted && !isLight ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0',
+          isMounted && !isLight ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0',
         )}
       />
     </Button>

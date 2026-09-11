@@ -12,11 +12,6 @@ const collectionLabel = (entry: RegistryEntryMeta) => {
   return CATEGORY_LABELS[entry.category];
 };
 
-/**
- * A row of catalog cards. Used for the cross-links at the foot of a detail
- * page, where the pager beside it walks the catalog in order and this walks it
- * by kinship so a page is a fork in the path rather than a dead end.
- */
 export interface ItemCardsProps {
   items: DatedEntry[];
   className?: string;

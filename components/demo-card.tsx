@@ -13,9 +13,7 @@ import { CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/h
 export interface DemoCardProps {
   entry: RegistryEntryMeta;
   className?: string;
-  /** Cropped 16:9 preview and a single title row instead of the full card. */
   compact?: boolean;
-  /** Ship date from the changelog; drives the "New" badge in compact cards. */
   addedAt?: string;
 }
 
@@ -41,14 +39,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
         className,
       )}
     >
-      <LazyDemo
-        name={entry.name}
-        compact={compact}
-        // Demos stay out of the tab order (and the a11y tree) until the card
-        // is hovered or focused, so tabbing through an index of 60+ cards
-        // walks titles instead of every mounted control.
-        inert={!engaged && hoverCapable}
-      />
+      <LazyDemo name={entry.name} compact={compact} inert={!engaged && hoverCapable} />
       <div className={cn('flex flex-col gap-1.5 border-t border-border', compact ? 'px-4 py-3' : 'p-4')}>
         <div className="flex items-center justify-between gap-2">
           <h3 className="flex min-w-0 items-center gap-2 text-sm font-medium tracking-[-0.01em]">
@@ -89,8 +80,6 @@ const subscribeHover = (onChange: () => void) => {
   return () => hoverQuery?.removeEventListener('change', onChange);
 };
 
-/** True only on devices where hovering is the primary pointer interaction —
- * touch devices never inert their demos, since a tap should act immediately. */
 const useHoverCapable = () => {
   return React.useSyncExternalStore(
     subscribeHover,
@@ -99,10 +88,6 @@ const useHoverCapable = () => {
   );
 };
 
-/**
- * Mounts the demo only once the card is near the viewport, so an index of 60+
- * cards doesn't pull every component chunk on page load.
- */
 interface LazyDemoProps {
   name: string;
   inert: boolean;
@@ -130,8 +115,7 @@ const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
 
   return (
     <div ref={ref} inert={inert} className={cn(PREVIEW_FRAME, compact ? 'aspect-video' : 'h-60')}>
-      {/* The title link's ::after overlay covers the card; this layer sits
-          above it so the demo itself stays interactive. */}
+      {/* Sits above the title link's ::after overlay so the demo stays interactive. */}
       <div className="relative z-10 flex max-h-full w-full items-center justify-center">
         {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>

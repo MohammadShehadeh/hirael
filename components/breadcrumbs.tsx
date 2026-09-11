@@ -4,15 +4,15 @@ import { cn } from '@/lib/utils';
 
 export interface Crumb {
   label: string;
-  /** Omit on the final, current crumb so it renders as plain text. */
   href?: string;
 }
 
-/**
- * Hierarchy trail shown above category and detail pages. Slash separators
- * stay neutral under RTL, so there's nothing directional to flip.
- */
-export const Breadcrumbs = ({ items, className }: { items: Crumb[]; className?: string }) => {
+export interface BreadcrumbsProps {
+  items: Crumb[];
+  className?: string;
+}
+
+export const Breadcrumbs = ({ items, className }: BreadcrumbsProps) => {
   return (
     <nav
       aria-label="Breadcrumb"
@@ -21,18 +21,18 @@ export const Breadcrumbs = ({ items, className }: { items: Crumb[]; className?: 
         className,
       )}
     >
-      {items.map((item, i) => {
-        const last = i === items.length - 1;
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
         return (
-          <span key={`${item.label}-${i}`} className="flex items-center gap-2">
-            {item.href && !last ? (
+          <span key={`${item.label}-${index}`} className="flex items-center gap-2">
+            {item.href && !isLast ? (
               <Link href={item.href} className="transition-colors hover:text-foreground">
                 {item.label}
               </Link>
             ) : (
-              <span className={last ? 'text-foreground' : undefined}>{item.label}</span>
+              <span className={isLast ? 'text-foreground' : undefined}>{item.label}</span>
             )}
-            {!last && <span className="text-muted-foreground/50">/</span>}
+            {!isLast && <span className="text-muted-foreground/50">/</span>}
           </span>
         );
       })}

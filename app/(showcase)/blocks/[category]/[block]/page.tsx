@@ -18,18 +18,18 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
+interface BlockRouteProps {
   params: Promise<{ category: string; block: string }>;
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({ params }: BlockRouteProps): Promise<Metadata> {
   const { category, block } = await params;
   const entry = REGISTRY_BY_NAME[block];
   if (!entry || entry.category !== 'blocks' || entryCategorySlug(entry) !== category) return {};
   return detailMetadata(entry, { titleSuffix: 'block' });
 }
 
-export default async function BlockRoute({ params }: { params: Promise<{ category: string; block: string }> }) {
+export default async function BlockRoute({ params }: BlockRouteProps) {
   const { category, block } = await params;
   const entry = REGISTRY_BY_NAME[block];
   if (!entry || entry.category !== 'blocks' || entryCategorySlug(entry) !== category) notFound();

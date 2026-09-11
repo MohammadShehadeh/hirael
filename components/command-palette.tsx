@@ -23,25 +23,38 @@ import {
   entryHref,
   type ComponentCategory,
 } from '@/registry/hirael/registry-meta';
-import { pushRecent, recentsSnapshot, serverRecents, subscribeRecents, type RecentItem } from '@/lib/recents';
+import {
+  pushRecent,
+  recentsSnapshot,
+  serverRecents,
+  subscribeRecents,
+  type RecentItem,
+  type RecentKind,
+} from '@/lib/recents';
 
-/**
- * The heavy half of the ⌘K palette — the project's own `dialog` + `command`
- * (cmdk) primitives. Loaded lazily (see command-menu.tsx) so cmdk only ships
- * to visitors who actually open search.
- */
-export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
+const RECENT_KIND_LABELS: Record<RecentKind, string> = {
+  component: 'Component',
+  block: 'Block',
+  template: 'Template',
+};
+
+const CATEGORY_HINT_CLASS = 'ms-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground';
+
+export interface CommandPaletteProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   const router = useRouter();
 
-  const go = (item: RecentItem) => {
+  const handleSelect = (item: RecentItem) => {
     pushRecent(item);
     onOpenChange(false);
     router.push(item.href);
   };
 
-  const components = COMPONENTS;
-  const blocks = REGISTRY.filter((r) => r.category === 'blocks');
-  const templates = TEMPLATES;
+  const blocks = REGISTRY.filter((entry) => entry.category === 'blocks');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -55,73 +68,71 @@ export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenCh
           <CommandInput placeholder="Search by name or what it does…" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <RecentGroup onSelect={go} />
+            <RecentGroup onSelect={handleSelect} />
             <CommandGroup heading="Components">
-              {components.map((c) => (
+              {COMPONENTS.map((component) => (
                 <CommandItem
-                  key={c.name}
-                  value={`${c.title} ${c.name}`}
-                  keywords={[c.description, CATEGORY_LABELS[c.category as ComponentCategory]]}
+                  key={component.name}
+                  value={`${component.title} ${component.name}`}
+                  keywords={[component.description, CATEGORY_LABELS[component.category as ComponentCategory]]}
                   onSelect={() =>
-                    go({
-                      name: c.name,
-                      title: c.title,
-                      href: entryHref(c),
+                    handleSelect({
+                      name: component.name,
+                      title: component.title,
+                      href: entryHref(component),
                       kind: 'component',
                     })
                   }
                 >
                   <Boxes className="text-muted-foreground" />
-                  <span>{c.title}</span>
-                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    {CATEGORY_LABELS[c.category as ComponentCategory]}
+                  <span>{component.title}</span>
+                  <span className={CATEGORY_HINT_CLASS}>
+                    {CATEGORY_LABELS[component.category as ComponentCategory]}
                   </span>
                 </CommandItem>
               ))}
             </CommandGroup>
             <CommandGroup heading="Blocks">
-              {blocks.map((b) => (
+              {blocks.map((block) => (
                 <CommandItem
-                  key={b.name}
-                  value={`${b.title} ${b.name}`}
-                  keywords={[b.description, b.blockKind ?? '']}
+                  key={block.name}
+                  value={`${block.title} ${block.name}`}
+                  keywords={[block.description, block.blockKind ?? '']}
                   onSelect={() =>
-                    go({
-                      name: b.name,
-                      title: b.title,
-                      href: entryHref(b),
+                    handleSelect({
+                      name: block.name,
+                      title: block.title,
+                      href: entryHref(block),
                       kind: 'block',
                     })
                   }
                 >
                   <LayoutTemplate className="text-muted-foreground" />
-                  <span>{b.title}</span>
-                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    {b.blockKind ? BLOCK_KIND_LABELS[b.blockKind] : 'Block'}
+                  <span>{block.title}</span>
+                  <span className={CATEGORY_HINT_CLASS}>
+                    {block.blockKind ? BLOCK_KIND_LABELS[block.blockKind] : 'Block'}
                   </span>
                 </CommandItem>
               ))}
             </CommandGroup>
             <CommandGroup heading="Templates">
-              {templates.map((t) => (
+              {TEMPLATES.map((template) => (
                 <CommandItem
-                  key={t.name}
-                  value={`${t.title} ${t.name}`}
-                  keywords={[t.description]}
+                  key={template.name}
+                  value={`${template.title} ${template.name}`}
+                  keywords={[template.description]}
                   onSelect={() =>
-                    go({
-                      name: t.name,
-                      title: t.title,
-                      href: entryHref(t),
+                    handleSelect({
+                      name: template.name,
+                      title: template.title,
+                      href: entryHref(template),
                       kind: 'template',
                     })
                   }
                 >
                   <Frame className="text-muted-foreground" />
-                  <span>{t.title}</span>
-                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    Template
-                  </span>
+                  <span>{template.title}</span>
+                  <span className={CATEGORY_HINT_CLASS}>Template</span>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -134,7 +145,7 @@ export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenCh
           <span className="inline-flex items-center gap-1.5">
             <Kbd>↵</Kbd> open
           </span>
-          <span className="ml-auto inline-flex items-center gap-1.5">
+          <span className="ms-auto inline-flex items-center gap-1.5">
             <Kbd>esc</Kbd> close
           </span>
         </div>
@@ -143,13 +154,19 @@ export const CommandPalette = ({ open, onOpenChange }: { open: boolean; onOpenCh
   );
 };
 
-const Kbd = ({ children }: { children: React.ReactNode }) => {
+interface KbdProps {
+  children: React.ReactNode;
+}
+
+const Kbd = ({ children }: KbdProps) => {
   return <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">{children}</kbd>;
 };
 
-/** Previously opened items, shown only while the query is empty. Subscribed to
- * the store, so anything opened elsewhere in the tab shows up immediately. */
-const RecentGroup = ({ onSelect }: { onSelect: (item: RecentItem) => void }) => {
+interface RecentGroupProps {
+  onSelect: (item: RecentItem) => void;
+}
+
+const RecentGroup = ({ onSelect }: RecentGroupProps) => {
   const search = useCommandState((state) => state.search);
   const recents = React.useSyncExternalStore(subscribeRecents, recentsSnapshot, serverRecents);
 
@@ -166,9 +183,7 @@ const RecentGroup = ({ onSelect }: { onSelect: (item: RecentItem) => void }) => 
         >
           <History className="text-muted-foreground" />
           <span>{item.title}</span>
-          <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-            {item.kind === 'component' ? 'Component' : item.kind === 'block' ? 'Block' : 'Template'}
-          </span>
+          <span className={CATEGORY_HINT_CLASS}>{RECENT_KIND_LABELS[item.kind]}</span>
         </CommandItem>
       ))}
     </CommandGroup>

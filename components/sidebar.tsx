@@ -3,41 +3,30 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Boxes, Frame, History, LayoutTemplate } from 'lucide-react';
+import { Boxes, Frame, History, LayoutTemplate, type LucideIcon } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { CATEGORIES_BY_GROUP } from '@/components/block-categories';
-import { LogoTile } from '@/components/logo';
-import { SITE } from '@/lib/site';
+import { CommandMenu } from '@/components/command-menu';
 import {
   BLOCKS_BY_KIND,
   CATEGORY_LABELS,
   COMPONENT_CATEGORY_ORDER,
-  COMPONENTS,
   REGISTRY_BY_CATEGORY,
   TEMPLATES,
   entryHref,
 } from '@/registry/hirael/registry-meta';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from '@/registry/hirael/bases/radix/ui/sidebar';
 
 type Section = 'components' | 'blocks' | 'templates' | 'changelog';
 
-const sectionFor = (pathname: string): Section => {
+const sectionForPath = (pathname: string): Section => {
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
   if (pathname === '/changelog') return 'changelog';
   return 'components';
 };
+
+const isCurrentPath = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
 export interface SidebarRelease {
   slug: string;
@@ -45,229 +34,235 @@ export interface SidebarRelease {
   date: string;
 }
 
-export const ShowcaseSidebar = ({ releases }: { releases: SidebarRelease[] }) => {
-  const pathname = usePathname();
-  const { setOpenMobile } = useSidebar();
-  const contentRef = React.useRef<HTMLDivElement>(null);
-  const section = sectionFor(pathname);
-  const blockCount = REGISTRY_BY_CATEGORY.blocks.length;
-  const templateCount = TEMPLATES.length;
+export interface DocsSidebarProps {
+  releases: SidebarRelease[];
+}
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
-  const isExact = (href: string) => pathname === href;
-
-  React.useEffect(() => {
-    setOpenMobile(false);
-  }, [pathname, setOpenMobile]);
-
-  React.useEffect(() => {
-    if (contentRef.current) revealActiveItem(contentRef.current);
-  }, [pathname]);
-
+export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
   return (
-    <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
-      <SidebarHeader>
-        <Link
-          href="/"
-          className="group/brand flex items-center gap-3 rounded-sm px-2 py-2 transition-colors hover:bg-sidebar-accent"
-          aria-label={`${SITE.name} | home`}
-        >
-          <LogoTile />
-          <span
-            className="truncate whitespace-nowrap text-xl leading-none text-foreground"
-            style={{
-              fontFamily: 'var(--font-cormorant), ui-serif, serif',
-              fontWeight: 500,
-              letterSpacing: '0.22em',
-            }}
-          >
-            HIRAEL
-          </span>
-        </Link>
-      </SidebarHeader>
-
-      <SidebarContent ref={contentRef}>
-        {/* The desktop topbar carries these links; only phones need them here. */}
-        <SidebarGroup className="lg:hidden">
-          <SidebarGroupLabel>Browse</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact('/components')}>
-                  <Link href="/components">
-                    <Boxes />
-                    <span>Components</span>
-                    <Count n={COMPONENTS.length} />
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact('/blocks')}>
-                  <Link href="/blocks">
-                    <LayoutTemplate />
-                    <span>Blocks</span>
-                    <Count n={blockCount} />
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact('/templates')}>
-                  <Link href="/templates">
-                    <Frame />
-                    <span>Templates</span>
-                    <Count n={templateCount} />
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isExact('/changelog')}>
-                  <Link href="/changelog">
-                    <History />
-                    <span>Changelog</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {section === 'components' && <ComponentGroups isActive={isActive} />}
-        {section === 'blocks' && <BlockGroups isActive={isActive} />}
-        {section === 'templates' && <TemplateGroup isActive={isActive} />}
-        {section === 'changelog' && <ReleaseGroup releases={releases} />}
-      </SidebarContent>
-    </Sidebar>
+    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-(--docs-sidebar-width) shrink-0 overflow-y-auto border-e border-border md:block">
+      <DocsSidebarNav releases={releases} className="p-4" />
+    </aside>
   );
 };
 
-const revealActiveItem = (container: HTMLElement) => {
-  const active = container.querySelector<HTMLElement>('[data-sidebar="menu-button"][data-active="true"]');
-  if (!active) return;
-  const box = container.getBoundingClientRect();
-  const item = active.getBoundingClientRect();
-  const isHidden = item.top < box.top || item.bottom > box.bottom;
-  if (isHidden) active.scrollIntoView({ block: 'center' });
-};
-
-const Count = ({ n }: { n: number }) => {
-  return <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">{n}</span>;
-};
-
-interface GroupProps {
-  isActive: (href: string) => boolean;
+export interface DocsSidebarNavProps {
+  releases: SidebarRelease[];
+  className?: string;
 }
 
-const ComponentGroups = ({ isActive }: GroupProps) => {
+export const DocsSidebarNav = ({ releases, className }: DocsSidebarNavProps) => {
+  const pathname = usePathname();
+  const ref = React.useRef<HTMLElement>(null);
+  const section = sectionForPath(pathname);
+
+  React.useEffect(() => {
+    if (ref.current) scrollCurrentPageIntoView(ref.current);
+  }, [pathname]);
+
+  return (
+    <nav ref={ref} aria-label="Sidebar" className={cn('flex flex-col gap-4', className)}>
+      <CommandMenu variant="field" />
+      <div className="flex flex-col gap-3">
+        {section === 'components' && <ComponentTree pathname={pathname} />}
+        {section === 'blocks' && <BlockTree pathname={pathname} />}
+        {section === 'templates' && <TemplateTree pathname={pathname} />}
+        {section === 'changelog' && <ReleaseTree releases={releases} />}
+      </div>
+    </nav>
+  );
+};
+
+const scrollCurrentPageIntoView = (tree: HTMLElement) => {
+  const current = tree.querySelector<HTMLElement>('[aria-current="page"]');
+  if (!current) return;
+  const scroller = tree.parentElement ?? tree;
+  const box = scroller.getBoundingClientRect();
+  const row = current.getBoundingClientRect();
+  const isOutOfSight = row.top < box.top || row.bottom > box.bottom;
+  if (isOutOfSight) current.scrollIntoView({ block: 'center' });
+};
+
+interface RootPageLinkProps {
+  href: string;
+  isCurrent: boolean;
+  children: React.ReactNode;
+}
+
+const RootPageLink = ({ href, isCurrent, children }: RootPageLinkProps) => {
+  return (
+    <Link
+      href={href}
+      aria-current={isCurrent ? 'page' : undefined}
+      className={cn(
+        'relative flex items-center gap-2 px-2 py-1.5 text-sm transition-colors',
+        isCurrent
+          ? 'bg-accent text-foreground before:absolute before:inset-y-0 before:-inset-s-2 before:w-0.5 before:bg-foreground'
+          : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
+      )}
+    >
+      {children}
+    </Link>
+  );
+};
+
+interface FolderProps {
+  icon: LucideIcon;
+  label: string;
+  href?: string;
+  children: React.ReactNode;
+}
+
+const Folder = ({ icon: Icon, label, href, children }: FolderProps) => {
+  const header = (
+    <>
+      <Icon className="size-4 text-muted-foreground" aria-hidden />
+      <span>{label}</span>
+    </>
+  );
+
+  const headerClass = 'flex items-center gap-2 px-2 py-1.5 text-sm text-foreground/80';
+
+  return (
+    <div className="flex flex-col">
+      {href ? (
+        <Link href={href} className={cn(headerClass, 'rounded-md transition-colors hover:text-foreground')}>
+          {header}
+        </Link>
+      ) : (
+        <div className={headerClass}>{header}</div>
+      )}
+      <ul className="ms-4 flex flex-col border-s border-border ps-2">{children}</ul>
+    </div>
+  );
+};
+
+interface FolderPageLinkProps {
+  href: string;
+  isCurrent: boolean;
+  count?: number;
+  children: React.ReactNode;
+}
+
+const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProps) => {
+  return (
+    <li>
+      <Link
+        href={href}
+        aria-current={isCurrent ? 'page' : undefined}
+        className={cn(
+          'relative flex items-center gap-2 px-2.5 py-1.5 text-sm transition-colors',
+          isCurrent
+            ? 'bg-accent text-foreground before:absolute before:inset-y-0 before:-inset-s-2.25 before:w-0.5 before:bg-foreground'
+            : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        <span className="truncate">{children}</span>
+        {count !== undefined && (
+          <span className="ms-auto font-mono text-[10px] tabular-nums text-muted-foreground">{count}</span>
+        )}
+      </Link>
+    </li>
+  );
+};
+
+interface SectionTreeProps {
+  pathname: string;
+}
+
+const ComponentTree = ({ pathname }: SectionTreeProps) => {
   return (
     <>
-      {COMPONENT_CATEGORY_ORDER.map((cat) => {
-        const items = REGISTRY_BY_CATEGORY[cat];
-        if (!items.length) return null;
+      <RootPageLink href="/components" isCurrent={pathname === '/components'}>
+        Overview
+      </RootPageLink>
+      {COMPONENT_CATEGORY_ORDER.map((category) => {
+        const components = REGISTRY_BY_CATEGORY[category];
+        if (!components.length) return null;
         return (
-          <SidebarGroup key={cat}>
-            <SidebarGroupLabel asChild>
-              <Link href={`/components/${cat}`}>{CATEGORY_LABELS[cat]}</Link>
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {items.map((entry) => {
-                  const href = entryHref(entry);
-                  return (
-                    <SidebarMenuItem key={entry.name}>
-                      <SidebarMenuButton asChild isActive={isActive(href)}>
-                        <Link href={href}>
-                          <span>{entry.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <Folder key={category} icon={Boxes} label={CATEGORY_LABELS[category]} href={`/components/${category}`}>
+            {components.map((entry) => {
+              const href = entryHref(entry);
+              return (
+                <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
+                  {entry.title}
+                </FolderPageLink>
+              );
+            })}
+          </Folder>
         );
       })}
     </>
   );
 };
 
-const BlockGroups = ({ isActive }: GroupProps) => {
+const BlockTree = ({ pathname }: SectionTreeProps) => {
   return (
     <>
+      <RootPageLink href="/blocks" isCurrent={pathname === '/blocks'}>
+        Overview
+      </RootPageLink>
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => (
-        <SidebarGroup key={group}>
-          <SidebarGroupLabel asChild>
-            <Link href="/blocks">{label}</Link>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {categories.map((cat) => {
-                const href = `/blocks/${cat.slug}`;
-                const blocks = cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind] : [];
-                return (
-                  <SidebarMenuItem key={cat.slug}>
-                    <SidebarMenuButton asChild isActive={isActive(href)}>
-                      <Link href={href}>
-                        <span>{cat.title}</span>
-                        {blocks.length > 0 && <Count n={blocks.length} />}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <Folder key={group} icon={LayoutTemplate} label={label}>
+          {categories.map((category) => {
+            const href = `/blocks/${category.slug}`;
+            const blockCount = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
+            return (
+              <FolderPageLink
+                key={category.slug}
+                href={href}
+                isCurrent={isCurrentPath(pathname, href)}
+                count={blockCount > 0 ? blockCount : undefined}
+              >
+                {category.title}
+              </FolderPageLink>
+            );
+          })}
+        </Folder>
       ))}
     </>
   );
 };
 
-const TemplateGroup = ({ isActive }: GroupProps) => {
+const TemplateTree = ({ pathname }: SectionTreeProps) => {
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel asChild>
-        <Link href="/templates">Templates</Link>
-      </SidebarGroupLabel>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {TEMPLATES.map((entry) => {
-            const href = entryHref(entry);
-            return (
-              <SidebarMenuItem key={entry.name}>
-                <SidebarMenuButton asChild isActive={isActive(href)}>
-                  <Link href={href}>
-                    <span>{entry.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <>
+      <RootPageLink href="/templates" isCurrent={pathname === '/templates'}>
+        Overview
+      </RootPageLink>
+      <Folder icon={Frame} label="Templates">
+        {TEMPLATES.map((entry) => {
+          const href = entryHref(entry);
+          return (
+            <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
+              {entry.title}
+            </FolderPageLink>
+          );
+        })}
+      </Folder>
+    </>
   );
 };
 
-const ReleaseGroup = ({ releases }: { releases: SidebarRelease[] }) => {
+interface ReleaseTreeProps {
+  releases: SidebarRelease[];
+}
+
+const ReleaseTree = ({ releases }: ReleaseTreeProps) => {
   if (!releases.length) return null;
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Releases</SidebarGroupLabel>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {releases.map((release) => (
-            <SidebarMenuItem key={release.slug}>
-              <SidebarMenuButton asChild>
-                <a href={`#release-${release.slug}`}>
-                  <span>{release.label}</span>
-                  <span className="ml-auto font-mono text-[10px] text-muted-foreground">{release.date}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <Folder icon={History} label="Releases">
+      {releases.map((release) => (
+        <li key={release.slug}>
+          <a
+            href={`#release-${release.slug}`}
+            className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span className="truncate">{release.label}</span>
+            <span className="ms-auto font-mono text-[10px] text-muted-foreground">{release.date}</span>
+          </a>
+        </li>
+      ))}
+    </Folder>
   );
 };

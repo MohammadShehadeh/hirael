@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight, Boxes, Download, Languages, Layers, MonitorSmartphone, SunMoon } from 'lucide-react';
@@ -6,17 +5,16 @@ import { ArrowRight, ArrowUpRight, Boxes, Download, Languages, Layers, MonitorSm
 import { BlockPreview } from '@/components/block-preview';
 import { BlockShowcase } from '@/components/block-showcase';
 import { DemoCard } from '@/components/demo-card';
-import { ItemCards } from '@/components/item-cards';
+import { LandingCatalog } from '@/components/landing-catalog';
 import { Pill, SectionHeading } from '@/components/page-header';
 import { InstallBlock } from '@/components/install-block';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { getChangelog, type ChangelogEntry } from '@/lib/changelog';
-import { getRecentlyAdded } from '@/lib/detail-extras';
+import { getLatestCatalog } from '@/lib/detail-extras';
 import { getRepoStars } from '@/lib/github';
 import { listingMetadata } from '@/lib/seo';
 import { SITE } from '@/lib/site';
-import { Marquee } from '@/registry/hirael/bases/radix/components/marquee';
 import {
   BLOCK_KIND_ORDER,
   BLOCKS_BY_KIND,
@@ -30,8 +28,7 @@ import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = listingMetadata({
   path: '/',
-  // `title.template` applies to child segments, not to the page in the same
-  // one, so the home page names the site itself.
+  // `title.template` applies to child segments, not the page in the same one, so the home page names the site itself.
   title: `${SITE.tagline} - ${SITE.name}`,
   description: SITE.longDescription,
   keywords: [...SITE.keywords],
@@ -39,19 +36,24 @@ export const metadata: Metadata = listingMetadata({
 
 const blocksTotal = BLOCK_KIND_ORDER.reduce((sum, k) => sum + BLOCKS_BY_KIND[k].length, 0);
 
+const CATALOG_PREVIEW_COUNT = 2;
+
 export default async function LandingPage() {
-  const [stars, changelog] = await Promise.all([getRepoStars(), getChangelog()]);
+  const [stars, changelog, latest] = await Promise.all([
+    getRepoStars(),
+    getChangelog(),
+    getLatestCatalog(CATALOG_PREVIEW_COUNT),
+  ]);
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader stars={stars} />
       <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
         <Hero latestRelease={changelog.entries[0] ?? null} />
-        <CatalogTicker />
+        <LandingCatalog items={latest} />
         <WhyHirael />
         <FeaturedComponents />
         <SectionBlocks />
         <FullTemplates />
-        <RecentlyAdded />
         <ClosingCta />
       </main>
       <SiteFooter />
@@ -59,32 +61,16 @@ export default async function LandingPage() {
   );
 }
 
-function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
+interface HeroProps {
+  latestRelease: ChangelogEntry | null;
+}
+
+function Hero({ latestRelease }: HeroProps) {
   const rise = 'animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
 
   return (
-    <section className="relative isolate overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <Image
-          src="/images/hero-dark.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="hidden object-cover object-center opacity-75 dark:block"
-        />
-        <Image
-          src="/images/hero-light.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center opacity-85 dark:hidden"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-background/25 via-background/45 to-background" />
-        <div className="bg-dot-grid absolute inset-0 opacity-20 mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent_70%)]" />
-      </div>
-
-      <div className="mx-auto flex min-h-[86vh] flex-col max-w-5xl items-center justify-center gap-7 px-4 py-24 text-center sm:px-6 sm:py-28">
+    <section className="relative">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 py-12 text-center sm:gap-6 sm:px-6 sm:py-16">
         {latestRelease && (
           <Link href="/changelog" className={cn('group text-foreground', rise)}>
             <span className="glass-panel glass-panel-lit inline-flex items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
@@ -93,7 +79,7 @@ function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
                   v{latestRelease.version}
                 </span>
               )}
-              <span className="group-hover:underline">{latestRelease.title}</span>
+              <span className="group-hover:underline line-clamp-1 text-start">{latestRelease.title}</span>
               <ArrowRight
                 className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
                 size={16}
@@ -104,22 +90,27 @@ function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
 
         <h1
           style={{ animationDelay: '80ms', animationFillMode: 'both' }}
-          className={`w-full text-pretty text-4xl italic leading-[0.95] tracking-[-0.025em] sm:text-5xl sm:leading-[0.9] md:text-6xl ${rise}`}
+          className={cn(
+            'text-display w-full text-pretty text-4xl italic leading-[0.95] tracking-tight sm:text-5xl sm:leading-[0.9]',
+            rise,
+          )}
         >
-          Components, blocks &amp; templates built on top of shadcn/ui.
+          Components, blocks and templates
+          <br />
+          for shadcn/ui.
         </h1>
 
         <p
           style={{ animationDelay: '160ms', animationFillMode: 'both' }}
-          className={`max-w-xl text-base text-muted-foreground sm:text-lg ${rise}`}
+          className={cn('max-w-2xl text-base text-muted-foreground sm:text-lg', rise)}
         >
-          A shadcn-compatible registry of React components, section blocks, and full-page templates most products end up
-          building anyway. Install with the shadcn CLI; the source lands in your repo, yours to keep.
+          A collection of React components, section blocks, and full-page templates you can copy into any project with
+          the shadcn CLI.
         </p>
 
         <div
           style={{ animationDelay: '240ms', animationFillMode: 'both' }}
-          className={`flex flex-wrap items-center justify-center gap-3 ${rise}`}
+          className={cn('flex flex-wrap items-center justify-center gap-3', rise)}
         >
           <Button size="lg" className="rounded-full px-6" asChild>
             <Link href="/components">
@@ -130,44 +121,6 @@ function Hero({ latestRelease }: { latestRelease: ChangelogEntry | null }) {
           <Button size="lg" variant="ghost" className="glass-panel glass-panel-lit rounded-full px-6" asChild>
             <Link href="/blocks">Browse blocks</Link>
           </Button>
-        </div>
-
-        <div
-          style={{ animationDelay: '340ms', animationFillMode: 'both' }}
-          className={`mt-8 flex flex-col items-center gap-5 ${rise}`}
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            Works anywhere React runs
-          </span>
-          <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm font-medium text-foreground/60 sm:gap-x-10">
-            {['Next.js', 'Remix', 'Vite', 'Astro', 'shadcn/ui'].map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CatalogTicker() {
-  return (
-    <section aria-label="Component catalog" className="relative -mt-4 pb-4 sm:pb-8">
-      <div className="container w-full">
-        <div className="relative overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <Marquee pauseOnHover duration={70} gap="0.75rem" repeat={2}>
-            {COMPONENTS.map((entry) => (
-              <Link
-                key={entry.name}
-                href={entryHref(entry)}
-                title={entry.title}
-                className="glass-panel inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-mono text-[11px] tracking-tight text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
-              >
-                <span className="size-1 rounded-full bg-muted-foreground/50" />
-                {entry.name}
-              </Link>
-            ))}
-          </Marquee>
         </div>
       </div>
     </section>
@@ -211,8 +164,6 @@ const FEATURES: {
   },
 ];
 
-// A few lit cells per card so the blueprint grid reads differently on each.
-// Coordinates are [column, row] in 20px grid units.
 const CARD_GRID_SQUARES: [number, number][][] = [
   [
     [8, 1],
@@ -246,13 +197,12 @@ const CARD_GRID_SQUARES: [number, number][][] = [
   ],
 ];
 
-/**
- * Faint blueprint grid with a few lit cells — adapted from the Tailwind UI
- * "GridPattern". Token-only (foreground at low opacity) so it stays on the
- * near-monochrome palette and works in both themes; masked so it glows at the
- * top and fades out.
- */
-function CardGrid({ id, squares }: { id: string; squares: [number, number][] }) {
+interface CardGridProps {
+  id: string;
+  squares: [number, number][];
+}
+
+function CardGrid({ id, squares }: CardGridProps) {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 mask-[linear-gradient(white,transparent)]">
       <div className="absolute inset-0 bg-linear-to-br from-primary/8 to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
@@ -335,7 +285,7 @@ function FeaturedComponents() {
         <div className="mt-8 flex justify-center">
           <Button variant="outline" className="rounded-full px-5" asChild>
             <Link href="/components">
-              All {COMPONENTS.length} components
+              All components
               <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
           </Button>
@@ -361,15 +311,8 @@ function SectionBlocks() {
   );
 }
 
-/** The two the catalog leads with; the rest are one click away on /templates. */
 const FEATURED_TEMPLATES = ['agency-landing', 'mindloop'] as const;
 
-/**
- * Components and blocks each get a section that shows the real thing; templates
- * were the one item type the page only named, in a button at the very bottom.
- * They are the largest thing the registry ships, so they get the same framed
- * preview the templates index uses.
- */
 function FullTemplates() {
   return (
     <section className="relative py-20 sm:py-28">
@@ -418,52 +361,17 @@ function FullTemplates() {
   );
 }
 
-const RECENT_COUNT = 6;
-
-/**
- * What shipped last. The changelog tells the story of a release; this points
- * at the items themselves, so a returning visitor lands on something new in
- * one click instead of reading release notes to find its name.
- */
-async function RecentlyAdded() {
-  const recent = await getRecentlyAdded(RECENT_COUNT);
-  if (recent.length === 0) return null;
-
-  return (
-    <section className="relative py-20 sm:py-28">
-      <div className="container w-full">
-        <SectionHeading
-          kicker="Recently added"
-          title="The newest of the catalog."
-          blurb="The last few items to land, newest first. Every release is written up in the changelog."
-        />
-
-        <ItemCards items={recent} withDate />
-
-        <div className="mt-8 flex justify-center">
-          <Button variant="outline" className="rounded-full px-5" asChild>
-            <Link href="/changelog">
-              Read the changelog
-              <ArrowRight className="size-4 rtl:rotate-180" />
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ClosingCta() {
   return (
     <section className="relative isolate overflow-hidden py-24 sm:py-32">
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="hero-aurora" />
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-background to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-background to-transparent" />
       </div>
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
-        <Pill live>Get started</Pill>
+        <Pill data-live>Get started</Pill>
         <h2 className="text-display text-4xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
           Install one. Keep all of it.
         </h2>

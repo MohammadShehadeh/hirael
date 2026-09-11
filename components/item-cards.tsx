@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { NewBadge } from '@/components/new-badge';
-import { formatDay, type DatedEntry } from '@/lib/freshness';
+import type { DatedEntry } from '@/lib/freshness';
 import { BLOCK_KIND_LABELS, CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 const collectionLabel = (entry: RegistryEntryMeta) => {
@@ -12,22 +12,12 @@ const collectionLabel = (entry: RegistryEntryMeta) => {
   return CATEGORY_LABELS[entry.category];
 };
 
-/**
- * A row of catalog cards. Used for the cross-links at the foot of a detail
- * page, where the pager beside it walks the catalog in order and this walks it
- * by kinship so a page is a fork in the path rather than a dead end, and for
- * the landing page's recently-added rail.
- */
-export const ItemCards = ({
-  items,
-  withDate,
-  className,
-}: {
+export interface ItemCardsProps {
   items: DatedEntry[];
-  /** Show when each item shipped. For lists whose whole point is recency. */
-  withDate?: boolean;
   className?: string;
-}) => {
+}
+
+export const ItemCards = ({ items, className }: ItemCardsProps) => {
   if (items.length === 0) return null;
 
   return (
@@ -49,9 +39,8 @@ export const ItemCards = ({
             />
           </span>
 
-          <span className="flex flex-wrap items-center gap-x-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
             {collectionLabel(entry)}
-            {withDate && addedAt && <time dateTime={addedAt}>{formatDay(addedAt)}</time>}
           </span>
 
           <span className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">{entry.description}</span>

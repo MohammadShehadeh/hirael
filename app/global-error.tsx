@@ -5,11 +5,10 @@ import { RefreshCw } from 'lucide-react';
 import './globals.css';
 
 import { LogoMark } from '@/components/logo';
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-// global-error replaces the root layout, so it has to bring its own document
-// and fonts. We mirror the root layout's setup so the fallback still reads as
-// Hirael instead of falling back to the browser's default serif.
+// global-error replaces the root layout, so it has to bring its own document and fonts.
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -31,7 +30,7 @@ const cormorant = Cormorant_Garamond({
 export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${jetBrainsMono.variable} ${cormorant.variable} antialiased`}>
+      <body className={cn(inter.className, jetBrainsMono.variable, cormorant.variable, 'antialiased')}>
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />
           <div
@@ -62,13 +61,12 @@ export default function GlobalError() {
                 <RefreshCw className="size-4" />
                 Refresh page
               </Button>
-              {/* Plain anchor forces a full document load rather than a client
-                  navigation, which is what recovery needs here. */}
+              {/* Plain anchor: recovery needs a full document load, not a client navigation. */}
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-11 rounded-full border-border bg-card/60 px-6 text-foreground backdrop-blur-sm hover:bg-accent hover:text-foreground dark:border-border dark:bg-card/60 dark:hover:bg-accent"
+                className="h-11 rounded-full border-border bg-card/60 px-6 text-foreground backdrop-blur-sm hover:bg-accent hover:text-foreground"
               >
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a href="/">Back to home</a>

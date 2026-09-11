@@ -1,11 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Tokens: `:root` is dark (the default canvas) and `.light` swaps the
- * palette. Mode scripts always set a class on <html> — `.dark` in dark
- * mode, `.light` in light mode — so `dark:` utilities follow the standard
- * shadcn convention and registry components behave here exactly as they
- * do in a consumer app. */
+/* The mode script sets `.dark` or `.light` on <html>, so `dark:` utilities follow shadcn's convention. */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -59,16 +55,27 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Page container — one max-width for every section. */
 @utility container {
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: 16px;
   max-width: 1480px;
 }
 
-/* Light: warm near-white canvas (#F4F2EC), slate ink (#161B22) — the faithful
- * inverse of the dark board palette. Primary is slate, warm taupe (#ADA69A) is
- * the brand tone, and a single cool blue stays reserved for live/active. */
+@utility docs-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1480px;
+  padding-inline: 16px;
+
+  @media (width >= 640px) {
+    padding-inline: 24px;
+  }
+
+  @media (width >= 1024px) {
+    padding-inline: 32px;
+  }
+}
+
 :root {
   --background: oklch(0.961 0.008 91.5);
   --foreground: oklch(0.22 0.016 256.8);
@@ -96,7 +103,7 @@
   --chart-3: oklch(0.656 0.024 256.8);
   --chart-4: oklch(0.61 0.021 80.1);
   --chart-5: oklch(0.434 0.023 262.9);
-  --radius: 0.625rem;
+  --radius: 10px;
   --sidebar: oklch(0.985 0.005 95.1);
   --sidebar-foreground: oklch(0.22 0.016 256.8);
   --sidebar-primary: oklch(0.78 0.14 78);
@@ -106,7 +113,6 @@
   --sidebar-border: oklch(0.901 0.014 88.7);
   --sidebar-ring: oklch(0.7 0.13 75);
 
-  /* Warm brand tone — taupe (#ADA69A). Decoration, glows, wordmark sheen. */
   --warm: oklch(0.728 0.019 81.3);
   --warm-foreground: oklch(0.22 0.016 256.8);
   --warm-glow: oklch(0.65 0.05 81.3 / 20%);
@@ -117,16 +123,9 @@
   --halo-warm: oklch(0.72 0.05 82 / 6%);
 }
 
-/* Brand palette — cool blue-slate canvas (#0D1117 / #1A1F29 / #2E3440), warm
- * cream ink (#E7E4DE), warm taupe (#ADA69A) as the brand tone, a dawn-gold
- * primary (--primary, amber at first light) for actions, and a single
- * cool blue (--accent-cool) reserved for live/active state. Dark is the
- * primary canvas. The dark values live on both `:root` and `.dark` so a nested
- * `.dark` region (an always-dark image hero, say) forces dark tokens even
- * while the site is in light mode — matching the standard shadcn `.dark`
- * contract. */
+/* Dark tokens live on `.dark` (not only `:root`) so a nested `.dark` region stays dark while the site is light. */
 .dark {
-  --radius: 0.65rem;
+  --radius: 10px;
 
   --background: oklch(0.176 0.014 258.4);
   --foreground: oklch(0.92 0.009 84.6);
@@ -163,12 +162,10 @@
   --sidebar-border: oklch(0.92 0.01 90 / 9%);
   --sidebar-ring: oklch(0.74 0.12 78);
 
-  /* Warm brand tone — taupe (#ADA69A). Decoration, glows, wordmark sheen. */
   --warm: oklch(0.728 0.019 81.3);
   --warm-foreground: oklch(0.176 0.014 258.4);
   --warm-glow: oklch(0.728 0.05 81.3 / 18%);
 
-  /* The one cool non-neutral — tags live/active state only. */
   --accent-cool: oklch(0.62 0.19 260);
   --accent-cool-glow: oklch(0.62 0.19 260 / 30%);
   --halo-cool: oklch(0.6 0.12 255 / 10%);
@@ -197,8 +194,7 @@
     cursor: pointer;
   }
 
-  /* Firefox fallback for the webkit scrollbar rules below; these properties
-   * inherit, so setting them on the root styles every scroll container. */
+  /* Firefox: these inherit, so the root styles every scroll container. */
   html {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent) transparent;
@@ -230,9 +226,7 @@
     color: var(--foreground);
   }
 
-  /* Site chrome sits above the noise overlay so it isn't tinted. Kept in
-   * @layer base so positioning utilities (e.g. `sticky` on the header) still
-   * win over this rule — unlayered CSS would otherwise override them. */
+  /* Stays in @layer base so positioning utilities like `sticky` still win over it. */
   header,
   main,
   footer,
@@ -243,9 +237,6 @@
 }
 
 @layer utilities {
-  /* Ambient halo — large soft radial glows behind the hero. Warm-near
-   * + cool-far creates depth; the slow drift keeps it alive without
-   * being noticeable as motion. */
   .ambient-halo {
     position: absolute;
     inset: 0;
@@ -256,9 +247,6 @@
     animation: ambient-drift 42s ease-in-out infinite;
   }
 
-  /* Cinematic hero backdrop — a luminous top-down glow over a faint cool
-   * halo. Token-only so both themes get the drama without a video or image.
-   * Drifts on the same slow cadence as the ambient halo. */
   .hero-aurora {
     position: absolute;
     inset: 0;
@@ -270,10 +258,7 @@
     animation: ambient-drift 42s ease-in-out infinite;
   }
 
-  /* Hybrid glass + hairline. Used only on focal containers so the rest
-   * of the doc-grade structure (plain hairline borders) stays clear.
-   * Doubled selector raises specificity so this beats Tailwind's
-   * bg-card on shared targets. */
+  /* Doubled selector outranks a `bg-card` utility on the same element. */
   .glass-panel.glass-panel {
     background-color: color-mix(in oklch, var(--card) 55%, transparent);
     backdrop-filter: blur(20px) saturate(140%);
@@ -284,12 +269,6 @@
       0 1px 24px -8px color-mix(in oklch, var(--accent-cool) 12%, transparent);
   }
 
-  /* Lit-edge glass — adds a gradient hairline rim that is brightest at the
-   * top and bottom and fades to nothing on the sides, the "liquid glass"
-   * sheen the premium templates use. Token-only (scales with --foreground)
-   * so both themes get the lit edge. Layer it on a container that already
-   * has a radius + plain hairline border; the rim sits inside via a masked
-   * ::before. Focal panels only. */
   .glass-panel-lit {
     position: relative;
   }
@@ -320,9 +299,6 @@
     z-index: 1;
   }
 
-  /* Denser glass — used on floating chrome (the site header bar) and the
-   * footer anchor panel, where the surface needs to read as solid-ish
-   * while still letting texture through. */
   .glass-panel-strong.glass-panel-strong {
     background-color: var(--background);
     border: 1px solid var(--border);
@@ -331,9 +307,6 @@
       0 20px 50px -28px color-mix(in oklch, var(--foreground) 30%, transparent);
   }
 
-  /* Serif display type — Cormorant set for large page and section
-   * headings. The single biggest "elegant" lever; pair with mono
-   * eyebrows and sans body. Callers add size / line-height. */
   .text-display {
     font-family: var(--font-serif), ui-serif, Georgia, serif;
     font-weight: 500;
@@ -343,9 +316,6 @@
       'calt' 1;
   }
 
-  /* Token-only elevation — soft, colorless depth for focal cards and the
-   * footer panel. No hard-coded color; scales with the foreground token so
-   * it works in both themes. */
   .shadow-elevated {
     box-shadow:
       inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent),
@@ -353,10 +323,6 @@
       0 8px 24px -18px color-mix(in oklch, var(--foreground) 16%, transparent);
   }
 
-  /* Cutout wordmark — the glyphs are filled with the dot-grid texture (plus
-   * a soft top-down falloff) clipped to the type, so the textured layer reads
-   * as showing *through* the letters rather than sitting behind them. Pure
-   * monochrome, low contrast: still texture, not text. */
   .wordmark-cutout {
     font-family: var(--font-serif), ui-serif, Georgia, serif;
     font-weight: 500;
@@ -377,8 +343,6 @@
     -webkit-text-fill-color: transparent;
   }
 
-  /* Cool state indicator. Pulses on a 3s cycle — system-feedback
-   * pacing, not UI animation. */
   .state-dot {
     display: inline-block;
     width: 6px;
@@ -389,10 +353,6 @@
     animation: state-pulse 3s ease-in-out infinite;
   }
 
-  /* Engineering-blueprint texture for the block schematic plates: a faint
-     graph-paper grid masked to the four corners only, so it frames the card
-     like a registration grid without texturing the whole face. Monochrome in
-     both themes. */
   .blueprint-corners {
     background-image:
       linear-gradient(to right, color-mix(in oklch, var(--warm) 38%, transparent) 1px, transparent 1px),
@@ -410,8 +370,6 @@
       radial-gradient(circle at bottom right, black, transparent 31%);
   }
 
-  /* Faint dot grid used as a subtle background texture on the hero —
-     reads as monochrome zinc dots in both themes. */
   .bg-dot-grid {
     background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
     background-size: 22px 22px;
@@ -444,9 +402,7 @@
   }
 }
 
-/* shiki dual-theme: defaultColor=dark means the inline color/bg are dark
-   values; --shiki-light + --shiki-light-bg are CSS vars we swap to in
-   light mode. */
+/* Shiki inlines the dark theme; light mode swaps to the `--shiki-light*` vars it also emits. */
 .shiki {
   background-color: var(--card) !important;
   font-family: var(--font-jet-brains-mono), ui-monospace, monospace;
@@ -468,9 +424,6 @@ html.light .shiki span {
   text-decoration: var(--shiki-light-text-decoration, inherit) !important;
 }
 
-/* Inline shiki — token spans only (no surface/padding), used to syntax-color
-   short type signatures in the API table. Same dual-theme light swap as the
-   block .shiki above. */
 .shiki-inline span {
   background: transparent !important;
 }
@@ -479,9 +432,6 @@ html.light .shiki-inline span {
   color: var(--shiki-light) !important;
 }
 
-/* Freeze the marquee ticker for visitors who ask for less motion — it falls
- * back to a static, readable strip. The ambient halos and status dots are
- * decorative loops too, so they freeze as well. */
 @media (prefers-reduced-motion: reduce) {
   [data-slot='marquee-track'],
   .ambient-halo,
@@ -491,23 +441,22 @@ html.light .shiki-inline span {
   }
 }
 
-/* Static thumbnails (`data-static`) never scroll, so `whileInView` reveals
- * never fire and motion leaves them at inline `opacity: 0`. Pin them to their
- * final frame; live embeds omit the flag and still animate. */
+/* Static thumbnails never scroll, so `whileInView` reveals never fire; pin them to their final frame. */
 html[data-static] [style*='opacity'] {
   opacity: 1 !important;
   transform: none !important;
 }
 
-/* Drop the shell's full-viewport min-height in thumbnails so a compact block
- * reports its natural height for block-preview.tsx to fit the card to. */
-html[data-static] [data-embed-shell] {
+/* Framed previews report their natural height instead of filling the viewport. */
+html[data-static] [data-embed-shell],
+html[data-fit] [data-embed-shell] {
   min-height: 0 !important;
 }
 
-/* Same as data-static but keeps live animations: the detail-page viewer adds
- * ?fit=1 so a block reports its natural height and the iframe can size to it
- * (see block-viewer.tsx). */
-html[data-fit] [data-embed-shell] {
-  min-height: 0 !important;
+/* The frame grows a beat behind its content, so a visible scrollbar would flash and shift the block sideways. */
+html[data-fit] {
+  scrollbar-width: none;
+}
+html[data-fit]::-webkit-scrollbar {
+  display: none;
 }

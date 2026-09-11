@@ -1,10 +1,5 @@
 import type { RegistryFileMeta } from '@/registry/hirael/registry-meta';
 
-/**
- * Value exports of a source file. Regex-based rather than a TypeScript pass:
- * registry source is hand-written to one shape, and this runs for every file
- * of every item in both bases on each build.
- */
 const exportedNames = (code: string): string[] => {
   const names = new Set<string>();
   for (const match of code.matchAll(/^export\s+(?:async\s+)?(?:function|const|let|class)\s+([A-Za-z_$][\w$]*)/gm)) {
@@ -21,22 +16,13 @@ const exportedNames = (code: string): string[] => {
   return [...names];
 };
 
-/** Where a file lands in a consumer project. Mirrors `deriveTarget` in scripts/build-registry.mts. */
+/** Must match `deriveTarget` in scripts/build-registry.mts. */
 export const installTarget = (file: RegistryFileMeta): string => {
   if (file.target) return file.target;
   if (file.path.startsWith('components/')) return file.path;
   return `components/ui/${file.path.split('/').pop()}`;
 };
 
-/**
- * The import statement a consumer writes after installing an item: every
- * documented part plus any hooks, from the paths the CLI actually wrote to.
- * When the API tables are available their part names decide what is public;
- * without them, anything capitalised counts.
- *
- * Shared by the detail route's Usage block and the generated `.md`, so the
- * page and the file an agent fetches can't drift.
- */
 export const buildUsageCode = (
   files: RegistryFileMeta[] | undefined,
   readCode: (path: string) => string | undefined,

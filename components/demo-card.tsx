@@ -6,10 +6,18 @@ import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
+import { NewBadge } from '@/components/new-badge';
 import { RegistryDemo } from '@/registry/hirael/registry-demos';
 import { CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-export const DemoCard = ({ entry, className }: { entry: RegistryEntryMeta; className?: string }) => {
+export interface DemoCardProps {
+  entry: RegistryEntryMeta;
+  className?: string;
+  compact?: boolean;
+  addedAt?: string;
+}
+
+export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCardProps) => {
   const href = entryHref(entry);
   const [engaged, setEngaged] = React.useState(false);
   const hoverCapable = useHoverCapable();
@@ -31,38 +39,39 @@ export const DemoCard = ({ entry, className }: { entry: RegistryEntryMeta; class
         className,
       )}
     >
-      <LazyDemo
-        name={entry.name}
-        // Demos stay out of the tab order (and the a11y tree) until the card
-        // is hovered or focused, so tabbing through an index of 60+ cards
-        // walks titles instead of every mounted control.
-        inert={!engaged && hoverCapable}
-      />
-      <div className="flex flex-col gap-1.5 border-t border-border p-4">
+      <LazyDemo name={entry.name} compact={compact} inert={!engaged && hoverCapable} />
+      <div className={cn('flex flex-col gap-1.5 border-t border-border', compact ? 'px-4 py-3' : 'p-4')}>
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-sm font-medium tracking-[-0.01em]">
+          <h3 className="flex min-w-0 items-center gap-2 text-sm font-medium tracking-[-0.01em]">
             <Link
               href={href}
-              className="outline-none after:absolute after:inset-0 after:content-[''] focus-visible:underline"
+              className="truncate outline-none after:absolute after:inset-0 after:content-[''] focus-visible:underline"
             >
               {entry.title}
             </Link>
+            {compact && <NewBadge addedAt={addedAt} />}
           </h3>
-          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-            {CATEGORY_LABELS[entry.category]}
-          </span>
+          {!compact && (
+            <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+              {CATEGORY_LABELS[entry.category]}
+            </span>
+          )}
         </div>
-        <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
-        <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
-          View
-          <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
-        </span>
+        {!compact && (
+          <>
+            <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
+            <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
+              View
+              <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
+            </span>
+          </>
+        )}
       </div>
     </article>
   );
 };
 
-const PREVIEW_FRAME = 'bg-dot-grid relative flex h-60 items-center justify-center overflow-hidden p-5';
+const PREVIEW_FRAME = 'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5';
 
 const hoverQuery = typeof window !== 'undefined' ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
 
@@ -71,8 +80,6 @@ const subscribeHover = (onChange: () => void) => {
   return () => hoverQuery?.removeEventListener('change', onChange);
 };
 
-/** True only on devices where hovering is the primary pointer interaction —
- * touch devices never inert their demos, since a tap should act immediately. */
 const useHoverCapable = () => {
   return React.useSyncExternalStore(
     subscribeHover,
@@ -81,11 +88,13 @@ const useHoverCapable = () => {
   );
 };
 
-/**
- * Mounts the demo only once the card is near the viewport, so an index of 60+
- * cards doesn't pull every component chunk on page load.
- */
-const LazyDemo = ({ name, inert }: { name: string; inert: boolean }) => {
+interface LazyDemoProps {
+  name: string;
+  inert: boolean;
+  compact: boolean;
+}
+
+const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [isNear, setIsNear] = React.useState(false);
 
@@ -105,9 +114,8 @@ const LazyDemo = ({ name, inert }: { name: string; inert: boolean }) => {
   const base = useRegistryBase();
 
   return (
-    <div ref={ref} inert={inert} className={PREVIEW_FRAME}>
-      {/* The title link's ::after overlay covers the card; this layer sits
-          above it so the demo itself stays interactive. */}
+    <div ref={ref} inert={inert} className={cn(PREVIEW_FRAME, compact ? 'aspect-video' : 'h-60')}>
+      {/* Sits above the title link's ::after overlay so the demo stays interactive. */}
       <div className="relative z-10 flex max-h-full w-full items-center justify-center">
         {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>

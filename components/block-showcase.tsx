@@ -6,18 +6,14 @@ import { CATEGORIES_BY_GROUP } from '@/components/block-categories';
 import { SectionLabel } from '@/components/page-header';
 import { BLOCKS_BY_KIND } from '@/registry/hirael/registry-meta';
 
-// Schematic wireframe cards — each card previews the shape of its category.
-// Token-only (muted-foreground / primary / border at low opacity) so it
-// stays on the near-monochrome palette and works in both themes; RTL-safe
-// via logical properties.
-
 const CARD_SHELL =
   'relative flex aspect-video size-full overflow-hidden rounded-md border border-border bg-card/55 shadow-xs outline-none focus-visible:border-warm focus-visible:ring-[3px] focus-visible:ring-ring/40 xl:aspect-[1.8/1] dark:bg-[radial-gradient(90%_120%_at_50%_0%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent)]';
 
-// Hirael's blueprint signature: a faint graph-paper grid masked to the four
-// corners, framing each card like a registration plate. This turns the generic
-// wireframe preview into a static "spec plate" that reads as ours.
-const BlueprintFrame = ({ children }: { children: React.ReactNode }) => {
+interface BlueprintFrameProps {
+  children: React.ReactNode;
+}
+
+const BlueprintFrame = ({ children }: BlueprintFrameProps) => {
   return (
     <>
       <div aria-hidden className="blueprint-corners pointer-events-none absolute inset-0 opacity-20" />
@@ -26,19 +22,22 @@ const BlueprintFrame = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const Label = ({
-  title,
-  count,
-  center = false,
-  className,
-}: {
+interface LabelProps {
   title: string;
   count: number;
-  center?: boolean;
   className?: string;
-}) => {
+  'data-centered'?: boolean;
+}
+
+const Label = ({ title, count, className, ...props }: LabelProps) => {
   return (
-    <div className={cn(center && 'flex flex-col items-center text-center', className)}>
+    <div
+      className={cn(
+        'data-centered:flex data-centered:flex-col data-centered:items-center data-centered:text-center',
+        className,
+      )}
+      {...props}
+    >
       <h3 className="text-sm font-semibold">{title}</h3>
       <p className="font-mono text-xs uppercase whitespace-nowrap text-muted-foreground/90">
         {count} block{count === 1 ? '' : 's'}
@@ -47,8 +46,11 @@ const Label = ({
   );
 };
 
-// Faint placeholder bar — the building block of every schematic.
-const Bar = ({ className }: { className?: string }) => {
+interface BarProps {
+  className?: string;
+}
+
+const Bar = ({ className }: BarProps) => {
   return <div className={cn('rounded-full bg-muted-foreground/35', className)} />;
 };
 
@@ -62,7 +64,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
     <div className="relative flex size-full flex-col items-center justify-center gap-2">
       <div className="absolute inset-y-0 start-5 w-px bg-linear-to-b from-transparent via-border to-border" />
       <div className="absolute inset-y-0 end-5 w-px bg-linear-to-b from-transparent via-border to-border" />
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="mt-1 grid grid-cols-2 gap-2">
         <div className="h-4 w-12 rounded bg-muted-foreground/15" />
         <div className="h-4 w-12 rounded bg-warm/40" />
@@ -72,7 +74,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   features: ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-3 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="grid grid-cols-3">
         {[0, 1, 2].map((i) => (
           <div
@@ -90,7 +92,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   pricing: ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-3 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="grid grid-cols-3 gap-2">
         {[0, 1, 2].map((i) => (
           <div
@@ -132,7 +134,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   stats: ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-2.5 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div aria-hidden className="grid grid-cols-3 rounded-md border border-border/70 bg-background/30">
         {['48', '12k', '99'].map((value, i) => (
           <div
@@ -165,7 +167,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   cta: ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="w-full border-y border-border/70 px-4">
         <div className="grid grid-cols-2 border-x border-border/70">
           <div className="flex items-center border-e border-border/70 p-2">
@@ -227,7 +229,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
         <div className="h-3.5 w-10 rounded-sm bg-warm/45" />
       </div>
       <div className="flex flex-1 flex-col items-center justify-center">
-        <Label title={title} count={count} center />
+        <Label title={title} count={count} data-centered />
       </div>
     </div>
   ),
@@ -235,15 +237,15 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
   footer: ({ title, count }) => (
     <div className="flex size-full flex-col">
       <div className="flex flex-1 flex-col items-center justify-center">
-        <Label title={title} count={count} center />
+        <Label title={title} count={count} data-centered />
       </div>
       <div className="mask-[linear-gradient(black,transparent)] border-t border-border/70 px-4">
         <div className="grid grid-cols-4 gap-3 border-x border-border/70 p-3">
-          {[4, 4, 3, 1].map((rows, c) => (
-            <div key={c} className="flex flex-col gap-1">
+          {[4, 4, 3, 1].map((rowCount, columnIndex) => (
+            <div key={columnIndex} className="flex flex-col gap-1">
               <Bar className="mb-0.5 h-1 w-4 bg-warm/40" />
-              {Array.from({ length: rows }).map((_, r) => (
-                <Bar key={r} className="h-1 w-6" />
+              {Array.from({ length: rowCount }).map((_, rowIndex) => (
+                <Bar key={rowIndex} className="h-1 w-6" />
               ))}
             </div>
           ))}
@@ -255,7 +257,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
   'not-found': ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-2">
       <span className="text-display text-3xl italic leading-none text-muted-foreground/30 md:text-4xl">404</span>
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="flex gap-2">
         <div className="h-3 w-10 rounded-sm bg-muted-foreground/15" />
         <div className="h-3 w-10 rounded-sm bg-warm/45" />
@@ -267,15 +269,15 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
     <div className="grid size-full grid-cols-[0.8fr_1.2fr] items-center gap-3 px-4">
       <Label title={title} count={count} />
       <div aria-hidden className="relative flex flex-col gap-2 border-s border-border/80 ps-3">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="relative flex items-center gap-2">
+        {['w-full', 'w-4/5', 'w-3/5'].map((width, i) => (
+          <div key={width} className="relative flex items-center gap-2">
             <span
               className={cn(
                 'absolute inset-s-[-0.925rem] size-1.5 rounded-full border border-border bg-card',
                 i === 0 && 'border-warm bg-warm',
               )}
             />
-            <Bar className={cn('h-1 bg-muted-foreground/18', i === 0 ? 'w-full' : i === 1 ? 'w-4/5' : 'w-3/5')} />
+            <Bar className={cn('h-1 bg-muted-foreground/18', width)} />
           </div>
         ))}
       </div>
@@ -334,10 +336,10 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   'image-gallery': ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-2 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="grid grid-cols-4 grid-rows-2 gap-1">
         {['row-span-2', '', '', 'row-span-2', '', 'col-span-2', ''].map((span, i) => (
-          <div key={i} className={cn('rounded-sm bg-muted-foreground/12', span)} style={{ minHeight: 12 }} />
+          <div key={i} className={cn('min-h-3 rounded-sm bg-muted-foreground/12', span)} />
         ))}
       </div>
     </div>
@@ -360,7 +362,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   'logo-cloud': ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="mask-[linear-gradient(to_right,transparent,black,transparent)] mx-auto h-px w-1/2 bg-border" />
       <div className="mask-[linear-gradient(to_right,transparent,black,transparent)] flex w-full items-center gap-2 overflow-hidden px-2">
         {Array.from({ length: 7 }).map((_, i) => (
@@ -419,11 +421,11 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
           ))}
         </div>
         <div className="flex flex-1 items-end gap-0.5">
-          {[5, 7, 4, 8, 6, 9, 5, 7, 10, 6].map((h, i) => (
+          {[5, 7, 4, 8, 6, 9, 5, 7, 10, 6].map((barHeight, i) => (
             <div
               key={i}
               className="flex-1 rounded-t-xs bg-linear-to-b from-muted-foreground/25 to-muted-foreground/5"
-              style={{ height: `${h * 9}%` }}
+              style={{ height: `${barHeight * 9}%` }}
             />
           ))}
         </div>
@@ -439,7 +441,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
           <div
             key={i}
             className={cn(
-              'aspect-square rounded-[2px]',
+              'aspect-square rounded-xs',
               i % 7 === 0 ? 'bg-warm/50' : i % 5 === 0 ? 'bg-muted-foreground/25' : 'bg-muted-foreground/12',
             )}
           />
@@ -502,7 +504,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   widgets: ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-2 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="grid grid-cols-2 gap-1.5">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="flex flex-col gap-1 rounded-sm border border-border/60 p-1.5">
@@ -552,7 +554,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   process: ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-3 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="flex w-4/5 items-center">
         {[0, 1, 2].map((i) => (
           <div key={i} className={cn('flex items-center', i < 2 && 'flex-1')}>
@@ -568,7 +570,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   comparison: ({ title, count }) => (
     <div className="flex size-full flex-col justify-center gap-3 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col gap-1 rounded-md border border-warm/50 bg-warm/10 p-2">
           {[0, 1, 2].map((i) => (
@@ -592,7 +594,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 
   newsletter: ({ title, count }) => (
     <div className="flex size-full flex-col items-center justify-center gap-2.5 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="flex w-3/4 items-center gap-1.5">
         <div className="h-4 flex-1 rounded-sm border border-border/70 bg-muted/20" />
         <div className="h-4 w-10 rounded-sm bg-warm/45" />
@@ -624,7 +626,7 @@ const SCHEMATICS: Record<string, React.ComponentType<SchematicProps>> = {
 const GenericSchematic = ({ title, count }: SchematicProps) => {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2 px-4">
-      <Label title={title} count={count} center />
+      <Label title={title} count={count} data-centered />
       <div className="flex w-2/3 flex-col gap-1.5">
         <Bar className="h-1.5 w-full bg-muted-foreground/15" />
         <Bar className="h-1.5 w-2/3 bg-muted-foreground/15" />
@@ -638,7 +640,7 @@ export const BlockShowcase = () => {
     <div className="flex flex-col gap-10 sm:gap-12">
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => {
         const blockCount = categories.reduce(
-          (sum, cat) => sum + (cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind].length : 0),
+          (sum, category) => sum + (category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0),
           0,
         );
         return (
@@ -650,18 +652,18 @@ export const BlockShowcase = () => {
               </span>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-              {categories.map((cat) => {
-                const count = cat.blockKind ? BLOCKS_BY_KIND[cat.blockKind].length : 0;
-                const Schematic = SCHEMATICS[cat.slug] ?? GenericSchematic;
+              {categories.map((category) => {
+                const count = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
+                const Schematic = SCHEMATICS[category.slug] ?? GenericSchematic;
                 return (
                   <Link
-                    key={cat.slug}
-                    href={`/blocks/${cat.slug}`}
-                    aria-label={`Browse ${cat.title} blocks`}
+                    key={category.slug}
+                    href={`/blocks/${category.slug}`}
+                    aria-label={`Browse ${category.title} blocks`}
                     className={CARD_SHELL}
                   >
                     <BlueprintFrame>
-                      <Schematic title={cat.title} count={count} />
+                      <Schematic title={category.title} count={count} />
                     </BlueprintFrame>
                   </Link>
                 );

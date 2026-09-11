@@ -14,11 +14,11 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function BlockOpenGraphImage({
-  params,
-}: {
+interface BlockOpenGraphImageProps {
   params: Promise<{ category: string; block: string }>;
-}) {
+}
+
+export default async function BlockOpenGraphImage({ params }: BlockOpenGraphImageProps) {
   const { category, block } = await params;
   const entry = REGISTRY_BY_NAME[block];
 

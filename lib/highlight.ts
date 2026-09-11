@@ -1,16 +1,5 @@
-/**
- * Server-side syntax highlighting via shiki.
- *
- * The highlighter is created once per server process (cached as a module-level
- * promise) and reused across requests. Output uses dual themes — CSS variables
- * carry both the light and dark token colors, and a small block in
- * globals.css picks the right one based on the `.light` mode class.
- */
-
 import type { BundledLanguage, Highlighter } from 'shiki';
 
-// VSCode's own default themes — the familiar editor colors (blue keywords,
-// orange strings, teal types, yellow functions, green numbers/comments).
 const DARK_THEME = 'dark-plus';
 const LIGHT_THEME = 'light-plus';
 
@@ -33,23 +22,18 @@ export type HighlightLang = BundledLanguage | 'plaintext';
 
 export const highlightCode = async (code: string, lang: HighlightLang): Promise<string> => {
   const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage) ? (lang as BundledLanguage) : 'tsx';
-  const hl = await getHighlighter();
-  return hl.codeToHtml(code, {
+  const highlighter = await getHighlighter();
+  return highlighter.codeToHtml(code, {
     lang: safeLang,
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: 'dark',
   });
 };
 
-/**
- * Inline highlight — token `<span>`s only, no `<pre>`/`<code>` wrapper or
- * surface — for syntax-coloring short type signatures inside the API table.
- * Defaults to `ts` so prop types and defaults read like editor code.
- */
 export const highlightInline = async (code: string, lang: HighlightLang = 'ts'): Promise<string> => {
   const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage) ? (lang as BundledLanguage) : 'ts';
-  const hl = await getHighlighter();
-  return hl.codeToHtml(code, {
+  const highlighter = await getHighlighter();
+  return highlighter.codeToHtml(code, {
     lang: safeLang,
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: 'dark',
@@ -57,7 +41,6 @@ export const highlightInline = async (code: string, lang: HighlightLang = 'ts'):
   });
 };
 
-/** Infer a shiki lang from a filename. */
 export const langFromPath = (filePath: string): HighlightLang => {
   const ext = filePath.split('.').pop()?.toLowerCase();
   switch (ext) {

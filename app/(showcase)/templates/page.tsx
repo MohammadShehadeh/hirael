@@ -26,7 +26,7 @@ export const metadata: Metadata = listingMetadata({
 
 export default function TemplatesIndex() {
   return (
-    <div className="container flex w-full flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+    <div className="docs-container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <CollectionJsonLd
         id="templates-index"
         path="/templates"
@@ -54,10 +54,7 @@ export default function TemplatesIndex() {
             <BlockPreview entry={entry} />
 
             <div className="flex flex-1 flex-col gap-2 p-4 sm:p-5">
-              <div className="flex items-center justify-between gap-2">
-                <h2 className="text-base font-medium tracking-[-0.01em]">{entry.title}</h2>
-                <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
-              </div>
+              <h2 className="text-base font-medium tracking-[-0.01em]">{entry.title}</h2>
               <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
               {entry.dependencies?.length ? (
                 <div className="flex flex-wrap gap-1.5">

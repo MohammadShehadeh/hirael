@@ -11,14 +11,6 @@ import {
   Space_Grotesk,
 } from 'next/font/google';
 
-/**
- * Sans-serif options for the Customizer's Font picker. Inter is the site
- * font and is preloaded from the root layout; the alternatives are declared
- * here with `preload: false` so their @font-face rules exist but no bytes
- * download until a visitor actually picks one. The Customizer applies a
- * choice by writing `font.style.fontFamily` to `--font-sans-active`, which
- * `--font-sans` in globals.css falls through to Inter without.
- */
 export const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -45,7 +37,6 @@ const notoSans = Noto_Sans({
 export interface FontOption {
   name: string;
   title: string;
-  /** `font-family` value from next/font, ready for a CSS custom property. */
   family: string;
 }
 

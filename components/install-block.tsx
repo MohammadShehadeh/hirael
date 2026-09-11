@@ -11,12 +11,6 @@ import { SITE } from '@/lib/site';
 import { useRegistryBase } from '@/components/active-theme';
 import { registryItemPath } from '@/registry/hirael/registry-meta';
 
-/**
- * Two layouts of the same three parts (command line, package-manager picker,
- * copy). "default" stacks a control bar over the command for the detail page;
- * "inline" folds everything into one row for list contexts, where each block
- * gets its own install line under the live preview.
- */
 const installBlockVariants = cva('overflow-hidden rounded-md border border-border bg-card', {
   variants: {
     variant: {
@@ -53,11 +47,11 @@ interface InstallBlockProps extends VariantProps<typeof installBlockVariants> {
 }
 
 export const InstallBlock = ({ name, className, variant }: InstallBlockProps) => {
-  const [pm, setPm] = usePackageManager();
+  const { packageManager, setPackageManager } = usePackageManager();
   const origin = React.useSyncExternalStore(subscribeNoop, getClientOrigin, getServerOrigin);
 
   const url = `${origin}${registryItemPath(useRegistryBase(), name)}`;
-  const command = getShadcnAddCommand(pm, url);
+  const command = getShadcnAddCommand(packageManager, url);
 
   return (
     <div className={cn(installBlockVariants({ variant }), className)}>
@@ -72,9 +66,9 @@ export const InstallBlock = ({ name, className, variant }: InstallBlockProps) =>
         <SegmentedControl
           role="radio"
           ariaLabel="Package manager"
-          value={pm}
-          onValueChange={(v) => setPm(v as PackageManager)}
-          items={PACKAGE_MANAGERS.map((p) => ({ value: p, label: p }))}
+          value={packageManager}
+          onValueChange={(value) => setPackageManager(value as PackageManager)}
+          items={PACKAGE_MANAGERS.map((manager) => ({ value: manager, label: manager }))}
         />
         <CopyButton value={command} size="sm" aria-label="Copy install command" />
       </div>
@@ -82,23 +76,18 @@ export const InstallBlock = ({ name, className, variant }: InstallBlockProps) =>
   );
 };
 
-// The registry origin: the configured base URL, else wherever the page is
-// served from (so a local `pnpm dev` shows a local install command). Read
-// through useSyncExternalStore so the static HTML carries the canonical
-// origin and the client swaps in its own on hydration without a mismatch.
+// Read via useSyncExternalStore so the static HTML carries the canonical origin and the client swaps in its own on hydration without a mismatch.
 const subscribeNoop = () => () => {};
 const getServerOrigin = () => SITE.registry.origin;
 const getClientOrigin = () => process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
 
-// VSCode dark-plus / light-plus token colors, applied semantically so the
-// install command reads like editor-highlighted shell (bash itself has nothing
-// to colorize in a bare command, so we classify the tokens ourselves).
+// Hex values are VSCode light-plus / dark-plus token colors.
 const TOKEN_CLASS = {
-  runner: 'text-[#795e26] dark:text-[#dcdcaa]', // npx / pnpm / yarn / bunx
-  verb: 'text-[#0000ff] dark:text-[#569cd6]', // dlx / add
-  flag: 'text-[#0070c1] dark:text-[#9cdcfe]', // --bun
-  pkg: 'text-[#267f99] dark:text-[#4ec9b0]', // shadcn@latest
-  url: 'text-[#a31515] dark:text-[#ce9178]', // registry URL
+  runner: 'text-[#795e26] dark:text-[#dcdcaa]',
+  verb: 'text-[#0000ff] dark:text-[#569cd6]',
+  flag: 'text-[#0070c1] dark:text-[#9cdcfe]',
+  pkg: 'text-[#267f99] dark:text-[#4ec9b0]',
+  url: 'text-[#a31515] dark:text-[#ce9178]',
   plain: 'text-muted-foreground',
 } as const;
 
@@ -111,14 +100,18 @@ const classifyToken = (token: string, index: number): keyof typeof TOKEN_CLASS =
   return 'plain';
 };
 
-const CommandLine = ({ command }: { command: string }) => {
+interface CommandLineProps {
+  command: string;
+}
+
+const CommandLine = ({ command }: CommandLineProps) => {
   const tokens = command.split(' ');
   return (
     <code dir="ltr" className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs">
-      {tokens.map((t, i) => (
-        <React.Fragment key={i}>
-          {i > 0 && ' '}
-          <span className={TOKEN_CLASS[classifyToken(t, i)]}>{t}</span>
+      {tokens.map((token, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && ' '}
+          <span className={TOKEN_CLASS[classifyToken(token, index)]}>{token}</span>
         </React.Fragment>
       ))}
     </code>

@@ -14,14 +14,18 @@ export function generateStaticParams() {
   return REGISTRY.filter((entry) => entry.category === 'templates').map((entry) => ({ template: entry.name }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ template: string }> }): Promise<Metadata> {
+interface TemplateRouteProps {
+  params: Promise<{ template: string }>;
+}
+
+export async function generateMetadata({ params }: TemplateRouteProps): Promise<Metadata> {
   const { template } = await params;
   const entry = REGISTRY_BY_NAME[template];
   if (!entry || entry.category !== 'templates') return {};
   return detailMetadata(entry, { titleSuffix: 'template' });
 }
 
-export default async function TemplateRoute({ params }: { params: Promise<{ template: string }> }) {
+export default async function TemplateRoute({ params }: TemplateRouteProps) {
   const { template } = await params;
   const entry = REGISTRY_BY_NAME[template];
   if (!entry || entry.category !== 'templates') notFound();

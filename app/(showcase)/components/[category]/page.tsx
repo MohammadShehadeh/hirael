@@ -23,7 +23,11 @@ export function generateStaticParams() {
   return COMPONENT_CATEGORY_ORDER.map((category) => ({ category }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+interface ComponentCategoryRouteProps {
+  params: Promise<{ category: string }>;
+}
+
+export async function generateMetadata({ params }: ComponentCategoryRouteProps): Promise<Metadata> {
   const { category } = await params;
   if (!isComponentCategory(category)) return {};
   const label = CATEGORY_LABELS[category];
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   });
 }
 
-export default async function ComponentCategoryRoute({ params }: { params: Promise<{ category: string }> }) {
+export default async function ComponentCategoryRoute({ params }: ComponentCategoryRouteProps) {
   const { category } = await params;
   if (!isComponentCategory(category)) notFound();
   const label = CATEGORY_LABELS[category];

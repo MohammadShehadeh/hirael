@@ -15,13 +15,9 @@ const MAX_RECENTS = 5;
 const NO_RECENTS: RecentItem[] = [];
 const listeners = new Set<() => void>();
 
-/**
- * Snapshot cached against the raw string: `useSyncExternalStore` needs the same
- * reference back for an unchanged value, and JSON.parse never gives one.
- */
+/** `useSyncExternalStore` needs the same reference back for an unchanged value, and JSON.parse never gives one. */
 let cache: { raw: string | null; value: RecentItem[] } | null = null;
 
-/** Set only when localStorage refused the write, and from then on the answer. */
 let memory: RecentItem[] | null = null;
 
 const read = (): string | null => {
@@ -66,10 +62,8 @@ export const recentsSnapshot = (): RecentItem[] => {
   return cache.value;
 };
 
-/** Nothing is known about the visitor's storage on the server. */
 export const serverRecents = (): RecentItem[] => NO_RECENTS;
 
-/** Most-recent-first, deduped by href, capped at MAX_RECENTS. */
 export const pushRecent = (item: RecentItem): RecentItem[] => {
   const capped = [item, ...recentsSnapshot().filter((r) => r.href !== item.href)].slice(0, MAX_RECENTS);
   try {

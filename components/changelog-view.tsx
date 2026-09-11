@@ -5,9 +5,11 @@ import { PageHeader } from '@/components/page-header';
 import type { Changelog } from '@/lib/changelog';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
-export const ChangelogView = ({ entries, lastUpdated, latestSlug }: Changelog) => {
+export type ChangelogViewProps = Changelog;
+
+export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogViewProps) => {
   return (
-    <article className="relative container w-full py-16 sm:py-20">
+    <article className="docs-container relative py-16 sm:py-20">
       <div className="relative">
         <div
           aria-hidden
@@ -29,7 +31,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: Changelog) =
       {entries.length === 0 ? (
         <p className="mt-16 text-sm text-muted-foreground">No releases recorded yet.</p>
       ) : (
-        <div className="mt-14 space-y-5">
+        <div className="mt-14 flex flex-col gap-5">
           {entries.map((entry) => (
             <section
               key={entry.slug}

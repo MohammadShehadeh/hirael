@@ -13,11 +13,11 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function ComponentOpenGraphImage({
-  params,
-}: {
+interface ComponentOpenGraphImageProps {
   params: Promise<{ category: string; component: string }>;
-}) {
+}
+
+export default async function ComponentOpenGraphImage({ params }: ComponentOpenGraphImageProps) {
   const { component } = await params;
   const entry = REGISTRY_BY_NAME[component];
 

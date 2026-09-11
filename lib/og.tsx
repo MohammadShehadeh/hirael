@@ -2,7 +2,6 @@ import { ImageResponse } from 'next/og';
 
 import { SITE } from '@/lib/site';
 
-/** The social card behind all three detail routes: components, blocks, templates. */
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = 'image/png';
 
@@ -10,13 +9,18 @@ export const OG_CONTENT_TYPE = 'image/png';
 // for the Command key, so a ⌘K description fails the fetch and renders blank.
 const spellGlyphs = (text: string) => text.replaceAll('⌘', 'Cmd');
 
-/** Cut rather than wrap off the bottom of the card. */
 const clamp = (text: string, max: number) => {
   const clean = spellGlyphs(text);
   return clean.length > max ? `${clean.slice(0, max - 3)}...` : clean;
 };
 
-export const ogCard = ({ kicker, title, description }: { kicker: string; title: string; description: string }) =>
+export interface OgCardOptions {
+  kicker: string;
+  title: string;
+  description: string;
+}
+
+export const ogCard = ({ kicker, title, description }: OgCardOptions) =>
   new ImageResponse(
     <div
       style={{

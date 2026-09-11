@@ -2,18 +2,18 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 
 /**
- * Background wrapper for statically exported block embeds; a plain server
- * wrapper since reading direction is set pre-paint in `lib/embed.ts`.
- *
- * `demoNotice` renders a banner marking the form a demo. It's in the static
- * HTML but hidden under `html[data-framed]`, so only direct visits (including
- * Safe Browsing's crawler) see it: auth embeds are bare login forms on a real
- * URL, which Google's phishing classifier flags without the notice.
+ * `hasDemoNotice` stays in the static HTML and hides only under `html[data-framed]`: auth embeds are bare login
+ * forms on a real URL, and Google Safe Browsing flagged them as phishing without the notice on direct visits.
  */
-export const BlockEmbedShell = ({ children, demoNotice = false }: { children: ReactNode; demoNotice?: boolean }) => {
+export interface BlockEmbedShellProps {
+  children: ReactNode;
+  hasDemoNotice?: boolean;
+}
+
+export const BlockEmbedShell = ({ children, hasDemoNotice = false }: BlockEmbedShellProps) => {
   return (
     <div data-embed-shell className="min-h-svh bg-background">
-      {demoNotice && (
+      {hasDemoNotice && (
         <div
           role="note"
           className="fixed inset-x-0 top-0 z-50 border-b border-border bg-card px-4 py-2 text-center text-xs text-muted-foreground [[data-framed]_&]:hidden"

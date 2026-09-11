@@ -26,20 +26,9 @@ const tocLinkVariants = cva('block border-s py-1 ps-3 text-[13px] leading-snug t
   defaultVariants: { active: false },
 });
 
-/**
- * "On this page" rail — the right-column table of contents shadcn/ui's docs
- * carry. It mirrors the sections ComponentPage renders (single source of
- * truth: the same descriptor list feeds the content and this nav) and
- * scroll-spies the active one. The section ids it points at carry
- * scroll-margin so the sticky topbar never covers a heading you jump to.
- *
- * Logical properties throughout (`border-s`, `ms`/`ps`) so the rail sits on
- * the inline-start edge under both LTR and RTL.
- */
 export const Toc = ({ items, className }: TocProps) => {
   const active = useActiveSection(items.map((i) => i.id));
 
-  // One lonely entry isn't a table of contents.
   if (items.length < 2) return null;
 
   return (
@@ -65,12 +54,6 @@ export const Toc = ({ items, className }: TocProps) => {
   );
 };
 
-/**
- * The same "on this page" navigation as {@link Toc}, as a horizontal chip row
- * for viewports below xl where the sticky rail is hidden — section jumping
- * shouldn't be a desktop-only affordance. Shares the scroll-spy hook, so both
- * highlight the same section.
- */
 export const TocChips = ({ items, className }: TocProps) => {
   const active = useActiveSection(items.map((i) => i.id));
 
@@ -97,17 +80,9 @@ export const TocChips = ({ items, className }: TocProps) => {
   );
 };
 
-/**
- * Tracks which section is in view. An IntersectionObserver marks sections as
- * they cross the upper band of the viewport; the active one is the first
- * (top-most in document order) currently inside that band. Falls back to the
- * first id before any scroll. Runs only in the browser, so it's safe under
- * `output: "export"` — the static HTML ships without it and it wires up on
- * hydration.
- */
 const useActiveSection = (ids: string[]) => {
   const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
-  // Re-run the effect when the *set* of ids changes, not its array identity.
+  // Joined so the effect re-runs on a change of ids, not on array identity.
   const key = ids.join('|');
 
   React.useEffect(() => {
@@ -124,9 +99,8 @@ const useActiveSection = (ids: string[]) => {
         const current = sectionIds.find((id) => visible.has(id));
         if (current) setActive(current);
       },
-      // Activate a heading once it passes the topbar and before it leaves the
-      // top third — keeps the highlight one step ahead of the reading line.
-      { rootMargin: '-88px 0px -66% 0px', threshold: 0 },
+      // -72px clears the sticky tabs bar; -66% activates a heading before it leaves the top third.
+      { rootMargin: '-72px 0px -66% 0px', threshold: 0 },
     );
 
     for (const id of sectionIds) {

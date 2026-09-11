@@ -26,7 +26,7 @@ interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   config: CustomizerConfig;
-  /** Hydration-safe base: the default until mounted, then `config.base`. */
+  /** The default until mounted so the first client render matches the server HTML. */
   base: RegistryBase;
   tokens: ResolvedTokens;
   isDefault: boolean;
@@ -46,7 +46,11 @@ const readPersistedConfig = (): CustomizerConfig => {
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
-const TokenProvider = ({ children }: { children: React.ReactNode }) => {
+interface TokenProviderProps {
+  children: React.ReactNode;
+}
+
+const TokenProvider = ({ children }: TokenProviderProps) => {
   const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
   const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
 
@@ -55,16 +59,16 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [config, setConfigState] = React.useState<CustomizerConfig>(readPersistedConfig);
 
-  const mounted = useMounted();
+  const isMounted = useMounted();
 
   React.useEffect(() => {
-    function onStorage(e: StorageEvent) {
-      if (e.key !== CONFIG_STORAGE_KEY) return;
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== CONFIG_STORAGE_KEY) return;
       const next = readPersistedConfig();
       setConfigState((prev) => (JSON.stringify(next) === JSON.stringify(prev) ? prev : next));
-    }
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
   const tokens = resolveTokens(config);
@@ -73,31 +77,32 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useLayoutEffect(() => {
     const css = isEmbed ? embedCss : mainCss;
-    let el = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
+    let styleElement = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
     if (!css) {
-      el?.remove();
+      styleElement?.remove();
       return;
     }
-    if (!el) {
-      el = document.createElement('style');
-      el.id = STYLE_ELEMENT_ID;
-      document.head.appendChild(el);
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = STYLE_ELEMENT_ID;
+      document.head.appendChild(styleElement);
     }
-    if (el.textContent !== css) el.textContent = css;
+    if (styleElement.textContent !== css) styleElement.textContent = css;
   }, [isEmbed, mainCss, embedCss]);
 
   React.useEffect(() => {
-    const id = window.setTimeout(() => {
+    const timerId = window.setTimeout(() => {
       try {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
         localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
+        // Storage can be unavailable (private mode, quota); the in-memory config still applies.
       }
     }, 200);
-    return () => window.clearTimeout(id);
+    return () => window.clearTimeout(timerId);
   }, [config, mainCss, embedCss]);
 
-  const setMode = (m: ThemeMode) => setTheme(m);
+  const setMode = (nextMode: ThemeMode) => setTheme(nextMode);
 
   const setConfig = (patch: Partial<CustomizerConfig>) => {
     setConfigState((prev) => {
@@ -115,7 +120,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     mode,
     setMode,
     config,
-    base: mounted ? config.base : DEFAULT_CONFIG.base,
+    base: isMounted ? config.base : DEFAULT_CONFIG.base,
     tokens,
     isDefault: isDefaultConfig(config),
     setConfig,
@@ -125,7 +130,11 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
     <NextThemesProvider
       attribute="class"
@@ -146,5 +155,4 @@ export const useTheme = (): ThemeContextValue => {
   return ctx;
 };
 
-/** The registry tree the showcase previews, shows and installs from. */
 export const useRegistryBase = (): RegistryBase => useTheme().base;

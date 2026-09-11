@@ -1,14 +1,6 @@
-/**
- * Site-wide brand constants. One source of truth for name, URLs, social links.
- */
-
 export const SITE = {
   name: 'Hirael',
   description: "The components shadcn/ui doesn't ship.",
-  /**
-   * The tagline as a page title. `description` keeps its full stop for display
-   * copy; one right before " - Hirael" reads as a typo in a search result.
-   */
   tagline: "Components, blocks and templates shadcn/ui doesn't ship",
   longDescription:
     "A shadcn-compatible registry of React components, section blocks, and full-page templates most products end up building anyway. The shadcn CLI copies the source into your repo, so there's no package to depend on.",
@@ -36,12 +28,11 @@ export const SITE = {
   ],
   registry: {
     name: 'hirael',
-    /** Public origin used when generating install URLs server-side. */
     origin: 'https://hirael.com',
   },
 } as const;
 
-export const NAV_LINKS: { href: string; label: string; external?: boolean }[] = [
+export const NAV_LINKS: { href: string; label: string; isExternal?: boolean }[] = [
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },

@@ -5,21 +5,13 @@ import path from 'node:path';
 import matter from 'gray-matter';
 
 export interface ChangelogEntry {
-  /** File basename without extension, e.g. `2026-08-initial-release`. */
   slug: string;
   title: string;
-  /** Version label shown as the entry heading; falls back to the title. */
   version: string | null;
   isoDate: string;
   displayDate: string;
   description: string | null;
-  /**
-   * Registry item names the release added, e.g. `['hero-10', 'footer-06']`.
-   * Optional in frontmatter; drives the "New" badge and the landing page's
-   * recently-added rail through {@link getReleaseDates}.
-   */
   added: string[];
-  /** Raw MDX body, compiled by the view. */
   body: string;
 }
 
@@ -29,7 +21,6 @@ export interface Changelog {
   latestSlug: string | null;
 }
 
-/** Registry item names a release shipped, from its `added` frontmatter. */
 const addedNames = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((name): name is string => typeof name === 'string') : [];
 
@@ -42,12 +33,7 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   timeZone: 'UTC',
 });
 
-/**
- * Reads `content/changelog/*.mdx` at build (output: "export" — no server or
- * ISR), newest first by frontmatter `date`. Each file's frontmatter carries
- * `title`, `date` (YYYY-MM-DD) and optional `version`/`description`; the MDX
- * body renders in `ChangelogView`. Entries without a valid date are dropped.
- */
+/** Read at `next build` and frozen into the static export; there is no server or ISR to refresh it. */
 export const getChangelog = async (): Promise<Changelog> => {
   let files: string[] = [];
   try {
@@ -85,23 +71,11 @@ export const getChangelog = async (): Promise<Changelog> => {
   };
 };
 
-/**
- * When each registry item shipped, as an ISO `YYYY-MM-DD`, read from the
- * `added` list in each release's frontmatter.
- *
- * The changelog is already the record of what shipped when, and writing an
- * entry is already part of cutting a release, so listing the item names there
- * keeps this to one line per release instead of a per-item table that has to
- * be regenerated. An item no release claims simply has no date: it wears no
- * badge and stays out of the recently-added rail, which is the right answer
- * for everything that predates the practice.
- */
+/** Ship dates come only from each release's `added:` frontmatter list; oldest release first so an item listed twice keeps the date it first shipped. */
 export const getReleaseDates = async (): Promise<Record<string, string>> => {
   const { entries } = await getChangelog();
   const dates: Record<string, string> = {};
 
-  // Oldest release first, so an item listed twice keeps the date it first
-  // shipped rather than the date it was last mentioned.
   for (const entry of [...entries].reverse()) {
     const day = entry.isoDate.slice(0, 10);
     for (const name of entry.added) dates[name] ??= day;

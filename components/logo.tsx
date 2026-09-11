@@ -8,13 +8,6 @@ const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
   letterSpacing: '0.18em',
 };
 
-/**
- * Arch-and-star mark — a squared doorway with a 4-point star inside and three
- * stacked reflection lenses below the base, reading as light on water (the
- * brand mark). The arch is stroked and the star and reflections are filled,
- * all in currentColor so the mark tracks the surrounding text color. The
- * viewBox is cropped to the artwork so it stays legible at favicon size.
- */
 const ArchMarkPaths = () => {
   return (
     <>
@@ -36,7 +29,11 @@ const ArchMarkPaths = () => {
   );
 };
 
-const ArchMarkSvg = ({ className }: { className?: string }) => {
+interface ArchMarkSvgProps {
+  className?: string;
+}
+
+const ArchMarkSvg = ({ className }: ArchMarkSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="80 104 352 352" role="img" aria-hidden className={className}>
       <title>Hirael</title>
@@ -45,26 +42,29 @@ const ArchMarkSvg = ({ className }: { className?: string }) => {
   );
 };
 
-/**
- * Wordmark — "HIRAEL" set in Cormorant with wide tracking, paired with
- * the arch mark on its left. ViewBox is tightened so the type fills the
- * vertical room; callers can size with a single h-* utility.
- */
-const HiraelWordmarkSvg = ({ className }: { className?: string }) => {
+interface HiraelWordmarkSvgProps {
+  className?: string;
+}
+
+const HiraelWordmarkSvg = ({ className }: HiraelWordmarkSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" role="img" aria-hidden className={className}>
       <title>Hirael</title>
       <svg x="6" y="6" width="46" height="46" viewBox="80 104 352 352">
         <ArchMarkPaths />
       </svg>
-      <text x="56" y="44" fill="currentColor" fontSize="42" style={CORMORANT_WORDMARK_STYLE}>
+      <text x="56" y="42" fill="currentColor" fontSize="42" style={CORMORANT_WORDMARK_STYLE}>
         HIRAEL
       </text>
     </svg>
   );
 };
 
-export const Logo = ({ className }: { className?: string }) => {
+export interface LogoProps {
+  className?: string;
+}
+
+export const Logo = ({ className }: LogoProps) => {
   return (
     <span role="img" aria-label="Hirael" className={cn('inline-flex shrink-0 text-foreground', className)}>
       <HiraelWordmarkSvg className="h-full w-auto" />
@@ -72,7 +72,11 @@ export const Logo = ({ className }: { className?: string }) => {
   );
 };
 
-export const LogoMark = ({ className }: { className?: string }) => {
+export interface LogoMarkProps {
+  className?: string;
+}
+
+export const LogoMark = ({ className }: LogoMarkProps) => {
   return (
     <span role="img" aria-label="Hirael" className={cn('inline-flex size-6 shrink-0 text-foreground', className)}>
       <ArchMarkSvg className="size-full" />
@@ -80,14 +84,12 @@ export const LogoMark = ({ className }: { className?: string }) => {
   );
 };
 
-/**
- * Icon/mark on a raised "keycap" tile — the arch mark sitting on a rounded
- * surface with a top-lit gradient, a hairline edge, a layered drop shadow, and
- * a glossy top bevel (the same physical-key treatment as the Kbd component, so
- * the brand mark reads like a pressable key). Matches the board's ICON / MARK
- * panel. Size with a single `size-*` utility on `className`.
- */
-export const LogoTile = ({ className, markClassName }: { className?: string; markClassName?: string }) => {
+export interface LogoTileProps {
+  className?: string;
+  markClassName?: string;
+}
+
+export const LogoTile = ({ className, markClassName }: LogoTileProps) => {
   return (
     <span
       role="img"

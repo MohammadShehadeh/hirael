@@ -1,10 +1,5 @@
 import { REGISTRY, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/**
- * Words too common across the catalog to signal a relationship: every entry
- * says "component", most say "with" and "and", and the block descriptions all
- * describe parts. Scoring on them would rank by description length.
- */
 const STOP_WORDS = new Set([
   'a',
   'an',
@@ -37,13 +32,6 @@ const tokens = (entry: RegistryEntryMeta): Set<string> =>
       .filter((word) => word.length > 2 && !STOP_WORDS.has(word)),
   );
 
-/**
- * How close two entries are. Taxonomy dominates — an item's block kind or
- * component category is a hand-made statement about what it is, worth more
- * than any number of shared words — then a shared registry dependency (two
- * items built on the same primitives compose well together), then vocabulary
- * overlap to separate siblings within a group.
- */
 const score = (entry: RegistryEntryMeta, candidate: RegistryEntryMeta, entryTokens: Set<string>): number => {
   let total = 0;
 
@@ -58,12 +46,6 @@ const score = (entry: RegistryEntryMeta, candidate: RegistryEntryMeta, entryToke
   return total;
 };
 
-/**
- * Items to offer next from a detail page. Ranked by {@link score}, with
- * catalog distance as the tie-breaker so two equally-scored siblings resolve
- * to the nearer one and each page gets a different set rather than every page
- * in a category pointing at the same three items.
- */
 export const relatedEntries = (entry: RegistryEntryMeta, limit = 3): RegistryEntryMeta[] => {
   const entryTokens = tokens(entry);
   const index = REGISTRY.findIndex((candidate) => candidate.name === entry.name);

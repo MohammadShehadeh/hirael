@@ -9,15 +9,21 @@ import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export interface CodeBlockTab {
-  /** Tab label (e.g. filename or install-target path). */
   label: string;
-  /** Raw source — used for copy + clipboard. */
   code: string;
-  /** Pre-highlighted shiki HTML for `code`. */
   html: string;
 }
 
 export type CodeBlockLayout = 'tabs' | 'tree';
+
+export interface CodeBlockProps {
+  tabs: CodeBlockTab[];
+  defaultTab?: string;
+  className?: string;
+  maxHeight?: string;
+  layout?: CodeBlockLayout;
+  collapsible?: boolean;
+}
 
 export const CodeBlock = ({
   tabs,
@@ -26,46 +32,36 @@ export const CodeBlock = ({
   maxHeight = 'max-h-[640px]',
   layout = 'tabs',
   collapsible = false,
-}: {
-  tabs: CodeBlockTab[];
-  defaultTab?: string;
-  className?: string;
-  /** Tailwind max-h class for the scroll area. */
-  maxHeight?: string;
-  /** "tabs" (horizontal) or "tree" (left sidebar file hierarchy). */
-  layout?: CodeBlockLayout;
-  /** Clip to a short preview behind an "Expand" control. */
-  collapsible?: boolean;
-}) => {
-  const [active, setActive] = React.useState(() => defaultTab ?? tabs[0]?.label);
-  const [expanded, setExpanded] = React.useState(false);
-  const current = tabs.find((t) => t.label === active) ?? tabs[0];
+}: CodeBlockProps) => {
+  const [activeLabel, setActiveLabel] = React.useState(() => defaultTab ?? tabs[0]?.label);
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const currentTab = tabs.find((tab) => tab.label === activeLabel) ?? tabs[0];
 
-  if (!current) return null;
+  if (!currentTab) return null;
 
   if (layout === 'tree') {
     return (
       <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
         <div className="flex min-h-0">
           <FileTree
-            paths={tabs.map((t) => t.label)}
-            active={current.label}
-            onSelect={setActive}
+            paths={tabs.map((tab) => tab.label)}
+            activePath={currentTab.label}
+            onSelect={setActiveLabel}
             maxHeight={maxHeight}
           />
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
-              <span title={current.label} className="truncate font-mono text-[11px] text-muted-foreground">
-                {current.label}
+              <span title={currentTab.label} className="truncate font-mono text-[11px] text-muted-foreground">
+                {currentTab.label}
               </span>
-              <CopyButton value={current.code} size="sm" aria-label="Copy code" />
+              <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
             </div>
             <CodePane
-              html={current.html}
+              html={currentTab.html}
               maxHeight={maxHeight}
-              collapsible={collapsible}
-              expanded={expanded}
-              onExpandedChange={setExpanded}
+              isCollapsible={collapsible}
+              isExpanded={isExpanded}
+              onExpandedChange={setIsExpanded}
               className="border-l border-border"
             />
           </div>
@@ -80,51 +76,46 @@ export const CodeBlock = ({
         <SegmentedControl
           role="tab"
           ariaLabel="Source files"
-          value={current.label}
-          onValueChange={setActive}
+          value={currentTab.label}
+          onValueChange={setActiveLabel}
           className="min-w-0 overflow-x-auto"
-          items={tabs.map((t) => ({
-            value: t.label,
-            label: t.label.split('/').slice(-1)[0],
-            title: t.label,
+          items={tabs.map((tab) => ({
+            value: tab.label,
+            label: tab.label.split('/').slice(-1)[0],
+            title: tab.label,
           }))}
         />
-        <CopyButton value={current.code} size="sm" aria-label="Copy code" className="mr-0.5" />
+        <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" className="mr-0.5" />
       </div>
       <CodePane
-        html={current.html}
+        html={currentTab.html}
         maxHeight={maxHeight}
-        collapsible={collapsible}
-        expanded={expanded}
-        onExpandedChange={setExpanded}
+        isCollapsible={collapsible}
+        isExpanded={isExpanded}
+        onExpandedChange={setIsExpanded}
       />
     </div>
   );
 };
 
-const CodePane = ({
-  html,
-  maxHeight,
-  collapsible,
-  expanded,
-  onExpandedChange,
-  className,
-}: {
+interface CodePaneProps {
   html: string;
   maxHeight: string;
-  collapsible: boolean;
-  expanded: boolean;
-  onExpandedChange: (expanded: boolean) => void;
+  isCollapsible: boolean;
+  isExpanded: boolean;
+  onExpandedChange: (isExpanded: boolean) => void;
   className?: string;
-}) => {
-  const clipped = collapsible && !expanded;
+}
+
+const CodePane = ({ html, maxHeight, isCollapsible, isExpanded, onExpandedChange, className }: CodePaneProps) => {
+  const isClipped = isCollapsible && !isExpanded;
   return (
     <div className={cn('relative', className)}>
       <div
-        className={cn('shiki-scroll', clipped ? 'max-h-72 overflow-hidden' : cn('overflow-auto', maxHeight))}
+        className={cn('shiki-scroll', isClipped ? 'max-h-72 overflow-hidden' : cn('overflow-auto', maxHeight))}
         dangerouslySetInnerHTML={{ __html: html }}
       />
-      {clipped && (
+      {isClipped && (
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-linear-to-t from-card via-card/85 to-transparent pb-3 pt-20">
           <Button
             type="button"
@@ -137,7 +128,7 @@ const CodePane = ({
           </Button>
         </div>
       )}
-      {collapsible && expanded && (
+      {isCollapsible && isExpanded && (
         <div className="flex justify-center border-t border-border py-1.5">
           <Button
             type="button"
@@ -156,7 +147,6 @@ const CodePane = ({
 
 interface TreeNode {
   name: string;
-  /** Full path when this node is a file; undefined for folders. */
   filePath?: string;
   children: TreeNode[];
 }
@@ -166,8 +156,8 @@ const buildTree = (paths: string[]): TreeNode[] => {
   for (const path of paths) {
     const parts = path.split('/').filter(Boolean);
     let level = roots;
-    parts.forEach((segment, i) => {
-      const isLeaf = i === parts.length - 1;
+    parts.forEach((segment, index) => {
+      const isLeaf = index === parts.length - 1;
       let node = level.find((n) => n.name === segment);
       if (!node) {
         node = { name: segment, children: [] };
@@ -179,79 +169,69 @@ const buildTree = (paths: string[]): TreeNode[] => {
       level = node.children;
     });
   }
-  const sort = (nodes: TreeNode[]) => {
+  const sortFoldersFirst = (nodes: TreeNode[]) => {
     nodes.sort((a, b) => {
-      const aFolder = a.children.length > 0;
-      const bFolder = b.children.length > 0;
-      if (aFolder !== bFolder) return aFolder ? -1 : 1;
+      const isFolderA = a.children.length > 0;
+      const isFolderB = b.children.length > 0;
+      if (isFolderA !== isFolderB) return isFolderA ? -1 : 1;
       return a.name.localeCompare(b.name);
     });
-    nodes.forEach((n) => sort(n.children));
+    nodes.forEach((n) => sortFoldersFirst(n.children));
   };
-  sort(roots);
+  sortFoldersFirst(roots);
   return roots;
 };
 
-const FileTree = ({
-  paths,
-  active,
-  onSelect,
-  maxHeight,
-}: {
+interface FileTreeProps {
   paths: string[];
-  active: string;
+  activePath: string;
   onSelect: (path: string) => void;
   maxHeight: string;
-}) => {
+}
+
+const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => {
   const tree = buildTree(paths);
   return (
-    <div
-      role="tree"
-      aria-label="Files"
-      className={cn('w-56 shrink-0 overflow-auto py-2 pl-1 pr-1 text-[12px]', maxHeight)}
-    >
+    <div role="tree" aria-label="Files" className={cn('w-56 shrink-0 overflow-auto px-1 py-2 text-[12px]', maxHeight)}>
       {tree.map((node) => (
-        <TreeRow key={node.name} node={node} depth={0} active={active} onSelect={onSelect} />
+        <TreeRow key={node.name} node={node} depth={0} activePath={activePath} onSelect={onSelect} />
       ))}
     </div>
   );
 };
 
-const TreeRow = ({
-  node,
-  depth,
-  active,
-  onSelect,
-}: {
+interface TreeRowProps {
   node: TreeNode;
   depth: number;
-  active: string;
+  activePath: string;
   onSelect: (path: string) => void;
-}) => {
+}
+
+const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
   const isFolder = node.children.length > 0;
-  const [open, setOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(true);
   const indent = { paddingLeft: 8 + depth * 12 };
 
   if (isFolder) {
     return (
-      <div role="treeitem" aria-expanded={open} aria-selected={false}>
+      <div role="treeitem" aria-expanded={isOpen} aria-selected={false}>
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setIsOpen((prev) => !prev)}
           style={indent}
           className={cn(
             'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono text-muted-foreground transition-colors hover:text-foreground',
             'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
           )}
         >
-          <ChevronRight className={cn('size-3 shrink-0 transition-transform', open && 'rotate-90')} aria-hidden />
+          <ChevronRight className={cn('size-3 shrink-0 transition-transform', isOpen && 'rotate-90')} aria-hidden />
           <Folder className="size-3 shrink-0" aria-hidden />
           <span className="truncate">{node.name}</span>
         </button>
-        {open && (
+        {isOpen && (
           <div role="group">
             {node.children.map((child) => (
-              <TreeRow key={child.name} node={child} depth={depth + 1} active={active} onSelect={onSelect} />
+              <TreeRow key={child.name} node={child} depth={depth + 1} activePath={activePath} onSelect={onSelect} />
             ))}
           </div>
         )}
@@ -259,7 +239,7 @@ const TreeRow = ({
     );
   }
 
-  const isActive = active === node.filePath;
+  const isActive = activePath === node.filePath;
   return (
     <button
       type="button"
@@ -281,17 +261,14 @@ const TreeRow = ({
   );
 };
 
-export const InlineCodeBlock = ({
-  html,
-  code,
-  className,
-  maxHeight = 'max-h-[640px]',
-}: {
+export interface InlineCodeBlockProps {
   html: string;
   code: string;
   className?: string;
   maxHeight?: string;
-}) => {
+}
+
+export const InlineCodeBlock = ({ html, code, className, maxHeight = 'max-h-[640px]' }: InlineCodeBlockProps) => {
   return (
     <div className={cn('group relative overflow-hidden rounded-md border border-border bg-card', className)}>
       <CopyButton

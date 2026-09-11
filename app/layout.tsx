@@ -9,6 +9,7 @@ import { siteJsonLd } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 import { customizerPrehydrationScript } from '@/lib/customizer';
 import { inter } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/registry/hirael/bases/radix/ui/tooltip';
 
 const jetBrainsMono = JetBrains_Mono({
@@ -83,11 +84,11 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth" suppressHydrationWarning>
       <head>
@@ -95,12 +96,10 @@ export default function RootLayout({
 
         <JsonLd id="hirael-jsonld" data={siteJsonLd()} />
 
-        {/* Machine-readable twins of the catalog, so an agent that lands on any
-            page can find the registry without scraping it. */}
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <link rel="alternate" type="application/json" title="Registry catalog" href="/r/registry.json" />
       </head>
-      <body className={`${inter.variable} ${jetBrainsMono.variable} ${cormorant.variable} font-sans antialiased`}>
+      <body className={cn(inter.variable, jetBrainsMono.variable, cormorant.variable, 'font-sans antialiased')}>
         <SkipLink />
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

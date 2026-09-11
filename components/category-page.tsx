@@ -17,25 +17,16 @@ interface CategoryPageProps {
 const chipStyle =
   'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
 
-/**
- * A block category as one long browse: every block live and full width in
- * registry order, each with its number and tagline, title and description,
- * the framed preview (viewport + RTL controls) and a one-line install command.
- * A visitor compares variants at real size and copies one in without opening
- * the detail page, which stays the place for source and dependencies. A
- * scroll-spied chip row sticks under the topbar so eleven previews are still
- * one click to any block.
- */
 export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
   const total = blocks.length;
 
   return (
-    <div className="container flex w-full flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
+    <div className="docs-container flex flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
       <Breadcrumbs items={[{ label: 'Blocks', href: '/blocks' }, { label: category.title }]} />
 
       <header className="flex flex-col gap-4">
-        {category.comingSoon && (
+        {category.isComingSoon && (
           <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             Roadmap
           </span>
@@ -43,17 +34,17 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
         <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">{category.title}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{category.description}</p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          {category.comingSoon
+          {category.isComingSoon
             ? 'Planned, not shipped yet'
             : `${total} block${total === 1 ? '' : 's'}, live at full size, install from here`}
         </p>
       </header>
 
-      {category.comingSoon ? (
+      {category.isComingSoon ? (
         <RoadmapState category={category} />
       ) : (
         <>
-          <div className="sticky top-14 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md">
+          <div className="sticky top-11 z-20 -mx-4 border-y border-border bg-background/85 px-4 py-2 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
             <TocChips items={blocks.map((b) => ({ id: b.name, label: b.title }))} />
           </div>
 
@@ -65,7 +56,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                   key={entry.name}
                   id={entry.name}
                   aria-labelledby={`${entry.name}-title`}
-                  className="flex scroll-mt-28 flex-col gap-5"
+                  className="flex scroll-mt-24 flex-col gap-5"
                 >
                   <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
                     <div className="flex min-w-0 flex-col gap-2">
@@ -107,7 +98,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                     </div>
                   </header>
 
-                  <BlockViewer entry={entry} minHeight={640} />
+                  <BlockViewer entry={entry} initialHeight={640} />
 
                   <InstallBlock name={entry.name} variant="inline" />
                 </article>
@@ -120,7 +111,11 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
   );
 };
 
-const RoadmapState = ({ category }: { category: CategoryMeta }) => {
+interface RoadmapStateProps {
+  category: CategoryMeta;
+}
+
+const RoadmapState = ({ category }: RoadmapStateProps) => {
   return (
     <section className="flex flex-col gap-8">
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">

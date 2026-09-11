@@ -10,7 +10,11 @@ export function generateStaticParams() {
 
 export const generateMetadata = blockEmbedMetadata;
 
-export default async function BlockEmbedRoute({ params }: { params: Promise<{ category: string; block: string }> }) {
+interface BlockEmbedRouteProps {
+  params: Promise<{ category: string; block: string }>;
+}
+
+export default async function BlockEmbedRoute({ params }: BlockEmbedRouteProps) {
   const { category, block } = await params;
   return <BlockEmbed base={DEFAULT_BASE} category={category} block={block} />;
 }

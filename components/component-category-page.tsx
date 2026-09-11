@@ -9,12 +9,16 @@ import {
 
 type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number];
 
-export const ComponentCategoryPage = ({ category }: { category: ComponentCategory }) => {
+export interface ComponentCategoryPageProps {
+  category: ComponentCategory;
+}
+
+export const ComponentCategoryPage = ({ category }: ComponentCategoryPageProps) => {
   const items = REGISTRY_BY_CATEGORY[category];
   const label = CATEGORY_LABELS[category];
 
   return (
-    <div className="container flex w-full flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
+    <div className="docs-container flex flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
       <Breadcrumbs items={[{ label: 'Components', href: '/components' }, { label }]} />
 
       <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">

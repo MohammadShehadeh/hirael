@@ -1,11 +1,10 @@
 import { cn } from '@/lib/utils';
 
-/**
- * First focusable element on every page: jumps keyboard users past the
- * sidebar/header chrome straight to `<main id="main-content">`. Visually
- * hidden until focused.
- */
-export const SkipLink = ({ className }: { className?: string }) => {
+export interface SkipLinkProps {
+  className?: string;
+}
+
+export const SkipLink = ({ className }: SkipLinkProps) => {
   return (
     <a
       href="#main-content"

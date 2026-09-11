@@ -44,7 +44,6 @@ export interface ApiProp {
   required: boolean;
   default: string | null;
   description: string | null;
-  /** Pre-highlighted inline HTML (VSCode token colors) for `type` / `default`. */
   typeHtml?: string;
   defaultHtml?: string | null;
 }
@@ -55,49 +54,31 @@ export interface ApiPart {
   extendsNative: boolean;
 }
 
-/** A single example a component showcases — its slug, label and source. */
 export interface ExampleEntry {
   slug: string;
   title: string;
   source: SourceFile | null;
 }
 
-/** An example with its source from every base; the page picks the active one. */
 export interface ExampleSources {
   slug: string;
   title: string;
   sources: Record<RegistryBase, SourceFile | null>;
 }
 
-export const ComponentPage = ({
-  entry,
-  sources,
-  examples,
-  api,
-  usage,
-  breadcrumb,
-  extras,
-}: {
+export interface ComponentPageProps {
   entry: RegistryEntryMeta;
-  /** Pre-highlighted install source files per base, keyed by base-relative path. */
   sources: Record<RegistryBase, Record<string, SourceFile>>;
-  /** Component examples, each with pre-highlighted source per base. Composite items pass none. */
   examples?: ExampleSources[];
-  /** Highlighted import snippet for the installed file. Components only. */
   usage?: SourceFile | null;
-  /** Extracted per-part props tables (registry-props.json). */
   api?: ApiPart[] | null;
-  /** Hierarchy trail shown above the header for navigation. */
   breadcrumb?: Crumb[];
-  /** Ship date and related items, resolved on the server from the changelog. */
   extras?: DetailExtras;
-}) => {
+}
+
+export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
-  // Multi-file items (composites, or a component that ships a folder of parts
-  // like the data table) show their install tree; single files stay flat.
   const treeView = isComposite || (entry.files ?? []).length > 1;
-  // Everything below reads from the active base: source tabs, examples, the
-  // framed preview and the install command all switch together.
   const base = useRegistryBase();
   const source = sources[base];
 
@@ -118,9 +99,6 @@ export const ComponentPage = ({
   const registryDeps = entry.registryDependencies ?? [];
   const npmDeps = entry.dependencies ?? [];
 
-  // One descriptor list drives both the rendered sections and the "On this
-  // page" rail, so the two can never drift. Order mirrors shadcn/ui's docs:
-  // the showcase first, then how to install it, then the reference material.
   const sections: PageSection[] = [];
 
   if (isComposite) {
@@ -217,32 +195,36 @@ export const ComponentPage = ({
   const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
-    <div className="container py-10 sm:py-12 md:py-16">
+    <div className="docs-container py-10 sm:py-12 md:py-14">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
-          <header className="flex flex-col gap-3 border-b border-border pb-6">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              {breadcrumb ? (
-                <Breadcrumbs items={breadcrumb} />
-              ) : (
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {entry.category}
-                  </span>
-                  {entry.blockKind && (
-                    <>
-                      <span className="font-mono text-[10px] text-muted-foreground">·</span>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                        {entry.blockKind}
-                      </span>
-                    </>
-                  )}
-                </div>
-              )}
+          <header className="flex flex-col gap-4">
+            {breadcrumb ? (
+              <Breadcrumbs items={breadcrumb} />
+            ) : (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {entry.category}
+                </span>
+                {entry.blockKind && (
+                  <>
+                    <span className="font-mono text-[10px] text-muted-foreground">/</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                      {entry.blockKind}
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
 
-              {/* Page-level actions sit with the breadcrumbs, clear of the
-              description below — a toolbar, not a footnote. */}
-              <div className="flex items-center gap-0.5 flex-wrap justify-start">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-balance md:text-4xl">
+                  {entry.title}
+                </h1>
+                <NewBadge addedAt={extras?.addedAt} />
+              </div>
+              <div className="flex flex-wrap items-center gap-0.5">
                 {sourceUrl && (
                   <HeaderAction href={sourceUrl} title="View source on GitHub" icon={<GithubIcon />}>
                     Source
@@ -255,11 +237,7 @@ export const ComponentPage = ({
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">{entry.title}</h1>
-              <NewBadge addedAt={extras?.addedAt} />
-            </div>
-            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{entry.description}</p>
+            <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{entry.description}</p>
           </header>
 
           <TocChips items={tocItems} className="xl:hidden" />
@@ -280,7 +258,7 @@ export const ComponentPage = ({
         </div>
 
         <aside className="hidden xl:block">
-          <div className="sticky top-24">
+          <div className="sticky top-16">
             <Toc items={tocItems} />
           </div>
         </aside>
@@ -305,17 +283,14 @@ const githubSourceUrl = (entry: RegistryEntryMeta, base: RegistryBase) => {
   return `${SITE.githubRepoUrl}/tree/main/${dir}`;
 };
 
-const HeaderAction = ({
-  href,
-  title,
-  icon,
-  children,
-}: {
+interface HeaderActionProps {
   href: string;
   title: string;
   icon: React.ReactNode;
   children: React.ReactNode;
-}) => {
+}
+
+const HeaderAction = ({ href, title, icon, children }: HeaderActionProps) => {
   return (
     <Button asChild variant="ghost" size="sm">
       <a href={href} target="_blank" rel="noreferrer noopener" title={title}>
@@ -326,9 +301,15 @@ const HeaderAction = ({
   );
 };
 
-const Section = ({ id, label, children }: { id: string; label: string; children: React.ReactNode }) => {
+interface SectionProps {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+}
+
+const Section = ({ id, label, children }: SectionProps) => {
   return (
-    <section id={id} className="flex scroll-mt-24 flex-col gap-4">
+    <section id={id} className="flex scroll-mt-16 flex-col gap-4">
       <a
         href={`#${id}`}
         className="group/anchor inline-flex w-fit items-center gap-1.5"
@@ -345,10 +326,14 @@ const Section = ({ id, label, children }: { id: string; label: string; children:
   );
 };
 
-/** One example: a preview ↔ code toggle (with an RTL toggle on the preview). */
-const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle: boolean }) => {
+interface ExampleBlockProps {
+  example: ExampleEntry;
+  showTitle: boolean;
+}
+
+const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
   const [view, setView] = React.useState<'preview' | 'code'>('preview');
-  const [rtl, setRtl] = React.useState(false);
+  const [isRtl, setIsRtl] = React.useState(false);
   const base = useRegistryBase();
   const hasCode = !!example.source;
 
@@ -374,23 +359,21 @@ const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle
               },
             ]}
           />
-          {view === 'preview' && <DirectionToggle rtl={rtl} onToggle={setRtl} />}
+          {view === 'preview' && <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} />}
         </div>
 
         {view === 'preview' ? (
           <div
-            dir={rtl ? 'rtl' : undefined}
+            dir={isRtl ? 'rtl' : undefined}
             data-customizer-scope=""
-            className="bg-dot-grid flex min-h-90 items-center justify-center p-6 sm:min-h-105 sm:p-8 md:p-10"
+            className="bg-dot-grid flex min-h-90 items-center justify-center px-8 py-6 sm:min-h-105 sm:px-12 sm:py-8 md:px-16 md:py-10"
           >
-            {/* Radix + Base UI direction providers cross React portals, so
-                dropdown/popover content (which portals to <body>, outside this
-                dir wrapper) still renders RTL. Remount on direction change so
-                locale-derived initial state re-seeds in the active language. */}
-            <DirectionProvider dir={rtl ? 'rtl' : 'ltr'}>
-              <BaseDirectionProvider direction={rtl ? 'rtl' : 'ltr'}>
-                <DemoLocaleProvider locale={rtl ? 'ar' : 'en'}>
-                  <RegistryExample key={`${base}-${rtl ? 'ar' : 'en'}`} name={example.slug} base={base} />
+            {/* Both direction providers must wrap here: portalled content renders outside this dir wrapper.
+                The key remounts on direction change so locale-derived initial state re-seeds. */}
+            <DirectionProvider dir={isRtl ? 'rtl' : 'ltr'}>
+              <BaseDirectionProvider direction={isRtl ? 'rtl' : 'ltr'}>
+                <DemoLocaleProvider locale={isRtl ? 'ar' : 'en'}>
+                  <RegistryExample key={`${base}-${isRtl ? 'ar' : 'en'}`} name={example.slug} base={base} />
                 </DemoLocaleProvider>
               </BaseDirectionProvider>
             </DirectionProvider>
@@ -411,7 +394,12 @@ const ExampleBlock = ({ example, showTitle }: { example: ExampleEntry; showTitle
   );
 };
 
-const DepGroup = ({ title, deps }: { title: string; deps: string[] }) => {
+interface DepGroupProps {
+  title: string;
+  deps: string[];
+}
+
+const DepGroup = ({ title, deps }: DepGroupProps) => {
   return (
     <div className="rounded-sm border border-border bg-card p-4">
       <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{title}</h3>
@@ -432,7 +420,11 @@ const DepGroup = ({ title, deps }: { title: string; deps: string[] }) => {
 const API_TH =
   'px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground';
 
-const ApiPanel = ({ parts }: { parts: ApiPart[] }) => {
+interface ApiPanelProps {
+  parts: ApiPart[];
+}
+
+const ApiPanel = ({ parts }: ApiPanelProps) => {
   return (
     <div className="flex flex-col gap-4">
       {parts.map((part) => (

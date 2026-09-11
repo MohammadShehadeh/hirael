@@ -12,11 +12,11 @@ export function generateStaticParams() {
 
 export const generateMetadata = templateEmbedMetadata;
 
-export default async function BaseTemplateEmbedRoute({
-  params,
-}: {
+interface BaseTemplateEmbedRouteProps {
   params: Promise<{ base: string; template: string }>;
-}) {
+}
+
+export default async function BaseTemplateEmbedRoute({ params }: BaseTemplateEmbedRouteProps) {
   const { base, template } = await params;
   if (!isRegistryBase(base) || base === DEFAULT_BASE) notFound();
   return <TemplateEmbed base={base} template={template} />;

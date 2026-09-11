@@ -10,7 +10,11 @@ export function generateStaticParams() {
 
 export const generateMetadata = templateEmbedMetadata;
 
-export default async function TemplateEmbedRoute({ params }: { params: Promise<{ template: string }> }) {
+interface TemplateEmbedRouteProps {
+  params: Promise<{ template: string }>;
+}
+
+export default async function TemplateEmbedRoute({ params }: TemplateEmbedRouteProps) {
   const { template } = await params;
   return <TemplateEmbed base={DEFAULT_BASE} template={template} />;
 }

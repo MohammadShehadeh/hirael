@@ -5,21 +5,15 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { newBadgeRemainingMs } from '@/lib/freshness';
 
-/**
- * "New" marker for items added inside the freshness window.
- *
- * The ship date comes from the release that lists the item in the changelog;
- * an item no release claims renders nothing.
- *
- * Whether that date is still recent is a clock read, and these pages are
- * statically exported and cached indefinitely, so deciding at build time would
- * freeze the badge onto items that have long since aged out. The clock is
- * therefore an external store: the server snapshot is always `false`, the
- * client resolves it on hydration, and the subscription fires once at expiry so
- * a page left open drops the badge in place rather than going stale.
- */
-export const NewBadge = ({ addedAt, className }: { addedAt?: string; className?: string }) => {
-  const visible = React.useSyncExternalStore(
+export interface NewBadgeProps {
+  addedAt?: string;
+  className?: string;
+}
+
+// Pages are statically exported and cached indefinitely, so freshness must be decided in the browser, not at build time.
+// The clock is read as an external store: the server snapshot is false, the client resolves it on hydration, and the subscription fires once at expiry.
+export const NewBadge = ({ addedAt, className }: NewBadgeProps) => {
+  const isVisible = React.useSyncExternalStore(
     (onExpire) => {
       const remaining = newBadgeRemainingMs(addedAt);
       if (remaining <= 0) return () => {};
@@ -30,7 +24,7 @@ export const NewBadge = ({ addedAt, className }: { addedAt?: string; className?:
     () => false,
   );
 
-  if (!visible) return null;
+  if (!isVisible) return null;
 
   return (
     <span

@@ -1,15 +1,15 @@
-/**
- * Renders schema.org JSON-LD. A plain `<script>` rather than `next/script`:
- * structured data has to be in the statically exported HTML for a crawler
- * that never runs JavaScript, and `type="application/ld+json"` is inert to
- * the browser, so there is nothing to defer.
- */
-export const JsonLd = ({ id, data }: { id: string; data: object | object[] }) => {
+export interface JsonLdProps {
+  id: string;
+  data: object | object[];
+}
+
+// A plain <script>, not next/script: the JSON-LD must be in the statically exported HTML for crawlers that run no JavaScript.
+export const JsonLd = ({ id, data }: JsonLdProps) => {
   return (
     <script
       id={id}
       type="application/ld+json"
-      // The payload is built from registry metadata, never user input.
+      // Payload comes from registry metadata, never user input.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );

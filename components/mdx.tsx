@@ -5,10 +5,6 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 
-/**
- * Prose styling for MDX rendered in the changelog. Kept token-only so it reads
- * correctly in both themes; internal links route through next/link.
- */
 export const mdxComponents: MDXComponents = {
   h2: ({ className, ...props }: React.ComponentProps<'h2'>) => (
     <h2
@@ -26,10 +22,10 @@ export const mdxComponents: MDXComponents = {
     <p className={cn('mt-4 text-sm leading-relaxed text-foreground/80 first:mt-0', className)} {...props} />
   ),
   ul: ({ className, ...props }: React.ComponentProps<'ul'>) => (
-    <ul className={cn('mt-3 space-y-2 text-sm', className)} {...props} />
+    <ul className={cn('mt-3 flex flex-col gap-2 text-sm', className)} {...props} />
   ),
   ol: ({ className, ...props }: React.ComponentProps<'ol'>) => (
-    <ol className={cn('mt-3 list-decimal space-y-2 ps-5 text-sm', className)} {...props} />
+    <ol className={cn('mt-3 flex flex-col gap-2 list-decimal ps-5 text-sm', className)} {...props} />
   ),
   li: ({ className, children, ...props }: React.ComponentProps<'li'>) => (
     <li className={cn('flex gap-2.5', className)} {...props}>

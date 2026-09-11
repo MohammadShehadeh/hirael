@@ -10,7 +10,11 @@ export function generateStaticParams() {
   return REGISTRY.filter((entry) => entry.category === 'templates').map((entry) => ({ template: entry.name }));
 }
 
-export default async function TemplateOpenGraphImage({ params }: { params: Promise<{ template: string }> }) {
+interface TemplateOpenGraphImageProps {
+  params: Promise<{ template: string }>;
+}
+
+export default async function TemplateOpenGraphImage({ params }: TemplateOpenGraphImageProps) {
   const { template } = await params;
   const entry = REGISTRY_BY_NAME[template];
 

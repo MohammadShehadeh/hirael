@@ -64,7 +64,7 @@ const LogoCloud02 = () => {
     <section className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-02-heading">
       <div className="container w-full">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">In production at</p>
+          <p className="text-xs uppercase text-muted-foreground">In production at</p>
           <h2 id="logo-cloud-02-heading" className="mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
             Fourteen teams, one component layer
           </h2>

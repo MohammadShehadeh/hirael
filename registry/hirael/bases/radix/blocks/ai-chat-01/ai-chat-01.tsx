@@ -168,7 +168,7 @@ interface AiChatHistoryGroupProps extends React.ComponentProps<'div'> {
 const AiChatHistoryGroup = ({ label, className, children, ...props }: AiChatHistoryGroupProps) => {
   return (
     <div data-slot="ai-chat-history-group" className={cn('flex flex-col gap-1', className)} {...props}>
-      <span className="px-2 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">{label}</span>
+      <span className="px-2 text-xs text-muted-foreground uppercase">{label}</span>
       <ul className="flex flex-col gap-0.5">{children}</ul>
     </div>
   );
@@ -224,9 +224,7 @@ interface AiChatSuggestionsProps extends React.ComponentProps<'div'> {
 const AiChatSuggestions = ({ label, className, children, ...props }: AiChatSuggestionsProps) => {
   return (
     <div data-slot="ai-chat-suggestions" className={cn('flex flex-col items-center gap-3', className)} {...props}>
-      {label ? (
-        <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">{label}</span>
-      ) : null}
+      {label ? <span className="text-xs text-muted-foreground uppercase">{label}</span> : null}
       <div className="flex flex-wrap justify-center gap-2">{children}</div>
     </div>
   );
@@ -751,9 +749,7 @@ const AiChat01 = () => {
           {messages.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
               <div className="flex flex-col items-center gap-2">
-                <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
-                  plinth-2-pro
-                </span>
+                <span className="text-xs text-muted-foreground uppercase">plinth-2-pro</span>
                 <h2 className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">What are you working on?</h2>
                 <p className="max-w-sm text-sm text-muted-foreground">
                   Ask a question, paste an error, or start from one of these.

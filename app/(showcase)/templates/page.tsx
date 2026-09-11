@@ -39,7 +39,7 @@ export default function TemplatesIndex() {
         title="Full pages, ready to copy."
         blurb="Complete pages assembled from the blocks and components in this registry with light, dark and RTL already handled. One command copies the whole page into your repo, then you swap in your copy and brand."
       >
-        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {TEMPLATES.length} template{TEMPLATES.length === 1 ? '' : 's'}
         </p>
       </PageHeader>
@@ -61,14 +61,14 @@ export default function TemplatesIndex() {
                   {entry.dependencies.map((dep) => (
                     <span
                       key={dep}
-                      className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted-foreground"
+                      className="rounded-full border border-border px-2 py-0.5 text-xs uppercase text-muted-foreground"
                     >
                       {dep}
                     </span>
                   ))}
                 </div>
               ) : null}
-              <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5 text-xs uppercase text-muted-foreground">
                 <span>{entryFileLabel(entry)}</span>
                 <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
                   view

@@ -19,7 +19,7 @@ const AnimatedNumberDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Metric cards · live values',
             ar: 'بطاقات المقاييس · قيم حيّة',
@@ -27,21 +27,17 @@ const AnimatedNumberDemo = () => {
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-md border border-border bg-card p-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              {t({ en: 'Revenue', ar: 'الإيرادات' })}
-            </p>
+            <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Revenue', ar: 'الإيرادات' })}</p>
             <AnimatedNumber value={revenue} prefix="$" className="mt-1 block text-2xl font-semibold tracking-tight" />
           </div>
           <div className="rounded-md border border-border bg-card p-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            <p className="text-xs uppercase text-muted-foreground">
               {t({ en: 'Active users', ar: 'المستخدمون النشطون' })}
             </p>
             <AnimatedNumber value={users} className="mt-1 block text-2xl font-semibold tracking-tight" />
           </div>
           <div className="rounded-md border border-border bg-card p-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              {t({ en: 'Conversion', ar: 'معدل التحويل' })}
-            </p>
+            <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Conversion', ar: 'معدل التحويل' })}</p>
             <AnimatedNumber
               value={3.2}
               decimals={1}
@@ -56,9 +52,7 @@ const AnimatedNumberDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Compact notation', ar: 'تنسيق مختصر' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Compact notation', ar: 'تنسيق مختصر' })}</p>
         <AnimatedNumber
           value={1284000}
           duration={1200}

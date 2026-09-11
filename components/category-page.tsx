@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import type { CategoryMeta } from '@/components/block-categories';
 import { BlockViewer } from '@/components/block-viewer';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { InstallBlock } from '@/components/install-block';
 import { TocChips } from '@/components/toc';
 import { BLOCKS_BY_KIND, entryFileLabel, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
@@ -15,7 +14,7 @@ interface CategoryPageProps {
 }
 
 const chipStyle =
-  'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
+  'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 text-xs uppercase text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
 
 export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
@@ -27,13 +26,13 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
 
       <header className="flex flex-col gap-4">
         {category.isComingSoon && (
-          <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+          <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 text-xs uppercase text-muted-foreground">
             Roadmap
           </span>
         )}
         <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">{category.title}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{category.description}</p>
-        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {category.isComingSoon
             ? 'Planned, not shipped yet'
             : `${total} block${total === 1 ? '' : 's'}, live at full size, install from here`}
@@ -60,7 +59,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                 >
                   <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
                     <div className="flex min-w-0 flex-col gap-2">
-                      <p className="flex flex-wrap items-center gap-x-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      <p className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
                         <span className="tabular-nums text-foreground">
                           {String(index + 1).padStart(2, '0')}
                           <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
@@ -70,7 +69,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                             <span aria-hidden className="text-border">
                               |
                             </span>
-                            <span>{entry.blockTagline}</span>
+                            <span className="tracking-wide">{entry.blockTagline}</span>
                           </>
                         )}
                       </p>
@@ -99,8 +98,6 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                   </header>
 
                   <BlockViewer entry={entry} initialHeight={640} />
-
-                  <InstallBlock name={entry.name} variant="inline" />
                 </article>
               );
             })}
@@ -124,7 +121,7 @@ const RoadmapState = ({ category }: RoadmapStateProps) => {
           className="bg-dot-grid pointer-events-none absolute inset-0 opacity-50 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
         />
         <div className="relative flex flex-col gap-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">In design</span>
+          <span className="text-xs uppercase text-muted-foreground">In design</span>
           <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
             {category.title} blocks are on the roadmap.
           </h3>

@@ -27,7 +27,7 @@ const Comparison03 = () => {
     <section className="bg-background py-20 sm:py-28" aria-labelledby="comparison-03-heading">
       <div className="container w-full max-w-5xl">
         <div className="max-w-2xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Before and after</p>
+          <p className="text-xs uppercase text-muted-foreground">Before and after</p>
           <h2 id="comparison-03-heading" className="mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
             The same afternoon, spent two ways
           </h2>
@@ -37,9 +37,7 @@ const Comparison03 = () => {
           <div className="bg-background p-7 sm:p-8">
             <div className="flex items-center gap-2">
               <CircleAlert aria-hidden className="size-4 text-muted-foreground" />
-              <h3 className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Writing it yourself
-              </h3>
+              <h3 className="text-xs uppercase text-muted-foreground">Writing it yourself</h3>
             </div>
             <ul className="mt-6 flex flex-col gap-4">
               {BEFORE.map((item) => (
@@ -54,7 +52,7 @@ const Comparison03 = () => {
           <div className="bg-card p-7 sm:p-8">
             <div className="flex items-center gap-2">
               <CircleCheck aria-hidden className="size-4" />
-              <h3 className="font-mono text-[10px] uppercase tracking-[0.12em]">Installing it from Hirael</h3>
+              <h3 className="text-xs uppercase">Installing it from Hirael</h3>
             </div>
             <ul className="mt-6 flex flex-col gap-4">
               {AFTER.map((item) => (

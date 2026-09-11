@@ -118,7 +118,7 @@ const MetricCard = ({ metric, index }: { metric: Metric; index: number }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.12 }}
     >
-      <h3 className="mb-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{metric.label}</h3>
+      <h3 className="mb-1 text-xs uppercase text-muted-foreground">{metric.label}</h3>
       <p className="font-serif text-3xl font-medium text-foreground">{metric.value}</p>
       <p className="text-sm text-muted-foreground">{metric.subtext}</p>
     </motion.div>
@@ -141,7 +141,7 @@ const Team02 = () => {
           >
             <Badge
               variant="outline"
-              className="rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm"
+              className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               Experience
             </Badge>

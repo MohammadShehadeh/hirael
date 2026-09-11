@@ -10,9 +10,7 @@ import {
 const Pane = ({ label, children }: { label: string; children?: React.ReactNode }) => {
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-        {label}
-      </div>
+      <div className="border-b border-border px-3 py-2 text-xs uppercase text-muted-foreground">{label}</div>
       <div className="flex-1 p-3 text-sm text-muted-foreground">{children}</div>
     </div>
   );

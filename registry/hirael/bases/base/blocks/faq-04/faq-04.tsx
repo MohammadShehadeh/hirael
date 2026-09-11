@@ -110,7 +110,7 @@ const Faq04 = () => {
         <span aria-hidden className="absolute -right-px top-0 hidden h-px w-6 translate-x-full bg-border md:block" />
 
         <div className="flex flex-col items-center gap-4 border-b border-border px-6 py-12 text-center md:px-10 md:py-16">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">faq</span>
+          <span className="text-xs uppercase text-foreground">faq</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Asked, answered, archived.
           </h2>
@@ -124,7 +124,7 @@ const Faq04 = () => {
             <section key={group.label} className="flex flex-col gap-2">
               <div className="flex items-baseline justify-between gap-3 md:px-4">
                 <h3 className="text-lg font-semibold tracking-[-0.02em]">{group.label}</h3>
-                <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground">
+                <span className="text-xs tabular-nums uppercase text-muted-foreground">
                   {String(gi + 1).padStart(2, '0')} · {group.faqs.length} questions
                 </span>
               </div>

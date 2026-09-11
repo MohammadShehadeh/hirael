@@ -293,7 +293,7 @@ const Dashboard02 = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" aria-label="Share report">
               <Share2 className="size-3.5" aria-hidden />
               <span className="hidden sm:inline">Share report</span>
             </Button>
@@ -304,9 +304,7 @@ const Dashboard02 = () => {
           {kpis.map((k) => (
             <div key={k.label} className="flex flex-col gap-2 bg-card p-5">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {k.label}
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">{k.label}</span>
                 <DeltaChip kpi={k} />
               </div>
               <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{k.value}</span>
@@ -320,17 +318,15 @@ const Dashboard02 = () => {
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
-                  <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    page views vs visitors
-                  </CardDescription>
+                  <CardDescription className="text-xs uppercase">page views vs visitors</CardDescription>
                   <CardTitle className="text-lg">{RANGES.find((r) => r.value === range)?.label}</CardTitle>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                     Views
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/45" />
                     Visitors
                   </span>
@@ -372,10 +368,7 @@ const Dashboard02 = () => {
                 </svg>
                 <div aria-hidden className="mt-2 flex justify-between">
                   {chart.map((b) => (
-                    <span
-                      key={b.label}
-                      className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
-                    >
+                    <span key={b.label} className="text-xs uppercase text-muted-foreground">
                       {b.label}
                     </span>
                   ))}
@@ -408,7 +401,7 @@ const Dashboard02 = () => {
 
               <Separator className="my-4" />
 
-              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <p className="text-xs uppercase text-muted-foreground">
                 Peak · {chart.reduce((a, b) => (b.views > a.views ? b : a)).label} · {max.toLocaleString('en-US')} views
               </p>
             </CardContent>
@@ -418,9 +411,7 @@ const Dashboard02 = () => {
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    top pages
-                  </CardDescription>
+                  <CardDescription className="text-xs uppercase">top pages</CardDescription>
                   <Button variant="link" size="sm" className="h-auto p-0" asChild>
                     <a href="#">View all</a>
                   </Button>
@@ -451,9 +442,7 @@ const Dashboard02 = () => {
 
             <Card>
               <CardHeader>
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  channels
-                </CardDescription>
+                <CardDescription className="text-xs uppercase">channels</CardDescription>
                 <CardTitle className="sr-only">Channels</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">

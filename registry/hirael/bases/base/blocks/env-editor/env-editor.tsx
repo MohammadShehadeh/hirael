@@ -406,10 +406,7 @@ const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) 
     >
       <div
         role="row"
-        className={cn(
-          'hidden border-b border-border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground',
-          ROW_GRID,
-        )}
+        className={cn('hidden border-b border-border px-4 py-2 text-xs uppercase text-muted-foreground', ROW_GRID)}
       >
         <span role="columnheader">Key</span>
         <span role="columnheader">Value</span>
@@ -456,7 +453,7 @@ const EnvironmentChips = ({ value, onChange, label }: EnvironmentChipsProps) => 
             aria-pressed={on}
             onClick={() => toggle(env.id)}
             className={cn(
-              'inline-flex h-7 items-center rounded-md border px-2 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'inline-flex h-7 items-center rounded-md border px-2 text-xs uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               on
                 ? 'border-foreground bg-foreground text-background'
                 : 'border-border bg-transparent text-muted-foreground hover:text-foreground',

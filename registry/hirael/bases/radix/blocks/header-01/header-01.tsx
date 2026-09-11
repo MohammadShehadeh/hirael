@@ -132,16 +132,14 @@ const Header01 = () => {
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader className="text-start">
-                <DrawerTitle className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
-                  Menu
-                </DrawerTitle>
+                <DrawerTitle className="text-xs uppercase text-muted-foreground">Menu</DrawerTitle>
               </DrawerHeader>
               <nav className="px-4">
                 <ul className="flex flex-col gap-0.5">
                   {NAV.map((n) =>
                     'items' in n ? (
                       <li key={n.label}>
-                        <span className="block px-3 pt-2 pb-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <span className="block px-3 pt-2 pb-1 text-xs uppercase tracking-wider text-muted-foreground">
                           {n.label}
                         </span>
                         <ul className="flex flex-col">

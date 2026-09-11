@@ -5,7 +5,6 @@ import { Marquee } from '@/registry/hirael/bases/base/components/marquee';
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
-/** Rendered as plain wordmarks, so the row stays locale-independent. */
 const COMPANIES = ['Halcyon', 'Cobalt', 'Lumen Labs', 'Vantara', 'Orbital', 'Ardent', 'Solstice', 'Kestrel'] as const;
 
 const COPY = {
@@ -44,7 +43,6 @@ export const Team = ({ lang }: { lang: Lang }) => {
           >
             {c.companiesLabel}
           </p>
-          {/* The wordmarks are Latin, so the track keeps its own reading order. */}
           <div dir="ltr" className="relative mt-7 w-full min-w-0 overflow-hidden">
             <Marquee pauseOnHover duration={20} gap="2rem" className="py-1">
               {COMPANIES.map((company) => (

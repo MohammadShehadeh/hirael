@@ -65,11 +65,7 @@ const ApiKeyName = ({ label, className, children, ...props }: ApiKeyNameProps) =
   return (
     <div data-slot="api-key-name" className={cn('flex min-w-0 flex-col', className)} {...props}>
       <span className="truncate text-sm font-medium text-foreground">{label}</span>
-      {children ? (
-        <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-          {children}
-        </span>
-      ) : null}
+      {children ? <span className="truncate text-xs uppercase text-muted-foreground">{children}</span> : null}
     </div>
   );
 };
@@ -139,11 +135,7 @@ type ApiKeyMetaProps = React.ComponentProps<'span'>;
 
 const ApiKeyMeta = ({ className, ...props }: ApiKeyMetaProps) => {
   return (
-    <span
-      data-slot="api-key-meta"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground', className)}
-      {...props}
-    />
+    <span data-slot="api-key-meta" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 

@@ -261,7 +261,7 @@ const CalendarHeatmap = ({
                   <span
                     key={month.weekIndex}
                     data-slot="calendar-heatmap-month-label"
-                    className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+                    className="whitespace-nowrap text-xs uppercase text-muted-foreground"
                     style={{ gridColumnStart: month.weekIndex + 1, gridRow: 1 }}
                   >
                     {month.label}

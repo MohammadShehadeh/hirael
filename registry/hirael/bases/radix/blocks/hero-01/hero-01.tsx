@@ -88,7 +88,7 @@ const Hero01 = () => {
 
             <div
               data-slot="hero-actions"
-              className="mt-10 flex flex-col items-center gap-3 rounded-full bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row"
+              className="mt-10 flex flex-col items-center gap-3 md:rounded-full rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row"
             >
               <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
                 <a href="#">

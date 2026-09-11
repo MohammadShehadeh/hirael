@@ -97,11 +97,7 @@ type TimelineTimeProps = React.ComponentProps<'time'>;
 
 const TimelineTime = ({ className, ...props }: TimelineTimeProps) => {
   return (
-    <time
-      data-slot="timeline-time"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground', className)}
-      {...props}
-    />
+    <time data-slot="timeline-time" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
   );
 };
 

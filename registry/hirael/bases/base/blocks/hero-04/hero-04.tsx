@@ -38,7 +38,7 @@ const Hero04 = () => {
 
       <div className="relative z-10 flex flex-1 items-end px-6 pb-16 md:px-10 lg:pb-24">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-start text-start">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm">
             Mission control
           </span>
 

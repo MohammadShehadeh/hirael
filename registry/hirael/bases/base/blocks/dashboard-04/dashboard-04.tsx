@@ -260,7 +260,7 @@ const PanelCard = ({
   return (
     <Card className={cn('gap-2 rounded-md py-2.5', className)}>
       <CardHeader className="px-3.5">
-        <CardTitle className="flex items-center gap-1.5 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground">
+        <CardTitle className="flex items-center gap-1.5 text-xs font-normal uppercase text-muted-foreground">
           <Icon className="size-3.5" aria-hidden />
           {label}
         </CardTitle>
@@ -336,9 +336,7 @@ const Dashboard04 = () => {
                 <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{s.value}</span>
                 <div className="flex items-center gap-1.5">
                   <DeltaChip delta={s.delta} label={s.label} />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                    vs yesterday
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">vs yesterday</span>
                 </div>
               </div>
             </PanelCard>
@@ -347,9 +345,7 @@ const Dashboard04 = () => {
 
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-lg font-semibold tracking-[-0.02em]">Today</h3>
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            Store time · resets 00:00 UTC
-          </span>
+          <span className="text-xs uppercase text-muted-foreground">Store time · resets 00:00 UTC</span>
         </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
@@ -357,7 +353,7 @@ const Dashboard04 = () => {
             <div className="flex items-start justify-between gap-4">
               <div className="flex gap-8">
                 <div className="flex flex-col gap-1">
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                     Today
                   </span>
@@ -366,7 +362,7 @@ const Dashboard04 = () => {
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                     <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/45" />
                     Yesterday
                   </span>
@@ -410,10 +406,7 @@ const Dashboard04 = () => {
               </svg>
               <div aria-hidden className="mt-2 flex justify-between">
                 {HOURLY.filter((_, i) => i % 2 === 0).map((h) => (
-                  <span
-                    key={h.hour}
-                    className="font-mono text-[10px] uppercase tracking-[0.1em] tabular-nums text-muted-foreground"
-                  >
+                  <span key={h.hour} className="text-xs uppercase tabular-nums text-muted-foreground">
                     {h.hour}
                   </span>
                 ))}
@@ -447,17 +440,13 @@ const Dashboard04 = () => {
               <div className="flex flex-1 flex-col justify-between gap-4">
                 <div className="flex items-end justify-between gap-4">
                   <div className="flex flex-col gap-0.5">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                      Spent today
-                    </span>
+                    <span className="text-xs uppercase text-muted-foreground">Spent today</span>
                     <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums">
                       {usd.format(BUDGET.spent)}
                     </span>
                   </div>
                   <div className="flex flex-col gap-0.5 text-end">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                      Daily cap
-                    </span>
+                    <span className="text-xs uppercase text-muted-foreground">Daily cap</span>
                     <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums text-muted-foreground">
                       {usd.format(BUDGET.cap)}
                     </span>
@@ -475,9 +464,7 @@ const Dashboard04 = () => {
                   >
                     <div className="h-full rounded-full bg-foreground/80" style={{ width: `${budgetPct}%` }} />
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    {budgetPct}% used · resets 00:00 UTC
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">{budgetPct}% used · resets 00:00 UTC</span>
                 </div>
               </div>
             </PanelCard>
@@ -488,9 +475,7 @@ const Dashboard04 = () => {
                   <span className="text-xl font-semibold tracking-[-0.02em]">
                     {peakWindow[0]?.hour}:00 – {peakWindow.at(-1)?.hour}:00
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    31% of today&apos;s orders
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">31% of today&apos;s orders</span>
                 </div>
                 <div aria-hidden className="flex h-16 items-end gap-1">
                   {PEAK_HOURS.map((h) => (
@@ -541,9 +526,7 @@ const Dashboard04 = () => {
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-0.5">
                 <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{week.orders.value}</span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  Orders completed
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">Orders completed</span>
               </div>
               <DeltaChip delta={week.orders.delta} label="Orders" />
             </div>
@@ -564,7 +547,7 @@ const Dashboard04 = () => {
                     className="mx-auto w-full max-w-16 rounded-t-xs bg-foreground/80 transition-all duration-300 ease-out"
                     style={{ height: `${(d.orders / barMax) * 100}%` }}
                   />
-                  <span className="text-center font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="text-center text-xs uppercase text-muted-foreground">
                     {d.day}
                     <span className="sr-only">: {d.orders} orders</span>
                   </span>

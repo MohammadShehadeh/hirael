@@ -147,9 +147,7 @@ const Footer02 = () => {
             'sm:flex-row sm:items-center',
           )}
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            © 2026 · All rights reserved
-          </p>
+          <p className="text-xs uppercase text-muted-foreground">© 2026 · All rights reserved</p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
               Terms

@@ -98,7 +98,7 @@ const Footer01 = () => {
 
           {COLUMNS.map((col) => (
             <div key={col.title} className="flex flex-col gap-4">
-              <h4 className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">{col.title}</h4>
+              <h4 className="text-xs uppercase text-foreground">{col.title}</h4>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
@@ -113,9 +113,7 @@ const Footer01 = () => {
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            © 2026 Hirael Labs · All rights reserved
-          </p>
+          <p className="text-xs uppercase text-muted-foreground">© 2026 Hirael Labs · All rights reserved</p>
           <div className="flex items-center gap-1">
             {SOCIALS.map(({ label, href, icon: Icon }) => (
               <a

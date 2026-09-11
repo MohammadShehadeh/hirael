@@ -23,7 +23,7 @@ const Comparison01 = () => {
     <section data-slot="comparison" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-5 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">comparison</span>
+          <span className="text-xs uppercase text-muted-foreground">comparison</span>
           <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             The difference is ownership.
           </h2>
@@ -41,7 +41,7 @@ const Comparison01 = () => {
         >
           <span
             aria-hidden
-            className="absolute start-1/2 top-1/2 z-20 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-background font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground shadow-sm md:grid rtl:translate-x-1/2"
+            className="absolute start-1/2 top-1/2 z-20 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-xs uppercase text-muted-foreground shadow-sm md:grid rtl:translate-x-1/2"
           >
             vs
           </span>
@@ -60,9 +60,7 @@ const Comparison01 = () => {
             />
             <div className="relative z-10 flex flex-col gap-6">
               <div className="flex flex-col gap-1">
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  with hirael
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">with hirael</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em]">Code you keep</h3>
               </div>
               <ul className="flex flex-col gap-3.5">
@@ -84,9 +82,7 @@ const Comparison01 = () => {
           <div data-slot="comparison-theirs" className="bg-muted/20 p-7 sm:p-8">
             <div className="flex flex-col gap-6 opacity-80">
               <div className="flex flex-col gap-1">
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                  the usual way
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">the usual way</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em] text-muted-foreground">Code you rent</h3>
               </div>
               <ul className="flex flex-col gap-3.5">

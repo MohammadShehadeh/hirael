@@ -213,7 +213,7 @@ const MessageContent = ({ className, ...props }: MessageContentProps) => {
         role === 'user' && 'rounded-2xl rounded-ee-sm bg-muted px-4 py-2.5',
         role === 'assistant' && 'bg-transparent py-1',
         role === 'system' &&
-          'rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase',
+          'rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground uppercase',
         className,
       )}
       {...props}
@@ -303,7 +303,7 @@ const TOOL_STATUS: Record<MessageToolCallStatus, { dot: string; label: string }>
 const ToolSection = ({ label, children }: { label: string; children: string }) => {
   return (
     <div className="flex flex-col gap-1">
-      <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">{label}</span>
+      <span className="text-xs text-muted-foreground uppercase">{label}</span>
       <pre
         dir="ltr"
         className="overflow-x-auto rounded-md bg-muted/40 p-2 font-mono text-[11px] leading-relaxed break-words whitespace-pre-wrap text-foreground"
@@ -340,12 +340,10 @@ const MessageToolCall = ({
       className={cn('w-full max-w-xl overflow-hidden rounded-md border border-border bg-card', className)}
       {...props}
     >
-      <CollapsibleTrigger className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start font-mono text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
+      <CollapsibleTrigger className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
         <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
-        <span className="truncate text-foreground">{name}</span>
-        <span className="ms-auto shrink-0 text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
-          {tone.label}
-        </span>
+        <span className="truncate font-mono text-foreground">{name}</span>
+        <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
         <ChevronDown
           className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-panel-open/tool:rotate-180 motion-reduce:transition-none"
           aria-hidden
@@ -472,9 +470,7 @@ const MessageSources = ({ label = 'Sources', className, children, ...props }: Me
       className={cn('flex flex-wrap items-center gap-1.5 [counter-reset:source]', className)}
       {...props}
     >
-      {label ? (
-        <span className="me-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">{label}</span>
-      ) : null}
+      {label ? <span className="me-1 text-xs text-muted-foreground uppercase">{label}</span> : null}
       {children}
     </div>
   );
@@ -618,9 +614,7 @@ const MessageThreadBlock = () => {
     <section data-slot="message-thread-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="flex w-full max-w-2xl flex-col overflow-hidden rounded-lg border border-border">
         <div className="flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-2">
-          <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
-            latency regression · plinth-2-pro
-          </span>
+          <span className="text-xs text-muted-foreground uppercase">latency regression · plinth-2-pro</span>
           <Button variant="outline" size="xs" onClick={replay}>
             <RefreshCw aria-hidden />
             Replay

@@ -99,7 +99,7 @@ const Faq03 = () => {
     <section className="bg-background py-20 md:py-28">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 md:px-10">
         <div className="flex flex-col items-center gap-4 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">help center</span>
+          <span className="text-xs uppercase text-foreground">help center</span>
           <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             Find the answer before you file the issue.
           </h2>
@@ -139,7 +139,7 @@ const Faq03 = () => {
                 <AccordionTrigger>
                   <span className="flex flex-1 items-baseline justify-between gap-4">
                     <span>{f.q}</span>
-                    <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="shrink-0 text-xs uppercase text-muted-foreground">
                       {CATEGORY_LABELS[f.category]}
                     </span>
                   </span>

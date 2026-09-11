@@ -203,15 +203,11 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
               <Breadcrumbs items={breadcrumb} />
             ) : (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {entry.category}
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">{entry.category}</span>
                 {entry.blockKind && (
                   <>
-                    <span className="font-mono text-[10px] text-muted-foreground">/</span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
-                      {entry.blockKind}
-                    </span>
+                    <span className="text-xs text-muted-foreground">/</span>
+                    <span className="text-xs uppercase text-foreground">{entry.blockKind}</span>
                   </>
                 )}
               </div>
@@ -251,7 +247,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
           <Pager prev={prev} next={next} />
 
           {extras?.addedAt && (
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-xs uppercase text-muted-foreground">
               Shipped <time dateTime={extras.addedAt}>{formatDay(extras.addedAt)}</time>
             </p>
           )}
@@ -348,7 +344,7 @@ const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
             value={view}
             onValueChange={(v) => setView(v as 'preview' | 'code')}
             className="rounded-md border border-border/70 bg-card/30 p-0.5"
-            itemClassName="rounded-sm px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em]"
+            itemClassName="rounded-sm px-2.5 py-1 text-xs uppercase"
             items={[
               { value: 'preview', label: 'preview' },
               {
@@ -402,13 +398,10 @@ interface DepGroupProps {
 const DepGroup = ({ title, deps }: DepGroupProps) => {
   return (
     <div className="rounded-sm border border-border bg-card p-4">
-      <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{title}</h3>
+      <h3 className="mb-2 text-xs uppercase text-muted-foreground">{title}</h3>
       <div className="flex flex-wrap gap-1.5">
         {deps.map((d) => (
-          <span
-            key={d}
-            className="rounded-sm border border-border px-1.5 py-0 font-mono text-[10px] uppercase tracking-[0.06em]"
-          >
+          <span key={d} className="rounded-sm border border-border px-1.5 py-0 text-xs uppercase">
             {d}
           </span>
         ))}
@@ -417,8 +410,7 @@ const DepGroup = ({ title, deps }: DepGroupProps) => {
   );
 };
 
-const API_TH =
-  'px-4 py-2 text-start font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground';
+const API_TH = 'px-4 py-2 text-start text-xs font-normal uppercase text-muted-foreground';
 
 interface ApiPanelProps {
   parts: ApiPart[];
@@ -432,9 +424,7 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
             <h3 className="font-mono text-xs text-foreground">{`<${part.name} />`}</h3>
             {part.extendsNative && (
-              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                + native element props
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">+ native element props</span>
             )}
           </div>
           {part.props.length ? (

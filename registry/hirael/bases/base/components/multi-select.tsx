@@ -330,9 +330,7 @@ const MultiSelectContent = ({
                         }}
                         className="justify-between"
                       >
-                        <span className="font-mono text-[10px] uppercase tracking-[0.08em]">
-                          {allSelected ? clearLabel : selectAllLabel}
-                        </span>
+                        <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
                         <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
                           {ctx.value.length} / {enabled.length}
                         </span>
@@ -340,7 +338,7 @@ const MultiSelectContent = ({
                     )}
                     {showClearItem && (
                       <CommandItem onSelect={() => ctx.clear()} className="justify-between">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.08em]">{clearLabel}</span>
+                        <span className="text-xs uppercase">{clearLabel}</span>
                         <X className="size-3 text-muted-foreground" />
                       </CommandItem>
                     )}

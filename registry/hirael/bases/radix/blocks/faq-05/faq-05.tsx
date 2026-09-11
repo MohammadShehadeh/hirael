@@ -45,7 +45,7 @@ const Faq05 = () => {
           data-slot="faq-intro"
           className="flex flex-col gap-4 border-b border-border px-6 pt-12 pb-6 md:border-b-0 md:border-e md:px-10 md:py-16"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">faq</span>
+          <span className="text-xs uppercase text-foreground">faq</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl">
             Questions, answered.
           </h2>

@@ -36,7 +36,7 @@ const SpotlightCardDemo = () => {
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.body}</p>
         </SpotlightCard>
       ))}
-      <p className="col-span-full font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+      <p className="col-span-full text-xs uppercase text-muted-foreground">
         {t({
           en: 'Move your cursor across a card',
           ar: 'مرّر المؤشر فوق بطاقة',

@@ -25,7 +25,7 @@ const Integrations03 = () => {
       <div className="container w-full max-w-5xl">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
           <div className="lg:sticky lg:top-16 lg:self-start">
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">How it plugs in</p>
+            <p className="text-xs uppercase text-muted-foreground">How it plugs in</p>
             <h2
               id="integrations-03-heading"
               className="mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl"
@@ -63,10 +63,7 @@ const Integrations03 = () => {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-medium">{row.name}</h3>
-                      <Badge
-                        variant={row.status === 'Live' ? 'secondary' : 'outline'}
-                        className="font-mono text-[10px] uppercase tracking-[0.1em]"
-                      >
+                      <Badge variant={row.status === 'Live' ? 'secondary' : 'outline'} className="text-xs uppercase">
                         {row.status}
                       </Badge>
                     </div>

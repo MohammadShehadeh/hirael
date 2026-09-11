@@ -112,9 +112,7 @@ const Newsletter01 = () => {
                 <span className="text-xs text-muted-foreground">Join 1,200+ developers on the list.</span>
               </div>
 
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Only release notes. Unsubscribe in one click.
-              </p>
+              <p className="text-xs uppercase text-muted-foreground">Only release notes. Unsubscribe in one click.</p>
             </>
           )}
         </div>

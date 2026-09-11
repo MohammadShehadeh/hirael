@@ -88,7 +88,7 @@ const SettingsPanelGroup = ({ label, className, children, ...props }: SettingsPa
       {label ? (
         <span
           id={labelId}
-          className="border-b border-border bg-muted/30 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
+          className="border-b border-border bg-muted/30 px-5 py-2 text-xs uppercase text-muted-foreground"
         >
           {label}
         </span>
@@ -188,7 +188,7 @@ const SettingsPanelSession = ({
             </Badge>
           ) : null}
         </span>
-        <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <span className="truncate text-xs uppercase text-muted-foreground">
           {location}
           {location && lastActive ? ' · ' : null}
           {lastActive}
@@ -342,7 +342,7 @@ const Settings02 = () => {
     <section data-slot="settings-02-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-6 flex flex-col gap-1">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Account</span>
+          <span className="text-xs uppercase text-muted-foreground">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Security and notifications</h1>
           <p className="text-sm text-muted-foreground">
             Keep your account locked down and decide what reaches your inbox.
@@ -477,7 +477,7 @@ const Settings02 = () => {
                     Devices signed in to your account. Revoke anything you do not recognise.
                   </SettingsPanelDescription>
                 </div>
-                <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                <span className="shrink-0 text-xs uppercase text-muted-foreground">
                   {sessions.length} {sessions.length === 1 ? 'device' : 'devices'}
                 </span>
               </SettingsPanelHeader>

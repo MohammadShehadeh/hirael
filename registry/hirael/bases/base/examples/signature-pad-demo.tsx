@@ -21,9 +21,7 @@ const SignaturePadDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Basic', ar: 'أساسي' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Basic', ar: 'أساسي' })}</p>
         <SignaturePad placeholder={t({ en: 'Sign here', ar: 'وقّع هنا' })}>
           <div className="absolute end-2 top-2 flex gap-1.5">
             <SignaturePadUndo />
@@ -33,9 +31,7 @@ const SignaturePadDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Export', ar: 'تصدير' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Export', ar: 'تصدير' })}</p>
         <SignaturePad
           ref={padRef}
           placeholder={t({ en: 'Sign, then export', ar: 'وقّع ثم صدّر' })}
@@ -71,9 +67,7 @@ const SignaturePadDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Thin pen', ar: 'قلم رفيع' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Thin pen', ar: 'قلم رفيع' })}</p>
         <SignaturePad
           minStrokeWidth={0.75}
           maxStrokeWidth={1.5}

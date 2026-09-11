@@ -191,7 +191,7 @@ const ChangelogEntryDate = ({ date, className, ...props }: ChangelogEntryDatePro
     <time
       dateTime={date}
       data-slot="changelog-entry-date"
-      className={cn('font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground', className)}
+      className={cn('text-xs uppercase text-muted-foreground', className)}
       {...props}
     >
       {formatDate(date)}
@@ -262,7 +262,7 @@ const ChangelogEntryTag = ({ kind, className, children, ...props }: ChangelogEnt
       variant="secondary"
       data-slot="changelog-entry-tag"
       data-kind={kind}
-      className={cn('font-mono text-[10px] uppercase tracking-[0.08em]', TAG_CLASSES[kind], className)}
+      className={cn('text-xs uppercase', TAG_CLASSES[kind], className)}
       {...props}
     >
       {children ?? TAG_LABELS[kind]}

@@ -41,7 +41,7 @@ export default function BlocksIndex() {
         title="Page sections, ready to copy."
         blurb="Hero, pricing, testimonial, FAQ, auth and dashboard sections built on shadcn/ui and Tailwind CSS, each composed from the components in this registry so it matches what you already installed. Preview any block at full width, then copy it in with one command and edit it like a file you wrote."
       >
-        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {blockCount} blocks in {BLOCK_KIND_ORDER.length} categories
         </p>
       </PageHeader>

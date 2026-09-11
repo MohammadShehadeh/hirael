@@ -118,9 +118,7 @@ const ClusterMapBlock = () => {
     <section data-slot="cluster-map-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="flex w-full max-w-2xl flex-col gap-4">
         <div>
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            prod-cluster · 96 nodes
-          </p>
+          <p className="mb-2 text-xs uppercase text-muted-foreground">prod-cluster · 96 nodes</p>
           <ClusterMap columns={CLUSTER_COLUMNS}>
             {nodes.map((node) => (
               <ClusterNode

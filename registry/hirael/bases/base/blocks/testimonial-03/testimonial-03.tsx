@@ -43,10 +43,7 @@ const Testimonial03 = () => {
             </span>
           </h2>
         </blockquote>
-        <figcaption
-          data-slot="testimonial-attribution"
-          className="mt-8 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground"
-        >
+        <figcaption data-slot="testimonial-attribution" className="mt-8 text-xs uppercase text-muted-foreground">
           Priya Anand · Product lead
         </figcaption>
       </div>

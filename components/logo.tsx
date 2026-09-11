@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
   fontFamily: 'var(--font-cormorant), ui-serif, serif',
   fontWeight: 500,
-  letterSpacing: '0.18em',
+  letterSpacing: '0.06em',
 };
 
 const ArchMarkPaths = () => {
@@ -48,7 +48,7 @@ interface HiraelWordmarkSvgProps {
 
 const HiraelWordmarkSvg = ({ className }: HiraelWordmarkSvgProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" role="img" aria-hidden className={className}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 60" role="img" aria-hidden className={className}>
       <title>Hirael</title>
       <svg x="6" y="6" width="46" height="46" viewBox="80 104 352 352">
         <ArchMarkPaths />

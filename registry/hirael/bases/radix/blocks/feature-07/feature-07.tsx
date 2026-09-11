@@ -38,7 +38,7 @@ const Feature07 = () => {
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col gap-4 text-center">
         <Badge
           variant="outline"
-          className="mx-auto rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+          className="mx-auto rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
         >
           The problem
         </Badge>

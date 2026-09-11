@@ -53,7 +53,7 @@ const Cta04 = () => {
       >
         <span
           data-slot="cta-eyebrow"
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground"
         >
           Get in touch
         </span>

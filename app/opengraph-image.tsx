@@ -50,8 +50,8 @@ export default function OpenGraphImage() {
           alignItems: 'center',
           height: 170,
           fontSize: 128,
-          letterSpacing: 24,
-          marginRight: -24,
+          letterSpacing: 8,
+          marginRight: -8,
           fontWeight: 500,
         }}
       >

@@ -62,7 +62,6 @@ export const Hero = ({ lang }: { lang: Lang }) => {
   return (
     <section id="intro" className="relative overflow-hidden pb-16 pt-28 sm:pb-24 sm:pt-36">
       <div className="mx-auto max-w-[1400px] px-6">
-        {/* Headline, with the photographic backdrop behind its lower half. */}
         <div className="relative mx-auto max-w-5xl px-[4%] pb-40 sm:pb-56">
           <div className="absolute inset-x-0 bottom-0 top-[42%] -z-10 overflow-hidden">
             <Image src={BACKDROP} alt="" fill priority sizes="100vw" className="object-cover" />
@@ -86,7 +85,6 @@ export const Hero = ({ lang }: { lang: Lang }) => {
           </a>
         </div>
 
-        {/* Intro card, overlapping the backdrop. */}
         <Reveal className="relative z-10 mx-auto -mt-24 w-full max-w-3xl sm:-mt-28">
           <span aria-hidden className="absolute start-1/2 top-0 h-8 w-px -translate-y-full bg-primary" />
           <div className="border border-border/60 bg-card/85 px-7 py-10 text-center backdrop-blur-sm sm:px-12 sm:py-12">

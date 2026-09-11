@@ -119,7 +119,7 @@ const Slot = ({ label, className }: { label: string; className?: string }) => {
         className,
       )}
     >
-      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
+      <span className="text-xs uppercase text-muted-foreground">{label}</span>
     </div>
   );
 };
@@ -166,17 +166,13 @@ const AppShell04 = () => {
                     </span>
                     <div className="grid min-w-0 flex-1 text-start leading-tight">
                       <span className="truncate text-sm font-semibold tracking-[-0.01em]">{activeWorkspace.name}</span>
-                      <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                        {activeWorkspace.tier}
-                      </span>
+                      <span className="truncate text-xs uppercase text-muted-foreground">{activeWorkspace.tier}</span>
                     </div>
                     <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuLabel className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    Workspaces
-                  </DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Workspaces</DropdownMenuLabel>
                   {WORKSPACES.map((w) => (
                     <DropdownMenuItem key={w.name} onSelect={() => setWorkspace(w.name)}>
                       <span className="flex-1">{w.name}</span>
@@ -259,7 +255,7 @@ const AppShell04 = () => {
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
-          <span className="px-2 pb-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground group-data-[collapsible=icon]:hidden">
+          <span className="px-2 pb-1 text-xs uppercase text-muted-foreground group-data-[collapsible=icon]:hidden">
             © {activeWorkspace.name}
           </span>
         </SidebarFooter>

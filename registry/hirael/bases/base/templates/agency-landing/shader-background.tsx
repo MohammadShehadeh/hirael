@@ -2,12 +2,6 @@
 
 import { ChromaFlow, FilmGrain, FlutedGlass, Shader, Swirl } from 'shaders/react';
 
-/**
- * The hero shader stack, composited bottom-to-top by the root Shader canvas:
- * a soft swirl, an orange chroma flow, a fluted-glass refraction pass, and a
- * light film grain. WebGL only, so it loads client-side via the dynamic
- * import in hero.tsx and never runs during server render.
- */
 export const ShaderBackground = () => {
   return (
     <Shader style={{ width: '100%', height: '100%' }}>

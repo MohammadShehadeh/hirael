@@ -67,7 +67,7 @@ const EmojiPickerDemo = () => {
   return (
     <div className="grid w-full max-w-xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Popover · insert into a message',
             ar: 'نافذة منبثقة · إدراج في رسالة',
@@ -127,7 +127,7 @@ const EmojiPickerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Inline · compact reaction picker',
             ar: 'مضمّن · منتقي تفاعل مضغوط',
@@ -140,9 +140,7 @@ const EmojiPickerDemo = () => {
             <EmojiPickerCategories labels={categoryLabels} className="border-t border-border pt-2" />
           </EmojiPicker>
           <div className="grid gap-1 text-sm">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              {t({ en: 'Reaction', ar: 'التفاعل' })}
-            </span>
+            <span className="text-xs uppercase text-muted-foreground">{t({ en: 'Reaction', ar: 'التفاعل' })}</span>
             <span className="text-3xl leading-none">{reaction}</span>
           </div>
         </div>

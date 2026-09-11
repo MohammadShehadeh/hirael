@@ -10,7 +10,6 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 import { EASE, HiraelMark, OrangeButton, PartnerIcon, RollText } from './primitives';
 
-// WebGL hero stack — client only, so it stays out of any server render.
 const ShaderBackground = dynamic(() => import('./shader-background').then((m) => m.ShaderBackground), { ssr: false });
 
 const NAV_LINKS = ['Projects', 'Studio', 'Journal', 'Connect'];
@@ -18,7 +17,6 @@ const NAV_LINKS = ['Projects', 'Studio', 'Journal', 'Connect'];
 export const Hero = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Lock body scroll behind the mobile sheet.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => {
@@ -85,7 +83,6 @@ export const Hero = () => {
           </nav>
         </header>
 
-        {/* Hero content, pinned to the bottom of the viewport */}
         <div className="relative z-20 flex flex-1 flex-col justify-end">
           <div className="mx-auto w-full max-w-[1440px] px-5 pb-14 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20">
             <span className="mb-5 block text-[13px] tracking-wide text-gray-900 sm:mb-8 sm:text-[14px]">

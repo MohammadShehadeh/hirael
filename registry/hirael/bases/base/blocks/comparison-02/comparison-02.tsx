@@ -64,9 +64,7 @@ const Comparison02 = () => {
             <thead>
               <tr>
                 <th scope="col" className="w-1/3 p-4 text-start align-bottom">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    Approach
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">Approach</span>
                 </th>
                 {COLUMNS.map((column) => (
                   <th
@@ -80,7 +78,7 @@ const Comparison02 = () => {
                     <span className="flex items-center gap-2">
                       <span className="text-base font-medium">{column.name}</span>
                       {column.featured && (
-                        <Badge variant="secondary" className="font-mono text-[10px] uppercase tracking-[0.1em]">
+                        <Badge variant="secondary" className="text-xs uppercase">
                           This one
                         </Badge>
                       )}

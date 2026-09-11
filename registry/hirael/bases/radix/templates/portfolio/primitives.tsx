@@ -7,10 +7,6 @@ import { cn } from '@/lib/utils';
 
 const SECTION_EASE: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
-/**
- * Smooth-scroll in-page anchors within the iframe/document. External and
- * mailto links fall through to default navigation.
- */
 export const onAnchorClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
   if (!href.startsWith('#') || href.length < 2) return;
   const target = document.getElementById(href.slice(1));
@@ -57,11 +53,6 @@ export const ArrowRight = ({ className }: { className?: string }) => {
   );
 };
 
-/**
- * Pill / button with the accent-gradient ring that fades in on hover. The
- * ring sits 2px behind an opaque inner surface, so only a hairline gradient
- * border shows through.
- */
 export const RingLink = ({
   href,
   children,
@@ -104,7 +95,6 @@ export const RingLink = ({
   );
 };
 
-/** Desktop-only "View all" pill used by the section headers. */
 export const ViewAllButton = ({ label, href, className }: { label: string; href: string; className?: string }) => {
   return (
     <RingLink
@@ -118,11 +108,6 @@ export const ViewAllButton = ({ label, href, className }: { label: string; href:
   );
 };
 
-/**
- * Eyebrow + heading + subtext header shared by the Work, Journal and
- * Explorations sections. The emphasized word renders in the serif display
- * face. Reveals on scroll with Framer Motion.
- */
 export const SectionHeader = ({
   eyebrow,
   lead,

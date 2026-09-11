@@ -22,7 +22,7 @@ const ErrorPageEyebrow = ({ className, ...props }: React.ComponentProps<'span'>)
   return (
     <span
       data-slot="error-page-eyebrow"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
+      className={cn('text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );
@@ -124,7 +124,7 @@ const ErrorPageDetails = ({
   return (
     <Collapsible defaultOpen={defaultOpen} asChild>
       <div data-slot="error-page-details" className={cn('w-full border-t border-border pt-4', className)} {...props}>
-        <CollapsibleTrigger className="group inline-flex items-center gap-2 rounded-sm font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <CollapsibleTrigger className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
           <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-[state=open]:rotate-180" />
           Technical details
         </CollapsibleTrigger>
@@ -137,7 +137,7 @@ const ErrorPageDetails = ({
                   data-slot="error-page-details-row"
                   className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs"
                 >
-                  <dt className="font-mono uppercase tracking-[0.08em] text-muted-foreground">{row.label}</dt>
+                  <dt className="uppercase text-muted-foreground">{row.label}</dt>
                   <dd dir="ltr" className="select-all font-mono tabular-nums text-foreground">
                     {row.value}
                   </dd>
@@ -167,7 +167,7 @@ const ErrorPageStatus = ({ tone = 'success', className, children, ...props }: Er
       data-slot="error-page-status"
       data-tone={tone}
       className={cn(
-        'inline-flex items-center gap-2 rounded-sm font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         className,
       )}
       {...props}

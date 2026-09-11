@@ -16,7 +16,7 @@ const ScrollRevealDemo = () => {
   return (
     <div className="grid w-full max-w-xl gap-6">
       <ScrollReveal>
-        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Reveal on scroll', ar: 'ظهور عند التمرير' })}
         </p>
       </ScrollReveal>
@@ -24,7 +24,7 @@ const ScrollRevealDemo = () => {
         {items.map((item, i) => (
           <ScrollReveal key={item.dir} direction={item.dir} delay={i * 100}>
             <div className="flex h-24 flex-col justify-between rounded-md border border-border bg-card p-4">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="text-xs uppercase text-muted-foreground">
                 {t({
                   en: `from ${item.label.toLowerCase()}`,
                   ar: `من ${item.label}`,

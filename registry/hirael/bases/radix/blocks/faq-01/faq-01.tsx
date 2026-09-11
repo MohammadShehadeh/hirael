@@ -45,7 +45,7 @@ const Faq01 = () => {
       <div className="container grid w-full grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <div className="sticky top-12 flex flex-col gap-6">
-            <span className="inline-flex w-fit items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+            <span className="inline-flex w-fit items-center gap-2 text-xs uppercase text-foreground">
               <span className="size-1 rounded-full bg-foreground" />
               FAQ · the short answers
             </span>
@@ -61,9 +61,7 @@ const Faq01 = () => {
               <CardContent className="flex flex-col gap-3">
                 <div className="inline-flex items-center gap-2">
                   <MessageCircleQuestion className="size-4 text-foreground" />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    still stuck?
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">still stuck?</span>
                 </div>
                 <p className="text-sm">Drop a question in the repo. Responses usually within a day.</p>
                 <Button asChild variant="outline" size="sm" className="w-fit">
@@ -83,9 +81,7 @@ const Faq01 = () => {
               <AccordionItem key={f.q} value={`item-${i}`} className="px-1">
                 <AccordionTrigger>
                   <span className="flex items-baseline gap-4">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
+                    <span className="text-xs uppercase text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
                     <span>{f.q}</span>
                   </span>
                 </AccordionTrigger>

@@ -33,7 +33,7 @@ export const Toc = ({ items, className }: TocProps) => {
 
   return (
     <nav aria-label="On this page" className={cn('flex flex-col gap-3', className)}>
-      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">On this page</p>
+      <p className="text-xs uppercase text-muted-foreground">On this page</p>
       <ul className="flex flex-col">
         {items.map((item) => {
           const isActive = item.id === active;
@@ -68,7 +68,7 @@ export const TocChips = ({ items, className }: TocProps) => {
             key={item.id}
             variant={isActive ? 'secondary' : 'outline'}
             asChild
-            className="px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em]"
+            className="px-3 py-1 text-xs uppercase"
           >
             <a href={`#${item.id}`} aria-current={isActive ? 'location' : undefined}>
               {item.label}

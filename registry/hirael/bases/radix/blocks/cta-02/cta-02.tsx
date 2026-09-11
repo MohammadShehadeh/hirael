@@ -32,7 +32,7 @@ const Cta02 = () => {
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">one-line install</span>
+        <span className="text-xs uppercase text-foreground">one-line install</span>
 
         <h2 className="font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           Make your component layer{' '}
@@ -54,7 +54,7 @@ const Cta02 = () => {
               <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+          <span className="text-xs uppercase text-muted-foreground">
             or{' '}
             <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
               read the dual-API contract

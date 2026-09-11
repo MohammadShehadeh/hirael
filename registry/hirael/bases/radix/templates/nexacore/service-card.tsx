@@ -4,11 +4,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-/**
- * Escalating orbit glyph: a base ring shared by every card, plus a growing
- * stack of filled accent dots so each stage of the program reads as more
- * built-out than the last.
- */
 const ServiceIcon = ({ level }: { level: number }) => {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[17px] w-[17px] shrink-0 text-[var(--nexa-accent)]">

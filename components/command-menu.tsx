@@ -54,7 +54,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         >
           <Search className="size-4 shrink-0" />
           <span>Search</span>
-          <span className="ms-auto font-mono text-[10px] tabular-nums">{REGISTRY.length} items</span>
+          <span className="ms-auto text-xs tabular-nums">{REGISTRY.length} items</span>
         </button>
       ) : (
         <Button
@@ -67,7 +67,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         >
           <Search className="size-3.5 shrink-0" />
           <span className="hidden text-[13px] tracking-tight sm:inline">Search…</span>
-          <KbdDisplay className="ms-2 hidden border border-border bg-background px-1.5 font-mono text-[10px] sm:inline-flex">
+          <KbdDisplay className="ms-2 hidden border border-border bg-background px-1.5 text-xs sm:inline-flex">
             {isMac ? '⌘' : 'Ctrl '}K
           </KbdDisplay>
         </Button>

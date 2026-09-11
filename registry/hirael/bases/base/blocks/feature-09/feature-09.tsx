@@ -62,7 +62,7 @@ const Feature09 = () => {
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
         <Badge
           variant="outline"
-          className="rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+          className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
         >
           Step catalog
         </Badge>

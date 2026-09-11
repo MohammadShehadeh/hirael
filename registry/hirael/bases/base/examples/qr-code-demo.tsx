@@ -12,9 +12,7 @@ const QrCodeDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Sizes', ar: 'الأحجام' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-end gap-4">
           <QRCode value="https://hirael.com" size={64} title="hirael.com" />
           <QRCode value="https://hirael.com" size={96} title="hirael.com" />
@@ -23,7 +21,7 @@ const QrCodeDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'currentColor theming', ar: 'تنسيق currentColor' })}
         </p>
         <div className="flex items-center gap-4">
@@ -38,7 +36,7 @@ const QrCodeDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Error correction · L vs H',
             ar: 'تصحيح الأخطاء · L مقابل H',
@@ -57,9 +55,7 @@ const QrCodeDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'In a card', ar: 'داخل بطاقة' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'In a card', ar: 'داخل بطاقة' })}</p>
         <div className="grid w-fit justify-items-center gap-3 rounded-lg border border-border bg-card p-6">
           <QRCode
             value="https://hirael.com"

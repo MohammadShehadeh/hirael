@@ -70,7 +70,7 @@ export default async function ComponentsIndex() {
           <a
             key={category}
             href={`#${category}`}
-            className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+            className="rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
             {CATEGORY_LABELS[category]}
             <span className="ms-1.5 tabular-nums text-muted-foreground/60">
@@ -93,7 +93,7 @@ export default async function ComponentsIndex() {
                 <SectionLabel className="text-foreground">{CATEGORY_LABELS[category]}</SectionLabel>
                 <ArrowRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
               </Link>
-              <span className="font-mono text-[10px] tabular-nums text-muted-foreground">{items.length}</span>
+              <span className="text-xs tabular-nums text-muted-foreground">{items.length}</span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {items.map((entry) => (
@@ -109,7 +109,7 @@ export default async function ComponentsIndex() {
         <p className="max-w-2xl text-sm text-muted-foreground">
           Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare
           name is the root primitive and holds state; every rendered piece carries a
-          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground">data-slot</code>
+          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 text-foreground">data-slot</code>
           attribute for downstream styling.
         </p>
         <InlineCodeBlock code={COMPOSE_SNIPPET} html={composeHtml} />
@@ -126,7 +126,7 @@ export default async function ComponentsIndex() {
             </span>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">{blocks.length} section blocks</span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs uppercase text-muted-foreground">
                 {BLOCK_KIND_ORDER.length} categories, preview and install
               </span>
             </div>
@@ -143,7 +143,7 @@ export default async function ComponentsIndex() {
             </span>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">{TEMPLATES.length} full-page templates</span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs uppercase text-muted-foreground">
                 landing pages, preview and install
               </span>
             </div>

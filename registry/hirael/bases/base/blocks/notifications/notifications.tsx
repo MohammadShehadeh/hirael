@@ -119,7 +119,7 @@ const NotificationTime = ({ className, ...props }: NotificationTimeProps) => {
   return (
     <time
       data-slot="notification-time"
-      className={cn('shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground', className)}
+      className={cn('shrink-0 text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );

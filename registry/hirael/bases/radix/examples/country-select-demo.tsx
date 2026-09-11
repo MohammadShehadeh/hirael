@@ -29,7 +29,7 @@ const CountrySelectDemo = () => {
   return (
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Single · with dial code',
             ar: 'اختيار مفرد · مع رمز الاتصال',
@@ -48,7 +48,7 @@ const CountrySelectDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Multiple · pinned Gulf markets',
             ar: 'اختيار متعدد · أسواق الخليج مثبتة',
@@ -89,7 +89,7 @@ const CountrySelectDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Form row · label and hint',
             ar: 'صف نموذج · تسمية وتلميح',

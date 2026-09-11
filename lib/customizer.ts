@@ -170,9 +170,17 @@ export const formatThemeCss = (tokens: ResolvedTokens): string => {
 
 export const isEmbedPath = (pathname: string) => pathname.startsWith('/embed/');
 
-/** Runs before hydration so a re-skinned page paints right on the first frame; framed `/embed/*` documents always get the unscoped sheet. */
+/** Runs before hydration so a re-skinned page paints right on the first frame; framed `/embed/*` documents always get the unscoped sheet. Embed `?theme=` locks light/dark before paint so a preview toggle cannot flash the stored site mode. */
 export const customizerPrehydrationScript = (): string => {
   return `(()=>{try{
+    if(location.pathname.indexOf('/embed/')===0){
+      var t=new URLSearchParams(location.search).get('theme');
+      if(t==='light'||t==='dark'){
+        document.documentElement.classList.remove('light','dark');
+        document.documentElement.classList.add(t);
+        document.documentElement.style.colorScheme=t;
+      }
+    }
     var raw=localStorage.getItem(${JSON.stringify(CSS_STORAGE_KEY)});
     if(!raw)return;
     var s=JSON.parse(raw);

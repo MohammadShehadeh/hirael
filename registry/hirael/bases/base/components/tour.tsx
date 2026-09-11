@@ -421,10 +421,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
         )}
         style={{ top: pos?.top ?? 0, left: pos?.left ?? 0 }}
       >
-        <p
-          data-slot="tour-counter"
-          className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground"
-        >
+        <p data-slot="tour-counter" className="text-xs tabular-nums uppercase text-muted-foreground">
           {step + 1} / {steps.length}
         </p>
         <h2 id={titleId} data-slot="tour-title" className="mt-1.5 text-sm font-semibold leading-tight">

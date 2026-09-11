@@ -38,7 +38,7 @@ const RECENT_KIND_LABELS: Record<RecentKind, string> = {
   template: 'Template',
 };
 
-const CATEGORY_HINT_CLASS = 'ms-auto font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground';
+const CATEGORY_HINT_CLASS = 'ms-auto text-xs uppercase text-muted-foreground';
 
 export interface CommandPaletteProps {
   open: boolean;
@@ -138,7 +138,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
             </CommandGroup>
           </CommandList>
         </Command>
-        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 text-xs uppercase text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <Kbd>↑↓</Kbd> navigate
           </span>

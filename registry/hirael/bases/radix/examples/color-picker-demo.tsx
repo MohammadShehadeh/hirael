@@ -23,7 +23,7 @@ const ColorPickerDemo = () => {
           <ColorPickerTrigger id="color-accent" />
           <ColorPickerContent />
         </ColorPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">{accent}</p>
+        <p className="text-xs text-muted-foreground uppercase">{accent}</p>
       </Field>
 
       <Field className="gap-2">
@@ -41,7 +41,7 @@ const ColorPickerDemo = () => {
           <ColorPickerTrigger id="color-brand" />
           <ColorPickerContent />
         </ColorPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">{brand}</p>
+        <p className="text-xs text-muted-foreground uppercase">{brand}</p>
       </Field>
     </FieldGroup>
   );

@@ -104,7 +104,7 @@ const Hero06 = () => {
                 <span className="block font-serif text-2xl font-semibold text-foreground dark:text-primary md:text-4xl">
                   {stat.value}
                 </span>
-                <span className="mt-1 block whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="mt-1 block whitespace-nowrap text-xs uppercase text-muted-foreground">
                   {stat.label}
                 </span>
               </div>
@@ -135,9 +135,7 @@ const Hero06 = () => {
         </div>
 
         <div className="mt-6 w-full max-w-2xl space-y-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            Core stack & expertise
-          </p>
+          <p className="text-xs uppercase text-muted-foreground">Core stack & expertise</p>
           <div className="flex items-center gap-4">
             <div aria-hidden className="hidden h-px flex-1 bg-gradient-to-r from-transparent to-border md:block" />
             <div className="flex flex-1 flex-wrap items-center justify-center gap-5 md:flex-none">

@@ -12,12 +12,6 @@ interface RevealOptions {
   delay?: number;
 }
 
-/**
- * Scroll-into-view entrance: fade plus an optional slide from `x`/`y`, played
- * once when the element crosses into the viewport. Transforms are dropped
- * automatically under reduced motion by the root MotionConfig, leaving a plain
- * fade.
- */
 export const reveal = ({ x = 0, y = 0, duration = 0.6, delay = 0 }: RevealOptions = {}): MotionProps => {
   return {
     initial: { opacity: 0, x, y },
@@ -27,7 +21,6 @@ export const reveal = ({ x = 0, y = 0, duration = 0.6, delay = 0 }: RevealOption
   };
 };
 
-/** Italic serif accent word, set in Instrument Serif. */
 export const Serif = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   return <span className={cn('font-normal italic [font-family:var(--font-asme-serif)]', className)}>{children}</span>;
 };
@@ -36,10 +29,6 @@ interface IconProps {
   className?: string;
 }
 
-/**
- * Social marks drawn as monochrome glyphs rather than imported brand icons,
- * which the icon library no longer ships.
- */
 export const InstagramIcon = ({ className }: IconProps) => {
   return (
     <svg

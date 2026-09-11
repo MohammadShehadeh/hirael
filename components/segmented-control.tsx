@@ -71,7 +71,7 @@ export const SegmentedControl = ({
             aria-disabled={item.disabled || undefined}
             onClick={() => onValueChange(item.value)}
             className={cn(
-              'inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[11px] tracking-tight transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40 disabled:hover:text-muted-foreground',
+              'inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-40 disabled:hover:text-muted-foreground',
               isActive ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
               itemClassName,
             )}

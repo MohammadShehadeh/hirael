@@ -51,7 +51,7 @@ export const CodeBlock = ({
           />
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
-              <span title={currentTab.label} className="truncate font-mono text-[11px] text-muted-foreground">
+              <span title={currentTab.label} className="truncate text-xs text-muted-foreground">
                 {currentTab.label}
               </span>
               <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
@@ -220,7 +220,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
           onClick={() => setIsOpen((prev) => !prev)}
           style={indent}
           className={cn(
-            'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono text-muted-foreground transition-colors hover:text-foreground',
+            'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left text-muted-foreground transition-colors hover:text-foreground',
             'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
           )}
         >
@@ -249,7 +249,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
       style={indent}
       title={node.filePath}
       className={cn(
-        'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left font-mono transition-colors',
+        'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left transition-colors',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         isActive ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
       )}

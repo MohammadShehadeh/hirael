@@ -60,7 +60,7 @@ const AudioPlayerDemo = () => {
       </MediaInput>
 
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Full player · composed', ar: 'مشغّل كامل · مركّب' })}
         </p>
         <AudioPlayer src={src} className="rounded-md border border-border bg-card p-3">
@@ -76,7 +76,7 @@ const AudioPlayerDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Podcast row · minimal', ar: 'صفّ بودكاست · مبسّط' })}
         </p>
         <AudioPlayer src={src}>
@@ -87,7 +87,7 @@ const AudioPlayerDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Custom · useAudioPlayer', ar: 'مخصّص · useAudioPlayer' })}
         </p>
         <AudioPlayer src={src} className="rounded-md border border-border bg-card p-3">

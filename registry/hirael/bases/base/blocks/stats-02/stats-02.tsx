@@ -60,7 +60,7 @@ const Stats02 = () => {
     <section className="bg-background py-20 sm:py-28" aria-labelledby="stats-02-heading">
       <div className="container w-full">
         <div className="max-w-2xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Last twelve weeks</p>
+          <p className="text-xs uppercase text-muted-foreground">Last twelve weeks</p>
           <h2 id="stats-02-heading" className="mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
             The numbers behind the registry
           </h2>

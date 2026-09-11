@@ -424,19 +424,15 @@ const AppShell03 = () => {
           <div className="flex items-center justify-between gap-2">
             <Tabs value={filter} onValueChange={(v) => setFilter(v as 'all' | 'unread')} className="w-fit">
               <TabsList className="h-7">
-                <TabsTrigger value="all" className="px-2 font-mono text-[10px] uppercase tracking-[0.08em]">
+                <TabsTrigger value="all" className="px-2 text-xs uppercase">
                   All
                 </TabsTrigger>
-                <TabsTrigger value="unread" className="px-2 font-mono text-[10px] uppercase tracking-[0.08em]">
+                <TabsTrigger value="unread" className="px-2 text-xs uppercase">
                   Unread
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <span
-              dir="ltr"
-              aria-live="polite"
-              className="font-mono text-[10px] uppercase tracking-[0.08em] tabular-nums text-muted-foreground"
-            >
+            <span dir="ltr" aria-live="polite" className="text-xs uppercase tabular-nums text-muted-foreground">
               {visible.length} of {inbox.length}
             </span>
           </div>
@@ -445,9 +441,7 @@ const AppShell03 = () => {
 
         {lastRemoval && (
           <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-4 py-2">
-            <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-              conversation {lastRemoval.kind}
-            </span>
+            <span className="truncate text-xs uppercase text-muted-foreground">conversation {lastRemoval.kind}</span>
             <Button variant="ghost" size="sm" className="h-6 shrink-0 px-2" onClick={undoRemoval}>
               <Undo2 className="size-3 rtl:rotate-180" aria-hidden />
               Undo
@@ -521,7 +515,7 @@ const AppShell03 = () => {
                       {c.sender}
                       {unread && <span className="sr-only"> (unread)</span>}
                     </span>
-                    <span className="ms-auto shrink-0 font-mono text-[10px] uppercase tracking-[0.08em] tabular-nums text-muted-foreground">
+                    <span className="ms-auto shrink-0 text-xs uppercase tabular-nums text-muted-foreground">
                       {c.time}
                     </span>
                   </span>
@@ -615,9 +609,7 @@ const AppShell03 = () => {
                       {m.initials}
                     </span>
                     <span className="text-xs font-medium">{m.from}</span>
-                    <span className="ms-auto font-mono text-[10px] uppercase tracking-[0.08em] tabular-nums text-muted-foreground">
-                      {m.time}
-                    </span>
+                    <span className="ms-auto text-xs uppercase tabular-nums text-muted-foreground">{m.time}</span>
                   </div>
                   <p className="text-sm text-muted-foreground">{m.body}</p>
                 </article>
@@ -641,9 +633,7 @@ const AppShell03 = () => {
                 className="min-h-20 resize-none"
               />
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  ⌘ + enter to send
-                </span>
+                <span className="text-xs uppercase text-muted-foreground">⌘ + enter to send</span>
                 <Button size="sm" onClick={sendReply} disabled={!draft.trim()}>
                   Send
                   <SendHorizonal className="size-3.5 rtl:rotate-180" aria-hidden />

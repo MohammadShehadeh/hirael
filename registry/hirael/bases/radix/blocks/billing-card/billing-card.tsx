@@ -35,7 +35,7 @@ const BillingCardEyebrow = ({ className, ...props }: BillingCardEyebrowProps) =>
   return (
     <p
       data-slot="billing-card-eyebrow"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground', className)}
+      className={cn('text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );

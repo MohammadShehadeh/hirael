@@ -31,9 +31,7 @@ const MonthPickerDemo = () => {
           <MonthPickerTrigger id="mp-launch" placeholder={t({ en: 'Pick a month', ar: 'اختر شهرًا' })} />
           <MonthPickerContent />
         </MonthPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-          {month ? `${month.month + 1}/${month.year}` : '-'}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{month ? `${month.month + 1}/${month.year}` : '-'}</p>
       </Field>
 
       <Field className="gap-2">
@@ -42,7 +40,7 @@ const MonthPickerDemo = () => {
           <MonthPickerTrigger id="mp-quarter" placeholder={t({ en: 'Pick a range', ar: 'اختر نطاقًا' })} />
           <MonthPickerContent />
         </MonthPicker>
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <p className="text-xs text-muted-foreground uppercase">
           {range
             ? `${range.from.month + 1}/${range.from.year} → ${
                 range.to ? `${range.to.month + 1}/${range.to.year}` : '…'

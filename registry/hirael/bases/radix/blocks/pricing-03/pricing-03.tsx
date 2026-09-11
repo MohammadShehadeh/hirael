@@ -156,7 +156,7 @@ const Pricing03 = () => {
                   )}
                 >
                   {plan.popular && (
-                    <span className="absolute -top-2.5 end-6 inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground">
+                    <span className="absolute -top-2.5 end-6 inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
                       <Sparkles className="size-3" />
                       Most popular
                     </span>

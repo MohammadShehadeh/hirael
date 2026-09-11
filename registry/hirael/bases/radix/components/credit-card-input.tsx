@@ -487,7 +487,7 @@ const CreditCardInputBrand = ({ labels, className, ...props }: CreditCardInputBr
       data-brand={ctx.brand}
       aria-live="polite"
       className={cn(
-        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.08em] text-muted-foreground',
+        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 text-xs font-medium uppercase text-muted-foreground',
         ctx.brand !== 'unknown' && 'text-foreground',
         className,
       )}

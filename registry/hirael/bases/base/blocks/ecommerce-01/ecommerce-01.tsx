@@ -132,7 +132,7 @@ const Ecommerce01 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="container flex w-full flex-col gap-10">
         <div className="flex flex-col gap-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">shop</span>
+          <span className="text-xs uppercase text-foreground">shop</span>
           <h2 className="max-w-xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
             The everyday carry edit.
           </h2>
@@ -155,7 +155,7 @@ const Ecommerce01 = () => {
               </Button>
             ))}
           </div>
-          <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="text-xs tabular-nums uppercase text-muted-foreground">
             {visible.length} product{visible.length === 1 ? '' : 's'}
           </span>
         </div>
@@ -178,7 +178,7 @@ const Ecommerce01 = () => {
                   {p.badge && (
                     <Badge
                       variant="outline"
-                      className="absolute start-2.5 top-2.5 bg-background/85 font-mono text-[10px] uppercase tracking-[0.08em] backdrop-blur"
+                      className="absolute start-2.5 top-2.5 bg-background/85 text-xs uppercase backdrop-blur"
                     >
                       {p.badge}
                     </Badge>
@@ -197,9 +197,7 @@ const Ecommerce01 = () => {
                 </div>
 
                 <div className="flex flex-col gap-1 pt-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {CATEGORY_LABELS[p.category]}
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">{CATEGORY_LABELS[p.category]}</span>
                   <h3 className="text-sm font-medium tracking-[-0.01em]">{p.name}</h3>
                   <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Rating value={p.rating} step={0.5} readOnly size="sm" aria-label={`Rated ${p.rating} out of 5`} />

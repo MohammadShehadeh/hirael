@@ -95,7 +95,7 @@ const ActivityFeedTime = ({ className, ...props }: ActivityFeedTimeProps) => {
   return (
     <time
       data-slot="activity-feed-time"
-      className={cn('font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground', className)}
+      className={cn('text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );
@@ -118,9 +118,7 @@ type ActivityFeedDividerProps = React.ComponentProps<'li'>;
 const ActivityFeedDivider = ({ className, children, ...props }: ActivityFeedDividerProps) => {
   return (
     <li data-slot="activity-feed-divider" className={cn('flex items-center gap-3 pb-5', className)} {...props}>
-      {children ? (
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{children}</span>
-      ) : null}
+      {children ? <span className="text-xs uppercase text-muted-foreground">{children}</span> : null}
       <span aria-hidden className="h-px flex-1 bg-border" />
     </li>
   );
@@ -143,7 +141,7 @@ const ActivityFeedBlock = () => {
   return (
     <section data-slot="activity-feed-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="grid w-full max-w-xl gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">Team activity</p>
+        <p className="text-xs uppercase text-muted-foreground">Team activity</p>
         <ActivityFeed>
           <ActivityFeedDivider>Today</ActivityFeedDivider>
           <ActivityFeedItem>

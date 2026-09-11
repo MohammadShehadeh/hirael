@@ -362,10 +362,10 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
       {ctx.format === '12h' && (
         <Tabs value={isAM ? 'AM' : 'PM'} onValueChange={(v) => setMeridiem(v as 'AM' | 'PM')} className="mt-3">
           <TabsList className="w-full">
-            <TabsTrigger value="AM" className="font-mono text-xs uppercase tracking-[0.1em]">
+            <TabsTrigger value="AM" className="text-xs uppercase">
               AM
             </TabsTrigger>
-            <TabsTrigger value="PM" className="font-mono text-xs uppercase tracking-[0.1em]">
+            <TabsTrigger value="PM" className="text-xs uppercase">
               PM
             </TabsTrigger>
           </TabsList>
@@ -379,7 +379,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
             size="xs"
             data-slot="time-picker-clear"
             onClick={() => ctx.clearValue()}
-            className="font-mono text-[10px] font-normal uppercase tracking-[0.08em]"
+            className="text-xs font-normal uppercase"
           >
             <X className="size-3" />
             Clear

@@ -83,7 +83,7 @@ const LightboxDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Gallery · captions · thumbnail strip',
             ar: 'معرض · تعليقات · شريط مصغّرات',
@@ -113,7 +113,7 @@ const LightboxDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Single image · render trigger',
             ar: 'صورة واحدة · مشغّل render',

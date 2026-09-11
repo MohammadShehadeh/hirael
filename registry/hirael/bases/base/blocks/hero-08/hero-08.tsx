@@ -59,7 +59,7 @@ const Hero08 = () => {
         <div className="mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
           <Badge
             variant="outline"
-            className="gap-2 rounded-full bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm"
+            className="gap-2 rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
           >
             <Sparkles className="size-3" />
             Design workflows visually

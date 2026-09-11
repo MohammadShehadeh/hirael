@@ -13,10 +13,7 @@ export const mdxComponents: MDXComponents = {
     />
   ),
   h3: ({ className, ...props }: React.ComponentProps<'h3'>) => (
-    <h3
-      className={cn('mt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground', className)}
-      {...props}
-    />
+    <h3 className={cn('mt-6 text-xs uppercase text-muted-foreground', className)} {...props} />
   ),
   p: ({ className, ...props }: React.ComponentProps<'p'>) => (
     <p className={cn('mt-4 text-sm leading-relaxed text-foreground/80 first:mt-0', className)} {...props} />

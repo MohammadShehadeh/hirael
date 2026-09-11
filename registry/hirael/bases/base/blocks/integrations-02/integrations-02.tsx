@@ -70,7 +70,7 @@ const Integrations02 = () => {
       <div className="container w-full">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Integrations</p>
+            <p className="text-xs uppercase text-muted-foreground">Integrations</p>
             <h2
               id="integrations-02-heading"
               className="mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl"
@@ -112,7 +112,7 @@ const Integrations02 = () => {
                 <span className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-background">
                   <item.icon aria-hidden className="size-4" />
                 </span>
-                <Badge variant="outline" className="font-mono text-[10px] uppercase tracking-[0.1em]">
+                <Badge variant="outline" className="text-xs uppercase">
                   {item.category}
                 </Badge>
               </div>
@@ -133,7 +133,7 @@ const Integrations02 = () => {
           ))}
         </ul>
 
-        <p aria-live="polite" className="mt-6 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p aria-live="polite" className="mt-6 text-xs uppercase text-muted-foreground">
           Showing {shown.length} of {INTEGRATIONS.length}
         </p>
       </div>

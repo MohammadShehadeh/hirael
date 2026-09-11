@@ -15,7 +15,7 @@ const AnnouncementBarDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-6">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Default · dismissible', ar: 'افتراضي · قابل للإغلاق' })}
         </p>
         <AnnouncementBar dismissible className="rounded-md border">
@@ -34,9 +34,7 @@ const AnnouncementBarDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Primary', ar: 'أساسي' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Primary', ar: 'أساسي' })}</p>
         <AnnouncementBar tone="primary" className="rounded-md border">
           <Sparkles className="size-3.5" />
           <span>
@@ -53,9 +51,7 @@ const AnnouncementBarDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Muted · simple', ar: 'هادئ · بسيط' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Muted · simple', ar: 'هادئ · بسيط' })}</p>
         <AnnouncementBar tone="muted" className="rounded-md">
           <span className="text-muted-foreground">
             {t({

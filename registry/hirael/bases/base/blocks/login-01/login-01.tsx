@@ -84,10 +84,7 @@ const Login01 = () => {
           <form className="p-8" onSubmit={(e) => e.preventDefault()}>
             <FieldGroup className="gap-5">
               <Field className="gap-1.5">
-                <FieldLabel
-                  htmlFor="login01-email"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
+                <FieldLabel htmlFor="login01-email" className="text-xs uppercase text-muted-foreground">
                   Email
                 </FieldLabel>
                 <Input
@@ -102,15 +99,12 @@ const Login01 = () => {
 
               <Field className="gap-1.5">
                 <div className="flex items-center justify-between">
-                  <FieldLabel
-                    htmlFor="login01-password"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                  >
+                  <FieldLabel htmlFor="login01-password" className="text-xs uppercase text-muted-foreground">
                     Password
                   </FieldLabel>
                   <a
                     href="#"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
                   >
                     Forgot?
                   </a>
@@ -165,7 +159,7 @@ const Login01 = () => {
           </div>
         </div>
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">
           Protected by single-tenant auth · SOC2 in progress
         </p>
       </div>

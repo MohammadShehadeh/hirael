@@ -515,9 +515,7 @@ const AvatarUploadCropDialog = ({
             data-slot="avatar-upload-cropper"
           >
             <div className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                {zoomLabel}
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">{zoomLabel}</span>
               <ImageCropperZoom aria-label={zoomLabel} />
             </div>
           </ImageCropper>

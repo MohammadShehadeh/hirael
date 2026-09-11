@@ -603,7 +603,7 @@ const PromptInputBlock = () => {
   return (
     <section data-slot="prompt-input-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="flex w-full max-w-2xl flex-col gap-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">New message</span>
+        <span className="text-xs uppercase text-muted-foreground">New message</span>
 
         <PromptInput
           onSubmit={handleSubmit}

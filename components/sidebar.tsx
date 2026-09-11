@@ -158,9 +158,7 @@ const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProp
         )}
       >
         <span className="truncate">{children}</span>
-        {count !== undefined && (
-          <span className="ms-auto font-mono text-[10px] tabular-nums text-muted-foreground">{count}</span>
-        )}
+        {count !== undefined && <span className="ms-auto text-xs tabular-nums text-muted-foreground">{count}</span>}
       </Link>
     </li>
   );
@@ -259,7 +257,7 @@ const ReleaseTree = ({ releases }: ReleaseTreeProps) => {
             className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <span className="truncate">{release.label}</span>
-            <span className="ms-auto font-mono text-[10px] text-muted-foreground">{release.date}</span>
+            <span className="ms-auto text-xs text-muted-foreground">{release.date}</span>
           </a>
         </li>
       ))}

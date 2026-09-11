@@ -60,7 +60,7 @@ const CalendarHeatmapDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Commit activity · 12 months',
             ar: 'نشاط الالتزامات · 12 شهرًا',
@@ -73,7 +73,7 @@ const CalendarHeatmapDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Compact · 6 months · week starts Monday',
             ar: 'مدمج · 6 أشهر · يبدأ الأسبوع الإثنين',
@@ -111,9 +111,7 @@ const CalendarHeatmapDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Custom scale', ar: 'تدرّج مخصّص' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Custom scale', ar: 'تدرّج مخصّص' })}</p>
         <div className="grid gap-2 overflow-x-auto pb-1">
           <CalendarHeatmap
             data={halfYearData}

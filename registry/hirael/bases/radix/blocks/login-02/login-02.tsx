@@ -49,7 +49,7 @@ const Login02 = () => {
           </div>
 
           <div className="mb-8 flex flex-col gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">sign in</span>
+            <span className="text-xs uppercase text-foreground">sign in</span>
             <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Welcome back.</h1>
             <p className="text-sm text-muted-foreground">
               Use the email you signed up with. We&apos;ll fetch your workspace from there.
@@ -59,10 +59,7 @@ const Login02 = () => {
           <form onSubmit={(e) => e.preventDefault()}>
             <FieldGroup className="gap-4">
               <Field className="gap-1.5">
-                <FieldLabel
-                  htmlFor="login02-email"
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                >
+                <FieldLabel htmlFor="login02-email" className="text-xs uppercase text-muted-foreground">
                   Work email
                 </FieldLabel>
                 <Input
@@ -77,15 +74,12 @@ const Login02 = () => {
 
               <Field className="gap-1.5">
                 <div className="flex items-center justify-between">
-                  <FieldLabel
-                    htmlFor="login02-password"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-                  >
+                  <FieldLabel htmlFor="login02-password" className="text-xs uppercase text-muted-foreground">
                     Password
                   </FieldLabel>
                   <a
                     href="#"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
                   >
                     Reset
                   </a>
@@ -145,9 +139,7 @@ const Login02 = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-medium">Mara Riviera</span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Eng lead · Helix
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">Eng lead · Helix</span>
             </div>
           </div>
 
@@ -157,7 +149,7 @@ const Login02 = () => {
               ['0', 'runtime deps'],
             ].map(([n, label]) => (
               <div key={label} className="bg-card px-4 py-3">
-                <dt className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">{label}</dt>
+                <dt className="text-[10px] uppercase text-muted-foreground">{label}</dt>
                 <dd className="mt-0.5 font-mono text-xl font-medium tabular-nums">{n}</dd>
               </div>
             ))}

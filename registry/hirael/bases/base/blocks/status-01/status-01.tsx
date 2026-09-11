@@ -136,7 +136,7 @@ const Status01 = () => {
     <section data-slot="status" className="flex min-h-svh w-full justify-center bg-background px-6 py-16 md:py-24">
       <div className="grid w-full max-w-3xl gap-12 md:gap-16">
         <div data-slot="status-header" className="flex flex-col gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Status</span>
+          <span className="text-xs uppercase text-muted-foreground">Status</span>
           <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">All systems, at a glance</h1>
           <p className="text-sm text-muted-foreground md:text-base">
             Live service health, ninety days of history and every incident we have written up.

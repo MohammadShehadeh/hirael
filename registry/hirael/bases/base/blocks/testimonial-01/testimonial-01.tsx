@@ -9,7 +9,7 @@ const Testimonial01 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-10 text-center">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+          <span className="inline-flex items-center gap-2 text-xs uppercase text-foreground">
             <span className="size-1 rounded-full bg-foreground" />
             Testimonial
           </span>
@@ -33,9 +33,7 @@ const Testimonial01 = () => {
             </div>
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-sm font-semibold tracking-[-0.01em]">Maya Renner</span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                Staff engineer · Plinth Labs
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">Staff engineer · Plinth Labs</span>
             </div>
           </div>
 

@@ -53,7 +53,7 @@ const Testimonial02 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div className="flex max-w-2xl flex-col gap-5">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground">
+          <span className="inline-flex items-center gap-2 text-xs uppercase text-foreground">
             <span className="size-1 rounded-full bg-foreground" />
             What teams say
           </span>
@@ -77,9 +77,7 @@ const Testimonial02 = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold tracking-[-0.01em]">{q.name}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {q.role}
-                  </span>
+                  <span className="text-xs uppercase text-muted-foreground">{q.role}</span>
                 </div>
               </figcaption>
             </figure>

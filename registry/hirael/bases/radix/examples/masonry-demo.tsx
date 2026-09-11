@@ -57,7 +57,7 @@ const MasonryDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Cards · default columns', ar: 'بطاقات · أعمدة افتراضية' })}
         </p>
         <Masonry>
@@ -71,7 +71,7 @@ const MasonryDemo = () => {
       </div>
 
       <div className="grid min-w-0 gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Media · varied aspect ratios',
             ar: 'وسائط · نِسب أبعاد متنوّعة',
@@ -87,7 +87,7 @@ const MasonryDemo = () => {
       </div>
 
       <div className="grid min-w-0 gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Compact · columns 2 / md 4',
             ar: 'مدمج · عمودان / md أربعة',

@@ -23,10 +23,7 @@ const ComingSoonEyebrow = ({ className, ...props }: React.ComponentProps<'span'>
   return (
     <span
       data-slot="coming-soon-eyebrow"
-      className={cn(
-        'inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground',
-        className,
-      )}
+      className={cn('inline-flex items-center gap-2 text-xs uppercase text-muted-foreground', className)}
       {...props}
     />
   );
@@ -128,7 +125,7 @@ const ComingSoonForm = ({
       {...props}
     >
       <Field className="gap-1.5">
-        <FieldLabel htmlFor={id} className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <FieldLabel htmlFor={id} className="text-xs uppercase text-muted-foreground">
           Get notified at launch
         </FieldLabel>
         <div className="flex gap-2">
@@ -208,9 +205,7 @@ const ComingSoon01 = () => {
           <ComingSoonForm />
 
           <ComingSoonFooter>
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-              Preview only, nothing is submitted.
-            </span>
+            <span className="text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</span>
             <a
               href="https://github.com/MohammadShehadeh/hirael"
               target="_blank"

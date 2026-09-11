@@ -14,9 +14,7 @@ const StatCardDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: '3-up grid', ar: 'شبكة من ثلاثة' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: '3-up grid', ar: 'شبكة من ثلاثة' })}</p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <StatCard>
             <StatCardLabel>{t({ en: 'Active users', ar: 'المستخدمون النشطون' })}</StatCardLabel>
@@ -42,9 +40,7 @@ const StatCardDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Custom layout', ar: 'تخطيط مخصّص' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Custom layout', ar: 'تخطيط مخصّص' })}</p>
         <StatCard className="max-w-xs">
           <div className="flex items-center justify-between">
             <StatCardLabel>

@@ -210,7 +210,7 @@ const PasswordInputStrength = ({ showLabel = true, renderMeta, className, ...pro
           renderMeta(s)
         ) : (
           <div aria-live="polite" className="flex items-center justify-between gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{s.label}</span>
+            <span className="text-xs uppercase text-muted-foreground">{s.label}</span>
             {s.hint && <span className="text-[11px] text-muted-foreground">{s.hint}</span>}
           </div>
         ))}

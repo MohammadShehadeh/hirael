@@ -47,7 +47,7 @@ const PasswordInputDemo = () => {
           />
           <PasswordInputStrength
             renderMeta={(s) => (
-              <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="text-xs uppercase text-muted-foreground">
                 {t({ en: 'score', ar: 'النتيجة' })} {s.score} / 4 · {s.label}
               </p>
             )}

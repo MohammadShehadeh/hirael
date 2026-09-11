@@ -47,7 +47,7 @@ const Feature02 = () => {
     <section className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">features</span>
+          <span className="text-xs uppercase text-muted-foreground">features</span>
           <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
             Everything a real product needs, none of the rest.
           </h2>

@@ -62,11 +62,7 @@ const VmTableHead = ({ className, ...props }: React.ComponentProps<'th'>) => {
   return (
     <th
       data-slot="vm-table-head"
-      className={cn(
-        'h-9 px-3 text-start align-middle font-medium whitespace-nowrap',
-        'font-mono text-[10px] uppercase tracking-[0.1em]',
-        className,
-      )}
+      className={cn('h-9 px-3 text-start align-middle font-medium whitespace-nowrap', 'text-xs uppercase', className)}
       {...props}
     />
   );

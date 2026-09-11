@@ -58,7 +58,7 @@ const TourDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Spotlight tour · 4 steps', ar: 'جولة مضيئة · 4 خطوات' })}
         </p>
         <Tour steps={steps} labels={tourLabels} onFinish={() => setCompleted(true)}>

@@ -50,7 +50,7 @@ const Hero03 = () => {
       />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-sm">
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm">
           Since 2021 · One calm workspace
         </span>
 
@@ -76,7 +76,7 @@ const Hero03 = () => {
         </div>
 
         <div className="mt-12 flex w-full flex-col items-center gap-5">
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Trusted by teams at</p>
+          <p className="text-xs uppercase text-muted-foreground">Trusted by teams at</p>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {LOGOS.map((logo) => (
               <span

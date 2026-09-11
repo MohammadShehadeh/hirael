@@ -16,6 +16,7 @@ const installBlockVariants = cva('overflow-hidden rounded-md border border-borde
     variant: {
       default: 'flex flex-col',
       inline: 'flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2',
+      frame: 'flex flex-col rounded-none border-0 border-t bg-card/50',
     },
   },
   defaultVariants: { variant: 'default' },
@@ -26,6 +27,7 @@ const controlsVariants = cva('flex items-center gap-1', {
     variant: {
       default: 'order-first justify-between border-b border-border px-1 py-1',
       inline: 'ms-auto shrink-0',
+      frame: 'order-first justify-between border-b border-border px-1 py-1',
     },
   },
   defaultVariants: { variant: 'default' },
@@ -36,6 +38,7 @@ const commandVariants = cva('flex min-w-0 items-center gap-2.5', {
     variant: {
       default: 'px-3 py-2.5',
       inline: 'flex-1 basis-64',
+      frame: 'px-3 py-2.5',
     },
   },
   defaultVariants: { variant: 'default' },

@@ -55,8 +55,6 @@ export const Navbar = ({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =>
                   href={`#${id}`}
                   aria-current={active === id ? 'true' : undefined}
                   className={cn(
-                    // Arabic reads small and breaks up under the wide Latin
-                    // tracking, so size up and drop the letter-spacing.
                     'flex h-full items-center px-7 text-[10px] font-medium uppercase tracking-[0.3em] transition-colors',
                     'rtl:text-sm rtl:tracking-normal',
                     active === id ? 'bg-accent text-accent-foreground' : 'text-foreground/50 hover:text-foreground',
@@ -95,10 +93,6 @@ export const Navbar = ({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =>
         </div>
       </div>
 
-      {/*
-        The panel lives inside the template rather than in a portal, so it keeps
-        the scoped palette and reads from the same `dir` as the page around it.
-      */}
       <div
         aria-hidden={!open}
         className={cn(

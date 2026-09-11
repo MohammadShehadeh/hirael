@@ -39,7 +39,7 @@ const PagerLink = ({ entry, direction }: PagerLinkProps) => {
         isPrev ? 'items-start text-start' : 'items-end text-end',
       )}
     >
-      <span className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+      <span className="flex items-center gap-1 text-xs uppercase text-muted-foreground">
         {isPrev && chevron}
         {isPrev ? 'Previous' : 'Next'}
         {!isPrev && chevron}

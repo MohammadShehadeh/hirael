@@ -7,11 +7,6 @@ import { cn } from '@/lib/utils';
 
 const FADE_EASE: Transition['ease'] = 'easeOut';
 
-/**
- * Shared fade-up motion props, staggered by delay. Reads the
- * reduced-motion preference so the page resolves to its final state with no
- * transform when the visitor asks for less motion.
- */
 export const useFadeUp = () => {
   const reduce = useReducedMotion();
   return (delay = 0): MotionProps => ({
@@ -22,14 +17,12 @@ export const useFadeUp = () => {
   });
 };
 
-/** Italic serif accent word, set in Instrument Serif. */
 export const Serif = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   return (
     <span className={cn('font-normal italic [font-family:var(--font-mindloop-serif)]', className)}>{children}</span>
   );
 };
 
-/** Concentric-circles brand mark. */
 export const Logo = ({ size = 'sm' }: { size?: 'sm' | 'lg' }) => {
   return (
     <span
@@ -83,11 +76,6 @@ export const TwitterIcon = ({ className }: IconProps) => {
   );
 };
 
-/**
- * Platform marks for the answer-engine section, drawn as monochrome
- * glyphs rather than shipped image files (binary assets can't travel
- * through the text registry).
- */
 export const ChatGptIcon = ({ className }: IconProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.1} className={className} aria-hidden>
@@ -130,7 +118,6 @@ const AVATAR_TONES = [
   { from: '#a6a6a6', to: '#545454' },
 ];
 
-/** Monochrome placeholder avatar, varied by tone for the subscriber row. */
 export const Avatar = ({ tone = 0, className }: { tone?: number; className?: string }) => {
   const t = AVATAR_TONES[tone % AVATAR_TONES.length];
   const id = `mindloop-avatar-${tone}`;

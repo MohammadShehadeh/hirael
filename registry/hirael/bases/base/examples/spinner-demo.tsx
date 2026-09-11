@@ -10,9 +10,7 @@ const SpinnerDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Variants', ar: 'الأنواع' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Variants', ar: 'الأنواع' })}</p>
         <div className="flex items-center gap-10 text-foreground">
           <div className="flex flex-col items-center gap-2">
             <Spinner variant="circle" size="lg" />
@@ -30,9 +28,7 @@ const SpinnerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Sizes', ar: 'الأحجام' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-center gap-6 text-foreground">
           <Spinner size="sm" />
           <Spinner size="md" />
@@ -41,7 +37,7 @@ const SpinnerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Inherits text color · in context',
             ar: 'يرث لون النص · ضمن السياق',

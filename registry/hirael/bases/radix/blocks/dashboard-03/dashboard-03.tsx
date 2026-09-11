@@ -268,7 +268,7 @@ const Dashboard03 = () => {
             </div>
             <Button variant="outline" size="sm">
               <Download className="size-3.5" aria-hidden />
-              <span className="hidden sm:inline">Export</span>
+              <span className="sr-only sm:not-sr-only sm:inline">Export</span>
             </Button>
           </div>
         </div>
@@ -277,9 +277,7 @@ const Dashboard03 = () => {
           <div className="flex flex-col gap-6">
             <Card>
               <CardHeader>
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  plan mix
-                </CardDescription>
+                <CardDescription className="text-xs uppercase">plan mix</CardDescription>
                 <CardTitle className="sr-only">Plan mix</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col items-center gap-5">
@@ -292,7 +290,7 @@ const Dashboard03 = () => {
                     <span
                       dir="ltr"
                       className={cn(
-                        'font-mono text-[10px] uppercase tracking-[0.1em]',
+                        'text-xs uppercase',
                         month.delta === 0
                           ? 'text-muted-foreground'
                           : month.delta > 0
@@ -320,9 +318,7 @@ const Dashboard03 = () => {
 
             <Card>
               <CardHeader>
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  invoices
-                </CardDescription>
+                <CardDescription className="text-xs uppercase">invoices</CardDescription>
                 <CardTitle className="sr-only">Invoices</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
@@ -345,9 +341,7 @@ const Dashboard03 = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
-                  <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    transactions
-                  </CardDescription>
+                  <CardDescription className="text-xs uppercase">transactions</CardDescription>
                   <CardTitle className="text-lg">Latest activity</CardTitle>
                 </div>
                 <Button variant="link" size="sm" className="h-auto p-0" asChild>
@@ -358,7 +352,7 @@ const Dashboard03 = () => {
             <CardContent className="px-0">
               <div
                 aria-hidden
-                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border px-6 pb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:grid"
+                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border px-6 pb-2 text-xs uppercase text-muted-foreground sm:grid"
               >
                 <span>Customer</span>
                 <span>Status</span>
@@ -408,11 +402,7 @@ const Dashboard03 = () => {
               </ul>
               <Separator />
               <div className="flex items-center justify-between px-6 pt-4">
-                <span
-                  dir="ltr"
-                  aria-live="polite"
-                  className="font-mono text-[10px] uppercase tracking-[0.1em] tabular-nums text-muted-foreground"
-                >
+                <span dir="ltr" aria-live="polite" className="text-xs uppercase tabular-nums text-muted-foreground">
                   {pageStart + 1}–{pageStart + pageRows.length} of {TRANSACTIONS.length}
                 </span>
                 <div className="flex items-center gap-1">

@@ -4,10 +4,8 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-// House easing for the text-roll / arrow-rotate hover motion.
 export const EASE = 'ease-[cubic-bezier(0.25,0.1,0.25,1)]';
 
-/** Hirael arch-and-star brand mark. Strokes track the current text color. */
 export const HiraelMark = ({ className }: { className?: string }) => {
   return (
     <svg
@@ -30,10 +28,6 @@ export const HiraelMark = ({ className }: { className?: string }) => {
   );
 };
 
-/**
- * Hover text-roll: two stacked copies inside a 20px window that slide up by
- * exactly one line on group-hover.
- */
 export const RollText = ({ children }: { children: ReactNode }) => {
   return (
     <span className="block h-[20px] overflow-hidden">
@@ -47,11 +41,6 @@ export const RollText = ({ children }: { children: ReactNode }) => {
   );
 };
 
-/**
- * Orange pill CTA with the shared text-roll + arrow-rotate hover. The
- * template runs on a fixed light palette rather than the site tokens, so the
- * brand orange stays on the class list instead of a Button variant.
- */
 export const OrangeButton = ({
   label,
   className,
@@ -76,7 +65,6 @@ export const OrangeButton = ({
   );
 };
 
-/** lucide "link" icon, inlined as two arc paths. */
 export const LinkIcon = ({ className }: { className?: string }) => {
   return (
     <svg
@@ -98,7 +86,6 @@ export const LinkIcon = ({ className }: { className?: string }) => {
   );
 };
 
-/** Certified-partner starburst mark. */
 export const PartnerIcon = ({ className }: { className?: string }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className={className} aria-hidden="true">

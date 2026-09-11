@@ -132,7 +132,7 @@ const OnboardingHeader = ({ showTitles = true, className, children, ...props }: 
   return (
     <div data-slot="onboarding-header" className={cn('flex flex-col gap-4', className)} {...props}>
       <div className="flex items-center justify-between gap-3">
-        <span aria-live="polite" className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
           Step {step + 1} of {total}
         </span>
         {children}

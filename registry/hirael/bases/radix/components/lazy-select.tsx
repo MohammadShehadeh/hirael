@@ -330,9 +330,7 @@ const LazySelectContent = ({
               ) : (
                 endMessage &&
                 ctx.options.length > 0 && (
-                  <div className="py-3 text-center text-[10px] font-mono uppercase tracking-[0.08em] text-muted-foreground">
-                    {endMessage}
-                  </div>
+                  <div className="py-3 text-center text-xs uppercase text-muted-foreground">{endMessage}</div>
                 )
               )}
             </>

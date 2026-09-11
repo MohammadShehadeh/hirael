@@ -47,9 +47,7 @@ export const Resources = ({ lang }: { lang: Lang }) => {
                 href="#"
                 className="group grid grid-cols-[3.5rem_1fr_auto] items-baseline gap-4 border-t border-border py-5"
               >
-                <span
-                  className={cn('text-xs text-muted-foreground', lang === 'en' && 'font-mono uppercase tracking-wider')}
-                >
+                <span className={cn('text-xs text-muted-foreground', lang === 'en' && 'uppercase tracking-wider')}>
                   {item.tag}
                 </span>
                 <span className="text-base font-medium text-foreground sm:text-lg">{item.title}</span>

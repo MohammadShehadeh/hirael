@@ -27,10 +27,7 @@ const MaintenanceStatus = ({ tone = 'warning', className, children, ...props }: 
     <span
       data-slot="maintenance-status"
       data-tone={tone}
-      className={cn(
-        'inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground',
-        className,
-      )}
+      className={cn('inline-flex items-center gap-2 text-xs uppercase text-muted-foreground', className)}
       {...props}
     >
       <span aria-hidden className="relative flex size-2">
@@ -79,7 +76,7 @@ const MaintenanceWindow = ({ progress, progressLabel, className, children, ...pr
       <dl className="flex flex-col divide-y divide-border">{children}</dl>
       {pct !== undefined ? (
         <div className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+          <div className="flex items-center justify-between text-xs uppercase text-muted-foreground">
             <span>{progressLabel ?? 'Window elapsed'}</span>
             <span className="tabular-nums text-foreground">{Math.round(pct)}%</span>
           </div>
@@ -122,7 +119,7 @@ const MaintenanceWindowRow = ({ label, className, children, ...props }: Maintena
 const MaintenanceUpdates = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div data-slot="maintenance-updates" className={cn('w-full border-t border-border pt-6', className)} {...props}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Follow updates</span>
+      <span className="text-xs uppercase text-muted-foreground">Follow updates</span>
       <ol className="mt-3 flex flex-col">{children}</ol>
     </div>
   );

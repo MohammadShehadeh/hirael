@@ -22,28 +22,24 @@ const DatePickerDemo = () => {
   return (
     <FieldGroup className="max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Popover', ar: 'منبثق' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Popover', ar: 'منبثق' })}</p>
         <Field className="gap-2">
           <FieldLabel htmlFor="dp-due">{t({ en: 'Due date', ar: 'تاريخ الاستحقاق' })}</FieldLabel>
           <DatePicker value={date} onValueChange={setDate}>
             <DatePickerTrigger id="dp-due" placeholder={t({ en: 'Pick a date', ar: 'اختر تاريخًا' })} />
             <DatePickerContent />
           </DatePicker>
-          <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{print(date)}</p>
+          <p className="text-xs uppercase text-muted-foreground">{print(date)}</p>
         </Field>
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          {t({ en: 'Inline calendar', ar: 'تقويم مضمّن' })}
-        </p>
+        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Inline calendar', ar: 'تقويم مضمّن' })}</p>
         <DateCalendar defaultValue={new Date(2026, 5, 8)} />
       </div>
 
       <div className="grid gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-xs uppercase text-muted-foreground">
           {t({
             en: 'Bounded, weekends disabled',
             ar: 'محدود، عطلة نهاية الأسبوع معطّلة',
@@ -55,7 +51,7 @@ const DatePickerDemo = () => {
             <DatePickerTrigger id="dp-delivery" placeholder={t({ en: 'Pick a weekday', ar: 'اختر يوم عمل' })} />
             <DatePickerContent disabledDate={(d) => d.getDay() === 0 || d.getDay() === 6} />
           </DatePicker>
-          <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{print(bounded)}</p>
+          <p className="text-xs uppercase text-muted-foreground">{print(bounded)}</p>
         </Field>
       </div>
     </FieldGroup>

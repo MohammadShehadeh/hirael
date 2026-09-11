@@ -25,6 +25,7 @@ import {
 } from '@/registry/hirael/registry-meta';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export const metadata: Metadata = listingMetadata({
   path: '/',
@@ -104,7 +105,7 @@ function Hero({ latestRelease }: HeroProps) {
           <Link href="/changelog" className={cn('group max-w-full text-foreground', rise)}>
             <span className="glass-panel glass-panel-lit inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
               {latestRelease.version && (
-                <span className="rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] tracking-[0.08em] text-background">
+                <span className="rounded-full bg-foreground px-2 py-0.5 text-xs text-background">
                   v{latestRelease.version}
                 </span>
               )}
@@ -120,13 +121,14 @@ function Hero({ latestRelease }: HeroProps) {
         <h1
           style={{ animationDelay: '80ms', animationFillMode: 'both' }}
           className={cn(
-            'text-display w-full text-pretty text-3xl italic leading-[0.95] tracking-tight sm:text-4xl sm:leading-[0.9] md:text-5xl',
+            'text-display w-full text-balance text-3xl italic leading-[0.95] tracking-tight sm:text-4xl sm:leading-[0.9] md:text-5xl',
             rise,
           )}
         >
           Components, blocks and templates{' '}
-          <br className="hidden sm:block" />
-          for shadcn/ui.
+          for{' '}
+          <Image alt="Shadcn" src="/shadcn.avif" className="inline-block size-6 rounded-full md:size-8 lg:size-10" width={32} height={32} />{' '}
+          shadcn/ui.
         </h1>
 
         <p

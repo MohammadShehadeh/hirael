@@ -259,7 +259,7 @@ const Spark = ({ points, className }: { points: readonly number[]; className?: s
 };
 
 const CellLabel = ({ children }: { children: React.ReactNode }) => {
-  return <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{children}</span>;
+  return <span className="text-xs uppercase text-muted-foreground">{children}</span>;
 };
 
 const Dashboard05 = () => {
@@ -272,7 +272,7 @@ const Dashboard05 = () => {
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-4">
           <div className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4">
             <div className="flex flex-col gap-1.5">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                 <MoonStar className="size-3.5" aria-hidden />
                 good evening
               </span>
@@ -325,7 +325,7 @@ const Dashboard05 = () => {
 
           <div className="flex flex-col justify-between gap-5 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                 <Sparkles className="size-3.5" aria-hidden />
                 insight
               </span>
@@ -336,16 +336,14 @@ const Dashboard05 = () => {
             <p className="max-w-md text-lg leading-snug font-medium tracking-[-0.01em] sm:text-xl">
               Cold starts dropped 21% this window after the v4.2.1 cache changes rolled out.
             </p>
-            <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Generated from 248K spans · confidence high
-            </span>
+            <span className="text-xs uppercase text-muted-foreground">Generated from 248K spans · confidence high</span>
           </div>
 
           <div className="flex flex-col gap-4 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
                 Latency distribution
-                <Badge variant="outline" className="font-mono text-[10px] uppercase tabular-nums">
+                <Badge variant="outline" className="text-xs uppercase tabular-nums">
                   p95 target · {P95_TARGET_MS}ms
                 </Badge>
               </span>
@@ -356,9 +354,7 @@ const Dashboard05 = () => {
             <ul className="flex flex-1 flex-col justify-center gap-3">
               {LATENCY.map((row) => (
                 <li key={row.label} className="flex items-center gap-3">
-                  <span className="w-8 shrink-0 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                    {row.label}
-                  </span>
+                  <span className="w-8 shrink-0 text-xs uppercase text-muted-foreground">{row.label}</span>
                   <div aria-hidden className="h-2 flex-1 overflow-hidden rounded-full bg-accent">
                     <div
                       className={cn('h-full rounded-full', row.overTarget ? 'bg-warning/70' : 'bg-foreground/70')}
@@ -377,9 +373,7 @@ const Dashboard05 = () => {
                 </li>
               ))}
             </ul>
-            <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Sampled across all regions
-            </span>
+            <span className="text-xs uppercase text-muted-foreground">Sampled across all regions</span>
           </div>
 
           <div className="flex flex-col bg-card md:col-span-4">
@@ -400,9 +394,7 @@ const Dashboard05 = () => {
                 >
                   <div className="flex min-w-0 flex-col">
                     <span className="truncate font-mono text-xs font-medium">{d.version}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                      {d.env}
-                    </span>
+                    <span className="text-xs uppercase text-muted-foreground">{d.env}</span>
                   </div>
                   <div className="justify-self-end md:justify-self-start">
                     <StatusBadge status={d.status} />
@@ -417,9 +409,7 @@ const Dashboard05 = () => {
                   <span className="hidden font-mono text-xs tabular-nums text-muted-foreground md:inline">
                     {d.date}
                   </span>
-                  <span className="hidden font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground md:inline">
-                    {d.cache} cache
-                  </span>
+                  <span className="hidden text-xs uppercase text-muted-foreground md:inline">{d.cache} cache</span>
                 </li>
               ))}
             </ul>

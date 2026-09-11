@@ -5,11 +5,6 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-/**
- * Tracks whether the page has scrolled past a threshold, for the navbar's
- * pill-shrink transition. Reads once on mount so a deep-linked load starts
- * in the correct state.
- */
 export const useScrolled = (threshold = 20) => {
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
@@ -21,7 +16,6 @@ export const useScrolled = (threshold = 20) => {
   return scrolled;
 };
 
-/** Gradient-stroked ring brand mark for the navbar wordmark. */
 export const Logo = ({ className }: { className?: string }) => {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden className={cn('shrink-0', className)}>
@@ -37,7 +31,6 @@ export const Logo = ({ className }: { className?: string }) => {
   );
 };
 
-/** Small concentric mark used inside the delivery-pillar chips. */
 export const BrandMark = ({ className, style }: { className?: string; style?: React.CSSProperties }) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={cn('shrink-0', className)} style={style}>
@@ -54,7 +47,6 @@ export const BrandMark = ({ className, style }: { className?: string; style?: Re
   );
 };
 
-/** Headline highlight set in the brand sunrise gradient (Gradient B). */
 export const GradientText = ({
   children,
   className,
@@ -71,10 +63,6 @@ export const GradientText = ({
   );
 };
 
-/**
- * Gradient-bordered pill. The inner face holds a solid blue that fades to
- * transparent on hover, revealing the gradient border fill underneath.
- */
 export const ContactButton = ({
   label = 'Contact',
   href = '#',

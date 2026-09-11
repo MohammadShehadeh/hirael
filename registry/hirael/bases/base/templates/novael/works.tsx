@@ -110,10 +110,7 @@ const COPY = {
   { items: Record<ProjectId, { title: string; category: string; description: string }> } & Record<string, unknown>
 >;
 
-/**
- * Stand-in for a project screenshot: an accent-washed panel carrying the entry
- * index. Swap the whole element for an `<Image>` once real artwork exists.
- */
+/** Placeholder for a project screenshot. Swap it for an `<Image>` once you have real artwork. */
 const ProjectPlaceholder = ({ index }: { index: number }) => {
   return (
     <div
@@ -154,12 +151,10 @@ export const Works = ({ lang }: { lang: Lang }) => {
                 >
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-card">
                     <ProjectPlaceholder index={index} />
-                    {/* Persistent gradient keeps the label legible. */}
                     <div
                       aria-hidden
                       className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"
                     />
-                    {/* Extra dim on interaction lifts the revealed copy. */}
                     <div
                       aria-hidden
                       className="absolute inset-0 bg-black/55 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
@@ -179,7 +174,6 @@ export const Works = ({ lang }: { lang: Lang }) => {
                       {copy.title}
                     </h3>
 
-                    {/* Description expands on hover / keyboard focus. */}
                     <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-visible:grid-rows-[1fr]">
                       <div className="overflow-hidden">
                         <p className="pt-3 text-sm font-light leading-relaxed text-white/70">{copy.description}</p>

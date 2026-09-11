@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 
+import { EmbedDirection } from '../../../embed-direction';
+
 /**
  * `hasDemoNotice` stays in the static HTML and hides only under `html[data-framed]`: auth embeds are bare login
  * forms on a real URL, and Google Safe Browsing flagged them as phishing without the notice on direct visits.
@@ -25,7 +27,7 @@ export const BlockEmbedShell = ({ children, hasDemoNotice = false }: BlockEmbedS
           component library. This form doesn&apos;t submit; don&apos;t enter real credentials.
         </div>
       )}
-      {children}
+      <EmbedDirection>{children}</EmbedDirection>
     </div>
   );
 };

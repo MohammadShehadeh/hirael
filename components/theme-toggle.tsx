@@ -12,7 +12,9 @@ export const ThemeToggle = () => {
   const { mode, setMode } = useTheme();
   const isMounted = useMounted();
 
-  const isLight = mode === 'light';
+  // Dark is the SSR default. Wait until mount before reading the stored mode so aria
+  // attributes hydrate against the same HTML the server sent.
+  const isLight = isMounted && mode === 'light';
 
   return (
     <Button

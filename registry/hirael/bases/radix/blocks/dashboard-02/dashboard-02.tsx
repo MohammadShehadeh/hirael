@@ -293,7 +293,7 @@ const Dashboard02 = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" aria-label="Share report">
               <Share2 className="size-3.5" aria-hidden />
               <span className="hidden sm:inline">Share report</span>
             </Button>

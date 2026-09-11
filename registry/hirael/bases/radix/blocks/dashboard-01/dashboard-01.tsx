@@ -7,7 +7,14 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/registry/hirael/bases/radix/ui/card';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
@@ -266,7 +273,7 @@ const Dashboard01 = () => {
             </Button>
             <Button variant="ghost" size="sm" onClick={onRefresh} disabled={refreshing}>
               <RefreshCw aria-hidden className={cn('size-3.5', refreshing && 'motion-safe:animate-spin')} />
-              <span className="hidden sm:inline">Refresh</span>
+              <span className="sr-only sm:not-sr-only sm:inline">Refresh</span>
             </Button>
           </div>
         </div>
@@ -288,26 +295,16 @@ const Dashboard01 = () => {
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex flex-col gap-1">
-                  <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                    sign-ups
-                  </CardDescription>
-                  <CardTitle className="text-lg">{signups.count} new sign-ups</CardTitle>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-end">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                      Conversion
-                    </span>
-                    <span className="font-mono text-lg font-semibold tabular-nums">{signups.conversion}</span>
-                  </div>
-                  <Button variant="outline" size="sm" aria-label="Export sign-ups">
-                    <Download className="size-3.5" aria-hidden />
-                    Export
-                  </Button>
-                </div>
-              </div>
+              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
+                sign-ups
+              </CardDescription>
+              <CardTitle className="text-lg">{signups.count} new sign-ups</CardTitle>
+              <CardAction>
+                <Button variant="outline" size="sm">
+                  <Download className="size-3.5" aria-hidden />
+                  <span className="sr-only sm:not-sr-only sm:inline">Export</span>
+                </Button>
+              </CardAction>
             </CardHeader>
             <CardContent>
               <div
@@ -354,30 +351,36 @@ const Dashboard01 = () => {
 
               <Separator className="my-4" />
 
-              <div className="flex items-center gap-5">
-                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
-                  Sign-ups
-                </span>
-                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/40" />
-                  Activated
-                </span>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-5">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
+                    Sign-ups
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/40" />
+                    Activated
+                  </span>
+                </div>
+                <p className="flex items-baseline gap-2 font-mono tabular-nums">
+                  <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Conversion</span>
+                  <span className="text-sm font-semibold">{signups.conversion}</span>
+                </p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
-                  recent activity
-                </CardDescription>
+              <CardDescription className="font-mono text-[10px] uppercase tracking-[0.12em]">
+                recent activity
+              </CardDescription>
+              <CardTitle className="sr-only">Recent activity</CardTitle>
+              <CardAction>
                 <Button variant="link" size="sm" className="h-auto p-0" asChild>
                   <a href="#">View all</a>
                 </Button>
-              </div>
-              <CardTitle className="sr-only">Recent activity</CardTitle>
+              </CardAction>
             </CardHeader>
             <CardContent className="px-0">
               <ul className="flex flex-col">

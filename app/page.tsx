@@ -25,6 +25,7 @@ import {
 } from '@/registry/hirael/registry-meta';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export const metadata: Metadata = listingMetadata({
   path: '/',
@@ -120,13 +121,14 @@ function Hero({ latestRelease }: HeroProps) {
         <h1
           style={{ animationDelay: '80ms', animationFillMode: 'both' }}
           className={cn(
-            'text-display w-full text-pretty text-3xl italic leading-[0.95] tracking-tight sm:text-4xl sm:leading-[0.9] md:text-5xl',
+            'text-display w-full text-balance text-3xl italic leading-[0.95] tracking-tight sm:text-4xl sm:leading-[0.9] md:text-5xl',
             rise,
           )}
         >
           Components, blocks and templates{' '}
-          <br className="hidden sm:block" />
-          for shadcn/ui.
+          for{' '}
+          <Image alt="Shadcn" src="/shadcn.avif" className="inline-block size-6 rounded-full md:size-8 lg:size-10" width={32} height={32} />{' '}
+          shadcn/ui.
         </h1>
 
         <p

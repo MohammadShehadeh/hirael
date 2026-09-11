@@ -391,8 +391,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-01',
     title: 'Feature 1',
     description:
-      'Three alternating feature rows, each pairing a stylized Tailwind-only mock UI with a copy column (eyebrow, headline, paragraph, 3-item checklist).',
-    blockTagline: 'Alternating rows · mock UIs · checklist',
+      'One bordered card of stacked stripes: a centered intro, two alternating rows pairing an icon tile and copy with a placeholder media panel, then a three-card primitives grid closing on a pair of calls to action.',
+    blockTagline: 'Stacked stripes · alternating rows · media placeholders',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -401,7 +401,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/feature-01.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3005,6 +3005,40 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'feature-10',
+    title: 'Feature 10',
+    description:
+      'Mixed-cell overview bento: a quote with attribution, two metric tiles, a latest-drop card with a CardAction, and a three-job list, all on one hairline lattice.',
+    blockTagline: 'Mixed cells · quote · metrics · latest drop',
+    category: 'blocks',
+    blockKind: 'feature',
+    files: [
+      {
+        path: 'blocks/feature-10/feature-10.tsx',
+        target: 'components/blocks/feature-10.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'button', 'card'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'feature-11',
+    title: 'Feature 11',
+    description:
+      'Feature switcher for a shared inbox: a vertical tab list of three capabilities beside a panel previewing each one, from assigned conversations to saved replies and snooze times. Arrow keys move between tabs and the panel follows.',
+    blockTagline: 'Vertical tabs · preview panel · inbox rows',
+    category: 'blocks',
+    blockKind: 'feature',
+    files: [
+      {
+        path: 'blocks/feature-11/feature-11.tsx',
+        target: 'components/blocks/feature-11.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'tabs'],
     dependencies: ['lucide-react'],
   },
   {

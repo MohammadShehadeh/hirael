@@ -268,7 +268,7 @@ const Dashboard03 = () => {
             </div>
             <Button variant="outline" size="sm">
               <Download className="size-3.5" aria-hidden />
-              <span className="hidden sm:inline">Export</span>
+              <span className="sr-only sm:not-sr-only sm:inline">Export</span>
             </Button>
           </div>
         </div>

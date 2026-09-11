@@ -1,200 +1,151 @@
-'use client';
-
-import * as React from 'react';
-import { Check, Terminal, GitBranch, Gauge } from 'lucide-react';
+import { ArrowRight, GitBranch, Layers, Rocket, ShieldCheck, Zap } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-interface FeatureRow {
-  eyebrow: string;
-  headline: string;
-  body: string;
-  bullets: readonly string[];
-  media: 'registry' | 'branches' | 'metrics';
-}
-
-const ROWS: readonly FeatureRow[] = [
+const LAYERS = [
   {
-    eyebrow: 'registry',
-    headline: 'One CLI command, source in your repo.',
-    body: 'Hirael distributes through the same shadcn CLI you already use. The component lands in your codebase as plain TSX, no package pin, no version drift.',
-    bullets: [
-      'Resolved against your existing tsconfig paths',
-      'Drops into components/ui/* by default',
-      'Zero runtime dependency on Hirael',
-    ],
-    media: 'registry',
+    icon: Rocket,
+    eyebrow: 'Shipping',
+    title: 'Push to main and be live before CI turns green',
+    body: 'Every commit builds in parallel across edge regions with immutable artifacts and one-click rollback. Preview URLs spin up per pull request, so reviewers test real behavior instead of local mocks.',
   },
   {
-    eyebrow: 'composition',
-    headline: 'Composition, the shadcn way.',
-    body: 'Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare name is the root and holds state; every rendered piece carries a data-slot for downstream styling.',
-    bullets: [
-      'Flat named exports, compose at the call site',
-      'data-slot on every rendered piece',
-      "Same state machine you'd write by hand",
-    ],
-    media: 'branches',
+    icon: GitBranch,
+    eyebrow: 'Collaboration',
+    title: 'A branch is a full environment, not just a diff',
+    body: 'Feature branches inherit a copy-on-write database, queue workers and edge caches cloned from production. Merge the pull request and the environment tears itself down, leaving no stale snapshots behind.',
+  },
+] as const;
+
+const PRIMITIVES = [
+  {
+    icon: Zap,
+    title: 'Instant cold starts',
+    body: 'A runtime sliced for fast boot in every region, with warm pools ready for burst traffic.',
   },
   {
-    eyebrow: 'performance',
-    headline: 'Built for dense product surfaces.',
-    body: 'Virtualized lists, debounced async, and stable keys are wired in by default, built to hold up under real production data, not just a demo.',
-    bullets: ['Stable keyboard nav past 10k rows', 'Async loading with cancellation', 'Tree-shakeable, SSR-safe'],
-    media: 'metrics',
+    icon: Layers,
+    title: 'Composable layers',
+    body: 'Take one primitive or all of them. Middleware, cache, queues and CDN each ship standalone.',
   },
-];
+  {
+    icon: ShieldCheck,
+    title: 'Enterprise controls',
+    body: 'SOC 2 Type II, SAML, SCIM and audit logs are included on every paid plan.',
+  },
+] as const;
 
-const MediaRegistry = () => {
-  return (
-    <div
-      className="relative w-full rounded-sm border border-border bg-card"
-      style={{ boxShadow: '6px 6px 0 0 var(--border)' }}
-    >
-      <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-        <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          <Terminal className="size-3" />
-          install
-        </span>
-        <div className="flex items-center gap-1">
-          <span className="size-1.5 rounded-full bg-border" />
-          <span className="size-1.5 rounded-full bg-border" />
-          <span className="size-1.5 rounded-full bg-foreground" />
-        </div>
-      </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7]">
-        <code>
-          <span className="block">
-            <span className="text-foreground">$</span> <span className="text-foreground">npx shadcn add</span>
-          </span>
-          <span className="block text-muted-foreground">{'  '}https://hirael.com/r/combobox</span>
-          <span className="block">&nbsp;</span>
-          <span className="block text-muted-foreground">✓ resolved registry</span>
-          <span className="block text-muted-foreground">✓ wrote combobox.tsx</span>
-        </code>
-      </pre>
-    </div>
-  );
-};
-
-const MediaBranches = () => {
-  return (
-    <div
-      className="relative w-full rounded-sm border border-border bg-card p-5"
-      style={{ boxShadow: '6px 6px 0 0 var(--border)' }}
-    >
-      <div className="mb-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-        <GitBranch className="size-3" />
-        composition
-      </div>
-      <div className="grid grid-cols-1 gap-3">
-        <div className="rounded-sm border border-border bg-background p-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">call site</span>
-          <pre className="mt-2 font-mono text-[11px] leading-[1.55]">
-            <code>
-              {'<MultiSelect value={v} onValueChange={set}>\n'}
-              {'  <MultiSelectTrigger />\n'}
-              {'  <MultiSelectContent />\n'}
-              {'</MultiSelect>'}
-            </code>
-          </pre>
-        </div>
-        <div className="rounded-sm border border-border bg-background p-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">rendered DOM</span>
-          <pre className="mt-2 font-mono text-[11px] leading-[1.55] text-muted-foreground">
-            <code>
-              {'<button data-slot="multi-select-trigger" />\n'}
-              {'<div   data-slot="multi-select-content" />'}
-            </code>
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const MediaMetrics = () => {
-  const bars = [38, 52, 44, 68, 49, 81, 62, 74, 58, 88];
-  return (
-    <div
-      className="relative w-full rounded-sm border border-border bg-card p-5"
-      style={{ boxShadow: '6px 6px 0 0 var(--border)' }}
-    >
-      <div className="mb-4 flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-          <Gauge className="size-3" />
-          render · 10k rows
-        </span>
-        <span className="font-mono text-[10px] tabular-nums text-foreground">14ms p95</span>
-      </div>
-      <div className="flex h-32 items-end gap-1.5">
-        {bars.map((h, i) => (
-          <div
-            key={i}
-            className={cn('flex-1 rounded-[2px]', i === bars.length - 1 ? 'bg-foreground' : 'bg-muted')}
-            style={{ height: `${h}%` }}
-          />
-        ))}
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-2 border-t border-border pt-4">
-        {[
-          { l: 'scroll', v: '60fps' },
-          { l: 'memory', v: '12 MB' },
-          { l: 'bundle', v: '+2.1 KB' },
-        ].map((s) => (
-          <div key={s.l}>
-            <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{s.l}</div>
-            <div className="mt-1 font-mono text-sm tabular-nums">{s.v}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const MEDIA: Record<FeatureRow['media'], React.ComponentType> = {
-  registry: MediaRegistry,
-  branches: MediaBranches,
-  metrics: MediaMetrics,
+const MediaPlaceholder = () => {
+  return <div data-slot="feature-media" className="aspect-4/3 w-full rounded-xl bg-muted" />;
 };
 
 const Feature01 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
-        <div className="flex flex-col gap-20 sm:gap-24">
-          {ROWS.map((row, i) => {
-            const Media = MEDIA[row.media];
-            const mediaFirst = i % 2 === 1;
-            return (
-              <div key={row.headline} className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
-                <div className={cn('lg:col-span-6', mediaFirst ? 'lg:order-2' : 'lg:order-1')}>
-                  <div className="flex flex-col gap-5">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                      {row.eyebrow}
-                    </span>
-                    <h3 className="text-2xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-3xl">
-                      {row.headline}
-                    </h3>
-                    <p className="max-w-lg text-sm text-muted-foreground sm:text-base">{row.body}</p>
-                    <ul className="mt-2 flex flex-col gap-2.5">
-                      {row.bullets.map((b) => (
-                        <li key={b} className="flex items-start gap-3 text-sm text-foreground">
-                          <span className="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-[2px] border border-border bg-card">
-                            <Check className="size-3" />
-                          </span>
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
+    <section data-slot="feature" className="bg-background px-4 py-16 md:py-24">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden rounded-2xl border border-border">
+        <div data-slot="feature-header" className="bg-card px-6 py-14 text-center sm:px-10 sm:py-16">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">The platform</p>
+          <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            Three layers of infrastructure, read top to bottom
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            Each stripe below is a separate layer of the platform. Skim the headlines or settle in and read: the rhythm
+            rewards both.
+          </p>
+        </div>
+
+        {LAYERS.map((layer, index) => {
+          const mediaFirst = index % 2 === 1;
+          const stripe = mediaFirst ? 'bg-card' : 'bg-muted/30';
+          return (
+            <div
+              key={layer.title}
+              data-slot="feature-row"
+              className={cn('relative px-6 py-14 sm:px-10 lg:ps-32 lg:pe-14', stripe)}
+            >
+              <span aria-hidden className="absolute inset-y-0 start-16 hidden w-px bg-border lg:block" />
+              <span
+                aria-hidden
+                className={cn(
+                  'absolute start-16 top-14 hidden size-12 items-center justify-center rounded-xl border border-border lg:flex',
+                  'ltr:-translate-x-1/2 rtl:translate-x-1/2',
+                  stripe === 'bg-card' ? 'bg-card' : 'bg-background',
+                )}
+              >
+                <layer.icon className="size-5" />
+              </span>
+
+              <div
+                className={cn(
+                  'grid gap-10 lg:items-center lg:gap-14',
+                  mediaFirst ? 'lg:grid-cols-[5fr_6fr]' : 'lg:grid-cols-[6fr_5fr]',
+                )}
+              >
+                <div className={cn('flex items-start gap-5', mediaFirst && 'lg:order-last')}>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'flex size-12 shrink-0 items-center justify-center rounded-xl border border-border lg:hidden',
+                      mediaFirst ? 'bg-muted/50' : 'bg-card',
+                    )}
+                  >
+                    <layer.icon className="size-5" />
+                  </span>
+                  <div>
+                    <p className="flex items-baseline gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                      <span className="font-mono tabular-nums text-foreground">{`0${index + 1}`}</span>
+                      {layer.eyebrow}
+                    </p>
+                    <h3 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{layer.title}</h3>
+                    <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      {layer.body}
+                    </p>
                   </div>
                 </div>
-                <div className={cn('lg:col-span-6', mediaFirst ? 'lg:order-1' : 'lg:order-2')}>
-                  <Media />
-                </div>
+                <MediaPlaceholder />
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
+
+        <div className="bg-muted/30 px-6 py-14 sm:px-10 sm:py-16 lg:px-14">
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Under the hood</p>
+            <h3 className="mx-auto mt-3 max-w-xl text-2xl font-bold tracking-tight sm:text-3xl">
+              Primitives that stay out of your way
+            </h3>
+            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
+              A small set of low-level capabilities you can compose or ignore. Each one is versioned on its own, fully
+              typed, and safe to adopt a piece at a time.
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-4">
+            {PRIMITIVES.map((primitive) => (
+              <div
+                key={primitive.title}
+                data-slot="feature-card"
+                className="rounded-xl border border-border bg-card p-5"
+              >
+                <span aria-hidden className="flex size-10 items-center justify-center rounded-lg bg-muted">
+                  <primitive.icon className="size-5" />
+                </span>
+                <h4 className="mt-4 text-base font-semibold">{primitive.title}</h4>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{primitive.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <Button size="lg" className="group h-12 rounded-xl px-6 text-base font-semibold sm:w-[180px]">
+              Get started
+              <ArrowRight className="size-5 transition-transform group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+            </Button>
+            <Button variant="ghost" size="lg" className="h-12 rounded-xl px-6 text-base font-semibold sm:w-[200px]">
+              Read the docs
+            </Button>
+          </div>
         </div>
       </div>
     </section>

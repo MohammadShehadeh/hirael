@@ -141,12 +141,12 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
   return theme === 'light' || theme === 'dark' ? theme : undefined;
 };
 
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [forcedTheme, setForcedTheme] = React.useState<ThemeMode | undefined>();
+/** The lock comes from the URL, which never changes without a navigation, so there is nothing to subscribe to. */
+const subscribeToForcedTheme = () => () => {};
 
-  React.useLayoutEffect(() => {
-    setForcedTheme(readEmbedForcedTheme());
-  }, []);
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  // The server render has no URL params, so the server snapshot stays undefined and hydration matches the HTML.
+  const forcedTheme = React.useSyncExternalStore(subscribeToForcedTheme, readEmbedForcedTheme, () => undefined);
 
   return (
     <NextThemesProvider

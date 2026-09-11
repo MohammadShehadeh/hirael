@@ -45,16 +45,33 @@ export default async function LandingPage() {
     getLatestCatalog(CATALOG_PREVIEW_COUNT),
   ]);
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="flex min-h-svh flex-col overflow-x-clip">
       <SiteHeader stars={stars} />
-      <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
-        <Hero latestRelease={changelog.entries[0] ?? null} />
-        <LandingCatalog items={latest} />
-        <WhyHirael />
-        <FeaturedComponents />
-        <SectionBlocks />
-        <FullTemplates />
-        <ClosingCta />
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="page-rails mx-auto w-[calc(100%-1rem)] max-w-[1480px] flex-1 outline-none sm:w-[calc(100%-1.5rem)]"
+      >
+        <div className="relative mx-auto max-w-6xl">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 -start-px hidden w-px bg-border mask-[linear-gradient(to_bottom,transparent,black_6%)] xl:block"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 -end-px hidden w-px bg-border mask-[linear-gradient(to_bottom,transparent,black_6%)] xl:block"
+          />
+          <Hero latestRelease={changelog.entries[0] ?? null} />
+          <BleedRule />
+          <LandingCatalog items={latest} />
+          <BleedRule />
+          <WhyHirael />
+          <FeaturedComponents />
+          <SectionBlocks />
+          <FullTemplates />
+          <BleedRule />
+          <ClosingCta />
+        </div>
       </main>
       <SiteFooter />
     </div>
@@ -65,15 +82,27 @@ interface HeroProps {
   latestRelease: ChangelogEntry | null;
 }
 
+function BleedRule() {
+  return <div aria-hidden className="relative left-1/2 z-1 h-px w-screen -translate-x-1/2 bg-border" />;
+}
+
 function Hero({ latestRelease }: HeroProps) {
   const rise = 'animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
 
   return (
     <section className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 start-4 hidden w-px bg-linear-to-b from-transparent via-border to-border md:start-8 md:block"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 end-4 hidden w-px bg-linear-to-b from-transparent via-border to-border md:end-8 md:block"
+      />
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 py-12 text-center sm:gap-6 sm:px-6 sm:py-16">
         {latestRelease && (
-          <Link href="/changelog" className={cn('group text-foreground', rise)}>
-            <span className="glass-panel glass-panel-lit inline-flex items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
+          <Link href="/changelog" className={cn('group max-w-full text-foreground', rise)}>
+            <span className="glass-panel glass-panel-lit inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
               {latestRelease.version && (
                 <span className="rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] tracking-[0.08em] text-background">
                   v{latestRelease.version}
@@ -91,12 +120,12 @@ function Hero({ latestRelease }: HeroProps) {
         <h1
           style={{ animationDelay: '80ms', animationFillMode: 'both' }}
           className={cn(
-            'text-display w-full text-pretty text-4xl italic leading-[0.95] tracking-tight sm:text-5xl sm:leading-[0.9]',
+            'text-display w-full text-pretty text-3xl italic leading-[0.95] tracking-tight sm:text-4xl sm:leading-[0.9] md:text-5xl',
             rise,
           )}
         >
-          Components, blocks and templates
-          <br />
+          Components, blocks and templates{' '}
+          <br className="hidden sm:block" />
           for shadcn/ui.
         </h1>
 
@@ -227,7 +256,7 @@ function CardGrid({ id, squares }: CardGridProps) {
 function WhyHirael() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="w-full px-4 sm:px-6">
         <SectionHeading
           kicker="Why Hirael"
           title="Own the source, not a dependency."
@@ -271,7 +300,7 @@ const FEATURED_COMPONENTS = [
 function FeaturedComponents() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="w-full px-4 sm:px-6">
         <SectionHeading
           kicker="Components"
           title="Try them before you install."
@@ -298,7 +327,7 @@ function FeaturedComponents() {
 function SectionBlocks() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="w-full px-4 sm:px-6">
         <SectionHeading
           kicker="Section blocks"
           title="Blocks for whole sections of a page."
@@ -316,14 +345,14 @@ const FEATURED_TEMPLATES = ['agency-landing', 'mindloop'] as const;
 function FullTemplates() {
   return (
     <section className="relative py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="w-full px-4 sm:px-6">
         <SectionHeading
           kicker="Templates"
           title="Whole pages, not just parts."
           blurb={`${TEMPLATES.length} complete pages assembled from the blocks and components above, with light, dark and RTL already handled. One command copies the whole page, sections and all, into your repo.`}
         />
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {FEATURED_TEMPLATES.map((name) => {
             const entry = REGISTRY_BY_NAME[name];
             return (

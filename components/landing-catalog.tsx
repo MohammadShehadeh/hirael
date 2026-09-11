@@ -29,8 +29,8 @@ export interface LandingCatalogProps {
 
 export const LandingCatalog = ({ items }: LandingCatalogProps) => {
   return (
-    <section aria-label="Latest from the catalog" className="pb-16 sm:pb-20">
-      <div className="container grid w-full gap-10 lg:grid-cols-3 lg:gap-8">
+    <section aria-label="Latest from the catalog" className="px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-20">
+      <div className="grid w-full gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
         {CATALOG_COLUMNS.map((column) => (
           <CatalogColumn
             key={column.kind}

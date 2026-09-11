@@ -76,6 +76,29 @@
   }
 }
 
+/* Vertical 1px rails that continue through the sticky header (h-14). Logical, so RTL mirrors. */
+@utility page-rails {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset-block: -3.5rem 0;
+    width: 1px;
+    background-color: var(--border);
+  }
+
+  &::before {
+    inset-inline-start: -1px;
+  }
+
+  &::after {
+    inset-inline-end: -1px;
+  }
+}
+
 :root {
   --background: oklch(0.961 0.008 91.5);
   --foreground: oklch(0.22 0.016 256.8);

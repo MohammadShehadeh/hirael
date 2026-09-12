@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
@@ -72,8 +71,6 @@ const SOCIALS = [
 ];
 
 const Footer06 = () => {
-  const reduceMotion = useReducedMotion();
-
   return (
     <footer data-slot="footer" className="w-full rounded-xs border border-input bg-muted/10 p-2">
       <div
@@ -97,20 +94,14 @@ const Footer06 = () => {
               Connect your account, get instant insights, and start designing workflows visually.
             </p>
           </div>
-          <motion.div
-            className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4"
-            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: reduceMotion ? 0 : 0.4, delay: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
-          >
+          <div className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4 animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200">
             <Button asChild className="h-10 w-full rounded-xs sm:h-12 md:w-52">
               <a href="#" className="group flex items-center gap-2">
                 <GithubIcon className="size-4" />
                 Get started
               </a>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </div>
 

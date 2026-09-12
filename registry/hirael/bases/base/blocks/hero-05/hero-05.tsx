@@ -31,7 +31,7 @@ const Hero05 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card md:rounded-[40px] text-card-foreground shadow-sm">
           <div
             aria-hidden
             data-slot="hero-wash"
@@ -75,7 +75,7 @@ const Hero05 = () => {
           </nav>
 
           <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-16 md:px-10">
-            <div className="flex max-w-2xl flex-col items-center rounded-[32px] border border-border/60 bg-background/40 px-6 py-12 text-center backdrop-blur-md md:px-12">
+            <div className="flex max-w-2xl flex-col items-center rounded-2xl border border-border/60 md:rounded-[32px] bg-background/40 px-6 py-12 text-center backdrop-blur-md md:px-12">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm">
                 <span className="relative flex size-1.5">
                   <span

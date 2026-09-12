@@ -1,15 +1,21 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
+/** A shorter rise for the header copy. */
+const RISE_SM =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 const HEADLINE = 'A small studio with a strong opinion';
 
 const Title = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -19,16 +25,13 @@ const Title = () => {
       className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn('me-[0.25em] inline-block', RISE_SM, i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
@@ -84,81 +87,56 @@ const CARDS: readonly AboutCard[] = [
 ];
 
 const Card = ({ card, index }: { card: AboutCard; index: number }) => {
-  const reduce = useReducedMotion();
-  const base = 0.2 + index * 0.1;
+  const base = 200 + index * 100;
 
   return (
-    <motion.article
+    <article
       data-slot="feature-card"
-      className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8"
-      initial={reduce ? false : { opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: 'easeOut', delay: base }}
+      className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-[30px] duration-600 ease-out fill-mode-both motion-reduce:animate-none md:px-10 md:py-8"
+      style={{ animationDelay: `${base}ms` }}
     >
       <GridPattern />
-      <motion.h3
-        className="relative mb-6 text-2xl font-semibold text-foreground md:text-3xl"
-        initial={reduce ? false : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut', delay: base + 0.1 }}
+      <h3
+        className={cn('relative mb-6 text-2xl font-semibold text-foreground', RISE, 'md:text-3xl')}
+        style={{ animationDelay: `${base + 100}ms` }}
       >
         {card.title}
-      </motion.h3>
+      </h3>
       <div className="relative flex flex-col gap-4">
         {card.paragraphs.map((text, i) => (
-          <motion.p
+          <p
             key={i}
-            className="leading-relaxed text-pretty text-muted-foreground"
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.5,
-              ease: 'easeOut',
-              delay: base + 0.2 + i * 0.1,
-            }}
+            className={cn('leading-relaxed text-pretty text-muted-foreground', RISE)}
+            style={{ animationDelay: `${base + 200 + i * 100}ms` }}
           >
             {text}
-          </motion.p>
+          </p>
         ))}
       </div>
-    </motion.article>
+    </article>
   );
 };
 
 const Feature06 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
+          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               About
             </Badge>
-          </motion.div>
+          </div>
           <Title />
-          <motion.p
+          <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE_SM, 'delay-400')}
           >
             We build the components shadcn/ui does not ship, and we build them the way we would want to inherit them.
-          </motion.p>
+          </p>
         </div>
 
         <div data-slot="feature-grid" className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">

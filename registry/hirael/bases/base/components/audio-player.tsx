@@ -33,6 +33,9 @@ const useAudioPlayer = () => {
   return ctx;
 };
 
+/** Base UI passes a bare number for a single thumb on pointer drags and an array from the keyboard. */
+const sliderValue = (value: number | readonly number[]) => (Array.isArray(value) ? (value[0] ?? 0) : (value as number));
+
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
   const total = Math.floor(seconds);
@@ -271,9 +274,9 @@ const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) =
         step={0.1}
         disabled={!hasDuration}
         aria-label="Seek"
-        onValueChange={(values) => setScrub(values[0] ?? 0)}
+        onValueChange={(values) => setScrub(sliderValue(values))}
         onValueCommit={(values) => {
-          seek(values[0] ?? 0);
+          seek(sliderValue(values));
           setScrub(null);
         }}
       />
@@ -326,7 +329,7 @@ const AudioPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
         max={1}
         step={0.01}
         aria-label="Volume"
-        onValueChange={(values) => setVolume(values[0] ?? 0)}
+        onValueChange={(values) => setVolume(sliderValue(values))}
         className="w-16"
       />
     </div>

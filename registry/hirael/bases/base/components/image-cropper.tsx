@@ -436,7 +436,9 @@ const ImageCropperZoom = ({ className, ...props }: ImageCropperZoomProps) => {
       max={ctx.maxZoom}
       step={0.01}
       value={[ctx.zoom]}
-      onValueChange={([v]) => {
+      onValueChange={(value) => {
+        // Base UI passes a bare number for a single thumb on pointer drags and an array from the keyboard.
+        const v = Array.isArray(value) ? value[0] : value;
         if (v !== undefined) ctx.setZoom(v);
       }}
       disabled={ctx.disabled}

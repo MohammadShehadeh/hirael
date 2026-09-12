@@ -1,7 +1,6 @@
 'use client';
 
 import { EyeOff, FileWarning, RefreshCcw } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -28,8 +27,6 @@ const CHALLENGES = [
 ];
 
 const Feature07 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section
       data-slot="feature"
@@ -53,14 +50,11 @@ const Feature07 = () => {
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-3 md:grid-cols-3">
         {CHALLENGES.map((challenge, i) => (
-          <motion.div
+          <div
             key={challenge.title}
             data-slot="feature-card"
-            className="group relative flex flex-col items-center gap-6 overflow-hidden rounded-xs border border-border bg-background px-8 pb-8 pt-10 text-center"
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
+            className="group relative flex flex-col items-center gap-6 overflow-hidden rounded-xs border border-border bg-background px-8 pb-8 pt-10 text-center animate-in fade-in slide-in-from-bottom-6 duration-600 ease-out fill-mode-both motion-reduce:animate-none"
+            style={{ animationDelay: `${i * 100}ms` }}
           >
             <div
               data-slot="feature-card-orb"
@@ -79,7 +73,7 @@ const Feature07 = () => {
               <h3 className="text-lg font-medium text-foreground">{challenge.title}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{challenge.description}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { AnimatePresence, type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -39,28 +39,28 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
-interface RevealProps extends HTMLMotionProps<'div'> {
-  /** Seconds to wait before the reveal starts. */
+interface RevealProps extends React.ComponentProps<'div'> {
+  /** Milliseconds to wait before the reveal starts. */
   delay?: number;
 }
 
-const Reveal = ({ delay = 0, ...props }: RevealProps) => {
-  const reduce = useReducedMotion();
+const Reveal = ({ delay = 0, className, style, ...props }: RevealProps) => {
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.5, ease: EASE }}
+    <div
+      className={cn(
+        'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+        className,
+      )}
+      style={{ animationDelay: `${delay}ms`, ...style }}
       {...props}
     />
   );
 };
 
-interface FooterColumnProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
+interface FooterColumnProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   title: string;
   children?: React.ReactNode;
-  /** Seconds to wait before the column reveals. */
+  /** Milliseconds to wait before the column reveals. */
   delay?: number;
 }
 
@@ -77,21 +77,18 @@ const FooterColumn = ({ title, delay = 0, className, children, ...props }: Foote
 
 interface FooterLinksProps extends React.ComponentProps<'ul'> {
   links: readonly { label: string; href: string; external?: boolean }[];
-  /** Seconds to wait before the first link reveals. */
+  /** Milliseconds to wait before the first link reveals. */
   delay?: number;
 }
 
 const FooterLinks = ({ links, delay = 0, className, ...props }: FooterLinksProps) => {
-  const reduce = useReducedMotion();
   return (
     <ul data-slot="footer-links" className={cn('flex flex-col gap-2', className)} {...props}>
       {links.map((link, i) => (
-        <motion.li
+        <li
           key={link.label}
-          initial={reduce ? false : { opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: delay + i * 0.12, duration: 0.35, ease: EASE }}
+          className="animate-in fade-in slide-in-from-bottom-3 duration-350 ease-out fill-mode-both motion-reduce:animate-none"
+          style={{ animationDelay: `${delay + i * 120}ms` }}
         >
           <a
             href={link.href}
@@ -101,7 +98,7 @@ const FooterLinks = ({ links, delay = 0, className, ...props }: FooterLinksProps
           >
             {link.label}
           </a>
-        </motion.li>
+        </li>
       ))}
     </ul>
   );
@@ -236,9 +233,9 @@ const Footer04 = () => {
               <p className="max-w-xs text-sm text-muted-foreground">{BRAND.blurb}</p>
             </Reveal>
 
-            <FooterColumn title="Contact" delay={0.1}>
+            <FooterColumn title="Contact" delay={100}>
               <FooterLinks
-                delay={0.3}
+                delay={300}
                 links={[
                   {
                     label: CONTACT.phone,
@@ -250,11 +247,11 @@ const Footer04 = () => {
               />
             </FooterColumn>
 
-            <FooterColumn title="Location" delay={0.2}>
+            <FooterColumn title="Location" delay={200}>
               <p className="text-sm text-muted-foreground">{CONTACT.location}</p>
             </FooterColumn>
 
-            <FooterColumn title="Subscribe for updates" delay={0.3} className="col-span-2 lg:col-span-1">
+            <FooterColumn title="Subscribe for updates" delay={300} className="col-span-2 lg:col-span-1">
               <FooterSubscribe />
               <p className="text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</p>
             </FooterColumn>
@@ -264,7 +261,7 @@ const Footer04 = () => {
 
           <Reveal
             data-slot="footer-bottom"
-            delay={0.1}
+            delay={100}
             className="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start"
           >
             <p className="text-sm text-muted-foreground">{BRAND.copyright}</p>

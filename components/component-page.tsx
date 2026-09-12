@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { CircleAlert, Hash } from 'lucide-react';
-import { DirectionProvider as BaseDirectionProvider } from '@base-ui/react/direction-provider';
 
 import { BlockViewer } from '@/components/block-viewer';
 import { Breadcrumbs, type Crumb } from '@/components/breadcrumbs';
@@ -15,18 +14,25 @@ import { NewBadge } from '@/components/new-badge';
 import { Pager } from '@/components/pager';
 import { SectionLabel } from '@/components/page-header';
 import { ItemCards } from '@/components/item-cards';
+import {
+  PreviewFrame,
+  PreviewMoreMenu,
+  PreviewOpenButton,
+  PreviewRefreshButton,
+  PreviewThemeButton,
+  previewSrc,
+  usePreviewTheme,
+} from '@/components/preview-frame';
 import { SegmentedControl } from '@/components/segmented-control';
 import { Toc, TocChips, type TocItem } from '@/components/toc';
 import { GithubIcon } from '@/components/github-link';
-import { DemoLocaleProvider } from '@/lib/demo-locale';
 import { formatDay, type DetailExtras } from '@/lib/freshness';
 import { SITE } from '@/lib/site';
-import { DirectionProvider } from '@/registry/hirael/bases/radix/ui/direction';
-import { RegistryExample } from '@/registry/hirael/registry-demos';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/radix/ui/table';
 import {
   entrySiblings,
+  exampleEmbedHref,
   registryFilePath,
   type RegistryBase,
   type RegistryEntryMeta,
@@ -114,7 +120,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
       content: (
         <div className="flex flex-col gap-8">
           {exampleList.map((example) => (
-            <ExampleBlock key={example.slug} example={example} showTitle={exampleList.length > 1} />
+            <ExampleBlock key={example.slug} entry={entry} example={example} showTitle={exampleList.length > 1} />
           ))}
         </div>
       ),
@@ -323,15 +329,27 @@ const Section = ({ id, label, children }: SectionProps) => {
 };
 
 interface ExampleBlockProps {
+  entry: RegistryEntryMeta;
   example: ExampleEntry;
   showTitle: boolean;
 }
 
-const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
+// Matches the inline frame the examples used before they were framed; the embed shell carries the same floor.
+const EXAMPLE_MIN_HEIGHT = 360;
+const EXAMPLE_MAX_HEIGHT = 1200;
+
+/**
+ * Examples render in an iframe of `/embed/components/<name>/<slug>`, like blocks, so the toolbar can lock a theme,
+ * flip direction and open the demo on its own: a scoped theme class can't reach portalled dialogs and popovers.
+ */
+const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
   const [view, setView] = React.useState<'preview' | 'code'>('preview');
   const [isRtl, setIsRtl] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
+  const previewTheme = usePreviewTheme();
   const base = useRegistryBase();
   const hasCode = !!example.source;
+  const src = previewSrc(exampleEmbedHref(entry, example.slug, base), { theme: previewTheme.previewMode, isRtl });
 
   return (
     <section data-slot="example" className="flex flex-col gap-3">
@@ -355,25 +373,27 @@ const ExampleBlock = ({ example, showTitle }: ExampleBlockProps) => {
               },
             ]}
           />
-          {view === 'preview' && <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} />}
+          {view === 'preview' && (
+            <div className="flex items-center gap-1">
+              <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
+              <PreviewThemeButton theme={previewTheme} />
+              <PreviewRefreshButton onRefresh={() => setRefreshKey((k) => k + 1)} />
+              <PreviewOpenButton href={src} />
+              <PreviewMoreMenu entry={entry} />
+            </div>
+          )}
         </div>
 
         {view === 'preview' ? (
-          <div
-            dir={isRtl ? 'rtl' : undefined}
-            data-customizer-scope=""
-            className="bg-dot-grid flex min-h-90 items-center justify-center px-8 py-6 sm:min-h-105 sm:px-12 sm:py-8 md:px-16 md:py-10"
-          >
-            {/* Both direction providers must wrap here: portalled content renders outside this dir wrapper.
-                The key remounts on direction change so locale-derived initial state re-seeds. */}
-            <DirectionProvider dir={isRtl ? 'rtl' : 'ltr'}>
-              <BaseDirectionProvider direction={isRtl ? 'rtl' : 'ltr'}>
-                <DemoLocaleProvider locale={isRtl ? 'ar' : 'en'}>
-                  <RegistryExample key={`${base}-${isRtl ? 'ar' : 'en'}`} name={example.slug} base={base} />
-                </DemoLocaleProvider>
-              </BaseDirectionProvider>
-            </DirectionProvider>
-          </div>
+          <PreviewFrame
+            src={src}
+            title={`${entry.title} ${example.title.toLowerCase()} preview`}
+            refreshKey={refreshKey}
+            initialHeight={EXAMPLE_MIN_HEIGHT}
+            minHeight={EXAMPLE_MIN_HEIGHT}
+            maxHeight={EXAMPLE_MAX_HEIGHT}
+            className="w-full"
+          />
         ) : example.source ? (
           <CodeBlock
             tabs={[

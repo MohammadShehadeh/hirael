@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -10,7 +9,6 @@ import { Sparkles } from '@/registry/hirael/bases/radix/components/sparkles';
 const HEADLINE = 'Something new is on the way';
 
 const Headline = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -20,44 +18,33 @@ const Headline = () => {
       className="max-w-xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
           {i < words.length - 1 ? ' ' : null}
-        </motion.span>
+        </span>
       ))}
     </h1>
   );
 };
 
 const ComingSoon02 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section
       data-slot="coming-soon"
       className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background pt-24"
     >
-      <motion.div
+      <div
         data-slot="coming-soon-body"
-        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 text-center md:px-10"
-        initial={reduce ? false : { opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 text-center md:px-10 animate-in fade-in slide-in-from-bottom-6 duration-800 ease-out fill-mode-both motion-reduce:animate-none"
       >
-        <motion.div
-          initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
-        >
+        <div className="animate-in fade-in zoom-in-90 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-300">
           <Badge
             variant="outline"
             data-slot="coming-soon-badge"
@@ -65,35 +52,27 @@ const ComingSoon02 = () => {
           >
             Launching soon
           </Badge>
-        </motion.div>
+        </div>
 
         <Headline />
 
-        <motion.p
+        <p
           data-slot="coming-soon-description"
-          className="mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
-          initial={reduce ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-800"
         >
           Hirael Cloud brings managed Postgres and object storage to the same terminal-first console you use for the
           registry. We are finishing the last pieces now.
-        </motion.p>
+        </p>
 
-        <motion.div
+        <div
           data-slot="coming-soon-actions"
-          className="mt-4 flex flex-col items-center gap-4 sm:flex-row"
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 1 }}
+          className="mt-4 flex flex-col items-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-1000"
         >
           <Badge variant="outline" data-slot="coming-soon-cta" className="rounded-full px-5 py-2 text-sm font-medium">
             Coming soon
           </Badge>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div
         data-slot="coming-soon-horizon"

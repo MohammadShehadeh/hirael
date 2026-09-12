@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -42,17 +41,9 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
   },
 ];
 
-const EASE = 'easeOut' as const;
-
 const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
-  const reduce = useReducedMotion();
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: EASE, delay: 0.2 }}
-    >
+    <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200">
       <Badge
         data-slot="faq-badge"
         variant="outline"
@@ -62,7 +53,7 @@ const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) =
         )}
         {...props}
       />
-    </motion.div>
+    </div>
   );
 };
 
@@ -71,7 +62,6 @@ interface FaqTitleProps extends Omit<React.ComponentProps<'h2'>, 'children'> {
 }
 
 const FaqTitle = ({ children, className, ...props }: FaqTitleProps) => {
-  const reduce = useReducedMotion();
   const words = children.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -85,31 +75,29 @@ const FaqTitle = ({ children, className, ...props }: FaqTitleProps) => {
       {...props}
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: EASE, delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
 };
 
-const FaqDescription = ({ className, ...props }: HTMLMotionProps<'p'>) => {
-  const reduce = useReducedMotion();
+const FaqDescription = ({ className, ...props }: React.ComponentProps<'p'>) => {
   return (
-    <motion.p
+    <p
       data-slot="faq-description"
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: EASE, delay: 0.4 }}
-      className={cn('mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', className)}
+      className={cn(
+        'mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400',
+        className,
+      )}
       {...props}
     />
   );
@@ -121,13 +109,10 @@ interface FaqCardProps extends React.ComponentProps<typeof AccordionItem> {
 }
 
 const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
-  const reduce = useReducedMotion();
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.45, ease: EASE, delay: index * 0.1 }}
+    <div
+      className="animate-in fade-in slide-in-from-bottom-5 duration-450 ease-out fill-mode-both motion-reduce:animate-none"
+      style={{ animationDelay: `${index * 100}ms` }}
     >
       <AccordionItem
         data-slot="faq-card"
@@ -137,7 +122,7 @@ const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
         )}
         {...props}
       />
-    </motion.div>
+    </div>
   );
 };
 

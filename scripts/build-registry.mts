@@ -69,9 +69,8 @@ const importsBaseUi = (base: RegistryBase, entry: RegistryEntry) =>
   base !== 'radix' &&
   (entry.files ?? []).some((file) => {
     try {
-      return readFileSync(path.join(ROOT, registryFilePath(base, file.path)), 'utf8').includes(
-        `from "${BASE_UI_PACKAGE}`,
-      );
+      const source = readFileSync(path.join(ROOT, registryFilePath(base, file.path)), 'utf8');
+      return source.includes(`from "${BASE_UI_PACKAGE}`) || source.includes(`from '${BASE_UI_PACKAGE}`);
     } catch {
       return false;
     }

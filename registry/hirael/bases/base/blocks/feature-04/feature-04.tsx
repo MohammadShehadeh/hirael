@@ -10,10 +10,13 @@ import {
   TrendingUp,
   type LucideIcon,
 } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
+
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
 
 interface Service {
   icon: LucideIcon;
@@ -66,7 +69,6 @@ const HEADLINE = 'Services that ship with your product';
 const glowStyle = 'pointer-events-none absolute inset-0 motion-safe:animate-pulse';
 
 const Title = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -76,67 +78,50 @@ const Title = () => {
       className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn('inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
           {i < words.length - 1 ? ' ' : null}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
 };
 
 const Feature04 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
+          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               Services
             </Badge>
-          </motion.div>
+          </div>
           <Title />
-          <motion.p
+          <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE, 'delay-400')}
           >
             Pick the engagement that fits. Each one ends with source you own and a team that knows how to extend it.
-          </motion.p>
+          </p>
         </div>
 
         <div data-slot="feature-grid" className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service, i) => {
             const Icon = service.icon;
             return (
-              <motion.article
+              <article
                 key={service.title}
                 data-slot="feature-card"
-                className="relative overflow-hidden rounded-lg border border-border bg-card p-5"
-                initial={reduce ? false : { opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.12 }}
+                className="relative overflow-hidden rounded-lg border border-border bg-card p-5 animate-in fade-in slide-in-from-bottom-10 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
+                style={{ animationDelay: `${i * 120}ms` }}
               >
                 <div
                   aria-hidden
@@ -164,7 +149,7 @@ const Feature04 = () => {
                     ))}
                   </ul>
                 </div>
-              </motion.article>
+              </article>
             );
           })}
         </div>

@@ -3,17 +3,21 @@ import type { Metadata } from 'next';
 
 import { embedDirScript } from '@/lib/embed';
 import { embedMetadata } from '@/lib/seo';
-import { RegistryDemo } from '@/registry/hirael/registry-demos';
+import { RegistryDemo, RegistryExample } from '@/registry/hirael/registry-demos';
 import {
+  COMPONENTS,
   DEFAULT_BASE,
   REGISTRY,
   REGISTRY_BASES,
   REGISTRY_BY_NAME,
   entryCategorySlug,
+  getExamples,
+  isComponentEntry,
   type RegistryBase,
 } from '@/registry/hirael/registry-meta';
 
 import { BlockEmbedShell } from './blocks/[category]/[block]/embed-shell';
+import { ExampleEmbedShell } from './components/[component]/[example]/embed-shell';
 import { TemplateEmbedShell } from './templates/[template]/embed-shell';
 
 export const blockEmbedParams = () =>
@@ -26,6 +30,11 @@ export const templateEmbedParams = () =>
   REGISTRY.filter((entry) => entry.category === 'templates').map((entry) => ({
     template: entry.name,
   }));
+
+export const exampleEmbedParams = () =>
+  COMPONENTS.flatMap((entry) =>
+    getExamples(entry.name).map((example) => ({ component: entry.name, example: example.slug })),
+  );
 
 export const nestedEmbedBases = (): RegistryBase[] => REGISTRY_BASES.filter((base) => base !== DEFAULT_BASE);
 
@@ -45,6 +54,18 @@ export interface TemplateEmbedMetadataProps {
 export const templateEmbedMetadata = async ({ params }: TemplateEmbedMetadataProps): Promise<Metadata> => {
   const { template } = await params;
   return embedMetadata(`${REGISTRY_BY_NAME[template]?.title ?? 'Template'} preview`);
+};
+
+export interface ExampleEmbedMetadataProps {
+  params: Promise<{ component: string; example: string }>;
+}
+
+export const exampleEmbedMetadata = async ({ params }: ExampleEmbedMetadataProps): Promise<Metadata> => {
+  const { component, example } = await params;
+  const entry = REGISTRY_BY_NAME[component];
+  const ref = entry ? getExamples(entry.name).find((e) => e.slug === example) : undefined;
+  const title = entry && ref ? `${entry.title} ${ref.title.toLowerCase()}` : 'Component';
+  return embedMetadata(`${title} preview`);
 };
 
 export interface BlockEmbedProps {
@@ -81,6 +102,25 @@ export const TemplateEmbed = ({ base, template }: TemplateEmbedProps) => {
       <TemplateEmbedShell>
         <RegistryDemo name={entry.name} base={base} />
       </TemplateEmbedShell>
+    </>
+  );
+};
+
+export interface ExampleEmbedProps {
+  base: RegistryBase;
+  component: string;
+  example: string;
+}
+
+export const ExampleEmbed = ({ base, component, example }: ExampleEmbedProps) => {
+  const entry = REGISTRY_BY_NAME[component];
+  if (!entry || !isComponentEntry(entry) || !getExamples(entry.name).some((e) => e.slug === example)) notFound();
+  return (
+    <>
+      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
+      <ExampleEmbedShell>
+        <RegistryExample name={example} base={base} />
+      </ExampleEmbedShell>
     </>
   );
 };

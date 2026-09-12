@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils';
 const HEADLINE = 'Build the page once, ship it everywhere';
 
 const Headline = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
 
   return (
@@ -21,21 +20,17 @@ const Headline = () => {
       {words.map((word, i) => {
         const accent = i >= words.length - 2;
         return (
-          <motion.span
+          <span
             key={`${word}-${i}`}
-            className={cn('inline-block', accent && 'italic text-foreground')}
-            initial={reduce ? false : { opacity: 0, y: 16, filter: 'blur(4px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.5,
-              ease: 'easeOut',
-              delay: 0.1 + i * 0.05,
-            }}
+            className={cn(
+              'inline-block animate-in fade-in slide-in-from-bottom-4 blur-in-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+              accent && 'italic text-foreground',
+            )}
+            style={{ animationDelay: `${100 + i * 50}ms` }}
           >
             {word}
             {i < words.length - 1 ? ' ' : null}
-          </motion.span>
+          </span>
         );
       })}
     </h1>
@@ -192,13 +187,7 @@ const Hero07 = () => {
         className="pointer-events-none absolute top-1/2 end-0 hidden -translate-y-1/2 -scale-x-90 rtl:scale-90 md:block"
       />
 
-      <motion.div
-        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5"
-        initial={reduce ? false : { opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 animate-in fade-in duration-800 ease-out fill-mode-both motion-reduce:animate-none">
         <span
           data-slot="hero-badge"
           className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
@@ -233,7 +222,7 @@ const Hero07 = () => {
             </a>
           </Button>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

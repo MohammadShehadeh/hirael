@@ -1,10 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
 
 interface Value {
   title: string;
@@ -44,7 +48,6 @@ const VALUES: readonly Value[] = [
 const HEADLINE = 'The principles behind every component';
 
 const Title = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -54,16 +57,13 @@ const Title = () => {
       className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn('me-[0.25em] inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
@@ -185,28 +185,22 @@ const DottedGlow = ({ className }: { className?: string }) => {
 };
 
 const ValueCard = ({ value, index }: { value: Value; index: number }) => {
-  const reduce = useReducedMotion();
-
   return (
-    <motion.article
+    <article
       data-slot="feature-card"
-      className="relative overflow-hidden rounded-lg border border-border bg-card/60 p-6 backdrop-blur-sm"
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.15 }}
+      className="relative overflow-hidden rounded-lg border border-border bg-card/60 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-5 duration-600 ease-out fill-mode-both motion-reduce:animate-none"
+      style={{ animationDelay: `${index * 150}ms` }}
     >
       <DottedGlow />
       <div className="relative flex flex-col gap-2">
         <h3 className="text-xl font-semibold text-foreground">{value.title}</h3>
         <p className="text-pretty text-muted-foreground">{value.description}</p>
       </div>
-    </motion.article>
+    </article>
   );
 };
 
 const Feature05 = () => {
-  const reduce = useReducedMotion();
   const half = Math.ceil(VALUES.length / 2);
   const columns = [VALUES.slice(0, half), VALUES.slice(half)];
 
@@ -214,30 +208,21 @@ const Feature05 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
+          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               Values
             </Badge>
-          </motion.div>
+          </div>
           <Title />
-          <motion.p
+          <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE, 'delay-400')}
           >
             Six decisions we make the same way every time, so you never have to guess how a new component will behave.
-          </motion.p>
+          </p>
         </div>
 
         <div

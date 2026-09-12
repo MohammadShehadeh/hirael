@@ -21,7 +21,7 @@ const Cta03 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-[48px] border border-border bg-card shadow-sm">
+        <div className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card md:rounded-[48px] shadow-sm">
           <div className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-30 dark:mix-blend-screen">
             <Cta03Backdrop active={active} />
           </div>

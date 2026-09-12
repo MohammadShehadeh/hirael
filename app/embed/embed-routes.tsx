@@ -5,21 +5,20 @@ import { embedDirScript } from '@/lib/embed';
 import { embedMetadata } from '@/lib/seo';
 import { RegistryDemo, RegistryExample } from '@/registry/hirael/registry-demos';
 import {
+  COMPONENTS,
   DEFAULT_BASE,
   REGISTRY,
   REGISTRY_BASES,
   REGISTRY_BY_NAME,
   entryCategorySlug,
   getExamples,
+  isComponentEntry,
   type RegistryBase,
-  type RegistryEntryMeta,
 } from '@/registry/hirael/registry-meta';
 
 import { BlockEmbedShell } from './blocks/[category]/[block]/embed-shell';
 import { ExampleEmbedShell } from './components/[component]/[example]/embed-shell';
 import { TemplateEmbedShell } from './templates/[template]/embed-shell';
-
-const isComponentEntry = (entry: RegistryEntryMeta) => entry.category !== 'blocks' && entry.category !== 'templates';
 
 export const blockEmbedParams = () =>
   REGISTRY.filter((entry) => entry.category === 'blocks').map((entry) => ({
@@ -33,7 +32,7 @@ export const templateEmbedParams = () =>
   }));
 
 export const exampleEmbedParams = () =>
-  REGISTRY.filter(isComponentEntry).flatMap((entry) =>
+  COMPONENTS.flatMap((entry) =>
     getExamples(entry.name).map((example) => ({ component: entry.name, example: example.slug })),
   );
 

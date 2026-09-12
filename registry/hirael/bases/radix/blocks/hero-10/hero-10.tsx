@@ -4,8 +4,13 @@ import * as React from 'react';
 import Image from 'next/image';
 import { Play, Rocket } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none';
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -42,20 +47,27 @@ const Hero10 = () => {
           </Badge>
 
           <h1
-            className="relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16 animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none"
+            className={cn(
+              'relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16',
+              RISE,
+            )}
           >
             The visual control plane <span>for your pipelines</span>
           </h1>
 
           <p
-            className="mx-auto mt-8 w-full text-base tracking-tight sm:text-lg md:text-balance animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-100"
+            className={cn('mx-auto mt-8 w-full text-base tracking-tight sm:text-lg md:text-balance', RISE, 'delay-100')}
           >
             Build, analyze, and optimize CI/CD workflows with drag-and-drop, AI insights, and guardrails, without
             breaking your YAML.
           </p>
 
           <div
-            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200"
+            className={cn(
+              'mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md',
+              RISE,
+              'delay-200',
+            )}
           >
             <Button asChild size="lg">
               <a href="#" className="group flex items-center gap-2">

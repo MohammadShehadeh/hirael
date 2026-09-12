@@ -40,7 +40,7 @@ const BrandMark = ({ className }: { className?: string }) => {
 };
 
 interface RevealProps extends React.ComponentProps<'div'> {
-  /** Seconds to wait before the reveal starts. */
+  /** Milliseconds to wait before the reveal starts. */
   delay?: number;
 }
 
@@ -51,7 +51,7 @@ const Reveal = ({ delay = 0, className, style, ...props }: RevealProps) => {
         'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
         className,
       )}
-      style={{ animationDelay: `${Math.round(delay * 1000)}ms`, ...style }}
+      style={{ animationDelay: `${delay}ms`, ...style }}
       {...props}
     />
   );
@@ -60,7 +60,7 @@ const Reveal = ({ delay = 0, className, style, ...props }: RevealProps) => {
 interface FooterColumnProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   title: string;
   children?: React.ReactNode;
-  /** Seconds to wait before the column reveals. */
+  /** Milliseconds to wait before the column reveals. */
   delay?: number;
 }
 
@@ -77,7 +77,7 @@ const FooterColumn = ({ title, delay = 0, className, children, ...props }: Foote
 
 interface FooterLinksProps extends React.ComponentProps<'ul'> {
   links: readonly { label: string; href: string; external?: boolean }[];
-  /** Seconds to wait before the first link reveals. */
+  /** Milliseconds to wait before the first link reveals. */
   delay?: number;
 }
 
@@ -88,7 +88,7 @@ const FooterLinks = ({ links, delay = 0, className, ...props }: FooterLinksProps
         <li
           key={link.label}
           className="animate-in fade-in slide-in-from-bottom-3 duration-350 ease-out fill-mode-both motion-reduce:animate-none"
-          style={{ animationDelay: `${Math.round((delay + i * 0.12) * 1000)}ms` }}
+          style={{ animationDelay: `${delay + i * 120}ms` }}
         >
           <a
             href={link.href}
@@ -233,9 +233,9 @@ const Footer04 = () => {
               <p className="max-w-xs text-sm text-muted-foreground">{BRAND.blurb}</p>
             </Reveal>
 
-            <FooterColumn title="Contact" delay={0.1}>
+            <FooterColumn title="Contact" delay={100}>
               <FooterLinks
-                delay={0.3}
+                delay={300}
                 links={[
                   {
                     label: CONTACT.phone,
@@ -247,11 +247,11 @@ const Footer04 = () => {
               />
             </FooterColumn>
 
-            <FooterColumn title="Location" delay={0.2}>
+            <FooterColumn title="Location" delay={200}>
               <p className="text-sm text-muted-foreground">{CONTACT.location}</p>
             </FooterColumn>
 
-            <FooterColumn title="Subscribe for updates" delay={0.3} className="col-span-2 lg:col-span-1">
+            <FooterColumn title="Subscribe for updates" delay={300} className="col-span-2 lg:col-span-1">
               <FooterSubscribe />
               <p className="text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</p>
             </FooterColumn>
@@ -261,7 +261,7 @@ const Footer04 = () => {
 
           <Reveal
             data-slot="footer-bottom"
-            delay={0.1}
+            delay={100}
             className="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start"
           >
             <p className="text-sm text-muted-foreground">{BRAND.copyright}</p>

@@ -14,6 +14,10 @@ import {
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 interface Service {
   icon: LucideIcon;
   title: string;
@@ -76,10 +80,7 @@ const Title = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
+          className={cn('inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
           style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
@@ -106,7 +107,7 @@ const Feature04 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400"
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE, 'delay-400')}
           >
             Pick the engagement that fits. Each one ends with source you own and a team that knows how to extend it.
           </p>

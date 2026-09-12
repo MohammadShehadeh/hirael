@@ -7,6 +7,10 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Sparkles } from '@/registry/hirael/bases/base/components/sparkles';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none';
+
 const HEADLINE = 'We are briefly offline';
 
 const Headline = () => {
@@ -66,7 +70,7 @@ const Maintenance02 = () => {
         <div role="status" aria-live="polite" className="contents">
           <p
             data-slot="maintenance-description"
-            className="mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-800"
+            className={cn('mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', RISE, 'delay-800')}
           >
             We are upgrading the registry and the console. Installed components keep working, and nothing you shipped is
             affected.
@@ -74,7 +78,7 @@ const Maintenance02 = () => {
 
           <div
             data-slot="maintenance-status"
-            className="mt-6 inline-flex items-center gap-2 text-sm text-foreground/70 animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-600"
+            className={cn('mt-6 inline-flex items-center gap-2 text-sm text-foreground/70', RISE, 'delay-600')}
           >
             <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
             <span>Check back in a few minutes</span>

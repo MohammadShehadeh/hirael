@@ -15,6 +15,10 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 const CONTACT = {
   email: 'hello@hirael.com',
   phone: '+971 50 000 0000',
@@ -147,7 +151,7 @@ const Contact03 = () => {
 
             <ContactTitle>{HEADLINE}</ContactTitle>
 
-            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400">
+            <div className={cn('flex flex-col gap-3', RISE, 'delay-400')}>
               <ContactDescription>
                 Send a short note about the product and where you are stuck. We read every message and reply within a
                 working day.
@@ -157,7 +161,7 @@ const Contact03 = () => {
               </ContactDescription>
             </div>
 
-            <div className="mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-600">
+            <div className={cn('mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2', RISE, 'delay-600')}>
               <ContactAction detail={CONTACT.email}>
                 <Button asChild size="lg" className="w-full rounded-full">
                   <a href={`mailto:${CONTACT.email}`}>

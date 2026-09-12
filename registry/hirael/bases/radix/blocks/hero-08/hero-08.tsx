@@ -7,6 +7,10 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none';
+
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
@@ -58,20 +62,31 @@ const Hero08 = () => {
           </Badge>
 
           <h1
-            className="font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none"
+            className={cn(
+              'font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl',
+              RISE,
+            )}
           >
             One workspace for every <span className="text-muted-foreground italic">moving part</span>
           </h1>
 
           <p
-            className="mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-100"
+            className={cn(
+              'mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg',
+              RISE,
+              'delay-100',
+            )}
           >
             Build, review, and ship your work from one place. Drag to arrange, connect the pieces, and keep the details
             that matter in view.
           </p>
 
           <div
-            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200"
+            className={cn(
+              'mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md',
+              RISE,
+              'delay-200',
+            )}
           >
             <Button asChild size="lg">
               <a className="flex items-center gap-2" href="#">

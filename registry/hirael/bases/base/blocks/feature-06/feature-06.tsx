@@ -5,6 +5,14 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
+/** A shorter rise for the header copy. */
+const RISE_SM =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 const HEADLINE = 'A small studio with a strong opinion';
 
 const Title = () => {
@@ -19,10 +27,7 @@ const Title = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
+          className={cn('me-[0.25em] inline-block', RISE_SM, i < half ? 'text-muted-foreground' : 'text-foreground')}
           style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
@@ -92,7 +97,7 @@ const Card = ({ card, index }: { card: AboutCard; index: number }) => {
     >
       <GridPattern />
       <h3
-        className="relative mb-6 text-2xl font-semibold text-foreground animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none md:text-3xl"
+        className={cn('relative mb-6 text-2xl font-semibold text-foreground', RISE, 'md:text-3xl')}
         style={{ animationDelay: `${base + 100}ms` }}
       >
         {card.title}
@@ -101,7 +106,7 @@ const Card = ({ card, index }: { card: AboutCard; index: number }) => {
         {card.paragraphs.map((text, i) => (
           <p
             key={i}
-            className="leading-relaxed text-pretty text-muted-foreground animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
+            className={cn('leading-relaxed text-pretty text-muted-foreground', RISE)}
             style={{ animationDelay: `${base + 200 + i * 100}ms` }}
           >
             {text}
@@ -128,7 +133,7 @@ const Feature06 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400"
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE_SM, 'delay-400')}
           >
             We build the components shadcn/ui does not ship, and we build them the way we would want to inherit them.
           </p>

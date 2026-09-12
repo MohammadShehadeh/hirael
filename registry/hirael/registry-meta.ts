@@ -3967,7 +3967,11 @@ export const REGISTRY_BY_CATEGORY = (() => {
 
 export const TEMPLATES = REGISTRY_BY_CATEGORY.templates;
 
-export const COMPONENTS = REGISTRY.filter((entry) => entry.category !== 'blocks' && entry.category !== 'templates');
+/** Anything that isn't a block or template: the primitives and components listed under `/components`. */
+export const isComponentEntry = (entry: RegistryEntryMeta) =>
+  entry.category !== 'blocks' && entry.category !== 'templates';
+
+export const COMPONENTS = REGISTRY.filter(isComponentEntry);
 
 /**
  * Component bases, shadcn's `registry/bases` analog: one full tree per
@@ -4257,11 +4261,6 @@ export const COMPONENTS_ORDERED: RegistryEntryMeta[] = COMPONENT_CATEGORY_ORDER.
 /** Every block flattened into display order: kind by kind, then registry order. */
 export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap((kind) => BLOCKS_BY_KIND[kind]);
 
-/**
- * The previous and next entry within an item's own collection
- * (components | blocks | templates). Used for the detail-page pager; either
- * side is `null` at a collection boundary.
- */
 /** The ordered catalog an entry is paged through: templates, blocks or components. */
 const catalogListFor = (entry: RegistryEntryMeta): RegistryEntryMeta[] =>
   entry.category === 'templates' ? TEMPLATES : entry.category === 'blocks' ? BLOCKS_ORDERED : COMPONENTS_ORDERED;
@@ -4272,6 +4271,11 @@ export const entryPosition = (entry: RegistryEntryMeta): { index: number; total:
   return { index: list.findIndex((e) => e.name === entry.name) + 1, total: list.length };
 };
 
+/**
+ * The previous and next entry within an item's own collection
+ * (components | blocks | templates). Used for the detail-page pager; either
+ * side is `null` at a collection boundary.
+ */
 export const entrySiblings = (
   entry: RegistryEntryMeta,
 ): {

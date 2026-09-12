@@ -7,6 +7,10 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 const email = 'team@example.com';
 const phone = '+1 (555) 012 3456';
 
@@ -59,7 +63,7 @@ const Cta05 = () => {
 
             <div
               data-slot="cta-actions"
-              className="mt-10 grid w-full max-w-md grid-cols-1 gap-5 md:grid-cols-2 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-600"
+              className={cn('mt-10 grid w-full max-w-md grid-cols-1 gap-5 md:grid-cols-2', RISE, 'delay-600')}
             >
               <div className="flex flex-col items-center gap-2">
                 <Button
@@ -106,11 +110,7 @@ const AnimatedTitle = ({ text, className, ...props }: React.ComponentProps<'h2'>
       {...props}
     >
       {words.map((word, i) => (
-        <span
-          key={i}
-          className="me-2 inline-block animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
-          style={{ animationDelay: `${i * 80}ms` }}
-        >
+        <span key={i} className={cn('me-2 inline-block', RISE)} style={{ animationDelay: `${i * 80}ms` }}>
           {word}
         </span>
       ))}

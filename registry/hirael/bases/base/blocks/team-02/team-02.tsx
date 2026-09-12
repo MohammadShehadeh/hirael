@@ -6,6 +6,14 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Marquee } from '@/registry/hirael/bases/base/components/marquee';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
+/** A shorter rise for the header copy. */
+const RISE_SM =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 const HEADLINE = 'Ten years of building interfaces that last';
 
 const Title = () => {
@@ -20,10 +28,7 @@ const Title = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
+          className={cn('me-[0.25em] inline-block', RISE_SM, i < half ? 'text-muted-foreground' : 'text-foreground')}
           style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
@@ -108,7 +113,7 @@ const MetricCard = ({ metric, index }: { metric: Metric; index: number }) => {
   return (
     <div
       data-slot="team-metric"
-      className="rounded-lg border border-border bg-card p-4 text-center animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
+      className={cn('rounded-lg border border-border bg-card p-4 text-center', RISE)}
       style={{ animationDelay: `${index * 120}ms` }}
     >
       <h3 className="mb-1 text-xs uppercase text-muted-foreground">{metric.label}</h3>
@@ -136,7 +141,7 @@ const Team02 = () => {
           <Title />
           <p
             data-slot="team-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400"
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE_SM, 'delay-400')}
           >
             The person behind the registry, the numbers that describe the work, and the skills that show up in every
             component.
@@ -155,11 +160,11 @@ const Team02 = () => {
             className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8 animate-in fade-in slide-in-from-top-5 duration-600 ease-out fill-mode-both motion-reduce:animate-none"
           >
             <GridPattern />
-            <div className="relative mb-4 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-100">
+            <div className={cn('relative mb-4', RISE, 'delay-100')}>
               <h3 className="mb-1 text-2xl font-semibold text-foreground md:text-3xl">Layla Haddad</h3>
               <p className="text-muted-foreground">Design systems lead, Hirael</p>
             </div>
-            <div className="relative flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200">
+            <div className={cn('relative flex flex-col gap-3', RISE, 'delay-200')}>
               <p className="leading-relaxed text-pretty text-muted-foreground">
                 Layla spent a decade turning one-off screens into systems that other engineers actually reach for. She
                 led the token migration at two product companies before starting Hirael.
@@ -176,7 +181,7 @@ const Team02 = () => {
             className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8"
           >
             <GridPattern />
-            <div className="relative mb-4 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
+            <div className={cn('relative mb-4', RISE)}>
               <h3 className="mb-3 text-2xl font-semibold text-foreground md:text-3xl">Core competencies</h3>
               <p className="text-pretty text-muted-foreground">
                 The skills that come up in every engagement, from the first token audit to the last accessibility pass.
@@ -185,7 +190,11 @@ const Team02 = () => {
 
             <div
               data-slot="team-marquee"
-              className="relative mt-auto flex flex-col gap-2 pt-6 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200"
+              className={cn(
+                'relative mt-auto flex flex-col gap-2 pt-6 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]',
+                RISE,
+                'delay-200',
+              )}
             >
               {rows.map((row, i) => (
                 <Marquee key={i} pauseOnHover reverse={i === 1} duration={30 + i * 5} gap="0.5rem">

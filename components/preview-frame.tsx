@@ -26,7 +26,7 @@ import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/
  * an iframe, so the theme lock, RTL flag, refresh and "open" affordances and the shell-height follow live here.
  */
 
-export const PREVIEW_ICON_BUTTON = 'size-7 rounded-sm text-muted-foreground';
+const PREVIEW_ICON_BUTTON = 'size-7 rounded-sm text-muted-foreground';
 
 /** `?fit=1` drops the embed shell's viewport min-height (globals.css) so the frame can size to the content's natural height.
  * `theme` is omitted until the toolbar overrides it, so the frame keeps following the site mode from storage. */
@@ -57,14 +57,14 @@ export const usePreviewTheme = (): PreviewTheme => {
   };
 };
 
-export interface PreviewToolbarButtonProps {
+interface PreviewToolbarButtonProps {
   label: string;
   onClick?: () => void;
   href?: string;
   children: React.ReactNode;
 }
 
-export const PreviewToolbarButton = ({ label, onClick, href, children }: PreviewToolbarButtonProps) => {
+const PreviewToolbarButton = ({ label, onClick, href, children }: PreviewToolbarButtonProps) => {
   const button = href ? (
     <Button asChild variant="ghost" size="icon-sm" className={PREVIEW_ICON_BUTTON}>
       <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
@@ -294,13 +294,12 @@ export const PreviewFrame = ({
   };
 
   // The frame can finish loading before React attaches `onLoad`, so also pick up an already-loaded frame after mount.
+  const followMounted = React.useEffectEvent(follow);
+
   React.useEffect(() => {
     const frame = frameRef.current;
     if (!frame) return;
-    observerRef.current?.disconnect();
-    observerRef.current = observeShellHeight(frame, (shellHeight) => {
-      setHeight(Math.min(maxHeight, Math.max(minHeight, shellHeight)));
-    });
+    followMounted(frame);
     return () => observerRef.current?.disconnect();
   }, [refreshKey, src, minHeight, maxHeight]);
 

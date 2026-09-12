@@ -6,6 +6,10 @@ import { useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
+/** Entrance: fade and rise, skipped under reduced motion. */
+const RISE =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+
 interface Value {
   title: string;
   description: string;
@@ -55,10 +59,7 @@ const Title = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
+          className={cn('me-[0.25em] inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
           style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
@@ -218,7 +219,7 @@ const Feature05 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400"
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE, 'delay-400')}
           >
             Six decisions we make the same way every time, so you never have to guess how a new component will behave.
           </p>

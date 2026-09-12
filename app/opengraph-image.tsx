@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
         padding: 80,
       }}
     >
-      <svg width="646" height="190" viewBox={HIRAEL_LOCKUP_VIEWBOX} fill="#E7E4DE">
+      <svg width="603" height="190" viewBox={HIRAEL_LOCKUP_VIEWBOX} fill="#E7E4DE">
         <path d={HIRAEL_MARK_PATH} />
         <path d={HIRAEL_WORDMARK_PATH} />
       </svg>

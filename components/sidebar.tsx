@@ -49,9 +49,10 @@ export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
 export interface DocsSidebarNavProps {
   releases: SidebarRelease[];
   className?: string;
+  onNavigate?: (hash: string) => void;
 }
 
-export const DocsSidebarNav = ({ releases, className }: DocsSidebarNavProps) => {
+export const DocsSidebarNav = ({ releases, className, onNavigate }: DocsSidebarNavProps) => {
   const pathname = usePathname();
   const ref = React.useRef<HTMLElement>(null);
   const section = sectionForPath(pathname);
@@ -67,7 +68,7 @@ export const DocsSidebarNav = ({ releases, className }: DocsSidebarNavProps) => 
         {section === 'components' && <ComponentTree pathname={pathname} />}
         {section === 'blocks' && <BlockTree pathname={pathname} />}
         {section === 'templates' && <TemplateTree pathname={pathname} />}
-        {section === 'changelog' && <ReleaseTree releases={releases} />}
+        {section === 'changelog' && <ReleaseTree releases={releases} onNavigate={onNavigate} />}
       </div>
     </nav>
   );
@@ -244,23 +245,28 @@ const TemplateTree = ({ pathname }: SectionTreeProps) => {
 
 interface ReleaseTreeProps {
   releases: SidebarRelease[];
+  onNavigate?: (hash: string) => void;
 }
 
-const ReleaseTree = ({ releases }: ReleaseTreeProps) => {
+const ReleaseTree = ({ releases, onNavigate }: ReleaseTreeProps) => {
   if (!releases.length) return null;
   return (
     <Folder icon={History} label="Releases">
-      {releases.map((release) => (
-        <li key={release.slug}>
-          <a
-            href={`#release-${release.slug}`}
-            className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <span className="truncate">{release.label}</span>
-            <span className="ms-auto text-xs text-muted-foreground">{release.date}</span>
-          </a>
-        </li>
-      ))}
+      {releases.map((release) => {
+        const hash = `#release-${release.slug}`;
+        return (
+          <li key={release.slug}>
+            <a
+              href={hash}
+              onClick={() => onNavigate?.(hash)}
+              className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+            >
+              <span className="truncate">{release.label}</span>
+              <span className="ms-auto text-xs text-muted-foreground">{release.date}</span>
+            </a>
+          </li>
+        );
+      })}
     </Folder>
   );
 };

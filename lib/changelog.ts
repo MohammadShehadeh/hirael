@@ -26,6 +26,15 @@ const addedNames = (value: unknown): string[] =>
 
 const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
 
+/**
+ * Newest first. Two releases can share a day, so fall back to the version compared numerically
+ * (`6.10.0` after `6.9.0`, not before) rather than leaving the order to the sort's tie handling.
+ */
+const byNewest = (a: ChangelogEntry, b: ChangelogEntry): number => {
+  if (a.isoDate !== b.isoDate) return a.isoDate < b.isoDate ? 1 : -1;
+  return (b.version ?? '').localeCompare(a.version ?? '', 'en', { numeric: true });
+};
+
 const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   month: 'long',
   day: 'numeric',
@@ -62,7 +71,7 @@ export const getChangelog = async (): Promise<Changelog> => {
         },
       ];
     })
-    .sort((a, b) => (a.isoDate < b.isoDate ? 1 : -1));
+    .sort(byNewest);
 
   return {
     entries,

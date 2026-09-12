@@ -1,5 +1,6 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
 
+import { cn } from '@/lib/utils';
 import { mdxComponents } from '@/components/mdx';
 import { PageHeader } from '@/components/page-header';
 import type { Changelog } from '@/lib/changelog';
@@ -27,14 +28,18 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
       {entries.length === 0 ? (
         <p className="mt-16 text-sm text-muted-foreground">No releases recorded yet.</p>
       ) : (
-        <div className="mt-14 flex flex-col gap-5">
-          {entries.map((entry) => (
+        <div className="mt-16 w-full docs-container sm:mt-20">
+          {entries.map((entry, index) => (
             <section
               key={entry.slug}
-              aria-labelledby={`release-${entry.slug}`}
-              className="glass-panel-lit relative scroll-mt-24 rounded-2xl border border-border bg-card/40 p-6 backdrop-blur-sm transition-colors hover:bg-card/60 sm:p-8"
+              id={`release-${entry.slug}`}
+              aria-labelledby={`release-${entry.slug}-title`}
+              className={cn(
+                'scroll-mt-24 md:grid md:grid-cols-[8.5rem_1fr] md:items-start md:gap-10',
+                index > 0 && 'mt-14 border-t border-border pt-14 sm:mt-16 sm:pt-16',
+              )}
             >
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 md:sticky md:top-16 md:flex-col md:items-start md:gap-2.5">
                 <p className="text-xs uppercase text-muted-foreground">
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
@@ -46,16 +51,21 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
                 ) : null}
               </div>
 
-              <h2 id={`release-${entry.slug}`} className="text-display mt-2 text-2xl sm:text-3xl">
-                {entry.version ?? entry.title}
-              </h2>
+              <div className="mt-4 min-w-0 md:mt-0">
+                <h2
+                  id={`release-${entry.slug}-title`}
+                  className="text-display text-3xl italic leading-[0.95] sm:text-4xl"
+                >
+                  {entry.version ?? entry.title}
+                </h2>
 
-              {entry.version && entry.title ? (
-                <p className="mt-2 text-base text-muted-foreground">{entry.title}</p>
-              ) : null}
+                {entry.version && entry.title ? (
+                  <p className="mt-3 text-balance text-base text-muted-foreground">{entry.title}</p>
+                ) : null}
 
-              <div className="mt-6">
-                <MDXRemote source={entry.body} components={mdxComponents} />
+                <div className="mt-7">
+                  <MDXRemote source={entry.body} components={mdxComponents} />
+                </div>
               </div>
             </section>
           ))}

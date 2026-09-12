@@ -23,6 +23,8 @@ export interface DocsHeaderProps {
 export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuTriggerRef = React.useRef<HTMLButtonElement>(null);
+  const pendingHash = React.useRef<string | null>(null);
 
   const [lastPathname, setLastPathname] = React.useState(pathname);
   if (pathname !== lastPathname) {
@@ -36,14 +38,38 @@ export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
         <div className="flex shrink-0 items-center gap-1 px-4 md:w-(--docs-sidebar-width)">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
-              <Button type="button" variant="ghost" size="icon-sm" aria-label="Open navigation" className="md:hidden">
+              <Button
+                ref={menuTriggerRef}
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Open navigation"
+                className="md:hidden"
+              >
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto p-0">
+            <SheetContent
+              side="left"
+              className="w-[85vw] max-w-sm overflow-y-auto p-0"
+              onCloseAutoFocus={(event) => {
+                const hash = pendingHash.current;
+                if (!hash) return;
+                pendingHash.current = null;
+                event.preventDefault();
+                menuTriggerRef.current?.focus({ preventScroll: true });
+                document.getElementById(hash.slice(1))?.scrollIntoView();
+              }}
+            >
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              {/* Extra top padding keeps the search field clear of the sheet's close button. */}
-              <DocsSidebarNav releases={releases} className="p-4 pt-12" />
+              <DocsSidebarNav
+                releases={releases}
+                onNavigate={(hash) => {
+                  pendingHash.current = hash;
+                  setMenuOpen(false);
+                }}
+                className="p-4 pt-12"
+              />
             </SheetContent>
           </Sheet>
           <Link

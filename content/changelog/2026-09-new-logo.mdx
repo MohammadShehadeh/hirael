@@ -1,0 +1,29 @@
+---
+title: A new logo, drawn once
+version: '6.6.0'
+date: 2026-09-12
+description: 'Hirael has a real mark and wordmark. The site, the favicons, the social image and the brand placeholders inside blocks all draw the same shapes now.'
+---
+
+Changed:
+
+- **A new mark and wordmark.** The H mark is a solid glyph rather than the old
+  outlined arch, and the wordmark is set beside it as a single lockup. `Logo`
+  gives you the full lockup, `LogoMark` the bare H, and `LogoTile` the H on a
+  raised square, so headers, sidebars and app shells pick the one that fits
+  without redrawing anything.
+- **One source for the shapes.** The paths live in `lib/logo-paths.ts`, which
+  both the React components and the icon routes import. The favicon, the Apple
+  touch icon, the PWA icon and the social image render through Satori instead of
+  the DOM, so they used to carry their own copy of the artwork and drift from
+  it. Now there is one copy to change.
+- **Icons are simpler.** The app icons lost the inner gloss, hairline border and
+  drop shadow, and the corner radius is tighter. At 32 pixels the extra layers
+  read as mud; the mark alone stays legible.
+- **The footer wordmark is the logo.** The oversized name behind the footer used
+  to be serif text with a gradient clipped to it. It is the actual wordmark now,
+  filled with the same gradient, so it matches the mark above it at every width.
+- **Brand placeholders in blocks follow.** Every footer, header, app shell,
+  auth screen and the agency template carried a stand-in mark of their own.
+  They all use the new H, and the sample addresses scattered through members,
+  settings and the shells moved to `hirael.com`.

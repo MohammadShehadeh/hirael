@@ -29,7 +29,7 @@ const Hero01 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-[40px] border border-border bg-card text-card-foreground shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card md:rounded-[40px] text-card-foreground shadow-sm">
           <div
             aria-hidden
             data-slot="hero-wash"

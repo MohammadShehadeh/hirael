@@ -1,21 +1,27 @@
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { BLOCK_KIND_LABELS, CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
+import { entryHref, entryPosition, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 export interface PagerProps {
   prev: RegistryEntryMeta | null;
   next: RegistryEntryMeta | null;
 }
 
+/**
+ * Previous/next along the catalog order, set as a hairline-split strip in the same voice as the category index
+ * (`02 / 10`, uppercase kicker, bare title). A missing side keeps its half so the other link stays put.
+ */
 export const Pager = ({ prev, next }: PagerProps) => {
   if (!prev && !next) return null;
 
   return (
-    <nav aria-label="Catalog" className="flex items-stretch justify-between gap-3 border-t border-border pt-6">
-      {prev ? <PagerLink entry={prev} direction="prev" /> : <span aria-hidden />}
-      {next ? <PagerLink entry={next} direction="next" /> : <span aria-hidden />}
+    <nav aria-label="Catalog" className="grid border-t border-border sm:grid-cols-2">
+      <div className="sm:border-e sm:border-border sm:pe-8">{prev && <PagerLink entry={prev} direction="prev" />}</div>
+      <div className={cn('sm:ps-8', prev && next && 'border-t border-border sm:border-t-0')}>
+        {next && <PagerLink entry={next} direction="next" />}
+      </div>
     </nav>
   );
 };
@@ -27,31 +33,43 @@ interface PagerLinkProps {
 
 const PagerLink = ({ entry, direction }: PagerLinkProps) => {
   const isPrev = direction === 'prev';
-  const Chevron = isPrev ? ChevronLeft : ChevronRight;
-  const chevron = <Chevron className="size-3.5 shrink-0 rtl:rotate-180" aria-hidden />;
+  const { index, total } = entryPosition(entry);
+  const arrow = isPrev ? (
+    <ArrowLeft
+      aria-hidden
+      className="size-3.5 transition-transform duration-150 ease-out group-hover:-translate-x-0.5 rtl:rotate-180 rtl:group-hover:translate-x-0.5"
+    />
+  ) : (
+    <ArrowRight
+      aria-hidden
+      className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+    />
+  );
 
   return (
     <Link
       href={entryHref(entry)}
-      rel={isPrev ? 'prev' : 'next'}
+      rel={direction}
       className={cn(
-        'group flex max-w-[48%] flex-col gap-1 rounded-md border border-border bg-card/40 px-4 py-3 transition-colors hover:bg-accent',
+        'group flex flex-col gap-2 py-6 outline-none focus-visible:rounded-sm focus-visible:ring-[3px] focus-visible:ring-ring/50',
         isPrev ? 'items-start text-start' : 'items-end text-end',
       )}
     >
-      <span className="flex items-center gap-1 text-xs uppercase text-muted-foreground">
-        {isPrev && chevron}
-        {isPrev ? 'Previous' : 'Next'}
-        {!isPrev && chevron}
+      <span className="flex items-center gap-x-2 text-xs uppercase text-muted-foreground">
+        {isPrev && arrow}
+        <span>{isPrev ? 'Previous' : 'Next'}</span>
+        <span aria-hidden className="text-border">
+          |
+        </span>
+        <span className="tabular-nums text-foreground">
+          {String(index).padStart(2, '0')}
+          <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
+        </span>
+        {!isPrev && arrow}
       </span>
-      <span className="truncate text-sm font-medium tracking-[-0.01em] text-foreground">{entry.title}</span>
-      <span className="truncate text-[11px] text-muted-foreground">{collectionLabel(entry)}</span>
+      <span className="text-xl font-semibold tracking-[-0.015em] text-foreground underline-offset-6 group-hover:underline sm:text-2xl">
+        {entry.title}
+      </span>
     </Link>
   );
-};
-
-const collectionLabel = (entry: RegistryEntryMeta) => {
-  if (entry.blockKind) return `${BLOCK_KIND_LABELS[entry.blockKind]} blocks`;
-  if (entry.category === 'templates') return 'Template';
-  return CATEGORY_LABELS[entry.category];
 };

@@ -51,7 +51,6 @@ const TESTIMONIALS: readonly Testimonial[] = [
 ];
 
 const Headline = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -61,16 +60,16 @@ const Headline = () => {
       className="max-w-3xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
@@ -98,8 +97,6 @@ const GlowingRing = ({ className }: { className?: string }) => {
 };
 
 const Testimonial04 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section data-slot="testimonial" className="bg-background py-16 md:py-24">
       <div className="container w-full">
@@ -107,12 +104,7 @@ const Testimonial04 = () => {
           data-slot="testimonial-header"
           className="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center"
         >
-          <motion.div
-            initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-          >
+          <div className="animate-in fade-in zoom-in-90 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-200">
             <Badge
               variant="outline"
               data-slot="testimonial-badge"
@@ -120,32 +112,25 @@ const Testimonial04 = () => {
             >
               Testimonials
             </Badge>
-          </motion.div>
+          </div>
 
           <Headline />
 
-          <motion.p
+          <p
             data-slot="testimonial-description"
-            className="max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            className="max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-400"
           >
             Teams shipping with Hirael, in their own words.
-          </motion.p>
+          </p>
         </div>
 
         <div data-slot="testimonial-grid" className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {TESTIMONIALS.map((item, i) => (
-            <motion.figure
+            <figure
               key={item.name}
               data-slot="testimonial-card"
-              className="flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6"
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.12 }}
+              className="flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
+              style={{ animationDelay: `${i * 120}ms` }}
             >
               <GlowingRing />
               <blockquote
@@ -158,7 +143,7 @@ const Testimonial04 = () => {
                 <span className="font-medium text-foreground">{item.name}</span>
                 <span className="text-muted-foreground">{item.role}</span>
               </figcaption>
-            </motion.figure>
+            </figure>
           ))}
         </div>
       </div>

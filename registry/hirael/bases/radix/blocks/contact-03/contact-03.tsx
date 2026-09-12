@@ -22,8 +22,6 @@ const CONTACT = {
 
 const HEADLINE = 'Tell us what you are building';
 
-const EASE = 'easeOut' as const;
-
 /** Digits only, ready for a wa.me link. */
 const digits = (phone: string) => phone.replace(/\D/g, '');
 
@@ -47,10 +45,6 @@ const ContactPanel = ({ className, style, children, ...props }: HTMLMotionProps<
     <div ref={ref} data-slot="contact-panel-outer">
       <motion.div
         data-slot="contact-panel"
-        initial={reduce ? false : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: EASE }}
         style={{
           background: reduce
             ? 'radial-gradient(130% 140% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklch, var(--primary) 18%, transparent) 82%, color-mix(in oklch, var(--primary) 40%, transparent) 100%)'
@@ -58,7 +52,7 @@ const ContactPanel = ({ className, style, children, ...props }: HTMLMotionProps<
           ...style,
         }}
         className={cn(
-          'relative overflow-hidden rounded-3xl border border-border bg-card pt-16 pb-24 md:pt-20 md:pb-32',
+          'relative overflow-hidden rounded-3xl border border-border bg-card pt-16 pb-24 md:pt-20 md:pb-32 animate-in fade-in slide-in-from-bottom-5 duration-700 ease-out fill-mode-both motion-reduce:animate-none',
           className,
         )}
         {...props}
@@ -70,14 +64,8 @@ const ContactPanel = ({ className, style, children, ...props }: HTMLMotionProps<
 };
 
 const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
-  const reduce = useReducedMotion();
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: EASE, delay: 0.2 }}
-    >
+    <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200">
       <Badge
         data-slot="contact-badge"
         variant="outline"
@@ -87,7 +75,7 @@ const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge
         )}
         {...props}
       />
-    </motion.div>
+    </div>
   );
 };
 
@@ -96,7 +84,6 @@ interface ContactTitleProps extends Omit<React.ComponentProps<'h2'>, 'children'>
 }
 
 const ContactTitle = ({ children, className, ...props }: ContactTitleProps) => {
-  const reduce = useReducedMotion();
   const words = children.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -110,17 +97,17 @@ const ContactTitle = ({ children, className, ...props }: ContactTitleProps) => {
       {...props}
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: EASE, delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
           {i < words.length - 1 ? ' ' : null}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
@@ -151,8 +138,6 @@ const ContactAction = ({ detail, className, children, ...props }: ContactActionP
 };
 
 const Contact03 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section data-slot="contact" className="bg-background py-16 md:py-24">
       <div className="container">
@@ -162,13 +147,7 @@ const Contact03 = () => {
 
             <ContactTitle>{HEADLINE}</ContactTitle>
 
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: EASE, delay: 0.4 }}
-              className="flex flex-col gap-3"
-            >
+            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400">
               <ContactDescription>
                 Send a short note about the product and where you are stuck. We read every message and reply within a
                 working day.
@@ -176,15 +155,9 @@ const Contact03 = () => {
               <ContactDescription className="text-sm sm:text-base">
                 Prefer to talk? The number below opens a chat, no call needed.
               </ContactDescription>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: EASE, delay: 0.6 }}
-              className="mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2"
-            >
+            <div className="mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-600">
               <ContactAction detail={CONTACT.email}>
                 <Button asChild size="lg" className="w-full rounded-full">
                   <a href={`mailto:${CONTACT.email}`}>
@@ -201,7 +174,7 @@ const Contact03 = () => {
                   </a>
                 </Button>
               </ContactAction>
-            </motion.div>
+            </div>
           </div>
         </ContactPanel>
       </div>

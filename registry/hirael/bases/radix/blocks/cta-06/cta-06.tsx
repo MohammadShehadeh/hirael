@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { GitBranch } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
@@ -43,13 +42,7 @@ const Cta06 = () => {
               </p>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.15, ease: 'easeOut' }}
-              className="flex w-full flex-wrap items-center gap-3 md:w-auto md:flex-col md:items-end md:gap-2"
-            >
+            <div className="flex w-full flex-wrap items-center gap-3 md:w-auto md:flex-col md:items-end md:gap-2 animate-in fade-in slide-in-from-bottom-4 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-150">
               <Button asChild size="lg" className="w-full rounded-md px-6 sm:w-auto">
                 <a href="#">
                   <GitBranch className="size-4" />
@@ -57,7 +50,7 @@ const Cta06 = () => {
                 </a>
               </Button>
               <p className="text-xs uppercase text-muted-foreground">Free to try</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

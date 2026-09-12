@@ -2382,7 +2382,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'testimonial-03',
@@ -2467,7 +2467,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'footer-02',
@@ -2556,7 +2556,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['accordion', 'badge'],
-    dependencies: ['motion'],
   },
   {
     name: 'contact-02',
@@ -2814,7 +2813,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'feature-05',
@@ -2848,7 +2847,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
-    dependencies: ['motion'],
   },
   {
     name: 'comparison-01',
@@ -2971,7 +2969,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
-    dependencies: ['motion', 'lucide-react'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'feature-08',
@@ -3107,7 +3105,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button'],
-    dependencies: ['motion', 'lucide-react'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'footer-06',
@@ -3124,7 +3122,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button'],
-    dependencies: ['motion'],
   },
   {
     name: 'footer-05',
@@ -3628,7 +3625,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'sparkles'],
-    dependencies: ['motion'],
   },
   {
     name: 'maintenance-01',
@@ -3663,7 +3659,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'sparkles'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'error-01',
@@ -3715,7 +3711,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'marquee'],
-    dependencies: ['motion'],
   },
   {
     name: 'stats-01',
@@ -4231,12 +4226,18 @@ export const entryHref = (entry: RegistryEntryMeta): string => {
   return `/components/${entry.category}/${entry.name}`;
 };
 
+const embedPrefix = (base: RegistryBase) => (base === DEFAULT_BASE ? '/embed' : `/embed/${base}`);
+
 /** Framed preview path; non-default bases nest under `/embed/<base>/`. */
 export const entryEmbedHref = (entry: RegistryEntryMeta, base: RegistryBase = DEFAULT_BASE): string => {
-  const prefix = base === DEFAULT_BASE ? '/embed' : `/embed/${base}`;
+  const prefix = embedPrefix(base);
   if (entry.category === 'templates') return `${prefix}/templates/${entry.name}`;
   return `${prefix}/blocks/${entryCategorySlug(entry)}/${entry.name}`;
 };
+
+/** Framed preview path for one component example (`examples/<slug>.tsx`), so demos get the same toolbar as blocks. */
+export const exampleEmbedHref = (entry: RegistryEntryMeta, slug: string, base: RegistryBase = DEFAULT_BASE): string =>
+  `${embedPrefix(base)}/components/${entry.name}/${slug}`;
 
 export const entryFileLabel = (entry: RegistryEntryMeta): string => {
   const count = entry.files?.length ?? 0;
@@ -4261,14 +4262,23 @@ export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap((kin
  * (components | blocks | templates). Used for the detail-page pager; either
  * side is `null` at a collection boundary.
  */
+/** The ordered catalog an entry is paged through: templates, blocks or components. */
+const catalogListFor = (entry: RegistryEntryMeta): RegistryEntryMeta[] =>
+  entry.category === 'templates' ? TEMPLATES : entry.category === 'blocks' ? BLOCKS_ORDERED : COMPONENTS_ORDERED;
+
+/** 1-based position of an entry in its catalog, for `02 / 10` style counters. */
+export const entryPosition = (entry: RegistryEntryMeta): { index: number; total: number } => {
+  const list = catalogListFor(entry);
+  return { index: list.findIndex((e) => e.name === entry.name) + 1, total: list.length };
+};
+
 export const entrySiblings = (
   entry: RegistryEntryMeta,
 ): {
   prev: RegistryEntryMeta | null;
   next: RegistryEntryMeta | null;
 } => {
-  const list =
-    entry.category === 'templates' ? TEMPLATES : entry.category === 'blocks' ? BLOCKS_ORDERED : COMPONENTS_ORDERED;
+  const list = catalogListFor(entry);
   const i = list.findIndex((e) => e.name === entry.name);
   if (i === -1) return { prev: null, next: null };
   return {

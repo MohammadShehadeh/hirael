@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Loader2 } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -11,7 +10,6 @@ import { Sparkles } from '@/registry/hirael/bases/base/components/sparkles';
 const HEADLINE = 'We are briefly offline';
 
 const Headline = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -21,24 +19,22 @@ const Headline = () => {
       className="max-w-3xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h1>
   );
 };
 
 const Maintenance02 = () => {
-  const reduce = useReducedMotion();
-
   return (
     <section
       data-slot="maintenance"
@@ -51,18 +47,11 @@ const Maintenance02 = () => {
       />
       <Sparkles density={3} className="-z-10 [mask-image:radial-gradient(50%_50%,black,transparent_85%)]" />
 
-      <motion.div
+      <div
         data-slot="maintenance-body"
-        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10"
-        initial={reduce ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10 animate-in fade-in duration-1000 ease-out fill-mode-both motion-reduce:animate-none"
       >
-        <motion.div
-          initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-        >
+        <div className="animate-in fade-in zoom-in-90 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-200">
           <Badge
             variant="outline"
             data-slot="maintenance-badge"
@@ -70,34 +59,28 @@ const Maintenance02 = () => {
           >
             Maintenance
           </Badge>
-        </motion.div>
+        </div>
 
         <Headline />
 
         <div role="status" aria-live="polite" className="contents">
-          <motion.p
+          <p
             data-slot="maintenance-description"
-            className="mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
+            className="mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-800"
           >
             We are upgrading the registry and the console. Installed components keep working, and nothing you shipped is
             affected.
-          </motion.p>
+          </p>
 
-          <motion.div
+          <div
             data-slot="maintenance-status"
-            className="mt-6 inline-flex items-center gap-2 text-sm text-foreground/70"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+            className="mt-6 inline-flex items-center gap-2 text-sm text-foreground/70 animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-600"
           >
-            <Loader2 aria-hidden className={cn('size-4', !reduce && 'animate-spin')} />
+            <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
             <span>Check back in a few minutes</span>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

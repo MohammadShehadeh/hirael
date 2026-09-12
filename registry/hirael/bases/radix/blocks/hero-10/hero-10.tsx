@@ -3,7 +3,6 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Play, Rocket } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -19,20 +18,7 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-const RISE = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const STILL = {
-  hidden: { opacity: 1, y: 0 },
-  visible: { opacity: 1, y: 0 },
-};
-
 const Hero10 = () => {
-  const reduceMotion = useReducedMotion();
-  const variants = reduceMotion ? STILL : RISE;
-
   return (
     <div
       data-slot="hero"
@@ -48,34 +34,28 @@ const Hero10 = () => {
         className="absolute inset-0 h-full w-full object-cover opacity-40 blur-[1px] md:blur-[2px]"
       />
 
-      <motion.div className="relative z-10 px-6" initial="hidden" animate="visible">
+      <div className="relative z-10 px-6">
         <div className="relative mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
           <Badge variant="outline">
             <Rocket className="size-3" />
             <span className="text-xs">Design workflows visually</span>
           </Badge>
 
-          <motion.h1
-            className="relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16"
-            variants={variants}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+          <h1
+            className="relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16 animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none"
           >
             The visual control plane <span>for your pipelines</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="mx-auto mt-8 w-full text-base tracking-tight sm:text-lg md:text-balance"
-            variants={variants}
-            transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
+          <p
+            className="mx-auto mt-8 w-full text-base tracking-tight sm:text-lg md:text-balance animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-100"
           >
             Build, analyze, and optimize CI/CD workflows with drag-and-drop, AI insights, and guardrails, without
             breaking your YAML.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md"
-            variants={variants}
-            transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
+          <div
+            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200"
           >
             <Button asChild size="lg">
               <a href="#" className="group flex items-center gap-2">
@@ -89,9 +69,9 @@ const Hero10 = () => {
                 See how it works
               </a>
             </Button>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

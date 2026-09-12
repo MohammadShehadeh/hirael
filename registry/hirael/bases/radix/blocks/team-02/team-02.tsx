@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -10,7 +9,6 @@ import { Marquee } from '@/registry/hirael/bases/radix/components/marquee';
 const HEADLINE = 'Ten years of building interfaces that last';
 
 const Title = () => {
-  const reduce = useReducedMotion();
   const words = HEADLINE.split(' ');
   const half = Math.floor(words.length / 2);
 
@@ -20,16 +18,16 @@ const Title = () => {
       className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
-        <motion.span
+        <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 + i * 0.08 }}
+          className={cn(
+            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            i < half ? 'text-muted-foreground' : 'text-foreground',
+          )}
+          style={{ animationDelay: `${200 + i * 80}ms` }}
         >
           {word}
-        </motion.span>
+        </span>
       ))}
     </h2>
   );
@@ -107,57 +105,42 @@ const Chip = ({ children }: { children: React.ReactNode }) => {
 };
 
 const MetricCard = ({ metric, index }: { metric: Metric; index: number }) => {
-  const reduce = useReducedMotion();
-
   return (
-    <motion.div
+    <div
       data-slot="team-metric"
-      className="rounded-lg border border-border bg-card p-4 text-center"
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.12 }}
+      className="rounded-lg border border-border bg-card p-4 text-center animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
+      style={{ animationDelay: `${index * 120}ms` }}
     >
       <h3 className="mb-1 text-xs uppercase text-muted-foreground">{metric.label}</h3>
       <p className="font-serif text-3xl font-medium text-foreground">{metric.value}</p>
       <p className="text-sm text-muted-foreground">{metric.subtext}</p>
-    </motion.div>
+    </div>
   );
 };
 
 const Team02 = () => {
-  const reduce = useReducedMotion();
   const rows = [COMPETENCIES.slice(0, 4), COMPETENCIES.slice(4, 8), COMPETENCIES.slice(8)];
 
   return (
     <section data-slot="team" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="team-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
+          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
             >
               Experience
             </Badge>
-          </motion.div>
+          </div>
           <Title />
-          <motion.p
+          <p
             data-slot="team-description"
-            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+            className="max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400"
           >
             The person behind the registry, the numbers that describe the work, and the skills that show up in every
             component.
-          </motion.p>
+          </p>
         </div>
 
         <div data-slot="team-metrics" className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -167,32 +150,16 @@ const Team02 = () => {
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-          <motion.article
+          <article
             data-slot="team-profile"
-            className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8"
-            initial={reduce ? false : { opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8 animate-in fade-in slide-in-from-top-5 duration-600 ease-out fill-mode-both motion-reduce:animate-none"
           >
             <GridPattern />
-            <motion.div
-              className="relative mb-4"
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-            >
+            <div className="relative mb-4 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-100">
               <h3 className="mb-1 text-2xl font-semibold text-foreground md:text-3xl">Layla Haddad</h3>
               <p className="text-muted-foreground">Design systems lead, Hirael</p>
-            </motion.div>
-            <motion.div
-              className="relative flex flex-col gap-3"
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
-            >
+            </div>
+            <div className="relative flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200">
               <p className="leading-relaxed text-pretty text-muted-foreground">
                 Layla spent a decade turning one-off screens into systems that other engineers actually reach for. She
                 led the token migration at two product companies before starting Hirael.
@@ -201,34 +168,24 @@ const Team02 = () => {
                 She reviews every component before it ships, usually in Arabic first, because if the RTL layout holds,
                 the rest tends to follow.
               </p>
-            </motion.div>
-          </motion.article>
+            </div>
+          </article>
 
           <div
             data-slot="team-skills"
             className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 md:px-10 md:py-8"
           >
             <GridPattern />
-            <motion.div
-              className="relative mb-4"
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            >
+            <div className="relative mb-4 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
               <h3 className="mb-3 text-2xl font-semibold text-foreground md:text-3xl">Core competencies</h3>
               <p className="text-pretty text-muted-foreground">
                 The skills that come up in every engagement, from the first token audit to the last accessibility pass.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
+            <div
               data-slot="team-marquee"
-              className="relative mt-auto flex flex-col gap-2 pt-6 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+              className="relative mt-auto flex flex-col gap-2 pt-6 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200"
             >
               {rows.map((row, i) => (
                 <Marquee key={i} pauseOnHover reverse={i === 1} duration={30 + i * 5} gap="0.5rem">
@@ -237,7 +194,7 @@ const Team02 = () => {
                   ))}
                 </Marquee>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

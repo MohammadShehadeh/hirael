@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Play, Sparkles } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -20,13 +19,6 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
 };
 
 const Hero08 = () => {
-  const reduceMotion = useReducedMotion();
-
-  const item = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <section
       data-slot="hero"
@@ -55,7 +47,7 @@ const Hero08 = () => {
         }}
       />
 
-      <motion.div data-slot="hero-content" className="relative z-10 px-6" initial="hidden" animate="visible">
+      <div data-slot="hero-content" className="relative z-10 px-6">
         <div className="mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
           <Badge
             variant="outline"
@@ -65,27 +57,21 @@ const Hero08 = () => {
             Design workflows visually
           </Badge>
 
-          <motion.h1
-            className="font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl"
-            variants={item}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+          <h1
+            className="font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none"
           >
             One workspace for every <span className="text-muted-foreground italic">moving part</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg"
-            variants={item}
-            transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
+          <p
+            className="mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-100"
           >
             Build, review, and ship your work from one place. Drag to arrange, connect the pieces, and keep the details
             that matter in view.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md"
-            variants={item}
-            transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
+          <div
+            className="mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200"
           >
             <Button render={<a className="flex items-center gap-2" href="#" />} nativeButton={false} size="lg">
               <GithubIcon className="size-4" />
@@ -100,7 +86,7 @@ const Hero08 = () => {
               <Play className="size-3.5 fill-current" />
               See how it works
             </Button>
-          </motion.div>
+          </div>
         </div>
 
         <div
@@ -136,7 +122,7 @@ const Hero08 = () => {
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

@@ -112,7 +112,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'text',
       id: 'email',
       label: 'Email',
-      value: 'mohammad@plinth.dev',
+      value: 'mohammad@hirael.com',
       hint: 'Used for sign-in',
     },
     {
@@ -188,7 +188,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'text',
       id: 'ap-email',
       label: 'Billing email',
-      value: 'ap@plinth.dev',
+      value: 'ap@hirael.com',
       hint: 'Invoices are sent here',
     },
   ],
@@ -238,26 +238,10 @@ const BrandMark = ({ className }: { className?: string }) => {
     <span
       role="img"
       aria-label="Hirael"
-      className={cn(
-        'flex aspect-square items-center justify-center rounded-md bg-foreground text-background',
-        className,
-      )}
+      className={cn('flex aspect-square items-center justify-center rounded-sm text-foreground', className)}
     >
-      <svg
-        viewBox="0 0 80 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-        className="size-[64%]"
-      >
-        <path d="M16 78 V40 a24 24 0 0 1 48 0 V78" />
-        <path d="M40 44 L43.2 52 L51 55 L43.2 58 L40 66 L36.8 58 L29 55 L36.8 52 Z" />
-        <path d="M22 86 H58" opacity="0.7" />
-        <path d="M28 92 H52" opacity="0.45" />
-        <path d="M34 96 H46" opacity="0.25" />
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className="size-[64%]">
+        <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
       </svg>
     </span>
   );
@@ -463,7 +447,7 @@ const AppShell02 = () => {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel className="font-normal">
                 <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                <span className="block truncate text-xs text-muted-foreground">mohammad@plinth.dev</span>
+                <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>

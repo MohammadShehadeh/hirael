@@ -519,7 +519,7 @@ const Settings02 = () => {
                 <div className="flex flex-col gap-1">
                   <SettingsPanelTitle>Email notifications</SettingsPanelTitle>
                   <SettingsPanelDescription>
-                    Sent to mohammad@plinth.dev. Pausing keeps your choices for when you come back.
+                    Sent to mohammad@hirael.com. Pausing keeps your choices for when you come back.
                   </SettingsPanelDescription>
                 </div>
                 <Field orientation="horizontal" className="w-auto shrink-0 gap-2">

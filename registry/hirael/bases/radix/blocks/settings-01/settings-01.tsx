@@ -403,7 +403,7 @@ const Settings01 = () => {
                     <Input
                       id="settings-email"
                       type="email"
-                      defaultValue="mohammad@plinth.dev"
+                      defaultValue="mohammad@hirael.com"
                       autoComplete="email"
                       readOnly
                       className="flex-1"

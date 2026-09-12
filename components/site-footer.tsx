@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { HIRAEL_LOCKUP_VIEWBOX, HIRAEL_MARK_PATH, HIRAEL_WORDMARK_PATH } from '@/lib/logo-paths';
 import { SITE } from '@/lib/site';
 import { Logo } from '@/components/logo';
 
@@ -181,12 +182,20 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
           </div>
 
           <div className="relative">
-            <span
+            <svg
               aria-hidden
-              className="wordmark-cutout pointer-events-none absolute inset-x-0 -bottom-4 text-center text-[18vw] leading-none sm:-bottom-8 lg:text-[12rem]"
+              viewBox={HIRAEL_LOCKUP_VIEWBOX}
+              className="pointer-events-none absolute inset-x-0 -bottom-5 mx-auto w-[62vw] select-none sm:-bottom-9 lg:w-[32rem]"
             >
-              Hirael
-            </span>
+              <defs>
+                <linearGradient id="footer-wordmark" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="color-mix(in oklch, var(--primary) 16%, transparent)" />
+                  <stop offset="100%" stopColor="color-mix(in oklch, var(--primary) 4%, transparent)" />
+                </linearGradient>
+              </defs>
+              <path d={HIRAEL_MARK_PATH} fill="url(#footer-wordmark)" />
+              <path d={HIRAEL_WORDMARK_PATH} fill="url(#footer-wordmark)" />
+            </svg>
             <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 © {year} {SITE.author}. Built on shadcn/ui.

@@ -573,7 +573,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm1',
     name: 'Mohammad Shehadeh',
-    email: 'mohammad@plinth.dev',
+    email: 'mohammad@hirael.com',
     role: 'Owner',
     status: 'Active',
     joined: 'Jan 12, 2025',
@@ -581,7 +581,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm2',
     name: 'Lena Fischer',
-    email: 'lena@plinth.dev',
+    email: 'lena@hirael.com',
     role: 'Admin',
     status: 'Active',
     joined: 'Feb 3, 2025',
@@ -589,7 +589,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm3',
     name: 'Omar Haddad',
-    email: 'omar@plinth.dev',
+    email: 'omar@hirael.com',
     role: 'Member',
     status: 'Active',
     joined: 'Mar 19, 2025',
@@ -597,7 +597,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm4',
     name: 'Priya Raman',
-    email: 'priya@plinth.dev',
+    email: 'priya@hirael.com',
     role: 'Member',
     status: 'Active',
     joined: 'May 7, 2025',
@@ -605,7 +605,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm5',
     name: 'Tomás Herrera',
-    email: 'tomas@plinth.dev',
+    email: 'tomas@hirael.com',
     role: 'Viewer',
     status: 'Active',
     joined: 'Jun 22, 2025',
@@ -613,7 +613,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm6',
     name: 'Sara Nakamura',
-    email: 'sara@plinth.dev',
+    email: 'sara@hirael.com',
     role: 'Member',
     status: 'Suspended',
     joined: 'Aug 1, 2025',
@@ -623,7 +623,7 @@ const MEMBERS: readonly Member[] = [
 const PENDING: readonly PendingInvite[] = [
   {
     id: 'p1',
-    email: 'nadia@plinth.dev',
+    email: 'nadia@hirael.com',
     role: 'Member',
     invited: '2 days ago',
   },

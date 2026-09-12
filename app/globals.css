@@ -346,26 +346,6 @@
       0 8px 24px -18px color-mix(in oklch, var(--foreground) 16%, transparent);
   }
 
-  .wordmark-cutout {
-    font-family: var(--font-serif), ui-serif, Georgia, serif;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 0.8;
-    user-select: none;
-    background-image: linear-gradient(
-      180deg,
-      color-mix(in oklch, var(--primary) 16%, transparent),
-      color-mix(in oklch, var(--primary) 4%, transparent)
-    );
-    background-size:
-      100% 100%,
-      14px 14px;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-  }
-
   .state-dot {
     display: inline-block;
     width: 6px;

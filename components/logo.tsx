@@ -1,61 +1,43 @@
-import * as React from 'react';
-
+import { HIRAEL_LOCKUP_VIEWBOX, HIRAEL_MARK_PATH, HIRAEL_MARK_VIEWBOX, HIRAEL_WORDMARK_PATH } from '@/lib/logo-paths';
 import { cn } from '@/lib/utils';
 
-const CORMORANT_WORDMARK_STYLE: React.CSSProperties = {
-  fontFamily: 'var(--font-cormorant), ui-serif, serif',
-  fontWeight: 500,
-  letterSpacing: '0.06em',
-};
-
-const ArchMarkPaths = () => {
-  return (
-    <>
-      <path
-        d="M160 340V235C160 171 203 128 256 128C309 128 352 171 352 235V340"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="18"
-        strokeLinecap="square"
-      />
-      <path
-        d="M256 220C262 242 274 254 296 260C274 266 262 278 256 300C250 278 238 266 216 260C238 254 250 242 256 220Z"
-        fill="currentColor"
-      />
-      <path d="M95 372C160 364 352 364 417 372C352 380 160 380 95 372Z" fill="currentColor" />
-      <path d="M135 405C185 399 327 399 377 405C327 411 185 411 135 405Z" fill="currentColor" />
-      <path d="M190 438C220 434 292 434 322 438C292 442 220 442 190 438Z" fill="currentColor" />
-    </>
-  );
-};
-
-interface ArchMarkSvgProps {
+interface MarkSvgProps {
   className?: string;
 }
 
-const ArchMarkSvg = ({ className }: ArchMarkSvgProps) => {
+const MarkSvg = ({ className }: MarkSvgProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="80 104 352 352" role="img" aria-hidden className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={HIRAEL_MARK_VIEWBOX}
+      fill="currentColor"
+      role="img"
+      aria-hidden
+      className={className}
+    >
       <title>Hirael</title>
-      <ArchMarkPaths />
+      <path d={HIRAEL_MARK_PATH} />
     </svg>
   );
 };
 
-interface HiraelWordmarkSvgProps {
+interface LockupSvgProps {
   className?: string;
 }
 
-const HiraelWordmarkSvg = ({ className }: HiraelWordmarkSvgProps) => {
+const LockupSvg = ({ className }: LockupSvgProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 60" role="img" aria-hidden className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={HIRAEL_LOCKUP_VIEWBOX}
+      fill="currentColor"
+      role="img"
+      aria-hidden
+      className={className}
+    >
       <title>Hirael</title>
-      <svg x="6" y="6" width="46" height="46" viewBox="80 104 352 352">
-        <ArchMarkPaths />
-      </svg>
-      <text x="56" y="42" fill="currentColor" fontSize="42" style={CORMORANT_WORDMARK_STYLE}>
-        HIRAEL
-      </text>
+      <path d={HIRAEL_MARK_PATH} />
+      <path d={HIRAEL_WORDMARK_PATH} />
     </svg>
   );
 };
@@ -66,8 +48,8 @@ export interface LogoProps {
 
 export const Logo = ({ className }: LogoProps) => {
   return (
-    <span role="img" aria-label="Hirael" className={cn('inline-flex shrink-0 text-foreground', className)}>
-      <HiraelWordmarkSvg className="h-full w-auto" />
+    <span role="img" aria-label="Hirael" className={cn('inline-flex shrink-0 items-center text-foreground', className)}>
+      <LockupSvg className="h-full w-auto" />
     </span>
   );
 };
@@ -78,8 +60,12 @@ export interface LogoMarkProps {
 
 export const LogoMark = ({ className }: LogoMarkProps) => {
   return (
-    <span role="img" aria-label="Hirael" className={cn('inline-flex size-6 shrink-0 text-foreground', className)}>
-      <ArchMarkSvg className="size-full" />
+    <span
+      role="img"
+      aria-label="Hirael"
+      className={cn('inline-flex size-6 shrink-0 items-center justify-center text-foreground', className)}
+    >
+      <MarkSvg className="h-full w-auto" />
     </span>
   );
 };
@@ -102,7 +88,7 @@ export const LogoTile = ({ className, markClassName }: LogoTileProps) => {
         className,
       )}
     >
-      <ArchMarkSvg className={cn('relative size-7.5', markClassName)} />
+      <MarkSvg className={cn('relative h-5 w-auto', markClassName)} />
     </span>
   );
 };

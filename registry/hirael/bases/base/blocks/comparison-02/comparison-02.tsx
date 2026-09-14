@@ -1,8 +1,16 @@
-import { Check, Minus } from 'lucide-react';
+import type * as React from 'react';
+import { ArrowRight, Check, Minus } from 'lucide-react';
 
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { cn } from '@/lib/utils';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 type Cell = boolean | string;
 
@@ -24,7 +32,7 @@ const ROWS: readonly { label: string; cells: readonly [Cell, Cell, Cell] }[] = [
   { label: 'Time to a working combobox', cells: ['Two days', 'One command', 'One command'] },
   { label: 'Restyle without fighting internals', cells: [true, true, false] },
   { label: 'Right-to-left handled out of the box', cells: [false, true, 'Sometimes'] },
-  { label: 'Light and dark both designed, not derived', cells: [false, true, 'Sometimes'] },
+  { label: 'Light and dark themes checked side by side', cells: [false, true, 'Sometimes'] },
   { label: 'Upgrades arrive on someone else’s schedule', cells: [false, false, true] },
 ];
 
@@ -39,7 +47,7 @@ const CellValue = ({ value }: { value: Cell }) => {
     </>
   ) : (
     <>
-      <Minus aria-hidden className="size-4 text-muted-foreground/50" />
+      <Minus aria-hidden className="size-4 text-muted-foreground" />
       <span className="sr-only">No</span>
     </>
   );
@@ -47,18 +55,21 @@ const CellValue = ({ value }: { value: Cell }) => {
 
 const Comparison02 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28" aria-labelledby="comparison-02-heading">
+    <section data-slot="comparison" className="bg-background py-20 sm:py-28" aria-labelledby="comparison-02-heading">
       <div className="container w-full max-w-5xl">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 id="comparison-02-heading" className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">
+        <div data-slot="comparison-header" className="mx-auto max-w-2xl text-center">
+          <h2
+            id="comparison-02-heading"
+            className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight sm:text-4xl')}
+          >
             Three ways to get a date range picker
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p style={stagger(1)} className={cn(ENTER, 'mt-4 text-muted-foreground')}>
             Only one of them leaves you with code you can read on a Friday afternoon and change on a Monday morning.
           </p>
         </div>
 
-        <div className="mt-12 overflow-x-auto">
+        <div data-slot="comparison-table" style={stagger(2)} className={cn(ENTER, 'mt-12 overflow-x-auto')}>
           <table className="w-full min-w-[42rem] border-collapse text-start">
             <caption className="sr-only">Comparing three ways to add a component to a project</caption>
             <thead>
@@ -114,8 +125,9 @@ const Comparison02 = () => {
                     className={cn('p-4', column.featured && 'rounded-b-md border-x border-b border-border bg-card')}
                   >
                     {column.featured && (
-                      <Button size="sm" className="w-full">
+                      <Button size="sm" className="group w-full" render={<a href="#" />} nativeButton={false}>
                         Browse the registry
+                        <ArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                       </Button>
                     )}
                   </td>

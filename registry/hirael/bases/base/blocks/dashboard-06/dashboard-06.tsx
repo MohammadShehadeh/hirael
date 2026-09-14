@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   BarChart3,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
   CircleSlash,
   Clock,
@@ -85,7 +86,7 @@ const RUNS: Run[] = [
     steps: [
       { name: 'Install deps', state: 'success', durationLabel: '20s' },
       { name: 'Build', state: 'success', durationLabel: '18s' },
-      { name: 'Upload', state: 'running', durationLabel: '—' },
+      { name: 'Upload', state: 'running', durationLabel: 'Running' },
     ],
   },
   {
@@ -101,7 +102,7 @@ const RUNS: Run[] = [
       { name: 'Install deps', state: 'success', durationLabel: '22s' },
       { name: 'Lint', state: 'success', durationLabel: '8s' },
       { name: 'Unit tests', state: 'failure', durationLabel: '41s' },
-      { name: 'Build', state: 'skipped', durationLabel: '—' },
+      { name: 'Build', state: 'skipped', durationLabel: '-' },
     ],
   },
   {
@@ -172,7 +173,7 @@ const RUNS: Run[] = [
     steps: [
       { name: 'Install deps', state: 'success', durationLabel: '21s' },
       { name: 'Lint', state: 'failure', durationLabel: '6s' },
-      { name: 'Unit tests', state: 'skipped', durationLabel: '—' },
+      { name: 'Unit tests', state: 'skipped', durationLabel: '-' },
     ],
   },
 ];
@@ -227,6 +228,20 @@ const chartConfig = {
   duration: { label: 'Duration' },
 } satisfies ChartConfig;
 
+const CHART_DATA = [...RUNS].reverse().map((run) => ({
+  run,
+  label: `#${run.number}`,
+  duration: run.durationSec,
+  state: run.state,
+}));
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+
 const formatSeconds = (value: number) => {
   if (value < 60) return `${value}s`;
   const m = Math.floor(value / 60);
@@ -263,29 +278,32 @@ const StatCard = ({ stat }: { stat: Stat }) => {
         {stat.label}
       </div>
       <span className="text-3xl font-semibold tabular-nums tracking-tight sm:text-4xl">{stat.value}</span>
-      <span className="text-[11px] text-muted-foreground">{stat.meta}</span>
+      <span className="text-xs text-muted-foreground">{stat.meta}</span>
     </div>
   );
 };
 
 const RunBreakdown = ({ run }: { run: Run | null }) => {
+  const [logOpen, setLogOpen] = React.useState(false);
+  const logId = React.useId();
+
   if (!run) {
     return (
-      <Card data-slot="dashboard-breakdown" className="gap-1 self-stretch overflow-hidden py-0">
+      <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'gap-1 self-stretch overflow-hidden py-0')}>
         <CardHeader className="px-4 pt-3">
-          <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Hash className="size-3 shrink-0" aria-hidden />
-            <span>—</span>
+            <span>None</span>
           </div>
           <CardTitle className="text-sm text-muted-foreground">No run selected</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-1 items-center justify-center px-4 pb-4">
           <Empty className="border-0">
-            <EmptyMedia variant="icon">
-              <BarChart3 />
+            <EmptyMedia>
+              <BarChart3 className="size-5 text-muted-foreground" aria-hidden />
             </EmptyMedia>
             <EmptyHeader>
-              <EmptyDescription>Pick a bar in the chart to inspect a run.</EmptyDescription>
+              <EmptyDescription>Pick a bar or a run in the list to inspect it.</EmptyDescription>
             </EmptyHeader>
           </Empty>
         </CardContent>
@@ -294,35 +312,42 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
   }
 
   return (
-    <Card data-slot="dashboard-breakdown" className="gap-2 self-stretch overflow-hidden py-0">
+    <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'gap-2 self-stretch overflow-hidden py-0')}>
       <CardHeader className="px-4 pt-3">
-        <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center">
             <Hash className="size-3 shrink-0" aria-hidden />
             {run.number}
           </span>
-          {run.attempt > 1 && <span>· attempt {run.attempt}</span>}
+          {run.attempt > 1 && (
+            <>
+              <span aria-hidden className="text-border">
+                |
+              </span>
+              <span>Attempt {run.attempt}</span>
+            </>
+          )}
         </div>
         <CardTitle className="flex items-center justify-between gap-2">
           <span className="line-clamp-1 text-sm">{run.pipeline}</span>
-          <Badge variant="outline" className="gap-1.5 text-[10px]" style={{ color: STATE_TOKEN[run.state] }}>
+          <Badge variant="outline" className="gap-1.5 text-xs" style={{ color: STATE_TOKEN[run.state] }}>
             <StateDot state={run.state} />
             {STATE_LABEL[run.state]}
           </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 px-4 pb-4">
-        <dl className="grid grid-cols-2 gap-2 text-[11px]">
+        <dl className="grid grid-cols-2 gap-2 text-xs">
           <div className="flex flex-col gap-0.5">
             <dt className="text-muted-foreground">Branch</dt>
-            <dd className="inline-flex items-center gap-1 font-mono">
+            <dd className="inline-flex items-center gap-1">
               <GitBranch className="size-3 shrink-0" aria-hidden />
               <span className="truncate">{run.branch}</span>
             </dd>
           </div>
           <div className="flex flex-col gap-0.5">
             <dt className="text-muted-foreground">Duration</dt>
-            <dd className="inline-flex items-center gap-1 font-mono tabular-nums">
+            <dd className="inline-flex items-center gap-1 tabular-nums">
               <Clock className="size-3 shrink-0" aria-hidden />
               {formatSeconds(run.durationSec)}
             </dd>
@@ -333,18 +358,51 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
           <p className="text-xs uppercase text-muted-foreground">Steps</p>
           <ul className="flex flex-col gap-1">
             {run.steps.map((step) => (
-              <li key={step.name} className="flex items-center gap-2 text-[11px]">
+              <li key={step.name} className="flex items-center gap-2 text-xs">
                 <StateDot state={step.state} />
                 <span className="min-w-0 flex-1 truncate">{step.name}</span>
-                <span className="shrink-0 font-mono tabular-nums text-muted-foreground">{step.durationLabel}</span>
+                <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <Button type="button" size="sm" className="mt-auto gap-1 px-3 py-1.5 text-[11px]">
-          View full log
-          <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
+        <div
+          id={logId}
+          data-slot="dashboard-log"
+          className={cn(
+            'grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+            logOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+          )}
+        >
+          <div className="overflow-hidden">
+            <pre className="rounded-md border border-border bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
+              {run.steps
+                .map(
+                  (step, index) =>
+                    `[${index + 1}/${run.steps.length}] ${step.name}: ${STATE_LABEL[step.state].toLowerCase()}${step.durationLabel === '-' || step.state === 'running' ? '' : ` in ${step.durationLabel}`}`,
+                )
+                .join('\n')}
+            </pre>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          size="sm"
+          aria-expanded={logOpen}
+          aria-controls={logId}
+          onClick={() => setLogOpen((open) => !open)}
+          className="mt-auto gap-1 px-3 py-1.5 text-xs"
+        >
+          {logOpen ? 'Hide log' : 'View full log'}
+          <ChevronDown
+            className={cn(
+              'size-3 transition-transform duration-150 motion-reduce:transition-none',
+              logOpen && 'rotate-180',
+            )}
+            aria-hidden
+          />
         </Button>
       </CardContent>
     </Card>
@@ -352,55 +410,50 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
 };
 
 const Dashboard06 = () => {
-  const chartData = React.useMemo(
-    () =>
-      [...RUNS].reverse().map((run) => ({
-        run,
-        label: `#${run.number}`,
-        duration: run.durationSec,
-        state: run.state,
-      })),
-    [],
-  );
-
-  const [selectedId, setSelectedId] = React.useState<string>(RUNS[0].id);
+  const [selectedId, setSelectedId] = React.useState<string | null>(RUNS[0].id);
   const selectedRun = RUNS.find((r) => r.id === selectedId) ?? null;
+
+  /** Picking the selected run again clears it, so the empty panel is reachable. */
+  const toggleRun = (id: string) => setSelectedId((current) => (current === id ? null : id));
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container flex w-full flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <span className="inline-flex w-fit items-center gap-1.5 text-xs uppercase text-muted-foreground">
-            <span className="size-1 rounded-full bg-foreground" />
-            Pipelines
-          </span>
-          <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Overview</h2>
+        <div data-slot="dashboard-header" className={cn(ENTER, 'flex flex-col gap-1')}>
+          <span className="text-xs uppercase text-muted-foreground">Pipelines</span>
+          <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Build health</h2>
           <p className="max-w-xl text-sm text-muted-foreground">
             Success rate, failures, and live activity across your pipelines, with the latest runs and what each one did.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          data-slot="dashboard-stats"
+          style={stagger(1)}
+          className={cn(ENTER, 'grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4')}
+        >
           {STATS.map((stat) => (
             <StatCard key={stat.key} stat={stat} />
           ))}
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-3 lg:grid-cols-[1fr_340px]">
+        <div style={stagger(2)} className={cn(ENTER, 'grid grid-cols-1 items-start gap-3 lg:grid-cols-[1fr_340px]')}>
           <Card data-slot="dashboard-chart" className="py-0">
             <CardHeader className="px-6 pt-4 pb-3">
               <CardTitle>Latest runs</CardTitle>
-              <CardDescription>Duration of the last {chartData.length} runs. Pick a bar to inspect.</CardDescription>
+              <CardDescription>
+                Duration of the last {CHART_DATA.length} runs. Pick a bar to inspect it, pick it again to clear.
+              </CardDescription>
             </CardHeader>
             <CardContent className="px-2 pb-4 sm:px-4">
               <ChartContainer config={chartConfig} className="h-[200px] w-full">
                 <BarChart
-                  data={chartData}
+                  data={CHART_DATA}
                   margin={{ left: 4, right: 4, top: 4, bottom: 0 }}
                   onClick={(e) => {
                     const payload = (e as { activePayload?: { payload?: unknown }[] }).activePayload?.[0]?.payload as
-                      (typeof chartData)[number] | undefined;
-                    if (payload?.run) setSelectedId(payload.run.id);
+                      (typeof CHART_DATA)[number] | undefined;
+                    if (payload?.run) toggleRun(payload.run.id);
                   }}
                 >
                   <XAxis
@@ -408,7 +461,7 @@ const Dashboard06 = () => {
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
+                    tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                   />
                   <YAxis
                     tickLine={false}
@@ -416,18 +469,18 @@ const Dashboard06 = () => {
                     tickMargin={4}
                     width={52}
                     tickFormatter={(v) => formatSeconds(v as number)}
-                    tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
+                    tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                   />
                   <ChartTooltip
                     cursor={{ fill: 'var(--muted)', opacity: 0.5 }}
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
-                      const { run, state } = payload[0].payload as (typeof chartData)[number];
+                      const { run, state } = payload[0].payload as (typeof CHART_DATA)[number];
                       return (
                         <div className="rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">
                           <p className="font-medium">{run.pipeline}</p>
-                          <p className="font-mono text-muted-foreground">{run.branch}</p>
-                          <div className="mt-1.5 space-y-0.5 text-[11px]">
+                          <p className="text-muted-foreground">{run.branch}</p>
+                          <div className="mt-1.5 space-y-0.5 text-xs">
                             <p>
                               <span className="text-muted-foreground">Status: </span>
                               {STATE_LABEL[state]}
@@ -446,7 +499,7 @@ const Dashboard06 = () => {
                     }}
                   />
                   <Bar dataKey="duration" radius={[4, 4, 0, 0]} maxBarSize={40} cursor="pointer">
-                    {chartData.map((entry) => (
+                    {CHART_DATA.map((entry) => (
                       <Cell
                         key={entry.run.id}
                         fill={STATE_TOKEN[entry.state]}
@@ -457,7 +510,7 @@ const Dashboard06 = () => {
                 </BarChart>
               </ChartContainer>
 
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 px-2 text-[11px] text-muted-foreground">
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 px-2 text-xs text-muted-foreground">
                 {LEGEND.map((item) => (
                   <span key={item.state} className="flex items-center gap-1.5">
                     <span
@@ -471,10 +524,10 @@ const Dashboard06 = () => {
             </CardContent>
           </Card>
 
-          <RunBreakdown run={selectedRun} />
+          <RunBreakdown key={selectedRun?.id ?? 'none'} run={selectedRun} />
         </div>
 
-        <Card data-slot="dashboard-recent" className="py-0">
+        <Card data-slot="dashboard-recent" style={stagger(3)} className={cn(ENTER, 'py-0')}>
           <CardHeader className="px-6 pt-4 pb-3">
             <CardTitle>Recent runs</CardTitle>
             <CardDescription>The last {RUNS.length} pipeline runs.</CardDescription>
@@ -485,7 +538,7 @@ const Dashboard06 = () => {
                 <li key={run.id}>
                   <button
                     type="button"
-                    onClick={() => setSelectedId(run.id)}
+                    onClick={() => toggleRun(run.id)}
                     aria-pressed={selectedId === run.id}
                     className={cn(
                       'grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-6 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50',
@@ -496,7 +549,7 @@ const Dashboard06 = () => {
                     <StateDot state={run.state} />
                     <div className="flex min-w-0 flex-col">
                       <span className="truncate text-sm font-medium">{run.pipeline}</span>
-                      <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                         <Hash className="size-3 shrink-0" aria-hidden />
                         {run.number}
                         <span className="inline-flex items-center gap-1">
@@ -506,7 +559,7 @@ const Dashboard06 = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                      <span className="text-xs tabular-nums text-muted-foreground">
                         {formatSeconds(run.durationSec)}
                         <span className="sr-only">, started {run.startedLabel}</span>
                       </span>

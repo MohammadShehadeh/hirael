@@ -6,11 +6,20 @@ import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { FieldError, FieldGroup, FieldLegend, FieldSet } from '@/registry/hirael/bases/radix/ui/field';
-import { Input } from '@/registry/hirael/bases/radix/ui/input';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/radix/ui/input-otp';
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
 const MASKED_EMAIL = 'a•••@studio.com';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({
+  animationDelay: `${index * step}ms`,
+});
 
 const BrandMark = ({ className }: { className?: string }) => {
   return (
@@ -21,11 +30,10 @@ const BrandMark = ({ className }: { className?: string }) => {
 };
 
 const OtpVerify01 = () => {
-  const [code, setCode] = React.useState<string[]>(Array.from({ length: CODE_LENGTH }, () => ''));
+  const [code, setCode] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<'idle' | 'verifying' | 'success'>('idle');
   const [secondsLeft, setSecondsLeft] = React.useState(RESEND_SECONDS);
-  const inputsRef = React.useRef<Array<HTMLInputElement | null>>([]);
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -35,70 +43,9 @@ const OtpVerify01 = () => {
     return () => window.clearTimeout(id);
   }, [secondsLeft]);
 
-  const applyDigits = (start: number, raw: string) => {
-    const digits = raw.replace(/\D/g, '').slice(0, CODE_LENGTH - start);
-    if (!digits) return;
-    setCode((prev) => {
-      const next = [...prev];
-      for (let j = 0; j < digits.length; j++) {
-        next[start + j] = digits[j];
-      }
-      return next;
-    });
-    setError(null);
-    inputsRef.current[Math.min(start + digits.length, CODE_LENGTH - 1)]?.focus();
-  };
-
-  const clearDigit = (index: number) => {
-    setCode((prev) => {
-      const next = [...prev];
-      next[index] = '';
-      return next;
-    });
-  };
-
-  const onChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    if (raw === '') {
-      clearDigit(index);
-      return;
-    }
-    applyDigits(index, raw);
-  };
-
-  const onKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && e.currentTarget.value === '' && index > 0) {
-      e.preventDefault();
-      clearDigit(index - 1);
-      inputsRef.current[index - 1]?.focus();
-      return;
-    }
-    if (e.key === 'ArrowLeft' && index > 0) {
-      e.preventDefault();
-      inputsRef.current[index - 1]?.focus();
-      return;
-    }
-    if (e.key === 'ArrowRight' && index < CODE_LENGTH - 1) {
-      e.preventDefault();
-      inputsRef.current[index + 1]?.focus();
-    }
-  };
-
-  const onPaste = (index: number, e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    applyDigits(index, e.clipboardData.getData('text'));
-  };
-
-  const resend = () => {
-    setCode(Array.from({ length: CODE_LENGTH }, () => ''));
-    setError(null);
-    setSecondsLeft(RESEND_SECONDS);
-    inputsRef.current[0]?.focus();
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (code.some((d) => d === '')) {
+  const verify = async (value: string) => {
+    if (status === 'verifying') return;
+    if (value.length < CODE_LENGTH) {
       setError('Enter all six digits to continue.');
       return;
     }
@@ -108,8 +55,22 @@ const OtpVerify01 = () => {
     setStatus('success');
   };
 
+  const resend = () => {
+    setCode('');
+    setError(null);
+    setSecondsLeft(RESEND_SECONDS);
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    void verify(code);
+  };
+
   return (
-    <section className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24">
+    <section
+      data-slot="otp-verify"
+      className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
@@ -121,12 +82,18 @@ const OtpVerify01 = () => {
       />
 
       <div className="mx-auto w-full max-w-md px-6">
-        <div className="rounded-sm border border-border bg-card" style={{ boxShadow: '8px 8px 0 0 var(--border)' }}>
+        <div
+          data-slot="otp-verify-card"
+          className={cn(ENTER, 'rounded-sm border border-border bg-card')}
+          style={{ boxShadow: '8px 8px 0 0 var(--border)' }}
+        >
           {status === 'success' ? (
-            <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 px-8 py-10 text-center">
-              <span className="inline-flex size-10 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-                <CheckCircle2 className="size-5" />
-              </span>
+            <div
+              role="status"
+              aria-live="polite"
+              className={cn(SWAP, 'flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-8')}
+            >
+              <CheckCircle2 aria-hidden className="size-7 text-foreground" />
               <div className="flex flex-col gap-1">
                 <h1 className="font-serif text-3xl font-medium tracking-tight">You&apos;re verified</h1>
                 <p className="text-xs text-muted-foreground">Code accepted. Redirecting you to your workspace…</p>
@@ -140,20 +107,27 @@ const OtpVerify01 = () => {
             </div>
           ) : (
             <>
-              <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
-                <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-background">
-                  <BrandMark className="size-6 text-foreground" />
-                </div>
-                <div className="flex flex-col items-center gap-1 text-center">
+              <div
+                data-slot="otp-verify-header"
+                className="flex flex-col items-center gap-4 border-b border-border px-6 pb-6 pt-8 sm:px-8"
+              >
+                <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
+                <div style={stagger(1)} className={cn(ENTER, 'flex flex-col items-center gap-1 text-center')}>
                   <h1 className="font-serif text-3xl font-medium tracking-tight">Check your email</h1>
                   <p className="text-xs text-muted-foreground">
-                    We sent a 6-digit code to <span className="font-mono text-foreground">{MASKED_EMAIL}</span>. It
-                    expires in 10 minutes.
+                    We sent a 6-digit code to <span className="text-foreground">{MASKED_EMAIL}</span>. It expires in 10
+                    minutes.
                   </p>
                 </div>
               </div>
 
-              <form noValidate className="p-8" onSubmit={onSubmit}>
+              <form
+                data-slot="otp-verify-form"
+                noValidate
+                style={stagger(2)}
+                className={cn(ENTER, 'p-6 sm:p-8')}
+                onSubmit={onSubmit}
+              >
                 <FieldGroup className="gap-5">
                   <FieldSet className="gap-1.5">
                     <FieldLegend
@@ -162,30 +136,38 @@ const OtpVerify01 = () => {
                     >
                       Verification code
                     </FieldLegend>
-                    <div dir="ltr" className="flex justify-between gap-2">
-                      {code.map((digit, i) => (
-                        <Input
-                          key={i}
-                          ref={(el) => {
-                            inputsRef.current[i] = el;
-                          }}
-                          type="text"
-                          inputMode="numeric"
-                          autoComplete={i === 0 ? 'one-time-code' : 'off'}
-                          aria-label={`Digit ${i + 1}`}
-                          aria-invalid={Boolean(error) || undefined}
-                          aria-describedby={error ? 'otp01-code-error' : undefined}
-                          value={digit}
-                          onChange={(e) => onChange(i, e)}
-                          onKeyDown={(e) => onKeyDown(i, e)}
-                          onPaste={(e) => onPaste(i, e)}
-                          onFocus={(e) => e.target.select()}
-                          className={cn(
-                            'size-11 px-0 text-center font-mono text-base tabular-nums',
-                            digit && 'border-foreground',
-                          )}
-                        />
-                      ))}
+                    <div dir="ltr">
+                      <InputOTP
+                        maxLength={CODE_LENGTH}
+                        value={code}
+                        onChange={(value) => {
+                          setCode(value);
+                          if (error) setError(null);
+                        }}
+                        onComplete={(value: string) => void verify(value)}
+                        pattern="^\d+$"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        disabled={status === 'verifying'}
+                        aria-label="Verification code"
+                        aria-invalid={Boolean(error) || undefined}
+                        aria-describedby={error ? 'otp01-code-error' : undefined}
+                        containerClassName="justify-between"
+                      >
+                        <InputOTPGroup className="w-full justify-between gap-1.5 sm:gap-2">
+                          {Array.from({ length: CODE_LENGTH }, (_, i) => (
+                            <InputOTPSlot
+                              key={i}
+                              index={i}
+                              aria-invalid={Boolean(error) || undefined}
+                              className={cn(
+                                'size-10 rounded-sm border border-input text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11',
+                                code[i] && 'border-foreground',
+                              )}
+                            />
+                          ))}
+                        </InputOTPGroup>
+                      </InputOTP>
                     </div>
                     <FieldError id="otp01-code-error" className="text-xs">
                       {error}
@@ -195,7 +177,7 @@ const OtpVerify01 = () => {
                   <Button type="submit" variant="default" size="lg" disabled={status === 'verifying'} className="group">
                     {status === 'verifying' ? (
                       <>
-                        <Loader2 className="size-4 animate-spin" />
+                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
                         Verifying…
                       </>
                     ) : (
@@ -206,27 +188,30 @@ const OtpVerify01 = () => {
                     )}
                   </Button>
 
-                  <p className="text-center text-xs text-muted-foreground" aria-live="polite">
+                  <p className="text-center text-xs text-muted-foreground">
                     {secondsLeft > 0 ? (
                       <>
                         Resend code in{' '}
-                        <span className="font-mono tabular-nums text-foreground">
+                        <span dir="ltr" className="tabular-nums text-foreground">
                           0:{String(secondsLeft).padStart(2, '0')}
                         </span>
                       </>
                     ) : (
-                      <>
+                      <span key="resend" className={SWAP}>
                         Didn&apos;t get it?{' '}
                         <Button type="button" variant="link" size="xs" onClick={resend} className="h-auto p-0">
                           Resend code
                         </Button>
-                      </>
+                      </span>
                     )}
                   </p>
+                  <span aria-live="polite" className="sr-only">
+                    {secondsLeft === 0 ? 'You can request a new code now.' : ''}
+                  </span>
                 </FieldGroup>
               </form>
 
-              <div className="border-t border-border px-8 py-4 text-center">
+              <div style={stagger(3)} className={cn(ENTER, 'border-t border-border px-6 py-4 text-center sm:px-8')}>
                 <p className="text-xs text-muted-foreground">
                   Wrong address?{' '}
                   <a
@@ -241,8 +226,8 @@ const OtpVerify01 = () => {
           )}
         </div>
 
-        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">
-          One-time codes · Never shared with anyone
+        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs uppercase text-muted-foreground')}>
+          One-time codes are never shared with anyone
         </p>
       </div>
     </section>

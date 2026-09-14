@@ -4,6 +4,7 @@ import * as React from 'react';
 import { GitMerge, UserPlus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 type ActivityFeedProps = React.ComponentProps<'ul'>;
 
@@ -137,54 +138,153 @@ export {
   ActivityFeedDivider,
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+type ActivityType = 'code' | 'comment' | 'member';
+type ActivityFilter = 'all' | ActivityType;
+
+interface ActivityEvent {
+  id: string;
+  day: string;
+  type: ActivityType;
+  actor: string;
+  initials: string;
+  action: string;
+  time: string;
+  body?: string;
+}
+
+const ACTIVITY: ActivityEvent[] = [
+  {
+    id: 'merge-billing',
+    day: 'Today',
+    type: 'code',
+    actor: 'Lena Park',
+    initials: 'LP',
+    action: 'merged feat/billing into main',
+    time: '14:20',
+  },
+  {
+    id: 'comment-1284',
+    day: 'Today',
+    type: 'comment',
+    actor: 'Mara Singh',
+    initials: 'MS',
+    action: 'commented on PR #1284',
+    time: '13:58',
+    body: 'Looks good. Can we add a test for the proration edge case before this ships?',
+  },
+  {
+    id: 'push-invoices',
+    day: 'Today',
+    type: 'code',
+    actor: 'Omar Haddad',
+    initials: 'OH',
+    action: 'pushed 3 commits to fix/invoice-pdf',
+    time: '11:12',
+  },
+  {
+    id: 'join-theo',
+    day: 'Yesterday',
+    type: 'member',
+    actor: 'Theo Adams',
+    initials: 'TA',
+    action: 'joined the workspace',
+    time: '17:02',
+  },
+  {
+    id: 'comment-1279',
+    day: 'Yesterday',
+    type: 'comment',
+    actor: 'Lena Park',
+    initials: 'LP',
+    action: 'commented on PR #1279',
+    time: '09:41',
+    body: 'Rebased on main. The flaky checkout test passes locally now.',
+  },
+];
+
+const FILTERS: { value: ActivityFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'code', label: 'Code' },
+  { value: 'comment', label: 'Comments' },
+  { value: 'member', label: 'Members' },
+];
+
+const EVENT_ICON: Partial<Record<ActivityType, typeof GitMerge>> = {
+  code: GitMerge,
+  member: UserPlus,
+};
+
 const ActivityFeedBlock = () => {
+  const [filter, setFilter] = React.useState<ActivityFilter>('all');
+  const events = ACTIVITY.filter((event) => filter === 'all' || event.type === filter);
+  const days = [...new Set(events.map((event) => event.day))];
+
   return (
     <section data-slot="activity-feed-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="grid w-full max-w-xl gap-3">
-        <p className="text-xs uppercase text-muted-foreground">Team activity</p>
-        <ActivityFeed>
-          <ActivityFeedDivider>Today</ActivityFeedDivider>
-          <ActivityFeedItem>
-            <ActivityFeedAvatar>
-              <GitMerge className="text-foreground" />
-            </ActivityFeedAvatar>
-            <ActivityFeedContent>
-              <ActivityFeedHeader>
-                <ActivityFeedActor>Lena Park</ActivityFeedActor>
-                <ActivityFeedAction>
-                  merged <span className="font-mono">feat/billing</span> into main
-                </ActivityFeedAction>
-                <ActivityFeedTime className="ms-auto">14:20</ActivityFeedTime>
-              </ActivityFeedHeader>
-            </ActivityFeedContent>
-          </ActivityFeedItem>
-          <ActivityFeedItem>
-            <ActivityFeedAvatar>MS</ActivityFeedAvatar>
-            <ActivityFeedContent>
-              <ActivityFeedHeader>
-                <ActivityFeedActor>Mara Singh</ActivityFeedActor>
-                <ActivityFeedAction>commented on PR #1284</ActivityFeedAction>
-                <ActivityFeedTime className="ms-auto">13:58</ActivityFeedTime>
-              </ActivityFeedHeader>
-              <ActivityFeedBody>
-                Looks good. Can we add a test for the proration edge case before this ships?
-              </ActivityFeedBody>
-            </ActivityFeedContent>
-          </ActivityFeedItem>
-          <ActivityFeedDivider>Yesterday</ActivityFeedDivider>
-          <ActivityFeedItem>
-            <ActivityFeedAvatar>
-              <UserPlus className="text-foreground" />
-            </ActivityFeedAvatar>
-            <ActivityFeedContent>
-              <ActivityFeedHeader>
-                <ActivityFeedActor>Theo Adams</ActivityFeedActor>
-                <ActivityFeedAction>joined the workspace</ActivityFeedAction>
-                <ActivityFeedTime className="ms-auto">17:02</ActivityFeedTime>
-              </ActivityFeedHeader>
-            </ActivityFeedContent>
-          </ActivityFeedItem>
-        </ActivityFeed>
+      <div className={cn(ENTER, 'grid w-full max-w-xl gap-4')}>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs uppercase text-muted-foreground">Team activity</p>
+          <ToggleGroup
+            type="single"
+            size="sm"
+            variant="outline"
+            value={filter}
+            onValueChange={(value) => {
+              if (value) setFilter(value as ActivityFilter);
+            }}
+            aria-label="Filter by type"
+          >
+            {FILTERS.map((option) => (
+              <ToggleGroupItem key={option.value} value={option.value} className="px-2.5 text-xs">
+                {option.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+        {events.length ? (
+          <ActivityFeed key={filter} className={SWAP}>
+            {days.map((day) => (
+              <React.Fragment key={day}>
+                <ActivityFeedDivider>{day}</ActivityFeedDivider>
+                {events
+                  .filter((event) => event.day === day)
+                  .map((event) => {
+                    const Icon = EVENT_ICON[event.type];
+                    return (
+                      <ActivityFeedItem key={event.id}>
+                        <ActivityFeedAvatar>
+                          {Icon ? <Icon aria-hidden className="text-foreground" /> : event.initials}
+                        </ActivityFeedAvatar>
+                        <ActivityFeedContent>
+                          <ActivityFeedHeader>
+                            <ActivityFeedActor>{event.actor}</ActivityFeedActor>
+                            <ActivityFeedAction>{event.action}</ActivityFeedAction>
+                            <ActivityFeedTime className="ms-auto tabular-nums">{event.time}</ActivityFeedTime>
+                          </ActivityFeedHeader>
+                          {event.body ? <ActivityFeedBody>{event.body}</ActivityFeedBody> : null}
+                        </ActivityFeedContent>
+                      </ActivityFeedItem>
+                    );
+                  })}
+              </React.Fragment>
+            ))}
+          </ActivityFeed>
+        ) : (
+          <p
+            key={`${filter}-empty`}
+            className={cn(
+              SWAP,
+              'rounded-md border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground',
+            )}
+          >
+            Nothing of this type in the last two days.
+          </p>
+        )}
       </div>
     </section>
   );

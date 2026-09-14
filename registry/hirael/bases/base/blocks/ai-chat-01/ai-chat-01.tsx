@@ -4,7 +4,7 @@ import * as React from 'react';
 import {
   ArrowDown,
   ArrowUp,
-  Download,
+  Check,
   MoreHorizontal,
   PanelLeft,
   Pencil,
@@ -31,6 +31,11 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 
 export type AiChatRole = 'user' | 'assistant';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 type SheetSide = 'left' | 'right';
 
@@ -350,13 +355,13 @@ const AiChatMessage = ({
     <div
       data-slot="ai-chat-message"
       data-role={role}
-      className={cn('flex w-full items-start gap-3', isUser && 'flex-row-reverse', className)}
+      className={cn(SWAP, 'flex w-full items-start gap-3', isUser && 'flex-row-reverse', className)}
       {...props}
     >
       <span
         aria-hidden
         className={cn(
-          'flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-medium select-none',
+          'flex size-7 shrink-0 items-center justify-center rounded-full text-[10px] font-medium select-none',
           isUser ? 'bg-muted text-foreground' : 'border border-border bg-card text-foreground',
         )}
       >
@@ -418,7 +423,12 @@ const AiChatComposer = ({
   onStop,
   disabled = false,
   placeholder = 'Message the assistant',
-  hint = 'Enter to send · Shift+Enter for a new line',
+  hint = (
+    <>
+      <span>Enter to send</span>
+      <span>Shift+Enter for a new line</span>
+    </>
+  ),
   maxRows = 6,
   className,
   ...props
@@ -483,7 +493,9 @@ const AiChatComposer = ({
           className="min-h-0 resize-none rounded-none border-0 bg-transparent px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent"
         />
         <div className="flex items-center gap-2">
-          {hint ? <p className="me-auto px-1 font-mono text-[10px] text-muted-foreground">{hint}</p> : null}
+          {hint ? (
+            <p className="me-auto flex flex-wrap gap-x-3 px-1 text-[11px] text-muted-foreground">{hint}</p>
+          ) : null}
           {isStreaming ? (
             <Button
               type="button"
@@ -548,20 +560,66 @@ const HISTORY: readonly HistoryGroup[] = [
   },
   {
     label: 'Yesterday',
-    items: [
-      { id: 'c3', title: 'Postgres index for the events table' },
-      { id: 'c4', title: 'Q3 roadmap summary for the board' },
-    ],
+    items: [{ id: 'c3', title: 'Postgres index for the events table' }],
   },
   {
     label: 'Last 7 days',
-    items: [
-      { id: 'c5', title: 'Cron job retries and backoff' },
-      { id: 'c6', title: 'Terraform module review' },
-      { id: 'c7', title: 'How JWT rotation should work' },
-    ],
+    items: [{ id: 'c4', title: 'Cron job retries and backoff' }],
   },
 ];
+
+const PAST_CONVERSATIONS: Record<string, readonly ChatMessage[]> = {
+  c1: [
+    {
+      id: 'c1-1',
+      role: 'user',
+      text: "p95 on /api/accounts went from 180ms to 620ms after Tuesday's deploy. Where do I start?",
+    },
+    {
+      id: 'c1-2',
+      role: 'assistant',
+      text: 'Start with what that deploy changed on the path. Deploy #4821 added a join on events for the activity column, and events has no index on account_id.\n\nRun EXPLAIN ANALYZE on the list query for a real account. If it shows a sequential scan on events, add an index on (account_id, created_at) and p95 should drop back under 200ms.',
+    },
+    { id: 'c1-3', role: 'user', text: 'Sequential scan confirmed, 1.2M rows. The index is building now.' },
+    {
+      id: 'c1-4',
+      role: 'assistant',
+      text: 'Good. Build it with CREATE INDEX CONCURRENTLY so writes keep flowing, then watch p95 for 15 minutes after it finishes. If it stays above 250ms, look at the worker retries next; they changed in the same deploy.',
+    },
+  ],
+  c2: [
+    {
+      id: 'c2-1',
+      role: 'user',
+      text: "Rewrite this so it sounds less like a sales pitch: 'Welcome aboard! Unlock the full power of your workspace today.'",
+    },
+    {
+      id: 'c2-2',
+      role: 'assistant',
+      text: 'Welcome to your workspace.\n\nThree things are worth doing first: invite the people you work with, connect the repository you deploy from, and choose who gets paged when a deploy fails. Each takes about a minute.\n\nIf something looks wrong, reply to this email and a person will answer.',
+    },
+  ],
+  c3: [
+    {
+      id: 'c3-1',
+      role: 'user',
+      text: 'Which index should the events table have? We filter by account_id and sort by created_at, newest first.',
+    },
+    {
+      id: 'c3-2',
+      role: 'assistant',
+      text: 'A composite index on (account_id, created_at DESC). Postgres can then read the newest rows for one account straight from the index, with no sort step.\n\nIf most queries also filter by type, put it in the middle: (account_id, type, created_at DESC).',
+    },
+  ],
+  c4: [
+    { id: 'c4-1', role: 'user', text: 'How many times should a nightly cron job retry before it pages someone?' },
+    {
+      id: 'c4-2',
+      role: 'assistant',
+      text: 'Three retries with exponential backoff (1, 4, then 16 minutes) covers most transient failures, like a database failover or a rate limit. Page after the third failure, not the first, and put the last error in the alert so whoever is on call does not have to dig for it.',
+    },
+  ],
+};
 
 const SUGGESTIONS = [
   "Summarize the last deploy's changes",
@@ -599,17 +657,30 @@ const AiChat01 = () => {
   const [draft, setDraft] = React.useState('');
   const [streamingId, setStreamingId] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState('');
-  const [activeId, setActiveId] = React.useState<string | null>('c1');
-  const timers = React.useRef<{ timeout?: number; interval?: number }>({});
+  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [titles, setTitles] = React.useState<Record<string, string>>({});
+  const [deletedIds, setDeletedIds] = React.useState<string[]>([]);
+  const [renaming, setRenaming] = React.useState(false);
+  const [titleDraft, setTitleDraft] = React.useState('');
+  const [copied, setCopied] = React.useState(false);
+  const timers = React.useRef<{ timeout?: number; interval?: number; copied?: number }>({});
   const sequence = React.useRef(0);
+  const renameInputRef = React.useRef<HTMLInputElement>(null);
+  const renameRequested = React.useRef(false);
+  const renameCancelled = React.useRef(false);
 
   React.useEffect(() => {
     const pending = timers.current;
     return () => {
       window.clearTimeout(pending.timeout);
       window.clearInterval(pending.interval);
+      window.clearTimeout(pending.copied);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (renaming) renameInputRef.current?.select();
+  }, [renaming]);
 
   const stop = () => {
     window.clearTimeout(timers.current.timeout);
@@ -629,7 +700,6 @@ const AiChat01 = () => {
       { id: replyId, role: 'assistant', text: '' },
     ]);
     setDraft('');
-    setActiveId(null);
     setStreamingId(replyId);
 
     const tokens = replyFor(prompt).match(/\S+\s*/g) ?? [];
@@ -647,28 +717,75 @@ const AiChat01 = () => {
     }, 600);
   };
 
-  const newChat = () => {
+  const openChat = (id: string | null) => {
     stop();
-    setMessages([]);
+    setMessages(id ? [...(PAST_CONVERSATIONS[id] ?? [])] : []);
     setDraft('');
-    setActiveId(null);
+    setActiveId(id);
+    setRenaming(false);
+    setCopied(false);
+    setTitles((prev) => {
+      const next = { ...prev };
+      delete next.draft;
+      return next;
+    });
   };
+
+  const deleteChat = () => {
+    if (activeId) setDeletedIds((prev) => [...prev, activeId]);
+    openChat(null);
+  };
+
+  const shareChat = async () => {
+    try {
+      await navigator.clipboard.writeText(`https://chat.plinth.dev/share/${activeId ?? 'draft'}`);
+    } catch {
+      return;
+    }
+    setCopied(true);
+    window.clearTimeout(timers.current.copied);
+    timers.current.copied = window.setTimeout(() => setCopied(false), 2000);
+  };
+
+  const titleKey = activeId ?? 'draft';
+
+  const titleOf = (item: HistoryEntry) => titles[item.id] ?? item.title;
 
   const q = query.trim().toLowerCase();
   const visibleHistory = HISTORY.map((group) => ({
     ...group,
-    items: q ? group.items.filter((item) => item.title.toLowerCase().includes(q)) : group.items,
+    items: group.items.filter(
+      (item) => !deletedIds.includes(item.id) && (!q || titleOf(item).toLowerCase().includes(q)),
+    ),
   })).filter((group) => group.items.length > 0);
 
+  const activeEntry = HISTORY.flatMap((g) => g.items).find((i) => i.id === activeId);
   const firstPrompt = messages.find((m) => m.role === 'user')?.text;
-  const title = firstPrompt ?? HISTORY.flatMap((g) => g.items).find((i) => i.id === activeId)?.title ?? 'New chat';
+  const title = titles[titleKey] ?? (activeEntry ? activeEntry.title : firstPrompt) ?? 'New chat';
+
+  const startRename = () => {
+    renameRequested.current = true;
+    renameCancelled.current = false;
+    setTitleDraft(title);
+    setRenaming(true);
+  };
+
+  const commitRename = () => {
+    if (renameCancelled.current) {
+      renameCancelled.current = false;
+      return;
+    }
+    const next = titleDraft.trim();
+    if (next) setTitles((prev) => ({ ...prev, [titleKey]: next }));
+    setRenaming(false);
+  };
 
   return (
     <section data-slot="ai-chat-01-block" className="min-h-svh w-full bg-background">
       <AiChat>
         <AiChatSidebar>
           <AiChatSidebarHeader>
-            <Button variant="outline" size="sm" onClick={newChat}>
+            <Button variant="outline" size="sm" onClick={() => openChat(null)}>
               <Plus aria-hidden />
               New chat
             </Button>
@@ -695,15 +812,8 @@ const AiChat01 = () => {
               visibleHistory.map((group) => (
                 <AiChatHistoryGroup key={group.label} label={group.label}>
                   {group.items.map((item) => (
-                    <AiChatHistoryItem
-                      key={item.id}
-                      active={item.id === activeId && messages.length === 0}
-                      onClick={() => {
-                        newChat();
-                        setActiveId(item.id);
-                      }}
-                    >
-                      {item.title}
+                    <AiChatHistoryItem key={item.id} active={item.id === activeId} onClick={() => openChat(item.id)}>
+                      {titleOf(item)}
                     </AiChatHistoryItem>
                   ))}
                 </AiChatHistoryGroup>
@@ -712,31 +822,70 @@ const AiChat01 = () => {
           </AiChatHistory>
         </AiChatSidebar>
 
-        <AiChatMain>
+        <AiChatMain className={ENTER}>
           <AiChatHeader>
             <AiChatSidebarTrigger className="-ms-1" />
-            <h1 className="min-w-0 flex-1 truncate text-sm font-medium">{title}</h1>
-            <Badge variant="outline" className="hidden font-mono sm:inline-flex">
+            {renaming ? (
+              <form
+                className="min-w-0 flex-1"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  commitRename();
+                }}
+              >
+                <InputGroup className="h-8 max-w-sm">
+                  <InputGroupInput
+                    ref={renameInputRef}
+                    value={titleDraft}
+                    onChange={(event) => setTitleDraft(event.target.value)}
+                    onBlur={commitRename}
+                    onKeyDown={(event) => {
+                      if (event.key !== 'Escape') return;
+                      renameCancelled.current = true;
+                      setRenaming(false);
+                    }}
+                    aria-label="Chat title"
+                    className="text-sm"
+                  />
+                </InputGroup>
+              </form>
+            ) : (
+              <h1 key={title} className={cn(SWAP, 'min-w-0 flex-1 truncate text-sm font-medium')}>
+                {title}
+              </h1>
+            )}
+            <Badge variant="outline" className="hidden sm:inline-flex">
               plinth-2-pro
             </Badge>
-            <Button variant="ghost" size="icon-sm" aria-label="Share chat">
-              <Share2 aria-hidden />
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label={copied ? 'Link copied' : 'Share chat'}
+              onClick={shareChat}
+              className="px-2"
+            >
+              {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
+              {copied ? <span className={cn(SWAP, 'text-xs')}>Copied</span> : null}
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="More actions" />}>
                 <MoreHorizontal aria-hidden />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem>
+              <DropdownMenuContent
+                align="end"
+                className="w-48"
+                finalFocus={() => {
+                  if (!renameRequested.current) return true;
+                  renameRequested.current = false;
+                  return renameInputRef.current ?? false;
+                }}
+              >
+                <DropdownMenuItem onClick={startRename}>
                   <Pencil />
                   Rename
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Download />
-                  Export as Markdown
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive" onClick={newChat}>
+                <DropdownMenuItem variant="destructive" onClick={deleteChat}>
                   <Trash2 />
                   Delete chat
                 </DropdownMenuItem>
@@ -745,7 +894,10 @@ const AiChat01 = () => {
           </AiChatHeader>
 
           {messages.length === 0 ? (
-            <div className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
+            <div
+              key={activeId ?? 'new'}
+              className={cn(SWAP, 'flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center')}
+            >
               <div className="flex flex-col items-center gap-2">
                 <span className="text-xs text-muted-foreground uppercase">plinth-2-pro</span>
                 <h2 className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">What are you working on?</h2>

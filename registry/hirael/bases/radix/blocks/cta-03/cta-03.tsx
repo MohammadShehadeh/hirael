@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, PenLine } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const Cta03Backdrop = dynamic(() => import('./cta-03-backdrop'), {
@@ -11,51 +12,84 @@ const Cta03Backdrop = dynamic(() => import('./cta-03-backdrop'), {
   loading: () => <div className="size-full bg-muted/20" />,
 });
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 const Cta03 = () => {
   const [active, setActive] = React.useState(false);
 
   return (
-    <section className="flex w-full items-center justify-center px-4 py-12 md:px-6">
+    <section data-slot="cta" className="flex w-full items-center justify-center px-4 py-12 md:px-6">
       <div
         className="relative w-full max-w-7xl"
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card md:rounded-[48px] shadow-sm">
-          <div className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-30 dark:mix-blend-screen">
+        <div
+          data-slot="cta-panel"
+          className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card md:rounded-[48px] shadow-sm"
+        >
+          <div
+            aria-hidden
+            data-slot="cta-backdrop"
+            className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-30 dark:mix-blend-screen"
+          >
             <Cta03Backdrop active={active} />
           </div>
 
-          <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center">
-            <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm dark:text-primary">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-primary" />
-              </span>
+          <div
+            data-slot="cta-body"
+            className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 py-16 text-center"
+          >
+            <span
+              data-slot="cta-eyebrow"
+              className={cn(
+                ENTER,
+                'mb-8 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm dark:text-primary',
+              )}
+            >
+              <PenLine aria-hidden className="size-3.5" />
               AI writing
             </span>
 
-            <h2 className="mb-8 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-foreground md:text-7xl lg:text-8xl">
+            <h2
+              data-slot="cta-title"
+              style={stagger(1)}
+              className={cn(
+                ENTER,
+                'mb-8 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-foreground md:text-7xl lg:text-8xl',
+              )}
+            >
               Your words,
               <br />
               <span className="text-foreground/80">only sharper.</span>
             </h2>
 
-            <p className="mb-12 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+            <p
+              data-slot="cta-description"
+              style={stagger(2)}
+              className={cn(ENTER, 'mb-12 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl')}
+            >
               An AI editor that keeps your voice and tightens everything else. It drafts, trims, and proofs while you
               type.
             </p>
 
-            <Button
-              asChild
-              size="lg"
-              className="group h-14 rounded-full px-10 text-base transition-transform duration-300 hover:scale-105 hover:ring-4 hover:ring-primary/20 active:scale-95"
-            >
-              <a href="#">
-                Start writing
-                <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
-              </a>
-            </Button>
+            <div data-slot="cta-actions" style={stagger(3)} className={ENTER}>
+              <Button
+                asChild
+                size="lg"
+                className="group h-14 rounded-full px-10 text-base transition-[transform,box-shadow] duration-150 hover:scale-105 hover:ring-4 hover:ring-primary/20 active:scale-95 motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
+              >
+                <a href="#">
+                  Start writing
+                  <ArrowRight className="size-5 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

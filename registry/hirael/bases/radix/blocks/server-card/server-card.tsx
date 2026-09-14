@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { Cpu, HardDrive, MemoryStick } from 'lucide-react';
 
@@ -45,7 +43,7 @@ interface ServerCardTitleProps extends React.ComponentProps<'div'> {
 const ServerCardTitle = ({ region, className, children, ...props }: ServerCardTitleProps) => {
   return (
     <div data-slot="server-card-title" className={cn('flex min-w-0 flex-col gap-1', className)} {...props}>
-      <span className="truncate font-mono text-sm font-medium text-foreground">{children}</span>
+      <span className="truncate text-sm font-medium text-foreground">{children}</span>
       {region ? <span className="truncate text-xs text-muted-foreground">{region}</span> : null}
     </div>
   );
@@ -73,7 +71,7 @@ const ServerCardStatus = ({ status, className, children, ...props }: ServerCardS
         {live ? (
           <span
             className={cn(
-              'absolute inline-flex size-full animate-ping rounded-full opacity-75',
+              'absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none',
               statusTone[status].split(' ')[0],
             )}
             aria-hidden
@@ -114,7 +112,7 @@ const ServerCardSpec = ({ label, icon, className, children, ...props }: ServerCa
         {Icon ? <Icon className="size-3" aria-hidden /> : null}
         {label}
       </dt>
-      <dd className="font-mono text-sm text-foreground">{children}</dd>
+      <dd className="text-sm text-foreground">{children}</dd>
     </div>
   );
 };
@@ -122,7 +120,7 @@ const ServerCardSpec = ({ label, icon, className, children, ...props }: ServerCa
 interface ServerCardMeterProps extends React.ComponentProps<'div'> {
   label: React.ReactNode;
   value: number;
-  /** Fraction (0–1) where the bar switches to warning, then destructive. */
+  /** Fraction (0 to 1) where the bar switches to warning, then destructive. */
   thresholds?: [warn: number, crit: number];
 }
 
@@ -135,10 +133,13 @@ const ServerCardMeter = ({ label, value, thresholds = [0.75, 0.9], className, ..
     <div data-slot="server-card-meter" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div className="flex items-center justify-between text-xs">
         <span className="text-muted-foreground">{label}</span>
-        <span className="font-mono text-foreground">{pct}%</span>
+        <span className="text-foreground">{pct}%</span>
       </div>
       <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-        <div className={cn('h-full rounded-full transition-[width]', tone)} style={{ inlineSize: `${pct}%` }} />
+        <div
+          className={cn('h-full rounded-full transition-[inline-size] duration-300', tone)}
+          style={{ inlineSize: `${pct}%` }}
+        />
       </div>
     </div>
   );
@@ -154,75 +155,96 @@ export {
   ServerCardMeter,
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const SERVERS: {
+  name: string;
+  region: string;
+  provider: string;
+  status: ServerStatus;
+  statusLabel: string;
+  specs: { cpu: string; memory: string; disk: string };
+  meters: { label: string; value: number }[];
+}[] = [
+  {
+    name: 'web-prod-01',
+    region: 'us-east-1',
+    provider: 'AWS',
+    status: 'online',
+    statusLabel: 'Online',
+    specs: { cpu: '8', memory: '32 GB', disk: '512 GB' },
+    meters: [
+      { label: 'CPU', value: 62 },
+      { label: 'Memory', value: 81 },
+    ],
+  },
+  {
+    name: 'db-replica-03',
+    region: 'eu-west-2',
+    provider: 'AWS',
+    status: 'degraded',
+    statusLabel: 'Degraded',
+    specs: { cpu: '16', memory: '64 GB', disk: '2 TB' },
+    meters: [
+      { label: 'CPU', value: 94 },
+      { label: 'Disk', value: 88 },
+    ],
+  },
+  {
+    name: 'cache-02',
+    region: 'ap-south-1',
+    provider: 'AWS',
+    status: 'provisioning',
+    statusLabel: 'Provisioning',
+    specs: { cpu: '4', memory: '16 GB', disk: '128 GB' },
+    meters: [
+      { label: 'CPU', value: 7 },
+      { label: 'Memory', value: 12 },
+    ],
+  },
+];
+
 const ServerCardBlock = () => {
   return (
     <section data-slot="server-card-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2">
-        <ServerCard>
-          <ServerCardHeader>
-            <ServerCardTitle region="us-east-1 · AWS">web-prod-01</ServerCardTitle>
-            <ServerCardStatus status="online">Online</ServerCardStatus>
-          </ServerCardHeader>
-          <ServerCardSpecs>
-            <ServerCardSpec icon="cpu" label="vCPU">
-              8
-            </ServerCardSpec>
-            <ServerCardSpec icon="memory" label="Memory">
-              32 GB
-            </ServerCardSpec>
-            <ServerCardSpec icon="disk" label="Disk">
-              512 GB
-            </ServerCardSpec>
-          </ServerCardSpecs>
-          <div className="grid gap-3">
-            <ServerCardMeter label="CPU" value={62} />
-            <ServerCardMeter label="Memory" value={81} />
-          </div>
-        </ServerCard>
-
-        <ServerCard>
-          <ServerCardHeader>
-            <ServerCardTitle region="eu-west-2 · AWS">db-replica-03</ServerCardTitle>
-            <ServerCardStatus status="degraded">Degraded</ServerCardStatus>
-          </ServerCardHeader>
-          <ServerCardSpecs>
-            <ServerCardSpec icon="cpu" label="vCPU">
-              16
-            </ServerCardSpec>
-            <ServerCardSpec icon="memory" label="Memory">
-              64 GB
-            </ServerCardSpec>
-            <ServerCardSpec icon="disk" label="Disk">
-              2 TB
-            </ServerCardSpec>
-          </ServerCardSpecs>
-          <div className="grid gap-3">
-            <ServerCardMeter label="CPU" value={94} />
-            <ServerCardMeter label="Disk" value={88} />
-          </div>
-        </ServerCard>
-
-        <ServerCard>
-          <ServerCardHeader>
-            <ServerCardTitle region="ap-south-1 · AWS">cache-02</ServerCardTitle>
-            <ServerCardStatus status="provisioning">Provisioning</ServerCardStatus>
-          </ServerCardHeader>
-          <ServerCardSpecs>
-            <ServerCardSpec icon="cpu" label="vCPU">
-              4
-            </ServerCardSpec>
-            <ServerCardSpec icon="memory" label="Memory">
-              16 GB
-            </ServerCardSpec>
-            <ServerCardSpec icon="disk" label="Disk">
-              128 GB
-            </ServerCardSpec>
-          </ServerCardSpecs>
-          <div className="grid gap-3">
-            <ServerCardMeter label="CPU" value={7} />
-            <ServerCardMeter label="Memory" value={12} />
-          </div>
-        </ServerCard>
+        {SERVERS.map((server, index) => (
+          <ServerCard key={server.name} style={{ animationDelay: `${index * 60}ms` }} className={ENTER}>
+            <ServerCardHeader>
+              <ServerCardTitle
+                region={
+                  <>
+                    <span>{server.region}</span>
+                    <span aria-hidden className="mx-1.5 text-border">
+                      |
+                    </span>
+                    <span>{server.provider}</span>
+                  </>
+                }
+              >
+                {server.name}
+              </ServerCardTitle>
+              <ServerCardStatus status={server.status}>{server.statusLabel}</ServerCardStatus>
+            </ServerCardHeader>
+            <ServerCardSpecs>
+              <ServerCardSpec icon="cpu" label="vCPU">
+                {server.specs.cpu}
+              </ServerCardSpec>
+              <ServerCardSpec icon="memory" label="Memory">
+                {server.specs.memory}
+              </ServerCardSpec>
+              <ServerCardSpec icon="disk" label="Disk">
+                {server.specs.disk}
+              </ServerCardSpec>
+            </ServerCardSpecs>
+            <div className="grid gap-3">
+              {server.meters.map((meter) => (
+                <ServerCardMeter key={meter.label} label={meter.label} value={meter.value} />
+              ))}
+            </div>
+          </ServerCard>
+        ))}
       </div>
     </section>
   );

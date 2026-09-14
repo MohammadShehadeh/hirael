@@ -25,7 +25,7 @@ const nodeDot: Record<NodeStatus, string> = {
 };
 
 // Keyframes travel with the component so the animated edges work the moment
-// it is copied into a project — no globals.css or Tailwind config edits needed.
+// it is copied into a project, with no globals.css or Tailwind config edits needed.
 const TOPOLOGY_KEYFRAMES = `
 @keyframes msh-network-dash {
   to { stroke-dashoffset: -14; }
@@ -142,7 +142,7 @@ const NetworkNode = ({
       {label || sublabel ? (
         <span className="flex min-w-0 flex-col leading-tight">
           {label ? <span className="truncate text-xs font-medium">{label}</span> : null}
-          {sublabel ? <span className="truncate font-mono text-[10px] text-muted-foreground">{sublabel}</span> : null}
+          {sublabel ? <span className="truncate text-[10px] text-muted-foreground">{sublabel}</span> : null}
         </span>
       ) : null}
       <span className={cn('size-2 shrink-0 rounded-full ring-2 ring-card', nodeDot[status])} aria-hidden />
@@ -157,7 +157,7 @@ const NetworkTopologyBlock = () => {
   return (
     <section data-slot="network-topology-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="w-full max-w-2xl">
-        <NetworkTopology className="h-80">
+        <NetworkTopology className="h-80 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
           <NetworkTopologyEdges>
             <NetworkEdge from={[50, 12]} to={[50, 38]} status="active" animated />
             <NetworkEdge from={[50, 38]} to={[22, 66]} status="active" animated />

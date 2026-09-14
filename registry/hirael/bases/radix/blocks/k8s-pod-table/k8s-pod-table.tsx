@@ -3,6 +3,8 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 export type PodPhase =
   'Running' | 'Pending' | 'Succeeded' | 'Failed' | 'CrashLoopBackOff' | 'ContainerCreating' | 'Terminating';
@@ -78,7 +80,7 @@ const K8sPodTableCell = ({ className, ...props }: React.ComponentProps<'td'>) =>
   return (
     <td
       data-slot="k8s-pod-table-cell"
-      className={cn('px-3 py-2.5 align-middle whitespace-nowrap font-mono text-xs text-muted-foreground', className)}
+      className={cn('px-3 py-2.5 align-middle whitespace-nowrap text-xs text-muted-foreground', className)}
       {...props}
     />
   );
@@ -92,8 +94,8 @@ const K8sPodName = ({ namespace, className, children, ...props }: K8sPodNameProp
   return (
     <td data-slot="k8s-pod-name" className={cn('px-3 py-2.5 align-middle', className)} {...props}>
       <div className="flex flex-col">
-        <span className="font-mono text-xs font-medium text-foreground">{children}</span>
-        {namespace ? <span className="font-mono text-[11px] text-muted-foreground">{namespace}</span> : null}
+        <span className="text-xs font-medium text-foreground">{children}</span>
+        {namespace ? <span className="text-[11px] text-muted-foreground">{namespace}</span> : null}
       </div>
     </td>
   );
@@ -117,7 +119,9 @@ const K8sPodPhase = ({ phase, className, children, ...props }: K8sPodPhaseProps)
       )}
       {...props}
     >
-      {meta.live ? <span className="size-1.5 animate-pulse rounded-full bg-current" aria-hidden /> : null}
+      {meta.live ? (
+        <span className="size-1.5 animate-pulse rounded-full bg-current motion-reduce:animate-none" aria-hidden />
+      ) : null}
       {children ?? phase}
     </span>
   );
@@ -134,7 +138,7 @@ const K8sPodRestarts = ({ count, warnAt = 3, className, ...props }: K8sPodRestar
     <td
       data-slot="k8s-pod-restarts"
       className={cn(
-        'px-3 py-2.5 align-middle font-mono text-xs',
+        'px-3 py-2.5 align-middle text-xs',
         count >= warnAt ? 'text-destructive' : 'text-muted-foreground',
         className,
       )}
@@ -157,7 +161,12 @@ export {
   K8sPodRestarts,
 };
 
-const POD_ROWS: {
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+type PodRow = {
   name: string;
   ns: string;
   phase: PodPhase;
@@ -165,7 +174,9 @@ const POD_ROWS: {
   restarts: number;
   age: string;
   node: string;
-}[] = [
+};
+
+const POD_ROWS: PodRow[] = [
   {
     name: 'api-7d9f8c-2xk4p',
     ns: 'default',
@@ -213,10 +224,64 @@ const POD_ROWS: {
   },
 ];
 
+const POD_FILTERS: { value: string; label: string; phases: PodPhase[] }[] = [
+  {
+    value: 'all',
+    label: 'All',
+    phases: ['Running', 'Pending', 'ContainerCreating', 'Terminating', 'Succeeded', 'Failed', 'CrashLoopBackOff'],
+  },
+  { value: 'running', label: 'Running', phases: ['Running'] },
+  { value: 'pending', label: 'Pending', phases: ['Pending', 'ContainerCreating', 'Terminating'] },
+  { value: 'failing', label: 'Failing', phases: ['Failed', 'CrashLoopBackOff'] },
+  { value: 'completed', label: 'Completed', phases: ['Succeeded'] },
+];
+
+const isFailing = (phase: PodPhase) => phase === 'Failed' || phase === 'CrashLoopBackOff';
+
 const K8sPodTableBlock = () => {
+  const [pods, setPods] = React.useState(POD_ROWS);
+  const [filter, setFilter] = React.useState('all');
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  React.useEffect(() => {
+    const pending = timers.current;
+    return () => pending.forEach(clearTimeout);
+  }, []);
+
+  const activeFilter = POD_FILTERS.find((option) => option.value === filter) ?? POD_FILTERS[0];
+  const visiblePods = pods.filter((pod) => activeFilter.phases.includes(pod.phase));
+
+  const updatePod = (name: string, patch: Partial<PodRow>) =>
+    setPods((current) => current.map((pod) => (pod.name === name ? { ...pod, ...patch } : pod)));
+
+  const restartPod = (name: string) => {
+    updatePod(name, { phase: 'ContainerCreating', restarts: 0, age: '0s' });
+    timers.current.push(setTimeout(() => updatePod(name, { phase: 'Running', ready: '1/1', age: '3s' }), 2400));
+  };
+
   return (
     <section data-slot="k8s-pod-table-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="w-full max-w-3xl">
+      <div className={cn(ENTER, 'flex w-full max-w-3xl flex-col gap-3')}>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          size="sm"
+          value={filter}
+          onValueChange={(value) => value && setFilter(value)}
+          aria-label="Filter pods by phase"
+          className="max-w-full flex-wrap"
+        >
+          {POD_FILTERS.map((option) => {
+            const count = pods.filter((pod) => option.phases.includes(pod.phase)).length;
+            return (
+              <ToggleGroupItem key={option.value} value={option.value} className="gap-1.5">
+                {option.label}
+                <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
+              </ToggleGroupItem>
+            );
+          })}
+        </ToggleGroup>
+
         <K8sPodTable caption={<span className="font-mono">kubectl get pods -A</span>}>
           <K8sPodTableHeader>
             <K8sPodTableRow>
@@ -228,19 +293,34 @@ const K8sPodTableBlock = () => {
               <K8sPodTableHead>Node</K8sPodTableHead>
             </K8sPodTableRow>
           </K8sPodTableHeader>
-          <K8sPodTableBody>
-            {POD_ROWS.map((pod) => (
-              <K8sPodTableRow key={pod.name}>
-                <K8sPodName namespace={pod.ns}>{pod.name}</K8sPodName>
-                <K8sPodTableCell>
-                  <K8sPodPhase phase={pod.phase} />
+          <K8sPodTableBody key={filter} className={SWAP}>
+            {visiblePods.length === 0 ? (
+              <K8sPodTableRow className="hover:bg-transparent">
+                <K8sPodTableCell colSpan={6} className="py-10 text-center text-sm">
+                  No {activeFilter.label.toLowerCase()} pods in any namespace.
                 </K8sPodTableCell>
-                <K8sPodTableCell>{pod.ready}</K8sPodTableCell>
-                <K8sPodRestarts count={pod.restarts} />
-                <K8sPodTableCell>{pod.age}</K8sPodTableCell>
-                <K8sPodTableCell>{pod.node}</K8sPodTableCell>
               </K8sPodTableRow>
-            ))}
+            ) : (
+              visiblePods.map((pod) => (
+                <K8sPodTableRow key={pod.name}>
+                  <K8sPodName namespace={pod.ns}>{pod.name}</K8sPodName>
+                  <K8sPodTableCell>
+                    <span className="flex items-center gap-3">
+                      <K8sPodPhase key={pod.phase} phase={pod.phase} className={SWAP} />
+                      {isFailing(pod.phase) ? (
+                        <Button variant="outline" size="xs" onClick={() => restartPod(pod.name)}>
+                          Restart
+                        </Button>
+                      ) : null}
+                    </span>
+                  </K8sPodTableCell>
+                  <K8sPodTableCell className="tabular-nums">{pod.ready}</K8sPodTableCell>
+                  <K8sPodRestarts count={pod.restarts} className="tabular-nums" />
+                  <K8sPodTableCell className="tabular-nums">{pod.age}</K8sPodTableCell>
+                  <K8sPodTableCell>{pod.node}</K8sPodTableCell>
+                </K8sPodTableRow>
+              ))
+            )}
           </K8sPodTableBody>
         </K8sPodTable>
       </div>

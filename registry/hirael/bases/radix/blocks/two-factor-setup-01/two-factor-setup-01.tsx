@@ -11,6 +11,15 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/r
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 import { QRCode } from '@/registry/hirael/bases/radix/components/qr-code';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({
+  animationDelay: `${index * step}ms`,
+});
+
 interface TwoFactorSetupContextValue {
   step: number;
   setStep: (step: number) => void;
@@ -127,15 +136,20 @@ const TwoFactorSetupStep = ({ index, className, ...props }: TwoFactorSetupStepPr
     <div
       data-slot="two-factor-setup-step"
       data-index={index}
-      className={cn('flex flex-col gap-5', className)}
+      className={cn(SWAP, 'flex flex-col gap-5', className)}
       {...props}
     />
   );
 };
 
-const TwoFactorSetupTitle = ({ className, ...props }: React.ComponentProps<'h2'>) => {
+export interface TwoFactorSetupTitleProps extends React.ComponentProps<'h2'> {
+  /** Heading level. Use `h1` when the setup is the whole page. */
+  as?: 'h1' | 'h2' | 'h3';
+}
+
+const TwoFactorSetupTitle = ({ as: Heading = 'h2', className, ...props }: TwoFactorSetupTitleProps) => {
   return (
-    <h2
+    <Heading
       data-slot="two-factor-setup-title"
       className={cn('font-serif text-3xl font-medium tracking-tight', className)}
       {...props}
@@ -245,12 +259,12 @@ const TwoFactorSetupCode = ({
           aria-describedby={error ? errorId : undefined}
           containerClassName="justify-between"
         >
-          <InputOTPGroup className="w-full justify-between gap-2">
+          <InputOTPGroup className="w-full justify-between gap-1.5 sm:gap-2">
             {Array.from({ length }, (_, i) => (
               <InputOTPSlot
                 key={i}
                 index={i}
-                className="size-11 rounded-sm border border-input font-mono text-base tabular-nums first:rounded-s-sm last:rounded-e-sm"
+                className="size-10 rounded-sm border border-input text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11"
               />
             ))}
           </InputOTPGroup>
@@ -346,7 +360,7 @@ const TwoFactorSetupFooter = ({ className, ...props }: React.ComponentProps<'div
   return (
     <div
       data-slot="two-factor-setup-footer"
-      className={cn('flex items-center justify-between gap-3 border-t border-border px-8 py-4', className)}
+      className={cn('flex items-center justify-between gap-3 border-t border-border px-6 py-4 sm:px-8', className)}
       {...props}
     />
   );
@@ -418,14 +432,16 @@ const TwoFactorSetup01 = () => {
       />
 
       <div className="mx-auto w-full max-w-md px-6">
-        <TwoFactorSetup step={step} onStepChange={setStep} count={3}>
+        <TwoFactorSetup step={step} onStepChange={setStep} count={3} className={ENTER}>
           {done ? (
-            <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 px-8 py-10 text-center">
-              <span className="inline-flex size-10 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-                <CheckCircle2 className="size-5" />
-              </span>
+            <div
+              role="status"
+              aria-live="polite"
+              className={cn(SWAP, 'flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-8')}
+            >
+              <CheckCircle2 aria-hidden className="size-7 text-foreground" />
               <div className="flex flex-col gap-1">
-                <TwoFactorSetupTitle>Two-factor is on</TwoFactorSetupTitle>
+                <TwoFactorSetupTitle as="h1">Two-factor is on</TwoFactorSetupTitle>
                 <TwoFactorSetupDescription>
                   You&apos;ll be asked for a code from your authenticator app the next time you sign in.
                 </TwoFactorSetupDescription>
@@ -439,31 +455,28 @@ const TwoFactorSetup01 = () => {
             </div>
           ) : (
             <>
-              <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
-                <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-background">
-                  <BrandMark className="size-6 text-foreground" />
-                </div>
-                <TwoFactorSetupSteps labels={STEP_LABELS} />
-                <div className="flex flex-col items-center gap-1 text-center">
+              <div className="flex flex-col items-center gap-4 border-b border-border px-6 pb-6 pt-8 sm:px-8">
+                <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
+                <TwoFactorSetupSteps labels={STEP_LABELS} style={stagger(1)} className={ENTER} />
+                <div key={step} className={cn(SWAP, 'flex flex-col items-center gap-1 text-center')}>
                   {step === 0 ? (
                     <>
-                      <TwoFactorSetupTitle>Scan this code</TwoFactorSetupTitle>
+                      <TwoFactorSetupTitle as="h1">Scan this code</TwoFactorSetupTitle>
                       <TwoFactorSetupDescription>
-                        Open your authenticator app (1Password, Authy, Google Authenticator) and scan the QR code.
+                        Open your authenticator app and scan the QR code to add your {ISSUER} account.
                       </TwoFactorSetupDescription>
                     </>
                   ) : step === 1 ? (
                     <>
-                      <TwoFactorSetupTitle>Enter the code</TwoFactorSetupTitle>
+                      <TwoFactorSetupTitle as="h1">Enter the code</TwoFactorSetupTitle>
                       <TwoFactorSetupDescription>
-                        Type the six digits your app shows for{' '}
-                        <span className="font-mono text-foreground">{ISSUER}</span> to confirm it&apos;s set up
-                        correctly.
+                        Type the six digits your app shows for <span className="text-foreground">{ISSUER}</span> to
+                        confirm it&apos;s set up correctly.
                       </TwoFactorSetupDescription>
                     </>
                   ) : (
                     <>
-                      <TwoFactorSetupTitle>Save your recovery codes</TwoFactorSetupTitle>
+                      <TwoFactorSetupTitle as="h1">Save your recovery codes</TwoFactorSetupTitle>
                       <TwoFactorSetupDescription>
                         Each code works once. Use them if you lose access to your authenticator app.
                       </TwoFactorSetupDescription>
@@ -472,7 +485,13 @@ const TwoFactorSetup01 = () => {
                 </div>
               </div>
 
-              <form id={formId} noValidate className="p-8" onSubmit={step === 1 ? verify : (e) => e.preventDefault()}>
+              <form
+                id={formId}
+                noValidate
+                style={stagger(2)}
+                className={cn(ENTER, 'p-6 sm:p-8')}
+                onSubmit={step === 1 ? verify : (e) => e.preventDefault()}
+              >
                 <TwoFactorSetupStep index={0}>
                   <TwoFactorSetupQr value={OTPAUTH_URI} />
                   <TwoFactorSetupSecret value={SECRET} />
@@ -500,27 +519,36 @@ const TwoFactorSetup01 = () => {
                 </TwoFactorSetupStep>
               </form>
 
-              <TwoFactorSetupFooter>
+              <TwoFactorSetupFooter style={stagger(3)} className={ENTER}>
                 {step === 0 ? (
-                  <>
+                  <React.Fragment key="scan">
                     <a
                       href="#"
-                      className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+                      className={cn(
+                        SWAP,
+                        'text-xs uppercase text-muted-foreground transition-colors hover:text-foreground',
+                      )}
                     >
                       Cancel
                     </a>
-                    <Button type="button" className="group" onClick={() => setStep(1)}>
+                    <Button type="button" className={cn(SWAP, 'group')} onClick={() => setStep(1)}>
                       Continue
                       <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                     </Button>
-                  </>
+                  </React.Fragment>
                 ) : step === 1 ? (
-                  <>
-                    <Button type="button" variant="ghost" onClick={() => setStep(0)} disabled={verifying}>
+                  <React.Fragment key="verify">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className={SWAP}
+                      onClick={() => setStep(0)}
+                      disabled={verifying}
+                    >
                       <ArrowLeft className="size-4 rtl:rotate-180" />
                       Back
                     </Button>
-                    <Button type="submit" form={formId} className="group" disabled={verifying}>
+                    <Button type="submit" form={formId} className={cn(SWAP, 'group')} disabled={verifying}>
                       {verifying ? (
                         <>
                           <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
@@ -533,24 +561,28 @@ const TwoFactorSetup01 = () => {
                         </>
                       )}
                     </Button>
-                  </>
+                  </React.Fragment>
                 ) : (
-                  <>
-                    <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
-                      <ShieldCheck className="size-3.5" />
+                  <React.Fragment key="recovery">
+                    <span
+                      className={cn(SWAP, 'inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground')}
+                    >
+                      <ShieldCheck aria-hidden className="size-3.5" />
                       Code verified
                     </span>
-                    <Button type="button" disabled={!saved} onClick={() => setDone(true)}>
+                    <Button type="button" className={SWAP} disabled={!saved} onClick={() => setDone(true)}>
                       Finish
                     </Button>
-                  </>
+                  </React.Fragment>
                 )}
               </TwoFactorSetupFooter>
             </>
           )}
         </TwoFactorSetup>
 
-        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</p>
+        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs uppercase text-muted-foreground')}>
+          Recovery codes are shown once, so keep them safe
+        </p>
       </div>
     </section>
   );

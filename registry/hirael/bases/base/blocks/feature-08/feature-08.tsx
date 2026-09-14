@@ -1,9 +1,17 @@
 'use client';
 
+import type * as React from 'react';
 import { Activity, FileCode2, KeyRound, Terminal, Workflow, Zap } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const FEATURES = [
   {
@@ -105,32 +113,36 @@ const Feature08 = () => {
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
         <Badge
           variant="outline"
-          className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
+          className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
         >
           Features
         </Badge>
-        <h2 className="font-serif text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
+        <h2
+          style={stagger(1)}
+          className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl')}
+        >
           Everything a pipeline needs
         </h2>
-        <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p style={stagger(2)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground md:text-lg')}>
           The editor is the headline, but the platform underneath carries the boring parts: secrets, caching, retries
           and an API for the rest.
         </p>
       </div>
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((feature) => (
-          <FeatureCard key={feature.title}>
+        {FEATURES.map((feature, index) => (
+          <FeatureCard key={feature.title} style={stagger(index, 60, 180)} className={ENTER}>
             <CrossDecor position="top-start" />
             <CrossDecor position="bottom-end" />
-            <div
-              data-slot="feature-card-icon"
-              className="relative z-10 flex w-fit items-center justify-center rounded-xs border border-border bg-muted/20 p-3 transition-colors duration-300 group-hover:border-warm/40"
-            >
-              <feature.icon aria-hidden className="size-5 stroke-[1.5] text-foreground" />
-            </div>
             <div className="relative z-10 flex flex-col gap-2">
-              <h3 className="text-base font-medium text-foreground">{feature.title}</h3>
+              <h3 className="flex items-center gap-2.5 text-base font-medium text-foreground">
+                <feature.icon
+                  aria-hidden
+                  data-slot="feature-card-icon"
+                  className="size-4 shrink-0 stroke-[1.5] text-muted-foreground transition-colors duration-150 group-hover:text-warm"
+                />
+                {feature.title}
+              </h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{feature.description}</p>
             </div>
           </FeatureCard>

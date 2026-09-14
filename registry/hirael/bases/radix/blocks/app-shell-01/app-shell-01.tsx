@@ -65,6 +65,11 @@ import {
   SidebarTrigger,
 } from '@/registry/hirael/bases/radix/ui/sidebar';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 interface NavLink {
   label: string;
   icon: LucideIcon;
@@ -268,7 +273,11 @@ const AppShell01 = () => {
                 </span>
                 <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
-                  <span className="truncate text-xs uppercase text-muted-foreground">plinth labs · pro</span>
+                  <span className="flex gap-1.5 truncate text-xs uppercase text-muted-foreground">
+                    <span>plinth labs</span>
+                    <span className="text-border">|</span>
+                    <span>pro</span>
+                  </span>
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -331,12 +340,16 @@ const AppShell01 = () => {
                     tooltip="Mohammad Shehadeh"
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
-                    <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-muted font-mono text-[10px] font-medium text-foreground">
+                    <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-muted text-[10px] font-medium text-foreground">
                       MS
                     </span>
                     <div className="grid min-w-0 flex-1 text-start leading-tight">
                       <span className="truncate text-xs font-medium">Mohammad Shehadeh</span>
-                      <span className="truncate text-xs uppercase text-muted-foreground">admin · plinth labs</span>
+                      <span className="flex gap-1.5 truncate text-xs uppercase text-muted-foreground">
+                        <span>admin</span>
+                        <span className="text-border">|</span>
+                        <span>plinth labs</span>
+                      </span>
                     </div>
                     <ChevronsUpDown className="ms-auto size-3.5 shrink-0 text-muted-foreground" />
                   </SidebarMenuButton>
@@ -413,7 +426,7 @@ const AppShell01 = () => {
             </InputGroupAddon>
           </InputGroup>
 
-          <Button variant="outline" size="icon" aria-label="Notifications · 3 unread" className="relative size-8">
+          <Button variant="outline" size="icon" aria-label="Notifications, 3 unread" className="relative size-8">
             <Bell className="size-3.5" aria-hidden />
             <span aria-hidden className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
           </Button>
@@ -426,7 +439,7 @@ const AppShell01 = () => {
           </Button>
         </header>
 
-        <div className="flex flex-1 flex-col gap-5 p-4 sm:p-6">
+        <div data-slot="app-shell-main" className={cn(ENTER, 'flex flex-1 flex-col gap-5 p-4 sm:p-6')}>
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold tracking-[-0.02em]">Dashboard</h1>
             <p className="text-sm text-muted-foreground">
@@ -442,7 +455,7 @@ const AppShell01 = () => {
                 <span
                   dir="ltr"
                   aria-label={deltaLabel(m)}
-                  className={cn('font-mono text-[10px] tabular-nums', deltaTone(m))}
+                  className={cn('text-[10px] tabular-nums', deltaTone(m))}
                 >
                   {formatDelta(m)}
                 </span>
@@ -450,7 +463,7 @@ const AppShell01 = () => {
             ))}
           </div>
 
-          <Card className="gap-0 overflow-hidden p-0">
+          <Card data-slot="app-shell-table" style={{ animationDelay: '80ms' }} className={cn(ENTER, 'gap-0 overflow-hidden p-0')}>
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
                 recent accounts
@@ -466,14 +479,14 @@ const AppShell01 = () => {
             </div>
 
             {visibleRows.length === 0 ? (
-              <Empty className="border-0">
+              <Empty className={cn(SWAP, 'border-0')}>
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
                     <Search />
                   </EmptyMedia>
                   <EmptyTitle>No matching accounts</EmptyTitle>
                   <EmptyDescription>
-                    Nothing matched <span className="font-mono text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try
+                    Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try
                     a company name, a plan, or a status.
                   </EmptyDescription>
                 </EmptyHeader>
@@ -542,7 +555,7 @@ const AppShell01 = () => {
                           <span className="inline-flex items-center gap-2">
                             <span
                               aria-hidden
-                              className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium text-foreground"
+                              className="inline-flex size-6 items-center justify-center rounded-full bg-muted text-[10px] font-medium text-foreground"
                             >
                               {r.initials}
                             </span>
@@ -550,11 +563,11 @@ const AppShell01 = () => {
                           </span>
                         </TableCell>
                         <TableCell className="px-4 py-2.5">
-                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'} className="font-mono">
+                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'}>
                             {r.plan}
                           </Badge>
                         </TableCell>
-                        <TableCell className="hidden px-4 py-2.5 text-end font-mono tabular-nums text-foreground sm:table-cell">
+                        <TableCell className="hidden px-4 py-2.5 text-end tabular-nums text-foreground sm:table-cell">
                           {usd.format(r.mrr)}
                         </TableCell>
                         <TableCell className="px-4 py-2.5">

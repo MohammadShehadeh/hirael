@@ -1,6 +1,4 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 import {
   CloudLightning,
   FilePenLine,
@@ -16,7 +14,11 @@ import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
 /** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface Service {
   icon: LucideIcon;
@@ -64,29 +66,14 @@ const SERVICES: readonly Service[] = [
   },
 ];
 
-const HEADLINE = 'Services that ship with your product';
-
-const glowStyle = 'pointer-events-none absolute inset-0 motion-safe:animate-pulse';
-
 const Title = () => {
-  const words = HEADLINE.split(' ');
-  const half = Math.floor(words.length / 2);
-
   return (
     <h2
       data-slot="feature-title"
-      className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
+      style={stagger(1)}
+      className={cn(RISE, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl')}
     >
-      {words.map((word, i) => (
-        <span
-          key={`${word}-${i}`}
-          className={cn('inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
-          style={{ animationDelay: `${200 + i * 80}ms` }}
-        >
-          {word}
-          {i < words.length - 1 ? ' ' : null}
-        </span>
-      ))}
+      Services that ship with your product
     </h2>
   );
 };
@@ -96,7 +83,7 @@ const Feature04 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
+          <div className={RISE}>
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
@@ -107,7 +94,8 @@ const Feature04 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE, 'delay-400')}
+            style={stagger(2)}
+            className={cn(RISE, 'max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg')}
           >
             Pick the engagement that fits. Each one ends with source you own and a team that knows how to extend it.
           </p>
@@ -120,22 +108,12 @@ const Feature04 = () => {
               <article
                 key={service.title}
                 data-slot="feature-card"
-                className="relative overflow-hidden rounded-lg border border-border bg-card p-5 animate-in fade-in slide-in-from-bottom-10 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
-                style={{ animationDelay: `${i * 120}ms` }}
+                style={stagger(i, 60, 180)}
+                className={cn(RISE, 'relative overflow-hidden rounded-lg border border-border bg-card p-5')}
               >
                 <div
                   aria-hidden
-                  className={cn(
-                    glowStyle,
-                    'bg-[radial-gradient(260px_220px_at_20%_0%,var(--warm-glow),transparent_50%)]',
-                  )}
-                />
-                <div
-                  aria-hidden
-                  className={cn(
-                    glowStyle,
-                    'bg-[radial-gradient(220px_200px_at_90%_20%,var(--warm-glow),transparent_50%)]',
-                  )}
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_220px_at_20%_0%,var(--warm-glow),transparent_60%)]"
                 />
                 <div data-slot="feature-card-icon" className="relative mb-4 grid place-items-center">
                   <Icon strokeWidth={1} className="size-14 text-foreground/90" />

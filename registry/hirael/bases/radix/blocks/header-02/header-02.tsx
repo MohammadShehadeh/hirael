@@ -31,6 +31,15 @@ const SHRINK_AT = 100;
 
 const SPRING = { type: 'spring', stiffness: 220, damping: 40 } as const;
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 const BrandMark = ({ className }: { className?: string }) => {
@@ -75,10 +84,8 @@ const Header = ({ scrollRef, shrinkAt = SHRINK_AT, className, children, ...props
     setIsShrunk(y > shrinkAt);
   });
 
-  const value = React.useMemo(() => ({ isShrunk, reduce }), [isShrunk, reduce]);
-
   return (
-    <HeaderContext.Provider value={value}>
+    <HeaderContext.Provider value={{ isShrunk, reduce }}>
       <motion.header
         data-slot="header"
         data-state={isShrunk ? 'shrunk' : 'expanded'}
@@ -122,6 +129,7 @@ interface HeaderNavProps extends React.ComponentProps<'nav'> {
 const HeaderNav = ({ items, onItemClick, className, ...props }: HeaderNavProps) => {
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
   const { reduce } = useHeader();
+  const layoutId = React.useId();
 
   return (
     <nav
@@ -145,7 +153,7 @@ const HeaderNav = ({ items, onItemClick, className, ...props }: HeaderNavProps) 
           {hoveredIndex === i ? (
             <motion.span
               aria-hidden
-              layoutId="header-02-hover"
+              layoutId={layoutId}
               transition={reduce ? { duration: 0 } : SPRING}
               className="absolute inset-0 rounded-full bg-muted"
             />
@@ -186,7 +194,7 @@ const HeaderMobileMenu = ({ open, className, children, ...props }: HeaderMobileM
           initial={reduce ? false : { opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={reduce ? undefined : { opacity: 0, height: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
+          transition={{ duration: 0.25, ease: EASE }}
           className="overflow-hidden"
         >
           <div className={cn('flex flex-col gap-1 px-1 pt-3 pb-2', className)} {...props}>
@@ -223,7 +231,10 @@ const Header02 = () => {
       data-slot="header-02-block"
       className="relative h-[640px] w-full overflow-y-auto bg-background"
     >
-      <Header scrollRef={scrollRef}>
+      <Header
+        scrollRef={scrollRef}
+        className="animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+      >
         <HeaderBar>
           <Brand />
           <HeaderNav items={NAV} />
@@ -278,15 +289,23 @@ const Header02 = () => {
       </Header>
 
       <div className="container flex flex-col gap-6 py-20 md:py-28">
-        <span className="text-xs uppercase text-muted-foreground">Scroll to see the bar shrink</span>
-        <h1 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl">
+        <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+          Scroll to see the bar shrink
+        </span>
+        <h2
+          style={stagger(2)}
+          className={cn(
+            ENTER,
+            'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
+          )}
+        >
           A nav that gets out of the way once you start reading.
-        </h1>
-        <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
+        </h2>
+        <p style={stagger(3)} className={cn(ENTER, 'max-w-xl text-base text-muted-foreground sm:text-lg')}>
           Full width at the top of the page, a floating pill after the first hundred pixels. The links keep a sliding
           hover state either way.
         </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div style={stagger(4)} className={cn(ENTER, 'mt-8 grid gap-4 sm:grid-cols-2')}>
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} aria-hidden className="h-40 rounded-lg border border-border bg-card" />
           ))}

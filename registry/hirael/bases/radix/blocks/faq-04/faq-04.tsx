@@ -1,13 +1,19 @@
-'use client';
+import type * as React from 'react';
 
-import * as React from 'react';
-
+import { cn } from '@/lib/utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/registry/hirael/bases/radix/ui/accordion';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface Group {
   label: string;
@@ -102,37 +108,83 @@ const GROUPS: readonly Group[] = [
   },
 ];
 
+const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
+
+const groupId = (label: string) => `faq-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
 const Faq04 = () => {
   return (
-    <section className="bg-background py-16 md:py-24">
+    <section data-slot="faq" className="bg-background py-16 md:py-24">
       <div className="relative mx-auto w-full max-w-2xl border-border md:border-x">
-        <span aria-hidden className="absolute -left-px top-0 hidden h-px w-6 -translate-x-full bg-border md:block" />
-        <span aria-hidden className="absolute -right-px top-0 hidden h-px w-6 translate-x-full bg-border md:block" />
+        <span
+          aria-hidden
+          className="absolute -start-px top-0 hidden h-px w-6 -translate-x-full bg-border rtl:translate-x-full md:block"
+        />
+        <span
+          aria-hidden
+          className="absolute -end-px top-0 hidden h-px w-6 translate-x-full bg-border rtl:-translate-x-full md:block"
+        />
 
-        <div className="flex flex-col items-center gap-4 border-b border-border px-6 py-12 text-center md:px-10 md:py-16">
-          <span className="text-xs uppercase text-foreground">faq</span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+        <div
+          data-slot="faq-header"
+          className="flex flex-col items-center gap-4 border-b border-border px-6 py-12 text-center md:px-10 md:py-16"
+        >
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Help archive</span>
+          <h2
+            style={stagger(1, 70)}
+            className={cn(
+              ENTER,
+              'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+            )}
+          >
             Asked, answered, archived.
           </h2>
-          <p className="max-w-md text-sm text-muted-foreground">
+          <p style={stagger(2, 70)} className={cn(ENTER, 'max-w-md text-sm text-muted-foreground')}>
             Every question we&apos;ve answered more than twice, grouped by topic so you can skip to yours.
           </p>
+          <nav
+            data-slot="faq-index"
+            aria-label="Topics"
+            style={stagger(3, 70)}
+            className={cn(ENTER, 'mt-2 flex flex-wrap justify-center gap-x-5 gap-y-2')}
+          >
+            {GROUPS.map((group, gi) => (
+              <a
+                key={group.label}
+                href={`#${groupId(group.label)}`}
+                className="group inline-flex items-baseline gap-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground"
+              >
+                <span className="text-xs tabular-nums text-muted-foreground/70 transition-colors duration-150 group-hover:text-warm">
+                  {formatIndex(gi)}
+                </span>
+                {group.label}
+              </a>
+            ))}
+          </nav>
         </div>
 
-        <div className="flex flex-col gap-12 px-6 py-10 md:px-10 md:py-14">
+        <div data-slot="faq-groups" className="flex flex-col gap-12 px-6 py-10 md:px-10 md:py-14">
           {GROUPS.map((group, gi) => (
-            <section key={group.label} className="flex flex-col gap-2">
+            <section
+              key={group.label}
+              id={groupId(group.label)}
+              data-slot="faq-group"
+              style={stagger(gi, 60, 260)}
+              className={cn(ENTER, 'flex scroll-mt-24 flex-col gap-2')}
+            >
               <div className="flex items-baseline justify-between gap-3 md:px-4">
                 <h3 className="text-lg font-semibold tracking-[-0.02em]">{group.label}</h3>
-                <span className="text-xs tabular-nums uppercase text-muted-foreground">
-                  {String(gi + 1).padStart(2, '0')} · {group.faqs.length} questions
+                <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+                  {formatIndex(gi)}
+                  <span className="mx-1.5 text-border">|</span>
+                  {formatIndex(GROUPS.length - 1)}
                 </span>
               </div>
               <Accordion type="single" collapsible className="w-full">
                 {group.faqs.map((f) => (
                   <AccordionItem key={f.q} value={f.q} className="md:px-4">
                     <AccordionTrigger>{f.q}</AccordionTrigger>
-                    <AccordionContent>{f.a}</AccordionContent>
+                    <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
@@ -140,7 +192,7 @@ const Faq04 = () => {
           ))}
         </div>
 
-        <div className="border-t border-border px-6 py-8 text-center md:px-10">
+        <div data-slot="faq-footer" className="border-t border-border px-6 py-8 text-center md:px-10">
           <p className="text-sm text-muted-foreground">
             Covering a case we missed?{' '}
             <a

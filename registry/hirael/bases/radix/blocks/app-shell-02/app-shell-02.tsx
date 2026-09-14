@@ -48,6 +48,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/registry/hirael/base
 
 const NAV = ['Overview', 'Projects', 'Activity', 'Settings'] as const;
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 type SectionId = 'profile' | 'security' | 'api' | 'billing' | 'integrations';
 
 interface Section {
@@ -174,7 +179,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'readonly',
       id: 'plan',
       label: 'Current plan',
-      value: 'Pro · $24/mo',
+      value: 'Pro, $24 a month',
       hint: 'Renews 14 June 2026',
     },
     {
@@ -271,7 +276,7 @@ const FieldRow = ({
           {field.label}
         </span>
         {field.hint && (
-          <span id={hintId} className="font-mono text-[11px] text-muted-foreground">
+          <span id={hintId} className="text-[11px] text-muted-foreground">
             {field.hint}
           </span>
         )}
@@ -288,16 +293,16 @@ const FieldRow = ({
           <InlineEditPreview
             aria-labelledby={`${field.id}-label`}
             aria-describedby={hintId}
-            className="font-mono text-sm"
+            className="text-sm"
           />
-          <InlineEditInput aria-labelledby={`${field.id}-label`} className="h-8 min-w-0 flex-1 font-mono text-sm" />
+          <InlineEditInput aria-labelledby={`${field.id}-label`} className="h-8 min-w-0 flex-1 text-sm" />
           <InlineEditControls />
         </InlineEdit>
       )}
 
       {field.kind === 'secret' && (
         <div className="flex items-center gap-2">
-          <span className="font-mono text-sm tabular-nums text-foreground">
+          <span className="text-sm tabular-nums text-foreground">
             {field.value.slice(0, 9)}
             <span aria-hidden>{'•'.repeat(8)}</span>
             <span className="sr-only"> hidden</span>
@@ -326,7 +331,7 @@ const FieldRow = ({
         </div>
       )}
 
-      {field.kind === 'readonly' && <span className="font-mono text-sm text-muted-foreground">{field.value}</span>}
+      {field.kind === 'readonly' && <span className="text-sm text-muted-foreground">{field.value}</span>}
     </div>
   );
 };
@@ -428,7 +433,7 @@ const AppShell02 = () => {
             />
           </InputGroup>
 
-          <Button variant="outline" size="icon" aria-label="Notifications · 3 unread" className="relative size-8">
+          <Button variant="outline" size="icon" aria-label="Notifications, 3 unread" className="relative size-8">
             <Bell className="size-3.5" aria-hidden />
             <span aria-hidden className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
           </Button>
@@ -439,7 +444,7 @@ const AppShell02 = () => {
                 variant="ghost"
                 size="icon"
                 aria-label="Account menu"
-                className="size-8 rounded-full bg-foreground font-mono text-[10px] font-medium text-background hover:bg-foreground/90 hover:text-background"
+                className="size-8 rounded-full bg-foreground text-[10px] font-medium text-background hover:bg-foreground/90 hover:text-background"
               >
                 MS
               </Button>
@@ -464,9 +469,13 @@ const AppShell02 = () => {
         </div>
       </header>
 
-      <div className="container w-full py-6 sm:py-8">
+      <div data-slot="app-shell-main" className={cn(ENTER, 'container w-full py-6 sm:py-8')}>
         <div className="flex flex-col gap-1">
-          <span className="text-xs uppercase text-muted-foreground">workspace · plinth labs</span>
+          <span className="flex gap-1.5 text-xs uppercase text-muted-foreground">
+            <span>workspace</span>
+            <span className="text-border">|</span>
+            <span>plinth labs</span>
+          </span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Settings</h1>
           <p className="text-sm text-muted-foreground">
             Manage your account, security, and workspace integrations. Changes save as you make them.
@@ -497,7 +506,7 @@ const AppShell02 = () => {
                   {normalized && (
                     <Badge
                       variant={count ? 'secondary' : 'outline'}
-                      className="ms-auto font-mono text-[10px] tabular-nums"
+                      className="ms-auto text-[10px] tabular-nums"
                     >
                       {count}
                       <span className="sr-only"> matches</span>
@@ -515,18 +524,16 @@ const AppShell02 = () => {
               const elsewhere = SECTIONS.filter((other) => other.id !== s.id && matchesBySection[other.id].length > 0);
               return (
                 <TabsContent key={s.id} value={s.id} className="mt-0">
-                  <Card className="gap-0 overflow-hidden p-0">
+                  <Card className={cn(SWAP, 'gap-0 overflow-hidden p-0')}>
                     <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-9 items-center justify-center rounded-md border border-border bg-muted">
-                          <s.icon className="size-4" aria-hidden />
-                        </span>
+                        <s.icon className="size-4 shrink-0 self-start mt-0.5 text-muted-foreground" aria-hidden />
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold">{s.label}</span>
-                          <span className="text-xs text-muted-foreground">{s.desc}</span>
+                          <h2 className="text-sm font-semibold">{s.label}</h2>
+                          <p className="text-xs text-muted-foreground">{s.desc}</p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="hidden font-mono tabular-nums sm:inline-flex">
+                      <Badge variant="outline" className="hidden tabular-nums sm:inline-flex">
                         {fields.length}
                         {normalized ? ` of ${SECTION_FIELDS[s.id].length}` : ''} fields
                       </Badge>
@@ -541,7 +548,7 @@ const AppShell02 = () => {
                           <EmptyTitle>Nothing here matches</EmptyTitle>
                           <EmptyDescription>
                             Nothing in {s.label} matches{' '}
-                            <span className="font-mono text-foreground">&ldquo;{query.trim()}&rdquo;</span>
+                            <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>
                             {elsewhere.length > 0 ? ', but other sections have hits.' : '.'}
                           </EmptyDescription>
                         </EmptyHeader>
@@ -550,7 +557,7 @@ const AppShell02 = () => {
                             <Button key={other.id} variant="outline" size="sm" onClick={() => setSection(other.id)}>
                               <other.icon aria-hidden />
                               {other.label}
-                              <Badge variant="secondary" className="font-mono text-[10px] tabular-nums">
+                              <Badge variant="secondary" className="text-[10px] tabular-nums">
                                 {matchesBySection[other.id].length}
                               </Badge>
                             </Button>

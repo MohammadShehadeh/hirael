@@ -1,15 +1,28 @@
 'use client';
 
+import * as React from 'react';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+type Billing = 'monthly' | 'yearly';
 
 const TIERS = [
   {
     name: 'Free',
-    price: '$0',
+    price: { monthly: 0, yearly: 0 },
     tagline: 'For side projects and trying the editor.',
     cta: 'Start free',
     featured: false,
@@ -17,7 +30,7 @@ const TIERS = [
   },
   {
     name: 'Team',
-    price: '$12',
+    price: { monthly: 12, yearly: 10 },
     tagline: 'For teams shipping every day.',
     cta: 'Start with Team',
     featured: true,
@@ -25,7 +38,7 @@ const TIERS = [
   },
   {
     name: 'Scale',
-    price: '$29',
+    price: { monthly: 29, yearly: 24 },
     tagline: 'For orgs with many repos and gates.',
     cta: 'Start with Scale',
     featured: false,
@@ -33,68 +46,112 @@ const TIERS = [
   },
 ];
 
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
 const Pricing04 = () => {
+  const [billing, setBilling] = React.useState<Billing>('monthly');
+
   return (
-    <section data-slot="pricing" className="flex w-full flex-col gap-16 bg-background px-6 py-16 md:px-10 md:py-24">
+    <section data-slot="pricing" className="flex w-full flex-col gap-12 bg-background px-6 py-16 md:px-10 md:py-24">
       <div data-slot="pricing-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
         <Badge
           variant="outline"
-          className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
+          className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
         >
           Pricing
         </Badge>
-        <h2 className="font-serif text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
+        <h2
+          style={stagger(1)}
+          className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl')}
+        >
           Priced by the minute, not the seat
         </h2>
-        <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p style={stagger(2)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground md:text-lg')}>
           Every plan includes the full editor. You pay for compute and retention, and collaborators are free everywhere.
         </p>
+        <ToggleGroup
+          data-slot="pricing-billing"
+          type="single"
+          variant="outline"
+          value={billing}
+          onValueChange={(next) => next && setBilling(next as Billing)}
+          aria-label="Billing period"
+          style={stagger(3)}
+          className={cn(ENTER, 'mt-4')}
+        >
+          <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
+          <ToggleGroupItem value="yearly">Yearly</ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {TIERS.map((tier) => (
-          <div
-            key={tier.name}
-            data-slot="pricing-tier"
-            data-featured={tier.featured}
-            className={cn(
-              'relative flex h-full flex-col gap-6 overflow-hidden rounded-xs border border-border bg-background p-7',
-              tier.featured && 'border-primary/60',
-            )}
-          >
-            {tier.featured ? (
-              <>
-                <div
-                  aria-hidden
-                  className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,var(--warm-glow),transparent_70%)]"
-                />
-                <Badge className="absolute end-5 top-5 text-xs uppercase">Most popular</Badge>
-              </>
-            ) : null}
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 md:grid-cols-3">
+        {TIERS.map((tier, index) => {
+          const price = tier.price[billing];
 
-            <div className="flex flex-col gap-2">
-              <h3 className="text-xs uppercase text-muted-foreground">{tier.name}</h3>
-              <div className="flex items-baseline gap-1">
-                <span className="text-5xl font-semibold tracking-tight">{tier.price}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
+          return (
+            <div
+              key={tier.name}
+              data-slot="pricing-tier"
+              data-featured={tier.featured}
+              style={stagger(index, 60, 240)}
+              className={cn(
+                ENTER,
+                'relative isolate flex h-full flex-col gap-6 overflow-hidden rounded-xs border border-border bg-background p-7',
+                tier.featured && 'border-primary/60',
+              )}
+            >
+              {tier.featured ? (
+                <>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,var(--warm-glow),transparent_70%)]"
+                  />
+                  <Badge className="absolute end-5 top-5 text-xs uppercase">Most popular</Badge>
+                </>
+              ) : null}
+
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xs uppercase text-muted-foreground">{tier.name}</h3>
+                <div key={billing} data-slot="pricing-price" className={cn(SWAP, 'flex flex-col gap-1')}>
+                  <div className="flex items-baseline gap-1">
+                    <span dir="ltr" className="text-5xl font-semibold tabular-nums tracking-tight">
+                      {money.format(price)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">/ month</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {price === 0 ? (
+                      'No card needed'
+                    ) : billing === 'yearly' ? (
+                      <>
+                        <span dir="ltr" className="tabular-nums">
+                          {money.format(price * 12)}
+                        </span>{' '}
+                        billed once a year
+                      </>
+                    ) : (
+                      'Billed monthly'
+                    )}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground">{tier.tagline}</p>
               </div>
-              <p className="text-sm text-muted-foreground">{tier.tagline}</p>
+
+              <Button variant={tier.featured ? 'default' : 'outline'} className="w-full" asChild>
+                <a href="#">{tier.cta}</a>
+              </Button>
+
+              <ul className="flex flex-col gap-2.5 text-sm">
+                {tier.quota.map((line) => (
+                  <li key={line} className="flex items-start gap-2">
+                    <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <Button variant={tier.featured ? 'default' : 'outline'} className="w-full" asChild>
-              <a href="#">{tier.cta}</a>
-            </Button>
-
-            <ul className="flex flex-col gap-2.5 text-sm">
-              {tier.quota.map((line) => (
-                <li key={line} className="flex items-start gap-2">
-                  <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

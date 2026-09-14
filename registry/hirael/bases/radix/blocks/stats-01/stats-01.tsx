@@ -197,6 +197,13 @@ export {
   StatsDelta,
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 const STATS = [
   {
     label: 'Deploys per week',
@@ -229,18 +236,20 @@ const STATS = [
 
 const Stats01Block = () => {
   return (
-    <Stats data-slot="stats-01-block">
+    <Stats>
       <StatsHeader>
-        <StatsEyebrow>By the numbers</StatsEyebrow>
-        <StatsTitle>Boring in production, on purpose.</StatsTitle>
-        <StatsDescription>
-          Every figure below is pulled from the public status page and updated monthly. No rounding up.
+        <StatsEyebrow className={ENTER}>By the numbers</StatsEyebrow>
+        <StatsTitle style={stagger(1)} className={ENTER}>
+          Boring in production, on purpose.
+        </StatsTitle>
+        <StatsDescription style={stagger(2)} className={ENTER}>
+          Every figure below comes from the public status page and is refreshed on the first of each month.
         </StatsDescription>
       </StatsHeader>
 
       <StatsGrid>
-        {STATS.map((stat) => (
-          <StatsItem key={stat.label}>
+        {STATS.map((stat, index) => (
+          <StatsItem key={stat.label} style={stagger(index, 60, 180)} className={ENTER}>
             <StatsValue value={stat.value} suffix={stat.suffix} decimals={'decimals' in stat ? stat.decimals : 0} />
             <StatsLabel>{stat.label}</StatsLabel>
             {'delta' in stat ? <StatsDelta trend={stat.trend}>{stat.delta}</StatsDelta> : null}

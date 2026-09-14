@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { Play, Sparkles } from 'lucide-react';
 
@@ -9,7 +7,11 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 /** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
-  'animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none';
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -22,11 +24,53 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
+type CardState = 'queued' | 'active' | 'review' | 'done';
+
+interface BoardCard {
+  title: string;
+  tag: string;
+  owner: string;
+  state: CardState;
+  meta: string;
+}
+
+const BOARD: { name: string; cards: BoardCard[] }[] = [
+  {
+    name: 'Up next',
+    cards: [
+      { title: 'Billing page empty state', tag: 'Design', owner: 'NR', state: 'queued', meta: '2 comments' },
+      { title: 'Rate limit the export API', tag: 'Backend', owner: 'TL', state: 'queued', meta: 'Due Fri' },
+      { title: 'Onboarding checklist copy', tag: 'Content', owner: 'GO', state: 'queued', meta: '1 comment' },
+    ],
+  },
+  {
+    name: 'In progress',
+    cards: [
+      { title: 'Team invites by link', tag: 'Frontend', owner: 'AM', state: 'active', meta: 'Editing now' },
+      { title: 'Search across projects', tag: 'Backend', owner: 'JP', state: 'review', meta: 'PR #482' },
+    ],
+  },
+  {
+    name: 'Shipped',
+    cards: [
+      { title: 'Dark mode for docs', tag: 'Frontend', owner: 'RK', state: 'done', meta: 'Tue' },
+      { title: 'CSV import for tasks', tag: 'Backend', owner: 'LM', state: 'done', meta: 'Mon' },
+    ],
+  },
+];
+
+const STATE_LABEL: Record<CardState, string> = {
+  queued: 'Queued',
+  active: 'Live',
+  review: 'In review',
+  done: 'Done',
+};
+
 const Hero08 = () => {
   return (
     <section
       data-slot="hero"
-      className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-muted bg-background pt-30"
+      className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
     >
       <div
         data-slot="hero-backdrop"
@@ -55,13 +99,17 @@ const Hero08 = () => {
         <div className="mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
           <Badge
             variant="outline"
-            className="gap-2 rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
+            className={cn(
+              RISE,
+              'gap-2 rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
+            )}
           >
-            <Sparkles className="size-3" />
-            Design workflows visually
+            <Sparkles aria-hidden className="size-3" />
+            Boards for product teams
           </Badge>
 
           <h1
+            style={stagger(1)}
             className={cn(
               'font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl',
               RISE,
@@ -71,22 +119,17 @@ const Hero08 = () => {
           </h1>
 
           <p
-            className={cn(
-              'mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg',
-              RISE,
-              'delay-100',
-            )}
+            style={stagger(2)}
+            className={cn('mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg', RISE)}
           >
             Build, review, and ship your work from one place. Drag to arrange, connect the pieces, and keep the details
             that matter in view.
           </p>
 
           <div
-            className={cn(
-              'mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md',
-              RISE,
-              'delay-200',
-            )}
+            data-slot="hero-actions"
+            style={stagger(3)}
+            className={cn('mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md', RISE)}
           >
             <Button asChild size="lg">
               <a className="flex items-center gap-2" href="#">
@@ -105,31 +148,68 @@ const Hero08 = () => {
 
         <div
           data-slot="hero-preview"
+          style={stagger(4)}
           className={cn(
+            RISE,
             'mx-auto max-w-5xl rounded-t-xl border border-b-0 border-border',
             'bg-card/60 p-2 shadow-elevated backdrop-blur-sm',
           )}
         >
-          <div className="flex items-center gap-1.5 px-2 pb-2">
-            <span className="size-2.5 rounded-full bg-muted" />
-            <span className="size-2.5 rounded-full bg-muted" />
-            <span className="size-2.5 rounded-full bg-muted" />
+          <div className="flex items-center justify-between gap-3 px-2 pb-2">
+            <div aria-hidden className="flex items-center gap-1.5">
+              <span className="size-2.5 rounded-full bg-muted" />
+              <span className="size-2.5 rounded-full bg-muted" />
+              <span className="size-2.5 rounded-full bg-muted" />
+            </div>
+            <span className="truncate text-xs text-muted-foreground">Q3 launch board</span>
+            <span className="text-xs tabular-nums text-muted-foreground">7 tasks</span>
           </div>
-          <div className="grid h-64 grid-cols-3 gap-2 rounded-lg border border-border bg-background/80 p-3">
-            {[0, 1, 2].map((column) => (
-              <div key={column} className="flex flex-col gap-2">
-                {[0, 1, 2].map((row) => (
+          <div
+            data-slot="hero-board"
+            className="grid grid-cols-2 gap-2 rounded-lg border border-border bg-background/80 p-3 text-start sm:grid-cols-3"
+          >
+            {BOARD.map((column, columnIndex) => (
+              <div
+                key={column.name}
+                data-slot="hero-board-column"
+                className={cn('flex flex-col gap-2', columnIndex === 2 && 'hidden sm:flex')}
+              >
+                <div className="flex items-center justify-between px-1 pb-1 text-xs text-muted-foreground">
+                  <span className="uppercase">{column.name}</span>
+                  <span className="tabular-nums">{column.cards.length}</span>
+                </div>
+                {column.cards.map((card) => (
                   <div
-                    key={row}
-                    className="flex flex-1 flex-col gap-1.5 rounded-md border border-border bg-muted/40 p-2.5"
+                    key={card.title}
+                    data-slot="hero-board-card"
+                    className={cn(
+                      'flex flex-col gap-2 rounded-md border border-border bg-card p-2.5',
+                      card.state === 'active' && 'border-accent-cool/40',
+                    )}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-foreground/10" />
-                      <span className="h-1.5 w-1/2 rounded-full bg-foreground/10" />
+                    <span
+                      className={cn(
+                        'text-sm leading-snug font-medium',
+                        card.state === 'done' && 'text-muted-foreground line-through decoration-border',
+                      )}
+                    >
+                      {card.title}
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="rounded-sm border border-border px-1.5 py-0.5">{card.tag}</span>
+                      <span
+                        className={cn(
+                          'truncate',
+                          card.state === 'active' && 'text-accent-cool',
+                          card.state === 'review' && 'text-warm',
+                        )}
+                      >
+                        {card.state === 'queued' || card.state === 'done' ? card.meta : STATE_LABEL[card.state]}
+                      </span>
+                      <span className="ms-auto grid size-5 shrink-0 place-items-center rounded-full bg-muted text-[10px] font-medium text-foreground">
+                        {card.owner}
+                      </span>
                     </div>
-                    <span className="h-1.5 w-full rounded-full bg-foreground/10" />
-                    <span className="h-1.5 w-2/3 rounded-full bg-foreground/10" />
-                    <span className="mt-auto h-4 w-full rounded-sm bg-muted" />
                   </div>
                 ))}
               </div>

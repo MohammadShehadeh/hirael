@@ -4,6 +4,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
@@ -15,6 +16,15 @@ import {
   CardTitle,
 } from '@/registry/hirael/bases/radix/ui/card';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
+
+const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
+const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
+const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface Post {
   category: string;
@@ -38,11 +48,11 @@ const IMG = {
 
 const FEATURED: Post = {
   category: 'Engineering',
-  title: 'Why we shipped the same component twice, and why you should too.',
+  title: 'Why we build every component from small, swappable parts.',
   excerpt:
-    "Every Hirael primitive exposes a compound surface and a single-prop surface in the same file. Here's the design contract behind it, and the four bugs it quietly prevented in production.",
-  author: { name: 'John Doe', initials: 'JD' },
-  date: 'May 22 · 2026',
+    "Every Hirael item starts as a flat set of parts you compose yourself. Here's the contract behind that choice, and the four bugs it quietly prevented in production.",
+  author: { name: 'Nadia Rahman', initials: 'NR' },
+  date: 'May 22, 2026',
   readMin: 9,
   href: '#',
   cover: IMG.a,
@@ -71,7 +81,7 @@ const POSTS: readonly Post[] = [
   },
   {
     category: 'Release',
-    title: 'v1.3 · year picker, eyedropper, dense data tables.',
+    title: 'v1.3: year picker, eyedropper, dense data tables.',
     excerpt:
       'Three new primitives, a quiet API revision to combobox, and a long-deferred fix for SSR hydration in tag-input.',
     author: { name: 'Adaeze Okafor', initials: 'AO' },
@@ -92,6 +102,10 @@ const POSTS: readonly Post[] = [
   },
 ];
 
+const ALL = 'All';
+const ALL_POSTS: readonly Post[] = [FEATURED, ...POSTS];
+const CATEGORIES = [ALL, ...Array.from(new Set(ALL_POSTS.map((post) => post.category)))];
+
 const PostCover = ({
   cover,
   alt,
@@ -111,9 +125,10 @@ const PostCover = ({
           alt={alt}
           fill
           sizes="(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
         />
-        <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
+        {/* Photo scrim: fixed dark overlay so the badges stay legible on any image, in both themes. */}
+        <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-linear-to-t from-black/60 via-black/10 to-transparent p-4">
           {featured && <Badge className="bg-background/85 text-foreground backdrop-blur-sm">Featured</Badge>}
           <Badge variant="outline" className="border-white/30 text-white">
             {category}
@@ -149,24 +164,85 @@ const PostCover = ({
   );
 };
 
-const Blog01 = () => {
+const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) => {
+  const titleId = `blog-01-post-${post.title.replace(/[^a-z0-9]+/gi, '-').slice(0, 24)}`;
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <Card
+      data-slot="blog-post"
+      style={style}
+      className={cn(
+        SWAP,
+        'group relative gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30',
+      )}
+    >
+      <article aria-labelledby={titleId} className="flex h-full flex-col">
+        {post.cover && (
+          <a href={post.href} aria-hidden tabIndex={-1} className="block aspect-[16/10] overflow-hidden">
+            <PostCover cover={post.cover} alt={post.title} category={post.category} />
+          </a>
+        )}
+        <CardHeader className="px-5 pt-5">
+          <div className="flex items-center justify-between">
+            {!post.cover ? <Badge variant="outline">{post.category}</Badge> : <span aria-hidden />}
+            <span className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground">
+              <Clock aria-hidden className="size-2.5" />
+              {post.readMin} min
+            </span>
+          </div>
+          <CardTitle id={titleId} className="mt-2 text-base leading-snug tracking-[-0.01em] text-pretty">
+            <a href={post.href} className="after:absolute after:inset-0 focus-visible:outline-none">
+              {post.title}
+            </a>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 px-5 py-4">
+          <CardDescription className="text-pretty">{post.excerpt}</CardDescription>
+        </CardContent>
+        <Separator />
+        <CardFooter className="px-5 py-4">
+          <div className="flex w-full items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-[10px] font-medium text-foreground">
+                {post.author.initials}
+              </span>
+              <span className="truncate text-xs text-foreground">{post.author.name}</span>
+            </div>
+            <span className="shrink-0 text-xs uppercase text-muted-foreground">{post.date}</span>
+          </div>
+        </CardFooter>
+      </article>
+    </Card>
+  );
+};
+
+const Blog01 = () => {
+  const [category, setCategory] = React.useState(ALL);
+  // The first render staggers in after the header; later filter changes swap immediately.
+  const [filtered, setFiltered] = React.useState(false);
+  const showFeatured = category === ALL;
+  const posts = showFeatured ? POSTS : ALL_POSTS.filter((post) => post.category === category);
+
+  return (
+    <section data-slot="blog" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex flex-col gap-5 border-b border-border pb-10 sm:flex-row sm:items-end sm:justify-between">
+        <div
+          data-slot="blog-header"
+          className="flex flex-col gap-5 border-b border-border pb-10 sm:flex-row sm:items-end sm:justify-between"
+        >
           <div className="flex max-w-xl flex-col gap-4">
-            <Badge variant="outline" className="w-fit">
-              journal
-            </Badge>
-            <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Journal</span>
+            <h2
+              style={stagger(1)}
+              className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            >
               Writing from the workshop.
             </h2>
-            <p className="text-base text-muted-foreground">
-              Patterns, release notes, and field reports from teams putting Hirael to work. No launch tweets, no growth
+            <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground')}>
+              Patterns, release notes, and field reports from teams putting Hirael to work. No launch threads, no growth
               posts.
             </p>
           </div>
-          <Button variant="link" className="group h-auto p-0" asChild>
+          <Button variant="link" className={cn(ENTER, 'group h-auto w-fit p-0')} style={stagger(3)} asChild>
             <a href="#">
               All posts
               <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -174,93 +250,94 @@ const Blog01 = () => {
           </Button>
         </div>
 
-        <Card className="group mt-10 gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30">
-          <article aria-labelledby="blog-01-featured-title" className="relative grid grid-cols-1 lg:grid-cols-12">
-            <a
-              href={FEATURED.href}
-              aria-hidden
-              tabIndex={-1}
-              className="block aspect-[16/10] lg:col-span-7 lg:aspect-auto"
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          size="sm"
+          spacing={2}
+          value={category}
+          onValueChange={(next) => {
+            if (!next) return;
+            setCategory(next);
+            setFiltered(true);
+          }}
+          aria-label="Filter posts by category"
+          data-slot="blog-filter"
+          style={stagger(3)}
+          className={cn(ENTER, 'mt-8 flex-wrap')}
+        >
+          {CATEGORIES.map((item) => (
+            <ToggleGroupItem
+              key={item}
+              value={item}
+              className="rounded-full data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
             >
-              <PostCover cover={FEATURED.cover} alt={FEATURED.title} category={FEATURED.category} featured />
-            </a>
+              {item}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
 
-            <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
-              <span className="text-xs uppercase text-muted-foreground">
-                {FEATURED.date} · {FEATURED.readMin} min read
-              </span>
-              <h3
-                id="blog-01-featured-title"
-                className="text-2xl font-semibold leading-[1.15] tracking-[-0.025em] sm:text-3xl"
+        {showFeatured && (
+          <Card
+            data-slot="blog-featured"
+            style={filtered ? undefined : stagger(4)}
+            className={cn(
+              filtered ? SWAP : ENTER,
+              'group mt-8 gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30',
+            )}
+          >
+            <article aria-labelledby="blog-01-featured-title" className="relative grid grid-cols-1 lg:grid-cols-12">
+              <a
+                href={FEATURED.href}
+                aria-hidden
+                tabIndex={-1}
+                className="block aspect-[16/10] lg:col-span-7 lg:aspect-auto"
               >
-                <a href={FEATURED.href} className="after:absolute after:inset-0 focus-visible:outline-none">
-                  {FEATURED.title}
-                </a>
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">{FEATURED.excerpt}</p>
-              <div className="mt-2 flex items-center gap-3">
-                <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-muted font-mono text-xs font-medium text-foreground">
-                  {FEATURED.author.initials}
+                <PostCover cover={FEATURED.cover} alt={FEATURED.title} category={FEATURED.category} featured />
+              </a>
+
+              <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
+                <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                  <span>{FEATURED.date}</span>
+                  <span aria-hidden className="text-border">
+                    |
+                  </span>
+                  <span>{FEATURED.readMin} min read</span>
                 </span>
-                <span className="text-sm text-foreground">{FEATURED.author.name}</span>
+                <h3
+                  id="blog-01-featured-title"
+                  className="text-2xl font-semibold leading-[1.15] tracking-[-0.025em] text-pretty sm:text-3xl"
+                >
+                  <a href={FEATURED.href} className="after:absolute after:inset-0 focus-visible:outline-none">
+                    {FEATURED.title}
+                  </a>
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">{FEATURED.excerpt}</p>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-foreground">
+                    {FEATURED.author.initials}
+                  </span>
+                  <span className="text-sm text-foreground">{FEATURED.author.name}</span>
+                </div>
+                <Button asChild variant="default" className="group/cta relative z-10 mt-2 w-fit">
+                  <a href={FEATURED.href}>
+                    Read the post
+                    <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5 rtl:rotate-180 rtl:group-hover/cta:-translate-x-0.5" />
+                  </a>
+                </Button>
               </div>
-              <Button asChild variant="default" className="group/cta relative z-10 mt-2 w-fit">
-                <a href={FEATURED.href}>
-                  Read the post
-                  <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover/cta:translate-x-0.5 rtl:rotate-180 rtl:group-hover/cta:-translate-x-0.5" />
-                </a>
-              </Button>
-            </div>
-          </article>
-        </Card>
+            </article>
+          </Card>
+        )}
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {POSTS.map((p) => {
-            const titleId = `blog-01-post-${p.title.replace(/\s+/g, '-').slice(0, 24)}`;
-            return (
-              <Card
-                key={p.title}
-                className="group relative gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30"
-              >
-                <article aria-labelledby={titleId} className="flex h-full flex-col">
-                  {p.cover && (
-                    <a href={p.href} aria-hidden tabIndex={-1} className="block aspect-[16/10] overflow-hidden">
-                      <PostCover cover={p.cover} alt={p.title} category={p.category} />
-                    </a>
-                  )}
-                  <CardHeader className="px-5 pt-5">
-                    <div className="flex items-center justify-between">
-                      {!p.cover ? <Badge variant="outline">{p.category}</Badge> : <span aria-hidden />}
-                      <span className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground">
-                        <Clock className="size-2.5" />
-                        {p.readMin}m
-                      </span>
-                    </div>
-                    <CardTitle id={titleId} className="mt-2 text-base leading-snug tracking-[-0.01em]">
-                      <a href={p.href} className="after:absolute after:inset-0 focus-visible:outline-none">
-                        {p.title}
-                      </a>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 px-5 py-4">
-                    <CardDescription className="line-clamp-3">{p.excerpt}</CardDescription>
-                  </CardContent>
-                  <Separator />
-                  <CardFooter className="px-5 py-4">
-                    <div className="flex w-full items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex size-6 items-center justify-center rounded-full border border-border bg-muted font-mono text-[10px] font-medium text-foreground">
-                          {p.author.initials}
-                        </span>
-                        <span className="truncate text-xs text-foreground">{p.author.name}</span>
-                      </div>
-                      <span className="text-xs uppercase text-muted-foreground">{p.date}</span>
-                    </div>
-                  </CardFooter>
-                </article>
-              </Card>
-            );
-          })}
+        <div
+          key={category}
+          data-slot="blog-grid"
+          className={cn('grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4', showFeatured ? 'mt-10' : 'mt-8')}
+        >
+          {posts.map((post, index) => (
+            <PostCard key={post.title} post={post} style={stagger(index, 60, filtered ? 0 : 320)} />
+          ))}
         </div>
       </div>
     </section>

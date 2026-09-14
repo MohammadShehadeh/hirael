@@ -122,17 +122,23 @@ type AuditLogDetailProps = React.ComponentProps<'dl'>;
 
 const AuditLogDetail = ({ className, children, ...props }: AuditLogDetailProps) => {
   return (
-    <CollapsibleContent asChild>
-      <dl
-        data-slot="audit-log-detail"
-        className={cn(
-          'grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11',
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </dl>
+    <CollapsibleContent
+      forceMount
+      data-slot="audit-log-detail-panel"
+      className="grid grid-rows-[1fr] transition-[grid-template-rows,visibility] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] motion-reduce:transition-none"
+    >
+      <div className="min-h-0 overflow-hidden">
+        <dl
+          data-slot="audit-log-detail"
+          className={cn(
+            'grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11',
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </dl>
+      </div>
     </CollapsibleContent>
   );
 };
@@ -145,7 +151,7 @@ const AuditLogField = ({ label, className, children, ...props }: AuditLogFieldPr
   return (
     <div data-slot="audit-log-field" className={cn('contents', className)} {...props}>
       <dt className="text-xs uppercase text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 break-words font-mono text-[12px] text-foreground">{children}</dd>
+      <dd className="min-w-0 break-words text-[12px] text-foreground">{children}</dd>
     </div>
   );
 };
@@ -165,7 +171,7 @@ export {
 const AuditLogBlock = () => {
   return (
     <section data-slot="audit-log-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="grid w-full max-w-2xl gap-3">
+      <div className="grid w-full max-w-2xl gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
         <p className="text-xs uppercase text-muted-foreground">Recent events</p>
         <AuditLog>
           <AuditLogItem defaultOpen>
@@ -181,7 +187,8 @@ const AuditLogBlock = () => {
               <AuditLogField label="Actor">lena.park@acme.co</AuditLogField>
               <AuditLogField label="IP">192.0.2.51</AuditLogField>
               <AuditLogField label="Location">Lisbon, PT</AuditLogField>
-              <AuditLogField label="Changed">plan: pro → scale, seats: 10 → 25</AuditLogField>
+              <AuditLogField label="Plan">Pro to Scale</AuditLogField>
+              <AuditLogField label="Seats">10 to 25</AuditLogField>
             </AuditLogDetail>
           </AuditLogItem>
 

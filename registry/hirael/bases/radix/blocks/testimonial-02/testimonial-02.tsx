@@ -1,84 +1,112 @@
-'use client';
+import type * as React from 'react';
 
-import * as React from 'react';
+import { cn } from '@/lib/utils';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface Quote {
   body: string;
   initials: string;
   name: string;
   role: string;
+  company: string;
 }
 
 const QUOTES: readonly Quote[] = [
   {
-    body: 'The compound APIs are identical to shadcn, so onboarding was zero. We composed a whole settings page out of these in an afternoon.',
+    body: 'The compound APIs are the same shape as shadcn, so there was nothing new to learn. We composed a whole settings page out of these in an afternoon.',
     initials: 'MR',
     name: 'Maya Renner',
-    role: 'Staff engineer · Plinth Labs',
+    role: 'Staff engineer',
+    company: 'Plinth Labs',
   },
   {
-    body: 'Light and dark are true inverses, which almost no kit gets right. I stopped patching contrast bugs.',
+    body: 'Light and dark mirror each other properly, which few kits get right. I stopped patching contrast bugs.',
     initials: 'JT',
     name: 'Jules Tanaka',
-    role: 'Design systems · Hexpoint',
+    role: 'Design systems',
+    company: 'Hexpoint',
   },
   {
     body: "RTL just worked. We flipped the locale and didn't have to touch a single component.",
     initials: 'AO',
     name: 'Adaeze Okafor',
-    role: 'Founding engineer · Brella',
+    role: 'Founding engineer',
+    company: 'Brella',
   },
   {
     body: "It's source in our repo, not another dependency to keep up with. That's what sold the team.",
     initials: 'SK',
     name: 'Soren Kim',
-    role: 'Frontend lead · Verbit',
+    role: 'Frontend lead',
+    company: 'Verbit',
   },
   {
     body: 'We replaced three half-finished internal components in a morning and deleted a lot of code.',
     initials: 'RP',
     name: 'Reema Patel',
-    role: 'CTO · Lattice & Co.',
+    role: 'CTO',
+    company: 'Lattice & Co.',
   },
   {
     body: 'The blocks gave us a real landing page on day one. We swapped the copy and colors and shipped.',
     initials: 'DL',
     name: 'Diego Larrea',
-    role: 'Engineer · Mercado',
+    role: 'Engineer',
+    company: 'Mercado',
   },
 ];
 
 const Testimonial02 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="testimonial" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex max-w-2xl flex-col gap-5">
-          <span className="inline-flex items-center gap-2 text-xs uppercase text-foreground">
-            <span className="size-1 rounded-full bg-foreground" />
-            What teams say
-          </span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+        <div data-slot="testimonial-header" className="flex max-w-2xl flex-col gap-5">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>What teams say</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
             What people are <span className="italic text-foreground">actually</span> saying.
           </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
+          <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
             Notes from engineers and designers building with the catalog in production.
           </p>
         </div>
 
-        <div className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-          {QUOTES.map((q) => (
-            <figure key={q.name} className="break-inside-avoid rounded-md border border-border bg-card p-5">
+        <div data-slot="testimonial-grid" className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+          {QUOTES.map((quote, index) => (
+            <figure
+              key={quote.name}
+              data-slot="testimonial-card"
+              style={stagger(index, 40, 180)}
+              className={cn(ENTER, 'break-inside-avoid rounded-md border border-border bg-card p-5')}
+            >
               <blockquote>
-                <p className="text-sm leading-relaxed text-foreground">{q.body}</p>
+                <p className="text-sm leading-relaxed text-foreground">{quote.body}</p>
               </blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
-                <div className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-muted font-mono text-xs font-medium text-foreground">
-                  {q.initials}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold tracking-[-0.01em]">{q.name}</span>
-                  <span className="text-xs uppercase text-muted-foreground">{q.role}</span>
-                </div>
+                <span
+                  aria-hidden
+                  className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-foreground"
+                >
+                  {quote.initials}
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-sm font-semibold tracking-[-0.01em]">{quote.name}</span>
+                  <span className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
+                    <span>{quote.role}</span>
+                    <span aria-hidden className="text-border">
+                      |
+                    </span>
+                    <span>{quote.company}</span>
+                  </span>
+                </span>
               </figcaption>
             </figure>
           ))}

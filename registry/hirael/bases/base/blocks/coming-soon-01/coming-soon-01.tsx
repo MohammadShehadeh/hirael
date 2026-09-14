@@ -5,9 +5,16 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { Field, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
+import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { CountdownTimer } from '@/registry/hirael/bases/base/components/countdown-timer';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const ComingSoon = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
@@ -85,13 +92,23 @@ const ComingSoonForm = ({
 }: ComingSoonFormProps) => {
   const id = React.useId();
   const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
   const [subscribed, setSubscribed] = React.useState(false);
 
   const handleSubmit = React.useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!email.trim()) return;
-      onSubscribe?.(email.trim());
+      const value = email.trim();
+      if (!value) {
+        setError('Enter your email to get the launch note.');
+        return;
+      }
+      if (!EMAIL_PATTERN.test(value)) {
+        setError("That doesn't look like a valid email.");
+        return;
+      }
+      setError(null);
+      onSubscribe?.(value);
       setSubscribed(true);
     },
     [email, onSubscribe],
@@ -104,12 +121,16 @@ const ComingSoonForm = ({
         data-state="subscribed"
         role="status"
         aria-live="polite"
-        className={cn('inline-flex h-10 items-center gap-2 text-sm text-foreground', className)}
+        className={cn(
+          'flex min-h-10 w-full max-w-md flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground',
+          'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+          className,
+        )}
       >
-        <CheckCircle2 className="size-4 text-success" />
+        <CheckCircle2 aria-hidden className="size-4 shrink-0 text-success" />
         {successMessage}
-        <span className="text-muted-foreground">
-          We&apos;ll email <span className="font-mono text-foreground">{email}</span> on launch day.
+        <span className="min-w-0 break-words text-muted-foreground">
+          We&apos;ll email <span className="break-all text-foreground">{email.trim()}</span> on launch day.
         </span>
       </p>
     );
@@ -124,7 +145,7 @@ const ComingSoonForm = ({
       className={cn('w-full max-w-md', className)}
       {...props}
     >
-      <Field className="gap-1.5">
+      <Field className="gap-1.5" data-invalid={error ? true : undefined}>
         <FieldLabel htmlFor={id} className="text-xs uppercase text-muted-foreground">
           Get notified at launch
         </FieldLabel>
@@ -135,14 +156,22 @@ const ComingSoonForm = ({
             autoComplete="email"
             placeholder={placeholder}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-10 flex-1"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError(null);
+            }}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? `${id}-error` : undefined}
+            className="h-10 min-w-0 flex-1"
           />
           <Button type="submit" size="lg" className="group">
             {buttonLabel}
             <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
         </div>
+        <FieldError id={`${id}-error`} className="text-xs">
+          {error}
+        </FieldError>
       </Field>
     </form>
   );
@@ -191,21 +220,20 @@ const ComingSoon01 = () => {
 
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
-          <ComingSoonEyebrow>
-            <span aria-hidden className="size-1.5 rounded-full bg-warm motion-safe:animate-pulse" />
-            Launching soon
-          </ComingSoonEyebrow>
-          <ComingSoonTitle>Hirael Cloud opens in three weeks.</ComingSoonTitle>
-          <ComingSoonDescription>
+          <ComingSoonEyebrow className={ENTER}>Launching soon</ComingSoonEyebrow>
+          <ComingSoonTitle style={stagger(1)} className={ENTER}>
+            Hirael Cloud opens in three weeks.
+          </ComingSoonTitle>
+          <ComingSoonDescription style={stagger(2)} className={ENTER}>
             Managed Postgres and object storage, with the same terminal-first console you already use for the registry.
           </ComingSoonDescription>
 
-          <ComingSoonCountdown target={target} />
+          <ComingSoonCountdown style={stagger(3)} className={ENTER} target={target} />
 
-          <ComingSoonForm />
+          <ComingSoonForm style={stagger(4)} className={ENTER} />
 
-          <ComingSoonFooter>
-            <span className="text-xs uppercase text-muted-foreground">Preview only, nothing is submitted.</span>
+          <ComingSoonFooter style={stagger(5)} className={ENTER}>
+            <span className="text-xs uppercase text-muted-foreground">People on the list get access first.</span>
             <a
               href="https://github.com/MohammadShehadeh/hirael"
               target="_blank"

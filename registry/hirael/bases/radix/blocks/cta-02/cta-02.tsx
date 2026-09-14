@@ -1,9 +1,19 @@
-'use client';
-
 import * as React from 'react';
 import { ArrowRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const REGISTRY_URL = 'https://hirael.com/r/multi-select.json';
+const COMMAND = `npx shadcn add ${REGISTRY_URL}`;
 
 const Cta02 = () => {
   return (
@@ -32,9 +42,15 @@ const Cta02 = () => {
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
-        <span className="text-xs uppercase text-foreground">one-line install</span>
+        <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>One-line install</span>
 
-        <h2 className="font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        <h2
+          style={stagger(1)}
+          className={cn(
+            ENTER,
+            'font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl',
+          )}
+        >
           Make your component layer{' '}
           <span className="relative inline-block">
             <span className="relative z-10 italic">do its job.</span>
@@ -42,12 +58,16 @@ const Cta02 = () => {
           </span>
         </h2>
 
-        <p className="max-w-xl text-base text-muted-foreground">
+        <p style={stagger(2)} className={cn(ENTER, 'max-w-xl text-base text-muted-foreground')}>
           Hirael fills the obvious gaps in shadcn: the components your team quietly rebuilds project after project, so
           you can spend that time on the work only you can do.
         </p>
 
-        <div className="flex flex-col items-center gap-3 sm:flex-row">
+        <div
+          data-slot="cta-actions"
+          style={stagger(3)}
+          className={cn(ENTER, 'flex flex-col items-center gap-3 sm:flex-row')}
+        >
           <Button asChild size="lg" className="group rounded-full px-7">
             <a href="#">
               Browse the registry
@@ -56,17 +76,31 @@ const Cta02 = () => {
           </Button>
           <span className="text-xs uppercase text-muted-foreground">
             or{' '}
-            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
-              read the dual-API contract
+            <a
+              className="underline-offset-4 transition-colors duration-150 hover:text-foreground hover:underline"
+              href="#"
+            >
+              read the install guide
             </a>
           </span>
         </div>
 
-        <div className="mt-2 flex max-w-full items-center gap-3 overflow-x-auto rounded-full border border-border bg-card/70 px-5 py-2.5 font-mono text-xs backdrop-blur-sm">
-          <span className="shrink-0 text-foreground">$</span>
-          <code className="whitespace-nowrap text-foreground">
-            npx shadcn add <span className="text-muted-foreground">https://hirael.com/r/multi-select</span>
+        <div
+          data-slot="cta-command"
+          dir="ltr"
+          style={stagger(4)}
+          className={cn(
+            ENTER,
+            'mt-2 flex w-full max-w-xl min-w-0 items-center gap-3 rounded-full border border-border bg-card/70 py-1.5 ps-5 pe-1.5 backdrop-blur-sm',
+          )}
+        >
+          <span aria-hidden className="shrink-0 select-none font-mono text-xs text-muted-foreground">
+            $
+          </span>
+          <code className="min-w-0 flex-1 truncate text-start font-mono text-xs text-foreground">
+            npx shadcn add <span className="text-muted-foreground">{REGISTRY_URL}</span>
           </code>
+          <CopyButton value={COMMAND} size="md" className="shrink-0 rounded-full" />
         </div>
       </div>
     </section>

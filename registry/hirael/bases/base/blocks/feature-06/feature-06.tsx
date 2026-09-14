@@ -7,11 +7,7 @@ import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
 /** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
-  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
-
-/** A shorter rise for the header copy. */
-const RISE_SM =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const HEADLINE = 'A small studio with a strong opinion';
 
@@ -27,8 +23,8 @@ const Title = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn('me-[0.25em] inline-block', RISE_SM, i < half ? 'text-muted-foreground' : 'text-foreground')}
-          style={{ animationDelay: `${200 + i * 80}ms` }}
+          className={cn('me-[0.25em] inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={{ animationDelay: `${60 + i * 30}ms` }}
         >
           {word}
         </span>
@@ -46,7 +42,7 @@ const GridPattern = () => {
       data-slot="grid-pattern"
       className="pointer-events-none absolute top-0 start-1/2 -mt-2 -ms-20 h-full w-full [mask-image:linear-gradient(black,transparent)]"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent [mask-image:radial-gradient(farthest-side_at_top,black,transparent)]">
+      <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent [mask-image:radial-gradient(farthest-side_at_top,black,transparent)]">
         <svg className="absolute inset-0 h-full w-full fill-primary/5 stroke-primary/25 mix-blend-overlay">
           <pattern id={id} width="20" height="20" patternUnits="userSpaceOnUse" x="-12" y="4">
             <path d="M.5 20V.5H20" fill="none" />
@@ -80,25 +76,25 @@ const CARDS: readonly AboutCard[] = [
   {
     title: 'How we work',
     paragraphs: [
-      'Every component starts as a written API before it becomes markup. We test it in light, dark, and right-to-left before it ships, and we keep the copy short enough to read in one pass.',
+      'Every component starts as a written API before it becomes markup. We test it in light, dark, and right to left before it ships, and we keep the copy short enough to read in one pass.',
       'You install the source, so nothing we do locks you in. If a component stops fitting, edit it. It was always yours.',
     ],
   },
 ];
 
 const Card = ({ card, index }: { card: AboutCard; index: number }) => {
-  const base = 200 + index * 100;
+  const base = 240 + index * 60;
 
   return (
     <article
       data-slot="feature-card"
-      className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-[30px] duration-600 ease-out fill-mode-both motion-reduce:animate-none md:px-10 md:py-8"
+      className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none md:px-10 md:py-8"
       style={{ animationDelay: `${base}ms` }}
     >
       <GridPattern />
       <h3
         className={cn('relative mb-6 text-2xl font-semibold text-foreground', RISE, 'md:text-3xl')}
-        style={{ animationDelay: `${base + 100}ms` }}
+        style={{ animationDelay: `${base + 60}ms` }}
       >
         {card.title}
       </h3>
@@ -107,7 +103,7 @@ const Card = ({ card, index }: { card: AboutCard; index: number }) => {
           <p
             key={i}
             className={cn('leading-relaxed text-pretty text-muted-foreground', RISE)}
-            style={{ animationDelay: `${base + 200 + i * 100}ms` }}
+            style={{ animationDelay: `${base + 100 + i * 40}ms` }}
           >
             {text}
           </p>
@@ -122,7 +118,7 @@ const Feature06 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none">
+          <div className={RISE}>
             <Badge
               variant="outline"
               className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
@@ -133,7 +129,8 @@ const Feature06 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE_SM, 'delay-400')}
+            style={{ animationDelay: '240ms' }}
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE)}
           >
             We build the components shadcn/ui does not ship, and we build them the way we would want to inherit them.
           </p>

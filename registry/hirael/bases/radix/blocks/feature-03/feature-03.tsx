@@ -1,9 +1,17 @@
-import { Combine, Languages, Braces, Palette, Server, Check, type LucideIcon } from 'lucide-react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
+
 interface Tile {
-  icon: LucideIcon;
   title: string;
   body: string;
   swatches?: boolean;
@@ -11,54 +19,71 @@ interface Tile {
 
 const TILES: readonly Tile[] = [
   {
-    icon: Combine,
-    title: 'Dual API by default',
-    body: 'Every component ships a compound surface and a single-prop surface in one file. Reach for whichever fits.',
+    title: 'Primitives come first',
+    body: 'If the item needs a Button or a Popover you do not have yet, the CLI adds it from shadcn/ui before anything else.',
   },
   {
-    icon: Languages,
-    title: 'RTL is built in',
-    body: 'Logical properties throughout, so every component works under dir=rtl with no extra config.',
+    title: 'Imports match your aliases',
+    body: 'Paths are rewritten to the folders in your components.json, so nothing points at a folder you do not have.',
   },
   {
-    icon: Braces,
-    title: 'Typed end to end',
-    body: 'Strict TypeScript with generics that flow from options to onChange. No any, no manual hints.',
+    title: 'npm packages are listed',
+    body: 'Anything the item imports from npm, like lucide-react, is installed with your package manager in the same run.',
   },
   {
-    icon: Palette,
-    title: 'Your theme tokens',
-    body: 'Reads the same CSS variables as shadcn/ui, so it re-skins live against any token system.',
+    title: 'Your tokens do the styling',
+    body: 'Files use the CSS variables your theme already defines, so new components match on the first render.',
     swatches: true,
   },
   {
-    icon: Server,
-    title: 'SSR safe',
-    body: "Server components by default, with 'use client' only where interactivity demands it.",
+    title: 'Nothing left at runtime',
+    body: 'There is no Hirael package in your bundle. Delete a file and the component is gone.',
   },
 ];
 
-const WRITTEN_FILES = ['button.tsx', 'input.tsx', 'combobox.tsx'] as const;
+const COMMAND = 'npx shadcn add https://hirael.com/r/combobox.json';
+
+const OUTPUT = [
+  { state: 'done', text: 'Checking registry dependencies' },
+  { state: 'done', text: 'Installing button, popover, command' },
+  { state: 'done', text: 'Installing lucide-react' },
+  { state: 'done', text: 'Created 4 files:' },
+] as const;
+
+const WRITTEN_FILES = [
+  'components/ui/button.tsx',
+  'components/ui/popover.tsx',
+  'components/ui/command.tsx',
+  'components/combobox.tsx',
+] as const;
+
 const SWATCHES = ['bg-foreground', 'bg-muted-foreground', 'bg-warm', 'bg-primary', 'bg-background'] as const;
 
 const Feature03 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <div className="flex max-w-2xl flex-col gap-5">
-          <span className="text-xs uppercase text-muted-foreground">why hirael</span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
-            One system, every surface.
+        <div data-slot="feature-header" className="flex max-w-2xl flex-col gap-5">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>How install works</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
+            One command, a few plain files
           </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
-            The decisions that hold across the whole catalog, from a single input to a full page template.
+          <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
+            Here is what the shadcn CLI does when you add a Hirael item, and what it leaves in your repo afterwards.
           </p>
         </div>
 
         <div data-slot="feature-bento" className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
           <div
             data-slot="feature-tile"
-            className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-6 sm:col-span-2 lg:col-span-4 lg:row-span-2"
+            style={stagger(0, 60, 180)}
+            className={cn(
+              ENTER,
+              'relative flex flex-col justify-between gap-8 overflow-hidden rounded-xl border border-border bg-card p-6 sm:col-span-2 lg:col-span-4 lg:row-span-2',
+            )}
           >
             <div
               aria-hidden
@@ -69,65 +94,64 @@ const Feature03 = () => {
               }}
             />
             <div className="relative z-10 flex flex-col gap-2">
-              <span className="text-xs uppercase text-muted-foreground">source you own</span>
+              <span className="text-xs uppercase text-muted-foreground">Source you own</span>
               <h3 className="max-w-md text-2xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-3xl">
-                Installed as plain TSX, never a black box.
+                The CLI writes TSX into your repo and steps away
               </h3>
               <p className="max-w-md text-sm text-muted-foreground">
-                The CLI copies the source into your repo. No runtime package, no version pin, no upgrade path to fight.
-                Edit it like it is yours, because it is.
+                You review the diff and commit it like code a teammate wrote. From then on, every edit is yours to make.
               </p>
             </div>
 
             <div
-              aria-hidden
-              className="relative z-10 mt-8 overflow-hidden rounded-md border border-border bg-background"
+              data-slot="feature-terminal"
+              dir="ltr"
+              className="relative z-10 -mx-6 -mb-6 border-t border-border bg-background px-6 py-5 text-start font-mono text-[12px] leading-relaxed"
             >
-              <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-                <span className="text-xs uppercase text-muted-foreground">components/ui</span>
-                <div className="flex gap-1">
-                  <span className="size-1.5 rounded-full bg-border" />
-                  <span className="size-1.5 rounded-full bg-border" />
-                  <span className="size-1.5 rounded-full bg-foreground" />
-                </div>
-              </div>
-              <ul className="flex flex-col gap-2.5 p-4 font-mono text-[12px]">
-                {WRITTEN_FILES.map((file) => (
-                  <li key={file} className="flex items-center gap-2 text-foreground">
-                    <Check className="size-3.5 shrink-0 text-muted-foreground" />
-                    {file}
+              <p className="text-foreground">
+                <span className="select-none text-muted-foreground">$ </span>
+                {COMMAND}
+              </p>
+              <ul className="mt-3 flex flex-col text-muted-foreground">
+                {OUTPUT.map((line) => (
+                  <li key={line.text}>
+                    <span className="text-foreground">✔</span> {line.text}
                   </li>
                 ))}
-                <li className="ps-[22px] text-muted-foreground/60">+ 4 more files</li>
+                {WRITTEN_FILES.map((file) => (
+                  <li key={file} className="ps-4 text-foreground">
+                    - {file}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          {TILES.map((tile) => {
-            const Icon = tile.icon;
-            return (
-              <div
-                key={tile.title}
-                data-slot="feature-tile"
-                className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 lg:col-span-2"
-              >
-                <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-                  <Icon className="size-4" />
-                </span>
-                <div className="flex flex-col gap-1.5">
-                  <h3 className="text-base font-semibold tracking-[-0.01em]">{tile.title}</h3>
-                  <p className="text-sm text-muted-foreground">{tile.body}</p>
-                </div>
-                {tile.swatches ? (
-                  <div className="mt-auto flex items-center gap-1.5 pt-2">
-                    {SWATCHES.map((swatch) => (
-                      <span key={swatch} className={cn('size-5 rounded-md border border-border', swatch)} />
-                    ))}
-                  </div>
-                ) : null}
+          {TILES.map((tile, index) => (
+            <div
+              key={tile.title}
+              data-slot="feature-tile"
+              style={stagger(index + 1, 60, 180)}
+              className={cn(ENTER, 'flex flex-col gap-3 rounded-xl border border-border bg-card p-6 lg:col-span-2')}
+            >
+              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+                <span className="text-foreground">{formatIndex(index)}</span>
+                <span className="mx-1.5 text-border">|</span>
+                {formatIndex(TILES.length - 1)}
+              </span>
+              <div className="flex flex-col gap-1.5">
+                <h3 className="text-base font-semibold tracking-[-0.01em]">{tile.title}</h3>
+                <p className="text-sm text-muted-foreground text-pretty">{tile.body}</p>
               </div>
-            );
-          })}
+              {tile.swatches ? (
+                <div aria-hidden className="mt-auto flex items-center gap-1.5 pt-2">
+                  {SWATCHES.map((swatch) => (
+                    <span key={swatch} className={cn('size-5 rounded-md border border-border', swatch)} />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ))}
         </div>
       </div>
     </section>

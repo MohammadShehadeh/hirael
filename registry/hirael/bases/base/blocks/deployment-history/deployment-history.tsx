@@ -4,6 +4,7 @@ import * as React from 'react';
 import { CheckCircle2, Clock, GitCommitHorizontal, Loader2, RotateCcw, XCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 export type DeploymentState = 'success' | 'failed' | 'building' | 'rolled-back' | 'queued';
 
@@ -74,13 +75,16 @@ const DeploymentHistoryItem = ({
     >
       <div className="flex flex-col items-center">
         <span className={cn('flex size-7 shrink-0 items-center justify-center rounded-full border bg-card', meta.ring)}>
-          <Icon className={cn('size-4', meta.text, state === 'building' && 'animate-spin')} aria-hidden />
+          <Icon
+            className={cn('size-4', meta.text, state === 'building' && 'animate-spin motion-reduce:animate-none')}
+            aria-hidden
+          />
         </span>
         {!last ? <span className="w-px flex-1 bg-border" aria-hidden /> : null}
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1 pb-6">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-sm font-medium text-foreground">{version}</span>
+          <span className="text-sm font-medium text-foreground">{version}</span>
           {environment ? (
             <span className="rounded-sm bg-accent px-1.5 py-0.5 text-xs uppercase text-muted-foreground">
               {environment}
@@ -114,7 +118,7 @@ const DeploymentHistoryCommit = ({ sha, className, children, ...props }: Deploym
   return (
     <span data-slot="deployment-history-commit" className={cn('inline-flex items-center gap-1', className)} {...props}>
       <GitCommitHorizontal className="size-3.5" aria-hidden />
-      <span className="font-mono">{sha}</span>
+      <span>{sha}</span>
       {children}
     </span>
   );
@@ -122,42 +126,195 @@ const DeploymentHistoryCommit = ({ sha, className, children, ...props }: Deploym
 
 export { DeploymentHistory, DeploymentHistoryItem, DeploymentHistoryMeta, DeploymentHistoryCommit };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+type Deployment = {
+  id: string;
+  state: DeploymentState;
+  version: string;
+  environment: string;
+  sha: string;
+  note: string;
+  when: string;
+  duration?: string;
+};
+
+const DEPLOYMENTS: Deployment[] = [
+  {
+    id: 'dpl-5',
+    state: 'building',
+    version: 'v2.4.1',
+    environment: 'staging',
+    sha: 'a1b9c4d',
+    note: 'by maya',
+    when: 'just now',
+  },
+  {
+    id: 'dpl-4',
+    state: 'success',
+    version: 'v2.4.0',
+    environment: 'production',
+    sha: 'e84f2c7',
+    note: 'by omar',
+    when: '2h ago',
+    duration: '48s',
+  },
+  {
+    id: 'dpl-3',
+    state: 'success',
+    version: 'v2.3.9',
+    environment: 'production',
+    sha: '7f2e10a',
+    note: 'by lena',
+    when: 'yesterday',
+    duration: '52s',
+  },
+  {
+    id: 'dpl-2',
+    state: 'rolled-back',
+    version: 'v2.3.8',
+    environment: 'production',
+    sha: 'c03be91',
+    note: 'reverted failing migration',
+    when: '2d ago',
+  },
+  {
+    id: 'dpl-1',
+    state: 'failed',
+    version: 'v2.3.7',
+    environment: 'staging',
+    sha: '11de4f0',
+    note: 'build step exited 1',
+    when: '2d ago',
+  },
+];
+
+type RollbackStep = 'idle' | 'confirm' | 'pending';
+
 const DeploymentHistoryBlock = () => {
+  const [deployments, setDeployments] = React.useState(DEPLOYMENTS);
+  const [target, setTarget] = React.useState<string | null>(null);
+  const [step, setStep] = React.useState<RollbackStep>('idle');
+  const [addedId, setAddedId] = React.useState<string | null>(null);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+
+  const live = deployments.find(
+    (deployment) => deployment.environment === 'production' && deployment.state === 'success',
+  );
+
+  const rollback = (deployment: Deployment) => {
+    setStep('pending');
+    timer.current = setTimeout(() => {
+      const id = `dpl-${deployments.length + 1}`;
+      setDeployments((current) => [
+        {
+          ...deployment,
+          id,
+          state: 'success',
+          note: `rolled back from ${live?.version ?? 'latest'}`,
+          when: 'just now',
+          duration: '31s',
+        },
+        ...current.map((item) => (item.id === live?.id ? { ...item, state: 'rolled-back' as const } : item)),
+      ]);
+      setAddedId(id);
+      setTarget(null);
+      setStep('idle');
+    }, 1800);
+  };
+
   return (
     <section data-slot="deployment-history-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="w-full max-w-lg">
+      <div className={cn(ENTER, 'w-full max-w-lg')}>
         <DeploymentHistory>
-          <DeploymentHistoryItem state="building" version="v2.4.0" environment="production">
-            <DeploymentHistoryMeta>
-              <DeploymentHistoryCommit sha="a1b9c4d" />
-              <span>by maya</span>
-              <span>just now</span>
-            </DeploymentHistoryMeta>
-          </DeploymentHistoryItem>
+          {deployments.map((deployment, index) => {
+            const canRollback =
+              deployment.environment === 'production' &&
+              deployment.state === 'success' &&
+              deployment.version !== live?.version;
+            const isTarget = target === deployment.id;
 
-          <DeploymentHistoryItem state="success" version="v2.3.9" environment="production">
-            <DeploymentHistoryMeta>
-              <DeploymentHistoryCommit sha="7f2e10a" />
-              <span>by omar</span>
-              <span>2h ago · 48s</span>
-            </DeploymentHistoryMeta>
-          </DeploymentHistoryItem>
+            return (
+              <DeploymentHistoryItem
+                key={deployment.id}
+                state={deployment.state}
+                version={deployment.version}
+                environment={deployment.environment}
+                last={index === deployments.length - 1}
+                className={cn(deployment.id === addedId && SWAP)}
+              >
+                <DeploymentHistoryMeta>
+                  <DeploymentHistoryCommit sha={deployment.sha} />
+                  <span>{deployment.note}</span>
+                  <span>{deployment.when}</span>
+                  {deployment.duration ? <span className="tabular-nums">{deployment.duration}</span> : null}
+                </DeploymentHistoryMeta>
 
-          <DeploymentHistoryItem state="rolled-back" version="v2.3.8" environment="production">
-            <DeploymentHistoryMeta>
-              <DeploymentHistoryCommit sha="c03be91" />
-              <span>reverted failing migration</span>
-              <span>5h ago</span>
-            </DeploymentHistoryMeta>
-          </DeploymentHistoryItem>
-
-          <DeploymentHistoryItem state="failed" version="v2.3.7" environment="staging" last>
-            <DeploymentHistoryMeta>
-              <DeploymentHistoryCommit sha="11de4f0" />
-              <span>build step exited 1</span>
-              <span>6h ago</span>
-            </DeploymentHistoryMeta>
-          </DeploymentHistoryItem>
+                {canRollback ? (
+                  <div data-slot="deployment-history-actions" className="pt-1.5">
+                    {!isTarget ? (
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        disabled={step !== 'idle'}
+                        onClick={() => {
+                          setTarget(deployment.id);
+                          setStep('confirm');
+                        }}
+                      >
+                        <RotateCcw aria-hidden />
+                        Roll back to {deployment.version}
+                      </Button>
+                    ) : (
+                      <div
+                        key={step}
+                        className={cn(
+                          SWAP,
+                          'flex flex-wrap items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2',
+                        )}
+                      >
+                        {step === 'pending' ? (
+                          <span role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />
+                            Rolling production back to {deployment.version}
+                          </span>
+                        ) : (
+                          <>
+                            <span className="me-auto text-xs text-foreground">
+                              Replace {live?.version} in production with {deployment.version}?
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="xs"
+                              onClick={() => {
+                                setTarget(null);
+                                setStep('idle');
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                            <Button size="xs" onClick={() => rollback(deployment)}>
+                              Roll back
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </DeploymentHistoryItem>
+            );
+          })}
         </DeploymentHistory>
       </div>
     </section>

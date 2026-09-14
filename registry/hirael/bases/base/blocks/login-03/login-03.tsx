@@ -1,10 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -31,6 +37,7 @@ const jitter = (i: number) => {
 };
 
 const FloatingPaths = ({ position }: { position: number }) => {
+  const reduceMotion = useReducedMotion();
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -40,7 +47,6 @@ const FloatingPaths = ({ position }: { position: number }) => {
     } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
       684 - i * 5 * position
     } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
-    color: `rgba(15,23,42,${0.1 + i * 0.03})`,
     width: 0.5 + i * 0.03,
   }));
 
@@ -49,13 +55,10 @@ const FloatingPaths = ({ position }: { position: number }) => {
       <svg className="h-full w-full text-primary" fill="none" viewBox="0 0 696 316">
         {paths.map((path) => (
           <motion.path
-            animate={{
-              pathLength: 1,
-              pathOffset: [0, 1, 0],
-            }}
+            key={path.id}
             d={path.d}
             initial={{ pathLength: 0.3 }}
-            key={path.id}
+            animate={reduceMotion ? undefined : { pathLength: 1, pathOffset: [0, 1, 0] }}
             stroke="currentColor"
             className="opacity-60"
             strokeOpacity={0.1 + path.id * 0.03}
@@ -73,6 +76,14 @@ const FloatingPaths = ({ position }: { position: number }) => {
 };
 
 const Login03 = () => {
+  const [redirecting, setRedirecting] = React.useState(false);
+
+  const onContinue = async () => {
+    setRedirecting(true);
+    await new Promise((r) => setTimeout(r, 2000));
+    setRedirecting(false);
+  };
+
   return (
     <section data-slot="login" className="relative min-h-svh overflow-hidden bg-background lg:grid lg:grid-cols-2">
       <aside
@@ -92,22 +103,24 @@ const Login03 = () => {
           <FloatingPaths position={-1} />
         </div>
 
-        <div className="relative z-10 flex items-center gap-2">
-          <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-            <BrandMark className="size-5" />
-          </span>
+        <div className={cn(ENTER, 'relative z-10 flex items-center gap-2')}>
+          <BrandMark className="size-6 text-foreground" />
           <span className="text-base font-semibold tracking-[-0.025em]">Hirael</span>
         </div>
 
-        <div className="relative z-10 mt-auto">
-          <blockquote className="flex flex-col gap-3">
-            <p className="font-serif text-2xl leading-[1.25] tracking-tight md:text-3xl">
-              We wired up auth in an afternoon and <span className="italic text-foreground">never looked back</span>.
-              The source lives in our repo, so it bends to us.
-            </p>
-            <footer className="text-xs uppercase text-muted-foreground">Platform team · Northwind</footer>
+        <figure style={stagger(4)} className={cn(ENTER, 'relative z-10 mt-auto flex flex-col gap-3')}>
+          <blockquote className="font-serif text-2xl leading-[1.25] tracking-tight md:text-3xl">
+            We wired up auth in an afternoon and <span className="italic text-foreground">never looked back</span>. The
+            source lives in our repo, so it bends to us.
           </blockquote>
-        </div>
+          <figcaption className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+            <span>Platform team</span>
+            <span aria-hidden className="text-border">
+              |
+            </span>
+            <span>Northwind</span>
+          </figcaption>
+        </figure>
       </aside>
 
       <div data-slot="login-main" className="relative flex min-h-svh flex-col justify-center px-8 lg:min-h-0">
@@ -132,34 +145,49 @@ const Login03 = () => {
           render={<a href="#" />}
           nativeButton={false}
           variant="ghost"
-          className="absolute start-5 top-7 z-10 gap-1.5"
+          className={cn(ENTER, 'absolute start-5 top-7 z-10 gap-1.5')}
         >
           <ChevronLeft className="size-4 rtl:rotate-180" />
           Home
         </Button>
 
-        <div className="relative z-10 mx-auto w-full space-y-6 sm:max-w-sm">
-          <div className="flex items-center gap-2 lg:hidden">
-            <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-card text-foreground">
-              <BrandMark className="size-5" />
-            </span>
+        <div data-slot="login-panel" className="relative z-10 mx-auto w-full space-y-6 sm:max-w-sm">
+          <div className={cn(ENTER, 'flex items-center gap-2 lg:hidden')}>
+            <BrandMark className="size-6 text-foreground" />
             <span className="text-base font-semibold tracking-[-0.025em]">Hirael</span>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase text-foreground">sign in</span>
-            <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Sign in or join.</h1>
-            <p className="text-sm text-muted-foreground">
+          <div data-slot="login-header" className="flex flex-col gap-2">
+            <h1 style={stagger(1)} className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight sm:text-5xl')}>
+              Sign in or join.
+            </h1>
+            <p style={stagger(2)} className={cn(ENTER, 'text-sm text-muted-foreground')}>
               One click with GitHub. No password to remember, no form to fill.
             </p>
           </div>
 
-          <Button type="button" variant="default" size="lg" className="w-full gap-2">
-            <GithubIcon className="size-4" />
-            Continue with GitHub
-          </Button>
+          <div style={stagger(3)} className={ENTER}>
+            <Button
+              type="button"
+              variant="default"
+              size="lg"
+              disabled={redirecting}
+              onClick={onContinue}
+              className="w-full gap-2"
+            >
+              {redirecting ? (
+                <Loader2 aria-hidden className="size-4 animate-spin" />
+              ) : (
+                <GithubIcon className="size-4" />
+              )}
+              {redirecting ? 'Redirecting to GitHub…' : 'Continue with GitHub'}
+            </Button>
+            <span role="status" className="sr-only">
+              {redirecting ? 'Redirecting to GitHub' : ''}
+            </span>
+          </div>
 
-          <p className="text-xs text-muted-foreground">
+          <p style={stagger(4)} className={cn(ENTER, 'text-xs text-muted-foreground')}>
             By continuing, you agree to the{' '}
             <a href="#" className="text-foreground underline-offset-4 hover:underline">
               terms

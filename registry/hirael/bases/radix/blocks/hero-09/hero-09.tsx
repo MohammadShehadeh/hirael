@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Bell, CalendarClock, ChevronDown, Container, FlaskConical, Hammer, Rocket } from 'lucide-react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 // WebGL can't paint before hydration, so the shader stays out of the initial
@@ -26,7 +27,7 @@ const STEP_TYPES = [
 ];
 
 const STATS = [
-  { value: '8', label: 'step types' },
+  { value: String(STEP_TYPES.length), label: 'step types' },
   { value: '40s', label: 'median queue to start' },
   { value: '$0', label: 'to start building' },
 ];
@@ -38,6 +39,13 @@ const BrandMark = ({ className }: { className?: string }) => {
     </svg>
   );
 };
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const ZOOM_AT = 0.55;
 const SPRING = { stiffness: 200, damping: 40, mass: 0.4 };
@@ -111,19 +119,17 @@ const Hero09 = () => {
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-between gap-10 p-6 pb-28 text-foreground md:p-10 md:pt-7">
-          <div data-slot="hero-nav" className="relative flex items-center justify-between">
+          <div data-slot="hero-nav" className={cn(ENTER, 'relative flex items-center justify-between')}>
             <a href="#" data-slot="hero-brand" className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-sm border border-foreground/20 bg-foreground/10 text-foreground">
-                <BrandMark className="size-5" />
-              </span>
-              <span className="text-base font-semibold tracking-tight">Hirael Flow</span>
+              <BrandMark className="size-5 text-foreground" />
+              <span className="text-base font-semibold tracking-tight">Hirael</span>
             </a>
             <nav className="absolute start-1/2 hidden items-center gap-6 ltr:-translate-x-1/2 rtl:translate-x-1/2 md:flex">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link}
                   href={`#${link.toLowerCase()}`}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground"
                 >
                   {link}
                 </a>
@@ -142,20 +148,29 @@ const Hero09 = () => {
           <div className="mx-auto flex max-w-4xl flex-1 flex-col items-center justify-center gap-6 px-2 text-center">
             <h1
               data-slot="hero-title"
-              className="font-serif text-balance text-5xl font-medium leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
+              style={stagger(1)}
+              className={cn(
+                ENTER,
+                'font-serif text-balance text-5xl font-medium leading-[1.05] tracking-tight md:text-6xl lg:text-7xl',
+              )}
             >
               Pipelines you can see, <span className="text-primary">not just read</span>
             </h1>
 
             <p
               data-slot="hero-description"
-              className="max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg"
+              style={stagger(2)}
+              className={cn(ENTER, 'max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg')}
             >
               Design workflows on a canvas, keep them in sync with YAML, and watch every run move step by step through
               the same graph.
             </p>
 
-            <div data-slot="hero-actions" className="flex flex-col gap-3 pt-1 sm:flex-row">
+            <div
+              data-slot="hero-actions"
+              style={stagger(3)}
+              className={cn(ENTER, 'flex flex-col gap-3 pt-1 sm:flex-row')}
+            >
               <Button size="lg" asChild>
                 <a href="#">Start building</a>
               </Button>
@@ -164,20 +179,41 @@ const Hero09 = () => {
               </Button>
             </div>
 
-            <div data-slot="hero-steps" className="mt-4 flex flex-col items-center gap-3.5">
+            <div
+              data-slot="hero-steps"
+              style={stagger(4)}
+              className={cn(ENTER, 'mt-4 flex flex-col items-center gap-3.5')}
+            >
               <span className="text-xs uppercase text-muted-foreground">Every step in one graph</span>
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+              <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 sm:gap-x-6 sm:gap-y-3">
                 {STEP_TYPES.map((step) => (
-                  <span
+                  <li
                     key={step.label}
-                    className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground sm:text-sm"
                   >
                     <step.icon aria-hidden className="size-4 text-primary/70" />
-                    <span className="hidden sm:inline">{step.label}</span>
-                  </span>
+                    {step.label}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
+
+            {/* Below md the carved corner is hidden, so the same figures sit
+                under the steps as a compact row. */}
+            <dl
+              data-slot="hero-stats-inline"
+              style={stagger(5)}
+              className={cn(ENTER, 'mt-2 grid w-full max-w-sm grid-cols-3 gap-4 border-t border-border pt-5 md:hidden')}
+            >
+              {STATS.map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center gap-0.5">
+                  <dt className="order-2 text-[11px] uppercase leading-tight text-muted-foreground">{stat.label}</dt>
+                  <dd dir="ltr" className="order-1 font-serif text-xl font-medium tabular-nums text-primary">
+                    {stat.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
 
@@ -191,11 +227,20 @@ const Hero09 = () => {
         {/* Carved stat corner: background-colored so it reads as a cutout. */}
         <div
           data-slot="hero-stats"
-          className="absolute bottom-0 end-0 z-10 hidden items-end gap-8 rounded-ss-[18px] bg-background pb-2.5 pe-8 ps-7 pt-5 md:flex"
+          style={stagger(5)}
+          className={cn(
+            'absolute bottom-0 end-0 z-10 hidden items-end gap-8 rounded-ss-[18px] bg-background pb-2.5 pe-8 ps-7 pt-5 md:flex',
+            'animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+          )}
         >
           {STATS.map((stat) => (
             <div key={stat.label}>
-              <div className="font-serif text-2xl font-medium leading-tight text-primary md:text-3xl">{stat.value}</div>
+              <div
+                dir="ltr"
+                className="font-serif text-2xl font-medium leading-tight tabular-nums text-primary md:text-3xl"
+              >
+                {stat.value}
+              </div>
               <div className="text-xs uppercase text-muted-foreground">{stat.label}</div>
             </div>
           ))}

@@ -197,7 +197,7 @@ const CookieConsent = ({
         className={cn(
           position === 'fixed' ? 'fixed' : 'absolute',
           'bottom-4 start-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground shadow-lg',
-          'animate-in fade-in-0 slide-in-from-bottom-4 duration-300 motion-reduce:animate-none',
+          'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
           className,
         )}
         {...props}
@@ -259,16 +259,33 @@ const CookieConsentManage = ({ className, children = 'Manage', ...props }: Cooki
 
 type CookieConsentCategoriesProps = React.ComponentProps<'div'>;
 
-/** Renders its categories only while the banner is expanded. */
+/**
+ * Reveals its categories while the banner is expanded. They stay mounted when
+ * collapsed so Accept all and Reject all know every category.
+ */
 const CookieConsentCategories = ({ className, ...props }: CookieConsentCategoriesProps) => {
   const { expanded } = useCookieConsent();
-  if (!expanded) return null;
   return (
     <div
-      data-slot="cookie-consent-categories"
-      className={cn('flex flex-col divide-y divide-border rounded-md border border-border bg-background', className)}
-      {...props}
-    />
+      data-slot="cookie-consent-categories-reveal"
+      data-expanded={expanded ? '' : undefined}
+      inert={!expanded}
+      className={cn(
+        'grid transition-[grid-template-rows,opacity,margin] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+        expanded ? 'grid-rows-[1fr] opacity-100' : '-mt-4 grid-rows-[0fr] opacity-0',
+      )}
+    >
+      <div className="min-h-0 overflow-hidden">
+        <div
+          data-slot="cookie-consent-categories"
+          className={cn(
+            'flex flex-col divide-y divide-border rounded-md border border-border bg-background',
+            className,
+          )}
+          {...props}
+        />
+      </div>
+    </div>
   );
 };
 
@@ -428,8 +445,21 @@ const CookieConsentBlock = () => {
       className="relative flex min-h-svh w-full flex-col items-center justify-center gap-3 overflow-hidden bg-background p-6 sm:p-10"
     >
       <div className="flex flex-col items-center gap-2 text-center">
-        <span className="text-xs uppercase text-muted-foreground">
-          {summary ? `Saved · ${summary}` : 'Waiting for a choice'}
+        <span
+          key={summary ?? 'waiting'}
+          className="flex items-center gap-2 text-xs uppercase text-muted-foreground animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+        >
+          {summary ? (
+            <>
+              <span>Saved</span>
+              <span aria-hidden className="text-border">
+                |
+              </span>
+              <span>{summary}</span>
+            </>
+          ) : (
+            'Waiting for a choice'
+          )}
         </span>
         {!open ? (
           <Button type="button" variant="link" onClick={reset} className="h-auto p-0 underline">

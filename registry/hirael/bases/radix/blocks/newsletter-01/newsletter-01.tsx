@@ -8,6 +8,14 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 
+const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
+const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
+const SWAP = `animate-in fade-in zoom-in-97 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
+
+const stagger = (index: number, step = 70): React.CSSProperties => ({
+  animationDelay: `${index * step}ms`,
+});
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Newsletter01 = () => {
@@ -29,7 +37,10 @@ const Newsletter01 = () => {
     <section data-slot="newsletter" className="bg-background px-4 py-20 sm:py-28">
       <div
         data-slot="newsletter-panel"
-        className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center sm:p-12"
+        className={cn(
+          ENTER,
+          'relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center sm:p-12',
+        )}
         style={{
           boxShadow: '0 24px 60px -34px color-mix(in oklch, var(--foreground) 24%, transparent)',
         }}
@@ -43,15 +54,20 @@ const Newsletter01 = () => {
           }}
         />
 
-        <div className="relative z-10 flex flex-col items-center gap-5">
-          <span className="inline-flex size-11 items-center justify-center rounded-md border border-border bg-background">
-            <Mail className="size-5" />
+        <div aria-live="polite" className="relative z-10 flex flex-col items-center gap-5">
+          <span
+            data-slot="newsletter-label"
+            style={stagger(1)}
+            className={cn(ENTER, 'inline-flex items-center gap-2 text-xs uppercase text-muted-foreground')}
+          >
+            <Mail aria-hidden className="size-3.5" />
+            Release notes
           </span>
 
           {subscribed ? (
-            <div data-slot="newsletter-success" className="flex flex-col items-center gap-2">
+            <div key="success" data-slot="newsletter-success" className={cn(SWAP, 'flex flex-col items-center gap-2')}>
               <h2 className="flex items-center gap-2 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
-                <Check className="size-6" />
+                <Check aria-hidden className="size-6" />
                 You&apos;re on the list.
               </h2>
               <p className="text-sm text-muted-foreground sm:text-base">
@@ -59,17 +75,26 @@ const Newsletter01 = () => {
               </p>
             </div>
           ) : (
-            <>
+            <React.Fragment key="form">
               <div className="flex flex-col items-center gap-2">
-                <h2 className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">
+                <h2
+                  style={stagger(2)}
+                  className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight text-balance sm:text-4xl')}
+                >
                   New components, in your inbox.
                 </h2>
-                <p className="max-w-md text-sm text-muted-foreground sm:text-base">
+                <p style={stagger(3)} className={cn(ENTER, 'max-w-md text-sm text-muted-foreground sm:text-base')}>
                   A short note when we ship something. New components, blocks, and the occasional deep dive.
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} noValidate className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+              <form
+                data-slot="newsletter-form"
+                onSubmit={handleSubmit}
+                noValidate
+                style={stagger(4)}
+                className={cn(ENTER, 'flex w-full max-w-md flex-col gap-3 sm:flex-row')}
+              >
                 <Field className="gap-1.5 text-start" data-invalid={error ? true : undefined}>
                   <FieldLabel htmlFor="newsletter-email" className="sr-only">
                     Email address
@@ -98,12 +123,12 @@ const Newsletter01 = () => {
                 </Button>
               </form>
 
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2 rtl:space-x-reverse">
+              <div style={stagger(5)} className={cn(ENTER, 'flex items-center gap-3')}>
+                <div aria-hidden className="flex -space-x-2 rtl:space-x-reverse">
                   {['MS', 'AK', 'JD', 'RL'].map((initials) => (
                     <span
                       key={initials}
-                      className="inline-flex size-7 items-center justify-center rounded-full border-2 border-card bg-muted font-mono text-[10px] font-medium text-muted-foreground"
+                      className="inline-flex size-7 items-center justify-center rounded-full border-2 border-card bg-muted text-[10px] font-medium text-muted-foreground"
                     >
                       {initials}
                     </span>
@@ -112,8 +137,10 @@ const Newsletter01 = () => {
                 <span className="text-xs text-muted-foreground">Join 1,200+ developers on the list.</span>
               </div>
 
-              <p className="text-xs uppercase text-muted-foreground">Only release notes. Unsubscribe in one click.</p>
-            </>
+              <p style={stagger(6)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+                Only release notes. Unsubscribe in one click.
+              </p>
+            </React.Fragment>
           )}
         </div>
       </div>

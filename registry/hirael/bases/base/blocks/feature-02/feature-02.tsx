@@ -1,77 +1,87 @@
-'use client';
+import type * as React from 'react';
 
-import * as React from 'react';
-import { Sparkles, Zap, Shield, Compass, Layers, Cpu, type LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
 
 interface Feature {
-  icon: LucideIcon;
   title: string;
   body: string;
 }
 
 const FEATURES: readonly Feature[] = [
   {
-    icon: Sparkles,
-    title: 'Dual-API by default',
-    body: 'Every component ships a compound surface and a single-prop surface in the same file. Pick whichever fits the screen.',
+    title: 'A live preview for every item',
+    body: 'Each page renders the real component in light, dark and right to left, at any width you drag it to.',
   },
   {
-    icon: Zap,
-    title: 'Built for dense data',
-    body: 'Virtualization, async loading, and stable keyboard navigation are wired in, not bolted on after launch.',
+    title: 'Radix UI or Base UI',
+    body: 'Every item exists for both primitive libraries. Switch the base and the preview, source and install command follow.',
   },
   {
-    icon: Shield,
-    title: 'Typed end-to-end',
-    body: 'Strict TypeScript, no any, no implicit casts. Generics flow from options to onChange without a manual hint.',
+    title: 'The full source, up front',
+    body: 'Read every line the CLI will write before you run it, with the imports already pointed at your paths.',
   },
   {
-    icon: Compass,
-    title: 'Drop-in theme',
-    body: 'Reads the same CSS variables as shadcn/ui. Re-skins live against any existing token system.',
+    title: 'A props table you can trust',
+    body: 'Props, types and defaults are generated from the source on every build, so they never fall behind the code.',
   },
   {
-    icon: Layers,
-    title: 'Source you own',
-    body: "Installed via CLI as plain TSX. No package pin, no upgrade path. Edit it like it's yours, because it is.",
+    title: 'Demos you can copy',
+    body: 'Usage examples sit next to the preview and cover the common setups, not only the happy path.',
   },
   {
-    icon: Cpu,
-    title: 'SSR-safe',
-    body: "Server components by default, with 'use client' only where interactivity demands it. App Router native.",
+    title: 'A page your agent can read',
+    body: 'Every item has a Markdown version with the install command, usage and source, ready to paste into a prompt.',
   },
 ];
 
 const Feature02 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className="text-xs uppercase text-muted-foreground">features</span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
-            Everything a real product needs, none of the rest.
+        <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>What you get</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
+            Everything you need to decide before you install
           </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
-            Six decisions baked into every Hirael component, so you can stop making them yourself in every new repo.
+          <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
+            Each item in the catalog comes with the same six things, so you can judge it on the page instead of in your
+            repo.
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {FEATURES.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div key={f.title} className="flex flex-col gap-4 rounded-md border border-border bg-card p-6">
-                <div className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-                  <Icon className="size-4" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <h3 className="text-base font-semibold tracking-[-0.01em]">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground">{f.body}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <ul
+          data-slot="feature-list"
+          className="mt-14 grid grid-cols-1 gap-x-10 border-t border-border sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {FEATURES.map((feature, index) => (
+            <li
+              key={feature.title}
+              data-slot="feature-item"
+              style={stagger(index, 60, 180)}
+              className={cn(ENTER, 'flex flex-col gap-3 border-b border-border py-8')}
+            >
+              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+                <span className="text-foreground">{formatIndex(index)}</span>
+                <span className="mx-1.5 text-border">|</span>
+                {formatIndex(FEATURES.length - 1)}
+              </span>
+              <h3 className="text-base font-semibold tracking-[-0.01em]">{feature.title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{feature.body}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

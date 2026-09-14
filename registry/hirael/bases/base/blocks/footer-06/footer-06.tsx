@@ -1,9 +1,16 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -59,13 +66,14 @@ const COLUMNS = [
     label: 'Resources',
     links: [
       { label: 'Documentation', href: '#' },
-      { label: 'GitHub', href: '#' },
+      { label: 'Changelog', href: '#' },
       { label: 'Contact us', href: '#' },
     ],
   },
 ];
 
 const SOCIALS = [
+  { label: 'GitHub', href: '#', icon: GithubIcon },
   { label: 'LinkedIn', href: '#', icon: LinkedinIcon },
   { label: 'Instagram', href: '#', icon: InstagramIcon },
 ];
@@ -83,25 +91,26 @@ const Footer06 = () => {
           width={1920}
           height={1080}
           quality={75}
-          className="absolute inset-0 h-full w-full rotate-180 object-cover opacity-40 blur-[1px] md:blur-[2px]"
+          className="absolute inset-0 h-full w-full rotate-180 object-cover dark:opacity-40 blur-[1px] md:blur-[2px]"
         />
+        <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10" />
         <div className="relative z-10 flex h-full flex-col items-start justify-between px-4 pb-2 pt-2 sm:justify-center sm:pb-4 md:px-8">
-          <div className="relative flex flex-col items-start justify-start">
-            <p className="mt-2 max-w-lg text-start text-lg font-semibold tracking-tight sm:mt-3 sm:text-xl md:text-3xl">
+          <div className={cn(ENTER, 'relative flex flex-col items-start justify-start')}>
+            <p className="mt-2 max-w-lg text-start text-lg font-semibold tracking-tight sm:mt-3 sm:text-xl md:text-3xl text-white">
               Stop fighting YAML. Start orchestrating CI/CD.
             </p>
-            <p className="max-w-xl pt-2 text-start text-xs text-foreground/80 sm:pt-3 sm:text-sm">
-              Connect your account, get instant insights, and start designing workflows visually.
+            <p className="max-w-xl pt-2 text-start text-xs text-white/80 sm:pt-3 sm:text-sm">
+              Connect a repository, see every workflow as a graph, and edit it without leaving the page.
             </p>
           </div>
-          <div className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4 animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none delay-200">
+          <div className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none delay-150">
             <Button
               render={<a href="#" className="group flex items-center gap-2" />}
               nativeButton={false}
               className="h-10 w-full rounded-xs sm:h-12 md:w-52"
             >
-              <GithubIcon className="size-4" />
               Get started
+              <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </Button>
           </div>
         </div>
@@ -110,24 +119,22 @@ const Footer06 = () => {
       <div className="px-4 pb-2 pt-12 md:pb-12">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div data-slot="footer-brand" className="lg:col-span-2">
-              <a href="#" className="mb-2 flex items-center gap-2">
-                <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-                  <BrandMark className="size-5" />
-                </span>
-                <span className="text-base font-semibold tracking-tight">Hirael Flow</span>
+            <div data-slot="footer-brand" className={cn(ENTER, 'lg:col-span-2')}>
+              <a href="#" className="mb-2 flex w-fit items-center gap-2 text-foreground">
+                <BrandMark className="size-5" />
+                <span className="text-base font-semibold tracking-tight">Hirael</span>
               </a>
               <p className="mb-4 max-w-sm text-balance text-sm text-muted-foreground">
-                The visual control plane for your pipelines. Built for platform teams that ship at scale.
+                A visual editor for CI pipelines. Your workflow files stay in the repo, and the graph stays in sync.
               </p>
               <div className="flex gap-1">
                 {SOCIALS.map((social) => (
                   <Button
-                    key={social.label}
                     render={
                       <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} />
                     }
                     nativeButton={false}
+                    key={social.label}
                     variant="ghost"
                     size="icon"
                   >
@@ -137,13 +144,16 @@ const Footer06 = () => {
               </div>
             </div>
 
-            {COLUMNS.map((section) => (
-              <div key={section.label} data-slot="footer-column">
+            {COLUMNS.map((section, index) => (
+              <div key={section.label} data-slot="footer-column" style={stagger(index + 1)} className={ENTER}>
                 <h3 className="mb-4 font-semibold text-foreground">{section.label}</h3>
                 <ul className="space-y-3 text-sm">
                   {section.links.map((link) => (
                     <li key={link.label}>
-                      <a href={link.href} className="text-muted-foreground transition-colors hover:text-foreground">
+                      <a
+                        href={link.href}
+                        className="text-muted-foreground transition-colors duration-150 hover:text-foreground"
+                      >
                         {link.label}
                       </a>
                     </li>
@@ -153,11 +163,9 @@ const Footer06 = () => {
             ))}
           </div>
 
-          <div data-slot="footer-legal" className="border-t border-border/50 pt-8">
+          <div data-slot="footer-legal" style={stagger(3)} className={cn(ENTER, 'border-t border-border/50 pt-8')}>
             <div className="flex flex-col items-center justify-between md:flex-row">
-              <p className="text-sm text-muted-foreground">
-                © 2026 Hirael Flow. Built for modern DevOps teams · Powered by GitHub
-              </p>
+              <p className="text-sm text-muted-foreground">© 2026 Hirael. All rights reserved.</p>
             </div>
           </div>
         </div>

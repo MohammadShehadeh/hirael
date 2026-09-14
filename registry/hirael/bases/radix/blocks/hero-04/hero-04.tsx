@@ -1,9 +1,16 @@
-'use client';
-
+import * as React from 'react';
 import Image from 'next/image';
 import { ArrowRight, Orbit } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const Hero04 = () => {
   return (
@@ -21,13 +28,13 @@ const Hero04 = () => {
       />
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/80 to-background/20"
+        className="absolute inset-0 -z-10 bg-linear-to-t from-background via-background/80 to-background/20"
       />
 
-      <header data-slot="hero-nav" className="relative z-10 px-4 py-4 md:px-6">
+      <header data-slot="hero-nav" className={cn(ENTER, 'relative z-10 px-4 py-4 md:px-6')}>
         <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 pe-2 ps-5 backdrop-blur-md">
           <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-            <Orbit className="size-5 text-primary" />
+            <Orbit aria-hidden className="size-5 text-primary" />
             Orbit
           </span>
           <Button asChild size="sm" className="rounded-full">
@@ -36,25 +43,43 @@ const Hero04 = () => {
         </nav>
       </header>
 
-      <div className="relative z-10 flex flex-1 items-end px-6 pb-16 md:px-10 lg:pb-24">
+      <div data-slot="hero-content" className="relative z-10 flex flex-1 items-end px-6 pb-16 md:px-10 lg:pb-24">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-start text-start">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm">
+          <span
+            data-slot="hero-eyebrow"
+            style={stagger(1)}
+            className={cn(
+              ENTER,
+              'inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
+            )}
+          >
             Mission control
           </span>
 
-          <h1 className="mt-6 max-w-2xl font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+          <h1
+            style={stagger(2)}
+            className={cn(
+              ENTER,
+              'mt-6 max-w-2xl font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+            )}
+          >
             Launch with confidence.
           </h1>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Monitor every deploy, rollback, and metric from a single pane of glass. Catch problems before your users do.
+          <p style={stagger(3)} className={cn(ENTER, 'mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground')}>
+            Watch every deploy, error rate, and rollback on one screen, and catch a bad release before most of your
+            users see it.
           </p>
 
-          <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+          <div
+            data-slot="hero-actions"
+            style={stagger(4)}
+            className={cn(ENTER, 'mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center')}
+          >
             <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
               <a href="#">
                 Start your trial
-                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </a>
             </Button>
             <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">

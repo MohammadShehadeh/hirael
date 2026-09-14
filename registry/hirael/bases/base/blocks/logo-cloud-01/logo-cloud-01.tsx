@@ -1,7 +1,7 @@
-'use client';
-
+import type * as React from 'react';
 import {
   ArrowRight,
+  Bird,
   Captions,
   Compass,
   Dna,
@@ -12,11 +12,20 @@ import {
   ShieldCheck,
   Store,
   Umbrella,
+  Waves,
   type LucideIcon,
 } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface Logo {
   name: string;
@@ -24,6 +33,7 @@ interface Logo {
   icon: LucideIcon;
 }
 
+/** Twelve logos, so the grid divides evenly at 2, 3 and 6 columns and never leaves an empty cell. */
 const LOGOS: readonly Logo[] = [
   { name: 'Acme', href: '#', icon: Hexagon },
   { name: 'Helix', href: '#', icon: Dna },
@@ -35,6 +45,8 @@ const LOGOS: readonly Logo[] = [
   { name: 'Brella', href: '#', icon: Umbrella },
   { name: 'Verbit', href: '#', icon: Captions },
   { name: 'Mercado', href: '#', icon: Store },
+  { name: 'Kestrel', href: '#', icon: Bird },
+  { name: 'Tidewater', href: '#', icon: Waves },
 ];
 
 const STATS = [
@@ -45,25 +57,34 @@ const STATS = [
 
 const LogoCloud01 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-01-heading">
+    <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-01-heading">
       <div className="container w-full">
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div data-slot="logo-cloud-header" className="flex flex-col items-center gap-4 text-center">
           <Badge
             variant="outline"
-            className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
+            className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
           >
-            Trusted by teams shipping at scale
+            Customers
           </Badge>
-          <h2 id="logo-cloud-01-heading" className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">
-            10,000+ engineers reach for Hirael
+          <h2
+            id="logo-cloud-01-heading"
+            style={stagger(1)}
+            className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight sm:text-4xl')}
+          >
+            12,000 developers reach for Hirael
             <br className="hidden sm:inline" />
             <span className="text-muted-foreground"> when shadcn isn&apos;t enough.</span>
           </h2>
         </div>
 
         <ul
+          data-slot="logo-cloud-grid"
           aria-label="Customer logos"
-          className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-5"
+          style={stagger(2)}
+          className={cn(
+            ENTER,
+            'mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-6',
+          )}
         >
           {LOGOS.map((logo) => (
             <li key={logo.name} className="bg-background">
@@ -81,19 +102,23 @@ const LogoCloud01 = () => {
           ))}
         </ul>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div
+          data-slot="logo-cloud-footer"
+          style={stagger(3)}
+          className={cn(ENTER, 'mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row')}
+        >
           <dl className="flex items-center gap-4 text-xs uppercase text-muted-foreground sm:gap-6">
             {STATS.map((s) => (
               <div key={s.label} className="flex items-baseline gap-1.5">
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="font-mono text-sm font-semibold tabular-nums text-foreground">{s.value}</dd>
-                <span>{s.label}</span>
+                <dd className="text-sm font-semibold tabular-nums text-foreground">{s.value}</dd>
+                <span aria-hidden>{s.label}</span>
               </div>
             ))}
           </dl>
           <Button variant="link" className="group h-auto p-0" render={<a href="#" />} nativeButton={false}>
             See the case studies
-            <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+            <ArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
         </div>
       </div>

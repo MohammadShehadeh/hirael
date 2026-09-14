@@ -1,9 +1,20 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -73,7 +84,7 @@ const TeamGrid = ({ className, ...props }: TeamGridProps) => {
   return (
     <ul
       data-slot="team-grid"
-      className={cn('grid grid-cols-2 gap-px border border-border bg-border md:grid-cols-3 lg:grid-cols-4', className)}
+      className={cn('grid grid-cols-1 border-s border-t border-border sm:grid-cols-2 lg:grid-cols-4', className)}
       {...props}
     />
   );
@@ -83,14 +94,18 @@ type TeamMemberProps = React.ComponentProps<'li'>;
 
 const TeamMember = ({ className, ...props }: TeamMemberProps) => {
   return (
-    <li data-slot="team-member" className={cn('flex flex-col gap-4 bg-background p-4 sm:p-5', className)} {...props} />
+    <li
+      data-slot="team-member"
+      className={cn('flex flex-col gap-4 border-e border-b border-border bg-background p-5 sm:p-6', className)}
+      {...props}
+    />
   );
 };
 
 interface TeamMemberAvatarProps extends Omit<React.ComponentProps<'div'>, 'children'> {
-  /** Shown in serif when there is no image. */
+  /** Shown when there is no image. */
   initials: string;
-  /** Optional portrait; falls back to the initials placeholder. */
+  /** Optional portrait; falls back to the initials. */
   src?: string;
   alt?: string;
 }
@@ -100,19 +115,15 @@ const TeamMemberAvatar = ({ initials, src, alt = '', className, ...props }: Team
     <div
       data-slot="team-member-avatar"
       className={cn(
-        'flex aspect-square w-full items-center justify-center overflow-hidden rounded-sm bg-muted',
+        'relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted ring-1 ring-border',
         className,
       )}
       {...props}
     >
       {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className="size-full object-cover" />
+        <Image src={src} alt={alt} fill sizes="56px" className="object-cover" />
       ) : (
-        <span
-          aria-hidden
-          className="font-serif text-4xl font-medium leading-none tracking-tight text-foreground/80 sm:text-5xl"
-        >
+        <span aria-hidden className="text-sm font-medium tracking-wide text-muted-foreground">
           {initials}
         </span>
       )}
@@ -146,7 +157,7 @@ const TeamMemberBio = ({ className, ...props }: TeamMemberBioProps) => {
   return (
     <p
       data-slot="team-member-bio"
-      className={cn('text-sm leading-relaxed text-muted-foreground', className)}
+      className={cn('text-sm leading-relaxed text-pretty text-muted-foreground', className)}
       {...props}
     />
   );
@@ -167,7 +178,7 @@ const TeamMemberLink = ({ className, ...props }: TeamMemberLinkProps) => {
     <a
       data-slot="team-member-link"
       className={cn(
-        'inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4',
+        '-ms-1.5 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4',
         className,
       )}
       {...props}
@@ -204,32 +215,62 @@ export {
   TeamFooter,
 };
 
-const MEMBERS = [
+// Placeholder photos served from hirael.com. Swap them for your own assets, or
+// add the host to `images.remotePatterns` in next.config to keep them.
+const AVATARS = {
+  nadia: '/media/blocks/team-01/avatar-2.jpg',
+  tomasz: '/media/blocks/team-01/avatar-1.jpg',
+  maya: '/media/blocks/team-01/avatar-4.jpg',
+  arjun: '/media/blocks/team-01/avatar-3.jpg',
+} as const;
+
+const DEPARTMENTS = ['All', 'Leadership', 'Engineering', 'Design and product'] as const;
+
+type Department = (typeof DEPARTMENTS)[number];
+
+interface Member {
+  name: string;
+  initials: string;
+  role: string;
+  department: Exclude<Department, 'All'>;
+  bio: string;
+  github: string;
+  avatar?: string;
+}
+
+const MEMBERS: readonly Member[] = [
   {
     name: 'Nadia Haddad',
     initials: 'NH',
     role: 'Co-founder, CEO',
+    department: 'Leadership',
     bio: 'Ran platform at a payments company before starting Plinth.',
     github: '#',
+    avatar: AVATARS.nadia,
   },
   {
     name: 'Tomasz Wierzbicki',
     initials: 'TW',
     role: 'Co-founder, CTO',
+    department: 'Leadership',
     bio: 'Wrote the first scheduler and still reviews every migration.',
     github: '#',
+    avatar: AVATARS.tomasz,
   },
   {
     name: 'Maya Renner',
     initials: 'MR',
     role: 'Staff engineer',
+    department: 'Engineering',
     bio: 'Owns the runtime. Cares a lot about p99s.',
     github: '#',
+    avatar: AVATARS.maya,
   },
   {
     name: 'Kwame Boateng',
     initials: 'KB',
     role: 'Design',
+    department: 'Design and product',
     bio: 'Designs the console and the docs, in that order.',
     github: '#',
   },
@@ -237,6 +278,7 @@ const MEMBERS = [
     name: 'Elif Demir',
     initials: 'ED',
     role: 'Infrastructure',
+    department: 'Engineering',
     bio: 'Keeps three regions boring. Previously SRE at a CDN.',
     github: '#',
   },
@@ -244,6 +286,7 @@ const MEMBERS = [
     name: 'Jonas Lindqvist',
     initials: 'JL',
     role: 'Developer experience',
+    department: 'Engineering',
     bio: 'Maintains the CLI and answers most of the GitHub issues.',
     github: '#',
   },
@@ -251,56 +294,100 @@ const MEMBERS = [
     name: 'Priya Raman',
     initials: 'PR',
     role: 'Product',
-    bio: 'Turns support threads into roadmap. Ex-Linear.',
+    department: 'Design and product',
+    bio: 'Turns support threads into the roadmap. Ran product at a scheduling startup.',
     github: '#',
   },
   {
-    name: 'Samuel Okafor',
-    initials: 'SO',
+    name: 'Arjun Menon',
+    initials: 'AM',
     role: 'Security',
+    department: 'Engineering',
     bio: 'Runs the audit program and the bug bounty.',
     github: '#',
+    avatar: AVATARS.arjun,
   },
-] as const;
+];
+
+const countFor = (department: Department) =>
+  department === 'All' ? MEMBERS.length : MEMBERS.filter((member) => member.department === department).length;
 
 const Team01Block = () => {
+  const [department, setDepartment] = React.useState<Department>('All');
+
+  const members = department === 'All' ? MEMBERS : MEMBERS.filter((member) => member.department === department);
+
   return (
-    <Team data-slot="team-01-block">
+    <Team>
       <TeamHeader>
-        <TeamEyebrow>The team</TeamEyebrow>
-        <TeamTitle>Eight people, three time zones.</TeamTitle>
-        <TeamDescription>
+        <TeamEyebrow className={ENTER}>The team</TeamEyebrow>
+        <TeamTitle style={stagger(1, 70)} className={ENTER}>
+          Eight people, three time zones.
+        </TeamTitle>
+        <TeamDescription style={stagger(2, 70)} className={ENTER}>
           Everyone here has shipped and operated the thing they now build. We keep the team small on purpose and hire
           when a seat is clearly missing.
         </TeamDescription>
       </TeamHeader>
 
-      <TeamGrid>
-        {MEMBERS.map((member) => (
-          <TeamMember key={member.name}>
-            <TeamMemberAvatar initials={member.initials} />
-            <div className="flex flex-col gap-1">
-              <TeamMemberName>{member.name}</TeamMemberName>
-              <TeamMemberRole>{member.role}</TeamMemberRole>
-            </div>
-            <TeamMemberBio>{member.bio}</TeamMemberBio>
-            <TeamMemberLinks>
-              <TeamMemberLink href={member.github} aria-label={`${member.name} on GitHub`}>
-                <GithubIcon />
-              </TeamMemberLink>
-            </TeamMemberLinks>
-          </TeamMember>
-        ))}
-      </TeamGrid>
+      <div className="flex flex-col gap-6">
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          size="sm"
+          spacing={2}
+          value={department}
+          onValueChange={(next) => {
+            if (next) setDepartment(next as Department);
+          }}
+          aria-label="Filter the team by department"
+          data-slot="team-filter"
+          style={stagger(3, 70)}
+          className={cn(ENTER, 'flex-wrap')}
+        >
+          {DEPARTMENTS.map((dept) => (
+            <ToggleGroupItem
+              key={dept}
+              value={dept}
+              className="group/chip gap-1.5 rounded-full data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+            >
+              {dept}
+              <span className="text-xs tabular-nums text-muted-foreground group-data-[state=on]/chip:text-primary-foreground/70">
+                {countFor(dept)}
+              </span>
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        <TeamGrid style={stagger(4, 70)} className={ENTER}>
+          {members.map((member, index) => (
+            <TeamMember key={`${department}-${member.name}`} style={stagger(index, 40)} className={SWAP}>
+              <div className="flex items-center gap-3">
+                <TeamMemberAvatar initials={member.initials} src={member.avatar} alt={member.name} />
+                <div className="flex min-w-0 flex-col gap-1">
+                  <TeamMemberName>{member.name}</TeamMemberName>
+                  <TeamMemberRole>{member.role}</TeamMemberRole>
+                </div>
+              </div>
+              <TeamMemberBio>{member.bio}</TeamMemberBio>
+              <TeamMemberLinks>
+                <TeamMemberLink href={member.github} aria-label={`${member.name} on GitHub`}>
+                  <GithubIcon />
+                </TeamMemberLink>
+              </TeamMemberLinks>
+            </TeamMember>
+          ))}
+        </TeamGrid>
+      </div>
 
       <TeamFooter>
         <p className="text-sm text-muted-foreground">We&apos;re hiring across engineering and design.</p>
         <a
           href="#"
-          className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="group inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           See open roles
-          <ArrowRight className="size-4 rtl:rotate-180" />
+          <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
         </a>
       </TeamFooter>
     </Team>

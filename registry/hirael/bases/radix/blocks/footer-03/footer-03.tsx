@@ -1,6 +1,4 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -37,6 +35,13 @@ const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface FooterColumn {
   label: string;
@@ -86,13 +91,13 @@ const Footer03 = () => {
       <div className="pt-12 pb-2 md:pb-12">
         <div className="container">
           <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
-            <div data-slot="footer-brand">
+            <div data-slot="footer-brand" className={ENTER}>
               <span className="mb-3 inline-flex items-center gap-2 text-base font-semibold tracking-tight text-foreground">
                 <BrandMark />
                 Hirael
               </span>
               <p className="mb-4 max-w-sm text-sm text-muted-foreground">
-                Visual building blocks for teams that ship at scale. Composable, token-driven, and yours to keep.
+                Sections and full pages built on your design tokens. Install the source and it stays yours.
               </p>
               <div className="flex gap-1">
                 {SOCIALS.map(({ label, href, icon: Icon }) => (
@@ -105,13 +110,16 @@ const Footer03 = () => {
               </div>
             </div>
 
-            {COLUMNS.map((column) => (
-              <div key={column.label} data-slot="footer-column">
-                <h4 className="mb-4 font-semibold text-foreground">{column.label}</h4>
+            {COLUMNS.map((column, index) => (
+              <div key={column.label} data-slot="footer-column" style={stagger(index + 1)} className={ENTER}>
+                <h3 className="mb-4 font-semibold text-foreground">{column.label}</h3>
                 <ul className="space-y-3 text-sm">
                   {column.links.map((link) => (
                     <li key={link.label}>
-                      <a href={link.href} className="text-muted-foreground transition-colors hover:text-foreground">
+                      <a
+                        href={link.href}
+                        className="text-muted-foreground transition-colors duration-150 hover:text-foreground"
+                      >
                         {link.label}
                       </a>
                     </li>
@@ -121,12 +129,10 @@ const Footer03 = () => {
             ))}
           </div>
 
-          <div data-slot="footer-bottom" className="border-t border-border/50 pt-8">
+          <div data-slot="footer-bottom" style={stagger(3)} className={cn(ENTER, 'border-t border-border/50 pt-8')}>
             <div className="flex flex-col items-center justify-between md:flex-row">
               <div className="mb-4 flex flex-col items-center gap-4 md:mb-0 md:flex-row">
-                <p className="text-start text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} Hirael · Built for modern product teams
-                </p>
+                <p className="text-start text-sm text-muted-foreground">© 2026 Hirael. All rights reserved.</p>
               </div>
             </div>
           </div>

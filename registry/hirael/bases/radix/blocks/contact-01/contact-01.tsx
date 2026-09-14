@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { ArrowRight, CheckCircle2, Loader2, Mail, MapPin, MessageCircle } from 'lucide-react';
 
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
 import { Checkbox } from '@/registry/hirael/bases/radix/ui/checkbox';
@@ -12,6 +12,15 @@ import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const MESSAGE_MAX = 1000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,7 +69,7 @@ const CHANNELS: readonly Channel[] = [
   {
     icon: MessageCircle,
     label: 'Discord',
-    value: 'hirael · #help',
+    value: '#help on the Hirael server',
     href: '#',
   },
 ];
@@ -111,24 +120,24 @@ const Contact01 = () => {
   const messageRemaining = MESSAGE_MAX - state.message.length;
 
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="contact" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex max-w-2xl flex-col gap-5">
-          <Badge variant="outline" className="w-fit">
-            <span className="size-1 rounded-full bg-foreground" />
-            Talk to us
-          </Badge>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+        <div data-slot="contact-header" className="flex max-w-2xl flex-col gap-5">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Talk to us</span>
+          <h2
+            style={stagger(1, 70)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
             Have a question we haven&apos;t answered yet?
           </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
+          <p style={stagger(2, 70)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
             Drop a note and we&apos;ll route it to the right person. Engineering questions, sales, partnerships: all the
             same form.
           </p>
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-          <Card className="lg:col-span-7">
+          <Card data-slot="contact-form" style={stagger(3, 70)} className={cn(ENTER, 'lg:col-span-7')}>
             <CardHeader>
               <CardTitle>Send a message</CardTitle>
               <CardDescription>We reply within one business day, usually faster.</CardDescription>
@@ -136,18 +145,20 @@ const Contact01 = () => {
             <CardContent>
               {status === 'sent' ? (
                 <div
+                  key="sent"
                   role="status"
                   aria-live="polite"
-                  className="flex flex-col items-start gap-4 rounded-md border border-dashed border-border bg-card/40 p-6"
+                  data-slot="contact-success"
+                  className={cn(SWAP, 'flex flex-col items-start gap-4 py-2')}
                 >
-                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-success/10 text-success">
-                    <CheckCircle2 className="size-5" />
-                  </span>
                   <div className="flex flex-col gap-1">
-                    <h3 className="text-base font-semibold tracking-[-0.01em]">Message sent.</h3>
+                    <h3 className="inline-flex items-center gap-2 text-base font-semibold tracking-[-0.01em]">
+                      <CheckCircle2 aria-hidden className="size-4 text-success" />
+                      Message sent
+                    </h3>
                     <p className="text-sm text-muted-foreground">
                       Thanks{state.name ? `, ${state.name.split(' ')[0]}` : ''}. We&apos;ll be in touch at{' '}
-                      <span className="font-mono text-foreground">{state.email}</span>.
+                      <span className="text-foreground">{state.email}</span>.
                     </p>
                   </div>
                   <Button variant="outline" size="sm" onClick={reset}>
@@ -155,7 +166,7 @@ const Contact01 = () => {
                   </Button>
                 </div>
               ) : (
-                <form noValidate onSubmit={onSubmit} className="contents">
+                <form key="form" noValidate onSubmit={onSubmit} className={cn(SWAP, 'block')}>
                   <FieldGroup>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                       <Field data-invalid={Boolean(errors.name) || undefined}>
@@ -164,7 +175,7 @@ const Contact01 = () => {
                           id="contact-name"
                           name="name"
                           autoComplete="name"
-                          placeholder="Ada Lovelace"
+                          placeholder="Mira Kovac"
                           value={state.name}
                           onChange={(e) => set('name', e.target.value)}
                           aria-invalid={Boolean(errors.name) || undefined}
@@ -179,7 +190,7 @@ const Contact01 = () => {
                           name="email"
                           type="email"
                           autoComplete="email"
-                          placeholder="ada@studio.io"
+                          placeholder="mira@plinth.dev"
                           value={state.email}
                           onChange={(e) => set('email', e.target.value)}
                           aria-invalid={Boolean(errors.email) || undefined}
@@ -238,10 +249,11 @@ const Contact01 = () => {
                           Plain text. Code snippets welcome.
                         </FieldDescription>
                         <span
-                          className={`font-mono text-[10px] tabular-nums ${
-                            messageRemaining < 0 ? 'text-destructive' : 'text-muted-foreground'
-                          }`}
-                          aria-live="polite"
+                          dir="ltr"
+                          className={cn(
+                            'shrink-0 text-xs tabular-nums',
+                            messageRemaining < 0 ? 'text-destructive' : 'text-muted-foreground',
+                          )}
                         >
                           {state.message.length} / {MESSAGE_MAX}
                         </span>
@@ -273,7 +285,7 @@ const Contact01 = () => {
                     <Separator />
 
                     <div className="flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
-                      <p className="text-xs uppercase text-muted-foreground">Routed to the right team automatically.</p>
+                      <p className="text-sm text-muted-foreground">Routed to the right team automatically.</p>
                       <Button type="submit" size="lg" disabled={status === 'sending'} className="group sm:w-fit">
                         {status === 'sending' ? (
                           <>
@@ -294,53 +306,49 @@ const Contact01 = () => {
             </CardContent>
           </Card>
 
-          <aside className="flex flex-col gap-6 lg:col-span-5">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xs uppercase text-muted-foreground">other ways to reach us</CardTitle>
-              </CardHeader>
-              <CardContent className="px-0">
-                <ul className="flex flex-col">
-                  {CHANNELS.map((c, i) => {
-                    const Icon = c.icon;
-                    return (
-                      <li key={c.label}>
-                        <a
-                          href={c.href}
-                          className={`group flex items-center justify-between gap-4 px-6 py-3.5 transition-colors hover:bg-accent/40 focus-visible:outline-none focus-visible:bg-accent/60 ${i < CHANNELS.length - 1 ? 'border-b border-border' : ''}`}
-                        >
-                          <span className="flex items-center gap-3">
-                            <span className="inline-flex size-8 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-                              <Icon className="size-3.5" />
-                            </span>
-                            <span className="flex flex-col">
-                              <span className="text-xs uppercase text-muted-foreground">{c.label}</span>
-                              <span className="text-sm font-medium text-foreground">{c.value}</span>
-                            </span>
+          <aside
+            data-slot="contact-aside"
+            style={stagger(4, 70)}
+            className={cn(ENTER, 'flex flex-col gap-10 lg:col-span-5')}
+          >
+            <div className="flex flex-col gap-3">
+              <p className="text-xs uppercase text-muted-foreground">Other ways to reach us</p>
+              <ul className="flex flex-col border-t border-border">
+                {CHANNELS.map((c) => {
+                  const Icon = c.icon;
+                  return (
+                    <li key={c.label} className="border-b border-border">
+                      <a
+                        href={c.href}
+                        className="group flex items-center justify-between gap-4 py-4 outline-none transition-colors duration-150 focus-visible:bg-accent/40"
+                      >
+                        <span className="flex flex-col gap-0.5">
+                          <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                            <Icon aria-hidden className="size-3.5" />
+                            {c.label}
                           </span>
-                          <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:opacity-100 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </CardContent>
-            </Card>
+                          <span className="text-sm font-medium text-foreground">{c.value}</span>
+                        </span>
+                        <ArrowRight className="size-4 text-muted-foreground transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
 
-            <Card className="border-dashed bg-card/30">
-              <CardContent>
-                <div className="flex items-start gap-3">
-                  <span className="inline-flex size-8 items-center justify-center rounded-sm border border-border bg-background text-foreground">
-                    <MapPin className="size-3.5" />
-                  </span>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-xs uppercase text-muted-foreground">Remote, mostly</p>
-                    <p className="text-sm text-foreground">Distributed across UTC-5 → UTC+3.</p>
-                    <p className="text-sm text-muted-foreground">Office hours 09:00–17:00 local time.</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div data-slot="contact-location" className="flex flex-col gap-1">
+              <p className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                <MapPin aria-hidden className="size-3.5" />
+                Remote, mostly
+              </p>
+              <p className="text-sm text-foreground">
+                Spread across time zones from <span dir="ltr">UTC-5</span> to <span dir="ltr">UTC+3</span>.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Office hours <span dir="ltr">09:00 to 17:00</span> local time.
+              </p>
+            </div>
           </aside>
         </div>
       </div>

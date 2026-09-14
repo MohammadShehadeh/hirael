@@ -1,14 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowDownRight, ArrowUpRight, Minus, Share2 } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, Check, Minus, Share2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/hirael/bases/base/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 type Range = '7d' | '14d' | '28d';
 
@@ -214,7 +218,7 @@ const DeltaChip = ({ kpi }: { kpi: Kpi }) => {
       dir="ltr"
       aria-label={`${label} ${direction} ${Math.abs(delta)} ${UNIT_WORD[unit]} against the previous period`}
       className={cn(
-        'inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums',
+        'inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-[11px] leading-none tabular-nums',
         deltaTone(kpi),
       )}
     >
@@ -257,6 +261,24 @@ const linePath = (values: number[], max: number) => {
 
 const Dashboard02 = () => {
   const [range, setRange] = React.useState<Range>('7d');
+  const [copied, setCopied] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!copied) return;
+    const timeout = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
+  const onShare = async () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('range', range);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const kpis = KPIS_BY_RANGE[range];
   const chart = CHART_BY_RANGE[range];
@@ -269,15 +291,17 @@ const Dashboard02 = () => {
     chart.map((b) => b.visitors),
     max,
   );
+  const peak = chart.reduce((a, b) => (b.views > a.views ? b : a));
 
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div
+          data-slot="dashboard-header"
+          className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
+        >
           <div className="flex max-w-xl flex-col gap-3">
-            <Badge variant="outline" className="w-fit">
-              analytics
-            </Badge>
+            <span className="text-xs uppercase text-muted-foreground">Analytics</span>
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Traffic, end to end.</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -293,28 +317,54 @@ const Dashboard02 = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" aria-label="Share report">
-              <Share2 className="size-3.5" aria-hidden />
-              <span className="hidden sm:inline">Share report</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onShare}
+              aria-label={copied ? 'Link copied' : 'Copy link to report'}
+            >
+              {copied ? (
+                <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+              ) : (
+                <Share2 className="size-3.5" aria-hidden />
+              )}
+              <span className="hidden sm:inline">{copied ? 'Copied' : 'Share report'}</span>
             </Button>
+            <span aria-live="polite" className="sr-only">
+              {copied ? 'Link copied' : ''}
+            </span>
           </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4">
+        <div
+          data-slot="dashboard-metrics"
+          style={{ animationDelay: '60ms' }}
+          className={cn(
+            ENTER,
+            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+          )}
+        >
           {kpis.map((k) => (
             <div key={k.label} className="flex flex-col gap-2 bg-card p-5">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs uppercase text-muted-foreground">{k.label}</span>
-                <DeltaChip kpi={k} />
+                <span key={range} className={SWAP}>
+                  <DeltaChip kpi={k} />
+                </span>
               </div>
-              <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{k.value}</span>
-              <Sparkline points={k.spark} />
+              <div key={range} className={cn(SWAP, 'flex flex-col gap-2')}>
+                <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{k.value}</span>
+                <Sparkline points={k.spark} />
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
-          <Card className="lg:col-span-2">
+        <div
+          style={{ animationDelay: '120ms' }}
+          className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
+        >
+          <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
@@ -334,7 +384,7 @@ const Dashboard02 = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div>
+              <div key={range} className={SWAP}>
                 <svg viewBox="0 0 100 46" preserveAspectRatio="none" aria-hidden className="h-56 w-full">
                   {[11, 22, 33].map((y) => (
                     <line
@@ -401,14 +451,16 @@ const Dashboard02 = () => {
 
               <Separator className="my-4" />
 
-              <p className="text-xs uppercase text-muted-foreground">
-                Peak · {chart.reduce((a, b) => (b.views > a.views ? b : a)).label} · {max.toLocaleString('en-US')} views
+              <p className="flex flex-wrap gap-x-3 text-xs uppercase text-muted-foreground">
+                <span>Peak</span>
+                <span className="text-foreground">{peak.label}</span>
+                <span className="tabular-nums">{max.toLocaleString('en-US')} views</span>
               </p>
             </CardContent>
           </Card>
 
           <div className="flex flex-col gap-6">
-            <Card>
+            <Card data-slot="dashboard-top-pages">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardDescription className="text-xs uppercase">top pages</CardDescription>
@@ -422,8 +474,8 @@ const Dashboard02 = () => {
                 {TOP_PAGES.map((p) => (
                   <div key={p.path} className="flex flex-col gap-1.5">
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="truncate font-mono text-xs text-foreground">{p.path}</span>
-                      <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+                      <span className="truncate text-xs text-foreground">{p.path}</span>
+                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                         {compact.format(p.views)}
                       </span>
                     </div>
@@ -440,7 +492,7 @@ const Dashboard02 = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card data-slot="dashboard-channels">
               <CardHeader>
                 <CardDescription className="text-xs uppercase">channels</CardDescription>
                 <CardTitle className="sr-only">Channels</CardTitle>
@@ -452,7 +504,7 @@ const Dashboard02 = () => {
                     <div aria-hidden className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
                       <div className="h-full rounded-full bg-foreground/70" style={{ width: `${c.share}%` }} />
                     </div>
-                    <span className="w-9 shrink-0 text-end font-mono text-xs tabular-nums text-muted-foreground">
+                    <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
                       {c.share}%
                     </span>
                   </div>

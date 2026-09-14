@@ -164,7 +164,10 @@ const TenantSwitcherTrigger = ({
       {children ?? (
         <>
           <TenantLogo tenant={active} />
-          <span className="flex min-w-0 flex-1 flex-col">
+          <span
+            key={active?.value ?? 'placeholder'}
+            className="flex min-w-0 flex-1 flex-col animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+          >
             <span className={cn('truncate font-medium leading-tight', !active && 'text-muted-foreground')}>
               {active ? active.label : placeholder}
             </span>
@@ -306,17 +309,17 @@ export { TenantSwitcher, TenantSwitcherTrigger, TenantSwitcherContent, TenantSwi
 
 const TENANT_WORKSPACES: Tenant[] = [
   { value: 'personal', label: 'Personal', caption: 'Free', group: 'Personal' },
-  { value: 'acme', label: 'Acme Inc', caption: 'Pro plan', group: 'Teams' },
-  { value: 'globex', label: 'Globex', caption: 'Enterprise', group: 'Teams' },
-  { value: 'initech', label: 'Initech', caption: 'Pro plan', group: 'Teams' },
+  { value: 'fieldnote', label: 'Fieldnote Labs', caption: 'Pro plan', group: 'Teams' },
+  { value: 'kestrel', label: 'Kestrel Health', caption: 'Enterprise', group: 'Teams' },
+  { value: 'harbor', label: 'Harbor Analytics', caption: 'Pro plan', group: 'Teams' },
 ];
 
 const TenantSwitcherBlock = () => {
-  const [workspace, setWorkspace] = React.useState<string | undefined>('acme');
+  const [workspace, setWorkspace] = React.useState<string | undefined>('fieldnote');
 
   return (
     <section data-slot="tenant-switcher-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="grid w-full max-w-sm gap-2">
+      <div className="grid w-full max-w-sm gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
         <span className="text-sm font-medium text-foreground">Workspace</span>
         <TenantSwitcher tenants={TENANT_WORKSPACES} value={workspace} onValueChange={setWorkspace}>
           <TenantSwitcherTrigger />

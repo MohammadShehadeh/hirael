@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -61,7 +59,7 @@ const UsageItem = ({ label, value, max, caption, unit, className, ...props }: Us
     <div data-slot="usage-item" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-sm text-foreground">{label}</span>
-        <span className="font-mono text-xs tabular-nums text-muted-foreground">
+        <span className="text-xs tabular-nums text-muted-foreground">
           {caption ?? `${value} / ${max}`}
           {unit != null ? <> {unit}</> : null}
         </span>
@@ -81,10 +79,13 @@ const UsageItem = ({ label, value, max, caption, unit, className, ...props }: Us
 
 export { UsageDashboard, UsageDashboardHeader, UsageDashboardTitle, UsageList, UsageItem };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const UsageDashboardBlock = () => {
   return (
     <section data-slot="usage-dashboard-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <UsageDashboard className="w-full max-w-md">
+      <UsageDashboard className={cn(ENTER, 'w-full max-w-md')}>
         <UsageDashboardHeader>
           <UsageDashboardTitle>Usage this month</UsageDashboardTitle>
           <span className="text-xs uppercase text-muted-foreground">Resets Jul 1</span>

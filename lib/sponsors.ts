@@ -3,7 +3,7 @@ import { SITE } from '@/lib/site';
 export interface Sponsor {
   name: string;
   href: string;
-  /** Path under `public/`, e.g. `/sponsors/acme.svg`. */
+  /** Path under `public/`, e.g. `/brand-logos/acme.svg`. */
   logo: string;
   /** Monochrome dark logos read on the dark canvas only once inverted. */
   invertOnDark?: boolean;
@@ -18,7 +18,7 @@ export const SPONSORS: Sponsor[] = [
   {
     name: 'Sahabti',
     href: 'https://sahabti.com/en',
-    logo: '/sponsors/sahabti.svg',
+    logo: '/brand-logos/sahabti.svg',
     invertOnDark: true,
     showName: true,
   },

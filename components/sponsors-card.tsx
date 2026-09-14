@@ -61,10 +61,14 @@ export const SponsorsCard = ({ className }: { className?: string }) => (
               {/* eslint-disable-next-line @next/next/no-img-element -- static export, images are unoptimized */}
               <img
                 src={sponsor.logo}
-                alt={sponsor.showName ? '' : sponsor.name}
+                alt={sponsor.name}
                 className={cn('max-h-6 w-auto max-w-full object-contain', sponsor.invertOnDark && 'dark:invert')}
               />
-              {sponsor.showName && <span className="text-sm font-semibold tracking-tight">{sponsor.name}</span>}
+              {sponsor.showName && (
+                <span aria-hidden className="text-sm font-semibold tracking-tight">
+                  {sponsor.name}
+                </span>
+              )}
             </a>
           ))
         : Array.from({ length: OPEN_SLOTS }, (_, i) => (

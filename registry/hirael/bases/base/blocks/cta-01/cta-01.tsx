@@ -1,16 +1,26 @@
-'use client';
-
 import * as React from 'react';
 import { ArrowRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const COMMAND = 'npx shadcn add https://hirael.com/r/multi-select.json';
 
 const Cta01 = () => {
   return (
     <section data-slot="cta" className="bg-background py-20 md:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div
-          className="relative overflow-hidden rounded-[2rem] border border-border bg-card"
+          data-slot="cta-panel"
+          className={cn(ENTER, 'relative overflow-hidden rounded-[2rem] border border-border bg-card')}
           style={{
             boxShadow: '0 30px 70px -40px color-mix(in oklch, var(--foreground) 30%, transparent)',
           }}
@@ -25,40 +35,52 @@ const Cta01 = () => {
           />
 
           <div className="relative grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:items-center lg:gap-16 lg:p-14">
-            <div className="flex flex-col gap-5 lg:col-span-7">
-              <span className="inline-flex w-fit items-center gap-2 text-xs uppercase text-foreground">
-                <span className="size-1 rounded-full bg-foreground" />
+            <div data-slot="cta-header" className="flex flex-col gap-5 lg:col-span-7">
+              <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
                 Get started
               </span>
-              <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
-                Stop rebuilding the components <span className="italic text-foreground">every project</span> needs.
+              <h2
+                style={stagger(2)}
+                className={cn(
+                  ENTER,
+                  'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+                )}
+              >
+                Stop rebuilding the components every project needs.
               </h2>
-              <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+              <p style={stagger(3)} className={cn(ENTER, 'max-w-xl text-sm text-muted-foreground sm:text-base')}>
                 Pull a real multi-select, year picker, or tag input into your repo in one command. No package, no
                 version pin. Just the source, in your codebase, yours to shape.
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 lg:col-span-5 lg:items-end">
-              <Button
-                render={<a href="#" />}
-                nativeButton={false}
-                size="lg"
-                className="group w-full justify-between rounded-full px-7 lg:w-auto"
+            <div
+              data-slot="cta-actions"
+              style={stagger(4)}
+              className={cn(ENTER, 'flex min-w-0 flex-col gap-3 lg:col-span-5')}
+            >
+              <div
+                data-slot="cta-command"
+                dir="ltr"
+                className="flex min-w-0 items-center gap-3 rounded-full border border-border bg-background/60 py-1.5 ps-5 pe-1.5"
               >
-                Install via shadcn CLI
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-              </Button>
+                <span aria-hidden className="select-none font-mono text-sm text-muted-foreground">
+                  $
+                </span>
+                <code className="min-w-0 flex-1 truncate font-mono text-sm">{COMMAND}</code>
+                <CopyButton value={COMMAND} size="md" className="shrink-0 rounded-full" />
+              </div>
               <Button
                 render={<a href="#" />}
                 nativeButton={false}
                 variant="outline"
                 size="lg"
-                className="w-full rounded-full px-7 lg:w-auto"
+                className="group w-full rounded-full px-7"
               >
                 Browse blocks
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
-              <p className="text-end text-xs uppercase text-muted-foreground">No runtime dependency</p>
+              <p className="text-center text-xs uppercase text-muted-foreground lg:text-end">No runtime dependency</p>
             </div>
           </div>
         </div>

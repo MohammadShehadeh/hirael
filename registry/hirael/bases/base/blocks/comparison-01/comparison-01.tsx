@@ -1,6 +1,15 @@
+import type * as React from 'react';
 import { Check, Minus } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const HIRAEL = [
   'Source copied straight into your repo',
@@ -22,20 +31,24 @@ const Comparison01 = () => {
   return (
     <section data-slot="comparison" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <span className="text-xs uppercase text-muted-foreground">comparison</span>
-          <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
+        <div data-slot="comparison-header" className="flex flex-col items-center gap-5 text-center">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Comparison</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
             The difference is ownership.
           </h2>
-          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
+          <p style={stagger(2)} className={cn(ENTER, 'max-w-xl text-base text-muted-foreground sm:text-lg')}>
             Same install command you already use, a very different relationship with the code it leaves behind.
           </p>
         </div>
 
         <div
           data-slot="comparison-grid"
-          className="relative mt-12 grid overflow-hidden rounded-xl border border-border md:grid-cols-2"
+          className={cn(ENTER, 'relative mt-12 grid overflow-hidden rounded-xl border border-border md:grid-cols-2')}
           style={{
+            ...stagger(3),
             boxShadow: '0 24px 60px -34px color-mix(in oklch, var(--foreground) 22%, transparent)',
           }}
         >
@@ -60,7 +73,7 @@ const Comparison01 = () => {
             />
             <div className="relative z-10 flex flex-col gap-6">
               <div className="flex flex-col gap-1">
-                <span className="text-xs uppercase text-muted-foreground">with hirael</span>
+                <span className="text-xs uppercase text-muted-foreground">With Hirael</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em]">Code you keep</h3>
               </div>
               <ul className="flex flex-col gap-3.5">
@@ -73,7 +86,7 @@ const Comparison01 = () => {
                   </li>
                 ))}
               </ul>
-              <Button render={<a href="#" />} nativeButton={false} className="mt-1 w-full sm:w-auto">
+              <Button className="mt-1 w-full sm:w-auto" render={<a href="#" />} nativeButton={false}>
                 Browse the registry
               </Button>
             </div>
@@ -82,7 +95,7 @@ const Comparison01 = () => {
           <div data-slot="comparison-theirs" className="bg-muted/20 p-7 sm:p-8">
             <div className="flex flex-col gap-6 opacity-80">
               <div className="flex flex-col gap-1">
-                <span className="text-xs uppercase text-muted-foreground">the usual way</span>
+                <span className="text-xs uppercase text-muted-foreground">The usual way</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em] text-muted-foreground">Code you rent</h3>
               </div>
               <ul className="flex flex-col gap-3.5">

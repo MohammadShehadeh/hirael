@@ -4,11 +4,19 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { ArrowRight, Compass, Dna, Gem, Globe, Play, ShieldCheck, Sun } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const Hero02Backdrop = dynamic(() => import('./hero-02-backdrop'), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
+});
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
 });
 
 const WORDMARKS = [
@@ -50,33 +58,48 @@ const Hero02 = () => {
         <Hero02Backdrop active={active} />
       </div>
 
-      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm">
-        <span className="relative flex size-1.5">
-          <span
-            className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
-            style={{ background: 'var(--accent-cool)' }}
-          />
-          <span className="relative inline-flex size-1.5 rounded-full" style={{ background: 'var(--accent-cool)' }} />
+      <a
+        href="#"
+        data-slot="hero-release"
+        className={cn(
+          ENTER,
+          'inline-flex items-center gap-2.5 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm transition-colors duration-150 hover:border-warm/50',
+        )}
+      >
+        <span className="text-warm">New release</span>
+        <span aria-hidden className="text-border">
+          |
         </span>
-        Live
-        <span className="text-muted-foreground">2026.06</span>
-      </span>
+        <span dir="ltr" className="tabular-nums text-muted-foreground">
+          2026.06
+        </span>
+      </a>
 
-      <h1 className="mt-8 max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl">
+      <h1
+        style={stagger(1)}
+        className={cn(
+          ENTER,
+          'mt-8 max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl',
+        )}
+      >
         Ship faster with tools that stay{' '}
         <span className="italic underline decoration-border decoration-2 underline-offset-[10px]">out of your way</span>
         .
       </h1>
 
-      <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+      <p style={stagger(2)} className={cn(ENTER, 'mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground')}>
         A focused toolkit for teams that would rather build than configure. Sensible defaults, no busywork.
       </p>
 
-      <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
+      <div
+        data-slot="hero-actions"
+        style={stagger(3)}
+        className={cn(ENTER, 'mt-10 flex flex-col items-center gap-3 sm:flex-row')}
+      >
         <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
           <a href="#">
             Get started
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+            <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </a>
         </Button>
         <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
@@ -87,13 +110,13 @@ const Hero02 = () => {
         </Button>
       </div>
 
-      <div className="mt-16 flex flex-col items-center gap-5">
-        <p className="text-xs uppercase text-muted-foreground">Trusted by teams shipping at scale</p>
+      <div data-slot="hero-logos" style={stagger(4)} className={cn(ENTER, 'mt-16 flex flex-col items-center gap-5')}>
+        <p className="text-xs uppercase text-muted-foreground">Used by product teams at</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {WORDMARKS.map((w) => (
             <span
               key={w.name}
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground"
             >
               <w.icon aria-hidden className="size-4" />
               {w.name}

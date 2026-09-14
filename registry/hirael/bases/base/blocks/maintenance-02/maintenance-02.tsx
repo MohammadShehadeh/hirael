@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -9,7 +7,9 @@ import { Sparkles } from '@/registry/hirael/bases/base/components/sparkles';
 
 /** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
-  'animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none';
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const delay = (ms: number): React.CSSProperties => ({ animationDelay: `${ms}ms` });
 
 const HEADLINE = 'We are briefly offline';
 
@@ -25,11 +25,8 @@ const Headline = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
-          style={{ animationDelay: `${200 + i * 80}ms` }}
+          className={cn('me-[0.25em] inline-block', RISE, i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={delay(60 + i * 50)}
         >
           {word}
         </span>
@@ -53,9 +50,9 @@ const Maintenance02 = () => {
 
       <div
         data-slot="maintenance-body"
-        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10 animate-in fade-in duration-1000 ease-out fill-mode-both motion-reduce:animate-none"
+        className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10"
       >
-        <div className="animate-in fade-in zoom-in-90 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-200">
+        <div className={RISE}>
           <Badge
             variant="outline"
             data-slot="maintenance-badge"
@@ -67,22 +64,22 @@ const Maintenance02 = () => {
 
         <Headline />
 
-        <div role="status" aria-live="polite" className="contents">
-          <p
-            data-slot="maintenance-description"
-            className={cn('mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', RISE, 'delay-800')}
-          >
-            We are upgrading the registry and the console. Installed components keep working, and nothing you shipped is
-            affected.
-          </p>
+        <p
+          data-slot="maintenance-description"
+          style={delay(300)}
+          className={cn('mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', RISE)}
+        >
+          We are upgrading the registry and the console. Installed components keep working, and nothing you shipped is
+          affected.
+        </p>
 
-          <div
-            data-slot="maintenance-status"
-            className={cn('mt-6 inline-flex items-center gap-2 text-sm text-foreground/70', RISE, 'delay-600')}
-          >
-            <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
-            <span>Check back in a few minutes</span>
-          </div>
+        <div
+          data-slot="maintenance-status"
+          style={delay(380)}
+          className={cn('mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground', RISE)}
+        >
+          <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+          <span>Check back in a few minutes</span>
         </div>
       </div>
     </section>

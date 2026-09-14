@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -178,6 +178,11 @@ const TXN_STATUS: Record<Txn['status'], { label: string; dot: string; amount: st
 
 const PAGE_SIZE = 3;
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const usd = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -224,6 +229,13 @@ const Donut = ({ plans }: { plans: readonly PlanSlice[] }) => {
 const Dashboard03 = () => {
   const [monthIndex, setMonthIndex] = React.useState(MONTHS.length - 1);
   const [page, setPage] = React.useState(0);
+  const [exported, setExported] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!exported) return;
+    const timeout = setTimeout(() => setExported(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [exported]);
 
   const month = MONTHS[monthIndex];
   const pageCount = Math.ceil(TRANSACTIONS.length / PAGE_SIZE);
@@ -231,13 +243,14 @@ const Dashboard03 = () => {
   const pageRows = TRANSACTIONS.slice(pageStart, pageStart + PAGE_SIZE);
 
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div
+          data-slot="dashboard-header"
+          className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
+        >
           <div className="flex max-w-xl flex-col gap-3">
-            <Badge variant="outline" className="w-fit">
-              revenue
-            </Badge>
+            <span className="text-xs uppercase text-muted-foreground">Revenue</span>
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Where the money lands.</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -252,7 +265,7 @@ const Dashboard03 = () => {
               >
                 <ChevronLeft className="size-3.5 rtl:rotate-180" aria-hidden />
               </Button>
-              <span aria-live="polite" className="w-32 text-center font-mono text-xs tabular-nums">
+              <span aria-live="polite" className="w-32 text-center text-xs tabular-nums">
                 {month.label}
               </span>
               <Button
@@ -266,21 +279,33 @@ const Dashboard03 = () => {
                 <ChevronRight className="size-3.5 rtl:rotate-180" aria-hidden />
               </Button>
             </div>
-            <Button variant="outline" size="sm">
-              <Download className="size-3.5" aria-hidden />
-              <span className="sr-only sm:not-sr-only sm:inline">Export</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setExported(true)}
+              aria-label={exported ? `Exported ${month.label}` : `Export ${month.label}`}
+            >
+              {exported ? (
+                <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+              ) : (
+                <Download className="size-3.5" aria-hidden />
+              )}
+              <span className="sr-only sm:not-sr-only sm:inline">{exported ? 'Exported' : 'Export'}</span>
             </Button>
           </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
+        <div
+          style={{ animationDelay: '80ms' }}
+          className={cn(ENTER, 'mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
+        >
           <div className="flex flex-col gap-6">
-            <Card>
+            <Card data-slot="dashboard-plan-mix">
               <CardHeader>
                 <CardDescription className="text-xs uppercase">plan mix</CardDescription>
                 <CardTitle className="sr-only">Plan mix</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col items-center gap-5">
+              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col items-center gap-5')}>
                 <div className="relative">
                   <Donut plans={month.plans} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
@@ -308,28 +333,28 @@ const Dashboard03 = () => {
                     <li key={p.plan} className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-2 rounded-xs', PLAN_TONE[p.plan].swatch)} />
                       <span className="text-xs text-foreground">{p.plan}</span>
-                      <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">{p.share}%</span>
-                      <span className="w-16 text-end font-mono text-xs tabular-nums">{usd.format(p.mrr)}</span>
+                      <span className="ms-auto text-xs tabular-nums text-muted-foreground">{p.share}%</span>
+                      <span className="w-16 text-end text-xs tabular-nums">{usd.format(p.mrr)}</span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card data-slot="dashboard-invoices">
               <CardHeader>
                 <CardDescription className="text-xs uppercase">invoices</CardDescription>
                 <CardTitle className="sr-only">Invoices</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-3">
+              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col gap-3')}>
                 {month.invoices.map((inv, i) => (
                   <React.Fragment key={inv.state}>
                     {i > 0 && <Separator />}
                     <div className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-1.5 rounded-full', INVOICE_TONE[inv.state])} />
                       <span className="text-xs text-foreground">{inv.state}</span>
-                      <span className="ms-auto font-mono text-xs tabular-nums text-muted-foreground">{inv.count}</span>
-                      <span className="w-20 text-end font-mono text-xs tabular-nums">{usd.format(inv.amount)}</span>
+                      <span className="ms-auto text-xs tabular-nums text-muted-foreground">{inv.count}</span>
+                      <span className="w-20 text-end text-xs tabular-nums">{usd.format(inv.amount)}</span>
                     </div>
                   </React.Fragment>
                 ))}
@@ -337,7 +362,7 @@ const Dashboard03 = () => {
             </Card>
           </div>
 
-          <Card className="lg:col-span-2">
+          <Card data-slot="dashboard-transactions" className="lg:col-span-2">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
@@ -359,7 +384,7 @@ const Dashboard03 = () => {
                 <span>Date</span>
                 <span className="text-end">Amount</span>
               </div>
-              <ul className="flex flex-col">
+              <ul key={page} className={cn(SWAP, 'flex flex-col')}>
                 {pageRows.map((t, i) => {
                   const status = TXN_STATUS[t.status];
                   return (
@@ -373,13 +398,13 @@ const Dashboard03 = () => {
                       <div className="flex min-w-0 items-center gap-3">
                         <span
                           aria-hidden
-                          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted font-mono text-xs font-medium"
+                          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
                         >
                           {t.initials}
                         </span>
                         <div className="flex min-w-0 flex-col">
                           <span className="truncate text-sm font-medium">{t.name}</span>
-                          <span className="truncate font-mono text-[11px] text-muted-foreground">{t.email}</span>
+                          <span className="truncate text-[11px] text-muted-foreground">{t.email}</span>
                         </div>
                       </div>
                       <Badge
@@ -389,10 +414,10 @@ const Dashboard03 = () => {
                         <span aria-hidden className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}
                       </Badge>
-                      <span className="hidden font-mono text-xs tabular-nums text-muted-foreground sm:inline">
+                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">
                         {t.date}
                       </span>
-                      <span dir="ltr" className={cn('text-end font-mono text-sm tabular-nums', status.amount)}>
+                      <span dir="ltr" className={cn('text-end text-sm tabular-nums', status.amount)}>
                         <span className="sr-only">{status.label}, </span>
                         {signedUsd(t.amount)}
                       </span>

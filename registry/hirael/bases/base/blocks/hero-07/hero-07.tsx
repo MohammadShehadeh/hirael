@@ -23,10 +23,10 @@ const Headline = () => {
           <span
             key={`${word}-${i}`}
             className={cn(
-              'inline-block animate-in fade-in slide-in-from-bottom-4 blur-in-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+              'inline-block animate-in fade-in slide-in-from-bottom-4 blur-in-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
               accent && 'italic text-foreground',
             )}
-            style={{ animationDelay: `${100 + i * 50}ms` }}
+            style={{ animationDelay: `${40 + i * 35}ms` }}
           >
             {word}
             {i < words.length - 1 ? ' ' : null}
@@ -187,32 +187,33 @@ const Hero07 = () => {
         className="pointer-events-none absolute top-1/2 end-0 hidden -translate-y-1/2 -scale-x-90 rtl:scale-90 md:block"
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 animate-in fade-in duration-800 ease-out fill-mode-both motion-reduce:animate-none">
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
         <span
           data-slot="hero-badge"
           className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
         >
-          <span className="relative flex size-1.5">
-            <span
-              className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
-              style={{ background: 'var(--accent-cool)' }}
-            />
-            <span className="relative inline-flex size-1.5 rounded-full" style={{ background: 'var(--accent-cool)' }} />
-          </span>
           Now in beta
         </span>
 
         <Headline />
 
-        <p data-slot="hero-subhead" className="mt-2 max-w-xl text-muted-foreground sm:mt-4">
+        <p
+          data-slot="hero-subhead"
+          className="mt-2 max-w-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none sm:mt-4"
+          style={{ animationDelay: '330ms' }}
+        >
           One source of truth for your interface. Design it, theme it, and reuse it across every project without
           rewriting the same components.
         </p>
 
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+        <div
+          data-slot="hero-actions"
+          className="mt-4 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none sm:flex-row"
+          style={{ animationDelay: '390ms' }}
+        >
           <Button render={<a href="#" />} nativeButton={false} size="lg" className="group rounded-full px-7">
             <span>Get started</span>
-            <ArrowRight className="size-4 -rotate-45 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-[135deg] rtl:group-hover:-translate-x-0.5" />
+            <ArrowRight className="size-4 -rotate-45 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:rotate-[135deg] rtl:group-hover:-translate-x-0.5" />
           </Button>
           <Button
             render={<a href="#" />}

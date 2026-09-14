@@ -94,7 +94,11 @@ const ResourceStatusItem = ({
         {description ? <span className="truncate text-xs text-muted-foreground">{description}</span> : null}
       </div>
       <div className="flex shrink-0 items-center gap-3">
-        {uptime ? <span className="font-mono text-xs text-muted-foreground">{uptime}</span> : null}
+        {uptime ? (
+          <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+            {uptime}
+          </span>
+        ) : null}
         {children ?? <ResourceStatusIndicator state={state} />}
       </div>
     </li>
@@ -112,7 +116,10 @@ const ResourceStatusDot = ({ state, pulse, className, ...props }: ResourceStatus
     <span data-slot="resource-status-dot" className={cn('relative flex size-2.5 shrink-0', className)} {...props}>
       {pulse ? (
         <span
-          className={cn('absolute inline-flex size-full animate-ping rounded-full opacity-75', stateDot[state])}
+          className={cn(
+            'absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none',
+            stateDot[state],
+          )}
           aria-hidden
         />
       ) : null}
@@ -152,10 +159,10 @@ export {
 const ResourceStatusBlock = () => {
   return (
     <section data-slot="resource-status-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <ResourceStatus className="w-full max-w-lg">
+      <ResourceStatus className="w-full max-w-lg animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
         <ResourceStatusBanner state="degraded">Some systems degraded</ResourceStatusBanner>
         <ResourceStatusList>
-          <ResourceStatusItem name="API" description="REST + GraphQL" state="operational" uptime="99.98%" />
+          <ResourceStatusItem name="API" description="REST and GraphQL" state="operational" uptime="99.98%" />
           <ResourceStatusItem name="Dashboard" description="app.example.com" state="operational" uptime="99.95%" />
           <ResourceStatusItem
             name="Webhooks"

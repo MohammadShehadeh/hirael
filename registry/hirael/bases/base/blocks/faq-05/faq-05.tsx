@@ -1,13 +1,19 @@
-'use client';
+import type * as React from 'react';
 
-import * as React from 'react';
-
+import { cn } from '@/lib/utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/registry/hirael/bases/base/ui/accordion';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const FAQS: readonly { id: string; q: string; a: string }[] = [
   {
@@ -45,19 +51,22 @@ const Faq05 = () => {
           data-slot="faq-intro"
           className="flex flex-col gap-4 border-b border-border px-6 pt-12 pb-6 md:border-b-0 md:border-e md:px-10 md:py-16"
         >
-          <span className="text-xs uppercase text-foreground">faq</span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Plans and billing</span>
+          <h2
+            style={stagger(1, 70)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl')}
+          >
             Questions, answered.
           </h2>
-          <p className="max-w-sm text-sm text-muted-foreground">
+          <p style={stagger(2, 70)} className={cn(ENTER, 'max-w-sm text-sm text-muted-foreground')}>
             The things people ask most often. Still stuck? Reach out and we’ll walk you through it.
           </p>
         </div>
 
         <div data-slot="faq-list" className="flex flex-col justify-center px-6 py-4 md:px-8">
           <Accordion type="single" collapsible className="w-full">
-            {FAQS.map((item) => (
-              <AccordionItem key={item.id} value={item.id}>
+            {FAQS.map((item, i) => (
+              <AccordionItem key={item.id} value={item.id} style={stagger(i, 50, 200)} className={ENTER}>
                 <AccordionTrigger>{item.q}</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">{item.a}</AccordionContent>
               </AccordionItem>

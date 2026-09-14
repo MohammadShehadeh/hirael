@@ -315,8 +315,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'hero-02',
     title: 'Hero 2',
     description:
-      'Centered hero over animated grayscale gradient bars, with a live pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.',
-    blockTagline: 'Stripe shader • live pill • wordmark strip',
+      'Centered hero over animated gradient bars, with a release pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.',
+    blockTagline: 'Stripe shader • release pill • wordmark strip',
     category: 'blocks',
     blockKind: 'hero',
     files: [
@@ -370,8 +370,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'hero-05',
     title: 'Hero 5',
     description:
-      'Full-bleed hero card over an animated aurora shader, with a glass pill nav, a glass content panel, a serif headline, dual CTA and an avatar social-proof row.',
-    blockTagline: 'Aurora shader • glass panel • social proof',
+      'Full-bleed hero card over an animated aurora shader, with a pill nav, a live status pill, a serif headline, dual CTA and an avatar social-proof row.',
+    blockTagline: 'Aurora shader • glass nav • social proof',
     category: 'blocks',
     blockKind: 'hero',
     files: [
@@ -391,8 +391,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-01',
     title: 'Feature 1',
     description:
-      'One bordered card of stacked stripes: a centered intro, two alternating rows pairing an icon tile and copy with a placeholder media panel, then a three-card primitives grid closing on a pair of calls to action.',
-    blockTagline: 'Stacked stripes • alternating rows • media placeholders',
+      'One bordered card of stacked stripes: a centered intro, three alternating rows pairing an indexed layer with a small deploys, previews or release-rules mockup, then a three-column primitives row and a pair of link calls to action.',
+    blockTagline: 'Stacked stripes • 3 layer mockups • link CTAs',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -408,8 +408,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-02',
     title: 'Feature 2',
     description:
-      'Section header above a 3-column, 2-row grid of bordered feature cards with lucide icons, headlines and short blurbs.',
-    blockTagline: 'Icon grid • 6 cards • concise blurbs',
+      'Centered header above a six-item list of what every catalog item includes, laid out on hairline rows with a tabular index kicker.',
+    blockTagline: 'What you get • 6 items • index kicker',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -419,14 +419,13 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ['lucide-react'],
   },
   {
     name: 'pricing-01',
     title: 'Pricing 1',
     description:
-      'Three-tier card row with a featured middle plan. Each card lists price, blurb, feature checklist and a primary or outline CTA.',
-    blockTagline: '3 tiers • featured plan • checklist',
+      'Three-tier card row with a monthly/yearly toggle that swaps each price and billing note, a featured middle plan, feature checklist and CTA.',
+    blockTagline: 'Billing toggle • 3 tiers • featured plan',
     category: 'blocks',
     blockKind: 'pricing',
     files: [
@@ -435,15 +434,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/pricing-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'card', 'separator'],
+    registryDependencies: ['button', 'card', 'separator', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'pricing-02',
     title: 'Pricing 2',
     description:
-      'Compare-by-feature pricing table with sticky tier header (tier name, price, CTA) and ~8 feature rows below.',
-    blockTagline: 'Comparison table • sticky header • per-tier CTA',
+      'Plan comparison table with grouped feature rows and a per-plan CTA in the header; on small screens a plan picker shows one plan column at a time.',
+    blockTagline: 'Comparison table • grouped rows • mobile plan picker',
     category: 'blocks',
     blockKind: 'pricing',
     files: [
@@ -452,7 +451,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/pricing-02.tsx',
       },
     ],
-    registryDependencies: ['button', 'table'],
+    registryDependencies: ['button', 'table', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -469,8 +468,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/pricing-03.tsx',
       },
     ],
-    registryDependencies: ['animated-number', 'badge', 'button', 'card'],
-    dependencies: ['motion', 'lucide-react'],
+    registryDependencies: ['animated-number', 'badge', 'button', 'card', 'toggle-group'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'testimonial-01',
@@ -509,8 +508,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'cta-01',
     title: 'CTA 1',
     description:
-      'Framed CTA card with corner marks, headline + sub-copy on the left, dual buttons stacked on the right.',
-    blockTagline: 'Framed • split layout • corner marks',
+      'Framed CTA card with headline and sub-copy on the left, and an install command with a copy button above a browse button on the right.',
+    blockTagline: 'Framed • split layout • copyable install',
     category: 'blocks',
     blockKind: 'cta',
     files: [
@@ -519,14 +518,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/cta-01.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'copy-button'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'cta-02',
     title: 'CTA 2',
     description:
-      'Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an inline install command.',
+      'Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an install command with a copy button.',
     blockTagline: 'Centered • highlight underlay • install command',
     category: 'blocks',
     blockKind: 'cta',
@@ -536,14 +535,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/cta-02.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'copy-button'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'cta-03',
     title: 'CTA 3',
     description:
-      'Full-bleed CTA card with an animated dithered shader backdrop, a live status pill, a serif headline and a pill action button.',
+      'Full-bleed CTA card with an animated dithered shader backdrop, an eyebrow pill, a serif headline and a pill action button.',
     blockTagline: 'Centered • dithered backdrop • serif headline',
     category: 'blocks',
     blockKind: 'cta',
@@ -563,8 +562,9 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'faq-01',
     title: 'FAQ 1',
-    description: 'Two-column FAQ: sticky heading + contact card on the left, numbered accordion on the right.',
-    blockTagline: 'Sticky split • numbered • contact card',
+    description:
+      'Two-column FAQ: sticky heading and a hairline help note on the start side, numbered accordion on the end side.',
+    blockTagline: 'Sticky split • numbered • help note',
     category: 'blocks',
     blockKind: 'faq',
     files: [
@@ -573,7 +573,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/faq-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'accordion', 'card'],
+    registryDependencies: ['accordion', 'button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -613,8 +613,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'faq-04',
     title: 'FAQ 4',
     description:
-      'Framed single-column FAQ with side rules, a centered display header, five topic groups each pairing a heading with its own accordion, and a support footer line.',
-    blockTagline: 'Framed column • topic groups • support line',
+      'Framed single-column FAQ with side rules, a centered display header with a topic jump nav, five topic groups each pairing a heading with its own accordion, and a support footer line.',
+    blockTagline: 'Framed column • topic jump nav • grouped accordions',
     category: 'blocks',
     blockKind: 'faq',
     files: [
@@ -698,7 +698,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'otp-verify-01',
     title: 'OTP Verify 1',
     description:
-      'Centered verification card with a six-box code input built in the block: auto-advance, backspace, paste distribution and arrow-key focus, plus a 30s resend countdown and a pending → success verify flow.',
+      'Centered verification card built on InputOTP: six slots that fit a phone screen, paste support, auto-verify on the last digit, a 30s resend countdown announced once when it unlocks, and a pending then success verify flow.',
     blockTagline: 'Six-box code • 30s resend • success state',
     category: 'blocks',
     blockKind: 'login',
@@ -708,7 +708,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/otp-verify-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'field', 'input'],
+    registryDependencies: ['button', 'field', 'input-otp'],
     dependencies: ['lucide-react'],
   },
   {
@@ -744,6 +744,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ['button'],
     dependencies: ['lucide-react', 'motion'],
+  },
+  {
+    name: 'header-03',
+    title: 'Header 3',
+    description:
+      'Sticky marketing header with Product, Solutions and Resources mega menus, each a two-column link list beside a featured entry, plain Pricing and Docs links, and a side sheet with collapsible groups on small screens.',
+    blockTagline: 'Mega menu • Featured entry • Mobile sheet',
+    category: 'blocks',
+    blockKind: 'header',
+    files: [
+      {
+        path: 'blocks/header-03/header-03.tsx',
+        target: 'components/blocks/header-03.tsx',
+      },
+    ],
+    registryDependencies: ['accordion', 'button', 'navigation-menu', 'sheet'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'footer-01',
@@ -831,8 +848,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'logo-cloud-01',
     title: 'Logo Cloud 1',
     description:
-      'Centered eyebrow + headline above a 5-column bordered wordmark grid, with stat strip and case-study link below.',
-    blockTagline: 'Bordered grid • 10 wordmarks • stat strip',
+      'Centered eyebrow + headline above a 6-column bordered wordmark grid, with stat strip and case-study link below.',
+    blockTagline: 'Bordered grid • 12 wordmarks • stat strip',
     category: 'blocks',
     blockKind: 'logo-cloud',
     files: [
@@ -879,10 +896,27 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'logo-cloud-04',
+    title: 'Logo Cloud 4',
+    description:
+      'Six customer wordmarks as tabs, each opening a proof panel with a metric, a short quote and a story link. It advances on its own, pauses on hover or focus, and stops once you pick one.',
+    blockTagline: 'Wordmark tabs • Proof metric • Auto-advance',
+    category: 'blocks',
+    blockKind: 'logo-cloud',
+    files: [
+      {
+        path: 'blocks/logo-cloud-04/logo-cloud-04.tsx',
+        target: 'components/blocks/logo-cloud-04.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'tabs'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'contact-01',
     title: 'Contact 1',
     description:
-      'Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location card alongside.',
+      'Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location note alongside.',
     blockTagline: 'Validated form • pending • sent state',
     category: 'blocks',
     blockKind: 'contact',
@@ -892,8 +926,9 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/contact-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'card', 'checkbox', 'field', 'input', 'select', 'separator', 'textarea'],
+    registryDependencies: ['button', 'card', 'checkbox', 'field', 'input', 'select', 'separator', 'textarea'],
     dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'blog-01',
@@ -909,15 +944,32 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/blog-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'card', 'separator'],
+    registryDependencies: ['badge', 'button', 'card', 'separator', 'toggle-group'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'blog-02',
+    title: 'Blog 2',
+    description:
+      'Editorial post index as dated rows with a thumbnail that surfaces on hover, category tabs with counts that filter the list, and an empty state for a category with nothing in it yet.',
+    blockTagline: 'Dated rows • Category filter • Hover thumbnails',
+    category: 'blocks',
+    blockKind: 'blog',
+    files: [
+      {
+        path: 'blocks/blog-02/blog-02.tsx',
+        target: 'components/blocks/blog-02.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'empty', 'tabs'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'ecommerce-01',
     title: 'E-commerce 1',
     description:
-      'Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and per-card add buttons.',
-    blockTagline: 'Product grid • filter pills • wishlist',
+      'Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and add-to-cart buttons that update a live cart count.',
+    blockTagline: 'Product grid • filter pills • cart count',
     category: 'blocks',
     blockKind: 'ecommerce',
     files: [
@@ -933,7 +985,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'ecommerce-02',
     title: 'E-commerce 2',
     description:
-      'Shopping cart with quantity steppers, removable line items, promo-code validation, a free-shipping threshold, live totals and an empty-cart state.',
+      'Shopping cart with capped quantity steppers, animated line-item removal, promo-code validation, a free-shipping threshold, live totals, a checkout that confirms with an order number, and an empty-cart state.',
     blockTagline: 'Cart rows • promo code • live totals',
     category: 'blocks',
     blockKind: 'ecommerce',
@@ -945,6 +997,43 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ['button', 'card', 'empty', 'input-group', 'separator'],
     dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'ecommerce-03',
+    title: 'E-commerce 3',
+    description:
+      'Product detail page with a thumbnail gallery, colour swatches, a size grid that knows what is sold out in each colour, a stock-capped quantity stepper, add to cart, and details in an accordion.',
+    blockTagline: 'Gallery • Stock-aware sizes • Add to cart',
+    category: 'blocks',
+    blockKind: 'ecommerce',
+    files: [
+      {
+        path: 'blocks/ecommerce-03/ecommerce-03.tsx',
+        target: 'components/blocks/ecommerce-03.tsx',
+      },
+    ],
+    registryDependencies: ['accordion', 'badge', 'breadcrumb', 'button', 'input-group', 'radio-group', 'rating', 'toggle-group'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'ecommerce-04',
+    title: 'E-commerce 4',
+    description:
+      'Category page with a sticky filter sidebar (category counts that react to the other filters, price range, colour, stock, rating), removable filter chips, sorting, an empty state, and a filter sheet on small screens.',
+    blockTagline: 'Live counts • Filter chips • Mobile sheet',
+    category: 'blocks',
+    blockKind: 'ecommerce',
+    files: [
+      {
+        path: 'blocks/ecommerce-04/ecommerce-04.tsx',
+        target: 'components/blocks/ecommerce-04.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button', 'checkbox', 'empty', 'field', 'radio-group', 'rating', 'select', 'sheet', 'slider', 'switch', 'toggle-group'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'dashboard-01',
@@ -960,7 +1049,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/dashboard-01.tsx',
       },
     ],
-    registryDependencies: ['avatar', 'badge', 'button', 'card', 'separator', 'tabs', 'tooltip'],
+    registryDependencies: ['avatar', 'badge', 'button', 'card', 'select', 'separator', 'tabs', 'tooltip'],
     dependencies: ['lucide-react'],
   },
   {
@@ -977,7 +1066,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/dashboard-02.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'card', 'select', 'separator'],
+    registryDependencies: ['button', 'card', 'select', 'separator'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1011,7 +1100,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/dashboard-04.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'card', 'select'],
+    registryDependencies: ['button', 'card', 'select'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1035,8 +1124,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'integrations-01',
     title: 'Integrations 1',
     description:
-      'Two-column integrations section with copy and feature list on the left, orbit diagram (central hub + 7 logo spokes connected by dashed rays) on the right.',
-    blockTagline: 'Hub & spoke • 7 spokes • orbit ring',
+      'Two-column integrations section with copy and a linked integration list on the left, and an orbit diagram (central hub with 6 spokes) on the right that highlights the spoke you hover.',
+    blockTagline: 'Hub & spoke • 6 spokes • linked hover',
     category: 'blocks',
     blockKind: 'integrations',
     files: [
@@ -1052,7 +1141,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'integrations-02',
     title: 'Integrations 2',
     description:
-      'Filterable connector grid: category chips above a card grid, each card showing an icon, a summary and a connect or connected state.',
+      'Filterable connector grid: a category toggle group above a card grid, where each card connects or disconnects with a pending state and a running connected count.',
     blockTagline: 'Card grid • category filter • connected state',
     category: 'blocks',
     blockKind: 'integrations',
@@ -1062,15 +1151,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/integrations-02.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button'],
+    registryDependencies: ['badge', 'button', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'integrations-03',
     title: 'Integrations 3',
     description:
-      'Two-column integrations page: a sticky intro with a request card beside a ruled list of connectors and their status.',
-    blockTagline: 'Sticky intro • ruled list • request card',
+      'Two-column integrations page: a sticky intro with a request-an-integration popover form beside a ruled list of linked connectors and their status.',
+    blockTagline: 'Sticky intro • linked rows • request form',
     category: 'blocks',
     blockKind: 'integrations',
     files: [
@@ -1079,15 +1168,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/integrations-03.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'separator'],
+    registryDependencies: ['badge', 'button', 'field', 'input', 'popover', 'separator'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'image-gallery-01',
     title: 'Image Gallery 1',
     description:
-      'Studio-style masonry gallery with Tabs-driven category filter, real photo tiles via next/image, varied aspect ratios, hover zoom + arrow chip and an Empty fallback for empty filters.',
-    blockTagline: 'Tabs filter • masonry • empty state',
+      'Studio-style masonry gallery with a Tabs category filter showing counts, photo tiles in varied aspect ratios that open in a lightbox with thumbnails, and an empty state for categories with no work yet.',
+    blockTagline: 'Tabs filter • masonry • lightbox',
     category: 'blocks',
     blockKind: 'image-gallery',
     files: [
@@ -1096,7 +1185,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/image-gallery-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'empty', 'tabs'],
+    registryDependencies: ['badge', 'button', 'empty', 'lightbox', 'tabs'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'image-gallery-02',
+    title: 'Image Gallery 2',
+    description:
+      'Photo grid with a Grid and Rows layout switch, captions on hover or focus, and a lightbox with thumbnails that opens at the chosen photo and returns focus to it on close.',
+    blockTagline: 'Layout switch • Hover captions • Lightbox',
+    category: 'blocks',
+    blockKind: 'image-gallery',
+    files: [
+      {
+        path: 'blocks/image-gallery-02/image-gallery-02.tsx',
+        target: 'components/blocks/image-gallery-02.tsx',
+      },
+    ],
+    registryDependencies: ['lightbox', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1131,7 +1237,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'app-shell-02',
     title: 'App Shell 2',
     description:
-      'Sidebar-free admin shell with a sticky top bar over a working settings screen: vertical tabs with roving keyboard focus, a header search that filters every section and counts matches per tab, and rows that actually do their thing — inline edit, copy to clipboard, or a switch — with a live save status.',
+      'Sidebar-free admin shell with a sticky top bar over a working settings screen: vertical tabs with roving keyboard focus, a header search that filters every section and counts matches per tab, and rows that actually do their thing (inline edit, copy to clipboard, or a switch) with a live save status.',
     blockTagline: 'Top nav • vertical tabs • settings that save',
     category: 'blocks',
     blockKind: 'app-shell',
@@ -1177,8 +1283,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'app-shell-04',
     title: 'App Shell 4',
     description:
-      'Starter shell on the shadcn Sidebar primitive (inset variant): a workspace switcher that switches, a ⌘K field that filters the nav, icon-collapsible items with tooltips, an inset header with an account menu and notification count, and a welcome heading over dashed placeholder slots.',
-    blockTagline: 'Inset Sidebar • ⌘K nav filter • slot grid',
+      'Starter shell on the shadcn Sidebar primitive (inset variant): a workspace switcher that switches, a ⌘K field that filters the nav, icon-collapsible items with tooltips, an inset header with an account menu and notification count, and a campaign board overview with a stat row and four stage columns.',
+    blockTagline: 'Inset Sidebar • ⌘K nav filter • campaign board',
     category: 'blocks',
     blockKind: 'app-shell',
     files: [
@@ -1455,7 +1561,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'Activity Feed',
     description:
       'Avatar-led event feed with a connecting rail, actor and action lines, timestamps, quoted bodies and date dividers. Ships composable parts.',
-    blockTagline: 'Event feed • rail • timestamps',
+    blockTagline: 'Event feed • type filter • timestamps',
     category: 'blocks',
     blockKind: 'widgets',
     files: [
@@ -1464,7 +1570,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/activity-feed.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1483,6 +1589,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ['collapsible'],
     dependencies: ['lucide-react', 'class-variance-authority'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'blur-reveal',
@@ -1638,7 +1745,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/inspector-panel.tsx',
       },
     ],
-    registryDependencies: ['collapsible'],
+    registryDependencies: ['collapsible', 'input-group', 'native-select'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1663,7 +1770,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'KPI Grid',
     description:
       'Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Ships composable parts.',
-    blockTagline: 'KPI tiles • delta • sparkline',
+    blockTagline: 'KPI tiles • period toggle • sparkline',
     category: 'blocks',
     blockKind: 'widgets',
     files: [
@@ -1672,15 +1779,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/kpi-grid.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['toggle-group'],
     dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'quick-actions',
     title: 'Quick Actions',
     description:
-      'Grid of dashboard shortcut tiles with icon, label and description. Each tile is a button or, via asChild, a link. Ships composable parts.',
-    blockTagline: 'Shortcut tiles • icon • label',
+      'Grid of dashboard shortcut tiles with icon, label and description; each opens a small form and shows its result in place. Each tile is a button or, via asChild, a link. Ships composable parts.',
+    blockTagline: 'Shortcut tiles • inline form • result',
     category: 'blocks',
     blockKind: 'widgets',
     files: [
@@ -1689,15 +1797,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/quick-actions.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['button', 'input', 'label', 'popover'],
     dependencies: ['@radix-ui/react-slot', 'lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'notifications',
     title: 'Notifications',
     description:
-      'Notification panel with header, list, per-item media, title, description, time and an accent-cool unread marker. Ships composable parts.',
-    blockTagline: 'Notification panel • unread marker',
+      'Notification panel with an All/Unread filter, mark all read, per-item mark read and dismiss, an empty state, and an accent-cool unread marker. Ships composable parts.',
+    blockTagline: 'Notification panel • filter • mark read',
     category: 'blocks',
     blockKind: 'widgets',
     files: [
@@ -1706,7 +1815,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/notifications.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1714,7 +1823,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'Billing Card',
     description:
       'Current-plan summary with price, a usage meter, billing detail rows and footer actions. Composable parts for billing settings.',
-    blockTagline: 'Plan summary • meter • actions',
+    blockTagline: 'Plan summary • meter • upgrade flow',
     category: 'blocks',
     blockKind: 'saas',
     files: [
@@ -1724,7 +1833,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button'],
-    dependencies: [],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'subscription-plans',
@@ -1748,7 +1857,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'API Keys',
     description:
       'API key manager with reveal/hide, copy-to-clipboard, key metadata and a create action. Ships composable parts.',
-    blockTagline: 'Key manager • reveal • copy',
+    blockTagline: 'Key manager • one-time reveal • revoke',
     category: 'blocks',
     blockKind: 'saas',
     files: [
@@ -1776,6 +1885,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: [],
     dependencies: [],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'creative-studio',
@@ -2337,7 +2447,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'hero-06',
     title: 'Hero 6',
     description:
-      'Centered personal hero: a live "available for work" badge, a serif headline with a primary-tinted emphasis span, a sub-line, a three-stat row with hairline dividers, dual rounded CTAs, and a tooltip-backed core-stack icon row framed by gradient rules. Rotated geometric border accents fade in behind it (and stay still under reduced motion).',
+      'Centered personal hero: a live "available for work" badge, a serif headline with a primary-tinted emphasis span, a sub-line, a three-stat row with hairline dividers, dual rounded CTAs, and a tooltip-backed core-stack icon row framed by gradient rules. Rotated geometric border accents zoom in behind it (and stay still under reduced motion).',
     blockTagline: 'Centered • stat row • geometric accents',
     category: 'blocks',
     blockKind: 'hero',
@@ -2348,7 +2458,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button', 'tooltip'],
-    dependencies: ['motion', 'lucide-react'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'hero-07',
@@ -2371,8 +2481,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'hero-08',
     title: 'Hero 8',
     description:
-      'Centered hero on a framed, token-lit panel: a pill badge eyebrow, a serif headline with an italic emphasis span, sub-copy, dual CTA buttons, and a faux app-window preview below. Headline, sub-copy, and CTAs fade and rise in with staggered motion that respects reduced-motion.',
-    blockTagline: 'Centered • framed panel • window preview',
+      'Centered hero on a framed, token-lit panel: a pill badge, a serif headline with an italic emphasis span, sub-copy, dual CTA buttons, and a window preview of a task board with named cards and statuses. Everything rises in with a staggered entrance that respects reduced motion.',
+    blockTagline: 'Centered • framed panel • board preview',
     category: 'blocks',
     blockKind: 'hero',
     files: [
@@ -2388,7 +2498,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'testimonial-03',
     title: 'Testimonial 3',
     description:
-      'Centered statement quote with a serif display heading, an inline quote glyph in the corner, gradient hairline dividers, and a highlighted phrase, closed by a small mono attribution line.',
+      'Centered statement quote with a serif display, an inline quote glyph in the corner, gradient hairline dividers, and a highlighted phrase, closed by a small attribution line.',
     blockTagline: 'Statement quote • serif display • highlight',
     category: 'blocks',
     blockKind: 'testimonial',
@@ -2405,8 +2515,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'testimonial-04',
     title: 'Testimonial 4',
     description:
-      'Three-column quote grid under a centered pill badge and word-by-word headline. Each card opens with a quote icon inside a ring lit by an orbiting glow, then the quote in serif marks and an author line. Cards rise in with staggered motion.',
-    blockTagline: 'Quote grid • orbiting glow ring • staggered rise',
+      'Three-column quote grid under a centered pill badge and word-by-word headline. Each card opens with a quote mark, then the quote and an author line. Cards rise in with a short stagger.',
+    blockTagline: 'Quote grid • word-by-word headline • staggered rise',
     category: 'blocks',
     blockKind: 'testimonial',
     files: [
@@ -2416,14 +2526,31 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'testimonial-05',
+    title: 'Testimonial 5',
+    description:
+      'Customer stories carousel where each card leads with a measured result, then a short quote, the person behind it and a link to the case study, with a slide counter and a segmented progress bar.',
+    blockTagline: 'Metric first • Case studies • Segmented progress',
+    category: 'blocks',
+    blockKind: 'testimonial',
+    files: [
+      {
+        path: 'blocks/testimonial-05/testimonial-05.tsx',
+        target: 'components/blocks/testimonial-05.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'carousel'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'cta-04',
     title: 'CTA 4',
     description:
-      'Centered "get in touch" CTA with a mono eyebrow, serif headline, mail button, a direct-contact line, and a row of outline social icon buttons, capped by a soft radial glow dome with a starfield speckle.',
-    blockTagline: 'Centered • glow dome • social icons',
+      'Centered get-in-touch CTA with a pill eyebrow, serif headline, mail button, a copy-to-clipboard email address, and GitHub and LinkedIn icon buttons, capped by a soft radial glow dome with a starfield speckle.',
+    blockTagline: 'Centered • glow dome • copy email',
     category: 'blocks',
     blockKind: 'cta',
     files: [
@@ -2432,7 +2559,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/cta-04.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'copy-button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -2449,15 +2576,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/cta-05.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'copy-button'],
     dependencies: ['motion', 'lucide-react'],
   },
   {
     name: 'cta-06',
     title: 'CTA 6',
     description:
-      'Framed CTA banner over a tokenized gradient surface: an eyebrow label, a serif headline with an italic emphasis, short sub-copy, and a primary action button with a motion reveal.',
-    blockTagline: 'Framed panel • gradient surface • motion reveal',
+      'CTA banner on one tokenized gradient surface: an eyebrow label, a serif headline with an italic emphasis, short sub-copy, and a primary action button that rises in.',
+    blockTagline: 'Single panel • gradient surface • rise-in',
     category: 'blocks',
     blockKind: 'cta',
     files: [
@@ -2508,7 +2635,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'Footer 4',
     description:
       'Four-column footer lit by slow light rays falling from the top edge: brand mark and blurb, a contact column with WhatsApp and email links, a location column, and a subscribe form whose placeholder cycles through prompts. Columns and links rise in with staggered motion; a divided copyright row closes it. Rays hold still under reduced-motion.',
-    blockTagline: 'Light rays • contact columns • rotating placeholder',
+    blockTagline: 'Light rays • contact columns • validated subscribe',
     category: 'blocks',
     blockKind: 'footer',
     files: [
@@ -2528,7 +2655,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'faq-05',
     title: 'FAQ 5',
     description:
-      'Two-column FAQ block: a mono eyebrow, serif headline and short intro sit on the start side; a single-open accordion of five questions sits on the end side, split by a vertical divider that collapses to a stacked layout on mobile.',
+      'Two-column FAQ block: an eyebrow, serif headline and short intro sit on the start side; a single-open accordion of five questions sits on the end side, split by a vertical divider that collapses to a stacked layout on mobile.',
     blockTagline: 'Split layout • divider • single accordion',
     category: 'blocks',
     blockKind: 'faq',
@@ -2561,8 +2688,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'contact-02',
     title: 'Contact 2',
     description:
-      'Bordered contact section with a serif header, a three-column info grid (email, location, social) using muted-fill labels and divider rules, and a "Find us online" footer of pill-shaped social links.',
-    blockTagline: 'Info grid • bordered cells • social pills',
+      'Bordered contact section with a serif header and a three-column info grid: email with a copy button, location, and social pills.',
+    blockTagline: 'Info grid • copy email • social pills',
     category: 'blocks',
     blockKind: 'contact',
     files: [
@@ -2571,15 +2698,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/contact-02.tsx',
       },
     ],
-    registryDependencies: ['separator'],
+    registryDependencies: ['button', 'separator'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'contact-03',
     title: 'Contact 3',
     description:
-      'Centered contact panel whose bottom glow widens as the section scrolls into view, with a pill badge, a word-by-word headline reveal, two short paragraphs, and a two-column CTA grid: an email button with the address beneath it and an outline call button that opens a WhatsApp chat. Ships composable parts.',
-    blockTagline: 'Scroll-driven glow • word reveal • email + chat CTAs',
+      'Centered contact panel whose bottom glow widens as the section scrolls into view, with a pill badge, a word-by-word headline reveal, two short paragraphs, and a two-column CTA grid: an email button with the address and a copy button beneath it and an outline call button that opens a WhatsApp chat. Ships composable parts.',
+    blockTagline: 'Scroll glow • word reveal • copy email',
     category: 'blocks',
     blockKind: 'contact',
     files: [
@@ -2589,7 +2716,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button'],
-    dependencies: ['lucide-react', 'motion'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'contact-04',
+    title: 'Contact 4',
+    description:
+      'Support contact section with a live reply-time line from fixed support hours, contact channels, common questions, and a ticket form that suggests help articles as you type the subject.',
+    blockTagline: 'Reply time • Suggested answers • Ticket form',
+    category: 'blocks',
+    blockKind: 'contact',
+    files: [
+      {
+        path: 'blocks/contact-04/contact-04.tsx',
+        target: 'components/blocks/contact-04.tsx',
+      },
+    ],
+    registryDependencies: ['accordion', 'button', 'field', 'input', 'select', 'textarea'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'login-03',
@@ -2622,8 +2767,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'app-shell-05',
     title: 'App Shell 5',
     description:
-      'Inset sidebar app shell: a collapsible icon sidebar with a brand header, grouped Workspace and Tools nav (with a Beta badge), and an account menu in the footer, paired with a sticky header carrying the sidebar toggle and a breadcrumb. The inset holds a stat row and a placeholder for page content.',
-    blockTagline: 'Inset sidebar • grouped nav • account menu',
+      'Inset sidebar app shell: a collapsible icon sidebar with a brand header, grouped Workspace and Tools nav (with a Beta badge), and an account menu in the footer, paired with a sticky header carrying the sidebar toggle and a breadcrumb. The inset holds a documents list with status filters that actually filter.',
+    blockTagline: 'Inset sidebar • grouped nav • filterable documents',
     category: 'blocks',
     blockKind: 'app-shell',
     files: [
@@ -2632,7 +2777,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/app-shell-05.tsx',
       },
     ],
-    registryDependencies: ['avatar', 'badge', 'breadcrumb', 'dropdown-menu', 'separator', 'sidebar'],
+    registryDependencies: ['avatar', 'badge', 'breadcrumb', 'button', 'dropdown-menu', 'separator', 'sidebar'],
     dependencies: ['lucide-react'],
   },
   {
@@ -2768,8 +2913,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'process-01',
     title: 'Process 1',
     description:
-      'How-it-works section with a three-step row: each step pairs an icon badge, a Step NN label, a title and a short body, joined by a hairline connector on desktop.',
-    blockTagline: 'How it works • 3 steps • connector line',
+      'Team onboarding in three indexed steps (invite, connect tools, ship the first project), each with a warm hairline, a title, a body and a short detail line.',
+    blockTagline: 'Getting started • 3 steps • index kicker',
     category: 'blocks',
     blockKind: 'process',
     files: [
@@ -2779,14 +2924,30 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
+  },
+  {
+    name: 'process-02',
+    title: 'Process 2',
+    description:
+      'Four-step install section. Picking a step fills the connector up to it and swaps in a detail panel with a short checklist, and the section closes on a copyable install command.',
+    blockTagline: 'Four steps • Filling connector • Copyable command',
+    category: 'blocks',
+    blockKind: 'process',
+    files: [
+      {
+        path: 'blocks/process-02/process-02.tsx',
+        target: 'components/blocks/process-02.tsx',
+      },
+    ],
+    registryDependencies: ['copy-button', 'tabs'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'feature-03',
     title: 'Feature 3',
     description:
-      'Bento feature grid: a large lead tile with a faux file-tree preview beside five smaller token-lit tiles, each with an icon, title and short blurb.',
-    blockTagline: 'Bento grid • lead tile • icon tiles',
+      'Bento explaining install: a lead tile with the shadcn add command and the files it writes, beside five indexed tiles on dependencies, aliases, npm packages, tokens and runtime.',
+    blockTagline: 'Bento grid • terminal lead tile • index kicker',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -2796,13 +2957,12 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ['lucide-react'],
   },
   {
     name: 'feature-04',
     title: 'Feature 4',
     description:
-      'Services grid: a pill badge, word-by-word animated title and intro over a three-column set of cards, each with a large thin icon, title, blurb and a three-point bullet list, lit by two pulsing warm radial glows. Cards rise in with staggered motion that respects reduced-motion.',
+      'Services grid: a pill badge, title and intro over a three-column set of cards, each with a large thin icon, title, blurb and a three-point bullet list, lit by a static warm radial glow. Cards rise in with a staggered CSS entrance.',
     blockTagline: 'Icon cards • warm glow • bullet list',
     category: 'blocks',
     blockKind: 'feature',
@@ -2819,8 +2979,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-05',
     title: 'Feature 5',
     description:
-      'Values section: a centered animated header over a two-column, offset grid of six glass cards, each backed by a canvas dot grid that shimmers dot by dot in the brand warm tone. Pauses off-screen and renders a single static frame under reduced-motion.',
-    blockTagline: 'Offset columns • dotted glow canvas • glass cards',
+      'Values section: a centered header over a two-column, offset grid of six glass cards, each backed by a static dot pattern in the brand warm tone, rising in with a staggered CSS entrance.',
+    blockTagline: 'Offset columns • dotted pattern • glass cards',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -2830,7 +2990,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge'],
-    dependencies: ['motion'],
   },
   {
     name: 'feature-06',
@@ -2886,7 +3045,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'comparison-03',
     title: 'Comparison 3',
     description:
-      'Before and after panels side by side, the old way struck through and the new way ticked, closing on an outcome strip.',
+      'Before and after panels side by side, the old way muted with crosses and the new way ticked, a Before/After switch on small screens, closing on an outcome strip.',
     blockTagline: 'Before and after • two panels • outcome strip',
     category: 'blocks',
     blockKind: 'comparison',
@@ -2896,7 +3055,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/comparison-03.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'toggle-group'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'comparison-04',
+    title: 'Comparison 4',
+    description:
+      'Three-plan feature matrix with a sticky plan header, a column highlight that follows the pointer, a switch that hides rows where every plan is equal, and a single-plan picker on small screens.',
+    blockTagline: 'Sticky plans • Column focus • Differences only',
+    category: 'blocks',
+    blockKind: 'comparison',
+    files: [
+      {
+        path: 'blocks/comparison-04/comparison-04.tsx',
+        target: 'components/blocks/comparison-04.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'label', 'switch', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -2917,6 +3093,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'newsletter-02',
+    title: 'Newsletter 2',
+    description:
+      'Waitlist form that validates the address, shows a brief loading state, then returns your place in line with an invite link to copy and the referral rewards it unlocks.',
+    blockTagline: 'Waitlist position • Invite link • Referral tiers',
+    category: 'blocks',
+    blockKind: 'newsletter',
+    files: [
+      {
+        path: 'blocks/newsletter-02/newsletter-02.tsx',
+        target: 'components/blocks/newsletter-02.tsx',
+      },
+    ],
+    registryDependencies: ['animated-number', 'avatar-stack', 'button', 'copy-button', 'field', 'input-group', 'progress', 'spinner'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
     name: 'careers-01',
     title: 'Careers 1',
     description:
@@ -2934,10 +3128,28 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'careers-02',
+    title: 'Careers 2',
+    description:
+      'Single job posting with the role details, a numbered hiring process and a sticky apply form with CV upload, validation and a success state. On small screens a sticky button jumps to the form.',
+    blockTagline: 'Role details • Hiring stages • Apply form',
+    category: 'blocks',
+    blockKind: 'careers',
+    files: [
+      {
+        path: 'blocks/careers-02/careers-02.tsx',
+        target: 'components/blocks/careers-02.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'field', 'file-dropzone', 'input', 'separator', 'textarea'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
     name: 'hero-09',
     title: 'Hero 9',
     description:
-      'Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a step-type strip, a drifting WebGL gradient mixed from the theme tokens, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.',
+      'Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a labelled step-type strip, a drifting WebGL gradient mixed from the theme tokens, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.',
     blockTagline: 'Zoom-out card • fluid gradient • carved stats',
     category: 'blocks',
     blockKind: 'hero',
@@ -2975,7 +3187,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-08',
     title: 'Feature 8',
     description:
-      'Six-card feature grid on hairline rails: each card carries an icon tile, a title and a description, corner crosshair marks, and a radial spotlight that follows the pointer on hover. Warm-tinted top glow per card.',
+      'Six-card feature grid on hairline rails: each card carries an inline icon beside its title, a title and a description, corner crosshair marks, and a radial spotlight that follows the pointer on hover. Warm-tinted top glow per card.',
     blockTagline: 'Pointer spotlight • hairline rails • crosshair corners',
     category: 'blocks',
     blockKind: 'feature',
@@ -2992,8 +3204,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'feature-09',
     title: 'Feature 9',
     description:
-      'Catalog bento on a hairline grid: a wide opening cell, four single cells and a full-width closing cell, each with a large faded icon that warms on hover, a title, a clamped description and a crosshair frame that clips at the cell edge.',
-    blockTagline: 'Bento grid • crosshair frames • hover-warm icons',
+      'Selectable catalog bento on a hairline grid: step cells with a large faded icon, title and description; picking one shows its sample settings in a panel below. Crosshair frames clip at the cell edge.',
+    blockTagline: 'Bento grid • selectable steps • settings panel',
     category: 'blocks',
     blockKind: 'feature',
     files: [
@@ -3043,8 +3255,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'pricing-04',
     title: 'Pricing 4',
     description:
-      'Three-tier pricing row with an uppercase plan label, a large price, a tagline, a full-width CTA and a check-marked quota list per tier; the featured tier gets a warm border, a top radial glow and a most-popular badge.',
-    blockTagline: 'Three tiers • featured glow • quota checklist',
+      'Three-tier pricing row with a monthly/yearly toggle, an uppercase plan label, a large price with billing note, a tagline, a full-width CTA and a check-marked quota list; the featured tier gets a warm border, a top radial glow and a most-popular badge.',
+    blockTagline: 'Billing toggle • featured glow • quota checklist',
     category: 'blocks',
     blockKind: 'pricing',
     files: [
@@ -3053,15 +3265,32 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/pricing-04.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button'],
+    registryDependencies: ['badge', 'button', 'toggle-group'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'pricing-05',
+    title: 'Pricing 5',
+    description:
+      'Usage pricing calculator with sliders for active users and build minutes, a priority support switch, and a live monthly estimate broken into line items with a volume tier note and monthly or yearly billing.',
+    blockTagline: 'Usage sliders • Live estimate • Yearly billing',
+    category: 'blocks',
+    blockKind: 'pricing',
+    files: [
+      {
+        path: 'blocks/pricing-05/pricing-05.tsx',
+        target: 'components/blocks/pricing-05.tsx',
+      },
+    ],
+    registryDependencies: ['animated-number', 'button', 'field', 'separator', 'slider', 'switch', 'toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'faq-07',
     title: 'FAQ 7',
     description:
-      'Split FAQ: a serif heading and lead on the start side, a single-open accordion of five questions on the end side, divided by a hairline rule and framed by section borders.',
-    blockTagline: 'Split layout • hairline divide • single-open accordion',
+      'Split FAQ: a heading, lead and numbered topic index on the start side; picking a topic opens its answer in the single-open accordion on the end side.',
+    blockTagline: 'Topic index • synced accordion • split layout',
     category: 'blocks',
     blockKind: 'faq',
     files: [
@@ -3122,6 +3351,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'footer-05',
@@ -3144,7 +3374,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'status-01',
     title: 'Status 1',
     description:
-      'Service status page: an operational banner with a green check, a 90-day uptime grid of tooltip-backed day bars per service with a status legend, and a dated incident history where each update carries a tone-colored badge, a timestamp and a note.',
+      'Service status page: an operational banner with an inline check, a 90-day uptime grid of tooltip-backed day bars per service with a status legend, and a dated incident history where each update carries a tone-colored badge, a timestamp and a note.',
     blockTagline: 'Uptime bars • day tooltips • incident timeline',
     category: 'blocks',
     blockKind: 'not-found',
@@ -3156,6 +3386,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     registryDependencies: ['badge', 'tooltip'],
     dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'metric-card',
@@ -3202,7 +3433,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'VM Table',
     description:
       'Virtual-machine instance table with live status dots, size, region, IP and uptime. Self-contained parts, no table primitive required.',
-    blockTagline: 'Instance table • live status • uptime',
+    blockTagline: 'Instance table • status filter • restart',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3211,7 +3442,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/vm-table.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['button', 'toggle-group'],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
   },
@@ -3220,7 +3451,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'K8s Pod Table',
     description:
       'Kubernetes pod table with phase pills (Running, Pending, CrashLoopBackOff), ready and restart counts that flag unhealthy pods.',
-    blockTagline: 'Pod phases • ready • restarts',
+    blockTagline: 'Pod phases • phase filter • restart',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3229,7 +3460,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/k8s-pod-table.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['button', 'toggle-group'],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
   },
@@ -3256,7 +3487,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'Cluster Map',
     description:
       'Grid heatmap of cluster nodes, each cell tinted by health and load with a hover label, plus a legend. Ships composable parts.',
-    blockTagline: 'Node heatmap • health • legend',
+    blockTagline: 'Node heatmap • details • legend',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3291,8 +3522,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'storage-browser',
     title: 'Storage Browser',
     description:
-      'Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates. Ships composable parts.',
-    blockTagline: 'Object store • breadcrumb • rows',
+      'Object-storage file browser with a clickable path breadcrumb, folder and file rows, sizes and modified dates, and a details row for the selected file. Ships composable parts.',
+    blockTagline: 'Object store • breadcrumb • file details',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3308,8 +3539,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'log-viewer',
     title: 'Log Viewer',
     description:
-      'Streaming log panel with severity-colored lines, timestamps, sources and tail-follow that unpins when you scroll up. Ships composable parts.',
-    blockTagline: 'Log stream • levels • tail-follow',
+      'Streaming log panel with severity-colored lines, timestamps and sources, a level filter with counts, and a Follow toggle that tails new lines and unpins when you scroll up. Ships composable parts.',
+    blockTagline: 'Log stream • level filter • follow',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3318,8 +3549,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/log-viewer.tsx',
       },
     ],
-    registryDependencies: [],
-    dependencies: [],
+    registryDependencies: ['toggle', 'toggle-group'],
+    dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
   {
@@ -3345,7 +3576,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     title: 'Deployment History',
     description:
       'Deployment feed on a connecting rail: version, environment and status (deployed, failed, building, rolled back) with commit and author meta.',
-    blockTagline: 'Deploy feed • status • commits',
+    blockTagline: 'Deploy feed • status • rollback',
     category: 'blocks',
     blockKind: 'cloud',
     files: [
@@ -3354,7 +3585,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/deployment-history.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['button'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -3614,8 +3845,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'coming-soon-02',
     title: 'Coming Soon 2',
     description:
-      'Full-viewport launch teaser: a pill badge, a word-by-word serif headline, sub-copy and a disabled pill CTA above a glowing horizon of sparkles with a rounded planet edge. Motion respects reduced-motion.',
-    blockTagline: 'Word reveal • sparkle horizon • disabled CTA',
+      'Full-viewport launch teaser: a pill badge, a word-by-word serif headline, sub-copy and an email notify form with inline validation and a confirmation, above a glowing horizon of sparkles with a rounded planet edge. Motion respects reduced-motion.',
+    blockTagline: 'Word reveal • notify form • sparkle horizon',
     category: 'blocks',
     blockKind: 'not-found',
     files: [
@@ -3624,14 +3855,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/coming-soon-02.tsx',
       },
     ],
-    registryDependencies: ['badge', 'sparkles'],
+    registryDependencies: ['badge', 'button', 'field', 'input', 'sparkles'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'maintenance-01',
     title: 'Maintenance 1',
     description:
-      'Scheduled maintenance page with a pulsing status dot, window card showing start, expected return and elapsed progress, paired CTAs and a timestamped updates list. Ships composable parts.',
-    blockTagline: 'Pulsing status • window progress • update log',
+      'Scheduled maintenance page with a pulsing status dot, window card showing start, expected return and migration progress, a notify-me popover with email validation, a status page link and a timestamped updates list. Ships composable parts.',
+    blockTagline: 'Window progress • notify popover • update log',
     category: 'blocks',
     blockKind: 'not-found',
     files: [
@@ -3640,7 +3873,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/maintenance-01.tsx',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'field', 'input', 'popover'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -3683,8 +3916,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'team-01',
     title: 'Team 1',
     description:
-      'Team section with serif headline, a bordered grid of members with initials placeholders, roles, bios, GitHub links, and a hiring footer. Ships composable parts.',
-    blockTagline: 'Bordered grid • initials placeholders • hiring footer',
+      'Team section with a serif headline, a department filter, a grid of members with portraits or initials, roles, bios and GitHub links, and a hiring footer. Ships composable parts.',
+    blockTagline: 'Department filter • portrait grid • hiring footer',
     category: 'blocks',
     blockKind: 'team',
     files: [
@@ -3693,7 +3926,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/team-01.tsx',
       },
     ],
-    registryDependencies: [],
+    registryDependencies: ['toggle-group'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3711,6 +3944,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'marquee'],
+  },
+  {
+    name: 'team-03',
+    title: 'Team 3',
+    description:
+      'Distributed team directory grouped by department, showing each person’s live local time and whether they are inside working hours, with a department filter and a sort by time zone.',
+    blockTagline: 'Live local times • Department filter • Sort by time zone',
+    category: 'blocks',
+    blockKind: 'team',
+    files: [
+      {
+        path: 'blocks/team-03/team-03.tsx',
+        target: 'components/blocks/team-03.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'button', 'toggle-group', 'tooltip'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'stats-01',
@@ -3733,8 +3983,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'stats-02',
     title: 'Stats 2',
     description:
-      'Four bordered metric tiles, each with a big figure, a trend chip and its own twelve-week sparkline underneath.',
-    blockTagline: 'Four tiles • sparkline each • trend chips',
+      'Four metric tiles with a 4w, 12w or 52w range toggle that swaps each figure, trend chip and sparkline; one metric trends the wrong way.',
+    blockTagline: 'Range toggle • sparkline each • trend chips',
     category: 'blocks',
     blockKind: 'stats',
     files: [
@@ -3743,7 +3993,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/stats-02.tsx',
       },
     ],
-    registryDependencies: ['sparkline'],
+    registryDependencies: ['sparkline', 'toggle-group'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'stats-03',
+    title: 'Stats 3',
+    description:
+      'Split stats section: a short growth story on one side, four metrics tracked against their targets on the other. Bars fill from zero on load and a Quarter / Year toggle swaps the figures.',
+    blockTagline: 'Growth story • Progress to target • Quarter or year',
+    category: 'blocks',
+    blockKind: 'stats',
+    files: [
+      {
+        path: 'blocks/stats-03/stats-03.tsx',
+        target: 'components/blocks/stats-03.tsx',
+      },
+    ],
+    registryDependencies: ['progress', 'toggle-group'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -3778,7 +4046,25 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/changelog-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'toggle-group'],
+    registryDependencies: ['badge', 'button', 'field', 'input', 'popover', 'toggle-group'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'changelog-02',
+    title: 'Changelog 2',
+    description:
+      'Public roadmap board with Now, Next and Later columns. Every item can be upvoted, the board sorts by votes or by date, and on small screens tabs pick the column.',
+    blockTagline: 'Now, Next, Later • Upvotes • Sort by votes',
+    category: 'blocks',
+    blockKind: 'changelog',
+    files: [
+      {
+        path: 'blocks/changelog-02/changelog-02.tsx',
+        target: 'components/blocks/changelog-02.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button', 'tabs', 'toggle-group'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },

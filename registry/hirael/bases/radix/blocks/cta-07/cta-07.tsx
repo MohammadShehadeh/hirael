@@ -9,6 +9,15 @@ import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const TITLE = 'Your next pipeline draws itself';
+// The closing words carry the promise, so they get the full-strength ink.
+const EMPHASIS_WORDS = 2;
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const glow = (w: number, h: number) =>
   `radial-gradient(${w}% ${h}% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklab, var(--primary) 30%, transparent) 82%, color-mix(in oklab, var(--primary) 30%, transparent) 100%)`;
@@ -18,22 +27,27 @@ const STATIC_GLOW = glow(120, 130);
 
 const Cta07 = () => {
   const reduced = useReducedMotion();
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['end start', 'start end'],
   });
 
-  const glowWidth = useTransform(scrollYProgress, [0, 1], [50, 140]);
-  const glowHeight = useTransform(scrollYProgress, [0, 1], [70, 160]);
+  // Below 100% the ellipse stops reaching the panel edges and the rim vanishes,
+  // so the whole scroll range maps onto the visible band.
+  const glowWidth = useTransform(scrollYProgress, [0, 1], [100, 140]);
+  const glowHeight = useTransform(scrollYProgress, [0, 1], [110, 160]);
   const scrollGlow = useTransform([glowWidth, glowHeight], ([w, h]: Array<number>) =>
-    glow(Math.max(Math.floor(w ?? 100), 100), Math.max(Math.round(h ?? 100), 100)),
+    glow(Math.round(w ?? 120), Math.round(h ?? 130)),
   );
   const words = TITLE.split(' ');
 
   return (
-    <div ref={containerRef} data-slot="cta" className="bg-background px-6 py-16 md:px-10 md:py-24">
-      <div data-slot="cta-panel" className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 pb-24 pt-18">
+    <section ref={containerRef} data-slot="cta" className="bg-background px-6 py-16 md:px-10 md:py-24">
+      <div
+        data-slot="cta-panel"
+        className={cn(ENTER, 'relative mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 pb-24 pt-18')}
+      >
         <motion.div
           aria-hidden
           data-slot="cta-glow"
@@ -46,21 +60,26 @@ const Cta07 = () => {
         >
           <Badge
             variant="outline"
-            className="rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground"
+            style={stagger(1)}
+            className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
           >
             Get started
           </Badge>
 
           <h2
             data-slot="cta-title"
-            className="mt-4 font-serif text-balance text-3xl font-medium leading-[1.12] tracking-tight md:text-4xl lg:text-5xl"
+            style={stagger(2)}
+            className={cn(
+              ENTER,
+              'mt-4 font-serif text-balance text-3xl font-medium leading-[1.12] tracking-tight md:text-4xl lg:text-5xl',
+            )}
           >
             {words.map((word, i) => (
               <span
                 key={`${word}-${i}`}
                 className={cn(
                   'me-2 inline-block',
-                  i < Math.floor(words.length / 2) ? 'text-foreground' : 'text-muted-foreground',
+                  i >= words.length - EMPHASIS_WORDS ? 'text-foreground' : 'text-muted-foreground',
                 )}
               >
                 {word}
@@ -70,13 +89,18 @@ const Cta07 = () => {
 
           <p
             data-slot="cta-description"
-            className="mt-4 max-w-md text-pretty text-base text-muted-foreground md:text-lg"
+            style={stagger(3)}
+            className={cn(ENTER, 'mt-4 max-w-md text-pretty text-base text-muted-foreground md:text-lg')}
           >
             Import a repo, watch its workflow appear as a graph, and run it. The first pipeline takes minutes, not an
             afternoon.
           </p>
 
-          <div data-slot="cta-actions" className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row">
+          <div
+            data-slot="cta-actions"
+            style={stagger(4)}
+            className={cn(ENTER, 'mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row')}
+          >
             <Button size="lg" asChild>
               <a href="#">
                 Get started
@@ -89,7 +113,7 @@ const Cta07 = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,7 +1,14 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 import { MessageCircle } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 interface LinkColumn {
   title: string;
@@ -67,29 +74,37 @@ const SOCIALS = [
 
 const Footer01 = () => {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer data-slot="footer" className="border-t border-border bg-background">
       <div className="container w-full py-16">
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-5 lg:gap-16">
-          <div className="col-span-2">
+          <div data-slot="footer-brand" className={cn(ENTER, 'col-span-2')}>
             <div className="flex flex-col gap-4">
-              <span className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
+              <span className="inline-flex items-center text-sm font-semibold tracking-[-0.02em] text-foreground">
                 <BrandMark className="me-1.5 size-5 text-foreground" />
                 Hirael
               </span>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                A registry for the dense product components shadcn/ui doesn&apos;t ship. Source-installed via CLI. No
-                runtime dependency.
+                The components and blocks shadcn/ui doesn&apos;t ship, installed as source with the shadcn CLI. Nothing
+                to update at runtime.
               </p>
             </div>
           </div>
 
-          {COLUMNS.map((col) => (
-            <div key={col.title} className="flex flex-col gap-4">
-              <h4 className="text-xs uppercase text-foreground">{col.title}</h4>
+          {COLUMNS.map((col, index) => (
+            <div
+              key={col.title}
+              data-slot="footer-column"
+              style={stagger(index + 1)}
+              className={cn(ENTER, 'flex flex-col gap-4')}
+            >
+              <h3 className="text-xs uppercase text-muted-foreground">{col.title}</h3>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                    <a
+                      href={l.href}
+                      className="text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground"
+                    >
                       {l.label}
                     </a>
                   </li>
@@ -99,15 +114,28 @@ const Footer01 = () => {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
-          <p className="text-xs uppercase text-muted-foreground">© 2026 Hirael Labs · All rights reserved</p>
+        <div
+          data-slot="footer-meta"
+          style={stagger(4)}
+          className={cn(
+            ENTER,
+            'mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center',
+          )}
+        >
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+            <span>© 2026 Hirael Labs</span>
+            <span aria-hidden className="text-border">
+              |
+            </span>
+            <span>All rights reserved</span>
+          </p>
           <div className="flex items-center gap-1">
             {SOCIALS.map(({ label, href, icon: Icon }) => (
               <a
                 key={label}
                 href={href}
                 aria-label={label}
-                className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Icon className="size-4" />
               </a>

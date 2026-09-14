@@ -5,11 +5,19 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { ArrowRight, Cloud } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const Hero05Backdrop = dynamic(() => import('./hero-05-backdrop'), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
+});
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
 });
 
 const AVATARS = [
@@ -51,20 +59,24 @@ const Hero05 = () => {
           >
             <Hero05Backdrop active={active} />
           </div>
+          {/* A soft scrim behind the copy keeps it legible over the aurora
+              without boxing it into a second panel. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_45%_at_50%_52%,var(--card),transparent)] opacity-70"
+          />
 
           <nav
             data-slot="hero-nav"
-            className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
+            className={cn(ENTER, 'relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10')}
           >
             <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15">
-                <Cloud className="size-4" />
-              </span>
+              <Cloud aria-hidden className="size-5 text-primary" />
               Nimbus
             </span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
-                <a key={link} href="#" className="transition-colors hover:text-foreground">
+                <a key={link} href="#" className="transition-colors duration-150 hover:text-foreground">
                   {link}
                 </a>
               ))}
@@ -74,35 +86,52 @@ const Hero05 = () => {
             </Button>
           </nav>
 
-          <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-16 md:px-10">
-            <div className="flex max-w-2xl flex-col items-center rounded-2xl border border-border/60 md:rounded-[32px] bg-background/40 px-6 py-12 text-center backdrop-blur-md md:px-12">
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm">
-                <span className="relative flex size-1.5">
-                  <span
-                    className="absolute inline-flex size-full animate-ping rounded-full opacity-75"
-                    style={{ background: 'var(--accent-cool)' }}
-                  />
-                  <span
-                    className="relative inline-flex size-1.5 rounded-full"
-                    style={{ background: 'var(--accent-cool)' }}
-                  />
+          <div
+            data-slot="hero-content"
+            className="relative z-10 flex flex-1 items-center justify-center px-6 py-16 md:px-10"
+          >
+            <div className="flex max-w-2xl flex-col items-center text-center">
+              <span
+                data-slot="hero-status"
+                style={stagger(1)}
+                className={cn(
+                  ENTER,
+                  'inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm',
+                )}
+              >
+                <span aria-hidden className="relative flex size-1.5">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-cool opacity-75 motion-reduce:animate-none" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-accent-cool" />
                 </span>
                 All systems online
               </span>
 
-              <h1 className="mt-7 font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+              <h1
+                style={stagger(2)}
+                className={cn(
+                  ENTER,
+                  'mt-7 font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+                )}
+              >
                 Bring your ideas together.
               </h1>
 
-              <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
+              <p
+                style={stagger(3)}
+                className={cn(ENTER, 'mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground')}
+              >
                 A shared canvas for notes, tasks, and docs, so your team always knows what&apos;s next.
               </p>
 
-              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <div
+                data-slot="hero-actions"
+                style={stagger(4)}
+                className={cn(ENTER, 'mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center')}
+              >
                 <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
                   <a href="#">
                     Try it free
-                    <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                    <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                   </a>
                 </Button>
                 <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
@@ -110,7 +139,11 @@ const Hero05 = () => {
                 </Button>
               </div>
 
-              <div className="mt-10 flex items-center gap-3">
+              <div
+                data-slot="hero-social-proof"
+                style={stagger(5)}
+                className={cn(ENTER, 'mt-10 flex items-center gap-3')}
+              >
                 <div className="flex -space-x-2">
                   {AVATARS.map((src) => (
                     <Image
@@ -123,7 +156,7 @@ const Hero05 = () => {
                     />
                   ))}
                 </div>
-                <span className="text-sm text-muted-foreground">Join 2,000+ teams already on board</span>
+                <span className="text-sm text-muted-foreground">Used by 2,000+ teams to plan their week</span>
               </div>
             </div>
           </div>

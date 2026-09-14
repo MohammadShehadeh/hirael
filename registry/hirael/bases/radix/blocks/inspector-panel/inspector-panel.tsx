@@ -5,6 +5,8 @@ import { ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/radix/ui/collapsible';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
+import { NativeSelect, NativeSelectOption } from '@/registry/hirael/bases/radix/ui/native-select';
 
 type InspectorPanelProps = React.ComponentProps<'aside'>;
 
@@ -95,61 +97,143 @@ const InspectorPanelRow = ({ label, className, children, ...props }: InspectorPa
 
 export { InspectorPanel, InspectorPanelHeader, InspectorPanelTitle, InspectorPanelSection, InspectorPanelRow };
 
-const InspectorField = ({ className, children }: { className?: string; children: React.ReactNode }) => {
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+interface InspectorFieldProps extends Omit<React.ComponentProps<'input'>, 'size'> {
+  /** Unit shown after the value, e.g. `px` or `%`. */
+  unit?: React.ReactNode;
+  /** Content shown before the value, e.g. a color swatch. */
+  leading?: React.ReactNode;
+}
+
+const InspectorField = ({ unit, leading, className, ...props }: InspectorFieldProps) => {
   return (
-    <span
-      className={cn(
-        'inline-flex h-7 w-full items-center rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground',
-        className,
-      )}
-    >
-      {children}
-    </span>
+    <InputGroup data-slot="inspector-field" className="h-7 w-full">
+      {leading ? <InputGroupAddon className="py-0 ps-1.5">{leading}</InputGroupAddon> : null}
+      <InputGroupInput className={cn('h-7 px-2 text-xs tabular-nums md:text-xs', className)} {...props} />
+      {unit ? (
+        <InputGroupAddon align="inline-end" className="py-0 pe-2 text-xs font-normal">
+          {unit}
+        </InputGroupAddon>
+      ) : null}
+    </InputGroup>
   );
 };
 
+const HEX_PATTERN = /^#[0-9a-f]{6}$/i;
+
+const clampNumber = (raw: string, min: number, max: number) => {
+  const digits = raw.replace(/[^0-9]/g, '');
+  if (digits === '') return '';
+  return String(Math.min(max, Math.max(min, Number(digits))));
+};
+
 const InspectorPanelBlock = () => {
+  const [layout, setLayout] = React.useState({ width: '320', height: '192', radius: '12' });
+  const [fill, setFill] = React.useState('#3F6FD8');
+  const [opacity, setOpacity] = React.useState('100');
+  const [fontSize, setFontSize] = React.useState('14');
+  const [weight, setWeight] = React.useState('500');
+
+  const validFill = HEX_PATTERN.test(fill);
+
+  const layoutField = (key: keyof typeof layout, label: string, max: number) => (
+    <InspectorPanelRow label={label}>
+      <InspectorField
+        aria-label={label}
+        inputMode="numeric"
+        unit="px"
+        value={layout[key]}
+        onChange={(event) => {
+          const next = clampNumber(event.target.value, 0, max);
+          setLayout((current) => ({ ...current, [key]: next }));
+        }}
+      />
+    </InspectorPanelRow>
+  );
+
   return (
     <section data-slot="inspector-panel-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <InspectorPanel>
+      <InspectorPanel className={ENTER}>
         <InspectorPanelHeader>
           <InspectorPanelTitle>Inspector</InspectorPanelTitle>
-          <span className="text-xs text-muted-foreground">Frame 12</span>
+          <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+            {layout.width || 0} x {layout.height || 0}
+          </span>
         </InspectorPanelHeader>
 
         <InspectorPanelSection title="Layout">
-          <InspectorPanelRow label="Width">
-            <InspectorField>320</InspectorField>
-          </InspectorPanelRow>
-          <InspectorPanelRow label="Height">
-            <InspectorField>192</InspectorField>
-          </InspectorPanelRow>
-          <InspectorPanelRow label="Radius">
-            <InspectorField>12</InspectorField>
-          </InspectorPanelRow>
+          {layoutField('width', 'Width', 4096)}
+          {layoutField('height', 'Height', 4096)}
+          {layoutField('radius', 'Radius', 999)}
         </InspectorPanelSection>
 
         <InspectorPanelSection title="Appearance">
           <InspectorPanelRow label="Fill">
-            <span className="relative w-full">
-              <span
-                aria-hidden
-                className="absolute start-2 top-1/2 size-4 -translate-y-1/2 rounded-sm border border-border bg-foreground/80"
-              />
-              <InspectorField className="ps-8">#18181B</InspectorField>
-            </span>
+            <InspectorField
+              aria-label="Fill color"
+              aria-invalid={!validFill}
+              spellCheck={false}
+              maxLength={7}
+              value={fill}
+              onChange={(event) => {
+                const next = event.target.value.startsWith('#') ? event.target.value : `#${event.target.value}`;
+                setFill(next.toUpperCase());
+              }}
+              className="uppercase"
+              leading={
+                <label className="relative block size-4 cursor-pointer overflow-hidden rounded-sm border border-border">
+                  <span
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{ backgroundColor: validFill ? fill : 'transparent' }}
+                  />
+                  <input
+                    type="color"
+                    aria-label="Pick fill color"
+                    value={validFill ? fill.toLowerCase() : '#000000'}
+                    onChange={(event) => setFill(event.target.value.toUpperCase())}
+                    className="absolute inset-0 size-full cursor-pointer opacity-0"
+                  />
+                </label>
+              }
+            />
           </InspectorPanelRow>
           <InspectorPanelRow label="Opacity">
-            <InspectorField>100%</InspectorField>
+            <InspectorField
+              aria-label="Opacity"
+              inputMode="numeric"
+              unit="%"
+              value={opacity}
+              onChange={(event) => setOpacity(clampNumber(event.target.value, 0, 100))}
+            />
           </InspectorPanelRow>
         </InspectorPanelSection>
 
         <InspectorPanelSection title="Typography" defaultOpen={false}>
           <InspectorPanelRow label="Size">
-            <InspectorField>14</InspectorField>
+            <InspectorField
+              aria-label="Font size"
+              inputMode="numeric"
+              unit="px"
+              value={fontSize}
+              onChange={(event) => setFontSize(clampNumber(event.target.value, 1, 400))}
+            />
           </InspectorPanelRow>
           <InspectorPanelRow label="Weight">
-            <InspectorField>Medium</InspectorField>
+            <NativeSelect
+              aria-label="Font weight"
+              size="sm"
+              value={weight}
+              onChange={(event) => setWeight(event.target.value)}
+              className="h-7 text-xs data-[size=sm]:h-7"
+            >
+              <NativeSelectOption value="400">Regular</NativeSelectOption>
+              <NativeSelectOption value="500">Medium</NativeSelectOption>
+              <NativeSelectOption value="600">Semibold</NativeSelectOption>
+              <NativeSelectOption value="700">Bold</NativeSelectOption>
+            </NativeSelect>
           </InspectorPanelRow>
         </InspectorPanelSection>
       </InspectorPanel>

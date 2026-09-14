@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/registry/hirael/bases/radix/ui/alert-dialog';
-import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/registry/hirael/bases/radix/ui/avatar';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
@@ -30,6 +30,13 @@ import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 type SettingsProps = React.ComponentProps<'div'>;
 
@@ -267,17 +274,32 @@ const Settings01 = () => {
   const [savedRecovery, setSavedRecovery] = React.useState('');
   const recoveryDirty = recovery !== savedRecovery;
 
+  const avatarInputRef = React.useRef<HTMLInputElement>(null);
+  const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (avatarUrl) URL.revokeObjectURL(avatarUrl);
+    };
+  }, [avatarUrl]);
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) setAvatarUrl(URL.createObjectURL(file));
+    event.target.value = '';
+  };
+
   return (
     <section data-slot="settings-01-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
-        <div className="mb-8 flex flex-col gap-1">
+        <div className={cn(ENTER, 'mb-8 flex flex-col gap-1')}>
           <span className="text-xs uppercase text-muted-foreground">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Account settings</h1>
           <p className="text-sm text-muted-foreground">Your profile, contact email, and how the app behaves for you.</p>
         </div>
 
         <Settings>
-          <SettingsNav>
+          <SettingsNav style={stagger(1)} className={ENTER}>
             {SECTIONS.map((section) => (
               <SettingsNavItem
                 key={section.id}
@@ -296,7 +318,7 @@ const Settings01 = () => {
           </SettingsNav>
 
           <div className="flex min-w-0 flex-col gap-6">
-            <SettingsSection id="profile">
+            <SettingsSection id="profile" style={stagger(2)} className={ENTER}>
               <SettingsSectionHeader>
                 <SettingsSectionTitle>Profile</SettingsSectionTitle>
                 <SettingsSectionDescription>
@@ -306,15 +328,32 @@ const Settings01 = () => {
               <FieldGroup className="gap-0 divide-y divide-border">
                 <SettingsRow label="Avatar" description="PNG or JPG, at least 256 by 256.">
                   <div className="flex items-center gap-3">
-                    <Avatar size="lg">
-                      <AvatarFallback className="font-mono text-xs font-medium text-foreground">
+                    <Avatar key={avatarUrl ?? 'initials'} size="lg">
+                      {avatarUrl ? <AvatarImage src={avatarUrl} alt="" className="object-cover" /> : null}
+                      <AvatarFallback className="text-xs font-medium text-foreground">
                         {initialsOf(profile.name) || '?'}
                       </AvatarFallback>
                     </Avatar>
-                    <Button type="button" variant="outline" size="sm">
+                    <input
+                      ref={avatarInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg"
+                      className="sr-only"
+                      tabIndex={-1}
+                      aria-hidden
+                      onChange={handleAvatarChange}
+                    />
+                    <Button type="button" variant="outline" size="sm" onClick={() => avatarInputRef.current?.click()}>
                       Upload
                     </Button>
-                    <Button type="button" variant="ghost" size="sm" className="text-muted-foreground">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground"
+                      disabled={!avatarUrl}
+                      onClick={() => setAvatarUrl(null)}
+                    >
                       Remove
                     </Button>
                   </div>
@@ -362,7 +401,7 @@ const Settings01 = () => {
                     rows={3}
                     onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))}
                   />
-                  <span className="self-end font-mono text-[10px] tabular-nums text-muted-foreground">
+                  <span className="self-end text-xs tabular-nums text-muted-foreground">
                     {profile.bio.length} / {BIO_MAX}
                   </span>
                 </SettingsRow>
@@ -388,7 +427,7 @@ const Settings01 = () => {
               </SettingsFooter>
             </SettingsSection>
 
-            <SettingsSection id="email">
+            <SettingsSection id="email" style={stagger(3)} className={ENTER}>
               <SettingsSectionHeader>
                 <SettingsSectionTitle>Email</SettingsSectionTitle>
                 <SettingsSectionDescription>Where sign-in links, receipts, and alerts go.</SettingsSectionDescription>
@@ -453,7 +492,7 @@ const Settings01 = () => {
               </SettingsFooter>
             </SettingsSection>
 
-            <SettingsSection id="preferences">
+            <SettingsSection id="preferences" style={stagger(4)} className={ENTER}>
               <SettingsSectionHeader>
                 <SettingsSectionTitle>Preferences</SettingsSectionTitle>
                 <SettingsSectionDescription>Language, time zone, and calendar defaults.</SettingsSectionDescription>
@@ -531,7 +570,7 @@ const Settings01 = () => {
               </SettingsFooter>
             </SettingsSection>
 
-            <SettingsSection id="danger" destructive>
+            <SettingsSection id="danger" destructive style={stagger(5)} className={ENTER}>
               <SettingsSectionHeader>
                 <SettingsSectionTitle className="flex items-center gap-2">
                   <TriangleAlert className="size-4 text-destructive" aria-hidden />
@@ -561,7 +600,7 @@ const Settings01 = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Keep account</AlertDialogCancel>
-                      <AlertDialogAction className="bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60">
+                      <AlertDialogAction variant="destructive">
                         Delete account
                       </AlertDialogAction>
                     </AlertDialogFooter>

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowDownRight, ArrowUpRight, Download, Filter, Minus, RefreshCw } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, Check, Download, Minus, RefreshCw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
@@ -15,9 +15,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/registry/hirael/bases/radix/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 interface Metric {
   label: string;
@@ -159,8 +165,13 @@ const SIGNUPS_BY_RANGE: Record<Range, { count: string; conversion: string }> = {
   '90d': { count: '6,820', conversion: '2.94%' },
 };
 
+const TEAMS = ['All teams', 'Growth', 'Platform', 'Support'] as const;
+
+type Team = (typeof TEAMS)[number];
+
 interface Activity {
   initials: string;
+  team: Exclude<Team, 'All teams'>;
   name: string;
   action: string;
   time: string;
@@ -170,32 +181,44 @@ const ACTIVITY: readonly Activity[] = [
   {
     initials: 'MR',
     name: 'Maya Renner',
+    team: 'Growth',
     action: 'upgraded to Pro',
     time: '2m ago',
   },
   {
     initials: 'JT',
     name: 'Jules Tanaka',
+    team: 'Growth',
     action: 'invited 3 teammates',
     time: '14m ago',
   },
   {
     initials: 'AO',
     name: 'Adaeze Okafor',
+    team: 'Support',
     action: 'exported 412 rows',
     time: '1h ago',
   },
   {
     initials: 'SK',
     name: 'Soren Kim',
+    team: 'Platform',
     action: 'rotated API keys',
     time: '3h ago',
   },
   {
     initials: 'LB',
     name: 'Lena Brandt',
+    team: 'Platform',
     action: 'connected Slack',
     time: '5h ago',
+  },
+  {
+    initials: 'RD',
+    name: 'Rafael Duarte',
+    team: 'Support',
+    action: 'closed 18 tickets',
+    time: '6h ago',
   },
 ];
 
@@ -217,7 +240,7 @@ const DeltaChip = ({ metric }: { metric: Metric }) => {
     <Badge
       dir="ltr"
       aria-label={`${label} ${direction} ${Math.abs(delta)} ${measure} against the previous period`}
-      className={cn('rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums', deltaTone(metric))}
+      className={cn('rounded-sm px-1.5 py-0.5 text-[11px] leading-none tabular-nums', deltaTone(metric))}
     >
       <Icon className="size-3" aria-hidden />
       {sign}
@@ -231,11 +254,25 @@ const Dashboard01 = () => {
   const [range, setRange] = React.useState<Range>('7d');
   const [refreshing, setRefreshing] = React.useState(false);
   const [status, setStatus] = React.useState('');
+  const [team, setTeam] = React.useState<Team>('All teams');
+  const [exported, setExported] = React.useState(false);
 
   const metrics = METRICS_BY_RANGE[range];
   const chart = CHART_BY_RANGE[range];
   const signups = SIGNUPS_BY_RANGE[range];
   const chartMax = Math.max(...chart.flatMap((c) => [c.a, c.b]));
+  const activity = team === 'All teams' ? ACTIVITY : ACTIVITY.filter((a) => a.team === team);
+
+  React.useEffect(() => {
+    if (!exported) return;
+    const timeout = setTimeout(() => setExported(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [exported]);
+
+  const onExport = () => {
+    setExported(true);
+    setStatus(`Exported ${signups.count} sign-ups`);
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -246,15 +283,19 @@ const Dashboard01 = () => {
   };
 
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div
+          data-slot="dashboard-header"
+          className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
+        >
           <div className="flex max-w-xl flex-col gap-3">
-            <Badge variant="outline" className="w-fit">
-              overview
-            </Badge>
-            <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
-              Operations · {RANGES.find((r) => r.value === range)?.label}.
+            <span className="text-xs uppercase text-muted-foreground">Overview</span>
+            <h2 className="flex flex-wrap items-baseline gap-x-3 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+              <span>Operations</span>
+              <span key={range} className={cn(SWAP, 'text-muted-foreground')}>
+                {RANGES.find((r) => r.value === range)?.label}
+              </span>
             </h2>
           </div>
           <div className="flex items-center gap-2">
@@ -267,10 +308,18 @@ const Dashboard01 = () => {
                 ))}
               </TabsList>
             </Tabs>
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-              <Filter className="size-3.5" aria-hidden />
-              All teams
-            </Button>
+            <Select value={team} onValueChange={(v) => setTeam(v as Team)}>
+              <SelectTrigger size="sm" className="hidden w-32 sm:flex" aria-label="Filter activity by team">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {TEAMS.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {t}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Button variant="ghost" size="sm" onClick={onRefresh} disabled={refreshing}>
               <RefreshCw aria-hidden className={cn('size-3.5', refreshing && 'motion-safe:animate-spin')} />
               <span className="sr-only sm:not-sr-only sm:inline">Refresh</span>
@@ -282,25 +331,41 @@ const Dashboard01 = () => {
           {status}
         </p>
 
-        <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4">
+        <div
+          data-slot="dashboard-metrics"
+          style={{ animationDelay: '60ms' }}
+          className={cn(
+            ENTER,
+            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+          )}
+        >
           {metrics.map((m) => (
             <div key={m.label} className="flex flex-col gap-2 bg-card p-5">
               <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
-              <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{m.value}</span>
-              <DeltaChip metric={m} />
+              <div key={range} className={cn(SWAP, 'flex flex-col items-start gap-2')}>
+                <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{m.value}</span>
+                <DeltaChip metric={m} />
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
-          <Card className="lg:col-span-2">
+        <div
+          style={{ animationDelay: '120ms' }}
+          className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
+        >
+          <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <CardDescription className="text-xs uppercase">sign-ups</CardDescription>
-              <CardTitle className="text-lg">{signups.count} new sign-ups</CardTitle>
+              <CardTitle className="text-lg tabular-nums">{signups.count} new sign-ups</CardTitle>
               <CardAction>
-                <Button variant="outline" size="sm">
-                  <Download className="size-3.5" aria-hidden />
-                  <span className="sr-only sm:not-sr-only sm:inline">Export</span>
+                <Button variant="outline" size="sm" onClick={onExport} aria-label={exported ? 'Exported' : 'Export'}>
+                  {exported ? (
+                    <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+                  ) : (
+                    <Download className="size-3.5" aria-hidden />
+                  )}
+                  <span className="sr-only sm:not-sr-only sm:inline">{exported ? 'Exported' : 'Export'}</span>
                 </Button>
               </CardAction>
             </CardHeader>
@@ -324,12 +389,12 @@ const Dashboard01 = () => {
                         <span className="flex h-full items-end gap-1">
                           <span
                             aria-hidden
-                            className="flex-1 rounded-t-xs bg-foreground/85 transition-colors group-hover/bar:bg-foreground group-focus-visible/bar:bg-foreground"
+                            className="flex-1 rounded-t-xs bg-foreground/85 transition-[height,background-color] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/bar:bg-foreground group-focus-visible/bar:bg-foreground"
                             style={{ height: `${(row.a / chartMax) * 100}%` }}
                           />
                           <span
                             aria-hidden
-                            className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-colors group-hover/bar:bg-muted-foreground/60 group-focus-visible/bar:bg-muted-foreground/60"
+                            className="flex-1 rounded-t-xs bg-muted-foreground/40 transition-[height,background-color] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/bar:bg-muted-foreground/60 group-focus-visible/bar:bg-muted-foreground/60"
                             style={{ height: `${(row.b / chartMax) * 100}%` }}
                           />
                         </span>
@@ -337,8 +402,10 @@ const Dashboard01 = () => {
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <span className="font-mono tabular-nums">
-                        {row.d} · {row.a} sign-ups · {row.b} activated
+                      <span className="flex gap-2 tabular-nums">
+                        <span>{row.d}</span>
+                        <span>{row.a} sign-ups</span>
+                        <span>{row.b} activated</span>
                       </span>
                     </TooltipContent>
                   </Tooltip>
@@ -360,13 +427,13 @@ const Dashboard01 = () => {
                 </div>
                 <p className="flex items-baseline gap-2">
                   <span className="text-xs uppercase text-muted-foreground">Conversion</span>
-                  <span className="font-mono text-sm font-semibold tabular-nums">{signups.conversion}</span>
+                  <span className="text-sm font-semibold tabular-nums">{signups.conversion}</span>
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card data-slot="dashboard-activity">
             <CardHeader>
               <CardDescription className="text-xs uppercase">recent activity</CardDescription>
               <CardTitle className="sr-only">Recent activity</CardTitle>
@@ -377,17 +444,17 @@ const Dashboard01 = () => {
               </CardAction>
             </CardHeader>
             <CardContent className="px-0">
-              <ul className="flex flex-col">
-                {ACTIVITY.map((a, i) => (
+              <ul key={team} className={cn(SWAP, 'flex flex-col')}>
+                {activity.map((a, i) => (
                   <li
                     key={a.name}
                     className={cn(
                       'flex items-center gap-3 px-6 py-3',
-                      i < ACTIVITY.length - 1 && 'border-b border-border',
+                      i < activity.length - 1 && 'border-b border-border',
                     )}
                   >
                     <Avatar aria-hidden>
-                      <AvatarFallback className="bg-muted font-mono text-xs font-medium text-foreground">
+                      <AvatarFallback className="bg-muted text-xs font-medium text-foreground">
                         {a.initials}
                       </AvatarFallback>
                     </Avatar>

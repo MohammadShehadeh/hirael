@@ -208,7 +208,7 @@ const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
       dir="ltr"
       aria-label={`${label} ${direction} ${Math.abs(value)} ${UNIT_WORD[unit]}`}
       className={cn(
-        'inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-[11px] leading-none tabular-nums',
+        'inline-flex w-fit items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs leading-none tabular-nums',
         tone,
       )}
     >
@@ -258,6 +258,19 @@ const Spark = ({ points, className }: { points: readonly number[]; className?: s
   );
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const Divider = () => {
+  return (
+    <span aria-hidden className="text-border">
+      |
+    </span>
+  );
+};
+
 const CellLabel = ({ children }: { children: React.ReactNode }) => {
   return <span className="text-xs uppercase text-muted-foreground">{children}</span>;
 };
@@ -267,14 +280,23 @@ const Dashboard05 = () => {
   const kpis = KPIS_BY_RANGE[range];
 
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
       <div className="container w-full">
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-4">
-          <div className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4">
+        <div
+          data-slot="dashboard-grid"
+          className={cn(
+            ENTER,
+            'grid grid-cols-1 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-4',
+          )}
+        >
+          <div
+            data-slot="dashboard-header"
+            className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4"
+          >
             <div className="flex flex-col gap-1.5">
               <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                 <MoonStar className="size-3.5" aria-hidden />
-                good evening
+                Evening check-in
               </span>
               <h2 className="font-serif text-3xl font-medium tracking-tight">All systems steady.</h2>
             </div>
@@ -293,15 +315,15 @@ const Dashboard05 = () => {
           </div>
 
           {kpis.map((k) => (
-            <div key={k.label} className="flex flex-col justify-between gap-3 bg-card p-5">
-              <div className="flex flex-col gap-2">
+            <div key={k.label} data-slot="dashboard-kpi" className="flex flex-col justify-between gap-3 bg-card p-5">
+              <div key={range} className={cn(SWAP, 'flex flex-col gap-2')}>
                 <CellLabel>{k.label}</CellLabel>
                 <div className="flex items-end justify-between gap-2">
                   <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">{k.value}</span>
                   <DeltaChip delta={k.delta} label={k.label} />
                 </div>
               </div>
-              <Spark points={k.spark} className="h-10" />
+              <Spark key={range} points={k.spark} className={cn(SWAP, 'h-10')} />
             </div>
           ))}
 
@@ -323,29 +345,32 @@ const Dashboard05 = () => {
             <Spark points={DURATION_SERIES} className="h-16" />
           </div>
 
-          <div className="flex flex-col justify-between gap-5 bg-card p-5 md:col-span-2">
+          <div data-slot="dashboard-insight" className="flex flex-col justify-between gap-5 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
                 <Sparkles className="size-3.5" aria-hidden />
-                insight
+                Insight
               </span>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" render={<a href="#" />} nativeButton={false}>
                 View traces
               </Button>
             </div>
             <p className="max-w-md text-lg leading-snug font-medium tracking-[-0.01em] sm:text-xl">
               Cold starts dropped 21% this window after the v4.2.1 cache changes rolled out.
             </p>
-            <span className="text-xs uppercase text-muted-foreground">Generated from 248K spans · confidence high</span>
+            <span className="flex flex-wrap items-center gap-2 text-xs uppercase text-muted-foreground">
+              <span>Generated from 248K spans</span>
+              <Divider />
+              <span>Confidence high</span>
+            </span>
           </div>
 
-          <div className="flex flex-col gap-4 bg-card p-5 md:col-span-2">
+          <div data-slot="dashboard-latency" className="flex flex-col gap-4 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
                 Latency distribution
-                <Badge variant="outline" className="text-xs uppercase tabular-nums">
-                  p95 target · {P95_TARGET_MS}ms
-                </Badge>
+                <Divider />
+                <span className="tabular-nums">P95 target {P95_TARGET_MS} ms</span>
               </span>
               <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
                 Open metrics
@@ -361,12 +386,7 @@ const Dashboard05 = () => {
                       style={{ width: `${row.pct}%` }}
                     />
                   </div>
-                  <span
-                    className={cn(
-                      'w-14 shrink-0 text-end font-mono text-xs tabular-nums',
-                      row.overTarget && 'text-warning',
-                    )}
-                  >
+                  <span className={cn('w-14 shrink-0 text-end text-xs tabular-nums', row.overTarget && 'text-warning')}>
                     {row.ms} ms
                     {row.overTarget && <span className="sr-only">, over target</span>}
                   </span>
@@ -376,7 +396,7 @@ const Dashboard05 = () => {
             <span className="text-xs uppercase text-muted-foreground">Sampled across all regions</span>
           </div>
 
-          <div className="flex flex-col bg-card md:col-span-4">
+          <div data-slot="dashboard-deployments" className="flex flex-col bg-card md:col-span-4">
             <div className="flex items-center justify-between gap-2 p-5 pb-3">
               <CellLabel>Active deployments</CellLabel>
               <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
@@ -393,22 +413,20 @@ const Dashboard05 = () => {
                   )}
                 >
                   <div className="flex min-w-0 flex-col">
-                    <span className="truncate font-mono text-xs font-medium">{d.version}</span>
+                    <span className="truncate text-xs font-medium">{d.version}</span>
                     <span className="text-xs uppercase text-muted-foreground">{d.env}</span>
                   </div>
                   <div className="justify-self-end md:justify-self-start">
                     <StatusBadge status={d.status} />
                   </div>
                   <div className="col-span-2 flex min-w-0 flex-col md:col-span-1">
-                    <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                       <GitBranch className="size-3" aria-hidden />
                       {d.branch}
                     </span>
                     <span className="truncate text-xs text-foreground">{d.message}</span>
                   </div>
-                  <span className="hidden font-mono text-xs tabular-nums text-muted-foreground md:inline">
-                    {d.date}
-                  </span>
+                  <span className="hidden text-xs tabular-nums text-muted-foreground md:inline">{d.date}</span>
                   <span className="hidden text-xs uppercase text-muted-foreground md:inline">{d.cache} cache</span>
                 </li>
               ))}

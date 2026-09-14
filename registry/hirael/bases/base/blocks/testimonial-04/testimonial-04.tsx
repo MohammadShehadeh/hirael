@@ -1,11 +1,11 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 import { Quote } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const HEADLINE = 'What people say after the first install';
 
@@ -62,37 +62,13 @@ const Headline = () => {
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
-            i < half ? 'text-muted-foreground' : 'text-foreground',
-          )}
-          style={{ animationDelay: `${200 + i * 80}ms` }}
+          className={cn(ENTER, 'me-[0.25em] inline-block', i < half ? 'text-muted-foreground' : 'text-foreground')}
+          style={{ animationDelay: `${60 + i * 30}ms` }}
         >
           {word}
         </span>
       ))}
     </h2>
-  );
-};
-
-const GlowingRing = ({ className }: { className?: string }) => {
-  const reduce = useReducedMotion();
-
-  return (
-    <div
-      data-slot="testimonial-ring"
-      aria-hidden
-      className={cn('relative size-12 shrink-0 overflow-hidden rounded-full bg-primary/5', className)}
-    >
-      <Quote className="absolute start-1/2 top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-foreground rtl:translate-x-1/2" />
-      <motion.div
-        className="absolute inset-0 rounded-full will-change-transform"
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={reduce ? undefined : { duration: 3, ease: 'linear', repeat: Infinity }}
-      >
-        <div className="absolute start-1/2 top-1 h-3 w-10 -translate-x-1/2 rounded-full bg-primary blur-[10px] rtl:translate-x-1/2" />
-      </motion.div>
-    </div>
   );
 };
 
@@ -104,7 +80,7 @@ const Testimonial04 = () => {
           data-slot="testimonial-header"
           className="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center"
         >
-          <div className="animate-in fade-in zoom-in-90 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-200">
+          <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
               data-slot="testimonial-badge"
@@ -118,7 +94,8 @@ const Testimonial04 = () => {
 
           <p
             data-slot="testimonial-description"
-            className="max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-600 ease-out fill-mode-both motion-reduce:animate-none delay-400"
+            style={{ animationDelay: '240ms' }}
+            className={cn(ENTER, 'max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg')}
           >
             Teams shipping with Hirael, in their own words.
           </p>
@@ -129,13 +106,13 @@ const Testimonial04 = () => {
             <figure
               key={item.name}
               data-slot="testimonial-card"
-              className="flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none"
-              style={{ animationDelay: `${i * 120}ms` }}
+              className={cn(ENTER, 'flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6')}
+              style={{ animationDelay: `${280 + i * 40}ms` }}
             >
-              <GlowingRing />
+              <Quote data-slot="testimonial-mark" aria-hidden className="size-5 text-warm" />
               <blockquote
                 data-slot="testimonial-quote"
-                className="text-pretty text-base font-medium leading-relaxed text-foreground before:me-1 before:font-serif before:text-2xl before:text-primary before:content-[open-quote] after:ms-1 after:font-serif after:text-2xl after:text-primary after:content-[close-quote]"
+                className="text-pretty text-base font-medium leading-relaxed text-foreground"
               >
                 {item.quote}
               </blockquote>

@@ -381,7 +381,7 @@ const PromptInputAttachment = ({ name, size, icon, onRemove, className, ...props
       <span className="shrink-0 text-muted-foreground [&_svg]:size-3.5">{icon ?? <FileText aria-hidden />}</span>
       <span className="max-w-40 truncate">{name}</span>
       {size != null ? (
-        <span className="shrink-0 font-mono text-[10px] text-muted-foreground tabular-nums">{formatBytes(size)}</span>
+        <span className="shrink-0 text-[10px] text-muted-foreground tabular-nums">{formatBytes(size)}</span>
       ) : null}
       {onRemove ? (
         <Button
@@ -439,7 +439,7 @@ const PromptInputModelSelect = ({
             disabled={disabled}
             aria-label={`Model: ${selected?.label ?? 'none'}`}
             className={cn(
-              'gap-1 px-2 font-mono text-xs text-muted-foreground hover:text-foreground data-open:bg-accent data-open:text-foreground',
+              'gap-1 px-2 text-xs text-muted-foreground hover:text-foreground data-open:bg-accent data-open:text-foreground',
               className,
             )}
           />
@@ -504,13 +504,18 @@ type PromptInputHintProps = React.ComponentProps<'p'>;
 
 const PromptInputHint = ({
   className,
-  children = 'Enter to send · Shift+Enter for a new line',
+  children = (
+    <>
+      <span>Enter to send</span>
+      <span>Shift+Enter for a new line</span>
+    </>
+  ),
   ...props
 }: PromptInputHintProps) => {
   return (
     <p
       data-slot="prompt-input-hint"
-      className={cn('px-1 font-mono text-[10px] text-muted-foreground', className)}
+      className={cn('flex flex-wrap gap-x-3 px-1 text-xs text-muted-foreground', className)}
       {...props}
     >
       {children}
@@ -552,6 +557,11 @@ const MODELS: PromptInputModel[] = [
 
 const MAX_CHARS = 2000;
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const SEED_ATTACHMENTS: PromptAttachment[] = [
   {
     id: 'seed-report',
@@ -568,9 +578,9 @@ const CharacterCounter = ({ max }: { max: number }) => {
     <span
       data-slot="prompt-input-counter"
       aria-live="polite"
-      className={cn('px-1 font-mono text-[10px] tabular-nums', over ? 'text-destructive' : 'text-muted-foreground')}
+      className={cn('shrink-0 px-1 text-xs tabular-nums', over ? 'text-destructive' : 'text-muted-foreground')}
     >
-      {value.length.toLocaleString()} / {max.toLocaleString()}
+      {value.length.toLocaleString('en-US')} / {max.toLocaleString('en-US')}
     </span>
   );
 };
@@ -604,7 +614,7 @@ const PromptInputBlock = () => {
 
   return (
     <section data-slot="prompt-input-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="flex w-full max-w-2xl flex-col gap-3">
+      <div className={cn(ENTER, 'flex w-full max-w-2xl flex-col gap-3')}>
         <span className="text-xs uppercase text-muted-foreground">New message</span>
 
         <PromptInput
@@ -629,29 +639,32 @@ const PromptInputBlock = () => {
           </div>
         </PromptInput>
 
-        <p
-          aria-live="polite"
-          className="flex min-h-5 items-center gap-2 px-1 font-mono text-[10px] text-muted-foreground"
-        >
-          {isStreaming ? (
-            <>
-              <span
-                aria-hidden
-                className="size-1.5 rounded-full bg-accent-cool animate-pulse motion-reduce:animate-none"
-              />
-              Generating a reply, press Stop to cancel
-            </>
-          ) : lastSent ? (
-            <>
-              <span className="uppercase tracking-[0.1em]">Sent</span>
-              <span className="truncate text-foreground">{lastSent.text || '(no text)'}</span>
-              <span className="shrink-0">
-                · {lastSent.attachments} {lastSent.attachments === 1 ? 'attachment' : 'attachments'} · {modelLabel}
-              </span>
-            </>
-          ) : (
-            'Nothing sent yet'
-          )}
+        <p aria-live="polite" className="flex min-h-5 items-center px-1 text-xs text-muted-foreground">
+          <span
+            key={isStreaming ? 'streaming' : lastSent ? 'sent' : 'idle'}
+            className={cn(SWAP, 'flex min-w-0 items-center gap-2')}
+          >
+            {isStreaming ? (
+              <>
+                <span
+                  aria-hidden
+                  className="size-1.5 rounded-full bg-accent-cool animate-pulse motion-reduce:animate-none"
+                />
+                Generating a reply, press Stop to cancel
+              </>
+            ) : lastSent ? (
+              <>
+                <span className="uppercase tracking-[0.1em]">Sent</span>
+                <span className="truncate text-foreground">{lastSent.text || '(no text)'}</span>
+                <span className="shrink-0">
+                  {lastSent.attachments} {lastSent.attachments === 1 ? 'attachment' : 'attachments'}
+                </span>
+                <span className="shrink-0">{modelLabel}</span>
+              </>
+            ) : (
+              'Nothing sent yet'
+            )}
+          </span>
         </p>
       </div>
     </section>

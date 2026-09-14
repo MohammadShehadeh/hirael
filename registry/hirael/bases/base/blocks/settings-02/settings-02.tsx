@@ -23,6 +23,15 @@ import {
   PasswordInputStrength,
 } from '@/registry/hirael/bases/base/components/password-input';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 type SettingsPanelProps = React.ComponentProps<'section'>;
 
 const SettingsPanel = ({ className, ...props }: SettingsPanelProps) => {
@@ -71,7 +80,7 @@ const SettingsPanelDescription = ({ className, ...props }: SettingsPanelDescript
 };
 
 interface SettingsPanelGroupProps extends React.ComponentProps<'div'> {
-  /** Mono eyebrow above the group. */
+  /** Uppercase eyebrow above the group. */
   label?: React.ReactNode;
 }
 
@@ -172,12 +181,7 @@ const SettingsPanelSession = ({
       className={cn('flex items-center gap-3 px-5 py-3', className)}
       {...props}
     >
-      <span
-        aria-hidden
-        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground"
-      >
-        <Icon className="size-4" />
-      </span>
+      <Icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="flex flex-wrap items-center gap-2">
           <span className="truncate text-sm font-medium text-foreground">{device}</span>
@@ -188,10 +192,14 @@ const SettingsPanelSession = ({
             </Badge>
           ) : null}
         </span>
-        <span className="truncate text-xs uppercase text-muted-foreground">
-          {location}
-          {location && lastActive ? ' · ' : null}
-          {lastActive}
+        <span className="flex min-w-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+          {location ? <span className="truncate">{location}</span> : null}
+          {location && lastActive ? (
+            <span aria-hidden className="text-border">
+              |
+            </span>
+          ) : null}
+          {lastActive ? <span className="truncate">{lastActive}</span> : null}
         </span>
       </div>
       {current ? null : (
@@ -245,7 +253,7 @@ interface Session {
 const SESSIONS: readonly Session[] = [
   {
     id: 's1',
-    device: 'MacBook Pro · Chrome',
+    device: 'Chrome on MacBook Pro',
     location: 'Amman, JO',
     lastActive: 'Active now',
     current: true,
@@ -253,14 +261,14 @@ const SESSIONS: readonly Session[] = [
   },
   {
     id: 's2',
-    device: 'iPhone 15 · Safari',
+    device: 'Safari on iPhone 15',
     location: 'Amman, JO',
     lastActive: '2 hours ago',
     icon: Smartphone,
   },
   {
     id: 's3',
-    device: 'Windows · Edge',
+    device: 'Edge on Windows',
     location: 'Berlin, DE',
     lastActive: '6 days ago',
     icon: Laptop,
@@ -341,7 +349,7 @@ const Settings02 = () => {
   return (
     <section data-slot="settings-02-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-        <div className="mb-6 flex flex-col gap-1">
+        <div className={cn(ENTER, 'mb-6 flex flex-col gap-1')}>
           <span className="text-xs uppercase text-muted-foreground">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Security and notifications</h1>
           <p className="text-sm text-muted-foreground">
@@ -349,7 +357,7 @@ const Settings02 = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="security" className="gap-6">
+        <Tabs defaultValue="security" style={stagger(1)} className={cn(ENTER, 'gap-6')}>
           <TabsList variant="line" className="w-full justify-start border-b border-border">
             <TabsTrigger value="security" className="flex-none px-3">
               Security
@@ -359,7 +367,7 @@ const Settings02 = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="security" className="flex flex-col gap-6">
+          <TabsContent value="security" className={cn(SWAP, 'flex flex-col gap-6')}>
             <SettingsPanel>
               <SettingsPanelHeader>
                 <div className="flex flex-col gap-1">
@@ -403,7 +411,7 @@ const Settings02 = () => {
                           aria-describedby={confirmMismatch ? 'settings-confirm-error' : undefined}
                         />
                       </PasswordInput>
-                      <FieldError id="settings-confirm-error" className="text-[11px]">
+                      <FieldError id="settings-confirm-error" className="text-xs">
                         {confirmMismatch ? 'Passwords do not match.' : null}
                       </FieldError>
                     </Field>
@@ -458,6 +466,7 @@ const Settings02 = () => {
                 </SettingsPanelItem>
                 {twoFactor ? (
                   <SettingsPanelItem
+                    className={SWAP}
                     label="Recovery codes"
                     description="Ten one-time codes for when you lose your phone. 10 of 10 left."
                   >
@@ -513,7 +522,7 @@ const Settings02 = () => {
             </SettingsPanel>
           </TabsContent>
 
-          <TabsContent value="notifications" className="flex flex-col gap-6">
+          <TabsContent value="notifications" className={cn(SWAP, 'flex flex-col gap-6')}>
             <SettingsPanel>
               <SettingsPanelHeader>
                 <div className="flex flex-col gap-1">

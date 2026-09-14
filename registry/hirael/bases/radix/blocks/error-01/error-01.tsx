@@ -8,6 +8,11 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/radix/ui/collapsible';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+
 const ErrorPage = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
     <section
@@ -128,7 +133,7 @@ const ErrorPageDetails = ({
           <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-[state=open]:rotate-180" />
           Technical details
         </CollapsibleTrigger>
-        <CollapsibleContent className="pt-3">
+        <CollapsibleContent className="pt-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-250 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
           <div className="flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
             <dl className="flex flex-col gap-2">
               {allRows.map((row) => (
@@ -138,7 +143,7 @@ const ErrorPageDetails = ({
                   className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs"
                 >
                   <dt className="uppercase text-muted-foreground">{row.label}</dt>
-                  <dd dir="ltr" className="select-all font-mono tabular-nums text-foreground">
+                  <dd dir="ltr" className="select-all tabular-nums text-foreground">
                     {row.value}
                   </dd>
                 </div>
@@ -186,16 +191,25 @@ const Error01 = () => {
     <ErrorPage data-slot="error-01-block">
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
-          <ErrorPageEyebrow>500</ErrorPageEyebrow>
-          <ErrorPageTitle>Something broke on our end.</ErrorPageTitle>
-          <ErrorPageDescription>
+          <ErrorPageEyebrow className={ENTER}>500</ErrorPageEyebrow>
+          <ErrorPageTitle style={stagger(1)} className={ENTER}>
+            Something broke on our end.
+          </ErrorPageTitle>
+          <ErrorPageDescription style={stagger(2)} className={ENTER}>
             The request hit an error we didn&apos;t expect. It&apos;s been logged, and retrying usually works. If it
             keeps happening, send us the details below.
           </ErrorPageDescription>
 
-          <ErrorPageActions homeHref="#" onRetry={() => new Promise((r) => setTimeout(r, 900))} />
+          <ErrorPageActions
+            style={stagger(3)}
+            className={ENTER}
+            homeHref="#"
+            onRetry={() => new Promise((r) => setTimeout(r, 900))}
+          />
 
           <ErrorPageDetails
+            style={stagger(4)}
+            className={ENTER}
             requestId={REQUEST_ID}
             timestamp={TIMESTAMP}
             rows={[
@@ -204,7 +218,9 @@ const Error01 = () => {
             ]}
           />
 
-          <ErrorPageStatus href="#">Status: all systems operational</ErrorPageStatus>
+          <ErrorPageStatus style={stagger(5)} className={ENTER} href="#">
+            Status: all systems operational
+          </ErrorPageStatus>
         </div>
       </div>
     </ErrorPage>

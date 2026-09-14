@@ -1,10 +1,21 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowUpRight, Bell } from 'lucide-react';
+import { ArrowUpRight, Bell, CheckCircle2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
+import { Input } from '@/registry/hirael/bases/radix/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE}`;
+const SWAP = `animate-in fade-in slide-in-from-bottom-1 duration-250 ${EASE}`;
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const Maintenance = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (
@@ -82,7 +93,7 @@ const MaintenanceWindow = ({ progress, progressLabel, className, children, ...pr
           </div>
           <div
             role="progressbar"
-            aria-label="Maintenance window elapsed"
+            aria-label={typeof progressLabel === 'string' ? progressLabel : 'Maintenance window elapsed'}
             aria-valuenow={Math.round(pct)}
             aria-valuemin={0}
             aria-valuemax={100}
@@ -111,7 +122,7 @@ const MaintenanceWindowRow = ({ label, className, children, ...props }: Maintena
       {...props}
     >
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className="font-mono text-sm tabular-nums text-foreground">{children}</dd>
+      <dd className="text-sm tabular-nums text-foreground">{children}</dd>
     </div>
   );
 };
@@ -139,7 +150,7 @@ const MaintenanceUpdate = ({ time, latest, className, children, ...props }: Main
       className={cn('flex items-baseline gap-4 border-b border-border py-3 last:border-b-0', className)}
       {...props}
     >
-      <span className="w-16 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">{time}</span>
+      <span className="w-16 shrink-0 text-xs tabular-nums text-muted-foreground">{time}</span>
       <span className={cn('text-sm', latest ? 'text-foreground' : 'text-muted-foreground')}>{children}</span>
     </li>
   );
@@ -148,6 +159,71 @@ const MaintenanceUpdate = ({ time, latest, className, children, ...props }: Main
 const MaintenanceActions = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div data-slot="maintenance-actions" className={cn('flex flex-wrap items-center gap-3', className)} {...props} />
+  );
+};
+
+const NotifyPopover = () => {
+  const id = React.useId();
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
+  const [subscribed, setSubscribed] = React.useState(false);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!EMAIL_PATTERN.test(email.trim())) {
+      setError('Enter a valid email address.');
+      return;
+    }
+    setError(null);
+    setSubscribed(true);
+  }
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button type="button" size="lg">
+          <Bell aria-hidden className="size-4" />
+          Get notified
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-80" data-slot="maintenance-notify">
+        {subscribed ? (
+          <div key="done" role="status" aria-live="polite" className={cn(SWAP, 'flex flex-col gap-1')}>
+            <p className="flex items-center gap-2 text-sm font-medium">
+              <CheckCircle2 aria-hidden className="size-4 shrink-0 text-success" />
+              We&apos;ll let you know
+            </p>
+            <p className="text-sm text-muted-foreground">
+              One email to <span className="break-all text-foreground">{email.trim()}</span> when sign-in is back.
+            </p>
+          </div>
+        ) : (
+          <form key="form" noValidate onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <Field className="gap-1.5" data-invalid={error ? true : undefined}>
+              <FieldLabel htmlFor={id}>Email me when we&apos;re back</FieldLabel>
+              <Input
+                id={id}
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError(null);
+                }}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? `${id}-error` : undefined}
+              />
+              <FieldError id={`${id}-error`} className="text-xs">
+                {error}
+              </FieldError>
+            </Field>
+            <Button type="submit">Notify me</Button>
+          </form>
+        )}
+      </PopoverContent>
+    </Popover>
   );
 };
 
@@ -178,24 +254,28 @@ const Maintenance01 = () => {
     <Maintenance data-slot="maintenance-01-block">
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
-          <MaintenanceStatus>Scheduled maintenance</MaintenanceStatus>
-          <MaintenanceTitle>We&apos;ll be back shortly.</MaintenanceTitle>
-          <MaintenanceDescription>
+          <MaintenanceStatus className={ENTER}>Scheduled maintenance</MaintenanceStatus>
+          <MaintenanceTitle style={stagger(1)} className={ENTER}>
+            We&apos;ll be back shortly.
+          </MaintenanceTitle>
+          <MaintenanceDescription style={stagger(2)} className={ENTER}>
             We&apos;re moving the primary database to new hardware. Nothing you&apos;ve saved is affected, and sign-in
             resumes the moment we&apos;re done.
           </MaintenanceDescription>
 
-          <MaintenanceWindow progress={62} progressLabel="1h 14m elapsed">
+          <MaintenanceWindow
+            style={stagger(3)}
+            className={ENTER}
+            progress={62}
+            progressLabel="Migration progress, updated 03:14 UTC"
+          >
             <MaintenanceWindowRow label="Started">02:00 UTC</MaintenanceWindowRow>
             <MaintenanceWindowRow label="Expected back">04:00 UTC</MaintenanceWindowRow>
-            <MaintenanceWindowRow label="Affected">API · Dashboard · Webhooks</MaintenanceWindowRow>
+            <MaintenanceWindowRow label="Affected">API, Dashboard, Webhooks</MaintenanceWindowRow>
           </MaintenanceWindow>
 
-          <MaintenanceActions>
-            <Button type="button" size="lg" className="group">
-              <Bell className="size-4" />
-              Get notified
-            </Button>
+          <MaintenanceActions style={stagger(4)} className={ENTER}>
+            <NotifyPopover />
             <Button asChild variant="outline" size="lg" className="group">
               <a href="#">
                 Check status page
@@ -204,7 +284,7 @@ const Maintenance01 = () => {
             </Button>
           </MaintenanceActions>
 
-          <MaintenanceUpdates>
+          <MaintenanceUpdates style={stagger(5)} className={ENTER}>
             {UPDATES.map((u) => (
               <MaintenanceUpdate key={u.time} time={`${u.time} UTC`} latest={u.latest}>
                 {u.text}

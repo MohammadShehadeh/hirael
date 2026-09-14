@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ArrowUpRight, LifeBuoy, Mail, Search, SearchX } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import {
   Accordion,
   AccordionContent,
@@ -20,6 +21,15 @@ import {
 } from '@/registry/hirael/bases/radix/ui/empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 type Category = 'getting-started' | 'billing' | 'licensing';
 
@@ -96,19 +106,25 @@ const Faq03 = () => {
   };
 
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section data-slot="faq" className="bg-background py-20 md:py-28">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 md:px-10">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <span className="text-xs uppercase text-foreground">help center</span>
-          <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
+        <div data-slot="faq-header" className="flex flex-col items-center gap-4 text-center">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Help center</span>
+          <h2
+            style={stagger(1, 70)}
+            className={cn(
+              ENTER,
+              'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+            )}
+          >
             Find the answer before you file the issue.
           </h2>
-          <p className="max-w-xl text-sm text-muted-foreground">
+          <p style={stagger(2, 70)} className={cn(ENTER, 'max-w-xl text-sm text-muted-foreground')}>
             Search the questions we hear most, or narrow by topic. Anything unanswered lands in the inbox below.
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-4">
+        <div data-slot="faq-filters" style={stagger(3, 70)} className={cn(ENTER, 'flex flex-col items-center gap-4')}>
           <InputGroup className="w-full max-w-md">
             <InputGroupAddon>
               <Search className="size-4" />
@@ -121,10 +137,14 @@ const Faq03 = () => {
               aria-label="Search questions"
             />
           </InputGroup>
-          <Tabs value={category} onValueChange={(v) => setCategory(v as Category | 'all')} className="w-fit">
-            <TabsList>
+          <Tabs
+            value={category}
+            onValueChange={(v) => setCategory(v as Category | 'all')}
+            className="w-full items-center"
+          >
+            <TabsList className="max-w-full flex-wrap group-data-[orientation=horizontal]/tabs:h-auto">
               {CATEGORIES.map((c) => (
-                <TabsTrigger key={c.value} value={c.value}>
+                <TabsTrigger key={c.value} value={c.value} className="flex-none">
                   {c.label}
                 </TabsTrigger>
               ))}
@@ -133,26 +153,28 @@ const Faq03 = () => {
         </div>
 
         {visible.length > 0 ? (
-          <Accordion type="single" collapsible className="border-y border-border">
-            {visible.map((f) => (
-              <AccordionItem key={f.q} value={f.q} className="px-1">
-                <AccordionTrigger>
-                  <span className="flex flex-1 items-baseline justify-between gap-4">
-                    <span>{f.q}</span>
-                    <span className="shrink-0 text-xs uppercase text-muted-foreground">
-                      {CATEGORY_LABELS[f.category]}
+          <div key={`${category}:${normalized}`} data-slot="faq-list" className={SWAP}>
+            <Accordion type="single" collapsible className="border-y border-border">
+              {visible.map((f) => (
+                <AccordionItem key={f.q} value={f.q} className="px-1">
+                  <AccordionTrigger>
+                    <span className="flex flex-1 items-baseline justify-between gap-4">
+                      <span>{f.q}</span>
+                      <span className="shrink-0 text-xs uppercase text-muted-foreground">
+                        {CATEGORY_LABELS[f.category]}
+                      </span>
                     </span>
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent>{f.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         ) : (
-          <Empty>
+          <Empty data-slot="faq-empty" className={SWAP}>
             <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <SearchX />
+              <EmptyMedia>
+                <SearchX aria-hidden className="size-6 text-muted-foreground" />
               </EmptyMedia>
               <EmptyTitle>No matching questions</EmptyTitle>
               <EmptyDescription>
@@ -169,15 +191,16 @@ const Faq03 = () => {
           </Empty>
         )}
 
-        <div className="flex flex-col items-start justify-between gap-4 rounded-md border border-border bg-card/40 p-5 sm:flex-row sm:items-center sm:p-6">
-          <div className="flex items-start gap-3">
-            <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-sm border border-border bg-background">
-              <LifeBuoy className="size-4" />
+        <div
+          data-slot="faq-help"
+          className="flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center"
+        >
+          <div className="flex flex-col gap-1">
+            <span className="inline-flex items-center gap-2 text-sm font-medium">
+              <LifeBuoy aria-hidden className="size-4 text-muted-foreground" />
+              Still stuck?
             </span>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">Still stuck?</span>
-              <span className="text-xs text-muted-foreground">We answer most questions within a day.</span>
-            </div>
+            <span className="text-sm text-muted-foreground">We answer most questions within a day.</span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" asChild>
@@ -189,7 +212,7 @@ const Faq03 = () => {
             <Button size="sm" asChild>
               <a href="#">
                 Open an issue
-                <ArrowUpRight className="size-3.5" />
+                <ArrowUpRight className="size-3.5 rtl:-scale-x-100" />
               </a>
             </Button>
           </div>

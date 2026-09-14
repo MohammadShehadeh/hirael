@@ -1,13 +1,23 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CircleAlert, Loader2 } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Checkbox } from '@/registry/hirael/bases/base/ui/checkbox';
-import { Field, FieldGroup, FieldLabel, FieldSeparator } from '@/registry/hirael/bases/base/ui/field';
+import { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { PasswordInput, PasswordInputField } from '@/registry/hirael/bases/base/components/password-input';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -39,13 +49,46 @@ const BrandMark = ({ className }: { className?: string }) => {
   );
 };
 
+type Errors = Partial<{
+  email: string;
+  password: string;
+  form: string;
+}>;
+
 const Login01 = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [remember, setRemember] = React.useState(true);
+  const [errors, setErrors] = React.useState<Errors>({});
+  const [attempt, setAttempt] = React.useState(0);
+  const [pending, setPending] = React.useState(false);
+
+  const validate = (): Errors => {
+    const next: Errors = {};
+    if (!email.trim()) next.email = 'Enter the email you signed up with.';
+    else if (!EMAIL_PATTERN.test(email)) next.email = "That doesn't look like a valid email.";
+    if (!password) next.password = 'Enter your password.';
+    return next;
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const next = validate();
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    setPending(true);
+    await new Promise((r) => setTimeout(r, 900));
+    setPending(false);
+    setErrors({ form: "That email and password don't match." });
+    setAttempt((count) => count + 1);
+  };
 
   return (
-    <section className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24">
+    <section
+      data-slot="login"
+      className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
@@ -57,20 +100,44 @@ const Login01 = () => {
       />
 
       <div className="mx-auto w-full max-w-md px-6">
-        <div className="rounded-sm border border-border bg-card" style={{ boxShadow: '8px 8px 0 0 var(--border)' }}>
-          <div className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8">
-            <div className="flex size-10 items-center justify-center rounded-sm border border-border bg-background">
-              <BrandMark className="size-6 text-foreground" />
-            </div>
+        <div
+          data-slot="login-card"
+          className={cn(ENTER, 'rounded-sm border border-border bg-card')}
+          style={{ boxShadow: '8px 8px 0 0 var(--border)' }}
+        >
+          <div
+            data-slot="login-header"
+            className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8"
+          >
+            <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
             <div className="flex flex-col items-center gap-1 text-center">
-              <h1 className="font-serif text-3xl font-medium tracking-tight">Welcome back</h1>
-              <p className="text-xs text-muted-foreground">Sign in to your Hirael workspace to continue.</p>
+              <h1 style={stagger(1)} className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight')}>
+                Welcome back
+              </h1>
+              <p style={stagger(2)} className={cn(ENTER, 'text-xs text-muted-foreground')}>
+                Sign in to your Hirael workspace to continue.
+              </p>
             </div>
           </div>
 
-          <form className="p-8" onSubmit={(e) => e.preventDefault()}>
+          <form data-slot="login-form" noValidate style={stagger(3)} className={cn(ENTER, 'p-8')} onSubmit={onSubmit}>
             <FieldGroup className="gap-5">
-              <Field className="gap-1.5">
+              {errors.form && (
+                <div
+                  key={attempt}
+                  role="alert"
+                  data-slot="login-error"
+                  className={cn(
+                    SWAP,
+                    'flex items-center gap-2 rounded-sm border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive',
+                  )}
+                >
+                  <CircleAlert aria-hidden className="size-3.5 shrink-0" />
+                  {errors.form}
+                </div>
+              )}
+
+              <Field className="gap-1.5" data-invalid={Boolean(errors.email) || undefined}>
                 <FieldLabel htmlFor="login01-email" className="text-xs uppercase text-muted-foreground">
                   Email
                 </FieldLabel>
@@ -81,10 +148,15 @@ const Login01 = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  aria-invalid={Boolean(errors.email) || undefined}
+                  aria-describedby={errors.email ? 'login01-email-error' : undefined}
                 />
+                <FieldError id="login01-email-error" className="text-xs">
+                  {errors.email}
+                </FieldError>
               </Field>
 
-              <Field className="gap-1.5">
+              <Field className="gap-1.5" data-invalid={Boolean(errors.password) || undefined}>
                 <div className="flex items-center justify-between">
                   <FieldLabel htmlFor="login01-password" className="text-xs uppercase text-muted-foreground">
                     Password
@@ -97,8 +169,16 @@ const Login01 = () => {
                   </a>
                 </div>
                 <PasswordInput id="login01-password" value={password} onValueChange={setPassword}>
-                  <PasswordInputField placeholder="••••••••" />
+                  <PasswordInputField
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    aria-invalid={Boolean(errors.password) || undefined}
+                    aria-describedby={errors.password ? 'login01-password-error' : undefined}
+                  />
                 </PasswordInput>
+                <FieldError id="login01-password-error" className="text-xs">
+                  {errors.password}
+                </FieldError>
               </Field>
 
               <Field orientation="horizontal" className="gap-2">
@@ -111,9 +191,18 @@ const Login01 = () => {
                 </FieldLabel>
               </Field>
 
-              <Button type="submit" variant="default" size="lg" className="group">
-                Sign in
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+              <Button type="submit" variant="default" size="lg" disabled={pending} className="group">
+                {pending ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Signing in…
+                  </>
+                ) : (
+                  <>
+                    Sign in
+                    <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                  </>
+                )}
               </Button>
 
               <FieldSeparator className="[&_[data-slot=field-separator-content]]:bg-card">
@@ -133,7 +222,7 @@ const Login01 = () => {
             </FieldGroup>
           </form>
 
-          <div className="border-t border-border px-8 py-4 text-center">
+          <div data-slot="login-footer" className="border-t border-border px-8 py-4 text-center">
             <p className="text-xs text-muted-foreground">
               No account yet?{' '}
               <a
@@ -146,8 +235,18 @@ const Login01 = () => {
           </div>
         </div>
 
-        <p className="mt-4 text-center text-xs uppercase text-muted-foreground">
-          Protected by single-tenant auth · SOC2 in progress
+        <p
+          style={stagger(5)}
+          className={cn(
+            ENTER,
+            'mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground',
+          )}
+        >
+          <span>Protected by single-tenant auth</span>
+          <span aria-hidden className="text-border">
+            |
+          </span>
+          <span>SOC 2 in progress</span>
         </p>
       </div>
     </section>

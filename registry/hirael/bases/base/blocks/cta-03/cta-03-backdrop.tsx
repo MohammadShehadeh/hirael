@@ -43,13 +43,29 @@ const usePalette = () => {
   return palette;
 };
 
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+
+const subscribeReducedMotion = (onChange: () => void) => {
+  const media = window.matchMedia(REDUCED_MOTION);
+  media.addEventListener('change', onChange);
+  return () => media.removeEventListener('change', onChange);
+};
+
+const useReducedMotion = () =>
+  React.useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+
 const Cta03Backdrop = ({ active = false }: { active?: boolean }) => {
   const palette = usePalette();
+  const reduced = useReducedMotion();
   if (!palette) return null;
 
   return (
     <Shader style={{ width: '100%', height: '100%' }}>
-      <Swirl colorA={palette.base} colorB={palette.ink} speed={active ? 0.6 : 0.2} detail={1.6} />
+      <Swirl colorA={palette.base} colorB={palette.ink} speed={reduced ? 0 : active ? 0.6 : 0.2} detail={1.6} />
       <Dither colorMode="custom" colorA="transparent" colorB={palette.halftone} pattern="bayer4" pixelSize={3} />
     </Shader>
   );

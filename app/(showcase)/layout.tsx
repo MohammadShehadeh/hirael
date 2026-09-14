@@ -2,6 +2,7 @@ import { DocsHeader } from '@/components/docs-header';
 import { DocsTabsBar } from '@/components/docs-tabs-bar';
 import { DocsSidebar } from '@/components/sidebar';
 import { SiteFooterCompact } from '@/components/site-footer';
+import { SponsorsRail } from '@/components/sponsors-card';
 import { getChangelog } from '@/lib/changelog';
 import { getRepoStars } from '@/lib/github';
 
@@ -17,7 +18,7 @@ export default async function ShowcaseLayout({ children }: ShowcaseLayoutProps) 
     date: entry.displayDate,
   }));
   return (
-    <div className="flex min-h-svh flex-col [--docs-layout-width:97rem] [--docs-sidebar-width:17rem]">
+    <div className="flex min-h-svh flex-col [--docs-layout-width:97rem] [--docs-sidebar-width:17rem] [--docs-rail-width:15rem]">
       <DocsHeader stars={stars} releases={releases} />
       <DocsTabsBar />
       <div className="mx-auto flex w-full max-w-(--docs-layout-width) flex-1">
@@ -32,6 +33,7 @@ export default async function ShowcaseLayout({ children }: ShowcaseLayoutProps) 
           </main>
           <SiteFooterCompact />
         </div>
+        <SponsorsRail />
       </div>
     </div>
   );

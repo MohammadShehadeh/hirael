@@ -190,7 +190,7 @@ const MessageAvatar = ({ className, children, ...props }: MessageAvatarProps) =>
       data-slot="message-avatar"
       aria-hidden
       className={cn(
-        'flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-medium select-none',
+        'flex size-7 shrink-0 items-center justify-center rounded-full text-[10px] font-medium select-none',
         role === 'assistant' ? 'border border-border bg-card text-foreground' : 'bg-muted text-foreground',
         className,
       )}
@@ -275,7 +275,7 @@ const MessageTimestamp = ({ className, ...props }: MessageTimestampProps) => {
   return (
     <time
       data-slot="message-timestamp"
-      className={cn('px-1 font-mono text-[10px] text-muted-foreground tabular-nums', className)}
+      className={cn('px-1 text-[10px] text-muted-foreground tabular-nums', className)}
       {...props}
     />
   );
@@ -342,7 +342,7 @@ const MessageToolCall = ({
     >
       <CollapsibleTrigger className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
         <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
-        <span className="truncate font-mono text-foreground">{name}</span>
+        <span className="truncate text-foreground">{name}</span>
         <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
         <ChevronDown
           className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/tool:rotate-180 motion-reduce:transition-none"
@@ -491,7 +491,7 @@ const MessageSource = ({ className, children, ...props }: MessageSourceProps) =>
     >
       <span
         aria-hidden
-        className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-mono text-[10px] tabular-nums before:content-[counter(source)]"
+        className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] tabular-nums before:content-[counter(source)]"
       />
       <span className="truncate">{children}</span>
     </a>
@@ -527,6 +527,11 @@ const STREAMED_ANSWER = [
   "Heads up: API p95 latency has been elevated since Tuesday's 14:10 UTC deploy, around 340ms instead of 180ms. Root cause is a sequential scan on the new events join in the list endpoint. We are adding an index on events (account_id, created_at) and expect p95 to recover within the hour. No errors, only slower responses.",
   'Want me to open the migration PR as well?',
 ].join('\n\n');
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 type Feedback = 'up' | 'down' | null;
 
@@ -586,7 +591,7 @@ const StreamedMessage = ({ text, onReplay }: { text: string; onReplay: () => voi
         {count === 0 ? (
           <MessageTyping />
         ) : (
-          <MessageContent aria-busy={!done}>
+          <MessageContent aria-busy={!done} className={SWAP}>
             {paragraphs.map((paragraph, i) => (
               <p key={i}>
                 {paragraph}
@@ -596,10 +601,10 @@ const StreamedMessage = ({ text, onReplay }: { text: string; onReplay: () => voi
           </MessageContent>
         )}
         {done ? (
-          <>
+          <div className={cn(SWAP, 'flex flex-col items-start gap-1.5')}>
             <FeedbackActions copyText={text} onRegenerate={onReplay} />
             <MessageTimestamp dateTime="2026-08-25T10:44:00Z">10:44</MessageTimestamp>
-          </>
+          </div>
         ) : null}
       </MessageBody>
     </Message>
@@ -612,9 +617,12 @@ const MessageThreadBlock = () => {
 
   return (
     <section data-slot="message-thread-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="flex w-full max-w-2xl flex-col overflow-hidden rounded-lg border border-border">
+      <div className={cn(ENTER, 'flex w-full max-w-2xl flex-col overflow-hidden rounded-lg border border-border')}>
         <div className="flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-2">
-          <span className="text-xs text-muted-foreground uppercase">latency regression · plinth-2-pro</span>
+          <span className="flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground uppercase">
+            <span>Latency regression</span>
+            <span>plinth-2-pro</span>
+          </span>
           <Button variant="outline" size="xs" onClick={replay}>
             <RefreshCw aria-hidden />
             Replay
@@ -624,7 +632,7 @@ const MessageThreadBlock = () => {
         <MessageThread className="h-[520px]">
           <Message role="system">
             <MessageBody>
-              <MessageContent>Conversation started · Plinth 2 Pro</MessageContent>
+              <MessageContent>Conversation started with Plinth 2 Pro</MessageContent>
             </MessageBody>
           </Message>
 
@@ -668,9 +676,9 @@ const MessageThreadBlock = () => {
                 ))}
               </MessageContent>
               <MessageSources>
-                <MessageSource href="#">Grafana · api p95, 7d</MessageSource>
+                <MessageSource href="#">API p95 over 7 days</MessageSource>
                 <MessageSource href="#">Deploy #4821 diff</MessageSource>
-                <MessageSource href="#">Runbook · latency regressions</MessageSource>
+                <MessageSource href="#">Latency regression runbook</MessageSource>
               </MessageSources>
               <FeedbackActions copyText={FIRST_ANSWER.join('\n\n')} />
               <MessageTimestamp dateTime="2026-08-25T10:42:00Z">10:42</MessageTimestamp>

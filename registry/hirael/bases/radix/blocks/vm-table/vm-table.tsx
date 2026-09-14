@@ -3,6 +3,8 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 export type VmState = 'running' | 'stopped' | 'starting' | 'stopping' | 'error' | 'suspended';
 
@@ -91,7 +93,7 @@ const VmTableName = ({ id, className, children, ...props }: VmTableNameProps) =>
     <td data-slot="vm-table-name" className={cn('px-3 py-2.5 align-middle', className)} {...props}>
       <div className="flex flex-col">
         <span className="font-medium text-foreground">{children}</span>
-        {id ? <span className="font-mono text-xs text-muted-foreground">{id}</span> : null}
+        {id ? <span className="text-xs text-muted-foreground">{id}</span> : null}
       </div>
     </td>
   );
@@ -114,7 +116,10 @@ const VmStatus = ({ state, className, children, ...props }: VmStatusProps) => {
       <span className="relative flex size-2">
         {meta.live ? (
           <span
-            className={cn('absolute inline-flex size-full animate-ping rounded-full opacity-75', meta.dot)}
+            className={cn(
+              'absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none',
+              meta.dot,
+            )}
             aria-hidden
           />
         ) : null}
@@ -127,15 +132,22 @@ const VmStatus = ({ state, className, children, ...props }: VmStatusProps) => {
 
 export { VmTable, VmTableHeader, VmTableHead, VmTableBody, VmTableRow, VmTableCell, VmTableName, VmStatus };
 
-const VM_ROWS: {
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+type VmRow = {
   name: string;
   id: string;
   state: VmState;
   size: string;
   region: string;
-  ip: string;
-  uptime: string;
-}[] = [
+  ip: string | null;
+  uptime: string | null;
+};
+
+const VM_ROWS: VmRow[] = [
   {
     name: 'web-prod-01',
     id: 'i-0a1b2c3d',
@@ -161,7 +173,7 @@ const VM_ROWS: {
     size: 'm6i.large',
     region: 'eu-west-2',
     ip: '10.1.2.13',
-    uptime: '—',
+    uptime: null,
   },
   {
     name: 'db-replica-03',
@@ -170,7 +182,7 @@ const VM_ROWS: {
     size: 'r6i.4xlarge',
     region: 'eu-west-2',
     ip: '10.1.2.44',
-    uptime: '—',
+    uptime: null,
   },
   {
     name: 'sandbox-14',
@@ -178,16 +190,83 @@ const VM_ROWS: {
     state: 'stopped',
     size: 't3.medium',
     region: 'ap-south-1',
-    ip: '—',
-    uptime: '—',
+    ip: null,
+    uptime: null,
+  },
+  {
+    name: 'staging-api-02',
+    id: 'i-0d9e1f2a',
+    state: 'suspended',
+    size: 't3.large',
+    region: 'ap-south-1',
+    ip: null,
+    uptime: null,
   },
 ];
 
+const VM_FILTERS: { value: string; label: string; states: VmState[] }[] = [
+  { value: 'all', label: 'All', states: ['running', 'starting', 'stopping', 'error', 'stopped', 'suspended'] },
+  { value: 'running', label: 'Running', states: ['running'] },
+  { value: 'pending', label: 'Pending', states: ['starting', 'stopping'] },
+  { value: 'stopped', label: 'Stopped', states: ['stopped', 'suspended'] },
+  { value: 'error', label: 'Error', states: ['error'] },
+];
+
+const MutedValue = ({ value }: { value: string | null }) =>
+  value ?? <span className="text-muted-foreground/60">None</span>;
+
 const VmTableBlock = () => {
+  const [rows, setRows] = React.useState(VM_ROWS);
+  const [filter, setFilter] = React.useState('all');
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  React.useEffect(() => {
+    const pending = timers.current;
+    return () => pending.forEach(clearTimeout);
+  }, []);
+
+  const activeFilter = VM_FILTERS.find((option) => option.value === filter) ?? VM_FILTERS[0];
+  const visibleRows = rows.filter((row) => activeFilter.states.includes(row.state));
+  const regionCount = new Set(rows.map((row) => row.region)).size;
+
+  const setRowState = (id: string, patch: Partial<VmRow>) =>
+    setRows((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
+
+  const restart = (id: string) => {
+    setRowState(id, { state: 'starting' });
+    timers.current.push(setTimeout(() => setRowState(id, { state: 'running', uptime: '1m' }), 2400));
+  };
+
   return (
     <section data-slot="vm-table-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="w-full max-w-3xl">
-        <VmTable caption="5 instances across 3 regions">
+      <div className={cn(ENTER, 'flex w-full max-w-3xl flex-col gap-3')}>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          size="sm"
+          value={filter}
+          onValueChange={(value) => value && setFilter(value)}
+          aria-label="Filter instances by status"
+          className="max-w-full flex-wrap"
+        >
+          {VM_FILTERS.map((option) => {
+            const count = rows.filter((row) => option.states.includes(row.state)).length;
+            return (
+              <ToggleGroupItem key={option.value} value={option.value} className="gap-1.5">
+                {option.label}
+                <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
+              </ToggleGroupItem>
+            );
+          })}
+        </ToggleGroup>
+
+        <VmTable
+          caption={
+            filter === 'all'
+              ? `${rows.length} instances across ${regionCount} regions`
+              : `Showing ${visibleRows.length} of ${rows.length} instances`
+          }
+        >
           <VmTableHeader>
             <VmTableRow>
               <VmTableHead>Instance</VmTableHead>
@@ -198,19 +277,40 @@ const VmTableBlock = () => {
               <VmTableHead className="text-end">Uptime</VmTableHead>
             </VmTableRow>
           </VmTableHeader>
-          <VmTableBody>
-            {VM_ROWS.map((row) => (
-              <VmTableRow key={row.id}>
-                <VmTableName id={row.id}>{row.name}</VmTableName>
-                <VmTableCell>
-                  <VmStatus state={row.state} />
+          <VmTableBody key={filter} className={SWAP}>
+            {visibleRows.length === 0 ? (
+              <VmTableRow className="hover:bg-transparent">
+                <VmTableCell colSpan={6} className="py-10 text-center text-sm text-muted-foreground">
+                  No instances are {activeFilter.label.toLowerCase()} right now.
                 </VmTableCell>
-                <VmTableCell className="font-mono text-xs text-muted-foreground">{row.size}</VmTableCell>
-                <VmTableCell className="text-muted-foreground">{row.region}</VmTableCell>
-                <VmTableCell className="font-mono text-xs text-muted-foreground">{row.ip}</VmTableCell>
-                <VmTableCell className="text-end font-mono text-xs text-muted-foreground">{row.uptime}</VmTableCell>
               </VmTableRow>
-            ))}
+            ) : (
+              visibleRows.map((row) => (
+                <VmTableRow key={row.id}>
+                  <VmTableName id={row.id}>{row.name}</VmTableName>
+                  <VmTableCell>
+                    <span className="flex items-center gap-3">
+                      <VmStatus key={row.state} state={row.state} className={SWAP} />
+                      {row.state === 'error' ? (
+                        <Button variant="outline" size="xs" onClick={() => restart(row.id)}>
+                          Restart
+                        </Button>
+                      ) : null}
+                    </span>
+                  </VmTableCell>
+                  <VmTableCell className="text-xs text-muted-foreground">{row.size}</VmTableCell>
+                  <VmTableCell className="text-muted-foreground">{row.region}</VmTableCell>
+                  <VmTableCell className="text-xs text-muted-foreground">
+                    <span dir="ltr">
+                      <MutedValue value={row.ip} />
+                    </span>
+                  </VmTableCell>
+                  <VmTableCell className="text-end text-xs tabular-nums text-muted-foreground">
+                    <MutedValue value={row.uptime} />
+                  </VmTableCell>
+                </VmTableRow>
+              ))
+            )}
           </VmTableBody>
         </VmTable>
       </div>

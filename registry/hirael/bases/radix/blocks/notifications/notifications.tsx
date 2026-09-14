@@ -1,10 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { CreditCard, GitPullRequest, UserPlus } from 'lucide-react';
+import { Check, CreditCard, GitPullRequest, Inbox, UserPlus, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 type NotificationsProps = React.ComponentProps<'div'>;
 
@@ -138,52 +139,173 @@ export {
   NotificationTime,
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+type NotificationFilter = 'all' | 'unread';
+
+interface NotificationEntry {
+  id: string;
+  icon: React.ComponentType;
+  title: React.ReactNode;
+  label: string;
+  description: React.ReactNode;
+  time: string;
+  unread: boolean;
+}
+
+const NOTIFICATIONS: NotificationEntry[] = [
+  {
+    id: 'review',
+    icon: GitPullRequest,
+    title: (
+      <>
+        <span className="font-medium">Lena Park</span> requested your review
+      </>
+    ),
+    label: 'Lena Park requested your review',
+    description: (
+      <span className="flex flex-wrap gap-x-2">
+        <span>feat/billing-flow</span>
+        <span className="text-border" aria-hidden>
+          |
+        </span>
+        <span>2 files changed</span>
+      </span>
+    ),
+    time: '2m',
+    unread: true,
+  },
+  {
+    id: 'payment',
+    icon: CreditCard,
+    title: 'Payment received',
+    label: 'Payment received',
+    description: 'Invoice #3812 was paid in full.',
+    time: '1h',
+    unread: true,
+  },
+  {
+    id: 'joined',
+    icon: UserPlus,
+    title: 'Theo Adams joined',
+    label: 'Theo Adams joined',
+    description: 'Accepted your invite to the workspace.',
+    time: '3h',
+    unread: false,
+  },
+];
+
 const NotificationsBlock = () => {
+  const [items, setItems] = React.useState(NOTIFICATIONS);
+  const [filter, setFilter] = React.useState<NotificationFilter>('all');
+
+  const unreadCount = items.filter((item) => item.unread).length;
+  const visible = filter === 'unread' ? items.filter((item) => item.unread) : items;
+
+  const markRead = (id: string) =>
+    setItems((current) => current.map((item) => (item.id === id ? { ...item, unread: false } : item)));
+  const dismiss = (id: string) => setItems((current) => current.filter((item) => item.id !== id));
+
   return (
     <section data-slot="notifications-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <Notifications className="w-full max-w-sm">
+      <Notifications className={cn(ENTER, 'w-full max-w-sm')}>
         <NotificationsHeader>
           <NotificationsTitle>Notifications</NotificationsTitle>
-          <Button type="button" variant="ghost" size="xs" className="-me-2 text-muted-foreground">
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            className="-me-2 text-muted-foreground"
+            disabled={unreadCount === 0}
+            onClick={() => setItems((current) => current.map((item) => ({ ...item, unread: false })))}
+          >
             Mark all read
           </Button>
         </NotificationsHeader>
-        <NotificationsList>
-          <NotificationItem unread>
-            <NotificationMedia>
-              <GitPullRequest />
-            </NotificationMedia>
-            <NotificationContent>
-              <NotificationTitle>
-                <span className="font-medium">Lena Park</span> requested your review
-              </NotificationTitle>
-              <NotificationDescription>feat/billing-flow · 2 files changed</NotificationDescription>
-            </NotificationContent>
-            <NotificationTime>2m</NotificationTime>
-          </NotificationItem>
 
-          <NotificationItem unread>
-            <NotificationMedia>
-              <CreditCard />
-            </NotificationMedia>
-            <NotificationContent>
-              <NotificationTitle>Payment received</NotificationTitle>
-              <NotificationDescription>Invoice #3812 was paid in full.</NotificationDescription>
-            </NotificationContent>
-            <NotificationTime>1h</NotificationTime>
-          </NotificationItem>
+        <div data-slot="notifications-filter" className="border-b border-border px-4 py-2">
+          <ToggleGroup
+            type="single"
+            size="sm"
+            value={filter}
+            onValueChange={(value) => {
+              if (value) setFilter(value as NotificationFilter);
+            }}
+            aria-label="Filter notifications"
+          >
+            <ToggleGroupItem value="all" className="h-7 gap-1.5 text-xs">
+              All
+              <span className="tabular-nums text-muted-foreground">{items.length}</span>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="unread" className="h-7 gap-1.5 text-xs">
+              Unread
+              <span className="tabular-nums text-muted-foreground">{unreadCount}</span>
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
 
-          <NotificationItem>
-            <NotificationMedia>
-              <UserPlus />
-            </NotificationMedia>
-            <NotificationContent>
-              <NotificationTitle>Theo Adams joined</NotificationTitle>
-              <NotificationDescription>Accepted your invite to the workspace.</NotificationDescription>
-            </NotificationContent>
-            <NotificationTime>3h</NotificationTime>
-          </NotificationItem>
-        </NotificationsList>
+        {visible.length === 0 ? (
+          <div
+            key={`empty-${filter}`}
+            data-slot="notifications-empty"
+            className={cn(SWAP, 'flex flex-col items-center gap-1.5 px-4 py-10 text-center')}
+          >
+            <Inbox aria-hidden className="size-5 text-muted-foreground" />
+            <p className="text-sm font-medium">You&apos;re all caught up</p>
+            <p className="text-xs text-muted-foreground">
+              {filter === 'unread' && items.length > 0
+                ? 'Nothing unread. Switch to All to see earlier updates.'
+                : 'New reviews, payments and invites will show up here.'}
+            </p>
+          </div>
+        ) : (
+          <NotificationsList key={filter} className={SWAP}>
+            {visible.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NotificationItem key={item.id} unread={item.unread} className="group/notification">
+                  <NotificationMedia>
+                    <Icon />
+                  </NotificationMedia>
+                  <NotificationContent>
+                    <NotificationTitle>{item.title}</NotificationTitle>
+                    <NotificationDescription>{item.description}</NotificationDescription>
+                  </NotificationContent>
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    <NotificationTime>{item.time}</NotificationTime>
+                    <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-focus-within/notification:opacity-100 group-hover/notification:opacity-100 [@media(hover:none)]:opacity-100">
+                      {item.unread ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-xs"
+                          aria-label={`Mark "${item.label}" as read`}
+                          onClick={() => markRead(item.id)}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          <Check />
+                        </Button>
+                      ) : null}
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={`Dismiss "${item.label}"`}
+                        onClick={() => dismiss(item.id)}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                  </div>
+                </NotificationItem>
+              );
+            })}
+          </NotificationsList>
+        )}
       </Notifications>
     </section>
   );

@@ -5,19 +5,24 @@ import { Check, Minus } from 'lucide-react';
 
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/radix/ui/table';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 import { cn } from '@/lib/utils';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+/** Replays whenever a hidden column is shown, because leaving display:none restarts CSS animations. */
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 type Cell = boolean | string;
+type PlanKey = 'starter' | 'growth' | 'business';
 
-interface Row {
-  feature: string;
-  hobby: Cell;
-  pro: Cell;
-  team: Cell;
-}
-
-interface Tier {
-  key: 'hobby' | 'pro' | 'team';
+interface Plan {
+  key: PlanKey;
   name: string;
   price: string;
   cta: string;
@@ -25,93 +30,135 @@ interface Tier {
   featured?: boolean;
 }
 
-const TIERS: readonly Tier[] = [
-  {
-    key: 'hobby',
-    name: 'Hobby',
-    price: '$0',
-    cta: 'Start free',
-    ctaVariant: 'outline',
-  },
-  {
-    key: 'pro',
-    name: 'Pro',
-    price: '$18',
-    cta: 'Start trial',
-    ctaVariant: 'default',
-    featured: true,
-  },
-  {
-    key: 'team',
-    name: 'Team',
-    price: '$48',
-    cta: 'Contact',
-    ctaVariant: 'outline',
-  },
+const PLANS: readonly Plan[] = [
+  { key: 'starter', name: 'Starter', price: '$0', cta: 'Start free', ctaVariant: 'outline' },
+  { key: 'growth', name: 'Growth', price: '$29', cta: 'Start trial', ctaVariant: 'default', featured: true },
+  { key: 'business', name: 'Business', price: '$99', cta: 'Contact sales', ctaVariant: 'outline' },
 ];
 
-const ROWS: readonly Row[] = [
+interface Row {
+  feature: string;
+  cells: Record<PlanKey, Cell>;
+}
+
+const GROUPS: readonly { label: string; rows: readonly Row[] }[] = [
   {
-    feature: 'Registry components',
-    hobby: 'Up to 5',
-    pro: 'Unlimited',
-    team: 'Unlimited',
+    label: 'Monitoring',
+    rows: [
+      { feature: 'Uptime monitors', cells: { starter: '10', growth: '50', business: '250' } },
+      { feature: 'Check interval', cells: { starter: '5 min', growth: '1 min', business: '30 sec' } },
+      { feature: 'Check regions', cells: { starter: '3', growth: '12', business: '12' } },
+      { feature: 'Log retention', cells: { starter: '7 days', growth: '90 days', business: '1 year' } },
+    ],
   },
-  { feature: 'Theme presets', hobby: '3', pro: 'Unlimited', team: 'Unlimited' },
-  { feature: 'Private registry mirror', hobby: false, pro: true, team: true },
-  { feature: 'Shared workspace', hobby: false, pro: false, team: true },
-  { feature: 'SSO & audit log', hobby: false, pro: false, team: true },
-  { feature: 'Priority response', hobby: false, pro: true, team: true },
-  { feature: 'SLA support', hobby: false, pro: false, team: true },
-  { feature: 'Full source ownership', hobby: true, pro: true, team: true },
+  {
+    label: 'Alerts and status pages',
+    rows: [
+      { feature: 'Email and Slack alerts', cells: { starter: true, growth: true, business: true } },
+      { feature: 'SMS and phone calls', cells: { starter: false, growth: true, business: true } },
+      { feature: 'Public status pages', cells: { starter: '1', growth: '5', business: 'Unlimited' } },
+      { feature: 'Status page on your domain', cells: { starter: false, growth: true, business: true } },
+    ],
+  },
+  {
+    label: 'Team',
+    rows: [
+      { feature: 'Team members', cells: { starter: '2', growth: '10', business: 'Unlimited' } },
+      { feature: 'On-call schedules', cells: { starter: false, growth: true, business: true } },
+      { feature: 'SSO and audit log', cells: { starter: false, growth: false, business: true } },
+    ],
+  },
 ];
 
 const CellContent = ({ value }: { value: Cell }) => {
   if (value === true) {
-    return <Check className="size-4 text-foreground" aria-label="Included" />;
+    return (
+      <>
+        <Check aria-hidden className="size-4 text-foreground" />
+        <span className="sr-only">Included</span>
+      </>
+    );
   }
   if (value === false) {
-    return <Minus className="size-4 text-muted-foreground/50" aria-label="Not included" />;
+    return (
+      <>
+        <Minus aria-hidden className="size-4 text-muted-foreground" />
+        <span className="sr-only">Not included</span>
+      </>
+    );
   }
-  return <span className="font-mono text-xs tabular-nums text-foreground">{value}</span>;
+  return <span className="text-sm tabular-nums text-foreground">{value}</span>;
 };
 
 const Pricing02 = () => {
+  const [selected, setSelected] = React.useState<PlanKey>('growth');
+
+  /** Below md only the selected plan's column is shown; from md up every column is. */
+  const columnClass = (plan: Plan) =>
+    cn(plan.key !== selected && 'hidden md:table-cell', plan.featured && 'md:bg-primary/5');
+
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="pricing" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
-        <div className="flex flex-col gap-5">
-          <span className="text-xs uppercase text-muted-foreground">compare plans</span>
-          <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
-            Every feature, side by side.
+        <div data-slot="pricing-header" className="flex flex-col gap-5">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Compare plans</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
+            Know when your site is down before your customers do.
           </h2>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            One table, no marketing fog. See what each tier ships before you spend a dollar.
+          <p style={stagger(2)} className={cn(ENTER, 'max-w-2xl text-base text-muted-foreground sm:text-lg')}>
+            Every plan checks from several regions and alerts the right person. The larger plans check more often and
+            keep your history longer.
           </p>
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-md border border-border bg-card">
-          <Table className="border-collapse text-start">
+        <ToggleGroup
+          data-slot="pricing-plan-picker"
+          type="single"
+          variant="outline"
+          value={selected}
+          onValueChange={(next) => next && setSelected(next as PlanKey)}
+          aria-label="Plan to show"
+          style={stagger(3)}
+          className={cn(ENTER, 'mt-10 w-full md:hidden')}
+        >
+          {PLANS.map((plan) => (
+            <ToggleGroupItem key={plan.key} value={plan.key} className="flex-1">
+              {plan.name}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        <div
+          data-slot="pricing-table"
+          style={stagger(4)}
+          className={cn(ENTER, 'mt-4 overflow-hidden rounded-md border border-border bg-card md:mt-12')}
+        >
+          <Table className="table-fixed border-collapse text-start">
             <TableHeader className="bg-card">
               <TableRow className="border-b border-border hover:bg-transparent">
-                <TableHead className="w-2/5 px-5 pt-6 pb-5 align-top text-start">
-                  <span className="text-xs uppercase text-muted-foreground">plan</span>
+                <TableHead className="w-1/2 px-4 pt-6 pb-5 align-top text-start whitespace-normal sm:px-5 md:w-2/5">
+                  <span className="text-xs font-normal uppercase text-muted-foreground">Features</span>
                 </TableHead>
-                {TIERS.map((t) => (
+                {PLANS.map((plan) => (
                   <TableHead
-                    key={t.key}
-                    className={cn('px-5 py-5 align-bottom text-start', t.featured && 'bg-primary/5')}
+                    key={plan.key}
+                    className={cn('h-auto px-4 py-5 align-bottom text-start sm:px-5', columnClass(plan))}
                   >
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{t.name}</span>
-                        <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                          {t.price}
-                          <span className="text-muted-foreground">/mo</span>
+                    <div className={cn(SWAP, 'flex flex-col gap-3')}>
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+                        <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{plan.name}</span>
+                        <span className="text-xs text-muted-foreground">
+                          <span dir="ltr" className="tabular-nums text-foreground">
+                            {plan.price}
+                          </span>{' '}
+                          / month
                         </span>
                       </div>
-                      <Button asChild variant={t.ctaVariant} size="sm" className="w-full">
-                        <a href="#">{t.cta}</a>
+                      <Button asChild variant={plan.ctaVariant} size="sm" className="w-full">
+                        <a href="#">{plan.cta}</a>
                       </Button>
                     </div>
                   </TableHead>
@@ -119,15 +166,31 @@ const Pricing02 = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {ROWS.map((r) => (
-                <TableRow key={r.feature} className="border-b border-border last:border-b-0 hover:bg-transparent">
-                  <TableCell className="px-5 py-4 text-xs uppercase text-foreground">{r.feature}</TableCell>
-                  {TIERS.map((t) => (
-                    <TableCell key={t.key} className={cn('px-5 py-4', t.featured && 'bg-primary/5')}>
-                      <CellContent value={r[t.key]} />
+              {GROUPS.map((group) => (
+                <React.Fragment key={group.label}>
+                  <TableRow className="border-b border-border bg-muted/30 hover:bg-muted/30">
+                    <TableCell
+                      colSpan={PLANS.length + 1}
+                      className="px-4 py-2.5 text-xs uppercase text-muted-foreground sm:px-5"
+                    >
+                      {group.label}
                     </TableCell>
+                  </TableRow>
+                  {group.rows.map((row) => (
+                    <TableRow key={row.feature} className="border-b border-border hover:bg-transparent">
+                      <TableCell className="px-4 py-3.5 text-sm whitespace-normal text-foreground sm:px-5">
+                        {row.feature}
+                      </TableCell>
+                      {PLANS.map((plan) => (
+                        <TableCell key={plan.key} className={cn('px-4 py-3.5 sm:px-5', columnClass(plan))}>
+                          <span className={cn(SWAP, 'flex items-center')}>
+                            <CellContent value={row.cells[plan.key]} />
+                          </span>
+                        </TableCell>
+                      ))}
+                    </TableRow>
                   ))}
-                </TableRow>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import * as React from 'react';
+import { CircleCheck } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -10,6 +11,11 @@ type DayStatus = 'operational' | 'degraded' | 'outage';
 type UpdateStatus = 'resolved' | 'monitoring' | 'identified' | 'investigating';
 
 const DAYS = 90;
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const DOT_COLOR: Record<DayStatus, string> = {
   operational: 'bg-success',
@@ -136,24 +142,28 @@ const Status01 = () => {
     <section data-slot="status" className="flex min-h-svh w-full justify-center bg-background px-6 py-16 md:py-24">
       <div className="grid w-full max-w-3xl gap-12 md:gap-16">
         <div data-slot="status-header" className="flex flex-col gap-3">
-          <span className="text-xs uppercase text-muted-foreground">Status</span>
-          <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">All systems, at a glance</h1>
-          <p className="text-sm text-muted-foreground md:text-base">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Status</span>
+          <h1 style={stagger(1)} className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight sm:text-5xl')}>
+            All systems, at a glance
+          </h1>
+          <p style={stagger(2)} className={cn(ENTER, 'text-sm text-muted-foreground md:text-base')}>
             Live service health, ninety days of history and every incident we have written up.
           </p>
         </div>
 
-        <div data-slot="status-banner" className="flex items-center gap-4 border border-border bg-card p-5">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
-            <Check aria-hidden className="size-6" />
-          </span>
-          <div className="flex flex-col gap-0.5">
-            <h2 className="text-lg font-semibold">All systems operational</h2>
-            <p className="text-sm tabular-nums text-muted-foreground">Checked a minute ago</p>
-          </div>
+        <div
+          data-slot="status-banner"
+          style={stagger(3)}
+          className={cn(ENTER, 'flex flex-col gap-1 border border-border bg-card p-5')}
+        >
+          <h2 className="flex items-center gap-2 text-lg font-semibold">
+            <CircleCheck aria-hidden className="size-5 shrink-0 text-success" />
+            All systems operational
+          </h2>
+          <p className="ps-7 text-sm tabular-nums text-muted-foreground">Checked a minute ago</p>
         </div>
 
-        <div data-slot="status-uptime" className="w-full">
+        <div data-slot="status-uptime" style={stagger(4)} className={cn(ENTER, 'w-full')}>
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="font-serif text-2xl font-medium tracking-tight">Historical uptime</h2>
@@ -212,7 +222,7 @@ const Status01 = () => {
           </div>
         </div>
 
-        <div data-slot="status-incidents" className="w-full">
+        <div data-slot="status-incidents" style={stagger(5)} className={cn(ENTER, 'w-full')}>
           <div className="mb-8">
             <h2 className="font-serif text-2xl font-medium tracking-tight">Past incidents</h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -225,7 +235,7 @@ const Status01 = () => {
               <div key={incident.title} data-slot="status-incident" className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <span className="h-px flex-1 bg-border" aria-hidden />
-                  <span className="font-mono text-xs tabular-nums text-muted-foreground">{incident.date}</span>
+                  <span className="text-xs tabular-nums text-muted-foreground">{incident.date}</span>
                   <span className="h-px flex-1 bg-border" aria-hidden />
                 </div>
                 <div className="border border-border bg-card p-5">

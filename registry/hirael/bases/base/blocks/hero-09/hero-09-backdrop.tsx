@@ -39,7 +39,7 @@ const getProbe = () => {
   return probe;
 };
 
-/** Resolves any CSS color — oklch included — to sRGB, via a 1x1 canvas. */
+/** Resolves any CSS color (oklch included) to sRGB, via a 1x1 canvas. */
 const resolveCssColor = (value: string): Rgb | null => {
   const ctx = getProbe();
   if (!ctx) return null;
@@ -87,7 +87,7 @@ const oklchToLinearSrgb = ({ l: okL, c, h }: Oklch): Rgb => {
 const inGamut = (rgb: Rgb) => rgb.every((c) => c >= -1e-4 && c <= 1 + 1e-4);
 
 // Reduce chroma until the color fits sRGB, mirroring CSS Color 4 gamut mapping
-// rather than clipping channels — clipping would shift the hue.
+// rather than clipping channels, since clipping would shift the hue.
 const oklchToSrgb = (color: Oklch): Rgb => {
   let lo = 0;
   let hi = color.c;
@@ -143,7 +143,7 @@ const buildPalette = (): Palette | null => {
   const primary = srgbToOklch(primaryRgb);
   const cool = srgbToOklch(coolRgb);
   // Lightness alone decides the theme, so this works under `.dark`, `.light`,
-  // a media query, or a token override — no theme context needed.
+  // a media query, or a token override, with no theme context needed.
   const shades = background.l < 0.5 ? SHADES.dark : SHADES.light;
   const shade = (accent: Oklch, amount: number) => oklchToSrgb(mixOklab(background, accent, amount));
 
@@ -289,7 +289,7 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
       if (running && !still) frame = requestAnimationFrame(draw);
     };
 
-    // Paint only while on-screen and the tab is visible — an off-screen sky
+    // Paint only while on-screen and the tab is visible; an off-screen sky
     // costs nothing, and the CSS wash underneath covers the gap.
     const play = () => {
       if (running || !ready || !onScreen || document.hidden) return;
@@ -302,7 +302,7 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
     };
 
     // Read the tokens on the next frame, not now: a theme toggle flips the class
-    // in its own effect, and parent effects run after child ones — reading here
+    // in its own effect, and parent effects run after child ones, so reading here
     // would sample the theme we're leaving.
     const paletteFrame = requestAnimationFrame(() => {
       const palette = buildPalette();
@@ -310,7 +310,7 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
       // showing rather than an off-theme gradient.
       if (!palette) return;
 
-      // Fixed for the life of the effect — a theme change re-runs it — so these
+      // Fixed for the life of the effect (a theme change re-runs it), so these
       // upload once instead of every frame.
       gl.useProgram(program);
       gl.uniform3fv(gl.getUniformLocation(program, 'u_base'), palette.base);
@@ -337,7 +337,7 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
     const onVisibility = () => (document.hidden ? pause() : play());
     document.addEventListener('visibilitychange', onVisibility);
 
-    // A resize changes the canvas backing store, which clears it — repaint once
+    // A resize changes the canvas backing store, which clears it, so repaint once
     // even when the loop is parked on a still frame.
     const onResize = () => {
       if (ready && still) draw();

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -139,54 +139,115 @@ export {
   SubscriptionPlanAction,
 };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const PLANS = [
+  {
+    id: 'starter',
+    name: 'Starter',
+    price: '$0',
+    description: 'For side projects and trials.',
+    features: ['1 project', 'Community support', '1k requests / day'],
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    price: '$29',
+    description: 'For growing teams shipping every week.',
+    features: ['Unlimited projects', 'Priority support', '100k requests / day', 'Audit log'],
+    featured: true,
+  },
+  {
+    id: 'scale',
+    name: 'Scale',
+    price: '$99',
+    description: 'For high-volume production.',
+    features: ['Everything in Pro', 'SSO and SAML', 'Unlimited requests'],
+  },
+];
+
 const SubscriptionPlansBlock = () => {
+  const [currentId, setCurrentId] = React.useState('scale');
+  const [pendingId, setPendingId] = React.useState<string | null>(null);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  React.useEffect(() => () => clearTimeout(timer.current), []);
+
+  const currentIndex = PLANS.findIndex((plan) => plan.id === currentId);
+
+  const choose = (id: string) => {
+    setPendingId(id);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      setCurrentId(id);
+      setPendingId(null);
+    }, 1000);
+  };
+
   return (
     <section data-slot="subscription-plans-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <SubscriptionPlans className="w-full max-w-3xl">
-        <SubscriptionPlan>
-          <SubscriptionPlanName>Starter</SubscriptionPlanName>
-          <SubscriptionPlanPrice cycle="mo">$0</SubscriptionPlanPrice>
-          <SubscriptionPlanDescription>For side projects and trials.</SubscriptionPlanDescription>
-          <SubscriptionPlanFeatures>
-            <SubscriptionPlanFeature>1 project</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>Community support</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>1k requests / day</SubscriptionPlanFeature>
-          </SubscriptionPlanFeatures>
-          <SubscriptionPlanAction>Choose Starter</SubscriptionPlanAction>
-        </SubscriptionPlan>
-
-        <SubscriptionPlan featured>
-          <SubscriptionPlanBadge>Popular</SubscriptionPlanBadge>
-          <SubscriptionPlanName>Pro</SubscriptionPlanName>
-          <SubscriptionPlanPrice cycle="mo">$29</SubscriptionPlanPrice>
-          <SubscriptionPlanDescription>For growing teams shipping fast.</SubscriptionPlanDescription>
-          <SubscriptionPlanFeatures>
-            <SubscriptionPlanFeature>Unlimited projects</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>Priority support</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>100k requests / day</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>Audit log</SubscriptionPlanFeature>
-          </SubscriptionPlanFeatures>
-          <SubscriptionPlanAction variant="primary">Upgrade to Pro</SubscriptionPlanAction>
-        </SubscriptionPlan>
-
-        <SubscriptionPlan current>
-          <SubscriptionPlanBadge>Current</SubscriptionPlanBadge>
-          <SubscriptionPlanName>Scale</SubscriptionPlanName>
-          <SubscriptionPlanPrice cycle="mo">$99</SubscriptionPlanPrice>
-          <SubscriptionPlanDescription>For high-volume production.</SubscriptionPlanDescription>
-          <SubscriptionPlanFeatures>
-            <SubscriptionPlanFeature>Everything in Pro</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>SSO &amp; SAML</SubscriptionPlanFeature>
-            <SubscriptionPlanFeature>Unlimited requests</SubscriptionPlanFeature>
-          </SubscriptionPlanFeatures>
-          <SubscriptionPlanAction
-            disabled
-            className="disabled:border-border disabled:bg-muted/40 disabled:text-muted-foreground disabled:opacity-100"
-          >
-            Current plan
-          </SubscriptionPlanAction>
-        </SubscriptionPlan>
+        {PLANS.map((plan, index) => {
+          const current = plan.id === currentId;
+          const pending = plan.id === pendingId;
+          const verb = index > currentIndex ? 'Upgrade to' : 'Switch to';
+          return (
+            <SubscriptionPlan
+              key={plan.id}
+              featured={plan.featured}
+              current={current}
+              style={{ animationDelay: `${index * 60}ms` }}
+              className={ENTER}
+            >
+              {current ? (
+                <SubscriptionPlanBadge key="current" className={SWAP}>
+                  Current
+                </SubscriptionPlanBadge>
+              ) : plan.featured ? (
+                <SubscriptionPlanBadge key="featured">Popular</SubscriptionPlanBadge>
+              ) : null}
+              <SubscriptionPlanName>{plan.name}</SubscriptionPlanName>
+              <SubscriptionPlanPrice cycle="mo">{plan.price}</SubscriptionPlanPrice>
+              <SubscriptionPlanDescription>{plan.description}</SubscriptionPlanDescription>
+              <SubscriptionPlanFeatures>
+                {plan.features.map((feature) => (
+                  <SubscriptionPlanFeature key={feature}>{feature}</SubscriptionPlanFeature>
+                ))}
+              </SubscriptionPlanFeatures>
+              {current ? (
+                <SubscriptionPlanAction
+                  disabled
+                  className="disabled:border-border disabled:bg-muted/40 disabled:text-muted-foreground disabled:opacity-100"
+                >
+                  Current plan
+                </SubscriptionPlanAction>
+              ) : (
+                <SubscriptionPlanAction
+                  variant={plan.featured ? 'primary' : 'outline'}
+                  disabled={pendingId !== null}
+                  aria-busy={pending || undefined}
+                  onClick={() => choose(plan.id)}
+                >
+                  {pending ? (
+                    <>
+                      <Loader2 aria-hidden className="animate-spin motion-reduce:animate-none" />
+                      Switching
+                    </>
+                  ) : (
+                    `${verb} ${plan.name}`
+                  )}
+                </SubscriptionPlanAction>
+              )}
+            </SubscriptionPlan>
+          );
+        })}
       </SubscriptionPlans>
+      <p aria-live="polite" className="sr-only">
+        {pendingId ? 'Changing plan' : `Current plan: ${PLANS[currentIndex].name}`}
+      </p>
     </section>
   );
 };

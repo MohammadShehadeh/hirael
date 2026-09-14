@@ -1,9 +1,18 @@
-'use client';
-
 import * as React from 'react';
 import { Mail } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const EMAIL = 'hello@lenaparks.dev';
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -11,17 +20,6 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
       <path
         fill="currentColor"
         d="M12 2C6.48 2 2 6.58 2 12.22c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.36-3.37-1.36-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.35 1.11 2.92.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.13-4.55-5.04 0-1.11.39-2.02 1.03-2.74-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.04A9.4 9.4 0 0 1 12 7.04c.85 0 1.7.12 2.5.34 1.9-1.31 2.74-1.04 2.74-1.04.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.74 0 3.92-2.34 4.78-4.57 5.03.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.04 10.04 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z"
-      />
-    </svg>
-  );
-};
-
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden {...props}>
-      <path
-        fill="currentColor"
-        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
       />
     </svg>
   );
@@ -40,7 +38,6 @@ const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
 
 const socials = [
   { label: 'GitHub', href: '#', icon: GithubIcon },
-  { label: 'Twitter', href: '#', icon: XIcon },
   { label: 'LinkedIn', href: '#', icon: LinkedinIcon },
 ];
 
@@ -53,38 +50,61 @@ const Cta04 = () => {
       >
         <span
           data-slot="cta-eyebrow"
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground"
+          className={cn(
+            ENTER,
+            'inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground',
+          )}
         >
-          Get in touch
+          Booking projects for Q4
         </span>
 
         <h2
           data-slot="cta-title"
-          className="mt-6 font-serif text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
+          style={stagger(1)}
+          className={cn(
+            ENTER,
+            'mt-6 font-serif text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl',
+          )}
         >
           Let&apos;s work <span className="italic text-foreground">together</span>.
         </h2>
 
-        <p data-slot="cta-description" className="mt-5 max-w-2xl text-sm text-muted-foreground sm:text-base">
+        <p
+          data-slot="cta-description"
+          style={stagger(2)}
+          className={cn(ENTER, 'mt-5 max-w-2xl text-sm text-muted-foreground sm:text-base')}
+        >
           I build fast, accessible, and considered interfaces for the web. Whether you have a project in mind or just
           want to compare notes, I would like to hear from you.
         </p>
 
-        <Button render={<a href="#" />} nativeButton={false} size="lg" className="mt-7 rounded-full px-7">
-          <Mail className="size-4" />
-          Get in touch
-        </Button>
+        <div data-slot="cta-actions" style={stagger(3)} className={cn(ENTER, 'mt-7 flex flex-col items-center gap-2')}>
+          <Button render={<a href={`mailto:${EMAIL}`} />} nativeButton={false} size="lg" className="rounded-full px-7">
+            <Mail className="size-4" />
+            Get in touch
+          </Button>
 
-        <p data-slot="cta-direct" className="mt-3 text-sm text-muted-foreground">
-          or reach out directly at <span className="font-medium text-foreground">hello@example.com</span>
-        </p>
+          <p
+            data-slot="cta-direct"
+            className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground"
+          >
+            <span>or copy my address</span>
+            <CopyButton value={EMAIL} className="font-medium text-foreground">
+              {EMAIL}
+            </CopyButton>
+          </p>
+        </div>
 
-        <div data-slot="cta-socials" className="mt-5 flex items-center justify-center gap-3">
+        <div
+          data-slot="cta-socials"
+          style={stagger(4)}
+          className={cn(ENTER, 'mt-3 flex items-center justify-center gap-3')}
+        >
           {socials.map((social) => (
             <Button
-              key={social.label}
               render={<a href={social.href} aria-label={social.label} />}
               nativeButton={false}
+              key={social.label}
               variant="outline"
               size="icon"
               className="size-11 rounded-full"

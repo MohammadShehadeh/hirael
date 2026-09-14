@@ -1,6 +1,4 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -43,7 +41,7 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
 
 const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
-    <div className="animate-in fade-in zoom-in-90 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-200">
+    <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
       <Badge
         data-slot="faq-badge"
         variant="outline"
@@ -78,10 +76,10 @@ const FaqTitle = ({ children, className, ...props }: FaqTitleProps) => {
         <span
           key={`${word}-${i}`}
           className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both motion-reduce:animate-none',
+            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
             i < half ? 'text-muted-foreground' : 'text-foreground',
           )}
-          style={{ animationDelay: `${200 + i * 80}ms` }}
+          style={{ animationDelay: `${60 + i * 50}ms` }}
         >
           {word}
         </span>
@@ -95,7 +93,7 @@ const FaqDescription = ({ className, ...props }: React.ComponentProps<'p'>) => {
     <p
       data-slot="faq-description"
       className={cn(
-        'mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none delay-400',
+        'mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none delay-300',
         className,
       )}
       {...props}
@@ -111,8 +109,8 @@ interface FaqCardProps extends React.ComponentProps<typeof AccordionItem> {
 const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
   return (
     <div
-      className="animate-in fade-in slide-in-from-bottom-5 duration-450 ease-out fill-mode-both motion-reduce:animate-none"
-      style={{ animationDelay: `${index * 100}ms` }}
+      className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+      style={{ animationDelay: `${360 + index * 50}ms` }}
     >
       <AccordionItem
         data-slot="faq-card"

@@ -34,7 +34,7 @@ const TerminalHeader = ({ className, children, ...props }: TerminalHeaderProps) 
         <span className="size-2.5 rounded-full bg-warning/70" />
         <span className="size-2.5 rounded-full bg-success/70" />
       </span>
-      {children ? <span className="ms-1 truncate font-mono text-xs text-muted-foreground">{children}</span> : null}
+      {children ? <span className="ms-1 truncate text-xs text-muted-foreground">{children}</span> : null}
     </div>
   );
 };
@@ -163,7 +163,7 @@ const TERMINAL_USER = 'deploy@edge';
 
 const TerminalBlock = () => {
   const [entries, setEntries] = React.useState<TerminalEntry[]>([
-    { kind: 'output', text: 'hirael cloud shell. Type `help` to start' },
+    { kind: 'output', text: 'Hirael cloud shell. Type `help` to start' },
   ]);
 
   function run(command: string) {
@@ -208,7 +208,7 @@ const TerminalBlock = () => {
   return (
     <section data-slot="terminal-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="w-full max-w-2xl">
-        <Terminal>
+        <Terminal className="animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
           <TerminalHeader>{TERMINAL_USER}: ~/app</TerminalHeader>
           <TerminalBody>
             {entries.map((entry, i) => {

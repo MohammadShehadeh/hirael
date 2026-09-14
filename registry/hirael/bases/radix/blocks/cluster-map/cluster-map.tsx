@@ -43,7 +43,7 @@ const ClusterMap = ({ columns = 12, className, style, ...props }: ClusterMapProp
 interface ClusterNodeProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   health: NodeHealth;
   label?: React.ReactNode;
-  /** Utilization 0–1, drives the fill intensity. */
+  /** Utilization from 0 to 1, drives the fill intensity. */
   load?: number;
   active?: boolean;
 }
@@ -57,10 +57,12 @@ const ClusterNode = ({ health, label, load = 1, active, className, title, ...pro
       data-health={health}
       title={title ?? (label ? String(label) : healthLabel[health])}
       aria-label={label ? `${label}, ${healthLabel[health]}` : healthLabel[health]}
+      aria-pressed={active === undefined ? undefined : active}
+      data-active={active ? '' : undefined}
       className={cn(
         'group relative aspect-square rounded-sm outline-none transition-transform',
         'hover:z-10 hover:scale-110 focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring',
-        active && 'ring-2 ring-ring',
+        active && 'z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background',
         className,
       )}
       {...props}
@@ -97,6 +99,11 @@ const ClusterMapLegendItem = ({ health, className, children, ...props }: Cluster
 
 export { ClusterMap, ClusterNode, ClusterMapLegend, ClusterMapLegendItem };
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const CLUSTER_COLUMNS = 16;
 const CLUSTER_ROWS = 6;
 
@@ -107,34 +114,102 @@ const clusterHealthFor = (i: number): NodeHealth => {
   return 'healthy';
 };
 
-const ClusterMapBlock = () => {
-  const nodes = Array.from({ length: CLUSTER_COLUMNS * CLUSTER_ROWS }, (_, i) => ({
+const CLUSTER_NODES = Array.from({ length: CLUSTER_COLUMNS * CLUSTER_ROWS }, (_, i) => {
+  const health = clusterHealthFor(i);
+  return {
     id: i,
-    health: clusterHealthFor(i),
-    load: 0.4 + ((i * 7) % 60) / 100,
-  }));
+    name: `node-${String(i + 1).padStart(3, '0')}`,
+    zone: ['eu-west-1a', 'eu-west-1b', 'eu-west-1c'][i % 3],
+    health,
+    load: health === 'idle' ? 0.08 : 0.4 + ((i * 7) % 60) / 100,
+    pods: health === 'idle' ? 0 : 12 + ((i * 5) % 24),
+  };
+});
+
+const healthTone: Record<NodeHealth, string> = {
+  healthy: 'text-success',
+  warning: 'text-warning',
+  critical: 'text-destructive',
+  idle: 'text-muted-foreground',
+};
+
+const ClusterMapBlock = () => {
+  const [selectedId, setSelectedId] = React.useState<number | null>(37);
+  const selected = selectedId === null ? null : CLUSTER_NODES[selectedId];
+  const counts = CLUSTER_NODES.reduce<Record<NodeHealth, number>>(
+    (acc, node) => ({ ...acc, [node.health]: acc[node.health] + 1 }),
+    { healthy: 0, warning: 0, critical: 0, idle: 0 },
+  );
 
   return (
     <section data-slot="cluster-map-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="flex w-full max-w-2xl flex-col gap-4">
-        <div>
-          <p className="mb-2 text-xs uppercase text-muted-foreground">prod-cluster · 96 nodes</p>
+      <div className={cn(ENTER, 'flex w-full max-w-2xl flex-col gap-4')}>
+        <div className="flex flex-col gap-2">
+          <p className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+            <span>prod-cluster</span>
+            <span aria-hidden className="text-border">
+              |
+            </span>
+            <span className="tabular-nums">{CLUSTER_NODES.length} nodes</span>
+          </p>
           <ClusterMap columns={CLUSTER_COLUMNS}>
-            {nodes.map((node) => (
+            {CLUSTER_NODES.map((node) => (
               <ClusterNode
                 key={node.id}
                 health={node.health}
                 load={node.load}
-                label={`node-${String(node.id + 1).padStart(3, '0')}`}
+                label={node.name}
+                active={node.id === selectedId}
+                onClick={() => setSelectedId((current) => (current === node.id ? null : node.id))}
               />
             ))}
           </ClusterMap>
         </div>
+
+        <div
+          data-slot="cluster-map-details"
+          aria-live="polite"
+          className="min-h-14 rounded-md border border-border bg-card/40 px-4 py-3"
+        >
+          {selected ? (
+            <dl key={selected.id} className={cn(SWAP, 'grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-4')}>
+              <div className="flex flex-col gap-0.5">
+                <dt className="text-xs text-muted-foreground">Node</dt>
+                <dd className="font-medium">{selected.name}</dd>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <dt className="text-xs text-muted-foreground">Health</dt>
+                <dd className={cn('flex items-center gap-1.5', healthTone[selected.health])}>
+                  <span aria-hidden className={cn('size-2 rounded-sm', healthFill[selected.health])} />
+                  {healthLabel[selected.health]}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <dt className="text-xs text-muted-foreground">CPU load</dt>
+                <dd className="tabular-nums">{Math.round(selected.load * 100)}%</dd>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <dt className="text-xs text-muted-foreground">Pods</dt>
+                <dd className="tabular-nums">
+                  {selected.pods}
+                  <span className="ms-1.5 text-xs text-muted-foreground">{selected.zone}</span>
+                </dd>
+              </div>
+            </dl>
+          ) : (
+            <p key="empty" className={cn(SWAP, 'py-2 text-sm text-muted-foreground')}>
+              Select a node to see its health and load.
+            </p>
+          )}
+        </div>
+
         <ClusterMapLegend>
-          <ClusterMapLegendItem health="healthy">Healthy</ClusterMapLegendItem>
-          <ClusterMapLegendItem health="warning">Warning</ClusterMapLegendItem>
-          <ClusterMapLegendItem health="critical">Critical</ClusterMapLegendItem>
-          <ClusterMapLegendItem health="idle">Idle</ClusterMapLegendItem>
+          {(Object.keys(healthLabel) as NodeHealth[]).map((health) => (
+            <ClusterMapLegendItem key={health} health={health}>
+              {healthLabel[health]}
+              <span className="tabular-nums text-foreground">{counts[health]}</span>
+            </ClusterMapLegendItem>
+          ))}
         </ClusterMapLegend>
       </div>
     </section>

@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import Image from 'next/image';
 import { Play, Rocket } from 'lucide-react';
@@ -10,7 +8,11 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 /** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
-  'animate-in fade-in slide-in-from-bottom-5 duration-400 ease-out fill-mode-both motion-reduce:animate-none';
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -25,9 +27,9 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
 
 const Hero10 = () => {
   return (
-    <div
+    <section
       data-slot="hero"
-      className="relative z-0 max-h-fit min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
+      className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
     >
       <Image
         src="/media/blocks/hero-10/fractal-maze.jpg"
@@ -36,38 +38,41 @@ const Hero10 = () => {
         height={1080}
         quality={75}
         priority
-        className="absolute inset-0 h-full w-full object-cover opacity-40 blur-[1px] md:blur-[2px]"
+        className="absolute inset-0 h-full w-full object-cover dark:opacity-40 blur-[1px] md:blur-[2px]"
       />
 
-      <div className="relative z-10 px-6">
+      <div data-slot="hero-content" className="relative z-10 px-6">
         <div className="relative mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
-          <Badge variant="outline">
-            <Rocket className="size-3" />
-            <span className="text-xs">Design workflows visually</span>
+          <Badge variant="outline" className={cn(RISE, 'border-white/30 text-white')}>
+            <Rocket aria-hidden className="size-3" />
+            <span className="text-xs">Visual CI/CD editor</span>
           </Badge>
 
           <h1
+            style={stagger(1)}
             className={cn(
-              'relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16',
+              'relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16 text-white',
               RISE,
             )}
           >
-            The visual control plane <span>for your pipelines</span>
+            The visual control plane for your pipelines
           </h1>
 
           <p
-            className={cn('mx-auto mt-8 w-full text-base tracking-tight sm:text-lg md:text-balance', RISE, 'delay-100')}
+            style={stagger(2)}
+            className={cn(
+              'mx-auto mt-8 w-full text-base tracking-tight text-white/75 sm:text-lg md:text-balance',
+              RISE,
+            )}
           >
-            Build, analyze, and optimize CI/CD workflows with drag-and-drop, AI insights, and guardrails, without
-            breaking your YAML.
+            Arrange build, test, and deploy steps on a canvas, see which one failed and why, and have every change
+            written back to your YAML.
           </p>
 
           <div
-            className={cn(
-              'mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md',
-              RISE,
-              'delay-200',
-            )}
+            data-slot="hero-actions"
+            style={stagger(3)}
+            className={cn('mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md', RISE)}
           >
             <Button render={<a href="#" className="group flex items-center gap-2" />} nativeButton={false} size="lg">
               <GithubIcon className="size-4" />
@@ -79,13 +84,13 @@ const Hero10 = () => {
               variant="secondary"
               size="lg"
             >
-              <Play className="size-3.5 fill-current rtl:rotate-180" />
+              <Play className="size-3.5 fill-current" />
               See how it works
             </Button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -80,6 +80,15 @@ const STATUS_TONE: Record<MemberStatus, { dot: string; text: string }> = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
 const initialsOf = (name: string) => {
   return name
     .split(' ')
@@ -114,7 +123,7 @@ const MembersHeader = ({ title, count, description, className, children, ...prop
         <h2 className="flex items-center gap-2 text-base font-semibold tracking-[-0.01em] text-foreground">
           {title}
           {typeof count === 'number' ? (
-            <Badge variant="secondary" className="font-mono tabular-nums">
+            <Badge variant="secondary" className="tabular-nums">
               {count}
             </Badge>
           ) : null}
@@ -246,7 +255,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
       <TableCell className="px-4 py-2.5">
         <span className="flex items-center gap-3">
           <Avatar>
-            <AvatarFallback className="font-mono text-[10px] font-medium text-foreground">
+            <AvatarFallback className="text-xs font-medium text-foreground">
               {initialsOf(member.name)}
             </AvatarFallback>
           </Avatar>
@@ -261,7 +270,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
       </TableCell>
       <TableCell className="px-4 py-2.5">
         {roleLocked ? (
-          <Badge variant={isOwner ? 'secondary' : 'outline'} className="h-8 px-3 font-mono">
+          <Badge variant={isOwner ? 'secondary' : 'outline'} className="h-8 px-3">
             {member.role}
           </Badge>
         ) : (
@@ -271,7 +280,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
       <TableCell className="hidden px-4 py-2.5 sm:table-cell">
         <MembersStatus status={member.status} />
       </TableCell>
-      <TableCell className="hidden px-4 py-2.5 font-mono text-xs tabular-nums text-muted-foreground md:table-cell">
+      <TableCell className="hidden px-4 py-2.5 text-xs tabular-nums text-muted-foreground md:table-cell">
         {member.joined}
       </TableCell>
       <TableCell className="px-4 py-2.5 text-end">
@@ -475,8 +484,12 @@ const MembersPendingItem = ({
       </Avatar>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium text-foreground">{invite.email}</span>
-        <span className="truncate text-xs uppercase text-muted-foreground">
-          {invite.role} · Invited {invite.invited}
+        <span className="flex min-w-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+          <span>{invite.role}</span>
+          <span aria-hidden className="text-border">
+            |
+          </span>
+          <span className="truncate">Invited {invite.invited}</span>
         </span>
       </span>
       <MembersStatus status="Pending" className="hidden sm:inline-flex" />
@@ -490,10 +503,10 @@ const MembersPendingItem = ({
           className={cn('min-w-20', resent && 'text-success disabled:opacity-100')}
         >
           {resent ? (
-            <>
+            <span className={cn(SWAP, 'flex items-center gap-1.5')}>
               <Check className="size-3.5" aria-hidden />
               Sent
-            </>
+            </span>
           ) : (
             'Resend'
           )}
@@ -534,14 +547,11 @@ const MembersEmpty = ({
       )}
       {...props}
     >
-      <span
-        aria-hidden
-        className="inline-flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground"
-      >
-        <Users className="size-4" />
-      </span>
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-foreground">{title}</span>
+      <div className="flex flex-col items-center gap-1">
+        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <Users aria-hidden className="size-4 text-muted-foreground" />
+          {title}
+        </span>
         <span className="text-sm text-muted-foreground">{description}</span>
       </div>
       {action}
@@ -679,6 +689,7 @@ const Members01 = () => {
             title="Members"
             count={members.length}
             description="Everyone with access to the Plinth Labs workspace."
+            className={ENTER}
           >
             <InputGroup className="h-8 w-full sm:w-56">
               <InputGroupAddon align="inline-start">
@@ -703,10 +714,11 @@ const Members01 = () => {
 
           {visible.length === 0 ? (
             <MembersEmpty
+              className={SWAP}
               title="No matching members"
               description={
                 <>
-                  Nothing matched <span className="font-mono text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a
+                  Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a
                   name, an email, or a role.
                 </>
               }
@@ -725,7 +737,7 @@ const Members01 = () => {
               }
             />
           ) : (
-            <MembersTable>
+            <MembersTable style={stagger(1)} className={ENTER}>
               {visible.map((m) => (
                 <MembersRow
                   key={m.id}
@@ -739,11 +751,12 @@ const Members01 = () => {
           )}
 
           {pending.length > 0 ? (
-            <MembersPending count={pending.length}>
+            <MembersPending count={pending.length} style={stagger(2)} className={ENTER}>
               {pending.map((p) => (
                 <MembersPendingItem
                   key={p.id}
                   invite={p}
+                  className={p.invited === 'just now' ? SWAP : undefined}
                   resent={resent.has(p.id)}
                   onResend={() => resend(p.id)}
                   onRevoke={() => revoke(p.id)}

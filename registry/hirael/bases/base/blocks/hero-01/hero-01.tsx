@@ -4,11 +4,19 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { ArrowRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const Hero01Backdrop = dynamic(() => import('./hero-01-backdrop'), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
+});
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
 });
 
 const NAV_LINKS = ['Product', 'Docs', 'Pricing', 'Changelog'] as const;
@@ -52,14 +60,14 @@ const Hero01 = () => {
 
           <nav
             data-slot="hero-nav"
-            className="relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10"
+            className={cn(ENTER, 'relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10')}
           >
             <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
               Aperture
             </span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
-                <a key={link} href="#" className="transition-colors hover:text-foreground">
+                <a key={link} href="#" className="transition-colors duration-150 hover:text-foreground">
                   {link}
                 </a>
               ))}
@@ -67,7 +75,7 @@ const Hero01 = () => {
             <div className="flex items-center gap-2">
               <a
                 href="#"
-                className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline"
+                className="hidden text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground sm:inline"
               >
                 Sign in
               </a>
@@ -77,18 +85,31 @@ const Hero01 = () => {
             </div>
           </nav>
 
-          <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10">
-            <h1 className="max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+          <div
+            data-slot="hero-content"
+            className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center md:px-10"
+          >
+            <h1
+              style={stagger(1)}
+              className={cn(
+                ENTER,
+                'max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+              )}
+            >
               The interface layer your product was missing.
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p style={stagger(2)} className={cn(ENTER, 'mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground')}>
               Drop in accessible components and ship a polished UI in an afternoon, no design system required.
             </p>
 
             <div
               data-slot="hero-actions"
-              className="mt-10 flex flex-col items-center gap-3 md:rounded-full rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row"
+              style={stagger(3)}
+              className={cn(
+                ENTER,
+                'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
+              )}
             >
               <Button
                 render={<a href="#" />}
@@ -97,7 +118,7 @@ const Hero01 = () => {
                 className="group h-12 rounded-full px-7 text-base"
               >
                 Start building
-                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
               <Button
                 render={<a href="#" />}
@@ -113,13 +134,19 @@ const Hero01 = () => {
 
           <div
             data-slot="hero-stats"
-            className="relative z-10 flex items-center justify-center gap-8 border-t border-border px-6 py-7 md:gap-16 md:px-10"
+            style={stagger(4)}
+            className={cn(
+              ENTER,
+              'relative z-10 flex items-center justify-center gap-8 border-t border-border px-6 py-7 md:gap-16 md:px-10',
+            )}
           >
             {STATS.map((stat, i) => (
               <React.Fragment key={stat.label}>
                 {i > 0 && <span aria-hidden className="h-9 w-px bg-border" />}
-                <div className="text-center">
-                  <div className="font-serif text-2xl font-medium text-foreground md:text-3xl">{stat.value}</div>
+                <div data-slot="hero-stat" className="text-center">
+                  <div dir="ltr" className="font-serif text-2xl font-medium tabular-nums text-foreground md:text-3xl">
+                    {stat.value}
+                  </div>
                   <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">{stat.label}</div>
                 </div>
               </React.Fragment>

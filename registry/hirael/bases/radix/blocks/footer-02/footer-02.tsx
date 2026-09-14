@@ -1,6 +1,4 @@
-'use client';
-
-import * as React from 'react';
+import type * as React from 'react';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -10,6 +8,13 @@ interface FooterColumn {
   href: string;
   links: readonly { label: string; href: string }[];
 }
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const MAX_LINKS = 5;
 
@@ -22,8 +27,8 @@ const COLUMNS: readonly FooterColumn[] = [
       { label: 'Components', href: '#' },
       { label: 'Templates', href: '#' },
       { label: 'Pricing', href: '#' },
-      { label: 'Changelog', href: '#' },
       { label: 'Roadmap', href: '#' },
+      { label: 'Status', href: '#' },
     ],
   },
   {
@@ -42,7 +47,7 @@ const COLUMNS: readonly FooterColumn[] = [
     href: '#',
     links: [
       { label: 'About', href: '#' },
-      { label: 'Blog', href: '#' },
+      { label: 'Changelog', href: '#' },
       { label: 'Careers', href: '#' },
       { label: 'Contact', href: '#' },
       { label: 'Privacy', href: '#' },
@@ -72,18 +77,14 @@ const Footer02 = () => {
         />
 
         <div className="relative flex flex-col gap-10 lg:flex-row">
-          <div data-slot="footer-brand" className="flex items-start gap-4 lg:w-1/3">
-            <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground">
-              <BrandMark className="size-6" />
+          <div data-slot="footer-brand" className={cn(ENTER, 'flex flex-col gap-3 lg:w-1/3')}>
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.02em] text-foreground">
+              <BrandMark className="size-5" />
+              Hirael
             </span>
-            <div className="space-y-3">
-              <span className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground">
-                Hirael
-              </span>
-              <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Notes on building for the web: interface patterns, small tools, and resources worth keeping around.
-              </p>
-            </div>
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Components, blocks and full pages for shadcn/ui projects. Install the source and change whatever you need.
+            </p>
           </div>
 
           <nav
@@ -91,11 +92,11 @@ const Footer02 = () => {
             aria-label="Footer"
             className="grid flex-1 grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3"
           >
-            {COLUMNS.map((col) => (
-              <div data-slot="footer-column" key={col.title}>
+            {COLUMNS.map((col, index) => (
+              <div data-slot="footer-column" key={col.title} style={stagger(index + 1)} className={ENTER}>
                 <a
                   href={col.href}
-                  className="text-sm font-semibold text-foreground transition-colors hover:text-foreground"
+                  className="text-sm font-semibold text-foreground transition-colors duration-150 hover:text-muted-foreground"
                 >
                   {col.title}
                 </a>
@@ -129,12 +130,14 @@ const Footer02 = () => {
 
         <div
           data-slot="footer-meta"
+          style={stagger(4)}
           className={cn(
+            ENTER,
             'relative mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6',
             'sm:flex-row sm:items-center',
           )}
         >
-          <p className="text-xs uppercase text-muted-foreground">© 2026 · All rights reserved</p>
+          <p className="text-xs text-muted-foreground">© 2026 Hirael. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
               Terms

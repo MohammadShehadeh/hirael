@@ -1,48 +1,76 @@
-'use client';
+import type * as React from 'react';
 
-import * as React from 'react';
+import { cn } from '@/lib/utils';
 
-const LOGOS = ['Linear', 'Vercel', 'Resend', 'Cal.com', 'Raycast'] as const;
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const LOGOS = ['Plinth Labs', 'Hexpoint', 'Brella', 'Northline', 'Kestrel'] as const;
 
 const Testimonial01 = () => {
   return (
-    <section className="bg-background py-20 sm:py-28">
+    <section data-slot="testimonial" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-10 text-center">
-          <span className="inline-flex items-center gap-2 text-xs uppercase text-foreground">
-            <span className="size-1 rounded-full bg-foreground" />
-            Testimonial
-          </span>
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Customer story</span>
 
-          <blockquote className="flex flex-col items-center">
-            <span
-              aria-hidden
-              className="mb-2 block h-6 font-serif text-6xl leading-none text-muted-foreground/40 sm:h-8 sm:text-7xl"
+          <figure className="flex flex-col items-center gap-10">
+            <blockquote
+              data-slot="testimonial-quote"
+              style={stagger(1)}
+              className={cn(ENTER, 'flex flex-col items-center')}
             >
-              &ldquo;
-            </span>
-            <p className="font-serif text-2xl leading-[1.3] tracking-tight sm:text-3xl">
-              The compound APIs match shadcn exactly, so there was nothing new for the team to learn. We pulled in the
-              date picker and the data table and shipped the same afternoon.
-            </p>
-          </blockquote>
+              <span
+                aria-hidden
+                className="mb-2 block h-6 font-serif text-6xl leading-none text-muted-foreground/40 sm:h-8 sm:text-7xl"
+              >
+                &ldquo;
+              </span>
+              <p className="font-serif text-2xl leading-[1.3] tracking-tight sm:text-3xl">
+                The compound APIs match shadcn exactly, so there was nothing new for the team to learn. We pulled in the
+                date picker and the data table and shipped the same afternoon.
+              </p>
+            </blockquote>
 
-          <div className="flex flex-col items-center gap-3">
-            <div className="inline-flex size-12 items-center justify-center rounded-full border border-border bg-muted font-mono text-sm font-medium text-foreground">
-              MR
-            </div>
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="text-sm font-semibold tracking-[-0.01em]">Maya Renner</span>
-              <span className="text-xs uppercase text-muted-foreground">Staff engineer · Plinth Labs</span>
-            </div>
-          </div>
+            <figcaption
+              data-slot="testimonial-author"
+              style={stagger(2)}
+              className={cn(ENTER, 'flex flex-col items-center gap-3')}
+            >
+              <span
+                aria-hidden
+                className="inline-flex size-12 items-center justify-center rounded-full border border-border bg-muted text-sm font-medium text-foreground"
+              >
+                MR
+              </span>
+              <span className="flex flex-col items-center gap-0.5">
+                <span className="text-sm font-semibold tracking-[-0.01em]">Maya Renner</span>
+                <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                  <span>Staff engineer</span>
+                  <span aria-hidden className="text-border">
+                    |
+                  </span>
+                  <span>Plinth Labs</span>
+                </span>
+              </span>
+            </figcaption>
+          </figure>
 
-          <div className="w-full border-t border-border pt-8">
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-xs text-muted-foreground">
-              {LOGOS.map((l) => (
-                <span key={l}>{l}</span>
+          <div
+            data-slot="testimonial-logos"
+            style={stagger(3)}
+            className={cn(ENTER, 'w-full border-t border-border pt-8')}
+          >
+            <p className="sr-only">Also building with Hirael</p>
+            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+              {LOGOS.map((logo) => (
+                <li key={logo}>{logo}</li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </div>

@@ -31,6 +31,11 @@ import {
   StepperTrigger,
 } from '@/registry/hirael/bases/base/components/stepper';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 interface OnboardingStepMeta {
   title: string;
   description?: string;
@@ -161,7 +166,7 @@ const OnboardingProgress = ({ className, ...props }: OnboardingProgressProps) =>
   return (
     <div data-slot="onboarding-progress" className={cn('flex items-center gap-3', className)} {...props}>
       <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1 bg-muted" />
-      <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+      <span className="text-xs tabular-nums text-muted-foreground">
         {step + 1}/{total}
       </span>
     </div>
@@ -182,7 +187,7 @@ const OnboardingStep = ({ index, className, children, ...props }: OnboardingStep
       data-index={index}
       className={cn(
         'flex flex-col gap-5',
-        'animate-in fade-in-0 slide-in-from-bottom-1 duration-300 ease-out motion-reduce:animate-none',
+        SWAP,
         className,
       )}
       {...props}
@@ -386,17 +391,15 @@ const Onboarding01 = () => {
       data-slot="onboarding-01-block"
       className="flex min-h-svh w-full items-center justify-center bg-background px-4 py-10 sm:px-6"
     >
-      <Card className="w-full max-w-xl gap-0 px-6 py-6 sm:px-8 sm:py-8">
+      <Card className={cn(ENTER, 'w-full max-w-xl gap-0 px-6 py-6 sm:px-8 sm:py-8')}>
         {done ? (
           <div
             data-slot="onboarding-done"
-            className="flex flex-col items-center gap-5 py-6 text-center animate-in fade-in-0 zoom-in-95 duration-300 ease-out motion-reduce:animate-none"
+            className="flex flex-col items-center gap-5 py-6 text-center animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
           >
-            <span className="inline-flex size-14 items-center justify-center rounded-full bg-success/15 text-success">
-              <Check className="size-7" strokeWidth={2.5} aria-hidden />
-            </span>
-            <div className="flex flex-col gap-1.5">
-              <h2 className="text-xl font-semibold tracking-[-0.02em] text-foreground">
+            <div className="flex flex-col items-center gap-1.5">
+              <h2 className="flex items-center gap-2 text-xl font-semibold tracking-[-0.02em] text-foreground">
+                <Check className="size-5 shrink-0 text-success" strokeWidth={2.5} aria-hidden />
                 {workspace.trim() || 'Your workspace'} is ready.
               </h2>
               <p className="max-w-sm text-sm text-muted-foreground">
@@ -404,15 +407,10 @@ const Onboarding01 = () => {
                 You can change any of this later in Settings.
               </p>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <Button type="button" size="lg">
-                Go to dashboard
-                <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
-              </Button>
-              <Button type="button" variant="link" size="sm" onClick={restart} className="text-muted-foreground">
-                Start over
-              </Button>
-            </div>
+            <Button type="button" size="lg" onClick={restart}>
+              Set up another workspace
+              <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
+            </Button>
           </div>
         ) : (
           <Onboarding steps={STEPS} step={step} onStepChange={setStep} onComplete={() => setDone(true)}>
@@ -460,7 +458,7 @@ const Onboarding01 = () => {
                       {effectiveSlug ? (
                         <>
                           Your team signs in at{' '}
-                          <span className="font-mono text-foreground">hirael.app/{effectiveSlug}</span>.
+                          <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
                         </>
                       ) : (
                         'Lowercase letters, numbers, and dashes. Derived from the name until you edit it.'

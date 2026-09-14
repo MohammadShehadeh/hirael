@@ -291,7 +291,7 @@ const EnvEditorHeader = ({
     >
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-medium text-foreground">{title}</h3>
-        <Badge variant="outline" className="font-mono text-[10px] tabular-nums" aria-label={`${vars.length} variables`}>
+        <Badge variant="outline" className="text-[10px] tabular-nums" aria-label={`${vars.length} variables`}>
           {vars.length}
         </Badge>
       </div>
@@ -376,7 +376,7 @@ const EnvEditorImport = ({ className, children = 'Import .env', ...props }: EnvE
           className="min-h-40 font-mono text-xs"
         />
         <DialogFooter className="sm:items-center sm:justify-between">
-          <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+          <span className="text-[11px] tabular-nums text-muted-foreground">
             {parsed.length} {parsed.length === 1 ? 'variable' : 'variables'} found
           </span>
           <Button type="button" size="sm" disabled={parsed.length === 0} onClick={submit}>
@@ -613,7 +613,11 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
       onKeyDown={(event) => {
         if (event.key === 'Escape') reset();
       }}
-      className={cn('flex flex-col gap-2 border-t border-border bg-muted/40 px-4 py-3', ROW_GRID, className)}
+      className={cn(
+        'flex flex-col gap-2 border-t border-border bg-muted/40 px-4 py-3 animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+        ROW_GRID,
+        className,
+      )}
       {...props}
     >
       <Field className="gap-1" data-invalid={touched && keyError ? true : undefined}>
@@ -681,7 +685,7 @@ const EnvEditorEmpty = ({ className, ...props }: EnvEditorEmptyProps) => {
     <div
       data-slot="env-editor-empty"
       className={cn(
-        'flex flex-col items-center justify-center gap-1 px-4 py-12 text-center text-sm text-muted-foreground',
+        'flex flex-col items-center justify-center gap-1 px-4 py-12 text-center text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
         className,
       )}
       {...props}
@@ -702,9 +706,11 @@ const EnvEditorFooter = ({ className, children, ...props }: EnvEditorFooterProps
       {...props}
     >
       <span
+        key={hasErrors ? 'errors' : dirty ? 'dirty' : 'saved'}
         aria-live="polite"
         className={cn(
-          'font-mono text-[11px] tabular-nums',
+          'text-[11px] tabular-nums',
+          'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
           hasErrors ? 'text-destructive' : dirty ? 'text-foreground' : 'text-muted-foreground',
         )}
       >
@@ -753,8 +759,8 @@ const SAMPLE: EnvVar[] = [
     environments: ['production', 'preview'],
   },
   {
-    key: 'STRIPE_SECRET_KEY',
-    value: 'sk_live_51N8xK2QfR7ZmY0pL9wVtHc',
+    key: 'PAYMENTS_SECRET_KEY',
+    value: 'pay_8Nx2QfR7ZmY0pL9wVtHc51K',
     secret: true,
     environments: ['production'],
   },
@@ -781,7 +787,11 @@ const EnvEditorBlock = () => {
 
   return (
     <section data-slot="env-editor-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <EnvEditor value={vars} onValueChange={setVars} className="w-full max-w-4xl">
+      <EnvEditor
+        value={vars}
+        onValueChange={setVars}
+        className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+      >
         <EnvEditorHeader />
         <EnvEditorTable />
         <EnvEditorAdd />

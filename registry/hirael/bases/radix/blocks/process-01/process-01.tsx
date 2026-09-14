@@ -1,28 +1,37 @@
-import { Terminal, FileCode2, Rocket, type LucideIcon } from 'lucide-react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
+
+const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
+
 interface Step {
-  icon: LucideIcon;
   title: string;
   body: string;
+  detail: string;
 }
 
 const STEPS: readonly Step[] = [
   {
-    icon: Terminal,
-    title: 'Run one command',
-    body: 'Point the shadcn CLI at any Hirael item. It resolves the registry and writes the source straight into your repo.',
+    title: 'Invite your team',
+    body: 'Add people by email, or let anyone with your company domain join on their own. Pick a role on the invite so nobody starts with more access than they need.',
+    detail: 'Owner, Admin, Member or Viewer',
   },
   {
-    icon: FileCode2,
-    title: 'Own the source',
-    body: 'The component lands as plain TSX in your components folder. No package pin, no version drift, yours to edit.',
+    title: 'Connect your tools',
+    body: 'Link the repository and the chat workspace you already use. Updates flow in from both, so nobody has to change where they work.',
+    detail: 'About five minutes per tool',
   },
   {
-    icon: Rocket,
-    title: 'Compose and ship',
-    body: 'Build with the compound parts, restyle against your own tokens, and deploy. Nothing phones home.',
+    title: 'Ship the first project',
+    body: 'Start from a template, name an owner for each task and set a due date. Everyone you invited sees it on their home screen right away.',
+    detail: 'Most teams do this on day one',
   },
 ];
 
@@ -30,43 +39,41 @@ const Process01 = () => {
   return (
     <section data-slot="process" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
-        <div className="flex max-w-2xl flex-col gap-5">
-          <span className="text-xs uppercase text-muted-foreground">how it works</span>
-          <h2 className="font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">
-            From install to shipped in three steps.
+        <div data-slot="process-header" className="flex max-w-2xl flex-col gap-5">
+          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Getting started</span>
+          <h2
+            style={stagger(1)}
+            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+          >
+            Your whole team set up by the end of the day.
           </h2>
-          <p className="text-base text-muted-foreground sm:text-lg">
-            Hirael rides the shadcn CLI you already use. No new tooling, no runtime to learn.
+          <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
+            Three steps from an empty workspace to a project everyone can see. You can skip ahead and come back to any
+            of them.
           </p>
         </div>
 
-        <ol data-slot="process-steps" className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-3">
-          {STEPS.map((step, i) => {
-            const Icon = step.icon;
-            const last = i === STEPS.length - 1;
-            return (
-              <li key={step.title} data-slot="process-step" className="flex flex-col gap-5">
-                <div className="flex items-center gap-4">
-                  <span
-                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-card font-serif text-xl text-foreground tabular-nums"
-                    style={{
-                      boxShadow: 'inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 12%, transparent)',
-                    }}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span aria-hidden className={cn('h-px flex-1 bg-border', last ? 'hidden' : 'hidden sm:block')} />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Icon className="size-4 text-muted-foreground" />
-                    <h3 className="text-lg font-semibold tracking-[-0.01em]">{step.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{step.body}</p>
-                </div>
-              </li>
-            );
-          })}
+        <ol data-slot="process-steps" className="mt-16 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-3">
+          {STEPS.map((step, index) => (
+            <li
+              key={step.title}
+              data-slot="process-step"
+              style={stagger(index, 70, 180)}
+              className={cn(ENTER, 'relative flex flex-col gap-4 border-t border-border pt-6')}
+            >
+              <span aria-hidden className="absolute -top-px start-0 h-px w-12 bg-warm" />
+              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+                <span className="text-foreground">{formatIndex(index)}</span>
+                <span className="mx-1.5 text-border">|</span>
+                {formatIndex(STEPS.length - 1)}
+              </span>
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-semibold tracking-[-0.01em]">{step.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{step.body}</p>
+              </div>
+              <p className="mt-auto text-xs uppercase text-muted-foreground">{step.detail}</p>
+            </li>
+          ))}
         </ol>
       </div>
     </section>

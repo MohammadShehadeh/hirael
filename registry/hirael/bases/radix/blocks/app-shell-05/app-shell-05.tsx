@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
   Activity,
   ChevronsUpDown,
+  FileText,
   FolderGit2,
   LayoutDashboard,
   LogOut,
@@ -13,8 +14,10 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -59,8 +62,14 @@ interface NavItem {
   badge?: string;
 }
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const WORKSPACE: readonly NavItem[] = [
-  { label: 'Overview', href: '#', icon: LayoutDashboard, active: true },
+  { label: 'Overview', href: '#', icon: LayoutDashboard },
+  { label: 'Documents', href: '#', icon: FileText, active: true },
   { label: 'Projects', href: '#', icon: FolderGit2 },
   { label: 'Activity', href: '#', icon: Activity },
 ];
@@ -76,7 +85,88 @@ const USER = {
   initials: 'LO',
 } as const;
 
-const BrandMark = ({ className }: { className?: string }) => {
+type DocumentStatus = 'Draft' | 'Shared' | 'Final';
+
+interface WorkspaceDocument {
+  title: string;
+  folder: string;
+  owner: string;
+  initials: string;
+  updated: string;
+  status: DocumentStatus;
+}
+
+const DOCUMENTS: readonly WorkspaceDocument[] = [
+  { title: 'Q4 roadmap', folder: 'Planning', owner: 'Lena Ortiz', initials: 'LO', updated: 'Today, 10:12', status: 'Draft' },
+  { title: 'Editor beta feedback', folder: 'Research', owner: 'Sam Achebe', initials: 'SA', updated: 'Today, 08:40', status: 'Shared' },
+  { title: 'Marketplace review guidelines', folder: 'Policy', owner: 'Priya Nair', initials: 'PN', updated: 'Yesterday', status: 'Final' },
+  { title: 'Onboarding checklist for new hires', folder: 'People', owner: 'Lena Ortiz', initials: 'LO', updated: 'Sep 11', status: 'Shared' },
+  { title: 'Incident notes: sync outage', folder: 'Engineering', owner: 'Tom Weller', initials: 'TW', updated: 'Sep 9', status: 'Final' },
+  { title: 'Pricing page copy, second pass', folder: 'Marketing', owner: 'Sam Achebe', initials: 'SA', updated: 'Sep 4', status: 'Draft' },
+];
+
+const FILTERS = ['All', 'Draft', 'Shared', 'Final'] as const;
+type DocumentFilter = (typeof FILTERS)[number];
+
+const DocumentList = () => {
+  const [filter, setFilter] = React.useState<DocumentFilter>('All');
+  const visible = filter === 'All' ? DOCUMENTS : DOCUMENTS.filter((doc) => doc.status === filter);
+
+  return (
+    <div data-slot="app-shell-documents" className="mt-6 flex flex-col gap-3">
+      <div role="group" aria-label="Filter documents by status" className="flex flex-wrap items-center gap-1">
+        {FILTERS.map((option) => (
+          <Button
+            key={option}
+            variant={option === filter ? 'secondary' : 'ghost'}
+            size="sm"
+            aria-pressed={option === filter}
+            onClick={() => setFilter(option)}
+          >
+            {option}
+            <span className="text-xs tabular-nums text-muted-foreground">
+              {option === 'All' ? DOCUMENTS.length : DOCUMENTS.filter((doc) => doc.status === option).length}
+            </span>
+          </Button>
+        ))}
+      </div>
+
+      <ul key={filter} className={cn(SWAP, 'flex flex-col rounded-lg border border-border')}>
+        {visible.map((doc) => (
+          <li
+            key={doc.title}
+            className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 transition-colors hover:bg-muted/40"
+          >
+            <FileText className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <div className="flex min-w-0 flex-1 flex-col">
+              <a href="#" className="truncate text-sm font-medium hover:underline">
+                {doc.title}
+              </a>
+              <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span>{doc.folder}</span>
+                <span className="text-border">|</span>
+                <span className="tabular-nums">{doc.updated}</span>
+              </span>
+            </div>
+            <span
+              className={cn(
+                'hidden text-xs sm:inline',
+                doc.status === 'Draft' ? 'text-warm' : 'text-muted-foreground',
+              )}
+            >
+              {doc.status}
+            </span>
+            <Avatar className="size-7" aria-label={doc.owner}>
+              <AvatarFallback className="text-[11px]">{doc.initials}</AvatarFallback>
+            </Avatar>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const BrandMark =({ className }: { className?: string }) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -136,7 +226,7 @@ const AppSidebar = () => {
                   </SidebarMenuButton>
                   {item.badge && (
                     <SidebarMenuBadge>
-                      <Badge variant="secondary" className="font-mono">
+                      <Badge variant="secondary">
                         {item.badge}
                       </Badge>
                     </SidebarMenuBadge>
@@ -158,7 +248,7 @@ const AppSidebar = () => {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="size-8 rounded-md">
-                    <AvatarFallback className="rounded-md font-mono text-[10px]">{USER.initials}</AvatarFallback>
+                    <AvatarFallback className="rounded-md text-[10px]">{USER.initials}</AvatarFallback>
                   </Avatar>
                   <div className="grid min-w-0 flex-1 text-start text-sm leading-tight">
                     <span className="truncate font-medium">{USER.name}</span>
@@ -216,37 +306,21 @@ const AppShell05 = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Overview</BreadcrumbPage>
+                <BreadcrumbPage>Documents</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
 
-        <div className="min-w-0 flex-1 overflow-x-hidden p-4 sm:p-6">
+        <div data-slot="app-shell-main" className={cn(ENTER, 'min-w-0 flex-1 overflow-x-hidden p-4 sm:p-6')}>
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold tracking-[-0.02em]">Overview</h1>
+            <h1 className="text-2xl font-semibold tracking-[-0.02em]">Documents</h1>
             <p className="text-sm text-muted-foreground">
-              A sidebar shell with collapsible nav, a sticky header, and an account menu. Drop your pages into the
-              inset.
+              Everything your workspace has written, newest first. Drafts stay private until you share them.
             </p>
           </div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {[
-              { label: 'Projects', value: '12' },
-              { label: 'Open tasks', value: '34' },
-              { label: 'This week', value: '8' },
-            ].map((item) => (
-              <div key={item.label} className="rounded-lg border border-border bg-card p-4">
-                <span className="text-xs uppercase text-muted-foreground">{item.label}</span>
-                <p className="mt-1 text-2xl font-semibold tabular-nums">{item.value}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-3 rounded-lg border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-            Page content goes here.
-          </div>
+          <DocumentList />
         </div>
       </SidebarInset>
     </SidebarProvider>

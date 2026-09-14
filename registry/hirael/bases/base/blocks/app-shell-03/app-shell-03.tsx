@@ -32,6 +32,22 @@ import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tab
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/base/ui/tooltip';
 
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+/** Times are stored as "Today, 9:41" and shown as two spans, no separator glyph. */
+const Stamp = ({ time, className }: { time: string; className?: string }) => {
+  return (
+    <span className={cn('flex gap-1.5 tabular-nums', className)}>
+      {time.split(', ').map((part) => (
+        <span key={part}>{part}</span>
+      ))}
+    </span>
+  );
+};
+
 interface Message {
   id: string;
   from: string;
@@ -58,7 +74,7 @@ const CONVERSATIONS: readonly Conversation[] = [
     sender: 'Maya Renner',
     initials: 'MR',
     email: 'maya@hirael.com',
-    subject: 'Design review · pricing page',
+    subject: 'Design review: pricing page',
     preview: 'Left comments on the tier cards, the middle one still',
     time: '9:41',
     unread: true,
@@ -67,21 +83,21 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'design-review-1',
         from: 'Maya Renner',
         initials: 'MR',
-        time: 'Today · 9:41',
+        time: 'Today, 9:41',
         body: "Left comments on the tier cards. The middle one still reads as selected even when it isn't. Can we tone the border down a step?",
       },
       {
         id: 'design-review-2',
         from: 'Maya Renner',
         initials: 'MR',
-        time: 'Today · 9:44',
+        time: 'Today, 9:44',
         body: "Also flagged the annual toggle. It works, it just doesn't look like it does anything until you spot the price change.",
       },
     ],
   },
   {
     id: 'invoice-april',
-    sender: 'Billing · Northbeam',
+    sender: 'Northbeam Billing',
     initials: 'NB',
     email: 'billing@northbeam.io',
     subject: 'Invoice #2204 is ready',
@@ -91,9 +107,9 @@ const CONVERSATIONS: readonly Conversation[] = [
     thread: [
       {
         id: 'invoice-april-1',
-        from: 'Billing · Northbeam',
+        from: 'Northbeam Billing',
         initials: 'NB',
-        time: 'Today · 8:17',
+        time: 'Today, 8:17',
         body: 'Your April invoice for $1,188.00 is attached and due on May 14. No action needed if auto-pay is enabled.',
       },
     ],
@@ -111,14 +127,14 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'launch-checklist-1',
         from: 'Jules Tanaka',
         initials: 'JT',
-        time: 'Yesterday · 17:02',
+        time: 'Yesterday, 17:02',
         body: 'Status page and the rollback runbook. Everything else on the checklist is green; staging soak finished clean overnight.',
       },
       {
         id: 'launch-checklist-2',
         from: 'You',
         initials: 'YO',
-        time: 'Yesterday · 17:20',
+        time: 'Yesterday, 17:20',
         body: "Runbook draft is in the shared folder. I'll take the status page tomorrow morning.",
       },
     ],
@@ -136,7 +152,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'support-export-1',
         from: 'Adaeze Okafor',
         initials: 'AO',
-        time: 'Yesterday · 14:33',
+        time: 'Yesterday, 14:33',
         body: 'Confirmed on our side; exports created after the fix carry the offset correctly. Thanks for turning that around quickly.',
       },
     ],
@@ -155,7 +171,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'onboarding-feedback-1',
         from: 'Soren Kim',
         initials: 'SK',
-        time: 'Monday · 11:08',
+        time: 'Monday, 11:08',
         body: 'Three of five finished setup without docs. The two who stalled both hit the same step: connecting the first data source.',
       },
     ],
@@ -173,7 +189,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'offsite-dates-1',
         from: 'Lena Voss',
         initials: 'LV',
-        time: 'Monday · 9:30',
+        time: 'Monday, 9:30',
         body: "Locking the venue Friday. If the second week of June doesn't work for anyone, speak now.",
       },
     ],
@@ -191,7 +207,7 @@ const CONVERSATIONS: readonly Conversation[] = [
         id: 'security-rotation-1',
         from: 'Security bot',
         initials: 'SB',
-        time: 'Sunday · 03:00',
+        time: 'Sunday, 03:00',
         body: 'Production keys rotated on schedule. 2 services picked up the new credentials automatically; none required manual restarts.',
       },
     ],
@@ -327,7 +343,7 @@ const AppShell03 = () => {
   };
 
   return (
-    <div className="flex min-h-[640px] bg-background">
+    <div data-slot="app-shell" className="flex min-h-[640px] bg-background">
       <aside
         aria-label="Mailboxes"
         className="flex w-14 shrink-0 flex-col items-center gap-1 border-e border-border py-3"
@@ -347,7 +363,7 @@ const AppShell03 = () => {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  aria-label={item.current && unreadCount > 0 ? `${item.label} · ${unreadCount} unread` : item.label}
+                  aria-label={item.current && unreadCount > 0 ? `${item.label}, ${unreadCount} unread` : item.label}
                   aria-current={item.current ? 'page' : undefined}
                   className={cn('relative', item.current ? 'bg-accent text-foreground' : 'text-muted-foreground')}
                 />
@@ -378,7 +394,7 @@ const AppShell03 = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Settings</TooltipContent>
           </Tooltip>
-          <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card font-mono text-[11px] font-medium">
+          <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card text-[11px] font-medium">
             MS
           </span>
         </div>
@@ -386,15 +402,17 @@ const AppShell03 = () => {
 
       <section
         aria-label="Conversations"
+        data-slot="app-shell-list"
         className={cn(
+          ENTER,
           // Full width next to the rail on phones, a fixed column from md up.
           'min-w-0 flex-1 flex-col border-e border-border md:flex md:w-80 md:flex-none',
           mobilePane === 'thread' ? 'hidden' : 'flex',
         )}
       >
         <div className="flex h-14 shrink-0 items-center justify-between gap-2 px-4">
-          <h2 className="text-sm font-medium tracking-[-0.01em]">Inbox</h2>
-          <Badge variant="outline" className="font-mono text-[10px] tabular-nums">
+          <h1 className="text-sm font-medium tracking-[-0.01em]">Inbox</h1>
+          <Badge variant="outline" className="text-[10px] tabular-nums">
             {unreadCount} unread
           </Badge>
         </div>
@@ -512,9 +530,7 @@ const AppShell03 = () => {
                       {c.sender}
                       {unread && <span className="sr-only"> (unread)</span>}
                     </span>
-                    <span className="ms-auto shrink-0 text-xs uppercase tabular-nums text-muted-foreground">
-                      {c.time}
-                    </span>
+                    <Stamp time={c.time} className="ms-auto shrink-0 text-xs uppercase text-muted-foreground" />
                   </span>
                   <span className="truncate text-xs text-foreground">{c.subject}</span>
                   <span className="truncate text-xs text-muted-foreground">{c.preview}…</span>
@@ -527,10 +543,12 @@ const AppShell03 = () => {
 
       <section
         aria-label="Conversation"
-        className={cn('min-w-0 flex-1 flex-col md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
+        data-slot="app-shell-reading-pane"
+        style={{ animationDelay: '80ms' }}
+        className={cn(ENTER, 'min-w-0 flex-1 flex-col md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
       >
         {selected ? (
-          <>
+          <div key={selected.id} className={cn(SWAP, 'flex min-h-0 flex-1 flex-col')}>
             <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4 sm:px-6">
               <div className="flex min-w-0 items-center gap-2">
                 <Button
@@ -579,13 +597,17 @@ const AppShell03 = () => {
             <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
               <span
                 aria-hidden
-                className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-muted font-mono text-xs font-medium"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
               >
                 {selected.initials}
               </span>
               <div className="flex min-w-0 flex-col">
                 <span className="truncate text-sm font-medium">{selected.sender}</span>
-                <span className="truncate font-mono text-[11px] text-muted-foreground">{selected.email} · to you</span>
+                <span className="flex min-w-0 gap-1.5 text-xs text-muted-foreground">
+                  <span className="truncate">{selected.email}</span>
+                  <span className="text-border">|</span>
+                  <span className="shrink-0">to you</span>
+                </span>
               </div>
             </div>
 
@@ -601,12 +623,12 @@ const AppShell03 = () => {
                   <div className="flex items-center gap-2">
                     <span
                       aria-hidden
-                      className="inline-flex size-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-medium"
+                      className="inline-flex size-6 items-center justify-center rounded-full bg-muted text-[10px] font-medium"
                     >
                       {m.initials}
                     </span>
                     <span className="text-xs font-medium">{m.from}</span>
-                    <span className="ms-auto text-xs uppercase tabular-nums text-muted-foreground">{m.time}</span>
+                    <Stamp time={m.time} className="ms-auto text-xs uppercase text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{m.body}</p>
                 </article>
@@ -637,9 +659,9 @@ const AppShell03 = () => {
                 </Button>
               </div>
             </div>
-          </>
+          </div>
         ) : (
-          <Empty className="flex-1 border-0">
+          <Empty className={cn(SWAP, 'flex-1 border-0')}>
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <Inbox />

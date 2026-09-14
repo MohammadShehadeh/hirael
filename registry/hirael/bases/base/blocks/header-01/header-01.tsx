@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ChevronDown, Menu } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   DropdownMenu,
@@ -30,18 +31,21 @@ const NAV: NavItem[] = [
   {
     label: 'Product',
     items: [
-      { label: 'Overview', href: '#' },
-      { label: 'Features', href: '#' },
-      { label: 'Integrations', href: '#' },
+      { label: 'Overview', href: '#overview' },
+      { label: 'Features', href: '#features' },
+      { label: 'Integrations', href: '#integrations' },
     ],
   },
-  { label: 'Pricing', href: '#' },
-  { label: 'Docs', href: '#' },
-  { label: 'Changelog', href: '#' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Docs', href: '#docs' },
+  { label: 'Changelog', href: '#changelog' },
 ];
 
+const ENTER =
+  'animate-in fade-in slide-in-from-top-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
 const navLink =
-  'block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+  'block rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-accent/60 aria-[current=page]:text-foreground';
 
 const BrandMark = ({ className }: { className?: string }) => {
   return (
@@ -52,29 +56,40 @@ const BrandMark = ({ className }: { className?: string }) => {
 };
 
 const Header01 = () => {
+  const [current, setCurrent] = React.useState('#overview');
+
+  const linkProps = (href: string) => ({
+    href,
+    'aria-current': current === href ? ('page' as const) : undefined,
+    onClick: () => setCurrent(href),
+  });
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
+    <header
+      data-slot="header"
+      className={cn(ENTER, 'sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur')}
+    >
       <div className="container w-full">
         <div className="flex h-14 items-center justify-between">
           <a
             href="#"
-            className="inline-flex items-center font-mono text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex items-center text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <BrandMark className="me-1.5 size-5" />
             Hirael
           </a>
 
-          <nav className="hidden md:block">
+          <nav data-slot="header-nav" aria-label="Main" className="hidden md:block">
             <ul className="flex items-center gap-0.5">
               {NAV.map((n) =>
                 'items' in n ? (
-                  <li key={n.label}>
+                  <li key={n.label} data-active={n.items.some((item) => item.href === current) || undefined}>
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         render={
                           <button
                             type="button"
-                            className="group inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-open:text-foreground"
+                            className="group inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring in-data-active:text-foreground data-open:text-foreground"
                           />
                         }
                       >
@@ -83,7 +98,15 @@ const Header01 = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start" className="w-44">
                         {n.items.map((item) => (
-                          <DropdownMenuItem key={item.label} render={<a href={item.href} />}>
+                          <DropdownMenuItem
+                            render={
+                              <a
+                                {...linkProps(item.href)}
+                                className="aria-[current=page]:text-foreground aria-[current=page]:font-medium"
+                              />
+                            }
+                            key={item.label}
+                          >
                             {item.label}
                           </DropdownMenuItem>
                         ))}
@@ -93,8 +116,8 @@ const Header01 = () => {
                 ) : (
                   <li key={n.label}>
                     <a
-                      href={n.href}
-                      className="rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      {...linkProps(n.href)}
+                      className="relative rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors duration-150 after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-foreground after:transition-transform after:duration-250 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none"
                     >
                       {n.label}
                     </a>
@@ -123,7 +146,7 @@ const Header01 = () => {
               <DrawerHeader className="text-start">
                 <DrawerTitle className="text-xs uppercase text-muted-foreground">Menu</DrawerTitle>
               </DrawerHeader>
-              <nav className="px-4">
+              <nav aria-label="Main" className="px-4">
                 <ul className="flex flex-col gap-0.5">
                   {NAV.map((n) =>
                     'items' in n ? (
@@ -134,7 +157,7 @@ const Header01 = () => {
                         <ul className="flex flex-col">
                           {n.items.map((item) => (
                             <li key={item.label}>
-                              <DrawerClose render={<a href={item.href} className={navLink} />}>
+                              <DrawerClose render={<a {...linkProps(item.href)} className={navLink} />}>
                                 {item.label}
                               </DrawerClose>
                             </li>
@@ -143,7 +166,7 @@ const Header01 = () => {
                       </li>
                     ) : (
                       <li key={n.label}>
-                        <DrawerClose render={<a href={n.href} className={navLink} />}>{n.label}</DrawerClose>
+                        <DrawerClose render={<a {...linkProps(n.href)} className={navLink} />}>{n.label}</DrawerClose>
                       </li>
                     ),
                   )}

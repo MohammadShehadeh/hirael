@@ -1,12 +1,21 @@
 'use client';
 
 import * as React from 'react';
-import { Rss } from 'lucide-react';
+import { Check, Rss } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
+import { Input } from '@/registry/hirael/bases/base/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+
+const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
+const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
+const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export type ChangelogTagKind = 'new' | 'improved' | 'fixed';
 export type ChangelogFilterValue = 'all' | ChangelogTagKind;
@@ -89,11 +98,11 @@ const ChangelogHeader = ({ className, ...props }: ChangelogHeaderProps) => {
   );
 };
 
-type ChangelogTitleProps = React.ComponentProps<'h1'>;
+type ChangelogTitleProps = React.ComponentProps<'h2'>;
 
 const ChangelogTitle = ({ className, ...props }: ChangelogTitleProps) => {
   return (
-    <h1
+    <h2
       data-slot="changelog-title"
       className={cn(
         'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
@@ -119,11 +128,84 @@ const ChangelogDescription = ({ className, ...props }: ChangelogDescriptionProps
 type ChangelogSubscribeProps = React.ComponentProps<typeof Button>;
 
 const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: ChangelogSubscribeProps) => {
+  const id = React.useId();
+  const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
+  const [subscribed, setSubscribed] = React.useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = email.trim();
+    if (!value) {
+      setError('Enter your email address.');
+      return;
+    }
+    if (!EMAIL_PATTERN.test(value)) {
+      setError("That doesn't look like a valid email.");
+      return;
+    }
+    setError(null);
+    setSubscribed(true);
+  };
+
   return (
-    <Button variant="outline" size="sm" data-slot="changelog-subscribe" className={className} {...props}>
-      <Rss aria-hidden />
-      {children}
-    </Button>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        render={<Button variant="outline" size="sm" data-slot="changelog-subscribe" className={className} {...props} />}
+      >
+        {subscribed ? <Check aria-hidden /> : <Rss aria-hidden />}
+        {subscribed ? 'Subscribed' : children}
+      </PopoverTrigger>
+      <PopoverContent align="end" data-slot="changelog-subscribe-panel" className="w-80">
+        <div aria-live="polite">
+          {subscribed ? (
+            <div key="done" data-slot="changelog-subscribe-success" className={cn(SWAP, 'flex flex-col gap-1.5')}>
+              <p className="flex items-center gap-2 text-sm font-medium">
+                <Check aria-hidden className="size-4" />
+                You&apos;re subscribed
+              </p>
+              <p className="text-sm text-pretty text-muted-foreground">
+                Release notes go to <span className="break-all text-foreground">{email.trim()}</span>, one email per
+                release.
+              </p>
+            </div>
+          ) : (
+            <form key="form" noValidate onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium">Get release notes by email</p>
+                <p className="text-sm text-muted-foreground">One email per release, nothing else.</p>
+              </div>
+              <Field className="gap-1.5" data-invalid={error ? true : undefined}>
+                <FieldLabel htmlFor={`${id}-email`} className="sr-only">
+                  Email address
+                </FieldLabel>
+                <Input
+                  id={`${id}-email`}
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="you@company.com"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    if (error) setError(null);
+                  }}
+                  aria-invalid={error ? true : undefined}
+                  aria-describedby={error ? `${id}-error` : undefined}
+                />
+                <FieldError id={`${id}-error`} className="text-xs">
+                  {error}
+                </FieldError>
+              </Field>
+              <Button type="submit" size="sm">
+                Subscribe
+              </Button>
+            </form>
+          )}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 
@@ -169,7 +251,32 @@ const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
 type ChangelogListProps = React.ComponentProps<'div'>;
 
 const ChangelogList = ({ className, ...props }: ChangelogListProps) => {
-  return <div data-slot="changelog-list" className={cn('flex flex-col', className)} {...props} />;
+  return <div data-slot="changelog-list" className={cn('group/changelog-list flex flex-col', className)} {...props} />;
+};
+
+type ChangelogEmptyProps = React.ComponentProps<'p'>;
+
+/** Place inside `ChangelogList`; it hides itself while any entry is visible. */
+const ChangelogEmpty = ({
+  className,
+  children = 'No releases match this filter yet.',
+  ...props
+}: ChangelogEmptyProps) => {
+  const { filter } = useChangelog();
+  return (
+    <p
+      key={filter}
+      data-slot="changelog-empty"
+      className={cn(
+        SWAP,
+        'py-16 text-center text-sm text-muted-foreground group-has-[[data-slot=changelog-entry]]/changelog-list:hidden',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </p>
+  );
 };
 
 const formatDate = (date: string) => {
@@ -179,6 +286,7 @@ const formatDate = (date: string) => {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'UTC',
   }).format(parsed);
 };
 
@@ -206,7 +314,7 @@ const ChangelogEntryVersion = ({ className, ...props }: ChangelogEntryVersionPro
     <Badge
       variant="outline"
       data-slot="changelog-entry-version"
-      className={cn('font-mono text-[11px] tabular-nums', className)}
+      className={cn('text-[11px] tabular-nums', className)}
       {...props}
     />
   );
@@ -229,7 +337,8 @@ const ChangelogEntry = ({ version, date, tags = [], className, children, ...prop
       data-slot="changelog-entry"
       data-version={version}
       className={cn(
-        'grid grid-cols-1 gap-4 border-b border-border py-10 last:border-b-0 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-10',
+        SWAP,
+        'grid grid-cols-1 gap-4 border-b border-border py-10 last-of-type:border-b-0 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-10',
         className,
       )}
       {...props}
@@ -270,11 +379,11 @@ const ChangelogEntryTag = ({ kind, className, children, ...props }: ChangelogEnt
   );
 };
 
-type ChangelogEntryTitleProps = React.ComponentProps<'h2'>;
+type ChangelogEntryTitleProps = React.ComponentProps<'h3'>;
 
 const ChangelogEntryTitle = ({ className, ...props }: ChangelogEntryTitleProps) => {
   return (
-    <h2
+    <h3
       data-slot="changelog-entry-title"
       className={cn('text-xl font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-2xl', className)}
       {...props}
@@ -305,6 +414,7 @@ export {
   ChangelogSubscribe,
   ChangelogFilter,
   ChangelogList,
+  ChangelogEmpty,
   ChangelogEntry,
   ChangelogEntryDate,
   ChangelogEntryVersion,
@@ -352,7 +462,7 @@ const ENTRIES: readonly {
     items: [
       'Assign a thread to a teammate from the thread header or with Shift+A. Assignees get a notification and the thread shows up in their Assigned view.',
       'Filter any view by assignee, including Unassigned.',
-      'Zapier and the public API expose assignee on thread objects.',
+      'Webhooks and the public API include the assignee on thread objects.',
     ],
   },
   {
@@ -369,24 +479,33 @@ const ENTRIES: readonly {
 ];
 
 const Changelog01Block = () => {
+  const [filter, setFilter] = React.useState<ChangelogFilterValue>('all');
+  const visible = ENTRIES.filter((entry) => filter === 'all' || entry.tags.includes(filter));
+
   return (
-    <Changelog data-slot="changelog-01-block">
+    <Changelog data-slot="changelog-01-block" filter={filter} onFilterChange={setFilter}>
       <ChangelogHeader>
         <div className="flex flex-col gap-3">
-          <ChangelogTitle>Changelog</ChangelogTitle>
-          <ChangelogDescription>
+          <ChangelogTitle className={ENTER}>Changelog</ChangelogTitle>
+          <ChangelogDescription style={{ animationDelay: '70ms' }} className={ENTER}>
             What shipped in Relay, most recent first. Releases go out every other Tuesday.
           </ChangelogDescription>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div style={{ animationDelay: '140ms' }} className={cn(ENTER, 'flex flex-wrap items-center gap-2')}>
           <ChangelogFilter />
           <ChangelogSubscribe />
         </div>
       </ChangelogHeader>
 
       <ChangelogList>
-        {ENTRIES.map((entry) => (
-          <ChangelogEntry key={entry.version} version={entry.version} date={entry.date} tags={entry.tags}>
+        {visible.map((entry, index) => (
+          <ChangelogEntry
+            key={`${filter}-${entry.version}`}
+            version={entry.version}
+            date={entry.date}
+            tags={entry.tags}
+            style={{ animationDelay: `${index * 60}ms` }}
+          >
             <ChangelogEntryTags>
               {entry.tags.map((tag) => (
                 <ChangelogEntryTag key={tag} kind={tag} />
@@ -400,6 +519,7 @@ const Changelog01Block = () => {
             </ChangelogEntryBody>
           </ChangelogEntry>
         ))}
+        <ChangelogEmpty />
       </ChangelogList>
     </Changelog>
   );

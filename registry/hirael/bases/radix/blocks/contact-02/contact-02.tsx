@@ -1,8 +1,20 @@
+'use client';
+
 import * as React from 'react';
-import { Mail, MapPin, MessageCircle } from 'lucide-react';
+import { Check, Copy, Mail, MapPin, MessageCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
+
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in zoom-in-95 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+
+const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
+  animationDelay: `${offset + index * step}ms`,
+});
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -26,75 +38,108 @@ const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-const EMAIL = 'hello@example.com';
+const EMAIL = 'hello@hirael.com';
 
 const SOCIAL_LINKS = [
-  { icon: LinkedinIcon, href: '#', label: 'LinkedIn' },
   { icon: GithubIcon, href: '#', label: 'GitHub' },
+  { icon: LinkedinIcon, href: '#', label: 'LinkedIn' },
 ] as const;
+
+const CopyEmail = ({ email }: { email: string }) => {
+  const [copied, setCopied] = React.useState(false);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  React.useEffect(() => () => clearTimeout(timer.current), []);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      data-slot="contact-copy"
+      data-state={copied ? 'copied' : 'idle'}
+      onClick={copy}
+      className="text-muted-foreground hover:text-foreground"
+    >
+      <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1.5')}>
+        {copied ? <Check aria-hidden className="size-3.5" /> : <Copy aria-hidden className="size-3.5" />}
+        {copied ? 'Copied' : 'Copy'}
+      </span>
+      <span className="sr-only" aria-live="polite">
+        {copied ? 'Email address copied' : ''}
+      </span>
+    </Button>
+  );
+};
 
 const Contact02 = () => {
   return (
     <section data-slot="contact" className="relative mx-auto max-w-6xl border-x border-border bg-background">
-      <div className="flex grow flex-col justify-center px-4 py-18 md:items-center">
-        <h2 className="font-serif text-4xl font-medium tracking-tight md:text-5xl">Contact us</h2>
-        <p className="mb-5 text-base text-muted-foreground">Reach the team. We read every message.</p>
+      <div data-slot="contact-header" className="flex grow flex-col justify-center gap-2 px-4 py-18 md:items-center">
+        <h2 className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight md:text-5xl')}>Contact us</h2>
+        <p style={stagger(1, 70)} className={cn(ENTER, 'text-base text-muted-foreground')}>
+          Reach the team. We read every message.
+        </p>
       </div>
 
       <Separator />
 
       <div data-slot="contact-grid" className="grid md:grid-cols-3">
-        <Box icon={<Mail />} title="Email" description="We respond to every note within a day.">
-          <a href={`mailto:${EMAIL}`} className="font-mono text-sm font-medium tracking-wide hover:underline">
+        <Box
+          icon={<Mail />}
+          title="Email"
+          description="We respond to every note within a day."
+          style={stagger(0, 60, 200)}
+        >
+          <a href={`mailto:${EMAIL}`} className="text-sm font-medium tracking-wide hover:underline">
             {EMAIL}
           </a>
+          <CopyEmail email={EMAIL} />
         </Box>
 
-        <Box icon={<MapPin />} title="Location" description="A small, distributed team.">
-          <span className="font-mono text-sm font-medium tracking-wide">Remote-first</span>
+        <Box
+          icon={<MapPin />}
+          title="Location"
+          description="A small team spread across three time zones."
+          style={stagger(1, 60, 200)}
+        >
+          <span className="text-sm font-medium tracking-wide">Remote-first</span>
         </Box>
 
         <Box
           icon={<MessageCircle />}
-          title="Social"
-          description="Find us on the usual channels."
+          title="Elsewhere"
+          description="Issues and release notes live on GitHub."
           className="border-b-0 md:border-e-0"
+          style={stagger(2, 60, 200)}
         >
-          <div className="flex gap-3">
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="font-mono text-sm font-medium tracking-wide text-foreground underline underline-offset-4 hover:text-muted-foreground"
-              >
-                {link.label}
-              </a>
-            ))}
+          <div className="flex flex-wrap items-center gap-2">
+            {SOCIAL_LINKS.map((link) => {
+              const Icon = link.icon;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="flex items-center gap-x-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-sm transition-colors duration-150 ease-out hover:bg-accent"
+                >
+                  <Icon className="size-3.5 text-muted-foreground" />
+                  <span className="text-xs font-medium tracking-wide">{link.label}</span>
+                </a>
+              );
+            })}
           </div>
         </Box>
-      </div>
-
-      <Separator />
-
-      <div className="flex h-full flex-col items-center justify-center gap-4 py-24">
-        <h3 className="text-center text-2xl font-medium tracking-tight text-muted-foreground md:text-3xl">
-          Find us <span className="text-foreground">online</span>
-        </h3>
-        <div className="flex flex-wrap items-center gap-2">
-          {SOCIAL_LINKS.map((link) => {
-            const Icon = link.icon;
-            return (
-              <a
-                key={link.label}
-                href={link.href}
-                className="flex items-center gap-x-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-sm transition-colors duration-150 ease-out hover:bg-accent"
-              >
-                <Icon className="size-3.5 text-muted-foreground" />
-                <span className="font-mono text-xs font-medium tracking-wide">{link.label}</span>
-              </a>
-            );
-          })}
-        </div>
       </div>
     </section>
   );
@@ -110,7 +155,7 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
   return (
     <div
       data-slot="contact-box"
-      className={cn('flex flex-col justify-between border-b border-border md:border-b-0 md:border-e', className)}
+      className={cn(ENTER, 'flex flex-col justify-between border-b border-border md:border-b-0 md:border-e', className)}
       {...props}
     >
       <div
@@ -123,7 +168,7 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
         {icon}
         <h3 className="text-sm font-medium uppercase tracking-wider">{title}</h3>
       </div>
-      <div data-slot="contact-box-body" className="flex items-center gap-x-2 p-4 py-12">
+      <div data-slot="contact-box-body" className="flex flex-wrap items-center gap-x-2 gap-y-1 p-4 py-12">
         {children}
       </div>
       <div data-slot="contact-box-footer" className="border-t border-border p-4">

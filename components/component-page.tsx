@@ -24,6 +24,7 @@ import {
   usePreviewTheme,
 } from '@/components/preview-frame';
 import { SegmentedControl } from '@/components/segmented-control';
+import { SponsorsCard } from '@/components/sponsors-card';
 import { Toc, TocChips, type TocItem } from '@/components/toc';
 import { GithubIcon } from '@/components/github-link';
 import { formatDay, type DetailExtras } from '@/lib/freshness';
@@ -260,8 +261,9 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
         </div>
 
         <aside className="hidden xl:block">
-          <div className="sticky top-16">
+          <div className="sticky top-16 flex flex-col gap-8">
             <Toc items={tocItems} />
+            <SponsorsCard />
           </div>
         </aside>
       </div>

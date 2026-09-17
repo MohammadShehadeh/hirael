@@ -18,7 +18,7 @@ const titled = (text: string) => `${text} - ${SITE.name}`;
 
 const absolute = (path: string) => (path.startsWith('http') ? path : `${SITE.url}${path}`);
 
-const SITE_OG_IMAGE = '/opengraph-image';
+const SITE_OG_IMAGE = '/og.png';
 
 const author = {
   '@type': 'Person',

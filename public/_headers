@@ -30,3 +30,12 @@
 # which is right for both.
 /*.txt
   X-Robots-Tag: noindex
+
+# Next exports the generated per-item social cards without an extension, so
+# Pages serves them as application/octet-stream and link unfurlers (Slack,
+# Discord, LinkedIn) drop the preview. The hash suffix changes per build.
+/:section/:name/opengraph-image-:hash
+  Content-Type: image/png
+
+/:section/:group/:name/opengraph-image-:hash
+  Content-Type: image/png

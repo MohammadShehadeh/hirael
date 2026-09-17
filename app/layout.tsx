@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     images: [
       {
-        url: '/opengraph-image',
+        url: '/og.png',
         width: 1200,
         height: 630,
         alt: `${SITE.tagline} - ${SITE.name}`,
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${SITE.tagline} - ${SITE.name}`,
     description: SITE.longDescription,
-    images: ['/opengraph-image'],
+    images: ['/og.png'],
   },
   category: 'technology',
 };

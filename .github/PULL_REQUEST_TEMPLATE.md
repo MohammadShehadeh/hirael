@@ -1,28 +1,34 @@
 <!--
-  Thanks for contributing to Hirael! Please give your PR a title in
-  Conventional Commit format, e.g. `feat(multi-select): add async loader prop`.
-  Keep the PR focused — one component, one fix, or one refactor.
+  Thanks for contributing to Hirael! Title the PR in Conventional Commit format,
+  e.g. `feat(multi-select): add async loader prop`. Keep it focused: one
+  component, one fix, or one refactor.
 -->
 
 ## Summary
 
-<!-- What does this change and why? Link any related issue (e.g. Closes #123). -->
+<!-- What changes and why. Link the issue (e.g. Closes #123). -->
 
 ## Type of change
 
-- [ ] New component / block / template (`feat`)
+- [ ] New component, block or template (`feat`)
 - [ ] Bug fix (`fix`)
 - [ ] Docs (`docs`)
-- [ ] Refactor / internal (`refactor` / `chore`)
-- [ ] Build / CI / tooling (`build` / `ci`)
+- [ ] Refactor or internal (`refactor` / `chore`)
+- [ ] Build, CI or tooling (`build` / `ci`)
 
 ## Checklist
 
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build` pass locally
-- [ ] Edited `registry/hirael/registry-meta.ts` and ran `pnpm registry:gen` (never hand-edited `registry.json`)
-- [ ] Registered a preview loader in `registry-demos.tsx` for any new showcased item
-- [ ] Works under `dir="rtl"` (checked the preview RTL toggle) using CSS logical properties
+- [ ] Declared in `registry/hirael/registry-meta.ts` (generated `registry*.json` and `public/r/` not committed)
+- [ ] Same change in both bases: `bases/radix/` and `bases/base/`
+- [ ] Demo at `bases/<base>/examples/<name>-demo.tsx` with strings through `useT()` (components only)
+- [ ] Checked in light, dark and RTL on the preview
+- [ ] New items listed under `added:` in a `content/changelog/*.mdx` entry
+
+## Screenshots
+
+<!-- Required for UI work. Light and dark, plus RTL if layout changed. -->
 
 ## Test plan
 
-<!-- How did you verify this? Add screenshots or short clips for any UI work. -->
+<!-- What you exercised, and how. -->

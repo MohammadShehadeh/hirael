@@ -15,6 +15,7 @@ By participating you agree to abide by the project's
 - [Branch and commit conventions](#branch-and-commit-conventions)
 - [Coding standards](#coding-standards)
 - [Component contribution checklist](#component-contribution-checklist)
+- [Changelog](#changelog)
 - [Testing requirements](#testing-requirements)
 - [Pull request process](#pull-request-process)
 - [Issue workflow](#issue-workflow)
@@ -24,8 +25,8 @@ By participating you agree to abide by the project's
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) **20+** (CI runs Node 22; `.nvmrc` pins
-  the version — run `nvm use`)
+- [Node.js](https://nodejs.org) **22+** (CI runs Node 22; `.nvmrc` pins
+  the local version — run `nvm use`)
 - [pnpm](https://pnpm.io) **10+** (the repo ships `pnpm-lock.yaml`; do
   not switch package managers in a PR)
 
@@ -33,8 +34,8 @@ By participating you agree to abide by the project's
 
 ```bash
 git clone https://github.com/MohammadShehadeh/hirael.git
-cd hirael.com
-pnpm install
+cd hirael
+pnpm install      # also generates the registry files
 pnpm dev          # showcase site at http://localhost:3000
 ```
 
@@ -43,16 +44,21 @@ pnpm dev          # showcase site at http://localhost:3000
 To confirm a registry item installs cleanly into a consumer project:
 
 ```bash
-pnpm registry:build                # emits /public/r/<name>.json
-pnpm dev                            # serve /r/<name>.json locally
+pnpm registry:build                # emits public/r/<name>.json and public/r/base/<name>.json
+pnpm dev                           # serves them at /r/... locally
 
 # in a separate consumer app that already has shadcn installed
-npx shadcn@latest add http://localhost:3000/r/<name>.json
+npx shadcn@latest add http://localhost:3000/r/<name>.json        # Radix UI
+npx shadcn@latest add http://localhost:3000/r/base/<name>.json   # Base UI
 ```
 
-Resolving `registryDependencies` reaches out to `ui.shadcn.com`, so the
-machine running the consumer install must have network access to that
-host.
+Shadcn primitives in `registryDependencies` resolve from `ui.shadcn.com`, so
+the consumer machine needs network access to it. Dependencies on other Hirael
+items point at `https://hirael.com/r/...`, so a local install pulls the
+**published** version of those, not your local edits.
+
+For a fast offline check of every item, run `pnpm check:install` after a
+build. CI runs it on every PR.
 
 ## Project layout
 
@@ -70,6 +76,7 @@ registry/themes.ts           # Customizer palettes (base colors + accents)
 registry/base-colors.ts      # base-color options (derived from themes)
 registry.json                # generated from registry-meta.ts on install and
 registry.base.json           # build, one per base (git-ignored, never hand-edited)
+registry-props.json          # also generated and git-ignored, like llms.txt and public/r/
 content/changelog/*.mdx      # changelog entries (one MDX file per release)
 public/media/<kind>/<name>/  # placeholder images and videos, grouped per item
 components/<name>.tsx        # showcase-site UI, flat (not shipped)
@@ -77,8 +84,8 @@ lib/                         # showcase helpers (theme.ts, embed.ts, ...)
 app/                         # Next.js routes + /embed previews
 ```
 
-See the top-level **[README.md](./README.md)** for a full directory
-tour.
+[scripts/README.md](./scripts/README.md) maps each generator script to what it
+reads and writes.
 
 ## Branch and commit conventions
 
@@ -133,7 +140,7 @@ Scope is optional but encouraged — use the component or area name:
 ```
 feat(multi-select): add async loader prop
 fix(phone-input): correct E.164 normalization for short numbers
-docs(readme): document NEXT_PUBLIC_BASE_URL
+docs(contributing): document the Base UI port
 ```
 
 Breaking changes — add `!` after the type and a `BREAKING CHANGE:`
@@ -166,15 +173,14 @@ pnpm lint        # ESLint via next/core-web-vitals + next/typescript
 pnpm typecheck   # tsc --noEmit
 ```
 
-Formatting is Prettier with its default config (`.prettierrc` is `{}`):
-2-space indent, double-quoted strings, semicolons. It runs automatically on
+Formatting is Prettier (`.prettierrc`): 120-column lines, 2-space indent,
+single quotes, semicolons, trailing commas. It runs automatically on
 staged files via the husky pre-commit hook (`lint-staged`), so you rarely need
 to think about it — just don't fight it with a different editor formatter.
 Generated files (`registry.json`, `registry-props.json`, `llms.txt`,
 `public/r/`) are git-ignored and rebuilt by `pnpm install` and `pnpm build`;
-run `pnpm registry:gen && pnpm registry:props` to refresh them by hand.
-[scripts/README.md](./scripts/README.md) maps each command to what it reads
-and writes.
+run `pnpm registry:gen && pnpm registry:props && pnpm registry:md` to refresh
+them by hand.
 
 ### Component conventions
 
@@ -205,9 +211,11 @@ and writes.
   `data-[state=…]` selectors → Base UI attributes, anchored content as
   Positioner + Popup, menu `onSelect` → `onClick`. `pnpm check:registry`
   verifies both trees; the Customizer's Base picker previews either.
-- **Tokens.** Use `--background / --foreground / --border / --primary /
---accent` and the rest of the design tokens — never hard-code a
-  color. Light is a faithful inverse of dark; both must work.
+- **Tokens.** Use `--background`, `--foreground`, `--border`, `--primary`,
+  `--accent` and the rest of the design tokens in `app/globals.css`. Never
+  hard-code a color. Light is a faithful inverse of dark; both must work.
+  `--warm` is the brand tone; `--accent-cool` is reserved for live or active
+  state.
 - **`cn` helper.** Compose class names with `cn(...)` from
   `@/lib/utils`. Don't ad-hoc-concatenate `className` strings.
 - **RTL.** Use logical utilities instead of physical ones — `ms-*`/`me-*`
@@ -226,6 +234,12 @@ and writes.
   rewrites those paths to absolute `https://hirael.com/media/...` URLs in
   the shipped payloads so installed items render out of the box. Compress
   before committing; no third-party image or streaming hosts.
+- **Demo copy is translated.** User-facing strings in demos go through
+  `useT()` as `t({ en, ar })`, so the RTL toggle shows Arabic.
+- **Memoization.** The showcase runs the React Compiler, so don't hand-write
+  `useMemo`/`useCallback` in `app/`, `components/`, `lib/` or `examples/`.
+  Keep explicit memoization in shipped registry source (`ui/`, `components/`),
+  since consumers may not run the compiler.
 - **Comments.** Registry source is copied verbatim into consumer repos,
   so keep any comments purposeful and consumer-facing — put internal
   reasoning in commit messages or PR descriptions.
@@ -246,10 +260,10 @@ For each new component:
 - [ ] `bases/<base>/examples/<name>-demo.tsx` (both bases) showing a basic compose
       **and** a customized compose. To showcase several focused examples
       instead, add `<name>-<variant>.tsx` files, list them (ordered, with
-      titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`, and register
-      each slug in `EXAMPLE_LOADERS` in `registry-demos.tsx` — the component
-      page stacks them as titled preview/code blocks (the first is the
-      representative preview used in grids and embeds).
+      titles) under `EXAMPLE_OVERRIDES` in `registry-meta.ts`. Preview
+      loaders are derived from the file names, so `registry-demos.tsx` needs
+      no edit. The component page stacks them as titled preview/code blocks
+      (the first is the representative preview used in grids and embeds).
 - [ ] Entry in `registry/hirael/registry-meta.ts` with category,
       description, `dependencies`, `registryDependencies` and source
       file list (`registry.json` is generated from it, never hand-edited;
@@ -258,19 +272,42 @@ For each new component:
 - [ ] Imports go through `@/registry/hirael/bases/<base>/ui/*` (shadcn
       primitives) and `@/registry/hirael/bases/<base>/components/*` (other
       hirael components) — both aliases are rewritten on install.
-- [ ] Tokens reuse `--background / --foreground / --border /
---primary / --accent` and friends — never hard-code colors.
+- [ ] Tokens reuse `--background`, `--foreground`, `--border`, `--primary`,
+      `--accent` and friends. Never hard-code colors.
+- [ ] Checked in light, dark and RTL.
+- [ ] Item name listed under `added:` in the release's
+      `content/changelog/*.mdx` entry (see [Changelog](#changelog)).
 - [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
       clean.
 
-Marketing blocks follow the same shape but live under
-`bases/<base>/blocks/<block>/` and have a `blockKind` plus
-`blockTagline` in `registry-meta.ts`.
+Blocks follow the same shape but live at
+`bases/<base>/blocks/<block>/<block>.tsx` and have a `blockKind` plus
+`blockTagline` in `registry-meta.ts`. Controls stay generic; a composition
+tied to one domain (cloud, SaaS, widgets) is a block, not a component.
 
-Templates are full-page, multi-section layouts. They live under
-`bases/<base>/templates/<template>/`, use `category: "templates"` in
-`registry-meta.ts`, and ship as a multi-file `registry:block`. Like blocks, they are previewed full-bleed and do not
-need a demo under `examples/`.
+Templates are full-page, multi-section layouts. They live at
+`bases/<base>/templates/<template>/<template>.tsx`, use
+`category: "templates"` in `registry-meta.ts`, and ship as a multi-file
+`registry:block`. Like blocks, they are previewed full-bleed and do not need a
+demo under `examples/`.
+
+### Changelog
+
+`/changelog` renders one MDX file per release from `content/changelog/`.
+Frontmatter is `title`, `date` (YYYY-MM-DD) and optional `version` and
+`description`. A release that adds items lists their names under `added:`;
+that list dates each item and drives its "New" badge. Write the body for
+visitors: what's new and what's fixed, no build internals.
+
+```mdx
+---
+title: Three new pickers
+version: '6.8.0'
+date: 2026-09-20
+added:
+  - week-picker
+---
+```
 
 ## Testing requirements
 
@@ -288,14 +325,13 @@ All four must pass before requesting review. For component PRs you are
 also expected to:
 
 1. Visit the showcase page at
-   `http://localhost:3000/components/<category>/<name>` and exercise the demo.
-2. Confirm `npx shadcn@latest add http://localhost:3000/r/<name>.json`
-   succeeds in a separate consumer app (see
+   `http://localhost:3000/components/<category>/<name>` and exercise the demo
+   with both bases (the Customizer's Base picker switches them).
+2. Confirm the install succeeds in a separate consumer app (see
    [Validating an install end-to-end](#validating-an-install-end-to-end)).
-3. Verify the component renders correctly in **both** light and dark
-   themes — toggle from the showcase header.
-4. Spot-check keyboard navigation and screen-reader output for any
-   interactive component.
+3. Verify it renders correctly in **both** light and dark themes and under
+   the RTL toggle.
+4. Spot-check keyboard navigation for any interactive component.
 
 > **Note** — automated unit and visual-regression tests are not yet set
 > up. A future PR is expected to introduce a test runner (vitest, mirroring
@@ -315,12 +351,12 @@ also expected to:
 4. **Complete the
    [component contribution checklist](#component-contribution-checklist)**
    when adding a component.
-5. **Run the full build pipeline locally** — `pnpm lint && pnpm
-typecheck && pnpm registry:build && pnpm build`.
+5. **Run the full build pipeline locally:**
+   `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`.
 6. **Open the PR** with:
    - a clear title in Conventional Commit format,
    - a short summary of the change and the motivation,
-   - screenshots or short clips for any UI work,
+   - screenshots or short clips for any UI work (light and dark),
    - a manual test plan describing what you exercised.
 7. **Address review feedback** with follow-up commits — do not
    force-push during review unless asked. Squash on merge keeps the
@@ -332,9 +368,9 @@ typecheck && pnpm registry:build && pnpm build`.
 Use the issue forms under `.github/ISSUE_TEMPLATE/` — **Bug report** and
 **Feature request** — which prompt for the fields below.
 
-- **Bug reports** should include: the component or block, the
-  reproduction steps, the expected vs actual behavior, your Node
-  version, browser, and a minimal repro repo or CodeSandbox where
+- **Bug reports** should include: the component or block, which base
+  (Radix UI or Base UI), the reproduction steps, the expected vs actual
+  behavior, your browser, and a minimal repro repo or StackBlitz where
   possible.
 - **Feature requests** should explain the user problem first, then
   propose the API. Reference existing shadcn or Radix conventions
@@ -342,6 +378,9 @@ Use the issue forms under `.github/ISSUE_TEMPLATE/` — **Bug report** and
 - **Component proposals** should reference the shadcn convention you
   expect to follow, list the `registryDependencies` you anticipate,
   and sketch the compound surface area.
+- **Questions** go to
+  [Discussions](https://github.com/MohammadShehadeh/hirael/discussions), not
+  issues.
 - **Triage labels** are applied by maintainers — please do not assign
   labels yourself.
 

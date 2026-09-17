@@ -155,7 +155,7 @@ checklist, and **[the Code of Conduct](./CODE_OF_CONDUCT.md)** before you start.
 <br />
 
 This repo is the showcase site: a static Next.js 16 export that previews every
-item and serves the generated `/r/*.json` files. Requires Node 22 (see
+item and serves the generated `/r/*.json` files. Requires Node 22+ (see
 `.nvmrc`) and pnpm 10.
 
 ```bash

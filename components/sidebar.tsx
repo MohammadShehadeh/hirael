@@ -3,10 +3,24 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Boxes, Frame, History, LayoutTemplate, type LucideIcon } from 'lucide-react';
+import {
+  CalendarDays,
+  Compass,
+  Eye,
+  FileUp,
+  Globe,
+  History,
+  LayoutDashboard,
+  LayoutTemplate,
+  Megaphone,
+  Sparkles,
+  Table2,
+  TextCursorInput,
+  type LucideIcon,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { CATEGORIES_BY_GROUP } from '@/components/block-categories';
+import { CATEGORIES_BY_GROUP, type CategoryGroup } from '@/components/block-categories';
 import { CommandMenu } from '@/components/command-menu';
 import {
   BLOCKS_BY_KIND,
@@ -18,6 +32,22 @@ import {
 } from '@/registry/hirael/registry-meta';
 
 type Section = 'components' | 'blocks' | 'templates' | 'changelog';
+
+const COMPONENT_CATEGORY_ICONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], LucideIcon> = {
+  inputs: TextCursorInput,
+  pickers: CalendarDays,
+  files: FileUp,
+  data: Table2,
+  display: Eye,
+  animation: Sparkles,
+  navigation: Compass,
+};
+
+const BLOCK_GROUP_ICONS: Record<CategoryGroup, LucideIcon> = {
+  marketing: Megaphone,
+  site: Globe,
+  app: LayoutDashboard,
+};
 
 const sectionForPath = (pathname: string): Section => {
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
@@ -179,7 +209,12 @@ const ComponentTree = ({ pathname }: SectionTreeProps) => {
         const components = REGISTRY_BY_CATEGORY[category];
         if (!components.length) return null;
         return (
-          <Folder key={category} icon={Boxes} label={CATEGORY_LABELS[category]} href={`/components/${category}`}>
+          <Folder
+            key={category}
+            icon={COMPONENT_CATEGORY_ICONS[category]}
+            label={CATEGORY_LABELS[category]}
+            href={`/components/${category}`}
+          >
             {components.map((entry) => {
               const href = entryHref(entry);
               return (
@@ -202,7 +237,7 @@ const BlockTree = ({ pathname }: SectionTreeProps) => {
         Overview
       </RootPageLink>
       {CATEGORIES_BY_GROUP.map(({ group, label, categories }) => (
-        <Folder key={group} icon={LayoutTemplate} label={label}>
+        <Folder key={group} icon={BLOCK_GROUP_ICONS[group]} label={label}>
           {categories.map((category) => {
             const href = `/blocks/${category.slug}`;
             const blockCount = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
@@ -229,7 +264,7 @@ const TemplateTree = ({ pathname }: SectionTreeProps) => {
       <RootPageLink href="/templates" isCurrent={pathname === '/templates'}>
         Overview
       </RootPageLink>
-      <Folder icon={Frame} label="Templates">
+      <Folder icon={LayoutTemplate} label="Templates">
         {TEMPLATES.map((entry) => {
           const href = entryHref(entry);
           return (

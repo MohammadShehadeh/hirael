@@ -113,8 +113,7 @@ const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
 
   return (
     <div ref={ref} inert={inert} className={cn(PREVIEW_FRAME, compact ? 'aspect-video' : 'h-60')}>
-      {/* Sits above the title link's ::after overlay so the demo stays interactive. */}
-      <div className="relative z-10 flex max-h-full w-full items-center justify-center">
+      <div className="mask-[linear-gradient(to_bottom,transparent,black_7%,black_93%,transparent)] relative z-10 flex max-h-full w-full items-center justify-center">
         {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>
     </div>

@@ -76,7 +76,16 @@
   }
 }
 
-/* Vertical 1px rails that continue through the sticky header (h-14). Logical, so RTL mirrors. */
+/* Focal fill in a block wireframe. Taupe fades out on the light canvas, so light takes twice the alpha. */
+@utility warm-tint {
+  background-color: color-mix(in oklch, var(--warm) 14%, transparent);
+
+  .dark & {
+    background-color: color-mix(in oklch, var(--warm) 7%, transparent);
+  }
+}
+
+/* Vertical dashed rails that continue through the sticky header (h-14). Logical, so RTL mirrors. */
 @utility page-rails {
   position: relative;
 
@@ -85,9 +94,12 @@
     content: '';
     pointer-events: none;
     position: absolute;
-    inset-block: -3.5rem 0;
+    inset-block: -56px 0;
     width: 1px;
-    background-color: var(--border);
+    /* Declared here, not on :root, so the nested vars resolve against the active theme. */
+    --rail-dash: repeating-linear-gradient(to bottom, var(--border) 0 16px, transparent 16px 32px);
+    --rail-hatch: repeating-linear-gradient(135deg, var(--hatch) 0 1px, transparent 1px 17px);
+    background-image: var(--rail-dash);
   }
 
   &::before {
@@ -96,6 +108,39 @@
 
   &::after {
     inset-inline-end: -1px;
+  }
+
+  /* Past 1280px the gutter clears the band, so each rail widens into a hatched margin. */
+  @media (width >= 1280px) {
+    &::before,
+    &::after {
+      width: 40px;
+      background-image:
+        var(--rail-dash), linear-gradient(to bottom, var(--background) 56px, transparent 128px), var(--rail-hatch);
+      background-size:
+        1px 100%,
+        auto,
+        auto;
+      background-repeat: no-repeat, no-repeat, repeat;
+      background-position: var(--rail-dash-x) 0, 0 0, 0 0;
+    }
+
+    &::before {
+      --rail-dash-x: 0;
+    }
+
+    &::after {
+      --rail-dash-x: 100%;
+    }
+
+    /* background-position takes no logical keywords, so RTL flips the dash to the outer edge by hand. */
+    [dir='rtl'] &::before {
+      --rail-dash-x: 100%;
+    }
+
+    [dir='rtl'] &::after {
+      --rail-dash-x: 0;
+    }
   }
 }
 
@@ -144,6 +189,7 @@
   --accent-cool-glow: oklch(0.5 0.2 260 / 20%);
   --halo-cool: oklch(0.55 0.1 255 / 7%);
   --halo-warm: oklch(0.72 0.05 82 / 6%);
+  --hatch: oklch(0.728 0.019 81.3 / 50%);
 }
 
 /* Dark tokens live on `.dark` (not only `:root`) so a nested `.dark` region stays dark while the site is light. */
@@ -193,6 +239,7 @@
   --accent-cool-glow: oklch(0.62 0.19 260 / 30%);
   --halo-cool: oklch(0.6 0.12 255 / 10%);
   --halo-warm: oklch(0.72 0.05 82 / 7%);
+  --hatch: oklch(0.728 0.019 81.3 / 38%);
 }
 
 @layer base {

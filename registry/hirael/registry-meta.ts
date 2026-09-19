@@ -1013,7 +1013,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/ecommerce-03.tsx',
       },
     ],
-    registryDependencies: ['accordion', 'badge', 'breadcrumb', 'button', 'input-group', 'radio-group', 'rating', 'toggle-group'],
+    registryDependencies: [
+      'accordion',
+      'badge',
+      'breadcrumb',
+      'button',
+      'input-group',
+      'radio-group',
+      'rating',
+      'toggle-group',
+    ],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -1031,7 +1040,20 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/ecommerce-04.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'checkbox', 'empty', 'field', 'radio-group', 'rating', 'select', 'sheet', 'slider', 'switch', 'toggle-group'],
+    registryDependencies: [
+      'badge',
+      'button',
+      'checkbox',
+      'empty',
+      'field',
+      'radio-group',
+      'rating',
+      'select',
+      'sheet',
+      'slider',
+      'switch',
+      'toggle-group',
+    ],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -2283,6 +2305,116 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['motion', 'lucide-react'],
   },
   {
+    name: 'prism',
+    title: 'Prism',
+    description:
+      'Dark, liquid-glass landing page for an AI web design agency: a fixed glass pill nav, a full-screen video hero whose headline blurs in word by word over a partners row, a video-backed how-it-works statement, alternating feature rows with looping media, a four-card benefits grid, a stats band over a desaturated video, three testimonials and a video call to action that carries the footer. Self-contained pure-black palette, Barlow + Instrument Serif type, CSS entrances only.',
+    category: 'templates',
+    files: [
+      {
+        path: 'templates/prism/prism.tsx',
+        target: 'components/templates/prism/prism.tsx',
+      },
+      {
+        path: 'templates/prism/navbar.tsx',
+        target: 'components/templates/prism/navbar.tsx',
+      },
+      {
+        path: 'templates/prism/hero.tsx',
+        target: 'components/templates/prism/hero.tsx',
+      },
+      {
+        path: 'templates/prism/process.tsx',
+        target: 'components/templates/prism/process.tsx',
+      },
+      {
+        path: 'templates/prism/features.tsx',
+        target: 'components/templates/prism/features.tsx',
+      },
+      {
+        path: 'templates/prism/benefits.tsx',
+        target: 'components/templates/prism/benefits.tsx',
+      },
+      {
+        path: 'templates/prism/stats.tsx',
+        target: 'components/templates/prism/stats.tsx',
+      },
+      {
+        path: 'templates/prism/testimonials.tsx',
+        target: 'components/templates/prism/testimonials.tsx',
+      },
+      {
+        path: 'templates/prism/cta.tsx',
+        target: 'components/templates/prism/cta.tsx',
+      },
+      {
+        path: 'templates/prism/footer.tsx',
+        target: 'components/templates/prism/footer.tsx',
+      },
+      {
+        path: 'templates/prism/primitives.tsx',
+        target: 'components/templates/prism/primitives.tsx',
+      },
+      {
+        path: 'templates/prism/styles.tsx',
+        target: 'components/templates/prism/styles.tsx',
+      },
+      {
+        path: 'templates/prism/fonts.ts',
+        target: 'components/templates/prism/fonts.ts',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'akor',
+    title: 'AKOR',
+    description:
+      'Dark landing page for an intelligent-security firm: a fixed uppercase navbar, a full-screen video hero with copy anchored bottom-start, an inverted near-white services band with a 2x2 numbered card grid, a black about split with a looping video beside a heading-and-mission column, and a simple footer. Self-contained charcoal palette with a vivid green primary, Sora type, CSS entrances only.',
+    category: 'templates',
+    files: [
+      {
+        path: 'templates/akor/akor.tsx',
+        target: 'components/templates/akor/akor.tsx',
+      },
+      {
+        path: 'templates/akor/navbar.tsx',
+        target: 'components/templates/akor/navbar.tsx',
+      },
+      {
+        path: 'templates/akor/hero.tsx',
+        target: 'components/templates/akor/hero.tsx',
+      },
+      {
+        path: 'templates/akor/services.tsx',
+        target: 'components/templates/akor/services.tsx',
+      },
+      {
+        path: 'templates/akor/about.tsx',
+        target: 'components/templates/akor/about.tsx',
+      },
+      {
+        path: 'templates/akor/footer.tsx',
+        target: 'components/templates/akor/footer.tsx',
+      },
+      {
+        path: 'templates/akor/primitives.tsx',
+        target: 'components/templates/akor/primitives.tsx',
+      },
+      {
+        path: 'templates/akor/styles.tsx',
+        target: 'components/templates/akor/styles.tsx',
+      },
+      {
+        path: 'templates/akor/fonts.ts',
+        target: 'components/templates/akor/fonts.ts',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'nexacore',
     title: 'NexaCore',
     description:
@@ -3106,7 +3238,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/newsletter-02.tsx',
       },
     ],
-    registryDependencies: ['animated-number', 'avatar-stack', 'button', 'copy-button', 'field', 'input-group', 'progress', 'spinner'],
+    registryDependencies: [
+      'animated-number',
+      'avatar-stack',
+      'button',
+      'copy-button',
+      'field',
+      'input-group',
+      'progress',
+      'spinner',
+    ],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },

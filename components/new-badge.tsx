@@ -10,8 +10,7 @@ export interface NewBadgeProps {
   className?: string;
 }
 
-// Pages are statically exported and cached indefinitely, so freshness must be decided in the browser, not at build time.
-// The clock is read as an external store: the server snapshot is false, the client resolves it on hydration, and the subscription fires once at expiry.
+// Static pages cannot know the current time, so the badge is decided in the browser and hidden until hydration.
 export const NewBadge = ({ addedAt, className }: NewBadgeProps) => {
   const isVisible = React.useSyncExternalStore(
     (onExpire) => {

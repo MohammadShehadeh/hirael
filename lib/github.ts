@@ -3,14 +3,14 @@ import 'server-only';
 const REPO = 'MohammadShehadeh/hirael';
 const REPO_API_URL = `https://api.github.com/repos/${REPO}`;
 
-/** Fetched once at `next build` and frozen into the static export; null on failure so the header omits the badge instead of failing the build. */
+/** Read once at build time. A failed request leaves the star count off the header instead of failing the build. */
 export const getRepoStars = async (): Promise<number | null> => {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
   };
 
-  // Keeps builds off GitHub's 60 req/hr unauthenticated rate limit.
+  // A token keeps the build off GitHub's unauthenticated rate limit.
   if (process.env.GITHUB_TOKEN_HIRAEL) {
     headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN_HIRAEL}`;
   }

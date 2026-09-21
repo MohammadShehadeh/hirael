@@ -26,7 +26,7 @@ interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   config: CustomizerConfig;
-  /** The default until mounted so the first client render matches the server HTML. */
+  /** Server default until mount, so hydration matches. */
   base: RegistryBase;
   tokens: ResolvedTokens;
   isDefault: boolean;
@@ -145,7 +145,7 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
 const subscribeToForcedTheme = () => () => {};
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // The server render has no URL params, so the server snapshot stays undefined and hydration matches the HTML.
+  // No URL on the server, so this stays empty and hydration matches.
   const forcedTheme = React.useSyncExternalStore(subscribeToForcedTheme, readEmbedForcedTheme, () => undefined);
 
   return (

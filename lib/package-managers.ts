@@ -39,7 +39,7 @@ const fromStorage = (): PackageManager => {
 
 const snapshot = (): PackageManager => (current ??= fromStorage());
 
-/** `storage` fires only in other tabs, so the custom event covers this one. */
+/** The storage event only fires in other tabs, so this tab sends its own. */
 const subscribe = (onStoreChange: () => void) => {
   const handleStorage = (event: StorageEvent) => {
     if (event.key !== STORAGE_KEY) return;

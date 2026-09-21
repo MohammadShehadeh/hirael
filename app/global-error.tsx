@@ -8,7 +8,7 @@ import { LogoMark } from '@/components/logo';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-// global-error replaces the root layout, so it has to bring its own document and fonts.
+// This page replaces the root layout, so it includes its own document and fonts.
 const outfit = Outfit({
   variable: '--font-outfit',
   subsets: ['latin'],

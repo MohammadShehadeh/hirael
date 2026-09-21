@@ -11,7 +11,7 @@ const OPEN_SLOTS = 2;
 const tileClassName =
   'flex h-11 items-center justify-center rounded-md px-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40';
 
-/** Detail pages render ComponentPage, which already has a right column (the TOC) and shows the card under it. */
+/** Detail pages already have a right column, so the rail stays off those routes. */
 const hasOwnRightColumn = (pathname: string) =>
   /^\/(components|blocks)\/[^/]+\/[^/]+$/.test(pathname) || /^\/templates\/[^/]+$/.test(pathname);
 

@@ -7,7 +7,7 @@ import { COMPONENT_CATEGORY_ORDER, COMPONENTS, REGISTRY, TEMPLATES, entryHref } 
 
 export const dynamic = 'force-static';
 
-/** `lastModified` comes from the changelog, not the build clock: a static export rebuilds on every deploy, so a build timestamp would claim every URL changed. */
+/** Dates come from the changelog. A build time would mark every URL as changed on each deploy. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ entries }, dates] = await Promise.all([getChangelog(), getReleaseDates()]);
   const latest = entries[0]?.isoDate ?? new Date().toISOString();

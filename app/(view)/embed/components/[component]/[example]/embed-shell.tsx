@@ -7,8 +7,8 @@ export interface ExampleEmbedShellProps {
 }
 
 /**
- * The frame sizes to `[data-embed-shell]`, so the floor lives on the inner box where `?fit=1` can't zero it: the
- * demo is centered in the same min-height the inline example used, and fills the viewport on a direct visit.
+ * The docs frame measures the outer shell, so the minimum height sits on the inner box.
+ * The demo stays centered in the docs and fills the screen on a direct visit.
  */
 export const ExampleEmbedShell = ({ children }: ExampleEmbedShellProps) => {
   return (

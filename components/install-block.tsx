@@ -79,12 +79,12 @@ export const InstallBlock = ({ name, className, variant }: InstallBlockProps) =>
   );
 };
 
-// Read via useSyncExternalStore so the static HTML carries the canonical origin and the client swaps in its own on hydration without a mismatch.
+// The static HTML uses the public origin. The browser swaps in its own after hydration.
 const subscribeNoop = () => () => {};
 const getServerOrigin = () => SITE.registry.origin;
 const getClientOrigin = () => process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
 
-// Hex values are VSCode light-plus / dark-plus token colors.
+// Matches the VS Code light and dark syntax colors.
 const TOKEN_CLASS = {
   runner: 'text-[#795e26] dark:text-[#dcdcaa]',
   verb: 'text-[#0000ff] dark:text-[#569cd6]',

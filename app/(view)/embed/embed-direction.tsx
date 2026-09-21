@@ -6,20 +6,18 @@ import { DirectionProvider as BaseDirectionProvider } from '@base-ui/react/direc
 import { DemoLocaleProvider } from '@/lib/demo-locale';
 import { DirectionProvider } from '@/registry/hirael/bases/radix/ui/direction';
 
+// Direction is set before paint and does not change, so there is nothing to subscribe to.
 const subscribe = () => () => {};
 
-/**
- * `?dir=rtl` lands on `<html>` before paint, but Radix and Base UI read direction from their own context and fall
- * back to LTR, which pins anchored content and roving focus the wrong way round. Feeding both contexts here keeps
- * every framed preview mirrored without each block having to opt in. The demo locale follows the same flag so
- * `useT()` strings switch to Arabic in framed component examples, as they did inline. The flag is `false` for the
- * server render and flips after hydration, so the subtree is keyed on it: demos that seed state or memoize
- * children at mount re-seed instead of keeping their English first render.
- */
 export interface EmbedDirectionProps {
   children: React.ReactNode;
 }
 
+/**
+ * Radix and Base UI ignore `dir` on the document and follow their own providers.
+ * Both stay in sync with the preview, and demo copy switches to Arabic in RTL.
+ * The demo remounts once direction is known, because the server render is always left to right.
+ */
 export const EmbedDirection = ({ children }: EmbedDirectionProps) => {
   const isRtl = React.useSyncExternalStore(
     subscribe,

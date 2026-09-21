@@ -1,5 +1,4 @@
-// The Hirael logo as raw path data, so the React component and the `next/og`
-// image routes (which render through Satori, not the DOM) draw the same shapes.
+// Shared path data so the React logo and the social images draw the same shapes.
 
 /** Bare H mark, tight bounds. */
 export const HIRAEL_MARK_PATH = 'M0 11.45h2.4V22.4h6.2v-8.35h4.6v8.35h6.2V11.45H17V.5h-6.2v8.35H6.2V.5H0Z';

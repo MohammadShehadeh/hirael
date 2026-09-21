@@ -1,32 +1,14 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
-import { ArrowRight, Frame, Layers } from 'lucide-react';
 
-import { InlineCodeBlock } from '@/components/code-block';
 import { CollectionJsonLd } from '@/components/collection-json-ld';
-import { DemoCard } from '@/components/demo-card';
-import { PageHeader, SectionLabel } from '@/components/page-header';
-import { highlightCode } from '@/lib/highlight';
+import { PageHeader } from '@/components/page-header';
 import { listingMetadata } from '@/lib/seo';
-import {
-  BLOCK_KIND_ORDER,
-  CATEGORY_LABELS,
-  COMPONENT_CATEGORY_ORDER,
-  COMPONENTS,
-  REGISTRY_BY_CATEGORY,
-  TEMPLATES,
-} from '@/registry/hirael/registry-meta';
+import { COMPONENTS } from '@/registry/hirael/registry-meta';
 
-const COMPOSE_SNIPPET = `import {
-  MultiSelect,
-  MultiSelectContent,
-  MultiSelectTrigger,
-} from "@/components/multi-select"
-
-<MultiSelect value={value} onValueChange={setValue} options={options}>
-  <MultiSelectTrigger placeholder="Pick…" />
-  <MultiSelectContent searchPlaceholder="Filter…" />
-</MultiSelect>`;
+import { CategoryNav } from './_components/category-nav';
+import { CategorySections } from './_components/category-sections';
+import { Composition } from './_components/composition';
+import { RelatedCatalog } from './_components/related-catalog';
 
 const COMPONENTS_DESCRIPTION =
   'Components shadcn/ui leaves out: multi-select, combobox, date and time pickers, tag input, currency input, file dropzone and more. Try each one live, then install it with the shadcn CLI.';
@@ -46,10 +28,7 @@ export const metadata: Metadata = listingMetadata({
   ],
 });
 
-export default async function ComponentsIndex() {
-  const blocks = REGISTRY_BY_CATEGORY.blocks;
-  const composeHtml = await highlightCode(COMPOSE_SNIPPET, 'tsx');
-
+export default function ComponentsIndex() {
   return (
     <div className="docs-container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <CollectionJsonLd
@@ -64,93 +43,10 @@ export default async function ComponentsIndex() {
         title="The full registry."
         blurb={`${COMPONENTS.length} components shadcn/ui leaves out: multi-select, combobox, date and time pickers, tag and currency inputs, file dropzones, data views and more. Each one runs live below, so you can test it before the shadcn CLI copies its source into your repo.`}
       />
-
-      <nav aria-label="Component categories" className="-mt-6 flex flex-wrap justify-center gap-2">
-        {COMPONENT_CATEGORY_ORDER.map((category) => (
-          <a
-            key={category}
-            href={`#${category}`}
-            className="rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
-          >
-            {CATEGORY_LABELS[category]}
-            <span className="ms-1.5 tabular-nums text-muted-foreground/60">
-              {REGISTRY_BY_CATEGORY[category].length}
-            </span>
-          </a>
-        ))}
-      </nav>
-
-      {COMPONENT_CATEGORY_ORDER.map((category) => {
-        const items = REGISTRY_BY_CATEGORY[category];
-        if (!items.length) return null;
-        return (
-          <section key={category} id={category} className="flex scroll-mt-24 flex-col gap-5">
-            <div className="flex items-baseline justify-between">
-              <Link
-                href={`/components/${category}`}
-                className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-              >
-                <SectionLabel className="text-foreground">{CATEGORY_LABELS[category]}</SectionLabel>
-                <ArrowRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
-              </Link>
-              <span className="text-xs tabular-nums text-muted-foreground">{items.length}</span>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {items.map((entry) => (
-                <DemoCard key={entry.name} entry={entry} />
-              ))}
-            </div>
-          </section>
-        );
-      })}
-
-      <section className="flex flex-col gap-5 border-t border-border pt-10">
-        <SectionLabel>Composition (the shadcn way)</SectionLabel>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Every compound component ships as flat top-level exports, no namespacing, no convenience wrappers. The bare
-          name is the root primitive and holds state; every rendered piece carries a
-          <code className="mx-1 rounded-sm bg-muted px-1 py-0.5 text-foreground">data-slot</code>
-          attribute for downstream styling.
-        </p>
-        <InlineCodeBlock code={COMPOSE_SNIPPET} html={composeHtml} />
-      </section>
-
-      <section className="grid gap-3 border-t border-border pt-10 sm:grid-cols-2">
-        <Link
-          href="/blocks"
-          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
-        >
-          <div className="flex items-center gap-3">
-            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-              <Layers className="size-4 text-foreground" />
-            </span>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">{blocks.length} section blocks</span>
-              <span className="text-xs uppercase text-muted-foreground">
-                {BLOCK_KIND_ORDER.length} categories, preview and install
-              </span>
-            </div>
-          </div>
-          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />
-        </Link>
-        <Link
-          href="/templates"
-          className="group flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 transition-colors hover:bg-accent"
-        >
-          <div className="flex items-center gap-3">
-            <span className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background">
-              <Frame className="size-4 text-foreground" />
-            </span>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">{TEMPLATES.length} full-page templates</span>
-              <span className="text-xs uppercase text-muted-foreground">
-                landing pages, preview and install
-              </span>
-            </div>
-          </div>
-          <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />
-        </Link>
-      </section>
+      <CategoryNav />
+      <CategorySections />
+      <Composition />
+      <RelatedCatalog />
     </div>
   );
 }

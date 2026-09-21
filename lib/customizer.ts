@@ -170,7 +170,7 @@ export const formatThemeCss = (tokens: ResolvedTokens): string => {
 
 export const isEmbedPath = (pathname: string) => pathname.startsWith('/embed/');
 
-/** Runs before hydration so a re-skinned page paints right on the first frame; framed `/embed/*` documents always get the unscoped sheet. Embed `?theme=` locks light/dark before paint so a preview toggle cannot flash the stored site mode. */
+/** Runs before paint so a saved theme does not flash. Previews ignore that saved theme, and `?theme=` locks the frame. */
 export const customizerPrehydrationScript = (): string => {
   return `(()=>{try{
     if(location.pathname.indexOf('/embed/')===0){

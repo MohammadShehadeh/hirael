@@ -6,8 +6,7 @@ import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
 import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-// `?static=1` drops the embed shell's `min-h-svh` (globals.css) so the block reports its natural height.
-// The iframe mounts only once the width is known so its content mounts visible, which `whileInView` reveals need.
+// Static mode reports the block's own height. The iframe waits for a width so reveal animations start on screen.
 const SIM_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
@@ -51,7 +50,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
     if (fill) return;
     const doc = event.currentTarget.contentDocument;
     if (!doc) return;
-    // Not `documentElement.scrollHeight`: it never drops below the iframe viewport, so it always reads the full sim height.
+    // The document height never shrinks below the iframe, so measure the embed shell instead.
     const target = doc.querySelector<HTMLElement>('[data-embed-shell]');
     if (!target) return;
     const measureHeight = () => {

@@ -17,7 +17,7 @@ const Bar = ({ className }: BarProps) => {
   return <div className={cn('rounded-full bg-foreground/12', className)} />;
 };
 
-/** Hairlines for structure, two neutral fills for mass, one warm element per card - never two. */
+/** Thin lines for structure, two neutral fills for weight, and one warm accent per card. */
 const ART: Record<string, React.ReactNode> = {
   hero: (
     <div className="flex size-full flex-col items-center justify-center gap-1.5">

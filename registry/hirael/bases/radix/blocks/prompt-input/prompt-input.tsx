@@ -273,7 +273,7 @@ const PromptInputTextarea = ({
       onKeyDown={handleKeyDown}
       onPaste={handlePaste}
       className={cn(
-        'min-h-0 resize-none rounded-none border-0 bg-transparent px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent',
+        'min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent',
         className,
       )}
       {...props}

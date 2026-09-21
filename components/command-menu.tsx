@@ -60,16 +60,14 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         <Button
           type="button"
           variant="outline"
-          size="icon-sm"
+          size="sm"
           onClick={openPalette}
           aria-label="Search components and blocks"
-          className={cn('sm:w-auto sm:px-2.5', className)}
+          className={className}
         >
           <Search className="size-3.5 shrink-0" />
           <span className="hidden text-[13px] tracking-tight sm:inline">Search…</span>
-          <KbdDisplay className="ms-2 hidden border border-border bg-background px-1.5 text-xs sm:inline-flex">
-            {isMac ? '⌘' : 'Ctrl '}K
-          </KbdDisplay>
+          <KbdDisplay className="ms-2 hidden sm:inline-flex">{isMac ? '⌘' : 'Ctrl '}K</KbdDisplay>
         </Button>
       )}
 

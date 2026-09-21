@@ -61,11 +61,7 @@ const Hero06 = () => {
       <GeometricAccent />
 
       <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6">
-        <Badge
-          render={<a href="#" />}
-          variant="secondary"
-          className={cn(ENTER, 'gap-2 rounded-full text-[11px] font-normal')}
-        >
+        <Badge render={<a href="#" />} variant="secondary" className={cn(ENTER, 'gap-2 text-[11px] font-normal')}>
           <span aria-hidden className="relative flex size-2">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-cool opacity-75 motion-reduce:animate-none" />
             <span className="relative inline-flex size-2 rounded-full bg-accent-cool" />

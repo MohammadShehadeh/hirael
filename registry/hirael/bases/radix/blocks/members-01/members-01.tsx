@@ -255,9 +255,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
       <TableCell className="px-4 py-2.5">
         <span className="flex items-center gap-3">
           <Avatar>
-            <AvatarFallback className="text-xs font-medium text-foreground">
-              {initialsOf(member.name)}
-            </AvatarFallback>
+            <AvatarFallback className="text-xs font-medium text-foreground">{initialsOf(member.name)}</AvatarFallback>
           </Avatar>
           <span className="flex min-w-0 flex-col">
             <span className="flex items-center gap-1.5 truncate font-medium text-foreground">
@@ -478,7 +476,7 @@ const MembersPendingItem = ({
       {...props}
     >
       <Avatar>
-        <AvatarFallback className="text-muted-foreground">
+        <AvatarFallback>
           <MailPlus className="size-3.5" aria-hidden />
         </AvatarFallback>
       </Avatar>
@@ -718,8 +716,8 @@ const Members01 = () => {
               title="No matching members"
               description={
                 <>
-                  Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a
-                  name, an email, or a role.
+                  Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a name, an
+                  email, or a role.
                 </>
               }
               action={

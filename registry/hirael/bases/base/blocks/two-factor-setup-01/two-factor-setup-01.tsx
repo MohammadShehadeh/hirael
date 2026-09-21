@@ -264,7 +264,7 @@ const TwoFactorSetupCode = ({
               <InputOTPSlot
                 key={i}
                 index={i}
-                className="size-10 rounded-sm border border-input text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11"
+                className="size-10 rounded-sm border text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11"
               />
             ))}
           </InputOTPGroup>

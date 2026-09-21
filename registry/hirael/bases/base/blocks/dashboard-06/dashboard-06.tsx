@@ -330,7 +330,7 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
         </div>
         <CardTitle className="flex items-center justify-between gap-2">
           <span className="line-clamp-1 text-sm">{run.pipeline}</span>
-          <Badge variant="outline" className="gap-1.5 text-xs" style={{ color: STATE_TOKEN[run.state] }}>
+          <Badge variant="outline" className="gap-1.5" style={{ color: STATE_TOKEN[run.state] }}>
             <StateDot state={run.state} />
             {STATE_LABEL[run.state]}
           </Badge>

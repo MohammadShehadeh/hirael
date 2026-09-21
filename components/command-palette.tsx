@@ -72,7 +72,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="top-[14vh] w-[calc(100%-2rem)] max-w-lg translate-y-0 gap-0 overflow-hidden rounded-md border-border bg-popover p-0 shadow-2xl"
+        className="top-[14vh] w-[calc(100%-2rem)] max-w-lg translate-y-0 gap-0 overflow-hidden p-0"
       >
         <DialogTitle className="sr-only">Search</DialogTitle>
         <DialogDescription className="sr-only">Search across all components and blocks.</DialogDescription>

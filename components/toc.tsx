@@ -64,12 +64,7 @@ export const TocChips = ({ items, className }: TocProps) => {
       {items.map((item) => {
         const isActive = item.id === active;
         return (
-          <Badge
-            key={item.id}
-            variant={isActive ? 'secondary' : 'outline'}
-            asChild
-            className="px-3 py-1 text-xs uppercase"
-          >
+          <Badge key={item.id} variant={isActive ? 'secondary' : 'outline'} asChild>
             <a href={`#${item.id}`} aria-current={isActive ? 'location' : undefined}>
               {item.label}
             </a>

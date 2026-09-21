@@ -176,7 +176,7 @@ const FlyoutRow = ({ link }: { link: MenuLink }) => {
     <li>
       <NavigationMenuLink
         href={link.href}
-        className="flex-row items-start gap-3 rounded-md p-3 transition-colors duration-150 hover:bg-muted/60 focus:bg-muted/60"
+        className="flex-row items-start gap-3 p-3 transition-colors duration-150 hover:bg-muted/60 focus:bg-muted/60"
       >
         <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
         <span className="flex min-w-0 flex-col gap-0.5">
@@ -202,7 +202,7 @@ const FlyoutFeature = ({ feature }: { feature: MenuFeature }) => {
       </time>
       <NavigationMenuLink
         href={feature.href}
-        className="group/cta mt-auto flex-row items-center gap-1.5 self-start px-0 pt-3 pb-0 text-sm font-medium text-foreground hover:bg-transparent hover:text-warm focus:bg-transparent"
+        className="group/cta mt-auto flex-row items-center gap-1.5 self-start px-0 pt-3 pb-0 text-foreground hover:bg-transparent hover:text-warm focus:bg-transparent"
       >
         {feature.cta}
         <ArrowRight
@@ -273,9 +273,7 @@ const Header03 = () => {
                 <Accordion type="single" collapsible>
                   {GROUPS.map((group) => (
                     <AccordionItem key={group.value} value={group.value} className="last:border-b">
-                      <AccordionTrigger className="py-4 text-base font-medium hover:no-underline">
-                        {group.label}
-                      </AccordionTrigger>
+                      <AccordionTrigger className="py-4 text-base hover:no-underline">{group.label}</AccordionTrigger>
                       <AccordionContent className="pb-3">
                         <ul className="flex flex-col">
                           {group.links.map((link) => {

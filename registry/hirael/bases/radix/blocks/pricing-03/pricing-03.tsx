@@ -125,7 +125,7 @@ const Pricing03 = () => {
           <ToggleGroupItem value="yearly" className="gap-2">
             Yearly
             {yearlySaving > 0 && (
-              <Badge variant="secondary" className="px-1.5 text-xs">
+              <Badge variant="secondary" className="px-1.5">
                 Save {yearlySaving}%
               </Badge>
             )}
@@ -153,7 +153,7 @@ const Pricing03 = () => {
                 }}
                 className={cn(
                   ENTER,
-                  'relative h-full gap-6 rounded-xl p-6 text-start transition-[translate,border-color] duration-200 hover:-translate-y-1',
+                  'relative h-full gap-6 p-6 text-start transition-[translate,border-color] duration-200 hover:-translate-y-1',
                   plan.popular ? 'ring-1 ring-foreground/25' : 'hover:border-foreground/20',
                 )}
               >
@@ -166,9 +166,9 @@ const Pricing03 = () => {
                 <CardHeader className="gap-3 px-0">
                   <div className="flex items-center gap-2">
                     <Icon aria-hidden className="size-4 text-muted-foreground" />
-                    <CardTitle className="text-lg font-semibold">{plan.name}</CardTitle>
+                    <CardTitle className="text-lg">{plan.name}</CardTitle>
                   </div>
-                  <CardDescription className="text-sm text-muted-foreground">{plan.description}</CardDescription>
+                  <CardDescription>{plan.description}</CardDescription>
                   <div data-slot="pricing-price" className="flex min-h-14 flex-col justify-end gap-1 pt-1">
                     {typeof amount === 'number' ? (
                       <>

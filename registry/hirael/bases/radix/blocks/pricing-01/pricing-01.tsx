@@ -121,7 +121,7 @@ const Pricing01 = () => {
                 }}
                 className={cn(
                   ENTER,
-                  'relative gap-6 rounded-xl p-6 transition-[translate,border-color] duration-200 hover:-translate-y-1',
+                  'relative gap-6 p-6 transition-[translate,border-color] duration-200 hover:-translate-y-1',
                   tier.featured ? 'ring-1 ring-foreground/25' : 'hover:border-foreground/20',
                 )}
               >

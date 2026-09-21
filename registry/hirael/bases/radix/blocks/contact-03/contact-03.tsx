@@ -101,10 +101,7 @@ const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge
       <Badge
         data-slot="contact-badge"
         variant="outline"
-        className={cn(
-          'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
-          className,
-        )}
+        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
         {...props}
       />
     </div>

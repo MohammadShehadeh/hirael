@@ -63,7 +63,7 @@ const Integrations01 = () => {
           <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
             <Badge
               variant="outline"
-              className={cn(ENTER, 'w-fit rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
+              className={cn(ENTER, 'w-fit bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}
             >
               Integrations
             </Badge>

@@ -161,7 +161,7 @@ const OtpVerify01 = () => {
                               index={i}
                               aria-invalid={Boolean(error) || undefined}
                               className={cn(
-                                'size-10 rounded-sm border border-input text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11',
+                                'size-10 rounded-sm border text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11',
                                 code[i] && 'border-foreground',
                               )}
                             />

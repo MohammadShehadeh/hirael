@@ -371,7 +371,7 @@ const ChangelogEntryTag = ({ kind, className, children, ...props }: ChangelogEnt
       variant="secondary"
       data-slot="changelog-entry-tag"
       data-kind={kind}
-      className={cn('text-xs uppercase', TAG_CLASSES[kind], className)}
+      className={cn('uppercase', TAG_CLASSES[kind], className)}
       {...props}
     >
       {children ?? TAG_LABELS[kind]}

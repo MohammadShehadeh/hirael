@@ -99,10 +99,7 @@ const Hero08 = () => {
         <div className="mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
           <Badge
             variant="outline"
-            className={cn(
-              RISE,
-              'gap-2 rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
-            )}
+            className={cn(RISE, 'gap-2 bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm')}
           >
             <Sparkles aria-hidden className="size-3" />
             Boards for product teams

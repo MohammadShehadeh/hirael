@@ -207,7 +207,7 @@ const Integrations03 = () => {
                     <div className="flex flex-wrap items-center gap-2">
                       <row.icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
                       <h3 className="text-sm font-medium">{row.name}</h3>
-                      <Badge variant={row.status === 'Live' ? 'secondary' : 'outline'} className="text-xs uppercase">
+                      <Badge variant={row.status === 'Live' ? 'secondary' : 'outline'} className="uppercase">
                         {row.status}
                       </Badge>
                     </div>

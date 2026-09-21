@@ -26,7 +26,7 @@ import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/
  * an iframe, so the theme lock, RTL flag, refresh and "open" affordances and the shell-height follow live here.
  */
 
-const PREVIEW_ICON_BUTTON = 'size-7 rounded-sm text-muted-foreground';
+const PREVIEW_ICON_BUTTON = 'size-7';
 
 /** `?fit=1` drops the embed shell's viewport min-height (globals.css) so the frame can size to the content's natural height.
  * `theme` is omitted until the toolbar overrides it, so the frame keeps following the site mode from storage. */
@@ -212,7 +212,7 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
           </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuLabel className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+        <DropdownMenuLabel className="flex items-center">
           <Package className="size-3" />
           Dependencies
         </DropdownMenuLabel>

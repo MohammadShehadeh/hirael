@@ -80,7 +80,7 @@ const Feature10 = () => {
             </CardContent>
             <CardFooter className="mt-auto gap-3">
               <Avatar aria-hidden>
-                <AvatarFallback className="bg-muted text-xs font-medium text-foreground">PB</AvatarFallback>
+                <AvatarFallback className="text-xs font-medium text-foreground">PB</AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-col">
                 <cite className="text-sm font-medium not-italic">Priya Banerjee</cite>
@@ -104,9 +104,7 @@ const Feature10 = () => {
             >
               <CardHeader>
                 <CardDescription className="text-xs uppercase">{metric.label}</CardDescription>
-                <CardTitle className="text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
-                  {metric.value}
-                </CardTitle>
+                <CardTitle className="text-4xl tracking-tight tabular-nums sm:text-5xl">{metric.value}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{metric.caption}</p>

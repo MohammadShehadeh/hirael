@@ -210,7 +210,8 @@ const Ecommerce01 = () => {
               <span
                 key={cartCount}
                 className={cn(
-                  cartCount > 0 && 'animate-in fade-in zoom-in-95 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none',
+                  cartCount > 0 &&
+                    'animate-in fade-in zoom-in-95 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none',
                   'tabular-nums',
                   cartCount > 0 && 'text-foreground',
                 )}
@@ -250,7 +251,7 @@ const Ecommerce01 = () => {
                   {p.badge && (
                     <Badge
                       variant="outline"
-                      className="absolute start-2.5 top-2.5 bg-background/85 text-xs uppercase backdrop-blur"
+                      className="absolute start-2.5 top-2.5 bg-background/85 uppercase backdrop-blur"
                     >
                       {p.badge}
                     </Badge>
@@ -279,9 +280,7 @@ const Ecommerce01 = () => {
                     <span className="flex items-baseline gap-1.5">
                       <span className="text-sm font-semibold tabular-nums">{p.price}</span>
                       {p.compareAt && (
-                        <span className="text-xs tabular-nums text-muted-foreground line-through">
-                          {p.compareAt}
-                        </span>
+                        <span className="text-xs tabular-nums text-muted-foreground line-through">{p.compareAt}</span>
                       )}
                     </span>
                     <Button

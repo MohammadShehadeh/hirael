@@ -423,7 +423,6 @@ const AppShell03 = () => {
               }}
               placeholder="Search mail…"
               aria-label="Search mail"
-              className="text-sm"
             />
           </InputGroup>
           <div className="flex items-center justify-between gap-2">

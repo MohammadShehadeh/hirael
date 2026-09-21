@@ -117,26 +117,14 @@ const CodePane = ({ html, maxHeight, isCollapsible, isExpanded, onExpandedChange
       />
       {isClipped && (
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-linear-to-t from-card via-card/85 to-transparent pb-3 pt-20">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => onExpandedChange(true)}
-            className="rounded-full bg-background"
-          >
+          <Button type="button" variant="outline" size="sm" onClick={() => onExpandedChange(true)}>
             Expand source
           </Button>
         </div>
       )}
       {isCollapsible && isExpanded && (
         <div className="flex justify-center border-t border-border py-1.5">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => onExpandedChange(false)}
-            className="text-muted-foreground"
-          >
+          <Button type="button" variant="ghost" size="sm" onClick={() => onExpandedChange(false)}>
             Collapse
           </Button>
         </div>
@@ -271,12 +259,9 @@ export interface InlineCodeBlockProps {
 export const InlineCodeBlock = ({ html, code, className, maxHeight = 'max-h-[640px]' }: InlineCodeBlockProps) => {
   return (
     <div className={cn('group relative overflow-hidden rounded-md border border-border bg-card', className)}>
-      <CopyButton
-        value={code}
-        size="sm"
-        aria-label="Copy code"
-        className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-      />
+      <span className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+        <CopyButton value={code} size="sm" aria-label="Copy code" />
+      </span>
       <div className={cn('shiki-scroll overflow-auto', maxHeight)} dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );

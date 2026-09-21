@@ -432,7 +432,8 @@ const DepGroup = ({ title, deps }: DepGroupProps) => {
   );
 };
 
-const API_TH = 'px-4 py-2 text-start text-xs font-normal uppercase text-muted-foreground';
+const API_TH = 'px-4 py-2 text-start';
+const API_TH_LABEL = 'text-xs font-normal uppercase text-muted-foreground';
 
 interface ApiPanelProps {
   parts: ApiPart[];
@@ -451,11 +452,17 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
           </div>
           {part.props.length ? (
             <Table>
-              <TableHeader className="bg-card">
+              <TableHeader>
                 <TableRow>
-                  <TableHead className={API_TH}>Prop</TableHead>
-                  <TableHead className={API_TH}>Type</TableHead>
-                  <TableHead className={API_TH}>Default</TableHead>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>Prop</span>
+                  </TableHead>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>Type</span>
+                  </TableHead>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>Default</span>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -484,11 +491,14 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
                         <code className="font-mono text-xs text-muted-foreground">{prop.type}</code>
                       )}
                     </TableCell>
-                    <TableCell className="px-4 py-2.5 whitespace-normal font-mono text-xs text-muted-foreground">
+                    <TableCell className="px-4 py-2.5 whitespace-normal">
                       {prop.defaultHtml ? (
-                        <code className="shiki-inline" dangerouslySetInnerHTML={{ __html: prop.defaultHtml }} />
+                        <code
+                          className="shiki-inline font-mono text-xs"
+                          dangerouslySetInnerHTML={{ __html: prop.defaultHtml }}
+                        />
                       ) : (
-                        (prop.default ?? 'none')
+                        <code className="font-mono text-xs text-muted-foreground">{prop.default ?? 'none'}</code>
                       )}
                     </TableCell>
                   </TableRow>

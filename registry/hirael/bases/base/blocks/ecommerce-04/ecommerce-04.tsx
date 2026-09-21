@@ -605,7 +605,7 @@ const Ecommerce04 = () => {
                       key={filter.key}
                       className="animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
                     >
-                      <Badge variant="outline" className="h-7 gap-1 pe-1 ps-2.5 text-xs font-normal">
+                      <Badge variant="outline" className="h-7 gap-1 pe-1 ps-2.5 font-normal">
                         {filter.label}
                         <button
                           type="button"

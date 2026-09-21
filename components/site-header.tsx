@@ -13,6 +13,7 @@ import { Logo } from '@/components/logo';
 import { CustomizerTrigger } from '@/components/customizer-sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import {
   Drawer,
   DrawerClose,
@@ -83,34 +84,23 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
           <ThemeToggle />
           <Drawer direction="bottom" open={mobileOpen} onOpenChange={setMobileOpen}>
             <DrawerTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Open menu"
-                className="rounded-full border border-border bg-card/60 text-foreground hover:border-foreground/40 lg:hidden"
-              >
+              <Button type="button" variant="ghost" size="icon-sm" aria-label="Open menu" className="lg:hidden">
                 <Menu className="size-3.5" />
               </Button>
             </DrawerTrigger>
             <DrawerContent>
-              <DrawerHeader className="flex flex-row items-center justify-between border-b border-border text-start">
+              <DrawerHeader className="flex flex-row items-center justify-between text-start">
                 <DrawerTitle className="flex items-center">
                   <Logo className="h-8" />
                   <span className="sr-only">Navigation</span>
                 </DrawerTitle>
                 <DrawerClose asChild>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Close menu"
-                    className="rounded-full border border-border bg-card text-foreground hover:border-foreground/40"
-                  >
+                  <Button type="button" variant="ghost" size="icon" aria-label="Close menu">
                     <X className="size-3.5" />
                   </Button>
                 </DrawerClose>
               </DrawerHeader>
+              <Separator />
               <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                 {NAV_LINKS.map((link) => {
                   const active = isActive(link.href);

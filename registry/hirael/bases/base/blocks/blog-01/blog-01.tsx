@@ -268,7 +268,7 @@ const Blog01 = () => {
           aria-label="Filter posts by category"
           data-slot="blog-filter"
           style={stagger(3)}
-          className={cn(ENTER, 'mt-8 flex-wrap')}
+          className={cn(ENTER, 'mt-8 flex-wrap gap-2')}
         >
           {CATEGORIES.map((item) => (
             <ToggleGroupItem

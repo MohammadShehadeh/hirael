@@ -164,7 +164,7 @@ const Integrations02 = () => {
                     <item.icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
                     {item.name}
                   </h3>
-                  <Badge variant="outline" className="text-xs uppercase">
+                  <Badge variant="outline" className="uppercase">
                     {item.category}
                   </Badge>
                 </div>

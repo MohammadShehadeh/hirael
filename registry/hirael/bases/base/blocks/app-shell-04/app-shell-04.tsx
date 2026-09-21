@@ -147,7 +147,10 @@ const BrandMark = ({ className }: { className?: string }) => {
 const BoardOverview = () => {
   return (
     <>
-      <dl data-slot="app-shell-stats" className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border xl:grid-cols-4">
+      <dl
+        data-slot="app-shell-stats"
+        className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border xl:grid-cols-4"
+      >
         {STATS.map((stat) => (
           <div key={stat.label} className="flex flex-col gap-1 bg-background p-4">
             <dt className="text-xs uppercase text-muted-foreground">{stat.label}</dt>
@@ -288,7 +291,6 @@ const AppShell04 = () => {
               placeholder="Filter nav…"
               aria-label="Filter navigation"
               aria-keyshortcuts="Meta+K Control+K"
-              className="text-sm"
             />
             <InputGroupAddon dir="ltr" align="inline-end">
               <KbdGroup>
@@ -354,10 +356,7 @@ const AppShell04 = () => {
           <div className="flex shrink-0 items-center gap-2">
             <Button variant="ghost" size="icon" className="relative size-8" aria-label="Notifications, 3 unread">
               <Bell className="size-4" aria-hidden />
-              <Badge
-                aria-hidden
-                className="absolute -end-1 -top-1 size-4 justify-center rounded-full p-0 text-[10px] tabular-nums"
-              >
+              <Badge aria-hidden className="absolute -end-1 -top-1 size-4 justify-center p-0 text-[10px] tabular-nums">
                 3
               </Badge>
             </Button>
@@ -369,7 +368,7 @@ const AppShell04 = () => {
                     variant="outline"
                     size="icon"
                     aria-label="Account menu"
-                    className="size-8 rounded-full text-[11px] font-medium"
+                    className="size-8 rounded-full text-[11px]"
                   />
                 }
               >

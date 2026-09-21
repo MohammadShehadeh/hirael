@@ -310,7 +310,7 @@ const Footer04 = () => {
             </FooterColumn>
           </div>
 
-          <Separator className="my-8 bg-border" />
+          <Separator className="my-8" />
 
           <Reveal
             data-slot="footer-bottom"

@@ -54,10 +54,7 @@ const Pricing04 = () => {
   return (
     <section data-slot="pricing" className="flex w-full flex-col gap-12 bg-background px-6 py-16 md:px-10 md:py-24">
       <div data-slot="pricing-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
-        <Badge
-          variant="outline"
-          className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
-        >
+        <Badge variant="outline" className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}>
           Pricing
         </Badge>
         <h2
@@ -106,7 +103,7 @@ const Pricing04 = () => {
                     aria-hidden
                     className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,var(--warm-glow),transparent_70%)]"
                   />
-                  <Badge className="absolute end-5 top-5 text-xs uppercase">Most popular</Badge>
+                  <Badge className="absolute end-5 top-5 uppercase">Most popular</Badge>
                 </>
               ) : null}
 

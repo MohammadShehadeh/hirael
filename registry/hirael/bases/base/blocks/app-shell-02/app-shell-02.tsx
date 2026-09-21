@@ -295,11 +295,7 @@ const FieldRow = ({
           selectOnFocus
           className="flex w-full flex-wrap items-center justify-start gap-1.5 sm:w-72 sm:justify-end"
         >
-          <InlineEditPreview
-            aria-labelledby={`${field.id}-label`}
-            aria-describedby={hintId}
-            className="text-sm"
-          />
+          <InlineEditPreview aria-labelledby={`${field.id}-label`} aria-describedby={hintId} className="text-sm" />
           <InlineEditInput aria-labelledby={`${field.id}-label`} className="h-8 min-w-0 flex-1 text-sm" />
           <InlineEditControls />
         </InlineEdit>
@@ -450,7 +446,7 @@ const AppShell02 = () => {
                   variant="ghost"
                   size="icon"
                   aria-label="Account menu"
-                  className="size-8 rounded-full bg-foreground text-[10px] font-medium text-background hover:bg-foreground/90 hover:text-background"
+                  className="size-8 rounded-full bg-foreground text-[10px] text-background hover:bg-foreground/90 hover:text-background"
                 />
               }
             >
@@ -506,15 +502,12 @@ const AppShell02 = () => {
                 <TabsTrigger
                   key={s.id}
                   value={s.id}
-                  className="gap-2.5 rounded-md px-3 py-2 text-sm data-active:bg-accent data-active:font-medium data-active:shadow-none"
+                  className="gap-2.5 px-3 py-2 data-active:bg-accent data-active:font-medium data-active:shadow-none"
                 >
                   <s.icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
                   <span className="whitespace-nowrap">{s.label}</span>
                   {normalized && (
-                    <Badge
-                      variant={count ? 'secondary' : 'outline'}
-                      className="ms-auto text-[10px] tabular-nums"
-                    >
+                    <Badge variant={count ? 'secondary' : 'outline'} className="ms-auto text-[10px] tabular-nums">
                       {count}
                       <span className="sr-only"> matches</span>
                     </Badge>

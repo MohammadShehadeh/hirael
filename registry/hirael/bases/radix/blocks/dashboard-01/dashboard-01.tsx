@@ -361,7 +361,10 @@ const Dashboard01 = () => {
               <CardAction>
                 <Button variant="outline" size="sm" onClick={onExport} aria-label={exported ? 'Exported' : 'Export'}>
                   {exported ? (
-                    <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+                    <Check
+                      className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none"
+                      aria-hidden
+                    />
                   ) : (
                     <Download className="size-3.5" aria-hidden />
                   )}
@@ -454,9 +457,7 @@ const Dashboard01 = () => {
                     )}
                   >
                     <Avatar aria-hidden>
-                      <AvatarFallback className="bg-muted text-xs font-medium text-foreground">
-                        {a.initials}
-                      </AvatarFallback>
+                      <AvatarFallback className="text-xs font-medium text-foreground">{a.initials}</AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-1 flex-col">
                       <p className="truncate text-sm">

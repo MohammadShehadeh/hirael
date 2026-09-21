@@ -115,7 +115,6 @@ const Newsletter02 = () => {
                   value={WAITLIST.referralUrl}
                   aria-labelledby="newsletter-02-link-label"
                   onFocus={(event) => event.currentTarget.select()}
-                  className="text-sm"
                 />
                 <InputGroupAddon align="inline-end">
                   <CopyButton value={WAITLIST.referralUrl} size="sm" aria-label="Copy invite link" />

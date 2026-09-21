@@ -44,7 +44,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
                 {entry.slug === latestSlug ? (
-                  <Badge variant="outline" className="gap-1.5 text-xs uppercase">
+                  <Badge variant="outline">
                     <span className="state-dot" />
                     Latest
                   </Badge>

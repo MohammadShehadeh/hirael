@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { SITE } from '@/lib/site';
 import { useRegistryBase } from '@/components/active-theme';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { ButtonGroup, ButtonGroupSeparator } from '@/registry/hirael/bases/radix/ui/button-group';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,7 +94,7 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
   const StateIcon = COPY_STATE_ICONS[copyState];
 
   return (
-    <div className={cn('inline-flex items-center', className)}>
+    <ButtonGroup className={className}>
       <Button
         type="button"
         variant="ghost"
@@ -103,7 +104,6 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
         aria-live="polite"
         aria-label={copyState === 'error' ? 'Copying failed. Try again' : 'Copy this page as Markdown'}
         title="Copy this page as Markdown"
-        className="rounded-e-none pe-2"
       >
         <StateIcon
           className={cn(
@@ -116,16 +116,11 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
         {copyState === 'error' ? 'Try again' : 'Copy page'}
       </Button>
 
+      <ButtonGroupSeparator />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label="More page actions"
-            title="More page actions"
-            className="rounded-s-none border-s border-border px-1.5"
-          >
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="More page actions" title="More page actions">
             <ChevronDown aria-hidden />
           </Button>
         </DropdownMenuTrigger>
@@ -169,6 +164,6 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </ButtonGroup>
   );
 };

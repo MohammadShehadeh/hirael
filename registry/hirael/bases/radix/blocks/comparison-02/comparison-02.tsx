@@ -89,7 +89,7 @@ const Comparison02 = () => {
                     <span className="flex items-center gap-2">
                       <span className="text-base font-medium">{column.name}</span>
                       {column.featured && (
-                        <Badge variant="secondary" className="text-xs uppercase">
+                        <Badge variant="secondary" className="uppercase">
                           This one
                         </Badge>
                       )}

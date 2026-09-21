@@ -111,10 +111,7 @@ const Feature08 = () => {
       className="flex w-full flex-col justify-center gap-12 bg-background px-6 py-16 md:px-10 md:py-24"
     >
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
-        <Badge
-          variant="outline"
-          className={cn(ENTER, 'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground')}
-        >
+        <Badge variant="outline" className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}>
           Features
         </Badge>
         <h2

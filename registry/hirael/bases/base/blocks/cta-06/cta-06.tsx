@@ -70,7 +70,7 @@ const Cta06 = () => {
               'flex w-full flex-wrap items-center gap-3 md:w-auto md:flex-col md:items-end md:gap-2',
             )}
           >
-            <Button render={<a href="#" />} nativeButton={false} size="lg" className="w-full rounded-md px-6 sm:w-auto">
+            <Button render={<a href="#" />} nativeButton={false} size="lg" className="w-full px-6 sm:w-auto">
               <GitBranch className="size-4" />
               Connect a repository
             </Button>

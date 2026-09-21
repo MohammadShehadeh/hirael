@@ -11,6 +11,7 @@ import type { ThemeItem } from '@/registry/themes';
 import { useTheme } from '@/components/active-theme';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
+import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import {
   Select,
   SelectContent,
@@ -70,13 +71,14 @@ const CustomizerBody = () => {
 
   return (
     <>
-      <SheetHeader className="border-b border-border pe-12">
+      <SheetHeader className="pe-12">
         <SheetTitle>Customizer</SheetTitle>
         <SheetDescription>
           Preview Hirael against your stack. Base switches every preview and install command between Radix UI and Base
           UI. Styles re-skin the site.
         </SheetDescription>
       </SheetHeader>
+      <Separator />
 
       <SheetBody className="flex flex-col gap-6">
         <Section title="Config" hint="Icons stay lucide">
@@ -187,7 +189,8 @@ const CustomizerBody = () => {
         </Section>
       </SheetBody>
 
-      <SheetFooter className="flex-row items-center justify-between border-t border-border">
+      <Separator />
+      <SheetFooter className="flex-row items-center justify-between">
         <p className="text-xs uppercase text-muted-foreground">Saved in this browser</p>
         <Button type="button" size="sm" variant="ghost" onClick={reset} disabled={isDefault}>
           <RotateCcw className="size-3.5" />

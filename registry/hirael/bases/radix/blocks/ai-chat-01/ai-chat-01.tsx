@@ -490,7 +490,7 @@ const AiChatComposer = ({
               submit();
             }
           }}
-          className="min-h-0 resize-none rounded-none border-0 bg-transparent px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent"
+          className="min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent"
         />
         <div className="flex items-center gap-2">
           {hint ? (
@@ -799,7 +799,6 @@ const AiChat01 = () => {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search chats"
                 aria-label="Search chats"
-                className="text-sm"
               />
             </InputGroup>
           </AiChatSidebarHeader>
@@ -845,7 +844,6 @@ const AiChat01 = () => {
                       setRenaming(false);
                     }}
                     aria-label="Chat title"
-                    className="text-sm"
                   />
                 </InputGroup>
               </form>

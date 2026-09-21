@@ -45,10 +45,7 @@ const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) =
       <Badge
         data-slot="faq-badge"
         variant="outline"
-        className={cn(
-          'rounded-full bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
-          className,
-        )}
+        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
         {...props}
       />
     </div>
@@ -140,7 +137,7 @@ const Faq06 = () => {
         <Accordion type="multiple" data-slot="faq-list" className="flex flex-col gap-3">
           {FAQS.map((item, i) => (
             <FaqCard key={item.id} value={item.id} index={i}>
-              <AccordionTrigger className="gap-6 py-4 text-start text-base font-medium text-foreground hover:no-underline md:text-lg">
+              <AccordionTrigger className="gap-6 py-4 text-start text-base text-foreground hover:no-underline md:text-lg">
                 {item.q}
               </AccordionTrigger>
               <AccordionContent className="pb-5 text-base text-muted-foreground">{item.a}</AccordionContent>

@@ -138,7 +138,7 @@ const Pricing02 = () => {
         >
           <Table className="table-fixed border-collapse text-start">
             <TableHeader className="bg-card">
-              <TableRow className="border-b border-border hover:bg-transparent">
+              <TableRow className="border-border hover:bg-transparent">
                 <TableHead className="w-1/2 px-4 pt-6 pb-5 align-top text-start whitespace-normal sm:px-5 md:w-2/5">
                   <span className="text-xs font-normal uppercase text-muted-foreground">Features</span>
                 </TableHead>
@@ -174,7 +174,7 @@ const Pricing02 = () => {
             <TableBody>
               {GROUPS.map((group) => (
                 <React.Fragment key={group.label}>
-                  <TableRow className="border-b border-border bg-muted/30 hover:bg-muted/30">
+                  <TableRow className="border-border bg-muted/30 hover:bg-muted/30">
                     <TableCell
                       colSpan={PLANS.length + 1}
                       className="px-4 py-2.5 text-xs uppercase text-muted-foreground sm:px-5"
@@ -183,7 +183,7 @@ const Pricing02 = () => {
                     </TableCell>
                   </TableRow>
                   {group.rows.map((row) => (
-                    <TableRow key={row.feature} className="border-b border-border hover:bg-transparent">
+                    <TableRow key={row.feature} className="border-border hover:bg-transparent">
                       <TableCell className="px-4 py-3.5 text-sm whitespace-normal text-foreground sm:px-5">
                         {row.feature}
                       </TableCell>

@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { CATEGORY_LABELS, COMPONENT_CATEGORY_ORDER, REGISTRY_BY_CATEGORY } from '@/registry/hirael/registry-meta';
 
 export const CategoryNav = () => {

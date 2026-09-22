@@ -1071,7 +1071,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/dashboard-01.tsx',
       },
     ],
-    registryDependencies: ['avatar', 'badge', 'button', 'card', 'select', 'separator', 'tabs', 'tooltip'],
+    registryDependencies: ['avatar', 'button', 'card', 'select', 'separator', 'tabs', 'tooltip'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1156,7 +1156,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/integrations-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'card'],
+    registryDependencies: ['badge', 'button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1207,7 +1207,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/image-gallery-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'empty', 'lightbox', 'tabs'],
+    registryDependencies: ['button', 'empty', 'lightbox', 'tabs'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1272,7 +1272,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [
       'badge',
       'button',
-      'card',
       'copy-button',
       'dropdown-menu',
       'empty',
@@ -1315,7 +1314,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/app-shell-04.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'dropdown-menu', 'input-group', 'kbd', 'separator', 'sidebar'],
+    registryDependencies: ['button', 'dropdown-menu', 'input-group', 'kbd', 'separator', 'sidebar'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1984,7 +1983,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/templates/agency-landing/shader-background.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button'],
+    registryDependencies: [],
     dependencies: ['shaders', 'lucide-react'],
   },
   {
@@ -2145,7 +2144,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/templates/usd-halo/fonts.ts',
       },
     ],
-    registryDependencies: ['button'],
+    registryDependencies: [],
     dependencies: ['lucide-react'],
   },
   {
@@ -2247,7 +2246,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/templates/velorah/fonts.ts',
       },
     ],
-    registryDependencies: ['button', 'toggle-group'],
+    registryDependencies: ['toggle-group'],
   },
   {
     name: 'asme',
@@ -2462,7 +2461,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/templates/nexacore/fonts.ts',
       },
     ],
-    registryDependencies: ['badge', 'button'],
+    registryDependencies: ['button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3474,7 +3473,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/hero-10.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button'],
+    registryDependencies: ['button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -4240,7 +4239,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/prompt-input.tsx',
       },
     ],
-    registryDependencies: ['button', 'dropdown-menu', 'textarea'],
+    registryDependencies: ['button', 'dropdown-menu'],
     dependencies: ['lucide-react'],
   },
   {
@@ -4275,7 +4274,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/ai-chat-01.tsx',
       },
     ],
-    registryDependencies: ['badge', 'button', 'dropdown-menu', 'input-group', 'sheet', 'textarea'],
+    registryDependencies: ['badge', 'button', 'dropdown-menu', 'input-group', 'sheet'],
     dependencies: ['lucide-react'],
   },
 ];

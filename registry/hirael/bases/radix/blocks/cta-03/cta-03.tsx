@@ -79,11 +79,7 @@ const Cta03 = () => {
             </p>
 
             <div data-slot="cta-actions" style={stagger(3)} className={ENTER}>
-              <Button
-                asChild
-                size="lg"
-                className="group h-14 rounded-full px-10 text-base transition-[transform,box-shadow] duration-150 hover:scale-105 hover:ring-4 hover:ring-primary/20 active:scale-95 motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
-              >
+              <Button asChild size="lg" className="group">
                 <a href="#">
                   Start writing
                   <ArrowRight className="size-5 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />

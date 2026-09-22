@@ -53,10 +53,7 @@ const Maintenance02 = () => {
         className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10"
       >
         <div className={RISE}>
-          <Badge
-            variant="outline"
-            data-slot="maintenance-badge"
-          >
+          <Badge variant="outline" data-slot="maintenance-badge">
             Maintenance
           </Badge>
         </div>

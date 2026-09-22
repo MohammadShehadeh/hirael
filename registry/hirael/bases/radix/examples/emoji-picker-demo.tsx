@@ -96,14 +96,13 @@ const EmojiPickerDemo = () => {
                   <SmilePlus />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-auto p-0">
+              <PopoverContent align="start" className="w-auto">
                 <EmojiPicker
                   recentKey="hirael-demo-recent-emoji"
                   onEmojiSelect={(emoji) => {
                     insertAtCursor(emoji);
                     setOpen(false);
                   }}
-                  className="border-0"
                 >
                   <EmojiPickerSearch placeholder={t({ en: 'Search emoji', ar: 'ابحث عن رمز' })} />
                   <EmojiPickerCategories labels={categoryLabels} />
@@ -137,7 +136,7 @@ const EmojiPickerDemo = () => {
           <EmojiPicker columns={6} onEmojiSelect={setReaction} className="w-64">
             <EmojiPickerSearch placeholder={t({ en: 'Search', ar: 'بحث' })} />
             <EmojiPickerList className="h-40" />
-            <EmojiPickerCategories labels={categoryLabels} className="border-t border-border pt-2" />
+            <EmojiPickerCategories labels={categoryLabels} />
           </EmojiPicker>
           <div className="grid gap-1 text-sm">
             <span className="text-xs uppercase text-muted-foreground">{t({ en: 'Reaction', ar: 'التفاعل' })}</span>

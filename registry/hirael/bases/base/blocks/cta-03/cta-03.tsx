@@ -79,12 +79,7 @@ const Cta03 = () => {
             </p>
 
             <div data-slot="cta-actions" style={stagger(3)} className={ENTER}>
-              <Button
-                render={<a href="#" />}
-                nativeButton={false}
-                size="lg"
-                className="group"
-              >
+              <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
                 Start writing
                 <ArrowRight className="size-5 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
               </Button>

@@ -104,9 +104,7 @@ const Login02 = () => {
               )}
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.email) || undefined}>
-                <FieldLabel htmlFor="login02-email" className="text-xs uppercase text-muted-foreground">
-                  Work email
-                </FieldLabel>
+                <FieldLabel htmlFor="login02-email">Work email</FieldLabel>
                 <Input
                   id="login02-email"
                   type="email"
@@ -117,16 +115,12 @@ const Login02 = () => {
                   aria-invalid={Boolean(errors.email) || undefined}
                   aria-describedby={errors.email ? 'login02-email-error' : undefined}
                 />
-                <FieldError id="login02-email-error" className="text-xs">
-                  {errors.email}
-                </FieldError>
+                <FieldError id="login02-email-error">{errors.email}</FieldError>
               </Field>
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.password) || undefined}>
                 <div className="flex items-center justify-between">
-                  <FieldLabel htmlFor="login02-password" className="text-xs uppercase text-muted-foreground">
-                    Password
-                  </FieldLabel>
+                  <FieldLabel htmlFor="login02-password">Password</FieldLabel>
                   <a
                     href="#"
                     className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
@@ -142,9 +136,7 @@ const Login02 = () => {
                     aria-describedby={errors.password ? 'login02-password-error' : undefined}
                   />
                 </PasswordInput>
-                <FieldError id="login02-password-error" className="text-xs">
-                  {errors.password}
-                </FieldError>
+                <FieldError id="login02-password-error">{errors.password}</FieldError>
               </Field>
 
               <Button type="submit" variant="default" size="lg" disabled={pending} className="group mt-2">

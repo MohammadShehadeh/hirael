@@ -279,11 +279,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <SidebarMenuButton size="lg" />
-                }
-              >
+              <DropdownMenuTrigger render={<SidebarMenuButton size="lg" />}>
                 <Avatar>
                   <AvatarFallback>{USER.initials}</AvatarFallback>
                 </Avatar>

@@ -84,9 +84,7 @@ const Feature04 = () => {
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
-            <Badge variant="outline">
-              Services
-            </Badge>
+            <Badge variant="outline">Services</Badge>
           </div>
           <Title />
           <p

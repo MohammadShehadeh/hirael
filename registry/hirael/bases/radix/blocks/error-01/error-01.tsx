@@ -129,12 +129,17 @@ const ErrorPageDetails = ({
   return (
     <Collapsible defaultOpen={defaultOpen} asChild>
       <div data-slot="error-page-details" className={cn('w-full border-t border-border pt-4', className)} {...props}>
-        <CollapsibleTrigger className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-[state=open]:rotate-180" />
-          Technical details
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-[state=open]:rotate-180" />
+            Technical details
+          </button>
         </CollapsibleTrigger>
-        <CollapsibleContent className="pt-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-250 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
-          <div className="flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
+        <CollapsibleContent className="data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-250 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
+          <div className="mt-3 flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
             <dl className="flex flex-col gap-2">
               {allRows.map((row) => (
                 <div

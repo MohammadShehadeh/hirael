@@ -107,7 +107,7 @@ const Footer06 = () => {
             <Button
               render={<a href="#" className="group flex items-center gap-2" />}
               nativeButton={false}
-              className="h-10 w-full rounded-xs sm:h-12 md:w-52"
+              className="h-10 w-full sm:h-12 md:w-52"
             >
               Get started
               <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />

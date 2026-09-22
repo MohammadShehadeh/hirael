@@ -206,19 +206,21 @@ const Pricing05 = () => {
               />
             </div>
             <Separator style={stagger(5, 80)} className={ENTER} />
-            <Field orientation="horizontal" style={stagger(6, 80)} className={cn(ENTER, 'items-center')}>
-              <FieldContent>
-                <FieldLabel htmlFor="pricing-05-support">Priority support</FieldLabel>
-                <FieldDescription>
-                  A named engineer and a four hour response, for{' '}
-                  <span dir="ltr" className="tabular-nums">
-                    {money.format(PRICING.support)}
-                  </span>{' '}
-                  a month.
-                </FieldDescription>
-              </FieldContent>
-              <Switch id="pricing-05-support" checked={support} onCheckedChange={setSupport} />
-            </Field>
+            <div style={stagger(6, 80)} className={ENTER}>
+              <Field orientation="horizontal" className="items-center">
+                <FieldContent>
+                  <FieldLabel htmlFor="pricing-05-support">Priority support</FieldLabel>
+                  <FieldDescription>
+                    A named engineer and a four hour response, for{' '}
+                    <span dir="ltr" className="tabular-nums">
+                      {money.format(PRICING.support)}
+                    </span>{' '}
+                    a month.
+                  </FieldDescription>
+                </FieldContent>
+                <Switch id="pricing-05-support" checked={support} onCheckedChange={setSupport} />
+              </Field>
+            </div>
           </div>
         </div>
 
@@ -253,14 +255,9 @@ const Pricing05 = () => {
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-baseline gap-2">
-              <AnimatedNumber
-                dir="ltr"
-                value={quote.monthly}
-                decimals={2}
-                duration={400}
-                format={TOTAL_FORMAT}
-                className="text-5xl font-semibold tracking-tight"
-              />
+              <span className="text-5xl font-semibold tracking-tight">
+                <AnimatedNumber dir="ltr" value={quote.monthly} decimals={2} duration={400} format={TOTAL_FORMAT} />
+              </span>
               <span className="text-sm text-muted-foreground">/ month</span>
             </div>
             <p key={billing} className={cn(SWAP, 'text-sm text-muted-foreground')}>

@@ -79,7 +79,7 @@ const Hero01 = () => {
               >
                 Sign in
               </a>
-              <Button asChild variant="outline" size="sm" className="rounded-full">
+              <Button asChild variant="outline" size="sm">
                 <a href="#">Get started</a>
               </Button>
             </div>
@@ -111,13 +111,13 @@ const Hero01 = () => {
                 'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
               )}
             >
-              <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
+              <Button asChild size="lg" className="group h-12">
                 <a href="#">
                   Start building
                   <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
+              <Button asChild size="lg" variant="ghost" className="h-12">
                 <a href="#">Read the docs</a>
               </Button>
             </div>

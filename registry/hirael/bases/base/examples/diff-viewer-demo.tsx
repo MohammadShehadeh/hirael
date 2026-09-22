@@ -123,8 +123,8 @@ const DiffViewerDemo = () => {
           onModeChange={setMode}
           context={Infinity}
         >
-          <DiffViewerHeader className="bg-transparent">
-            <DiffViewerTitle className="font-mono text-xs" />
+          <DiffViewerHeader>
+            <DiffViewerTitle />
             <DiffViewerStats />
           </DiffViewerHeader>
           <DiffViewerContent showLineNumbers={false} />

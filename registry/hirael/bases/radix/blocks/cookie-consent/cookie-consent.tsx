@@ -249,7 +249,7 @@ const CookieConsentManage = ({ className, children = 'Manage', ...props }: Cooki
       data-slot="cookie-consent-manage"
       aria-expanded={expanded}
       onClick={() => setExpanded(true)}
-      className={cn('text-muted-foreground', className)}
+      className={className}
       {...props}
     >
       {children}
@@ -326,7 +326,7 @@ const CookieConsentCategory = ({
           {name}
           {required ? <span className="text-xs uppercase text-muted-foreground">Always on</span> : null}
         </FieldLabel>
-        {description ? <FieldDescription className="text-xs">{description}</FieldDescription> : null}
+        {description ? <FieldDescription>{description}</FieldDescription> : null}
       </FieldContent>
       <Switch
         id={switchId}
@@ -462,7 +462,7 @@ const CookieConsentBlock = () => {
           )}
         </span>
         {!open ? (
-          <Button type="button" variant="link" onClick={reset} className="h-auto p-0 underline">
+          <Button type="button" variant="link" onClick={reset} className="h-auto">
             Reset and show the banner again
           </Button>
         ) : null}

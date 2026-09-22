@@ -25,7 +25,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { Card } from '@/registry/hirael/bases/radix/ui/card';
+import { Card, CardContent } from '@/registry/hirael/bases/radix/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -335,11 +335,7 @@ const AppShell01 = () => {
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton
-                    size="lg"
-                    tooltip="Mohammad Shehadeh"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                  >
+                  <SidebarMenuButton size="lg" tooltip="Mohammad Shehadeh">
                     <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-muted text-[10px] font-medium text-foreground">
                       MS
                     </span>
@@ -355,7 +351,7 @@ const AppShell01 = () => {
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" align="start" sideOffset={8} className="w-56">
-                  <DropdownMenuLabel className="font-normal">
+                  <DropdownMenuLabel>
                     <span className="block text-sm font-medium">Mohammad Shehadeh</span>
                     <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
                   </DropdownMenuLabel>
@@ -449,21 +445,28 @@ const AppShell01 = () => {
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {METRICS.map((m) => (
-              <Card key={m.label} className="gap-1 p-3">
-                <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
-                <span className="text-lg font-semibold tabular-nums">{m.value}</span>
-                <span
-                  dir="ltr"
-                  aria-label={deltaLabel(m)}
-                  className={cn('text-[10px] tabular-nums', deltaTone(m))}
-                >
-                  {formatDelta(m)}
-                </span>
+              <Card key={m.label}>
+                <CardContent>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
+                    <span className="text-lg font-semibold tabular-nums">{m.value}</span>
+                    <span dir="ltr" aria-label={deltaLabel(m)} className={cn('text-[10px] tabular-nums', deltaTone(m))}>
+                      {formatDelta(m)}
+                    </span>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>
 
-          <Card data-slot="app-shell-table" style={{ animationDelay: '80ms' }} className={cn(ENTER, 'gap-0 overflow-hidden p-0')}>
+          <div
+            data-slot="app-shell-table"
+            style={{ animationDelay: '80ms' }}
+            className={cn(
+              ENTER,
+              'overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm',
+            )}
+          >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
                 recent accounts
@@ -473,21 +476,21 @@ const AppShell01 = () => {
                   </span>
                 )}
               </span>
-              <Button variant="link" size="sm" className="h-auto p-0" asChild>
+              <Button variant="link" size="sm" className="h-auto" asChild>
                 <a href="#">View all</a>
               </Button>
             </div>
 
             {visibleRows.length === 0 ? (
-              <Empty className={cn(SWAP, 'border-0')}>
+              <Empty className={SWAP}>
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
                     <Search />
                   </EmptyMedia>
                   <EmptyTitle>No matching accounts</EmptyTitle>
                   <EmptyDescription>
-                    Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try
-                    a company name, a plan, or a status.
+                    Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a company
+                    name, a plan, or a status.
                   </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
@@ -509,20 +512,20 @@ const AppShell01 = () => {
                   Recent accounts, sorted by {sortedColumnLabel} {sortDirection === 'asc' ? 'ascending' : 'descending'}.
                 </caption>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent">
+                  <TableRow>
                     {COLUMNS.map((column) => {
                       const isSorted = column.key === sortKey;
                       return (
                         <TableHead
                           key={column.key}
                           aria-sort={isSorted ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                          className={cn('h-auto p-0 font-normal', column.hideBelowSm && 'hidden sm:table-cell')}
+                          className={cn('h-auto', column.hideBelowSm && 'hidden sm:table-cell')}
                         >
                           <button
                             type="button"
                             onClick={() => toggleSort(column.key)}
                             className={cn(
-                              'flex w-full items-center gap-1 px-4 py-2 text-xs uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:outline-none',
+                              'flex w-full items-center gap-1 px-2 py-2 text-xs uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:outline-none',
                               column.align === 'end' && 'justify-end',
                               isSorted ? 'text-foreground' : 'text-muted-foreground',
                             )}
@@ -541,7 +544,7 @@ const AppShell01 = () => {
                         </TableHead>
                       );
                     })}
-                    <TableHead className="h-auto px-4 py-2 text-end font-normal">
+                    <TableHead className="h-auto text-end">
                       <span className="sr-only">Actions</span>
                     </TableHead>
                   </TableRow>
@@ -550,8 +553,8 @@ const AppShell01 = () => {
                   {visibleRows.map((r) => {
                     const tone = STATUS_TONE[r.status];
                     return (
-                      <TableRow key={r.name} className="text-sm hover:bg-accent/30">
-                        <TableCell className="px-4 py-2.5">
+                      <TableRow key={r.name}>
+                        <TableCell>
                           <span className="inline-flex items-center gap-2">
                             <span
                               aria-hidden
@@ -562,21 +565,19 @@ const AppShell01 = () => {
                             <span className="font-medium">{r.name}</span>
                           </span>
                         </TableCell>
-                        <TableCell className="px-4 py-2.5">
-                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'}>
-                            {r.plan}
-                          </Badge>
+                        <TableCell>
+                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'}>{r.plan}</Badge>
                         </TableCell>
-                        <TableCell className="hidden px-4 py-2.5 text-end tabular-nums text-foreground sm:table-cell">
-                          {usd.format(r.mrr)}
+                        <TableCell className="hidden text-end sm:table-cell">
+                          <span className="tabular-nums">{usd.format(r.mrr)}</span>
                         </TableCell>
-                        <TableCell className="px-4 py-2.5">
+                        <TableCell>
                           <span className="inline-flex items-center gap-1.5 text-xs uppercase">
                             <span aria-hidden className={cn('size-1.5 rounded-full', tone.dot)} />
                             <span className={tone.text}>{r.status}</span>
                           </span>
                         </TableCell>
-                        <TableCell className="px-4 py-2.5 text-end">
+                        <TableCell className="text-end">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
@@ -603,7 +604,7 @@ const AppShell01 = () => {
                 </TableBody>
               </Table>
             )}
-          </Card>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>

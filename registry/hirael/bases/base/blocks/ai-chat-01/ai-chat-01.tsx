@@ -240,14 +240,7 @@ type AiChatSuggestionProps = React.ComponentProps<'button'>;
 
 const AiChatSuggestion = ({ className, children, ...props }: AiChatSuggestionProps) => {
   return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      data-slot="ai-chat-suggestion"
-      className={className}
-      {...props}
-    >
+    <Button type="button" variant="outline" size="sm" data-slot="ai-chat-suggestion" className={className} {...props}>
       {children}
     </Button>
   );
@@ -315,13 +308,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
         {children}
         {!atBottom ? (
           <div className="sticky bottom-4 z-10 -mt-6 flex h-0 justify-center overflow-visible">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={scrollToBottom}
-              className="-translate-y-full"
-            >
+            <Button type="button" variant="outline" size="sm" onClick={scrollToBottom} className="-translate-y-full">
               <ArrowDown className="size-3.5" aria-hidden />
               Jump to latest
             </Button>
@@ -498,23 +485,11 @@ const AiChatComposer = ({
             <p className="me-auto flex flex-wrap gap-x-3 px-1 text-[11px] text-muted-foreground">{hint}</p>
           ) : null}
           {isStreaming ? (
-            <Button
-              type="button"
-              size="icon-sm"
-              aria-label="Stop generating"
-              onClick={onStop}
-              className="ms-auto"
-            >
+            <Button type="button" size="icon-sm" aria-label="Stop generating" onClick={onStop} className="ms-auto">
               <Square className="size-3 fill-current" aria-hidden />
             </Button>
           ) : (
-            <Button
-              type="submit"
-              size="icon-sm"
-              aria-label="Send message"
-              disabled={!canSubmit}
-              className="ms-auto"
-            >
+            <Button type="submit" size="icon-sm" aria-label="Send message" disabled={!canSubmit} className="ms-auto">
               <ArrowUp aria-hidden />
             </Button>
           )}
@@ -856,12 +831,7 @@ const AiChat01 = () => {
             <Badge variant="outline" className="hidden sm:inline-flex">
               plinth-2-pro
             </Badge>
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-label={copied ? 'Link copied' : 'Share chat'}
-              onClick={shareChat}
-            >
+            <Button variant="ghost" size="sm" aria-label={copied ? 'Link copied' : 'Share chat'} onClick={shareChat}>
               {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
               {copied ? <span className={cn(SWAP, 'text-xs')}>Copied</span> : null}
             </Button>

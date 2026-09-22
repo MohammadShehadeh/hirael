@@ -107,7 +107,7 @@ const ForgotPassword01 = () => {
                         size="xs"
                         onClick={onResend}
                         disabled={resend === 'sending'}
-                        className="h-auto p-0"
+                        className="h-auto"
                       >
                         {resend === 'sending' ? 'Sending…' : 'Resend'}
                       </Button>
@@ -143,9 +143,7 @@ const ForgotPassword01 = () => {
               >
                 <FieldGroup className="gap-5">
                   <Field className="gap-1.5" data-invalid={Boolean(error) || undefined}>
-                    <FieldLabel htmlFor="forgot01-email" className="text-xs uppercase text-muted-foreground">
-                      Email
-                    </FieldLabel>
+                    <FieldLabel htmlFor="forgot01-email">Email</FieldLabel>
                     <Input
                       id="forgot01-email"
                       type="email"
@@ -156,9 +154,7 @@ const ForgotPassword01 = () => {
                       aria-invalid={Boolean(error) || undefined}
                       aria-describedby={error ? 'forgot01-email-error' : undefined}
                     />
-                    <FieldError id="forgot01-email-error" className="text-xs">
-                      {error}
-                    </FieldError>
+                    <FieldError id="forgot01-email-error">{error}</FieldError>
                   </Field>
 
                   <Button type="submit" variant="default" size="lg" disabled={status === 'sending'} className="group">

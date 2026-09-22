@@ -7,13 +7,7 @@ import { ArrowRight, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/registry/hirael/bases/base/ui/card';
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/registry/hirael/bases/base/ui/card';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
 
@@ -171,11 +165,7 @@ const PostCover = ({
 const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) => {
   const titleId = `blog-01-post-${post.title.replace(/[^a-z0-9]+/gi, '-').slice(0, 24)}`;
   return (
-    <div
-      data-slot="blog-post"
-      style={style}
-      className={cn(SWAP, CARD_SURFACE, 'group relative overflow-hidden')}
-    >
+    <div data-slot="blog-post" style={style} className={cn(SWAP, CARD_SURFACE, 'group relative overflow-hidden')}>
       <article aria-labelledby={titleId} className="flex h-full flex-col">
         {post.cover && (
           <a href={post.href} aria-hidden tabIndex={-1} className="block aspect-[16/10] overflow-hidden">

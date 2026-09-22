@@ -28,12 +28,14 @@ const SpotlightCardDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-3 sm:grid-cols-2">
       {cards.map((card) => (
-        <SpotlightCard key={card.title} className="p-5">
-          <div className="flex items-start justify-between gap-4">
-            <h3 className="text-sm font-medium text-foreground">{card.title}</h3>
-            <ArrowUpRight className="size-4 text-muted-foreground" />
+        <SpotlightCard key={card.title}>
+          <div className="p-5">
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-sm font-medium text-foreground">{card.title}</h3>
+              <ArrowUpRight className="size-4 text-muted-foreground" />
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.body}</p>
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.body}</p>
         </SpotlightCard>
       ))}
       <p className="col-span-full text-xs uppercase text-muted-foreground">

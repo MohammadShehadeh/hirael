@@ -130,10 +130,7 @@ const OtpVerify01 = () => {
               >
                 <FieldGroup className="gap-5">
                   <FieldSet className="gap-1.5">
-                    <FieldLegend
-                      variant="label"
-                      className="mb-1.5"
-                    >
+                    <FieldLegend variant="label" className="mb-1.5">
                       Verification code
                     </FieldLegend>
                     <div dir="ltr">
@@ -166,9 +163,7 @@ const OtpVerify01 = () => {
                         </InputOTPGroup>
                       </InputOTP>
                     </div>
-                    <FieldError id="otp01-code-error">
-                      {error}
-                    </FieldError>
+                    <FieldError id="otp01-code-error">{error}</FieldError>
                   </FieldSet>
 
                   <Button type="submit" variant="default" size="lg" disabled={status === 'verifying'} className="group">

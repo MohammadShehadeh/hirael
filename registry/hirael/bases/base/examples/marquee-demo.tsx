@@ -25,8 +25,8 @@ const MarqueeDemo = () => {
             ar: 'إيقاف عند المرور · تلاشٍ عند الحواف',
           })}
         </p>
-        <div className="relative w-full min-w-0 overflow-hidden">
-          <Marquee pauseOnHover duration={28} className="py-1">
+        <div className="relative w-full min-w-0 overflow-hidden py-1">
+          <Marquee pauseOnHover duration={28}>
             {brands.map((b) => (
               <Chip key={b}>{b}</Chip>
             ))}
@@ -38,8 +38,8 @@ const MarqueeDemo = () => {
 
       <div className="grid min-w-0 gap-2">
         <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Reverse direction', ar: 'اتجاه معكوس' })}</p>
-        <div className="relative w-full min-w-0 overflow-hidden">
-          <Marquee reverse pauseOnHover duration={28} className="py-1">
+        <div className="relative w-full min-w-0 overflow-hidden py-1">
+          <Marquee reverse pauseOnHover duration={28}>
             {brands.map((b) => (
               <Chip key={b}>{b}</Chip>
             ))}

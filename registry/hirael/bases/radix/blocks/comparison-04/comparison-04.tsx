@@ -167,9 +167,7 @@ const Comparison04 = () => {
               <span className="tabular-nums">{TOTAL_ROWS}</span> features
             </p>
             <div className="flex items-center gap-3">
-              <Label htmlFor="comparison-04-differences" className="font-normal text-muted-foreground">
-                Show differences only
-              </Label>
+              <Label htmlFor="comparison-04-differences">Show differences only</Label>
               <Switch id="comparison-04-differences" checked={differencesOnly} onCheckedChange={setDifferencesOnly} />
             </div>
           </div>

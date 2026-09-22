@@ -307,123 +307,123 @@ const Ecommerce02 = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span className="tabular-nums">{usd(subtotal)}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Shipping</span>
-                  {shipping === 0 ? (
-                    <span className="text-xs uppercase text-success">Free</span>
-                  ) : (
-                    <span className="tabular-nums">{usd(shipping)}</span>
-                  )}
-                </div>
-                {promoApplied && (
-                  <div className={cn(SWAP, 'flex items-center justify-between text-sm')}>
-                    <span className="inline-flex items-center gap-2 text-muted-foreground">
-                      <span>Discount</span>
-                      <span className="text-xs uppercase">{PROMO_CODE}</span>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-xs"
-                        onClick={() => setPromoApplied(false)}
-                        disabled={pending}
-                        aria-label="Remove promo code"
-                        className="size-4"
-                      >
-                        <X className="size-2.5" />
-                      </Button>
-                    </span>
-                    <span className="tabular-nums text-success">−{usd(discount)}</span>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="tabular-nums">{usd(subtotal)}</span>
                   </div>
-                )}
-                {shipping > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    {usd(FREE_SHIPPING_OVER - (subtotal - discount))} away from free shipping
-                  </p>
-                )}
-
-                <Separator className="my-1" />
-
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium">Total</span>
-                  <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">{usd(total)}</span>
-                </div>
-
-                {!promoApplied && (
-                  <div className="flex flex-col gap-1.5">
-                    <InputGroup>
-                      <InputGroupInput
-                        value={code}
-                        onChange={(e) => {
-                          setCode(e.target.value);
-                          setPromoError(false);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') applyPromo();
-                        }}
-                        placeholder="Promo code"
-                        aria-label="Promo code"
-                        aria-invalid={promoError}
-                        aria-describedby="ecommerce-02-promo-help"
-                        disabled={pending}
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
-                          Apply
-                        </InputGroupButton>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    <p
-                      id="ecommerce-02-promo-help"
-                      key={promoError ? 'error' : 'help'}
-                      className={cn(SWAP, 'text-xs', promoError ? 'text-destructive' : 'text-muted-foreground')}
-                    >
-                      {promoError ? (
-                        <>That code isn&apos;t recognized. Try {PROMO_CODE}.</>
-                      ) : (
-                        <>Try {PROMO_CODE} for 10% off</>
-                      )}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Shipping</span>
+                    {shipping === 0 ? (
+                      <span className="text-xs uppercase text-success">Free</span>
+                    ) : (
+                      <span className="tabular-nums">{usd(shipping)}</span>
+                    )}
+                  </div>
+                  {promoApplied && (
+                    <div className={cn(SWAP, 'flex items-center justify-between text-sm')}>
+                      <span className="inline-flex items-center gap-2 text-muted-foreground">
+                        <span>Discount</span>
+                        <span className="text-xs uppercase">{PROMO_CODE}</span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-xs"
+                          onClick={() => setPromoApplied(false)}
+                          disabled={pending}
+                          aria-label="Remove promo code"
+                          className="size-4"
+                        >
+                          <X className="size-2.5" />
+                        </Button>
+                      </span>
+                      <span className="tabular-nums text-success">−{usd(discount)}</span>
+                    </div>
+                  )}
+                  {shipping > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      {usd(FREE_SHIPPING_OVER - (subtotal - discount))} away from free shipping
                     </p>
-                  </div>
-                )}
-
-                <Button
-                  data-slot="ecommerce-checkout"
-                  className="group mt-1 w-full"
-                  onClick={placeOrder}
-                  disabled={pending || active.length === 0}
-                  aria-busy={pending || undefined}
-                >
-                  {pending ? (
-                    <span key="pending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
-                      <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
-                      Placing order…
-                    </span>
-                  ) : (
-                    <span key="idle" className="inline-flex items-center gap-2">
-                      Checkout
-                      <span className="tabular-nums">{usd(total)}</span>
-                      <ArrowRight
-                        aria-hidden
-                        className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
-                      />
-                    </span>
                   )}
-                </Button>
-                <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground">
-                  <span>Free returns</span>
-                  <span aria-hidden className="text-border">
-                    |
-                  </span>
-                  <span>2-year warranty</span>
-                  <span aria-hidden className="text-border">
-                    |
-                  </span>
-                  <span>Secure checkout</span>
-                </p>
+
+                  <Separator className="my-1" />
+
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm font-medium">Total</span>
+                    <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">{usd(total)}</span>
+                  </div>
+
+                  {!promoApplied && (
+                    <div className="flex flex-col gap-1.5">
+                      <InputGroup>
+                        <InputGroupInput
+                          value={code}
+                          onChange={(e) => {
+                            setCode(e.target.value);
+                            setPromoError(false);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') applyPromo();
+                          }}
+                          placeholder="Promo code"
+                          aria-label="Promo code"
+                          aria-invalid={promoError}
+                          aria-describedby="ecommerce-02-promo-help"
+                          disabled={pending}
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
+                            Apply
+                          </InputGroupButton>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      <p
+                        id="ecommerce-02-promo-help"
+                        key={promoError ? 'error' : 'help'}
+                        className={cn(SWAP, 'text-xs', promoError ? 'text-destructive' : 'text-muted-foreground')}
+                      >
+                        {promoError ? (
+                          <>That code isn&apos;t recognized. Try {PROMO_CODE}.</>
+                        ) : (
+                          <>Try {PROMO_CODE} for 10% off</>
+                        )}
+                      </p>
+                    </div>
+                  )}
+
+                  <Button
+                    data-slot="ecommerce-checkout"
+                    className="group mt-1 w-full"
+                    onClick={placeOrder}
+                    disabled={pending || active.length === 0}
+                    aria-busy={pending || undefined}
+                  >
+                    {pending ? (
+                      <span key="pending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
+                        <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+                        Placing order…
+                      </span>
+                    ) : (
+                      <span key="idle" className="inline-flex items-center gap-2">
+                        Checkout
+                        <span className="tabular-nums">{usd(total)}</span>
+                        <ArrowRight
+                          aria-hidden
+                          className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+                        />
+                      </span>
+                    )}
+                  </Button>
+                  <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground">
+                    <span>Free returns</span>
+                    <span aria-hidden className="text-border">
+                      |
+                    </span>
+                    <span>2-year warranty</span>
+                    <span aria-hidden className="text-border">
+                      |
+                    </span>
+                    <span>Secure checkout</span>
+                  </p>
                 </div>
               </CardContent>
             </Card>

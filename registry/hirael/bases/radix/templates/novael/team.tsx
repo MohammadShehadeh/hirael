@@ -44,7 +44,7 @@ export const Team = ({ lang }: { lang: Lang }) => {
             {c.companiesLabel}
           </p>
           <div dir="ltr" className="relative mt-7 w-full min-w-0 overflow-hidden">
-            <Marquee pauseOnHover duration={20} gap="2rem" className="py-1">
+            <Marquee pauseOnHover duration={20} gap="2rem">
               {COMPANIES.map((company) => (
                 <span
                   key={company}

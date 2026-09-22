@@ -89,9 +89,7 @@ const Cta04 = () => {
             className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground"
           >
             <span>or copy my address</span>
-            <CopyButton value={EMAIL}>
-              {EMAIL}
-            </CopyButton>
+            <CopyButton value={EMAIL}>{EMAIL}</CopyButton>
           </p>
         </div>
 

@@ -140,9 +140,7 @@ const Careers01 = () => {
                 <div className="flex flex-col gap-2">
                   <h3 className="text-base font-medium tracking-[-0.01em] sm:text-lg">{role.title}</h3>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground sm:text-sm">
-                    <Badge variant="outline" className="bg-card font-normal uppercase text-muted-foreground">
-                      {role.department}
-                    </Badge>
+                    <Badge variant="outline">{role.department}</Badge>
                     <span className="inline-flex items-center gap-1.5">
                       <MapPin aria-hidden className="size-3.5" />
                       {role.location}

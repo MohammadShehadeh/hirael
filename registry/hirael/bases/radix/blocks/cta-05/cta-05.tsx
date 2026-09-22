@@ -86,18 +86,18 @@ const Cta05 = () => {
               className={cn(RISE, 'mt-10 grid w-full max-w-md grid-cols-1 gap-5 md:grid-cols-2')}
             >
               <div className="flex flex-col items-center gap-2">
-                <Button asChild size="lg" className="w-full rounded-full">
+                <Button asChild size="lg" className="w-full">
                   <a href={`mailto:${email}`}>
                     <Mail className="size-4" />
                     Send email
                   </a>
                 </Button>
-                <CopyButton value={email} className="max-w-full font-medium text-muted-foreground">
+                <CopyButton value={email} className="max-w-full">
                   {email}
                 </CopyButton>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Button asChild size="lg" variant="outline" className="w-full rounded-full">
+                <Button asChild size="lg" variant="outline" className="w-full">
                   <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>
                     <Phone className="size-4" />
                     Call us

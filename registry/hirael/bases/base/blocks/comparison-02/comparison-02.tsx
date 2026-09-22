@@ -88,11 +88,7 @@ const Comparison02 = () => {
                   >
                     <span className="flex items-center gap-2">
                       <span className="text-base font-medium">{column.name}</span>
-                      {column.featured && (
-                        <Badge variant="secondary">
-                          This one
-                        </Badge>
-                      )}
+                      {column.featured && <Badge variant="secondary">This one</Badge>}
                     </span>
                     <span className="mt-1 block text-sm font-normal text-muted-foreground">{column.summary}</span>
                   </th>

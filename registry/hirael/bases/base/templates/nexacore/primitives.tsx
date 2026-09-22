@@ -3,7 +3,6 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 export const useScrolled = (threshold = 20) => {
   const [scrolled, setScrolled] = React.useState(false);
@@ -73,15 +72,17 @@ export const ContactButton = ({
   className?: string;
 }) => {
   return (
-    <Button
-      render={<a href={href} data-slot="contact-button" />}
-      nativeButton={false}
-      variant="ghost"
-      className={cn('nexa-grad-a-bg group relative h-auto rounded-xl p-px font-normal', className)}
+    <a
+      href={href}
+      data-slot="contact-button"
+      className={cn(
+        'nexa-grad-a-bg group relative inline-flex items-center justify-center rounded-xl p-px outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        className,
+      )}
     >
       <span className="w-full rounded-[11px] bg-primary px-7 py-3 text-center text-base text-primary-foreground transition-colors duration-300 group-hover:bg-transparent">
         {label}
       </span>
-    </Button>
+    </a>
   );
 };

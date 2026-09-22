@@ -231,19 +231,19 @@ const Blog02 = () => {
         <div style={stagger(4, 80)} className={cn(ENTER, 'border-t border-border')}>
           {visible.length === 0 ? (
             <div key={filter} className="border-b border-border">
-            <Empty data-slot="blog-empty" className={SWAP}>
-              <EmptyHeader>
-                <EmptyTitle>No {filter.toLowerCase()} posts yet</EmptyTitle>
-                <EmptyDescription>
-                  The first one is in review. Subscribe to the feed and it will show up when it is published.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button variant="outline" size="sm" onClick={() => setFilter('All')}>
-                  Show all posts
-                </Button>
-              </EmptyContent>
-            </Empty>
+              <Empty data-slot="blog-empty" className={SWAP}>
+                <EmptyHeader>
+                  <EmptyTitle>No {filter.toLowerCase()} posts yet</EmptyTitle>
+                  <EmptyDescription>
+                    The first one is in review. Subscribe to the feed and it will show up when it is published.
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                  <Button variant="outline" size="sm" onClick={() => setFilter('All')}>
+                    Show all posts
+                  </Button>
+                </EmptyContent>
+              </Empty>
             </div>
           ) : (
             <ul key={filter} data-slot="blog-list" className="flex flex-col">

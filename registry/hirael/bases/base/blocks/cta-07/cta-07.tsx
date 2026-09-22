@@ -58,11 +58,7 @@ const Cta07 = () => {
           data-slot="cta-body"
           className="relative z-10 mx-auto flex min-h-100 max-w-3xl flex-col items-center text-center"
         >
-          <Badge
-            variant="outline"
-            style={stagger(1)}
-            className={ENTER}
-          >
+          <Badge variant="outline" style={stagger(1)} className={ENTER}>
             Get started
           </Badge>
 

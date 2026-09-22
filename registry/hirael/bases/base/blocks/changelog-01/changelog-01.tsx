@@ -194,9 +194,7 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${id}-error` : undefined}
                 />
-                <FieldError id={`${id}-error`}>
-                  {error}
-                </FieldError>
+                <FieldError id={`${id}-error`}>{error}</FieldError>
               </Field>
               <Button type="submit" size="sm">
                 Subscribe
@@ -309,14 +307,7 @@ const ChangelogEntryDate = ({ date, className, ...props }: ChangelogEntryDatePro
 type ChangelogEntryVersionProps = React.ComponentProps<typeof Badge>;
 
 const ChangelogEntryVersion = ({ className, ...props }: ChangelogEntryVersionProps) => {
-  return (
-    <Badge
-      variant="outline"
-      data-slot="changelog-entry-version"
-      className={className}
-      {...props}
-    />
-  );
+  return <Badge variant="outline" data-slot="changelog-entry-version" className={className} {...props} />;
 };
 
 interface ChangelogEntryProps extends React.ComponentProps<'article'> {

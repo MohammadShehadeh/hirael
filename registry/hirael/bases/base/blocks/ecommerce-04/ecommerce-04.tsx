@@ -335,9 +335,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
   return (
     <div data-slot="filter-panel" className="flex flex-col divide-y divide-border">
       <FieldSet className="gap-3 pb-6">
-        <FieldLegend variant="label">
-          Category
-        </FieldLegend>
+        <FieldLegend variant="label">Category</FieldLegend>
         {CATEGORIES.map((category) => {
           const count = PRODUCTS.filter(
             (product) => product.category === category.value && matches(product, filters, true),
@@ -351,9 +349,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
                 disabled={count === 0 && !checked}
                 onCheckedChange={() => update({ categories: toggle(filters.categories, category.value) })}
               />
-              <FieldLabel htmlFor={`${id}-${category.value}`}>
-                {category.label}
-              </FieldLabel>
+              <FieldLabel htmlFor={`${id}-${category.value}`}>{category.label}</FieldLabel>
               <span className="ms-auto text-xs tabular-nums text-muted-foreground">{count}</span>
             </Field>
           );
@@ -361,9 +357,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </FieldSet>
 
       <FieldSet className="gap-4 py-6">
-        <FieldLegend variant="label">
-          Price
-        </FieldLegend>
+        <FieldLegend variant="label">Price</FieldLegend>
         <Slider
           min={PRICE_MIN}
           max={PRICE_MAX}
@@ -390,9 +384,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </FieldSet>
 
       <FieldSet className="gap-3 py-6">
-        <FieldLegend variant="label">
-          Colour
-        </FieldLegend>
+        <FieldLegend variant="label">Colour</FieldLegend>
         <ToggleGroup
           multiple
           spacing={2}
@@ -401,12 +393,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
           className="flex-wrap"
         >
           {COLOURS.map((colour) => (
-            <ToggleGroupItem
-              key={colour.value}
-              value={colour.value}
-              aria-label={colour.label}
-              title={colour.label}
-            >
+            <ToggleGroupItem key={colour.value} value={colour.value} aria-label={colour.label} title={colour.label}>
               <span
                 aria-hidden
                 style={{ backgroundColor: colour.swatch }}
@@ -418,9 +405,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </FieldSet>
 
       <Field orientation="horizontal" className="py-6">
-        <FieldLabel htmlFor={`${id}-stock`}>
-          In stock only
-        </FieldLabel>
+        <FieldLabel htmlFor={`${id}-stock`}>In stock only</FieldLabel>
         <Switch
           id={`${id}-stock`}
           checked={filters.inStock}
@@ -429,9 +414,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </Field>
 
       <FieldSet className="gap-3 pt-6">
-        <FieldLegend variant="label">
-          Rating
-        </FieldLegend>
+        <FieldLegend variant="label">Rating</FieldLegend>
         <RadioGroup value={filters.rating} onValueChange={(next) => update({ rating: next as RatingFilter })}>
           {RATINGS.map((option) => (
             <Field key={option.value} orientation="horizontal">
@@ -536,13 +519,7 @@ const Ecommerce04 = () => {
           >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <span className="text-sm font-medium">Filters</span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                onClick={clearAll}
-                disabled={active.length === 0}
-              >
+              <Button type="button" variant="ghost" size="xs" onClick={clearAll} disabled={active.length === 0}>
                 Clear all
               </Button>
             </div>
@@ -572,16 +549,16 @@ const Ecommerce04 = () => {
                         <FilterPanel filters={filters} onFiltersChange={setFilters} />
                       </div>
                       <div className="border-t border-border">
-                      <SheetFooter className="flex-row">
-                        <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
-                          Clear all
-                        </Button>
-                        <SheetClose render={<Button type="button" className="flex-1" />}>
-                          {results.length === 0
-                            ? 'No matches'
-                            : `Show ${results.length} ${results.length === 1 ? 'result' : 'results'}`}
-                        </SheetClose>
-                      </SheetFooter>
+                        <SheetFooter className="flex-row">
+                          <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
+                            Clear all
+                          </Button>
+                          <SheetClose render={<Button type="button" className="flex-1" />}>
+                            {results.length === 0
+                              ? 'No matches'
+                              : `Show ${results.length} ${results.length === 1 ? 'result' : 'results'}`}
+                          </SheetClose>
+                        </SheetFooter>
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -628,12 +605,7 @@ const Ecommerce04 = () => {
                     </li>
                   ))}
                   <li>
-                    <Button
-                      type="button"
-                      variant="link"
-                      size="xs"
-                      onClick={clearAll}
-                    >
+                    <Button type="button" variant="link" size="xs" onClick={clearAll}>
                       Clear all
                     </Button>
                   </li>

@@ -180,7 +180,6 @@ const Ecommerce03 = () => {
                 size="icon-sm"
                 aria-label="Previous view"
                 onClick={() => showView(view - 1)}
-                className="rounded-full bg-background/85 backdrop-blur"
               >
                 <ChevronLeft className="rtl:rotate-180" />
               </Button>
@@ -190,7 +189,6 @@ const Ecommerce03 = () => {
                 size="icon-sm"
                 aria-label="Next view"
                 onClick={() => showView(view + 1)}
-                className="rounded-full bg-background/85 backdrop-blur"
               >
                 <ChevronRight className="rtl:rotate-180" />
               </Button>
@@ -265,7 +263,7 @@ const Ecommerce03 = () => {
               <span className="text-base tabular-nums text-muted-foreground line-through">
                 <span className="sr-only">Was </span>$299
               </span>
-              <Badge variant="outline" className="self-center border-warm/40 text-warm">
+              <Badge variant="outline" className="self-center">
                 Save $50
               </Badge>
             </div>
@@ -280,7 +278,7 @@ const Ecommerce03 = () => {
                 aria-labelledby="ecommerce-03-colour"
                 value={colour}
                 onValueChange={changeColour}
-                className="flex gap-3"
+                className="flex"
               >
                 {COLOURS.map((option) => (
                   <RadioGroupItem
@@ -288,7 +286,7 @@ const Ecommerce03 = () => {
                     value={option.value}
                     aria-label={option.label}
                     style={{ backgroundColor: option.swatch }}
-                    className="size-8 border-foreground/15 ring-offset-2 ring-offset-background transition-shadow duration-150 data-[state=checked]:ring-2 data-[state=checked]:ring-foreground [&_[data-slot=radio-group-indicator]]:hidden"
+                    className="size-8"
                   />
                 ))}
               </RadioGroup>
@@ -323,7 +321,7 @@ const Ecommerce03 = () => {
                       value={option}
                       disabled={unavailable}
                       aria-label={unavailable ? `${option}, sold out in ${colourLabel}` : option}
-                      className="h-10 w-full tabular-nums disabled:line-through data-[state=on]:border-foreground"
+                      className="h-10 w-full"
                     >
                       {option}
                     </ToggleGroupItem>
@@ -358,7 +356,7 @@ const Ecommerce03 = () => {
                     inputMode="numeric"
                     value={clampedQuantity}
                     onChange={(event) => changeQuantity(Number.parseInt(event.target.value, 10))}
-                    className="text-center tabular-nums"
+                    className="text-center"
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
@@ -432,12 +430,12 @@ const Ecommerce03 = () => {
             collapsible
             defaultValue="details"
             style={stagger(5)}
-            className={cn(ENTER, 'border-t border-border')}
+            className={ENTER}
           >
             {DETAILS.map((item) => (
               <AccordionItem key={item.value} value={item.value}>
                 <AccordionTrigger>{item.title}</AccordionTrigger>
-                <AccordionContent className="leading-relaxed text-muted-foreground">{item.body}</AccordionContent>
+                <AccordionContent>{item.body}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

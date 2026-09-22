@@ -239,10 +239,10 @@ const Header02 = () => {
           <Brand />
           <HeaderNav items={NAV} />
           <div className="flex items-center gap-1.5">
-            <Button asChild variant="ghost" size="sm" className="rounded-full">
+            <Button asChild variant="ghost" size="sm">
               <a href="#">Sign in</a>
             </Button>
-            <Button asChild size="sm" className="rounded-full">
+            <Button asChild size="sm">
               <a href="#">Get started</a>
             </Button>
           </div>
@@ -257,7 +257,6 @@ const Header02 = () => {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
-              className="rounded-full"
             >
               {open ? <X /> : <Menu />}
             </Button>
@@ -277,10 +276,10 @@ const Header02 = () => {
               </a>
             ))}
             <div className="mt-2 flex gap-2">
-              <Button asChild variant="outline" className="flex-1 rounded-full">
+              <Button asChild variant="outline" className="flex-1">
                 <a href="#">Sign in</a>
               </Button>
-              <Button asChild className="flex-1 rounded-full">
+              <Button asChild className="flex-1">
                 <a href="#">Get started</a>
               </Button>
             </div>

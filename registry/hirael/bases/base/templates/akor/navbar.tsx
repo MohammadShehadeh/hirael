@@ -16,7 +16,7 @@ export const NAV_LINKS = [
   { label: 'Contacts', href: '#contacts' },
 ] as const;
 
-const QUOTE_BUTTON = 'h-11 rounded-lg text-xs uppercase tracking-widest active:scale-[0.97]';
+const QUOTE_BUTTON = 'h-11 active:scale-[0.97]';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -40,7 +40,7 @@ export const Navbar = () => {
           ))}
         </div>
 
-        <Button type="button" variant="secondary" className={cn(QUOTE_BUTTON, 'hidden px-6 md:inline-flex')}>
+        <Button type="button" variant="secondary" size="lg" className={cn(QUOTE_BUTTON, 'hidden md:inline-flex')}>
           Get Quote
         </Button>
         <Button
@@ -50,7 +50,7 @@ export const Navbar = () => {
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isOpen}
           onClick={() => setIsOpen((value) => !value)}
-          className="rounded-lg md:hidden"
+          className="md:hidden"
         >
           {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         </Button>
@@ -68,7 +68,7 @@ export const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <Button type="button" variant="secondary" className={cn(QUOTE_BUTTON, 'mt-1')}>
+          <Button type="button" variant="secondary" size="lg" className={cn(QUOTE_BUTTON, 'mt-1')}>
             Get Quote
           </Button>
         </div>

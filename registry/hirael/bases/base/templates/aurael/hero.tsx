@@ -163,7 +163,6 @@ export const Hero = ({
             variant="ghost"
             size="sm"
             onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-            className="rounded-full text-muted-foreground hover:text-foreground"
           >
             <Languages className="size-4" />
             <span className="hidden text-sm font-medium sm:inline">{c.toLang}</span>

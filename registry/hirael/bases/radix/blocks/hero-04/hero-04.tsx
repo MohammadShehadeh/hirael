@@ -37,7 +37,7 @@ const Hero04 = () => {
             <Orbit aria-hidden className="size-5 text-primary" />
             Orbit
           </span>
-          <Button asChild size="sm" className="rounded-full">
+          <Button asChild size="sm">
             <a href="#">Get started</a>
           </Button>
         </nav>
@@ -76,13 +76,13 @@ const Hero04 = () => {
             style={stagger(4)}
             className={cn(ENTER, 'mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center')}
           >
-            <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
+            <Button asChild size="lg" className="group">
               <a href="#">
                 Start your trial
                 <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </a>
             </Button>
-            <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
+            <Button asChild size="lg" variant="ghost">
               <a href="#">Talk to sales</a>
             </Button>
           </div>

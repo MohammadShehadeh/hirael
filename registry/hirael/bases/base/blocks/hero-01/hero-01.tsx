@@ -79,7 +79,7 @@ const Hero01 = () => {
               >
                 Sign in
               </a>
-              <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm" className="rounded-full">
+              <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm">
                 Get started
               </Button>
             </div>
@@ -111,22 +111,11 @@ const Hero01 = () => {
                 'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
               )}
             >
-              <Button
-                render={<a href="#" />}
-                nativeButton={false}
-                size="lg"
-                className="group h-12 rounded-full px-7 text-base"
-              >
+              <Button render={<a href="#" />} nativeButton={false} size="lg" className="group h-12">
                 Start building
                 <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
-              <Button
-                render={<a href="#" />}
-                nativeButton={false}
-                size="lg"
-                variant="ghost"
-                className="h-12 rounded-full px-7 text-base"
-              >
+              <Button render={<a href="#" />} nativeButton={false} size="lg" variant="ghost" className="h-12">
                 Read the docs
               </Button>
             </div>

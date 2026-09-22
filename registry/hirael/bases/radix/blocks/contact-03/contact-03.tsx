@@ -98,12 +98,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
 const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-      <Badge
-        data-slot="contact-badge"
-        variant="outline"
-        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
-        {...props}
-      />
+      <Badge data-slot="contact-badge" variant="outline" className={className} {...props} />
     </div>
   );
 };
@@ -200,7 +195,7 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
       data-state={copied ? 'copied' : 'idle'}
       aria-label={copied ? 'Copied' : label}
       onClick={copy}
-      className={cn('text-muted-foreground hover:text-foreground', className)}
+      className={className}
       {...props}
     >
       <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1')}>
@@ -243,7 +238,7 @@ const Contact03 = () => {
                   </>
                 }
               >
-                <Button asChild size="lg" className="w-full rounded-full">
+                <Button asChild size="lg" className="w-full">
                   <a href={`mailto:${CONTACT.email}`}>
                     <Mail />
                     Send an email
@@ -251,7 +246,7 @@ const Contact03 = () => {
                 </Button>
               </ContactAction>
               <ContactAction detail={<span dir="ltr">{CONTACT.phone}</span>}>
-                <Button asChild size="lg" variant="outline" className="w-full rounded-full">
+                <Button asChild size="lg" variant="outline" className="w-full">
                   <a href={`https://wa.me/${digits(CONTACT.phone)}`} target="_blank" rel="noreferrer">
                     <Phone />
                     Call or chat

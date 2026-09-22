@@ -61,7 +61,7 @@ export const Hero = () => {
               placeholder="Enter your email"
               className="min-w-0 flex-1 bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
             />
-            <Button asChild className="h-auto rounded-full px-8 py-3 font-semibold">
+            <Button asChild size="lg">
               <motion.button type="submit" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                 SUBSCRIBE
               </motion.button>

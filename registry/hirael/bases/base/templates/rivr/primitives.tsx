@@ -41,11 +41,7 @@ export const PillButton = ({
       render={<a href={href} />}
       nativeButton={false}
       variant={variant === 'solid' ? 'default' : 'outline'}
-      className={cn(
-        'group h-auto gap-2.5 rounded-full py-1.5 pe-1.5 ps-5',
-        variant === 'outline' && 'backdrop-blur-sm',
-        className,
-      )}
+      className={cn('group h-auto', className)}
     >
       <span>{label}</span>
       <span

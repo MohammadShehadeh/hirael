@@ -137,17 +137,14 @@ const Pricing02 = () => {
           className={cn(ENTER, 'mt-4 overflow-hidden rounded-md border border-border bg-card md:mt-12')}
         >
           <Table className="table-fixed border-collapse text-start">
-            <TableHeader className="bg-card">
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="w-1/2 px-4 pt-6 pb-5 align-top text-start whitespace-normal sm:px-5 md:w-2/5">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-1/2 align-top text-start whitespace-normal md:w-2/5">
                   <span className="text-xs font-normal uppercase text-muted-foreground">Features</span>
                 </TableHead>
                 {PLANS.map((plan) => (
-                  <TableHead
-                    key={plan.key}
-                    className={cn('h-auto px-4 py-5 align-bottom text-start sm:px-5', columnClass(plan))}
-                  >
-                    <div className={cn(SWAP, 'flex flex-col gap-3')}>
+                  <TableHead key={plan.key} className={cn('h-auto align-bottom text-start', columnClass(plan))}>
+                    <div className={cn(SWAP, 'flex flex-col gap-3 py-4')}>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
                         <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{plan.name}</span>
                         <span className="text-xs text-muted-foreground">
@@ -168,21 +165,16 @@ const Pricing02 = () => {
             <TableBody>
               {GROUPS.map((group) => (
                 <React.Fragment key={group.label}>
-                  <TableRow className="border-border bg-muted/30 hover:bg-muted/30">
-                    <TableCell
-                      colSpan={PLANS.length + 1}
-                      className="px-4 py-2.5 text-xs uppercase text-muted-foreground sm:px-5"
-                    >
-                      {group.label}
+                  <TableRow>
+                    <TableCell colSpan={PLANS.length + 1}>
+                      <span className="text-xs uppercase text-muted-foreground">{group.label}</span>
                     </TableCell>
                   </TableRow>
                   {group.rows.map((row) => (
-                    <TableRow key={row.feature} className="border-border hover:bg-transparent">
-                      <TableCell className="px-4 py-3.5 text-sm whitespace-normal text-foreground sm:px-5">
-                        {row.feature}
-                      </TableCell>
+                    <TableRow key={row.feature}>
+                      <TableCell className="whitespace-normal">{row.feature}</TableCell>
                       {PLANS.map((plan) => (
-                        <TableCell key={plan.key} className={cn('px-4 py-3.5 sm:px-5', columnClass(plan))}>
+                        <TableCell key={plan.key} className={columnClass(plan)}>
                           <span className={cn(SWAP, 'flex items-center')}>
                             <CellContent value={row.cells[plan.key]} />
                           </span>

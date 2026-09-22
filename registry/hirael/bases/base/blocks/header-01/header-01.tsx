@@ -173,12 +173,7 @@ const Header01 = () => {
                 </ul>
               </nav>
               <DrawerFooter>
-                <Button
-                  render={<a href="#" />}
-                  nativeButton={false}
-                  variant="ghost"
-                  className="w-full justify-center"
-                >
+                <Button render={<a href="#" />} nativeButton={false} variant="ghost" className="w-full justify-center">
                   Sign in
                 </Button>
                 <Button

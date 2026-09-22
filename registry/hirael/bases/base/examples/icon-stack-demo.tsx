@@ -44,9 +44,9 @@ const IconStackDemo = () => {
         </p>
         <div className="flex flex-wrap gap-8">
           <div className="grid max-w-45 justify-items-center gap-2 text-center">
-            <IconStack className="text-primary **:data-[slot=icon-stack-layer]:fill-primary/10">
-              <IconStackContent className="text-primary">
-                <Database className="size-6" strokeWidth={1.5} />
+            <IconStack>
+              <IconStackContent>
+                <Database className="size-6 text-primary" strokeWidth={1.5} />
               </IconStackContent>
             </IconStack>
             <p className="text-sm font-medium text-foreground">
@@ -61,9 +61,9 @@ const IconStackDemo = () => {
           </div>
 
           <div className="grid max-w-45 justify-items-center gap-2 text-center">
-            <IconStack className="text-accent-cool **:data-[slot=icon-stack-layer]:fill-accent-cool/10">
-              <IconStackContent className="text-accent-cool">
-                <Server className="size-6" strokeWidth={1.5} />
+            <IconStack>
+              <IconStackContent>
+                <Server className="size-6 text-accent-cool" strokeWidth={1.5} />
               </IconStackContent>
             </IconStack>
             <p className="text-sm font-medium text-foreground">{t({ en: 'Live regions', ar: 'مناطق نشطة' })}</p>

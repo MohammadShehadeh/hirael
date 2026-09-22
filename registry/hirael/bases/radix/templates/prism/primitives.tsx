@@ -3,7 +3,6 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 interface WordmarkProps {
   className?: string;
@@ -31,15 +30,15 @@ export const GlassPill = ({ children, className }: GlassPillProps) => {
   );
 };
 
-type GlassButtonProps = React.ComponentProps<typeof Button>;
+type GlassButtonProps = React.ComponentProps<'button'>;
 
 export const GlassButton = ({ className, ...props }: GlassButtonProps) => {
   return (
-    <Button
+    <button
       type="button"
-      variant="ghost"
+      data-slot="glass-button"
       className={cn(
-        'liquid-glass-strong h-auto rounded-full px-5 py-2.5 text-sm font-medium text-foreground hover:text-foreground',
+        'liquid-glass-strong inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap text-foreground outline-none transition-all focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
         className,
       )}
       {...props}

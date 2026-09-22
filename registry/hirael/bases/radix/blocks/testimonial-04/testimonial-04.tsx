@@ -81,11 +81,7 @@ const Testimonial04 = () => {
           className="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center"
         >
           <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-            <Badge
-              variant="outline"
-              data-slot="testimonial-badge"
-              className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
-            >
+            <Badge variant="outline" data-slot="testimonial-badge">
               Testimonials
             </Badge>
           </div>

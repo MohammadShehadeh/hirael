@@ -42,12 +42,7 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
 const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-      <Badge
-        data-slot="faq-badge"
-        variant="outline"
-        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
-        {...props}
-      />
+      <Badge data-slot="faq-badge" variant="outline" className={className} {...props} />
     </div>
   );
 };
@@ -106,17 +101,10 @@ interface FaqCardProps extends React.ComponentProps<typeof AccordionItem> {
 const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
   return (
     <div
-      className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+      className={`not-first:mt-3 rounded-lg border border-border bg-card px-4 transition-colors md:px-6 has-data-[state=open]:bg-muted/40 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none`}
       style={{ animationDelay: `${360 + index * 50}ms` }}
     >
-      <AccordionItem
-        data-slot="faq-card"
-        className={cn(
-          'rounded-lg border border-border bg-card px-4 transition-colors last:border-b data-[state=open]:bg-muted/40 md:px-6',
-          className,
-        )}
-        {...props}
-      />
+      <AccordionItem data-slot="faq-card" className={className} {...props} />
     </div>
   );
 };
@@ -134,13 +122,15 @@ const Faq06 = () => {
           </FaqDescription>
         </div>
 
-        <Accordion type="multiple" data-slot="faq-list" className="flex flex-col gap-3">
+        <Accordion type="multiple" data-slot="faq-list" className="flex flex-col">
           {FAQS.map((item, i) => (
             <FaqCard key={item.id} value={item.id} index={i}>
-              <AccordionTrigger className="gap-6 py-4 text-start text-base text-foreground hover:no-underline md:text-lg">
-                {item.q}
+              <AccordionTrigger className="text-start">
+                <span className="text-base md:text-lg">{item.q}</span>
               </AccordionTrigger>
-              <AccordionContent className="pb-5 text-base text-muted-foreground">{item.a}</AccordionContent>
+              <AccordionContent>
+                <p className="text-base text-muted-foreground">{item.a}</p>
+              </AccordionContent>
             </FaqCard>
           ))}
         </Accordion>

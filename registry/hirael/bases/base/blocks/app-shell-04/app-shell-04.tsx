@@ -238,14 +238,7 @@ const AppShell04 = () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <SidebarMenuButton
-                      size="lg"
-                      tooltip={activeWorkspace.name}
-                    />
-                  }
-                >
+                <DropdownMenuTrigger render={<SidebarMenuButton size="lg" tooltip={activeWorkspace.name} />}>
                   <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-sm text-sidebar-foreground">
                     <BrandMark className="size-5" />
                   </span>
@@ -363,15 +356,7 @@ const AppShell04 = () => {
             </Button>
             <Separator orientation="vertical" className="h-4" />
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="Account menu"
-                  />
-                }
-              >
+              <DropdownMenuTrigger render={<Button variant="outline" size="icon-sm" aria-label="Account menu" />}>
                 MS
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">

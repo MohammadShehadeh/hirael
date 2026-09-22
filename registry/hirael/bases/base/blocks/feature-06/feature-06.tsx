@@ -119,10 +119,7 @@ const Feature06 = () => {
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
-            <Badge
-              variant="outline"
-              className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
-            >
+            <Badge variant="outline">
               About
             </Badge>
           </div>

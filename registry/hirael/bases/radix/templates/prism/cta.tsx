@@ -18,9 +18,7 @@ export const Cta = () => {
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <GlassButton>Book a Call</GlassButton>
-            <Button type="button" className="h-auto rounded-full px-5 py-2.5 text-sm font-medium">
-              View Pricing
-            </Button>
+            <Button type="button">View Pricing</Button>
           </div>
         </div>
 

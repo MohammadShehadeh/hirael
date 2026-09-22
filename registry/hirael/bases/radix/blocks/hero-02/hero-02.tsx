@@ -96,13 +96,13 @@ const Hero02 = () => {
         style={stagger(3)}
         className={cn(ENTER, 'mt-10 flex flex-col items-center gap-3 sm:flex-row')}
       >
-        <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base">
+        <Button asChild size="lg" className="group">
           <a href="#">
             Get started
             <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </a>
         </Button>
-        <Button asChild size="lg" variant="ghost" className="h-12 rounded-full px-7 text-base">
+        <Button asChild size="lg" variant="ghost">
           <a href="#">
             <Play className="size-4" />
             Watch demo

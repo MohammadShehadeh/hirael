@@ -629,9 +629,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
           spellCheck={false}
           className="h-8"
         />
-        <FieldError id={keyErrorId}>
-          {touched && keyError ? keyError : null}
-        </FieldError>
+        <FieldError id={keyErrorId}>{touched && keyError ? keyError : null}</FieldError>
       </Field>
       <div className="flex items-center gap-1">
         <Input

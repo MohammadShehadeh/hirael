@@ -159,12 +159,7 @@ const Stats02 = () => {
             className={cn(ENTER, 'shrink-0')}
           >
             {RANGES.map((option) => (
-              <ToggleGroupItem
-                key={option.value}
-                value={option.value}
-                aria-label={option.long}
-                className="px-3 text-xs tabular-nums"
-              >
+              <ToggleGroupItem key={option.value} value={option.value} aria-label={option.long}>
                 {option.label}
               </ToggleGroupItem>
             ))}

@@ -323,7 +323,9 @@ const Contact04 = () => {
               {QUESTIONS.map((item) => (
                 <AccordionItem key={item.value} value={item.value}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
-                  <AccordionContent className="leading-relaxed text-muted-foreground">{item.answer}</AccordionContent>
+                  <AccordionContent>
+                    <p className="leading-relaxed text-muted-foreground">{item.answer}</p>
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

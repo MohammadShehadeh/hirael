@@ -98,12 +98,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
 const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-      <Badge
-        data-slot="contact-badge"
-        variant="outline"
-        className={className}
-        {...props}
-      />
+      <Badge data-slot="contact-badge" variant="outline" className={className} {...props} />
     </div>
   );
 };

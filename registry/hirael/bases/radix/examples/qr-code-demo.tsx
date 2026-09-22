@@ -25,13 +25,15 @@ const QrCodeDemo = () => {
           {t({ en: 'currentColor theming', ar: 'تنسيق currentColor' })}
         </p>
         <div className="flex items-center gap-4">
-          <QRCode value="https://hirael.com" size={96} className="text-primary" />
-          <QRCode value="https://hirael.com" size={96} className="text-muted-foreground" />
-          <QRCode
-            value="https://hirael.com"
-            size={96}
-            className="rounded-md bg-primary p-1.5 text-primary-foreground"
-          />
+          <div className="text-primary">
+            <QRCode value="https://hirael.com" size={96} />
+          </div>
+          <div className="text-muted-foreground">
+            <QRCode value="https://hirael.com" size={96} />
+          </div>
+          <div className="rounded-md bg-primary p-1.5 text-primary-foreground">
+            <QRCode value="https://hirael.com" size={96} />
+          </div>
         </div>
       </div>
 

@@ -104,7 +104,7 @@ const Footer06 = () => {
             </p>
           </div>
           <div className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none delay-150">
-            <Button asChild className="h-10 w-full rounded-xs sm:h-12 md:w-52">
+            <Button asChild className="h-10 w-full sm:h-12 md:w-52">
               <a href="#" className="group flex items-center gap-2">
                 Get started
                 <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />

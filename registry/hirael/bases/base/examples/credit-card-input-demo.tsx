@@ -97,42 +97,40 @@ const CreditCardInputDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Stacked · own labels', ar: 'مكدّس · تسميات مخصصة' })}
         </p>
-        <CreditCardInput
-          variant="stack"
-          defaultValue={{ number: '378282246310005', expiry: '12/29', cvc: '' }}
-          className="rounded-md border border-border bg-card p-4"
-        >
-          <Field className="gap-1.5">
-            <div className="flex items-center justify-between">
-              <FieldTitle>{t({ en: 'Card number', ar: 'رقم البطاقة' })}</FieldTitle>
-              <CreditCardInputBrand
-                labels={t({
-                  en: { amex: 'American Express' },
-                  ar: { amex: 'أمريكان إكسبريس' },
-                })}
-              />
+        <div className="rounded-md border border-border bg-card p-4">
+          <CreditCardInput variant="stack" defaultValue={{ number: '378282246310005', expiry: '12/29', cvc: '' }}>
+            <Field className="gap-1.5">
+              <div className="flex items-center justify-between">
+                <FieldTitle>{t({ en: 'Card number', ar: 'رقم البطاقة' })}</FieldTitle>
+                <CreditCardInputBrand
+                  labels={t({
+                    en: { amex: 'American Express' },
+                    ar: { amex: 'أمريكان إكسبريس' },
+                  })}
+                />
+              </div>
+              <CreditCardInputNumber aria-label={t({ en: 'Card number', ar: 'رقم البطاقة' })}>
+                <span aria-hidden />
+              </CreditCardInputNumber>
+            </Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field className="gap-1.5">
+                <FieldTitle>{t({ en: 'Expires', ar: 'تنتهي في' })}</FieldTitle>
+                <CreditCardInputExpiry aria-label={t({ en: 'Expiry date', ar: 'تاريخ الانتهاء' })} />
+              </Field>
+              <Field className="gap-1.5">
+                <FieldTitle>{t({ en: 'CVC', ar: 'رمز الأمان' })}</FieldTitle>
+                <CreditCardInputCvc aria-label={t({ en: 'Security code', ar: 'رمز الأمان' })} />
+              </Field>
             </div>
-            <CreditCardInputNumber aria-label={t({ en: 'Card number', ar: 'رقم البطاقة' })}>
-              <span aria-hidden />
-            </CreditCardInputNumber>
-          </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field className="gap-1.5">
-              <FieldTitle>{t({ en: 'Expires', ar: 'تنتهي في' })}</FieldTitle>
-              <CreditCardInputExpiry aria-label={t({ en: 'Expiry date', ar: 'تاريخ الانتهاء' })} />
-            </Field>
-            <Field className="gap-1.5">
-              <FieldTitle>{t({ en: 'CVC', ar: 'رمز الأمان' })}</FieldTitle>
-              <CreditCardInputCvc aria-label={t({ en: 'Security code', ar: 'رمز الأمان' })} />
-            </Field>
-          </div>
-          <FieldDescription>
-            {t({
-              en: 'Amex cards take a 4-digit code on the front.',
-              ar: 'بطاقات أمريكان إكسبريس تستخدم رمزًا من 4 أرقام على الوجه.',
-            })}
-          </FieldDescription>
-        </CreditCardInput>
+            <FieldDescription>
+              {t({
+                en: 'Amex cards take a 4-digit code on the front.',
+                ar: 'بطاقات أمريكان إكسبريس تستخدم رمزًا من 4 أرقام على الوجه.',
+              })}
+            </FieldDescription>
+          </CreditCardInput>
+        </div>
       </div>
     </div>
   );

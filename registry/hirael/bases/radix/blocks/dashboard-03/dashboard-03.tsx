@@ -257,8 +257,7 @@ const Dashboard03 = () => {
             <div className="flex items-center rounded-sm border border-border">
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-8 rounded-e-none"
+                size="icon-sm"
                 onClick={() => setMonthIndex((i) => Math.max(0, i - 1))}
                 disabled={monthIndex === 0}
                 aria-label="Previous month"
@@ -270,8 +269,7 @@ const Dashboard03 = () => {
               </span>
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-8 rounded-s-none"
+                size="icon-sm"
                 onClick={() => setMonthIndex((i) => Math.min(MONTHS.length - 1, i + 1))}
                 disabled={monthIndex === MONTHS.length - 1}
                 aria-label="Next month"
@@ -302,10 +300,12 @@ const Dashboard03 = () => {
           <div className="flex flex-col gap-6">
             <Card data-slot="dashboard-plan-mix">
               <CardHeader>
-                <CardDescription className="text-xs uppercase">plan mix</CardDescription>
+                <CardDescription>
+                  <span className="text-xs uppercase">plan mix</span>
+                </CardDescription>
                 <CardTitle className="sr-only">Plan mix</CardTitle>
               </CardHeader>
-              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col items-center gap-5')}>
+              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col items-center')}>
                 <div className="relative">
                   <Donut plans={month.plans} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
@@ -328,7 +328,7 @@ const Dashboard03 = () => {
                     </span>
                   </div>
                 </div>
-                <ul className="flex w-full flex-col gap-2.5">
+                <ul className="mt-5 flex w-full flex-col gap-2.5">
                   {month.plans.map((p) => (
                     <li key={p.plan} className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-2 rounded-xs', PLAN_TONE[p.plan].swatch)} />
@@ -343,13 +343,15 @@ const Dashboard03 = () => {
 
             <Card data-slot="dashboard-invoices">
               <CardHeader>
-                <CardDescription className="text-xs uppercase">invoices</CardDescription>
+                <CardDescription>
+                  <span className="text-xs uppercase">invoices</span>
+                </CardDescription>
                 <CardTitle className="sr-only">Invoices</CardTitle>
               </CardHeader>
-              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col gap-3')}>
+              <CardContent key={month.label} className={cn(SWAP, 'flex flex-col')}>
                 {month.invoices.map((inv, i) => (
                   <React.Fragment key={inv.state}>
-                    {i > 0 && <Separator />}
+                    {i > 0 && <Separator className="my-3" />}
                     <div className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-1.5 rounded-full', INVOICE_TONE[inv.state])} />
                       <span className="text-xs text-foreground">{inv.state}</span>
@@ -366,18 +368,20 @@ const Dashboard03 = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
-                  <CardDescription className="text-xs uppercase">transactions</CardDescription>
-                  <CardTitle className="text-lg">Latest activity</CardTitle>
+                  <CardDescription>
+                    <span className="text-xs uppercase">transactions</span>
+                  </CardDescription>
+                  <CardTitle>Latest activity</CardTitle>
                 </div>
-                <Button variant="link" size="sm" className="h-auto p-0" asChild>
+                <Button variant="link" size="sm" className="h-auto" asChild>
                   <a href="#">View all</a>
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="px-0">
+            <CardContent>
               <div
                 aria-hidden
-                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border px-6 pb-2 text-xs uppercase text-muted-foreground sm:grid"
+                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border pb-2 text-xs uppercase text-muted-foreground sm:grid"
               >
                 <span>Customer</span>
                 <span>Status</span>
@@ -391,7 +395,7 @@ const Dashboard03 = () => {
                     <li
                       key={t.email}
                       className={cn(
-                        'grid grid-cols-[1fr_auto] items-center gap-3 px-6 py-3 sm:grid-cols-[1fr_110px_70px_110px]',
+                        'grid grid-cols-[1fr_auto] items-center gap-3 py-3 sm:grid-cols-[1fr_110px_70px_110px]',
                         i < pageRows.length - 1 && 'border-b border-border',
                       )}
                     >
@@ -409,7 +413,7 @@ const Dashboard03 = () => {
                       </div>
                       <Badge
                         variant="outline"
-                        className="hidden w-fit gap-1.5 font-normal text-muted-foreground sm:inline-flex"
+                        className="hidden w-fit sm:inline-flex"
                       >
                         <span aria-hidden className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}

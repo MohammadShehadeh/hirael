@@ -134,9 +134,7 @@ const RequestIntegration = () => {
             className="flex flex-col gap-3"
           >
             <Field className="gap-1.5" data-invalid={Boolean(error) || undefined}>
-              <FieldLabel htmlFor="integrations-03-tool" className="text-xs uppercase text-muted-foreground">
-                Tool to connect
-              </FieldLabel>
+              <FieldLabel htmlFor="integrations-03-tool">Tool to connect</FieldLabel>
               <Input
                 id="integrations-03-tool"
                 placeholder="Issue tracker, CI runner, docs site"
@@ -145,9 +143,7 @@ const RequestIntegration = () => {
                 aria-invalid={Boolean(error) || undefined}
                 aria-describedby={error ? 'integrations-03-tool-error' : undefined}
               />
-              <FieldError id="integrations-03-tool-error" className="text-xs">
-                {error}
-              </FieldError>
+              <FieldError id="integrations-03-tool-error">{error}</FieldError>
             </Field>
             <Button type="submit" size="sm" disabled={pending}>
               {pending && <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />}
@@ -207,9 +203,7 @@ const Integrations03 = () => {
                     <div className="flex flex-wrap items-center gap-2">
                       <row.icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
                       <h3 className="text-sm font-medium">{row.name}</h3>
-                      <Badge variant={row.status === 'Live' ? 'secondary' : 'outline'} className="uppercase">
-                        {row.status}
-                      </Badge>
+                      <Badge variant={row.status === 'Live' ? 'secondary' : 'outline'}>{row.status}</Badge>
                     </div>
                     <p className="mt-1 text-sm text-pretty text-muted-foreground">{row.summary}</p>
                   </div>

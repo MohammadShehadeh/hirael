@@ -34,7 +34,7 @@ export const About = () => {
               models trained on real incidents, so the places people work and live respond to risk before it becomes an
               event.
             </p>
-            <CtaButton className="mt-10 px-10">Get Quote</CtaButton>
+            <CtaButton className="mt-10">Get Quote</CtaButton>
           </div>
         </div>
       </div>

@@ -116,12 +116,7 @@ const Hero06 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'mt-2 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-4')}
         >
-          <Button
-            render={<a href="#" />}
-            nativeButton={false}
-            size="lg"
-            className="group w-full sm:w-auto"
-          >
+          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group w-full sm:w-auto">
             View experience
             <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
           </Button>
@@ -147,7 +142,15 @@ const Hero06 = () => {
             <div className="flex flex-1 flex-wrap items-center justify-center gap-5 md:flex-none">
               {STACK.map((item) => (
                 <Tooltip key={item.name}>
-                  <TooltipTrigger render={<button type="button" aria-label={item.name} className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />}>
+                  <TooltipTrigger
+                    render={
+                      <button
+                        type="button"
+                        aria-label={item.name}
+                        className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      />
+                    }
+                  >
                     <item.icon className="size-6" aria-hidden />
                   </TooltipTrigger>
                   <TooltipContent>{item.name}</TooltipContent>

@@ -35,23 +35,26 @@ const AuditLogItem = ({ open, defaultOpen, onOpenChange, className, children, ..
   );
 };
 
-type AuditLogTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
+type AuditLogTriggerProps = React.ComponentProps<'button'>;
 
 const AuditLogTrigger = ({ className, children, ...props }: AuditLogTriggerProps) => {
   return (
-    <CollapsibleTrigger
-      data-slot="audit-log-trigger"
-      className={cn(
-        'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
-        className,
-      )}
-      {...props}
-    >
-      <ChevronRight
-        aria-hidden
-        className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180"
-      />
-      {children}
+    <CollapsibleTrigger asChild>
+      <button
+        type="button"
+        data-slot="audit-log-trigger"
+        className={cn(
+          'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+          className,
+        )}
+        {...props}
+      >
+        <ChevronRight
+          aria-hidden
+          className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180"
+        />
+        {children}
+      </button>
     </CollapsibleTrigger>
   );
 };
@@ -122,22 +125,23 @@ type AuditLogDetailProps = React.ComponentProps<'dl'>;
 
 const AuditLogDetail = ({ className, children, ...props }: AuditLogDetailProps) => {
   return (
-    <CollapsibleContent
-      forceMount
-      data-slot="audit-log-detail-panel"
-      className="grid grid-rows-[1fr] transition-[grid-template-rows,visibility] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] motion-reduce:transition-none"
-    >
-      <div className="min-h-0 overflow-hidden">
-        <dl
-          data-slot="audit-log-detail"
-          className={cn(
-            'grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11',
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </dl>
+    <CollapsibleContent forceMount asChild>
+      <div
+        data-slot="audit-log-detail-panel"
+        className="grid grid-rows-[1fr] transition-[grid-template-rows,visibility] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=closed]:invisible data-[state=closed]:grid-rows-[0fr] motion-reduce:transition-none"
+      >
+        <div className="min-h-0 overflow-hidden">
+          <dl
+            data-slot="audit-log-detail"
+            className={cn(
+              'grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 border-t border-border bg-muted/30 px-4 py-3 ps-11',
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </dl>
+        </div>
       </div>
     </CollapsibleContent>
   );

@@ -125,7 +125,7 @@ const MessageThreadScrollButton = ({
         variant="outline"
         size="sm"
         onClick={scrollToBottom}
-        className={cn('-translate-y-full rounded-full shadow-md backdrop-blur', className)}
+        className={cn('-translate-y-full', className)}
         {...props}
       >
         <ArrowDown className="size-3.5" aria-hidden />
@@ -253,15 +253,12 @@ const MessageAction = ({ label, pressed, className, children, ...props }: Messag
     <Button
       type="button"
       data-slot="message-action"
-      variant="ghost"
+      variant={pressed ? 'secondary' : 'ghost'}
       size="icon-xs"
       aria-label={label}
       aria-pressed={pressed}
       title={label}
-      className={cn(
-        "size-7 text-muted-foreground hover:text-foreground aria-pressed:bg-accent aria-pressed:text-foreground [&_svg:not([class*='size-'])]:size-3.5",
-        className,
-      )}
+      className={cn("size-7 [&_svg:not([class*='size-'])]:size-3.5", className)}
       {...props}
     >
       {children}
@@ -337,25 +334,32 @@ const MessageToolCall = ({
     <Collapsible
       data-slot="message-tool-call"
       data-status={status}
-      className={cn('w-full max-w-xl overflow-hidden rounded-md border border-border bg-card', className)}
+      className={cn('w-full max-w-xl', className)}
       {...props}
     >
-      <CollapsibleTrigger className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
-        <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
-        <span className="truncate text-foreground">{name}</span>
-        <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
-        <ChevronDown
-          className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/tool:rotate-180 motion-reduce:transition-none"
-          aria-hidden
-        />
-      </CollapsibleTrigger>
-      <CollapsibleContent className="border-t border-border">
-        <div className="flex flex-col gap-3 p-3">
-          {args !== undefined ? <ToolSection label="Arguments">{toPretty(args)}</ToolSection> : null}
-          {result !== undefined ? <ToolSection label="Result">{toPretty(result)}</ToolSection> : null}
-          {children}
-        </div>
-      </CollapsibleContent>
+      <div className="overflow-hidden rounded-md border border-border bg-card">
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+          >
+            <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
+            <span className="truncate text-foreground">{name}</span>
+            <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
+            <ChevronDown
+              className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/tool:rotate-180 motion-reduce:transition-none"
+              aria-hidden
+            />
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="flex flex-col gap-3 border-t border-border p-3">
+            {args !== undefined ? <ToolSection label="Arguments">{toPretty(args)}</ToolSection> : null}
+            {result !== undefined ? <ToolSection label="Result">{toPretty(result)}</ToolSection> : null}
+            {children}
+          </div>
+        </CollapsibleContent>
+      </div>
     </Collapsible>
   );
 };
@@ -397,15 +401,20 @@ const MessageReasoning = ({
       className={cn('flex w-full max-w-xl flex-col', className)}
       {...props}
     >
-      <CollapsibleTrigger className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 pe-2 ps-1 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">
-        <ChevronRight
-          className={cn(
-            'size-3.5 shrink-0 transition-transform motion-reduce:transition-none',
-            open ? 'rotate-90' : 'rtl:rotate-180',
-          )}
-          aria-hidden
-        />
-        <span className={cn(isThinking && 'animate-pulse motion-reduce:animate-none')}>{text}</span>
+      <CollapsibleTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 pe-2 ps-1 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <ChevronRight
+            className={cn(
+              'size-3.5 shrink-0 transition-transform motion-reduce:transition-none',
+              open ? 'rotate-90' : 'rtl:rotate-180',
+            )}
+            aria-hidden
+          />
+          <span className={cn(isThinking && 'animate-pulse motion-reduce:animate-none')}>{text}</span>
+        </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="ms-2.5 border-s-2 border-border py-1 ps-3 text-sm leading-relaxed text-muted-foreground [&_p+p]:mt-2">

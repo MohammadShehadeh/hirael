@@ -152,16 +152,13 @@ const Upvote = ({ count, voted, title, onToggle }: UpvoteProps) => {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant={voted ? 'secondary' : 'outline'}
+      size="sm"
       data-slot="roadmap-upvote"
       aria-pressed={voted}
       aria-label={`${voted ? 'Remove vote for' : 'Vote for'} ${title}, ${count} votes`}
       onClick={onToggle}
-      className={cn(
-        'h-auto w-12 shrink-0 flex-col gap-0 px-0 py-1.5 transition-colors duration-150',
-        voted &&
-          'border-warm/50 bg-warm/10 text-warm hover:bg-warm/15 hover:text-warm dark:border-warm/50 dark:bg-warm/10 dark:hover:bg-warm/15',
-      )}
+      className="h-auto w-12 shrink-0 flex-col"
     >
       <ChevronUp
         aria-hidden
@@ -236,10 +233,10 @@ const Changelog02 = () => {
               aria-labelledby="changelog-02-sort"
               data-slot="roadmap-sort"
             >
-              <ToggleGroupItem value="votes" className="text-xs">
+              <ToggleGroupItem value="votes">
                 Most votes
               </ToggleGroupItem>
-              <ToggleGroupItem value="newest" className="text-xs">
+              <ToggleGroupItem value="newest">
                 Newest
               </ToggleGroupItem>
             </ToggleGroup>
@@ -253,9 +250,9 @@ const Changelog02 = () => {
             aria-label="Roadmap column"
             className="md:hidden"
           >
-            <TabsList variant="line" className="w-full justify-start border-b border-border">
+            <TabsList variant="line" className="w-full justify-start">
               {COLUMNS.map((column) => (
-                <TabsTrigger key={column.id} value={column.id} className="flex-none gap-2 px-3">
+                <TabsTrigger key={column.id} value={column.id} className="flex-none">
                   {column.title}
                   <span className="text-xs tabular-nums text-muted-foreground">
                     {ITEMS.filter((item) => item.column === column.id).length}
@@ -305,7 +302,7 @@ const Changelog02 = () => {
                               <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
                             </div>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                              <Badge variant="outline" className="font-normal text-muted-foreground">
+                              <Badge variant="outline">
                                 {item.tag}
                               </Badge>
                               {item.shipped ? (
@@ -341,7 +338,7 @@ const Changelog02 = () => {
           className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
         >
           <span>Not on the board? Tell us what is missing and how you would use it.</span>
-          <Button variant="link" className="group/suggest h-auto w-fit p-0" asChild>
+          <Button variant="link" className="group/suggest h-auto w-fit" asChild>
             <a href="#">
               Suggest a feature
               <ArrowRight

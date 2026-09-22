@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
 import { InstagramIcon, LinkedinIcon, Logo, TwitterIcon } from './primitives';
 
 const NAV_LINKS = [
@@ -47,17 +45,14 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-2">
           {SOCIAL_LINKS.map(({ label, Icon }) => (
-            <Button
+            <a
               key={label}
-              asChild
-              variant="ghost"
-              size="icon-lg"
-              className="liquid-glass rounded-full text-muted-foreground hover:text-foreground"
+              href="#"
+              aria-label={label}
+              className="liquid-glass inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
             >
-              <a href="#" aria-label={label}>
-                <Icon className="size-4" />
-              </a>
-            </Button>
+              <Icon className="size-4" />
+            </a>
           ))}
         </div>
       </nav>

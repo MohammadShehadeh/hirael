@@ -132,13 +132,7 @@ const ApiKeyValue = ({
         </Button>
       ) : null}
       {copyable ? (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          aria-label={copied ? 'Copied' : 'Copy key'}
-          onClick={copy}
-        >
+        <Button type="button" variant="ghost" size="icon-xs" aria-label={copied ? 'Copied' : 'Copy key'} onClick={copy}>
           {copied ? <Check className="text-foreground" /> : <Copy />}
         </Button>
       ) : null}

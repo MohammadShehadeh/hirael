@@ -68,7 +68,6 @@ const ComingSoonCountdown = ({ target, onComplete, className, ...props }: Coming
         target={target}
         onComplete={onComplete}
         completeContent={<span className="font-serif text-2xl font-medium tracking-tight">It&apos;s live.</span>}
-        className="gap-3"
       />
     </div>
   );
@@ -146,8 +145,8 @@ const ComingSoonForm = ({
       {...props}
     >
       <Field className="gap-1.5" data-invalid={error ? true : undefined}>
-        <FieldLabel htmlFor={id} className="text-xs uppercase text-muted-foreground">
-          Get notified at launch
+        <FieldLabel htmlFor={id}>
+          <span className="text-xs uppercase text-muted-foreground">Get notified at launch</span>
         </FieldLabel>
         <div className="flex gap-2">
           <Input
@@ -169,7 +168,7 @@ const ComingSoonForm = ({
             <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
         </div>
-        <FieldError id={`${id}-error`} className="text-xs">
+        <FieldError id={`${id}-error`}>
           {error}
         </FieldError>
       </Field>

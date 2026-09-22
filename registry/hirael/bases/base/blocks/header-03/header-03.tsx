@@ -150,10 +150,7 @@ const CONTENT_MOTION = cn(
   'data-[activation-direction=right]:data-starting-style:translate-x-6 data-[activation-direction=right]:data-ending-style:-translate-x-6',
 );
 
-const TRIGGER = cn(
-  navigationMenuTriggerStyle(),
-  'h-8 bg-transparent px-3 font-normal text-muted-foreground hover:bg-muted/60 hover:text-foreground focus:bg-muted/60 data-popup-open:bg-muted/60 data-popup-open:text-foreground',
-);
+const TRIGGER = cn(navigationMenuTriggerStyle(), 'h-8');
 
 const Wordmark = ({ className }: { className?: string }) => {
   return (
@@ -174,10 +171,7 @@ const FlyoutRow = ({ link }: { link: MenuLink }) => {
   const Icon = link.icon;
   return (
     <li>
-      <NavigationMenuLink
-        href={link.href}
-        className="flex-row items-start gap-3 p-3 transition-colors duration-150 hover:bg-muted/60 focus:bg-muted/60"
-      >
+      <NavigationMenuLink href={link.href} className="flex-row items-start">
         <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="text-sm font-medium text-foreground">{link.title}</span>
@@ -200,10 +194,7 @@ const FlyoutFeature = ({ feature }: { feature: MenuFeature }) => {
       <time dateTime={feature.dateTime} className="text-xs tabular-nums text-muted-foreground">
         {feature.date}
       </time>
-      <NavigationMenuLink
-        href={feature.href}
-        className="group/cta mt-auto flex-row items-center gap-1.5 self-start px-0 pt-3 pb-0 text-foreground hover:bg-transparent hover:text-warm focus:bg-transparent"
-      >
+      <NavigationMenuLink href={feature.href} className="group/cta mt-auto flex-row items-center self-start">
         {feature.cta}
         <ArrowRight
           aria-hidden
@@ -222,11 +213,11 @@ const Header03 = () => {
           <Wordmark />
 
           <NavigationMenu className="hidden max-w-none flex-none md:flex">
-            <NavigationMenuList className="gap-0.5">
+            <NavigationMenuList>
               {GROUPS.map((group) => (
                 <NavigationMenuItem key={group.value} value={group.value}>
                   <NavigationMenuTrigger className={TRIGGER}>{group.label}</NavigationMenuTrigger>
-                  <NavigationMenuContent className={cn(CONTENT_MOTION, 'p-0 pe-0 md:w-[min(52rem,calc(100vw-3rem))]')}>
+                  <NavigationMenuContent className={cn(CONTENT_MOTION, 'md:w-[min(52rem,calc(100vw-3rem))]')}>
                     <div data-slot="header-flyout" className="grid md:grid-cols-[minmax(0,1fr)_17rem]">
                       <ul className="grid gap-1 p-3 sm:grid-cols-2">
                         {group.links.map((link) => (
@@ -263,8 +254,8 @@ const Header03 = () => {
             >
               <Menu aria-hidden className="size-5" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-full gap-0 sm:max-w-sm">
-              <SheetHeader className="h-14 justify-center border-b border-border px-6 py-0">
+            <SheetContent side="right" className="w-full sm:max-w-sm">
+              <SheetHeader className="h-14 justify-center">
                 <SheetTitle className="text-start">
                   <Wordmark />
                 </SheetTitle>
@@ -272,9 +263,9 @@ const Header03 = () => {
               <nav data-slot="header-mobile-menu" className="flex-1 overflow-y-auto px-6">
                 <Accordion>
                   {GROUPS.map((group) => (
-                    <AccordionItem key={group.value} value={group.value} className="last:border-b">
-                      <AccordionTrigger className="py-4 text-base hover:no-underline">{group.label}</AccordionTrigger>
-                      <AccordionContent className="pb-3">
+                    <AccordionItem key={group.value} value={group.value}>
+                      <AccordionTrigger>{group.label}</AccordionTrigger>
+                      <AccordionContent>
                         <ul className="flex flex-col">
                           {group.links.map((link) => {
                             const Icon = link.icon;
@@ -303,7 +294,7 @@ const Header03 = () => {
                     </AccordionItem>
                   ))}
                 </Accordion>
-                <ul className="flex flex-col">
+                <ul className="flex flex-col border-t border-border">
                   {PLAIN_LINKS.map((link) => (
                     <li key={link.label} className="border-b border-border last:border-b-0">
                       <SheetClose
@@ -321,7 +312,7 @@ const Header03 = () => {
                   ))}
                 </ul>
               </nav>
-              <SheetFooter className="border-t border-border px-6 py-4">
+              <SheetFooter>
                 <Button render={<a href="#" />} nativeButton={false} variant="ghost">
                   Sign in
                 </Button>

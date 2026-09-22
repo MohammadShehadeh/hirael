@@ -97,8 +97,11 @@ const Process02 = () => {
           </p>
         </div>
 
-        <Tabs value={active} onValueChange={(value) => setActive(value)} className="gap-8">
-          <TabsList variant="line" className="grid h-auto w-full grid-cols-1 items-stretch group-data-[orientation=horizontal]/tabs:h-auto gap-0 p-0 lg:grid-cols-4">
+        <Tabs value={active} onValueChange={(value) => setActive(value)}>
+          <TabsList
+            variant="line"
+            className="grid h-auto w-full grid-cols-1 items-stretch group-data-[orientation=horizontal]/tabs:h-auto lg:grid-cols-4"
+          >
             {STEPS.map((step, index) => {
               const reached = index <= activeIndex;
               const isLast = index === STEPS.length - 1;
@@ -109,14 +112,13 @@ const Process02 = () => {
                   style={stagger(index, 60, 200)}
                   className={cn(
                     ENTER,
-                    'group/step relative h-auto flex-row items-start justify-start gap-4 whitespace-normal rounded-none border-0 pb-8 ps-0 pe-4 pt-0 text-start lg:flex-col lg:gap-5 lg:pb-0',
-                    'after:hidden hover:bg-transparent',
-                    'data-[state=active]:bg-transparent dark:data-[state=active]:border-transparent dark:data-[state=active]:bg-transparent',
+                    'group/step relative h-auto flex-row items-start justify-start whitespace-normal text-start lg:flex-col',
+                    'after:hidden',
                   )}
                 >
                   {!isLast && (
                     <>
-                      <span aria-hidden className="absolute start-3.5 top-9 bottom-1 w-px bg-border lg:hidden">
+                      <span aria-hidden className="absolute start-5.5 top-10 bottom-1 w-px bg-border lg:hidden">
                         <span
                           className={cn(
                             'absolute inset-0 origin-top bg-foreground transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
@@ -124,7 +126,7 @@ const Process02 = () => {
                           )}
                         />
                       </span>
-                      <span aria-hidden className="absolute start-10 end-2 top-3.5 hidden h-px bg-border lg:block">
+                      <span aria-hidden className="absolute start-12 end-2 top-4.5 hidden h-px bg-border lg:block">
                         <span
                           className={cn(
                             'absolute inset-0 origin-left bg-foreground transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:origin-right',
@@ -137,7 +139,7 @@ const Process02 = () => {
                   <span
                     dir="ltr"
                     className={cn(
-                      'relative grid size-7 shrink-0 place-items-center rounded-full border text-[11px] font-medium tabular-nums transition-colors duration-250',
+                      'relative me-2.5 grid size-7 shrink-0 place-items-center rounded-full lg:me-0 lg:mb-3.5 border text-[11px] font-medium tabular-nums transition-colors duration-250',
                       index === activeIndex
                         ? 'border-foreground bg-foreground text-background'
                         : reached
@@ -147,7 +149,7 @@ const Process02 = () => {
                   >
                     {formatIndex(index)}
                   </span>
-                  <span className="flex min-w-0 flex-col gap-1.5 pt-0.5 lg:pt-0">
+                  <span className="flex min-w-0 flex-col gap-1.5 pe-4 pt-0.5 pb-8 lg:pt-0 lg:pb-0">
                     <span
                       className={cn(
                         'text-base font-medium transition-colors duration-150',
@@ -165,7 +167,7 @@ const Process02 = () => {
           </TabsList>
 
           {STEPS.map((step, index) => (
-            <TabsContent key={step.value} value={step.value}>
+            <TabsContent key={step.value} value={step.value} className="mt-6">
               <div
                 data-slot="process-detail"
                 className="grid gap-8 border-y border-border py-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14"

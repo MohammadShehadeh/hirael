@@ -60,7 +60,7 @@ const LogoCloud01 = () => {
     <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-01-heading">
       <div className="container w-full">
         <div data-slot="logo-cloud-header" className="flex flex-col items-center gap-4 text-center">
-          <Badge variant="outline" className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}>
+          <Badge variant="outline" className={ENTER}>
             Customers
           </Badge>
           <h2
@@ -113,7 +113,7 @@ const LogoCloud01 = () => {
               </div>
             ))}
           </dl>
-          <Button variant="link" className="group h-auto p-0" asChild>
+          <Button variant="link" className="group h-auto" asChild>
             <a href="#">
               See the case studies
               <ArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />

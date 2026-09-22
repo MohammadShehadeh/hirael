@@ -163,12 +163,8 @@ const Stats03 = () => {
               }}
               aria-label="Period"
             >
-              <ToggleGroupItem value="quarter" className="px-3 text-xs">
-                Quarter
-              </ToggleGroupItem>
-              <ToggleGroupItem value="year" className="px-3 text-xs">
-                Year
-              </ToggleGroupItem>
+              <ToggleGroupItem value="quarter">Quarter</ToggleGroupItem>
+              <ToggleGroupItem value="year">Year</ToggleGroupItem>
             </ToggleGroup>
           </div>
 
@@ -196,11 +192,8 @@ const Stats03 = () => {
                     value={filled ? Math.min(ratio, 100) : 0}
                     aria-label={`${metric.name}, ${ratio}% of target`}
                     className={cn(
-                      'h-1.5 bg-muted',
-                      '**:data-[slot=progress-indicator]:delay-(--bar-delay) **:data-[slot=progress-indicator]:duration-700 **:data-[slot=progress-indicator]:ease-[cubic-bezier(0.22,1,0.36,1)] **:data-[slot=progress-indicator]:motion-reduce:transition-none',
-                      met
-                        ? '**:data-[slot=progress-indicator]:bg-success'
-                        : '**:data-[slot=progress-indicator]:bg-foreground',
+                      'h-1.5',
+                      '**:data-[slot=progress-indicator]:delay-(--bar-delay) **:data-[slot=progress-indicator]:duration-700 **:data-[slot=progress-indicator]:ease-[cubic-bezier(0.22,1,0.36,1)]',
                     )}
                     style={{ '--bar-delay': `${index * 60}ms` } as React.CSSProperties}
                   />

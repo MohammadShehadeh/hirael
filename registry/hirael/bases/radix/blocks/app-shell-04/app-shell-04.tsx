@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
   DropdownMenu,
@@ -240,11 +239,7 @@ const AppShell04 = () => {
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton
-                    size="lg"
-                    tooltip={activeWorkspace.name}
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                  >
+                  <SidebarMenuButton size="lg" tooltip={activeWorkspace.name}>
                     <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-sm text-sidebar-foreground">
                       <BrandMark className="size-5" />
                     </span>
@@ -256,7 +251,7 @@ const AppShell04 = () => {
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Workspaces</DropdownMenuLabel>
+                  <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
                   {WORKSPACES.map((w) => (
                     <DropdownMenuItem key={w.name} onSelect={() => setWorkspace(w.name)}>
                       <span className="flex-1">{w.name}</span>
@@ -356,24 +351,22 @@ const AppShell04 = () => {
           <div className="flex shrink-0 items-center gap-2">
             <Button variant="ghost" size="icon" className="relative size-8" aria-label="Notifications, 3 unread">
               <Bell className="size-4" aria-hidden />
-              <Badge aria-hidden className="absolute -end-1 -top-1 size-4 justify-center p-0 text-[10px] tabular-nums">
+              <span
+                aria-hidden
+                className="absolute -end-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium tabular-nums text-primary-foreground"
+              >
                 3
-              </Badge>
+              </span>
             </Button>
             <Separator orientation="vertical" className="h-4" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  aria-label="Account menu"
-                  className="size-8 rounded-full text-[11px]"
-                >
+                <Button variant="outline" size="icon-sm" aria-label="Account menu">
                   MS
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="font-normal">
+                <DropdownMenuLabel>
                   <span className="block text-sm font-medium">Maya Renner</span>
                   <span className="block truncate text-xs text-muted-foreground">maya@hirael.com</span>
                 </DropdownMenuLabel>

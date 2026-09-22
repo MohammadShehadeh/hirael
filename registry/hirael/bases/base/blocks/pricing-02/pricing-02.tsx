@@ -142,10 +142,7 @@ const Pricing02 = () => {
                   <span className="text-xs font-normal uppercase text-muted-foreground">Features</span>
                 </TableHead>
                 {PLANS.map((plan) => (
-                  <TableHead
-                    key={plan.key}
-                    className={cn('h-auto align-bottom text-start', columnClass(plan))}
-                  >
+                  <TableHead key={plan.key} className={cn('h-auto align-bottom text-start', columnClass(plan))}>
                     <div className={cn(SWAP, 'flex flex-col gap-3 py-4')}>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
                         <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{plan.name}</span>
@@ -180,9 +177,7 @@ const Pricing02 = () => {
                   </TableRow>
                   {group.rows.map((row) => (
                     <TableRow key={row.feature}>
-                      <TableCell className="whitespace-normal">
-                        {row.feature}
-                      </TableCell>
+                      <TableCell className="whitespace-normal">{row.feature}</TableCell>
                       {PLANS.map((plan) => (
                         <TableCell key={plan.key} className={columnClass(plan)}>
                           <span className={cn(SWAP, 'flex items-center')}>

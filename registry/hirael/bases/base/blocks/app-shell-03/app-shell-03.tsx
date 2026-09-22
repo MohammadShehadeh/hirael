@@ -379,16 +379,7 @@ const AppShell03 = () => {
         ))}
         <div className="mt-auto flex flex-col items-center gap-1">
           <Tooltip>
-            <TooltipTrigger
-              render={
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Settings"
-                />
-              }
-            >
+            <TooltipTrigger render={<Button type="button" variant="ghost" size="icon" aria-label="Settings" />}>
               <Settings className="size-4" aria-hidden />
             </TooltipTrigger>
             <TooltipContent side="right">Settings</TooltipContent>
@@ -411,9 +402,7 @@ const AppShell03 = () => {
       >
         <div className="flex h-14 shrink-0 items-center justify-between gap-2 px-4">
           <h1 className="text-sm font-medium tracking-[-0.01em]">Inbox</h1>
-          <Badge variant="outline">
-            {unreadCount} unread
-          </Badge>
+          <Badge variant="outline">{unreadCount} unread</Badge>
         </div>
         <div className="flex flex-col gap-2.5 px-4 pb-3">
           <InputGroup className="h-8">
@@ -437,12 +426,8 @@ const AppShell03 = () => {
           <div className="flex items-center justify-between gap-2">
             <Tabs value={filter} onValueChange={(v) => setFilter(v as 'all' | 'unread')} className="w-fit">
               <TabsList className="h-7">
-                <TabsTrigger value="all">
-                  All
-                </TabsTrigger>
-                <TabsTrigger value="unread">
-                  Unread
-                </TabsTrigger>
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="unread">Unread</TabsTrigger>
               </TabsList>
             </Tabs>
             <span dir="ltr" aria-live="polite" className="text-xs uppercase tabular-nums text-muted-foreground">

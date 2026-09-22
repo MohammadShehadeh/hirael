@@ -7,20 +7,18 @@ import { ArrowRight, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/registry/hirael/bases/radix/ui/card';
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
+
+// The post cards run their media flush to the edge, which a stock Card's padding doesn't allow,
+// so they take the card surface on a plain element.
+const CARD_SURFACE =
+  'rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-foreground/30 focus-within:border-foreground/30';
 
 const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
   animationDelay: `${offset + index * step}ms`,
@@ -129,10 +127,10 @@ const PostCover = ({
         />
         {/* Photo scrim: fixed dark overlay so the badges stay legible on any image, in both themes. */}
         <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-linear-to-t from-black/60 via-black/10 to-transparent p-4">
-          {featured && <Badge className="bg-background/85 text-foreground backdrop-blur-sm">Featured</Badge>}
-          <Badge variant="outline" className="border-white/30 text-white">
+          {featured && <Badge variant="secondary">Featured</Badge>}
+          <span className="inline-flex items-center rounded-full border border-white/30 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white">
             {category}
-          </Badge>
+          </span>
         </div>
       </div>
     );
@@ -167,21 +165,14 @@ const PostCover = ({
 const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) => {
   const titleId = `blog-01-post-${post.title.replace(/[^a-z0-9]+/gi, '-').slice(0, 24)}`;
   return (
-    <Card
-      data-slot="blog-post"
-      style={style}
-      className={cn(
-        SWAP,
-        'group relative gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30',
-      )}
-    >
+    <div data-slot="blog-post" style={style} className={cn(SWAP, CARD_SURFACE, 'group relative overflow-hidden')}>
       <article aria-labelledby={titleId} className="flex h-full flex-col">
         {post.cover && (
           <a href={post.href} aria-hidden tabIndex={-1} className="block aspect-[16/10] overflow-hidden">
             <PostCover cover={post.cover} alt={post.title} category={post.category} />
           </a>
         )}
-        <CardHeader className="px-5 pt-5">
+        <CardHeader className="mt-5">
           <div className="flex items-center justify-between">
             {!post.cover ? <Badge variant="outline">{post.category}</Badge> : <span aria-hidden />}
             <span className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground">
@@ -189,17 +180,20 @@ const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) 
               {post.readMin} min
             </span>
           </div>
-          <CardTitle id={titleId} className="mt-2 text-base leading-snug tracking-[-0.01em] text-pretty">
-            <a href={post.href} className="after:absolute after:inset-0 focus-visible:outline-none">
+          <CardTitle id={titleId} className="mt-2">
+            <a
+              href={post.href}
+              className="text-base leading-snug tracking-[-0.01em] text-pretty after:absolute after:inset-0 focus-visible:outline-none"
+            >
               {post.title}
             </a>
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 px-5 py-4">
-          <CardDescription className="text-pretty">{post.excerpt}</CardDescription>
+        <CardContent className="my-4 flex-1">
+          <CardDescription>{post.excerpt}</CardDescription>
         </CardContent>
         <Separator />
-        <CardFooter className="px-5 py-4">
+        <CardFooter className="my-4">
           <div className="flex w-full items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">
               <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-[10px] font-medium text-foreground">
@@ -211,7 +205,7 @@ const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) 
           </div>
         </CardFooter>
       </article>
-    </Card>
+    </div>
   );
 };
 
@@ -242,7 +236,7 @@ const Blog01 = () => {
               posts.
             </p>
           </div>
-          <Button variant="link" className={cn(ENTER, 'group h-auto w-fit p-0')} style={stagger(3)} asChild>
+          <Button variant="link" className={cn(ENTER, 'group h-auto w-fit')} style={stagger(3)} asChild>
             <a href="#">
               All posts
               <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -275,13 +269,10 @@ const Blog01 = () => {
         </div>
 
         {showFeatured && (
-          <Card
+          <div
             data-slot="blog-featured"
             style={filtered ? undefined : stagger(4)}
-            className={cn(
-              filtered ? SWAP : ENTER,
-              'group mt-8 gap-0 overflow-hidden p-0 transition-colors hover:border-foreground/30 focus-within:border-foreground/30',
-            )}
+            className={cn(filtered ? SWAP : ENTER, CARD_SURFACE, 'group mt-8 overflow-hidden')}
           >
             <article aria-labelledby="blog-01-featured-title" className="relative grid grid-cols-1 lg:grid-cols-12">
               <a
@@ -324,7 +315,7 @@ const Blog01 = () => {
                 </Button>
               </div>
             </article>
-          </Card>
+          </div>
         )}
 
         <div

@@ -1,4 +1,4 @@
-import { Button } from '@/registry/hirael/bases/base/ui/button';
+import { PillButton } from './primitives';
 
 const CTA_VIDEO = '/media/templates/velorah/cta.mp4';
 
@@ -29,20 +29,10 @@ export const Cta = () => {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-          <Button
-            type="button"
-            variant="ghost"
-            className="liquid-glass h-auto rounded-full px-10 py-4 font-normal text-foreground transition-transform hover:scale-[1.03]"
-          >
-            Preorder Now
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            className="h-auto rounded-full border border-border px-10 py-4 font-normal text-muted-foreground hover:border-foreground/30 hover:text-foreground"
-          >
+          <PillButton className="px-10 py-4">Preorder Now</PillButton>
+          <PillButton tone="outline" className="px-10 py-4">
             Schedule a Tour
-          </Button>
+          </PillButton>
         </div>
       </div>
     </section>

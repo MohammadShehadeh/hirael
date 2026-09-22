@@ -59,7 +59,7 @@ const AssignPanel = () => {
             )}
           >
             <Avatar className="size-8 shrink-0">
-              <AvatarFallback className="text-[11px] font-medium">{conversation.owner}</AvatarFallback>
+              <AvatarFallback>{conversation.owner}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium">{conversation.subject}</p>
@@ -209,9 +209,9 @@ const Feature11 = () => {
         <Tabs
           defaultValue={FEATURES[0].value}
           orientation="vertical"
-          className="flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-stretch lg:gap-14"
+          className="flex-col lg:grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-stretch"
         >
-          <TabsList variant="line" className="w-full gap-0 p-0">
+          <TabsList variant="line" className="w-full">
             {FEATURES.map((feature, index) => (
               <TabsTrigger
                 key={feature.value}
@@ -219,26 +219,25 @@ const Feature11 = () => {
                 style={stagger(index, 80, 240)}
                 className={cn(
                   ENTER,
-                  'group/trigger h-auto w-full items-start gap-4 whitespace-normal rounded-none border-0 px-5 py-4 text-start',
-                  'after:hidden',
-                  'before:absolute before:inset-y-0 before:start-0 before:w-px before:bg-border',
-                  'data-active:bg-transparent dark:data-active:bg-transparent',
-                  'hover:bg-muted/30',
+                  'group/trigger h-auto w-full items-start whitespace-normal text-start after:hidden',
                 )}
               >
+                <span aria-hidden className="absolute inset-y-0 start-0 w-px bg-border" />
                 <span
                   aria-hidden
                   className="absolute inset-y-0 start-0 w-0.5 origin-top scale-y-0 bg-foreground transition-transform duration-300 ease-out group-data-active/trigger:scale-y-100 motion-reduce:transition-none"
                 />
-                <span className="pt-px text-xs tabular-nums text-muted-foreground transition-colors group-data-active/trigger:text-warm">
-                  {formatIndex(index)}
-                </span>
-                <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-sm font-medium">{feature.title}</span>
-                  <span className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-data-active/trigger:grid-rows-[1fr] group-data-active/trigger:opacity-100 motion-reduce:transition-none">
-                    <span className="overflow-hidden">
-                      <span className="block pt-1.5 text-sm font-normal leading-relaxed text-muted-foreground">
-                        {feature.summary}
+                <span className="flex min-w-0 flex-1 items-start gap-4 px-3 py-3">
+                  <span className="pt-px text-xs tabular-nums text-muted-foreground transition-colors group-data-active/trigger:text-warm">
+                    {formatIndex(index)}
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="text-sm font-medium">{feature.title}</span>
+                    <span className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-data-active/trigger:grid-rows-[1fr] group-data-active/trigger:opacity-100 motion-reduce:transition-none">
+                      <span className="overflow-hidden">
+                        <span className="block pt-1.5 text-sm font-normal leading-relaxed text-muted-foreground">
+                          {feature.summary}
+                        </span>
                       </span>
                     </span>
                   </span>
@@ -252,7 +251,7 @@ const Feature11 = () => {
             style={stagger(0, 0, 400)}
             className={cn(
               ENTER,
-              'relative flex min-h-80 flex-col overflow-hidden rounded-xl border border-border bg-card/40 shadow-sm lg:min-h-96',
+              'relative mt-6 flex min-h-80 flex-col overflow-hidden rounded-xl lg:ms-12 lg:mt-0 border border-border bg-card/40 shadow-sm lg:min-h-96',
             )}
           >
             <div

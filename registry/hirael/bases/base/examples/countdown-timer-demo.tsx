@@ -57,11 +57,9 @@ const CountdownTimerDemo = () => {
             en: 'Early-bird pricing ends in',
             ar: 'ينتهي سعر الحجز المبكر خلال',
           })}{' '}
-          <CountdownTimer
-            variant="minimal"
-            target={launchTarget}
-            className="align-baseline font-medium text-foreground"
-          />{' '}
+          <span className="font-medium text-foreground">
+            <CountdownTimer variant="minimal" target={launchTarget} className="align-baseline" />
+          </span>{' '}
           {t({ en: 'Lock in your seat now.', ar: 'احجز مقعدك الآن.' })}
         </div>
       </div>

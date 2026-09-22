@@ -242,9 +242,7 @@ const TwoFactorSetupCode = ({
       className={cn('gap-1.5', className)}
       {...props}
     >
-      <FieldLabel htmlFor={id}>
-        {label}
-      </FieldLabel>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
       <div dir="ltr">
         <InputOTP
           id={id}
@@ -261,18 +259,12 @@ const TwoFactorSetupCode = ({
         >
           <InputOTPGroup className="w-full justify-between">
             {Array.from({ length }, (_, i) => (
-              <InputOTPSlot
-                key={i}
-                index={i}
-                className="size-10 sm:size-11"
-              />
+              <InputOTPSlot key={i} index={i} className="size-10 sm:size-11" />
             ))}
           </InputOTPGroup>
         </InputOTP>
       </div>
-      <FieldError id={errorId}>
-        {error}
-      </FieldError>
+      <FieldError id={errorId}>{error}</FieldError>
     </Field>
   );
 };

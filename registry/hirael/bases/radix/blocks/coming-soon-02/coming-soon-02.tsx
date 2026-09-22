@@ -103,7 +103,7 @@ const NotifyForm = () => {
             }}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? `${id}-error` : undefined}
-            className="h-10 min-w-0 flex-1 bg-card/70"
+            className="h-10 min-w-0 flex-1"
           />
           <Button type="submit" size="lg" className="group shrink-0">
             Notify me
@@ -113,7 +113,7 @@ const NotifyForm = () => {
             />
           </Button>
         </div>
-        <FieldError id={`${id}-error`} className="text-xs">
+        <FieldError id={`${id}-error`}>
           {error}
         </FieldError>
       </Field>
@@ -132,11 +132,7 @@ const ComingSoon02 = () => {
         className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 text-center md:px-10"
       >
         <div className={ENTER}>
-          <Badge
-            variant="outline"
-            data-slot="coming-soon-badge"
-            className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
-          >
+          <Badge variant="outline" data-slot="coming-soon-badge">
             Launching soon
           </Badge>
         </div>

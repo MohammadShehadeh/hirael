@@ -2,9 +2,8 @@
 
 import * as React from 'react';
 
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
 import { Navbar } from './navbar';
+import { PillButton } from './primitives';
 
 const HERO_VIDEO = '/media/templates/velorah/hero.mp4';
 
@@ -51,13 +50,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: { videoSrc?: string; 
           digital spaces for sharp focus and inspired work.
         </p>
 
-        <Button
-          type="button"
-          variant="ghost"
-          className="animate-fade-rise-delay-2 liquid-glass mt-12 h-auto cursor-pointer rounded-full px-14 py-5 text-base font-normal text-foreground transition-transform hover:scale-[1.03]"
-        >
-          Begin Journey
-        </Button>
+        <PillButton className="animate-fade-rise-delay-2 mt-12 px-14 py-5 text-base">Begin Journey</PillButton>
       </div>
     </section>
   );

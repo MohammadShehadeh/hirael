@@ -113,10 +113,9 @@ const Pricing03 = () => {
 
         <ToggleGroup
           data-slot="pricing-billing"
-          type="single"
           variant="outline"
-          value={frequency}
-          onValueChange={(next) => next && setFrequency(next as Frequency)}
+          value={[frequency]}
+          onValueChange={([next]) => next && setFrequency(next as Frequency)}
           aria-label="Billing period"
           style={stagger(3)}
           className={ENTER}

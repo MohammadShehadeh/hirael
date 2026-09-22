@@ -98,7 +98,10 @@ const Process02 = () => {
         </div>
 
         <Tabs value={active} onValueChange={(value) => setActive(value)} className="gap-8">
-          <TabsList variant="line" className="grid h-auto w-full grid-cols-1 items-stretch group-data-[orientation=horizontal]/tabs:h-auto gap-0 p-0 lg:grid-cols-4">
+          <TabsList
+            variant="line"
+            className="grid h-auto w-full grid-cols-1 items-stretch group-data-[orientation=horizontal]/tabs:h-auto gap-0 p-0 lg:grid-cols-4"
+          >
             {STEPS.map((step, index) => {
               const reached = index <= activeIndex;
               const isLast = index === STEPS.length - 1;

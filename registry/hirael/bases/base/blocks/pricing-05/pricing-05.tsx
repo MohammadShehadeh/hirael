@@ -136,7 +136,7 @@ const UsageSlider = ({ id, label, unit, value, range, onChange }: UsageSliderPro
         min={range.min}
         max={range.max}
         step={range.step}
-        onValueChange={([next]) => onChange(next)}
+        onValueChange={(next) => onChange((next as number[])[0])}
       />
       <div aria-hidden className="relative h-4 text-xs tabular-nums text-muted-foreground">
         {range.ticks.map((tick) => {
@@ -239,11 +239,10 @@ const Pricing05 = () => {
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs uppercase text-muted-foreground">Estimate</span>
             <ToggleGroup
-              type="single"
               size="sm"
               variant="outline"
-              value={billing}
-              onValueChange={(next) => next && setBilling(next as Billing)}
+              value={[billing]}
+              onValueChange={([next]) => next && setBilling(next as Billing)}
               aria-label="Billing period"
             >
               <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>

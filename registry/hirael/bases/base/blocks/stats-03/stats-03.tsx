@@ -155,11 +155,10 @@ const Stats03 = () => {
               {caption}
             </span>
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
-              value={period}
-              onValueChange={(value) => {
+              value={[period]}
+              onValueChange={([value]) => {
                 if (value) setPeriod(value as Period);
               }}
               aria-label="Period"

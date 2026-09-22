@@ -244,7 +244,7 @@ const CalendarHeatmap = ({
 
   return (
     <div data-slot="calendar-heatmap" className={cn('w-fit', className)} {...props}>
-      <TooltipProvider delayDuration={0} skipDelayDuration={0}>
+      <TooltipProvider delay={0}>
         <div className="flex flex-col" style={{ gap }}>
           {showMonthLabels && (
             <div className="flex" style={{ gap }}>

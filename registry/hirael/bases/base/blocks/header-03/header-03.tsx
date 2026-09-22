@@ -270,7 +270,7 @@ const Header03 = () => {
                 </SheetTitle>
               </SheetHeader>
               <nav data-slot="header-mobile-menu" className="flex-1 overflow-y-auto px-6">
-                <Accordion type="single" collapsible>
+                <Accordion>
                   {GROUPS.map((group) => (
                     <AccordionItem key={group.value} value={group.value} className="last:border-b">
                       <AccordionTrigger className="py-4 text-base hover:no-underline">{group.label}</AccordionTrigger>

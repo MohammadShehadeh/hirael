@@ -116,10 +116,9 @@ const Pricing02 = () => {
 
         <ToggleGroup
           data-slot="pricing-plan-picker"
-          type="single"
           variant="outline"
-          value={selected}
-          onValueChange={(next) => next && setSelected(next as PlanKey)}
+          value={[selected]}
+          onValueChange={([next]) => next && setSelected(next as PlanKey)}
           aria-label="Plan to show"
           style={stagger(3)}
           className={cn(ENTER, 'mt-10 w-full md:hidden')}

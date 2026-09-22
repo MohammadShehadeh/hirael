@@ -253,11 +253,10 @@ const Team03 = () => {
             )}
           >
             <ToggleGroup
-              type="single"
               spacing={1}
               aria-label="Filter by department"
-              value={filter}
-              onValueChange={(next) => next && setFilter(next as Filter)}
+              value={[filter]}
+              onValueChange={([next]) => next && setFilter(next as Filter)}
               className="-mb-px flex-wrap gap-x-6 gap-y-0"
             >
               {filters.map((option) => (
@@ -277,12 +276,11 @@ const Team03 = () => {
                 Sort
               </span>
               <ToggleGroup
-                type="single"
                 variant="outline"
                 size="sm"
                 aria-labelledby="team-03-sort"
-                value={sort}
-                onValueChange={(next) => next && setSort(next as Sort)}
+                value={[sort]}
+                onValueChange={([next]) => next && setSort(next as Sort)}
               >
                 <ToggleGroupItem value="time">Local time</ToggleGroupItem>
                 <ToggleGroupItem value="name">A to Z</ToggleGroupItem>

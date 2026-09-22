@@ -241,11 +241,10 @@ const VmTableBlock = () => {
     <section data-slot="vm-table-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className={cn(ENTER, 'flex w-full max-w-3xl flex-col gap-3')}>
         <ToggleGroup
-          type="single"
           variant="outline"
           size="sm"
-          value={filter}
-          onValueChange={(value) => value && setFilter(value)}
+          value={[filter]}
+          onValueChange={([value]) => value && setFilter(value)}
           aria-label="Filter instances by status"
           className="max-w-full flex-wrap"
         >

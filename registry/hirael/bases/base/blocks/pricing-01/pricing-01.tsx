@@ -88,10 +88,9 @@ const Pricing01 = () => {
           <div style={stagger(3)} className={cn(ENTER, 'mt-2 flex flex-col items-center gap-2')}>
             <ToggleGroup
               data-slot="pricing-billing"
-              type="single"
               variant="outline"
-              value={billing}
-              onValueChange={(next) => next && setBilling(next as Billing)}
+              value={[billing]}
+              onValueChange={([next]) => next && setBilling(next as Billing)}
               aria-label="Billing period"
             >
               <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>

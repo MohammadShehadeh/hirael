@@ -68,10 +68,9 @@ const Pricing04 = () => {
         </p>
         <ToggleGroup
           data-slot="pricing-billing"
-          type="single"
           variant="outline"
-          value={billing}
-          onValueChange={(next) => next && setBilling(next as Billing)}
+          value={[billing]}
+          onValueChange={([next]) => next && setBilling(next as Billing)}
           aria-label="Billing period"
           style={stagger(3)}
           className={cn(ENTER, 'mt-4')}

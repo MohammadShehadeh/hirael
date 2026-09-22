@@ -225,11 +225,10 @@ const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
   const { filter, setFilter } = useChangelog();
   return (
     <ToggleGroup
-      type="single"
       variant="outline"
       size="sm"
-      value={filter}
-      onValueChange={(next) => {
+      value={[filter]}
+      onValueChange={([next]) => {
         // Radix clears the value when the active item is clicked again;
         // keep one filter selected at all times.
         if (next) setFilter(next as ChangelogFilterValue);

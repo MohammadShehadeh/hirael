@@ -125,12 +125,11 @@ const Integrations02 = () => {
 
           <div style={stagger(3)} className={ENTER}>
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
               spacing={1}
-              value={active}
-              onValueChange={(value) => {
+              value={[active]}
+              onValueChange={([value]) => {
                 if (value) setActive(value as Category);
               }}
               aria-label="Filter by category"

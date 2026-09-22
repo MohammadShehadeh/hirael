@@ -97,12 +97,54 @@ interface WorkspaceDocument {
 }
 
 const DOCUMENTS: readonly WorkspaceDocument[] = [
-  { title: 'Q4 roadmap', folder: 'Planning', owner: 'Lena Ortiz', initials: 'LO', updated: 'Today, 10:12', status: 'Draft' },
-  { title: 'Editor beta feedback', folder: 'Research', owner: 'Sam Achebe', initials: 'SA', updated: 'Today, 08:40', status: 'Shared' },
-  { title: 'Marketplace review guidelines', folder: 'Policy', owner: 'Priya Nair', initials: 'PN', updated: 'Yesterday', status: 'Final' },
-  { title: 'Onboarding checklist for new hires', folder: 'People', owner: 'Lena Ortiz', initials: 'LO', updated: 'Sep 11', status: 'Shared' },
-  { title: 'Incident notes: sync outage', folder: 'Engineering', owner: 'Tom Weller', initials: 'TW', updated: 'Sep 9', status: 'Final' },
-  { title: 'Pricing page copy, second pass', folder: 'Marketing', owner: 'Sam Achebe', initials: 'SA', updated: 'Sep 4', status: 'Draft' },
+  {
+    title: 'Q4 roadmap',
+    folder: 'Planning',
+    owner: 'Lena Ortiz',
+    initials: 'LO',
+    updated: 'Today, 10:12',
+    status: 'Draft',
+  },
+  {
+    title: 'Editor beta feedback',
+    folder: 'Research',
+    owner: 'Sam Achebe',
+    initials: 'SA',
+    updated: 'Today, 08:40',
+    status: 'Shared',
+  },
+  {
+    title: 'Marketplace review guidelines',
+    folder: 'Policy',
+    owner: 'Priya Nair',
+    initials: 'PN',
+    updated: 'Yesterday',
+    status: 'Final',
+  },
+  {
+    title: 'Onboarding checklist for new hires',
+    folder: 'People',
+    owner: 'Lena Ortiz',
+    initials: 'LO',
+    updated: 'Sep 11',
+    status: 'Shared',
+  },
+  {
+    title: 'Incident notes: sync outage',
+    folder: 'Engineering',
+    owner: 'Tom Weller',
+    initials: 'TW',
+    updated: 'Sep 9',
+    status: 'Final',
+  },
+  {
+    title: 'Pricing page copy, second pass',
+    folder: 'Marketing',
+    owner: 'Sam Achebe',
+    initials: 'SA',
+    updated: 'Sep 4',
+    status: 'Draft',
+  },
 ];
 
 const FILTERS = ['All', 'Draft', 'Shared', 'Final'] as const;
@@ -149,10 +191,7 @@ const DocumentList = () => {
               </span>
             </div>
             <span
-              className={cn(
-                'hidden text-xs sm:inline',
-                doc.status === 'Draft' ? 'text-warm' : 'text-muted-foreground',
-              )}
+              className={cn('hidden text-xs sm:inline', doc.status === 'Draft' ? 'text-warm' : 'text-muted-foreground')}
             >
               {doc.status}
             </span>
@@ -166,7 +205,7 @@ const DocumentList = () => {
   );
 };
 
-const BrandMark =({ className }: { className?: string }) => {
+const BrandMark = ({ className }: { className?: string }) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -226,9 +265,7 @@ const AppSidebar = () => {
                   </SidebarMenuButton>
                   {item.badge && (
                     <SidebarMenuBadge>
-                      <Badge variant="secondary">
-                        {item.badge}
-                      </Badge>
+                      <Badge variant="secondary">{item.badge}</Badge>
                     </SidebarMenuBadge>
                   )}
                 </SidebarMenuItem>

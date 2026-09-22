@@ -225,11 +225,10 @@ const Changelog02 = () => {
               Sort
             </span>
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
-              value={sort}
-              onValueChange={(next) => {
+              value={[sort]}
+              onValueChange={([next]) => {
                 // Keep one option selected when the active one is clicked again.
                 if (next) setSort(next as Sort);
               }}

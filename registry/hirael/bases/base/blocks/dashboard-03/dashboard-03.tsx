@@ -414,9 +414,7 @@ const Dashboard03 = () => {
                         <span aria-hidden className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}
                       </Badge>
-                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">
-                        {t.date}
-                      </span>
+                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">{t.date}</span>
                       <span dir="ltr" className={cn('text-end text-sm tabular-nums', status.amount)}>
                         <span className="sr-only">{status.label}, </span>
                         {signedUsd(t.amount)}

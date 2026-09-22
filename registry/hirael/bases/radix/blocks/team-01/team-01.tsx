@@ -331,33 +331,28 @@ const Team01Block = () => {
       </TeamHeader>
 
       <div className="flex flex-col gap-6">
-        <ToggleGroup
-          type="single"
-          variant="outline"
-          size="sm"
-          spacing={2}
-          value={department}
-          onValueChange={(next) => {
-            if (next) setDepartment(next as Department);
-          }}
-          aria-label="Filter the team by department"
-          data-slot="team-filter"
-          style={stagger(3, 70)}
-          className={cn(ENTER, 'flex-wrap')}
-        >
-          {DEPARTMENTS.map((dept) => (
-            <ToggleGroupItem
-              key={dept}
-              value={dept}
-              className="group/chip gap-1.5 rounded-full data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-            >
-              {dept}
-              <span className="text-xs tabular-nums text-muted-foreground group-data-[state=on]/chip:text-primary-foreground/70">
-                {countFor(dept)}
-              </span>
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+        <div style={stagger(3, 70)} className={cn(ENTER)}>
+          <ToggleGroup
+            type="single"
+            variant="outline"
+            size="sm"
+            spacing={2}
+            value={department}
+            onValueChange={(next) => {
+              if (next) setDepartment(next as Department);
+            }}
+            aria-label="Filter the team by department"
+            data-slot="team-filter"
+            className="flex-wrap"
+          >
+            {DEPARTMENTS.map((dept) => (
+              <ToggleGroupItem key={dept} value={dept}>
+                {dept}
+                <span className="text-xs tabular-nums text-muted-foreground">{countFor(dept)}</span>
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
 
         <TeamGrid style={stagger(4, 70)} className={ENTER}>
           {members.map((member, index) => (

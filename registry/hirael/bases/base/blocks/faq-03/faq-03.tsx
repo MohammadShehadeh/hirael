@@ -154,7 +154,7 @@ const Faq03 = () => {
 
         {visible.length > 0 ? (
           <div key={`${category}:${normalized}`} data-slot="faq-list" className={SWAP}>
-            <Accordion type="single" collapsible className="border-y border-border">
+            <Accordion className="border-y border-border">
               {visible.map((f) => (
                 <AccordionItem key={f.q} value={f.q} className="px-1">
                   <AccordionTrigger>

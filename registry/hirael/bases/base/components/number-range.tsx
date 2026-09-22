@@ -129,7 +129,7 @@ const NumberRangeSlider = ({
       step={ctx.step}
       value={ctx.value as number[]}
       disabled={ctx.disabled}
-      onValueChange={(v) => ctx.setValue([v[0], v[1]] as NumberRangeValue)}
+      onValueChange={(v) => ctx.setValue(v as NumberRangeValue)}
       data-slot="number-range-slider"
       className={className}
       {...props}

@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from '@/registry/hirael/bases/base/ui/radi
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import {
   Sheet,
-  SheetBody,
   SheetClose,
   SheetContent,
   SheetDescription,
@@ -371,7 +370,10 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
           step={10}
           minStepsBetweenValues={1}
           value={filters.price}
-          onValueChange={(next) => update({ price: [next[0], next[1]] })}
+          onValueChange={(next) => {
+            const [min, max] = next as number[];
+            update({ price: [min, max] });
+          }}
           aria-label="Price range"
         />
         <div className="flex items-center justify-between text-sm tabular-nums">
@@ -392,7 +394,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
           Colour
         </FieldLegend>
         <ToggleGroup
-          type="multiple"
+          multiple
           spacing={2}
           value={filters.colours}
           onValueChange={(next) => update({ colours: next as Colour[] })}
@@ -561,9 +563,9 @@ const Ecommerce04 = () => {
                         <SheetTitle>Filters</SheetTitle>
                         <SheetDescription>Results update as you change them.</SheetDescription>
                       </SheetHeader>
-                      <SheetBody className="min-h-0 py-6">
+                      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6">
                         <FilterPanel filters={filters} onFiltersChange={setFilters} />
-                      </SheetBody>
+                      </div>
                       <SheetFooter className="flex-row border-t border-border">
                         <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
                           Clear all
@@ -584,7 +586,7 @@ const Ecommerce04 = () => {
                   <SelectTrigger size="sm" aria-label="Sort products" className="min-w-44">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent position="popper" align="end">
+                  <SelectContent alignItemWithTrigger={false} align="end">
                     {SORTS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}

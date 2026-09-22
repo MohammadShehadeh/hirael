@@ -454,18 +454,18 @@ const AppShell01 = () => {
               <Card key={m.label} className="gap-1 p-3">
                 <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
                 <span className="text-lg font-semibold tabular-nums">{m.value}</span>
-                <span
-                  dir="ltr"
-                  aria-label={deltaLabel(m)}
-                  className={cn('text-[10px] tabular-nums', deltaTone(m))}
-                >
+                <span dir="ltr" aria-label={deltaLabel(m)} className={cn('text-[10px] tabular-nums', deltaTone(m))}>
                   {formatDelta(m)}
                 </span>
               </Card>
             ))}
           </div>
 
-          <Card data-slot="app-shell-table" style={{ animationDelay: '80ms' }} className={cn(ENTER, 'gap-0 overflow-hidden p-0')}>
+          <Card
+            data-slot="app-shell-table"
+            style={{ animationDelay: '80ms' }}
+            className={cn(ENTER, 'gap-0 overflow-hidden p-0')}
+          >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
               <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
                 recent accounts
@@ -488,8 +488,8 @@ const AppShell01 = () => {
                   </EmptyMedia>
                   <EmptyTitle>No matching accounts</EmptyTitle>
                   <EmptyDescription>
-                    Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try
-                    a company name, a plan, or a status.
+                    Nothing matched <span className="text-foreground">&ldquo;{query.trim()}&rdquo;</span>. Try a company
+                    name, a plan, or a status.
                   </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
@@ -565,9 +565,7 @@ const AppShell01 = () => {
                           </span>
                         </TableCell>
                         <TableCell className="px-4 py-2.5">
-                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'}>
-                            {r.plan}
-                          </Badge>
+                          <Badge variant={r.plan === 'Hobby' ? 'outline' : 'secondary'}>{r.plan}</Badge>
                         </TableCell>
                         <TableCell className="hidden px-4 py-2.5 text-end tabular-nums text-foreground sm:table-cell">
                           {usd.format(r.mrr)}

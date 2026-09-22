@@ -146,7 +146,10 @@ const Ecommerce02 = () => {
             <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Cart</span>
             <h2
               style={stagger(1, 70)}
-              className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl')}
+              className={cn(
+                ENTER,
+                'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              )}
             >
               {checkout === 'placed' ? 'On its way.' : 'Almost yours.'}
             </h2>

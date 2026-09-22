@@ -609,9 +609,7 @@ const Settings01 = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Keep account</AlertDialogCancel>
-                      <AlertDialogAction variant="destructive">
-                        Delete account
-                      </AlertDialogAction>
+                      <AlertDialogAction variant="destructive">Delete account</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

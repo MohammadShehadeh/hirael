@@ -144,7 +144,11 @@ const ImageGallery01 = () => {
   };
 
   return (
-    <section data-slot="image-gallery" className="bg-background py-20 sm:py-28" aria-labelledby="image-gallery-01-heading">
+    <section
+      data-slot="image-gallery"
+      className="bg-background py-20 sm:py-28"
+      aria-labelledby="image-gallery-01-heading"
+    >
       <div className="container w-full">
         <div
           data-slot="image-gallery-header"

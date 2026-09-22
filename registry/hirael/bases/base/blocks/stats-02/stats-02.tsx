@@ -147,11 +147,10 @@ const Stats02 = () => {
 
           <ToggleGroup
             data-slot="stats-range"
-            type="single"
             variant="outline"
             size="sm"
-            value={range}
-            onValueChange={(value) => {
+            value={[range]}
+            onValueChange={([value]) => {
               if (value) setRange(value as Range);
             }}
             aria-label="Time range"

@@ -7,8 +7,10 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/base/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
 
-const ENTER = 'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
-const SWAP = 'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out fill-mode-both motion-reduce:animate-none';
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
   animationDelay: `${offset + index * step}ms`,
@@ -122,8 +124,8 @@ const RepliesPanel = () => {
       >
         <p className="text-xs uppercase text-muted-foreground">Draft to Nadia</p>
         <p className="mt-2 text-sm leading-relaxed">
-          Hi Nadia, the duplicate charge of $49.00 is on its way back to the card ending 4412. Most banks show it
-          within five working days
+          Hi Nadia, the duplicate charge of $49.00 is on its way back to the card ending 4412. Most banks show it within
+          five working days
           <span aria-hidden className="ms-0.5 inline-block h-4 w-px translate-y-0.5 animate-pulse bg-foreground" />
         </p>
       </div>
@@ -262,9 +264,7 @@ const Feature11 = () => {
               return (
                 <TabsContent key={feature.value} value={feature.value} className="flex flex-1 flex-col">
                   <div className="flex items-center justify-between border-b border-border px-5 py-3">
-                    <span className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>
-                      {feature.label}
-                    </span>
+                    <span className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>{feature.label}</span>
                     <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
                       {formatIndex(index)}
                       <span className="mx-1.5 text-border">|</span>

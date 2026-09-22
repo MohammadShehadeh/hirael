@@ -254,32 +254,28 @@ const Blog01 = () => {
           </Button>
         </div>
 
-        <ToggleGroup
-          type="single"
-          variant="outline"
-          size="sm"
-          spacing={2}
-          value={category}
-          onValueChange={(next) => {
-            if (!next) return;
-            setCategory(next);
-            setFiltered(true);
-          }}
-          aria-label="Filter posts by category"
-          data-slot="blog-filter"
-          style={stagger(3)}
-          className={cn(ENTER, 'mt-8 flex-wrap gap-2')}
-        >
-          {CATEGORIES.map((item) => (
-            <ToggleGroupItem
-              key={item}
-              value={item}
-              className="rounded-full data-pressed:border-primary data-pressed:bg-primary data-pressed:text-primary-foreground"
-            >
-              {item}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+        <div style={stagger(3)} className={cn(ENTER, 'mt-8')}>
+          <ToggleGroup
+            variant="outline"
+            size="sm"
+            spacing={2}
+            value={[category]}
+            onValueChange={([next]) => {
+              if (!next) return;
+              setCategory(next);
+              setFiltered(true);
+            }}
+            aria-label="Filter posts by category"
+            data-slot="blog-filter"
+            className="flex-wrap"
+          >
+            {CATEGORIES.map((item) => (
+              <ToggleGroupItem key={item} value={item}>
+                {item}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
 
         {showFeatured && (
           <Card

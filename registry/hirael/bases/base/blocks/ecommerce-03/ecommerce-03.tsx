@@ -307,12 +307,11 @@ const Ecommerce03 = () => {
                 </a>
               </div>
               <ToggleGroup
-                type="single"
                 variant="outline"
                 spacing={2}
                 aria-labelledby="ecommerce-03-size"
-                value={size}
-                onValueChange={(next) => next && setSize(next as Size)}
+                value={[size]}
+                onValueChange={([next]) => next && setSize(next as Size)}
                 className="grid w-full grid-cols-4"
               >
                 {SIZES.map((option) => {
@@ -427,13 +426,7 @@ const Ecommerce03 = () => {
             </ul>
           </div>
 
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="details"
-            style={stagger(5)}
-            className={cn(ENTER, 'border-t border-border')}
-          >
+          <Accordion defaultValue={['details']} style={stagger(5)} className={cn(ENTER, 'border-t border-border')}>
             {DETAILS.map((item) => (
               <AccordionItem key={item.value} value={item.value}>
                 <AccordionTrigger>{item.title}</AccordionTrigger>

@@ -228,10 +228,9 @@ const NotificationsBlock = () => {
 
         <div data-slot="notifications-filter" className="border-b border-border px-4 py-2">
           <ToggleGroup
-            type="single"
             size="sm"
-            value={filter}
-            onValueChange={(value) => {
+            value={[filter]}
+            onValueChange={([value]) => {
               if (value) setFilter(value as NotificationFilter);
             }}
             aria-label="Filter notifications"

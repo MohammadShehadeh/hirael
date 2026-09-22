@@ -134,7 +134,7 @@ const Faq06 = () => {
           </FaqDescription>
         </div>
 
-        <Accordion type="multiple" data-slot="faq-list" className="flex flex-col gap-3">
+        <Accordion multiple data-slot="faq-list" className="flex flex-col gap-3">
           {FAQS.map((item, i) => (
             <FaqCard key={item.id} value={item.id} index={i}>
               <AccordionTrigger className="gap-6 py-4 text-start text-base text-foreground hover:no-underline md:text-lg">

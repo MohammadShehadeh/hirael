@@ -58,10 +58,9 @@ const Comparison03 = () => {
 
         <ToggleGroup
           data-slot="comparison-switch"
-          type="single"
           variant="outline"
-          value={view}
-          onValueChange={(next) => next && setView(next as View)}
+          value={[view]}
+          onValueChange={([next]) => next && setView(next as View)}
           aria-label="Show"
           style={stagger(2)}
           className={cn(ENTER, 'mt-10 w-full md:hidden')}

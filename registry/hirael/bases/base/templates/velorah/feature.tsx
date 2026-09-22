@@ -65,11 +65,10 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: { videoSrc?: st
 
           <div>
             <ToggleGroup
-              type="single"
               variant="outline"
               spacing={2}
-              value={active.id}
-              onValueChange={(id) => {
+              value={[active.id]}
+              onValueChange={([id]) => {
                 if (id) setActiveId(id);
               }}
               className="mb-8 flex-wrap"

@@ -504,9 +504,7 @@ const Dashboard02 = () => {
                     <div aria-hidden className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
                       <div className="h-full rounded-full bg-foreground/70" style={{ width: `${c.share}%` }} />
                     </div>
-                    <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
-                      {c.share}%
-                    </span>
+                    <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">{c.share}%</span>
                   </div>
                 ))}
               </CardContent>

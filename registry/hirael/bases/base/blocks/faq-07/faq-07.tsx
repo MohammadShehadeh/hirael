@@ -107,7 +107,7 @@ const Faq07 = () => {
         </div>
 
         <div data-slot="faq-list" style={stagger(3, 70)} className={ENTER}>
-          <Accordion type="single" collapsible value={open} onValueChange={setOpen} className="border-y border-border">
+          <Accordion value={[open]} onValueChange={([next]) => setOpen(next ?? '')} className="border-y border-border">
             {QUESTIONS.map((q, i) => (
               <AccordionItem key={q.value} value={q.value} className="px-1">
                 <AccordionTrigger className="py-5 text-base">

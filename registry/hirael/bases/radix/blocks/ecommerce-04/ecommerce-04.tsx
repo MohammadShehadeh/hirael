@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from '@/registry/hirael/bases/radix/ui/rad
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import {
   Sheet,
-  SheetBody,
   SheetClose,
   SheetContent,
   SheetDescription,
@@ -563,9 +562,9 @@ const Ecommerce04 = () => {
                         <SheetTitle>Filters</SheetTitle>
                         <SheetDescription>Results update as you change them.</SheetDescription>
                       </SheetHeader>
-                      <SheetBody className="min-h-0 py-6">
+                      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6">
                         <FilterPanel filters={filters} onFiltersChange={setFilters} />
-                      </SheetBody>
+                      </div>
                       <SheetFooter className="flex-row border-t border-border">
                         <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
                           Clear all

@@ -387,11 +387,10 @@ const DiffViewerModeToggle = ({
   const { mode, setMode } = useDiffViewer();
   return (
     <ToggleGroup
-      type="single"
       variant="outline"
       size="sm"
-      value={mode}
-      onValueChange={(next) => {
+      value={[mode]}
+      onValueChange={([next]) => {
         if (next === 'unified' || next === 'split') setMode(next);
       }}
       data-slot="diff-viewer-mode-toggle"

@@ -177,11 +177,10 @@ const LogViewerBlock = () => {
       <div data-slot="log-viewer-panel" className={cn(ENTER, 'flex w-full max-w-2xl flex-col gap-3')}>
         <div data-slot="log-viewer-toolbar" className="flex flex-wrap items-center justify-between gap-2">
           <ToggleGroup
-            type="single"
             size="sm"
             variant="outline"
-            value={filter}
-            onValueChange={(value) => {
+            value={[filter]}
+            onValueChange={([value]) => {
               if (value) setFilter(value as LogFilter);
             }}
             aria-label="Filter by level"

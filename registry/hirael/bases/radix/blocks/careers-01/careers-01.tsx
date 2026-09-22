@@ -102,33 +102,28 @@ const Careers01 = () => {
           </p>
         </div>
 
-        <ToggleGroup
-          type="single"
-          variant="outline"
-          size="sm"
-          spacing={2}
-          value={department}
-          onValueChange={(next) => {
-            if (next) setDepartment(next);
-          }}
-          aria-label="Filter roles by department"
-          data-slot="careers-filter"
-          style={stagger(3, 70)}
-          className={cn(ENTER, 'mt-10 flex-wrap')}
-        >
-          {DEPARTMENTS.map((dept) => (
-            <ToggleGroupItem
-              key={dept}
-              value={dept}
-              className="group/chip gap-1.5 rounded-full data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-            >
-              {dept}
-              <span className="text-xs tabular-nums text-muted-foreground group-data-[state=on]/chip:text-primary-foreground/70">
-                {countFor(dept)}
-              </span>
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+        <div style={stagger(3, 70)} className={cn(ENTER, 'mt-10')}>
+          <ToggleGroup
+            type="single"
+            variant="outline"
+            size="sm"
+            spacing={2}
+            value={department}
+            onValueChange={(next) => {
+              if (next) setDepartment(next);
+            }}
+            aria-label="Filter roles by department"
+            data-slot="careers-filter"
+            className="flex-wrap"
+          >
+            {DEPARTMENTS.map((dept) => (
+              <ToggleGroupItem key={dept} value={dept}>
+                {dept}
+                <span className="text-xs tabular-nums text-muted-foreground">{countFor(dept)}</span>
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
 
         <ul data-slot="careers-list" style={stagger(4, 70)} className={cn(ENTER, 'mt-8 border-t border-border')}>
           {roles.map((role, index) => (

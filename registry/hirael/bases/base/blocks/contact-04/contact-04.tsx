@@ -319,7 +319,7 @@ const Contact04 = () => {
 
           <div data-slot="support-faq" style={stagger(5, 80)} className={cn(ENTER, 'flex flex-col gap-2')}>
             <h3 className="text-xs font-normal uppercase text-muted-foreground">Asked this week</h3>
-            <Accordion type="single" collapsible>
+            <Accordion>
               {QUESTIONS.map((item) => (
                 <AccordionItem key={item.value} value={item.value}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
@@ -385,7 +385,7 @@ const Contact04 = () => {
                       >
                         <SelectValue placeholder="Choose a topic" />
                       </SelectTrigger>
-                      <SelectContent position="popper">
+                      <SelectContent alignItemWithTrigger={false}>
                         {TOPICS.map((topic) => (
                           <SelectItem key={topic.value} value={topic.value}>
                             {topic.label}

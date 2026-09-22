@@ -230,11 +230,10 @@ const ActivityFeedBlock = () => {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs uppercase text-muted-foreground">Team activity</p>
           <ToggleGroup
-            type="single"
             size="sm"
             variant="outline"
-            value={filter}
-            onValueChange={(value) => {
+            value={[filter]}
+            onValueChange={([value]) => {
               if (value) setFilter(value as ActivityFilter);
             }}
             aria-label="Filter by type"

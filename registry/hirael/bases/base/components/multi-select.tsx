@@ -1,11 +1,12 @@
 'use client';
 
 import * as React from 'react';
+import { Popover as PopoverPrimitive } from '@base-ui/react/popover';
 import { Check, ChevronDown, X, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
-import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { Popover, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -39,6 +40,7 @@ interface MultiSelectContextValue {
   remove: (v: string) => void;
   clear: () => void;
   listboxId: string;
+  anchorRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const MultiSelectContext = React.createContext<MultiSelectContextValue | null>(null);
@@ -123,6 +125,7 @@ const MultiSelect = ({
   const clear = React.useCallback(() => setValue([]), [setValue]);
 
   const listboxId = React.useId();
+  const anchorRef = React.useRef<HTMLDivElement>(null);
 
   const ctx = React.useMemo<MultiSelectContextValue>(
     () => ({
@@ -141,6 +144,7 @@ const MultiSelect = ({
       remove,
       clear,
       listboxId,
+      anchorRef,
     }),
     [value, setValue, options, open, setOpen, search, maxCount, disabled, loading, toggle, remove, clear, listboxId],
   );
@@ -172,7 +176,8 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ..
 
   // The popover anchors to the whole box, not the inner button that shrinks as chips fill the row.
   return (
-    <PopoverAnchor
+    <div
+      ref={ctx.anchorRef}
       data-slot="multi-select-trigger"
       data-open={ctx.open || undefined}
       className={cn(
@@ -243,11 +248,14 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ..
           </>
         )}
       </PopoverTrigger>
-    </PopoverAnchor>
+    </div>
   );
 };
 
-interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverContent> {
+interface MultiSelectContentProps
+  extends
+    PopoverPrimitive.Popup.Props,
+    Pick<PopoverPrimitive.Positioner.Props, 'align' | 'alignOffset' | 'side' | 'sideOffset'> {
   searchPlaceholder?: string;
   emptyMessage?: string;
   showSelectAll?: boolean;
@@ -259,6 +267,10 @@ interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverCon
 
 const MultiSelectContent = ({
   className,
+  align = 'start',
+  alignOffset = 0,
+  side = 'bottom',
+  sideOffset = 6,
   searchPlaceholder = 'Search…',
   emptyMessage = 'Nothing found.',
   showSelectAll = true,
@@ -287,69 +299,88 @@ const MultiSelectContent = ({
   }, [ctx.options]);
 
   return (
-    <PopoverContent
-      align="start"
-      sideOffset={6}
-      data-slot="multi-select-content"
-      className={cn('w-(--anchor-width) min-w-[14rem] p-0', className)}
-      initialFocus={() => inputRef.current}
-      {...props}
-    >
-      <Command shouldFilter loop>
-        <CommandInput ref={inputRef} placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
-        <CommandList id={ctx.listboxId}>
-          {ctx.loading ? (
-            <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
-              <Loader2 className="size-3.5 animate-spin" />
-              Loading…
-            </div>
-          ) : (
-            <>
-              <CommandEmpty>{emptyMessage}</CommandEmpty>
-              {children ??
-                groups.map(([group, items]) => (
-                  <CommandGroup key={group ?? '__default'} heading={group}>
-                    {items.map((opt) => (
-                      <MultiSelectItem key={opt.value} option={opt} />
-                    ))}
-                  </CommandGroup>
-                ))}
-              {(showSelectAllItem || showClearItem) && (
+    // Anchored to the whole bordered box, which the trigger button inside it does not span.
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Positioner
+        anchor={ctx.anchorRef}
+        align={align}
+        alignOffset={alignOffset}
+        side={side}
+        sideOffset={sideOffset}
+        className="isolate z-50"
+      >
+        <PopoverPrimitive.Popup
+          data-slot="multi-select-content"
+          className={cn(
+            'z-50 flex w-72 origin-(--transform-origin) flex-col gap-4 rounded-md bg-popover p-4 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-start-2 data-[side=inline-start]:slide-in-from-end-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+            'w-(--anchor-width) min-w-[14rem] p-0',
+            className,
+          )}
+          initialFocus={() => inputRef.current}
+          {...props}
+        >
+          <Command shouldFilter loop>
+            <CommandInput
+              ref={inputRef}
+              placeholder={searchPlaceholder}
+              value={ctx.search}
+              onValueChange={ctx.setSearch}
+            />
+            <CommandList id={ctx.listboxId}>
+              {ctx.loading ? (
+                <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
+                  <Loader2 className="size-3.5 animate-spin" />
+                  Loading…
+                </div>
+              ) : (
                 <>
-                  <CommandSeparator />
-                  <CommandGroup>
-                    {showSelectAllItem && (
-                      <CommandItem
-                        onSelect={() => {
-                          if (allSelected) {
-                            ctx.clear();
-                          } else {
-                            const next = enabled.map((o) => o.value).slice(0, ctx.maxCount ?? Infinity);
-                            ctx.setValue(next);
-                          }
-                        }}
-                        className="justify-between"
-                      >
-                        <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                          {ctx.value.length} / {enabled.length}
-                        </span>
-                      </CommandItem>
-                    )}
-                    {showClearItem && (
-                      <CommandItem onSelect={() => ctx.clear()} className="justify-between">
-                        <span className="text-xs uppercase">{clearLabel}</span>
-                        <X className="size-3 text-muted-foreground" />
-                      </CommandItem>
-                    )}
-                  </CommandGroup>
+                  <CommandEmpty>{emptyMessage}</CommandEmpty>
+                  {children ??
+                    groups.map(([group, items]) => (
+                      <CommandGroup key={group ?? '__default'} heading={group}>
+                        {items.map((opt) => (
+                          <MultiSelectItem key={opt.value} option={opt} />
+                        ))}
+                      </CommandGroup>
+                    ))}
+                  {(showSelectAllItem || showClearItem) && (
+                    <>
+                      <CommandSeparator />
+                      <CommandGroup>
+                        {showSelectAllItem && (
+                          <CommandItem
+                            onSelect={() => {
+                              if (allSelected) {
+                                ctx.clear();
+                              } else {
+                                const next = enabled.map((o) => o.value).slice(0, ctx.maxCount ?? Infinity);
+                                ctx.setValue(next);
+                              }
+                            }}
+                            className="justify-between"
+                          >
+                            <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
+                            <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                              {ctx.value.length} / {enabled.length}
+                            </span>
+                          </CommandItem>
+                        )}
+                        {showClearItem && (
+                          <CommandItem onSelect={() => ctx.clear()} className="justify-between">
+                            <span className="text-xs uppercase">{clearLabel}</span>
+                            <X className="size-3 text-muted-foreground" />
+                          </CommandItem>
+                        )}
+                      </CommandGroup>
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
-        </CommandList>
-      </Command>
-    </PopoverContent>
+            </CommandList>
+          </Command>
+        </PopoverPrimitive.Popup>
+      </PopoverPrimitive.Positioner>
+    </PopoverPrimitive.Portal>
   );
 };
 

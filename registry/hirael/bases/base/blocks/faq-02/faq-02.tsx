@@ -67,7 +67,7 @@ const Faq02 = () => {
           {[FAQS.slice(0, 3), FAQS.slice(3)].map((col, ci) => (
             <Accordion
               key={ci}
-              type="multiple"
+              multiple
               defaultValue={ci === 0 ? ['item-0-0'] : []}
               className="border-b border-border first:border-t lg:border-t"
             >

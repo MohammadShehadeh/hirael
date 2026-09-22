@@ -161,11 +161,10 @@ const ImageGallery02 = () => {
               {PHOTOS.length} photos
             </span>
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
-              value={view}
-              onValueChange={changeView}
+              value={[view]}
+              onValueChange={([next]) => next && changeView(next)}
               aria-label="Gallery layout"
               data-slot="image-gallery-view"
             >

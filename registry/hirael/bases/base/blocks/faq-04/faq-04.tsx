@@ -180,7 +180,7 @@ const Faq04 = () => {
                   {formatIndex(GROUPS.length - 1)}
                 </span>
               </div>
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion className="w-full">
                 {group.faqs.map((f) => (
                   <AccordionItem key={f.q} value={f.q} className="md:px-4">
                     <AccordionTrigger>{f.q}</AccordionTrigger>

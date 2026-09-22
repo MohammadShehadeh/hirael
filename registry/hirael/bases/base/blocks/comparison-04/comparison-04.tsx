@@ -148,10 +148,9 @@ const Comparison04 = () => {
             className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           >
             <ToggleGroup
-              type="single"
               variant="outline"
-              value={selected}
-              onValueChange={(next) => next && setPicked(next as PlanKey)}
+              value={[selected]}
+              onValueChange={([next]) => next && setPicked(next as PlanKey)}
               aria-label="Plan to compare"
               className="w-full sm:w-auto md:hidden"
             >

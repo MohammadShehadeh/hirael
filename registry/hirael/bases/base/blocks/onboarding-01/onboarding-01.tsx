@@ -185,11 +185,7 @@ const OnboardingStep = ({ index, className, children, ...props }: OnboardingStep
     <div
       data-slot="onboarding-step"
       data-index={index}
-      className={cn(
-        'flex flex-col gap-5',
-        SWAP,
-        className,
-      )}
+      className={cn('flex flex-col gap-5', SWAP, className)}
       {...props}
     >
       {children}
@@ -457,8 +453,7 @@ const Onboarding01 = () => {
                     <FieldDescription className="text-xs">
                       {effectiveSlug ? (
                         <>
-                          Your team signs in at{' '}
-                          <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
+                          Your team signs in at <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
                         </>
                       ) : (
                         'Lowercase letters, numbers, and dashes. Derived from the name until you edit it.'

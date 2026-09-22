@@ -55,7 +55,7 @@ function PaginationPrevious({ className, ...props }: React.ComponentProps<typeof
       className={cn('gap-1 px-2.5 sm:ps-2.5', className)}
       {...props}
     >
-      <ChevronLeftIcon />
+      <ChevronLeftIcon className="rtl:rotate-180" />
       <span className="hidden sm:block">Previous</span>
     </PaginationLink>
   );
@@ -70,7 +70,7 @@ function PaginationNext({ className, ...props }: React.ComponentProps<typeof Pag
       {...props}
     >
       <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon />
+      <ChevronRightIcon className="rtl:rotate-180" />
     </PaginationLink>
   );
 }

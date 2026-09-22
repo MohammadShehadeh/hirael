@@ -1,0 +1,33 @@
+---
+title: Primitives match shadcn/ui exactly
+version: '6.8.1'
+date: 2026-09-22
+description: 'Every ui primitive in both trees is now the same file the shadcn CLI installs, blocks stop overriding component styles, and the multi-select and lazy-select triggers drop their render-prop form.'
+---
+
+No new items this time. The primitives underneath everything got resynced
+with shadcn/ui, so what a block expects and what your project already has are
+the same thing.
+
+Changed:
+
+- **`ui/*` is shadcn/ui, verbatim.** The Radix tree now matches the CLI's
+  `new-york-v4` files and the Base UI tree matches `base-vega`, apart from
+  right-to-left support: logical spacing, mirrored chevrons, and a carousel
+  that follows the document direction. Hirael's own direction plumbing inside
+  dialogs, sheets, popovers and tooltips is gone; `dir` on `<html>` is enough.
+  `SheetBody` was a Hirael addition and is removed with it.
+- **Blocks no longer restyle components.** Colour, type and spacing overrides
+  on shadcn and Hirael components inside blocks and templates moved to
+  variants, wrappers or plain elements, so a block looks the same whether it
+  renders against Hirael's copy of a primitive or yours.
+- **Multi-select and lazy-select triggers.** `MultiSelectTrigger` is a single
+  box that is also the popover trigger, so the list matches its full width and
+  chips can carry their remove buttons; it takes `div` props plus `disabled`.
+  Both it and `LazySelectTrigger` drop the `children` render-prop form. If you
+  passed one, render your own trigger with `PopoverTrigger` instead.
+
+Fixed:
+
+- **Sidebar and sheet on small screens.** The sidebar's mobile breakpoint and
+  drawer follow shadcn's again, so app shells behave like the docs describe.

@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { ArrowRight, Frame, Layers } from 'lucide-react';
+import { ArrowRight, Frame, Layers, type LucideIcon } from 'lucide-react';
 
 import { BLOCK_KIND_ORDER, REGISTRY_BY_CATEGORY, TEMPLATES } from '@/registry/hirael/registry-meta';
 
 interface RelatedLinkProps {
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
   title: string;
   detail: string;
 }

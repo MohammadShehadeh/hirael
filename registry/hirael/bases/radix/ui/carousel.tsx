@@ -49,10 +49,13 @@ function Carousel({
   children,
   ...props
 }: React.ComponentProps<'div'> & CarouselProps) {
+  const [detectedDirection, setDetectedDirection] = React.useState<'ltr' | 'rtl'>('ltr');
+  const direction = opts?.direction ?? detectedDirection;
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
       axis: orientation === 'horizontal' ? 'x' : 'y',
+      direction,
     },
     plugins,
   );
@@ -77,14 +80,30 @@ function Carousel({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        scrollPrev();
+        if (direction === 'rtl') scrollNext();
+        else scrollPrev();
       } else if (event.key === 'ArrowRight') {
         event.preventDefault();
-        scrollNext();
+        if (direction === 'rtl') scrollPrev();
+        else scrollNext();
       }
     },
-    [scrollPrev, scrollNext],
+    [direction, scrollPrev, scrollNext],
   );
+
+  React.useEffect(() => {
+    if (opts?.direction) return;
+    const node = api?.rootNode();
+    if (!node) return;
+    const sync = () => {
+      const dir = getComputedStyle(node).direction === 'rtl' ? 'rtl' : 'ltr';
+      setDetectedDirection((prev) => (prev === dir ? prev : dir));
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+    return () => observer.disconnect();
+  }, [api, opts?.direction]);
 
   React.useEffect(() => {
     if (!api || !setApi) return;
@@ -170,14 +189,14 @@ function CarouselPrevious({
         'absolute size-8 rounded-full',
         orientation === 'horizontal'
           ? 'top-1/2 -start-12 -translate-y-1/2'
-          : '-top-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90',
+          : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
         className,
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <ArrowLeft className="rtl:rotate-180" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -200,14 +219,14 @@ function CarouselNext({
         'absolute size-8 rounded-full',
         orientation === 'horizontal'
           ? 'top-1/2 -end-12 -translate-y-1/2'
-          : '-bottom-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90',
+          : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
         className,
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <ArrowRight className="rtl:rotate-180" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

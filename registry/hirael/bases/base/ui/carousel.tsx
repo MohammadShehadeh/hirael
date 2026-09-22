@@ -49,10 +49,13 @@ function Carousel({
   children,
   ...props
 }: React.ComponentProps<'div'> & CarouselProps) {
+  const [detectedDirection, setDetectedDirection] = React.useState<'ltr' | 'rtl'>('ltr');
+  const direction = opts?.direction ?? detectedDirection;
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
       axis: orientation === 'horizontal' ? 'x' : 'y',
+      direction,
     },
     plugins,
   );
@@ -77,14 +80,30 @@ function Carousel({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        scrollPrev();
+        if (direction === 'rtl') scrollNext();
+        else scrollPrev();
       } else if (event.key === 'ArrowRight') {
         event.preventDefault();
-        scrollNext();
+        if (direction === 'rtl') scrollPrev();
+        else scrollNext();
       }
     },
-    [scrollPrev, scrollNext],
+    [direction, scrollPrev, scrollNext],
   );
+
+  React.useEffect(() => {
+    if (opts?.direction) return;
+    const node = api?.rootNode();
+    if (!node) return;
+    const sync = () => {
+      const dir = getComputedStyle(node).direction === 'rtl' ? 'rtl' : 'ltr';
+      setDetectedDirection((prev) => (prev === dir ? prev : dir));
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+    return () => observer.disconnect();
+  }, [api, opts?.direction]);
 
   React.useEffect(() => {
     if (!api || !setApi) return;
@@ -168,9 +187,7 @@ function CarouselPrevious({
       size={size}
       className={cn(
         'absolute touch-manipulation rounded-full',
-        orientation === 'horizontal'
-          ? 'inset-y-0 -start-12 my-auto'
-          : '-top-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90',
+        orientation === 'horizontal' ? 'inset-y-0 -start-12 my-auto' : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
         className,
       )}
       disabled={!canScrollPrev}
@@ -198,9 +215,7 @@ function CarouselNext({
       size={size}
       className={cn(
         'absolute touch-manipulation rounded-full',
-        orientation === 'horizontal'
-          ? 'inset-y-0 -end-12 my-auto'
-          : '-bottom-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90',
+        orientation === 'horizontal' ? 'inset-y-0 -end-12 my-auto' : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
         className,
       )}
       disabled={!canScrollNext}

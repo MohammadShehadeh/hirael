@@ -1,12 +1,14 @@
-import { Boxes, Download, Languages, Layers, MonitorSmartphone, SunMoon } from 'lucide-react';
+import { Boxes, Download, Languages, Layers, MonitorSmartphone, SunMoon, type LucideIcon } from 'lucide-react';
 
 import { SectionHeading } from '@/components/page-header';
 
-const FEATURES: {
-  icon: React.ComponentType<{ className?: string }>;
+interface Feature {
+  icon: LucideIcon;
   title: string;
   body: string;
-}[] = [
+}
+
+const FEATURES: Feature[] = [
   {
     icon: Download,
     title: 'Copies into your repo',

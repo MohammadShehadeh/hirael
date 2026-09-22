@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   DropdownMenu,
@@ -244,7 +243,6 @@ const AppShell04 = () => {
                     <SidebarMenuButton
                       size="lg"
                       tooltip={activeWorkspace.name}
-                      className="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
                     />
                   }
                 >
@@ -258,7 +256,7 @@ const AppShell04 = () => {
                   <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Workspaces</DropdownMenuLabel>
+                  <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
                   {WORKSPACES.map((w) => (
                     <DropdownMenuItem key={w.name} onClick={() => setWorkspace(w.name)}>
                       <span className="flex-1">{w.name}</span>
@@ -356,9 +354,12 @@ const AppShell04 = () => {
           <div className="flex shrink-0 items-center gap-2">
             <Button variant="ghost" size="icon" className="relative size-8" aria-label="Notifications, 3 unread">
               <Bell className="size-4" aria-hidden />
-              <Badge aria-hidden className="absolute -end-1 -top-1 size-4 justify-center p-0 text-[10px] tabular-nums">
+              <span
+                aria-hidden
+                className="absolute -end-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium tabular-nums text-primary-foreground"
+              >
                 3
-              </Badge>
+              </span>
             </Button>
             <Separator orientation="vertical" className="h-4" />
             <DropdownMenu>
@@ -366,16 +367,15 @@ const AppShell04 = () => {
                 render={
                   <Button
                     variant="outline"
-                    size="icon"
+                    size="icon-sm"
                     aria-label="Account menu"
-                    className="size-8 rounded-full text-[11px]"
                   />
                 }
               >
                 MS
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="font-normal">
+                <DropdownMenuLabel>
                   <span className="block text-sm font-medium">Maya Renner</span>
                   <span className="block truncate text-xs text-muted-foreground">maya@hirael.com</span>
                 </DropdownMenuLabel>

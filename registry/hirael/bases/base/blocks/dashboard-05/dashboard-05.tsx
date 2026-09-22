@@ -223,7 +223,7 @@ const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
 const StatusBadge = ({ status }: { status: Deploy['status'] }) => {
   const meta = STATUS_META[status];
   return (
-    <Badge variant="outline" className="w-fit gap-1.5 font-normal text-muted-foreground">
+    <Badge variant="outline" className="w-fit">
       <span aria-hidden className="relative flex size-2">
         {meta.pulse && (
           <span
@@ -372,9 +372,9 @@ const Dashboard05 = () => {
                 <Divider />
                 <span className="tabular-nums">P95 target {P95_TARGET_MS} ms</span>
               </span>
-              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
+              <a href="#" className="text-sm font-medium text-primary underline-offset-4 hover:underline">
                 Open metrics
-              </Button>
+              </a>
             </div>
             <ul className="flex flex-1 flex-col justify-center gap-3">
               {LATENCY.map((row) => (
@@ -399,9 +399,9 @@ const Dashboard05 = () => {
           <div data-slot="dashboard-deployments" className="flex flex-col bg-card md:col-span-4">
             <div className="flex items-center justify-between gap-2 p-5 pb-3">
               <CellLabel>Active deployments</CellLabel>
-              <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
+              <a href="#" className="text-sm font-medium text-primary underline-offset-4 hover:underline">
                 View all
-              </Button>
+              </a>
             </div>
             <ul className="flex flex-col">
               {DEPLOYS.map((d, i) => (

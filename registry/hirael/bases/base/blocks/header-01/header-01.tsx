@@ -128,23 +128,23 @@ const Header01 = () => {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm">
               Sign in
             </Button>
-            <Button render={<a href="#" />} nativeButton={false} variant="default" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="default" size="sm">
               Get started
             </Button>
           </div>
 
           <Drawer>
             <DrawerTrigger
-              render={<Button variant="outline" size="icon" aria-label="Open menu" className="rounded-sm md:hidden" />}
+              render={<Button variant="outline" size="icon" aria-label="Open menu" className="md:hidden" />}
             >
               <Menu className="size-4" />
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader className="text-start">
-                <DrawerTitle className="text-xs uppercase text-muted-foreground">Menu</DrawerTitle>
+                <DrawerTitle>Menu</DrawerTitle>
               </DrawerHeader>
               <nav aria-label="Main" className="px-4">
                 <ul className="flex flex-col gap-0.5">
@@ -172,12 +172,12 @@ const Header01 = () => {
                   )}
                 </ul>
               </nav>
-              <DrawerFooter className="gap-2">
+              <DrawerFooter>
                 <Button
                   render={<a href="#" />}
                   nativeButton={false}
                   variant="ghost"
-                  className="w-full justify-center rounded-full"
+                  className="w-full justify-center"
                 >
                   Sign in
                 </Button>
@@ -185,7 +185,7 @@ const Header01 = () => {
                   render={<a href="#" />}
                   nativeButton={false}
                   variant="default"
-                  className="w-full justify-center rounded-full"
+                  className="w-full justify-center"
                 >
                   Get started
                 </Button>

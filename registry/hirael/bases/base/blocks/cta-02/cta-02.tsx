@@ -68,7 +68,7 @@ const Cta02 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'flex flex-col items-center gap-3 sm:flex-row')}
         >
-          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group rounded-full px-7">
+          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
             Browse the registry
             <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
@@ -98,7 +98,7 @@ const Cta02 = () => {
           <code className="min-w-0 flex-1 truncate text-start font-mono text-xs text-foreground">
             npx shadcn add <span className="text-muted-foreground">{REGISTRY_URL}</span>
           </code>
-          <CopyButton value={COMMAND} size="md" className="shrink-0 rounded-full" />
+          <CopyButton value={COMMAND} size="md" className="shrink-0" />
         </div>
       </div>
     </section>

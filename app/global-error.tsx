@@ -56,7 +56,6 @@ export default function GlobalError() {
                 type="button"
                 size="lg"
                 onClick={() => window.location.reload()}
-                className="h-11 rounded-full px-6 has-[>svg]:px-6"
               >
                 <RefreshCw className="size-4" />
                 Refresh page
@@ -66,7 +65,6 @@ export default function GlobalError() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-11 rounded-full border-border bg-card/60 px-6 text-foreground backdrop-blur-sm hover:bg-accent hover:text-foreground"
               >
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a href="/">Back to home</a>

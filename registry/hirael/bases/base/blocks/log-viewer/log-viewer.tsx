@@ -186,7 +186,7 @@ const LogViewerBlock = () => {
             aria-label="Filter by level"
           >
             {FILTERS.map((option) => (
-              <ToggleGroupItem key={option.value} value={option.value} className="gap-1.5 px-2.5 text-xs">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
                 <span className="tabular-nums text-muted-foreground">
                   {logs.filter((entry) => matchesFilter(entry, option.value)).length}
@@ -199,7 +199,6 @@ const LogViewerBlock = () => {
             variant="outline"
             pressed={follow}
             onPressedChange={setFollow}
-            className="gap-1.5 px-2.5 text-xs"
           >
             <ArrowDownToLine aria-hidden className="size-3.5" />
             Follow

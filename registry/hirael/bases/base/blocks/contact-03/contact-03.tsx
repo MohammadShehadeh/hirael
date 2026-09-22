@@ -101,7 +101,7 @@ const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge
       <Badge
         data-slot="contact-badge"
         variant="outline"
-        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
+        className={className}
         {...props}
       />
     </div>
@@ -200,7 +200,7 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
       data-state={copied ? 'copied' : 'idle'}
       aria-label={copied ? 'Copied' : label}
       onClick={copy}
-      className={cn('text-muted-foreground hover:text-foreground', className)}
+      className={className}
       {...props}
     >
       <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1')}>
@@ -247,7 +247,7 @@ const Contact03 = () => {
                   render={<a href={`mailto:${CONTACT.email}`} />}
                   nativeButton={false}
                   size="lg"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Mail />
                   Send an email
@@ -259,7 +259,7 @@ const Contact03 = () => {
                   nativeButton={false}
                   size="lg"
                   variant="outline"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Phone />
                   Call or chat

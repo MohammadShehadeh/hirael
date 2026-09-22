@@ -130,7 +130,6 @@ const Team02 = () => {
           <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
             <Badge
               variant="outline"
-              className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
             >
               Experience
             </Badge>

@@ -96,7 +96,9 @@ const Newsletter02 = () => {
               </span>
               <h2 id="newsletter-02-heading" className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
                 You&apos;re number{' '}
-                <AnimatedNumber value={WAITLIST.position} duration={900} locale="en-US" className="text-warm" />
+                <span className="text-warm">
+                  <AnimatedNumber value={WAITLIST.position} duration={900} locale="en-US" />
+                </span>
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground">
                 We sent a confirmation to <span className="text-foreground">{email.trim()}</span>. Invite people you
@@ -134,7 +136,7 @@ const Newsletter02 = () => {
                 <Progress
                   value={progressFor(WAITLIST.invites)}
                   aria-label="Invite rewards progress"
-                  className="h-1.5 bg-muted [&_[data-slot=progress-indicator]]:bg-warm"
+                  className="h-1.5"
                 />
                 <div aria-hidden className="absolute inset-0 grid grid-cols-3">
                   {TIERS.map((tier) => (
@@ -165,7 +167,7 @@ const Newsletter02 = () => {
               </ol>
             </div>
 
-            <Button variant="link" size="sm" onClick={reset} className="h-auto w-fit p-0 text-muted-foreground">
+            <Button variant="link" size="sm" onClick={reset} className="h-auto w-fit">
               Use a different email
             </Button>
           </div>
@@ -219,7 +221,7 @@ const Newsletter02 = () => {
                 </InputGroup>
                 <FieldError
                   id="newsletter-02-error"
-                  className="text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="animate-in fade-in slide-in-from-top-1 duration-150"
                 >
                   {error}
                 </FieldError>
@@ -232,7 +234,7 @@ const Newsletter02 = () => {
             <div style={stagger(4, 80)} className={cn(ENTER, 'flex items-center gap-3')}>
               <AvatarStack size="sm" aria-hidden>
                 {JOINED_INITIALS.map((initials) => (
-                  <AvatarStackItem key={initials} fallback={initials} className="font-sans" />
+                  <AvatarStackItem key={initials} fallback={initials} />
                 ))}
               </AvatarStack>
               <span className="text-sm text-muted-foreground">

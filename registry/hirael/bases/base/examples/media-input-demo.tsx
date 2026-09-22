@@ -19,7 +19,11 @@ const AudioPreview = () => {
   const { value } = useMediaInput();
   if (!value) return null;
 
-  return <AudioPlayer src={value.url} className="rounded-md border border-border bg-card p-3" />;
+  return (
+    <div className="rounded-md border border-border bg-card p-3">
+      <AudioPlayer src={value.url} />
+    </div>
+  );
 };
 
 const ImagePreview = () => {
@@ -80,7 +84,7 @@ const MediaInputDemo = () => {
           {t({ en: 'Image · max 5 MB', ar: 'صورة · بحد أقصى 5 ميجابايت' })}
         </p>
         <MediaInput accept="image/*" maxSize={5 * 1024 * 1024}>
-          <MediaInputEmpty className="py-8">
+          <MediaInputEmpty>
             <ImageIcon aria-hidden className="size-6 text-muted-foreground" />
             <MediaInputTrigger variant="ghost" size="sm">
               {t({ en: 'Choose an image', ar: 'اختر صورة' })}

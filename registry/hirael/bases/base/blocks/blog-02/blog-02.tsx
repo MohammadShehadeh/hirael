@@ -218,7 +218,7 @@ const Blog02 = () => {
             <Tabs value={filter} onValueChange={(value) => setFilter(value as Filter)} aria-label="Filter posts">
               <TabsList data-slot="blog-filter" variant="line">
                 {FILTERS.map((item) => (
-                  <TabsTrigger key={item} value={item} className="gap-2 px-2.5">
+                  <TabsTrigger key={item} value={item}>
                     {item}
                     <span className="text-xs tabular-nums text-muted-foreground">{countFor(item)}</span>
                   </TabsTrigger>
@@ -230,7 +230,8 @@ const Blog02 = () => {
 
         <div style={stagger(4, 80)} className={cn(ENTER, 'border-t border-border')}>
           {visible.length === 0 ? (
-            <Empty key={filter} data-slot="blog-empty" className={cn(SWAP, 'border-b border-border py-16 md:py-20')}>
+            <div key={filter} className="border-b border-border">
+            <Empty data-slot="blog-empty" className={SWAP}>
               <EmptyHeader>
                 <EmptyTitle>No {filter.toLowerCase()} posts yet</EmptyTitle>
                 <EmptyDescription>
@@ -243,6 +244,7 @@ const Blog02 = () => {
                 </Button>
               </EmptyContent>
             </Empty>
+            </div>
           ) : (
             <ul key={filter} data-slot="blog-list" className="flex flex-col">
               {visible.map((post, index) => (
@@ -257,7 +259,7 @@ const Blog02 = () => {
             Showing <span className="tabular-nums">{visible.length}</span> of{' '}
             <span className="tabular-nums">{POSTS.length}</span>
           </span>
-          <Button variant="link" className="group/more h-auto p-0" render={<a href="#" />} nativeButton={false}>
+          <Button variant="link" className="group/more h-auto" render={<a href="#" />} nativeButton={false}>
             View all posts
             <ArrowRight
               aria-hidden

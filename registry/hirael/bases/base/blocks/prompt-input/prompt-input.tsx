@@ -12,7 +12,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/base/ui/dropdown-menu';
-import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 
 export interface PromptAttachment {
   id: string;
@@ -261,7 +260,7 @@ const PromptInputTextarea = ({
   };
 
   return (
-    <Textarea
+    <textarea
       ref={ref}
       id={textareaId}
       data-slot="prompt-input-textarea"
@@ -273,7 +272,7 @@ const PromptInputTextarea = ({
       onKeyDown={handleKeyDown}
       onPaste={handlePaste}
       className={cn(
-        'min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent',
+        'flex field-sizing-content min-h-0 w-full resize-none bg-transparent px-2 py-1.5 text-sm leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
@@ -329,7 +328,7 @@ const PromptInputAttach = ({ accept, multiple = true, className, children, ...pr
         disabled={disabled}
         aria-label="Attach files"
         onClick={() => inputRef.current?.click()}
-        className={cn('text-muted-foreground hover:text-foreground', className)}
+        className={className}
         {...props}
       >
         {children ?? <Paperclip aria-hidden />}
@@ -390,7 +389,7 @@ const PromptInputAttachment = ({ name, size, icon, onRemove, className, ...props
           size="icon-xs"
           onClick={onRemove}
           aria-label={`Remove ${name}`}
-          className="ms-0.5 size-5 rounded-sm text-muted-foreground hover:text-foreground"
+          className="ms-0.5 size-5"
         >
           <X className="size-3" aria-hidden />
         </Button>
@@ -438,10 +437,7 @@ const PromptInputModelSelect = ({
             size="sm"
             disabled={disabled}
             aria-label={`Model: ${selected?.label ?? 'none'}`}
-            className={cn(
-              'gap-1 px-2 text-xs text-muted-foreground hover:text-foreground data-open:bg-accent data-open:text-foreground',
-              className,
-            )}
+            className={className}
           />
         }
       >
@@ -451,7 +447,7 @@ const PromptInputModelSelect = ({
       <DropdownMenuContent align={align} className="w-64" data-slot="prompt-input-model-select-content">
         <DropdownMenuRadioGroup value={value} onValueChange={handleChange}>
           {models.map((model) => (
-            <DropdownMenuRadioItem key={model.id} value={model.id} className="flex-col items-start gap-0.5">
+            <DropdownMenuRadioItem key={model.id} value={model.id} className="flex-col items-start">
               <span className="text-sm text-foreground">{model.label}</span>
               {model.hint ? <span className="text-xs text-muted-foreground">{model.hint}</span> : null}
             </DropdownMenuRadioItem>
@@ -476,7 +472,7 @@ const PromptInputSubmit = ({ className, ...props }: PromptInputSubmitProps) => {
         size="icon-sm"
         aria-label="Stop generating"
         onClick={stop}
-        className={cn('rounded-full', className)}
+        className={className}
         {...props}
       >
         <Square className="size-3 fill-current" aria-hidden />
@@ -492,7 +488,7 @@ const PromptInputSubmit = ({ className, ...props }: PromptInputSubmitProps) => {
       size="icon-sm"
       aria-label="Send message"
       disabled={!canSubmit}
-      className={cn('rounded-full', className)}
+      className={className}
       {...props}
     >
       <ArrowUp aria-hidden />

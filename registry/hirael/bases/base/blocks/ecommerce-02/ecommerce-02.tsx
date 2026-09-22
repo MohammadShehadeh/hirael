@@ -198,7 +198,7 @@ const Ecommerce02 = () => {
             </Button>
           </div>
         ) : items.length === 0 ? (
-          <Empty data-slot="ecommerce-empty" className={cn(SWAP, 'border border-border')}>
+          <Empty data-slot="ecommerce-empty" className={SWAP}>
             <EmptyHeader>
               <EmptyTitle>Your cart is empty</EmptyTitle>
               <EmptyDescription>
@@ -243,7 +243,7 @@ const Ecommerce02 = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="size-7 rounded-e-none"
+                              className="size-7"
                               onClick={() => setQty(item.id, item.qty - 1)}
                               disabled={item.qty <= 1 || leaving || pending}
                               aria-label={`Decrease quantity of ${item.name}`}
@@ -256,7 +256,7 @@ const Ecommerce02 = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="size-7 rounded-s-none"
+                              className="size-7"
                               onClick={() => setQty(item.id, item.qty + 1)}
                               disabled={item.qty >= MAX_QTY || leaving || pending}
                               aria-label={`Increase quantity of ${item.name}`}
@@ -275,7 +275,7 @@ const Ecommerce02 = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="size-7 text-muted-foreground hover:text-foreground"
+                            className="size-7"
                             onClick={() => removeItem(item.id)}
                             disabled={leaving || pending}
                             aria-label={`Remove ${item.name}`}
@@ -302,10 +302,11 @@ const Ecommerce02 = () => {
               className={cn(ENTER, 'h-fit lg:sticky lg:top-6')}
             >
               <CardHeader>
-                <CardDescription className="text-xs uppercase">Order summary</CardDescription>
+                <CardDescription>Order summary</CardDescription>
                 <CardTitle className="sr-only">Order summary</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-3">
+              <CardContent>
+                <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="tabular-nums">{usd(subtotal)}</span>
@@ -330,7 +331,7 @@ const Ecommerce02 = () => {
                         onClick={() => setPromoApplied(false)}
                         disabled={pending}
                         aria-label="Remove promo code"
-                        className="size-4 rounded-sm text-muted-foreground"
+                        className="size-4"
                       >
                         <X className="size-2.5" />
                       </Button>
@@ -368,7 +369,6 @@ const Ecommerce02 = () => {
                         aria-invalid={promoError}
                         aria-describedby="ecommerce-02-promo-help"
                         disabled={pending}
-                        className="text-xs uppercase"
                       />
                       <InputGroupAddon align="inline-end">
                         <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
@@ -424,6 +424,7 @@ const Ecommerce02 = () => {
                   </span>
                   <span>Secure checkout</span>
                 </p>
+                </div>
               </CardContent>
             </Card>
           </div>

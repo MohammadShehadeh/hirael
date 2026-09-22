@@ -68,7 +68,7 @@ const Faq05 = () => {
             {FAQS.map((item, i) => (
               <AccordionItem key={item.id} value={item.id} style={stagger(i, 50, 200)} className={ENTER}>
                 <AccordionTrigger>{item.q}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{item.a}</AccordionContent>
+                <AccordionContent>{item.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

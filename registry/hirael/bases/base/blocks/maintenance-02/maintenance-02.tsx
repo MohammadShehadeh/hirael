@@ -56,7 +56,6 @@ const Maintenance02 = () => {
           <Badge
             variant="outline"
             data-slot="maintenance-badge"
-            className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
           >
             Maintenance
           </Badge>

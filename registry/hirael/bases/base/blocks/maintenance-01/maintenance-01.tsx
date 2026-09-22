@@ -217,7 +217,7 @@ const NotifyPopover = () => {
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? `${id}-error` : undefined}
               />
-              <FieldError id={`${id}-error`} className="text-xs">
+              <FieldError id={`${id}-error`}>
                 {error}
               </FieldError>
             </Field>

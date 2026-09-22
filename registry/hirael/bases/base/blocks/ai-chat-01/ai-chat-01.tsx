@@ -28,7 +28,6 @@ import {
 } from '@/registry/hirael/bases/base/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/registry/hirael/bases/base/ui/sheet';
-import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 
 export type AiChatRole = 'user' | 'assistant';
 
@@ -105,11 +104,13 @@ const AiChatSidebar = ({ className, children, ...props }: AiChatSidebarProps) =>
         {children}
       </aside>
       <Sheet open={mobileOpen} onOpenChange={(open) => !open && closeMobile()}>
-        <SheetContent side={mobileSide} data-slot="ai-chat-sidebar-sheet" className="w-80 gap-0 p-0 sm:max-w-80">
-          <SheetHeader className="h-12 shrink-0 justify-center border-b border-border py-0">
-            <SheetTitle className="text-sm">Conversations</SheetTitle>
-            <SheetDescription className="sr-only">Start a new chat or pick an earlier one.</SheetDescription>
-          </SheetHeader>
+        <SheetContent side={mobileSide} data-slot="ai-chat-sidebar-sheet" className="w-80 sm:max-w-80">
+          <div className="shrink-0 border-b border-border">
+            <SheetHeader>
+              <SheetTitle>Conversations</SheetTitle>
+              <SheetDescription className="sr-only">Start a new chat or pick an earlier one.</SheetDescription>
+            </SheetHeader>
+          </div>
           <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         </SheetContent>
       </Sheet>
@@ -244,7 +245,7 @@ const AiChatSuggestion = ({ className, children, ...props }: AiChatSuggestionPro
       variant="outline"
       size="sm"
       data-slot="ai-chat-suggestion"
-      className={cn('rounded-full', className)}
+      className={className}
       {...props}
     >
       {children}
@@ -319,7 +320,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
               variant="outline"
               size="sm"
               onClick={scrollToBottom}
-              className="-translate-y-full rounded-full shadow-md backdrop-blur"
+              className="-translate-y-full"
             >
               <ArrowDown className="size-3.5" aria-hidden />
               Jump to latest
@@ -476,7 +477,7 @@ const AiChatComposer = ({
         className="mx-auto flex w-full max-w-3xl flex-col gap-2 rounded-xl border border-input bg-card p-2 shadow-xs transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 motion-reduce:transition-none"
         {...props}
       >
-        <Textarea
+        <textarea
           ref={textareaRef}
           rows={1}
           value={value}
@@ -490,7 +491,7 @@ const AiChatComposer = ({
               submit();
             }
           }}
-          className="min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent"
+          className="min-h-0 w-full resize-none bg-transparent px-2 py-1.5 text-sm leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
         />
         <div className="flex items-center gap-2">
           {hint ? (
@@ -502,7 +503,7 @@ const AiChatComposer = ({
               size="icon-sm"
               aria-label="Stop generating"
               onClick={onStop}
-              className="ms-auto rounded-full"
+              className="ms-auto"
             >
               <Square className="size-3 fill-current" aria-hidden />
             </Button>
@@ -512,7 +513,7 @@ const AiChatComposer = ({
               size="icon-sm"
               aria-label="Send message"
               disabled={!canSubmit}
-              className="ms-auto rounded-full"
+              className="ms-auto"
             >
               <ArrowUp aria-hidden />
             </Button>
@@ -860,7 +861,6 @@ const AiChat01 = () => {
               size="sm"
               aria-label={copied ? 'Link copied' : 'Share chat'}
               onClick={shareChat}
-              className="px-2"
             >
               {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
               {copied ? <span className={cn(SWAP, 'text-xs')}>Copied</span> : null}

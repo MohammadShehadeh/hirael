@@ -239,7 +239,7 @@ const ActivityFeedBlock = () => {
             aria-label="Filter by type"
           >
             {FILTERS.map((option) => (
-              <ToggleGroupItem key={option.value} value={option.value} className="px-2.5 text-xs">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
               </ToggleGroupItem>
             ))}

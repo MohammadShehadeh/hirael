@@ -100,7 +100,7 @@ const Hero02 = () => {
           render={<a href="#" />}
           nativeButton={false}
           size="lg"
-          className="group h-12 rounded-full px-7 text-base"
+          className="group"
         >
           Get started
           <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -110,7 +110,7 @@ const Hero02 = () => {
           nativeButton={false}
           size="lg"
           variant="ghost"
-          className="h-12 rounded-full px-7 text-base"
+         
         >
           <Play className="size-4" />
           Watch demo

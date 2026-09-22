@@ -94,20 +94,18 @@ const CronEditorDemo = () => {
             ar: 'مضغوط · إعدادات مسبقة وتعبير فقط',
           })}
         </p>
-        <CronEditor
-          value={backup}
-          onValueChange={setBackup}
-          className="max-w-md gap-3 rounded-md border border-border bg-card p-4"
-        >
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-medium text-foreground">
-              {t({ en: 'Backup schedule', ar: 'جدول النسخ الاحتياطي' })}
-            </p>
-            <CronEditorPreview className="text-xs text-muted-foreground" />
-          </div>
-          <CronEditorPresets presets={presets} />
-          <CronEditorExpression label={t({ en: 'Cron', ar: 'Cron' })} showError={false} />
-        </CronEditor>
+        <div className="max-w-md rounded-md border border-border bg-card p-4">
+          <CronEditor value={backup} onValueChange={setBackup}>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-medium text-foreground">
+                {t({ en: 'Backup schedule', ar: 'جدول النسخ الاحتياطي' })}
+              </p>
+              <CronEditorPreview />
+            </div>
+            <CronEditorPresets presets={presets} />
+            <CronEditorExpression label={t({ en: 'Cron', ar: 'Cron' })} showError={false} />
+          </CronEditor>
+        </div>
       </div>
     </div>
   );

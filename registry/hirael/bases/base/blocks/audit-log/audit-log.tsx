@@ -38,17 +38,22 @@ const AuditLogItem = ({ open, defaultOpen, onOpenChange, className, children, ..
   );
 };
 
-type AuditLogTriggerProps = React.ComponentProps<typeof CollapsibleTrigger>;
+type AuditLogTriggerProps = React.ComponentProps<'button'>;
 
 const AuditLogTrigger = ({ className, children, ...props }: AuditLogTriggerProps) => {
   return (
     <CollapsibleTrigger
-      data-slot="audit-log-trigger"
-      className={cn(
-        'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
-        className,
-      )}
-      {...props}
+      render={
+        <button
+          type="button"
+          data-slot="audit-log-trigger"
+          className={cn(
+            'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+            className,
+          )}
+          {...props}
+        />
+      }
     >
       <ChevronRight
         aria-hidden
@@ -126,8 +131,12 @@ type AuditLogDetailProps = React.ComponentProps<'dl'>;
 const AuditLogDetail = ({ className, children, ...props }: AuditLogDetailProps) => {
   return (
     <CollapsibleContent
-      data-slot="audit-log-detail-panel"
-      className="h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none"
+      render={
+        <div
+          data-slot="audit-log-detail-panel"
+          className="h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none"
+        />
+      }
     >
       <dl
         data-slot="audit-log-detail"

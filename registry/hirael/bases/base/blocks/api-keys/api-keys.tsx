@@ -123,11 +123,10 @@ const ApiKeyValue = ({
         <Button
           type="button"
           variant="ghost"
-          size="icon"
+          size="icon-xs"
           aria-label={revealed ? 'Hide key' : 'Reveal key'}
           aria-pressed={revealed}
           onClick={() => setRevealed((value) => !value)}
-          className="size-6 rounded text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
         >
           {revealed ? <EyeOff /> : <Eye />}
         </Button>
@@ -136,10 +135,9 @@ const ApiKeyValue = ({
         <Button
           type="button"
           variant="ghost"
-          size="icon"
+          size="icon-xs"
           aria-label={copied ? 'Copied' : 'Copy key'}
           onClick={copy}
-          className="size-6 rounded text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
         >
           {copied ? <Check className="text-foreground" /> : <Copy />}
         </Button>
@@ -294,10 +292,9 @@ const ApiKeysBlock = () => {
                   <Button
                     type="button"
                     variant="ghost"
-                    size="icon"
+                    size="icon-sm"
                     aria-label={`Revoke ${row.label}`}
                     onClick={() => setConfirmId(row.id)}
-                    className="size-7 text-muted-foreground hover:text-destructive [&_svg]:size-3.5"
                   >
                     <Trash2 />
                   </Button>

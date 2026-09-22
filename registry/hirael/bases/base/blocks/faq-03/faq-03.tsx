@@ -153,10 +153,10 @@ const Faq03 = () => {
         </div>
 
         {visible.length > 0 ? (
-          <div key={`${category}:${normalized}`} data-slot="faq-list" className={SWAP}>
-            <Accordion className="border-y border-border">
+          <div key={`${category}:${normalized}`} data-slot="faq-list" className={cn(SWAP, 'border-y border-border')}>
+            <Accordion>
               {visible.map((f) => (
-                <AccordionItem key={f.q} value={f.q} className="px-1">
+                <AccordionItem key={f.q} value={f.q}>
                   <AccordionTrigger>
                     <span className="flex flex-1 items-baseline justify-between gap-4">
                       <span>{f.q}</span>
@@ -165,7 +165,7 @@ const Faq03 = () => {
                       </span>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+                  <AccordionContent>{f.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

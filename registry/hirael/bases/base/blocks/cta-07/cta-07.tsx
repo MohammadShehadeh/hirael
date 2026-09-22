@@ -61,7 +61,7 @@ const Cta07 = () => {
           <Badge
             variant="outline"
             style={stagger(1)}
-            className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}
+            className={ENTER}
           >
             Get started
           </Badge>

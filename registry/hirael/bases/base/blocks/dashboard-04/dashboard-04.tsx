@@ -267,15 +267,17 @@ const PanelCard = ({
   className?: string;
 }) => {
   return (
-    <Card data-slot="dashboard-panel" className={cn('gap-2 rounded-md py-2.5', className)}>
-      <CardHeader className="px-3.5">
-        <CardTitle className="flex items-center gap-1.5 text-xs font-normal uppercase text-muted-foreground">
-          <Icon className="size-3.5" aria-hidden />
-          {label}
+    <Card data-slot="dashboard-panel" size="sm" className={className}>
+      <CardHeader>
+        <CardTitle>
+          <span className="flex items-center gap-1.5 text-xs font-normal uppercase text-muted-foreground">
+            <Icon className="size-3.5" aria-hidden />
+            {label}
+          </span>
         </CardTitle>
         {action && <CardAction>{action}</CardAction>}
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col px-2.5 pb-0">
+      <CardContent className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col rounded-sm border border-border bg-background p-4 transition-[padding] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[density=compact]/dashboard:p-3 motion-reduce:transition-none">
           {children}
         </div>

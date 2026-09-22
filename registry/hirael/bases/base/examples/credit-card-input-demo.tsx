@@ -64,7 +64,7 @@ const CreditCardInputDemo = () => {
                 <CreditCardInputCvc aria-label={t({ en: 'Security code', ar: 'رمز الأمان' })} />
               </CreditCardInput>
               {errors.length > 0 && (
-                <FieldError className="text-[11px]">
+                <FieldError>
                   <ul className="grid gap-1">
                     {errors.map((field) => (
                       <li key={field}>{messages[field]}</li>
@@ -73,8 +73,8 @@ const CreditCardInputDemo = () => {
                 </FieldError>
               )}
               {card?.valid && (
-                <FieldDescription className="text-[11px] text-success">
-                  {t({ en: 'Looks good.', ar: 'كل شيء صحيح.' })}
+                <FieldDescription>
+                  <span className="text-success">{t({ en: 'Looks good.', ar: 'كل شيء صحيح.' })}</span>
                 </FieldDescription>
               )}
             </Field>
@@ -126,7 +126,7 @@ const CreditCardInputDemo = () => {
               <CreditCardInputCvc aria-label={t({ en: 'Security code', ar: 'رمز الأمان' })} />
             </Field>
           </div>
-          <FieldDescription className="text-[11px]">
+          <FieldDescription>
             {t({
               en: 'Amex cards take a 4-digit code on the front.',
               ar: 'بطاقات أمريكان إكسبريس تستخدم رمزًا من 4 أرقام على الوجه.',

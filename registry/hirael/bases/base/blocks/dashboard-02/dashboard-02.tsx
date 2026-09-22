@@ -368,8 +368,8 @@ const Dashboard02 = () => {
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
-                  <CardDescription className="text-xs uppercase">page views vs visitors</CardDescription>
-                  <CardTitle className="text-lg">{RANGES.find((r) => r.value === range)?.label}</CardTitle>
+                  <CardDescription>page views vs visitors</CardDescription>
+                  <CardTitle>{RANGES.find((r) => r.value === range)?.label}</CardTitle>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
@@ -463,14 +463,14 @@ const Dashboard02 = () => {
             <Card data-slot="dashboard-top-pages">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardDescription className="text-xs uppercase">top pages</CardDescription>
-                  <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
+                  <CardDescription>top pages</CardDescription>
+                  <Button variant="link" size="sm" className="h-auto" render={<a href="#" />} nativeButton={false}>
                     View all
                   </Button>
                 </div>
                 <CardTitle className="sr-only">Top pages</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-3.5">
+              <CardContent><div className="flex flex-col gap-3.5">
                 {TOP_PAGES.map((p) => (
                   <div key={p.path} className="flex flex-col gap-1.5">
                     <div className="flex items-baseline justify-between gap-3">
@@ -489,15 +489,15 @@ const Dashboard02 = () => {
                     </div>
                   </div>
                 ))}
-              </CardContent>
+              </div></CardContent>
             </Card>
 
             <Card data-slot="dashboard-channels">
               <CardHeader>
-                <CardDescription className="text-xs uppercase">channels</CardDescription>
+                <CardDescription>channels</CardDescription>
                 <CardTitle className="sr-only">Channels</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-3">
+              <CardContent><div className="flex flex-col gap-3">
                 {CHANNELS.map((c) => (
                   <div key={c.label} className="flex items-center gap-3">
                     <span className="w-28 shrink-0 text-xs text-muted-foreground">{c.label}</span>
@@ -507,7 +507,7 @@ const Dashboard02 = () => {
                     <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">{c.share}%</span>
                   </div>
                 ))}
-              </CardContent>
+              </div></CardContent>
             </Card>
           </div>
         </div>

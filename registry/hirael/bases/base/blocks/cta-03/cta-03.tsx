@@ -83,7 +83,7 @@ const Cta03 = () => {
                 render={<a href="#" />}
                 nativeButton={false}
                 size="lg"
-                className="group h-14 rounded-full px-10 text-base transition-[transform,box-shadow] duration-150 hover:scale-105 hover:ring-4 hover:ring-primary/20 active:scale-95 motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
+                className="group"
               >
                 Start writing
                 <ArrowRight className="size-5 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />

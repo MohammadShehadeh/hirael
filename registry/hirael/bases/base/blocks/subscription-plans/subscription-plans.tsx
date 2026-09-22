@@ -39,9 +39,9 @@ type SubscriptionPlanBadgeProps = React.ComponentProps<'span'>;
 const SubscriptionPlanBadge = ({ className, ...props }: SubscriptionPlanBadgeProps) => {
   return (
     <Badge
-      variant="outline"
+      variant="secondary"
       data-slot="subscription-plan-badge"
-      className={cn('absolute -top-2.5 inset-e-4 bg-background font-normal uppercase', className)}
+      className={cn('absolute -top-2.5 inset-e-4', className)}
       {...props}
     />
   );
@@ -218,12 +218,7 @@ const SubscriptionPlansBlock = () => {
                 ))}
               </SubscriptionPlanFeatures>
               {current ? (
-                <SubscriptionPlanAction
-                  disabled
-                  className="disabled:border-border disabled:bg-muted/40 disabled:text-muted-foreground disabled:opacity-100"
-                >
-                  Current plan
-                </SubscriptionPlanAction>
+                <SubscriptionPlanAction disabled>Current plan</SubscriptionPlanAction>
               ) : (
                 <SubscriptionPlanAction
                   variant={plan.featured ? 'primary' : 'outline'}

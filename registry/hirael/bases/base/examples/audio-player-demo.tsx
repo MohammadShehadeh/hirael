@@ -53,7 +53,7 @@ const AudioPlayerDemo = () => {
             {t({ en: 'Choose audio file', ar: 'اختر ملفًا صوتيًا' })}
           </MediaInputTrigger>
         </MediaInputEmpty>
-        <MediaInputContent className="flex items-center justify-between gap-3">
+        <MediaInputContent className="flex items-center justify-between">
           <MediaInputFile />
           <MediaInputTrigger size="sm">{t({ en: 'Replace audio', ar: 'استبدال الصوت' })}</MediaInputTrigger>
         </MediaInputContent>
@@ -63,16 +63,18 @@ const AudioPlayerDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Full player · composed', ar: 'مشغّل كامل · مركّب' })}
         </p>
-        <AudioPlayer src={src} className="rounded-md border border-border bg-card p-3">
-          <AudioPlayerSkip seconds={-15} />
-          <AudioPlayerPlay />
-          <AudioPlayerSkip seconds={15} />
-          <AudioPlayerTime mode="elapsed" />
-          <AudioPlayerSeek />
-          <AudioPlayerTime mode="duration" />
-          <AudioPlayerVolume className="max-sm:hidden" />
-          <AudioPlayerRate />
-        </AudioPlayer>
+        <div className="rounded-md border border-border bg-card p-3">
+          <AudioPlayer src={src}>
+            <AudioPlayerSkip seconds={-15} />
+            <AudioPlayerPlay />
+            <AudioPlayerSkip seconds={15} />
+            <AudioPlayerTime mode="elapsed" />
+            <AudioPlayerSeek />
+            <AudioPlayerTime mode="duration" />
+            <AudioPlayerVolume className="max-sm:hidden" />
+            <AudioPlayerRate />
+          </AudioPlayer>
+        </div>
       </div>
 
       <div className="grid gap-4">
@@ -90,11 +92,13 @@ const AudioPlayerDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Custom · useAudioPlayer', ar: 'مخصّص · useAudioPlayer' })}
         </p>
-        <AudioPlayer src={src} className="rounded-md border border-border bg-card p-3">
-          <AudioPlayerPlay />
-          <PlaybackStatus />
-          <AudioPlayerRate rates={[0.75, 1, 1.5, 2]} />
-        </AudioPlayer>
+        <div className="rounded-md border border-border bg-card p-3">
+          <AudioPlayer src={src}>
+            <AudioPlayerPlay />
+            <PlaybackStatus />
+            <AudioPlayerRate rates={[0.75, 1, 1.5, 2]} />
+          </AudioPlayer>
+        </div>
       </div>
     </div>
   );

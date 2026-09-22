@@ -90,12 +90,12 @@ const Cta05 = () => {
                   render={<a href={`mailto:${email}`} />}
                   nativeButton={false}
                   size="lg"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Mail className="size-4" />
                   Send email
                 </Button>
-                <CopyButton value={email} className="max-w-full font-medium text-muted-foreground">
+                <CopyButton value={email} className="max-w-full">
                   {email}
                 </CopyButton>
               </div>
@@ -105,7 +105,7 @@ const Cta05 = () => {
                   nativeButton={false}
                   size="lg"
                   variant="outline"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Phone className="size-4" />
                   Call us

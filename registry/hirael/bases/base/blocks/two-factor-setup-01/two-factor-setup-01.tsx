@@ -242,7 +242,7 @@ const TwoFactorSetupCode = ({
       className={cn('gap-1.5', className)}
       {...props}
     >
-      <FieldLabel htmlFor={id} className="text-xs uppercase text-muted-foreground">
+      <FieldLabel htmlFor={id}>
         {label}
       </FieldLabel>
       <div dir="ltr">
@@ -259,18 +259,18 @@ const TwoFactorSetupCode = ({
           aria-describedby={error ? errorId : undefined}
           containerClassName="justify-between"
         >
-          <InputOTPGroup className="w-full justify-between gap-1.5 sm:gap-2">
+          <InputOTPGroup className="w-full justify-between">
             {Array.from({ length }, (_, i) => (
               <InputOTPSlot
                 key={i}
                 index={i}
-                className="size-10 rounded-sm border text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11"
+                className="size-10 sm:size-11"
               />
             ))}
           </InputOTPGroup>
         </InputOTP>
       </div>
-      <FieldError id={errorId} className="text-xs">
+      <FieldError id={errorId}>
         {error}
       </FieldError>
     </Field>
@@ -348,7 +348,7 @@ const TwoFactorSetupRecoveryCodes = ({
             onSavedChange?.(next);
           }}
         />
-        <FieldLabel htmlFor={id} className="cursor-pointer text-xs font-normal text-muted-foreground">
+        <FieldLabel htmlFor={id} className="cursor-pointer">
           I&apos;ve saved these somewhere safe
         </FieldLabel>
       </Field>

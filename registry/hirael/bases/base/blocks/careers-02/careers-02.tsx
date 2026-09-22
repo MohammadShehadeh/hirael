@@ -282,7 +282,6 @@ const ApplyForm = () => {
               aria-describedby={errors.cv ? 'careers-02-cv-error' : undefined}
               headline="Drop your CV here, or browse"
               subline="PDF, up to 10 MB"
-              className={cn('gap-1 px-4 py-5', errors.cv && 'border-destructive')}
             />
             <FileDropzoneList className="mt-2" />
             <FileDropzoneErrors />
@@ -307,7 +306,7 @@ const ApplyForm = () => {
             className="max-h-40 resize-none"
           />
           <div className="flex items-center justify-between gap-3">
-            <FieldDescription className="text-xs">Two or three sentences is plenty.</FieldDescription>
+            <FieldDescription>Two or three sentences is plenty.</FieldDescription>
             <span
               id="careers-02-note-count"
               dir="ltr"

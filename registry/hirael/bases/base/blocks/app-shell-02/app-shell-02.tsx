@@ -17,7 +17,6 @@ import {
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { Card } from '@/registry/hirael/bases/base/ui/card';
 import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import {
   DropdownMenu,
@@ -293,10 +292,10 @@ const FieldRow = ({
           onSubmit={(next) => onCommit(field.id, next)}
           validate={(next) => (next.trim() === '' ? `${field.label} cannot be empty` : null)}
           selectOnFocus
-          className="flex w-full flex-wrap items-center justify-start gap-1.5 sm:w-72 sm:justify-end"
+          className="flex w-full flex-wrap items-center justify-start sm:w-72 sm:justify-end"
         >
-          <InlineEditPreview aria-labelledby={`${field.id}-label`} aria-describedby={hintId} className="text-sm" />
-          <InlineEditInput aria-labelledby={`${field.id}-label`} className="h-8 min-w-0 flex-1 text-sm" />
+          <InlineEditPreview aria-labelledby={`${field.id}-label`} aria-describedby={hintId} />
+          <InlineEditInput aria-labelledby={`${field.id}-label`} className="h-8 min-w-0 flex-1" />
           <InlineEditControls />
         </InlineEdit>
       )}
@@ -440,20 +439,11 @@ const AppShell02 = () => {
           </Button>
 
           <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Account menu"
-                  className="size-8 rounded-full bg-foreground text-[10px] text-background hover:bg-foreground/90 hover:text-background"
-                />
-              }
-            >
-              MS
+            <DropdownMenuTrigger render={<Button variant="secondary" size="icon-sm" aria-label="Account menu" />}>
+              <span className="text-[10px]">MS</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="font-normal">
+              <DropdownMenuLabel>
                 <span className="block text-sm font-medium">Mohammad Shehadeh</span>
                 <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
               </DropdownMenuLabel>
@@ -493,22 +483,18 @@ const AppShell02 = () => {
           value={section}
           onValueChange={(v) => setSection(v as SectionId)}
           orientation="vertical"
-          className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-12"
+          className="mt-6 grid grid-cols-1 items-start lg:grid-cols-12"
         >
-          <TabsList className="h-auto w-full justify-start gap-1 bg-transparent p-0 lg:col-span-3">
+          <TabsList variant="line" className="h-auto w-full justify-start lg:col-span-3">
             {SECTIONS.map((s) => {
               const count = matchesBySection[s.id].length;
               return (
-                <TabsTrigger
-                  key={s.id}
-                  value={s.id}
-                  className="gap-2.5 px-3 py-2 data-active:bg-accent data-active:font-medium data-active:shadow-none"
-                >
+                <TabsTrigger key={s.id} value={s.id}>
                   <s.icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
                   <span className="whitespace-nowrap">{s.label}</span>
                   {normalized && (
-                    <Badge variant={count ? 'secondary' : 'outline'} className="ms-auto text-[10px] tabular-nums">
-                      {count}
+                    <Badge variant={count ? 'secondary' : 'outline'} className="ms-auto">
+                      <span className="tabular-nums">{count}</span>
                       <span className="sr-only"> matches</span>
                     </Badge>
                   )}
@@ -517,14 +503,14 @@ const AppShell02 = () => {
             })}
           </TabsList>
 
-          <div className="lg:col-span-9">
+          <div className="mt-4 lg:col-span-9 lg:ms-4 lg:mt-0">
             {SECTIONS.map((s) => {
               const fields = matchesBySection[s.id];
               // When this section comes up empty, point at the ones that did not.
               const elsewhere = SECTIONS.filter((other) => other.id !== s.id && matchesBySection[other.id].length > 0);
               return (
                 <TabsContent key={s.id} value={s.id} className="mt-0">
-                  <Card className={cn(SWAP, 'gap-0 overflow-hidden p-0')}>
+                  <div className={cn(SWAP, 'overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm')}>
                     <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
                       <div className="flex items-center gap-3">
                         <s.icon className="size-4 shrink-0 self-start mt-0.5 text-muted-foreground" aria-hidden />
@@ -533,14 +519,16 @@ const AppShell02 = () => {
                           <p className="text-xs text-muted-foreground">{s.desc}</p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="hidden tabular-nums sm:inline-flex">
-                        {fields.length}
-                        {normalized ? ` of ${SECTION_FIELDS[s.id].length}` : ''} fields
+                      <Badge variant="outline" className="hidden sm:inline-flex">
+                        <span className="tabular-nums">
+                          {fields.length}
+                          {normalized ? ` of ${SECTION_FIELDS[s.id].length}` : ''} fields
+                        </span>
                       </Badge>
                     </div>
 
                     {fields.length === 0 ? (
-                      <Empty className="border-0">
+                      <Empty>
                         <EmptyHeader>
                           <EmptyMedia variant="icon">
                             <Search />
@@ -552,13 +540,13 @@ const AppShell02 = () => {
                             {elsewhere.length > 0 ? ', but other sections have hits.' : '.'}
                           </EmptyDescription>
                         </EmptyHeader>
-                        <EmptyContent className="flex-row flex-wrap justify-center gap-2">
+                        <EmptyContent className="flex-row flex-wrap justify-center">
                           {elsewhere.map((other) => (
                             <Button key={other.id} variant="outline" size="sm" onClick={() => setSection(other.id)}>
                               <other.icon aria-hidden />
                               {other.label}
-                              <Badge variant="secondary" className="text-[10px] tabular-nums">
-                                {matchesBySection[other.id].length}
+                              <Badge variant="secondary">
+                                <span className="tabular-nums">{matchesBySection[other.id].length}</span>
                               </Badge>
                             </Button>
                           ))}
@@ -600,7 +588,7 @@ const AppShell02 = () => {
                         Audit log
                       </Button>
                     </div>
-                  </Card>
+                  </div>
                 </TabsContent>
               );
             })}

@@ -166,7 +166,7 @@ const SettingsRow = ({ label, description, htmlFor, className, children, ...prop
     >
       <FieldContent className="min-w-0 gap-0.5 @md/field-group:max-w-xs @md/field-group:pt-1.5">
         {htmlFor ? <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel> : <FieldTitle>{label}</FieldTitle>}
-        {description ? <FieldDescription className="text-xs">{description}</FieldDescription> : null}
+        {description ? <FieldDescription>{description}</FieldDescription> : null}
       </FieldContent>
       <div className="flex w-full flex-col gap-2 @md/field-group:shrink-0 @md/field-group:basis-80">{children}</div>
     </Field>
@@ -325,12 +325,12 @@ const Settings01 = () => {
                   How you appear to teammates and in shared links.
                 </SettingsSectionDescription>
               </SettingsSectionHeader>
-              <FieldGroup className="gap-0 divide-y divide-border">
+              <FieldGroup className="gap-0">
                 <SettingsRow label="Avatar" description="PNG or JPG, at least 256 by 256.">
                   <div className="flex items-center gap-3">
                     <Avatar key={avatarUrl ?? 'initials'} size="lg">
                       {avatarUrl ? <AvatarImage src={avatarUrl} alt="" className="object-cover" /> : null}
-                      <AvatarFallback className="text-xs font-medium text-foreground">
+                      <AvatarFallback>
                         {initialsOf(profile.name) || '?'}
                       </AvatarFallback>
                     </Avatar>
@@ -350,7 +350,6 @@ const Settings01 = () => {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="text-muted-foreground"
                       disabled={!avatarUrl}
                       onClick={() => setAvatarUrl(null)}
                     >
@@ -432,7 +431,7 @@ const Settings01 = () => {
                 <SettingsSectionTitle>Email</SettingsSectionTitle>
                 <SettingsSectionDescription>Where sign-in links, receipts, and alerts go.</SettingsSectionDescription>
               </SettingsSectionHeader>
-              <FieldGroup className="gap-0 divide-y divide-border">
+              <FieldGroup className="gap-0">
                 <SettingsRow
                   label="Email address"
                   description="Changing it sends a confirmation to the new address."
@@ -447,12 +446,12 @@ const Settings01 = () => {
                       readOnly
                       className="flex-1"
                     />
-                    <Badge variant="outline" className="shrink-0 gap-1 text-success">
+                    <Badge variant="outline" className="shrink-0">
                       <Check aria-hidden />
                       Verified
                     </Badge>
                   </div>
-                  <Button type="button" variant="link" size="sm" className="h-auto self-start p-0 text-xs">
+                  <Button type="button" variant="link" size="sm" className="h-auto self-start">
                     Change email
                   </Button>
                 </SettingsRow>
@@ -497,7 +496,7 @@ const Settings01 = () => {
                 <SettingsSectionTitle>Preferences</SettingsSectionTitle>
                 <SettingsSectionDescription>Language, time zone, and calendar defaults.</SettingsSectionDescription>
               </SettingsSectionHeader>
-              <FieldGroup className="gap-0 divide-y divide-border">
+              <FieldGroup className="gap-0">
                 <SettingsRow
                   label="Language"
                   description="The interface language. Content is not translated."

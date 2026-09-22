@@ -162,7 +162,6 @@ const Stats02 = () => {
                 key={option.value}
                 value={option.value}
                 aria-label={option.long}
-                className="px-3 text-xs tabular-nums"
               >
                 {option.label}
               </ToggleGroupItem>

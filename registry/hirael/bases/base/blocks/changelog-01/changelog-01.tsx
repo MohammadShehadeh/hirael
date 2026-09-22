@@ -194,7 +194,7 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${id}-error` : undefined}
                 />
-                <FieldError id={`${id}-error`} className="text-xs">
+                <FieldError id={`${id}-error`}>
                   {error}
                 </FieldError>
               </Field>
@@ -239,7 +239,7 @@ const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
       {...props}
     >
       {FILTERS.map((item) => (
-        <ToggleGroupItem key={item.value} value={item.value} className="text-xs">
+        <ToggleGroupItem key={item.value} value={item.value}>
           {item.label}
         </ToggleGroupItem>
       ))}
@@ -313,7 +313,7 @@ const ChangelogEntryVersion = ({ className, ...props }: ChangelogEntryVersionPro
     <Badge
       variant="outline"
       data-slot="changelog-entry-version"
-      className={cn('text-[11px] tabular-nums', className)}
+      className={className}
       {...props}
     />
   );
@@ -370,7 +370,7 @@ const ChangelogEntryTag = ({ kind, className, children, ...props }: ChangelogEnt
       variant="secondary"
       data-slot="changelog-entry-tag"
       data-kind={kind}
-      className={cn('uppercase', TAG_CLASSES[kind], className)}
+      className={cn(TAG_CLASSES[kind], className)}
       {...props}
     >
       {children ?? TAG_LABELS[kind]}

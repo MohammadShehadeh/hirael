@@ -201,7 +201,8 @@ const Status01 = () => {
                           />
                         }
                       />
-                      <TooltipContent className="flex w-52 flex-col gap-1.5 text-start">
+                      <TooltipContent className="w-52 text-start">
+                        <div className="flex flex-col gap-1.5">
                         <span className="flex items-center justify-between gap-2">
                           <span className="text-xs font-medium tabular-nums">{daysAgoLabel(i)}</span>
                           <span className="flex items-center gap-1.5 text-[11px]">
@@ -210,6 +211,7 @@ const Status01 = () => {
                           </span>
                         </span>
                         <span className="text-[11px]/relaxed opacity-80">{day.note}</span>
+                        </div>
                       </TooltipContent>
                     </Tooltip>
                   ))}

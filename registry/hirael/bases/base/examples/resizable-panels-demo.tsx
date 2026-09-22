@@ -20,38 +20,40 @@ const ResizablePanelsDemo = () => {
   const t = useT();
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="h-72 w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card"
-    >
-      <ResizablePanel defaultSize={28} minSize={15}>
-        <Pane label={t({ en: 'Explorer', ar: 'المستكشف' })}>
-          {t({
-            en: 'Drag a divider to resize.',
-            ar: 'اسحب فاصلاً لتغيير الحجم.',
-          })}
-        </Pane>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={72}>
-        <ResizablePanelGroup direction="vertical" className="h-full">
-          <ResizablePanel defaultSize={64} minSize={20}>
-            <Pane label={t({ en: 'Editor', ar: 'المحرر' })}>
-              {t({
-                en: "Panels share their space proportionally and clamp to each panel's minimum size.",
-                ar: 'تتقاسم اللوحات مساحتها بالتناسب وتلتزم بالحد الأدنى لحجم كل لوحة.',
-              })}
-            </Pane>
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={36} minSize={15}>
-            <Pane label={t({ en: 'Terminal', ar: 'الطرفية' })}>
-              <span className="font-mono text-xs">$ pnpm dev</span>
-            </Pane>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div className="h-72 w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-full w-full"
+      >
+        <ResizablePanel defaultSize={28} minSize={15}>
+          <Pane label={t({ en: 'Explorer', ar: 'المستكشف' })}>
+            {t({
+              en: 'Drag a divider to resize.',
+              ar: 'اسحب فاصلاً لتغيير الحجم.',
+            })}
+          </Pane>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={72}>
+          <ResizablePanelGroup direction="vertical" className="h-full">
+            <ResizablePanel defaultSize={64} minSize={20}>
+              <Pane label={t({ en: 'Editor', ar: 'المحرر' })}>
+                {t({
+                  en: "Panels share their space proportionally and clamp to each panel's minimum size.",
+                  ar: 'تتقاسم اللوحات مساحتها بالتناسب وتلتزم بالحد الأدنى لحجم كل لوحة.',
+                })}
+              </Pane>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={36} minSize={15}>
+              <Pane label={t({ en: 'Terminal', ar: 'الطرفية' })}>
+                <span className="font-mono text-xs">$ pnpm dev</span>
+              </Pane>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 };
 

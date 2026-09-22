@@ -291,7 +291,7 @@ const EnvEditorHeader = ({
     >
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-medium text-foreground">{title}</h3>
-        <Badge variant="outline" className="text-[10px] tabular-nums" aria-label={`${vars.length} variables`}>
+        <Badge variant="outline" aria-label={`${vars.length} variables`}>
           {vars.length}
         </Badge>
       </div>
@@ -307,7 +307,6 @@ const EnvEditorHeader = ({
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search keys"
               aria-label="Search variables"
-              className="text-xs"
             />
           </InputGroup>
         ) : null}
@@ -373,7 +372,7 @@ const EnvEditorImport = ({ className, children = 'Import .env', ...props }: EnvE
           spellCheck={false}
           aria-label=".env contents"
           placeholder={'DATABASE_URL="postgres://..."\n# comments are fine\nLOG_LEVEL=debug'}
-          className="min-h-40 font-mono text-xs"
+          className="min-h-40"
         />
         <DialogFooter className="sm:items-center sm:justify-between">
           <span className="text-[11px] tabular-nums text-muted-foreground">
@@ -498,7 +497,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
           aria-describedby={error ? errorId : undefined}
           spellCheck={false}
           autoCapitalize="characters"
-          className="h-8 font-mono text-xs"
+          className="h-8"
         />
         {error ? (
           <p id={errorId} className="text-xs text-destructive">
@@ -515,7 +514,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
           aria-label="Value"
           spellCheck={false}
           autoComplete="off"
-          className="h-8 font-mono text-xs"
+          className="h-8"
         />
         {secret ? (
           <Button
@@ -525,7 +524,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
             aria-label={revealed ? 'Hide value' : 'Reveal value'}
             aria-pressed={revealed}
             onClick={() => setRevealed((v) => !v)}
-            className="size-7 text-muted-foreground hover:text-foreground [&_svg]:size-3.5"
+            className="size-7 [&_svg]:size-3.5"
           >
             {revealed ? <EyeOff /> : <Eye />}
           </Button>
@@ -541,10 +540,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
             update(index, { secret: !secret });
             setRevealed(false);
           }}
-          className={cn(
-            'size-7 [&_svg]:size-3.5',
-            secret ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-          )}
+          className="size-7 [&_svg]:size-3.5"
         >
           {secret ? <Lock /> : <LockOpen />}
         </Button>
@@ -565,7 +561,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
           size="icon-sm"
           aria-label={`Delete ${item.key || 'variable'}`}
           onClick={() => remove(index)}
-          className="size-7 text-muted-foreground hover:text-destructive [&_svg]:size-3.5"
+          className="size-7 [&_svg]:size-3.5"
         >
           <Trash2 />
         </Button>
@@ -631,9 +627,9 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
           aria-invalid={touched && keyError ? true : undefined}
           aria-describedby={touched && keyError ? keyErrorId : undefined}
           spellCheck={false}
-          className="h-8 bg-background font-mono text-xs"
+          className="h-8"
         />
-        <FieldError id={keyErrorId} className="text-xs">
+        <FieldError id={keyErrorId}>
           {touched && keyError ? keyError : null}
         </FieldError>
       </Field>
@@ -646,7 +642,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
           aria-label="New value"
           spellCheck={false}
           autoComplete="off"
-          className="h-8 bg-background font-mono text-xs"
+          className="h-8"
         />
         <Button
           type="button"
@@ -655,10 +651,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
           aria-label={secret ? 'Mark as plain text' : 'Mark as secret'}
           aria-pressed={secret}
           onClick={() => setSecret((v) => !v)}
-          className={cn(
-            'size-7 [&_svg]:size-3.5',
-            secret ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-          )}
+          className="size-7 [&_svg]:size-3.5"
         >
           {secret ? <Lock /> : <LockOpen />}
         </Button>

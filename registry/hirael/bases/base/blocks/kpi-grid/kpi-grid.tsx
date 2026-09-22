@@ -193,7 +193,7 @@ const KpiGridBlock = () => {
             aria-label="Period"
           >
             {PERIODS.map((option) => (
-              <ToggleGroupItem key={option.value} value={option.value} className="px-2.5 text-xs">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
               </ToggleGroupItem>
             ))}

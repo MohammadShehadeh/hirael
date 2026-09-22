@@ -196,7 +196,7 @@ const DocumentList = () => {
               {doc.status}
             </span>
             <Avatar className="size-7" aria-label={doc.owner}>
-              <AvatarFallback className="text-[11px]">{doc.initials}</AvatarFallback>
+              <AvatarFallback>{doc.initials}</AvatarFallback>
             </Avatar>
           </li>
         ))}
@@ -281,14 +281,11 @@ const AppSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <SidebarMenuButton
-                    size="lg"
-                    className="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
-                  />
+                  <SidebarMenuButton size="lg" />
                 }
               >
-                <Avatar className="size-8 rounded-md">
-                  <AvatarFallback className="rounded-md text-[10px]">{USER.initials}</AvatarFallback>
+                <Avatar>
+                  <AvatarFallback>{USER.initials}</AvatarFallback>
                 </Avatar>
                 <div className="grid min-w-0 flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-medium">{USER.name}</span>
@@ -297,8 +294,8 @@ const AppSidebar = () => {
                 <ChevronsUpDown className="ms-auto size-4 shrink-0" />
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" align="start" sideOffset={4} className="w-56">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col gap-0.5">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col gap-0.5 font-normal">
                     <span className="text-sm font-medium">{USER.name}</span>
                     <span className="truncate text-xs text-muted-foreground">{USER.email}</span>
                   </div>
@@ -315,7 +312,7 @@ const AppSidebar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive focus:text-destructive">
+                <DropdownMenuItem variant="destructive">
                   <LogOut className="size-4" />
                   Log out
                 </DropdownMenuItem>

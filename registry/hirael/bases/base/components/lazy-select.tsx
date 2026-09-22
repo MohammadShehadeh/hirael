@@ -180,12 +180,11 @@ const LazySelect = ({
 interface LazySelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   className?: string;
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
 }
 
-const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...props }: LazySelectTriggerProps) => {
+const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: LazySelectTriggerProps) => {
   const ctx = useLazySelect();
-  const showClear = !children && ctx.clearable && ctx.value !== undefined && !ctx.disabled;
+  const showClear = ctx.clearable && ctx.value !== undefined && !ctx.disabled;
 
   return (
     <div data-slot="lazy-select-trigger-wrapper" className="relative w-full">
@@ -211,26 +210,18 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...
           />
         }
       >
-        {typeof children === 'function' ? (
-          children(ctx)
-        ) : children ? (
-          children
-        ) : (
-          <>
-            <span
-              className={cn(
-                'min-w-0 flex-1 truncate',
-                ctx.selectedLabel === undefined && 'text-muted-foreground',
-                showClear && 'pe-5',
-              )}
-            >
-              {ctx.selectedLabel ?? placeholder}
-            </span>
-            <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-              <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-            </span>
-          </>
-        )}
+        <span
+          className={cn(
+            'min-w-0 flex-1 truncate',
+            ctx.selectedLabel === undefined && 'text-muted-foreground',
+            showClear && 'pe-5',
+          )}
+        >
+          {ctx.selectedLabel ?? placeholder}
+        </span>
+        <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
+          <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
+        </span>
       </PopoverTrigger>
       {showClear && (
         <button

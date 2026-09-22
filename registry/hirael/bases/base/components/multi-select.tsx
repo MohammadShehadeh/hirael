@@ -1,12 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { Popover as PopoverPrimitive } from '@base-ui/react/popover';
 import { Check, ChevronDown, X, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
-import { Popover, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -40,7 +39,6 @@ interface MultiSelectContextValue {
   remove: (v: string) => void;
   clear: () => void;
   listboxId: string;
-  anchorRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const MultiSelectContext = React.createContext<MultiSelectContextValue | null>(null);
@@ -125,7 +123,6 @@ const MultiSelect = ({
   const clear = React.useCallback(() => setValue([]), [setValue]);
 
   const listboxId = React.useId();
-  const anchorRef = React.useRef<HTMLDivElement>(null);
 
   const ctx = React.useMemo<MultiSelectContextValue>(
     () => ({
@@ -144,7 +141,6 @@ const MultiSelect = ({
       remove,
       clear,
       listboxId,
-      anchorRef,
     }),
     [value, setValue, options, open, setOpen, search, maxCount, disabled, loading, toggle, remove, clear, listboxId],
   );
@@ -159,45 +155,54 @@ const MultiSelect = ({
   );
 };
 
-// Chips hold remove buttons, which can't nest in a button: `className` styles the wrapper, other props go to the inner button.
-interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+// Div, not a button: chip remove buttons cannot nest inside a button.
+interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   placeholder?: string;
-  className?: string;
-  children?: React.ReactNode | ((ctx: MultiSelectContextValue) => React.ReactNode);
+  disabled?: boolean;
 }
 
-const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ...props }: MultiSelectTriggerProps) => {
+const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ...props }: MultiSelectTriggerProps) => {
   const ctx = useMultiSelect();
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
+  const isDisabled = ctx.disabled || disabled;
 
-  // The popover anchors to the whole box, not the inner button that shrinks as chips fill the row.
   return (
-    <div
-      ref={ctx.anchorRef}
-      data-slot="multi-select-trigger"
-      data-open={ctx.open || undefined}
-      className={cn(
-        'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors',
-        'hover:border-ring/60 focus-within:border-ring',
-        'data-open:border-ring',
-        ctx.disabled && 'cursor-not-allowed opacity-50',
-        className,
-      )}
+    <PopoverTrigger
+      nativeButton={false}
+      disabled={isDisabled}
+      render={
+        <div
+          role="combobox"
+          aria-controls={ctx.listboxId}
+          aria-expanded={ctx.open}
+          aria-haspopup="listbox"
+          data-slot="multi-select-trigger"
+          className={cn(
+            'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors outline-none',
+            'hover:border-ring/60 focus-within:border-ring',
+            'data-popup-open:border-ring',
+            isDisabled && 'cursor-not-allowed opacity-50',
+            className,
+          )}
+          {...props}
+        />
+      }
     >
-      {!children && selected.length > 0 && (
-        <span data-slot="multi-select-chips" className="flex flex-wrap items-center gap-1">
+      {selected.length > 0 && (
+        <span
+          data-slot="multi-select-chips"
+          onClick={(event) => event.stopPropagation()}
+          className="flex flex-wrap items-center gap-1"
+        >
           {selected.map((opt) => (
             <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
               {opt.label}
-              {!ctx.disabled && (
+              {!isDisabled && (
                 <button
                   type="button"
                   data-slot="multi-select-chip-remove"
                   aria-label={`Remove ${opt.label}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    ctx.remove(opt.value);
-                  }}
+                  onClick={() => ctx.remove(opt.value)}
                   className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
                 >
                   <X className="size-2.5" />
@@ -207,51 +212,23 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ..
           ))}
         </span>
       )}
-      <PopoverTrigger
-        render={
-          <button
-            type="button"
-            role="combobox"
-            aria-controls={ctx.listboxId}
-            aria-expanded={ctx.open}
-            aria-haspopup="listbox"
-            disabled={ctx.disabled}
-            data-slot="multi-select-trigger-button"
-            data-state={ctx.open ? 'open' : 'closed'}
-            className="flex grow items-center justify-between gap-2 self-stretch text-start outline-none disabled:cursor-not-allowed"
-            {...props}
-          />
-        }
-      >
-        {typeof children === 'function' ? (
-          children(ctx)
-        ) : children ? (
-          children
-        ) : (
-          <>
-            <span className="flex flex-1 flex-wrap items-center gap-1">
-              {selected.length === 0 && <span className="px-1 text-muted-foreground">{placeholder}</span>}
-            </span>
-            <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
-              {selected.length > 0 && (
-                <span className="font-mono text-[10px] tabular-nums">
-                  {selected.length}
-                  {ctx.maxCount ? `/${ctx.maxCount}` : ''}
-                </span>
-              )}
-              <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-            </span>
-          </>
+      <span className="flex flex-1 flex-wrap items-center gap-1">
+        {selected.length === 0 && <span className="px-1 text-muted-foreground">{placeholder}</span>}
+      </span>
+      <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
+        {selected.length > 0 && (
+          <span className="font-mono text-[10px] tabular-nums">
+            {selected.length}
+            {ctx.maxCount ? `/${ctx.maxCount}` : ''}
+          </span>
         )}
-      </PopoverTrigger>
-    </div>
+        <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[popup-open]:rotate-180" />
+      </span>
+    </PopoverTrigger>
   );
 };
 
-interface MultiSelectContentProps
-  extends
-    PopoverPrimitive.Popup.Props,
-    Pick<PopoverPrimitive.Positioner.Props, 'align' | 'alignOffset' | 'side' | 'sideOffset'> {
+interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverContent> {
   searchPlaceholder?: string;
   emptyMessage?: string;
   showSelectAll?: boolean;
@@ -263,10 +240,6 @@ interface MultiSelectContentProps
 
 const MultiSelectContent = ({
   className,
-  align = 'start',
-  alignOffset = 0,
-  side = 'bottom',
-  sideOffset = 6,
   searchPlaceholder = 'Search…',
   emptyMessage = 'Nothing found.',
   showSelectAll = true,
@@ -295,88 +268,69 @@ const MultiSelectContent = ({
   }, [ctx.options]);
 
   return (
-    // Anchored to the whole bordered box, which the trigger button inside it does not span.
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Positioner
-        anchor={ctx.anchorRef}
-        align={align}
-        alignOffset={alignOffset}
-        side={side}
-        sideOffset={sideOffset}
-        className="isolate z-50"
-      >
-        <PopoverPrimitive.Popup
-          data-slot="multi-select-content"
-          className={cn(
-            'z-50 flex w-72 origin-(--transform-origin) flex-col gap-4 rounded-md bg-popover p-4 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-start-2 data-[side=inline-start]:slide-in-from-end-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
-            'w-(--anchor-width) min-w-[14rem] p-0',
-            className,
-          )}
-          initialFocus={() => inputRef.current}
-          {...props}
-        >
-          <Command shouldFilter loop>
-            <CommandInput
-              ref={inputRef}
-              placeholder={searchPlaceholder}
-              value={ctx.search}
-              onValueChange={ctx.setSearch}
-            />
-            <CommandList id={ctx.listboxId}>
-              {ctx.loading ? (
-                <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
-                  <Loader2 className="size-3.5 animate-spin" />
-                  Loading…
-                </div>
-              ) : (
-                <>
-                  <CommandEmpty>{emptyMessage}</CommandEmpty>
-                  {children ??
-                    groups.map(([group, items]) => (
-                      <CommandGroup key={group ?? '__default'} heading={group}>
-                        {items.map((opt) => (
-                          <MultiSelectItem key={opt.value} option={opt} />
-                        ))}
-                      </CommandGroup>
+    <PopoverContent
+      align="start"
+      sideOffset={6}
+      data-slot="multi-select-content"
+      className={cn('w-(--anchor-width) min-w-56 p-0', className)}
+      initialFocus={() => inputRef.current}
+      {...props}
+    >
+      <Command shouldFilter loop>
+        <CommandInput ref={inputRef} placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
+        <CommandList id={ctx.listboxId}>
+          {ctx.loading ? (
+            <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
+              <Loader2 className="size-3.5 animate-spin" />
+              Loading…
+            </div>
+          ) : (
+            <>
+              <CommandEmpty>{emptyMessage}</CommandEmpty>
+              {children ??
+                groups.map(([group, items]) => (
+                  <CommandGroup key={group ?? '__default'} heading={group}>
+                    {items.map((opt) => (
+                      <MultiSelectItem key={opt.value} option={opt} />
                     ))}
-                  {(showSelectAllItem || showClearItem) && (
-                    <>
-                      <CommandSeparator />
-                      <CommandGroup>
-                        {showSelectAllItem && (
-                          <CommandItem
-                            onSelect={() => {
-                              if (allSelected) {
-                                ctx.clear();
-                              } else {
-                                const next = enabled.map((o) => o.value).slice(0, ctx.maxCount ?? Infinity);
-                                ctx.setValue(next);
-                              }
-                            }}
-                            className="justify-between"
-                          >
-                            <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                            <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                              {ctx.value.length} / {enabled.length}
-                            </span>
-                          </CommandItem>
-                        )}
-                        {showClearItem && (
-                          <CommandItem onSelect={() => ctx.clear()} className="justify-between">
-                            <span className="text-xs uppercase">{clearLabel}</span>
-                            <X className="size-3 text-muted-foreground" />
-                          </CommandItem>
-                        )}
-                      </CommandGroup>
-                    </>
-                  )}
+                  </CommandGroup>
+                ))}
+              {(showSelectAllItem || showClearItem) && (
+                <>
+                  <CommandSeparator />
+                  <CommandGroup>
+                    {showSelectAllItem && (
+                      <CommandItem
+                        onSelect={() => {
+                          if (allSelected) {
+                            ctx.clear();
+                          } else {
+                            const next = enabled.map((o) => o.value).slice(0, ctx.maxCount ?? Infinity);
+                            ctx.setValue(next);
+                          }
+                        }}
+                        className="justify-between"
+                      >
+                        <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
+                        <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                          {ctx.value.length} / {enabled.length}
+                        </span>
+                      </CommandItem>
+                    )}
+                    {showClearItem && (
+                      <CommandItem onSelect={() => ctx.clear()} className="justify-between">
+                        <span className="text-xs uppercase">{clearLabel}</span>
+                        <X className="size-3 text-muted-foreground" />
+                      </CommandItem>
+                    )}
+                  </CommandGroup>
                 </>
               )}
-            </CommandList>
-          </Command>
-        </PopoverPrimitive.Popup>
-      </PopoverPrimitive.Positioner>
-    </PopoverPrimitive.Portal>
+            </>
+          )}
+        </CommandList>
+      </Command>
+    </PopoverContent>
   );
 };
 

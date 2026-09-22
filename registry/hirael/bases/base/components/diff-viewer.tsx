@@ -29,10 +29,6 @@ const splitLines = (text: string) => {
 /** Cells above this are not worth a full LCS table; fall back to replace-all. */
 const MAX_LCS_CELLS = 4_000_000;
 
-/**
- * Line diff of two texts using a longest-common-subsequence table, with the
- * common prefix and suffix trimmed first. Removals come before additions.
- */
 const computeLineDiff = (oldValue: string, newValue: string): DiffLine[] => {
   const a = splitLines(oldValue);
   const b = splitLines(newValue);
@@ -387,11 +383,10 @@ const DiffViewerModeToggle = ({
   const { mode, setMode } = useDiffViewer();
   return (
     <ToggleGroup
-      type="single"
       variant="outline"
       size="sm"
-      value={mode}
-      onValueChange={(next) => {
+      value={[mode]}
+      onValueChange={([next]) => {
         if (next === 'unified' || next === 'split') setMode(next);
       }}
       data-slot="diff-viewer-mode-toggle"

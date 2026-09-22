@@ -70,7 +70,6 @@ const CopyEmail = ({ email }: { email: string }) => {
       data-slot="contact-copy"
       data-state={copied ? 'copied' : 'idle'}
       onClick={copy}
-      className="text-muted-foreground hover:text-foreground"
     >
       <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1.5')}>
         {copied ? <Check aria-hidden className="size-3.5" /> : <Copy aria-hidden className="size-3.5" />}

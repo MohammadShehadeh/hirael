@@ -9,7 +9,6 @@ import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const TITLE = 'Your next pipeline draws itself';
-// The closing words carry the promise, so they get the full-strength ink.
 const EMPHASIS_WORDS = 2;
 
 const ENTER =
@@ -22,7 +21,6 @@ const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => (
 const glow = (w: number, h: number) =>
   `radial-gradient(${w}% ${h}% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklab, var(--primary) 30%, transparent) 82%, color-mix(in oklab, var(--primary) 30%, transparent) 100%)`;
 
-// Resting state of the scroll-linked glow, used under reduced motion.
 const STATIC_GLOW = glow(120, 130);
 
 const Cta07 = () => {
@@ -58,11 +56,7 @@ const Cta07 = () => {
           data-slot="cta-body"
           className="relative z-10 mx-auto flex min-h-100 max-w-3xl flex-col items-center text-center"
         >
-          <Badge
-            variant="outline"
-            style={stagger(1)}
-            className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}
-          >
+          <Badge variant="outline" style={stagger(1)} className={ENTER}>
             Get started
           </Badge>
 

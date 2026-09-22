@@ -106,18 +106,18 @@ const Faq07 = () => {
           </nav>
         </div>
 
-        <div data-slot="faq-list" style={stagger(3, 70)} className={ENTER}>
-          <Accordion type="single" collapsible value={open} onValueChange={setOpen} className="border-y border-border">
+        <div data-slot="faq-list" style={stagger(3, 70)} className={cn(ENTER, 'border-y border-border')}>
+          <Accordion value={[open]} onValueChange={([next]) => setOpen(next ?? '')}>
             {QUESTIONS.map((q, i) => (
-              <AccordionItem key={q.value} value={q.value} className="px-1">
-                <AccordionTrigger className="py-5 text-base">
-                  <span className="flex items-baseline gap-4">
+              <AccordionItem key={q.value} value={q.value}>
+                <AccordionTrigger>
+                  <span className="flex items-baseline gap-4 text-base">
                     <span className="text-xs tabular-nums text-muted-foreground">{formatIndex(i)}</span>
                     <span>{q.question}</span>
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="ms-9 max-w-2xl pb-5 text-base text-muted-foreground">
-                  {q.answer}
+                <AccordionContent className="ms-9 max-w-2xl">
+                  <span className="text-muted-foreground">{q.answer}</span>
                 </AccordionContent>
               </AccordionItem>
             ))}

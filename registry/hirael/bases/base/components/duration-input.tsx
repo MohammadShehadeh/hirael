@@ -9,7 +9,6 @@ export type DurationUnit = 'd' | 'h' | 'm' | 's';
 
 const UNIT_SECONDS: Record<DurationUnit, number> = { d: 86400, h: 3600, m: 60, s: 1 };
 
-/** Segments always render largest first, whatever order `units` was passed in. */
 const UNIT_ORDER: readonly DurationUnit[] = ['d', 'h', 'm', 's'];
 
 const UNIT_NAMES: Record<DurationUnit, string> = {
@@ -21,11 +20,7 @@ const UNIT_NAMES: Record<DurationUnit, string> = {
 
 const sortUnits = (units: readonly DurationUnit[]): DurationUnit[] => UNIT_ORDER.filter((u) => units.includes(u));
 
-/**
- * Splits a total into one number per unit on show. The total is snapped to the
- * smallest of them first, so 3599 seconds with minutes as the smallest unit
- * reads as `01 h 00 m` rather than `00 h 60 m`.
- */
+// Snaps to the smallest unit first, so 3599s with minutes smallest reads `01 h 00 m`, not `00 h 60 m`.
 const splitDuration = (total: number, units: DurationUnit[]): Record<DurationUnit, number> => {
   const parts: Record<DurationUnit, number> = { d: 0, h: 0, m: 0, s: 0 };
   const smallest = UNIT_SECONDS[units[units.length - 1]];
@@ -44,12 +39,10 @@ interface DurationInputContextValue {
   seconds: number | null;
   units: DurationUnit[];
   parts: Record<DurationUnit, number>;
-  /** The largest unit absorbs the overflow; the rest roll over at their base. */
   maxFor: (unit: DurationUnit) => number;
   widthFor: (unit: DurationUnit) => number;
   setUnit: (unit: DurationUnit, next: number) => void;
   clear: () => void;
-  /** The segment being typed into, if any. Everything else reads from `parts`. */
   draft: { unit: DurationUnit; text: string } | null;
   setDraft: (next: { unit: DurationUnit; text: string } | null) => void;
   focusUnit: (from: DurationUnit, delta: number) => void;

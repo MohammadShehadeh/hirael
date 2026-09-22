@@ -62,13 +62,6 @@ function Carousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  React.useEffect(() => {
-    const node = api?.rootNode();
-    if (!node) return;
-    const dir = getComputedStyle(node).direction === 'rtl' ? 'rtl' : 'ltr';
-    setDetectedDirection((prev) => (prev === dir ? prev : dir));
-  }, [api]);
-
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
     setCanScrollPrev(api.canScrollPrev());
@@ -97,6 +90,20 @@ function Carousel({
     },
     [direction, scrollPrev, scrollNext],
   );
+
+  React.useEffect(() => {
+    if (opts?.direction) return;
+    const node = api?.rootNode();
+    if (!node) return;
+    const sync = () => {
+      const dir = getComputedStyle(node).direction === 'rtl' ? 'rtl' : 'ltr';
+      setDetectedDirection((prev) => (prev === dir ? prev : dir));
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+    return () => observer.disconnect();
+  }, [api, opts?.direction]);
 
   React.useEffect(() => {
     if (!api || !setApi) return;

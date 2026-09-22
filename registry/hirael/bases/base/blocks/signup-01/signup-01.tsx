@@ -6,14 +6,7 @@ import { ArrowRight, Loader2, MailCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Checkbox } from '@/registry/hirael/bases/base/ui/checkbox';
-import {
-  Field,
-  FieldContent,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldSeparator,
-} from '@/registry/hirael/bases/base/ui/field';
+import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import {
   PasswordInput,
@@ -161,9 +154,7 @@ const Signup01 = () => {
             >
               <FieldGroup className="gap-5">
                 <Field className="gap-1.5" data-invalid={Boolean(errors.name) || undefined}>
-                  <FieldLabel htmlFor="signup01-name" className="text-xs uppercase text-muted-foreground">
-                    Name
-                  </FieldLabel>
+                  <FieldLabel htmlFor="signup01-name">Name</FieldLabel>
                   <Input
                     id="signup01-name"
                     placeholder="Ada Lovelace"
@@ -173,15 +164,11 @@ const Signup01 = () => {
                     aria-invalid={Boolean(errors.name) || undefined}
                     aria-describedby={errors.name ? 'signup01-name-error' : undefined}
                   />
-                  <FieldError id="signup01-name-error" className="text-xs">
-                    {errors.name}
-                  </FieldError>
+                  <FieldError id="signup01-name-error">{errors.name}</FieldError>
                 </Field>
 
                 <Field className="gap-1.5" data-invalid={Boolean(errors.email) || undefined}>
-                  <FieldLabel htmlFor="signup01-email" className="text-xs uppercase text-muted-foreground">
-                    Email
-                  </FieldLabel>
+                  <FieldLabel htmlFor="signup01-email">Email</FieldLabel>
                   <Input
                     id="signup01-email"
                     type="email"
@@ -192,15 +179,11 @@ const Signup01 = () => {
                     aria-invalid={Boolean(errors.email) || undefined}
                     aria-describedby={errors.email ? 'signup01-email-error' : undefined}
                   />
-                  <FieldError id="signup01-email-error" className="text-xs">
-                    {errors.email}
-                  </FieldError>
+                  <FieldError id="signup01-email-error">{errors.email}</FieldError>
                 </Field>
 
                 <Field className="gap-1.5" data-invalid={Boolean(errors.password) || undefined}>
-                  <FieldLabel htmlFor="signup01-password" className="text-xs uppercase text-muted-foreground">
-                    Password
-                  </FieldLabel>
+                  <FieldLabel htmlFor="signup01-password">Password</FieldLabel>
                   <PasswordInput id="signup01-password" value={password} onValueChange={setPassword}>
                     <PasswordInputField
                       placeholder="••••••••"
@@ -210,9 +193,7 @@ const Signup01 = () => {
                     />
                     <PasswordInputStrength />
                   </PasswordInput>
-                  <FieldError id="signup01-password-error" className="text-xs">
-                    {errors.password}
-                  </FieldError>
+                  <FieldError id="signup01-password-error">{errors.password}</FieldError>
                 </Field>
 
                 <Field orientation="horizontal" className="gap-2" data-invalid={Boolean(errors.terms) || undefined}>
@@ -224,10 +205,7 @@ const Signup01 = () => {
                     aria-describedby={errors.terms ? 'signup01-terms-error' : undefined}
                   />
                   <FieldContent className="gap-1">
-                    <FieldLabel
-                      htmlFor="signup01-terms"
-                      className="cursor-pointer text-xs font-normal text-muted-foreground"
-                    >
+                    <FieldLabel htmlFor="signup01-terms" className="cursor-pointer">
                       <span>
                         I agree to the{' '}
                         <a href="#" className="font-medium text-foreground underline-offset-4 hover:underline">
@@ -236,9 +214,7 @@ const Signup01 = () => {
                         .
                       </span>
                     </FieldLabel>
-                    <FieldError id="signup01-terms-error" className="text-xs">
-                      {errors.terms}
-                    </FieldError>
+                    <FieldError id="signup01-terms-error">{errors.terms}</FieldError>
                   </FieldContent>
                 </Field>
 
@@ -256,9 +232,11 @@ const Signup01 = () => {
                   )}
                 </Button>
 
-                <FieldSeparator className="[&_[data-slot=field-separator-content]]:bg-card">
+                <div data-slot="signup-separator" className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <span aria-hidden className="h-px flex-1 bg-border" />
                   or continue with
-                </FieldSeparator>
+                  <span aria-hidden className="h-px flex-1 bg-border" />
+                </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <Button type="button" variant="outline">

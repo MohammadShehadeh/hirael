@@ -1,5 +1,3 @@
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
 import { LogoIcon } from './primitives';
 
 const NAV_LINKS = ['Network', 'Ecosystem', 'Rewards', 'Help', 'News'];
@@ -25,12 +23,12 @@ export const Navbar = () => {
           ))}
         </div>
 
-        <Button
+        <button
           type="button"
-          className="h-auto rounded-full bg-black px-7 py-2.5 text-base text-white duration-200 hover:bg-gray-800"
+          className="inline-flex shrink-0 items-center justify-center rounded-full bg-black px-7 py-2.5 text-base font-medium whitespace-nowrap text-white transition-all duration-200 outline-none hover:bg-gray-800 focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
           Open Wallet
-        </Button>
+        </button>
       </div>
     </nav>
   );

@@ -21,7 +21,6 @@ export interface CommandPaletteRecent {
 
 const NEVER_CHANGES = () => () => {};
 
-/** True on Apple platforms, resolved without a hydration mismatch. */
 const useIsApple = () =>
   React.useSyncExternalStore(
     NEVER_CHANGES,
@@ -44,19 +43,11 @@ const parseRecents = (raw: string | null): CommandPaletteRecent[] => {
   }
 };
 
-/**
- * Recents live in localStorage, so another tab or a second palette on the same
- * page updates every subscriber. Snapshots are cached against the raw string,
- * since the hook needs a stable reference for an unchanged value.
- */
+// Cached per raw string: useSyncExternalStore needs a stable snapshot for an unchanged value.
 const recentsListeners = new Set<() => void>();
 const recentsCache = new Map<string, { raw: string | null; value: CommandPaletteRecent[] }>();
 
-/**
- * Holds a key's list when localStorage refused the write, and from then on
- * answers for it: storage that cannot be written cannot change. A private-mode
- * visitor still gets recents for the length of the visit.
- */
+// Answers for keys localStorage refused to write (private mode), so recents still last the visit.
 const recentsMemory = new Map<string, CommandPaletteRecent[]>();
 
 const subscribeRecents = (onStoreChange: () => void) => {
@@ -113,10 +104,9 @@ const usePalette = () => {
   return ctx;
 };
 
-/** The page a part belongs to. `null` is the top level. */
+/** `null` is the top level. */
 const PageContext = React.createContext<string | null>(null);
 
-/** True for items rendered inside `<CommandPaletteRecents>`. */
 const RecentsContext = React.createContext(false);
 
 export interface CommandPaletteProps {
@@ -206,8 +196,7 @@ const CommandPalette = ({
     recentsMemory.delete(recentsKey);
     try {
       window.localStorage.removeItem(recentsKey);
-    } catch {
-    }
+    } catch {}
     emitRecents();
   }, [recentsKey]);
 
@@ -334,7 +323,6 @@ export interface CommandPalettePageProps {
   children?: React.ReactNode;
 }
 
-/** Renders its children only while it is the page on top of the stack. */
 const CommandPalettePage = ({ name, children }: CommandPalettePageProps) => {
   const ctx = usePalette();
   if (ctx.activePage !== name) return null;
@@ -414,10 +402,7 @@ export interface CommandPaletteRecentsProps {
   children: (recent: CommandPaletteRecent) => React.ReactNode;
 }
 
-/**
- * The recently chosen items, newest first. The child is a function because only
- * the caller knows what an id should do when it is picked again.
- */
+/** Newest first. The child is a function because only the caller knows what a re-picked id does. */
 const CommandPaletteRecents = ({ heading = 'Recent', children }: CommandPaletteRecentsProps) => {
   const ctx = usePalette();
   const page = React.useContext(PageContext);

@@ -7,10 +7,7 @@ import { CheckIcon, ChevronsUpDownIcon, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { InputGroup, InputGroupAddon } from '@/registry/hirael/bases/radix/ui/input-group';
 
-/**
- * Base UI styles className as `string | ((state) => string)`. The wrappers
- * here only ever pass strings through `cn`, so narrow it back to a string.
- */
+// Base UI also accepts a className function; these wrappers only pass strings through `cn`.
 type WithClassName<T> = Omit<T, 'className'> & { className?: string };
 
 const Combobox = <Value, Multiple extends boolean | undefined = false>(
@@ -23,11 +20,7 @@ const ComboboxValue = (props: ComboboxPrimitive.Value.Props) => {
   return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;
 };
 
-/**
- * Anchor the popup to a custom element (e.g. a <ComboboxChips> container)
- * rather than the input. Pass the returned ref to that element and to
- * <ComboboxContent anchor={…}>.
- */
+/** Pass the ref to a custom anchor (e.g. `<ComboboxChips>`) and to `<ComboboxContent anchor={…}>`. */
 const useComboboxAnchor = () => {
   return React.useRef<HTMLDivElement>(null);
 };

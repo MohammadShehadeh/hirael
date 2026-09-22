@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-/** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
@@ -22,7 +21,6 @@ const phone = '+1 (555) 012 3456';
 const glow = (w: number, h: number) =>
   `radial-gradient(${w}% ${h}% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklab, var(--primary) 60%, transparent) 80%, color-mix(in oklab, var(--primary) 18%, var(--card)) 100%)`;
 
-// Resting state of the scroll-linked glow, used under reduced motion.
 const STATIC_GLOW = glow(120, 135);
 
 const Cta05 = () => {
@@ -86,16 +84,11 @@ const Cta05 = () => {
               className={cn(RISE, 'mt-10 grid w-full max-w-md grid-cols-1 gap-5 md:grid-cols-2')}
             >
               <div className="flex flex-col items-center gap-2">
-                <Button
-                  render={<a href={`mailto:${email}`} />}
-                  nativeButton={false}
-                  size="lg"
-                  className="w-full rounded-full"
-                >
+                <Button render={<a href={`mailto:${email}`} />} nativeButton={false} size="lg" className="w-full">
                   <Mail className="size-4" />
                   Send email
                 </Button>
-                <CopyButton value={email} className="max-w-full font-medium text-muted-foreground">
+                <CopyButton value={email} className="max-w-full">
                   {email}
                 </CopyButton>
               </div>
@@ -105,7 +98,7 @@ const Cta05 = () => {
                   nativeButton={false}
                   size="lg"
                   variant="outline"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Phone className="size-4" />
                   Call us

@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 
-import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+
+import { PillButton } from './primitives';
 
 const FEATURE_VIDEO = '/media/templates/velorah/feature.mp4';
 
@@ -65,21 +66,17 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: { videoSrc?: st
 
           <div>
             <ToggleGroup
-              type="single"
               variant="outline"
+              size="sm"
               spacing={2}
-              value={active.id}
-              onValueChange={(id) => {
+              value={[active.id]}
+              onValueChange={([id]) => {
                 if (id) setActiveId(id);
               }}
               className="mb-8 flex-wrap"
             >
               {FEATURE_TABS.map((tab) => (
-                <ToggleGroupItem
-                  key={tab.id}
-                  value={tab.id}
-                  className="h-auto rounded-full px-4 py-2 text-xs font-normal text-muted-foreground shadow-none data-pressed:border-primary data-pressed:bg-primary data-pressed:text-primary-foreground"
-                >
+                <ToggleGroupItem key={tab.id} value={tab.id}>
                   {tab.label}
                 </ToggleGroupItem>
               ))}
@@ -92,13 +89,7 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: { videoSrc?: st
               />
             </div>
 
-            <Button
-              type="button"
-              variant="ghost"
-              className="liquid-glass h-auto rounded-full px-8 py-3 font-normal text-foreground transition-transform hover:scale-[1.03]"
-            >
-              Explore the Velorah Flow
-            </Button>
+            <PillButton className="px-8 py-3">Explore the Velorah Flow</PillButton>
           </div>
         </div>
 

@@ -115,7 +115,7 @@ const SparklineDemo = () => {
             min={3500}
             max={6000}
             inset={4}
-            className="h-12 w-56 text-warm"
+            className="h-12 w-56"
             label={t({
               en: 'Daily revenue for the last 12 days',
               ar: 'الإيراد اليومي لآخر 12 يومًا',

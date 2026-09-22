@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-/** Entrance: fade and rise on the house curve, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 const SWAP =
@@ -20,17 +19,11 @@ const CONTACT = {
 
 const HEADLINE = 'Tell us what you are building';
 
-/** Digits only, ready for a wa.me link. */
 const digits = (phone: string) => phone.replace(/\D/g, '');
 
 const GLOW =
   'radial-gradient(100% 100% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklch, var(--primary) 18%, transparent) 82%, color-mix(in oklch, var(--primary) 40%, transparent) 100%)';
 
-/**
- * Rounded panel whose bottom glow widens as the section scrolls through the
- * viewport. The glow is its own layer and only its transform changes, once
- * per frame at most; under reduced motion it stays still.
- */
 const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const glowRef = React.useRef<HTMLDivElement>(null);
@@ -98,12 +91,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
 const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-      <Badge
-        data-slot="contact-badge"
-        variant="outline"
-        className={cn('bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm', className)}
-        {...props}
-      />
+      <Badge data-slot="contact-badge" variant="outline" className={className} {...props} />
     </div>
   );
 };
@@ -200,7 +188,7 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
       data-state={copied ? 'copied' : 'idle'}
       aria-label={copied ? 'Copied' : label}
       onClick={copy}
-      className={cn('text-muted-foreground hover:text-foreground', className)}
+      className={className}
       {...props}
     >
       <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1')}>
@@ -247,7 +235,7 @@ const Contact03 = () => {
                   render={<a href={`mailto:${CONTACT.email}`} />}
                   nativeButton={false}
                   size="lg"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Mail />
                   Send an email
@@ -259,7 +247,7 @@ const Contact03 = () => {
                   nativeButton={false}
                   size="lg"
                   variant="outline"
-                  className="w-full rounded-full"
+                  className="w-full"
                 >
                   <Phone />
                   Call or chat

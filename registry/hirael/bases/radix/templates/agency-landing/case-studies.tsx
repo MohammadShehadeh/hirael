@@ -1,8 +1,8 @@
 import { ArrowRight } from 'lucide-react';
 
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+import { cn } from '@/lib/utils';
 
-import { LinkIcon } from './primitives';
+import { LinkIcon, PILL_LABEL } from './primitives';
 
 const NARRATIV_VIDEO = '/media/templates/agency-landing/case-study-narrativ.mp4';
 const LUMINAR_VIDEO = '/media/templates/agency-landing/case-study-luminar.mp4';
@@ -15,12 +15,14 @@ export const CaseStudies = () => {
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
             2
           </span>
-          <Badge
-            variant="outline"
-            className="border-gray-300 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]"
+          <span
+            className={cn(
+              PILL_LABEL,
+              'border-gray-300 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]',
+            )}
           >
             Featured client work
-          </Badge>
+          </span>
         </div>
 
         <h2 className="mb-10 px-5 text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12">

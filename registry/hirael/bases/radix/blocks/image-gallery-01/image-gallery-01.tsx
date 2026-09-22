@@ -12,7 +12,6 @@ import {
   LightboxTrigger,
   type LightboxItem,
 } from '@/registry/hirael/bases/radix/components/lightbox';
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/registry/hirael/bases/radix/ui/empty';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
@@ -144,7 +143,11 @@ const ImageGallery01 = () => {
   };
 
   return (
-    <section data-slot="image-gallery" className="bg-background py-20 sm:py-28" aria-labelledby="image-gallery-01-heading">
+    <section
+      data-slot="image-gallery"
+      className="bg-background py-20 sm:py-28"
+      aria-labelledby="image-gallery-01-heading"
+    >
       <div className="container w-full">
         <div
           data-slot="image-gallery-header"
@@ -174,8 +177,8 @@ const ImageGallery01 = () => {
           >
             <TabsList variant="line" className="flex-wrap group-data-[orientation=horizontal]/tabs:h-auto">
               {FILTERS.map((f) => (
-                <TabsTrigger key={f} value={f} className="gap-1.5 uppercase">
-                  {f}
+                <TabsTrigger key={f} value={f}>
+                  <span className="uppercase">{f}</span>
                   <span className="text-[10px] tabular-nums text-muted-foreground">{countFor(f)}</span>
                 </TabsTrigger>
               ))}
@@ -184,7 +187,7 @@ const ImageGallery01 = () => {
         </div>
 
         {visible.length === 0 ? (
-          <Empty key={filter} data-slot="image-gallery-empty" className={cn(SWAP, 'mt-10 border border-border')}>
+          <Empty key={filter} data-slot="image-gallery-empty" className={cn(SWAP, 'mt-10')}>
             <EmptyHeader>
               <EmptyTitle>No {filter.toLowerCase()} work yet</EmptyTitle>
               <EmptyDescription>
@@ -212,52 +215,53 @@ const ImageGallery01 = () => {
                 >
                   <LightboxTrigger
                     index={tileIndex}
-                    ref={(node: HTMLButtonElement | null) => {
-                      tileRefs.current[tileIndex] = node;
-                    }}
                     data-slot="image-gallery-tile"
                     aria-label={`${t.client}, ${t.project}. Open image ${tileIndex + 1} of ${visible.length}`}
-                    className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    asChild
                   >
-                    <span className={cn('relative block overflow-hidden rounded-t-md bg-muted', t.aspect)}>
-                      <Image
-                        src={t.src}
-                        alt=""
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 motion-reduce:transition-none"
-                      />
-                      {/* Photo scrim: keeps the white chips legible on any image. */}
-                      <span
-                        aria-hidden
-                        className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/40 via-black/0 to-black/10"
-                      />
-                      <Badge
-                        variant="outline"
-                        className="absolute start-3 top-3 border-white/30 bg-black/20 text-white backdrop-blur-sm"
-                      >
-                        {t.tag}
-                      </Badge>
-                      <span
-                        aria-hidden
-                        className="absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-sm border border-white/30 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-[opacity,transform] duration-150 ease-out group-hover:scale-105 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-                      >
-                        <Maximize2 className="size-3.5" />
-                      </span>
-                    </span>
-                    <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-4 py-3">
-                      <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 text-sm tracking-[-0.01em]">
-                        <span className="font-medium text-foreground">{t.client}</span>
-                        <span className="text-muted-foreground">{t.project}</span>
-                      </span>
-                      <span className="flex shrink-0 items-center gap-2 text-xs uppercase text-muted-foreground">
-                        <span className="tabular-nums">{t.year}</span>
-                        <span aria-hidden className="text-border">
-                          |
+                    <button
+                      type="button"
+                      ref={(node: HTMLButtonElement | null) => {
+                        tileRefs.current[tileIndex] = node;
+                      }}
+                      className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <span className={cn('relative block overflow-hidden rounded-t-md bg-muted', t.aspect)}>
+                        <Image
+                          src={t.src}
+                          alt=""
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 motion-reduce:transition-none"
+                        />
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/40 via-black/0 to-black/10"
+                        />
+                        <span className="absolute start-3 top-3 inline-flex items-center rounded-full border border-white/30 bg-black/20 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+                          {t.tag}
                         </span>
-                        <span>{t.type}</span>
+                        <span
+                          aria-hidden
+                          className="absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-sm border border-white/30 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-[opacity,transform] duration-150 ease-out group-hover:scale-105 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+                        >
+                          <Maximize2 className="size-3.5" />
+                        </span>
                       </span>
-                    </span>
+                      <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-4 py-3">
+                        <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 text-sm tracking-[-0.01em]">
+                          <span className="font-medium text-foreground">{t.client}</span>
+                          <span className="text-muted-foreground">{t.project}</span>
+                        </span>
+                        <span className="flex shrink-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+                          <span className="tabular-nums">{t.year}</span>
+                          <span aria-hidden className="text-border">
+                            |
+                          </span>
+                          <span>{t.type}</span>
+                        </span>
+                      </span>
+                    </button>
                   </LightboxTrigger>
                 </li>
               ))}

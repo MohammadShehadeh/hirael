@@ -6,10 +6,7 @@ export interface ExampleEmbedShellProps {
   children: ReactNode;
 }
 
-/**
- * The frame sizes to `[data-embed-shell]`, so the floor lives on the inner box where `?fit=1` can't zero it: the
- * demo is centered in the same min-height the inline example used, and fills the viewport on a direct visit.
- */
+// The docs frame measures the outer shell, so the minimum height sits on the inner box.
 export const ExampleEmbedShell = ({ children }: ExampleEmbedShellProps) => {
   return (
     <div data-embed-shell className="bg-background">

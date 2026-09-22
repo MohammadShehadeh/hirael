@@ -34,7 +34,7 @@ const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
 
 const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 
-// Floor keeps a refresh from collapsing before the first measurement. Blocks get their natural height; full-page templates are capped and scroll internally instead of stretching the page.
+// A floor keeps a refresh from collapsing the frame. Templates are capped so they scroll instead of stretching the page.
 const MIN_HEIGHT = 320;
 const BLOCK_MAX_HEIGHT = 1200;
 const TEMPLATE_MAX_HEIGHT = 700;

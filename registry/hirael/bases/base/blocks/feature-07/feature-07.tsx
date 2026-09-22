@@ -40,7 +40,7 @@ const Feature07 = () => {
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col gap-4 text-center">
         <Badge
           variant="outline"
-          className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none bg-card/70 px-4 py-1.5 uppercase text-muted-foreground"
+          className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
         >
           The problem
         </Badge>

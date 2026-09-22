@@ -96,7 +96,6 @@ const CellValue = ({ value }: { value: Value }) => {
   );
 };
 
-/** Collapses a table row's cell content with the grid-rows height trick; exits run faster than entrances. */
 const Collapse = ({ open, className, children }: { open: boolean; className?: string; children: React.ReactNode }) => (
   <div
     className={cn(
@@ -148,10 +147,9 @@ const Comparison04 = () => {
             className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           >
             <ToggleGroup
-              type="single"
               variant="outline"
-              value={selected}
-              onValueChange={(next) => next && setPicked(next as PlanKey)}
+              value={[selected]}
+              onValueChange={([next]) => next && setPicked(next as PlanKey)}
               aria-label="Plan to compare"
               className="w-full sm:w-auto md:hidden"
             >
@@ -167,9 +165,7 @@ const Comparison04 = () => {
               <span className="tabular-nums">{TOTAL_ROWS}</span> features
             </p>
             <div className="flex items-center gap-3">
-              <Label htmlFor="comparison-04-differences" className="font-normal text-muted-foreground">
-                Show differences only
-              </Label>
+              <Label htmlFor="comparison-04-differences">Show differences only</Label>
               <Switch id="comparison-04-differences" checked={differencesOnly} onCheckedChange={setDifferencesOnly} />
             </div>
           </div>

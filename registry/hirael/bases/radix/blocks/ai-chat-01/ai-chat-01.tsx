@@ -28,7 +28,6 @@ import {
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/registry/hirael/bases/radix/ui/sheet';
-import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
 
 export type AiChatRole = 'user' | 'assistant';
 
@@ -91,7 +90,6 @@ const AiChat = ({ className, ...props }: AiChatProps) => {
 
 type AiChatSidebarProps = React.ComponentProps<'aside'>;
 
-/** Fixed column on lg and up; a sheet below that, opened by AiChatSidebarTrigger. */
 const AiChatSidebar = ({ className, children, ...props }: AiChatSidebarProps) => {
   const { mobileOpen, mobileSide, closeMobile } = useAiChat();
 
@@ -105,11 +103,13 @@ const AiChatSidebar = ({ className, children, ...props }: AiChatSidebarProps) =>
         {children}
       </aside>
       <Sheet open={mobileOpen} onOpenChange={(open) => !open && closeMobile()}>
-        <SheetContent side={mobileSide} data-slot="ai-chat-sidebar-sheet" className="w-80 gap-0 p-0 sm:max-w-80">
-          <SheetHeader className="h-12 shrink-0 justify-center border-b border-border py-0">
-            <SheetTitle className="text-sm">Conversations</SheetTitle>
-            <SheetDescription className="sr-only">Start a new chat or pick an earlier one.</SheetDescription>
-          </SheetHeader>
+        <SheetContent side={mobileSide} data-slot="ai-chat-sidebar-sheet" className="w-80 sm:max-w-80">
+          <div className="shrink-0 border-b border-border">
+            <SheetHeader>
+              <SheetTitle>Conversations</SheetTitle>
+              <SheetDescription className="sr-only">Start a new chat or pick an earlier one.</SheetDescription>
+            </SheetHeader>
+          </div>
           <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         </SheetContent>
       </Sheet>
@@ -239,14 +239,7 @@ type AiChatSuggestionProps = React.ComponentProps<'button'>;
 
 const AiChatSuggestion = ({ className, children, ...props }: AiChatSuggestionProps) => {
   return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      data-slot="ai-chat-suggestion"
-      className={cn('rounded-full', className)}
-      {...props}
-    >
+    <Button type="button" variant="outline" size="sm" data-slot="ai-chat-suggestion" className={className} {...props}>
       {children}
     </Button>
   );
@@ -258,7 +251,6 @@ const prefersReducedMotion = () => {
 
 type AiChatMessagesProps = React.ComponentProps<'div'>;
 
-/** Scrolls to the newest message while streaming unless the reader scrolled up. */
 const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) => {
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -314,13 +306,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
         {children}
         {!atBottom ? (
           <div className="sticky bottom-4 z-10 -mt-6 flex h-0 justify-center overflow-visible">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={scrollToBottom}
-              className="-translate-y-full rounded-full shadow-md backdrop-blur"
-            >
+            <Button type="button" variant="outline" size="sm" onClick={scrollToBottom} className="-translate-y-full">
               <ArrowDown className="size-3.5" aria-hidden />
               Jump to latest
             </Button>
@@ -413,7 +399,6 @@ interface AiChatComposerProps extends Omit<React.ComponentProps<'form'>, 'onSubm
   maxRows?: number;
 }
 
-/** Pinned composer: Enter sends, Shift+Enter breaks the line, Stop while streaming. */
 const AiChatComposer = ({
   value: valueProp,
   defaultValue = '',
@@ -476,7 +461,7 @@ const AiChatComposer = ({
         className="mx-auto flex w-full max-w-3xl flex-col gap-2 rounded-xl border border-input bg-card p-2 shadow-xs transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 motion-reduce:transition-none"
         {...props}
       >
-        <Textarea
+        <textarea
           ref={textareaRef}
           rows={1}
           value={value}
@@ -490,30 +475,18 @@ const AiChatComposer = ({
               submit();
             }
           }}
-          className="min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent"
+          className="min-h-0 w-full resize-none bg-transparent px-2 py-1.5 text-sm leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
         />
         <div className="flex items-center gap-2">
           {hint ? (
             <p className="me-auto flex flex-wrap gap-x-3 px-1 text-[11px] text-muted-foreground">{hint}</p>
           ) : null}
           {isStreaming ? (
-            <Button
-              type="button"
-              size="icon-sm"
-              aria-label="Stop generating"
-              onClick={onStop}
-              className="ms-auto rounded-full"
-            >
+            <Button type="button" size="icon-sm" aria-label="Stop generating" onClick={onStop} className="ms-auto">
               <Square className="size-3 fill-current" aria-hidden />
             </Button>
           ) : (
-            <Button
-              type="submit"
-              size="icon-sm"
-              aria-label="Send message"
-              disabled={!canSubmit}
-              className="ms-auto rounded-full"
-            >
+            <Button type="submit" size="icon-sm" aria-label="Send message" disabled={!canSubmit} className="ms-auto">
               <ArrowUp aria-hidden />
             </Button>
           )}
@@ -855,13 +828,7 @@ const AiChat01 = () => {
             <Badge variant="outline" className="hidden sm:inline-flex">
               plinth-2-pro
             </Badge>
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-label={copied ? 'Link copied' : 'Share chat'}
-              onClick={shareChat}
-              className="px-2"
-            >
+            <Button variant="ghost" size="sm" aria-label={copied ? 'Link copied' : 'Share chat'} onClick={shareChat}>
               {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
               {copied ? <span className={cn(SWAP, 'text-xs')}>Copied</span> : null}
             </Button>

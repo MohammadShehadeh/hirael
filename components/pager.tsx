@@ -9,10 +9,7 @@ export interface PagerProps {
   next: RegistryEntryMeta | null;
 }
 
-/**
- * Previous/next along the catalog order, set as a hairline-split strip in the same voice as the category index
- * (`02 / 10`, uppercase kicker, bare title). A missing side keeps its half so the other link stays put.
- */
+/** An empty side keeps its half so the other link does not shift. */
 export const Pager = ({ prev, next }: PagerProps) => {
   if (!prev && !next) return null;
 

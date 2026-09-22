@@ -156,7 +156,7 @@ export const Explorations = () => {
             aria-modal="true"
             aria-label="Exploration preview"
             onClick={() => setActive(null)}
-            className={cn('fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6')}
+            className={cn('fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6 text-white')}
           >
             <Button
               type="button"
@@ -164,7 +164,7 @@ export const Explorations = () => {
               size="icon-lg"
               aria-label="Close"
               onClick={() => setActive(null)}
-              className="absolute end-6 top-6 rounded-full border border-white/15 text-white/80 hover:text-white"
+              className="absolute end-6 top-6"
             >
               <svg
                 viewBox="0 0 24 24"

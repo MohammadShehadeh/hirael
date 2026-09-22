@@ -146,7 +146,10 @@ const Ecommerce02 = () => {
             <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Cart</span>
             <h2
               style={stagger(1, 70)}
-              className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl')}
+              className={cn(
+                ENTER,
+                'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              )}
             >
               {checkout === 'placed' ? 'On its way.' : 'Almost yours.'}
             </h2>
@@ -195,7 +198,7 @@ const Ecommerce02 = () => {
             </Button>
           </div>
         ) : items.length === 0 ? (
-          <Empty data-slot="ecommerce-empty" className={cn(SWAP, 'border border-border')}>
+          <Empty data-slot="ecommerce-empty" className={SWAP}>
             <EmptyHeader>
               <EmptyTitle>Your cart is empty</EmptyTitle>
               <EmptyDescription>
@@ -240,7 +243,7 @@ const Ecommerce02 = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="size-7 rounded-e-none"
+                              className="size-7"
                               onClick={() => setQty(item.id, item.qty - 1)}
                               disabled={item.qty <= 1 || leaving || pending}
                               aria-label={`Decrease quantity of ${item.name}`}
@@ -253,7 +256,7 @@ const Ecommerce02 = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="size-7 rounded-s-none"
+                              className="size-7"
                               onClick={() => setQty(item.id, item.qty + 1)}
                               disabled={item.qty >= MAX_QTY || leaving || pending}
                               aria-label={`Increase quantity of ${item.name}`}
@@ -272,7 +275,7 @@ const Ecommerce02 = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="size-7 text-muted-foreground hover:text-foreground"
+                            className="size-7"
                             onClick={() => removeItem(item.id)}
                             disabled={leaving || pending}
                             aria-label={`Remove ${item.name}`}
@@ -299,128 +302,129 @@ const Ecommerce02 = () => {
               className={cn(ENTER, 'h-fit lg:sticky lg:top-6')}
             >
               <CardHeader>
-                <CardDescription className="text-xs uppercase">Order summary</CardDescription>
+                <CardDescription>Order summary</CardDescription>
                 <CardTitle className="sr-only">Order summary</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span className="tabular-nums">{usd(subtotal)}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Shipping</span>
-                  {shipping === 0 ? (
-                    <span className="text-xs uppercase text-success">Free</span>
-                  ) : (
-                    <span className="tabular-nums">{usd(shipping)}</span>
-                  )}
-                </div>
-                {promoApplied && (
-                  <div className={cn(SWAP, 'flex items-center justify-between text-sm')}>
-                    <span className="inline-flex items-center gap-2 text-muted-foreground">
-                      <span>Discount</span>
-                      <span className="text-xs uppercase">{PROMO_CODE}</span>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-xs"
-                        onClick={() => setPromoApplied(false)}
-                        disabled={pending}
-                        aria-label="Remove promo code"
-                        className="size-4 rounded-sm text-muted-foreground"
-                      >
-                        <X className="size-2.5" />
-                      </Button>
-                    </span>
-                    <span className="tabular-nums text-success">−{usd(discount)}</span>
+              <CardContent>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="tabular-nums">{usd(subtotal)}</span>
                   </div>
-                )}
-                {shipping > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    {usd(FREE_SHIPPING_OVER - (subtotal - discount))} away from free shipping
-                  </p>
-                )}
-
-                <Separator className="my-1" />
-
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium">Total</span>
-                  <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">{usd(total)}</span>
-                </div>
-
-                {!promoApplied && (
-                  <div className="flex flex-col gap-1.5">
-                    <InputGroup>
-                      <InputGroupInput
-                        value={code}
-                        onChange={(e) => {
-                          setCode(e.target.value);
-                          setPromoError(false);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') applyPromo();
-                        }}
-                        placeholder="Promo code"
-                        aria-label="Promo code"
-                        aria-invalid={promoError}
-                        aria-describedby="ecommerce-02-promo-help"
-                        disabled={pending}
-                        className="text-xs uppercase"
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
-                          Apply
-                        </InputGroupButton>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    <p
-                      id="ecommerce-02-promo-help"
-                      key={promoError ? 'error' : 'help'}
-                      className={cn(SWAP, 'text-xs', promoError ? 'text-destructive' : 'text-muted-foreground')}
-                    >
-                      {promoError ? (
-                        <>That code isn&apos;t recognized. Try {PROMO_CODE}.</>
-                      ) : (
-                        <>Try {PROMO_CODE} for 10% off</>
-                      )}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Shipping</span>
+                    {shipping === 0 ? (
+                      <span className="text-xs uppercase text-success">Free</span>
+                    ) : (
+                      <span className="tabular-nums">{usd(shipping)}</span>
+                    )}
+                  </div>
+                  {promoApplied && (
+                    <div className={cn(SWAP, 'flex items-center justify-between text-sm')}>
+                      <span className="inline-flex items-center gap-2 text-muted-foreground">
+                        <span>Discount</span>
+                        <span className="text-xs uppercase">{PROMO_CODE}</span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-xs"
+                          onClick={() => setPromoApplied(false)}
+                          disabled={pending}
+                          aria-label="Remove promo code"
+                          className="size-4"
+                        >
+                          <X className="size-2.5" />
+                        </Button>
+                      </span>
+                      <span className="tabular-nums text-success">−{usd(discount)}</span>
+                    </div>
+                  )}
+                  {shipping > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      {usd(FREE_SHIPPING_OVER - (subtotal - discount))} away from free shipping
                     </p>
-                  </div>
-                )}
-
-                <Button
-                  data-slot="ecommerce-checkout"
-                  className="group mt-1 w-full"
-                  onClick={placeOrder}
-                  disabled={pending || active.length === 0}
-                  aria-busy={pending || undefined}
-                >
-                  {pending ? (
-                    <span key="pending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
-                      <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
-                      Placing order…
-                    </span>
-                  ) : (
-                    <span key="idle" className="inline-flex items-center gap-2">
-                      Checkout
-                      <span className="tabular-nums">{usd(total)}</span>
-                      <ArrowRight
-                        aria-hidden
-                        className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
-                      />
-                    </span>
                   )}
-                </Button>
-                <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground">
-                  <span>Free returns</span>
-                  <span aria-hidden className="text-border">
-                    |
-                  </span>
-                  <span>2-year warranty</span>
-                  <span aria-hidden className="text-border">
-                    |
-                  </span>
-                  <span>Secure checkout</span>
-                </p>
+
+                  <Separator className="my-1" />
+
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm font-medium">Total</span>
+                    <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">{usd(total)}</span>
+                  </div>
+
+                  {!promoApplied && (
+                    <div className="flex flex-col gap-1.5">
+                      <InputGroup>
+                        <InputGroupInput
+                          value={code}
+                          onChange={(e) => {
+                            setCode(e.target.value);
+                            setPromoError(false);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') applyPromo();
+                          }}
+                          placeholder="Promo code"
+                          aria-label="Promo code"
+                          aria-invalid={promoError}
+                          aria-describedby="ecommerce-02-promo-help"
+                          disabled={pending}
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
+                            Apply
+                          </InputGroupButton>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      <p
+                        id="ecommerce-02-promo-help"
+                        key={promoError ? 'error' : 'help'}
+                        className={cn(SWAP, 'text-xs', promoError ? 'text-destructive' : 'text-muted-foreground')}
+                      >
+                        {promoError ? (
+                          <>That code isn&apos;t recognized. Try {PROMO_CODE}.</>
+                        ) : (
+                          <>Try {PROMO_CODE} for 10% off</>
+                        )}
+                      </p>
+                    </div>
+                  )}
+
+                  <Button
+                    data-slot="ecommerce-checkout"
+                    className="group mt-1 w-full"
+                    onClick={placeOrder}
+                    disabled={pending || active.length === 0}
+                    aria-busy={pending || undefined}
+                  >
+                    {pending ? (
+                      <span key="pending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
+                        <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+                        Placing order…
+                      </span>
+                    ) : (
+                      <span key="idle" className="inline-flex items-center gap-2">
+                        Checkout
+                        <span className="tabular-nums">{usd(total)}</span>
+                        <ArrowRight
+                          aria-hidden
+                          className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+                        />
+                      </span>
+                    )}
+                  </Button>
+                  <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground">
+                    <span>Free returns</span>
+                    <span aria-hidden className="text-border">
+                      |
+                    </span>
+                    <span>2-year warranty</span>
+                    <span aria-hidden className="text-border">
+                      |
+                    </span>
+                    <span>Secure checkout</span>
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>

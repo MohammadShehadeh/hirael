@@ -3,10 +3,8 @@ import Link from 'next/link';
 
 import { EmbedDirection } from '../../../embed-direction';
 
-/**
- * `hasDemoNotice` stays in the static HTML and hides only under `html[data-framed]`: auth embeds are bare login
- * forms on a real URL, and Google Safe Browsing flagged them as phishing without the notice on direct visits.
- */
+// Safe Browsing flagged the login demos (real forms on a public URL) as phishing without the
+// notice. It stays visible on a direct visit and hides inside the docs frame.
 export interface BlockEmbedShellProps {
   children: ReactNode;
   hasDemoNotice?: boolean;

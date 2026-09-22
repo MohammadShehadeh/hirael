@@ -188,8 +188,7 @@ const AccountsTable = () => {
 };
 
 const DataTableDemo = () => {
-  // useDataTable keeps page, sort and filters in the URL. In an app the adapter
-  // lives at the root; the demo scopes it here.
+  // In an app NuqsAdapter lives at the root; the demo scopes it here.
   return (
     <NuqsAdapter>
       <div className="w-full max-w-4xl">

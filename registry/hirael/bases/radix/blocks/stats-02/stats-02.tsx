@@ -28,7 +28,6 @@ interface Reading {
   value: string;
   delta: string;
   direction: 'up' | 'down';
-  /** Down is not always bad: p95 latency falling is the win. */
   good: boolean;
   data: number[];
 }
@@ -159,12 +158,7 @@ const Stats02 = () => {
             className={cn(ENTER, 'shrink-0')}
           >
             {RANGES.map((option) => (
-              <ToggleGroupItem
-                key={option.value}
-                value={option.value}
-                aria-label={option.long}
-                className="px-3 text-xs tabular-nums"
-              >
+              <ToggleGroupItem key={option.value} value={option.value} aria-label={option.long}>
                 {option.label}
               </ToggleGroupItem>
             ))}

@@ -52,9 +52,6 @@ const LazySelectDemo = () => {
 
   const mapUser = (u: User) => ({ value: u.id, label: u.name });
 
-  // `enabled: open` defers all network work until the dropdown is opened —
-  // the "lazy" half. `loadMore` appends the next page on scroll — the
-  // "autocomplete + paginate" half.
   const { setQuery, options, loading, loadingMore, hasMore, loadMore } = useLazySelectOptions(fetchUsers, mapUser, {
     enabled: open,
   });

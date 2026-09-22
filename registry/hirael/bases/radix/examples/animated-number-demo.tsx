@@ -28,22 +28,23 @@ const AnimatedNumberDemo = () => {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-md border border-border bg-card p-4">
             <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Revenue', ar: 'الإيرادات' })}</p>
-            <AnimatedNumber value={revenue} prefix="$" className="mt-1 block text-2xl font-semibold tracking-tight" />
+            <span className="mt-1 block text-2xl font-semibold tracking-tight">
+              <AnimatedNumber value={revenue} prefix="$" />
+            </span>
           </div>
           <div className="rounded-md border border-border bg-card p-4">
             <p className="text-xs uppercase text-muted-foreground">
               {t({ en: 'Active users', ar: 'المستخدمون النشطون' })}
             </p>
-            <AnimatedNumber value={users} className="mt-1 block text-2xl font-semibold tracking-tight" />
+            <span className="mt-1 block text-2xl font-semibold tracking-tight">
+              <AnimatedNumber value={users} />
+            </span>
           </div>
           <div className="rounded-md border border-border bg-card p-4">
             <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Conversion', ar: 'معدل التحويل' })}</p>
-            <AnimatedNumber
-              value={3.2}
-              decimals={1}
-              suffix="%"
-              className="mt-1 block text-2xl font-semibold tracking-tight"
-            />
+            <span className="mt-1 block text-2xl font-semibold tracking-tight">
+              <AnimatedNumber value={3.2} decimals={1} suffix="%" />
+            </span>
           </div>
         </div>
         <Button type="button" variant="outline" size="sm" onClick={shuffle} className="mt-1 w-fit">
@@ -53,12 +54,9 @@ const AnimatedNumberDemo = () => {
 
       <div className="grid gap-2">
         <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Compact notation', ar: 'تنسيق مختصر' })}</p>
-        <AnimatedNumber
-          value={1284000}
-          duration={1200}
-          format={{ notation: 'compact', maximumFractionDigits: 1 }}
-          className="text-3xl font-semibold tracking-tight"
-        />
+        <span className="text-3xl font-semibold tracking-tight">
+          <AnimatedNumber value={1284000} duration={1200} format={{ notation: 'compact', maximumFractionDigits: 1 }} />
+        </span>
       </div>
     </div>
   );

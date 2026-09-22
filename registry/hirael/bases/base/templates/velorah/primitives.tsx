@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react';
+
 import { cn } from '@/lib/utils';
 
 export const Wordmark = ({ className }: { className?: string }) => {
@@ -6,5 +8,26 @@ export const Wordmark = ({ className }: { className?: string }) => {
       Velorah
       <sup className="text-[0.4em]">&reg;</sup>
     </span>
+  );
+};
+
+interface PillButtonProps extends ComponentProps<'button'> {
+  /** `glass` is the frosted primary pill, `outline` the quiet bordered one. */
+  tone?: 'glass' | 'outline';
+}
+
+export const PillButton = ({ tone = 'glass', className, ...props }: PillButtonProps) => {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full text-sm font-normal whitespace-nowrap outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        tone === 'glass'
+          ? 'liquid-glass text-foreground transition-transform hover:scale-[1.03]'
+          : 'border border-border text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground',
+        className,
+      )}
+      {...props}
+    />
   );
 };

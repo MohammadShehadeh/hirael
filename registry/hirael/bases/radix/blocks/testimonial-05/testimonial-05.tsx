@@ -164,7 +164,7 @@ const Testimonial05 = () => {
           opts={{ align: 'start', loop: true }}
           aria-label="Customer stories"
           style={stagger(0, 0, 360)}
-          className={cn(ENTER, 'flex flex-col gap-8')}
+          className={cn(ENTER, 'flex flex-col')}
         >
           <div
             data-slot="testimonial-viewport"
@@ -204,7 +204,7 @@ const Testimonial05 = () => {
                     <figcaption className="mt-auto flex flex-col gap-5 border-t border-border pt-5">
                       <div className="flex items-center gap-3">
                         <Avatar className="size-9">
-                          <AvatarFallback className="text-xs font-medium">{story.initials}</AvatarFallback>
+                          <AvatarFallback>{story.initials}</AvatarFallback>
                         </Avatar>
                         <div className="flex min-w-0 flex-col">
                           <span className="text-sm font-medium">{story.name}</span>
@@ -231,7 +231,7 @@ const Testimonial05 = () => {
             </CarouselContent>
           </div>
 
-          <div data-slot="testimonial-controls" className="flex items-center gap-4 sm:gap-6">
+          <div data-slot="testimonial-controls" className="mt-8 flex items-center gap-4 sm:gap-6">
             <span dir="ltr" aria-live="polite" className="shrink-0 text-sm tabular-nums text-muted-foreground">
               <span className="text-foreground">{formatIndex(selected)}</span>
               <span className="mx-1.5 text-border">|</span>

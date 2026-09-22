@@ -5,7 +5,7 @@ import { Check, ChevronDown, X, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
-import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -155,93 +155,85 @@ const MultiSelect = ({
   );
 };
 
-/**
- * Chips carry remove buttons, so they cannot sit inside the trigger button. The
- * bordered box is a wrapper (`multi-select-trigger`) taking `className`; the
- * button inside it (`multi-select-trigger-button`) takes every other prop.
- */
-interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+// Div, not a button: chip remove buttons cannot nest inside a button.
+interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   placeholder?: string;
-  className?: string;
-  children?: React.ReactNode | ((ctx: MultiSelectContextValue) => React.ReactNode);
+  disabled?: boolean;
 }
 
-const MultiSelectTrigger = ({ placeholder = 'Select…', className, children, ...props }: MultiSelectTriggerProps) => {
+const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ...props }: MultiSelectTriggerProps) => {
   const ctx = useMultiSelect();
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
+  const isDisabled = ctx.disabled || disabled;
 
-  // The popover anchors to the whole box, not the inner button that shrinks as chips fill the row.
   return (
-    <PopoverAnchor
-      data-slot="multi-select-trigger"
-      data-state={ctx.open ? 'open' : 'closed'}
-      className={cn(
-        'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors',
-        'hover:border-ring/60 focus-within:border-ring',
-        'data-[state=open]:border-ring',
-        ctx.disabled && 'cursor-not-allowed opacity-50',
-        className,
-      )}
+    <PopoverTrigger
+      asChild
+      onClick={(event) => {
+        if (isDisabled) event.preventDefault();
+      }}
     >
-      {!children && selected.length > 0 && (
-        <span data-slot="multi-select-chips" className="flex flex-wrap items-center gap-1">
-          {selected.map((opt) => (
-            <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
-              {opt.label}
-              {!ctx.disabled && (
-                <button
-                  type="button"
-                  data-slot="multi-select-chip-remove"
-                  aria-label={`Remove ${opt.label}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    ctx.remove(opt.value);
-                  }}
-                  className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
-                >
-                  <X className="size-2.5" />
-                </button>
-              )}
-            </Badge>
-          ))}
-        </span>
-      )}
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          role="combobox"
-          aria-controls={ctx.listboxId}
-          aria-expanded={ctx.open}
-          aria-haspopup="listbox"
-          disabled={ctx.disabled}
-          data-slot="multi-select-trigger-button"
-          data-state={ctx.open ? 'open' : 'closed'}
-          className="flex grow items-center justify-between gap-2 self-stretch text-start outline-none disabled:cursor-not-allowed"
-          {...props}
-        >
-          {typeof children === 'function' ? (
-            children(ctx)
-          ) : children ? (
-            children
-          ) : (
-            <>
-              <span className="flex flex-1 flex-wrap items-center gap-1">
-                {selected.length === 0 && <span className="px-1 text-muted-foreground">{placeholder}</span>}
-              </span>
-              <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
-                {selected.length > 0 && (
-                  <span className="font-mono text-[10px] tabular-nums">
-                    {selected.length}
-                    {ctx.maxCount ? `/${ctx.maxCount}` : ''}
-                  </span>
+      <div
+        role="combobox"
+        aria-controls={ctx.listboxId}
+        aria-expanded={ctx.open}
+        aria-haspopup="listbox"
+        aria-disabled={isDisabled || undefined}
+        tabIndex={isDisabled ? -1 : 0}
+        data-slot="multi-select-trigger"
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          event.currentTarget.click();
+        }}
+        className={cn(
+          'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors outline-none',
+          'hover:border-ring/60 focus-within:border-ring',
+          'data-[state=open]:border-ring',
+          isDisabled && 'cursor-not-allowed opacity-50',
+          className,
+        )}
+        {...props}
+      >
+        {selected.length > 0 && (
+          <span
+            data-slot="multi-select-chips"
+            onClick={(event) => event.stopPropagation()}
+            className="flex flex-wrap items-center gap-1"
+          >
+            {selected.map((opt) => (
+              <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
+                {opt.label}
+                {!isDisabled && (
+                  <button
+                    type="button"
+                    data-slot="multi-select-chip-remove"
+                    aria-label={`Remove ${opt.label}`}
+                    onClick={() => ctx.remove(opt.value)}
+                    className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
+                  >
+                    <X className="size-2.5" />
+                  </button>
                 )}
-                <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-              </span>
-            </>
+              </Badge>
+            ))}
+          </span>
+        )}
+        <span className="flex flex-1 flex-wrap items-center gap-1">
+          {selected.length === 0 && <span className="px-1 text-muted-foreground">{placeholder}</span>}
+        </span>
+        <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
+          {selected.length > 0 && (
+            <span className="font-mono text-[10px] tabular-nums">
+              {selected.length}
+              {ctx.maxCount ? `/${ctx.maxCount}` : ''}
+            </span>
           )}
-        </button>
-      </PopoverTrigger>
-    </PopoverAnchor>
+          <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[state=open]:rotate-180" />
+        </span>
+      </div>
+    </PopoverTrigger>
   );
 };
 
@@ -289,7 +281,7 @@ const MultiSelectContent = ({
       align="start"
       sideOffset={6}
       data-slot="multi-select-content"
-      className={cn('w-(--radix-popover-trigger-width) min-w-[14rem] p-0', className)}
+      className={cn('w-(--radix-popover-trigger-width) min-w-56 p-0', className)}
       onOpenAutoFocus={(e) => {
         e.preventDefault();
         inputRef.current?.focus();

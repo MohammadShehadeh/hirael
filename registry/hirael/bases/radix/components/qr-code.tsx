@@ -423,7 +423,7 @@ const encodeQR = (value: string, level: QRCodeLevel = 'M'): boolean[][] => {
     }
   }
 
-  // format info — BCH(15,5), generator 0x537, masked with 0x5412
+  // Format info: BCH(15,5), generator 0x537, masked with 0x5412.
   const drawFormat = (mask: number) => {
     const data = (EC_FORMAT_BITS[level] << 3) | mask;
     let rem = data;
@@ -440,7 +440,7 @@ const encodeQR = (value: string, level: QRCodeLevel = 'M'): boolean[][] => {
   };
   drawFormat(0);
 
-  // version info — BCH(18,6), generator 0x1f25, version 7+
+  // Version info (version 7+): BCH(18,6), generator 0x1f25.
   if (version >= 7) {
     let rem = version;
     for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1f25);

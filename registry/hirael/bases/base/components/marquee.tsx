@@ -17,11 +17,8 @@ export interface MarqueeProps extends React.ComponentProps<'div'> {
   gap?: string;
 }
 
-// Keyframes travel with the component so it works the moment it is copied
-// into a project — no Tailwind config or globals.css edits required.
-// The horizontal track moves toward the inline-start: flex reverses the
-// duplicated tracks under dir="rtl", so the travel sign flips with it
-// (--marquee-x-dir: -1 ltr, 1 rtl) to keep the loop seamless either way.
+// Inline keyframes need no globals.css edit. Flex reverses the tracks under RTL, so
+// --marquee-x-dir flips the travel sign (-1 ltr, 1 rtl) to keep the loop seamless.
 const MARQUEE_KEYFRAMES = `
 @keyframes msh-marquee-x {
   from { transform: translateX(0); }

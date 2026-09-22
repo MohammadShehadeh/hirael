@@ -146,10 +146,6 @@ interface MentionInputCtx {
   backdropRef: React.RefObject<HTMLDivElement | null>;
   select: (item: MentionItem) => void;
   setActiveIndex: (index: number) => void;
-  /**
-   * Caret, scroll sync and suggestion keys all read state from here, so the
-   * handlers stay put and travel as one bundle for the textarea to spread.
-   */
   textareaProps: Pick<React.ComponentProps<'textarea'>, 'onChange' | 'onSelect' | 'onScroll' | 'onKeyDown' | 'onBlur'>;
 }
 

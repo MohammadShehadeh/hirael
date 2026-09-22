@@ -12,7 +12,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/base/ui/dropdown-menu';
-import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 
 export interface PromptAttachment {
   id: string;
@@ -241,9 +240,7 @@ const PromptInputTextarea = ({
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     onKeyDown?.(event);
     if (event.defaultPrevented) return;
-    // Enter sends, Shift+Enter breaks the line. An IME that is still
-    // composing (Japanese, Chinese, Korean input) uses Enter to commit
-    // the candidate, so leave those alone.
+    // An IME still composing (Japanese, Chinese, Korean) uses Enter to commit the candidate.
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       event.preventDefault();
       submit();
@@ -261,7 +258,7 @@ const PromptInputTextarea = ({
   };
 
   return (
-    <Textarea
+    <textarea
       ref={ref}
       id={textareaId}
       data-slot="prompt-input-textarea"
@@ -273,7 +270,7 @@ const PromptInputTextarea = ({
       onKeyDown={handleKeyDown}
       onPaste={handlePaste}
       className={cn(
-        'min-h-0 resize-none rounded-none border-0 px-2 py-1.5 text-sm leading-6 shadow-none focus-visible:ring-0 dark:bg-transparent',
+        'flex field-sizing-content min-h-0 w-full resize-none bg-transparent px-2 py-1.5 text-sm leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
@@ -289,7 +286,6 @@ const PromptInputToolbar = ({ className, ...props }: PromptInputToolbarProps) =>
 
 type PromptInputActionsProps = React.ComponentProps<'div'>;
 
-/** Start-side group in the toolbar; whatever follows it is pushed to the end. */
 const PromptInputActions = ({ className, ...props }: PromptInputActionsProps) => {
   return (
     <div data-slot="prompt-input-actions" className={cn('me-auto flex items-center gap-1', className)} {...props} />
@@ -329,7 +325,7 @@ const PromptInputAttach = ({ accept, multiple = true, className, children, ...pr
         disabled={disabled}
         aria-label="Attach files"
         onClick={() => inputRef.current?.click()}
-        className={cn('text-muted-foreground hover:text-foreground', className)}
+        className={className}
         {...props}
       >
         {children ?? <Paperclip aria-hidden />}
@@ -340,7 +336,6 @@ const PromptInputAttach = ({ accept, multiple = true, className, children, ...pr
 
 type PromptInputAttachmentsProps = React.ComponentProps<'div'>;
 
-/** Renders a chip per attachment; pass children to lay them out yourself. */
 const PromptInputAttachments = ({ className, children, ...props }: PromptInputAttachmentsProps) => {
   const { attachments, removeAttachment } = usePromptInput();
   if (children == null && attachments.length === 0) return null;
@@ -390,7 +385,7 @@ const PromptInputAttachment = ({ name, size, icon, onRemove, className, ...props
           size="icon-xs"
           onClick={onRemove}
           aria-label={`Remove ${name}`}
-          className="ms-0.5 size-5 rounded-sm text-muted-foreground hover:text-foreground"
+          className="ms-0.5 size-5"
         >
           <X className="size-3" aria-hidden />
         </Button>
@@ -438,10 +433,7 @@ const PromptInputModelSelect = ({
             size="sm"
             disabled={disabled}
             aria-label={`Model: ${selected?.label ?? 'none'}`}
-            className={cn(
-              'gap-1 px-2 text-xs text-muted-foreground hover:text-foreground data-open:bg-accent data-open:text-foreground',
-              className,
-            )}
+            className={className}
           />
         }
       >
@@ -451,7 +443,7 @@ const PromptInputModelSelect = ({
       <DropdownMenuContent align={align} className="w-64" data-slot="prompt-input-model-select-content">
         <DropdownMenuRadioGroup value={value} onValueChange={handleChange}>
           {models.map((model) => (
-            <DropdownMenuRadioItem key={model.id} value={model.id} className="flex-col items-start gap-0.5">
+            <DropdownMenuRadioItem key={model.id} value={model.id} className="flex-col items-start">
               <span className="text-sm text-foreground">{model.label}</span>
               {model.hint ? <span className="text-xs text-muted-foreground">{model.hint}</span> : null}
             </DropdownMenuRadioItem>
@@ -476,7 +468,7 @@ const PromptInputSubmit = ({ className, ...props }: PromptInputSubmitProps) => {
         size="icon-sm"
         aria-label="Stop generating"
         onClick={stop}
-        className={cn('rounded-full', className)}
+        className={className}
         {...props}
       >
         <Square className="size-3 fill-current" aria-hidden />
@@ -492,7 +484,7 @@ const PromptInputSubmit = ({ className, ...props }: PromptInputSubmitProps) => {
       size="icon-sm"
       aria-label="Send message"
       disabled={!canSubmit}
-      className={cn('rounded-full', className)}
+      className={className}
       {...props}
     >
       <ArrowUp aria-hidden />

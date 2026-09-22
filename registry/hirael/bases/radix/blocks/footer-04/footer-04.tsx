@@ -33,7 +33,6 @@ const SWAP =
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
-/** Digits only, ready for a wa.me link. */
 const digits = (phone: string) => phone.replace(/\D/g, '');
 
 const BrandMark = ({ className }: { className?: string }) => {
@@ -229,13 +228,13 @@ const FooterSubscribe = ({
             placeholder=""
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : undefined}
-            className="h-10 rounded-full bg-background/60 px-4"
+            className="h-10"
           />
           {email === '' ? (
             <div
               aria-hidden
               data-slot="footer-subscribe-placeholder"
-              className="pointer-events-none absolute inset-y-0 start-4 end-4 flex items-center overflow-hidden text-sm text-muted-foreground"
+              className="pointer-events-none absolute inset-y-0 start-3 end-3 flex items-center overflow-hidden text-sm text-muted-foreground"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -252,7 +251,7 @@ const FooterSubscribe = ({
             </div>
           ) : null}
         </div>
-        <Button type="submit" size="icon" aria-label="Subscribe" className="size-10 shrink-0 rounded-full">
+        <Button type="submit" size="icon-lg" aria-label="Subscribe" className="shrink-0">
           <ArrowRight className="rtl:rotate-180" />
         </Button>
       </div>

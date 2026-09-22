@@ -8,8 +8,7 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-// WebGL can't paint before hydration, so the shader stays out of the initial
-// bundle and the CSS wash below carries the first frame until it arrives.
+// WebGL can't paint before hydration; the CSS wash below carries the first frame.
 const Hero09Backdrop = dynamic(() => import('./hero-09-backdrop'), {
   ssr: false,
   loading: () => null,
@@ -50,11 +49,6 @@ const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => (
 const ZOOM_AT = 0.55;
 const SPRING = { stiffness: 200, damping: 40, mass: 0.4 };
 
-/**
- * Zooms the hero card out as the page scrolls so it recedes behind whatever
- * section follows it. Inert when the hero is the only content, and disabled
- * under reduced motion.
- */
 const HeroZoom = ({ className, children }: React.ComponentProps<'div'>) => {
   const reduced = useReducedMotion();
   const [viewportHeight, setViewportHeight] = React.useState(0);
@@ -67,8 +61,7 @@ const HeroZoom = ({ className, children }: React.ComponentProps<'div'>) => {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  // Until measured, keep the range effectively infinite so progress stays at
-  // 0 (avoids a first-paint jump before the effect runs).
+  // Effectively infinite until measured, so progress stays at 0 and the first paint doesn't jump.
   const end = viewportHeight > 0 ? viewportHeight * ZOOM_AT : 1e9;
   const progress = useTransform(scrollY, [0, end], [0, 1], { clamp: true });
 
@@ -90,9 +83,7 @@ const Hero09 = () => {
     <section data-slot="hero" className="relative min-h-svh bg-background pt-2.5">
       <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
-          {/* First frame, and the fallback wherever WebGL is unavailable: amber
-              overhead, cool blue from the lower start corner, a violet
-              counterweight opposite it, a warm floor. */}
+          {/* First frame, and the fallback wherever WebGL is unavailable. */}
           <div
             className="absolute inset-0"
             style={{
@@ -104,8 +95,6 @@ const Hero09 = () => {
               ].join(', '),
             }}
           />
-          {/* Fluid-noise gradient, its stops mixed from --background, --primary
-              and --accent-cool, so it drifts on-palette in either theme. */}
           <Hero09Backdrop className="absolute inset-0 size-full" />
 
           {/* Grain keeps the wide gradients from banding on large displays. */}
@@ -198,8 +187,6 @@ const Hero09 = () => {
               </ul>
             </div>
 
-            {/* Below md the carved corner is hidden, so the same figures sit
-                under the steps as a compact row. */}
             <dl
               data-slot="hero-stats-inline"
               style={stagger(5)}
@@ -224,7 +211,6 @@ const Hero09 = () => {
           />
         </div>
 
-        {/* Carved stat corner: background-colored so it reads as a cutout. */}
         <div
           data-slot="hero-stats"
           style={stagger(5)}

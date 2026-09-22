@@ -161,11 +161,10 @@ const ImageGallery02 = () => {
               {PHOTOS.length} photos
             </span>
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
-              value={view}
-              onValueChange={changeView}
+              value={[view]}
+              onValueChange={([next]) => next && changeView(next)}
               aria-label="Gallery layout"
               data-slot="image-gallery-view"
             >
@@ -200,7 +199,12 @@ const ImageGallery02 = () => {
                   data-slot="image-gallery-tile"
                   aria-label={`${photo.location}, ${photo.date}. Open photo ${photoIndex + 1} of ${PHOTOS.length}`}
                   style={{ viewTransitionName: `image-gallery-${transitionId}-${photoIndex}` }}
-                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg bg-muted outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  render={
+                    <button
+                      type="button"
+                      className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg bg-muted outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                    />
+                  }
                 >
                   <span className={cn('relative block w-full', view === 'grid' ? 'aspect-square' : 'aspect-[3/2]')}>
                     <Image

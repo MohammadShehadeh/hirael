@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from '@/registry/hirael/bases/base/ui/card';
 
-const CELL = 'min-h-full rounded-none border-0 shadow-none';
+const CELL = 'min-h-full';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -60,17 +60,16 @@ const Feature10 = () => {
           </p>
         </div>
 
-        <div
-          data-slot="feature-bento"
-          className="mt-14 grid grid-cols-6 gap-px overflow-hidden rounded-xl border border-border bg-border"
-        >
+        <div data-slot="feature-bento" className="mt-14 grid grid-cols-6 gap-4">
           <Card
             data-slot="feature-quote"
             style={stagger(0, 60, 180)}
             className={cn(ENTER, CELL, 'col-span-6 lg:col-span-4 lg:row-span-2')}
           >
             <CardHeader>
-              <CardDescription className="text-xs uppercase">from the field</CardDescription>
+              <CardDescription>
+                <span className="text-xs uppercase">from the field</span>
+              </CardDescription>
               <CardTitle className="sr-only">What teams say</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col">
@@ -78,9 +77,9 @@ const Feature10 = () => {
                 We stopped maintaining a fork of the date picker. The file in the registry is the one in production.
               </blockquote>
             </CardContent>
-            <CardFooter className="mt-auto gap-3">
-              <Avatar aria-hidden>
-                <AvatarFallback className="text-xs font-medium text-foreground">PB</AvatarFallback>
+            <CardFooter className="mt-auto">
+              <Avatar aria-hidden className="me-3">
+                <AvatarFallback>PB</AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-col">
                 <cite className="text-sm font-medium not-italic">Priya Banerjee</cite>
@@ -103,8 +102,12 @@ const Feature10 = () => {
               className={cn(ENTER, CELL, 'col-span-3 lg:col-span-2')}
             >
               <CardHeader>
-                <CardDescription className="text-xs uppercase">{metric.label}</CardDescription>
-                <CardTitle className="text-4xl tracking-tight tabular-nums sm:text-5xl">{metric.value}</CardTitle>
+                <CardDescription>
+                  <span className="text-xs uppercase">{metric.label}</span>
+                </CardDescription>
+                <CardTitle>
+                  <span className="text-4xl tracking-tight tabular-nums sm:text-5xl">{metric.value}</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{metric.caption}</p>
@@ -118,8 +121,10 @@ const Feature10 = () => {
             className={cn(ENTER, CELL, 'col-span-6 lg:col-span-4')}
           >
             <CardHeader>
-              <CardDescription className="text-xs uppercase">latest drop</CardDescription>
-              <CardTitle className="text-lg">Command Palette</CardTitle>
+              <CardDescription>
+                <span className="text-xs uppercase">latest drop</span>
+              </CardDescription>
+              <CardTitle>Command Palette</CardTitle>
               <CardAction>
                 <Button variant="outline" size="sm" render={<a href="#" />} nativeButton={false}>
                   Release notes
@@ -140,7 +145,9 @@ const Feature10 = () => {
             className={cn(ENTER, CELL, 'col-span-6 lg:col-span-2')}
           >
             <CardHeader>
-              <CardDescription className="text-xs uppercase">what it does</CardDescription>
+              <CardDescription>
+                <span className="text-xs uppercase">what it does</span>
+              </CardDescription>
               <CardTitle className="sr-only">What the registry does</CardTitle>
             </CardHeader>
             <CardContent>

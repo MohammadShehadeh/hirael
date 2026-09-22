@@ -263,18 +263,17 @@ const K8sPodTableBlock = () => {
     <section data-slot="k8s-pod-table-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className={cn(ENTER, 'flex w-full max-w-3xl flex-col gap-3')}>
         <ToggleGroup
-          type="single"
           variant="outline"
           size="sm"
-          value={filter}
-          onValueChange={(value) => value && setFilter(value)}
+          value={[filter]}
+          onValueChange={([value]) => value && setFilter(value)}
           aria-label="Filter pods by phase"
           className="max-w-full flex-wrap"
         >
           {POD_FILTERS.map((option) => {
             const count = pods.filter((pod) => option.phases.includes(pod.phase)).length;
             return (
-              <ToggleGroupItem key={option.value} value={option.value} className="gap-1.5">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
                 <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
               </ToggleGroupItem>

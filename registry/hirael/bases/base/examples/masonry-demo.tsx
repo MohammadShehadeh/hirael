@@ -62,9 +62,11 @@ const MasonryDemo = () => {
         </p>
         <Masonry>
           {cards.map((card) => (
-            <MasonryItem key={card.title} className="rounded-lg border border-border bg-card p-4">
-              <p className="text-sm font-medium text-foreground">{card.title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{card.body}</p>
+            <MasonryItem key={card.title}>
+              <div className="rounded-lg border border-border bg-card p-4">
+                <p className="text-sm font-medium text-foreground">{card.title}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{card.body}</p>
+              </div>
             </MasonryItem>
           ))}
         </Masonry>
@@ -95,16 +97,18 @@ const MasonryDemo = () => {
         </p>
         <Masonry columns={{ base: 2, md: 4 }} gap={8}>
           {['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'].map((label, i) => (
-            <MasonryItem key={label} className="rounded-md border border-border bg-card px-3 py-2">
-              <p className="text-xs font-medium text-foreground">{label}</p>
-              {i % 3 === 1 ? (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {t({
-                    en: 'Extra line for height variance.',
-                    ar: 'سطر إضافي لتفاوت الارتفاع.',
-                  })}
-                </p>
-              ) : null}
+            <MasonryItem key={label}>
+              <div className="rounded-md border border-border bg-card px-3 py-2">
+                <p className="text-xs font-medium text-foreground">{label}</p>
+                {i % 3 === 1 ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t({
+                      en: 'Extra line for height variance.',
+                      ar: 'سطر إضافي لتفاوت الارتفاع.',
+                    })}
+                  </p>
+                ) : null}
+              </div>
             </MasonryItem>
           ))}
         </Masonry>

@@ -37,15 +37,7 @@ export const PillButton = ({
   className?: string;
 }) => {
   return (
-    <Button
-      asChild
-      variant={variant === 'solid' ? 'default' : 'outline'}
-      className={cn(
-        'group h-auto gap-2.5 rounded-full py-1.5 pe-1.5 ps-5',
-        variant === 'outline' && 'backdrop-blur-sm',
-        className,
-      )}
-    >
+    <Button asChild variant={variant === 'solid' ? 'default' : 'outline'} className={cn('group h-auto', className)}>
       <a href={href}>
         <span>{label}</span>
         <span

@@ -275,7 +275,7 @@ const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) =
         disabled={!hasDuration}
         aria-label="Seek"
         onValueChange={(values) => setScrub(sliderValue(values))}
-        onValueCommit={(values) => {
+        onValueCommitted={(values) => {
           seek(sliderValue(values));
           setScrub(null);
         }}

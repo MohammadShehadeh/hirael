@@ -200,30 +200,35 @@ const ImageGallery02 = () => {
                   data-slot="image-gallery-tile"
                   aria-label={`${photo.location}, ${photo.date}. Open photo ${photoIndex + 1} of ${PHOTOS.length}`}
                   style={{ viewTransitionName: `image-gallery-${transitionId}-${photoIndex}` }}
-                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg bg-muted outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  asChild
                 >
-                  <span className={cn('relative block w-full', view === 'grid' ? 'aspect-square' : 'aspect-[3/2]')}>
-                    <Image
-                      src={photo.src}
-                      alt=""
-                      fill
-                      sizes={
-                        view === 'grid'
-                          ? '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw'
-                          : '(min-width: 640px) 50vw, 100vw'
-                      }
-                      style={{ objectPosition: photo.position }}
-                      className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none"
-                    />
-                  </span>
-                  <span
-                    aria-hidden
-                    data-slot="image-gallery-caption"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-1 flex-col items-start gap-0.5 bg-linear-to-t from-black/70 via-black/35 to-transparent px-3 pt-10 pb-3 text-start text-white opacity-0 transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none sm:px-4 sm:pb-4"
+                  <button
+                    type="button"
+                    className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg bg-muted outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                   >
-                    <span className="text-sm font-medium text-pretty">{photo.location}</span>
-                    <span className="text-xs tabular-nums text-white/75">{photo.date}</span>
-                  </span>
+                    <span className={cn('relative block w-full', view === 'grid' ? 'aspect-square' : 'aspect-[3/2]')}>
+                      <Image
+                        src={photo.src}
+                        alt=""
+                        fill
+                        sizes={
+                          view === 'grid'
+                            ? '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw'
+                            : '(min-width: 640px) 50vw, 100vw'
+                        }
+                        style={{ objectPosition: photo.position }}
+                        className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none"
+                      />
+                    </span>
+                    <span
+                      aria-hidden
+                      data-slot="image-gallery-caption"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-1 flex-col items-start gap-0.5 bg-linear-to-t from-black/70 via-black/35 to-transparent px-3 pt-10 pb-3 text-start text-white opacity-0 transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none sm:px-4 sm:pb-4"
+                    >
+                      <span className="text-sm font-medium text-pretty">{photo.location}</span>
+                      <span className="text-xs tabular-nums text-white/75">{photo.date}</span>
+                    </span>
+                  </button>
                 </LightboxTrigger>
               </li>
             ))}

@@ -2,7 +2,6 @@ import type { ComponentProps, CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const LOGO_PATH =
   'M 128.005 191.173 C 128.448 156.208 156.93 128 192 128 L 192 64 L 128 64 C 128 99.346 99.346 128 64 128 L 64 192 L 128 192 Z M 192 256 L 64 256 C 28.654 256 0 227.346 0 192 L 0 64 L 64 64 L 64 0 L 192 0 C 227.346 0 256 28.654 256 64 L 256 192 L 192 192 Z';
@@ -21,7 +20,7 @@ export const LogoIcon = ({ className }: { className?: string }) => {
   );
 };
 
-interface PillButtonProps extends Omit<ComponentProps<typeof Button>, 'children'> {
+interface PillButtonProps extends Omit<ComponentProps<'button'>, 'children'> {
   label: string;
   /** Larger label from md up. */
   large?: boolean;
@@ -31,10 +30,10 @@ interface PillButtonProps extends Omit<ComponentProps<typeof Button>, 'children'
 
 export const PillButton = ({ label, large = false, inverted = false, className, ...props }: PillButtonProps) => {
   return (
-    <Button
+    <button
       type="button"
       className={cn(
-        'h-auto gap-3 rounded-full py-2 ps-8 pe-2 text-base duration-200',
+        'inline-flex shrink-0 items-center justify-center gap-3 rounded-full py-2 ps-8 pe-2 text-base font-medium whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50',
         inverted ? 'bg-white text-[#2B2644] hover:bg-white/90' : 'bg-black text-white hover:bg-gray-800',
         large && 'md:text-lg',
         className,
@@ -45,7 +44,7 @@ export const PillButton = ({ label, large = false, inverted = false, className, 
       <span className={cn('rounded-full p-2', inverted ? 'bg-[#2B2644]' : 'bg-white')}>
         <ArrowRight className={cn('size-5 rtl:rotate-180', inverted ? 'text-white' : 'text-black')} />
       </span>
-    </Button>
+    </button>
   );
 };
 

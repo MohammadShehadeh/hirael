@@ -153,7 +153,6 @@ const LogoCloud04 = () => {
           value={active}
           onValueChange={pick}
           data-slot="logo-cloud-stories"
-          className="gap-0"
           onPointerEnter={() => setHovered(true)}
           onPointerLeave={() => setHovered(false)}
           onFocus={() => setFocused(true)}
@@ -161,108 +160,107 @@ const LogoCloud04 = () => {
             if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
           }}
         >
-          <TabsList
-            variant="line"
-            aria-label="Customers"
-            style={stagger(3, 80)}
-            className={cn(
-              ENTER,
-              'grid w-full grid-cols-2 gap-0 border-y border-border p-0 sm:grid-cols-3 lg:grid-cols-6',
-              'group-data-[orientation=horizontal]/tabs:h-auto',
-            )}
-          >
-            {STORIES.map((story) => {
-              const isActive = story.value === active;
-              return (
-                <TabsTrigger
-                  key={story.value}
-                  value={story.value}
-                  data-slot="logo-cloud-logo"
-                  className="h-20 rounded-none border-0 px-4 after:hidden hover:bg-muted/30"
-                >
-                  <span className={cn('whitespace-nowrap transition-colors duration-150', story.wordmark)}>
-                    {story.name}
-                  </span>
-                  <span aria-hidden className="absolute inset-x-4 bottom-0 h-0.5 overflow-hidden">
-                    {isActive && (
-                      <span
-                        data-slot="logo-cloud-progress"
-                        onAnimationEnd={advance}
-                        style={
-                          autoAdvance
-                            ? {
-                                animationDuration: `${AUTO_ADVANCE_MS}ms`,
-                                animationPlayState: paused ? 'paused' : 'running',
-                              }
-                            : undefined
-                        }
-                        className={cn(
-                          'block size-full bg-warm',
-                          autoAdvance &&
-                            'animate-in slide-in-from-start ease-linear fill-mode-both motion-reduce:animate-none',
-                        )}
-                      />
-                    )}
-                  </span>
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
+          <div className="border-y border-border">
+            <TabsList
+              variant="line"
+              aria-label="Customers"
+              style={stagger(3, 80)}
+              className={cn(
+                ENTER,
+                'grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
+                'group-data-[orientation=horizontal]/tabs:h-auto',
+              )}
+            >
+              {STORIES.map((story) => {
+                const isActive = story.value === active;
+                return (
+                  <TabsTrigger
+                    key={story.value}
+                    value={story.value}
+                    data-slot="logo-cloud-logo"
+                    className="h-20 after:hidden"
+                  >
+                    <span className={cn('whitespace-nowrap transition-colors duration-150', story.wordmark)}>
+                      {story.name}
+                    </span>
+                    <span aria-hidden className="absolute inset-x-4 bottom-0 h-0.5 overflow-hidden">
+                      {isActive && (
+                        <span
+                          data-slot="logo-cloud-progress"
+                          onAnimationEnd={advance}
+                          style={
+                            autoAdvance
+                              ? {
+                                  animationDuration: `${AUTO_ADVANCE_MS}ms`,
+                                  animationPlayState: paused ? 'paused' : 'running',
+                                }
+                              : undefined
+                          }
+                          className={cn(
+                            'block size-full bg-warm',
+                            autoAdvance &&
+                              'animate-in slide-in-from-start ease-linear fill-mode-both motion-reduce:animate-none',
+                          )}
+                        />
+                      )}
+                    </span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+          </div>
 
           {STORIES.map((story, index) => (
-            <TabsContent
-              key={story.value}
-              value={story.value}
-              data-slot="logo-cloud-proof"
-              className="grid gap-10 pt-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:pt-14"
-            >
-              <div className="flex flex-col gap-3">
-                <span dir="ltr" className={cn(SWAP, 'text-xs tabular-nums text-muted-foreground rtl:text-end')}>
-                  {formatIndex(index)}
-                  <span className="mx-1.5 text-border">|</span>
-                  {String(STORIES.length).padStart(2, '0')}
-                </span>
-                <p style={stagger(1)} className={cn(SWAP, 'mt-3 flex flex-col gap-1')}>
-                  <span
-                    dir="ltr"
-                    className="text-6xl font-semibold tracking-tight tabular-nums rtl:text-end sm:text-7xl"
-                  >
-                    {story.metric}
+            <TabsContent key={story.value} value={story.value} data-slot="logo-cloud-proof" className="mt-10 md:mt-14">
+              <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
+                <div className="flex flex-col gap-3">
+                  <span dir="ltr" className={cn(SWAP, 'text-xs tabular-nums text-muted-foreground rtl:text-end')}>
+                    {formatIndex(index)}
+                    <span className="mx-1.5 text-border">|</span>
+                    {String(STORIES.length).padStart(2, '0')}
                   </span>
-                  <span className="text-lg font-medium">{story.metricLabel}</span>
-                </p>
-                <span style={stagger(2)} className={cn(SWAP, 'text-sm text-muted-foreground')}>
-                  {story.period}
-                </span>
-              </div>
+                  <p style={stagger(1)} className={cn(SWAP, 'mt-3 flex flex-col gap-1')}>
+                    <span
+                      dir="ltr"
+                      className="text-6xl font-semibold tracking-tight tabular-nums rtl:text-end sm:text-7xl"
+                    >
+                      {story.metric}
+                    </span>
+                    <span className="text-lg font-medium">{story.metricLabel}</span>
+                  </p>
+                  <span style={stagger(2)} className={cn(SWAP, 'text-sm text-muted-foreground')}>
+                    {story.period}
+                  </span>
+                </div>
 
-              <figure className="flex flex-col gap-6 md:border-s md:border-border md:ps-16">
-                <blockquote
-                  style={stagger(2)}
-                  className={cn(SWAP, 'text-xl leading-relaxed font-medium tracking-tight text-pretty sm:text-2xl')}
-                >
-                  &ldquo;{story.quote}&rdquo;
-                </blockquote>
-                <figcaption
-                  style={stagger(3)}
-                  className={cn(SWAP, 'flex flex-wrap items-end justify-between gap-x-6 gap-y-4')}
-                >
-                  <span className="flex flex-col gap-0.5">
-                    <span className="text-sm font-medium">{story.person}</span>
-                    <span className="text-sm text-muted-foreground">{story.role}</span>
-                  </span>
-                  <Button variant="link" className="group h-auto p-0" asChild>
-                    <a href={story.href}>
-                      Read the story
-                      <span className="sr-only"> from {story.name}</span>
-                      <ArrowRight
-                        aria-hidden
-                        className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
-                      />
-                    </a>
-                  </Button>
-                </figcaption>
-              </figure>
+                <figure className="flex flex-col gap-6 md:border-s md:border-border md:ps-16">
+                  <blockquote
+                    style={stagger(2)}
+                    className={cn(SWAP, 'text-xl leading-relaxed font-medium tracking-tight text-pretty sm:text-2xl')}
+                  >
+                    &ldquo;{story.quote}&rdquo;
+                  </blockquote>
+                  <figcaption
+                    style={stagger(3)}
+                    className={cn(SWAP, 'flex flex-wrap items-end justify-between gap-x-6 gap-y-4')}
+                  >
+                    <span className="flex flex-col gap-0.5">
+                      <span className="text-sm font-medium">{story.person}</span>
+                      <span className="text-sm text-muted-foreground">{story.role}</span>
+                    </span>
+                    <Button variant="link" className="group h-auto" asChild>
+                      <a href={story.href}>
+                        Read the story
+                        <span className="sr-only"> from {story.name}</span>
+                        <ArrowRight
+                          aria-hidden
+                          className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+                        />
+                      </a>
+                    </Button>
+                  </figcaption>
+                </figure>
+              </div>
             </TabsContent>
           ))}
         </Tabs>

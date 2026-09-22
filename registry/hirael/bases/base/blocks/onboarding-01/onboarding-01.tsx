@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Plus, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { Card } from '@/registry/hirael/bases/base/ui/card';
+import { Card, CardContent } from '@/registry/hirael/bases/base/ui/card';
 import {
   Field,
   FieldContent,
@@ -42,7 +42,6 @@ interface OnboardingStepMeta {
 }
 
 interface OnboardingCtx {
-  /** Active step, 0-based. */
   step: number;
   total: number;
   steps: readonly OnboardingStepMeta[];
@@ -131,7 +130,6 @@ interface OnboardingHeaderProps extends React.ComponentProps<'div'> {
   showTitles?: boolean;
 }
 
-/** Step count eyebrow plus the stepper. Completed steps can be revisited. */
 const OnboardingHeader = ({ showTitles = true, className, children, ...props }: OnboardingHeaderProps) => {
   const { step, total, steps, goTo } = useOnboarding();
   return (
@@ -145,8 +143,8 @@ const OnboardingHeader = ({ showTitles = true, className, children, ...props }: 
       <Stepper value={step + 1} onValueChange={(s) => goTo(s - 1)}>
         {steps.map((meta, i) => (
           <StepperItem key={meta.title} step={i + 1} disabled={i > step}>
-            <StepperTrigger aria-label={`Step ${i + 1}: ${meta.title}`} className="gap-2">
-              <StepperIndicator className="size-7 text-xs" />
+            <StepperTrigger aria-label={`Step ${i + 1}: ${meta.title}`}>
+              <StepperIndicator className="size-7" />
               {showTitles ? <StepperTitle className="hidden sm:block">{meta.title}</StepperTitle> : null}
             </StepperTrigger>
             {i < total - 1 ? <StepperSeparator /> : null}
@@ -159,13 +157,12 @@ const OnboardingHeader = ({ showTitles = true, className, children, ...props }: 
 
 type OnboardingProgressProps = React.ComponentProps<'div'>;
 
-/** Thin bar alternative to the stepper. Fills as steps are completed. */
 const OnboardingProgress = ({ className, ...props }: OnboardingProgressProps) => {
   const { step, total } = useOnboarding();
   const value = total > 0 ? Math.round(((step + 1) / total) * 100) : 0;
   return (
     <div data-slot="onboarding-progress" className={cn('flex items-center gap-3', className)} {...props}>
-      <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1 bg-muted" />
+      <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1" />
       <span className="text-xs tabular-nums text-muted-foreground">
         {step + 1}/{total}
       </span>
@@ -185,11 +182,7 @@ const OnboardingStep = ({ index, className, children, ...props }: OnboardingStep
     <div
       data-slot="onboarding-step"
       data-index={index}
-      className={cn(
-        'flex flex-col gap-5',
-        SWAP,
-        className,
-      )}
+      className={cn('flex flex-col gap-5', SWAP, className)}
       {...props}
     >
       {children}
@@ -261,21 +254,14 @@ const OnboardingFooter = ({
       className={cn('flex items-center justify-between gap-2 border-t border-border pt-5', className)}
       {...props}
     >
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        disabled={isFirst}
-        onClick={back}
-        className="text-muted-foreground"
-      >
+      <Button type="button" variant="ghost" size="sm" disabled={isFirst} onClick={back}>
         <ArrowLeft className="size-3.5 rtl:rotate-180" aria-hidden />
         {backLabel}
       </Button>
       <div className="flex items-center gap-2">
         {children}
         {skippable ? (
-          <Button type="button" variant="ghost" size="sm" onClick={skip} className="text-muted-foreground">
+          <Button type="button" variant="ghost" size="sm" onClick={skip}>
             {skipLabel}
           </Button>
         ) : null}
@@ -391,232 +377,232 @@ const Onboarding01 = () => {
       data-slot="onboarding-01-block"
       className="flex min-h-svh w-full items-center justify-center bg-background px-4 py-10 sm:px-6"
     >
-      <Card className={cn(ENTER, 'w-full max-w-xl gap-0 px-6 py-6 sm:px-8 sm:py-8')}>
-        {done ? (
-          <div
-            data-slot="onboarding-done"
-            className="flex flex-col items-center gap-5 py-6 text-center animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
-          >
-            <div className="flex flex-col items-center gap-1.5">
-              <h2 className="flex items-center gap-2 text-xl font-semibold tracking-[-0.02em] text-foreground">
-                <Check className="size-5 shrink-0 text-success" strokeWidth={2.5} aria-hidden />
-                {workspace.trim() || 'Your workspace'} is ready.
-              </h2>
-              <p className="max-w-sm text-sm text-muted-foreground">
-                {invitedCount > 0 ? `We sent ${invitedCount} ${invitedCount === 1 ? 'invite' : 'invites'}. ` : ''}
-                You can change any of this later in Settings.
-              </p>
-            </div>
-            <Button type="button" size="lg" onClick={restart}>
-              Set up another workspace
-              <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
-            </Button>
-          </div>
-        ) : (
-          <Onboarding steps={STEPS} step={step} onStepChange={setStep} onComplete={() => setDone(true)}>
-            <OnboardingHeader />
-
-            <OnboardingStep index={0}>
-              <div className="flex flex-col gap-1">
-                <OnboardingStepTitle>Name your workspace</OnboardingStepTitle>
-                <OnboardingStepDescription>
-                  Usually your company or team name. Teammates will see it.
-                </OnboardingStepDescription>
-              </div>
-              <OnboardingBody>
-                <FieldGroup className="gap-5">
-                  <Field className="gap-2">
-                    <FieldLabel htmlFor="onboarding-workspace">Workspace name</FieldLabel>
-                    <Input
-                      id="onboarding-workspace"
-                      value={workspace}
-                      onChange={(e) => setWorkspace(e.target.value)}
-                      placeholder="Plinth Labs"
-                      autoComplete="organization"
-                      autoFocus
-                    />
-                  </Field>
-                  <Field className="gap-2">
-                    <FieldLabel htmlFor="onboarding-slug">Workspace URL</FieldLabel>
-                    <InputGroup>
-                      <InputGroupAddon align="inline-start">
-                        <span className="text-muted-foreground">hirael.app/</span>
-                      </InputGroupAddon>
-                      <InputGroupInput
-                        id="onboarding-slug"
-                        value={effectiveSlug}
-                        onChange={(e) => {
-                          setSlugTouched(true);
-                          setSlug(slugify(e.target.value));
-                        }}
-                        placeholder="plinth-labs"
-                        spellCheck={false}
-                        autoComplete="off"
-                      />
-                    </InputGroup>
-                    <FieldDescription className="text-xs">
-                      {effectiveSlug ? (
-                        <>
-                          Your team signs in at{' '}
-                          <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
-                        </>
-                      ) : (
-                        'Lowercase letters, numbers, and dashes. Derived from the name until you edit it.'
-                      )}
-                    </FieldDescription>
-                  </Field>
-                </FieldGroup>
-              </OnboardingBody>
-              <OnboardingFooter canContinue={canContinue} />
-            </OnboardingStep>
-
-            <OnboardingStep index={1}>
-              <div className="flex flex-col gap-1">
-                <OnboardingStepTitle>Tell us about you</OnboardingStepTitle>
-                <OnboardingStepDescription>
-                  Shown on comments and activity. Your role tunes the defaults.
-                </OnboardingStepDescription>
-              </div>
-              <OnboardingBody>
-                <FieldGroup className="gap-5">
-                  <Field className="gap-2">
-                    <FieldLabel htmlFor="onboarding-name">Full name</FieldLabel>
-                    <Input
-                      id="onboarding-name"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Mohammad Shehadeh"
-                      autoComplete="name"
-                      autoFocus
-                    />
-                  </Field>
-                  <Field className="gap-2">
-                    <FieldLabel htmlFor="onboarding-role">What do you do?</FieldLabel>
-                    <Select value={role} onValueChange={(v) => setRole(v ?? '')}>
-                      <SelectTrigger id="onboarding-role" className="w-full">
-                        <SelectValue placeholder="Pick a role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ROLES.map((r) => (
-                          <SelectItem key={r.value} value={r.value}>
-                            {r.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </FieldGroup>
-              </OnboardingBody>
-              <OnboardingFooter canContinue={canContinue} />
-            </OnboardingStep>
-
-            <OnboardingStep index={2}>
-              <div className="flex flex-col gap-1">
-                <OnboardingStepTitle>Invite your team</OnboardingStepTitle>
-                <OnboardingStepDescription>
-                  They join as members. You can change roles once they accept.
-                </OnboardingStepDescription>
-              </div>
-              <OnboardingBody>
-                <div className="flex flex-col gap-2">
-                  {invites.map((email, i) => {
-                    const invalid = email.trim() !== '' && !EMAIL_RE.test(email);
-                    return (
-                      <div key={i} className="flex items-center gap-2">
-                        <Input
-                          type="email"
-                          value={email}
-                          aria-label={`Teammate ${i + 1} email`}
-                          aria-invalid={invalid || undefined}
-                          onChange={(e) => setInvites((list) => list.map((v, j) => (j === i ? e.target.value : v)))}
-                          placeholder={
-                            ['lena@company.com', 'omar@company.com', 'priya@company.com'][i] ?? 'name@company.com'
-                          }
-                          autoComplete="off"
-                          autoFocus={i === 0}
-                        />
-                        {invites.length > 1 ? (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            aria-label={`Remove teammate ${i + 1}`}
-                            onClick={() => setInvites((list) => list.filter((_, j) => j !== i))}
-                            className="size-9 shrink-0 text-muted-foreground hover:text-foreground"
-                          >
-                            <X className="size-4" aria-hidden />
-                          </Button>
-                        ) : null}
-                      </div>
-                    );
-                  })}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    disabled={invites.length >= MAX_INVITES}
-                    onClick={() => setInvites((list) => [...list, ''])}
-                    className="self-start text-muted-foreground"
-                  >
-                    <Plus className="size-3.5" aria-hidden />
-                    Add another
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground" aria-live="polite">
-                  {invitedCount === 0
-                    ? 'Leave these empty to skip. You can invite people any time.'
-                    : `${invitedCount} ${invitedCount === 1 ? 'person' : 'people'} will get an invite.`}
+      <Card className={cn(ENTER, 'w-full max-w-xl')}>
+        <CardContent>
+          {done ? (
+            <div
+              data-slot="onboarding-done"
+              className="flex flex-col items-center gap-5 py-6 text-center animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+            >
+              <div className="flex flex-col items-center gap-1.5">
+                <h2 className="flex items-center gap-2 text-xl font-semibold tracking-[-0.02em] text-foreground">
+                  <Check className="size-5 shrink-0 text-success" strokeWidth={2.5} aria-hidden />
+                  {workspace.trim() || 'Your workspace'} is ready.
+                </h2>
+                <p className="max-w-sm text-sm text-muted-foreground">
+                  {invitedCount > 0 ? `We sent ${invitedCount} ${invitedCount === 1 ? 'invite' : 'invites'}. ` : ''}
+                  You can change any of this later in Settings.
                 </p>
-              </OnboardingBody>
-              <OnboardingFooter canContinue={canContinue} skippable onSkip={() => setInvites(['', '', ''])} />
-            </OnboardingStep>
-
-            <OnboardingStep index={3}>
-              <div className="flex flex-col gap-1">
-                <OnboardingStepTitle>A few preferences</OnboardingStepTitle>
-                <OnboardingStepDescription>
-                  Both of these live in Settings if you change your mind.
-                </OnboardingStepDescription>
               </div>
-              <OnboardingBody>
-                <FieldSet>
-                  <FieldLegend variant="label" className="mb-2">
-                    Appearance
-                  </FieldLegend>
-                  <RadioGroup value={theme} onValueChange={setTheme} className="grid gap-2 sm:grid-cols-3">
-                    {THEMES.map((t) => {
-                      const id = `onboarding-theme-${t.value}`;
+              <Button type="button" size="lg" onClick={restart}>
+                Set up another workspace
+                <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
+              </Button>
+            </div>
+          ) : (
+            <Onboarding steps={STEPS} step={step} onStepChange={setStep} onComplete={() => setDone(true)}>
+              <OnboardingHeader />
+
+              <OnboardingStep index={0}>
+                <div className="flex flex-col gap-1">
+                  <OnboardingStepTitle>Name your workspace</OnboardingStepTitle>
+                  <OnboardingStepDescription>
+                    Usually your company or team name. Teammates will see it.
+                  </OnboardingStepDescription>
+                </div>
+                <OnboardingBody>
+                  <FieldGroup className="gap-5">
+                    <Field className="gap-2">
+                      <FieldLabel htmlFor="onboarding-workspace">Workspace name</FieldLabel>
+                      <Input
+                        id="onboarding-workspace"
+                        value={workspace}
+                        onChange={(e) => setWorkspace(e.target.value)}
+                        placeholder="Plinth Labs"
+                        autoComplete="organization"
+                        autoFocus
+                      />
+                    </Field>
+                    <Field className="gap-2">
+                      <FieldLabel htmlFor="onboarding-slug">Workspace URL</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon align="inline-start">
+                          <span className="text-muted-foreground">hirael.app/</span>
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          id="onboarding-slug"
+                          value={effectiveSlug}
+                          onChange={(e) => {
+                            setSlugTouched(true);
+                            setSlug(slugify(e.target.value));
+                          }}
+                          placeholder="plinth-labs"
+                          spellCheck={false}
+                          autoComplete="off"
+                        />
+                      </InputGroup>
+                      <FieldDescription>
+                        {effectiveSlug ? (
+                          <>
+                            Your team signs in at <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
+                          </>
+                        ) : (
+                          'Lowercase letters, numbers, and dashes. Derived from the name until you edit it.'
+                        )}
+                      </FieldDescription>
+                    </Field>
+                  </FieldGroup>
+                </OnboardingBody>
+                <OnboardingFooter canContinue={canContinue} />
+              </OnboardingStep>
+
+              <OnboardingStep index={1}>
+                <div className="flex flex-col gap-1">
+                  <OnboardingStepTitle>Tell us about you</OnboardingStepTitle>
+                  <OnboardingStepDescription>
+                    Shown on comments and activity. Your role tunes the defaults.
+                  </OnboardingStepDescription>
+                </div>
+                <OnboardingBody>
+                  <FieldGroup className="gap-5">
+                    <Field className="gap-2">
+                      <FieldLabel htmlFor="onboarding-name">Full name</FieldLabel>
+                      <Input
+                        id="onboarding-name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Mohammad Shehadeh"
+                        autoComplete="name"
+                        autoFocus
+                      />
+                    </Field>
+                    <Field className="gap-2">
+                      <FieldLabel htmlFor="onboarding-role">What do you do?</FieldLabel>
+                      <Select value={role} onValueChange={(v) => setRole(v ?? '')}>
+                        <SelectTrigger id="onboarding-role" className="w-full">
+                          <SelectValue placeholder="Pick a role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ROLES.map((r) => (
+                            <SelectItem key={r.value} value={r.value}>
+                              {r.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </FieldGroup>
+                </OnboardingBody>
+                <OnboardingFooter canContinue={canContinue} />
+              </OnboardingStep>
+
+              <OnboardingStep index={2}>
+                <div className="flex flex-col gap-1">
+                  <OnboardingStepTitle>Invite your team</OnboardingStepTitle>
+                  <OnboardingStepDescription>
+                    They join as members. You can change roles once they accept.
+                  </OnboardingStepDescription>
+                </div>
+                <OnboardingBody>
+                  <div className="flex flex-col gap-2">
+                    {invites.map((email, i) => {
+                      const invalid = email.trim() !== '' && !EMAIL_RE.test(email);
                       return (
-                        <FieldLabel key={t.value} htmlFor={id}>
-                          <Field orientation="horizontal" className="gap-3">
-                            <FieldContent className="gap-0.5">
-                              <FieldTitle>{t.label}</FieldTitle>
-                              <FieldDescription className="text-xs">{t.description}</FieldDescription>
-                            </FieldContent>
-                            <RadioGroupItem id={id} value={t.value} />
-                          </Field>
-                        </FieldLabel>
+                        <div key={i} className="flex items-center gap-2">
+                          <Input
+                            type="email"
+                            value={email}
+                            aria-label={`Teammate ${i + 1} email`}
+                            aria-invalid={invalid || undefined}
+                            onChange={(e) => setInvites((list) => list.map((v, j) => (j === i ? e.target.value : v)))}
+                            placeholder={
+                              ['lena@company.com', 'omar@company.com', 'priya@company.com'][i] ?? 'name@company.com'
+                            }
+                            autoComplete="off"
+                            autoFocus={i === 0}
+                          />
+                          {invites.length > 1 ? (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              aria-label={`Remove teammate ${i + 1}`}
+                              onClick={() => setInvites((list) => list.filter((_, j) => j !== i))}
+                              className="size-9 shrink-0"
+                            >
+                              <X className="size-4" aria-hidden />
+                            </Button>
+                          ) : null}
+                        </div>
                       );
                     })}
-                  </RadioGroup>
-                </FieldSet>
-                <Field
-                  orientation="horizontal"
-                  className="items-center justify-between rounded-md border border-border p-3"
-                >
-                  <FieldContent className="gap-0.5">
-                    <FieldLabel htmlFor="onboarding-notify">Email me a weekly digest</FieldLabel>
-                    <FieldDescription className="text-xs">
-                      What changed, who joined, and what needs a look. Sent Monday mornings.
-                    </FieldDescription>
-                  </FieldContent>
-                  <Switch id="onboarding-notify" checked={notify} onCheckedChange={setNotify} />
-                </Field>
-              </OnboardingBody>
-              <OnboardingFooter canContinue={canContinue} />
-            </OnboardingStep>
-          </Onboarding>
-        )}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={invites.length >= MAX_INVITES}
+                      onClick={() => setInvites((list) => [...list, ''])}
+                      className="self-start"
+                    >
+                      <Plus className="size-3.5" aria-hidden />
+                      Add another
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground" aria-live="polite">
+                    {invitedCount === 0
+                      ? 'Leave these empty to skip. You can invite people any time.'
+                      : `${invitedCount} ${invitedCount === 1 ? 'person' : 'people'} will get an invite.`}
+                  </p>
+                </OnboardingBody>
+                <OnboardingFooter canContinue={canContinue} skippable onSkip={() => setInvites(['', '', ''])} />
+              </OnboardingStep>
+
+              <OnboardingStep index={3}>
+                <div className="flex flex-col gap-1">
+                  <OnboardingStepTitle>A few preferences</OnboardingStepTitle>
+                  <OnboardingStepDescription>
+                    Both of these live in Settings if you change your mind.
+                  </OnboardingStepDescription>
+                </div>
+                <OnboardingBody>
+                  <FieldSet>
+                    <FieldLegend variant="label" className="mb-2">
+                      Appearance
+                    </FieldLegend>
+                    <RadioGroup value={theme} onValueChange={setTheme} className="grid sm:grid-cols-3">
+                      {THEMES.map((t) => {
+                        const id = `onboarding-theme-${t.value}`;
+                        return (
+                          <FieldLabel key={t.value} htmlFor={id}>
+                            <Field orientation="horizontal" className="gap-3">
+                              <FieldContent className="gap-0.5">
+                                <FieldTitle>{t.label}</FieldTitle>
+                                <FieldDescription>{t.description}</FieldDescription>
+                              </FieldContent>
+                              <RadioGroupItem id={id} value={t.value} />
+                            </Field>
+                          </FieldLabel>
+                        );
+                      })}
+                    </RadioGroup>
+                  </FieldSet>
+                  <div className="rounded-md border border-border p-3">
+                    <Field orientation="horizontal" className="items-center justify-between">
+                      <FieldContent className="gap-0.5">
+                        <FieldLabel htmlFor="onboarding-notify">Email me a weekly digest</FieldLabel>
+                        <FieldDescription>
+                          What changed, who joined, and what needs a look. Sent Monday mornings.
+                        </FieldDescription>
+                      </FieldContent>
+                      <Switch id="onboarding-notify" checked={notify} onCheckedChange={setNotify} />
+                    </Field>
+                  </div>
+                </OnboardingBody>
+                <OnboardingFooter canContinue={canContinue} />
+              </OnboardingStep>
+            </Onboarding>
+          )}
+        </CardContent>
       </Card>
     </section>
   );

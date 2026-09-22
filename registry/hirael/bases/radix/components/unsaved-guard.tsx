@@ -17,11 +17,7 @@ export interface UnsavedGuardOptions {
   cancelText?: React.ReactNode;
 }
 
-/**
- * Runs `proceed` once it is safe to navigate. With no unsaved changes it runs
- * immediately; otherwise it asks for confirmation first. Resolves `true` when
- * the navigation went ahead, `false` when it was cancelled.
- */
+/** Runs `proceed`, confirming first when there are unsaved changes. Resolves `false` if cancelled. */
 export type GuardNavigation = (proceed?: () => void | Promise<void>) => Promise<boolean>;
 
 interface UnsavedGuardContextValue {
@@ -32,12 +28,7 @@ interface UnsavedGuardContextValue {
 
 const UnsavedGuardContext = React.createContext<UnsavedGuardContextValue | null>(null);
 
-/**
- * Registers an unsaved-changes guard. While `when` is true, leaving the page
- * (reload, tab close, in-app link) is intercepted with a confirm dialog.
- * Returns a `guard(proceed)` to wrap programmatic navigation. Must be used
- * under an `<UnsavedGuardProvider>`.
- */
+/** While `when` is true, reload, tab close and in-app links ask before leaving. */
 const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
   const ctx = React.useContext(UnsavedGuardContext);
   if (!ctx) {

@@ -2,9 +2,15 @@ import { type ComponentProps, type ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 export const EASE = 'ease-[cubic-bezier(0.25,0.1,0.25,1)]';
+
+/** Plain button base: the template keeps its fixed palette instead of the theme's Button. */
+export const PILL_BUTTON =
+  'inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50';
+
+/** Plain label pill, same reason as PILL_BUTTON. */
+export const PILL_LABEL = 'inline-flex w-fit shrink-0 items-center rounded-full border font-medium whitespace-nowrap';
 
 export const HiraelMark = ({ className }: { className?: string }) => {
   return (
@@ -37,12 +43,13 @@ export const OrangeButton = ({
   label,
   className,
   ...props
-}: Omit<ComponentProps<typeof Button>, 'children'> & { label: string }) => {
+}: Omit<ComponentProps<'button'>, 'children'> & { label: string }) => {
   return (
-    <Button
+    <button
       type="button"
       className={cn(
-        'group h-auto rounded-full bg-[#F26522] py-2 ps-5 pe-2 text-[13px] text-white hover:bg-[#e05a1a] sm:ps-6 sm:text-[14px]',
+        PILL_BUTTON,
+        'group h-auto bg-[#F26522] py-2 ps-5 pe-2 text-[13px] text-white hover:bg-[#e05a1a] sm:ps-6 sm:text-[14px]',
         className,
       )}
       {...props}
@@ -53,7 +60,7 @@ export const OrangeButton = ({
           className={cn('size-4 text-[#F26522] transition-transform duration-500 group-hover:-rotate-45', EASE)}
         />
       </span>
-    </Button>
+    </button>
   );
 };
 

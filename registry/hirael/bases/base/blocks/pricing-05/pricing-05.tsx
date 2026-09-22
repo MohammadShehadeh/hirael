@@ -23,11 +23,9 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type Billing = 'monthly' | 'yearly';
 
-/** Every rate the estimate uses. The line items, tier note and total all read from here. */
 const PRICING = {
   base: 49,
   includedUsers: 10_000,
-  /** Users past the included amount cost `rate` each, up to `upTo`; the last tier has no ceiling. */
   userTiers: [
     { upTo: 50_000, rate: 0.006 },
     { upTo: Infinity, rate: 0.004 },
@@ -35,7 +33,6 @@ const PRICING = {
   includedMinutes: 2_000,
   minuteRate: 0.008,
   support: 99,
-  /** Paying yearly covers 12 months for the price of 10. */
   paidMonthsPerYear: 10,
 } as const;
 
@@ -81,7 +78,6 @@ const estimate = (users: number, minutes: number, support: boolean, billing: Bil
   ];
 
   const subtotal = toCents(lines.reduce((sum, line) => sum + line.amount, 0));
-  // Yearly is charged as 10 months up front; the monthly figure is that charge spread over 12.
   const yearly = toCents(subtotal * PRICING.paidMonthsPerYear);
   const monthly = billing === 'yearly' ? toCents(yearly / 12) : subtotal;
 
@@ -136,7 +132,7 @@ const UsageSlider = ({ id, label, unit, value, range, onChange }: UsageSliderPro
         min={range.min}
         max={range.max}
         step={range.step}
-        onValueChange={([next]) => onChange(next)}
+        onValueChange={(next) => onChange((next as number[])[0])}
       />
       <div aria-hidden className="relative h-4 text-xs tabular-nums text-muted-foreground">
         {range.ticks.map((tick) => {
@@ -206,19 +202,21 @@ const Pricing05 = () => {
               />
             </div>
             <Separator style={stagger(5, 80)} className={ENTER} />
-            <Field orientation="horizontal" style={stagger(6, 80)} className={cn(ENTER, 'items-center')}>
-              <FieldContent>
-                <FieldLabel htmlFor="pricing-05-support">Priority support</FieldLabel>
-                <FieldDescription>
-                  A named engineer and a four hour response, for{' '}
-                  <span dir="ltr" className="tabular-nums">
-                    {money.format(PRICING.support)}
-                  </span>{' '}
-                  a month.
-                </FieldDescription>
-              </FieldContent>
-              <Switch id="pricing-05-support" checked={support} onCheckedChange={setSupport} />
-            </Field>
+            <div style={stagger(6, 80)} className={ENTER}>
+              <Field orientation="horizontal" className="items-center">
+                <FieldContent>
+                  <FieldLabel htmlFor="pricing-05-support">Priority support</FieldLabel>
+                  <FieldDescription>
+                    A named engineer and a four hour response, for{' '}
+                    <span dir="ltr" className="tabular-nums">
+                      {money.format(PRICING.support)}
+                    </span>{' '}
+                    a month.
+                  </FieldDescription>
+                </FieldContent>
+                <Switch id="pricing-05-support" checked={support} onCheckedChange={setSupport} />
+              </Field>
+            </div>
           </div>
         </div>
 
@@ -239,11 +237,10 @@ const Pricing05 = () => {
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs uppercase text-muted-foreground">Estimate</span>
             <ToggleGroup
-              type="single"
               size="sm"
               variant="outline"
-              value={billing}
-              onValueChange={(next) => next && setBilling(next as Billing)}
+              value={[billing]}
+              onValueChange={([next]) => next && setBilling(next as Billing)}
               aria-label="Billing period"
             >
               <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
@@ -253,14 +250,9 @@ const Pricing05 = () => {
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-baseline gap-2">
-              <AnimatedNumber
-                dir="ltr"
-                value={quote.monthly}
-                decimals={2}
-                duration={400}
-                format={TOTAL_FORMAT}
-                className="text-5xl font-semibold tracking-tight"
-              />
+              <span className="text-5xl font-semibold tracking-tight">
+                <AnimatedNumber dir="ltr" value={quote.monthly} decimals={2} duration={400} format={TOTAL_FORMAT} />
+              </span>
               <span className="text-sm text-muted-foreground">/ month</span>
             </div>
             <p key={billing} className={cn(SWAP, 'text-sm text-muted-foreground')}>

@@ -20,7 +20,6 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type Billing = 'monthly' | 'yearly';
 
-/** Yearly billing charges 10 months and covers 12. */
 const PAID_MONTHS_PER_YEAR = 10;
 
 interface Tier {
@@ -119,11 +118,7 @@ const Pricing01 = () => {
                       }
                     : undefined),
                 }}
-                className={cn(
-                  ENTER,
-                  'relative gap-6 p-6 transition-[translate,border-color] duration-200 hover:-translate-y-1',
-                  tier.featured ? 'ring-1 ring-foreground/25' : 'hover:border-foreground/20',
-                )}
+                className={cn(ENTER, 'relative')}
               >
                 {tier.featured && (
                   <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
@@ -131,7 +126,7 @@ const Pricing01 = () => {
                   </span>
                 )}
 
-                <CardHeader className="flex flex-col gap-2 px-0">
+                <CardHeader className="flex flex-col">
                   <h3 className="text-xs font-normal uppercase text-muted-foreground">{tier.name}</h3>
                   <div key={billing} data-slot="pricing-price" className={cn(SWAP, 'flex flex-col gap-1')}>
                     <div className="flex items-baseline gap-1">
@@ -158,9 +153,9 @@ const Pricing01 = () => {
                   <p className="pt-1 text-sm text-muted-foreground">{tier.blurb}</p>
                 </CardHeader>
 
-                <Separator className="border-dashed" />
+                <Separator />
 
-                <CardContent className="px-0">
+                <CardContent>
                   <ul className="flex flex-col gap-2.5">
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground">
@@ -171,8 +166,8 @@ const Pricing01 = () => {
                   </ul>
                 </CardContent>
 
-                <CardFooter className="mt-auto px-0 pt-2">
-                  <Button asChild variant={tier.ctaVariant} size="lg" className="w-full rounded-full">
+                <CardFooter className="mt-auto">
+                  <Button asChild variant={tier.ctaVariant} size="lg" className="w-full">
                     <a href="#">{tier.cta}</a>
                   </Button>
                 </CardFooter>

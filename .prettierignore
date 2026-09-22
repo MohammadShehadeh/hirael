@@ -11,3 +11,6 @@ registry.json
 registry.base.json
 registry/hirael/registry-props.json
 public/llms.txt
+
+# Owned by pnpm.
+pnpm-lock.yaml

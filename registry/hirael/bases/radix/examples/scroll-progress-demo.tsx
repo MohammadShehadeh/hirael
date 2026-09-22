@@ -19,10 +19,7 @@ const ScrollProgressDemo = () => {
       </p>
 
       <div className="relative h-72 overflow-hidden rounded-md border border-border">
-        <ScrollProgress
-          target={containerRef}
-          className="absolute inset-x-0 top-0 h-[3px] bg-linear-to-r from-foreground/40 via-foreground to-foreground/40"
-        />
+        <ScrollProgress target={containerRef} className="absolute inset-x-0 top-0 h-[3px]" />
         <div
           ref={containerRef}
           className="h-full overflow-y-auto px-5 py-4 text-sm leading-relaxed text-muted-foreground"

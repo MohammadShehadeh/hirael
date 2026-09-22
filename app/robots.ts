@@ -4,11 +4,8 @@ import { SITE } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
-/**
- * `/embed/*` is deliberately not disallowed: a robots.txt disallow would stop Google from fetching those pages, so
- * their `noindex` would go unseen and a Safe Browsing review (the auth embeds were once flagged as phishing) could
- * not verify them.
- */
+// Keep previews crawlable: blocking them hides their noindex tag, and Safe Browsing
+// could not recheck the login demos it once flagged as phishing.
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [

@@ -56,14 +56,8 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-lg"
-              aria-label="Search"
-              className="rounded-xl text-[var(--nexa-navy)]"
-            >
-              <Search className="size-5" />
+            <Button type="button" variant="ghost" size="icon-lg" aria-label="Search">
+              <Search className="size-5 text-[var(--nexa-navy)]" />
             </Button>
             <div className="hidden md:block">
               <ContactButton />
@@ -75,9 +69,13 @@ export const Navbar = () => {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
-              className="rounded-xl text-[var(--nexa-navy)] md:hidden"
+              className="md:hidden"
             >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+              {open ? (
+                <X className="size-5 text-[var(--nexa-navy)]" />
+              ) : (
+                <Menu className="size-5 text-[var(--nexa-navy)]" />
+              )}
             </Button>
           </div>
         </div>
@@ -95,14 +93,8 @@ export const Navbar = () => {
               </a>
             ))}
             <div className="mt-1 flex w-full items-center gap-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-lg"
-                aria-label="Search"
-                className="rounded-xl text-[var(--nexa-navy)]"
-              >
-                <Search className="size-5" />
+              <Button type="button" variant="ghost" size="icon-lg" aria-label="Search">
+                <Search className="size-5 text-[var(--nexa-navy)]" />
               </Button>
               <ContactButton className="flex-1" />
             </div>

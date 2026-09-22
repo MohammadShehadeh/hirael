@@ -107,7 +107,7 @@ export interface ErrorPageDetailsProps extends React.ComponentProps<'div'> {
   requestId: string;
   /** ISO 8601 string or preformatted text. */
   timestamp: string;
-  /** Extra mono rows rendered below the defaults. */
+  /** Extra label/value rows shown after Request ID and Timestamp. */
   rows?: ReadonlyArray<{ label: string; value: string }>;
   defaultOpen?: boolean;
 }
@@ -137,12 +137,19 @@ const ErrorPageDetails = ({
         />
       }
     >
-      <CollapsibleTrigger className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <CollapsibleTrigger
+        render={
+          <button
+            type="button"
+            className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        }
+      >
         <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-open:rotate-180" />
         Technical details
       </CollapsibleTrigger>
-      <CollapsibleContent className="pt-3 data-open:animate-in data-open:fade-in data-open:slide-in-from-top-1 data-open:duration-250 data-open:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
-        <div className="flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
+      <CollapsibleContent className="data-open:animate-in data-open:fade-in data-open:slide-in-from-top-1 data-open:duration-250 data-open:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
+        <div className="mt-3 flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
           <dl className="flex flex-col gap-2">
             {allRows.map((row) => (
               <div

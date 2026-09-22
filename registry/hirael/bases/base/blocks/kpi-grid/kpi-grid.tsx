@@ -184,17 +184,16 @@ const KpiGridBlock = () => {
             {comparison}
           </p>
           <ToggleGroup
-            type="single"
             size="sm"
             variant="outline"
-            value={period}
-            onValueChange={(value) => {
+            value={[period]}
+            onValueChange={([value]) => {
               if (value) setPeriod(value as KpiPeriod);
             }}
             aria-label="Period"
           >
             {PERIODS.map((option) => (
-              <ToggleGroupItem key={option.value} value={option.value} className="px-2.5 text-xs">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
               </ToggleGroupItem>
             ))}

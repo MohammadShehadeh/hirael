@@ -40,7 +40,7 @@ const SortableDemo = () => {
         </p>
         <Sortable value={taskOrder} onValueChange={setTaskOrder}>
           {Object.entries(tasks).map(([id, title]) => (
-            <SortableItem key={id} value={id} className="p-3">
+            <SortableItem key={id} value={id}>
               <SortableHandle />
               <span className="flex-1 truncate">{title}</span>
               <span className="font-mono text-[10px] text-muted-foreground">{id}</span>
@@ -59,7 +59,7 @@ const SortableDemo = () => {
         </p>
         <Sortable orientation="horizontal" value={tagOrder} onValueChange={setTagOrder}>
           {tags.map((tag) => (
-            <SortableItem key={tag} value={tag} className="rounded-full px-3 py-1 font-medium">
+            <SortableItem key={tag} value={tag}>
               {tag}
             </SortableItem>
           ))}
@@ -75,19 +75,19 @@ const SortableDemo = () => {
           })}
         </p>
         <Sortable defaultValue={['draft', 'locked', 'review', 'published']} className="max-w-sm">
-          <SortableItem value="draft" className="p-3">
+          <SortableItem value="draft">
             <SortableHandle />
             {t({ en: 'Draft', ar: 'مسودة' })}
           </SortableItem>
-          <SortableItem value="locked" disabled className="p-3">
+          <SortableItem value="locked" disabled>
             <SortableHandle />
             {t({ en: 'Locked (disabled)', ar: 'مقفل (معطّل)' })}
           </SortableItem>
-          <SortableItem value="review" className="p-3">
+          <SortableItem value="review">
             <SortableHandle />
             {t({ en: 'In review', ar: 'قيد المراجعة' })}
           </SortableItem>
-          <SortableItem value="published" className="p-3">
+          <SortableItem value="published">
             <SortableHandle />
             {t({ en: 'Published', ar: 'منشور' })}
           </SortableItem>

@@ -211,17 +211,11 @@ const Hero07 = () => {
           className="mt-4 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none sm:flex-row"
           style={{ animationDelay: '390ms' }}
         >
-          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group rounded-full px-7">
+          <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
             <span>Get started</span>
             <ArrowRight className="size-4 -rotate-45 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:rotate-[135deg] rtl:group-hover:-translate-x-0.5" />
           </Button>
-          <Button
-            render={<a href="#" />}
-            nativeButton={false}
-            size="lg"
-            variant="outline"
-            className="rounded-full px-7"
-          >
+          <Button render={<a href="#" />} nativeButton={false} size="lg" variant="outline">
             <span>Read the docs</span>
           </Button>
         </div>

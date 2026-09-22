@@ -30,12 +30,15 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button type="button" variant="link" className="h-auto p-0">
+          <Button type="button" variant="link" className="h-auto">
             Sign Up
           </Button>
-          <Button type="button" variant="ghost" className="liquid-glass h-auto rounded-full px-6 py-2 text-foreground">
+          <button
+            type="button"
+            className="liquid-glass rounded-full px-6 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
+          >
             Login
-          </Button>
+          </button>
         </div>
       </nav>
     </header>

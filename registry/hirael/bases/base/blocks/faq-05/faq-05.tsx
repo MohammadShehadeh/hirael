@@ -64,11 +64,11 @@ const Faq05 = () => {
         </div>
 
         <div data-slot="faq-list" className="flex flex-col justify-center px-6 py-4 md:px-8">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full">
             {FAQS.map((item, i) => (
               <AccordionItem key={item.id} value={item.id} style={stagger(i, 50, 200)} className={ENTER}>
                 <AccordionTrigger>{item.q}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{item.a}</AccordionContent>
+                <AccordionContent>{item.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

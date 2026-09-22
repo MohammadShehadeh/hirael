@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from '@/registry/hirael/bases/base/ui/radi
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import {
   Sheet,
-  SheetBody,
   SheetClose,
   SheetContent,
   SheetDescription,
@@ -46,7 +45,7 @@ const CATEGORIES = [
 
 type Category = (typeof CATEGORIES)[number]['value'];
 
-// Product finishes are catalogue data, so they stay the same in both themes.
+// Hard-coded on purpose: product finishes don't change with the theme.
 const COLOURS = [
   { value: 'black', label: 'Black', swatch: 'oklch(0.24 0.005 260)' },
   { value: 'white', label: 'White', swatch: 'oklch(0.97 0.003 90)' },
@@ -336,9 +335,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
   return (
     <div data-slot="filter-panel" className="flex flex-col divide-y divide-border">
       <FieldSet className="gap-3 pb-6">
-        <FieldLegend variant="label" className="text-xs font-normal uppercase text-muted-foreground">
-          Category
-        </FieldLegend>
+        <FieldLegend variant="label">Category</FieldLegend>
         {CATEGORIES.map((category) => {
           const count = PRODUCTS.filter(
             (product) => product.category === category.value && matches(product, filters, true),
@@ -352,9 +349,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
                 disabled={count === 0 && !checked}
                 onCheckedChange={() => update({ categories: toggle(filters.categories, category.value) })}
               />
-              <FieldLabel htmlFor={`${id}-${category.value}`} className="font-normal">
-                {category.label}
-              </FieldLabel>
+              <FieldLabel htmlFor={`${id}-${category.value}`}>{category.label}</FieldLabel>
               <span className="ms-auto text-xs tabular-nums text-muted-foreground">{count}</span>
             </Field>
           );
@@ -362,16 +357,17 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </FieldSet>
 
       <FieldSet className="gap-4 py-6">
-        <FieldLegend variant="label" className="text-xs font-normal uppercase text-muted-foreground">
-          Price
-        </FieldLegend>
+        <FieldLegend variant="label">Price</FieldLegend>
         <Slider
           min={PRICE_MIN}
           max={PRICE_MAX}
           step={10}
           minStepsBetweenValues={1}
           value={filters.price}
-          onValueChange={(next) => update({ price: [next[0], next[1]] })}
+          onValueChange={(next) => {
+            const [min, max] = next as number[];
+            update({ price: [min, max] });
+          }}
           aria-label="Price range"
         />
         <div className="flex items-center justify-between text-sm tabular-nums">
@@ -388,33 +384,28 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </FieldSet>
 
       <FieldSet className="gap-3 py-6">
-        <FieldLegend variant="label" className="text-xs font-normal uppercase text-muted-foreground">
-          Colour
-        </FieldLegend>
+        <FieldLegend variant="label">Colour</FieldLegend>
         <ToggleGroup
-          type="multiple"
+          multiple
           spacing={2}
           value={filters.colours}
           onValueChange={(next) => update({ colours: next as Colour[] })}
           className="flex-wrap"
         >
           {COLOURS.map((colour) => (
-            <ToggleGroupItem
-              key={colour.value}
-              value={colour.value}
-              aria-label={colour.label}
-              title={colour.label}
-              style={{ backgroundColor: colour.swatch }}
-              className="size-7 min-w-0 rounded-full border border-foreground/15 p-0 ring-offset-2 ring-offset-background transition-shadow duration-150 hover:opacity-90 data-pressed:ring-2 data-pressed:ring-foreground"
-            />
+            <ToggleGroupItem key={colour.value} value={colour.value} aria-label={colour.label} title={colour.label}>
+              <span
+                aria-hidden
+                style={{ backgroundColor: colour.swatch }}
+                className="size-4 shrink-0 rounded-full border border-foreground/15"
+              />
+            </ToggleGroupItem>
           ))}
         </ToggleGroup>
       </FieldSet>
 
       <Field orientation="horizontal" className="py-6">
-        <FieldLabel htmlFor={`${id}-stock`} className="font-normal">
-          In stock only
-        </FieldLabel>
+        <FieldLabel htmlFor={`${id}-stock`}>In stock only</FieldLabel>
         <Switch
           id={`${id}-stock`}
           checked={filters.inStock}
@@ -423,14 +414,12 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
       </Field>
 
       <FieldSet className="gap-3 pt-6">
-        <FieldLegend variant="label" className="text-xs font-normal uppercase text-muted-foreground">
-          Rating
-        </FieldLegend>
+        <FieldLegend variant="label">Rating</FieldLegend>
         <RadioGroup value={filters.rating} onValueChange={(next) => update({ rating: next as RatingFilter })}>
           {RATINGS.map((option) => (
             <Field key={option.value} orientation="horizontal">
               <RadioGroupItem id={`${id}-rating-${option.value}`} value={option.value} />
-              <FieldLabel htmlFor={`${id}-rating-${option.value}`} className="items-center font-normal">
+              <FieldLabel htmlFor={`${id}-rating-${option.value}`} className="items-center">
                 {option.min > 0 && <Rating value={option.min} readOnly size="sm" aria-hidden />}
                 {option.label}
               </FieldLabel>
@@ -461,7 +450,7 @@ const ProductCard = ({ product, index }: { product: Product; index: number }) =>
           )}
         />
         {!product.inStock && (
-          <Badge variant="outline" className="absolute start-2.5 top-2.5 bg-background/85 backdrop-blur">
+          <Badge variant="secondary" className="absolute start-2.5 top-2.5">
             Sold out
           </Badge>
         )}
@@ -530,14 +519,7 @@ const Ecommerce04 = () => {
           >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <span className="text-sm font-medium">Filters</span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                onClick={clearAll}
-                disabled={active.length === 0}
-                className="text-muted-foreground"
-              >
+              <Button type="button" variant="ghost" size="xs" onClick={clearAll} disabled={active.length === 0}>
                 Clear all
               </Button>
             </div>
@@ -556,24 +538,28 @@ const Ecommerce04 = () => {
                       Filters
                       {active.length > 0 && <span className="tabular-nums">({active.length})</span>}
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="max-h-[85svh] gap-0 rounded-t-xl">
-                      <SheetHeader className="border-b border-border">
-                        <SheetTitle>Filters</SheetTitle>
-                        <SheetDescription>Results update as you change them.</SheetDescription>
-                      </SheetHeader>
-                      <SheetBody className="min-h-0 py-6">
+                    <SheetContent side="bottom" className="max-h-[85svh]">
+                      <div className="border-b border-border">
+                        <SheetHeader>
+                          <SheetTitle>Filters</SheetTitle>
+                          <SheetDescription>Results update as you change them.</SheetDescription>
+                        </SheetHeader>
+                      </div>
+                      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6">
                         <FilterPanel filters={filters} onFiltersChange={setFilters} />
-                      </SheetBody>
-                      <SheetFooter className="flex-row border-t border-border">
-                        <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
-                          Clear all
-                        </Button>
-                        <SheetClose render={<Button type="button" className="flex-1 tabular-nums" />}>
-                          {results.length === 0
-                            ? 'No matches'
-                            : `Show ${results.length} ${results.length === 1 ? 'result' : 'results'}`}
-                        </SheetClose>
-                      </SheetFooter>
+                      </div>
+                      <div className="border-t border-border">
+                        <SheetFooter className="flex-row">
+                          <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
+                            Clear all
+                          </Button>
+                          <SheetClose render={<Button type="button" className="flex-1" />}>
+                            {results.length === 0
+                              ? 'No matches'
+                              : `Show ${results.length} ${results.length === 1 ? 'result' : 'results'}`}
+                          </SheetClose>
+                        </SheetFooter>
+                      </div>
                     </SheetContent>
                   </Sheet>
                   <p aria-live="polite" className="text-sm tabular-nums text-muted-foreground">
@@ -584,7 +570,7 @@ const Ecommerce04 = () => {
                   <SelectTrigger size="sm" aria-label="Sort products" className="min-w-44">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent position="popper" align="end">
+                  <SelectContent alignItemWithTrigger={false} align="end">
                     {SORTS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -605,7 +591,7 @@ const Ecommerce04 = () => {
                       key={filter.key}
                       className="animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
                     >
-                      <Badge variant="outline" className="h-7 gap-1 pe-1 ps-2.5 font-normal">
+                      <Badge variant="outline" className="h-7">
                         {filter.label}
                         <button
                           type="button"
@@ -619,13 +605,7 @@ const Ecommerce04 = () => {
                     </li>
                   ))}
                   <li>
-                    <Button
-                      type="button"
-                      variant="link"
-                      size="xs"
-                      onClick={clearAll}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
+                    <Button type="button" variant="link" size="xs" onClick={clearAll}>
                       Clear all
                     </Button>
                   </li>
@@ -644,7 +624,7 @@ const Ecommerce04 = () => {
                 ))}
               </div>
             ) : (
-              <Empty data-slot="product-empty" className={cn(SWAP, 'border border-border py-16')}>
+              <Empty data-slot="product-empty" className={SWAP}>
                 <EmptyHeader>
                   <EmptyTitle>Nothing matches those filters</EmptyTitle>
                   <EmptyDescription>

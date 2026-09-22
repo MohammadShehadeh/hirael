@@ -55,14 +55,9 @@ export const Contact = ({ lang }: { lang: Lang }) => {
         <Reveal className="mx-auto mt-10 max-w-2xl text-center">
           <p className="text-lg font-light leading-relaxed text-muted-foreground">{c.lead}</p>
           <div className="mt-10">
-            <Button
-              render={<a href={`mailto:${CONTACT.email}`} />}
-              nativeButton={false}
-              size="lg"
-              className={cn('h-12 px-8', lang === 'en' ? 'text-xs uppercase tracking-[0.2em]' : 'text-sm')}
-            >
+            <Button render={<a href={`mailto:${CONTACT.email}`} />} nativeButton={false} size="lg" className="h-12">
               <Mail className="size-4" />
-              {c.cta}
+              <span className={cn(lang === 'en' ? 'text-xs uppercase tracking-[0.2em]' : 'text-sm')}>{c.cta}</span>
             </Button>
           </div>
         </Reveal>

@@ -145,9 +145,8 @@ const CurrencyInput = ({
   const [internalValue, setInternalValue] = React.useState<number | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internalValue;
 
-  // Tracks the value currently reflected in the view so the sync effect below
-  // can tell an external value change apart from one the field just made while
-  // typing — otherwise every keystroke gets reformatted (e.g. "1" → "1.00").
+  // Lets the sync effect tell an external change from the field's own typing;
+  // without it every keystroke is reformatted ("1" becomes "1.00").
   const lastSeenValue = React.useRef<number | null | undefined>(value);
 
   const setValue = React.useCallback(

@@ -88,7 +88,6 @@ const StatsItem = ({ className, ...props }: StatsItemProps) => {
   );
 };
 
-/** Observes its own element and reports once it has scrolled into view. */
 const useInView = <T extends Element>(margin = '0px 0px -10% 0px') => {
   const ref = React.useRef<T | null>(null);
   const [inView, setInView] = React.useState(false);

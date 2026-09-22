@@ -336,14 +336,11 @@ interface ExampleBlockProps {
   showTitle: boolean;
 }
 
-// Matches the inline frame the examples used before they were framed; the embed shell carries the same floor.
+// Same floor as the embed shell.
 const EXAMPLE_MIN_HEIGHT = 360;
 const EXAMPLE_MAX_HEIGHT = 1200;
 
-/**
- * Examples render in an iframe of `/embed/components/<name>/<slug>`, like blocks, so the toolbar can lock a theme,
- * flip direction and open the demo on its own: a scoped theme class can't reach portalled dialogs and popovers.
- */
+// Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
 const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
   const [view, setView] = React.useState<'preview' | 'code'>('preview');
   const [isRtl, setIsRtl] = React.useState(false);

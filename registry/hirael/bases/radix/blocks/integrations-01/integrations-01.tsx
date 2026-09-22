@@ -6,7 +6,6 @@ import { ArrowRight, Boxes, Cloud, Database, Lock, Mail, MessageCircle, Package,
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { Card } from '@/registry/hirael/bases/radix/ui/card';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -61,10 +60,7 @@ const Integrations01 = () => {
       <div className="container w-full">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
-            <Badge
-              variant="outline"
-              className={cn(ENTER, 'w-fit bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}
-            >
+            <Badge variant="outline" className={cn(ENTER, 'w-fit')}>
               Integrations
             </Badge>
             <h2
@@ -112,7 +108,7 @@ const Integrations01 = () => {
               asChild
               variant="link"
               style={stagger(SPOKES.length, 50, 180)}
-              className={cn(ENTER, 'group mt-4 h-auto w-fit p-0')}
+              className={cn(ENTER, 'group mt-4 h-auto w-fit')}
             >
               <a href="#">
                 Browse all 40+ integrations
@@ -194,7 +190,10 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
         className="pointer-events-none absolute inset-0 m-auto size-32 rounded-full bg-primary opacity-[0.18] blur-3xl"
       />
 
-      <Card className="absolute inset-0 m-auto flex size-[22%] items-center justify-center gap-0 rounded-2xl p-0 shadow-lg">
+      <div
+        data-slot="integrations-hub"
+        className="absolute inset-0 m-auto flex size-[22%] items-center justify-center rounded-2xl border border-border bg-card text-card-foreground shadow-lg"
+      >
         <div className="flex flex-col items-center gap-1.5">
           <Boxes className="size-7 text-foreground" aria-hidden />
           <span className="text-[10px] font-semibold uppercase text-foreground">Hirael</span>
@@ -203,7 +202,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
           aria-hidden
           className="absolute -inset-2 -z-10 rounded-2xl border border-dashed border-border opacity-70"
         />
-      </Card>
+      </div>
 
       {SPOKES.map((spoke) => {
         const { x, y } = spokePosition(spoke.angle);

@@ -3,10 +3,8 @@ import Image from 'next/image';
 import { Play, Rocket } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-/** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
@@ -43,10 +41,15 @@ const Hero10 = () => {
 
       <div data-slot="hero-content" className="relative z-10 px-6">
         <div className="relative mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
-          <Badge variant="outline" className={cn(RISE, 'border-white/30 text-white')}>
+          <span
+            className={cn(
+              RISE,
+              'inline-flex w-fit items-center gap-1 rounded-full border border-white/30 px-2 py-0.5 font-medium whitespace-nowrap text-white',
+            )}
+          >
             <Rocket aria-hidden className="size-3" />
             <span className="text-xs">Visual CI/CD editor</span>
-          </Badge>
+          </span>
 
           <h1
             style={stagger(1)}

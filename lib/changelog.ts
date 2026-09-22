@@ -26,10 +26,7 @@ const addedNames = (value: unknown): string[] =>
 
 const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
 
-/**
- * Newest first. Two releases can share a day, so fall back to the version compared numerically
- * (`6.10.0` after `6.9.0`, not before) rather than leaving the order to the sort's tie handling.
- */
+/** Newest first. Same-day releases sort by version, so 6.10 stays after 6.9. */
 const byNewest = (a: ChangelogEntry, b: ChangelogEntry): number => {
   if (a.isoDate !== b.isoDate) return a.isoDate < b.isoDate ? 1 : -1;
   return (b.version ?? '').localeCompare(a.version ?? '', 'en', { numeric: true });
@@ -42,7 +39,7 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   timeZone: 'UTC',
 });
 
-/** Read at `next build` and frozen into the static export; there is no server or ISR to refresh it. */
+/** Read once at build time. There is no server to refresh it later. */
 export const getChangelog = async (): Promise<Changelog> => {
   let files: string[] = [];
   try {
@@ -80,7 +77,7 @@ export const getChangelog = async (): Promise<Changelog> => {
   };
 };
 
-/** Ship dates come only from each release's `added:` frontmatter list; oldest release first so an item listed twice keeps the date it first shipped. */
+/** Dates come from each release's `added` list. The oldest release wins when an item is listed twice. */
 export const getReleaseDates = async (): Promise<Record<string, string>> => {
   const { entries } = await getChangelog();
   const dates: Record<string, string> = {};

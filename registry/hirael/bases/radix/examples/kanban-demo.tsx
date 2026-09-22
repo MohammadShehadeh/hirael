@@ -87,7 +87,7 @@ const KanbanDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Three-column board', ar: 'لوحة من ثلاثة أعمدة' })}
         </p>
-        <Kanban value={board} onValueChange={setBoard} className="pb-2">
+        <Kanban value={board} onValueChange={setBoard}>
           {columns.map((column) => (
             <KanbanColumn key={column.id} id={column.id}>
               <KanbanColumnHeader>
@@ -101,11 +101,9 @@ const KanbanDemo = () => {
                     <KanbanCard key={cardId} id={cardId}>
                       <p className="font-medium leading-snug">{t(task.title)}</p>
                       <div className="flex items-center justify-between gap-2">
-                        <Badge variant="outline" className="text-[11px]">
-                          {t(task.tag)}
-                        </Badge>
+                        <Badge variant="outline">{t(task.tag)}</Badge>
                         <Avatar size="sm">
-                          <AvatarFallback className="text-[10px]">{task.assignee}</AvatarFallback>
+                          <AvatarFallback>{task.assignee}</AvatarFallback>
                         </Avatar>
                       </div>
                     </KanbanCard>
@@ -134,14 +132,16 @@ const KanbanDemo = () => {
             review: ['c-4'],
           }}
         >
-          <KanbanColumn id="backlog" className="w-56 bg-transparent">
-            <KanbanColumnHeader className="pt-2 pb-1">
-              <KanbanColumnTitle className="text-xs uppercase text-muted-foreground">
-                {t({ en: 'Backlog', ar: 'قائمة الانتظار' })}
+          <KanbanColumn id="backlog" className="w-56">
+            <KanbanColumnHeader>
+              <KanbanColumnTitle>
+                <span className="text-xs uppercase text-muted-foreground">
+                  {t({ en: 'Backlog', ar: 'قائمة الانتظار' })}
+                </span>
               </KanbanColumnTitle>
               <KanbanColumnCount />
             </KanbanColumnHeader>
-            <KanbanColumnContent className="gap-1">
+            <KanbanColumnContent>
               {(ids) =>
                 ids.map((id) => (
                   <CompactCard key={id} id={id}>
@@ -151,14 +151,16 @@ const KanbanDemo = () => {
               }
             </KanbanColumnContent>
           </KanbanColumn>
-          <KanbanColumn id="review" className="w-56 bg-transparent">
-            <KanbanColumnHeader className="pt-2 pb-1">
-              <KanbanColumnTitle className="text-xs uppercase text-muted-foreground">
-                {t({ en: 'In review', ar: 'قيد المراجعة' })}
+          <KanbanColumn id="review" className="w-56">
+            <KanbanColumnHeader>
+              <KanbanColumnTitle>
+                <span className="text-xs uppercase text-muted-foreground">
+                  {t({ en: 'In review', ar: 'قيد المراجعة' })}
+                </span>
               </KanbanColumnTitle>
               <KanbanColumnCount />
             </KanbanColumnHeader>
-            <KanbanColumnContent className="gap-1">
+            <KanbanColumnContent>
               {(ids) => (
                 <>
                   {ids.map((id) => (
@@ -188,9 +190,9 @@ const COMPACT: Record<string, { en: string; ar: string }> = {
 
 const CompactCard = ({ id, children }: { id: string; children: React.ReactNode }) => {
   return (
-    <KanbanCard id={id} className="flex-row items-center gap-1.5 p-1.5 pe-2.5">
+    <KanbanCard id={id} className="flex-row items-center">
       <KanbanCardHandle />
-      <span className="truncate text-xs">{children}</span>
+      <span className="ms-1.5 truncate text-xs">{children}</span>
     </KanbanCard>
   );
 };

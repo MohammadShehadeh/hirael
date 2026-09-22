@@ -1,9 +1,4 @@
-// Runs in `pnpm registry:md`, after registry:props. Writes the Markdown twin
-// of every detail page to public/r/<name>.md (and public/r/<base>/<name>.md),
-// the document the "Copy page" control fetches and an agent reads directly.
-//
-// Runs after `registry:props` because the API tables it embeds come from
-// registry-props.json.
+// Must run after registry:props: the API tables come from registry-props.json.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -30,7 +25,6 @@ if (!Object.keys(api).length) {
   console.warn('  registry-props.json is empty or missing; API tables will be omitted. Run `pnpm registry:props`.');
 }
 
-/** Reads a base-relative registry file, or undefined when it isn't there. */
 const read = (base: RegistryBase, file: string): string | undefined => {
   try {
     return readFileSync(path.join(ROOT, registryFilePath(base, file)), 'utf8');
@@ -50,9 +44,7 @@ for (const base of REGISTRY_BASES) {
     for (const file of entry.files ?? []) {
       const code = read(base, file.path);
       if (code === undefined) {
-        // A file listed in registry-meta that isn't on disk is a real error,
-        // and check:registry already fails the build on it. Here it only means
-        // the section is skipped, so say so rather than shipping a silent gap.
+        // check:registry already fails the build on this; here the section is skipped, loudly.
         console.warn(`  ${entry.name} (${base}): missing ${file.path}`);
         continue;
       }

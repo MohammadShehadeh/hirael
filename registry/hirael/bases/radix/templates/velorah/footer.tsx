@@ -1,6 +1,4 @@
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
-import { Wordmark } from './primitives';
+import { PillButton, Wordmark } from './primitives';
 
 const FOOTER_LINKS = ['product', 'app', 'company', 'community', 'press', 'preorder'];
 
@@ -32,13 +30,7 @@ export const Footer = () => {
             <br />
             Velorah updates.
           </p>
-          <Button
-            type="button"
-            variant="ghost"
-            className="liquid-glass h-auto rounded-full px-6 py-2.5 font-normal text-foreground transition-transform hover:scale-[1.03]"
-          >
-            Subscribe
-          </Button>
+          <PillButton className="px-6 py-2.5">Subscribe</PillButton>
         </div>
       </div>
 

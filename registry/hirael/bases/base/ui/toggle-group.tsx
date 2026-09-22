@@ -11,84 +11,45 @@ import { toggleVariants } from '@/registry/hirael/bases/base/ui/toggle';
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {
     spacing?: number;
+    orientation?: 'horizontal' | 'vertical';
   }
 >({
   size: 'default',
   variant: 'default',
-  spacing: 0,
+  spacing: 2,
+  orientation: 'horizontal',
 });
 
-type ToggleGroupType = 'single' | 'multiple' | undefined;
-
-/**
- * Base UI always works with arrays. `type="single"` keeps the Radix-style API
- * (a single string value, `""` when nothing is pressed); `type="multiple"` or
- * omitting `type` (optionally with `multiple`) uses arrays.
- */
-type ToggleGroupValueProps<Type extends ToggleGroupType> = Type extends 'single'
-  ? {
-      value?: string;
-      defaultValue?: string;
-      onValueChange?: (value: string, eventDetails: ToggleGroupPrimitive.ChangeEventDetails) => void;
-    }
-  : {
-      value?: readonly string[];
-      defaultValue?: readonly string[];
-      onValueChange?: (value: string[], eventDetails: ToggleGroupPrimitive.ChangeEventDetails) => void;
-    };
-
-type ToggleGroupProps<Type extends ToggleGroupType> = Omit<
-  ToggleGroupPrimitive.Props,
-  'value' | 'defaultValue' | 'onValueChange'
-> &
-  VariantProps<typeof toggleVariants> & {
-    spacing?: number;
-    type?: Type;
-  } & ToggleGroupValueProps<Type>;
-
-function toValueArray(value: string | readonly string[] | undefined): readonly string[] | undefined {
-  if (value === undefined) return undefined;
-  if (typeof value === 'string') return value ? [value] : [];
-  return value;
-}
-
-function ToggleGroup<Type extends ToggleGroupType = undefined>({
+function ToggleGroup({
   className,
   variant,
   size,
-  spacing = 0,
+  spacing = 2,
+  orientation = 'horizontal',
   children,
-  type,
-  multiple,
-  value,
-  defaultValue,
-  onValueChange,
   ...props
-}: ToggleGroupProps<Type>) {
-  const isSingle = type === 'single';
-  const handleValueChange = onValueChange as
-    ((value: string | string[], eventDetails: ToggleGroupPrimitive.ChangeEventDetails) => void) | undefined;
-
+}: ToggleGroupPrimitive.Props &
+  VariantProps<typeof toggleVariants> & {
+    spacing?: number;
+    orientation?: 'horizontal' | 'vertical';
+  }) {
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
       data-variant={variant}
       data-size={size}
       data-spacing={spacing}
+      data-orientation={orientation}
       style={{ '--gap': spacing } as React.CSSProperties}
       className={cn(
-        'group/toggle-group flex w-fit items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=default]:data-[variant=outline]:shadow-xs',
+        'group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=0]:data-[variant=outline]:shadow-xs data-vertical:flex-col data-vertical:items-stretch',
         className,
       )}
-      multiple={type ? type === 'multiple' : multiple}
-      value={toValueArray(value)}
-      defaultValue={toValueArray(defaultValue)}
-      onValueChange={(next, eventDetails) => {
-        handleValueChange?.(isSingle ? (next[0] ?? '') : next, eventDetails);
-      }}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, spacing }}>{children}</ToggleGroupContext.Provider>
+      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation }}>
+        {children}
+      </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive>
   );
 }
@@ -96,8 +57,8 @@ function ToggleGroup<Type extends ToggleGroupType = undefined>({
 function ToggleGroupItem({
   className,
   children,
-  variant,
-  size,
+  variant = 'default',
+  size = 'default',
   ...props
 }: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {
   const context = React.useContext(ToggleGroupContext);
@@ -109,12 +70,11 @@ function ToggleGroupItem({
       data-size={context.size || size}
       data-spacing={context.spacing}
       className={cn(
+        'shrink-0 group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:shadow-none focus:z-10 focus-visible:z-10 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pe-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:ps-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-s-md group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-md group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-e-md group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-md data-[state=on]:bg-muted group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-s-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-s group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t',
         toggleVariants({
           variant: context.variant || variant,
           size: context.size || size,
         }),
-        'w-auto min-w-0 shrink-0 px-3 focus:z-10 focus-visible:z-10',
-        'data-[spacing=0]:rounded-none data-[spacing=0]:shadow-none data-[spacing=0]:first:rounded-s-md data-[spacing=0]:last:rounded-e-md data-[spacing=0]:data-[variant=outline]:border-s-0 data-[spacing=0]:data-[variant=outline]:first:border-s',
         className,
       )}
       {...props}

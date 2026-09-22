@@ -139,7 +139,7 @@ const SettingsPanelItem = ({
           {htmlFor ? <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel> : <FieldTitle>{label}</FieldTitle>}
           {badge}
         </div>
-        {description ? <FieldDescription className="text-xs">{description}</FieldDescription> : null}
+        {description ? <FieldDescription>{description}</FieldDescription> : null}
       </FieldContent>
       {children ? <div className="flex shrink-0 items-center gap-2 self-center">{children}</div> : null}
     </Field>
@@ -186,10 +186,10 @@ const SettingsPanelSession = ({
         <span className="flex flex-wrap items-center gap-2">
           <span className="truncate text-sm font-medium text-foreground">{device}</span>
           {current ? (
-            <Badge variant="outline" className="gap-1.5 border-accent-cool/40 text-accent-cool">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-cool/40 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-accent-cool">
               <span aria-hidden className="size-1.5 rounded-full bg-accent-cool" />
               This device
-            </Badge>
+            </span>
           ) : null}
         </span>
         <span className="flex min-w-0 items-center gap-2 text-xs uppercase text-muted-foreground">
@@ -203,13 +203,7 @@ const SettingsPanelSession = ({
         </span>
       </div>
       {current ? null : (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={onRevoke}
-          className="text-muted-foreground hover:text-destructive"
-        >
+        <Button type="button" variant="ghost" size="sm" onClick={onRevoke}>
           {revokeLabel}
         </Button>
       )}
@@ -357,233 +351,231 @@ const Settings02 = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="security" style={stagger(1)} className={cn(ENTER, 'gap-6')}>
-          <TabsList variant="line" className="w-full justify-start border-b border-border">
-            <TabsTrigger value="security" className="flex-none px-3">
+        <Tabs defaultValue="security" style={stagger(1)} className={ENTER}>
+          <TabsList variant="line" className="w-full justify-start">
+            <TabsTrigger value="security" className="flex-none">
               Security
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex-none px-3">
+            <TabsTrigger value="notifications" className="flex-none">
               Notifications
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="security" className={cn(SWAP, 'flex flex-col gap-6')}>
-            <SettingsPanel>
-              <SettingsPanelHeader>
-                <div className="flex flex-col gap-1">
-                  <SettingsPanelTitle>Password</SettingsPanelTitle>
-                  <SettingsPanelDescription>
-                    Use at least 8 characters. A passphrase is easier to remember and harder to guess.
-                  </SettingsPanelDescription>
-                </div>
-              </SettingsPanelHeader>
-              <form
-                id="settings-password-form"
-                className="px-5 py-5"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setCurrent('');
-                  setNext('');
-                  setConfirm('');
-                }}
-              >
-                <FieldGroup className="gap-5">
-                  <Field className="gap-2">
-                    <FieldLabel htmlFor="settings-current-password">Current password</FieldLabel>
-                    <PasswordInput id="settings-current-password" value={current} onValueChange={setCurrent}>
-                      <PasswordInputField autoComplete="current-password" />
-                    </PasswordInput>
-                  </Field>
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field className="gap-2">
-                      <FieldLabel htmlFor="settings-new-password">New password</FieldLabel>
-                      <PasswordInput id="settings-new-password" value={next} onValueChange={setNext}>
-                        <PasswordInputField autoComplete="new-password" />
-                        <PasswordInputStrength showLabel={next.length > 0} />
-                      </PasswordInput>
-                    </Field>
-                    <Field className="gap-2" data-invalid={confirmMismatch || undefined}>
-                      <FieldLabel htmlFor="settings-confirm-password">Confirm new password</FieldLabel>
-                      <PasswordInput id="settings-confirm-password" value={confirm} onValueChange={setConfirm}>
-                        <PasswordInputField
-                          autoComplete="new-password"
-                          aria-invalid={confirmMismatch || undefined}
-                          aria-describedby={confirmMismatch ? 'settings-confirm-error' : undefined}
-                        />
-                      </PasswordInput>
-                      <FieldError id="settings-confirm-error" className="text-xs">
-                        {confirmMismatch ? 'Passwords do not match.' : null}
-                      </FieldError>
-                    </Field>
+          <TabsContent value="security" className={cn(SWAP, 'mt-4')}>
+            <div className="flex flex-col gap-6">
+              <SettingsPanel>
+                <SettingsPanelHeader>
+                  <div className="flex flex-col gap-1">
+                    <SettingsPanelTitle>Password</SettingsPanelTitle>
+                    <SettingsPanelDescription>
+                      Use at least 8 characters. A passphrase is easier to remember and harder to guess.
+                    </SettingsPanelDescription>
                   </div>
-                </FieldGroup>
-              </form>
-              <SettingsPanelFooter>
-                <Button
-                  type="button"
-                  variant="link"
-                  size="sm"
-                  className="me-auto h-auto p-0 text-xs text-muted-foreground"
-                >
-                  Forgot your password?
-                </Button>
-                <Button type="submit" form="settings-password-form" size="sm" disabled={!canUpdatePassword}>
-                  Update password
-                </Button>
-              </SettingsPanelFooter>
-            </SettingsPanel>
-
-            <SettingsPanel>
-              <SettingsPanelHeader>
-                <div className="flex flex-col gap-1">
-                  <SettingsPanelTitle>Two-factor authentication</SettingsPanelTitle>
-                  <SettingsPanelDescription>
-                    A second step at sign-in, using an authenticator app.
-                  </SettingsPanelDescription>
-                </div>
-              </SettingsPanelHeader>
-              <SettingsPanelGroup>
-                <SettingsPanelItem
-                  htmlFor="settings-2fa"
-                  label="Authenticator app"
-                  description={
-                    twoFactor
-                      ? 'Enabled. You will be asked for a code on new devices.'
-                      : 'Codes from Google Authenticator, 1Password, or similar.'
-                  }
-                  badge={
-                    twoFactor ? (
-                      <Badge variant="outline" className="gap-1 text-success">
-                        <ShieldCheck aria-hidden />
-                        On
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary">Recommended</Badge>
-                    )
-                  }
-                >
-                  <Switch id="settings-2fa" checked={twoFactor} onCheckedChange={setTwoFactor} />
-                </SettingsPanelItem>
-                {twoFactor ? (
-                  <SettingsPanelItem
-                    className={SWAP}
-                    label="Recovery codes"
-                    description="Ten one-time codes for when you lose your phone. 10 of 10 left."
-                  >
-                    <Button type="button" variant="outline" size="sm">
-                      View codes
-                    </Button>
-                  </SettingsPanelItem>
-                ) : null}
-              </SettingsPanelGroup>
-            </SettingsPanel>
-
-            <SettingsPanel>
-              <SettingsPanelHeader>
-                <div className="flex flex-col gap-1">
-                  <SettingsPanelTitle>Active sessions</SettingsPanelTitle>
-                  <SettingsPanelDescription>
-                    Devices signed in to your account. Revoke anything you do not recognise.
-                  </SettingsPanelDescription>
-                </div>
-                <span className="shrink-0 text-xs uppercase text-muted-foreground">
-                  {sessions.length} {sessions.length === 1 ? 'device' : 'devices'}
-                </span>
-              </SettingsPanelHeader>
-              <SettingsPanelSessions>
-                {sessions.map((s) => (
-                  <SettingsPanelSession
-                    key={s.id}
-                    device={s.device}
-                    location={s.location}
-                    lastActive={s.lastActive}
-                    current={s.current}
-                    icon={s.icon}
-                    onRevoke={() => setSessions((list) => list.filter((x) => x.id !== s.id))}
-                  />
-                ))}
-              </SettingsPanelSessions>
-              <SettingsPanelFooter className="justify-between">
-                <span className="text-xs text-muted-foreground">
-                  {others.length === 0
-                    ? 'Only this device is signed in.'
-                    : `${others.length} other ${others.length === 1 ? 'device' : 'devices'} signed in.`}
-                </span>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={others.length === 0}
-                  onClick={() => setSessions((list) => list.filter((x) => x.current))}
-                >
-                  Sign out all other devices
-                </Button>
-              </SettingsPanelFooter>
-            </SettingsPanel>
-          </TabsContent>
-
-          <TabsContent value="notifications" className={cn(SWAP, 'flex flex-col gap-6')}>
-            <SettingsPanel>
-              <SettingsPanelHeader>
-                <div className="flex flex-col gap-1">
-                  <SettingsPanelTitle>Email notifications</SettingsPanelTitle>
-                  <SettingsPanelDescription>
-                    Sent to mohammad@hirael.com. Pausing keeps your choices for when you come back.
-                  </SettingsPanelDescription>
-                </div>
-                <Field orientation="horizontal" className="w-auto shrink-0 gap-2">
-                  <FieldLabel htmlFor="settings-pause-all" className="text-xs font-normal text-muted-foreground">
-                    Pause all
-                  </FieldLabel>
-                  <Switch id="settings-pause-all" checked={paused} onCheckedChange={setPaused} />
-                </Field>
-              </SettingsPanelHeader>
-              {NOTIFICATION_GROUPS.map((group) => (
-                <SettingsPanelGroup key={group.label} label={group.label}>
-                  {group.rows.map((row) => {
-                    const id = `settings-notify-${row.key}`;
-                    return (
-                      <SettingsPanelItem
-                        key={row.key}
-                        htmlFor={id}
-                        label={row.label}
-                        description={row.description}
-                        className={cn(paused && 'opacity-60')}
-                      >
-                        <Switch
-                          id={id}
-                          checked={!paused && prefs[row.key]}
-                          disabled={paused}
-                          onCheckedChange={(checked) => setPrefs((p) => ({ ...p, [row.key]: checked }))}
-                        />
-                      </SettingsPanelItem>
-                    );
-                  })}
-                </SettingsPanelGroup>
-              ))}
-              <SettingsPanelFooter>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  disabled={!notificationsDirty}
-                  onClick={() => {
-                    setPaused(saved.paused);
-                    setPrefs(saved.prefs);
+                </SettingsPanelHeader>
+                <form
+                  id="settings-password-form"
+                  className="px-5 py-5"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setCurrent('');
+                    setNext('');
+                    setConfirm('');
                   }}
                 >
-                  Cancel
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  disabled={!notificationsDirty}
-                  onClick={() => setSaved({ paused, prefs })}
-                >
-                  Save changes
-                </Button>
-              </SettingsPanelFooter>
-            </SettingsPanel>
+                  <FieldGroup className="gap-5">
+                    <Field className="gap-2">
+                      <FieldLabel htmlFor="settings-current-password">Current password</FieldLabel>
+                      <PasswordInput id="settings-current-password" value={current} onValueChange={setCurrent}>
+                        <PasswordInputField autoComplete="current-password" />
+                      </PasswordInput>
+                    </Field>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <Field className="gap-2">
+                        <FieldLabel htmlFor="settings-new-password">New password</FieldLabel>
+                        <PasswordInput id="settings-new-password" value={next} onValueChange={setNext}>
+                          <PasswordInputField autoComplete="new-password" />
+                          <PasswordInputStrength showLabel={next.length > 0} />
+                        </PasswordInput>
+                      </Field>
+                      <Field className="gap-2" data-invalid={confirmMismatch || undefined}>
+                        <FieldLabel htmlFor="settings-confirm-password">Confirm new password</FieldLabel>
+                        <PasswordInput id="settings-confirm-password" value={confirm} onValueChange={setConfirm}>
+                          <PasswordInputField
+                            autoComplete="new-password"
+                            aria-invalid={confirmMismatch || undefined}
+                            aria-describedby={confirmMismatch ? 'settings-confirm-error' : undefined}
+                          />
+                        </PasswordInput>
+                        <FieldError id="settings-confirm-error">
+                          {confirmMismatch ? 'Passwords do not match.' : null}
+                        </FieldError>
+                      </Field>
+                    </div>
+                  </FieldGroup>
+                </form>
+                <SettingsPanelFooter>
+                  <Button type="button" variant="link" size="sm" className="me-auto h-auto">
+                    Forgot your password?
+                  </Button>
+                  <Button type="submit" form="settings-password-form" size="sm" disabled={!canUpdatePassword}>
+                    Update password
+                  </Button>
+                </SettingsPanelFooter>
+              </SettingsPanel>
+
+              <SettingsPanel>
+                <SettingsPanelHeader>
+                  <div className="flex flex-col gap-1">
+                    <SettingsPanelTitle>Two-factor authentication</SettingsPanelTitle>
+                    <SettingsPanelDescription>
+                      A second step at sign-in, using an authenticator app.
+                    </SettingsPanelDescription>
+                  </div>
+                </SettingsPanelHeader>
+                <SettingsPanelGroup>
+                  <SettingsPanelItem
+                    htmlFor="settings-2fa"
+                    label="Authenticator app"
+                    description={
+                      twoFactor
+                        ? 'Enabled. You will be asked for a code on new devices.'
+                        : 'Codes from Google Authenticator, 1Password, or similar.'
+                    }
+                    badge={
+                      twoFactor ? (
+                        <Badge variant="secondary">
+                          <ShieldCheck aria-hidden />
+                          On
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary">Recommended</Badge>
+                      )
+                    }
+                  >
+                    <Switch id="settings-2fa" checked={twoFactor} onCheckedChange={setTwoFactor} />
+                  </SettingsPanelItem>
+                  {twoFactor ? (
+                    <div className={SWAP}>
+                      <SettingsPanelItem
+                        label="Recovery codes"
+                        description="Ten one-time codes for when you lose your phone. 10 of 10 left."
+                      >
+                        <Button type="button" variant="outline" size="sm">
+                          View codes
+                        </Button>
+                      </SettingsPanelItem>
+                    </div>
+                  ) : null}
+                </SettingsPanelGroup>
+              </SettingsPanel>
+
+              <SettingsPanel>
+                <SettingsPanelHeader>
+                  <div className="flex flex-col gap-1">
+                    <SettingsPanelTitle>Active sessions</SettingsPanelTitle>
+                    <SettingsPanelDescription>
+                      Devices signed in to your account. Revoke anything you do not recognise.
+                    </SettingsPanelDescription>
+                  </div>
+                  <span className="shrink-0 text-xs uppercase text-muted-foreground">
+                    {sessions.length} {sessions.length === 1 ? 'device' : 'devices'}
+                  </span>
+                </SettingsPanelHeader>
+                <SettingsPanelSessions>
+                  {sessions.map((s) => (
+                    <SettingsPanelSession
+                      key={s.id}
+                      device={s.device}
+                      location={s.location}
+                      lastActive={s.lastActive}
+                      current={s.current}
+                      icon={s.icon}
+                      onRevoke={() => setSessions((list) => list.filter((x) => x.id !== s.id))}
+                    />
+                  ))}
+                </SettingsPanelSessions>
+                <SettingsPanelFooter className="justify-between">
+                  <span className="text-xs text-muted-foreground">
+                    {others.length === 0
+                      ? 'Only this device is signed in.'
+                      : `${others.length} other ${others.length === 1 ? 'device' : 'devices'} signed in.`}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={others.length === 0}
+                    onClick={() => setSessions((list) => list.filter((x) => x.current))}
+                  >
+                    Sign out all other devices
+                  </Button>
+                </SettingsPanelFooter>
+              </SettingsPanel>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="notifications" className={cn(SWAP, 'mt-4')}>
+            <div className="flex flex-col gap-6">
+              <SettingsPanel>
+                <SettingsPanelHeader>
+                  <div className="flex flex-col gap-1">
+                    <SettingsPanelTitle>Email notifications</SettingsPanelTitle>
+                    <SettingsPanelDescription>
+                      Sent to mohammad@hirael.com. Pausing keeps your choices for when you come back.
+                    </SettingsPanelDescription>
+                  </div>
+                  <Field orientation="horizontal" className="w-auto shrink-0 gap-2">
+                    <FieldLabel htmlFor="settings-pause-all">Pause all</FieldLabel>
+                    <Switch id="settings-pause-all" checked={paused} onCheckedChange={setPaused} />
+                  </Field>
+                </SettingsPanelHeader>
+                {NOTIFICATION_GROUPS.map((group) => (
+                  <SettingsPanelGroup key={group.label} label={group.label}>
+                    {group.rows.map((row) => {
+                      const id = `settings-notify-${row.key}`;
+                      return (
+                        <SettingsPanelItem
+                          key={row.key}
+                          htmlFor={id}
+                          label={row.label}
+                          description={row.description}
+                          data-disabled={paused || undefined}
+                        >
+                          <Switch
+                            id={id}
+                            checked={!paused && prefs[row.key]}
+                            disabled={paused}
+                            onCheckedChange={(checked) => setPrefs((p) => ({ ...p, [row.key]: checked }))}
+                          />
+                        </SettingsPanelItem>
+                      );
+                    })}
+                  </SettingsPanelGroup>
+                ))}
+                <SettingsPanelFooter>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={!notificationsDirty}
+                    onClick={() => {
+                      setPaused(saved.paused);
+                      setPrefs(saved.prefs);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={!notificationsDirty}
+                    onClick={() => setSaved({ paused, prefs })}
+                  >
+                    Save changes
+                  </Button>
+                </SettingsPanelFooter>
+              </SettingsPanel>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

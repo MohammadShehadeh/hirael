@@ -76,8 +76,8 @@ const JsonViewerDemo = () => {
 
       <div className="grid gap-2">
         <p className="text-xs uppercase text-muted-foreground">{t({ en: 'With toolbar', ar: 'مع شريط أدوات' })}</p>
-        <JsonViewer value={CONFIG} defaultExpanded={1} className="p-0">
-          <div className="flex items-center justify-between gap-2 border-b border-border px-2 py-1">
+        <JsonViewer value={CONFIG} defaultExpanded={1}>
+          <div className="-mx-3 -mt-3 mb-3 flex items-center justify-between gap-2 border-b border-border px-2 py-1">
             <span className="ps-1 font-sans text-xs text-muted-foreground">package.json</span>
             <div className="flex items-center gap-1">
               <JsonViewerExpandAll>{t({ en: 'Expand all', ar: 'توسيع الكل' })}</JsonViewerExpandAll>
@@ -85,7 +85,7 @@ const JsonViewerDemo = () => {
               <JsonViewerCopy />
             </div>
           </div>
-          <JsonViewerTree className="p-3" />
+          <JsonViewerTree />
         </JsonViewer>
       </div>
     </div>

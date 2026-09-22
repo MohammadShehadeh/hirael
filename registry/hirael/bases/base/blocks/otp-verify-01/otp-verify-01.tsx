@@ -130,10 +130,7 @@ const OtpVerify01 = () => {
               >
                 <FieldGroup className="gap-5">
                   <FieldSet className="gap-1.5">
-                    <FieldLegend
-                      variant="label"
-                      className="mb-1.5 font-normal uppercase text-muted-foreground data-[variant=label]:text-xs"
-                    >
+                    <FieldLegend variant="label" className="mb-1.5">
                       Verification code
                     </FieldLegend>
                     <div dir="ltr">
@@ -154,24 +151,19 @@ const OtpVerify01 = () => {
                         aria-describedby={error ? 'otp01-code-error' : undefined}
                         containerClassName="justify-between"
                       >
-                        <InputOTPGroup className="w-full justify-between gap-1.5 sm:gap-2">
+                        <InputOTPGroup className="w-full">
                           {Array.from({ length: CODE_LENGTH }, (_, i) => (
                             <InputOTPSlot
                               key={i}
                               index={i}
                               aria-invalid={Boolean(error) || undefined}
-                              className={cn(
-                                'size-10 rounded-sm border text-base tabular-nums first:rounded-s-sm last:rounded-e-sm sm:size-11',
-                                code[i] && 'border-foreground',
-                              )}
+                              className="h-10 flex-1 sm:h-11"
                             />
                           ))}
                         </InputOTPGroup>
                       </InputOTP>
                     </div>
-                    <FieldError id="otp01-code-error" className="text-xs">
-                      {error}
-                    </FieldError>
+                    <FieldError id="otp01-code-error">{error}</FieldError>
                   </FieldSet>
 
                   <Button type="submit" variant="default" size="lg" disabled={status === 'verifying'} className="group">
@@ -199,7 +191,7 @@ const OtpVerify01 = () => {
                     ) : (
                       <span key="resend" className={SWAP}>
                         Didn&apos;t get it?{' '}
-                        <Button type="button" variant="link" size="xs" onClick={resend} className="h-auto p-0">
+                        <Button type="button" variant="link" size="xs" onClick={resend} className="h-auto">
                           Resend code
                         </Button>
                       </span>

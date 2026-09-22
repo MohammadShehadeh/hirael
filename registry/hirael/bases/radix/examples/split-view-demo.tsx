@@ -15,7 +15,7 @@ const SplitViewDemo = () => {
 
   return (
     <SplitView defaultSize={38} minSize={20} className="h-72 w-full max-w-2xl">
-      <SplitViewPanel className="bg-card">
+      <SplitViewPanel>
         <div className="flex items-center justify-between border-b border-border px-3 py-2">
           <span className="text-xs uppercase text-muted-foreground">{t({ en: 'Files', ar: 'الملفات' })}</span>
         </div>
@@ -36,7 +36,7 @@ const SplitViewDemo = () => {
         </ul>
       </SplitViewPanel>
       <SplitViewResizer />
-      <SplitViewPanel className="bg-background">
+      <SplitViewPanel>
         <div className="flex items-center gap-2 border-b border-border px-3 py-2">
           <span className="font-mono text-xs text-foreground">router.ts</span>
         </div>

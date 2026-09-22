@@ -212,7 +212,6 @@ const Team03 = () => {
     members: sorted.filter((member) => member.department === department.value),
   })).filter((group) => filter === 'all' || group.value === filter);
 
-  // Each heading and row takes the next slot in one stagger sequence.
   const groups = visibleGroups.map((group, position) => ({
     ...group,
     firstSlot: visibleGroups.slice(0, position).reduce((slots, previous) => slots + previous.members.length + 1, 0),
@@ -253,19 +252,14 @@ const Team03 = () => {
             )}
           >
             <ToggleGroup
-              type="single"
               spacing={1}
               aria-label="Filter by department"
-              value={filter}
-              onValueChange={(next) => next && setFilter(next as Filter)}
-              className="-mb-px flex-wrap gap-x-6 gap-y-0"
+              value={[filter]}
+              onValueChange={([next]) => next && setFilter(next as Filter)}
+              className="-mb-px flex-wrap"
             >
               {filters.map((option) => (
-                <ToggleGroupItem
-                  key={option.value}
-                  value={option.value}
-                  className="h-10 gap-1.5 rounded-none border-b-2 border-transparent px-0 text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-pressed:border-foreground data-pressed:bg-transparent data-pressed:text-foreground"
-                >
+                <ToggleGroupItem key={option.value} value={option.value} className="h-10">
                   {option.label}
                   <span className="text-xs font-normal tabular-nums text-muted-foreground">{option.count}</span>
                 </ToggleGroupItem>
@@ -277,12 +271,11 @@ const Team03 = () => {
                 Sort
               </span>
               <ToggleGroup
-                type="single"
                 variant="outline"
                 size="sm"
                 aria-labelledby="team-03-sort"
-                value={sort}
-                onValueChange={(next) => next && setSort(next as Sort)}
+                value={[sort]}
+                onValueChange={([next]) => next && setSort(next as Sort)}
               >
                 <ToggleGroupItem value="time">Local time</ToggleGroupItem>
                 <ToggleGroupItem value="name">A to Z</ToggleGroupItem>
@@ -329,7 +322,7 @@ const Team03 = () => {
                         <div className="order-1 flex min-w-0 flex-1 items-center gap-3 md:order-none">
                           <Avatar className="size-10">
                             {member.avatar && <AvatarImage src={member.avatar} alt="" className="object-cover" />}
-                            <AvatarFallback className="text-xs font-medium">{initials(member.name)}</AvatarFallback>
+                            <AvatarFallback>{initials(member.name)}</AvatarFallback>
                           </Avatar>
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium">{member.name}</p>
@@ -377,7 +370,6 @@ const Team03 = () => {
                                   size="icon-sm"
                                   nativeButton={false}
                                   render={<a href={`mailto:${member.email}`} aria-label={`Email ${member.name}`} />}
-                                  className="text-muted-foreground"
                                 />
                               }
                             >
@@ -393,7 +385,6 @@ const Team03 = () => {
                                   variant="ghost"
                                   size="icon-sm"
                                   aria-label={`Book time with ${member.name}`}
-                                  className="text-muted-foreground"
                                 />
                               }
                             >

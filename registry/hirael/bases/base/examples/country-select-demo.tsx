@@ -81,7 +81,7 @@ const CountrySelectDemo = () => {
               key={iso2}
               className="inline-flex items-center gap-1 rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[11px] text-foreground"
             >
-              <CountrySelectFlag iso2={iso2} className="w-4 text-sm" />
+              <CountrySelectFlag iso2={iso2} className="w-4" />
               {iso2}
             </span>
           ))}
@@ -95,24 +95,26 @@ const CountrySelectDemo = () => {
             ar: 'صف نموذج · تسمية وتلميح',
           })}
         </p>
-        <Field className="gap-2 rounded-md border border-border bg-card p-4">
-          <FieldLabel htmlFor="ship-country">{t({ en: 'Shipping country', ar: 'دولة الشحن' })}</FieldLabel>
-          <CountrySelect id="ship-country" value={shipping} onValueChange={setShipping} priority={['US', 'GB', 'DE']}>
-            <CountrySelectTrigger className="w-full sm:max-w-xs">
-              <CountrySelectValue placeholder={t({ en: 'Where to?', ar: 'إلى أين؟' })} />
-            </CountrySelectTrigger>
-            <CountrySelectContent>
-              <CountrySelectSearch placeholder={searchPlaceholder} />
-              <CountrySelectList emptyLabel={emptyLabel} priorityLabel={t({ en: 'Popular', ar: 'شائعة' })} />
-            </CountrySelectContent>
-          </CountrySelect>
-          <FieldDescription className="text-[11px]">
-            {t({
-              en: 'We ship to 64 countries. Duties are shown at checkout.',
-              ar: 'نشحن إلى 64 دولة. تُعرض الرسوم عند الدفع.',
-            })}
-          </FieldDescription>
-        </Field>
+        <div className="rounded-md border border-border bg-card p-4">
+          <Field className="gap-2">
+            <FieldLabel htmlFor="ship-country">{t({ en: 'Shipping country', ar: 'دولة الشحن' })}</FieldLabel>
+            <CountrySelect id="ship-country" value={shipping} onValueChange={setShipping} priority={['US', 'GB', 'DE']}>
+              <CountrySelectTrigger className="w-full sm:max-w-xs">
+                <CountrySelectValue placeholder={t({ en: 'Where to?', ar: 'إلى أين؟' })} />
+              </CountrySelectTrigger>
+              <CountrySelectContent>
+                <CountrySelectSearch placeholder={searchPlaceholder} />
+                <CountrySelectList emptyLabel={emptyLabel} priorityLabel={t({ en: 'Popular', ar: 'شائعة' })} />
+              </CountrySelectContent>
+            </CountrySelect>
+            <FieldDescription>
+              {t({
+                en: 'We ship to 64 countries. Duties are shown at checkout.',
+                ar: 'نشحن إلى 64 دولة. تُعرض الرسوم عند الدفع.',
+              })}
+            </FieldDescription>
+          </Field>
+        </div>
       </div>
     </div>
   );

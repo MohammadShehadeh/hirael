@@ -249,10 +249,7 @@ const Ecommerce01 = () => {
                     />
                   </div>
                   {p.badge && (
-                    <Badge
-                      variant="outline"
-                      className="absolute start-2.5 top-2.5 bg-background/85 uppercase backdrop-blur"
-                    >
+                    <Badge variant="secondary" className="absolute start-2.5 top-2.5">
                       {p.badge}
                     </Badge>
                   )}
@@ -263,7 +260,7 @@ const Ecommerce01 = () => {
                     onClick={() => toggleSaved(p.id)}
                     aria-pressed={isSaved}
                     aria-label={isSaved ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`}
-                    className="absolute end-2.5 top-2.5 size-7 rounded-full bg-background/85 text-foreground backdrop-blur"
+                    className="absolute end-2.5 top-2.5"
                   >
                     <Heart className={cn('size-3.5', isSaved && 'fill-current')} />
                   </Button>

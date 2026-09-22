@@ -12,7 +12,6 @@ export interface CollectionJsonLdProps {
   breadcrumb?: Crumb[];
 }
 
-// Server component on purpose: the payload must be in the exported HTML for crawlers that run no JavaScript.
 export const CollectionJsonLd = ({ id, path, name, description, entries, breadcrumb }: CollectionJsonLdProps) => {
   const collection = collectionJsonLd({ path, name, description, entries });
   const crumbs = breadcrumb?.map((crumb) => ({ name: crumb.label, path: crumb.href ?? path }));

@@ -68,13 +68,7 @@ export const Navbar = ({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =>
         </nav>
 
         <div className="ms-auto flex items-center gap-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-            className="rounded-full text-muted-foreground hover:text-foreground"
-          >
+          <Button type="button" variant="ghost" size="sm" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}>
             <Languages className="size-4" />
             <span className="hidden text-sm font-medium sm:inline">{c.toLang}</span>
           </Button>

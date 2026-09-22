@@ -81,7 +81,7 @@ const Hero05 = () => {
                 </a>
               ))}
             </div>
-            <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="outline" size="sm">
               Get started
             </Button>
           </nav>
@@ -128,22 +128,11 @@ const Hero05 = () => {
                 style={stagger(4)}
                 className={cn(ENTER, 'mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center')}
               >
-                <Button
-                  render={<a href="#" />}
-                  nativeButton={false}
-                  size="lg"
-                  className="group h-12 rounded-full px-7 text-base"
-                >
+                <Button render={<a href="#" />} nativeButton={false} size="lg" className="group h-12">
                   Try it free
                   <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </Button>
-                <Button
-                  render={<a href="#" />}
-                  nativeButton={false}
-                  size="lg"
-                  variant="ghost"
-                  className="h-12 rounded-full px-7 text-base"
-                >
+                <Button render={<a href="#" />} nativeButton={false} size="lg" variant="ghost" className="h-12">
                   See how it works
                 </Button>
               </div>

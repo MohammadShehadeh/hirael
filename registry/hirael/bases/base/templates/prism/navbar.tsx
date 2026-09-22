@@ -44,11 +44,11 @@ export const Navbar = () => {
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
             onClick={() => setIsOpen((value) => !value)}
-            className="rounded-full text-foreground hover:bg-foreground/10 hover:text-foreground md:hidden"
+            className="md:hidden"
           >
             {isOpen ? <X className="size-4" /> : <Menu className="size-4" />}
           </Button>
-          <Button type="button" className="h-auto rounded-full px-3.5 py-1.5 text-sm font-medium">
+          <Button type="button" size="sm">
             Get Started
             <ArrowUpRight className="size-4 rtl:-scale-x-100" />
           </Button>

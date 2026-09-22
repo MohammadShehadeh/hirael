@@ -48,7 +48,7 @@ interface Day {
   note: string;
 }
 
-// Sample data: day 0 is the oldest, day 89 is today.
+// Day 0 is the oldest, day 89 is today.
 const buildDays = (exceptions: Record<number, { status: DayStatus; note: string }>): Array<Day> => {
   return Array.from({ length: DAYS }, (_, i) => {
     const ex = exceptions[i];
@@ -201,15 +201,17 @@ const Status01 = () => {
                           />
                         }
                       />
-                      <TooltipContent className="flex w-52 flex-col gap-1.5 text-start">
-                        <span className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-medium tabular-nums">{daysAgoLabel(i)}</span>
-                          <span className="flex items-center gap-1.5 text-[11px]">
-                            <span aria-hidden className={cn('size-1.5 rounded-full', DOT_COLOR[day.status])} />
-                            {STATUS_LABEL[day.status]}
+                      <TooltipContent className="w-52 text-start">
+                        <div className="flex flex-col gap-1.5">
+                          <span className="flex items-center justify-between gap-2">
+                            <span className="text-xs font-medium tabular-nums">{daysAgoLabel(i)}</span>
+                            <span className="flex items-center gap-1.5 text-[11px]">
+                              <span aria-hidden className={cn('size-1.5 rounded-full', DOT_COLOR[day.status])} />
+                              {STATUS_LABEL[day.status]}
+                            </span>
                           </span>
-                        </span>
-                        <span className="text-[11px]/relaxed opacity-80">{day.note}</span>
+                          <span className="text-[11px]/relaxed opacity-80">{day.note}</span>
+                        </div>
                       </TooltipContent>
                     </Tooltip>
                   ))}

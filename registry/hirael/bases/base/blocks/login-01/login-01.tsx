@@ -138,9 +138,7 @@ const Login01 = () => {
               )}
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.email) || undefined}>
-                <FieldLabel htmlFor="login01-email" className="text-xs uppercase text-muted-foreground">
-                  Email
-                </FieldLabel>
+                <FieldLabel htmlFor="login01-email">Email</FieldLabel>
                 <Input
                   id="login01-email"
                   type="email"
@@ -151,16 +149,12 @@ const Login01 = () => {
                   aria-invalid={Boolean(errors.email) || undefined}
                   aria-describedby={errors.email ? 'login01-email-error' : undefined}
                 />
-                <FieldError id="login01-email-error" className="text-xs">
-                  {errors.email}
-                </FieldError>
+                <FieldError id="login01-email-error">{errors.email}</FieldError>
               </Field>
 
               <Field className="gap-1.5" data-invalid={Boolean(errors.password) || undefined}>
                 <div className="flex items-center justify-between">
-                  <FieldLabel htmlFor="login01-password" className="text-xs uppercase text-muted-foreground">
-                    Password
-                  </FieldLabel>
+                  <FieldLabel htmlFor="login01-password">Password</FieldLabel>
                   <a
                     href="#"
                     className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
@@ -176,17 +170,12 @@ const Login01 = () => {
                     aria-describedby={errors.password ? 'login01-password-error' : undefined}
                   />
                 </PasswordInput>
-                <FieldError id="login01-password-error" className="text-xs">
-                  {errors.password}
-                </FieldError>
+                <FieldError id="login01-password-error">{errors.password}</FieldError>
               </Field>
 
               <Field orientation="horizontal" className="gap-2">
                 <Checkbox id="login01-remember" checked={remember} onCheckedChange={(v) => setRemember(v === true)} />
-                <FieldLabel
-                  htmlFor="login01-remember"
-                  className="cursor-pointer text-xs font-normal text-muted-foreground"
-                >
+                <FieldLabel htmlFor="login01-remember" className="cursor-pointer">
                   Keep me signed in
                 </FieldLabel>
               </Field>
@@ -205,9 +194,9 @@ const Login01 = () => {
                 )}
               </Button>
 
-              <FieldSeparator className="[&_[data-slot=field-separator-content]]:bg-card">
-                or continue with
-              </FieldSeparator>
+              <div className="[&_[data-slot=field-separator-content]]:bg-card">
+                <FieldSeparator>or continue with</FieldSeparator>
+              </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <Button type="button" variant="outline">

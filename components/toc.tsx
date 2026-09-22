@@ -77,7 +77,7 @@ export const TocChips = ({ items, className }: TocProps) => {
 
 const useActiveSection = (ids: string[]) => {
   const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
-  // Joined so the effect re-runs on a change of ids, not on array identity.
+  // Joined so the effect reruns when the ids change, not when the array is a new object.
   const key = ids.join('|');
 
   React.useEffect(() => {
@@ -94,7 +94,7 @@ const useActiveSection = (ids: string[]) => {
         const current = sectionIds.find((id) => visible.has(id));
         if (current) setActive(current);
       },
-      // -72px clears the sticky tabs bar; -66% activates a heading before it leaves the top third.
+      // Clear the sticky tabs, and mark a heading active before it leaves the top third.
       { rootMargin: '-72px 0px -66% 0px', threshold: 0 },
     );
 

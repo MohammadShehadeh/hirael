@@ -182,9 +182,11 @@ const Faq04 = () => {
               </div>
               <Accordion type="single" collapsible className="w-full">
                 {group.faqs.map((f) => (
-                  <AccordionItem key={f.q} value={f.q} className="md:px-4">
+                  <AccordionItem key={f.q} value={f.q}>
                     <AccordionTrigger>{f.q}</AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+                    <AccordionContent>
+                      <p className="text-muted-foreground">{f.a}</p>
+                    </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>

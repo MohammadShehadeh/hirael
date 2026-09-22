@@ -218,7 +218,7 @@ const NotificationsBlock = () => {
             type="button"
             variant="ghost"
             size="xs"
-            className="-me-2 text-muted-foreground"
+            className="-me-2"
             disabled={unreadCount === 0}
             onClick={() => setItems((current) => current.map((item) => ({ ...item, unread: false })))}
           >
@@ -228,19 +228,18 @@ const NotificationsBlock = () => {
 
         <div data-slot="notifications-filter" className="border-b border-border px-4 py-2">
           <ToggleGroup
-            type="single"
             size="sm"
-            value={filter}
-            onValueChange={(value) => {
+            value={[filter]}
+            onValueChange={([value]) => {
               if (value) setFilter(value as NotificationFilter);
             }}
             aria-label="Filter notifications"
           >
-            <ToggleGroupItem value="all" className="h-7 gap-1.5 text-xs">
+            <ToggleGroupItem value="all" className="h-7">
               All
               <span className="tabular-nums text-muted-foreground">{items.length}</span>
             </ToggleGroupItem>
-            <ToggleGroupItem value="unread" className="h-7 gap-1.5 text-xs">
+            <ToggleGroupItem value="unread" className="h-7">
               Unread
               <span className="tabular-nums text-muted-foreground">{unreadCount}</span>
             </ToggleGroupItem>
@@ -284,7 +283,6 @@ const NotificationsBlock = () => {
                           size="icon-xs"
                           aria-label={`Mark "${item.label}" as read`}
                           onClick={() => markRead(item.id)}
-                          className="text-muted-foreground hover:text-foreground"
                         >
                           <Check />
                         </Button>
@@ -295,7 +293,6 @@ const NotificationsBlock = () => {
                         size="icon-xs"
                         aria-label={`Dismiss "${item.label}"`}
                         onClick={() => dismiss(item.id)}
-                        className="text-muted-foreground hover:text-foreground"
                       >
                         <X />
                       </Button>

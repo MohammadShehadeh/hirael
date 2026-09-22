@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Sparkles } from '@/registry/hirael/bases/radix/components/sparkles';
 
-/** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
@@ -53,11 +52,7 @@ const Maintenance02 = () => {
         className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 text-center md:px-10"
       >
         <div className={RISE}>
-          <Badge
-            variant="outline"
-            data-slot="maintenance-badge"
-            className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
-          >
+          <Badge variant="outline" data-slot="maintenance-badge">
             Maintenance
           </Badge>
         </div>

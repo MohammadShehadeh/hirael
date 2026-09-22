@@ -137,7 +137,7 @@ const Integrations02 = () => {
               className="flex-wrap"
             >
               {CATEGORIES.map((category) => (
-                <ToggleGroupItem key={category} value={category} className="rounded-full px-3 text-xs">
+                <ToggleGroupItem key={category} value={category}>
                   {category}
                 </ToggleGroupItem>
               ))}
@@ -164,9 +164,7 @@ const Integrations02 = () => {
                     <item.icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
                     {item.name}
                   </h3>
-                  <Badge variant="outline" className="uppercase">
-                    {item.category}
-                  </Badge>
+                  <Badge variant="outline">{item.category}</Badge>
                 </div>
                 <p className="text-sm text-pretty text-muted-foreground">{item.summary}</p>
                 <Button
@@ -176,12 +174,12 @@ const Integrations02 = () => {
                   disabled={isPending}
                   onClick={() => toggle(item.name)}
                   aria-label={isConnected ? `Disconnect ${item.name}` : `Connect ${item.name}`}
-                  className={cn('mt-auto w-full', isConnected && !isPending && 'text-accent-cool')}
+                  className="mt-auto w-full"
                 >
                   {isPending ? (
                     <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />
                   ) : isConnected ? (
-                    <Check aria-hidden className="size-3.5" />
+                    <Check aria-hidden className="size-3.5 text-accent-cool" />
                   ) : (
                     <Plus aria-hidden className="size-3.5" />
                   )}

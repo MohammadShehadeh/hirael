@@ -58,7 +58,7 @@ export interface LazySelectProps {
   onSearchChange?: (search: string) => void;
   /** Called when the list is scrolled near the bottom and more pages exist. */
   onLoadMore?: () => void;
-  /** Initial / search page is loading. */
+  /** The first page, or the first page of a new search, is loading. */
   loading?: boolean;
   /** A subsequent page is being appended. */
   loadingMore?: boolean;
@@ -186,12 +186,11 @@ const LazySelect = ({
 interface LazySelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   className?: string;
-  children?: React.ReactNode | ((ctx: Ctx) => React.ReactNode);
 }
 
-const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...props }: LazySelectTriggerProps) => {
+const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: LazySelectTriggerProps) => {
   const ctx = useLazySelect();
-  const showClear = !children && ctx.clearable && ctx.value !== undefined && !ctx.disabled;
+  const showClear = ctx.clearable && ctx.value !== undefined && !ctx.disabled;
 
   return (
     <div data-slot="lazy-select-trigger-wrapper" className="relative w-full">
@@ -214,26 +213,18 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, children, ...
           )}
           {...props}
         >
-          {typeof children === 'function' ? (
-            children(ctx)
-          ) : children ? (
-            children
-          ) : (
-            <>
-              <span
-                className={cn(
-                  'min-w-0 flex-1 truncate',
-                  ctx.selectedLabel === undefined && 'text-muted-foreground',
-                  showClear && 'pe-5',
-                )}
-              >
-                {ctx.selectedLabel ?? placeholder}
-              </span>
-              <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-                <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
-              </span>
-            </>
-          )}
+          <span
+            className={cn(
+              'min-w-0 flex-1 truncate',
+              ctx.selectedLabel === undefined && 'text-muted-foreground',
+              showClear && 'pe-5',
+            )}
+          >
+            {ctx.selectedLabel ?? placeholder}
+          </span>
+          <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
+            <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
+          </span>
         </button>
       </PopoverTrigger>
       {showClear && (
@@ -376,12 +367,7 @@ export type LazyPage<T> = {
   hasMore: boolean;
 };
 
-/**
- * Drives a lazily paginated, debounced-search option source. Nothing is
- * fetched until `enabled` is true (wire it to the open state for true
- * lazy-on-open loading); changing the query resets to the first page, and
- * `loadMore` appends the next one.
- */
+/** Fetches nothing until `enabled`; wire it to the open state to load on open. */
 export const useLazySelectOptions = <T,>(
   loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
   map: (item: T) => LazySelectOption,

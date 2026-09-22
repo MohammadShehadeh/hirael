@@ -107,7 +107,7 @@ export const entryJsonLd = (entry: RegistryEntryMeta, addedAt?: string): object 
     isPartOf: { '@id': WEBSITE_ID },
     articleSection: collectionName(entry),
     keywords: entryKeywords(entry).join(', '),
-    // The route's own card carries a build hash, so it can't be named here.
+    // The route's own card has a build hash, so it cannot be named here.
     image: absolute(SITE_OG_IMAGE),
     ...(addedAt ? { datePublished: addedAt, dateModified: addedAt } : {}),
     author,
@@ -162,7 +162,7 @@ interface SocialCardOptions {
   url: string;
   title: string;
   description: string;
-  /** Drops the site-wide `images` so Next's file-convention resolver fills in the route's own hashed URL, which is unknown at `generateMetadata` time. */
+  /** Omit the shared image so Next uses this route's own card. */
   hasOwnOgImage?: boolean;
   type?: 'website' | 'article';
 }
@@ -243,7 +243,7 @@ export const listingMetadata = ({
   ...cards({ url: path === '/' ? SITE.url : `${SITE.url}${path}`, title: titled(title), description }),
 });
 
-/** The null canonical matters: inheriting the root layout's `/` would ask Google to fold every frame into the home page. */
+/** Drop the inherited home canonical so search engines do not treat every preview as the home page. */
 export const embedMetadata = (title: string): Metadata => ({
   title,
   robots: { index: false, follow: false },

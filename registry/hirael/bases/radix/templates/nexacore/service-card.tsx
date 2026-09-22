@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const ServiceIcon = ({ level }: { level: number }) => {
@@ -60,15 +59,16 @@ export const ServiceCard = ({ label, level, title, bullets }: ServiceCardProps) 
           padding: 'clamp(16px, 1.94vw, 32px) clamp(18px, 2.36vw, 36px)',
         }}
       >
-        <Badge
-          className="gap-2 bg-[var(--nexa-badge)] font-normal text-white [&>svg]:size-[17px]"
+        <span
+          data-slot="service-card-badge"
+          className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-[var(--nexa-badge)] text-white [&>svg]:size-[17px]"
           style={{
             padding: 'clamp(6px, 0.7vw, 12px) clamp(10px, 1.25vw, 20px)',
           }}
         >
           <ServiceIcon level={level} />
           <span style={{ fontSize: 'clamp(12px, 0.97vw, 15px)' }}>{label}</span>
-        </Badge>
+        </span>
 
         <div className="flex-grow" />
 
@@ -100,7 +100,7 @@ export const ServiceCard = ({ label, level, title, bullets }: ServiceCardProps) 
         >
           <Button
             type="button"
-            className="nexa-grad-a-bg mt-4 h-auto w-full rounded-xl"
+            className="mt-4 h-auto w-full"
             style={{
               padding: 'clamp(10px, 0.9vw, 14px) 0',
               fontSize: 'clamp(13px, 1.1vw, 16px)',

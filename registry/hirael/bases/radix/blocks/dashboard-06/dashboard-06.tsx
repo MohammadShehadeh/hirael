@@ -289,16 +289,16 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
 
   if (!run) {
     return (
-      <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'gap-1 self-stretch overflow-hidden py-0')}>
-        <CardHeader className="px-4 pt-3">
+      <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'self-stretch overflow-hidden')}>
+        <CardHeader>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Hash className="size-3 shrink-0" aria-hidden />
             <span>None</span>
           </div>
-          <CardTitle className="text-sm text-muted-foreground">No run selected</CardTitle>
+          <CardTitle>No run selected</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-1 items-center justify-center px-4 pb-4">
-          <Empty className="border-0">
+        <CardContent className="flex flex-1 items-center justify-center">
+          <Empty>
             <EmptyMedia>
               <BarChart3 className="size-5 text-muted-foreground" aria-hidden />
             </EmptyMedia>
@@ -312,8 +312,8 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
   }
 
   return (
-    <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'gap-2 self-stretch overflow-hidden py-0')}>
-      <CardHeader className="px-4 pt-3">
+    <Card data-slot="dashboard-breakdown" className={cn(SWAP, 'self-stretch overflow-hidden')}>
+      <CardHeader>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center">
             <Hash className="size-3 shrink-0" aria-hidden />
@@ -328,82 +328,84 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
             </>
           )}
         </div>
-        <CardTitle className="flex items-center justify-between gap-2">
+        <CardTitle className="flex items-center justify-between">
           <span className="line-clamp-1 text-sm">{run.pipeline}</span>
-          <Badge variant="outline" className="gap-1.5" style={{ color: STATE_TOKEN[run.state] }}>
+          <Badge variant="outline" style={{ color: STATE_TOKEN[run.state] }}>
             <StateDot state={run.state} />
             {STATE_LABEL[run.state]}
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 px-4 pb-4">
-        <dl className="grid grid-cols-2 gap-2 text-xs">
-          <div className="flex flex-col gap-0.5">
-            <dt className="text-muted-foreground">Branch</dt>
-            <dd className="inline-flex items-center gap-1">
-              <GitBranch className="size-3 shrink-0" aria-hidden />
-              <span className="truncate">{run.branch}</span>
-            </dd>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <dt className="text-muted-foreground">Duration</dt>
-            <dd className="inline-flex items-center gap-1 tabular-nums">
-              <Clock className="size-3 shrink-0" aria-hidden />
-              {formatSeconds(run.durationSec)}
-            </dd>
-          </div>
-        </dl>
+      <CardContent className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col gap-3">
+          <dl className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex flex-col gap-0.5">
+              <dt className="text-muted-foreground">Branch</dt>
+              <dd className="inline-flex items-center gap-1">
+                <GitBranch className="size-3 shrink-0" aria-hidden />
+                <span className="truncate">{run.branch}</span>
+              </dd>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <dt className="text-muted-foreground">Duration</dt>
+              <dd className="inline-flex items-center gap-1 tabular-nums">
+                <Clock className="size-3 shrink-0" aria-hidden />
+                {formatSeconds(run.durationSec)}
+              </dd>
+            </div>
+          </dl>
 
-        <div className="flex flex-col gap-1 border-t border-border pt-2">
-          <p className="text-xs uppercase text-muted-foreground">Steps</p>
-          <ul className="flex flex-col gap-1">
-            {run.steps.map((step) => (
-              <li key={step.name} className="flex items-center gap-2 text-xs">
-                <StateDot state={step.state} />
-                <span className="min-w-0 flex-1 truncate">{step.name}</span>
-                <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div
-          id={logId}
-          data-slot="dashboard-log"
-          className={cn(
-            'grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-            logOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
-          )}
-        >
-          <div className="overflow-hidden">
-            <pre className="rounded-md border border-border bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
-              {run.steps
-                .map(
-                  (step, index) =>
-                    `[${index + 1}/${run.steps.length}] ${step.name}: ${STATE_LABEL[step.state].toLowerCase()}${step.durationLabel === '-' || step.state === 'running' ? '' : ` in ${step.durationLabel}`}`,
-                )
-                .join('\n')}
-            </pre>
+          <div className="flex flex-col gap-1 border-t border-border pt-2">
+            <p className="text-xs uppercase text-muted-foreground">Steps</p>
+            <ul className="flex flex-col gap-1">
+              {run.steps.map((step) => (
+                <li key={step.name} className="flex items-center gap-2 text-xs">
+                  <StateDot state={step.state} />
+                  <span className="min-w-0 flex-1 truncate">{step.name}</span>
+                  <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        <Button
-          type="button"
-          size="sm"
-          aria-expanded={logOpen}
-          aria-controls={logId}
-          onClick={() => setLogOpen((open) => !open)}
-          className="mt-auto gap-1 px-3 py-1.5 text-xs"
-        >
-          {logOpen ? 'Hide log' : 'View full log'}
-          <ChevronDown
+          <div
+            id={logId}
+            data-slot="dashboard-log"
             className={cn(
-              'size-3 transition-transform duration-150 motion-reduce:transition-none',
-              logOpen && 'rotate-180',
+              'grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+              logOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
             )}
-            aria-hidden
-          />
-        </Button>
+          >
+            <div className="overflow-hidden">
+              <pre className="rounded-md border border-border bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
+                {run.steps
+                  .map(
+                    (step, index) =>
+                      `[${index + 1}/${run.steps.length}] ${step.name}: ${STATE_LABEL[step.state].toLowerCase()}${step.durationLabel === '-' || step.state === 'running' ? '' : ` in ${step.durationLabel}`}`,
+                  )
+                  .join('\n')}
+              </pre>
+            </div>
+          </div>
+
+          <Button
+            type="button"
+            size="sm"
+            aria-expanded={logOpen}
+            aria-controls={logId}
+            onClick={() => setLogOpen((open) => !open)}
+            className="mt-auto"
+          >
+            {logOpen ? 'Hide log' : 'View full log'}
+            <ChevronDown
+              className={cn(
+                'size-3 transition-transform duration-150 motion-reduce:transition-none',
+                logOpen && 'rotate-180',
+              )}
+              aria-hidden
+            />
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
@@ -413,7 +415,6 @@ const Dashboard06 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(RUNS[0].id);
   const selectedRun = RUNS.find((r) => r.id === selectedId) ?? null;
 
-  /** Picking the selected run again clears it, so the empty panel is reachable. */
   const toggleRun = (id: string) => setSelectedId((current) => (current === id ? null : id));
 
   return (
@@ -438,14 +439,14 @@ const Dashboard06 = () => {
         </div>
 
         <div style={stagger(2)} className={cn(ENTER, 'grid grid-cols-1 items-start gap-3 lg:grid-cols-[1fr_340px]')}>
-          <Card data-slot="dashboard-chart" className="py-0">
-            <CardHeader className="px-6 pt-4 pb-3">
+          <Card data-slot="dashboard-chart">
+            <CardHeader>
               <CardTitle>Latest runs</CardTitle>
               <CardDescription>
                 Duration of the last {CHART_DATA.length} runs. Pick a bar to inspect it, pick it again to clear.
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-2 pb-4 sm:px-4">
+            <CardContent>
               <ChartContainer config={chartConfig} className="h-[200px] w-full">
                 <BarChart
                   data={CHART_DATA}
@@ -527,12 +528,12 @@ const Dashboard06 = () => {
           <RunBreakdown key={selectedRun?.id ?? 'none'} run={selectedRun} />
         </div>
 
-        <Card data-slot="dashboard-recent" style={stagger(3)} className={cn(ENTER, 'py-0')}>
-          <CardHeader className="px-6 pt-4 pb-3">
+        <Card data-slot="dashboard-recent" style={stagger(3)} className={ENTER}>
+          <CardHeader>
             <CardTitle>Recent runs</CardTitle>
             <CardDescription>The last {RUNS.length} pipeline runs.</CardDescription>
           </CardHeader>
-          <CardContent className="px-0 pb-2">
+          <CardContent>
             <ul className="flex flex-col">
               {RUNS.map((run, i) => (
                 <li key={run.id}>
@@ -541,7 +542,7 @@ const Dashboard06 = () => {
                     onClick={() => toggleRun(run.id)}
                     aria-pressed={selectedId === run.id}
                     className={cn(
-                      'grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-6 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50',
+                      'grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-3 py-3 text-start transition-colors duration-150 ease-out hover:bg-muted/50',
                       i < RUNS.length - 1 && 'border-b border-border',
                       selectedId === run.id && 'bg-muted/40',
                     )}

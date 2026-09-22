@@ -42,7 +42,7 @@ const CONSUMER_IMPORTS = new Map<string, string>(
 
 const BASE_IMPORT = /@\/registry\/hirael\/bases\/[a-z]+\/([\w./-]+)/g;
 
-/** The shadcn CLI rewrites `@/registry/hirael/bases/<base>/…` imports on install; this document is read rather than installed, so it does the same rewrite. */
+// The CLI rewrites imports on install; a page that is only read has to do it here.
 const forConsumer = (code: string): string =>
   code.replace(BASE_IMPORT, (_match, file: string) => {
     const mapped = CONSUMER_IMPORTS.get(file);

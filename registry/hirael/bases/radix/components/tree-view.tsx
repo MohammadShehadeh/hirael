@@ -29,7 +29,6 @@ const TreeDepthContext = React.createContext(0);
 
 const TreeParentContext = React.createContext<React.RefObject<HTMLButtonElement | null> | null>(null);
 
-/** Horizontal inset per nesting level, plus the base inset, in px. */
 const TREE_INDENT_PER_LEVEL = 14;
 const TREE_INDENT_BASE = 8;
 
@@ -161,8 +160,7 @@ const TreeItem = ({
     return registerItem(value, el);
   }, [registerItem, value]);
 
-  // An unmounting item that holds focus (e.g. an ancestor collapsed) hands it
-  // to the parent trigger instead of dropping it to <body>. Kept apart from the
+  // Hands focus to the parent trigger on unmount (e.g. an ancestor collapsed). Separate from the
   // registration effect, which re-runs on `value` changes while the item stays mounted.
   React.useLayoutEffect(() => {
     const el = triggerRef.current;
@@ -232,8 +230,6 @@ const TreeItem = ({
     onFocus: () => setTabbable(value),
   };
 
-  // Folder open/closed and the chevron rotation are driven off the trigger's
-  // data-[state] (set by Collapsible) instead of tracked React state.
   const leadingIcon =
     icon !== undefined ? (
       icon

@@ -21,15 +21,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
 import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/**
- * Shared pieces of the framed previews: blocks, templates and component examples all render an `/embed/*` page in
- * an iframe, so the theme lock, RTL flag, refresh and "open" affordances and the shell-height follow live here.
- */
-
 const PREVIEW_ICON_BUTTON = 'size-7';
 
-/** `?fit=1` drops the embed shell's viewport min-height (globals.css) so the frame can size to the content's natural height.
- * `theme` is omitted until the toolbar overrides it, so the frame keeps following the site mode from storage. */
 export const previewSrc = (embedHref: string, options: { theme: ThemeMode | null; isRtl: boolean }) => {
   const params = new URLSearchParams({ fit: '1' });
   if (options.theme) params.set('theme', options.theme);
@@ -38,9 +31,9 @@ export const previewSrc = (embedHref: string, options: { theme: ThemeMode | null
 };
 
 export interface PreviewTheme {
-  /** The mode the frame shows: the toolbar override, else the site mode once mounted. */
+  /** Shown mode: the toolbar choice, or the site mode after mount. */
   frameMode: ThemeMode;
-  /** The toolbar override, or `null` while the frame follows the site. */
+  /** Toolbar choice, or null while the frame follows the site. */
   previewMode: ThemeMode | null;
   toggle: () => void;
 }
@@ -143,7 +136,6 @@ export interface PreviewMoreMenuProps {
   entry: RegistryEntryMeta;
 }
 
-/** The overflow menu every framed preview carries: copy the page link, report an issue, and the entry's dependencies. */
 export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
   const pageUrl = `${SITE.url}${entryHref(entry)}`;
   const [copied, setCopied] = React.useState(false);
@@ -261,15 +253,14 @@ const observeShellHeight = (frame: HTMLIFrameElement, onHeight: (shellHeight: nu
 export interface PreviewFrameProps extends Omit<React.ComponentProps<'iframe'>, 'src' | 'title' | 'height'> {
   src: string;
   title: string;
-  /** Bumping it remounts the frame, which reloads the page. */
+  /** Change this to reload the frame. */
   refreshKey?: number;
-  /** Height until the first measurement, so a refresh doesn't collapse the frame. */
+  /** Height before the first measurement, so a refresh does not collapse the frame. */
   initialHeight: number;
   minHeight: number;
   maxHeight: number;
 }
 
-/** An `/embed/*` page in an iframe that follows the height of the page's `[data-embed-shell]`, clamped to the given range. */
 export const PreviewFrame = ({
   src,
   title,
@@ -293,7 +284,7 @@ export const PreviewFrame = ({
     });
   };
 
-  // The frame can finish loading before React attaches `onLoad`, so also pick up an already-loaded frame after mount.
+  // Also measure a frame that finished loading before React attached onLoad.
   const followMounted = React.useEffectEvent(follow);
 
   React.useEffect(() => {

@@ -1,4 +1,4 @@
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { PillButton } from './primitives';
 
 const STATEMENT_VIDEO = '/media/templates/velorah/statement.mp4';
 
@@ -49,13 +49,7 @@ export const Statement = () => {
           ))}
         </div>
 
-        <Button
-          type="button"
-          variant="ghost"
-          className="liquid-glass mt-12 h-auto rounded-full px-10 py-4 font-normal text-foreground transition-transform hover:scale-[1.03]"
-        >
-          Discover the App
-        </Button>
+        <PillButton className="mt-12 px-10 py-4">Discover the App</PillButton>
       </div>
     </section>
   );

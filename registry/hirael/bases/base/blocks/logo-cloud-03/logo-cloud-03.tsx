@@ -64,7 +64,9 @@ const LogoCloud03 = () => {
           </blockquote>
           <figcaption className="flex items-center gap-3">
             <Avatar className="size-9">
-              <AvatarFallback className="text-xs">RK</AvatarFallback>
+              <AvatarFallback>
+                <span className="text-xs">RK</span>
+              </AvatarFallback>
             </Avatar>
             <div className="text-start">
               <p className="text-sm font-medium">Rania Khoury</p>

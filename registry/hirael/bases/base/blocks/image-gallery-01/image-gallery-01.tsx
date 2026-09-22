@@ -12,7 +12,6 @@ import {
   LightboxTrigger,
   type LightboxItem,
 } from '@/registry/hirael/bases/base/components/lightbox';
-import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/registry/hirael/bases/base/ui/empty';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
@@ -144,7 +143,11 @@ const ImageGallery01 = () => {
   };
 
   return (
-    <section data-slot="image-gallery" className="bg-background py-20 sm:py-28" aria-labelledby="image-gallery-01-heading">
+    <section
+      data-slot="image-gallery"
+      className="bg-background py-20 sm:py-28"
+      aria-labelledby="image-gallery-01-heading"
+    >
       <div className="container w-full">
         <div
           data-slot="image-gallery-header"
@@ -174,8 +177,8 @@ const ImageGallery01 = () => {
           >
             <TabsList variant="line" className="flex-wrap group-data-[orientation=horizontal]/tabs:h-auto">
               {FILTERS.map((f) => (
-                <TabsTrigger key={f} value={f} className="gap-1.5 uppercase">
-                  {f}
+                <TabsTrigger key={f} value={f}>
+                  <span className="uppercase">{f}</span>
                   <span className="text-[10px] tabular-nums text-muted-foreground">{countFor(f)}</span>
                 </TabsTrigger>
               ))}
@@ -184,7 +187,7 @@ const ImageGallery01 = () => {
         </div>
 
         {visible.length === 0 ? (
-          <Empty key={filter} data-slot="image-gallery-empty" className={cn(SWAP, 'mt-10 border border-border')}>
+          <Empty key={filter} data-slot="image-gallery-empty" className={cn(SWAP, 'mt-10')}>
             <EmptyHeader>
               <EmptyTitle>No {filter.toLowerCase()} work yet</EmptyTitle>
               <EmptyDescription>
@@ -212,12 +215,17 @@ const ImageGallery01 = () => {
                 >
                   <LightboxTrigger
                     index={tileIndex}
-                    ref={(node: HTMLButtonElement | null) => {
-                      tileRefs.current[tileIndex] = node;
-                    }}
                     data-slot="image-gallery-tile"
                     aria-label={`${t.client}, ${t.project}. Open image ${tileIndex + 1} of ${visible.length}`}
-                    className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    render={
+                      <button
+                        type="button"
+                        ref={(node: HTMLButtonElement | null) => {
+                          tileRefs.current[tileIndex] = node;
+                        }}
+                        className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      />
+                    }
                   >
                     <span className={cn('relative block overflow-hidden rounded-t-md bg-muted', t.aspect)}>
                       <Image
@@ -227,17 +235,13 @@ const ImageGallery01 = () => {
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                         className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 motion-reduce:transition-none"
                       />
-                      {/* Photo scrim: keeps the white chips legible on any image. */}
                       <span
                         aria-hidden
                         className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/40 via-black/0 to-black/10"
                       />
-                      <Badge
-                        variant="outline"
-                        className="absolute start-3 top-3 border-white/30 bg-black/20 text-white backdrop-blur-sm"
-                      >
+                      <span className="absolute start-3 top-3 inline-flex items-center rounded-full border border-white/30 bg-black/20 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
                         {t.tag}
-                      </Badge>
+                      </span>
                       <span
                         aria-hidden
                         className="absolute end-3 top-3 inline-flex size-7 items-center justify-center rounded-sm border border-white/30 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-[opacity,transform] duration-150 ease-out group-hover:scale-105 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"

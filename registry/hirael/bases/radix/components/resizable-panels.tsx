@@ -123,8 +123,7 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
     prev.style.flexGrow = String(newPrevGrow);
     next.style.flexGrow = String(totalGrow - newPrevGrow);
     if (totalSize <= 0) return;
-    // Derived from the numbers already in hand: re-measuring after the style
-    // writes would force a synchronous layout on every pointermove.
+    // Re-measuring after the style writes would force a synchronous layout per pointermove.
     const nextRange = {
       now: Math.round((newPrev / totalSize) * 100),
       min: Math.round((prevMin / totalSize) * 100),

@@ -27,8 +27,8 @@ const InlineEditDemo = () => {
           placeholder={t({ en: 'Untitled document', ar: 'مستند بلا عنوان' })}
           aria-label={t({ en: 'Document title', ar: 'عنوان المستند' })}
         >
-          <div className="flex items-center gap-2">
-            <InlineEditPreview className="text-sm font-medium" />
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <InlineEditPreview />
             <InlineEditInput
               aria-label={t({
                 en: 'Edit document title',
@@ -65,8 +65,8 @@ const InlineEditDemo = () => {
             await new Promise((resolve) => setTimeout(resolve, 800));
           }}
         >
-          <div className="grid gap-2">
-            <InlineEditPreview className="text-sm leading-relaxed" />
+          <div className="grid gap-2 text-sm leading-relaxed">
+            <InlineEditPreview />
             <InlineEditTextarea aria-label={t({ en: 'Edit bio', ar: 'تعديل النبذة' })} rows={3} />
             <InlineEditControls className="justify-end" />
           </div>

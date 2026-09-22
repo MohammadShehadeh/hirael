@@ -16,10 +16,6 @@ const RANGES: { value: Range; label: string }[] = [
   { value: '7d', label: 'Last 7 days' },
 ];
 
-/**
- * The sign gives the direction and `goodWhen` gives the intent, so falling
- * errors and falling latency read as wins without a per-metric special case.
- */
 interface Delta {
   value: number;
   unit: '%' | 'pp';
@@ -119,7 +115,6 @@ const DURATION_SERIES = [31, 28, 29, 26, 27, 24, 23];
 
 const P95_TARGET_MS = 200;
 
-/** `overTarget` is measured against the stated target, not eyeballed. */
 const LATENCY = [
   { label: 'P50', ms: 92, pct: 28 },
   { label: 'P95', ms: 184, pct: 58 },
@@ -175,11 +170,6 @@ const DEPLOYS: readonly Deploy[] = [
   },
 ];
 
-/**
- * `--accent-cool` is the reserved live/active tone in this theme, so the
- * deployment actually taking traffic gets it. Canary is a warning, and
- * stable is simply not noteworthy.
- */
 const STATUS_META: Record<Deploy['status'], { label: string; dot: string; pulse: boolean }> = {
   live: { label: 'Live', dot: 'bg-accent-cool', pulse: true },
   stable: { label: 'Stable', dot: 'bg-muted-foreground/50', pulse: false },
@@ -223,7 +213,7 @@ const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
 const StatusBadge = ({ status }: { status: Deploy['status'] }) => {
   const meta = STATUS_META[status];
   return (
-    <Badge variant="outline" className="w-fit gap-1.5 font-normal text-muted-foreground">
+    <Badge variant="outline" className="w-fit">
       <span aria-hidden className="relative flex size-2">
         {meta.pulse && (
           <span
@@ -372,9 +362,9 @@ const Dashboard05 = () => {
                 <Divider />
                 <span className="tabular-nums">P95 target {P95_TARGET_MS} ms</span>
               </span>
-              <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                <a href="#">Open metrics</a>
-              </Button>
+              <a href="#" className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+                Open metrics
+              </a>
             </div>
             <ul className="flex flex-1 flex-col justify-center gap-3">
               {LATENCY.map((row) => (
@@ -399,9 +389,9 @@ const Dashboard05 = () => {
           <div data-slot="dashboard-deployments" className="flex flex-col bg-card md:col-span-4">
             <div className="flex items-center justify-between gap-2 p-5 pb-3">
               <CellLabel>Active deployments</CellLabel>
-              <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                <a href="#">View all</a>
-              </Button>
+              <a href="#" className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+                View all
+              </a>
             </div>
             <ul className="flex flex-col">
               {DEPLOYS.map((d, i) => (

@@ -1,6 +1,6 @@
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+import { cn } from '@/lib/utils';
 
-import { OrangeButton } from './primitives';
+import { OrangeButton, PILL_LABEL } from './primitives';
 
 const SMALL_IMAGE = '/media/templates/agency-landing/about-small.jpg';
 const LARGE_IMAGE = '/media/templates/agency-landing/about-large.jpg';
@@ -16,12 +16,14 @@ export const About = () => {
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
             1
           </span>
-          <Badge
-            variant="outline"
-            className="border-gray-200 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]"
+          <span
+            className={cn(
+              PILL_LABEL,
+              'border-gray-200 px-3 py-1 text-[12px] text-gray-900 sm:px-4 sm:py-1.5 sm:text-[13px]',
+            )}
           >
             Introducing Hirael
-          </Badge>
+          </span>
         </div>
 
         <h2 className="mb-12 px-5 text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 sm:mb-16 sm:px-8 lg:mb-28 lg:px-12">

@@ -15,7 +15,7 @@ const MAX_RECENTS = 5;
 const NO_RECENTS: RecentItem[] = [];
 const listeners = new Set<() => void>();
 
-/** `useSyncExternalStore` needs the same reference back for an unchanged value, and JSON.parse never gives one. */
+/** Keep the last parsed list. A fresh parse would be a new array and look like a change. */
 let cache: { raw: string | null; value: RecentItem[] } | null = null;
 
 let memory: RecentItem[] | null = null;

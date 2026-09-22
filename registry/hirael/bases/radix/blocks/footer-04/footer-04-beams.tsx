@@ -17,8 +17,7 @@ interface RayConfig {
   strongSway: boolean;
 }
 
-// Fan the rays from the top edge: leftmost leans right, rightmost leans left.
-// The golden-ratio step keeps neighbours from pulsing in lockstep.
+// The golden-ratio step keeps neighbouring rays from pulsing in lockstep.
 const rayConfig = (index: number, total: number): RayConfig => {
   const progress = index / Math.max(total - 1, 1);
   const variation = (index * 0.618) % 1;
@@ -122,10 +121,6 @@ export interface FooterBeamsProps extends React.ComponentProps<'div'> {
   rayLength?: string;
 }
 
-/**
- * Soft light rays that fall from the top edge and slowly pulse and sway.
- * Sits behind whatever you pass as children.
- */
 const FooterBeams = ({
   rayCount = 12,
   rayOpacity = 0.35,

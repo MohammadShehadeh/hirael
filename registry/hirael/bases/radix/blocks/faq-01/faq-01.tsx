@@ -88,9 +88,9 @@ const Faq01 = () => {
         </div>
 
         <div data-slot="faq-list" className="lg:col-span-7">
-          <Accordion type="single" collapsible defaultValue="item-0" className="border-y border-border">
+          <Accordion type="single" collapsible defaultValue="item-0">
             {FAQS.map((f, i) => (
-              <AccordionItem key={f.q} value={`item-${i}`} style={stagger(i, 50, 200)} className={cn(ENTER, 'px-1')}>
+              <AccordionItem key={f.q} value={`item-${i}`} style={stagger(i, 50, 200)} className={ENTER}>
                 <AccordionTrigger>
                   <span className="flex items-baseline gap-4">
                     <span className="text-xs tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>

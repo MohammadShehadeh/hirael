@@ -5,8 +5,7 @@ import { SITE } from '@/lib/site';
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = 'image/png';
 
-// `next/og` fetches a font per glyph it can't cover and Google Fonts has none
-// for the Command key, so a ⌘K description fails the fetch and renders blank.
+// Spell the Command key. The image renderer has no font for that glyph, so the card would come out blank.
 const spellGlyphs = (text: string) => text.replaceAll('⌘', 'Cmd');
 
 const clamp = (text: string, max: number) => {

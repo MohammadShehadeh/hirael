@@ -15,7 +15,7 @@ const InspectorPanel = ({ className, ...props }: InspectorPanelProps) => {
     <aside
       data-slot="inspector-panel"
       className={cn(
-        'flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground',
+        'flex w-full max-w-xs flex-col divide-y divide-border overflow-hidden rounded-lg border border-border bg-card text-card-foreground',
         className,
       )}
       {...props}
@@ -60,20 +60,22 @@ const InspectorPanelSection = ({
   ...props
 }: InspectorPanelSectionProps) => {
   return (
-    <Collapsible
-      defaultOpen={defaultOpen}
-      data-slot="inspector-panel-section"
-      className={cn('border-b border-border last:border-b-0', className)}
-      {...props}
-    >
-      <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
-        <span className="text-xs font-medium text-foreground">{title}</span>
-        <ChevronDown
-          aria-hidden
-          className="size-3.5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
-        />
+    <Collapsible defaultOpen={defaultOpen} data-slot="inspector-panel-section" className={className} {...props}>
+      <CollapsibleTrigger asChild>
+        <button
+          type="button"
+          className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+        >
+          <span className="text-xs font-medium text-foreground">{title}</span>
+          <ChevronDown
+            aria-hidden
+            className="size-3.5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
+          />
+        </button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="flex flex-col gap-2 px-3 pb-3 pt-1">{children}</CollapsibleContent>
+      <CollapsibleContent>
+        <div className="flex flex-col gap-2 px-3 pb-3 pt-1">{children}</div>
+      </CollapsibleContent>
     </Collapsible>
   );
 };
@@ -110,11 +112,11 @@ interface InspectorFieldProps extends Omit<React.ComponentProps<'input'>, 'size'
 const InspectorField = ({ unit, leading, className, ...props }: InspectorFieldProps) => {
   return (
     <InputGroup data-slot="inspector-field" className="h-7 w-full">
-      {leading ? <InputGroupAddon className="py-0 ps-1.5">{leading}</InputGroupAddon> : null}
-      <InputGroupInput className={cn('h-7 px-2 text-xs tabular-nums md:text-xs', className)} {...props} />
+      {leading ? <InputGroupAddon>{leading}</InputGroupAddon> : null}
+      <InputGroupInput className={cn('h-7', className)} {...props} />
       {unit ? (
-        <InputGroupAddon align="inline-end" className="py-0 pe-2 text-xs font-normal">
-          {unit}
+        <InputGroupAddon align="inline-end">
+          <span className="text-xs font-normal">{unit}</span>
         </InputGroupAddon>
       ) : null}
     </InputGroup>
@@ -181,7 +183,6 @@ const InspectorPanelBlock = () => {
                 const next = event.target.value.startsWith('#') ? event.target.value : `#${event.target.value}`;
                 setFill(next.toUpperCase());
               }}
-              className="uppercase"
               leading={
                 <label className="relative block size-4 cursor-pointer overflow-hidden rounded-sm border border-border">
                   <span
@@ -227,7 +228,7 @@ const InspectorPanelBlock = () => {
               size="sm"
               value={weight}
               onChange={(event) => setWeight(event.target.value)}
-              className="h-7 text-xs data-[size=sm]:h-7"
+              className="h-7 data-[size=sm]:h-7"
             >
               <NativeSelectOption value="400">Regular</NativeSelectOption>
               <NativeSelectOption value="500">Medium</NativeSelectOption>

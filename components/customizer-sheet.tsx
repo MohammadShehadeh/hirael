@@ -22,7 +22,6 @@ import {
 } from '@/registry/hirael/bases/radix/ui/select';
 import {
   Sheet,
-  SheetBody,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -80,7 +79,7 @@ const CustomizerBody = () => {
       </SheetHeader>
       <Separator />
 
-      <SheetBody className="flex flex-col gap-6">
+      <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
         <Section title="Config" hint="Icons stay lucide">
           <Rows>
             <Row label="Base">
@@ -187,7 +186,7 @@ const CustomizerBody = () => {
             placeholder="Pick a base color, theme, chart color or radius to generate overrides."
           />
         </Section>
-      </SheetBody>
+      </div>
 
       <Separator />
       <SheetFooter className="flex-row items-center justify-between">

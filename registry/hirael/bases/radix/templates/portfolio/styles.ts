@@ -1,5 +1,4 @@
-// Palette, fonts and keyframes, scoped to the template root. Colors are HSL
-// channels, read in class names as `hsl(var(--token))`.
+// Colors are HSL channels, read in class names as `hsl(var(--token))`.
 export const PORTFOLIO_STYLES = `
 [data-slot="portfolio"] {
   --bg: 0 0% 4%;

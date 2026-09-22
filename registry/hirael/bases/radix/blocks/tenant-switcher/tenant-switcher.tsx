@@ -152,10 +152,7 @@ const TenantSwitcherTrigger = ({
         disabled={disabled}
         data-slot="tenant-switcher-trigger"
         data-state={open ? 'open' : 'closed'}
-        className={cn(
-          'group h-12 w-full justify-start gap-2.5 px-2.5 text-start font-normal data-[state=open]:border-ring',
-          className,
-        )}
+        className={cn('group h-12 w-full justify-start text-start', className)}
         {...props}
       >
         {children ?? (
@@ -203,7 +200,7 @@ const TenantSwitcherContent = ({
       align="start"
       sideOffset={6}
       data-slot="tenant-switcher-content"
-      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem] p-0', className)}
+      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem]', className)}
       onOpenAutoFocus={(event) => event.preventDefault()}
       {...props}
     >
@@ -252,7 +249,7 @@ const TenantSwitcherItem = ({
         setOpen(false);
       }}
       data-slot="tenant-switcher-item"
-      className={cn('gap-2.5', className)}
+      className={className}
       {...props}
     >
       <TenantLogo tenant={tenant} className="size-6 text-[10px]" />
@@ -290,7 +287,6 @@ const TenantSwitcherCreate = ({
   );
 };
 
-/** Bucket tenants by their `group`, preserving first-seen order. */
 const useGroupedTenants = (tenants: Tenant[]) => {
   return React.useMemo(() => {
     const groups = new Map<string | undefined, Tenant[]>();

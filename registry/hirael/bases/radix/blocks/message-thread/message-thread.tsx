@@ -59,8 +59,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
-    // While a programmatic smooth scroll is in flight, ignore the
-    // intermediate positions so the pill doesn't flicker.
+    // Ignore intermediate positions of a programmatic smooth scroll so the pill doesn't flicker.
     if (autoScrollingRef.current) {
       if (!pinned) return;
       autoScrollingRef.current = false;
@@ -106,7 +105,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
 
 type MessageThreadScrollButtonProps = Omit<React.ComponentProps<typeof Button>, 'onClick'>;
 
-/** "Jump to latest" pill. Render it as the last child of the thread. */
+/** Render it as the last child of the thread. */
 const MessageThreadScrollButton = ({
   className,
   children = 'Jump to latest',
@@ -125,7 +124,7 @@ const MessageThreadScrollButton = ({
         variant="outline"
         size="sm"
         onClick={scrollToBottom}
-        className={cn('-translate-y-full rounded-full shadow-md backdrop-blur', className)}
+        className={cn('-translate-y-full', className)}
         {...props}
       >
         <ArrowDown className="size-3.5" aria-hidden />
@@ -141,7 +140,6 @@ interface MessageProps extends React.ComponentProps<'div'> {
   role?: MessageRole;
 }
 
-/** User messages sit on the end side, assistant on the start side. */
 const Message = ({ role = 'assistant', className, ...props }: MessageProps) => {
   return (
     <MessageRoleContext.Provider value={role}>
@@ -162,7 +160,6 @@ const Message = ({ role = 'assistant', className, ...props }: MessageProps) => {
 
 type MessageBodyProps = React.ComponentProps<'div'>;
 
-/** Column next to the avatar: bubble, actions, timestamp, tool calls. */
 const MessageBody = ({ className, ...props }: MessageBodyProps) => {
   const role = React.useContext(MessageRoleContext);
   return (
@@ -253,15 +250,12 @@ const MessageAction = ({ label, pressed, className, children, ...props }: Messag
     <Button
       type="button"
       data-slot="message-action"
-      variant="ghost"
+      variant={pressed ? 'secondary' : 'ghost'}
       size="icon-xs"
       aria-label={label}
       aria-pressed={pressed}
       title={label}
-      className={cn(
-        "size-7 text-muted-foreground hover:text-foreground aria-pressed:bg-accent aria-pressed:text-foreground [&_svg:not([class*='size-'])]:size-3.5",
-        className,
-      )}
+      className={cn("size-7 [&_svg:not([class*='size-'])]:size-3.5", className)}
       {...props}
     >
       {children}
@@ -337,25 +331,32 @@ const MessageToolCall = ({
     <Collapsible
       data-slot="message-tool-call"
       data-status={status}
-      className={cn('w-full max-w-xl overflow-hidden rounded-md border border-border bg-card', className)}
+      className={cn('w-full max-w-xl', className)}
       {...props}
     >
-      <CollapsibleTrigger className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
-        <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
-        <span className="truncate text-foreground">{name}</span>
-        <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
-        <ChevronDown
-          className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/tool:rotate-180 motion-reduce:transition-none"
-          aria-hidden
-        />
-      </CollapsibleTrigger>
-      <CollapsibleContent className="border-t border-border">
-        <div className="flex flex-col gap-3 p-3">
-          {args !== undefined ? <ToolSection label="Arguments">{toPretty(args)}</ToolSection> : null}
-          {result !== undefined ? <ToolSection label="Result">{toPretty(result)}</ToolSection> : null}
-          {children}
-        </div>
-      </CollapsibleContent>
+      <div className="overflow-hidden rounded-md border border-border bg-card">
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="group/tool flex w-full items-center gap-2 px-3 py-2 text-start text-xs outline-none hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+          >
+            <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', tone.dot)} />
+            <span className="truncate text-foreground">{name}</span>
+            <span className="ms-auto shrink-0 text-xs text-muted-foreground uppercase">{tone.label}</span>
+            <ChevronDown
+              className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/tool:rotate-180 motion-reduce:transition-none"
+              aria-hidden
+            />
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="flex flex-col gap-3 border-t border-border p-3">
+            {args !== undefined ? <ToolSection label="Arguments">{toPretty(args)}</ToolSection> : null}
+            {result !== undefined ? <ToolSection label="Result">{toPretty(result)}</ToolSection> : null}
+            {children}
+          </div>
+        </CollapsibleContent>
+      </div>
     </Collapsible>
   );
 };
@@ -397,15 +398,20 @@ const MessageReasoning = ({
       className={cn('flex w-full max-w-xl flex-col', className)}
       {...props}
     >
-      <CollapsibleTrigger className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 pe-2 ps-1 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">
-        <ChevronRight
-          className={cn(
-            'size-3.5 shrink-0 transition-transform motion-reduce:transition-none',
-            open ? 'rotate-90' : 'rtl:rotate-180',
-          )}
-          aria-hidden
-        />
-        <span className={cn(isThinking && 'animate-pulse motion-reduce:animate-none')}>{text}</span>
+      <CollapsibleTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 pe-2 ps-1 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <ChevronRight
+            className={cn(
+              'size-3.5 shrink-0 transition-transform motion-reduce:transition-none',
+              open ? 'rotate-90' : 'rtl:rotate-180',
+            )}
+            aria-hidden
+          />
+          <span className={cn(isThinking && 'animate-pulse motion-reduce:animate-none')}>{text}</span>
+        </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="ms-2.5 border-s-2 border-border py-1 ps-3 text-sm leading-relaxed text-muted-foreground [&_p+p]:mt-2">
@@ -418,7 +424,6 @@ const MessageReasoning = ({
 
 type MessageStreamingCursorProps = React.ComponentProps<'span'>;
 
-/** Blinking block cursor to append while text is still arriving. */
 const MessageStreamingCursor = ({ className, style, ...props }: MessageStreamingCursorProps) => {
   return (
     <span
@@ -478,7 +483,7 @@ const MessageSources = ({ label = 'Sources', className, children, ...props }: Me
 
 type MessageSourceProps = React.ComponentProps<'a'>;
 
-/** Numbered citation chip; numbering is automatic within MessageSources. */
+/** Numbering is automatic within MessageSources. */
 const MessageSource = ({ className, children, ...props }: MessageSourceProps) => {
   return (
     <a
@@ -563,7 +568,7 @@ const FeedbackActions = ({ copyText, onRegenerate }: { copyText: string; onRegen
   );
 };
 
-/** Reveals `text` word by word on mount; remount (change the key) to replay. */
+/** Remount (change the key) to replay. */
 const StreamedMessage = ({ text, onReplay }: { text: string; onReplay: () => void }) => {
   const tokens = text.match(/\S+\s*/g) ?? [];
   const [count, setCount] = React.useState(0);

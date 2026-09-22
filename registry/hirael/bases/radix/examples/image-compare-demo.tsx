@@ -49,7 +49,7 @@ const ImageCompareDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Drag to compare · labels', ar: 'اسحب للمقارنة · تسميات' })}
         </p>
-        <ImageCompare className="aspect-video rounded-lg border border-border">
+        <ImageCompare className="aspect-video">
           <ImageCompareBefore>
             <Image
               src={PHOTO}
@@ -84,11 +84,7 @@ const ImageCompareDemo = () => {
         <p className="text-xs uppercase text-muted-foreground">
           {t({ en: 'Vertical orientation', ar: 'اتجاه عمودي' })}
         </p>
-        <ImageCompare
-          orientation="vertical"
-          defaultPosition={40}
-          className="aspect-video rounded-lg border border-border"
-        >
+        <ImageCompare orientation="vertical" defaultPosition={40} className="aspect-video">
           <ImageCompareBefore>
             <Image
               src={PHOTO}
@@ -120,7 +116,7 @@ const ImageCompareDemo = () => {
             ar: 'تتبّع المؤشر · مخطط مقابل مُنسّق',
           })}
         </p>
-        <ImageCompare followPointer className="aspect-video rounded-lg border border-border">
+        <ImageCompare followPointer className="aspect-video">
           <ImageCompareBefore>
             <MockPanel />
           </ImageCompareBefore>

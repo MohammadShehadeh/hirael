@@ -194,9 +194,7 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? `${id}-error` : undefined}
                 />
-                <FieldError id={`${id}-error`} className="text-xs">
-                  {error}
-                </FieldError>
+                <FieldError id={`${id}-error`}>{error}</FieldError>
               </Field>
               <Button type="submit" size="sm">
                 Subscribe
@@ -225,11 +223,10 @@ const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
   const { filter, setFilter } = useChangelog();
   return (
     <ToggleGroup
-      type="single"
       variant="outline"
       size="sm"
-      value={filter}
-      onValueChange={(next) => {
+      value={[filter]}
+      onValueChange={([next]) => {
         // Radix clears the value when the active item is clicked again;
         // keep one filter selected at all times.
         if (next) setFilter(next as ChangelogFilterValue);
@@ -240,7 +237,7 @@ const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
       {...props}
     >
       {FILTERS.map((item) => (
-        <ToggleGroupItem key={item.value} value={item.value} className="text-xs">
+        <ToggleGroupItem key={item.value} value={item.value}>
           {item.label}
         </ToggleGroupItem>
       ))}
@@ -310,14 +307,7 @@ const ChangelogEntryDate = ({ date, className, ...props }: ChangelogEntryDatePro
 type ChangelogEntryVersionProps = React.ComponentProps<typeof Badge>;
 
 const ChangelogEntryVersion = ({ className, ...props }: ChangelogEntryVersionProps) => {
-  return (
-    <Badge
-      variant="outline"
-      data-slot="changelog-entry-version"
-      className={cn('text-[11px] tabular-nums', className)}
-      {...props}
-    />
-  );
+  return <Badge variant="outline" data-slot="changelog-entry-version" className={className} {...props} />;
 };
 
 interface ChangelogEntryProps extends React.ComponentProps<'article'> {
@@ -371,7 +361,7 @@ const ChangelogEntryTag = ({ kind, className, children, ...props }: ChangelogEnt
       variant="secondary"
       data-slot="changelog-entry-tag"
       data-kind={kind}
-      className={cn('uppercase', TAG_CLASSES[kind], className)}
+      className={cn(TAG_CLASSES[kind], className)}
       {...props}
     >
       {children ?? TAG_LABELS[kind]}

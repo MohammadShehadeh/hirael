@@ -9,7 +9,7 @@ export interface EntryJsonLdProps {
   addedAt?: string;
 }
 
-// Must stay a server component: the JSON-LD has to be in the exported HTML for crawlers that run no JavaScript.
+// Stays a server component so the data is in the exported HTML.
 export const EntryJsonLd = ({ entry, breadcrumb, addedAt }: EntryJsonLdProps) => {
   const crumbs = breadcrumb.map((crumb) => ({
     name: crumb.label,

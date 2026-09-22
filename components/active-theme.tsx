@@ -26,7 +26,7 @@ interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
   config: CustomizerConfig;
-  /** The default until mounted so the first client render matches the server HTML. */
+  /** Server default until mount, so hydration matches. */
   base: RegistryBase;
   tokens: ResolvedTokens;
   isDefault: boolean;
@@ -96,7 +96,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
         localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
-        // Storage can be unavailable (private mode, quota); the in-memory config still applies.
+        // Storage can be unavailable (private mode, quota).
       }
     }, 200);
     return () => window.clearTimeout(timerId);
@@ -141,11 +141,11 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
   return theme === 'light' || theme === 'dark' ? theme : undefined;
 };
 
-/** The lock comes from the URL, which never changes without a navigation, so there is nothing to subscribe to. */
+/** Only a navigation changes the URL, so there is nothing to subscribe to. */
 const subscribeToForcedTheme = () => () => {};
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // The server render has no URL params, so the server snapshot stays undefined and hydration matches the HTML.
+  // No URL on the server, so this stays empty and hydration matches.
   const forcedTheme = React.useSyncExternalStore(subscribeToForcedTheme, readEmbedForcedTheme, () => undefined);
 
   return (

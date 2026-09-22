@@ -38,11 +38,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
             Get Started
             <ArrowUpRight className="size-5 rtl:-scale-x-100" />
           </GlassButton>
-          <Button
-            type="button"
-            variant="ghost"
-            className="h-auto rounded-full px-2 py-2.5 text-sm font-medium text-foreground hover:bg-transparent hover:text-foreground/80"
-          >
+          <Button type="button" variant="ghost">
             Watch the Film
             <Play className="size-4 fill-current" />
           </Button>

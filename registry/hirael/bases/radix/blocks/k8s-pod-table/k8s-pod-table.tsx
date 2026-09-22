@@ -274,7 +274,7 @@ const K8sPodTableBlock = () => {
           {POD_FILTERS.map((option) => {
             const count = pods.filter((pod) => option.phases.includes(pod.phase)).length;
             return (
-              <ToggleGroupItem key={option.value} value={option.value} className="gap-1.5">
+              <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
                 <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
               </ToggleGroupItem>

@@ -61,7 +61,7 @@ const Hero06 = () => {
       <GeometricAccent />
 
       <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6">
-        <Badge variant="secondary" className={cn(ENTER, 'gap-2 text-[11px] font-normal')} asChild>
+        <Badge variant="secondary" className={ENTER} asChild>
           <a href="#">
             <span aria-hidden className="relative flex size-2">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-cool opacity-75 motion-reduce:animate-none" />
@@ -118,13 +118,13 @@ const Hero06 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'mt-2 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-4')}
         >
-          <Button asChild size="lg" className="group w-full rounded-full sm:w-auto">
+          <Button asChild size="lg" className="group w-full sm:w-auto">
             <a href="#">
               View experience
               <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
             </a>
           </Button>
-          <Button asChild variant="outline" size="lg" className="group w-full rounded-full sm:w-auto">
+          <Button asChild variant="outline" size="lg" className="group w-full sm:w-auto">
             <a href="#">
               View projects
               <Sparkles className="size-4 transition-transform duration-150 group-hover:rotate-12 motion-reduce:group-hover:rotate-0" />
@@ -142,11 +142,14 @@ const Hero06 = () => {
             <div className="flex flex-1 flex-wrap items-center justify-center gap-5 md:flex-none">
               {STACK.map((item) => (
                 <Tooltip key={item.name}>
-                  <TooltipTrigger
-                    aria-label={item.name}
-                    className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <item.icon className="size-6" aria-hidden />
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label={item.name}
+                      className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <item.icon className="size-6" aria-hidden />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent>{item.name}</TooltipContent>
                 </Tooltip>

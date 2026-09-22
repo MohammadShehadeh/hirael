@@ -5,7 +5,6 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
-/** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
@@ -119,12 +118,7 @@ const Feature06 = () => {
       <div className="container w-full">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
-            <Badge
-              variant="outline"
-              className="bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm"
-            >
-              About
-            </Badge>
+            <Badge variant="outline">About</Badge>
           </div>
           <Title />
           <p

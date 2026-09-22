@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-/** Entrance: fade and rise, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
@@ -97,10 +96,7 @@ const Hero08 = () => {
 
       <div data-slot="hero-content" className="relative z-10 px-6">
         <div className="mx-auto mb-8 max-w-4xl space-y-4 text-center sm:mb-12 md:mb-16">
-          <Badge
-            variant="outline"
-            className={cn(RISE, 'gap-2 bg-card/70 px-4 py-1.5 uppercase text-muted-foreground backdrop-blur-sm')}
-          >
+          <Badge variant="outline" className={RISE}>
             <Sparkles aria-hidden className="size-3" />
             Boards for product teams
           </Badge>

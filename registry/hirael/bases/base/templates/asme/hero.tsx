@@ -152,7 +152,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
               placeholder="Enter your email"
               className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
             />
-            <Button type="submit" size="icon" aria-label="Subscribe" className="size-11 rounded-full">
+            <Button type="submit" size="icon" aria-label="Subscribe" className="size-11">
               <ArrowRight className="size-5 rtl:rotate-180" />
             </Button>
           </Field>
@@ -163,27 +163,24 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
           exciting updates.
         </p>
 
-        <Button
+        <button
           type="button"
-          variant="ghost"
-          className="liquid-glass mt-8 h-auto rounded-full px-8 py-3 text-foreground"
+          className="liquid-glass mt-8 rounded-full px-8 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
         >
           Manifesto
-        </Button>
+        </button>
       </div>
 
       <footer className="relative z-10 flex justify-center gap-4 pb-12">
         {SOCIAL_LINKS.map(({ label, Icon }) => (
-          <Button
+          <a
             key={label}
-            render={<a href="#" aria-label={label} />}
-            nativeButton={false}
-            variant="ghost"
-            size="icon"
-            className="liquid-glass size-13 rounded-full text-foreground/80 hover:text-foreground"
+            href="#"
+            aria-label={label}
+            className="liquid-glass inline-flex size-13 items-center justify-center rounded-full text-foreground/80 transition-colors hover:text-foreground"
           >
             <Icon className="size-5" />
-          </Button>
+          </a>
         ))}
       </footer>
     </section>

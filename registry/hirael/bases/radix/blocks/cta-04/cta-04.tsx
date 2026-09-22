@@ -79,7 +79,7 @@ const Cta04 = () => {
         </p>
 
         <div data-slot="cta-actions" style={stagger(3)} className={cn(ENTER, 'mt-7 flex flex-col items-center gap-2')}>
-          <Button asChild size="lg" className="rounded-full px-7">
+          <Button asChild size="lg">
             <a href={`mailto:${EMAIL}`}>
               <Mail className="size-4" />
               Get in touch
@@ -91,9 +91,7 @@ const Cta04 = () => {
             className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground"
           >
             <span>or copy my address</span>
-            <CopyButton value={EMAIL} className="font-medium text-foreground">
-              {EMAIL}
-            </CopyButton>
+            <CopyButton value={EMAIL}>{EMAIL}</CopyButton>
           </p>
         </div>
 
@@ -103,7 +101,7 @@ const Cta04 = () => {
           className={cn(ENTER, 'mt-3 flex items-center justify-center gap-3')}
         >
           {socials.map((social) => (
-            <Button key={social.label} asChild variant="outline" size="icon" className="size-11 rounded-full">
+            <Button key={social.label} asChild variant="outline" size="icon" className="size-11">
               <a href={social.href} aria-label={social.label}>
                 <social.icon className="size-5" />
               </a>

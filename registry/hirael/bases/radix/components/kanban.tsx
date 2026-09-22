@@ -33,7 +33,6 @@ interface DropTarget {
 interface DragState {
   id: string;
   rect: { left: number; top: number; width: number; height: number };
-  /** Static clone of the card that follows the pointer. */
   ghost: HTMLElement;
 }
 
@@ -196,7 +195,7 @@ const Kanban = ({
     return title?.textContent?.trim() || id;
   }, []);
 
-  /** Column ids in DOM order, so arrow keys follow what is on screen. */
+  // DOM order, not registration order, so arrow keys follow what is on screen.
   const orderedColumns = React.useCallback(() => {
     return Array.from(columnsRef.current.entries())
       .sort(([, a], [, b]) => (a.node.compareDocumentPosition(b.node) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1))

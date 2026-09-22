@@ -94,7 +94,7 @@ const CELLS: readonly Cell[] = [
   },
 ];
 
-/** Crosshair frame: lines extend past the padded box and clip at the cell edge. */
+/** Lines extend past the padded box and clip at the cell edge. */
 const CellFrame = () => {
   return (
     <div className="pointer-events-none absolute inset-[calc(var(--box-padding)-1px)] z-0">
@@ -116,7 +116,7 @@ const Feature09 = () => {
       className="flex w-full flex-col justify-center gap-12 bg-background px-6 py-16 md:px-10 md:py-24"
     >
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
-        <Badge variant="outline" className={cn(ENTER, 'bg-card/70 px-4 py-1.5 uppercase text-muted-foreground')}>
+        <Badge variant="outline" className={ENTER}>
           Step catalog
         </Badge>
         <h2

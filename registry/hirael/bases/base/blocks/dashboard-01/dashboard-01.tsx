@@ -5,7 +5,6 @@ import { ArrowDownRight, ArrowUpRight, Check, Download, Minus, RefreshCw } from 
 
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/base/ui/avatar';
-import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   Card,
@@ -222,7 +221,6 @@ const ACTIVITY: readonly Activity[] = [
   },
 ];
 
-/** Tone follows intent, not sign: falling churn is good news, so it is green. */
 const deltaTone = ({ delta, goodWhen }: Metric) => {
   if (delta === 0) return 'bg-accent text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
@@ -237,16 +235,20 @@ const DeltaChip = ({ metric }: { metric: Metric }) => {
   const sign = delta > 0 ? '+' : delta < 0 ? '−' : '';
 
   return (
-    <Badge
+    <span
+      data-slot="dashboard-delta"
       dir="ltr"
       aria-label={`${label} ${direction} ${Math.abs(delta)} ${measure} against the previous period`}
-      className={cn('rounded-sm px-1.5 py-0.5 text-[11px] leading-none tabular-nums', deltaTone(metric))}
+      className={cn(
+        'inline-flex w-fit shrink-0 items-center gap-1 whitespace-nowrap rounded-sm px-1.5 py-0.5 text-[11px] font-medium leading-none tabular-nums',
+        deltaTone(metric),
+      )}
     >
       <Icon className="size-3" aria-hidden />
       {sign}
       {Math.abs(delta)}
       {unit}
-    </Badge>
+    </span>
   );
 };
 
@@ -356,8 +358,12 @@ const Dashboard01 = () => {
         >
           <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
-              <CardDescription className="text-xs uppercase">sign-ups</CardDescription>
-              <CardTitle className="text-lg tabular-nums">{signups.count} new sign-ups</CardTitle>
+              <CardDescription>
+                <span className="text-xs uppercase">sign-ups</span>
+              </CardDescription>
+              <CardTitle>
+                <span className="text-lg tabular-nums">{signups.count} new sign-ups</span>
+              </CardTitle>
               <CardAction>
                 <Button variant="outline" size="sm" onClick={onExport} aria-label={exported ? 'Exported' : 'Export'}>
                   {exported ? (
@@ -440,16 +446,18 @@ const Dashboard01 = () => {
 
           <Card data-slot="dashboard-activity">
             <CardHeader>
-              <CardDescription className="text-xs uppercase">recent activity</CardDescription>
+              <CardDescription>
+                <span className="text-xs uppercase">recent activity</span>
+              </CardDescription>
               <CardTitle className="sr-only">Recent activity</CardTitle>
               <CardAction>
-                <Button variant="link" size="sm" className="h-auto p-0" render={<a href="#" />} nativeButton={false}>
+                <Button variant="link" size="sm" className="h-auto" render={<a href="#" />} nativeButton={false}>
                   View all
                 </Button>
               </CardAction>
             </CardHeader>
-            <CardContent className="px-0">
-              <ul key={team} className={cn(SWAP, 'flex flex-col')}>
+            <CardContent>
+              <ul key={team} className={cn(SWAP, '-mx-6 flex flex-col')}>
                 {activity.map((a, i) => (
                   <li
                     key={a.name}
@@ -459,7 +467,9 @@ const Dashboard01 = () => {
                     )}
                   >
                     <Avatar aria-hidden>
-                      <AvatarFallback className="text-xs font-medium text-foreground">{a.initials}</AvatarFallback>
+                      <AvatarFallback>
+                        <span className="text-xs font-medium text-foreground">{a.initials}</span>
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-1 flex-col">
                       <p className="truncate text-sm">

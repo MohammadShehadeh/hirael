@@ -61,11 +61,7 @@ const DEFAULT_FORMAT: AddressFormat = {
   },
 };
 
-/**
- * Per-country overrides on top of {@link DEFAULT_FORMAT}. Only the countries
- * whose address really differs are listed; everything else falls through to the
- * default. Pass `formats` to add your own.
- */
+/** Per-country overrides on top of {@link DEFAULT_FORMAT}; unlisted countries use the default. */
 export const ADDRESS_FORMATS: Record<string, Partial<AddressFormat>> = {
   US: {
     rows: [['line1'], ['line2'], ['city'], ['region', 'postalCode']],

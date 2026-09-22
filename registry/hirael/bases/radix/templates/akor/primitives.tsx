@@ -27,16 +27,7 @@ export const SectionLabel = ({ children }: SectionLabelProps) => {
 type CtaButtonProps = React.ComponentProps<typeof Button>;
 
 export const CtaButton = ({ className, ...props }: CtaButtonProps) => {
-  return (
-    <Button
-      type="button"
-      className={cn(
-        'h-11 rounded-lg px-8 text-xs font-semibold uppercase tracking-widest active:scale-[0.97]',
-        className,
-      )}
-      {...props}
-    />
-  );
+  return <Button type="button" size="lg" className={cn('h-11 active:scale-[0.97]', className)} {...props} />;
 };
 
 type TextLinkProps = React.ComponentProps<'a'>;

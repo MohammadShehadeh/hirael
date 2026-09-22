@@ -26,7 +26,6 @@ const NAV: readonly NavLink[] = [
   { label: 'Changelog', href: '#' },
 ];
 
-/** Scroll distance, in px, after which the bar shrinks into a pill. */
 const SHRINK_AT = 100;
 
 const SPRING = { type: 'spring', stiffness: 220, damping: 40 } as const;
@@ -239,10 +238,10 @@ const Header02 = () => {
           <Brand />
           <HeaderNav items={NAV} />
           <div className="flex items-center gap-1.5">
-            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm">
               Sign in
             </Button>
-            <Button render={<a href="#" />} nativeButton={false} size="sm" className="rounded-full">
+            <Button render={<a href="#" />} nativeButton={false} size="sm">
               Get started
             </Button>
           </div>
@@ -257,7 +256,6 @@ const Header02 = () => {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
-              className="rounded-full"
             >
               {open ? <X /> : <Menu />}
             </Button>
@@ -277,10 +275,10 @@ const Header02 = () => {
               </a>
             ))}
             <div className="mt-2 flex gap-2">
-              <Button render={<a href="#" />} nativeButton={false} variant="outline" className="flex-1 rounded-full">
+              <Button render={<a href="#" />} nativeButton={false} variant="outline" className="flex-1">
                 Sign in
               </Button>
-              <Button render={<a href="#" />} nativeButton={false} className="flex-1 rounded-full">
+              <Button render={<a href="#" />} nativeButton={false} className="flex-1">
                 Get started
               </Button>
             </div>

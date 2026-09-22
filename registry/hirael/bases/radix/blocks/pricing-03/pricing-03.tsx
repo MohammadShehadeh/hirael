@@ -77,7 +77,6 @@ const PLANS: readonly Plan[] = [
 const PRICE_FORMAT: Intl.NumberFormatOptions = { style: 'currency', currency: 'USD', maximumFractionDigits: 0 };
 const money = new Intl.NumberFormat('en-US', PRICE_FORMAT);
 
-/** The largest yearly saving across paid plans, read from the prices so the badge can't drift from them. */
 const yearlySaving = Math.max(
   0,
   ...PLANS.map(({ price }) =>
@@ -122,13 +121,9 @@ const Pricing03 = () => {
           className={ENTER}
         >
           <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
-          <ToggleGroupItem value="yearly" className="gap-2">
+          <ToggleGroupItem value="yearly">
             Yearly
-            {yearlySaving > 0 && (
-              <Badge variant="secondary" className="px-1.5">
-                Save {yearlySaving}%
-              </Badge>
-            )}
+            {yearlySaving > 0 && <Badge variant="secondary">Save {yearlySaving}%</Badge>}
           </ToggleGroupItem>
         </ToggleGroup>
 
@@ -151,11 +146,7 @@ const Pricing03 = () => {
                       }
                     : undefined),
                 }}
-                className={cn(
-                  ENTER,
-                  'relative h-full gap-6 p-6 text-start transition-[translate,border-color] duration-200 hover:-translate-y-1',
-                  plan.popular ? 'ring-1 ring-foreground/25' : 'hover:border-foreground/20',
-                )}
+                className={cn(ENTER, 'relative h-full text-start')}
               >
                 {plan.popular && (
                   <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
@@ -163,23 +154,19 @@ const Pricing03 = () => {
                   </span>
                 )}
 
-                <CardHeader className="gap-3 px-0">
+                <CardHeader>
                   <div className="flex items-center gap-2">
                     <Icon aria-hidden className="size-4 text-muted-foreground" />
-                    <CardTitle className="text-lg">{plan.name}</CardTitle>
+                    <CardTitle>{plan.name}</CardTitle>
                   </div>
                   <CardDescription>{plan.description}</CardDescription>
                   <div data-slot="pricing-price" className="flex min-h-14 flex-col justify-end gap-1 pt-1">
                     {typeof amount === 'number' ? (
                       <>
                         <div className="flex items-baseline gap-1">
-                          <AnimatedNumber
-                            dir="ltr"
-                            className="text-4xl font-semibold tracking-[-0.04em] text-foreground"
-                            format={PRICE_FORMAT}
-                            duration={250}
-                            value={amount}
-                          />
+                          <span className="text-4xl font-semibold tracking-[-0.04em] text-foreground">
+                            <AnimatedNumber dir="ltr" format={PRICE_FORMAT} duration={250} value={amount} />
+                          </span>
                           <span className="text-xs text-muted-foreground">/ month</span>
                         </div>
                         <span key={frequency} className={cn(SWAP, 'text-xs text-muted-foreground')}>
@@ -201,7 +188,7 @@ const Pricing03 = () => {
                   </div>
                 </CardHeader>
 
-                <CardContent className="px-0">
+                <CardContent>
                   <ul className="flex flex-col gap-2.5">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground">
@@ -212,8 +199,8 @@ const Pricing03 = () => {
                   </ul>
                 </CardContent>
 
-                <CardFooter className="mt-auto px-0 pt-2">
-                  <Button asChild variant={plan.ctaVariant} size="lg" className="group w-full rounded-full">
+                <CardFooter className="mt-auto">
+                  <Button asChild variant={plan.ctaVariant} size="lg" className="group w-full">
                     <a href="#">
                       {plan.cta}
                       <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />

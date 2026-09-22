@@ -5,10 +5,8 @@ import dynamic from 'next/dynamic';
 import { ArrowRight, Menu, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
-import { EASE, HiraelMark, OrangeButton, PartnerIcon, RollText } from './primitives';
+import { EASE, HiraelMark, OrangeButton, PartnerIcon, PILL_BUTTON, RollText } from './primitives';
 
 const ShaderBackground = dynamic(() => import('./shader-background').then((m) => m.ShaderBackground), { ssr: false });
 
@@ -55,9 +53,9 @@ export const Hero = () => {
 
             <div className="hidden items-center gap-4 md:flex">
               <span className="hidden text-[13px] text-gray-600 lg:block">Taking on projects for Q1 2026</span>
-              <Button
+              <button
                 type="button"
-                className="group h-auto rounded-full bg-gray-900 py-2 ps-5 pe-2 text-[13px] text-white hover:bg-gray-900"
+                className={cn(PILL_BUTTON, 'group h-auto bg-gray-900 py-2 ps-5 pe-2 text-[13px] text-white')}
               >
                 <RollText>Book a strategy call</RollText>
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">
@@ -68,18 +66,17 @@ export const Hero = () => {
                     )}
                   />
                 </span>
-              </Button>
+              </button>
             </div>
 
-            <Button
+            <button
               type="button"
-              size="icon-lg"
               onClick={() => setMenuOpen((open) => !open)}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              className="rounded-full bg-gray-900 text-white hover:bg-gray-900 md:hidden"
+              className={cn(PILL_BUTTON, 'size-10 bg-gray-900 text-white md:hidden')}
             >
               {menuOpen ? <X className="size-[18px]" /> : <Menu className="size-[18px]" />}
-            </Button>
+            </button>
           </nav>
         </header>
 
@@ -103,9 +100,9 @@ export const Hero = () => {
               <div className="flex items-center gap-2 rounded-[4px] bg-white px-2.5 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
                 <PartnerIcon className="h-5 w-5 fill-current text-[#E8704E] sm:h-6 sm:w-6" />
                 <span className="text-[13px] font-medium text-gray-900 sm:text-[14px]">Certified Partner</span>
-                <Badge className="rounded bg-gray-900 px-1.5 text-[10px] font-normal text-white sm:px-2 sm:text-[11px]">
+                <span className="inline-flex items-center rounded bg-gray-900 px-1.5 py-0.5 text-[10px] font-normal whitespace-nowrap text-white sm:px-2 sm:text-[11px]">
                   Featured
-                </Badge>
+                </span>
               </div>
             </div>
           </div>

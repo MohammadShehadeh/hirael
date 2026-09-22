@@ -123,8 +123,8 @@ const MembersHeader = ({ title, count, description, className, children, ...prop
         <h2 className="flex items-center gap-2 text-base font-semibold tracking-[-0.01em] text-foreground">
           {title}
           {typeof count === 'number' ? (
-            <Badge variant="secondary" className="tabular-nums">
-              {count}
+            <Badge variant="secondary">
+              <span className="tabular-nums">{count}</span>
             </Badge>
           ) : null}
         </h2>
@@ -210,18 +210,20 @@ const MembersTable = ({ className, children, ...props }: MembersTableProps) => {
     >
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground">
-              Member
+          <TableRow>
+            <TableHead>
+              <span className="text-xs font-normal uppercase text-muted-foreground">Member</span>
             </TableHead>
-            <TableHead className="h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground">Role</TableHead>
-            <TableHead className="hidden h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground sm:table-cell">
-              Status
+            <TableHead>
+              <span className="text-xs font-normal uppercase text-muted-foreground">Role</span>
             </TableHead>
-            <TableHead className="hidden h-auto px-4 py-2 text-xs font-normal uppercase text-muted-foreground md:table-cell">
-              Joined
+            <TableHead className="hidden sm:table-cell">
+              <span className="text-xs font-normal uppercase text-muted-foreground">Status</span>
             </TableHead>
-            <TableHead className="h-auto px-4 py-2">
+            <TableHead className="hidden md:table-cell">
+              <span className="text-xs font-normal uppercase text-muted-foreground">Joined</span>
+            </TableHead>
+            <TableHead>
               <span className="sr-only">Actions</span>
             </TableHead>
           </TableRow>
@@ -247,15 +249,13 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
   const roleLocked = isOwner || isYou;
 
   return (
-    <TableRow
-      data-slot="members-row"
-      data-status={member.status.toLowerCase()}
-      className={cn('text-sm hover:bg-accent/30', className)}
-    >
-      <TableCell className="px-4 py-2.5">
+    <TableRow data-slot="members-row" data-status={member.status.toLowerCase()} className={className}>
+      <TableCell>
         <span className="flex items-center gap-3">
           <Avatar>
-            <AvatarFallback className="text-xs font-medium text-foreground">{initialsOf(member.name)}</AvatarFallback>
+            <AvatarFallback>
+              <span className="text-xs font-medium text-foreground">{initialsOf(member.name)}</span>
+            </AvatarFallback>
           </Avatar>
           <span className="flex min-w-0 flex-col">
             <span className="flex items-center gap-1.5 truncate font-medium text-foreground">
@@ -266,22 +266,22 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
           </span>
         </span>
       </TableCell>
-      <TableCell className="px-4 py-2.5">
+      <TableCell>
         {roleLocked ? (
-          <Badge variant={isOwner ? 'secondary' : 'outline'} className="h-8 px-3">
+          <Badge variant={isOwner ? 'secondary' : 'outline'} className="h-8">
             {member.role}
           </Badge>
         ) : (
           <MembersRoleSelect value={member.role} onValueChange={onRoleChange} aria-label={`Role for ${member.name}`} />
         )}
       </TableCell>
-      <TableCell className="hidden px-4 py-2.5 sm:table-cell">
+      <TableCell className="hidden sm:table-cell">
         <MembersStatus status={member.status} />
       </TableCell>
-      <TableCell className="hidden px-4 py-2.5 text-xs tabular-nums text-muted-foreground md:table-cell">
-        {member.joined}
+      <TableCell className="hidden md:table-cell">
+        <span className="text-xs tabular-nums text-muted-foreground">{member.joined}</span>
       </TableCell>
-      <TableCell className="px-4 py-2.5 text-end">
+      <TableCell className="text-end">
         <DropdownMenu>
           <DropdownMenuTrigger
             render={<Button variant="ghost" size="icon" className="size-7" aria-label={`Actions for ${member.name}`} />}
@@ -407,7 +407,7 @@ const MembersInviteDialog = ({
                 </TagInputContainer>
                 <TagInputError />
               </TagInput>
-              <FieldDescription className="text-xs">
+              <FieldDescription>
                 Press Enter, comma, or space after each address. Paste a list to add several at once.
               </FieldDescription>
             </Field>
@@ -415,7 +415,7 @@ const MembersInviteDialog = ({
             <Field className="gap-2">
               <FieldLabel htmlFor={roleId}>Role</FieldLabel>
               <MembersRoleSelect id={roleId} value={role} onValueChange={setRole} size="default" className="w-full" />
-              <FieldDescription className="text-xs">{ROLE_HINT[role]}</FieldDescription>
+              <FieldDescription>{ROLE_HINT[role]}</FieldDescription>
             </Field>
           </FieldGroup>
 
@@ -495,16 +495,9 @@ const MembersPendingItem = ({
       </span>
       <MembersStatus status="Pending" className="hidden sm:inline-flex" />
       <span className="flex items-center gap-1">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={onResend}
-          disabled={resent}
-          className={cn('min-w-20', resent && 'text-success disabled:opacity-100')}
-        >
+        <Button type="button" variant="ghost" size="sm" onClick={onResend} disabled={resent} className="min-w-20">
           {resent ? (
-            <span className={cn(SWAP, 'flex items-center gap-1.5')}>
+            <span className={cn(SWAP, 'flex items-center gap-1.5 text-success')}>
               <Check className="size-3.5" aria-hidden />
               Sent
             </span>
@@ -512,13 +505,7 @@ const MembersPendingItem = ({
             'Resend'
           )}
         </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={onRevoke}
-          className="text-muted-foreground hover:text-destructive"
-        >
+        <Button type="button" variant="ghost" size="sm" onClick={onRevoke}>
           Revoke
         </Button>
       </span>

@@ -73,7 +73,8 @@ const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
         id: 'select',
         header: ({ table }) => (
           <Checkbox
-            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+            checked={table.getIsAllPageRowsSelected()}
+            indeterminate={table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
             aria-label={t({ en: 'Select all', ar: 'تحديد الكل' })}
           />
@@ -188,8 +189,7 @@ const AccountsTable = () => {
 };
 
 const DataTableDemo = () => {
-  // useDataTable keeps page, sort and filters in the URL. In an app the adapter
-  // lives at the root; the demo scopes it here.
+  // In an app NuqsAdapter lives at the root; the demo scopes it here.
   return (
     <NuqsAdapter>
       <div className="w-full max-w-4xl">

@@ -7,8 +7,10 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/base/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
 
-const ENTER = 'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
-const SWAP = 'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out fill-mode-both motion-reduce:animate-none';
+const ENTER =
+  'animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out fill-mode-both motion-reduce:animate-none';
+const SWAP =
+  'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
   animationDelay: `${offset + index * step}ms`,
@@ -57,7 +59,7 @@ const AssignPanel = () => {
             )}
           >
             <Avatar className="size-8 shrink-0">
-              <AvatarFallback className="text-[11px] font-medium">{conversation.owner}</AvatarFallback>
+              <AvatarFallback>{conversation.owner}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium">{conversation.subject}</p>
@@ -122,8 +124,8 @@ const RepliesPanel = () => {
       >
         <p className="text-xs uppercase text-muted-foreground">Draft to Nadia</p>
         <p className="mt-2 text-sm leading-relaxed">
-          Hi Nadia, the duplicate charge of $49.00 is on its way back to the card ending 4412. Most banks show it
-          within five working days
+          Hi Nadia, the duplicate charge of $49.00 is on its way back to the card ending 4412. Most banks show it within
+          five working days
           <span aria-hidden className="ms-0.5 inline-block h-4 w-px translate-y-0.5 animate-pulse bg-foreground" />
         </p>
       </div>
@@ -207,9 +209,9 @@ const Feature11 = () => {
         <Tabs
           defaultValue={FEATURES[0].value}
           orientation="vertical"
-          className="flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-stretch lg:gap-14"
+          className="flex-col lg:grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-stretch"
         >
-          <TabsList variant="line" className="w-full gap-0 p-0">
+          <TabsList variant="line" className="w-full">
             {FEATURES.map((feature, index) => (
               <TabsTrigger
                 key={feature.value}
@@ -217,26 +219,25 @@ const Feature11 = () => {
                 style={stagger(index, 80, 240)}
                 className={cn(
                   ENTER,
-                  'group/trigger h-auto w-full items-start gap-4 whitespace-normal rounded-none border-0 px-5 py-4 text-start',
-                  'after:hidden',
-                  'before:absolute before:inset-y-0 before:start-0 before:w-px before:bg-border',
-                  'data-active:bg-transparent dark:data-active:bg-transparent',
-                  'hover:bg-muted/30',
+                  'group/trigger h-auto w-full items-start whitespace-normal text-start after:hidden',
                 )}
               >
+                <span aria-hidden className="absolute inset-y-0 start-0 w-px bg-border" />
                 <span
                   aria-hidden
                   className="absolute inset-y-0 start-0 w-0.5 origin-top scale-y-0 bg-foreground transition-transform duration-300 ease-out group-data-active/trigger:scale-y-100 motion-reduce:transition-none"
                 />
-                <span className="pt-px text-xs tabular-nums text-muted-foreground transition-colors group-data-active/trigger:text-warm">
-                  {formatIndex(index)}
-                </span>
-                <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-sm font-medium">{feature.title}</span>
-                  <span className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-data-active/trigger:grid-rows-[1fr] group-data-active/trigger:opacity-100 motion-reduce:transition-none">
-                    <span className="overflow-hidden">
-                      <span className="block pt-1.5 text-sm font-normal leading-relaxed text-muted-foreground">
-                        {feature.summary}
+                <span className="flex min-w-0 flex-1 items-start gap-4 px-3 py-3">
+                  <span className="pt-px text-xs tabular-nums text-muted-foreground transition-colors group-data-active/trigger:text-warm">
+                    {formatIndex(index)}
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="text-sm font-medium">{feature.title}</span>
+                    <span className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-data-active/trigger:grid-rows-[1fr] group-data-active/trigger:opacity-100 motion-reduce:transition-none">
+                      <span className="overflow-hidden">
+                        <span className="block pt-1.5 text-sm font-normal leading-relaxed text-muted-foreground">
+                          {feature.summary}
+                        </span>
                       </span>
                     </span>
                   </span>
@@ -250,7 +251,7 @@ const Feature11 = () => {
             style={stagger(0, 0, 400)}
             className={cn(
               ENTER,
-              'relative flex min-h-80 flex-col overflow-hidden rounded-xl border border-border bg-card/40 shadow-sm lg:min-h-96',
+              'relative mt-6 flex min-h-80 flex-col overflow-hidden rounded-xl lg:ms-12 lg:mt-0 border border-border bg-card/40 shadow-sm lg:min-h-96',
             )}
           >
             <div
@@ -262,9 +263,7 @@ const Feature11 = () => {
               return (
                 <TabsContent key={feature.value} value={feature.value} className="flex flex-1 flex-col">
                   <div className="flex items-center justify-between border-b border-border px-5 py-3">
-                    <span className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>
-                      {feature.label}
-                    </span>
+                    <span className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>{feature.label}</span>
                     <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
                       {formatIndex(index)}
                       <span className="mx-1.5 text-border">|</span>

@@ -112,11 +112,8 @@ const Newsletter01 = () => {
                     }}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? 'newsletter-error' : undefined}
-                    className={cn(error && 'border-destructive')}
                   />
-                  <FieldError id="newsletter-error" className="text-xs">
-                    {error}
-                  </FieldError>
+                  <FieldError id="newsletter-error">{error}</FieldError>
                 </Field>
                 <Button type="submit" className="shrink-0">
                   Subscribe

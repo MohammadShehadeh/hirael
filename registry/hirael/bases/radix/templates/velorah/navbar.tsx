@@ -1,6 +1,4 @@
-import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
-import { Wordmark } from './primitives';
+import { PillButton, Wordmark } from './primitives';
 
 const NAV_LINKS = [
   { label: 'Home', href: '#' },
@@ -23,13 +21,7 @@ export const Navbar = () => {
         ))}
       </div>
 
-      <Button
-        type="button"
-        variant="ghost"
-        className="liquid-glass h-auto rounded-full px-6 py-2.5 font-normal text-foreground transition-transform hover:scale-[1.03]"
-      >
-        Begin Journey
-      </Button>
+      <PillButton className="px-6 py-2.5">Begin Journey</PillButton>
     </nav>
   );
 };

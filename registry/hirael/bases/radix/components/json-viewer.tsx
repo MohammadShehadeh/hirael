@@ -53,7 +53,6 @@ const childPath = (path: string, key: string, parentKind: JsonKind) => {
   return parentKind === 'array' ? `${path}[${key}]` : `${path}.${key}`;
 };
 
-/** Every expandable path in `value`, root included. */
 const collectPaths = (value: unknown, path = '$'): string[] => {
   const kind = kindOf(value);
   if (!isExpandable(kind)) return [];
@@ -353,7 +352,6 @@ const JsonViewerNode = ({
           onKeyDown={handleKeyDown}
           onClick={(e) => {
             if (!expandable) return;
-            // Let inline controls (copy, string expand) handle their own clicks.
             if ((e.target as HTMLElement).closest('button')) return;
             toggle(path, depth);
           }}

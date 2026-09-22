@@ -1,8 +1,3 @@
-// Runs as `pnpm registry:props`. Generates registry/hirael/registry-props.json,
-// the per-component API tables on the showcase's API tab: each exported
-// component's own props (declared in registry source, not inherited HTML/React
-// attributes) with type, optionality, destructured default and JSDoc.
-
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
@@ -44,7 +39,6 @@ const functionOf = (declaration: ts.Declaration | undefined): ts.SignatureDeclar
   return node && ts.isFunctionLike(node) ? node : undefined;
 };
 
-// Defaults destructured in the props parameter, e.g. `({ size = "md" })`.
 const collectDefaults = (declaration: ts.Declaration | undefined) => {
   const defaults: Record<string, string> = {};
   const parameter = functionOf(declaration)?.parameters[0];

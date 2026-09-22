@@ -123,23 +123,23 @@ const Header01 = () => {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button asChild variant="ghost" size="sm" className="rounded-full">
+            <Button asChild variant="ghost" size="sm">
               <a href="#">Sign in</a>
             </Button>
-            <Button asChild variant="default" size="sm" className="rounded-full">
+            <Button asChild variant="default" size="sm">
               <a href="#">Get started</a>
             </Button>
           </div>
 
           <Drawer>
             <DrawerTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="Open menu" className="rounded-sm md:hidden">
+              <Button variant="outline" size="icon" aria-label="Open menu" className="md:hidden">
                 <Menu className="size-4" />
               </Button>
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader className="text-start">
-                <DrawerTitle className="text-xs uppercase text-muted-foreground">Menu</DrawerTitle>
+                <DrawerTitle>Menu</DrawerTitle>
               </DrawerHeader>
               <nav aria-label="Main" className="px-4">
                 <ul className="flex flex-col gap-0.5">
@@ -173,11 +173,11 @@ const Header01 = () => {
                   )}
                 </ul>
               </nav>
-              <DrawerFooter className="gap-2">
-                <Button asChild variant="ghost" className="w-full justify-center rounded-full">
+              <DrawerFooter>
+                <Button asChild variant="ghost" className="w-full justify-center">
                   <a href="#">Sign in</a>
                 </Button>
-                <Button asChild variant="default" className="w-full justify-center rounded-full">
+                <Button asChild variant="default" className="w-full justify-center">
                   <a href="#">Get started</a>
                 </Button>
               </DrawerFooter>

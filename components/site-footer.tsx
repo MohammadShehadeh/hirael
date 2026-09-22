@@ -35,7 +35,7 @@ const FOOTER_LINKS: FooterLinkGroup[] = [
     ],
   },
   {
-    // isExternal keeps these static files out of the client router, which would otherwise treat them as routes.
+    // External so the client router does not treat these files as pages.
     label: 'For agents',
     links: [
       { href: '/llms.txt', label: 'llms.txt', isExternal: true },

@@ -141,7 +141,7 @@ const Login03 = () => {
           />
         </div>
 
-        <Button asChild variant="ghost" className={cn(ENTER, 'absolute start-5 top-7 z-10 gap-1.5')}>
+        <Button asChild variant="ghost" className={cn(ENTER, 'absolute start-5 top-7 z-10')}>
           <a href="#">
             <ChevronLeft className="size-4 rtl:rotate-180" />
             Home
@@ -170,7 +170,7 @@ const Login03 = () => {
               size="lg"
               disabled={redirecting}
               onClick={onContinue}
-              className="w-full gap-2"
+              className="w-full"
             >
               {redirecting ? (
                 <Loader2 aria-hidden className="size-4 animate-spin" />

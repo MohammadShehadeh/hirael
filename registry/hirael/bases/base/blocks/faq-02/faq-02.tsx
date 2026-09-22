@@ -65,31 +65,28 @@ const Faq02 = () => {
 
         <div data-slot="faq-list" className="grid grid-cols-1 gap-x-12 gap-y-0 lg:grid-cols-2 lg:items-start">
           {[FAQS.slice(0, 3), FAQS.slice(3)].map((col, ci) => (
-            <Accordion
-              key={ci}
-              type="multiple"
-              defaultValue={ci === 0 ? ['item-0-0'] : []}
-              className="border-b border-border first:border-t lg:border-t"
-            >
-              {col.map((f, i) => (
-                <AccordionItem
-                  key={f.q}
-                  value={`item-${ci}-${i}`}
-                  style={stagger(ci * 3 + i, 50, 220)}
-                  className={cn(ENTER, 'px-1')}
-                >
-                  <AccordionTrigger>
-                    <span className="flex items-baseline gap-3">
-                      <span className="text-xs tabular-nums text-muted-foreground">Q{ci * 3 + i + 1}</span>
-                      <span>{f.q}</span>
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="ms-8 text-muted-foreground">{f.a}</div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <div key={ci} className="border-b border-border first:border-t lg:border-t">
+              <Accordion multiple defaultValue={ci === 0 ? ['item-0-0'] : []}>
+                {col.map((f, i) => (
+                  <AccordionItem
+                    key={f.q}
+                    value={`item-${ci}-${i}`}
+                    style={stagger(ci * 3 + i, 50, 220)}
+                    className={ENTER}
+                  >
+                    <AccordionTrigger>
+                      <span className="flex items-baseline gap-3">
+                        <span className="text-xs tabular-nums text-muted-foreground">Q{ci * 3 + i + 1}</span>
+                        <span>{f.q}</span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="ms-8 text-muted-foreground">{f.a}</div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           ))}
         </div>
       </div>

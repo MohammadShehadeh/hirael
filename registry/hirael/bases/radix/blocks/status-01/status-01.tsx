@@ -48,7 +48,7 @@ interface Day {
   note: string;
 }
 
-// Sample data: day 0 is the oldest, day 89 is today.
+// Day 0 is the oldest, day 89 is today.
 const buildDays = (exceptions: Record<number, { status: DayStatus; note: string }>): Array<Day> => {
   return Array.from({ length: DAYS }, (_, i) => {
     const ex = exceptions[i];

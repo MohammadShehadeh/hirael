@@ -42,9 +42,7 @@ export default function GlobalError() {
             <LogoMark className="relative size-8" />
 
             <div className="relative flex flex-col items-center gap-3">
-              <span className="text-xs uppercase text-muted-foreground">
-                Something went wrong
-              </span>
+              <span className="text-xs uppercase text-muted-foreground">Something went wrong</span>
               <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">This page failed to load.</h1>
               <p className="max-w-sm text-sm text-muted-foreground">
                 An unexpected error occurred. Try refreshing the page or come back in a moment.
@@ -52,20 +50,12 @@ export default function GlobalError() {
             </div>
 
             <div className="relative flex flex-wrap items-center justify-center gap-3">
-              <Button
-                type="button"
-                size="lg"
-                onClick={() => window.location.reload()}
-              >
+              <Button type="button" size="lg" onClick={() => window.location.reload()}>
                 <RefreshCw className="size-4" />
                 Refresh page
               </Button>
               {/* Plain anchor: recovery needs a full document load, not a client navigation. */}
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-              >
+              <Button asChild variant="outline" size="lg">
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a href="/">Back to home</a>
               </Button>

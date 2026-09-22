@@ -10,7 +10,6 @@ export const SECTION_IDS = ['intro', 'services', 'works', 'contact'] as const;
 
 export type SectionId = (typeof SECTION_IDS)[number];
 
-/** Placeholder copy. Every paragraph reads from here, so swap in real writing in one place. */
 export const LOREM: Record<Lang, { short: string; medium: string; long: string }> = {
   en: {
     short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

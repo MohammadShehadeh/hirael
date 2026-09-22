@@ -42,7 +42,7 @@ const CONSUMER_IMPORTS = new Map<string, string>(
 
 const BASE_IMPORT = /@\/registry\/hirael\/bases\/[a-z]+\/([\w./-]+)/g;
 
-/** Rewrite in-repo imports to the paths a consumer gets on install. This page is read, not installed, so it does that itself. */
+// The CLI rewrites imports on install; a page that is only read has to do it here.
 const forConsumer = (code: string): string =>
   code.replace(BASE_IMPORT, (_match, file: string) => {
     const mapped = CONSUMER_IMPORTS.get(file);

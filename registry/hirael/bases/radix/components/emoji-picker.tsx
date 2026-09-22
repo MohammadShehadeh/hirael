@@ -690,9 +690,7 @@ const useEmojiPicker = () => {
 
 const EmojiPickerHoverContext = React.createContext<EmojiItem | null>(null);
 
-// Its own context, not the main one: activeIndex changes on every arrow key. The
-// list reads it and hands each item a boolean `active`, so the memoized items
-// re-render only when their own flag flips.
+// Separate from the main context so memoized items re-render only when their own `active` flag flips.
 const EmojiPickerActiveIndexContext = React.createContext(-1);
 
 const readRecent = (key: string): string[] => {
@@ -710,7 +708,7 @@ const writeRecent = (key: string, list: string[]) => {
   try {
     window.localStorage.setItem(key, JSON.stringify(list));
   } catch {
-    // Storage may be unavailable (private mode, quota). Recents are a nicety.
+    // Storage may be unavailable (private mode, quota).
   }
 };
 

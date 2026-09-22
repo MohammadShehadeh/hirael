@@ -425,13 +425,7 @@ const Ecommerce03 = () => {
             </ul>
           </div>
 
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="details"
-            style={stagger(5)}
-            className={ENTER}
-          >
+          <Accordion type="single" collapsible defaultValue="details" style={stagger(5)} className={ENTER}>
             {DETAILS.map((item) => (
               <AccordionItem key={item.value} value={item.value}>
                 <AccordionTrigger>{item.title}</AccordionTrigger>

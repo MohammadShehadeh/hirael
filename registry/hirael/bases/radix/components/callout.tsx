@@ -5,9 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const calloutVariants = cva('my-4 flex flex-col gap-2 overflow-hidden rounded-md border-s-4 p-4 text-sm', {
-  // Status colors come from the --info / --success / --warning theme
-  // tokens (shipped with this component's cssVars) so callouts follow
-  // the consumer's theme in both modes — no hard-coded palette.
+  // --info / --success / --warning ship in this component's cssVars.
   variants: {
     variant: {
       info: 'border-info bg-info/10 text-info',

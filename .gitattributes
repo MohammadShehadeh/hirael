@@ -1,0 +1,2 @@
+# Prettier enforces LF (endOfLine: lf); keep checkouts LF on Windows too.
+* text=auto eol=lf

@@ -90,7 +90,6 @@ const AiChat = ({ className, ...props }: AiChatProps) => {
 
 type AiChatSidebarProps = React.ComponentProps<'aside'>;
 
-/** Fixed column on lg and up; a sheet below that, opened by AiChatSidebarTrigger. */
 const AiChatSidebar = ({ className, children, ...props }: AiChatSidebarProps) => {
   const { mobileOpen, mobileSide, closeMobile } = useAiChat();
 
@@ -252,7 +251,6 @@ const prefersReducedMotion = () => {
 
 type AiChatMessagesProps = React.ComponentProps<'div'>;
 
-/** Scrolls to the newest message while streaming unless the reader scrolled up. */
 const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) => {
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -401,7 +399,6 @@ interface AiChatComposerProps extends Omit<React.ComponentProps<'form'>, 'onSubm
   maxRows?: number;
 }
 
-/** Pinned composer: Enter sends, Shift+Enter breaks the line, Stop while streaming. */
 const AiChatComposer = ({
   value: valueProp,
   defaultValue = '',

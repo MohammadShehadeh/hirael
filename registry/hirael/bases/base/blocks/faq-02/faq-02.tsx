@@ -66,10 +66,7 @@ const Faq02 = () => {
         <div data-slot="faq-list" className="grid grid-cols-1 gap-x-12 gap-y-0 lg:grid-cols-2 lg:items-start">
           {[FAQS.slice(0, 3), FAQS.slice(3)].map((col, ci) => (
             <div key={ci} className="border-b border-border first:border-t lg:border-t">
-              <Accordion
-                multiple
-                defaultValue={ci === 0 ? ['item-0-0'] : []}
-              >
+              <Accordion multiple defaultValue={ci === 0 ? ['item-0-0'] : []}>
                 {col.map((f, i) => (
                   <AccordionItem
                     key={f.q}

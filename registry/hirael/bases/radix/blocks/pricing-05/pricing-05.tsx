@@ -23,11 +23,9 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type Billing = 'monthly' | 'yearly';
 
-/** Every rate the estimate uses. The line items, tier note and total all read from here. */
 const PRICING = {
   base: 49,
   includedUsers: 10_000,
-  /** Users past the included amount cost `rate` each, up to `upTo`; the last tier has no ceiling. */
   userTiers: [
     { upTo: 50_000, rate: 0.006 },
     { upTo: Infinity, rate: 0.004 },
@@ -35,7 +33,6 @@ const PRICING = {
   includedMinutes: 2_000,
   minuteRate: 0.008,
   support: 99,
-  /** Paying yearly covers 12 months for the price of 10. */
   paidMonthsPerYear: 10,
 } as const;
 
@@ -81,7 +78,6 @@ const estimate = (users: number, minutes: number, support: boolean, billing: Bil
   ];
 
   const subtotal = toCents(lines.reduce((sum, line) => sum + line.amount, 0));
-  // Yearly is charged as 10 months up front; the monthly figure is that charge spread over 12.
   const yearly = toCents(subtotal * PRICING.paidMonthsPerYear);
   const monthly = billing === 'yearly' ? toCents(yearly / 12) : subtotal;
 

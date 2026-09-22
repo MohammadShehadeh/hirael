@@ -1,13 +1,5 @@
-/**
- * Theme palettes for the Customizer sheet, in the shape of shadcn's
- * `registry/themes.ts`: each entry is a full or partial set of OKLCH tokens
- * for light and dark. The first entry is Hirael's own palette, which lives
- * in `app/globals.css` and so carries no overrides; the rest are the base
- * colors (full canvas swaps) and accent themes (primary, secondary and chart
- * tokens only) from shadcn/ui, so previews match what a consumer gets from
- * `shadcn init` with the same choices. Radius is a separate knob and is not
- * part of any palette. Not shipped through the registry.
- */
+// The first theme is Hirael's own (app/globals.css), so it carries no overrides.
+// Not shipped through the registry.
 
 export type ThemeTokens = Record<string, string>;
 

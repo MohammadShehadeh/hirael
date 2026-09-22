@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* The mode script sets `.dark` or `.light` on <html>, so `dark:` utilities follow shadcn's convention. */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -76,7 +75,7 @@
   }
 }
 
-/* Focal fill in a block wireframe. Taupe fades out on the light canvas, so light takes twice the alpha. */
+/* Taupe fades out on the light canvas, so light takes twice the alpha. */
 @utility warm-tint {
   background-color: color-mix(in oklch, var(--warm) 14%, transparent);
 
@@ -85,7 +84,7 @@
   }
 }
 
-/* Vertical dashed rails that continue through the sticky header (h-14). Logical, so RTL mirrors. */
+/* The -56px inset carries the rails up through the h-14 sticky header. */
 @utility page-rails {
   position: relative;
 
@@ -110,7 +109,6 @@
     inset-inline-end: -1px;
   }
 
-  /* Past 1280px the gutter clears the band, so each rail widens into a hatched margin. */
   @media (width >= 1280px) {
     &::before,
     &::after {
@@ -122,7 +120,10 @@
         auto,
         auto;
       background-repeat: no-repeat, no-repeat, repeat;
-      background-position: var(--rail-dash-x) 0, 0 0, 0 0;
+      background-position:
+        var(--rail-dash-x) 0,
+        0 0,
+        0 0;
     }
 
     &::before {
@@ -497,7 +498,6 @@ html[data-static] [style*='opacity'] {
   transform: none !important;
 }
 
-/* Framed previews report their natural height instead of filling the viewport. */
 html[data-static] [data-embed-shell],
 html[data-fit] [data-embed-shell] {
   min-height: 0 !important;

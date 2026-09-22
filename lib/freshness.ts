@@ -1,6 +1,5 @@
 import type { RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/** Long enough that a release stays marked until the next one ships. */
 export const NEW_WINDOW_DAYS = 7;
 
 const DAY_MS = 24 * 60 * 60 * 1000;

@@ -4,11 +4,9 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Marquee } from '@/registry/hirael/bases/radix/components/marquee';
 
-/** Entrance: fade and rise on the house curve, skipped under reduced motion. */
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-/** A shorter rise for the header copy. */
 const RISE_SM =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 

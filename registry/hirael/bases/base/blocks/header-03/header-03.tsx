@@ -143,7 +143,6 @@ const PLAIN_LINKS = [
   { label: 'Docs', href: '#' },
 ] as const;
 
-/** Shortens the slide between flyouts and speeds up the exit. */
 const CONTENT_MOTION = cn(
   'duration-250 data-ending-style:duration-150',
   'data-[activation-direction=left]:data-starting-style:-translate-x-6 data-[activation-direction=left]:data-ending-style:translate-x-6',

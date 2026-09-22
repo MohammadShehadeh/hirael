@@ -107,7 +107,7 @@ export interface ErrorPageDetailsProps extends React.ComponentProps<'div'> {
   requestId: string;
   /** ISO 8601 string or preformatted text. */
   timestamp: string;
-  /** Extra mono rows rendered below the defaults. */
+  /** Extra label/value rows shown after Request ID and Timestamp. */
   rows?: ReadonlyArray<{ label: string; value: string }>;
   defaultOpen?: boolean;
 }

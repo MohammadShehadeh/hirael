@@ -155,11 +155,7 @@ const MultiSelect = ({
   );
 };
 
-/**
- * Chips carry remove buttons, so they cannot sit inside the trigger button. The
- * bordered box is a wrapper (`multi-select-trigger`) taking `className`; the
- * button inside it (`multi-select-trigger-button`) takes every other prop.
- */
+// Chips hold remove buttons, which can't nest in a button: `className` styles the wrapper, other props go to the inner button.
 interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   className?: string;

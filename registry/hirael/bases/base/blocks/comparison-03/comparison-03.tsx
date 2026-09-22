@@ -9,7 +9,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/to
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-/** Replays when a panel leaves display:none on small screens. */
+// Replays when a panel leaves display:none on small screens.
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 

@@ -45,7 +45,7 @@ const CATEGORIES = [
 
 type Category = (typeof CATEGORIES)[number]['value'];
 
-// Product finishes are catalogue data, so they stay the same in both themes.
+// Hard-coded on purpose: product finishes don't change with the theme.
 const COLOURS = [
   { value: 'black', label: 'Black', swatch: 'oklch(0.24 0.005 260)' },
   { value: 'white', label: 'White', swatch: 'oklch(0.97 0.003 90)' },

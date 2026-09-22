@@ -143,7 +143,6 @@ const PLAIN_LINKS = [
   { label: 'Docs', href: '#' },
 ] as const;
 
-/** Anchors the shared viewport to the full header row and tunes its motion. */
 const MENU_ROOT = cn(
   'static max-w-none flex-none',
   '[&>div:last-child]:inset-x-0',

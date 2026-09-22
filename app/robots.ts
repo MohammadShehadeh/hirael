@@ -4,10 +4,8 @@ import { SITE } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
-/**
- * Previews stay crawlable. Blocking them would hide their noindex tag, and Safe Browsing
- * could not recheck the login demos it once flagged as phishing.
- */
+// Keep previews crawlable: blocking them hides their noindex tag, and Safe Browsing
+// could not recheck the login demos it once flagged as phishing.
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [

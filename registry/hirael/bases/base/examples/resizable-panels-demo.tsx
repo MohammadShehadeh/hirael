@@ -21,10 +21,7 @@ const ResizablePanelsDemo = () => {
 
   return (
     <div className="h-72 w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card">
-      <ResizablePanelGroup
-        direction="horizontal"
-        className="h-full w-full"
-      >
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
         <ResizablePanel defaultSize={28} minSize={15}>
           <Pane label={t({ en: 'Explorer', ar: 'المستكشف' })}>
             {t({

@@ -6,7 +6,6 @@ import { type HTMLMotionProps, motion, useReducedMotion, useSpring } from 'motio
 
 import { cn } from '@/lib/utils';
 
-/** A `<button>` that can be swapped for any element through Base UI's `render` prop. */
 const MagneticSlot = ({ render, ...props }: useRender.ComponentProps<'button'>) => {
   return useRender({ defaultTagName: 'button', render, props });
 };

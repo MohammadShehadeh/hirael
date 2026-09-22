@@ -40,7 +40,6 @@ const LogViewer = ({ follow = true, className, children, ...props }: LogViewerPr
     pinnedRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
   }, []);
 
-  // Turning follow back on re-pins the view, even if the reader had scrolled up.
   React.useEffect(() => {
     if (follow) pinnedRef.current = true;
   }, [follow]);
@@ -156,7 +155,6 @@ const LogViewerBlock = () => {
   const [filter, setFilter] = React.useState<LogFilter>('all');
   const [follow, setFollow] = React.useState(true);
 
-  // New lines keep arriving while Follow is on, so the tail has something to follow.
   React.useEffect(() => {
     if (!follow) return;
     const timer = window.setInterval(() => {
@@ -194,12 +192,7 @@ const LogViewerBlock = () => {
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
-          <Toggle
-            size="sm"
-            variant="outline"
-            pressed={follow}
-            onPressedChange={setFollow}
-          >
+          <Toggle size="sm" variant="outline" pressed={follow} onPressedChange={setFollow}>
             <ArrowDownToLine aria-hidden className="size-3.5" />
             Follow
             <span

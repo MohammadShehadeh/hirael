@@ -20,7 +20,6 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type Billing = 'monthly' | 'yearly';
 
-/** Yearly billing charges 10 months and covers 12. */
 const PAID_MONTHS_PER_YEAR = 10;
 
 interface Tier {

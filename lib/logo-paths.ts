@@ -1,11 +1,7 @@
-// Shared path data so the React logo and the social images draw the same shapes.
-
-/** Bare H mark, tight bounds. */
 export const HIRAEL_MARK_PATH = 'M0 11.45h2.4V22.4h6.2v-8.35h4.6v8.35h6.2V11.45H17V.5h-6.2v8.35H6.2V.5H0Z';
 
 export const HIRAEL_MARK_VIEWBOX = '0 0 19.4 24';
 
-/** H mark padded to a square, for favicons and app icons. */
 export const HIRAEL_ICON_PATH = 'M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z';
 
 export const HIRAEL_ICON_VIEWBOX = '0 0 24 24';

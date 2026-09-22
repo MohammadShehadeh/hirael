@@ -15,8 +15,7 @@ export interface EmbedDirectionProps {
 
 /**
  * Radix and Base UI ignore `dir` on the document and follow their own providers.
- * Both stay in sync with the preview, and demo copy switches to Arabic in RTL.
- * The demo remounts once direction is known, because the server render is always left to right.
+ * The server render is always left to right, so the demo remounts once direction is known.
  */
 export const EmbedDirection = ({ children }: EmbedDirectionProps) => {
   const isRtl = React.useSyncExternalStore(

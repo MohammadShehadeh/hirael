@@ -29,10 +29,6 @@ const splitLines = (text: string) => {
 /** Cells above this are not worth a full LCS table; fall back to replace-all. */
 const MAX_LCS_CELLS = 4_000_000;
 
-/**
- * Line diff of two texts using a longest-common-subsequence table, with the
- * common prefix and suffix trimmed first. Removals come before additions.
- */
 const computeLineDiff = (oldValue: string, newValue: string): DiffLine[] => {
   const a = splitLines(oldValue);
   const b = splitLines(newValue);

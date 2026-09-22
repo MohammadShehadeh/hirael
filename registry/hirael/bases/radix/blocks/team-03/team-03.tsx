@@ -212,7 +212,6 @@ const Team03 = () => {
     members: sorted.filter((member) => member.department === department.value),
   })).filter((group) => filter === 'all' || group.value === filter);
 
-  // Each heading and row takes the next slot in one stagger sequence.
   const groups = visibleGroups.map((group, position) => ({
     ...group,
     firstSlot: visibleGroups.slice(0, position).reduce((slots, previous) => slots + previous.members.length + 1, 0),

@@ -2,30 +2,18 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-/**
- * Isometric plates drawn in a single SVG, each offset up-and-right from the one
- * behind it. The path is one plate at the origin; the stack is that path
- * repeated at multiples of the step below, so the layer count is free.
- */
 const PLATE_WIDTH = 44;
 const PLATE_HEIGHT = 68.3;
 const STEP_X = 13.65;
 const STEP_Y = 6.04;
 
-/** Center of a plate's front face, in the plate's own coordinates. */
 const FACE_X = 23.7;
 const FACE_Y = 34.9;
 
-/**
- * The viewBox is a fixed 72x80, matched by the root's aspect ratio, and the stack is
- * scaled to fit inside it. A viewBox that grew with the layer count would
- * letterbox against that box, and `IconStackContent` is positioned as a
- * percentage of it, so the icon would drift off the face.
- */
+// Fixed, not grown per layer: `IconStackContent` is placed as a percentage of it and would drift off the face.
 const VIEW_WIDTH = 72;
 const VIEW_HEIGHT = 80;
 
-/** Room under the stack for the contact shadow, which bleeds past it. */
 const SHADOW_ROOM = 4;
 
 export interface IconStackProps extends React.ComponentProps<'div'> {
@@ -33,32 +21,16 @@ export interface IconStackProps extends React.ComponentProps<'div'> {
   layers?: number;
 }
 
-/**
- * A short stack of isometric plates with an icon sitting on the front face —
- * the "layers of the same thing" mark used above feature copy and empty states.
- * Pair it with `IconStackContent`, which skews its children onto that face:
- *
- * ```tsx
- * <IconStack>
- *   <IconStackContent>
- *     <Database className="size-6" />
- *   </IconStackContent>
- * </IconStack>
- * ```
- *
- * Size it with a width (`w-24`); height follows from the 72:80 aspect ratio.
- */
+/** Pair with `IconStackContent`. Size it with a width; height follows the 72:80 aspect ratio. */
 const IconStack = ({ className, children, style, layers = 3, ...props }: IconStackProps) => {
   const count = Math.max(1, Math.round(layers));
   const stackWidth = PLATE_WIDTH + STEP_X * (count - 1);
   const stackHeight = PLATE_HEIGHT + STEP_Y * (count - 1) + SHADOW_ROOM;
 
-  // Fit the stack into the fixed viewBox and center it there.
   const scale = Math.min(VIEW_WIDTH / stackWidth, VIEW_HEIGHT / stackHeight);
   const offsetX = (VIEW_WIDTH - stackWidth * scale) / 2;
   const offsetY = (VIEW_HEIGHT - stackHeight * scale) / 2;
 
-  // The front plate is the last one drawn, so its face carries the same offset.
   const faceX = offsetX + (FACE_X + STEP_X * (count - 1)) * scale;
   const faceY = offsetY + (FACE_Y + STEP_Y * (count - 1)) * scale;
 
@@ -145,10 +117,6 @@ const IconStackLayer = ({
   );
 };
 
-/**
- * Sits its children on the front plate's face, skewed to match the isometric
- * angle. Position comes from the root, so it works at any layer count.
- */
 const IconStackContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div

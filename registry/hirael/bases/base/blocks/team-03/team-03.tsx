@@ -212,7 +212,6 @@ const Team03 = () => {
     members: sorted.filter((member) => member.department === department.value),
   })).filter((group) => filter === 'all' || group.value === filter);
 
-  // Each heading and row takes the next slot in one stagger sequence.
   const groups = visibleGroups.map((group, position) => ({
     ...group,
     firstSlot: visibleGroups.slice(0, position).reduce((slots, previous) => slots + previous.members.length + 1, 0),
@@ -260,11 +259,7 @@ const Team03 = () => {
               className="-mb-px flex-wrap"
             >
               {filters.map((option) => (
-                <ToggleGroupItem
-                  key={option.value}
-                  value={option.value}
-                  className="h-10"
-                >
+                <ToggleGroupItem key={option.value} value={option.value} className="h-10">
                   {option.label}
                   <span className="text-xs font-normal tabular-nums text-muted-foreground">{option.count}</span>
                 </ToggleGroupItem>

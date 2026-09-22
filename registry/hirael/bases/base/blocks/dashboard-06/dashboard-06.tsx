@@ -338,73 +338,73 @@ const RunBreakdown = ({ run }: { run: Run | null }) => {
       </CardHeader>
       <CardContent className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col gap-3">
-        <dl className="grid grid-cols-2 gap-2 text-xs">
-          <div className="flex flex-col gap-0.5">
-            <dt className="text-muted-foreground">Branch</dt>
-            <dd className="inline-flex items-center gap-1">
-              <GitBranch className="size-3 shrink-0" aria-hidden />
-              <span className="truncate">{run.branch}</span>
-            </dd>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <dt className="text-muted-foreground">Duration</dt>
-            <dd className="inline-flex items-center gap-1 tabular-nums">
-              <Clock className="size-3 shrink-0" aria-hidden />
-              {formatSeconds(run.durationSec)}
-            </dd>
-          </div>
-        </dl>
+          <dl className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex flex-col gap-0.5">
+              <dt className="text-muted-foreground">Branch</dt>
+              <dd className="inline-flex items-center gap-1">
+                <GitBranch className="size-3 shrink-0" aria-hidden />
+                <span className="truncate">{run.branch}</span>
+              </dd>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <dt className="text-muted-foreground">Duration</dt>
+              <dd className="inline-flex items-center gap-1 tabular-nums">
+                <Clock className="size-3 shrink-0" aria-hidden />
+                {formatSeconds(run.durationSec)}
+              </dd>
+            </div>
+          </dl>
 
-        <div className="flex flex-col gap-1 border-t border-border pt-2">
-          <p className="text-xs uppercase text-muted-foreground">Steps</p>
-          <ul className="flex flex-col gap-1">
-            {run.steps.map((step) => (
-              <li key={step.name} className="flex items-center gap-2 text-xs">
-                <StateDot state={step.state} />
-                <span className="min-w-0 flex-1 truncate">{step.name}</span>
-                <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div
-          id={logId}
-          data-slot="dashboard-log"
-          className={cn(
-            'grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-            logOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
-          )}
-        >
-          <div className="overflow-hidden">
-            <pre className="rounded-md border border-border bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
-              {run.steps
-                .map(
-                  (step, index) =>
-                    `[${index + 1}/${run.steps.length}] ${step.name}: ${STATE_LABEL[step.state].toLowerCase()}${step.durationLabel === '-' || step.state === 'running' ? '' : ` in ${step.durationLabel}`}`,
-                )
-                .join('\n')}
-            </pre>
+          <div className="flex flex-col gap-1 border-t border-border pt-2">
+            <p className="text-xs uppercase text-muted-foreground">Steps</p>
+            <ul className="flex flex-col gap-1">
+              {run.steps.map((step) => (
+                <li key={step.name} className="flex items-center gap-2 text-xs">
+                  <StateDot state={step.state} />
+                  <span className="min-w-0 flex-1 truncate">{step.name}</span>
+                  <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        <Button
-          type="button"
-          size="sm"
-          aria-expanded={logOpen}
-          aria-controls={logId}
-          onClick={() => setLogOpen((open) => !open)}
-          className="mt-auto"
-        >
-          {logOpen ? 'Hide log' : 'View full log'}
-          <ChevronDown
+          <div
+            id={logId}
+            data-slot="dashboard-log"
             className={cn(
-              'size-3 transition-transform duration-150 motion-reduce:transition-none',
-              logOpen && 'rotate-180',
+              'grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+              logOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
             )}
-            aria-hidden
-          />
-        </Button>
+          >
+            <div className="overflow-hidden">
+              <pre className="rounded-md border border-border bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
+                {run.steps
+                  .map(
+                    (step, index) =>
+                      `[${index + 1}/${run.steps.length}] ${step.name}: ${STATE_LABEL[step.state].toLowerCase()}${step.durationLabel === '-' || step.state === 'running' ? '' : ` in ${step.durationLabel}`}`,
+                  )
+                  .join('\n')}
+              </pre>
+            </div>
+          </div>
+
+          <Button
+            type="button"
+            size="sm"
+            aria-expanded={logOpen}
+            aria-controls={logId}
+            onClick={() => setLogOpen((open) => !open)}
+            className="mt-auto"
+          >
+            {logOpen ? 'Hide log' : 'View full log'}
+            <ChevronDown
+              className={cn(
+                'size-3 transition-transform duration-150 motion-reduce:transition-none',
+                logOpen && 'rotate-180',
+              )}
+              aria-hidden
+            />
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -415,7 +415,6 @@ const Dashboard06 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(RUNS[0].id);
   const selectedRun = RUNS.find((r) => r.id === selectedId) ?? null;
 
-  /** Picking the selected run again clears it, so the empty panel is reachable. */
   const toggleRun = (id: string) => setSelectedId((current) => (current === id ? null : id));
 
   return (

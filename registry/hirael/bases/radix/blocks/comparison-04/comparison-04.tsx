@@ -96,7 +96,6 @@ const CellValue = ({ value }: { value: Value }) => {
   );
 };
 
-/** Collapses a table row's cell content with the grid-rows height trick; exits run faster than entrances. */
 const Collapse = ({ open, className, children }: { open: boolean; className?: string; children: React.ReactNode }) => (
   <div
     className={cn(

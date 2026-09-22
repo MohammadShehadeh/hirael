@@ -35,9 +35,7 @@ const announcementBarVariants = cva(
 
 const noopUnsubscribe = () => () => {};
 
-// Server render returns false (visible by default) so the SSR HTML and the
-// hydration pass agree without warnings. Once hydration is committed, the
-// real storage value is read — returning users see the bar hide.
+// Server snapshot is false (visible) so hydration agrees; a returning user's bar hides after it.
 const useStoredDismiss = (storageKey?: string) => {
   const subscribe = React.useCallback(
     (cb: () => void) => {

@@ -96,22 +96,11 @@ const Hero02 = () => {
         style={stagger(3)}
         className={cn(ENTER, 'mt-10 flex flex-col items-center gap-3 sm:flex-row')}
       >
-        <Button
-          render={<a href="#" />}
-          nativeButton={false}
-          size="lg"
-          className="group"
-        >
+        <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
           Get started
           <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
         </Button>
-        <Button
-          render={<a href="#" />}
-          nativeButton={false}
-          size="lg"
-          variant="ghost"
-         
-        >
+        <Button render={<a href="#" />} nativeButton={false} size="lg" variant="ghost">
           <Play className="size-4" />
           Watch demo
         </Button>

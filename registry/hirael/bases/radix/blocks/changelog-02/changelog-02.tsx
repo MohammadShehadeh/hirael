@@ -133,8 +133,7 @@ const ITEMS: readonly RoadmapItem[] = [
   },
 ];
 
-// Sort on the stored count so an item does not jump away from the cursor the
-// moment someone votes for it. The new order applies on the next sort change.
+// Sorts on the stored count so an item doesn't jump from under the cursor when voted.
 const sortItems = (items: readonly RoadmapItem[], sort: Sort) =>
   [...items].sort((a, b) => (sort === 'votes' ? b.votes - a.votes : b.added.localeCompare(a.added)));
 
@@ -233,12 +232,8 @@ const Changelog02 = () => {
               aria-labelledby="changelog-02-sort"
               data-slot="roadmap-sort"
             >
-              <ToggleGroupItem value="votes">
-                Most votes
-              </ToggleGroupItem>
-              <ToggleGroupItem value="newest">
-                Newest
-              </ToggleGroupItem>
+              <ToggleGroupItem value="votes">Most votes</ToggleGroupItem>
+              <ToggleGroupItem value="newest">Newest</ToggleGroupItem>
             </ToggleGroup>
           </div>
         </header>
@@ -302,9 +297,7 @@ const Changelog02 = () => {
                               <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
                             </div>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                              <Badge variant="outline">
-                                {item.tag}
-                              </Badge>
+                              <Badge variant="outline">{item.tag}</Badge>
                               {item.shipped ? (
                                 <span className="inline-flex items-center gap-1 text-xs text-success">
                                   <Check aria-hidden className="size-3" />

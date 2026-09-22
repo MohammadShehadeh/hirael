@@ -16,7 +16,6 @@ export const SCENE_IMAGE: Record<Scene, string> = {
   night: '/media/templates/aurael/night.jpg',
 };
 
-/** Placeholder copy. Every paragraph reads from here, so swap in real writing in one place. */
 export const LOREM: Record<Lang, { short: string; medium: string; long: string }> = {
   en: {
     short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

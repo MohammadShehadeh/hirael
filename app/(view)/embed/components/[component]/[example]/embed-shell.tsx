@@ -6,10 +6,7 @@ export interface ExampleEmbedShellProps {
   children: ReactNode;
 }
 
-/**
- * The docs frame measures the outer shell, so the minimum height sits on the inner box.
- * The demo stays centered in the docs and fills the screen on a direct visit.
- */
+// The docs frame measures the outer shell, so the minimum height sits on the inner box.
 export const ExampleEmbedShell = ({ children }: ExampleEmbedShellProps) => {
   return (
     <div data-embed-shell className="bg-background">

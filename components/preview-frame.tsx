@@ -21,11 +21,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
 import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/** Shared toolbar and iframe for block, template, and example previews. */
-
 const PREVIEW_ICON_BUTTON = 'size-7';
 
-/** `fit` lets the frame size to the content. Theme is left off until the toolbar sets it, so the frame follows the site. */
 export const previewSrc = (embedHref: string, options: { theme: ThemeMode | null; isRtl: boolean }) => {
   const params = new URLSearchParams({ fit: '1' });
   if (options.theme) params.set('theme', options.theme);
@@ -139,7 +136,6 @@ export interface PreviewMoreMenuProps {
   entry: RegistryEntryMeta;
 }
 
-/** Copy the page link, report an issue, and list dependencies. */
 export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
   const pageUrl = `${SITE.url}${entryHref(entry)}`;
   const [copied, setCopied] = React.useState(false);
@@ -265,7 +261,6 @@ export interface PreviewFrameProps extends Omit<React.ComponentProps<'iframe'>, 
   maxHeight: number;
 }
 
-/** Iframe that tracks the embed height, within the given range. */
 export const PreviewFrame = ({
   src,
   title,

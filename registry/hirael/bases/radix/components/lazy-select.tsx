@@ -58,7 +58,7 @@ export interface LazySelectProps {
   onSearchChange?: (search: string) => void;
   /** Called when the list is scrolled near the bottom and more pages exist. */
   onLoadMore?: () => void;
-  /** Initial / search page is loading. */
+  /** The first page, or the first page of a new search, is loading. */
   loading?: boolean;
   /** A subsequent page is being appended. */
   loadingMore?: boolean;
@@ -376,12 +376,7 @@ export type LazyPage<T> = {
   hasMore: boolean;
 };
 
-/**
- * Drives a lazily paginated, debounced-search option source. Nothing is
- * fetched until `enabled` is true (wire it to the open state for true
- * lazy-on-open loading); changing the query resets to the first page, and
- * `loadMore` appends the next one.
- */
+/** Fetches nothing until `enabled`; wire it to the open state to load on open. */
 export const useLazySelectOptions = <T,>(
   loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
   map: (item: T) => LazySelectOption,

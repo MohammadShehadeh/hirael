@@ -3,11 +3,7 @@
 import * as React from 'react';
 import { Beam, Shader, Swirl } from 'shaders/react';
 
-/**
- * Resolves a CSS color expression (a token, a color-mix) to the absolute color
- * the current theme gives it. The shader parses colors itself and cannot read
- * `var()`, so the tokens are read from the DOM instead of hard-coded.
- */
+// The shader can't read `var()`, so tokens are resolved to absolute colors through the DOM.
 const resolveColor = (value: string) => {
   const probe = document.createElement('span');
   probe.style.color = value;
@@ -23,7 +19,6 @@ const readPalette = () => ({
 
 type Palette = ReturnType<typeof readPalette>;
 
-/** Theme tokens, re-read whenever the theme class on <html> changes. */
 const usePalette = () => {
   const [palette, setPalette] = React.useState<Palette | null>(() =>
     typeof document === 'undefined' ? null : readPalette(),

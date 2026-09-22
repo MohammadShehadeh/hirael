@@ -82,7 +82,6 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
 
 const NEVER_CHANGES = () => () => {};
 
-/** False through the server render and hydration, true from then on. */
 const useMounted = () =>
   React.useSyncExternalStore(
     NEVER_CHANGES,

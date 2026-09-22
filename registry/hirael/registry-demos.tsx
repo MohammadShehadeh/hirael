@@ -4,19 +4,8 @@ import * as React from 'react';
 
 import { DEFAULT_BASE, REGISTRY, getExamples, type RegistryBase } from '@/registry/hirael/registry-meta';
 
-/**
- * Lazy preview registry, derived from the file layout — no hand-kept loader
- * list. Every block/template lives at `<kind>/<name>/<name>.tsx` and every
- * component demo at `examples/<slug>.tsx`, each under `bases/<base>/`, so the
- * import path is computed from the base and the entry's name/category alone.
- *
- * The template-literal `import()`s below compile to bundler context modules
- * over `bases/<base>/{blocks,templates,examples}/`, so adding an item is
- * picked up automatically — the file just has to follow the naming convention
- * (which `pnpm check:registry` enforces). registry-meta.ts stays data-only, so
- * these dynamic imports are what pull component code into the bundle,
- * code-split per preview — a route only loads what it renders.
- */
+// Template-literal `import()`s compile to context modules over `<kind>/<name>/<name>.tsx` and
+// `examples/<slug>.tsx`, so an item following that layout needs no entry here.
 const loadExample = (base: RegistryBase, slug: string) =>
   import(`./bases/${base}/examples/${slug}`) as Promise<{
     default: React.ComponentType;
@@ -30,10 +19,7 @@ const loadTemplate = (base: RegistryBase, name: string) =>
     default: React.ComponentType;
   }>;
 
-// React.lazy identities must stay stable across renders or the preview
-// remounts, so each is built once and cached at module scope by key. A failed
-// import (unknown slug/name) resolves to a null component, so the preview
-// goes blank instead of throwing.
+// Cached at module scope: a new React.lazy identity per render would remount the preview.
 const lazyCache = new Map<string, React.LazyExoticComponent<React.ComponentType>>();
 
 const lazyFor = (key: string, load: () => Promise<{ default: React.ComponentType }>) => {
@@ -60,10 +46,6 @@ const Render = ({
   );
 };
 
-/**
- * Render one component example by its slug (e.g. `tag-input-demo`) from the
- * given base's tree.
- */
 export const RegistryExample = ({
   name,
   base = DEFAULT_BASE,
@@ -76,11 +58,6 @@ export const RegistryExample = ({
   return <Render Component={lazyFor(`${base}:example:${name}`, () => loadExample(base, name))} fallback={fallback} />;
 };
 
-/**
- * Render the representative preview for an entry: a block/template by its
- * name, or a component's primary (first) example. Used by grids, the theme
- * playground and `/embed/*`.
- */
 export const RegistryDemo = ({
   name,
   base = DEFAULT_BASE,

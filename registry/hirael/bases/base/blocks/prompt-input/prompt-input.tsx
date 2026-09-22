@@ -240,9 +240,7 @@ const PromptInputTextarea = ({
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     onKeyDown?.(event);
     if (event.defaultPrevented) return;
-    // Enter sends, Shift+Enter breaks the line. An IME that is still
-    // composing (Japanese, Chinese, Korean input) uses Enter to commit
-    // the candidate, so leave those alone.
+    // An IME still composing (Japanese, Chinese, Korean) uses Enter to commit the candidate.
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       event.preventDefault();
       submit();
@@ -288,7 +286,6 @@ const PromptInputToolbar = ({ className, ...props }: PromptInputToolbarProps) =>
 
 type PromptInputActionsProps = React.ComponentProps<'div'>;
 
-/** Start-side group in the toolbar; whatever follows it is pushed to the end. */
 const PromptInputActions = ({ className, ...props }: PromptInputActionsProps) => {
   return (
     <div data-slot="prompt-input-actions" className={cn('me-auto flex items-center gap-1', className)} {...props} />
@@ -339,7 +336,6 @@ const PromptInputAttach = ({ accept, multiple = true, className, children, ...pr
 
 type PromptInputAttachmentsProps = React.ComponentProps<'div'>;
 
-/** Renders a chip per attachment; pass children to lay them out yourself. */
 const PromptInputAttachments = ({ className, children, ...props }: PromptInputAttachmentsProps) => {
   const { attachments, removeAttachment } = usePromptInput();
   if (children == null && attachments.length === 0) return null;

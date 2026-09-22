@@ -77,7 +77,6 @@ const PLANS: readonly Plan[] = [
 const PRICE_FORMAT: Intl.NumberFormatOptions = { style: 'currency', currency: 'USD', maximumFractionDigits: 0 };
 const money = new Intl.NumberFormat('en-US', PRICE_FORMAT);
 
-/** The largest yearly saving across paid plans, read from the prices so the badge can't drift from them. */
 const yearlySaving = Math.max(
   0,
   ...PLANS.map(({ price }) =>

@@ -97,7 +97,6 @@ type Status = 'Active' | 'Trial' | 'Past due';
 interface Account {
   name: string;
   plan: Plan;
-  /** Whole dollars, so the column can be sorted and formatted in one place. */
   mrr: number;
   status: Status;
   initials: string;
@@ -129,10 +128,6 @@ const ROWS: readonly Account[] = [
   },
 ];
 
-/**
- * Sort order for the two columns that aren't alphabetical or numeric: smallest
- * plan and calmest status first, so ascending reads as "least urgent" in both.
- */
 const PLAN_RANK: Record<Plan, number> = { Hobby: 0, Pro: 1, Team: 2 };
 const STATUS_RANK: Record<Status, number> = {
   Active: 0,
@@ -149,10 +144,8 @@ const STATUS_TONE: Record<Status, { dot: string; text: string }> = {
 interface Metric {
   label: string;
   value: string;
-  /** Change against the previous period; the sign carries the direction. */
   delta: number;
   unit: '%' | 'pt';
-  /** Which direction counts as an improvement for this metric. */
   goodWhen: 'up' | 'down';
 }
 
@@ -191,13 +184,12 @@ const compareBy = (a: Account, b: Account, key: SortKey) => {
   return a.name.localeCompare(b.name);
 };
 
-/** Signed delta, e.g. `+8.7%` or `−0.4%`. */
+/** Negative deltas use a true minus sign (U+2212), not a hyphen. */
 const formatDelta = ({ delta, unit }: Pick<Metric, 'delta' | 'unit'>) => {
   const sign = delta > 0 ? '+' : delta < 0 ? '−' : '';
   return `${sign}${Math.abs(delta)}${unit}`;
 };
 
-/** A falling number is an improvement for churn, so tone follows intent. */
 const deltaTone = ({ delta, goodWhen }: Pick<Metric, 'delta' | 'goodWhen'>) => {
   if (delta === 0) return 'text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
@@ -224,7 +216,6 @@ const AppShell01 = () => {
   const [sortDirection, setSortDirection] = React.useState<SortDirection>('desc');
   const searchRef = React.useRef<HTMLInputElement>(null);
 
-  // The ⌘K hint in the header has to do something, or it is decoration.
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const isSearchShortcut = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);
@@ -255,7 +246,6 @@ const AppShell01 = () => {
       return;
     }
     setSortKey(key);
-    // Names read best A to Z; money and severity read best worst-first.
     setSortDirection(key === 'name' ? 'asc' : 'desc');
   };
 
@@ -403,7 +393,6 @@ const AppShell01 = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key !== 'Escape') return;
-                // First Escape clears, a second one gives focus back.
                 if (query) {
                   e.preventDefault();
                   setQuery('');

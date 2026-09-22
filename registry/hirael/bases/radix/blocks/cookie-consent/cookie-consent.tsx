@@ -68,8 +68,7 @@ const writeStored = (key: string, prefs: CookiePreferences) => {
   try {
     window.localStorage.setItem(key, JSON.stringify(prefs));
   } catch {
-    // Storage may be unavailable (private mode, quota). The choice still
-    // reaches `onChange`, so nothing else to do here.
+    // Storage may be unavailable (private mode, quota); `onChange` still gets the choice.
   }
 };
 
@@ -237,7 +236,6 @@ const CookieConsentDescription = ({ className, ...props }: CookieConsentDescript
 
 type CookieConsentManageProps = React.ComponentProps<typeof Button>;
 
-/** Expands the per-category switches. Hidden once they're showing. */
 const CookieConsentManage = ({ className, children = 'Manage', ...props }: CookieConsentManageProps) => {
   const { expanded, setExpanded } = useCookieConsent();
   if (expanded) return null;
@@ -259,10 +257,7 @@ const CookieConsentManage = ({ className, children = 'Manage', ...props }: Cooki
 
 type CookieConsentCategoriesProps = React.ComponentProps<'div'>;
 
-/**
- * Reveals its categories while the banner is expanded. They stay mounted when
- * collapsed so Accept all and Reject all know every category.
- */
+// Stays mounted while collapsed so Accept all and Reject all see every category.
 const CookieConsentCategories = ({ className, ...props }: CookieConsentCategoriesProps) => {
   const { expanded } = useCookieConsent();
   return (
@@ -375,7 +370,6 @@ const CookieConsentRejectAll = ({ children = 'Reject all', ...props }: CookieCon
   );
 };
 
-/** Saves the current switches. Only shown while categories are expanded. */
 const CookieConsentSave = ({ children = 'Save choices', ...props }: CookieConsentButtonProps) => {
   const { expanded, save } = useCookieConsent();
   if (!expanded) return null;

@@ -94,7 +94,7 @@ const CELLS: readonly Cell[] = [
   },
 ];
 
-/** Crosshair frame: lines extend past the padded box and clip at the cell edge. */
+/** Lines extend past the padded box and clip at the cell edge. */
 const CellFrame = () => {
   return (
     <div className="pointer-events-none absolute inset-[calc(var(--box-padding)-1px)] z-0">

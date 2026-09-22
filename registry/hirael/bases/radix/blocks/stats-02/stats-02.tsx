@@ -28,7 +28,6 @@ interface Reading {
   value: string;
   delta: string;
   direction: 'up' | 'down';
-  /** Down is not always bad: p95 latency falling is the win. */
   good: boolean;
   data: number[];
 }

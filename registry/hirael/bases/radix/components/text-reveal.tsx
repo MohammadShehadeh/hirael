@@ -41,11 +41,8 @@ const TextReveal = ({
 }: TextRevealProps) => {
   const reduced = useReducedMotion();
   const ref = React.useRef<HTMLElement>(null);
-  // Observe the unclipped container, never the units. Each unit sits in an
-  // `overflow-hidden` mask and starts translated fully below it, so an in-view
-  // observer on the unit itself would measure it as 100% clipped and never
-  // fire — leaving the text stuck offscreen. Watching the container fires
-  // reliably, then each unit reveals on its own staggered delay.
+  // Observe the container: each unit starts fully clipped by its `overflow-hidden`
+  // mask, so an observer on a unit never fires.
   const inView = useInView(ref, { once, amount });
   const Tag = (as ?? 'p') as React.ElementType;
 

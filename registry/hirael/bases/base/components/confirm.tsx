@@ -33,11 +33,9 @@ export interface ConfirmOptions {
   /** Whether Escape dismisses the dialog (counts as cancel). Defaults to true. */
   dismissible?: boolean;
   /**
-   * Runs when the user confirms. While the returned promise is pending the
-   * confirm button shows a spinner and the dialog stays open, closing once it
-   * resolves. If it rejects, the dialog returns to its idle state so the user
-   * can retry, so handle the error inside `onConfirm`. When omitted,
-   * confirming closes immediately.
+   * Runs on confirm. A pending promise keeps the dialog open with a spinner; a
+   * rejection returns it to idle so the user can retry, so handle errors inside.
+   * Without it, confirming closes immediately.
    */
   onConfirm?: () => void | Promise<void>;
 }
@@ -47,11 +45,7 @@ export type ConfirmFn = (options?: ConfirmOptions) => Promise<boolean>;
 
 const ConfirmContext = React.createContext<ConfirmFn | null>(null);
 
-/**
- * Returns a `confirm(options)` function that opens the shared dialog and
- * resolves to `true` when the user confirms or `false` when they cancel or
- * dismiss it. Must be called under a `<ConfirmProvider>`.
- */
+/** Must be called under a `<ConfirmProvider>`. */
 const useConfirm = (): ConfirmFn => {
   const ctx = React.useContext(ConfirmContext);
   if (!ctx) {
@@ -73,11 +67,7 @@ export interface ConfirmProviderProps {
 
 const CLOSE_DURATION = 200;
 
-/**
- * Wrap your app once, near the root. Renders a single shared alert dialog and
- * exposes `useConfirm()` to any descendant. Re-entrant `confirm()` calls queue
- * behind the open one.
- */
+/** Mount once near the root. Re-entrant `confirm()` calls queue behind the open one. */
 const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => {
   const [open, setOpen] = React.useState(false);
   const [pending, setPending] = React.useState(false);
@@ -138,7 +128,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       .then(onConfirm)
       .then(
         () => settle(true),
-        // Back to idle so the user can retry; per onConfirm's contract the error is theirs to surface.
+        // Back to idle so the user can retry; surfacing the error is onConfirm's job.
         () => setPending(false),
       );
   }, [settle]);

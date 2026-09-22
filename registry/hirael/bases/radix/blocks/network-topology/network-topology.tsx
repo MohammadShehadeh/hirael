@@ -24,8 +24,7 @@ const nodeDot: Record<NodeStatus, string> = {
   idle: 'bg-muted-foreground',
 };
 
-// Keyframes travel with the component so the animated edges work the moment
-// it is copied into a project, with no globals.css or Tailwind config edits needed.
+// Keyframes ship inline so copied edges animate without globals.css edits.
 const TOPOLOGY_KEYFRAMES = `
 @keyframes msh-network-dash {
   to { stroke-dashoffset: -14; }

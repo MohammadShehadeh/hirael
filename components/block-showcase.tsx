@@ -17,7 +17,6 @@ const Bar = ({ className }: BarProps) => {
   return <div className={cn('rounded-full bg-foreground/12', className)} />;
 };
 
-/** Thin lines for structure, two neutral fills for weight, and one warm accent per card. */
 const ART: Record<string, React.ReactNode> = {
   hero: (
     <div className="flex size-full flex-col items-center justify-center gap-1.5">
@@ -292,10 +291,7 @@ const ART: Record<string, React.ReactNode> = {
   blog: (
     <div className="flex size-full flex-col px-4 py-3">
       {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className={cn('flex min-h-0 flex-1 items-center gap-2.5', i < 2 && 'border-b border-border')}
-        >
+        <div key={i} className={cn('flex min-h-0 flex-1 items-center gap-2.5', i < 2 && 'border-b border-border')}>
           <span className={cn('h-2/3 w-6 shrink-0 rounded-sm', i === 0 ? 'bg-warm' : 'bg-foreground/10')} />
           <div className="flex flex-1 flex-col gap-1">
             <Bar className="h-1 w-full" />
@@ -329,10 +325,7 @@ const ART: Record<string, React.ReactNode> = {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className={cn(
-            'flex min-h-0 flex-1 items-center justify-between gap-3',
-            i < 2 && 'border-b border-border',
-          )}
+          className={cn('flex min-h-0 flex-1 items-center justify-between gap-3', i < 2 && 'border-b border-border')}
         >
           <div className="flex flex-col gap-1">
             <Bar className="h-1 w-20" />

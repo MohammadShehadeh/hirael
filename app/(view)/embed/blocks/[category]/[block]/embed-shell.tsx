@@ -3,10 +3,8 @@ import Link from 'next/link';
 
 import { EmbedDirection } from '../../../embed-direction';
 
-/**
- * Login demos are real forms on a public URL. The notice stays visible on a direct visit
- * and hides inside the docs frame. Safe Browsing flagged these pages as phishing without it.
- */
+// Safe Browsing flagged the login demos (real forms on a public URL) as phishing without the
+// notice. It stays visible on a direct visit and hides inside the docs frame.
 export interface BlockEmbedShellProps {
   children: ReactNode;
   hasDemoNotice?: boolean;

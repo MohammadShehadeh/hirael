@@ -2,13 +2,6 @@
 
 import * as React from 'react';
 
-/**
- * A WebGL fluid-noise gradient: two layers of simplex noise warp the UVs, then
- * five color stops are mixed across the warped field and dithered with grain.
- * The stops are derived from `--background`, `--primary` and `--accent-cool` at
- * runtime, so the wash follows the theme instead of freezing one palette.
- */
-
 type Rgb = [number, number, number];
 type Oklch = { l: number; c: number; h: number };
 
@@ -20,9 +13,7 @@ type Palette = {
   blue: Rgb;
 };
 
-// Share of the accent each stop carries; the remainder is `--background`. Dark
-// canvases need more of it to lift off the background, light ones less before
-// the copy stops reading.
+// Accent share per stop, the rest is `--background`; dark canvases need more to lift off it.
 const SHADES = {
   light: { wisp: 0.16, sky: 0.52, deep: 0.4, blue: 0.22 },
   dark: { wisp: 0.26, sky: 0.72, deep: 0.58, blue: 0.36 },
@@ -39,12 +30,10 @@ const getProbe = () => {
   return probe;
 };
 
-/** Resolves any CSS color (oklch included) to sRGB, via a 1x1 canvas. */
 const resolveCssColor = (value: string): Rgb | null => {
   const ctx = getProbe();
   if (!ctx) return null;
-  // An unparseable value leaves fillStyle untouched, so seed a sentinel and
-  // reject the color if it never moved off it.
+  // An unparseable value leaves fillStyle untouched, so a sentinel detects it.
   ctx.fillStyle = '#000000';
   ctx.fillStyle = value;
   if (ctx.fillStyle === '#000000' && value.trim() !== '#000000') return null;
@@ -86,8 +75,7 @@ const oklchToLinearSrgb = ({ l: okL, c, h }: Oklch): Rgb => {
 
 const inGamut = (rgb: Rgb) => rgb.every((c) => c >= -1e-4 && c <= 1 + 1e-4);
 
-// Reduce chroma until the color fits sRGB, mirroring CSS Color 4 gamut mapping
-// rather than clipping channels, since clipping would shift the hue.
+// Reduce chroma to fit sRGB (CSS Color 4 gamut mapping); clipping channels would shift the hue.
 const oklchToSrgb = (color: Oklch): Rgb => {
   let lo = 0;
   let hi = color.c;
@@ -104,12 +92,7 @@ const oklchToSrgb = (color: Oklch): Rgb => {
   ) as Rgb;
 };
 
-/**
- * Mixes in Oklab, not Oklch. Interpolating hue would sweep a cream background
- * (h~91) round to the cool accent (h~260) *through green*; going rectangular
- * passes through near-neutral instead, which is what a wash of one color over
- * another actually looks like.
- */
+// Oklab, not Oklch: interpolating hue would sweep a cream background to the cool accent through green.
 const mixOklab = (a: Oklch, b: Oklch, t: number): Oklch => {
   const toAB = ({ c, h }: Oklch) => {
     const rad = (h * Math.PI) / 180;
@@ -126,12 +109,6 @@ const mixOklab = (a: Oklch, b: Oklch, t: number): Oklch => {
   };
 };
 
-/**
- * Reads the tokens off `<html>` and expands them into the five stops the shader
- * mixes: warm ones from `--primary`, cool ones from `--accent-cool`. Returns
- * null when the tokens can't be read, so the caller can leave the CSS wash
- * showing rather than paint something off-palette.
- */
 const buildPalette = (): Palette | null => {
   const styles = getComputedStyle(document.documentElement);
   const backgroundRgb = resolveCssColor(styles.getPropertyValue('--background'));
@@ -142,11 +119,8 @@ const buildPalette = (): Palette | null => {
   const background = srgbToOklch(backgroundRgb);
   const primary = srgbToOklch(primaryRgb);
   const cool = srgbToOklch(coolRgb);
-  // Lightness alone decides the theme, so this works under `.dark`, `.light`,
-  // a media query, or a token override, with no theme context needed.
   const shades = background.l < 0.5 ? SHADES.dark : SHADES.light;
-  const shade = (accent: Oklch, amount: number) =>
-    oklchToSrgb(mixOklab(background, accent, amount));
+  const shade = (accent: Oklch, amount: number) => oklchToSrgb(mixOklab(background, accent, amount));
 
   return {
     base: backgroundRgb,
@@ -222,7 +196,6 @@ const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
 
 const Hero09Backdrop = ({ className }: { className?: string }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  // Bumped whenever the theme flips, to re-read the tokens and repaint.
   const [themeTick, setThemeTick] = React.useState(0);
 
   React.useEffect(() => {
@@ -263,15 +236,12 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
     const uTime = gl.getUniformLocation(program, 'u_time');
     const start = Date.now();
 
-    // A still frame is the whole effect under reduced motion: the wash is the
-    // point, the drift is the flourish.
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let frame = 0;
     let running = false;
     let ready = false;
-    // Start optimistically on-screen so the hero paints at load; the observer's
-    // first callback pauses it a frame later if it isn't.
+    // Assume on-screen so the hero paints at load; the observer's first callback corrects it.
     let onScreen = true;
 
     const draw = () => {
@@ -290,8 +260,6 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
       if (running && !still) frame = requestAnimationFrame(draw);
     };
 
-    // Paint only while on-screen and the tab is visible; an off-screen sky
-    // costs nothing, and the CSS wash underneath covers the gap.
     const play = () => {
       if (running || !ready || !onScreen || document.hidden) return;
       running = true;
@@ -302,17 +270,11 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
       cancelAnimationFrame(frame);
     };
 
-    // Read the tokens on the next frame, not now: a theme toggle flips the class
-    // in its own effect, and parent effects run after child ones, so reading here
-    // would sample the theme we're leaving.
+    // Next frame: the theme toggle flips the class in a parent effect, which runs after this one.
     const paletteFrame = requestAnimationFrame(() => {
       const palette = buildPalette();
-      // Without tokens there is nothing on-palette to paint; leave the CSS wash
-      // showing rather than an off-theme gradient.
       if (!palette) return;
 
-      // Fixed for the life of the effect (a theme change re-runs it), so these
-      // upload once instead of every frame.
       gl.useProgram(program);
       gl.uniform3fv(gl.getUniformLocation(program, 'u_base'), palette.base);
       gl.uniform3fv(gl.getUniformLocation(program, 'u_wisp'), palette.wisp);
@@ -330,7 +292,6 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
         if (onScreen) play();
         else pause();
       },
-      // Pre-roll a little before it scrolls in, so it is already painting.
       { rootMargin: '200px' },
     );
     observer.observe(canvas);
@@ -338,8 +299,7 @@ const Hero09Backdrop = ({ className }: { className?: string }) => {
     const onVisibility = () => (document.hidden ? pause() : play());
     document.addEventListener('visibilitychange', onVisibility);
 
-    // A resize changes the canvas backing store, which clears it, so repaint once
-    // even when the loop is parked on a still frame.
+    // Resizing the backing store clears the canvas, so repaint even when parked on a still frame.
     const onResize = () => {
       if (ready && still) draw();
     };

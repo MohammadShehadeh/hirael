@@ -60,10 +60,7 @@ const Integrations01 = () => {
       <div className="container w-full">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
-            <Badge
-              variant="outline"
-              className={cn(ENTER, 'w-fit')}
-            >
+            <Badge variant="outline" className={cn(ENTER, 'w-fit')}>
               Integrations
             </Badge>
             <h2

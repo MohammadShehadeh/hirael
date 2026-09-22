@@ -25,11 +25,8 @@ const RANGES: { value: Range; label: string }[] = [
 interface Kpi {
   label: string;
   value: string;
-  /** Change against the previous period; the sign carries the direction. */
   delta: number;
-  /** `pp` is percentage points, so a rate change never reads as a percentage. */
   unit: '%' | 'pp' | 's';
-  /** Which way this metric has to move to be good news. Bounce rate falls. */
   goodWhen: 'up' | 'down';
   spark: readonly number[];
 }
@@ -194,7 +191,6 @@ const CHANNELS = [
   { label: 'Social', share: 9 },
 ] as const;
 
-/** Tone follows intent, not sign: a falling bounce rate is good news. */
 const deltaTone = ({ delta, goodWhen }: Kpi) => {
   if (delta === 0) return 'bg-accent text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
@@ -252,7 +248,7 @@ const Sparkline = ({ points }: { points: readonly number[] }) => {
 };
 
 const linePath = (values: number[], max: number) => {
-  // A single bucket would divide by zero; draw it flat across instead.
+  // A single bucket would divide by zero.
   const step = values.length > 1 ? 100 / (values.length - 1) : 100;
   return values
     .map((v, i) => `${i === 0 ? 'M' : 'L'}${(i * step).toFixed(2)} ${(44 - (v / max) * 38).toFixed(2)}`)
@@ -424,8 +420,6 @@ const Dashboard02 = () => {
                   ))}
                 </div>
 
-                {/* The numbers behind the line, for screen readers and
-                    anyone who would rather read than squint. */}
                 <table className="sr-only">
                   <caption>
                     Page views and visitors per bucket, {RANGES.find((r) => r.value === range)?.label.toLowerCase()}
@@ -470,26 +464,28 @@ const Dashboard02 = () => {
                 </div>
                 <CardTitle className="sr-only">Top pages</CardTitle>
               </CardHeader>
-              <CardContent><div className="flex flex-col gap-3.5">
-                {TOP_PAGES.map((p) => (
-                  <div key={p.path} className="flex flex-col gap-1.5">
-                    <div className="flex items-baseline justify-between gap-3">
-                      <span className="truncate text-xs text-foreground">{p.path}</span>
-                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-                        {compact.format(p.views)}
-                      </span>
+              <CardContent>
+                <div className="flex flex-col gap-3.5">
+                  {TOP_PAGES.map((p) => (
+                    <div key={p.path} className="flex flex-col gap-1.5">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="truncate text-xs text-foreground">{p.path}</span>
+                        <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                          {compact.format(p.views)}
+                        </span>
+                      </div>
+                      <div aria-hidden className="h-1 w-full overflow-hidden rounded-full bg-accent">
+                        <div
+                          className="h-full rounded-full bg-foreground/70"
+                          style={{
+                            width: `${Math.round((p.views / TOP_PAGE_PEAK) * 100)}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div aria-hidden className="h-1 w-full overflow-hidden rounded-full bg-accent">
-                      <div
-                        className="h-full rounded-full bg-foreground/70"
-                        style={{
-                          width: `${Math.round((p.views / TOP_PAGE_PEAK) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div></CardContent>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
 
             <Card data-slot="dashboard-channels">
@@ -497,17 +493,21 @@ const Dashboard02 = () => {
                 <CardDescription>channels</CardDescription>
                 <CardTitle className="sr-only">Channels</CardTitle>
               </CardHeader>
-              <CardContent><div className="flex flex-col gap-3">
-                {CHANNELS.map((c) => (
-                  <div key={c.label} className="flex items-center gap-3">
-                    <span className="w-28 shrink-0 text-xs text-muted-foreground">{c.label}</span>
-                    <div aria-hidden className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
-                      <div className="h-full rounded-full bg-foreground/70" style={{ width: `${c.share}%` }} />
+              <CardContent>
+                <div className="flex flex-col gap-3">
+                  {CHANNELS.map((c) => (
+                    <div key={c.label} className="flex items-center gap-3">
+                      <span className="w-28 shrink-0 text-xs text-muted-foreground">{c.label}</span>
+                      <div aria-hidden className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
+                        <div className="h-full rounded-full bg-foreground/70" style={{ width: `${c.share}%` }} />
+                      </div>
+                      <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
+                        {c.share}%
+                      </span>
                     </div>
-                    <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">{c.share}%</span>
-                  </div>
-                ))}
-              </div></CardContent>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
           </div>
         </div>

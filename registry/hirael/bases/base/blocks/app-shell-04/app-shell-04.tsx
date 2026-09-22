@@ -213,7 +213,6 @@ const AppShell04 = () => {
   const [query, setQuery] = React.useState('');
   const searchRef = React.useRef<HTMLInputElement>(null);
 
-  // The ⌘K hint next to the field has to focus something, or it is a sticker.
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const isSearchShortcut = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);

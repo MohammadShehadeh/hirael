@@ -235,7 +235,6 @@ const ImageGallery01 = () => {
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                         className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 motion-reduce:transition-none"
                       />
-                      {/* Photo scrim: keeps the white chips legible on any image. */}
                       <span
                         aria-hidden
                         className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/40 via-black/0 to-black/10"

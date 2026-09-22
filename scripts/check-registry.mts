@@ -1,8 +1,3 @@
-// Runs as `pnpm check:registry` (CI and `pnpm build`). Consistency guard over
-// registry-meta.ts: every referenced source and preview file exists, declared
-// dependencies match real imports, and the ordering arrays cover every
-// category and block kind.
-
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
@@ -24,7 +19,6 @@ import {
 
 import { ALL_ENTRIES, ROOT, createReporter, isShowcased, type RegistryEntry } from './shared.mts';
 
-// Provided by the consumer's framework, never declared by an item.
 const IMPLICIT_PACKAGES = new Set(['react', 'react-dom', 'next']);
 const HIRAEL_IMPORT_PATTERN = /^@\/registry\/hirael\/bases\/[a-z]+\/(?:ui|components)\/([a-z0-9-]+)/;
 
@@ -33,12 +27,10 @@ const report = createReporter('registry check');
 const parseSource = (source: string, fileName: string) =>
   ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 
-// `motion/react` → `motion`; `@radix-ui/react-slider` stays scoped.
 const packageNameOf = (specifier: string) =>
   specifier.startsWith('@') ? specifier.split('/').slice(0, 2).join('/') : specifier.split('/')[0];
 
-// Static, re-export and dynamic import specifiers, read from the AST so
-// mentions in comments or strings don't count.
+// Read from the AST so mentions in comments or strings don't count.
 const importSpecifiers = (source: string, fileName: string) => {
   const specifiers: string[] = [];
   const visit = (node: ts.Node) => {
@@ -87,9 +79,6 @@ const checkFiles = (base: RegistryBase, entry: RegistryEntry) => {
   }
 };
 
-// registry-demos.tsx loads previews by naming convention, per base: a
-// component's examples at <base>/examples/<slug>.tsx, a block or template's
-// primary file at <base>/<category>/<name>/<name>.tsx.
 const checkPreview = (base: RegistryBase, entry: RegistryEntry) => {
   if (!isShowcased(entry)) return;
   const composite = entry.category === 'blocks' || entry.category === 'templates';
@@ -108,9 +97,8 @@ const checkPreview = (base: RegistryBase, entry: RegistryEntry) => {
   }
 };
 
-// A package reached only through a primitive belongs to that primitive.
-// Declared packages are the Radix set; the Base UI tree is checked against
-// the mapped set it ships with.
+// A package reached only through a primitive belongs to that primitive. Declared
+// packages are the Radix set; the Base UI tree is checked against its mapped set.
 const checkDependencies = (base: RegistryBase, entry: RegistryEntry) => {
   const imported = collectImports(base, entry);
   const declaredRegistry = new Set(entry.registryDependencies ?? []);
@@ -135,8 +123,6 @@ const checkDependencies = (base: RegistryBase, entry: RegistryEntry) => {
   }
 };
 
-// A kind missing from its ordering array silently drops its items from
-// pagers, indexes and the sitemap.
 const checkOrder = (arrayName: string, kindLabel: string, order: readonly string[], expected: Set<string>) => {
   const seen = new Set<string>();
   for (const key of order) {

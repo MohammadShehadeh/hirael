@@ -9,7 +9,7 @@ export interface PagerProps {
   next: RegistryEntryMeta | null;
 }
 
-/** Previous and next in catalog order. An empty side keeps its half so the other link does not shift. */
+/** An empty side keeps its half so the other link does not shift. */
 export const Pager = ({ prev, next }: PagerProps) => {
   if (!prev && !next) return null;
 

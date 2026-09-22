@@ -1,14 +1,10 @@
-// Runs in `pnpm registry:build`, after `shadcn build`. Prepends the Hirael
-// attribution header to every source file in the built /r/*.json payloads and
-// points placeholder media at the showcase host; repo source stays untouched.
+// Runs after `shadcn build`, on the built /r/*.json payloads; repo source stays untouched.
 
 import { writeFileSync } from 'node:fs';
 
 import { REGISTRY_BASE_URL, STAMPABLE_FILE, jsonText, readAllBuiltItems, sourceHeader } from './shared.mts';
 
-// Placeholder images and videos live in public/media and are referenced
-// root-relative in source. Installed items would 404 on those paths, so the
-// shipped payload carries absolute URLs instead.
+// Root-relative /media paths would 404 once installed, so payloads get absolute URLs.
 const MEDIA_PATH = /(["'`])\/media\//g;
 
 let stampedFiles = 0;

@@ -88,7 +88,6 @@ export const COUNTRIES: readonly Country[] = [
   { iso2: 'ZA', name: 'South Africa', dialCode: '+27' },
 ] as const;
 
-/** Regional indicator pair for an ISO-2 code, e.g. "JO" -> the Jordan flag. */
 export const countryFlag = (iso2: string): string => {
   const code = iso2.toUpperCase();
   if (!/^[A-Z]{2}$/.test(code)) return '';

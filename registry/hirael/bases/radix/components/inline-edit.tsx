@@ -104,7 +104,6 @@ const InlineEdit = ({
     [editingProp, onEditingChange],
   );
 
-  // Reset the draft whenever edit mode is entered, controlled or not.
   const [prevEditing, setPrevEditing] = React.useState(editing);
   if (editing !== prevEditing) {
     setPrevEditing(editing);
@@ -157,8 +156,8 @@ const InlineEdit = ({
   const previewRef = React.useRef<HTMLSpanElement | null>(null);
   const wasEditingRef = React.useRef(editing);
 
-  // The editor unmounts when editing ends, dropping focus to <body>; return it
-  // to the preview unless the user already moved focus elsewhere (blur-submit).
+  // The editor unmounts on exit and drops focus to <body>; restore it unless
+  // blur-submit already moved focus elsewhere.
   React.useEffect(() => {
     const wasEditing = wasEditingRef.current;
     wasEditingRef.current = editing;
@@ -313,8 +312,7 @@ const InlineEditInput = ({
     cancel,
   } = useInlineEdit();
 
-  // Focus/select once per mounted node. A consumer's inline callback ref gives
-  // the composed ref a new identity every render, so React re-invokes it, and
+  // Once per node: an inline consumer ref re-invokes this every render, and
   // re-selecting mid-typing would swallow the next keystroke.
   const focusedRef = React.useRef<HTMLInputElement | null>(null);
   const focusOnMount = React.useCallback(

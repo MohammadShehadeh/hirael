@@ -48,7 +48,6 @@ const FEATURES = [
   },
 ];
 
-/** Corner crosshair, drawn half outside the card edge like a survey mark. */
 const CrossDecor = ({ position }: { position: 'top-start' | 'bottom-end' }) => {
   return (
     <svg

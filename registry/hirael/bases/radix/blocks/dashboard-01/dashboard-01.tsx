@@ -221,7 +221,6 @@ const ACTIVITY: readonly Activity[] = [
   },
 ];
 
-/** Tone follows intent, not sign: falling churn is good news, so it is green. */
 const deltaTone = ({ delta, goodWhen }: Metric) => {
   if (delta === 0) return 'bg-accent text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');

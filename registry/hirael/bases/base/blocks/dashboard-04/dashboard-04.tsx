@@ -20,11 +20,6 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/registry/hirael/bases/base/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 
-/**
- * One delta, one source of truth. The sign gives the direction, `goodWhen`
- * gives the intent, and both the colour and the spoken label come from those
- * two fields, so a falling refund rate can never render as bad news.
- */
 interface Delta {
   value: number;
   unit: '%' | 'pp';
@@ -65,7 +60,6 @@ const STATS: readonly Stat[] = [
   },
 ];
 
-/** Revenue every two hours, so the ticks and the data table share one source. */
 const HOURLY: readonly { hour: string; today: number; yesterday: number }[] = [
   { hour: '00', today: 12, yesterday: 10 },
   { hour: '02', today: 9, yesterday: 8 },
@@ -88,7 +82,6 @@ const REVENUE = {
   delta: { value: 17.6, unit: '%', goodWhen: 'up' } satisfies Delta,
 };
 
-/** `peak` is a fact about the hour, not a brightness threshold in the markup. */
 const PEAK_HOURS: readonly { hour: string; orders: number; peak?: boolean }[] = [
   { hour: '07', orders: 14 },
   { hour: '08', orders: 18 },
@@ -202,7 +195,6 @@ const SWAP =
 
 const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-/** Density is read from the section, so every panel tightens without prop drilling. */
 const DENSE_GAP = 'group-data-[density=compact]/dashboard:gap-2.5';
 
 const usd = new Intl.NumberFormat('en-US', {
@@ -261,7 +253,6 @@ const PanelCard = ({
 }: {
   icon: LucideIcon;
   label: string;
-  /** Only pass an action when there is one. An empty menu is not a feature. */
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
@@ -457,7 +448,6 @@ const Dashboard04 = () => {
                   ))}
                 </div>
 
-                {/* The chart is pixels; this is the same data as text. */}
                 <table className="sr-only">
                   <caption>Revenue by hour, today versus yesterday</caption>
                   <thead>
@@ -595,8 +585,6 @@ const Dashboard04 = () => {
                   <div key={d.day} className="flex h-full flex-col justify-end gap-1.5">
                     <div
                       aria-hidden
-                      // Capped so seven bars across a wide card stay bars
-                      // rather than slabs.
                       className="mx-auto w-full max-w-16 rounded-t-xs bg-foreground/80 transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
                       style={{ height: `${(d.orders / barMax) * 100}%` }}
                     />

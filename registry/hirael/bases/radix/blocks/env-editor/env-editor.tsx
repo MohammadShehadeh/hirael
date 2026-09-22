@@ -39,11 +39,6 @@ const ENVIRONMENTS: readonly { id: EnvEnvironment; label: string }[] = [
 const KEY_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
 const SECRET_HINT = /(SECRET|TOKEN|PASSWORD|PRIVATE|API_KEY)/;
 
-/**
- * Parses `.env` text into variables. Handles comments, blank lines, an
- * optional `export` prefix, single or double quotes, `\n` escapes inside
- * double quotes, and trailing `# comments` after unquoted values.
- */
 const parseDotEnv = (text: string): EnvVar[] => {
   const vars: EnvVar[] = [];
   for (const rawLine of text.split(/\r?\n/)) {
@@ -140,7 +135,6 @@ const EnvEditor = ({
   const [valueState, setValueState] = React.useState<EnvVar[]>(() => defaultValue ?? []);
   const vars = isControlled ? valueProp : valueState;
 
-  // Last saved snapshot; the footer counts changes against it.
   const [baseline, setBaseline] = React.useState<EnvVar[]>(vars);
   const [query, setQuery] = React.useState('');
   const [adding, setAdding] = React.useState(false);
@@ -389,7 +383,6 @@ const ROW_GRID = 'md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto_auto]
 
 type EnvEditorTableProps = React.ComponentProps<'div'>;
 
-/** Renders one `EnvEditorRow` per visible variable unless children are given. */
 const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) => {
   const { vars, visible, query } = useEnvEditor();
 
@@ -570,7 +563,6 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
 
 type EnvEditorAddProps = Omit<React.ComponentProps<'form'>, 'onSubmit'>;
 
-/** Inline form for a new row. Shows after "Add variable" is pressed. */
 const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
   const { vars, add, adding, setAdding } = useEnvEditor();
   const [key, setKey] = React.useState('');

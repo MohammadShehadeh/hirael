@@ -12,7 +12,6 @@ export interface CollectionJsonLdProps {
   breadcrumb?: Crumb[];
 }
 
-// Stays a server component so the data is in the exported HTML.
 export const CollectionJsonLd = ({ id, path, name, description, entries, breadcrumb }: CollectionJsonLdProps) => {
   const collection = collectionJsonLd({ path, name, description, entries });
   const crumbs = breadcrumb?.map((crumb) => ({ name: crumb.label, path: crumb.href ?? path }));

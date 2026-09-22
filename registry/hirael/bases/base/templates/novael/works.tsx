@@ -110,7 +110,6 @@ const COPY = {
   { items: Record<ProjectId, { title: string; category: string; description: string }> } & Record<string, unknown>
 >;
 
-/** Placeholder for a project screenshot. Swap it for an `<Image>` once you have real artwork. */
 const ProjectPlaceholder = ({ index }: { index: number }) => {
   return (
     <div

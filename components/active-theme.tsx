@@ -96,7 +96,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
         localStorage.setItem(CSS_STORAGE_KEY, JSON.stringify({ main: mainCss, embed: embedCss }));
       } catch {
-        // Storage can be unavailable (private mode, quota); the in-memory config still applies.
+        // Storage can be unavailable (private mode, quota).
       }
     }, 200);
     return () => window.clearTimeout(timerId);
@@ -141,7 +141,7 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
   return theme === 'light' || theme === 'dark' ? theme : undefined;
 };
 
-/** The lock comes from the URL, which never changes without a navigation, so there is nothing to subscribe to. */
+/** Only a navigation changes the URL, so there is nothing to subscribe to. */
 const subscribeToForcedTheme = () => () => {};
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {

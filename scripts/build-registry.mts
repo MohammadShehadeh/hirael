@@ -1,6 +1,3 @@
-// Runs in `pnpm registry:gen`. Generates registry.json (the input to
-// `shadcn build`) from registry-meta.ts, the single source of truth.
-
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { registrySchema, type RegistryItem } from 'shadcn/schema';
@@ -17,8 +14,6 @@ import {
 
 import { ALL_ENTRIES, BRAND, REGISTRY_BASE_URL, ROOT, isShowcased, jsonText, type RegistryEntry } from './shared.mts';
 
-// Radix is the default base and keeps the original registry.json; every
-// other base gets registry.<base>.json, built to public/r/<base>.
 const registryJsonPath = (base: RegistryBase) =>
   path.join(ROOT, base === 'radix' ? 'registry.json' : `registry.${base}.json`);
 const COMPONENTS_DIR = 'components/';
@@ -30,9 +25,6 @@ type ItemType = RegistryItem['type'];
 const isComposite = (entry: RegistryEntry) =>
   isShowcased(entry) ? entry.category === 'blocks' || entry.category === 'templates' : entry.type === 'registry:block';
 
-// Mirrors shadcn/ui's own registry: `ui/` primitives are `registry:ui`,
-// hirael's components are `registry:component`, blocks and templates are
-// `registry:block`.
 const deriveType = (entry: RegistryEntry): ItemType => {
   if (!isShowcased(entry)) return entry.type;
   if (isComposite(entry)) return 'registry:block';
@@ -50,21 +42,17 @@ const deriveCategories = (entry: RegistryEntry): string[] => {
   return [entry.category];
 };
 
-// Primitives land in components/ui; hirael components keep their sub-path so
-// multi-file kits install as folders.
+// Hirael components keep their sub-path so multi-file kits install as folders.
 const deriveTarget = (sourcePath: string) =>
   sourcePath.startsWith(COMPONENTS_DIR) ? sourcePath : `components/ui/${path.basename(sourcePath)}`;
 
-// Hirael items resolve against this registry instead of ui.shadcn.com; shadcn
-// primitives stay bare, URLs and `@`-namespaced deps pass through. A base's
-// items depend on the same base's payloads.
+// shadcn primitives stay bare so consumers keep their own copy; hirael deps point at the same base's payloads.
 const resolveDependency = (base: RegistryBase, dep: string) =>
   ITEM_NAMES.has(dep) && !dep.includes('/') && !dep.startsWith('@')
     ? `${REGISTRY_BASE_URL}${registryItemPath(base, dep)}`
     : dep;
 
-// A base tree file may import @base-ui/react (useRender) even where the Radix
-// version needed no Radix package at all.
+// A Base UI file may import @base-ui/react (useRender) where the Radix version needed no Radix package.
 const importsBaseUi = (base: RegistryBase, entry: RegistryEntry) =>
   base !== 'radix' &&
   (entry.files ?? []).some((file) => {

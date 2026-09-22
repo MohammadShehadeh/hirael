@@ -4,8 +4,10 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-// Dependency-free YAML tokenizer — enough to read config at a glance, not a
-// full parser. Each line becomes a list of classed spans.
+// The textarea sits over the highlighted <pre>, so both must render the same
+// font or the selection drifts. Preflight gives <pre> its own mono stack.
+const layerClass =
+  'absolute inset-0 whitespace-pre p-3 [font:inherit] [font-feature-settings:inherit] [font-variation-settings:inherit] [tab-size:inherit] [text-rendering:inherit]';
 
 const tokenClass = {
   comment: 'text-muted-foreground italic',
@@ -183,7 +185,7 @@ const YamlEditor = ({
           ref={preRef}
           data-slot="yaml-editor-highlight"
           aria-hidden
-          className="pointer-events-none absolute inset-0 overflow-hidden whitespace-pre p-3 text-foreground"
+          className={cn(layerClass, 'pointer-events-none overflow-hidden text-foreground')}
         >
           {lines.map((line, i) => (
             <HighlightLine key={i} line={line} />
@@ -201,7 +203,10 @@ const YamlEditor = ({
           onChange={handleChange}
           onScroll={syncScroll}
           onKeyDown={handleKeyDown}
-          className="absolute inset-0 resize-none overflow-auto whitespace-pre bg-transparent p-3 text-transparent caret-foreground outline-none selection:text-transparent"
+          className={cn(
+            layerClass,
+            'resize-none overflow-auto bg-transparent text-transparent caret-foreground outline-none selection:text-transparent',
+          )}
           {...textareaProps}
         />
       </div>

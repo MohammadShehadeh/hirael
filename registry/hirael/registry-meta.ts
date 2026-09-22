@@ -41,30 +41,17 @@ export type RegistryFileType =
   | 'registry:page'
   | 'registry:file';
 
-/**
- * One source file shipped by a registry item, mirroring the shadcn
- * registry-item `files[]` shape. Co-locating the install target with its
- * source path removes the parallel-array coupling the old
- * `sourceFiles` + `installTargets` pair required.
- */
+/** One source file an item ships, in the shadcn registry-item `files[]` shape. */
 export interface RegistryFileMeta {
-  /** Repo-relative source path, e.g. `registry/hirael/components/multi-select.tsx`. */
+  /** Base-relative source path, e.g. `components/multi-select.tsx`. */
   path: string;
-  /**
-   * Where the file lands in a consumer project. Optional for UI components
-   * (auto-derived as `components/ui/<basename>`); required for blocks and
-   * templates, whose files install to bespoke paths.
-   */
+  /** Install path in the consumer project. Required for blocks and templates; UI files default to `components/ui/<basename>`. */
   target?: string;
   /** Registry file type. Defaults to the item's type when omitted. */
   type?: RegistryFileType;
 }
 
-/**
- * CSS variables an item ships with (registry-item schema `cssVars`).
- * `light` lands in `:root`, `dark` in `.dark`; the shadcn CLI also maps
- * them into `@theme inline` for Tailwind v4 consumers.
- */
+/** registry-item `cssVars`: `light` lands in `:root`, `dark` in `.dark`. */
 export interface RegistryCssVars {
   theme?: Record<string, string>;
   light?: Record<string, string>;
@@ -76,10 +63,6 @@ export interface RegistryEntryMeta {
   title: string;
   description: string;
   category: ComponentCategory;
-  /**
-   * Source files the item ships. Shown in the code view as a file hierarchy
-   * so users see where each file lands in their project.
-   */
   files?: RegistryFileMeta[];
   installSlug?: string;
   registryDependencies?: string[];
@@ -87,20 +70,11 @@ export interface RegistryEntryMeta {
   blockKind?: BlockKind;
   blockTagline?: string;
   cssVars?: RegistryCssVars;
-  /**
-   * Short post-install note (registry-item schema `docs`) the shadcn CLI
-   * prints after adding the item. Reserve it for items with real setup
-   * beyond the auto-installed `dependencies` — most items need none.
-   */
+  /** Post-install note the shadcn CLI prints, for setup beyond the auto-installed `dependencies`. */
   docs?: string;
 }
 
-/**
- * The status palette the cloud components rely on (`--success` / `--warning`
- * / `--info`) — the same values Callout ships. Attached via `cssVars` so an
- * item stays self-contained: a consumer installing only a cloud component
- * still gets the status tokens its source references, without needing Callout.
- */
+/** Shipped as `cssVars` so a cloud component installed on its own still gets the status tokens. */
 const STATUS_CSS_VARS: RegistryCssVars = {
   light: {
     success: 'oklch(0.527 0.154 150.069)',
@@ -4279,11 +4253,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
 ];
 
-/**
- * Items that install through the registry but aren't showcased on the site
- * (no demo page, no sidebar entry). registry.json is generated from
- * REGISTRY + DISTRIBUTION_ONLY by scripts/build-registry.mjs.
- */
+/** Installable through the registry but not showcased on the site. */
 export interface DistributionOnlyEntry {
   name: string;
   title: string;
@@ -4291,10 +4261,7 @@ export interface DistributionOnlyEntry {
   type: 'registry:ui' | 'registry:component' | 'registry:block' | 'registry:theme';
   /** Raw registry.json categories. */
   categories: string[];
-  /**
-   * Optional because a `registry:theme` item ships only `cssVars` — no
-   * source files to install.
-   */
+  /** Optional because a `registry:theme` item ships only `cssVars`. */
   files?: RegistryFileMeta[];
   registryDependencies?: string[];
   dependencies?: string[];
@@ -4393,19 +4360,12 @@ export const REGISTRY_BY_CATEGORY = (() => {
 
 export const TEMPLATES = REGISTRY_BY_CATEGORY.templates;
 
-/** Anything that isn't a block or template: the primitives and components listed under `/components`. */
 export const isComponentEntry = (entry: RegistryEntryMeta) =>
   entry.category !== 'blocks' && entry.category !== 'templates';
 
 export const COMPONENTS = REGISTRY.filter(isComponentEntry);
 
-/**
- * Component bases, shadcn's `registry/bases` analog: one full tree per
- * primitive library under `registry/hirael/bases/<base>/`. Every item exists
- * in both; file paths in this file are base-relative (`ui/button.tsx`) and
- * resolve through `registryFilePath`. Radix keeps the original `/r/<name>.json`
- * install URLs; Base UI items live at `/r/base/<name>.json`.
- */
+/** File paths in this file are base-relative (`ui/button.tsx`) and resolve through `registryFilePath`. */
 export const REGISTRY_BASES = ['radix', 'base'] as const;
 export type RegistryBase = (typeof REGISTRY_BASES)[number];
 export const DEFAULT_BASE: RegistryBase = 'radix';
@@ -4420,21 +4380,10 @@ export const registryFilePath = (base: RegistryBase, file: string) => `${registr
 export const registryItemPath = (base: RegistryBase, name: string) =>
   base === DEFAULT_BASE ? `/r/${name}.json` : `/r/${base}/${name}.json`;
 
-/**
- * The item's detail page as Markdown, generated by `pnpm registry:md` beside
- * its install payload. It is what "Copy page" copies and what an agent handed
- * the URL reads, so both stay one document.
- */
 export const registryMarkdownPath = (base: RegistryBase, name: string) =>
   base === DEFAULT_BASE ? `/r/${name}.md` : `/r/${base}/${name}.md`;
 
-/**
- * Items declare npm dependencies once, for the Radix tree; the Base UI tree
- * swaps every Radix-backed package (`radix-ui`, `@radix-ui/*`, `vaul`) for
- * `@base-ui/react`, and adds it when a file that had no Radix dependency
- * reaches for Base UI's `useRender` (`importsBaseUi`). Everything else is
- * shared.
- */
+// Items declare npm dependencies once, for Radix; the Base UI tree swaps Radix-backed packages for @base-ui/react.
 export const BASE_UI_PACKAGE = '@base-ui/react';
 const RADIX_BACKED = (pkg: string) => pkg === 'radix-ui' || pkg.startsWith('@radix-ui/') || pkg === 'vaul';
 
@@ -4445,13 +4394,7 @@ export const basePackages = (base: RegistryBase, packages: readonly string[], im
   return [...new Set(mapped)];
 };
 
-/**
- * One demo a component showcases on its page. `slug` is the example file
- * basename under `<base>/examples/<slug>.tsx` and the loader key in
- * registry-demos.tsx; `title` labels the block when a component has more than
- * one. Most components have a single `<name>-demo`; list extra variants here
- * (the first entry is the representative preview used in grids and embeds).
- */
+/** `slug` is the basename under `<base>/examples/`. The first example is the preview used in grids and embeds. */
 export interface ExampleRef {
   slug: string;
   title: string;
@@ -4469,7 +4412,6 @@ const EXAMPLE_OVERRIDES: Record<string, ExampleRef[]> = {
   ],
 };
 
-/** Ordered examples for a component, defaulting to a single `<name>-demo`. */
 export const getExamples = (name: string): ExampleRef[] => {
   return EXAMPLE_OVERRIDES[name] ?? [{ slug: `${name}-demo`, title: 'Example' }];
 };
@@ -4578,7 +4520,6 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   'changelog',
 ];
 
-/** Component categories in display order. Drives the index, sidebar, sitemap. */
 export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'templates'>[] = [
   'inputs',
   'pickers',
@@ -4589,7 +4530,6 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'te
   'navigation',
 ];
 
-/** One-line, human blurb for each component category landing page. */
 export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], string> = {
   inputs:
     'Multi-select, combobox, tag, phone, currency, address and credit card inputs, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
@@ -4606,11 +4546,6 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_
     'Steppers, product tours, a command palette, a dock, floating toolbars and action buttons, split views, resizable panels and a table of contents, with keyboard focus that mirrors in RTL.',
 };
 
-/**
- * URL slug per block kind. The slug differs from the kind key wherever the
- * plural or label reads better in a path (feature → features, login → auth).
- * This is the source of truth the block category pages derive their slug from.
- */
 export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   hero: 'hero',
   feature: 'features',
@@ -4643,13 +4578,11 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
   changelog: 'changelog',
 };
 
-/** The category segment an entry's detail page sits under. */
 export const entryCategorySlug = (entry: RegistryEntryMeta): string => {
   if (entry.category === 'blocks' && entry.blockKind) return BLOCK_KIND_SLUGS[entry.blockKind];
   return entry.category;
 };
 
-/** Canonical site path for an entry's detail page (category in the URL). */
 export const entryHref = (entry: RegistryEntryMeta): string => {
   if (entry.category === 'templates') return `/templates/${entry.name}`;
   if (entry.category === 'blocks') return `/blocks/${entryCategorySlug(entry)}/${entry.name}`;
@@ -4658,14 +4591,12 @@ export const entryHref = (entry: RegistryEntryMeta): string => {
 
 const embedPrefix = (base: RegistryBase) => (base === DEFAULT_BASE ? '/embed' : `/embed/${base}`);
 
-/** Framed preview path; non-default bases nest under `/embed/<base>/`. */
 export const entryEmbedHref = (entry: RegistryEntryMeta, base: RegistryBase = DEFAULT_BASE): string => {
   const prefix = embedPrefix(base);
   if (entry.category === 'templates') return `${prefix}/templates/${entry.name}`;
   return `${prefix}/blocks/${entryCategorySlug(entry)}/${entry.name}`;
 };
 
-/** Framed preview path for one component example (`examples/<slug>.tsx`), so demos get the same toolbar as blocks. */
 export const exampleEmbedHref = (entry: RegistryEntryMeta, slug: string, base: RegistryBase = DEFAULT_BASE): string =>
   `${embedPrefix(base)}/components/${entry.name}/${slug}`;
 
@@ -4674,34 +4605,20 @@ export const entryFileLabel = (entry: RegistryEntryMeta): string => {
   return `${count} file${count === 1 ? '' : 's'}`;
 };
 
-/**
- * Every component flattened into display order: category by category (the
- * sidebar / index order), and within a category the registry order. This is
- * the path the detail-page pager walks, so Next steps from the last item of
- * one category straight into the first of the next.
- */
 export const COMPONENTS_ORDERED: RegistryEntryMeta[] = COMPONENT_CATEGORY_ORDER.flatMap(
   (cat) => REGISTRY_BY_CATEGORY[cat],
 );
 
-/** Every block flattened into display order: kind by kind, then registry order. */
 export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap((kind) => BLOCKS_BY_KIND[kind]);
 
-/** The ordered catalog an entry is paged through: templates, blocks or components. */
 const catalogListFor = (entry: RegistryEntryMeta): RegistryEntryMeta[] =>
   entry.category === 'templates' ? TEMPLATES : entry.category === 'blocks' ? BLOCKS_ORDERED : COMPONENTS_ORDERED;
 
-/** 1-based position of an entry in its catalog, for `02 / 10` style counters. */
 export const entryPosition = (entry: RegistryEntryMeta): { index: number; total: number } => {
   const list = catalogListFor(entry);
   return { index: list.findIndex((e) => e.name === entry.name) + 1, total: list.length };
 };
 
-/**
- * The previous and next entry within an item's own collection
- * (components | blocks | templates). Used for the detail-page pager; either
- * side is `null` at a collection boundary.
- */
 export const entrySiblings = (
   entry: RegistryEntryMeta,
 ): {

@@ -1,6 +1,5 @@
 import { BLOCK_KIND_LABELS, CATEGORY_LABELS, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-/** Words people type for a thing the catalog names differently. */
 const ALIASES: Record<string, string[]> = {
   modal: ['dialog'],
   popup: ['dialog', 'popover'],
@@ -47,7 +46,7 @@ const ALIASES: Record<string, string[]> = {
 
 const STOPWORDS = new Set(['a', 'an', 'and', 'the', 'with', 'for', 'of', 'to', 'in', 'on', 'or']);
 
-/** Lowercase words; `01` and `1` compare equal so "hero 1" finds `hero-01`. */
+// `01` and `1` compare equal so "hero 1" finds `hero-01`.
 const words = (text: string) =>
   text
     .toLowerCase()
@@ -101,7 +100,6 @@ export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
     };
   });
 
-/** True when `a` and `b` differ by at most one insert, delete or substitution. */
 const withinOneEdit = (a: string, b: string) => {
   if (Math.abs(a.length - b.length) > 1) return false;
   let i = 0;
@@ -129,7 +127,6 @@ const wordScore = (token: string, word: string) => {
   if (word.startsWith(token)) return 0.75;
   if (token.length >= 3 && word.includes(token)) return 0.4;
   if (token.length >= 5 && withinOneEdit(token, word)) return 0.5;
-  // Typing past the word, e.g. "pickers" for "picker".
   if (word.length >= 4 && token.startsWith(word) && token.length - word.length <= 2) return 0.6;
   return 0;
 };
@@ -148,7 +145,6 @@ const tokenScore = (doc: SearchDoc, token: string, exact = false) => {
 const scoreDoc = (doc: SearchDoc, tokens: string[], query: string) => {
   let score = 0;
 
-  // "datepicker" or "date-picker" against "Date Picker".
   if (query.length >= 3) {
     if (doc.compactTitle === query || doc.compactName === query) score += 400;
     else if (doc.compactTitle.startsWith(query) || doc.compactName.startsWith(query)) score += 250;
@@ -158,7 +154,6 @@ const scoreDoc = (doc: SearchDoc, tokens: string[], query: string) => {
   let matchedAll = true;
   for (const token of tokens) {
     let best = tokenScore(doc, token);
-    // An alias must match a whole word and counts for a bit less than the word itself.
     for (const alias of ALIASES[token] ?? []) best = Math.max(best, tokenScore(doc, alias, true) * 0.8);
     if (best === 0) matchedAll = false;
     score += best;

@@ -26,7 +26,6 @@ const NAV: readonly NavLink[] = [
   { label: 'Changelog', href: '#' },
 ];
 
-/** Scroll distance, in px, after which the bar shrinks into a pill. */
 const SHRINK_AT = 100;
 
 const SPRING = { type: 'spring', stiffness: 220, damping: 40 } as const;

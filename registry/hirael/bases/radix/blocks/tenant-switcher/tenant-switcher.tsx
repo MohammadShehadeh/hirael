@@ -287,7 +287,6 @@ const TenantSwitcherCreate = ({
   );
 };
 
-/** Bucket tenants by their `group`, preserving first-seen order. */
 const useGroupedTenants = (tenants: Tenant[]) => {
   return React.useMemo(() => {
     const groups = new Map<string | undefined, Tenant[]>();

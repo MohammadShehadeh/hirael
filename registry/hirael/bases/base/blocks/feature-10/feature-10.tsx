@@ -60,10 +60,7 @@ const Feature10 = () => {
           </p>
         </div>
 
-        <div
-          data-slot="feature-bento"
-          className="mt-14 grid grid-cols-6 gap-4"
-        >
+        <div data-slot="feature-bento" className="mt-14 grid grid-cols-6 gap-4">
           <Card
             data-slot="feature-quote"
             style={stagger(0, 60, 180)}

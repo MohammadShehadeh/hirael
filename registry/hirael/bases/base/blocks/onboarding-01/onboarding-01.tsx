@@ -42,7 +42,6 @@ interface OnboardingStepMeta {
 }
 
 interface OnboardingCtx {
-  /** Active step, 0-based. */
   step: number;
   total: number;
   steps: readonly OnboardingStepMeta[];
@@ -131,7 +130,6 @@ interface OnboardingHeaderProps extends React.ComponentProps<'div'> {
   showTitles?: boolean;
 }
 
-/** Step count eyebrow plus the stepper. Completed steps can be revisited. */
 const OnboardingHeader = ({ showTitles = true, className, children, ...props }: OnboardingHeaderProps) => {
   const { step, total, steps, goTo } = useOnboarding();
   return (
@@ -159,7 +157,6 @@ const OnboardingHeader = ({ showTitles = true, className, children, ...props }: 
 
 type OnboardingProgressProps = React.ComponentProps<'div'>;
 
-/** Thin bar alternative to the stepper. Fills as steps are completed. */
 const OnboardingProgress = ({ className, ...props }: OnboardingProgressProps) => {
   const { step, total } = useOnboarding();
   const value = total > 0 ? Math.round(((step + 1) / total) * 100) : 0;

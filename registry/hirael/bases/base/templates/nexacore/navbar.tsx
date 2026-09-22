@@ -56,12 +56,7 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-lg"
-              aria-label="Search"
-            >
+            <Button type="button" variant="ghost" size="icon-lg" aria-label="Search">
               <Search className="size-5 text-[var(--nexa-navy)]" />
             </Button>
             <div className="hidden md:block">
@@ -98,12 +93,7 @@ export const Navbar = () => {
               </a>
             ))}
             <div className="mt-1 flex w-full items-center gap-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-lg"
-                aria-label="Search"
-              >
+              <Button type="button" variant="ghost" size="icon-lg" aria-label="Search">
                 <Search className="size-5 text-[var(--nexa-navy)]" />
               </Button>
               <ContactButton className="flex-1" />

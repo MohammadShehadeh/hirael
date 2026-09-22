@@ -40,7 +40,6 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type SettingsProps = React.ComponentProps<'div'>;
 
-/** Page container: side nav on md+, stacked on mobile. */
 const Settings = ({ className, ...props }: SettingsProps) => {
   return (
     <div
@@ -152,10 +151,6 @@ interface SettingsRowProps extends Omit<React.ComponentProps<'div'>, 'children'>
   children?: React.ReactNode;
 }
 
-/**
- * Label and description on the start side, control on the end side.
- * Stacks until the surrounding `FieldGroup` is wide enough for a row.
- */
 const SettingsRow = ({ label, description, htmlFor, className, children, ...props }: SettingsRowProps) => {
   return (
     <Field
@@ -175,7 +170,6 @@ const SettingsRow = ({ label, description, htmlFor, className, children, ...prop
 
 type SettingsFooterProps = React.ComponentProps<'div'>;
 
-/** Save / Cancel row at the bottom of a section. */
 const SettingsFooter = ({ className, ...props }: SettingsFooterProps) => {
   return (
     <div
@@ -330,9 +324,7 @@ const Settings01 = () => {
                   <div className="flex items-center gap-3">
                     <Avatar key={avatarUrl ?? 'initials'} size="lg">
                       {avatarUrl ? <AvatarImage src={avatarUrl} alt="" className="object-cover" /> : null}
-                      <AvatarFallback>
-                        {initialsOf(profile.name) || '?'}
-                      </AvatarFallback>
+                      <AvatarFallback>{initialsOf(profile.name) || '?'}</AvatarFallback>
                     </Avatar>
                     <input
                       ref={avatarInputRef}

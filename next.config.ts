@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   typescript: {
-    // We do our own typechecking in CI.
+    // `pnpm typecheck` runs in CI, so the build skips it.
     ignoreBuildErrors: true,
   },
 };

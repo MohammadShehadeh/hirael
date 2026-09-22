@@ -16,10 +16,6 @@ const RANGES: { value: Range; label: string }[] = [
   { value: '7d', label: 'Last 7 days' },
 ];
 
-/**
- * The sign gives the direction and `goodWhen` gives the intent, so falling
- * errors and falling latency read as wins without a per-metric special case.
- */
 interface Delta {
   value: number;
   unit: '%' | 'pp';
@@ -119,7 +115,6 @@ const DURATION_SERIES = [31, 28, 29, 26, 27, 24, 23];
 
 const P95_TARGET_MS = 200;
 
-/** `overTarget` is measured against the stated target, not eyeballed. */
 const LATENCY = [
   { label: 'P50', ms: 92, pct: 28 },
   { label: 'P95', ms: 184, pct: 58 },
@@ -175,11 +170,6 @@ const DEPLOYS: readonly Deploy[] = [
   },
 ];
 
-/**
- * `--accent-cool` is the reserved live/active tone in this theme, so the
- * deployment actually taking traffic gets it. Canary is a warning, and
- * stable is simply not noteworthy.
- */
 const STATUS_META: Record<Deploy['status'], { label: string; dot: string; pulse: boolean }> = {
   live: { label: 'Live', dot: 'bg-accent-cool', pulse: true },
   stable: { label: 'Stable', dot: 'bg-muted-foreground/50', pulse: false },

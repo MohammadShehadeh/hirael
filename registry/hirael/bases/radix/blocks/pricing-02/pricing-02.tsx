@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-/** Replays whenever a hidden column is shown, because leaving display:none restarts CSS animations. */
+// Leaving display:none restarts CSS animations, so this replays whenever a column is shown.
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 

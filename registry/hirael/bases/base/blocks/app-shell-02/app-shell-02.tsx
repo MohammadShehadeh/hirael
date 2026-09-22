@@ -84,11 +84,6 @@ const SECTIONS: readonly Section[] = [
   },
 ];
 
-/**
- * Every row declares how it is changed, so no field ships an action that
- * does nothing: `text` edits in place, `secret` copies, `toggle` flips,
- * and `readonly` is stated as read-only instead of faking a button.
- */
 type Field =
   | { kind: 'text'; id: string; label: string; value: string; hint?: string }
   | { kind: 'secret'; id: string; label: string; value: string; hint?: string }
@@ -506,7 +501,6 @@ const AppShell02 = () => {
           <div className="mt-4 lg:col-span-9 lg:ms-4 lg:mt-0">
             {SECTIONS.map((s) => {
               const fields = matchesBySection[s.id];
-              // When this section comes up empty, point at the ones that did not.
               const elsewhere = SECTIONS.filter((other) => other.id !== s.id && matchesBySection[other.id].length > 0);
               return (
                 <TabsContent key={s.id} value={s.id} className="mt-0">

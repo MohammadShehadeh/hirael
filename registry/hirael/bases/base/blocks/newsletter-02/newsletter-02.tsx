@@ -219,10 +219,7 @@ const Newsletter02 = () => {
                     aria-describedby={error ? 'newsletter-02-error' : undefined}
                   />
                 </InputGroup>
-                <FieldError
-                  id="newsletter-02-error"
-                  className="animate-in fade-in slide-in-from-top-1 duration-150"
-                >
+                <FieldError id="newsletter-02-error" className="animate-in fade-in slide-in-from-top-1 duration-150">
                   {error}
                 </FieldError>
               </Field>

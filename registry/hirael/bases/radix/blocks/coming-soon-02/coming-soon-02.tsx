@@ -113,9 +113,7 @@ const NotifyForm = () => {
             />
           </Button>
         </div>
-        <FieldError id={`${id}-error`}>
-          {error}
-        </FieldError>
+        <FieldError id={`${id}-error`}>{error}</FieldError>
       </Field>
     </form>
   );

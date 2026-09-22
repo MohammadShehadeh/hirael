@@ -59,8 +59,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
-    // While a programmatic smooth scroll is in flight, ignore the
-    // intermediate positions so the pill doesn't flicker.
+    // Ignore intermediate positions of a programmatic smooth scroll so the pill doesn't flicker.
     if (autoScrollingRef.current) {
       if (!pinned) return;
       autoScrollingRef.current = false;
@@ -106,7 +105,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
 
 type MessageThreadScrollButtonProps = Omit<React.ComponentProps<typeof Button>, 'onClick'>;
 
-/** "Jump to latest" pill. Render it as the last child of the thread. */
+/** Render it as the last child of the thread. */
 const MessageThreadScrollButton = ({
   className,
   children = 'Jump to latest',
@@ -141,7 +140,6 @@ interface MessageProps extends React.ComponentProps<'div'> {
   role?: MessageRole;
 }
 
-/** User messages sit on the end side, assistant on the start side. */
 const Message = ({ role = 'assistant', className, ...props }: MessageProps) => {
   return (
     <MessageRoleContext.Provider value={role}>
@@ -162,7 +160,6 @@ const Message = ({ role = 'assistant', className, ...props }: MessageProps) => {
 
 type MessageBodyProps = React.ComponentProps<'div'>;
 
-/** Column next to the avatar: bubble, actions, timestamp, tool calls. */
 const MessageBody = ({ className, ...props }: MessageBodyProps) => {
   const role = React.useContext(MessageRoleContext);
   return (
@@ -431,7 +428,6 @@ const MessageReasoning = ({
 
 type MessageStreamingCursorProps = React.ComponentProps<'span'>;
 
-/** Blinking block cursor to append while text is still arriving. */
 const MessageStreamingCursor = ({ className, style, ...props }: MessageStreamingCursorProps) => {
   return (
     <span
@@ -491,7 +487,7 @@ const MessageSources = ({ label = 'Sources', className, children, ...props }: Me
 
 type MessageSourceProps = React.ComponentProps<'a'>;
 
-/** Numbered citation chip; numbering is automatic within MessageSources. */
+/** Numbering is automatic within MessageSources. */
 const MessageSource = ({ className, children, ...props }: MessageSourceProps) => {
   return (
     <a
@@ -576,7 +572,7 @@ const FeedbackActions = ({ copyText, onRegenerate }: { copyText: string; onRegen
   );
 };
 
-/** Reveals `text` word by word on mount; remount (change the key) to replay. */
+/** Remount (change the key) to replay. */
 const StreamedMessage = ({ text, onReplay }: { text: string; onReplay: () => void }) => {
   const tokens = text.match(/\S+\s*/g) ?? [];
   const [count, setCount] = React.useState(0);

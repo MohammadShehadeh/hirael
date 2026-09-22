@@ -33,7 +33,6 @@ const SWAP =
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
-/** Digits only, ready for a wa.me link. */
 const digits = (phone: string) => phone.replace(/\D/g, '');
 
 const BrandMark = ({ className }: { className?: string }) => {

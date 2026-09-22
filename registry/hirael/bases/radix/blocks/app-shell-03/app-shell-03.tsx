@@ -244,8 +244,6 @@ const AppShell03 = () => {
   const [query, setQuery] = React.useState('');
   const [filter, setFilter] = React.useState<'all' | 'unread'>('all');
   const [draft, setDraft] = React.useState('');
-  // On phones the list and the reading pane share the viewport, so only one
-  // of them is on screen at a time.
   const [mobilePane, setMobilePane] = React.useState<'list' | 'thread'>('list');
 
   const optionRefs = React.useRef(new Map<string, HTMLLIElement>());
@@ -275,7 +273,6 @@ const AppShell03 = () => {
     setReadIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
   }, []);
 
-  /** Arrow keys walk the list the way every mail client does. */
   const onListKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
     const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
     if (!keys.includes(event.key) || visible.length === 0) return;
@@ -302,7 +299,6 @@ const AppShell03 = () => {
     setStarred((prev) => (prev.includes(selected.id) ? prev.filter((s) => s !== selected.id) : [...prev, selected.id]));
   };
 
-  /** Removing selects the neighbour below, then above, so focus never dies. */
   const remove = (kind: Removal['kind']) => {
     if (!selected) return;
     const index = visible.findIndex((c) => c.id === selected.id);
@@ -395,7 +391,6 @@ const AppShell03 = () => {
         data-slot="app-shell-list"
         className={cn(
           ENTER,
-          // Full width next to the rail on phones, a fixed column from md up.
           'min-w-0 flex-1 flex-col border-e border-border md:flex md:w-80 md:flex-none',
           mobilePane === 'thread' ? 'hidden' : 'flex',
         )}

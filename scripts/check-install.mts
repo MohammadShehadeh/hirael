@@ -1,15 +1,11 @@
-// Runs as `pnpm check:install` (CI, after the build). Offline install
-// verification: a real `shadcn add` reaches ui.shadcn.com and stalls CI, so
-// this rebuilds /r/*.json, applies the CLI's import-rewrite rules and asserts
-// each item installs to the right place with consumer-alias imports, URL-form
-// hirael dependencies and the source header.
+// Offline: a real `shadcn add` reaches ui.shadcn.com and stalls CI, so this
+// replays the CLI's import rewrites against a fresh /r instead.
 
 import { execFileSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
 
 import { R_DIR, ROOT, STAMPABLE_FILE, createReporter, readAllBuiltItems, sourceHeader } from './shared.mts';
 
-// shadcn's default aliases; the CLI maps registry path segments onto them.
 const CONSUMER_ALIASES = {
   ui: '@/components/ui',
   components: '@/components',
@@ -28,11 +24,8 @@ const rewriteImport = (specifier: string) =>
 const importSpecifiers = (source: string) =>
   [...source.matchAll(/(?:import|export)[^"']*?["']([^"']+)["']/g)].map((match) => match[1]);
 
-// `shadcn build` writes but never prunes, so start from an empty /r to avoid
-// validating stale payloads. That also clears the generated `.md` pages, which
-// share the directory but not the builder — `registry:md` puts them back, so a
-// run leaves /r as the build would, not missing half of it. `shell: true`
-// resolves pnpm's Windows shim; the static args carry no injection risk.
+// `shadcn build` never prunes, so start from an empty /r; `registry:md` restores
+// the .md pages this also deletes. `shell: true` resolves pnpm's Windows shim.
 rmSync(R_DIR, { recursive: true, force: true });
 for (const script of ['registry:gen', 'registry:build', 'registry:md']) {
   execFileSync('pnpm', [script], { stdio: 'inherit', cwd: ROOT, shell: true });

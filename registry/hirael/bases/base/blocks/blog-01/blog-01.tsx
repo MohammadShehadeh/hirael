@@ -125,7 +125,7 @@ const PostCover = ({
           sizes="(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
         />
-        {/* Photo scrim: fixed dark overlay so the badges stay legible on any image, in both themes. */}
+        {/* Fixed dark scrim in both themes so the badges stay legible on any photo. */}
         <div className="absolute inset-x-0 bottom-0 flex items-end gap-2 bg-linear-to-t from-black/60 via-black/10 to-transparent p-4">
           {featured && <Badge variant="secondary">Featured</Badge>}
           <span className="inline-flex items-center rounded-full border border-white/30 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white">

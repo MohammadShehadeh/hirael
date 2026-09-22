@@ -12,10 +12,6 @@ import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 type PlanName = 'Pro' | 'Team' | 'Enterprise';
 type InvoiceState = 'Paid' | 'Open' | 'Overdue';
 
-/**
- * Colour lives in one lookup per scale, keyed by what the value means.
- * Nothing in the data below carries a class name.
- */
 const PLAN_TONE: Record<PlanName, { stroke: string; swatch: string }> = {
   Pro: { stroke: 'stroke-foreground/85', swatch: 'bg-foreground/85' },
   Team: {
@@ -43,7 +39,6 @@ interface PlanSlice {
 interface MonthData {
   label: string;
   total: number;
-  /** Percent change against the month before; the sign carries direction. */
   delta: number;
   comparedWith: string;
   plans: readonly PlanSlice[];
@@ -107,7 +102,6 @@ interface Txn {
   email: string;
   status: 'paid' | 'open' | 'refunded';
   date: string;
-  /** Signed, so a refund is negative in the data and not only in the label. */
   amount: number;
 }
 
@@ -205,8 +199,7 @@ const Donut = ({ plans }: { plans: readonly PlanSlice[] }) => {
     <svg viewBox="0 0 42 42" aria-hidden className="size-44">
       <circle cx="21" cy="21" r="15.9155" fill="none" strokeWidth="4" className="stroke-accent" />
       {plans.map((p, i) => {
-        // Each slice starts where the previous ones ended; 25 rotates the
-        // first slice to 12 o'clock.
+        // 25 rotates the first slice to 12 o'clock.
         const offset = 25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0);
         return (
           <circle
@@ -411,16 +404,11 @@ const Dashboard03 = () => {
                           <span className="truncate text-[11px] text-muted-foreground">{t.email}</span>
                         </div>
                       </div>
-                      <Badge
-                        variant="outline"
-                        className="hidden w-fit sm:inline-flex"
-                      >
+                      <Badge variant="outline" className="hidden w-fit sm:inline-flex">
                         <span aria-hidden className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}
                       </Badge>
-                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">
-                        {t.date}
-                      </span>
+                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">{t.date}</span>
                       <span dir="ltr" className={cn('text-end text-sm tabular-nums', status.amount)}>
                         <span className="sr-only">{status.label}, </span>
                         {signedUsd(t.amount)}

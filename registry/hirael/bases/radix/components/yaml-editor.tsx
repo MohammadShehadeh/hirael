@@ -201,7 +201,7 @@ const YamlEditor = ({
           onChange={handleChange}
           onScroll={syncScroll}
           onKeyDown={handleKeyDown}
-          className="absolute inset-0 resize-none overflow-auto whitespace-pre bg-transparent p-3 text-transparent caret-foreground outline-none"
+          className="absolute inset-0 resize-none overflow-auto whitespace-pre bg-transparent p-3 text-transparent caret-foreground outline-none selection:text-transparent"
           {...textareaProps}
         />
       </div>

@@ -23,6 +23,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -252,13 +253,15 @@ const AppShell04 = () => {
                   <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-                  {WORKSPACES.map((w) => (
-                    <DropdownMenuItem key={w.name} onClick={() => setWorkspace(w.name)}>
-                      <span className="flex-1">{w.name}</span>
-                      {w.name === activeWorkspace.name && <Check className="size-4" aria-label="Current" />}
-                    </DropdownMenuItem>
-                  ))}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+                    {WORKSPACES.map((w) => (
+                      <DropdownMenuItem key={w.name} onClick={() => setWorkspace(w.name)}>
+                        <span className="flex-1">{w.name}</span>
+                        {w.name === activeWorkspace.name && <Check className="size-4" aria-label="Current" />}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
@@ -363,10 +366,12 @@ const AppShell04 = () => {
                 MS
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <span className="block text-sm font-medium">Maya Renner</span>
-                  <span className="block truncate text-xs text-muted-foreground">maya@hirael.com</span>
-                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    <span className="block text-sm font-medium">Mohammad Shehadeh</span>
+                    <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Settings />
@@ -390,7 +395,7 @@ const AppShell04 = () => {
           {active === NAV[0].label ? (
             <div key={active} className={cn(SWAP, 'flex flex-col gap-6')}>
               <div className="flex flex-col gap-1">
-                <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">Good morning, Maya.</h1>
+                <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">Good morning, Mohammad.</h1>
                 <p className="text-sm text-muted-foreground">
                   Two campaigns are due before Wednesday and three drafts are waiting for review.
                 </p>

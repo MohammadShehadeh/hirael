@@ -72,7 +72,7 @@ const TourDemo = () => {
             <div className="grid gap-3 sm:grid-cols-2">
               <div id="tour-demo-profile" className="rounded-md border border-border bg-card p-4 sm:col-span-2">
                 <p className="text-sm font-medium">{t({ en: 'Profile', ar: 'الملف الشخصي' })}</p>
-                <p className="mt-1 text-xs text-muted-foreground">Mohammad Shehadeh · mohammad@hirael.com</p>
+                <p className="mt-1 text-xs text-muted-foreground">Mohammad Shehadeh · hello@mohammadshehadeh.com</p>
                 <Button variant="secondary" size="sm" className="mt-3">
                   {t({ en: 'Edit profile', ar: 'تعديل الملف الشخصي' })}
                 </Button>

@@ -80,9 +80,9 @@ const TOOLS: readonly NavItem[] = [
 ];
 
 const USER = {
-  name: 'Lena Ortiz',
-  email: 'lena@example.com',
-  initials: 'LO',
+  name: 'Mohammad Shehadeh',
+  email: 'hello@mohammadshehadeh.com',
+  initials: 'MS',
 } as const;
 
 type DocumentStatus = 'Draft' | 'Shared' | 'Final';
@@ -100,8 +100,8 @@ const DOCUMENTS: readonly WorkspaceDocument[] = [
   {
     title: 'Q4 roadmap',
     folder: 'Planning',
-    owner: 'Lena Ortiz',
-    initials: 'LO',
+    owner: 'Mohammad Shehadeh',
+    initials: 'MS',
     updated: 'Today, 10:12',
     status: 'Draft',
   },
@@ -124,8 +124,8 @@ const DOCUMENTS: readonly WorkspaceDocument[] = [
   {
     title: 'Onboarding checklist for new hires',
     folder: 'People',
-    owner: 'Lena Ortiz',
-    initials: 'LO',
+    owner: 'Mohammad Shehadeh',
+    initials: 'MS',
     updated: 'Sep 11',
     status: 'Shared',
   },
@@ -336,7 +336,7 @@ const AppShell05 = () => {
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/60">
           <SidebarTrigger className="-ms-1" />
-          <Separator orientation="vertical" className="mx-1 h-5" />
+          <Separator orientation="vertical" className="mx-1 data-[orientation=vertical]:h-5" />
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>

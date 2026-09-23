@@ -347,7 +347,7 @@ const AppShell01 = () => {
                 <DropdownMenuContent side="top" align="start" sideOffset={8} className="w-56">
                   <DropdownMenuLabel>
                     <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                    <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
+                    <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
@@ -375,7 +375,7 @@ const AppShell01 = () => {
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-3 backdrop-blur sm:px-4">
           <SidebarTrigger className="-ms-1" />
-          <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+          <Separator orientation="vertical" className="mx-1 hidden data-[orientation=vertical]:h-5 sm:block" />
           <nav
             aria-label="Breadcrumb"
             className="hidden items-center gap-1.5 text-xs uppercase text-muted-foreground sm:flex"

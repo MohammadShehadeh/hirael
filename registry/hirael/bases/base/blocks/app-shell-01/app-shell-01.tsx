@@ -29,6 +29,7 @@ import { Card, CardContent } from '@/registry/hirael/bases/base/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -343,10 +344,12 @@ const AppShell01 = () => {
                   <ChevronsUpDown className="ms-auto size-3.5 shrink-0 text-muted-foreground" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" align="start" sideOffset={8} className="w-56">
-                  <DropdownMenuLabel>
-                    <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                    <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
-                  </DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>
+                      <span className="block text-sm font-medium">Mohammad Shehadeh</span>
+                      <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
+                    </DropdownMenuLabel>
+                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Settings />

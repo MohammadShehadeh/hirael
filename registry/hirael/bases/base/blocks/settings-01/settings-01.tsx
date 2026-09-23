@@ -433,7 +433,7 @@ const Settings01 = () => {
                     <Input
                       id="settings-email"
                       type="email"
-                      defaultValue="mohammad@hirael.com"
+                      defaultValue="hello@mohammadshehadeh.com"
                       autoComplete="email"
                       readOnly
                       className="flex-1"

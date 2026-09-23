@@ -21,6 +21,7 @@ import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -116,7 +117,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'text',
       id: 'email',
       label: 'Email',
-      value: 'mohammad@hirael.com',
+      value: 'hello@mohammadshehadeh.com',
       hint: 'Used for sign-in',
     },
     {
@@ -438,10 +439,12 @@ const AppShell02 = () => {
               <span className="text-[10px]">MS</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>
-                <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
-              </DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>
+                  <span className="block text-sm font-medium">Mohammad Shehadeh</span>
+                  <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Settings />

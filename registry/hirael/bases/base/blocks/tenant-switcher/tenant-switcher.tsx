@@ -209,7 +209,7 @@ const TenantSwitcherContent = ({
       align="start"
       sideOffset={6}
       data-slot="tenant-switcher-content"
-      className={cn('w-(--anchor-width) min-w-[15rem]', className)}
+      className={cn('w-(--anchor-width) min-w-60 p-0', className)}
       initialFocus={false}
       {...props}
     >

@@ -207,7 +207,7 @@ const TenantSwitcherContent = ({
       align="start"
       sideOffset={6}
       data-slot="tenant-switcher-content"
-      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem]', className)}
+      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem] p-0', className)}
       onOpenAutoFocus={(event) => event.preventDefault()}
       {...props}
     >

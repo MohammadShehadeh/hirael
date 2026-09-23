@@ -81,7 +81,12 @@ const CARDS: readonly AboutCard[] = [
   },
 ];
 
-const Card = ({ card, index }: { card: AboutCard; index: number }) => {
+interface CardProps {
+  card: AboutCard;
+  index: number;
+}
+
+const Card = ({ card, index }: CardProps) => {
   const base = 240 + index * 60;
 
   return (
@@ -123,8 +128,7 @@ const Feature06 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            style={{ animationDelay: '240ms' }}
-            className={cn('max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE)}
+            className={cn('delay-240 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE)}
           >
             We build the components shadcn/ui does not ship, and we build them the way we would want to inherit them.
           </p>

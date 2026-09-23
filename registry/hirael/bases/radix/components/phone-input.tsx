@@ -62,13 +62,26 @@ const digitsOnly = (input: string): string => {
   return input.replace(/\D/g, '');
 };
 
-const parseE164 = (value: string | undefined, fallback: Country): { country: Country; national: string } => {
+const toE164 = (country: Country, national: string): string => {
+  const digits = digitsOnly(national);
+  return digits ? `${country.dialCode}${digits}` : '';
+};
+
+interface ParsedE164 {
+  country: Country;
+  national: string;
+}
+
+const parseE164 = (value: string | undefined, fallback: Country): ParsedE164 => {
   if (!value) return { country: fallback, national: '' };
   const trimmed = value.trim();
   if (!trimmed.startsWith('+')) {
     return { country: fallback, national: digitsOnly(trimmed) };
   }
-  const sorted = [...COUNTRIES].sort((a, b) => b.dialCode.length - a.dialCode.length);
+  // Longest dial code wins; on a shared code (+1 is US and CA) prefer the fallback country.
+  const sorted = [...COUNTRIES].sort(
+    (a, b) => b.dialCode.length - a.dialCode.length || Number(b === fallback) - Number(a === fallback),
+  );
   for (const c of sorted) {
     if (trimmed.startsWith(c.dialCode)) {
       return {
@@ -87,8 +100,6 @@ interface Ctx {
   national: string;
   setNational: (next: string) => void;
   disabled?: boolean;
-  open: boolean;
-  setOpen: (next: boolean) => void;
 }
 
 const PhoneInputContext = React.createContext<Ctx | null>(null);
@@ -135,8 +146,6 @@ const PhoneInput = ({
   const [national, setNationalState] = React.useState<string>(
     () => parseE164(valueProp ?? defaultValue, fallback).national,
   );
-  const [open, setOpen] = React.useState(false);
-
   const isControlled = valueProp !== undefined;
 
   const lastSeen = React.useRef<string | undefined>(valueProp);
@@ -151,8 +160,7 @@ const PhoneInput = ({
 
   const emit = React.useCallback(
     (c: Country, n: string) => {
-      const digits = digitsOnly(n);
-      const e164 = digits ? `${c.dialCode}${digits}` : '';
+      const e164 = toE164(c, n);
       lastSeen.current = e164;
       onValueChange?.(e164);
     },
@@ -183,14 +191,11 @@ const PhoneInput = ({
       national,
       setNational,
       disabled,
-      open,
-      setOpen,
     }),
-    [fieldId, country, setCountry, national, setNational, disabled, open],
+    [fieldId, country, setCountry, national, setNational, disabled],
   );
 
-  const nationalDigits = digitsOnly(national);
-  const e164 = nationalDigits ? `${country.dialCode}${nationalDigits}` : '';
+  const e164 = toE164(country, national);
 
   return (
     <PhoneInputContext.Provider value={ctx}>
@@ -212,27 +217,27 @@ type PhoneInputCountrySelectProps = Omit<React.ComponentProps<'button'>, 'childr
 const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelectProps) => {
   const ctx = usePhoneInput();
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <InputGroupAddon align="inline-start" data-slot="phone-input-country-select" className="cursor-pointer">
-      <Popover open={ctx.open} onOpenChange={ctx.setOpen}>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <InputGroupButton
             type="button"
             size="sm"
             role="combobox"
-            aria-expanded={ctx.open}
+            aria-expanded={open}
             aria-haspopup="listbox"
             aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
             disabled={ctx.disabled}
-            data-state={ctx.open ? 'open' : 'closed'}
             className={cn('gap-1.5 font-mono text-xs', className)}
             {...props}
           >
             <span className="font-medium text-foreground">{ctx.country.iso2}</span>
             <span className="text-muted-foreground">{ctx.country.dialCode}</span>
             <ChevronDown
-              className={cn('size-3 text-muted-foreground transition-transform duration-150', ctx.open && 'rotate-180')}
+              className={cn('size-3 text-muted-foreground transition-transform duration-150', open && 'rotate-180')}
             />
           </InputGroupButton>
         </PopoverTrigger>
@@ -256,7 +261,7 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
                     value={`${c.name} ${c.iso2} ${c.dialCode}`}
                     onSelect={() => {
                       ctx.setCountry(c);
-                      ctx.setOpen(false);
+                      setOpen(false);
                     }}
                     className="justify-between"
                   >

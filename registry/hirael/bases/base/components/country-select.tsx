@@ -153,7 +153,7 @@ export type CountrySelectProps = CountrySelectSingleProps | CountrySelectMultipl
 
 const toList = (v: string | string[] | undefined): string[] => {
   if (v === undefined || v === '') return [];
-  return Array.isArray(v) ? v : [v];
+  return (Array.isArray(v) ? v : [v]).map((code) => code.toUpperCase());
 };
 
 const NO_PRIORITY: readonly string[] = [];
@@ -297,7 +297,6 @@ const CountrySelectTrigger = ({ className, children, variant = 'outline', ...pro
           role="combobox"
           id={ctx.id}
           aria-controls={ctx.listboxId}
-          aria-expanded={ctx.open}
           aria-haspopup="listbox"
           disabled={ctx.disabled}
           data-slot="country-select-trigger"

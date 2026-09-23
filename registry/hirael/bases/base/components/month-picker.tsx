@@ -53,7 +53,9 @@ const useMonthPicker = () => {
   return ctx;
 };
 
-const monthLabels = (locale: string | undefined, style: 'short' | 'long') => {
+type MonthLabelWidth = 'short' | 'long';
+
+const monthLabels = (locale: string | undefined, style: MonthLabelWidth) => {
   const fmt = new Intl.DateTimeFormat(locale, { month: style });
   return Array.from({ length: 12 }, (_, m) => fmt.format(new Date(2024, m, 1)));
 };
@@ -274,10 +276,9 @@ const MonthPickerTrigger = ({
           type="button"
           disabled={ctx.disabled}
           data-slot="month-picker-trigger"
-          data-state={ctx.open ? 'open' : 'closed'}
           className={cn(
             'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
-            'hover:border-ring/60 focus-visible:border-ring data-open:border-ring',
+            'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
             empty && 'text-muted-foreground font-sans',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
@@ -362,9 +363,11 @@ const MonthPickerContent = ({
         nextMonth = month + (3 - (month % 4));
         break;
       case 'PageUp':
+        e.preventDefault();
         ctx.setDisplayYear(Math.max(ctx.minYear, year - 1));
         return;
       case 'PageDown':
+        e.preventDefault();
         ctx.setDisplayYear(Math.min(ctx.maxYear, year + 1));
         return;
       default:
@@ -379,7 +382,8 @@ const MonthPickerContent = ({
       nextMonth -= 12;
       nextYear += 1;
     }
-    nextYear = Math.max(ctx.minYear, Math.min(ctx.maxYear, nextYear));
+    // Past the first/last allowed year: stay put rather than wrap within the same year.
+    if (nextYear < ctx.minYear || nextYear > ctx.maxYear) return;
     if (nextYear !== ctx.displayYear) {
       ctx.setDisplayYear(nextYear);
       requestAnimationFrame(() => focusCell(nextYear, nextMonth));

@@ -48,7 +48,13 @@ const FEATURES = [
   },
 ];
 
-const CrossDecor = ({ position }: { position: 'top-start' | 'bottom-end' }) => {
+type CrossDecorPosition = 'top-start' | 'bottom-end';
+
+interface CrossDecorProps {
+  position: CrossDecorPosition;
+}
+
+const CrossDecor = ({ position }: CrossDecorProps) => {
   return (
     <svg
       aria-hidden

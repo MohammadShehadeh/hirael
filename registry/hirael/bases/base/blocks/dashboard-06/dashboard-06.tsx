@@ -249,7 +249,11 @@ const formatSeconds = (value: number) => {
   return s ? `${m}m ${s}s` : `${m}m`;
 };
 
-const StateDot = ({ state }: { state: RunState }) => {
+interface StateDotProps {
+  state: RunState;
+}
+
+const StateDot = ({ state }: StateDotProps) => {
   return (
     <span
       aria-hidden
@@ -259,7 +263,11 @@ const StateDot = ({ state }: { state: RunState }) => {
   );
 };
 
-const StatCard = ({ stat }: { stat: Stat }) => {
+interface StatCardProps {
+  stat: Stat;
+}
+
+const StatCard = ({ stat }: StatCardProps) => {
   const Icon = stat.icon;
   return (
     <div data-slot="dashboard-stat" className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4">
@@ -283,7 +291,11 @@ const StatCard = ({ stat }: { stat: Stat }) => {
   );
 };
 
-const RunBreakdown = ({ run }: { run: Run | null }) => {
+interface RunBreakdownProps {
+  run: Run | null;
+}
+
+const RunBreakdown = ({ run }: RunBreakdownProps) => {
   const [logOpen, setLogOpen] = React.useState(false);
   const logId = React.useId();
 

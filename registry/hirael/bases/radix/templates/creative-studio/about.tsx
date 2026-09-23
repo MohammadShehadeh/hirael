@@ -25,10 +25,7 @@ export const About = () => {
           Visual arts
         </span>
 
-        <h2
-          className="mx-auto max-w-3xl text-3xl leading-[0.95] sm:text-4xl sm:leading-[0.9] md:text-5xl lg:text-6xl xl:text-7xl"
-          style={{ color: '#E1E0CC' }}
-        >
+        <h2 className="mx-auto max-w-3xl text-3xl leading-[0.95] sm:text-4xl sm:leading-[0.9] md:text-5xl lg:text-6xl xl:text-7xl text-(--cs-cream)">
           <WordsPullUpMultiStyle segments={HEADING_SEGMENTS} />
         </h2>
 

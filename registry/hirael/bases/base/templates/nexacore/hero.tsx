@@ -20,23 +20,17 @@ export const Hero = () => {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, #000201)',
-        }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48 bg-[linear-gradient(to_bottom,transparent,#000201)]"
       />
 
       <div className="relative z-10 flex max-w-2xl flex-col items-center gap-6 text-center">
         <GradientText className="text-lg font-medium">Infrastructure Built to Last</GradientText>
 
-        <h1
-          className="font-medium leading-tight text-white md:whitespace-nowrap"
-          style={{ fontSize: 'clamp(32px, 4vw, 56px)' }}
-        >
+        <h1 className="text-[length:clamp(32px,4vw,56px)] font-medium leading-tight text-white md:whitespace-nowrap">
           Engineer and scale with clarity.
         </h1>
 
-        <p className="text-[var(--nexa-lavender)]" style={{ fontSize: 'clamp(15px, 1.2vw, 20px)' }}>
+        <p className="text-[length:clamp(15px,1.2vw,20px)] text-[var(--nexa-lavender)]">
           NexaCore helps infrastructure owner, operator and supplier teams enforce global build standards for
           mission-critical systems. Align teams, regions and programs without the heavy lifting.
         </p>

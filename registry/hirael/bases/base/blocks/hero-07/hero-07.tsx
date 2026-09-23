@@ -37,7 +37,12 @@ const Headline = () => {
   );
 };
 
-const Beam = ({ className, reduce }: { className?: string; reduce: boolean | null }) => {
+interface BeamProps {
+  className?: string;
+  reduce: boolean | null;
+}
+
+const Beam = ({ className, reduce }: BeamProps) => {
   const verticals = [
     'M141.338 232.625V5.075',
     'M200.338 232.625V5.075',
@@ -96,7 +101,12 @@ const Beam = ({ className, reduce }: { className?: string; reduce: boolean | nul
   );
 };
 
-const SideBeam = ({ className, reduce }: { className?: string; reduce: boolean | null }) => {
+interface SideBeamProps {
+  className?: string;
+  reduce: boolean | null;
+}
+
+const SideBeam = ({ className, reduce }: SideBeamProps) => {
   const paths = [
     'M0 442.957L209.048 442.957C212.366 442.957 215.508 441.458 217.596 438.879L321.802 310.196',
     'M0 1.19531L209.048 1.19557C212.366 1.19558 215.508 2.69391 217.596 5.27302L321.802 133.956',
@@ -160,14 +170,7 @@ const Hero07 = () => {
       <div
         aria-hidden
         data-slot="hero-backdrop"
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
-        style={{
-          backgroundImage: [
-            'radial-gradient(120% 120% at 50% 26%, color-mix(in oklch, var(--primary) 26%, transparent), transparent 60%)',
-            'radial-gradient(80% 70% at 6% 96%, color-mix(in oklch, var(--accent-cool) 24%, transparent), transparent 64%)',
-            'radial-gradient(80% 70% at 94% 92%, color-mix(in oklch, var(--warm) 20%, transparent), transparent 64%)',
-          ].join(', '),
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_26%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_60%),radial-gradient(80%_70%_at_6%_96%,color-mix(in_oklch,var(--accent-cool)_24%,transparent),transparent_64%),radial-gradient(80%_70%_at_94%_92%,color-mix(in_oklch,var(--warm)_20%,transparent),transparent_64%)] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
       />
 
       <Beam
@@ -199,8 +202,7 @@ const Hero07 = () => {
 
         <p
           data-slot="hero-subhead"
-          className="mt-2 max-w-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none sm:mt-4"
-          style={{ animationDelay: '330ms' }}
+          className="mt-2 max-w-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both delay-330 motion-reduce:animate-none sm:mt-4"
         >
           One source of truth for your interface. Design it, theme it, and reuse it across every project without
           rewriting the same components.
@@ -208,8 +210,7 @@ const Hero07 = () => {
 
         <div
           data-slot="hero-actions"
-          className="mt-4 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none sm:flex-row"
-          style={{ animationDelay: '390ms' }}
+          className="mt-4 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both delay-390 motion-reduce:animate-none sm:flex-row"
         >
           <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
             <span>Get started</span>

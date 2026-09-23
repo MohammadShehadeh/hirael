@@ -126,6 +126,11 @@ type MorphingDialogContentProps = HTMLMotionProps<'div'>;
 const MorphingDialogContent = ({ className, children, style, ...props }: MorphingDialogContentProps) => {
   const { isOpen, close, uniqueId, titleId, descriptionId, hasTitle, hasDescription, triggerRef } = useMorphingDialog();
   const panelRef = React.useRef<HTMLDivElement>(null);
+  // Latest close in a ref so an inline onOpenChange doesn't re-run the focus effect on every render.
+  const closeRef = React.useRef(close);
+  React.useEffect(() => {
+    closeRef.current = close;
+  }, [close]);
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -136,7 +141,7 @@ const MorphingDialogContent = ({ className, children, style, ...props }: Morphin
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        close();
+        closeRef.current();
         return;
       }
       if (event.key === 'Tab' && panel) {
@@ -168,7 +173,7 @@ const MorphingDialogContent = ({ className, children, style, ...props }: Morphin
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
     };
-  }, [isOpen, close, triggerRef]);
+  }, [isOpen, triggerRef]);
 
   if (typeof document === 'undefined') return null;
 

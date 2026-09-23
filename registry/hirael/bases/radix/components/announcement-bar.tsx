@@ -33,13 +33,11 @@ const announcementBarVariants = cva(
   },
 );
 
-const noopUnsubscribe = () => () => {};
-
 // Server snapshot is false (visible) so hydration agrees; a returning user's bar hides after it.
 const useStoredDismiss = (storageKey?: string) => {
   const subscribe = React.useCallback(
     (cb: () => void) => {
-      if (!storageKey || typeof window === 'undefined') return noopUnsubscribe();
+      if (!storageKey) return () => {};
       const handler = (e: StorageEvent) => {
         if (e.key === storageKey) cb();
       };
@@ -49,7 +47,7 @@ const useStoredDismiss = (storageKey?: string) => {
     [storageKey],
   );
   const getSnapshot = React.useCallback(() => {
-    if (!storageKey || typeof window === 'undefined') return false;
+    if (!storageKey) return false;
     try {
       return window.localStorage.getItem(storageKey) === '1';
     } catch {

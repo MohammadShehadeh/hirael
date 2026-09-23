@@ -17,6 +17,7 @@ const CursorGlow = ({
   children,
   size = 400,
   color = 'color-mix(in oklch, var(--foreground) 12%, transparent)',
+  onPointerMove: onPointerMoveProp,
   ...props
 }: CursorGlowProps) => {
   const reduced = useReducedMotion();
@@ -25,6 +26,7 @@ const CursorGlow = ({
   const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerMoveProp?.(event);
     if (reduced) return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set(event.clientX - rect.left);
@@ -38,12 +40,15 @@ const CursorGlow = ({
       className={cn('group relative overflow-hidden', className)}
       {...props}
     >
-      <motion.div
-        aria-hidden
-        data-slot="cursor-glow-layer"
-        className="pointer-events-none absolute inset-0 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background }}
-      />
+      {/* The layer never tracks the pointer under reduced motion, so it would sit pinned at 0,0. */}
+      {reduced ? null : (
+        <motion.div
+          aria-hidden
+          data-slot="cursor-glow-layer"
+          className="pointer-events-none absolute inset-0 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+          style={{ background }}
+        />
+      )}
       <div data-slot="cursor-glow-content" className="relative">
         {children}
       </div>

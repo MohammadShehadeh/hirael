@@ -25,7 +25,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Footer = ({ lang }: { lang: Lang }) => {
+interface FooterProps {
+  lang: Lang;
+}
+
+export const Footer = ({ lang }: FooterProps) => {
   const c = COPY[lang];
   const year = new Date().getFullYear();
 

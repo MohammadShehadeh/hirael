@@ -24,7 +24,11 @@ const COLUMNS = [
   },
 ];
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />

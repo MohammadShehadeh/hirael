@@ -46,11 +46,11 @@ const Comparison01 = () => {
 
         <div
           data-slot="comparison-grid"
-          className={cn(ENTER, 'relative mt-12 grid overflow-hidden rounded-xl border border-border md:grid-cols-2')}
-          style={{
-            ...stagger(3),
-            boxShadow: '0 24px 60px -34px color-mix(in oklch, var(--foreground) 22%, transparent)',
-          }}
+          className={cn(
+            ENTER,
+            'relative mt-12 grid overflow-hidden rounded-xl border border-border shadow-[0_24px_60px_-34px_color-mix(in_oklch,var(--foreground)_22%,transparent)] md:grid-cols-2',
+          )}
+          style={stagger(3)}
         >
           <span
             aria-hidden
@@ -65,11 +65,7 @@ const Comparison01 = () => {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                backgroundImage:
-                  'radial-gradient(110% 80% at 50% 0%, color-mix(in oklch, var(--primary) 11%, transparent), transparent 62%)',
-              }}
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(110%_80%_at_50%_0%,color-mix(in_oklch,var(--primary)_11%,transparent),transparent_62%)]"
             />
             <div className="relative z-10 flex flex-col gap-6">
               <div className="flex flex-col gap-1">

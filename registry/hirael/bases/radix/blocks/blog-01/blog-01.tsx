@@ -104,17 +104,14 @@ const ALL = 'All';
 const ALL_POSTS: readonly Post[] = [FEATURED, ...POSTS];
 const CATEGORIES = [ALL, ...Array.from(new Set(ALL_POSTS.map((post) => post.category)))];
 
-const PostCover = ({
-  cover,
-  alt,
-  category,
-  featured,
-}: {
+interface PostCoverProps {
   cover?: string;
   alt: string;
   category: string;
   featured?: boolean;
-}) => {
+}
+
+const PostCover = ({ cover, alt, category, featured }: PostCoverProps) => {
   if (cover) {
     return (
       <div className="relative size-full overflow-hidden">
@@ -140,17 +137,11 @@ const PostCover = ({
     <div className="relative size-full overflow-hidden bg-card">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[24px_24px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -end-16 -top-16 size-64 rounded-full opacity-[0.18] blur-3xl"
-        style={{ background: 'var(--primary)' }}
+        className="pointer-events-none absolute -end-16 -top-16 size-64 rounded-full bg-primary opacity-[0.18] blur-3xl"
       />
       <div className="absolute inset-0 flex items-end p-4">
         <div className="flex items-center gap-2">
@@ -162,7 +153,12 @@ const PostCover = ({
   );
 };
 
-const PostCard = ({ post, style }: { post: Post; style?: React.CSSProperties }) => {
+interface PostCardProps {
+  post: Post;
+  style?: React.CSSProperties;
+}
+
+const PostCard = ({ post, style }: PostCardProps) => {
   const titleId = `blog-01-post-${post.title.replace(/[^a-z0-9]+/gi, '-').slice(0, 24)}`;
   return (
     <div data-slot="blog-post" style={style} className={cn(SWAP, CARD_SURFACE, 'group relative overflow-hidden')}>

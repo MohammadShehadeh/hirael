@@ -57,12 +57,11 @@ export const useActiveSection = (ids: readonly string[]) => {
   return active;
 };
 
-export const Reveal = ({
-  className,
-  delay = 0,
-  children,
-  ...props
-}: React.ComponentProps<'div'> & { delay?: number }) => {
+interface RevealProps extends React.ComponentProps<'div'> {
+  delay?: number;
+}
+
+export const Reveal = ({ className, delay = 0, children, ...props }: RevealProps) => {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const [shown, setShown] = React.useState(false);
 
@@ -103,17 +102,14 @@ export const Reveal = ({
   );
 };
 
-export const CountUp = ({
-  to,
-  suffix = '',
-  durationMs = 2000,
-  className,
-}: {
+interface CountUpProps {
   to: number;
   suffix?: string;
   durationMs?: number;
   className?: string;
-}) => {
+}
+
+export const CountUp = ({ to, suffix = '', durationMs = 2000, className }: CountUpProps) => {
   const ref = React.useRef<HTMLSpanElement | null>(null);
   const [value, setValue] = React.useState(0);
 
@@ -161,19 +157,17 @@ export const CountUp = ({
   );
 };
 
-export const SectionHeader = ({
-  pretitle,
-  title,
-  lang,
-  tone = 'surface',
-  className,
-}: {
+type SectionHeaderTone = 'surface' | 'panel';
+
+interface SectionHeaderProps {
   pretitle: string;
   title: React.ReactNode;
   lang: Lang;
-  tone?: 'surface' | 'panel';
+  tone?: SectionHeaderTone;
   className?: string;
-}) => {
+}
+
+export const SectionHeader = ({ pretitle, title, lang, tone = 'surface', className }: SectionHeaderProps) => {
   const onPanel = tone === 'panel';
 
   return (

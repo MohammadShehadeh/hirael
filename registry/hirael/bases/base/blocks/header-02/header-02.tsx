@@ -41,7 +41,11 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={cn('size-6 text-primary', className)}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -80,7 +84,8 @@ const Header = ({ scrollRef, shrinkAt = SHRINK_AT, className, children, ...props
   const { scrollY } = useScroll(scrollRef ? { container: scrollRef } : {});
 
   useMotionValueEvent(scrollY, 'change', (y) => {
-    setIsShrunk(y > shrinkAt);
+    const isPastShrink = y > shrinkAt;
+    if (isPastShrink !== isShrunk) setIsShrunk(isPastShrink);
   });
 
   return (
@@ -170,7 +175,7 @@ const HeaderMobile = ({ className, ...props }: React.ComponentProps<'div'>) => {
     <div
       data-slot="header-mobile"
       className={cn(
-        'mx-auto flex w-full flex-col rounded-3xl border px-3 py-2 backdrop-blur-md transition-[background-color,border-color] duration-300 lg:hidden',
+        'relative mx-auto flex w-full flex-col rounded-3xl border px-3 py-2 backdrop-blur-md transition-[background-color,border-color] duration-300 lg:hidden',
         isShrunk ? 'border-border bg-card/80' : 'border-transparent',
         className,
       )}
@@ -183,6 +188,8 @@ interface HeaderMobileMenuProps extends React.ComponentProps<'div'> {
   open: boolean;
 }
 
+// Drops in below the bar as an opaque panel: opacity and transform only, so
+// opening it never reflows the page or repaints a backdrop blur.
 const HeaderMobileMenu = ({ open, className, children, ...props }: HeaderMobileMenuProps) => {
   const { reduce } = useHeader();
   return (
@@ -190,13 +197,13 @@ const HeaderMobileMenu = ({ open, className, children, ...props }: HeaderMobileM
       {open ? (
         <motion.div
           data-slot="header-mobile-menu"
-          initial={reduce ? false : { opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={reduce ? undefined : { opacity: 0, height: 0 }}
-          transition={{ duration: 0.25, ease: EASE }}
-          className="overflow-hidden"
+          initial={reduce ? false : { opacity: 0, y: -8, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={reduce ? undefined : { opacity: 0, y: -8, scale: 0.98 }}
+          transition={{ duration: 0.2, ease: EASE }}
+          className="absolute inset-x-0 top-full mt-2 origin-top rounded-3xl border border-border bg-popover p-2 text-popover-foreground shadow-lg"
         >
-          <div className={cn('flex flex-col gap-1 px-1 pt-3 pb-2', className)} {...props}>
+          <div className={cn('flex flex-col gap-1', className)} {...props}>
             {children}
           </div>
         </motion.div>

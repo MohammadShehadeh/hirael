@@ -11,10 +11,12 @@ import { UseCasesSection } from './use-cases';
 const UsdHalo = () => {
   return (
     <div
-      className={cn(manrope.variable, inter.variable, 'flex flex-col bg-[#F5F5F5] text-black antialiased')}
-      style={{
-        fontFamily: 'var(--font-manrope), ui-sans-serif, system-ui, sans-serif',
-      }}
+      className={cn(
+        manrope.variable,
+        inter.variable,
+        'flex flex-col bg-[#F5F5F5] text-black antialiased',
+        '[font-family:var(--font-manrope),ui-sans-serif,system-ui,sans-serif]',
+      )}
     >
       <div className="relative flex h-dvh flex-col overflow-hidden">
         <Navbar />

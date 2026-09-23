@@ -15,7 +15,11 @@ export const useScrolled = (threshold = 20) => {
   return scrolled;
 };
 
-export const Logo = ({ className }: { className?: string }) => {
+interface LogoProps {
+  className?: string;
+}
+
+export const Logo = ({ className }: LogoProps) => {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden className={cn('shrink-0', className)}>
       <defs>
@@ -30,7 +34,12 @@ export const Logo = ({ className }: { className?: string }) => {
   );
 };
 
-export const BrandMark = ({ className, style }: { className?: string; style?: React.CSSProperties }) => {
+interface BrandMarkProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export const BrandMark = ({ className, style }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={cn('shrink-0', className)} style={style}>
       <defs>
@@ -46,15 +55,13 @@ export const BrandMark = ({ className, style }: { className?: string; style?: Re
   );
 };
 
-export const GradientText = ({
-  children,
-  className,
-  style,
-}: {
+interface GradientTextProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-}) => {
+}
+
+export const GradientText = ({ children, className, style }: GradientTextProps) => {
   return (
     <span data-slot="gradient-text" className={cn('nexa-grad-text', className)} style={style}>
       {children}
@@ -62,15 +69,13 @@ export const GradientText = ({
   );
 };
 
-export const ContactButton = ({
-  label = 'Contact',
-  href = '#',
-  className,
-}: {
+interface ContactButtonProps {
   label?: string;
   href?: string;
   className?: string;
-}) => {
+}
+
+export const ContactButton = ({ label = 'Contact', href = '#', className }: ContactButtonProps) => {
   return (
     <a
       href={href}

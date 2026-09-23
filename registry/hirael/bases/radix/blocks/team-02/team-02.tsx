@@ -93,7 +93,11 @@ const COMPETENCIES = [
   'Code review',
 ] as const;
 
-const Chip = ({ children }: { children: React.ReactNode }) => {
+interface ChipProps {
+  children: React.ReactNode;
+}
+
+const Chip = ({ children }: ChipProps) => {
   return (
     <span
       data-slot="team-chip"
@@ -104,7 +108,12 @@ const Chip = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const MetricCard = ({ metric, index }: { metric: Metric; index: number }) => {
+interface MetricCardProps {
+  metric: Metric;
+  index: number;
+}
+
+const MetricCard = ({ metric, index }: MetricCardProps) => {
   return (
     <div
       data-slot="team-metric"

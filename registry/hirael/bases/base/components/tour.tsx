@@ -207,6 +207,11 @@ interface TourOverlayProps {
   labels?: TourLabels;
 }
 
+interface CardPosition {
+  top: number;
+  left: number;
+}
+
 const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, labels }: TourOverlayProps) => {
   const current = steps[step];
   const side = current?.side ?? 'bottom';
@@ -218,7 +223,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     w: window.innerWidth,
     h: window.innerHeight,
   }));
-  const [pos, setPos] = React.useState<{ top: number; left: number } | null>(null);
+  const [pos, setPos] = React.useState<CardPosition | null>(null);
   const titleId = React.useId();
   const descriptionId = React.useId();
 

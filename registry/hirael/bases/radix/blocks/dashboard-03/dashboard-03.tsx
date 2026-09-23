@@ -194,7 +194,11 @@ const signedUsd = (amount: number) => {
   return `${sign}${usdCents.format(Math.abs(amount))}`;
 };
 
-const Donut = ({ plans }: { plans: readonly PlanSlice[] }) => {
+interface DonutProps {
+  plans: readonly PlanSlice[];
+}
+
+const Donut = ({ plans }: DonutProps) => {
   return (
     <svg viewBox="0 0 42 42" aria-hidden className="size-44">
       <circle cx="21" cy="21" r="15.9155" fill="none" strokeWidth="4" className="stroke-accent" />
@@ -286,10 +290,7 @@ const Dashboard03 = () => {
           </div>
         </div>
 
-        <div
-          style={{ animationDelay: '80ms' }}
-          className={cn(ENTER, 'mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
-        >
+        <div className={cn(ENTER, 'delay-80 mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
           <div className="flex flex-col gap-6">
             <Card data-slot="dashboard-plan-mix">
               <CardHeader>

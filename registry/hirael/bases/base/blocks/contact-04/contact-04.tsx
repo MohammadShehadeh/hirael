@@ -220,11 +220,13 @@ const ReplyTime = () => {
   );
 };
 
+type SendStatus = 'idle' | 'sending' | 'sent';
+
 const Contact04 = () => {
   const [form, setForm] = React.useState<FormState>(INITIAL);
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [submitted, setSubmitted] = React.useState(false);
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<SendStatus>('idle');
   const [ticket, setTicket] = React.useState(FIRST_TICKET);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 

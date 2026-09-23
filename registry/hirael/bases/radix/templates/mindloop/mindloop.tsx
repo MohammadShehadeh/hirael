@@ -20,10 +20,8 @@ const Mindloop = () => {
         inter.variable,
         instrumentSerif.variable,
         'relative min-h-svh bg-background text-foreground antialiased',
+        '[font-family:var(--font-mindloop-sans),ui-sans-serif,sans-serif]',
       )}
-      style={{
-        fontFamily: 'var(--font-mindloop-sans), ui-sans-serif, sans-serif',
-      }}
     >
       <MindloopStyles />
       <Navbar />

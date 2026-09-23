@@ -79,7 +79,11 @@ const isSame = (values: Record<PlanKey, Value>) => PLANS.every((plan) => values[
 const TOTAL_ROWS = GROUPS.reduce((sum, group) => sum + group.rows.length, 0);
 const DIFFERENT_ROWS = GROUPS.reduce((sum, group) => sum + group.rows.filter((row) => !isSame(row.values)).length, 0);
 
-const CellValue = ({ value }: { value: Value }) => {
+interface CellValueProps {
+  value: Value;
+}
+
+const CellValue = ({ value }: CellValueProps) => {
   if (typeof value === 'string') {
     return <span className="text-sm tabular-nums">{value}</span>;
   }
@@ -96,7 +100,13 @@ const CellValue = ({ value }: { value: Value }) => {
   );
 };
 
-const Collapse = ({ open, className, children }: { open: boolean; className?: string; children: React.ReactNode }) => (
+interface CollapseProps {
+  open: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Collapse = ({ open, className, children }: CollapseProps) => (
   <div
     className={cn(
       'grid ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',

@@ -235,8 +235,8 @@ const TreeItem = ({
       icon
     ) : hasChildren ? (
       <>
-        <Folder className="size-4 text-muted-foreground group-data-open:hidden" />
-        <FolderOpen className="hidden size-4 text-muted-foreground group-data-open:block" />
+        <Folder className="size-4 text-muted-foreground group-data-panel-open:hidden" />
+        <FolderOpen className="hidden size-4 text-muted-foreground group-data-panel-open:block" />
       </>
     ) : (
       <File className="size-4 text-muted-foreground" />
@@ -248,7 +248,7 @@ const TreeItem = ({
         aria-hidden
         className={cn(
           'size-3.5 shrink-0 text-muted-foreground transition-transform duration-150',
-          hasChildren ? 'group-data-open:rotate-90 rtl:group-data-closed:rotate-180' : 'invisible',
+          hasChildren ? 'group-data-panel-open:rotate-90 rtl:group-not-data-panel-open:rotate-180' : 'invisible',
         )}
       />
       {leadingIcon != null && <span className="flex shrink-0 items-center [&_svg]:size-4">{leadingIcon}</span>}

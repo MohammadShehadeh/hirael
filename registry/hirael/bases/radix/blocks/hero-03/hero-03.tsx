@@ -24,19 +24,11 @@ const Hero03 = () => {
     <section data-slot="hero" className="relative isolate overflow-hidden bg-background">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px"
-        style={{
-          background: 'linear-gradient(to right, transparent, var(--primary) 50%, transparent)',
-        }}
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-[linear-gradient(to_right,transparent,var(--primary)_50%,transparent)]"
       />
       {/* Three orbs rather than one grey one: the grid alone left the section
           reading as bare background in both themes. */}

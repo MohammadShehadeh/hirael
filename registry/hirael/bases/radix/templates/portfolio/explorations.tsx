@@ -37,7 +37,13 @@ const ITEMS = [
   },
 ];
 
-const Card = ({ image, rotate, onOpen }: { image: string; rotate: number; onOpen: () => void }) => {
+interface CardProps {
+  image: string;
+  rotate: number;
+  onOpen: () => void;
+}
+
+const Card = ({ image, rotate, onOpen }: CardProps) => {
   return (
     <button
       type="button"

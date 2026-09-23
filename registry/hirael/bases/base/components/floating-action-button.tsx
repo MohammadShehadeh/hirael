@@ -23,11 +23,12 @@ const useFab = () => {
   return ctx;
 };
 
+// Horizontal sides are physical, like `side` itself: the rtl: counterparts stop RTL from flipping the row.
 const listSideClasses: Record<FabSide, string> = {
   top: 'bottom-full left-1/2 mb-3 -translate-x-1/2 flex-col-reverse',
   bottom: 'top-full left-1/2 mt-3 -translate-x-1/2 flex-col',
-  left: 'right-full top-1/2 me-3 -translate-y-1/2 flex-row-reverse',
-  right: 'left-full top-1/2 ms-3 -translate-y-1/2 flex-row',
+  left: 'right-full top-1/2 mr-3 -translate-y-1/2 flex-row-reverse rtl:flex-row',
+  right: 'left-full top-1/2 ml-3 -translate-y-1/2 flex-row rtl:flex-row-reverse',
 };
 
 const closedOffset: Record<FabSide, { x?: number; y?: number }> = {
@@ -141,10 +142,10 @@ const FloatingActionButtonList = ({ className, ...props }: FloatingActionButtonL
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!open) return;
+    // The row is pinned to physical order in both directions, so the arrow keys stay physical too.
     const horizontal = side === 'left' || side === 'right';
-    const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-    const nextKey = horizontal ? (rtl ? 'ArrowLeft' : 'ArrowRight') : 'ArrowDown';
-    const prevKey = horizontal ? (rtl ? 'ArrowRight' : 'ArrowLeft') : 'ArrowUp';
+    const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
+    const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp';
     if (event.key !== nextKey && event.key !== prevKey) return;
     event.preventDefault();
     const items = Array.from(

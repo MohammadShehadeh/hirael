@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Check, X } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 import { GradientText } from './primitives';
 
 const FREEDOM_VIDEO = '/media/templates/nexacore/freedom.mp4';
@@ -32,19 +34,15 @@ const ControlGlyph = () => {
   );
 };
 
-const PointRow = ({ children, positive }: { children: ReactNode; positive?: boolean }) => {
+interface PointRowProps {
+  children: ReactNode;
+  positive?: boolean;
+}
+
+const PointRow = ({ children, positive }: PointRowProps) => {
   return (
-    <div
-      className="nexa-soft-shadow flex items-center gap-3 rounded-[18px] bg-white"
-      style={{ padding: 'clamp(12px, 0.97vw, 16px) clamp(14px, 1.25vw, 20px)' }}
-    >
-      <span
-        className="flex shrink-0 items-center justify-center"
-        style={{
-          width: 'clamp(16px, 1.25vw, 20px)',
-          height: 'clamp(16px, 1.25vw, 20px)',
-        }}
-      >
+    <div className="nexa-soft-shadow flex items-center gap-3 rounded-[18px] bg-white px-[clamp(14px,1.25vw,20px)] py-[clamp(12px,0.97vw,16px)]">
+      <span className="flex size-[clamp(16px,1.25vw,20px)] shrink-0 items-center justify-center">
         {positive ? (
           <Check className="size-full text-[var(--nexa-blue)]" strokeWidth={2.5} />
         ) : (
@@ -52,8 +50,10 @@ const PointRow = ({ children, positive }: { children: ReactNode; positive?: bool
         )}
       </span>
       <span
-        className={positive ? 'text-[var(--nexa-navy)]' : 'text-[var(--nexa-lavender-3)]'}
-        style={{ fontSize: 'clamp(13px, 1.15vw, 17px)' }}
+        className={cn(
+          'text-[length:clamp(13px,1.15vw,17px)]',
+          positive ? 'text-[var(--nexa-navy)]' : 'text-[var(--nexa-lavender-3)]',
+        )}
       >
         {children}
       </span>
@@ -66,57 +66,29 @@ export const Freedom = () => {
     <section
       id="method"
       data-slot="freedom"
-      className="flex flex-col items-center bg-white"
-      style={{
-        padding: 'clamp(48px, 6vw, 80px) clamp(16px, 3vw, 40px)',
-        gap: 36,
-      }}
+      className="flex flex-col items-center gap-[36px] bg-white px-[clamp(16px,3vw,40px)] py-[clamp(48px,6vw,80px)]"
     >
       <div className="flex flex-col items-center gap-9 text-center">
-        <span
-          className="inline-flex items-center gap-2 rounded-full bg-[var(--nexa-chip)] font-medium text-[var(--nexa-navy)]"
-          style={{ padding: '0.9vw 1.25vw', fontSize: 18 }}
-        >
+        <span className="inline-flex items-center gap-2 rounded-full bg-[var(--nexa-chip)] px-[1.25vw] py-[0.9vw] text-[18px] font-medium text-[var(--nexa-navy)]">
           <ControlGlyph />
           Control
         </span>
-        <h2
-          className="font-medium text-[var(--nexa-navy)]"
-          style={{ fontSize: 'clamp(32px, 4vw, 56px)', lineHeight: 1.15 }}
-        >
+        <h2 className="text-[length:clamp(32px,4vw,56px)] font-medium leading-[1.15] text-[var(--nexa-navy)]">
           Stop absorbing the chaos.
           <br />
-          <GradientText className="inline-block" style={{ paddingBottom: '0.3vw' }}>
-            Run with confidence.
-          </GradientText>
+          <GradientText className="inline-block pb-[0.3vw]">Run with confidence.</GradientText>
         </h2>
       </div>
 
-      <div
-        className="flex w-full flex-col items-center lg:grid lg:items-start"
-        style={{
-          gridTemplateColumns: '26vw 1fr 26vw',
-          columnGap: 36,
-          rowGap: 24,
-          padding: '0 clamp(0px, 2.92vw, 40px)',
-        }}
-      >
-        <div className="order-2 flex w-full flex-col lg:order-none" style={{ gap: 12 }}>
+      <div className="flex w-full grid-cols-[26vw_1fr_26vw] flex-col items-center gap-x-[36px] gap-y-[24px] px-[clamp(0px,2.92vw,40px)] lg:grid lg:items-start">
+        <div className="order-2 flex w-full flex-col gap-[12px] lg:order-none">
           {NEGATIVES.map((text) => (
             <PointRow key={text}>{text}</PointRow>
           ))}
         </div>
 
         <div className="order-first flex w-full justify-center lg:order-none">
-          <div
-            className="relative"
-            style={{
-              borderRadius: '50%',
-              overflow: 'hidden',
-              width: 'clamp(200px, 22vw, 400px)',
-              height: 'clamp(200px, 22vw, 400px)',
-            }}
-          >
+          <div className="relative size-[clamp(200px,22vw,400px)] overflow-hidden rounded-[50%]">
             <video
               src={FREEDOM_VIDEO}
               autoPlay
@@ -124,20 +96,12 @@ export const Freedom = () => {
               muted
               playsInline
               aria-hidden
-              style={{
-                width: '160%',
-                height: '160%',
-                objectFit: 'cover',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
+              className="absolute top-1/2 left-1/2 h-[160%] w-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
             />
           </div>
         </div>
 
-        <div className="order-3 flex w-full flex-col lg:order-none" style={{ gap: 12 }}>
+        <div className="order-3 flex w-full flex-col gap-[12px] lg:order-none">
           {POSITIVES.map((text) => (
             <PointRow key={text} positive>
               {text}

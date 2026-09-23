@@ -33,7 +33,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Customers = ({ lang }: { lang: Lang }) => {
+interface CustomersProps {
+  lang: Lang;
+}
+
+export const Customers = ({ lang }: CustomersProps) => {
   const c = COPY[lang];
   return (
     <Band id="customers" index="06" label={c.label} note={c.note} lang={lang}>

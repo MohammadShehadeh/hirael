@@ -49,8 +49,12 @@ const entriesOf = (value: unknown, kind: JsonKind): [string, unknown][] => {
   return [];
 };
 
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
+
+// Keys that aren't identifiers get bracket-quoted so "a.b" and nested a -> b don't share a path.
 const childPath = (path: string, key: string, parentKind: JsonKind) => {
-  return parentKind === 'array' ? `${path}[${key}]` : `${path}.${key}`;
+  if (parentKind === 'array') return `${path}[${key}]`;
+  return IDENTIFIER.test(key) ? `${path}.${key}` : `${path}[${JSON.stringify(key)}]`;
 };
 
 const collectPaths = (value: unknown, path = '$'): string[] => {
@@ -90,12 +94,8 @@ const useJsonViewer = () => {
 };
 
 interface JsonViewerNodeCtx {
-  path: string;
-  depth: number;
-  kind: JsonKind;
   expandable: boolean;
   expanded: boolean;
-  count: number;
 }
 
 const JsonViewerNodeContext = React.createContext<JsonViewerNodeCtx | null>(null);
@@ -258,23 +258,14 @@ const JsonViewerNode = ({
 }: JsonViewerNodeProps) => {
   const { isExpanded, toggle, focusedPath, setFocusedPath, treeRef } = useJsonViewer();
   const kind = kindOf(value);
-  const expandable = isExpandable(kind);
+  // Compared inline rather than via isExpandable() so the compiler sees a primitive memo dependency.
+  const expandable = kind === 'object' || kind === 'array';
   const entries = expandable ? entriesOf(value, kind) : [];
   const expanded = expandable && isExpanded(path, depth);
   const open = kind === 'array' ? '[' : '{';
   const close = kind === 'array' ? ']' : '}';
 
-  const nodeCtx = React.useMemo<JsonViewerNodeCtx>(
-    () => ({
-      path,
-      depth,
-      kind,
-      expandable,
-      expanded,
-      count: entries.length,
-    }),
-    [path, depth, kind, expandable, expanded, entries.length],
-  );
+  const nodeCtx = React.useMemo<JsonViewerNodeCtx>(() => ({ expandable, expanded }), [expandable, expanded]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const row = e.currentTarget;
@@ -456,7 +447,8 @@ const JsonViewerValue = ({ value, className, ...props }: JsonViewerValueProps) =
       text = value as string;
       break;
     case 'date':
-      text = (value as Date).toISOString();
+      // toISOString throws a RangeError on an invalid date.
+      text = Number.isNaN((value as Date).getTime()) ? 'Invalid Date' : (value as Date).toISOString();
       break;
     case 'number':
       text = Object.is(value, -0) ? '-0' : String(value);

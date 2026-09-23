@@ -49,7 +49,6 @@ const AnimatedNumber = ({
 }: AnimatedNumberProps) => {
   const [display, setDisplay] = React.useState(startValue);
   const displayRef = React.useRef(startValue);
-  const frameRef = React.useRef<number | undefined>(undefined);
 
   const formatter = React.useMemo(
     () =>
@@ -73,32 +72,29 @@ const AnimatedNumber = ({
     const from = displayRef.current;
     const start = performance.now();
 
+    let frame: number;
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
       const next = t < 1 ? from + (value - from) * easeOutCubic(t) : value;
       displayRef.current = next;
       setDisplay(next);
-      if (t < 1) frameRef.current = requestAnimationFrame(tick);
+      if (t < 1) frame = requestAnimationFrame(tick);
     };
 
-    frameRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current);
-    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [value, duration, animated]);
 
   const formatted = formatter.format(animated ? display : value);
 
   return (
-    <span
-      data-slot="animated-number"
-      className={cn('tabular-nums', className)}
-      aria-label={`${prefix ?? ''}${formatter.format(value)}${suffix ?? ''}`}
-      {...props}
-    >
-      {prefix}
-      <span aria-hidden>{formatted}</span>
-      {suffix}
+    <span data-slot="animated-number" className={cn('tabular-nums', className)} {...props}>
+      <span className="sr-only">{`${prefix ?? ''}${formatter.format(value)}${suffix ?? ''}`}</span>
+      <span aria-hidden>
+        {prefix}
+        {formatted}
+        {suffix}
+      </span>
     </span>
   );
 };

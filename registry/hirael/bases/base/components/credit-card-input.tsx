@@ -163,6 +163,8 @@ export interface CreditCardChange extends CreditCardValue {
   errors: CreditCardField[];
 }
 
+type CreditCardInputVariant = 'row' | 'stack';
+
 interface CreditCardInputContextValue {
   id: string;
   value: CreditCardValue;
@@ -174,7 +176,7 @@ interface CreditCardInputContextValue {
   setField: (field: CreditCardField, next: string) => void;
   focusField: (field: CreditCardField) => void;
   register: (field: CreditCardField, el: HTMLInputElement | null) => void;
-  variant: 'row' | 'stack';
+  variant: CreditCardInputVariant;
   disabled?: boolean;
 }
 
@@ -196,7 +198,7 @@ export interface CreditCardInputProps extends Omit<React.ComponentProps<'div'>, 
   defaultValue?: CreditCardValue;
   onValueChange?: (value: CreditCardChange) => void;
   /** `row` is one bordered strip; `stack` leaves each field on its own. */
-  variant?: 'row' | 'stack';
+  variant?: CreditCardInputVariant;
   disabled?: boolean;
 }
 
@@ -255,18 +257,16 @@ const CreditCardInput = ({
   const setField = React.useCallback(
     (field: CreditCardField, raw: string) => {
       const next: CreditCardValue = { ...value };
-      if (field === 'number') {
-        const nextBrand = detectCardBrand(raw);
-        const max = Math.max(...getCardBrandSpec(nextBrand).lengths);
-        next.number = digitsOnly(raw).slice(0, max);
-      } else if (field === 'expiry') {
-        next.expiry = formatCardExpiry(raw);
-      } else {
-        next.cvc = digitsOnly(raw).slice(0, 4);
-      }
-      if (valueProp === undefined) setInternal(next);
+      if (field === 'number') next.number = digitsOnly(raw);
+      else if (field === 'expiry') next.expiry = formatCardExpiry(raw);
+      else next.cvc = digitsOnly(raw);
+      // Brand patterns match on the prefix only, so detecting before truncation is safe.
       const nextBrand = detectCardBrand(next.number);
       const nextSpec = getCardBrandSpec(nextBrand);
+      next.number = next.number.slice(0, Math.max(...nextSpec.lengths));
+      // A brand switch (Amex 4 -> Visa 3) shortens the CVC in state, not just on screen.
+      next.cvc = next.cvc.slice(0, nextSpec.cvcLength);
+      if (valueProp === undefined) setInternal(next);
       const nextErrors = computeErrors(next, nextSpec, new Date());
       onValueChange?.({
         ...next,
@@ -452,7 +452,7 @@ const CreditCardInputCvc = ({
       dir="ltr"
       placeholder={placeholder}
       maxLength={ctx.spec.cvcLength}
-      value={ctx.value.cvc.slice(0, ctx.spec.cvcLength)}
+      value={ctx.value.cvc}
       disabled={ctx.disabled}
       aria-invalid={invalid || undefined}
       aria-label="Security code"

@@ -54,7 +54,8 @@ export const getColumnPinningStyle = <TData extends RowData>({
     insetInlineEnd: isPinned === 'end' ? `${column.getAfter('end')}px` : undefined,
     opacity: isPinned ? 0.97 : 1,
     position: isPinned ? 'sticky' : 'relative',
-    background: 'var(--background)',
+    // Only pinned cells need an opaque fill; on others it would hide row hover/selected tints.
+    background: isPinned ? 'var(--background)' : undefined,
     width: column.getSize(),
     zIndex: isPinned ? 1 : undefined,
   };

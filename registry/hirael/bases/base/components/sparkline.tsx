@@ -406,11 +406,11 @@ const SparklineTooltip = ({ format, className, children, ...props }: SparklineTo
         <div
           data-slot="sparkline-tooltip"
           className={cn(
-            'absolute top-0 z-10 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[11px] leading-tight text-card-foreground shadow-sm',
+            'absolute top-0 z-10 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[11px] leading-tight text-card-foreground shadow-sm -mt-1',
             align === 'start' ? 'translate-x-0' : align === 'end' ? '-translate-x-full' : '-translate-x-1/2',
             className,
           )}
-          style={{ left: px, marginTop: -4 }}
+          style={{ left: px }}
           {...props}
         >
           {render(value, activeIndex)}

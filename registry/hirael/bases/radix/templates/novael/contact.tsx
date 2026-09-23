@@ -43,7 +43,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Contact = ({ lang }: { lang: Lang }) => {
+interface ContactProps {
+  lang: Lang;
+}
+
+export const Contact = ({ lang }: ContactProps) => {
   const c = COPY[lang];
   const year = new Date().getFullYear();
 

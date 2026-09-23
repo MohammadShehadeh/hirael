@@ -41,14 +41,7 @@ const Hero02 = () => {
       <div
         aria-hidden
         data-slot="hero-wash"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: [
-            'radial-gradient(55% 55% at 50% 8%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 64%)',
-            'radial-gradient(60% 60% at 10% 92%, color-mix(in oklch, var(--accent-cool) 28%, transparent), transparent 68%)',
-            'radial-gradient(60% 60% at 90% 80%, color-mix(in oklch, var(--chart-2) 20%, transparent), transparent 68%)',
-          ].join(', '),
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_50%_8%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_64%),radial-gradient(60%_60%_at_10%_92%,color-mix(in_oklch,var(--accent-cool)_28%,transparent),transparent_68%),radial-gradient(60%_60%_at_90%_80%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%)]"
       />
       <div
         aria-hidden

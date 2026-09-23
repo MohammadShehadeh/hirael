@@ -11,10 +11,11 @@ import { AkorStyles } from './styles';
 const Akor = () => {
   return (
     <div
-      className={cn('akor', sora.variable, 'relative min-h-svh bg-background text-foreground antialiased')}
-      style={{
-        fontFamily: 'var(--font-akor-sans), ui-sans-serif, sans-serif',
-      }}
+      className={cn(
+        'akor',
+        sora.variable,
+        'relative min-h-svh bg-background text-foreground antialiased [font-family:var(--font-akor-sans),ui-sans-serif,sans-serif]',
+      )}
     >
       <AkorStyles />
       <Navbar />

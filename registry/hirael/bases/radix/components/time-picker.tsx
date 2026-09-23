@@ -44,11 +44,6 @@ const pad2 = (n: number) => {
   return n.toString().padStart(2, '0');
 };
 
-const clampStep = (value: number, step: number, max: number) => {
-  const snapped = Math.round(value / step) * step;
-  return Math.max(0, Math.min(max, snapped));
-};
-
 export interface TimePickerProps {
   value?: TimeValue | null;
   defaultValue?: TimeValue;
@@ -164,7 +159,6 @@ const TimePickerTrigger = ({
         type="button"
         disabled={ctx.disabled}
         data-slot="time-picker-trigger"
-        data-state={ctx.open ? 'open' : 'closed'}
         className={cn(
           'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
@@ -183,17 +177,14 @@ const TimePickerTrigger = ({
   );
 };
 
-const ScrollColumn = ({
-  values,
-  selected,
-  onSelect,
-  ariaLabel,
-}: {
+interface ScrollColumnProps {
   values: number[];
   selected?: number;
   onSelect: (n: number) => void;
   ariaLabel: string;
-}) => {
+}
+
+const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnProps) => {
   const listRef = React.useRef<HTMLDivElement>(null);
 
   const displayValues = React.useMemo(() => {
@@ -295,13 +286,13 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
   const minuteValues = React.useMemo(() => {
     const step = Math.max(1, ctx.minuteStep);
     const count = Math.ceil(60 / step);
-    return Array.from({ length: count }, (_, i) => clampStep(i * step, step, 59));
+    return Array.from({ length: count }, (_, i) => i * step);
   }, [ctx.minuteStep]);
 
   const secondValues = React.useMemo(() => {
     const step = Math.max(1, ctx.secondStep);
     const count = Math.ceil(60 / step);
-    return Array.from({ length: count }, (_, i) => clampStep(i * step, step, 59));
+    return Array.from({ length: count }, (_, i) => i * step);
   }, [ctx.secondStep]);
 
   const displayHour = ctx.value

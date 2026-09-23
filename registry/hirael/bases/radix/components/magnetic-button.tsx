@@ -17,19 +17,29 @@ interface MagneticButtonProps extends HTMLMotionProps<'button'> {
   asChild?: boolean;
 }
 
-const MagneticButton = ({ className, strength = 0.4, asChild = false, ...props }: MagneticButtonProps) => {
+const MagneticButton = ({
+  className,
+  strength = 0.4,
+  asChild = false,
+  onPointerMove,
+  onPointerLeave,
+  ...props
+}: MagneticButtonProps) => {
   const reduced = useReducedMotion();
   const x = useSpring(0, SPRING);
   const y = useSpring(0, SPRING);
 
-  const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
+  // Consumer handlers run alongside the magnet instead of replacing it.
+  const handlePointerMove = (event: React.PointerEvent<HTMLButtonElement>) => {
+    onPointerMove?.(event);
     if (reduced) return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set((event.clientX - (rect.left + rect.width / 2)) * strength);
     y.set((event.clientY - (rect.top + rect.height / 2)) * strength);
   };
 
-  const reset = () => {
+  const handlePointerLeave = (event: React.PointerEvent<HTMLButtonElement>) => {
+    onPointerLeave?.(event);
     x.set(0);
     y.set(0);
   };
@@ -39,8 +49,8 @@ const MagneticButton = ({ className, strength = 0.4, asChild = false, ...props }
   return (
     <Comp
       data-slot="magnetic-button"
-      onPointerMove={onPointerMove}
-      onPointerLeave={reset}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       style={{ x, y }}
       className={cn(
         !asChild &&

@@ -23,7 +23,12 @@ import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/
 
 const PREVIEW_ICON_BUTTON = 'size-7';
 
-export const previewSrc = (embedHref: string, options: { theme: ThemeMode | null; isRtl: boolean }) => {
+interface PreviewSrcOptions {
+  theme: ThemeMode | null;
+  isRtl: boolean;
+}
+
+export const previewSrc = (embedHref: string, options: PreviewSrcOptions) => {
   const params = new URLSearchParams({ fit: '1' });
   if (options.theme) params.set('theme', options.theme);
   if (options.isRtl) params.set('dir', 'rtl');

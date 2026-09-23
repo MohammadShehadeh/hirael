@@ -3,12 +3,9 @@ import { CaseStudies } from './case-studies';
 import { Footer } from './footer';
 import { Hero } from './hero';
 
-const SYSTEM_FONT =
-  'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-
 const AgencyLanding = () => {
   return (
-    <div className="bg-white text-gray-900 antialiased" style={{ fontFamily: SYSTEM_FONT }}>
+    <div className="bg-white text-gray-900 antialiased [font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,'Helvetica_Neue',Arial,'Noto_Sans',sans-serif,'Apple_Color_Emoji','Segoe_UI_Emoji','Segoe_UI_Symbol','Noto_Color_Emoji']">
       <Hero />
       <About />
       <CaseStudies />

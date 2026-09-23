@@ -23,7 +23,12 @@ const SERVICES = [
   },
 ];
 
-const ServiceVideo = ({ src, posterSrc }: { src: string; posterSrc?: string }) => {
+interface ServiceVideoProps {
+  src: string;
+  posterSrc?: string;
+}
+
+const ServiceVideo = ({ src, posterSrc }: ServiceVideoProps) => {
   const [failed, setFailed] = React.useState(false);
 
   if (failed) {
@@ -53,7 +58,12 @@ const ServiceVideo = ({ src, posterSrc }: { src: string; posterSrc?: string }) =
   );
 };
 
-export const Services = ({ videoSrcs, posterSrcs }: { videoSrcs?: string[]; posterSrcs?: string[] }) => {
+interface ServicesProps {
+  videoSrcs?: string[];
+  posterSrcs?: string[];
+}
+
+export const Services = ({ videoSrcs, posterSrcs }: ServicesProps) => {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-28 md:py-40">
       <div aria-hidden className="glow-center absolute inset-0" />

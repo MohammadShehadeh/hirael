@@ -8,6 +8,7 @@ import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-re
 
 export interface MentionItem {
   id: string;
+  /** Inserted after the trigger; keep it free of spaces so the token stays one mention. */
   label: string;
   description?: string;
 }
@@ -51,7 +52,7 @@ const triggerCharClass = (triggers: string[]) => {
 
 export const getMentions = (value: string, trigger: string | string[] = '@'): string[] => {
   const triggers = Array.isArray(trigger) ? trigger : [trigger];
-  const re = new RegExp(`(?:^|\\s)[${triggerCharClass(triggers)}]([\\w.\\-]+)`, 'g');
+  const re = new RegExp(`(?:^|\\s)[${triggerCharClass(triggers)}]([\\p{L}\\p{N}_.\\-]+)`, 'gu');
   const out: string[] = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(value)) !== null) out.push(m[1]);
@@ -106,7 +107,7 @@ interface Segment {
 }
 
 const segmentValue = (value: string, triggers: string[], known: Set<string>): Segment[] => {
-  const re = new RegExp(`(^|\\s)([${triggerCharClass(triggers)}][\\w.\\-]+)`, 'g');
+  const re = new RegExp(`(^|\\s)([${triggerCharClass(triggers)}][\\p{L}\\p{N}_.\\-]+)`, 'gu');
   const segments: Segment[] = [];
   let last = 0;
   let m: RegExpExecArray | null;
@@ -124,6 +125,11 @@ const segmentValue = (value: string, triggers: string[], known: Set<string>): Se
 
 const metrics = 'min-h-16 w-full rounded-sm border px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words';
 
+interface MentionPosition {
+  top: number;
+  left: number;
+}
+
 interface MentionInputCtx {
   id: string;
   listboxId: string;
@@ -132,7 +138,7 @@ interface MentionInputCtx {
   filteredItems: MentionItem[];
   activeIndex: number;
   activeTrigger: string | undefined;
-  pos: { top: number; left: number };
+  pos: MentionPosition;
   value: string;
   segments: Segment[];
   disabled?: boolean;
@@ -216,7 +222,7 @@ const MentionInput = ({
   const [asyncItems, setAsyncItems] = React.useState<MentionItem[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [selectedLabels, setSelectedLabels] = React.useState<string[]>([]);
-  const [pos, setPos] = React.useState<{ top: number; left: number }>({
+  const [pos, setPos] = React.useState<MentionPosition>({
     top: 0,
     left: 0,
   });

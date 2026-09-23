@@ -237,7 +237,11 @@ const fieldMatches = (field: Field, query: string) => {
   return haystack.includes(query);
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <span
       role="img"
@@ -253,19 +257,15 @@ const BrandMark = ({ className }: { className?: string }) => {
 
 type SaveState = 'idle' | 'saving' | 'saved';
 
-const FieldRow = ({
-  field,
-  values,
-  toggles,
-  onCommit,
-  onToggle,
-}: {
+interface FieldRowProps {
   field: Field;
   values: Record<string, string>;
   toggles: Record<string, boolean>;
   onCommit: (id: string, value: string) => Promise<void>;
   onToggle: (id: string, next: boolean) => void;
-}) => {
+}
+
+const FieldRow = ({ field, values, toggles, onCommit, onToggle }: FieldRowProps) => {
   const hintId = field.hint ? `${field.id}-hint` : undefined;
 
   return (

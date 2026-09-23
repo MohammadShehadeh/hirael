@@ -31,7 +31,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const About = ({ lang }: { lang: Lang }) => {
+interface AboutProps {
+  lang: Lang;
+}
+
+export const About = ({ lang }: AboutProps) => {
   const c = COPY[lang];
   return (
     <Band id="about" index="03" label={c.label} note={c.note} lang={lang}>

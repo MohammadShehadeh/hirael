@@ -80,6 +80,35 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
 
 const EMPTY_RANGE: DateRange = {};
 
+const getIsDayDisabled = (d: Date, min?: Date, max?: Date, disabledDate?: (d: Date) => boolean): boolean => {
+  if (min && d.getTime() < startOfDay(min).getTime()) return true;
+  if (max && d.getTime() > startOfDay(max).getTime()) return true;
+  return disabledDate ? disabledDate(d) : false;
+};
+
+// Today differs between the static-export build and the visitor, so read it on the client only.
+const subscribeToday = () => () => {};
+const getTodaySnapshot = () => startOfDay(new Date()).getTime();
+const getServerTodaySnapshot = () => null;
+
+// Disabled days can't take focus, so walk past them in the direction of travel, stopping at min/max.
+const findFocusableDay = (
+  from: Date,
+  dir: 1 | -1,
+  isDisabled: (d: Date) => boolean,
+  min?: Date,
+  max?: Date,
+): Date | null => {
+  let d = from;
+  for (let i = 0; i < 366; i++) {
+    if (min && d.getTime() < startOfDay(min).getTime()) return null;
+    if (max && d.getTime() > startOfDay(max).getTime()) return null;
+    if (!isDisabled(d)) return d;
+    d = addDays(d, dir);
+  }
+  return null;
+};
+
 export interface DateRangeCalendarProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: DateRange;
   defaultValue?: DateRange;
@@ -108,10 +137,11 @@ const DateRangeCalendar = ({
 }: DateRangeCalendarProps) => {
   const [internal, setInternal] = React.useState<DateRange | undefined>(defaultValue);
   const range = valueProp !== undefined ? valueProp : internal;
-  const today = startOfDay(new Date());
+  const todayTime = React.useSyncExternalStore(subscribeToday, getTodaySnapshot, getServerTodaySnapshot);
+  const today = todayTime === null ? null : new Date(todayTime);
 
   const [viewMonth, setViewMonth] = React.useState<Date>(() => {
-    const anchor = range?.from ?? today;
+    const anchor = range?.from ?? new Date();
     return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
   });
   const [hovered, setHovered] = React.useState<Date | null>(null);
@@ -127,11 +157,7 @@ const DateRangeCalendar = ({
   );
 
   const isDayDisabled = React.useCallback(
-    (d: Date) => {
-      if (min && d.getTime() < startOfDay(min).getTime()) return true;
-      if (max && d.getTime() > startOfDay(max).getTime()) return true;
-      return disabledDate ? disabledDate(d) : false;
-    },
+    (d: Date) => getIsDayDisabled(d, min, max, disabledDate),
     [min, max, disabledDate],
   );
 
@@ -197,7 +223,9 @@ const DateRangeCalendar = ({
     });
     if (!next) return;
     e.preventDefault();
-    focusDay(clampDate(next, min, max));
+    const target = clampDate(next, min, max);
+    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDayDisabled, min, max);
+    if (focusable) focusDay(focusable);
   };
 
   const monthFmt = new Intl.DateTimeFormat(locale, {
@@ -210,8 +238,12 @@ const DateRangeCalendar = ({
     weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
   );
 
-  const tabbable =
-    range?.from && isMonthVisible(range.from) ? startOfDay(range.from) : isMonthVisible(today) ? today : viewMonth;
+  const isTabbable = (d: Date | null | undefined): d is Date => !!d && isMonthVisible(d) && !isDayDisabled(d);
+  const tabbable = isTabbable(fromDay)
+    ? fromDay
+    : isTabbable(today)
+      ? today
+      : (months.flatMap((m) => monthCells(m, weekStartsOn)).find((c): c is Date => isTabbable(c)) ?? viewMonth);
 
   return (
     <div ref={composedRef} data-slot="date-range-calendar" className={cn('flex gap-4', className)} {...props}>
@@ -415,17 +447,19 @@ const DateRangePicker = ({
   );
 };
 
+interface DateRangePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+  placeholder?: string;
+  locale?: string;
+  children?: React.ReactNode;
+}
+
 const DateRangePickerTrigger = ({
   placeholder = 'Pick a date range',
   locale,
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
-  placeholder?: string;
-  locale?: string;
-  children?: React.ReactNode;
-}) => {
+}: DateRangePickerTriggerProps) => {
   const ctx = useDateRangePicker();
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
   const label = ctx.range?.from
@@ -458,6 +492,15 @@ const DateRangePickerTrigger = ({
   );
 };
 
+interface DateRangePickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  presets?: DateRangePreset[];
+  showPresets?: boolean;
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  numberOfMonths?: 1 | 2;
+  disabledDate?: (d: Date) => boolean;
+}
+
 const DateRangePickerContent = ({
   presets = DEFAULT_PRESETS,
   showPresets = true,
@@ -468,21 +511,10 @@ const DateRangePickerContent = ({
   align = 'start',
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent> & {
-  presets?: DateRangePreset[];
-  showPresets?: boolean;
-  locale?: string;
-  weekStartsOn?: 0 | 1;
-  numberOfMonths?: 1 | 2;
-  disabledDate?: (d: Date) => boolean;
-}) => {
+}: DateRangePickerContentProps) => {
   const ctx = useDateRangePicker();
 
-  const isDayDisabled = (d: Date) => {
-    if (ctx.min && d.getTime() < startOfDay(ctx.min).getTime()) return true;
-    if (ctx.max && d.getTime() > startOfDay(ctx.max).getTime()) return true;
-    return disabledDate ? disabledDate(d) : false;
-  };
+  const isDayDisabled = (d: Date) => getIsDayDisabled(d, ctx.min, ctx.max, disabledDate);
 
   const resolvePreset = (preset: DateRangePreset): DateRange | null => {
     const raw = preset.range();

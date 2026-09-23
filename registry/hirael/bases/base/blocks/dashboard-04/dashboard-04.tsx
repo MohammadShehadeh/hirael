@@ -215,7 +215,12 @@ const linePath = (values: readonly number[], max: number, h: number) => {
     .join(' ');
 };
 
-const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
+interface DeltaChipProps {
+  delta: Delta;
+  label: string;
+}
+
+const DeltaChip = ({ delta, label }: DeltaChipProps) => {
   const { value, unit, goodWhen } = delta;
   const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
   const direction = value > 0 ? 'up' : value < 0 ? 'down' : 'unchanged';
@@ -244,19 +249,15 @@ const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
   );
 };
 
-const PanelCard = ({
-  icon: Icon,
-  label,
-  action,
-  children,
-  className,
-}: {
+interface PanelCardProps {
   icon: LucideIcon;
   label: string;
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
-}) => {
+}
+
+const PanelCard = ({ icon: Icon, label, action, children, className }: PanelCardProps) => {
   return (
     <Card data-slot="dashboard-panel" size="sm" className={className}>
       <CardHeader>
@@ -277,7 +278,11 @@ const PanelCard = ({
   );
 };
 
-const Sparkline = ({ points }: { points: readonly number[] }) => {
+interface SparklineProps {
+  points: readonly number[];
+}
+
+const Sparkline = ({ points }: SparklineProps) => {
   const max = Math.max(...points);
   const min = Math.min(...points);
   const span = max - min || 1;

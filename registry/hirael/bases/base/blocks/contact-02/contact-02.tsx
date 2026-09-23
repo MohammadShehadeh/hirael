@@ -45,7 +45,11 @@ const SOCIAL_LINKS = [
   { icon: LinkedinIcon, href: '#', label: 'LinkedIn' },
 ] as const;
 
-const CopyEmail = ({ email }: { email: string }) => {
+interface CopyEmailProps {
+  email: string;
+}
+
+const CopyEmail = ({ email }: CopyEmailProps) => {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 

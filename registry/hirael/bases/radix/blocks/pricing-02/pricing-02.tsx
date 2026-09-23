@@ -70,7 +70,11 @@ const GROUPS: readonly { label: string; rows: readonly Row[] }[] = [
   },
 ];
 
-const CellContent = ({ value }: { value: Cell }) => {
+interface CellContentProps {
+  value: Cell;
+}
+
+const CellContent = ({ value }: CellContentProps) => {
   if (value === true) {
     return (
       <>

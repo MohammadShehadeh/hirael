@@ -35,7 +35,12 @@ const Wordmark = () => {
   );
 };
 
-export const Navbar = ({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) => void }) => {
+interface NavbarProps {
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+}
+
+export const Navbar = ({ lang, setLang }: NavbarProps) => {
   const active = useActiveSection(SECTION_IDS);
   const [open, setOpen] = React.useState(false);
   const c = COPY[lang];

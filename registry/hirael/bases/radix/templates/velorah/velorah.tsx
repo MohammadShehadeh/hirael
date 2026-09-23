@@ -19,10 +19,8 @@ const Velorah = () => {
         inter.variable,
         instrumentSerif.variable,
         'relative min-h-svh bg-background text-foreground antialiased',
+        '[font-family:var(--font-velorah-sans),ui-sans-serif,sans-serif]',
       )}
-      style={{
-        fontFamily: 'var(--font-velorah-sans), ui-sans-serif, sans-serif',
-      }}
     >
       <VelorahStyles />
       <Hero />

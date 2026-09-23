@@ -17,13 +17,24 @@ export const useFadeUp = () => {
   });
 };
 
-export const Serif = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+interface SerifProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Serif = ({ children, className }: SerifProps) => {
   return (
     <span className={cn('font-normal italic [font-family:var(--font-mindloop-serif)]', className)}>{children}</span>
   );
 };
 
-export const Logo = ({ size = 'sm' }: { size?: 'sm' | 'lg' }) => {
+type LogoSize = 'sm' | 'lg';
+
+interface LogoProps {
+  size?: LogoSize;
+}
+
+export const Logo = ({ size = 'sm' }: LogoProps) => {
   return (
     <span
       aria-hidden
@@ -118,7 +129,12 @@ const AVATAR_TONES = [
   { from: '#a6a6a6', to: '#545454' },
 ];
 
-export const Avatar = ({ tone = 0, className }: { tone?: number; className?: string }) => {
+interface AvatarProps {
+  tone?: number;
+  className?: string;
+}
+
+export const Avatar = ({ tone = 0, className }: AvatarProps) => {
   const t = AVATAR_TONES[tone % AVATAR_TONES.length];
   const id = `mindloop-avatar-${tone}`;
   return (
@@ -138,7 +154,11 @@ export const Avatar = ({ tone = 0, className }: { tone?: number; className?: str
   );
 };
 
-export const AvatarRow = ({ className }: { className?: string }) => {
+interface AvatarRowProps {
+  className?: string;
+}
+
+export const AvatarRow = ({ className }: AvatarRowProps) => {
   return (
     <div className={cn('flex -space-x-2', className)}>
       <Avatar tone={0} />

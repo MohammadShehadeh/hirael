@@ -30,7 +30,11 @@ const useDock = () => {
   return ctx;
 };
 
-const DockItemContext = React.createContext<{ hovered: boolean }>({
+interface DockItemContextValue {
+  hovered: boolean;
+}
+
+const DockItemContext = React.createContext<DockItemContextValue>({
   hovered: false,
 });
 
@@ -43,7 +47,15 @@ interface DockProps extends React.ComponentProps<'div'> {
   distance?: number;
 }
 
-const Dock = ({ baseSize = 44, magnification = 72, distance = 140, className, children, ...props }: DockProps) => {
+const Dock = ({
+  baseSize = 44,
+  magnification = 72,
+  distance = 140,
+  className,
+  children,
+  onKeyDown,
+  ...props
+}: DockProps) => {
   const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
   const value = React.useMemo<DockContextValue>(
     () => ({ mouseX, baseSize, magnification, distance }),
@@ -59,6 +71,8 @@ const Dock = ({ baseSize = 44, magnification = 72, distance = 140, className, ch
         }}
         onPointerLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
         onKeyDown={(event) => {
+          onKeyDown?.(event);
+          if (event.defaultPrevented) return;
           if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
           const items = Array.from(
             event.currentTarget.querySelectorAll<HTMLElement>('[data-slot="dock-item"]:not(:disabled)'),

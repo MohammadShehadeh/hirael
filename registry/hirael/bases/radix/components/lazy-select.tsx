@@ -367,11 +367,21 @@ export type LazyPage<T> = {
   hasMore: boolean;
 };
 
+interface LazySelectLoaderParams {
+  query: string;
+  page: number;
+}
+
+interface UseLazySelectOptionsOptions {
+  debounce?: number;
+  enabled?: boolean;
+}
+
 /** Fetches nothing until `enabled`; wire it to the open state to load on open. */
 export const useLazySelectOptions = <T,>(
-  loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
+  loader: (params: LazySelectLoaderParams) => Promise<LazyPage<T>>,
   map: (item: T) => LazySelectOption,
-  { debounce = 250, enabled = true }: { debounce?: number; enabled?: boolean } = {},
+  { debounce = 250, enabled = true }: UseLazySelectOptionsOptions = {},
 ) => {
   const [query, setQuery] = React.useState('');
   const [options, setOptions] = React.useState<LazySelectOption[]>([]);

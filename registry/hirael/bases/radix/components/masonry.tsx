@@ -61,7 +61,6 @@ const Masonry = ({
   const itemRefsRef = React.useRef(new Map<number, (node: HTMLDivElement | null) => void>());
   const observerRef = React.useRef<ResizeObserver | null>(null);
   const rafRef = React.useRef(0);
-  const scheduleRef = React.useRef<() => void>(() => {});
 
   React.useEffect(() => {
     const resolve = (width: number) => {
@@ -100,7 +99,6 @@ const Masonry = ({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(compute);
     };
-    scheduleRef.current = schedule;
 
     const observer = new ResizeObserver((entries) => {
       let changed = false;

@@ -340,9 +340,11 @@ interface ExampleBlockProps {
 const EXAMPLE_MIN_HEIGHT = 360;
 const EXAMPLE_MAX_HEIGHT = 1200;
 
+type ExampleView = 'preview' | 'code';
+
 // Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
 const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
-  const [view, setView] = React.useState<'preview' | 'code'>('preview');
+  const [view, setView] = React.useState<ExampleView>('preview');
   const [isRtl, setIsRtl] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
   const previewTheme = usePreviewTheme();
@@ -359,7 +361,7 @@ const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
             role="tab"
             ariaLabel="Example view"
             value={view}
-            onValueChange={(v) => setView(v as 'preview' | 'code')}
+            onValueChange={(v) => setView(v as ExampleView)}
             className="rounded-md border border-border/70 bg-card/30 p-0.5"
             itemClassName="rounded-sm px-2.5 py-1 text-xs uppercase"
             items={[

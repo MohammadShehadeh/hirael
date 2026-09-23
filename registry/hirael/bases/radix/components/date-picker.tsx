@@ -8,6 +8,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import {
+  addDays,
   clampDate,
   gridKeyToDate,
   monthCells,
@@ -15,6 +16,29 @@ import {
   sameDay,
   startOfDay,
 } from '@/registry/hirael/bases/radix/components/calendar-utils';
+
+// Today differs between the static-export build and the visitor, so read it on the client only.
+const subscribeToday = () => () => {};
+const getTodaySnapshot = () => startOfDay(new Date()).getTime();
+const getServerTodaySnapshot = () => null;
+
+// Disabled days can't take focus, so walk past them in the direction of travel, stopping at min/max.
+const findFocusableDay = (
+  from: Date,
+  dir: 1 | -1,
+  isDisabled: (d: Date) => boolean,
+  min?: Date,
+  max?: Date,
+): Date | null => {
+  let d = from;
+  for (let i = 0; i < 366; i++) {
+    if (min && d.getTime() < startOfDay(min).getTime()) return null;
+    if (max && d.getTime() > startOfDay(max).getTime()) return null;
+    if (!isDisabled(d)) return d;
+    d = addDays(d, dir);
+  }
+  return null;
+};
 
 export interface DateCalendarProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: Date | null;
@@ -48,10 +72,11 @@ const DateCalendar = ({
 }: DateCalendarProps) => {
   const [internal, setInternal] = React.useState<Date | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internal;
-  const today = startOfDay(new Date());
+  const todayTime = React.useSyncExternalStore(subscribeToday, getTodaySnapshot, getServerTodaySnapshot);
+  const today = todayTime === null ? null : new Date(todayTime);
 
   const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
-    const anchor = monthProp ?? defaultMonth ?? value ?? today;
+    const anchor = monthProp ?? defaultMonth ?? value ?? new Date();
     return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
   });
   const viewMonth =
@@ -121,7 +146,9 @@ const DateCalendar = ({
     });
     if (!next) return;
     e.preventDefault();
-    focusDay(clampDate(next, min, max));
+    const target = clampDate(next, min, max);
+    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDayDisabled, min, max);
+    if (focusable) focusDay(focusable);
   };
 
   const monthFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }), [locale]);
@@ -137,7 +164,12 @@ const DateCalendar = ({
     weeks.push(cells.slice(i, i + 7));
   }
 
-  const tabbable = selected && isMonthVisible(selected) ? selected : isMonthVisible(today) ? today : viewMonth;
+  const isTabbable = (d: Date | null): d is Date => !!d && isMonthVisible(d) && !isDayDisabled(d);
+  const tabbable = isTabbable(selected)
+    ? selected
+    : isTabbable(today)
+      ? today
+      : (cells.find((c): c is Date => isTabbable(c)) ?? viewMonth);
 
   return (
     <div ref={composedRef} data-slot="date-picker-calendar" className={cn('w-60', className)} {...props}>
@@ -308,17 +340,19 @@ const DatePicker = ({
   );
 };
 
+interface DatePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+  placeholder?: string;
+  locale?: string;
+  children?: React.ReactNode;
+}
+
 const DatePickerTrigger = ({
   placeholder = 'Pick a date',
   locale,
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
-  placeholder?: string;
-  locale?: string;
-  children?: React.ReactNode;
-}) => {
+}: DatePickerTriggerProps) => {
   const ctx = useDatePicker();
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
   return (
@@ -346,6 +380,15 @@ const DatePickerTrigger = ({
   );
 };
 
+interface DatePickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  locale?: string;
+  weekStartsOn?: 0 | 1;
+  disabledDate?: (d: Date) => boolean;
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
+}
+
 const DatePickerContent = ({
   locale,
   weekStartsOn,
@@ -355,14 +398,7 @@ const DatePickerContent = ({
   onMonthChange,
   className,
   ...props
-}: React.ComponentProps<typeof PopoverContent> & {
-  locale?: string;
-  weekStartsOn?: 0 | 1;
-  disabledDate?: (d: Date) => boolean;
-  month?: Date;
-  defaultMonth?: Date;
-  onMonthChange?: (month: Date) => void;
-}) => {
+}: DatePickerContentProps) => {
   const ctx = useDatePicker();
   return (
     <PopoverContent align="start" data-slot="date-picker-content" className={cn('w-auto p-3', className)} {...props}>

@@ -23,7 +23,11 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -36,7 +40,11 @@ const jitter = (i: number) => {
   return value - Math.floor(value);
 };
 
-const FloatingPaths = ({ position }: { position: number }) => {
+interface FloatingPathsProps {
+  position: number;
+}
+
+const FloatingPaths = ({ position }: FloatingPathsProps) => {
   const reduceMotion = useReducedMotion();
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
@@ -92,10 +100,7 @@ const Login03 = () => {
       >
         <div
           aria-hidden
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to bottom, transparent, transparent, var(--background))',
-          }}
+          className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,transparent,var(--background))]"
         />
 
         <div className="absolute inset-0">
@@ -125,20 +130,8 @@ const Login03 = () => {
 
       <div data-slot="login-main" className="relative flex min-h-svh flex-col justify-center px-8 lg:min-h-0">
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-60">
-          <div
-            className="absolute end-0 top-0 h-320 w-140 -translate-y-88 rounded-full"
-            style={{
-              background:
-                'radial-gradient(68.54% 68.72% at 55.02% 31.46%, color-mix(in oklch, var(--foreground) 6%, transparent) 0, color-mix(in oklch, var(--foreground) 2%, transparent) 50%, color-mix(in oklch, var(--foreground) 1%, transparent) 80%)',
-            }}
-          />
-          <div
-            className="absolute end-0 top-0 h-320 w-60 translate-x-[5%] -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                'radial-gradient(50% 50% at 50% 50%, color-mix(in oklch, var(--foreground) 4%, transparent) 0, color-mix(in oklch, var(--foreground) 1%, transparent) 80%, transparent 100%)',
-            }}
-          />
+          <div className="absolute end-0 top-0 h-320 w-140 -translate-y-88 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,color-mix(in_oklch,var(--foreground)_6%,transparent)_0,color-mix(in_oklch,var(--foreground)_2%,transparent)_50%,color-mix(in_oklch,var(--foreground)_1%,transparent)_80%)]" />
+          <div className="absolute end-0 top-0 h-320 w-60 translate-x-[5%] -translate-y-1/2 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,color-mix(in_oklch,var(--foreground)_4%,transparent)_0,color-mix(in_oklch,var(--foreground)_1%,transparent)_80%,transparent_100%)]" />
         </div>
 
         <Button asChild variant="ghost" className={cn(ENTER, 'absolute start-5 top-7 z-10')}>

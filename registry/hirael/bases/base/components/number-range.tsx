@@ -47,8 +47,8 @@ const clampPair = ([lo, hi]: NumberRangeValue, min: number, max: number): Number
 const defaultFormat: NumberFormatter = (n) => String(n);
 const defaultParse: NumberParser = (s) => {
   const cleaned = s.replace(/[^\d.-]/g, '');
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : 0;
+  // NaN for empty/invalid so a cleared field keeps its old value instead of committing 0.
+  return cleaned === '' ? Number.NaN : Number(cleaned);
 };
 
 export interface NumberRangeProps extends Omit<React.ComponentProps<'div'>, 'defaultValue' | 'prefix'> {
@@ -148,11 +148,13 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
   const format = ctx.format;
 
   const [draft, setDraft] = React.useState<string | null>(null);
-  const [editing, setEditing] = React.useState(false);
-  const shown = editing && draft !== null ? draft : format(current);
+  const shown = draft ?? format(current);
 
   const commit = (raw: string) => {
+    // An emptied field keeps the previous value, whatever a custom parser makes of ''.
+    if (raw.trim() === '') return;
     const parsed = ctx.parse(raw);
+    if (!Number.isFinite(parsed)) return;
     const next: NumberRangeValue = bound === 'min' ? [parsed, ctx.value[1]] : [ctx.value[0], parsed];
     ctx.setValue(next);
   };
@@ -170,12 +172,10 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
         value={shown}
         disabled={ctx.disabled}
         onFocus={() => {
-          setEditing(true);
           setDraft(format(current));
         }}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={(e) => {
-          setEditing(false);
           setDraft(null);
           commit(e.target.value);
         }}
@@ -191,7 +191,7 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
                 ? ([ctx.value[0] + delta * mult, ctx.value[1]] as NumberRangeValue)
                 : ([ctx.value[0], ctx.value[1] + delta * mult] as NumberRangeValue);
             ctx.setValue(next);
-            setDraft(format(next[i]));
+            setDraft(format(clampPair(next, ctx.min, ctx.max)[i]));
           }
         }}
         data-slot="number-range-field"

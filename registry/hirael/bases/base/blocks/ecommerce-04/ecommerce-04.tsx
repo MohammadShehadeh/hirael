@@ -431,7 +431,12 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
   );
 };
 
-const ProductCard = ({ product, index }: { product: Product; index: number }) => {
+interface ProductCardProps {
+  product: Product;
+  index: number;
+}
+
+const ProductCard = ({ product, index }: ProductCardProps) => {
   return (
     <article
       data-slot="product-card"

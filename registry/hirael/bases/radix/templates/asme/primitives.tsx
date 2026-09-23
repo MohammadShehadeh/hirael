@@ -21,7 +21,12 @@ export const reveal = ({ x = 0, y = 0, duration = 0.6, delay = 0 }: RevealOption
   };
 };
 
-export const Serif = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+interface SerifProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Serif = ({ children, className }: SerifProps) => {
   return <span className={cn('font-normal italic [font-family:var(--font-asme-serif)]', className)}>{children}</span>;
 };
 

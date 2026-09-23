@@ -23,11 +23,8 @@ const CreativeStudio = () => {
         'creative-studio',
         almarai.variable,
         instrumentSerif.variable,
-        'bg-black text-(--cs-ink) antialiased',
+        'bg-black text-(--cs-ink) antialiased [font-family:var(--font-almarai),ui-sans-serif,system-ui,sans-serif]',
       )}
-      style={{
-        fontFamily: 'var(--font-almarai), ui-sans-serif, system-ui, sans-serif',
-      }}
     >
       <style dangerouslySetInnerHTML={{ __html: CREATIVE_STUDIO_CSS }} />
       <Hero />

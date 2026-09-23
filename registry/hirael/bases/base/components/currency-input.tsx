@@ -35,15 +35,12 @@ const formatNumber = (value: number, locale: string, decimals: number): string =
   }
 };
 
-const resolveSeparators = (locale: string): { decimal: string; group: string } => {
+const resolveDecimalSeparator = (locale: string): string => {
   try {
     const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
-    return {
-      decimal: parts.find((p) => p.type === 'decimal')?.value ?? '.',
-      group: parts.find((p) => p.type === 'group')?.value ?? ',',
-    };
+    return parts.find((p) => p.type === 'decimal')?.value ?? '.';
   } catch {
-    return { decimal: '.', group: ',' };
+    return '.';
   }
 };
 
@@ -92,13 +89,11 @@ interface Ctx {
   setValue: (next: number | null) => void;
   view: string;
   setView: (next: string) => void;
-  currency: string;
   locale: string;
   decimals: number;
   disabled?: boolean;
   symbol: string;
   decimalSeparator: string;
-  groupSeparator: string;
 }
 
 const CurrencyInputContext = React.createContext<Ctx | null>(null);
@@ -147,7 +142,10 @@ const CurrencyInput = ({
 
   // Lets the sync effect tell an external change from the field's own typing;
   // without it every keystroke is reformatted ("1" becomes "1.00").
-  const lastSeenValue = React.useRef<number | null | undefined>(value);
+  const lastSeenValue = React.useRef<number | null>(value);
+  // A locale or precision change must reformat the view even when the value is unchanged.
+  const formatKey = `${locale}|${decimals}`;
+  const lastFormatKey = React.useRef(formatKey);
 
   const setValue = React.useCallback(
     (next: number | null) => {
@@ -158,36 +156,33 @@ const CurrencyInput = ({
     [valueProp, onValueChange],
   );
 
-  const [view, setView] = React.useState<string>(() =>
-    value === null || value === undefined ? '' : formatNumber(value, locale, decimals),
-  );
+  const [view, setView] = React.useState<string>(() => (value === null ? '' : formatNumber(value, locale, decimals)));
 
   React.useEffect(() => {
-    if (lastSeenValue.current === value) return;
+    if (lastSeenValue.current === value && lastFormatKey.current === formatKey) return;
     lastSeenValue.current = value;
-    setView(value === null || value === undefined ? '' : formatNumber(value, locale, decimals));
-  }, [value, locale, decimals]);
+    lastFormatKey.current = formatKey;
+    setView(value === null ? '' : formatNumber(value, locale, decimals));
+  }, [value, locale, decimals, formatKey]);
 
   const symbol = React.useMemo(() => resolveCurrencySymbol(currency, locale), [currency, locale]);
 
-  const separators = React.useMemo(() => resolveSeparators(locale), [locale]);
+  const decimalSeparator = React.useMemo(() => resolveDecimalSeparator(locale), [locale]);
 
   const ctx = React.useMemo<Ctx>(
     () => ({
       id: fieldId,
-      value: value ?? null,
+      value,
       setValue,
       view,
       setView,
-      currency,
       locale,
       decimals,
       disabled,
       symbol,
-      decimalSeparator: separators.decimal,
-      groupSeparator: separators.group,
+      decimalSeparator,
     }),
-    [fieldId, value, setValue, view, currency, locale, decimals, disabled, symbol, separators],
+    [fieldId, value, setValue, view, locale, decimals, disabled, symbol, decimalSeparator],
   );
 
   return (
@@ -262,7 +257,7 @@ const CurrencyInputField = ({
       }}
       onFocus={(e) => {
         onFocus?.(e);
-        if (ctx.value === null || ctx.value === undefined) return;
+        if (ctx.value === null) return;
         const raw =
           ctx.decimals > 0
             ? ctx.value.toFixed(ctx.decimals).replace('.', ctx.decimalSeparator)
@@ -272,13 +267,9 @@ const CurrencyInputField = ({
       onBlur={(e) => {
         onBlur?.(e);
         const parsed = parseToNumber(ctx.view, ctx.decimalSeparator);
-        if (parsed === null) {
-          ctx.setView('');
-          ctx.setValue(null);
-          return;
-        }
-        ctx.setView(formatNumber(parsed, ctx.locale, ctx.decimals));
-        ctx.setValue(parsed);
+        ctx.setView(parsed === null ? '' : formatNumber(parsed, ctx.locale, ctx.decimals));
+        // Only commit a real change, so a plain focus/blur never fires onValueChange.
+        if (parsed !== ctx.value) ctx.setValue(parsed);
       }}
       {...props}
     />

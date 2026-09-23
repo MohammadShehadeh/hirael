@@ -135,6 +135,17 @@ const CommandPalette = ({
 
   const [query, setQuery] = React.useState('');
   const [pages, setPages] = React.useState<string[]>([]);
+
+  // A controlled close never goes through setOpen, so the reset also keys off the value itself.
+  const [prevOpen, setPrevOpen] = React.useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (!open) {
+      setQuery('');
+      setPages([]);
+    }
+  }
+
   const isApple = useIsApple();
 
   const recents = React.useSyncExternalStore(

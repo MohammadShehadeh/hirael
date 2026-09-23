@@ -137,17 +137,6 @@ const AudioPlayer = ({
     setBuffered(ranges.length > 0 ? ranges.end(ranges.length - 1) : 0);
   }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    props.onKeyDown?.(event);
-    if (event.defaultPrevented || event.key !== ' ') return;
-    const target = event.target as HTMLElement;
-    if (target.closest("button, input, textarea, select, [role='slider']")) {
-      return;
-    }
-    event.preventDefault();
-    toggle();
-  };
-
   const ctx = React.useMemo<AudioPlayerCtx>(
     () => ({
       playing,
@@ -174,7 +163,6 @@ const AudioPlayer = ({
         data-state={playing ? 'playing' : 'paused'}
         className={cn('flex w-full items-center gap-2', className)}
         {...props}
-        onKeyDown={handleKeyDown}
       >
         <audio
           ref={audioRef}
@@ -381,7 +369,7 @@ const AudioPlayerSkip = ({ seconds, className, ...props }: AudioPlayerSkipProps)
       className={cn('size-8', className)}
       {...props}
     >
-      {back ? <RotateCcw className="rtl:rotate-180" /> : <RotateCw className="rtl:rotate-180" />}
+      {back ? <RotateCcw /> : <RotateCw />}
     </Button>
   );
 };

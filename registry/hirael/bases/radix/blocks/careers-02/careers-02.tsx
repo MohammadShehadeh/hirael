@@ -123,7 +123,13 @@ const scrollToForm = () => {
   form.querySelector<HTMLInputElement>('input:not([type=file])')?.focus({ preventScroll: true });
 };
 
-const RoleSection = ({ title, index, children }: { title: string; index: number; children: React.ReactNode }) => {
+interface RoleSectionProps {
+  title: string;
+  index: number;
+  children: React.ReactNode;
+}
+
+const RoleSection = ({ title, index, children }: RoleSectionProps) => {
   return (
     <section
       data-slot="careers-role-section"
@@ -136,7 +142,11 @@ const RoleSection = ({ title, index, children }: { title: string; index: number;
   );
 };
 
-const RoleList = ({ items }: { items: string[] }) => {
+interface RoleListProps {
+  items: string[];
+}
+
+const RoleList = ({ items }: RoleListProps) => {
   return (
     <ul className="flex flex-col gap-3">
       {items.map((item) => (
@@ -149,11 +159,13 @@ const RoleList = ({ items }: { items: string[] }) => {
   );
 };
 
+type SubmitStatus = 'idle' | 'submitting' | 'sent';
+
 const ApplyForm = () => {
   const [state, setState] = React.useState<FormState>(INITIAL);
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [submitted, setSubmitted] = React.useState(false);
-  const [status, setStatus] = React.useState<'idle' | 'submitting' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<SubmitStatus>('idle');
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     const next = { ...state, [key]: value };

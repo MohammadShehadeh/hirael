@@ -209,7 +209,7 @@ const Contact03 = () => {
 
             <ContactTitle>{HEADLINE}</ContactTitle>
 
-            <div className={cn('flex flex-col gap-3', RISE)} style={{ animationDelay: '320ms' }}>
+            <div className={cn('flex flex-col gap-3', RISE, 'delay-320')}>
               <ContactDescription>
                 Send a short note about the product and where you are stuck. We read every message and reply within a
                 working day.
@@ -219,10 +219,7 @@ const Contact03 = () => {
               </ContactDescription>
             </div>
 
-            <div
-              className={cn('mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2', RISE)}
-              style={{ animationDelay: '400ms' }}
-            >
+            <div className={cn('mt-4 grid w-full max-w-md grid-cols-1 gap-4 sm:grid-cols-2', RISE, 'delay-400')}>
               <ContactAction
                 detail={
                   <>

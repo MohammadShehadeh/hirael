@@ -14,13 +14,6 @@ const toneText: Record<MetricTone, string> = {
   critical: 'text-destructive',
 };
 
-const toneStroke: Record<MetricTone, string> = {
-  neutral: 'text-muted-foreground',
-  positive: 'text-success',
-  warning: 'text-warning',
-  critical: 'text-destructive',
-};
-
 type MetricCardProps = React.ComponentProps<'div'>;
 
 const MetricCard = ({ className, ...props }: MetricCardProps) => {
@@ -110,7 +103,7 @@ const MetricCardSpark = ({ points, tone = 'neutral', area = true, className, ...
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="none"
       aria-hidden
-      className={cn('h-8 w-full', toneStroke[tone], className)}
+      className={cn('h-8 w-full', toneText[tone], className)}
       {...props}
     >
       {area ? <polygon points={fill} fill="currentColor" className="opacity-10" /> : null}

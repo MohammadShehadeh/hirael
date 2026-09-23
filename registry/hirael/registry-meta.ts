@@ -93,7 +93,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'multi-select',
     title: 'Multi Select',
     description:
-      'Chip-based multi-select with command-palette dropdown, search, select-all and async loader. Compound and single-prop APIs.',
+      'Chip-based multi-select with command-palette dropdown, search, select-all and a loading state. Compound and single-prop APIs.',
     category: 'inputs',
     files: [{ path: 'components/multi-select.tsx' }],
     registryDependencies: ['popover', 'command', 'badge'],
@@ -1482,6 +1482,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: 'relative-time',
+    title: 'Relative Time',
+    description:
+      'Live "3 minutes ago" label on a semantic <time>, formatted with Intl for any locale. Every instance shares one timer per refresh rate, and old dates refresh hourly.',
+    category: 'data',
+    files: [{ path: 'components/relative-time.tsx' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: 'qr-code',
     title: 'QR Code',
     description:
@@ -1498,7 +1508,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.',
     category: 'data',
     files: [{ path: 'components/calendar-heatmap.tsx' }],
-    registryDependencies: ['tooltip'],
+    registryDependencies: ['tooltip', 'calendar-utils'],
     dependencies: [],
   },
   {
@@ -1530,6 +1540,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     files: [{ path: 'components/audio-player.tsx' }],
     registryDependencies: ['button', 'slider'],
     dependencies: ['lucide-react'],
+  },
+  {
+    name: 'video-player',
+    title: 'Video Player',
+    description:
+      'Composable video player with click or Space to play, scrub-safe seek with buffered tint, time readouts, volume, full screen, and controls that fade out while it plays.',
+    category: 'display',
+    files: [{ path: 'components/video-player.tsx' }],
+    registryDependencies: ['button', 'slider'],
+    dependencies: ['lucide-react', 'motion'],
   },
   {
     name: 'media-input',

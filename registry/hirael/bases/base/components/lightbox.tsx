@@ -16,7 +16,6 @@ export interface LightboxItem {
 interface LightboxContextValue {
   items: LightboxItem[];
   index: number;
-  loop: boolean;
   zoomed: boolean;
   setZoomed: (zoomed: boolean) => void;
   goTo: (index: number) => void;
@@ -114,7 +113,6 @@ const Lightbox = ({
     () => ({
       items,
       index,
-      loop,
       zoomed,
       setZoomed,
       goTo,
@@ -123,7 +121,7 @@ const Lightbox = ({
       canPrev,
       canNext,
     }),
-    [items, index, loop, zoomed, goTo, next, prev, canPrev, canNext],
+    [items, index, zoomed, goTo, next, prev, canPrev, canNext],
   );
 
   return (

@@ -90,6 +90,8 @@ const MediaInput = ({
       URL.revokeObjectURL(createdUrlRef.current);
       createdUrlRef.current = null;
     }
+    // Emptied here, not on change, so a named input still submits its file and re-picking the same file fires change.
+    if (inputRef.current) inputRef.current.value = '';
     setError(null);
     setValue(null);
   }, [setValue]);
@@ -131,10 +133,7 @@ const MediaInput = ({
           disabled={disabled}
           className="sr-only"
           tabIndex={-1}
-          onChange={(event) => {
-            handleFile(event.target.files?.[0]);
-            event.target.value = '';
-          }}
+          onChange={(event) => handleFile(event.target.files?.[0])}
         />
         {children}
       </div>

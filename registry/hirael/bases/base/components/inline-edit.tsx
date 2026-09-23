@@ -149,11 +149,10 @@ const InlineEdit = ({
 
   const cancel = React.useCallback(() => {
     if (pending) return;
-    setDraft(value);
-    setError(null);
+    // Draft and error reset when editing next starts, so there's nothing to restore here.
     setEditing(false);
     onCancel?.();
-  }, [pending, value, setEditing, onCancel]);
+  }, [pending, setEditing, onCancel]);
 
   const previewRef = React.useRef<HTMLSpanElement | null>(null);
   const wasEditingRef = React.useRef(editing);

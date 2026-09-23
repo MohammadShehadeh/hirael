@@ -50,11 +50,7 @@ const Integrations01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0)',
-          backgroundSize: '20px 20px',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] bg-size-[20px_20px] opacity-[0.18] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
       />
 
       <div className="container w-full">

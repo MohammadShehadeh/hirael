@@ -39,19 +39,12 @@ const Newsletter01 = () => {
         data-slot="newsletter-panel"
         className={cn(
           ENTER,
-          'relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center sm:p-12',
+          'relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center shadow-[0_24px_60px_-34px_color-mix(in_oklch,var(--foreground)_24%,transparent)] sm:p-12',
         )}
-        style={{
-          boxShadow: '0 24px 60px -34px color-mix(in oklch, var(--foreground) 24%, transparent)',
-        }}
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(120% 90% at 50% -10%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 60%)',
-          }}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-10%,color-mix(in_oklch,var(--primary)_12%,transparent),transparent_60%)]"
         />
 
         <div aria-live="polite" className="relative z-10 flex flex-col items-center gap-5">

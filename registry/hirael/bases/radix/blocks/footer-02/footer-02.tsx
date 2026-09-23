@@ -55,7 +55,11 @@ const COLUMNS: readonly FooterColumn[] = [
   },
 ];
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -69,11 +73,7 @@ const Footer02 = () => {
       <div data-slot="footer-inner" className="relative container w-full py-12 lg:py-16">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-32"
-          style={{
-            background:
-              'radial-gradient(35% 128px at 50% 0%, color-mix(in oklch, var(--primary) 14%, transparent), transparent)',
-          }}
+          className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(35%_128px_at_50%_0%,color-mix(in_oklch,var(--primary)_14%,transparent),transparent)]"
         />
 
         <div className="relative flex flex-col gap-10 lg:flex-row">

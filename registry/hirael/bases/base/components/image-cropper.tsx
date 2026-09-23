@@ -10,9 +10,20 @@ export interface ImageCropperCrop {
   y: number;
 }
 
+interface ImageCropperOutputOptions {
+  size?: number;
+  type?: string;
+  quality?: number;
+}
+
 export interface ImageCropperRef {
-  getCroppedDataUrl: (opts?: { size?: number; type?: string; quality?: number }) => string | null;
+  getCroppedDataUrl: (opts?: ImageCropperOutputOptions) => string | null;
   reset: () => void;
+}
+
+interface PinchState {
+  dist: number;
+  zoom: number;
 }
 
 interface Size {
@@ -223,7 +234,7 @@ const ImageCropper = ({
   }, []);
 
   const pointersRef = React.useRef(new Map<number, ImageCropperCrop>());
-  const pinchRef = React.useRef<{ dist: number; zoom: number } | null>(null);
+  const pinchRef = React.useRef<PinchState | null>(null);
 
   const pinchDistance = () => {
     const pts = Array.from(pointersRef.current.values());

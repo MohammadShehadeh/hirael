@@ -6,10 +6,12 @@ import { ChevronsLeftRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
+type ImageCompareOrientation = 'horizontal' | 'vertical';
+
 interface ImageCompareContextValue {
   position: number;
   setPosition: (next: number) => void;
-  orientation: 'horizontal' | 'vertical';
+  orientation: ImageCompareOrientation;
   disabled: boolean;
   dragging: boolean;
   setDragging: (dragging: boolean) => void;
@@ -36,7 +38,7 @@ export interface ImageCompareProps extends Omit<React.ComponentProps<'div'>, 'on
   position?: number;
   defaultPosition?: number;
   onPositionChange?: (position: number) => void;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: ImageCompareOrientation;
   /** Follow the hovering pointer instead of requiring a drag. */
   followPointer?: boolean;
   disabled?: boolean;

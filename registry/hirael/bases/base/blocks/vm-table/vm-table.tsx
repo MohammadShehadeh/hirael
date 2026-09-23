@@ -212,8 +212,11 @@ const VM_FILTERS: { value: string; label: string; states: VmState[] }[] = [
   { value: 'error', label: 'Error', states: ['error'] },
 ];
 
-const MutedValue = ({ value }: { value: string | null }) =>
-  value ?? <span className="text-muted-foreground/60">None</span>;
+interface MutedValueProps {
+  value: string | null;
+}
+
+const MutedValue = ({ value }: MutedValueProps) => value ?? <span className="text-muted-foreground/60">None</span>;
 
 const VmTableBlock = () => {
   const [rows, setRows] = React.useState(VM_ROWS);

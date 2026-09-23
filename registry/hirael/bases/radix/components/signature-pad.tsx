@@ -13,11 +13,15 @@ interface Point {
 }
 type Stroke = Point[];
 
+interface SignaturePadDataURLOptions {
+  backgroundColor?: string;
+}
+
 export interface SignaturePadRef {
   clear: () => void;
   undo: () => void;
   isEmpty: () => boolean;
-  toDataURL: (type?: string, opts?: { backgroundColor?: string }) => string;
+  toDataURL: (type?: string, opts?: SignaturePadDataURLOptions) => string;
 }
 
 interface SignaturePadContextValue {
@@ -94,7 +98,7 @@ const SignaturePad = ({
 }: SignaturePadProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const strokesRef = React.useRef<Stroke[]>([]);
-  const drawingRef = React.useRef(false);
+  // Non-null while a stroke is in progress.
   const activePointerRef = React.useRef<number | null>(null);
   const lastTimeRef = React.useRef(0);
   const [empty, setEmpty] = React.useState(true);
@@ -221,10 +225,9 @@ const SignaturePad = ({
   };
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (disabled || !e.isPrimary || drawingRef.current) return;
+    if (disabled || !e.isPrimary || activePointerRef.current !== null) return;
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
-    drawingRef.current = true;
     activePointerRef.current = e.pointerId;
     lastTimeRef.current = e.timeStamp;
     const { x, y } = pointFromEvent(e);
@@ -240,7 +243,7 @@ const SignaturePad = ({
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawingRef.current || disabled || e.pointerId !== activePointerRef.current) {
+    if (disabled || e.pointerId !== activePointerRef.current) {
       return;
     }
     const stroke = strokesRef.current[strokesRef.current.length - 1];
@@ -260,8 +263,7 @@ const SignaturePad = ({
   };
 
   const endStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawingRef.current || e.pointerId !== activePointerRef.current) return;
-    drawingRef.current = false;
+    if (e.pointerId !== activePointerRef.current) return;
     activePointerRef.current = null;
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);

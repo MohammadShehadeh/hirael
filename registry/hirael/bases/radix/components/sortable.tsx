@@ -36,12 +36,14 @@ const useSortable = () => {
   return ctx;
 };
 
+type SortableItemState = 'idle' | 'grabbed';
+
 interface SortableItemCtx {
   id: string;
   disabled: boolean;
   hasHandle: boolean;
   setHasHandle: (has: boolean) => void;
-  state: 'idle' | 'grabbed';
+  state: SortableItemState;
 }
 
 const SortableItemContext = React.createContext<SortableItemCtx | null>(null);
@@ -403,7 +405,7 @@ const SortableItem = ({ value, disabled: disabledProp = false, className, style,
   }, [value, disabled, registerItem]);
 
   const index = order.indexOf(value);
-  const state: 'idle' | 'grabbed' = dragId === value || grabbedId === value ? 'grabbed' : 'idle';
+  const state: SortableItemState = dragId === value || grabbedId === value ? 'grabbed' : 'idle';
 
   const itemCtx = React.useMemo<SortableItemCtx>(
     () => ({ id: value, disabled, hasHandle, setHasHandle, state }),
@@ -422,9 +424,10 @@ const SortableItem = ({ value, disabled: disabledProp = false, className, style,
         tabIndex={hasHandle || disabled ? undefined : 0}
         style={{ ...style, order: index === -1 ? undefined : index }}
         onPointerDown={hasHandle || disabled ? undefined : (e) => startPress(e, value)}
-        onPointerMove={disabled ? undefined : (e) => handlePointerMove(e, value)}
-        onPointerUp={disabled ? undefined : (e) => handlePointerEnd(e, value, false)}
-        onPointerCancel={disabled ? undefined : (e) => handlePointerEnd(e, value, true)}
+        // The handle owns pointer events; bubbled copies here would end the drag twice.
+        onPointerMove={hasHandle || disabled ? undefined : (e) => handlePointerMove(e, value)}
+        onPointerUp={hasHandle || disabled ? undefined : (e) => handlePointerEnd(e, value, false)}
+        onPointerCancel={hasHandle || disabled ? undefined : (e) => handlePointerEnd(e, value, true)}
         onKeyDown={hasHandle || disabled ? undefined : (e) => handleKeyDown(e, value)}
         onBlur={hasHandle || disabled ? undefined : () => handleBlur(value)}
         className={cn(

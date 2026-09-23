@@ -37,7 +37,7 @@ const CronEditorDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Full editor · presets, fields, expression, preview',
             ar: 'المحرر الكامل · إعدادات مسبقة، حقول، تعبير، معاينة',
@@ -73,7 +73,7 @@ const CronEditorDemo = () => {
               <CronEditorPreview />
             </div>
             <div className="grid content-start gap-1.5">
-              <p className="text-xs uppercase text-muted-foreground">
+              <p className="text-xs text-muted-foreground uppercase">
                 {t({ en: 'Next runs', ar: 'التشغيلات القادمة' })}
               </p>
               <CronEditorNextRuns
@@ -88,7 +88,7 @@ const CronEditorDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Compact · presets and expression only',
             ar: 'مضغوط · إعدادات مسبقة وتعبير فقط',

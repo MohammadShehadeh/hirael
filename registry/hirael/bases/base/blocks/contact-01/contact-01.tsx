@@ -82,6 +82,7 @@ const validate = (state: FormState): FormErrors => {
   if (state.message.trim().length < 20) errors.message = 'A little more detail helps us route your note.';
   if (state.message.length > MESSAGE_MAX) errors.message = `Keep it under ${MESSAGE_MAX} characters.`;
   if (!state.consent) errors.consent = 'Please accept the privacy notice.';
+
   return errors;
 };
 
@@ -123,12 +124,12 @@ const Contact01 = () => {
 
   return (
     <section data-slot="contact" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="contact-header" className="flex max-w-2xl flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Talk to us</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Talk to us</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Have a question we haven&apos;t answered yet?
           </h2>
@@ -205,7 +206,7 @@ const Contact01 = () => {
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                       <Field>
                         <FieldLabel htmlFor="contact-company">
-                          Company <span className="text-xs uppercase text-muted-foreground">optional</span>
+                          Company <span className="text-xs text-muted-foreground uppercase">optional</span>
                         </FieldLabel>
                         <Input
                           id="contact-company"
@@ -314,18 +315,19 @@ const Contact01 = () => {
             className={cn(ENTER, 'flex flex-col gap-10 lg:col-span-5')}
           >
             <div className="flex flex-col gap-3">
-              <p className="text-xs uppercase text-muted-foreground">Other ways to reach us</p>
+              <p className="text-xs text-muted-foreground uppercase">Other ways to reach us</p>
               <ul className="flex flex-col border-t border-border">
                 {CHANNELS.map((c) => {
                   const Icon = c.icon;
+
                   return (
                     <li key={c.label} className="border-b border-border">
                       <a
                         href={c.href}
-                        className="group flex items-center justify-between gap-4 py-4 outline-none transition-colors duration-150 focus-visible:bg-accent/40"
+                        className="group flex items-center justify-between gap-4 py-4 transition-colors duration-150 outline-none focus-visible:bg-accent/40"
                       >
                         <span className="flex flex-col gap-0.5">
-                          <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                          <span className="inline-flex items-center gap-2 text-xs text-muted-foreground uppercase">
                             <Icon aria-hidden className="size-3.5" />
                             {c.label}
                           </span>
@@ -340,7 +342,7 @@ const Contact01 = () => {
             </div>
 
             <div data-slot="contact-location" className="flex flex-col gap-1">
-              <p className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
+              <p className="inline-flex items-center gap-2 text-xs text-muted-foreground uppercase">
                 <MapPin aria-hidden className="size-3.5" />
                 Remote, mostly
               </p>

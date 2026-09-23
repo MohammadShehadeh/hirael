@@ -5,7 +5,7 @@ import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from 'mot
 
 import { cn } from '@/lib/utils';
 
-interface CursorGlowProps extends React.ComponentProps<'div'> {
+export interface CursorGlowProps extends React.ComponentProps<'div'> {
   /** Diameter of the glow, in px. */
   size?: number;
   /** Glow color. Defaults to a soft tint of the foreground token. */
@@ -27,7 +27,7 @@ const CursorGlow = ({
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerMoveProp?.(event);
-    if (reduced) return;
+    if (event.defaultPrevented || reduced || event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);
@@ -36,9 +36,9 @@ const CursorGlow = ({
   return (
     <div
       data-slot="cursor-glow"
-      onPointerMove={onPointerMove}
       className={cn('group relative overflow-hidden', className)}
       {...props}
+      onPointerMove={onPointerMove}
     >
       {/* The layer never tracks the pointer under reduced motion, so it would sit pinned at 0,0. */}
       {reduced ? null : (

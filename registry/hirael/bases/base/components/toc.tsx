@@ -47,53 +47,53 @@ const throttle = (fn: () => void, limit: number): ThrottledFn => {
   return throttled;
 };
 
-const flattenTocItems = (items: TocItem[]): TocItem[] => {
-  const out: TocItem[] = [];
-  const walk = (list: TocItem[]) => {
-    for (const item of list) {
-      out.push(item);
-      if (item.children) walk(item.children);
-    }
-  };
-  walk(items);
-  return out;
-};
-
 const prefersReducedMotion = () => {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
+
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 const TOP_OFFSET = 56;
 
-const useActiveHeading = (items: TocItem[], enabled: boolean) => {
+/** Fraction of the viewport height a heading must scroll past to become active. */
+const ACTIVATION_RATIO = 0.25;
+
+const useActiveHeading = (idsKey: string, enabled: boolean) => {
   const [activeId, setActiveId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!enabled) return;
-    const headings = flattenTocItems(items);
+    const ids = idsKey ? idsKey.split(' ') : [];
 
     const update = () => {
       if (window.scrollY === 0) {
         setActiveId(null);
+
         return;
       }
 
-      const boxes = headings
-        .map(({ id }) => {
+      const boxes = ids
+        .map((id) => {
           const el = document.getElementById(id);
           if (!el) return null;
-          return { id, box: el.getBoundingClientRect() };
+
+          return { id, top: el.getBoundingClientRect().top };
         })
-        .filter((entry): entry is { id: string; box: DOMRect } => entry !== null);
+        .filter((entry): entry is { id: string; top: number } => entry !== null)
+        .sort((a, b) => a.top - b.top);
 
-      let current = boxes.find(({ box }) => box.bottom > TOP_OFFSET && box.top < window.innerHeight);
+      const { scrollHeight } = document.documentElement;
+      const atBottom = scrollHeight > window.innerHeight && window.innerHeight + window.scrollY >= scrollHeight - 1;
+      // At the bottom of the page the last headings can never reach the line, so the lowest visible one wins.
+      const line = atBottom ? window.innerHeight : Math.max(TOP_OFFSET, window.innerHeight * ACTIVATION_RATIO);
 
-      if (!current) {
-        current = [...boxes].reverse().find(({ box }) => box.bottom < TOP_OFFSET);
+      let current: string | null = null;
+      for (const box of boxes) {
+        if (box.top > line) break;
+        current = box.id;
       }
 
-      setActiveId(current ? current.id : null);
+      setActiveId(current);
     };
 
     const onScroll = throttle(update, 200);
@@ -107,13 +107,14 @@ const useActiveHeading = (items: TocItem[], enabled: boolean) => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [items, enabled]);
+  }, [idsKey, enabled]);
 
   return activeId;
 };
 
 interface TocContextValue {
   activeId: string | null;
+  registerHeading: (id: string) => () => void;
 }
 
 const TocContext = React.createContext<TocContextValue | null>(null);
@@ -123,10 +124,11 @@ const useTocContext = (component: string) => {
   if (!ctx) {
     throw new Error(`${component} must be used within <TableOfContents>.`);
   }
+
   return ctx;
 };
 
-interface TableOfContentsProps extends Omit<React.ComponentProps<'nav'>, 'children'> {
+export interface TableOfContentsProps extends Omit<React.ComponentProps<'nav'>, 'children'> {
   items?: TocItem[];
   activeId?: string | null;
   label?: React.ReactNode;
@@ -142,9 +144,26 @@ const TableOfContents = ({
   'aria-label': ariaLabel,
   ...props
 }: TableOfContentsProps) => {
-  const trackedActiveId = useActiveHeading(items ?? [], controlledActiveId === undefined);
+  const headingCounts = React.useRef(new Map<string, number>());
+  const [idsKey, setIdsKey] = React.useState('');
+
+  // Every link registers its target, so the items and compound forms both track the active heading.
+  const registerHeading = React.useCallback((id: string) => {
+    const counts = headingCounts.current;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+    setIdsKey([...counts.keys()].join(' '));
+
+    return () => {
+      const next = (counts.get(id) ?? 1) - 1;
+      if (next > 0) counts.set(id, next);
+      else counts.delete(id);
+      setIdsKey([...counts.keys()].join(' '));
+    };
+  }, []);
+
+  const trackedActiveId = useActiveHeading(idsKey, controlledActiveId === undefined);
   const activeId = controlledActiveId !== undefined ? controlledActiveId : trackedActiveId;
-  const contextValue = React.useMemo(() => ({ activeId }), [activeId]);
+  const contextValue = React.useMemo(() => ({ activeId, registerHeading }), [activeId, registerHeading]);
 
   const content =
     children ??
@@ -161,7 +180,7 @@ const TableOfContents = ({
     <TocContext.Provider value={contextValue}>
       <nav
         data-slot="toc"
-        aria-label={ariaLabel ?? 'On this page'}
+        aria-label={ariaLabel ?? (typeof label === 'string' ? label : 'On this page')}
         className={cn('flex flex-col gap-3', className)}
         {...props}
       >
@@ -171,13 +190,13 @@ const TableOfContents = ({
   );
 };
 
-type TableOfContentsLabelProps = React.ComponentProps<'p'>;
+export type TableOfContentsLabelProps = React.ComponentProps<'p'>;
 
 const TableOfContentsLabel = ({ className, ...props }: TableOfContentsLabelProps) => {
-  return <p data-slot="toc-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />;
+  return <p data-slot="toc-label" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />;
 };
 
-interface TableOfContentsListProps extends Omit<React.ComponentProps<'ul'>, 'children'> {
+export interface TableOfContentsListProps extends Omit<React.ComponentProps<'ul'>, 'children'> {
   items?: TocItem[];
   level?: number;
   children?: React.ReactNode;
@@ -198,7 +217,7 @@ const TableOfContentsList = ({ items, level = 0, className, children, ...props }
   );
 };
 
-interface TableOfContentsItemProps extends Omit<React.ComponentProps<'li'>, 'children'> {
+export interface TableOfContentsItemProps extends Omit<React.ComponentProps<'li'>, 'children'> {
   item: TocItem;
   level?: number;
 }
@@ -216,7 +235,7 @@ const TableOfContentsItem = ({ item, level = 0, className, ...props }: TableOfCo
   );
 };
 
-interface TableOfContentsLinkProps extends React.ComponentProps<'a'> {
+export interface TableOfContentsLinkProps extends React.ComponentProps<'a'> {
   level?: number;
 }
 
@@ -228,9 +247,16 @@ const TableOfContentsLink = ({
   children,
   ...props
 }: TableOfContentsLinkProps) => {
-  const { activeId } = useTocContext('TableOfContentsLink');
+  const { activeId, registerHeading } = useTocContext('TableOfContentsLink');
   const id = href.startsWith('#') ? href.slice(1) : href;
   const isActive = id.length > 0 && activeId === id;
+  const isHash = href.startsWith('#') && id.length > 0;
+
+  React.useEffect(() => {
+    if (!isHash) return undefined;
+
+    return registerHeading(id);
+  }, [isHash, id, registerHeading]);
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event);

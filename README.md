@@ -99,7 +99,7 @@ npx shadcn@latest add @hirael/multi-select @hirael/date-range-picker @hirael/pri
 **3. Use it.**
 
 ```tsx
-import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/ui/multi-select';
+import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/multi-select';
 
 export function FrameworkPicker() {
   const [value, setValue] = useState<string[]>([]);

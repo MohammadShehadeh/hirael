@@ -73,11 +73,11 @@ const Header01 = () => {
       data-slot="header"
       className={cn(ENTER, 'sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur')}
     >
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div className="flex h-14 items-center justify-between">
           <a
             href="#"
-            className="inline-flex items-center text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex items-center text-sm font-semibold tracking-[-0.02em] text-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           >
             <BrandMark className="me-1.5 size-5" />
             Hirael
@@ -93,7 +93,7 @@ const Header01 = () => {
                         render={
                           <button
                             type="button"
-                            className="group inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring in-data-active:text-foreground data-open:text-foreground"
+                            className="group inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none in-data-active:text-foreground data-open:text-foreground"
                           />
                         }
                       >
@@ -106,7 +106,7 @@ const Header01 = () => {
                             render={
                               <a
                                 {...linkProps(item.href)}
-                                className="aria-[current=page]:text-foreground aria-[current=page]:font-medium"
+                                className="aria-[current=page]:font-medium aria-[current=page]:text-foreground"
                               />
                             }
                             key={item.label}
@@ -121,7 +121,7 @@ const Header01 = () => {
                   <li key={n.label}>
                     <a
                       {...linkProps(n.href)}
-                      className="relative rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors duration-150 after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-foreground after:transition-transform after:duration-250 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none"
+                      className="relative rounded-sm px-3 py-1.5 text-sm text-muted-foreground transition-colors duration-150 after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-foreground after:transition-transform after:duration-250 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none"
                     >
                       {n.label}
                     </a>
@@ -155,7 +155,7 @@ const Header01 = () => {
                   {NAV.map((n) =>
                     'items' in n ? (
                       <li key={n.label}>
-                        <span className="block px-3 pt-2 pb-1 text-xs uppercase tracking-wider text-muted-foreground">
+                        <span className="block px-3 pt-2 pb-1 text-xs tracking-wider text-muted-foreground uppercase">
                           {n.label}
                         </span>
                         <ul className="flex flex-col">

@@ -18,7 +18,7 @@ const InlineEditDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Single-line · title', ar: 'سطر واحد · عنوان' })}
         </p>
         <InlineEdit
@@ -41,7 +41,7 @@ const InlineEditDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Textarea · validation + async submit',
             ar: 'منطقة نص · تحقق + إرسال غير متزامن',
@@ -80,7 +80,7 @@ const InlineEditDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'render · heading', ar: 'render · عنوان' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'render · heading', ar: 'render · عنوان' })}</p>
         <InlineEdit
           defaultValue={t({
             en: 'Release notes v2.4',

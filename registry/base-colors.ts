@@ -11,6 +11,7 @@ export const isBaseColor = (name: string): name is BaseColorName => BASE_COLOR_S
 export const BASE_COLORS: ThemeItem[] = BASE_COLOR_NAMES.map((name) => {
   const theme = THEMES.find((t) => t.name === name);
   if (!theme) throw new Error(`Base color "${name}" is missing from THEMES`);
+
   return theme;
 });
 

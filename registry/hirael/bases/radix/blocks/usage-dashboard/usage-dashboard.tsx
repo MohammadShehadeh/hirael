@@ -55,11 +55,12 @@ interface UsageItemProps extends React.ComponentProps<'div'> {
 const UsageItem = ({ label, value, max, caption, unit, className, ...props }: UsageItemProps) => {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
   const tone = pct >= 100 ? 'bg-destructive' : pct >= 90 ? 'bg-warning' : 'bg-foreground';
+
   return (
     <div data-slot="usage-item" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-sm text-foreground">{label}</span>
-        <span className="text-xs tabular-nums text-muted-foreground">
+        <span className="text-xs text-muted-foreground tabular-nums">
           {caption ?? `${value} / ${max}`}
           {unit != null ? <> {unit}</> : null}
         </span>
@@ -88,7 +89,7 @@ const UsageDashboardBlock = () => {
       <UsageDashboard className={cn(ENTER, 'w-full max-w-md')}>
         <UsageDashboardHeader>
           <UsageDashboardTitle>Usage this month</UsageDashboardTitle>
-          <span className="text-xs uppercase text-muted-foreground">Resets Jul 1</span>
+          <span className="text-xs text-muted-foreground uppercase">Resets Jul 1</span>
         </UsageDashboardHeader>
         <UsageList>
           <UsageItem label="API requests" value={82000} max={100000} caption="82k / 100k" />

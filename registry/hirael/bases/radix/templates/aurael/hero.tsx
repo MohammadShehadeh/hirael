@@ -77,6 +77,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
     setScene(next);
     if (reduced) {
       setDisplayScene(null);
+
       return;
     }
     animatingRef.current = true;
@@ -91,6 +92,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
       .then(() => {
         setDisplayScene(next);
         controls.set({ y: '20%', scale: 1.1, opacity: 1 });
+
         return controls.start({
           y: '0%',
           scale: 1.1,
@@ -185,11 +187,11 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
         </div>
       </nav>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center px-5 pb-12 pt-10 text-center md:pb-16">
+      <div className="relative z-10 flex flex-1 flex-col items-center px-5 pt-10 pb-12 text-center md:pb-16">
         <h1
           data-slot="aurael-display"
           className={cn(
-            'max-w-2xl text-balance text-5xl font-medium leading-[1.02] text-foreground transition-colors duration-500 sm:text-6xl md:text-7xl',
+            'max-w-2xl text-5xl leading-[1.02] font-medium text-balance text-foreground transition-colors duration-500 sm:text-6xl md:text-7xl',
             lang === 'en' ? 'tracking-tight' : 'tracking-normal',
           )}
         >
@@ -207,6 +209,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
           {SCENES.map((key) => {
             const active = selected === key;
             const s = c.scene[key];
+
             return (
               <button
                 key={key}
@@ -227,7 +230,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
                     transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 32 }}
                   />
                 )}
-                <span className="relative z-10 text-lg font-medium leading-tight">{s.label}</span>
+                <span className="relative z-10 text-lg leading-tight font-medium">{s.label}</span>
                 <span className={cn('relative z-10 text-[11px]', active ? 'opacity-75' : 'text-muted-foreground')}>
                   {s.note}
                 </span>
@@ -236,7 +239,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
           })}
         </div>
 
-        <p className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground transition-colors duration-500">
+        <p className="mt-8 max-w-xl text-base leading-relaxed text-pretty text-muted-foreground transition-colors duration-500">
           {c.body}
         </p>
       </div>

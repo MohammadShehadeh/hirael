@@ -30,7 +30,7 @@ const LOGOS: readonly Logo[] = [
 const LogoCloud03 = () => {
   return (
     <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-03-heading">
-      <div className="container w-full max-w-4xl">
+      <div className="mx-auto w-full max-w-4xl px-4">
         <h2 id="logo-cloud-03-heading" className="sr-only">
           Teams building on Hirael
         </h2>

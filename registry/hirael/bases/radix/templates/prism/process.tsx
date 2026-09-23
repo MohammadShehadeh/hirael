@@ -16,7 +16,7 @@ export const Process = () => {
       <div className="rise relative z-10 mx-auto flex min-h-[500px] w-full max-w-3xl flex-col items-center justify-center text-center">
         <GlassPill className="mb-4">How It Works</GlassPill>
         <Heading>You dream it. We ship it.</Heading>
-        <p className="mt-6 max-w-xl text-sm font-light leading-relaxed text-foreground/60 md:text-base">
+        <p className="mt-6 max-w-xl text-sm leading-relaxed font-light text-foreground/60 md:text-base">
           Share your vision. Our AI handles the rest: wireframes, design, code, launch. All in days, not quarters.
         </p>
         <GlassButton className="mt-8">

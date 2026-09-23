@@ -11,8 +11,12 @@ interface AnnouncementBarProps extends React.ComponentProps<'div'>, VariantProps
   dismissible?: boolean;
   /** Controlled-open. If provided, internal state is bypassed. */
   open?: boolean;
-  /** Fires when the user dismisses via the close button. */
+  /** Fires with `false` when the user dismisses via the close button. */
+  onOpenChange?: (open: boolean) => void;
+  /** Fires when the user dismisses via the close button. Same moment as `onOpenChange(false)`. */
   onDismiss?: () => void;
+  /** Accessible name of the close button. */
+  dismissLabel?: string;
   /** localStorage key. When set, the dismissed state is persisted across reloads. */
   storageKey?: string;
 }
@@ -42,6 +46,7 @@ const useStoredDismiss = (storageKey?: string) => {
         if (e.key === storageKey) cb();
       };
       window.addEventListener('storage', handler);
+
       return () => window.removeEventListener('storage', handler);
     },
     [storageKey],
@@ -55,6 +60,7 @@ const useStoredDismiss = (storageKey?: string) => {
     }
   }, [storageKey]);
   const getServerSnapshot = React.useCallback(() => false, []);
+
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
 
@@ -63,7 +69,9 @@ const AnnouncementBar = ({
   tone = 'default',
   dismissible = false,
   open,
+  onOpenChange,
   onDismiss,
+  dismissLabel = 'Dismiss announcement',
   storageKey,
   children,
   ...props
@@ -83,6 +91,7 @@ const AnnouncementBar = ({
         window.localStorage.setItem(storageKey, '1');
       } catch {}
     }
+    onOpenChange?.(false);
     onDismiss?.();
   };
 
@@ -104,7 +113,7 @@ const AnnouncementBar = ({
           variant="ghost"
           size="icon"
           onClick={handleDismiss}
-          aria-label="Dismiss announcement"
+          aria-label={dismissLabel}
           className={cn(
             'absolute end-2 size-7',
             isPrimary && 'text-background/70 hover:bg-background/10 hover:text-background',
@@ -139,7 +148,7 @@ const AnnouncementBarLink = ({ className, ...props }: AnnouncementBarLinkProps) 
     <a
       data-slot="announcement-bar-link"
       className={cn(
-        'inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'inline-flex items-center gap-1 underline underline-offset-4 transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,
       )}
       {...props}

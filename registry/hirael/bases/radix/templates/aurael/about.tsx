@@ -37,6 +37,7 @@ interface AboutProps {
 
 export const About = ({ lang }: AboutProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="about" index="03" label={c.label} note={c.note} lang={lang}>
       <Reveal>

@@ -42,7 +42,7 @@ const MorphingDialogDemo = () => {
                 ar: 'نظام تصميم قائم على الرموز لواجهات المنتجات الكثيفة: أكثر من 200 متغيّر، يبدأ بالوضع الداكن، وأداة سطر أوامر تنسخ المصدر مباشرة إلى مستودعك.',
               })}
             </MorphingDialogDescription>
-            <div className="mt-1 flex items-center gap-2 text-xs uppercase text-muted-foreground">
+            <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground uppercase">
               <span>v3.2</span>
               <span aria-hidden>·</span>
               <span>MIT</span>
@@ -51,7 +51,7 @@ const MorphingDialogDemo = () => {
           <MorphingDialogClose />
         </MorphingDialogContent>
       </MorphingDialog>
-      <p className="text-xs uppercase text-muted-foreground">
+      <p className="text-xs text-muted-foreground uppercase">
         {t({ en: 'Click the card to expand', ar: 'انقر على البطاقة لتتوسّع' })}
       </p>
     </div>

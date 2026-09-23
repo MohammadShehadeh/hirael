@@ -73,7 +73,7 @@ export const Freedom = () => {
           <ControlGlyph />
           Control
         </span>
-        <h2 className="text-[length:clamp(32px,4vw,56px)] font-medium leading-[1.15] text-[var(--nexa-navy)]">
+        <h2 className="text-[length:clamp(32px,4vw,56px)] leading-[1.15] font-medium text-[var(--nexa-navy)]">
           Stop absorbing the chaos.
           <br />
           <GradientText className="inline-block pb-[0.3vw]">Run with confidence.</GradientText>

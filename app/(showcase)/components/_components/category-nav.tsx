@@ -7,10 +7,10 @@ export const CategoryNav = () => {
         <a
           key={category}
           href={`#${category}`}
-          className="rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+          className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground uppercase transition-colors hover:border-foreground/40 hover:text-foreground"
         >
           {CATEGORY_LABELS[category]}
-          <span className="ms-1.5 tabular-nums text-muted-foreground/60">{REGISTRY_BY_CATEGORY[category].length}</span>
+          <span className="ms-1.5 text-muted-foreground/60 tabular-nums">{REGISTRY_BY_CATEGORY[category].length}</span>
         </a>
       ))}
     </nav>

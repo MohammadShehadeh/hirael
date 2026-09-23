@@ -23,6 +23,7 @@ const useMessageThread = () => {
   if (!context) {
     throw new Error('MessageThread parts must be rendered inside <MessageThread>.');
   }
+
   return context;
 };
 
@@ -79,6 +80,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
       if (pinnedRef.current) viewport.scrollTop = viewport.scrollHeight;
     });
     observer.observe(content);
+
     return () => observer.disconnect();
   }, [follow]);
 
@@ -162,6 +164,7 @@ type MessageBodyProps = React.ComponentProps<'div'>;
 
 const MessageBody = ({ className, ...props }: MessageBodyProps) => {
   const role = React.useContext(MessageRoleContext);
+
   return (
     <div
       data-slot="message-body"
@@ -182,6 +185,7 @@ type MessageAvatarProps = React.ComponentProps<'span'>;
 /** Initials as children; the assistant falls back to a spark icon. */
 const MessageAvatar = ({ className, children, ...props }: MessageAvatarProps) => {
   const role = React.useContext(MessageRoleContext);
+
   return (
     <span
       data-slot="message-avatar"
@@ -202,6 +206,7 @@ type MessageContentProps = React.ComponentProps<'div'>;
 
 const MessageContent = ({ className, ...props }: MessageContentProps) => {
   const role = React.useContext(MessageRoleContext);
+
   return (
     <div
       data-slot="message-content"
@@ -287,7 +292,7 @@ const toPretty = (value: unknown) => {
 
 const TOOL_STATUS: Record<MessageToolCallStatus, { dot: string; label: string }> = {
   running: {
-    dot: 'bg-accent-cool animate-pulse motion-reduce:animate-none',
+    dot: 'bg-primary animate-pulse motion-reduce:animate-none',
     label: 'running',
   },
   done: { dot: 'bg-success', label: 'done' },
@@ -332,6 +337,7 @@ const MessageToolCall = ({
   ...props
 }: MessageToolCallProps) => {
   const tone = TOOL_STATUS[status];
+
   return (
     <Collapsible
       data-slot="message-tool-call"
@@ -409,7 +415,7 @@ const MessageReasoning = ({
         render={
           <button
             type="button"
-            className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 pe-2 ps-1 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex w-fit items-center gap-1.5 rounded-md py-1 ps-1 pe-2 text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           />
         }
       >
@@ -439,7 +445,7 @@ const MessageStreamingCursor = ({ className, style, ...props }: MessageStreaming
       data-slot="message-streaming-cursor"
       aria-hidden
       className={cn(
-        'ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] rounded-[1px] bg-foreground align-baseline animate-pulse motion-reduce:animate-none',
+        'ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] animate-pulse rounded-[1px] bg-foreground align-baseline motion-reduce:animate-none',
         className,
       )}
       style={{ animationDuration: '1s', ...style }}
@@ -465,7 +471,7 @@ const MessageTyping = ({ label = 'Assistant is typing', className, ...props }: M
         <span
           key={delay}
           aria-hidden
-          className="size-1.5 rounded-full bg-muted-foreground animate-bounce motion-reduce:animate-none"
+          className="size-1.5 animate-bounce rounded-full bg-muted-foreground motion-reduce:animate-none"
           style={{ animationDelay: `${delay}ms` }}
         />
       ))}
@@ -498,7 +504,7 @@ const MessageSource = ({ className, children, ...props }: MessageSourceProps) =>
     <a
       data-slot="message-source"
       className={cn(
-        'inline-flex max-w-full items-center gap-1.5 rounded-full border border-border bg-card py-0.5 pe-2.5 ps-1 text-xs text-foreground transition-colors [counter-increment:source] hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+        'inline-flex max-w-full items-center gap-1.5 rounded-full border border-border bg-card py-0.5 ps-1 pe-2.5 text-xs text-foreground transition-colors [counter-increment:source] hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,
       )}
       {...props}
@@ -556,6 +562,7 @@ interface FeedbackActionsProps {
 
 const FeedbackActions = ({ copyText, onRegenerate }: FeedbackActionsProps) => {
   const [feedback, setFeedback] = React.useState<Feedback>(null);
+
   return (
     <MessageActions>
       <CopyButton value={copyText} size="sm" />
@@ -599,6 +606,7 @@ const StreamedMessage = ({ text, onReplay }: StreamedMessageProps) => {
     const start = window.setTimeout(() => {
       interval = window.setInterval(() => setCount((c) => c + 1), 55);
     }, 600);
+
     return () => {
       window.clearTimeout(start);
       window.clearInterval(interval);

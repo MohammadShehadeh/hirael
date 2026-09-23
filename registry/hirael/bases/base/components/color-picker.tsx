@@ -47,6 +47,7 @@ const useColorPicker = () => {
   if (!ctx) {
     throw new Error('ColorPicker compound components must be used inside <ColorPicker>');
   }
+
   return ctx;
 };
 
@@ -61,6 +62,7 @@ const hexToRgb = (hex: string): RGB | null => {
     const g = parseInt(m[1] + m[1], 16);
     const b = parseInt(m[2] + m[2], 16);
     if ([r, g, b].some(Number.isNaN)) return null;
+
     return { r, g, b };
   }
   if (m.length === 6) {
@@ -68,13 +70,16 @@ const hexToRgb = (hex: string): RGB | null => {
     const g = parseInt(m.slice(2, 4), 16);
     const b = parseInt(m.slice(4, 6), 16);
     if ([r, g, b].some(Number.isNaN)) return null;
+
     return { r, g, b };
   }
+
   return null;
 };
 
 const rgbToHex = ({ r, g, b }: RGB): string => {
   const h = (n: number) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0');
+
   return `#${h(r)}${h(g)}${h(b)}`;
 };
 
@@ -103,6 +108,7 @@ const rgbToHsv = ({ r, g, b }: RGB): HSV => {
     h *= 60;
     if (h < 0) h += 360;
   }
+
   return { h, s: s * 100, v: v * 100 };
 };
 
@@ -122,6 +128,7 @@ const hsvToRgb = ({ h, s, v }: HSV): RGB => {
   else if (hp < 5) [r, g, b] = [x, 0, c];
   else [r, g, b] = [c, 0, x];
   const m = vn - c;
+
   return {
     r: (r + m) * 255,
     g: (g + m) * 255,
@@ -153,6 +160,7 @@ const rgbToHsl = ({ r, g, b }: RGB): HSL => {
         break;
     }
   }
+
   return { h, s: s * 100, l: l * 100 };
 };
 
@@ -228,6 +236,7 @@ const ColorPicker = ({
           s: parsed.v === 0 ? prev.s : parsed.s,
           v: parsed.v,
         };
+
         return Math.abs(prev.h - next.h) < 0.5 && Math.abs(prev.s - next.s) < 0.5 && Math.abs(prev.v - next.v) < 0.5
           ? prev
           : next;
@@ -258,6 +267,7 @@ const ColorPicker = ({
     (hex: string) => {
       setRecent((prev) => {
         const filtered = prev.filter((c) => c.toLowerCase() !== hex.toLowerCase());
+
         return [hex, ...filtered].slice(0, recentLimit);
       });
     },
@@ -274,6 +284,7 @@ const ColorPicker = ({
       seen.add(key);
       unique.push(c);
     }
+
     return unique.slice(0, 16);
   }, [swatchesProp, recent]);
 
@@ -313,6 +324,7 @@ const ColorPickerTrigger = ({
   ...props
 }: ColorPickerTriggerProps) => {
   const ctx = useColorPicker();
+
   return (
     <PopoverTrigger
       render={
@@ -321,7 +333,7 @@ const ColorPickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="color-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums uppercase outline-none transition-colors',
+            'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm uppercase tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
@@ -359,6 +371,13 @@ const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div
     ctx.setHsv({ h: ctx.hsv.h, s: x * 100, v: (1 - y) * 100 });
   };
 
+  // A cancelled or lost capture (touch scroll, alt-tab) ends the drag too, or the thumb would follow a hovering pointer.
+  const endDrag = () => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    ctx.pushSwatch(ctx.hex.toLowerCase());
+  };
+
   const pureHue = rgbToHex(hsvToRgb({ h: ctx.hsv.h, s: 100, v: 100 }));
 
   return (
@@ -388,9 +407,15 @@ const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div
       }}
       onPointerUp={(e) => {
         props.onPointerUp?.(e);
-        if (!draggingRef.current) return;
-        draggingRef.current = false;
-        ctx.pushSwatch(ctx.hex.toLowerCase());
+        endDrag();
+      }}
+      onPointerCancel={(e) => {
+        props.onPointerCancel?.(e);
+        endDrag();
+      }}
+      onLostPointerCapture={(e) => {
+        props.onLostPointerCapture?.(e);
+        endDrag();
       }}
       onKeyDown={(e) => {
         props.onKeyDown?.(e);
@@ -454,6 +479,12 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
     ctx.setHsv({ h: x * 360, s: ctx.hsv.s, v: ctx.hsv.v });
   };
 
+  const endDrag = () => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    ctx.pushSwatch(ctx.hex.toLowerCase());
+  };
+
   return (
     <div
       ref={composedRef}
@@ -480,9 +511,15 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
       }}
       onPointerUp={(e) => {
         props.onPointerUp?.(e);
-        if (!draggingRef.current) return;
-        draggingRef.current = false;
-        ctx.pushSwatch(ctx.hex.toLowerCase());
+        endDrag();
+      }}
+      onPointerCancel={(e) => {
+        props.onPointerCancel?.(e);
+        endDrag();
+      }}
+      onLostPointerCapture={(e) => {
+        props.onLostPointerCapture?.(e);
+        endDrag();
       }}
       onKeyDown={(e) => {
         props.onKeyDown?.(e);
@@ -518,6 +555,7 @@ const ColorPickerFormatTabs = ({
 }: Omit<React.ComponentProps<typeof Tabs>, 'value' | 'onValueChange'>) => {
   const ctx = useColorPicker();
   const formats: ColorFormat[] = ['hex', 'rgb', 'hsl'];
+
   return (
     <Tabs
       {...props}
@@ -537,6 +575,50 @@ const ColorPickerFormatTabs = ({
   );
 };
 
+interface ChannelInputProps {
+  value: number;
+  max: number;
+  onCommit: (n: number) => void;
+  'aria-label': string;
+}
+
+// Keeps the raw text while editing, so clearing a field doesn't snap it to 0; out-of-range input clamps on blur or Enter.
+const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: ChannelInputProps) => {
+  const [draft, setDraft] = React.useState<string | null>(null);
+
+  const parse = (raw: string) => {
+    if (!/^\d+$/.test(raw.trim())) return null;
+
+    return parseInt(raw, 10);
+  };
+
+  const commit = () => {
+    if (draft === null) return;
+    const n = parse(draft);
+    if (n !== null) onCommit(clamp(n, 0, max));
+    setDraft(null);
+  };
+
+  return (
+    <Input
+      value={draft ?? String(Math.round(value))}
+      onChange={(e) => {
+        const raw = e.target.value;
+        setDraft(raw);
+        const n = parse(raw);
+        if (n !== null && n <= max) onCommit(n);
+      }}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') commit();
+      }}
+      inputMode="numeric"
+      aria-label={ariaLabel}
+      className="h-8 px-2 text-center font-mono text-xs tabular-nums"
+    />
+  );
+};
+
 const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
   const rgb = hexToRgb(ctx.hex) ?? { r: 0, g: 0, b: 0 };
@@ -549,6 +631,7 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
   const parseHex = (raw: string) => {
     const v = raw.trim();
     if (!/^#?[0-9a-fA-F]{6}$/.test(v)) return null;
+
     return (v.startsWith('#') ? v : `#${v}`).toLowerCase();
   };
 
@@ -586,35 +669,31 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
             if (e.key === 'Enter') commitHexDraft();
           }}
           aria-label="Hex color"
-          className="h-8 text-xs tabular-nums uppercase"
+          className="h-8 text-xs uppercase tabular-nums"
         />
       </div>
     );
   }
   if (ctx.format === 'rgb') {
-    const setChannel = (k: keyof RGB, raw: string) => {
-      const n = clamp(parseInt(raw || '0', 10) || 0, 0, 255);
-      const next = { ...rgb, [k]: n };
-      ctx.setHex(rgbToHex(next));
+    const setChannel = (k: keyof RGB, n: number) => {
+      ctx.setHex(rgbToHex({ ...rgb, [k]: n }));
     };
+
     return (
       <div {...props} data-slot="color-picker-format-inputs" className={cn('grid grid-cols-3 gap-1.5', className)}>
         {(['r', 'g', 'b'] as const).map((k) => (
-          <Input
+          <ChannelInput
             key={k}
-            value={Math.round(rgb[k])}
-            onChange={(e) => setChannel(k, e.target.value)}
-            inputMode="numeric"
+            value={rgb[k]}
+            max={255}
+            onCommit={(n) => setChannel(k, n)}
             aria-label={`${k.toUpperCase()} channel`}
-            className="h-8 px-2 text-center font-mono text-xs tabular-nums"
           />
         ))}
       </div>
     );
   }
-  const setHslChannel = (k: keyof HSL, raw: string) => {
-    const max = k === 'h' ? 360 : 100;
-    const n = clamp(parseInt(raw || '0', 10) || 0, 0, max);
+  const setHslChannel = (k: keyof HSL, n: number) => {
     const next = { ...hsl, [k]: n };
     const v = next.l / 100;
     const sn = next.s / 100;
@@ -622,16 +701,16 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
     const hsvS = max2 === 0 ? 0 : 2 * (1 - v / max2);
     ctx.setHsv({ h: next.h, s: hsvS * 100, v: max2 * 100 });
   };
+
   return (
     <div {...props} data-slot="color-picker-format-inputs" className={cn('grid grid-cols-3 gap-1.5', className)}>
       {(['h', 's', 'l'] as const).map((k) => (
-        <Input
+        <ChannelInput
           key={k}
-          value={Math.round(hsl[k])}
-          onChange={(e) => setHslChannel(k, e.target.value)}
-          inputMode="numeric"
+          value={hsl[k]}
+          max={k === 'h' ? 360 : 100}
+          onCommit={(n) => setHslChannel(k, n)}
           aria-label={`${k.toUpperCase()} channel`}
-          className="h-8 px-2 text-center font-mono text-xs tabular-nums"
         />
       ))}
     </div>
@@ -684,10 +763,12 @@ const ColorPickerEyedropper = ({
 const ColorPickerSwatches = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
   if (ctx.swatches.length === 0) return null;
+
   return (
     <div {...props} data-slot="color-picker-swatches" className={cn('flex flex-wrap gap-1', className)}>
       {ctx.swatches.map((s) => {
         const active = s.toLowerCase() === ctx.hex.toLowerCase();
+
         return (
           <button
             key={s}
@@ -711,28 +792,32 @@ const ColorPickerSwatches = ({ className, ...props }: React.ComponentProps<'div'
   );
 };
 
-const ColorPickerContent = ({ className, ...props }: React.ComponentProps<typeof PopoverContent>) => {
+/** Renders the default layout; pass children to compose your own from the parts. */
+const ColorPickerContent = ({ className, children, ...props }: React.ComponentProps<typeof PopoverContent>) => {
   const ctx = useColorPicker();
+
   return (
     <PopoverContent align="start" data-slot="color-picker-content" className={cn('w-64 p-3', className)} {...props}>
-      <div className="flex flex-col gap-3">
-        <ColorPickerArea />
-        <div className="flex items-center gap-2">
-          <span
-            aria-hidden
-            data-slot="color-picker-preview"
-            className="inline-block size-8 shrink-0 rounded-sm border border-border"
-            style={{ backgroundColor: ctx.hex }}
-          />
-          <div className="flex-1">
-            <ColorPickerHueSlider />
+      {children ?? (
+        <div className="flex flex-col gap-3">
+          <ColorPickerArea />
+          <div className="flex items-center gap-2">
+            <span
+              aria-hidden
+              data-slot="color-picker-preview"
+              className="inline-block size-8 shrink-0 rounded-sm border border-border"
+              style={{ backgroundColor: ctx.hex }}
+            />
+            <div className="flex-1">
+              <ColorPickerHueSlider />
+            </div>
+            <ColorPickerEyedropper />
           </div>
-          <ColorPickerEyedropper />
+          <ColorPickerFormatTabs />
+          <ColorPickerFormatInputs />
+          <ColorPickerSwatches />
         </div>
-        <ColorPickerFormatTabs />
-        <ColorPickerFormatInputs />
-        <ColorPickerSwatches />
-      </div>
+      )}
     </PopoverContent>
   );
 };

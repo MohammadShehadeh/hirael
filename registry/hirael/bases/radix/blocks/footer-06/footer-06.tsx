@@ -95,19 +95,19 @@ const Footer06 = () => {
           width={1920}
           height={1080}
           quality={75}
-          className="absolute inset-0 h-full w-full rotate-180 object-cover dark:opacity-40 blur-[1px] md:blur-[2px]"
+          className="absolute inset-0 h-full w-full rotate-180 object-cover blur-[1px] md:blur-[2px] dark:opacity-40"
         />
         <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10" />
-        <div className="relative z-10 flex h-full flex-col items-start justify-between px-4 pb-2 pt-2 sm:justify-center sm:pb-4 md:px-8">
+        <div className="relative z-10 flex h-full flex-col items-start justify-between px-4 pt-2 pb-2 sm:justify-center sm:pb-4 md:px-8">
           <div className={cn(ENTER, 'relative flex flex-col items-start justify-start')}>
-            <p className="mt-2 max-w-lg text-start text-lg font-semibold tracking-tight sm:mt-3 sm:text-xl md:text-3xl text-white">
+            <p className="mt-2 max-w-lg text-start text-lg font-semibold tracking-tight text-white sm:mt-3 sm:text-xl md:text-3xl">
               Stop fighting YAML. Start orchestrating CI/CD.
             </p>
             <p className="max-w-xl pt-2 text-start text-xs text-white/80 sm:pt-3 sm:text-sm">
               Connect a repository, see every workflow as a graph, and edit it without leaving the page.
             </p>
           </div>
-          <div className="mt-4 flex w-full flex-row flex-wrap items-stretch justify-center gap-2 sm:mt-6 md:items-start md:justify-start md:gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none delay-150">
+          <div className="mt-4 flex w-full animate-in flex-row flex-wrap items-stretch justify-center gap-2 delay-150 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none sm:mt-6 md:items-start md:justify-start md:gap-4">
             <Button asChild className="h-10 w-full sm:h-12 md:w-52">
               <a href="#" className="group flex items-center gap-2">
                 Get started
@@ -118,7 +118,7 @@ const Footer06 = () => {
         </div>
       </div>
 
-      <div className="px-4 pb-2 pt-12 md:pb-12">
+      <div className="px-4 pt-12 pb-2 md:pb-12">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div data-slot="footer-brand" className={cn(ENTER, 'lg:col-span-2')}>
@@ -126,7 +126,7 @@ const Footer06 = () => {
                 <BrandMark className="size-5" />
                 <span className="text-base font-semibold tracking-tight">Hirael</span>
               </a>
-              <p className="mb-4 max-w-sm text-balance text-sm text-muted-foreground">
+              <p className="mb-4 max-w-sm text-sm text-balance text-muted-foreground">
                 A visual editor for CI pipelines. Your workflow files stay in the repo, and the graph stays in sync.
               </p>
               <div className="flex gap-1">

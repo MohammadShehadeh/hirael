@@ -5,7 +5,7 @@ import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring 
 
 import { cn } from '@/lib/utils';
 
-interface TiltCardProps extends React.ComponentProps<'div'> {
+export interface TiltCardProps extends React.ComponentProps<'div'> {
   /** Maximum tilt on each axis, in degrees. */
   max?: number;
   /** Scale applied while pointing. */
@@ -26,6 +26,8 @@ const TiltCard = ({
   scale = 1,
   perspective = 800,
   glare = false,
+  onPointerMove: onPointerMoveProp,
+  onPointerLeave: onPointerLeaveProp,
   ...props
 }: TiltCardProps) => {
   const reduced = useReducedMotion();
@@ -36,7 +38,8 @@ const TiltCard = ({
   const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (reduced) return;
+    onPointerMoveProp?.(event);
+    if (event.defaultPrevented || reduced || event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
     const px = (event.clientX - rect.left) / rect.width;
     const py = (event.clientY - rect.top) / rect.height;
@@ -46,7 +49,8 @@ const TiltCard = ({
     glareY.set(py * 100);
   };
 
-  const reset = () => {
+  const onPointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerLeaveProp?.(event);
     rotateX.set(0);
     rotateY.set(0);
   };
@@ -55,7 +59,7 @@ const TiltCard = ({
     <div
       data-slot="tilt-card"
       onPointerMove={onPointerMove}
-      onPointerLeave={reset}
+      onPointerLeave={onPointerLeave}
       className={cn('group', className)}
       style={{ perspective: `${perspective}px`, ...style }}
       {...props}

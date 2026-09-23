@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { GlobeIcon } from 'lucide-react';
 
 import { useT } from '@/lib/demo-locale';

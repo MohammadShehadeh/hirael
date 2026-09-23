@@ -22,6 +22,9 @@ interface VideoPlayerCtx {
   setVolume: (volume: number) => void;
   toggleMute: () => void;
   toggleFullscreen: () => void;
+  fullscreenSupported: boolean;
+  /** Shows the controls and restarts the idle timer. */
+  wake: () => void;
   media: MediaHandlers;
 }
 
@@ -44,6 +47,7 @@ const useVideoPlayer = () => {
   if (!ctx) {
     throw new Error('VideoPlayer compound parts must be used inside <VideoPlayer>');
   }
+
   return ctx;
 };
 
@@ -54,10 +58,14 @@ const formatTime = (seconds: number) => {
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
   const pad = (n: number) => String(n).padStart(2, '0');
+
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
 };
 
 const IDLE_MS = 2500;
+
+/** iOS Safari only offers native fullscreen on the video element itself. */
+type WebkitVideoElement = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
 
 export interface VideoPlayerProps extends React.ComponentProps<'div'> {
   /** Hide the controls and cursor after this many ms without pointer or key input while playing. */
@@ -75,6 +83,7 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
   const [volume, setVolumeState] = React.useState(1);
   const [muted, setMuted] = React.useState(false);
   const [fullscreen, setFullscreen] = React.useState(false);
+  const [fullscreenSupported, setFullscreenSupported] = React.useState(true);
 
   // Idle lives on the DOM and motion fades the controls: pointer movement never re-renders the player.
   const setIdle = React.useCallback((idle: boolean) => {
@@ -94,8 +103,14 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
   }, [idleDelay, setIdle]);
 
   React.useEffect(() => {
+    const video = videoRef.current as WebkitVideoElement | null;
+    setFullscreenSupported(
+      Boolean(document.fullscreenEnabled && rootRef.current?.requestFullscreen) ||
+        typeof video?.webkitEnterFullscreen === 'function',
+    );
     const onFullscreen = () => setFullscreen(document.fullscreenElement === rootRef.current);
     document.addEventListener('fullscreenchange', onFullscreen);
+
     return () => {
       document.removeEventListener('fullscreenchange', onFullscreen);
       if (idleTimerRef.current) window.clearTimeout(idleTimerRef.current);
@@ -175,8 +190,17 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
   const toggleFullscreen = React.useCallback(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
-    else void root.requestFullscreen?.().catch(() => undefined);
+    if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => undefined);
+
+      return;
+    }
+    if (document.fullscreenEnabled && root.requestFullscreen) {
+      void root.requestFullscreen().catch(() => undefined);
+
+      return;
+    }
+    (videoRef.current as WebkitVideoElement | null)?.webkitEnterFullscreen?.();
   }, []);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -212,6 +236,8 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
       setVolume,
       toggleMute,
       toggleFullscreen,
+      fullscreenSupported,
+      wake,
       media,
     }),
     [
@@ -228,6 +254,8 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
       setVolume,
       toggleMute,
       toggleFullscreen,
+      fullscreenSupported,
+      wake,
       media,
     ],
   );
@@ -257,16 +285,23 @@ const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, 
   );
 };
 
-const VideoPlayerVideo = ({ className, onClick, ref, ...props }: React.ComponentProps<'video'>) => {
-  const { attachVideo, toggle, media } = useVideoPlayer();
+const VideoPlayerVideo = ({ className, onClick, onPointerDown, ref, ...props }: React.ComponentProps<'video'>) => {
+  const { attachVideo, toggle, wake, playing, media } = useVideoPlayer();
+  const pointerTypeRef = React.useRef('');
+  // Kept in a ref so an inline consumer ref doesn't detach and re-attach the video every render.
+  const consumerRef = React.useRef(ref);
+  React.useLayoutEffect(() => {
+    consumerRef.current = ref;
+  });
   // The player needs the element too, so a consumer ref is attached alongside, not instead.
   const composedRef = React.useCallback(
     (video: HTMLVideoElement | null) => {
       attachVideo(video);
-      if (typeof ref === 'function') return ref(video);
-      if (ref) ref.current = video;
+      const current = consumerRef.current;
+      if (typeof current === 'function') current(video);
+      else if (current) current.current = video;
     },
-    [attachVideo, ref],
+    [attachVideo],
   );
   // The player's own media handlers always run; a consumer's run after them instead of replacing them.
   const handlers = Object.fromEntries(
@@ -286,9 +321,16 @@ const VideoPlayerVideo = ({ className, onClick, ref, ...props }: React.Component
       playsInline
       preload="metadata"
       className={cn('block size-full object-contain', className)}
+      onPointerDown={(event) => {
+        pointerTypeRef.current = event.pointerType;
+        onPointerDown?.(event);
+      }}
       onClick={(event) => {
         onClick?.(event);
-        if (!event.defaultPrevented) toggle();
+        if (event.defaultPrevented) return;
+        // A tap on a playing video reveals the controls; pausing is left to the play button.
+        if (pointerTypeRef.current === 'touch' && playing) wake();
+        else toggle();
       }}
       {...props}
       {...handlers}
@@ -312,7 +354,18 @@ const VideoPlayerControls = ({ className, ...props }: React.ComponentProps<'div'
 
 const controlButton = 'size-8';
 
-const VideoPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Button>) => {
+export interface VideoPlayerPlayProps extends React.ComponentProps<typeof Button> {
+  playLabel?: string;
+  pauseLabel?: string;
+}
+
+const VideoPlayerPlay = ({
+  playLabel = 'Play',
+  pauseLabel = 'Pause',
+  onClick,
+  className,
+  ...props
+}: VideoPlayerPlayProps) => {
   const { playing, toggle } = useVideoPlayer();
 
   return (
@@ -321,8 +374,11 @@ const VideoPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Bu
       variant="ghost"
       size="icon"
       data-slot="video-player-play"
-      aria-label={playing ? 'Pause' : 'Play'}
-      onClick={toggle}
+      aria-label={playing ? pauseLabel : playLabel}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) toggle();
+      }}
       className={cn(controlButton, className)}
       {...props}
     >
@@ -331,7 +387,11 @@ const VideoPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Bu
   );
 };
 
-const VideoPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface VideoPlayerSeekProps extends React.ComponentProps<'div'> {
+  seekLabel?: string;
+}
+
+const VideoPlayerSeek = ({ seekLabel = 'Seek', className, ...props }: VideoPlayerSeekProps) => {
   const { duration, currentTime, buffered, seek } = useVideoPlayer();
   const [scrub, setScrub] = React.useState<number | null>(null);
 
@@ -358,7 +418,7 @@ const VideoPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) =
         max={max}
         step={0.1}
         disabled={!hasDuration}
-        aria-label="Seek"
+        aria-label={seekLabel}
         onValueChange={(values) => setScrub(values[0] ?? 0)}
         onValueCommit={(values) => {
           seek(values[0] ?? 0);
@@ -383,7 +443,7 @@ const VideoPlayerTime = ({ mode = 'elapsed', className, ...props }: VideoPlayerT
     <span
       data-slot="video-player-time"
       data-mode={mode}
-      className={cn('shrink-0 px-1 text-xs tabular-nums text-muted-foreground', className)}
+      className={cn('shrink-0 px-1 text-xs text-muted-foreground tabular-nums', className)}
       {...props}
     >
       {mode === 'remaining' && label !== '--:--' ? `-${label}` : label}
@@ -391,7 +451,19 @@ const VideoPlayerTime = ({ mode = 'elapsed', className, ...props }: VideoPlayerT
   );
 };
 
-const VideoPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface VideoPlayerVolumeProps extends React.ComponentProps<'div'> {
+  muteLabel?: string;
+  unmuteLabel?: string;
+  volumeLabel?: string;
+}
+
+const VideoPlayerVolume = ({
+  muteLabel = 'Mute',
+  unmuteLabel = 'Unmute',
+  volumeLabel = 'Volume',
+  className,
+  ...props
+}: VideoPlayerVolumeProps) => {
   const { volume, muted, setVolume, toggleMute } = useVideoPlayer();
   const silent = muted || volume === 0;
 
@@ -402,7 +474,7 @@ const VideoPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
         variant="ghost"
         size="icon"
         data-slot="video-player-mute"
-        aria-label={silent ? 'Unmute' : 'Mute'}
+        aria-label={silent ? unmuteLabel : muteLabel}
         onClick={toggleMute}
         className={controlButton}
       >
@@ -413,7 +485,7 @@ const VideoPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
         min={0}
         max={1}
         step={0.01}
-        aria-label="Volume"
+        aria-label={volumeLabel}
         onValueChange={(values) => setVolume(values[0] ?? 0)}
         className="w-16 max-sm:hidden"
       />
@@ -421,8 +493,21 @@ const VideoPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
   );
 };
 
-const VideoPlayerFullscreen = ({ className, ...props }: React.ComponentProps<typeof Button>) => {
-  const { fullscreen, toggleFullscreen } = useVideoPlayer();
+export interface VideoPlayerFullscreenProps extends React.ComponentProps<typeof Button> {
+  enterLabel?: string;
+  exitLabel?: string;
+}
+
+const VideoPlayerFullscreen = ({
+  enterLabel = 'Full screen',
+  exitLabel = 'Exit full screen',
+  onClick,
+  className,
+  ...props
+}: VideoPlayerFullscreenProps) => {
+  const { fullscreen, fullscreenSupported, toggleFullscreen } = useVideoPlayer();
+
+  if (!fullscreenSupported) return null;
 
   return (
     <Button
@@ -430,8 +515,11 @@ const VideoPlayerFullscreen = ({ className, ...props }: React.ComponentProps<typ
       variant="ghost"
       size="icon"
       data-slot="video-player-fullscreen"
-      aria-label={fullscreen ? 'Exit full screen' : 'Full screen'}
-      onClick={toggleFullscreen}
+      aria-label={fullscreen ? exitLabel : enterLabel}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) toggleFullscreen();
+      }}
       className={cn(controlButton, className)}
       {...props}
     >

@@ -21,7 +21,7 @@ const Asme = () => {
           'asme',
           inter.variable,
           instrumentSerif.variable,
-          'relative min-h-svh bg-background text-foreground antialiased [font-family:var(--font-asme-sans),ui-sans-serif,sans-serif]',
+          'relative min-h-svh bg-background [font-family:var(--font-asme-sans),ui-sans-serif,sans-serif] text-foreground antialiased',
         )}
       >
         <AsmeStyles />

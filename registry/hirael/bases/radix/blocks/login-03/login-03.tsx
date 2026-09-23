@@ -37,6 +37,7 @@ const BrandMark = ({ className }: BrandMarkProps) => {
 
 const jitter = (i: number) => {
   const value = Math.sin(i + 1) * 10_000;
+
   return value - Math.floor(value);
 };
 
@@ -115,10 +116,10 @@ const Login03 = () => {
 
         <figure style={stagger(4)} className={cn(ENTER, 'relative z-10 mt-auto flex flex-col gap-3')}>
           <blockquote className="font-serif text-2xl leading-[1.25] tracking-tight md:text-3xl">
-            We wired up auth in an afternoon and <span className="italic text-foreground">never looked back</span>. The
+            We wired up auth in an afternoon and <span className="text-foreground italic">never looked back</span>. The
             source lives in our repo, so it bends to us.
           </blockquote>
-          <figcaption className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+          <figcaption className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
             <span>Platform team</span>
             <span aria-hidden className="text-border">
               |

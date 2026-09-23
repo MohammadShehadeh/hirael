@@ -45,7 +45,7 @@ const AvatarUploadDemo = () => {
   return (
     <div className="grid w-full max-w-xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Profile photo · initials fallback, circle crop',
             ar: 'صورة الملف الشخصي · أحرف بديلة، قص دائري',
@@ -74,7 +74,7 @@ const AvatarUploadDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Workspace logo · square, button trigger',
             ar: 'شعار مساحة العمل · مربع، زر رفع',

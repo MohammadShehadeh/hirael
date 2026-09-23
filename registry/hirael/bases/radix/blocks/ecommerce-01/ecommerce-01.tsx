@@ -162,14 +162,14 @@ const Ecommerce01 = () => {
 
   return (
     <section data-slot="ecommerce" className="bg-background py-20 sm:py-28">
-      <div className="container flex w-full flex-col gap-10">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-10 px-4">
         <div data-slot="ecommerce-header" className="flex flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Shop</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Shop</span>
           <h2
             style={stagger(1, 70)}
             className={cn(
               ENTER,
-              'max-w-xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              'max-w-xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
             )}
           >
             The everyday carry edit.
@@ -200,7 +200,7 @@ const Ecommerce01 = () => {
               </Button>
             ))}
           </div>
-          <div className="flex items-center gap-3 text-xs uppercase text-muted-foreground">
+          <div className="flex items-center gap-3 text-xs text-muted-foreground uppercase">
             <span className="tabular-nums">
               {visible.length} product{visible.length === 1 ? '' : 's'}
             </span>
@@ -213,7 +213,7 @@ const Ecommerce01 = () => {
                 key={cartCount}
                 className={cn(
                   cartCount > 0 &&
-                    'animate-in fade-in zoom-in-95 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none',
+                    'animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] zoom-in-95 fade-in motion-reduce:animate-none',
                   'tabular-nums',
                   cartCount > 0 && 'text-foreground',
                 )}
@@ -233,6 +233,7 @@ const Ecommerce01 = () => {
             const isSaved = saved.includes(p.id);
             const added = justAdded === p.id;
             const inCart = cart[p.id] ?? 0;
+
             return (
               <article
                 key={p.id}
@@ -269,7 +270,7 @@ const Ecommerce01 = () => {
                 </div>
 
                 <div className="flex flex-col gap-1 pt-3">
-                  <span className="text-xs uppercase text-muted-foreground">{CATEGORY_LABELS[p.category]}</span>
+                  <span className="text-xs text-muted-foreground uppercase">{CATEGORY_LABELS[p.category]}</span>
                   <h3 className="text-sm font-medium tracking-[-0.01em] text-pretty">{p.name}</h3>
                   <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Rating value={p.rating} step={0.5} readOnly size="sm" aria-label={`Rated ${p.rating} out of 5`} />
@@ -279,7 +280,7 @@ const Ecommerce01 = () => {
                     <span className="flex items-baseline gap-1.5">
                       <span className="text-sm font-semibold tabular-nums">{p.price}</span>
                       {p.compareAt && (
-                        <span className="text-xs tabular-nums text-muted-foreground line-through">{p.compareAt}</span>
+                        <span className="text-xs text-muted-foreground tabular-nums line-through">{p.compareAt}</span>
                       )}
                     </span>
                     <Button
@@ -292,7 +293,7 @@ const Ecommerce01 = () => {
                     >
                       <span
                         key={added ? 'added' : 'add'}
-                        className="inline-flex items-center gap-1.5 animate-in fade-in zoom-in-95 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
+                        className="inline-flex animate-in items-center gap-1.5 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] zoom-in-95 fade-in motion-reduce:animate-none"
                       >
                         {added ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
                         {added ? 'Added' : 'Add'}

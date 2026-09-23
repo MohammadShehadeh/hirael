@@ -34,11 +34,12 @@ export interface MaintenanceStatusProps extends React.ComponentProps<'span'> {
 
 const MaintenanceStatus = ({ tone = 'warning', className, children, ...props }: MaintenanceStatusProps) => {
   const dot = tone === 'success' ? 'bg-success' : tone === 'destructive' ? 'bg-destructive' : 'bg-warning';
+
   return (
     <span
       data-slot="maintenance-status"
       data-tone={tone}
-      className={cn('inline-flex items-center gap-2 text-xs uppercase text-muted-foreground', className)}
+      className={cn('inline-flex items-center gap-2 text-xs text-muted-foreground uppercase', className)}
       {...props}
     >
       <span aria-hidden className="relative flex size-2">
@@ -54,7 +55,7 @@ const MaintenanceTitle = ({ className, ...props }: React.ComponentProps<'h1'>) =
   return (
     <h1
       data-slot="maintenance-title"
-      className={cn('font-serif text-5xl font-medium leading-none tracking-tight sm:text-6xl md:text-7xl', className)}
+      className={cn('font-serif text-5xl leading-none font-medium tracking-tight sm:text-6xl md:text-7xl', className)}
       {...props}
     />
   );
@@ -78,6 +79,7 @@ export interface MaintenanceWindowProps extends React.ComponentProps<'div'> {
 
 const MaintenanceWindow = ({ progress, progressLabel, className, children, ...props }: MaintenanceWindowProps) => {
   const pct = progress === undefined ? undefined : Math.max(0, Math.min(100, progress));
+
   return (
     <div
       data-slot="maintenance-window"
@@ -87,9 +89,9 @@ const MaintenanceWindow = ({ progress, progressLabel, className, children, ...pr
       <dl className="flex flex-col divide-y divide-border">{children}</dl>
       {pct !== undefined ? (
         <div className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between text-xs uppercase text-muted-foreground">
+          <div className="flex items-center justify-between text-xs text-muted-foreground uppercase">
             <span>{progressLabel ?? 'Window elapsed'}</span>
-            <span className="tabular-nums text-foreground">{Math.round(pct)}%</span>
+            <span className="text-foreground tabular-nums">{Math.round(pct)}%</span>
           </div>
           <div
             role="progressbar"
@@ -122,7 +124,7 @@ const MaintenanceWindowRow = ({ label, className, children, ...props }: Maintena
       {...props}
     >
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-sm tabular-nums text-foreground">{children}</dd>
+      <dd className="text-sm text-foreground tabular-nums">{children}</dd>
     </div>
   );
 };
@@ -130,7 +132,7 @@ const MaintenanceWindowRow = ({ label, className, children, ...props }: Maintena
 const MaintenanceUpdates = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div data-slot="maintenance-updates" className={cn('w-full border-t border-border pt-6', className)} {...props}>
-      <span className="text-xs uppercase text-muted-foreground">Follow updates</span>
+      <span className="text-xs text-muted-foreground uppercase">Follow updates</span>
       <ol className="mt-3 flex flex-col">{children}</ol>
     </div>
   );
@@ -150,7 +152,7 @@ const MaintenanceUpdate = ({ time, latest, className, children, ...props }: Main
       className={cn('flex items-baseline gap-4 border-b border-border py-3 last:border-b-0', className)}
       {...props}
     >
-      <span className="w-16 shrink-0 text-xs tabular-nums text-muted-foreground">{time}</span>
+      <span className="w-16 shrink-0 text-xs text-muted-foreground tabular-nums">{time}</span>
       <span className={cn('text-sm', latest ? 'text-foreground' : 'text-muted-foreground')}>{children}</span>
     </li>
   );
@@ -172,6 +174,7 @@ const NotifyPopover = () => {
     event.preventDefault();
     if (!EMAIL_PATTERN.test(email.trim())) {
       setError('Enter a valid email address.');
+
       return;
     }
     setError(null);
@@ -278,7 +281,7 @@ const Maintenance01 = () => {
             <NotifyPopover />
             <Button render={<a href="#" />} nativeButton={false} variant="outline" size="lg" className="group">
               Check status page
-              <ArrowUpRight className="size-4 transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
+              <ArrowUpRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
             </Button>
           </MaintenanceActions>
 

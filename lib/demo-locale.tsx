@@ -21,6 +21,7 @@ export const useDemoLocale = (): DemoLocale => {
 
 export const useT = () => {
   const locale = useDemoLocale();
+
   return function t<T>(pair: { en: T; ar: T }): T {
     return pair[locale];
   };

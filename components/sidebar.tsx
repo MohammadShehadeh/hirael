@@ -53,6 +53,7 @@ const sectionForPath = (pathname: string): Section => {
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
   if (pathname === '/changelog') return 'changelog';
+
   return 'components';
 };
 
@@ -189,7 +190,7 @@ const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProp
         )}
       >
         <span className="truncate">{children}</span>
-        {count !== undefined && <span className="ms-auto text-xs tabular-nums text-muted-foreground">{count}</span>}
+        {count !== undefined && <span className="ms-auto text-xs text-muted-foreground tabular-nums">{count}</span>}
       </Link>
     </li>
   );
@@ -208,6 +209,7 @@ const ComponentTree = ({ pathname }: SectionTreeProps) => {
       {COMPONENT_CATEGORY_ORDER.map((category) => {
         const components = REGISTRY_BY_CATEGORY[category];
         if (!components.length) return null;
+
         return (
           <Folder
             key={category}
@@ -217,6 +219,7 @@ const ComponentTree = ({ pathname }: SectionTreeProps) => {
           >
             {components.map((entry) => {
               const href = entryHref(entry);
+
               return (
                 <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
                   {entry.title}
@@ -241,6 +244,7 @@ const BlockTree = ({ pathname }: SectionTreeProps) => {
           {categories.map((category) => {
             const href = `/blocks/${category.slug}`;
             const blockCount = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
+
             return (
               <FolderPageLink
                 key={category.slug}
@@ -267,6 +271,7 @@ const TemplateTree = ({ pathname }: SectionTreeProps) => {
       <Folder icon={LayoutTemplate} label="Templates">
         {TEMPLATES.map((entry) => {
           const href = entryHref(entry);
+
           return (
             <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
               {entry.title}
@@ -285,10 +290,12 @@ interface ReleaseTreeProps {
 
 const ReleaseTree = ({ releases, onNavigate }: ReleaseTreeProps) => {
   if (!releases.length) return null;
+
   return (
     <Folder icon={History} label="Releases">
       {releases.map((release) => {
         const hash = `#release-${release.slug}`;
+
         return (
           <li key={release.slug}>
             <a

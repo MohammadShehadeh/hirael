@@ -53,6 +53,7 @@ const Login02 = () => {
     if (!email.trim()) next.email = 'Enter your work email.';
     else if (!EMAIL_PATTERN.test(email)) next.email = "That doesn't look like a valid email.";
     if (!password) next.password = 'Enter your password.';
+
     return next;
   };
 
@@ -79,7 +80,7 @@ const Login02 = () => {
           </div>
 
           <div data-slot="login-header" className="mb-8 flex flex-col gap-2">
-            <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+            <span style={stagger(1)} className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>
               Sign in
             </span>
             <h1 style={stagger(2)} className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight sm:text-5xl')}>
@@ -127,7 +128,7 @@ const Login02 = () => {
                   <FieldLabel htmlFor="login02-password">Password</FieldLabel>
                   <a
                     href="#"
-                    className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
                   >
                     Reset
                   </a>
@@ -181,7 +182,7 @@ const Login02 = () => {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-32 -end-24 -z-10 size-[420px] rounded-full bg-primary opacity-[0.18] blur-3xl"
+          className="pointer-events-none absolute -end-24 -bottom-32 -z-10 size-[420px] rounded-full bg-primary opacity-[0.18] blur-3xl"
         />
 
         <figure className="flex w-full max-w-md flex-col gap-8 px-8 py-12 md:gap-10 md:px-10 lg:px-12 lg:py-16">
@@ -196,7 +197,7 @@ const Login02 = () => {
             style={stagger(4)}
             className={cn(ENTER, 'font-serif text-2xl leading-[1.3] tracking-tight md:text-3xl lg:text-4xl')}
           >
-            The parts compose just like the primitives we <span className="italic text-foreground">already use</span>,
+            The parts compose just like the primitives we <span className="text-foreground italic">already use</span>,
             so we shipped the new dashboard without learning anything new.
           </blockquote>
 
@@ -206,7 +207,7 @@ const Login02 = () => {
             </span>
             <span className="flex flex-col">
               <span className="text-sm font-medium">Mara Riviera</span>
-              <span className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
+              <span className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
                 <span>Eng lead</span>
                 <span aria-hidden className="text-border">
                   |
@@ -222,7 +223,7 @@ const Login02 = () => {
           >
             {STATS.map((stat) => (
               <div key={stat.label} className="bg-card px-4 py-3">
-                <dt className="text-[10px] uppercase text-muted-foreground">{stat.label}</dt>
+                <dt className="text-[10px] text-muted-foreground uppercase">{stat.label}</dt>
                 <dd className="mt-0.5 text-xl font-medium tabular-nums">{stat.value}</dd>
               </div>
             ))}

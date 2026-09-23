@@ -73,7 +73,7 @@ const HERO_BRANDS: MarqueeBrand[] = [
 
 export const HeroSection = () => {
   return (
-    <section className="flex flex-1 items-end px-6 pb-6 pt-20">
+    <section className="flex flex-1 items-end px-6 pt-20 pb-6">
       <div className="relative mx-auto h-[calc(100dvh-96px)] w-full max-w-[88rem] overflow-hidden rounded-2xl">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }} />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/10" />
@@ -83,13 +83,13 @@ export const HeroSection = () => {
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">
-          <h1 className="mb-4 max-w-xl text-5xl font-medium leading-tight tracking-[-0.04em] text-black md:text-6xl">
+          <h1 className="mb-4 max-w-xl text-5xl leading-tight font-medium tracking-[-0.04em] text-black md:text-6xl">
             Your Wealth
             <br />
             Works
           </h1>
 
-          <p className="mb-8 max-w-md text-base leading-relaxed text-black/70 [font-family:var(--font-inter),ui-sans-serif,system-ui,sans-serif] md:text-lg">
+          <p className="mb-8 max-w-md [font-family:var(--font-inter),ui-sans-serif,system-ui,sans-serif] text-base leading-relaxed text-black/70 md:text-lg">
             An automated, reward-powered digital dollar built for native passive earnings and effortless connection into
             DeFi.
           </p>

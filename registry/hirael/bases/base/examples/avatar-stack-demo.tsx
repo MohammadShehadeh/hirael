@@ -20,7 +20,7 @@ const AvatarStackDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex flex-wrap items-end gap-6">
           {(
             [
@@ -40,7 +40,7 @@ const AvatarStackDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Spacing', ar: 'التباعد' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Spacing', ar: 'التباعد' })}</p>
         <div className="flex flex-wrap items-center gap-8">
           {(['tight', 'normal', 'loose'] as const).map((spacing) => (
             <AvatarStack key={spacing} spacing={spacing}>
@@ -53,7 +53,7 @@ const AvatarStackDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'With caption', ar: 'مع تسمية' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'With caption', ar: 'مع تسمية' })}</p>
         <div className="flex items-center gap-3">
           <AvatarStack>
             <AvatarStackItem>{t({ en: 'MR', ar: 'سر' })}</AvatarStackItem>
@@ -79,7 +79,7 @@ const AvatarStackDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Clickable · render', ar: 'قابل للنقر · render' })}
         </p>
         <AvatarStack>

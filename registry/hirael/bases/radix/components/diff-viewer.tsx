@@ -23,11 +23,64 @@ const splitLines = (text: string) => {
   if (text === '') return [];
   const lines = text.split(/\r?\n/);
   if (lines[lines.length - 1] === '') lines.pop();
+
   return lines;
 };
 
-/** Cells above this are not worth a full LCS table; fall back to replace-all. */
-const MAX_LCS_CELLS = 4_000_000;
+/** Edit distances above this fall back to replace-all; the trace grows with its square. */
+const MAX_EDIT_DISTANCE = 1000;
+
+type DiffOp = 'equal' | 'remove' | 'add';
+
+const backtrackOps = (trace: Int32Array[], n: number, m: number) => {
+  const ops: DiffOp[] = [];
+  let x = n;
+  let y = m;
+  for (let d = trace.length - 1; d >= 0; d--) {
+    const snapshot = trace[d];
+    const at = (k: number) => snapshot[k + d + 1];
+    const k = x - y;
+    const prevK = k === -d || (k !== d && at(k - 1) < at(k + 1)) ? k + 1 : k - 1;
+    const prevX = at(prevK);
+    const prevY = prevX - prevK;
+    while (x > prevX && y > prevY) {
+      ops.push('equal');
+      x--;
+      y--;
+    }
+    if (d > 0) ops.push(x === prevX ? 'add' : 'remove');
+    x = prevX;
+    y = prevY;
+  }
+
+  return ops.reverse();
+};
+
+/** Myers' O(ND) shortest edit script, or null when the distance exceeds the cap. */
+const diffOps = (a: readonly string[], b: readonly string[]): DiffOp[] | null => {
+  const n = a.length;
+  const m = b.length;
+  const limit = Math.min(n + m, MAX_EDIT_DISTANCE);
+  const offset = limit + 1;
+  const v = new Int32Array(2 * limit + 3);
+  const trace: Int32Array[] = [];
+  for (let d = 0; d <= limit; d++) {
+    trace.push(v.slice(offset - d - 1, offset + d + 2));
+    for (let k = -d; k <= d; k += 2) {
+      let x =
+        k === -d || (k !== d && v[offset + k - 1] < v[offset + k + 1]) ? v[offset + k + 1] : v[offset + k - 1] + 1;
+      let y = x - k;
+      while (x < n && y < m && a[x] === b[y]) {
+        x++;
+        y++;
+      }
+      v[offset + k] = x;
+      if (x >= n && y >= m) return backtrackOps(trace, n, m);
+    }
+  }
+
+  return null;
+};
 
 const computeLineDiff = (oldValue: string, newValue: string): DiffLine[] => {
   const a = splitLines(oldValue);
@@ -58,44 +111,36 @@ const computeLineDiff = (oldValue: string, newValue: string): DiffLine[] => {
     endB--;
   }
 
-  const n = endA - start;
-  const m = endB - start;
-
-  if (n * m > MAX_LCS_CELLS) {
+  const ops = diffOps(a.slice(start, endA), b.slice(start, endB));
+  if (ops === null) {
     for (let i = start; i < endA; i++) remove(a[i]);
     for (let j = start; j < endB; j++) add(b[j]);
-  } else if (n > 0 || m > 0) {
-    // table[i][j] = LCS length of a[start+i..] and b[start+j..]
-    const cols = m + 1;
-    const table = new Int32Array((n + 1) * cols);
-    for (let i = n - 1; i >= 0; i--) {
-      for (let j = m - 1; j >= 0; j--) {
-        table[i * cols + j] =
-          a[start + i] === b[start + j]
-            ? table[(i + 1) * cols + j + 1] + 1
-            : Math.max(table[(i + 1) * cols + j], table[i * cols + j + 1]);
-      }
-    }
-    let i = 0;
-    let j = 0;
-    while (i < n && j < m) {
-      if (a[start + i] === b[start + j]) {
-        equal(a[start + i]);
+  } else {
+    // Within a hunk, removals are listed before additions.
+    let i = start;
+    let j = start;
+    let pendingAdds: string[] = [];
+    const flushAdds = () => {
+      pendingAdds.forEach(add);
+      pendingAdds = [];
+    };
+    for (const op of ops) {
+      if (op === 'equal') {
+        flushAdds();
+        equal(a[i]);
         i++;
         j++;
-      } else if (table[(i + 1) * cols + j] >= table[i * cols + j + 1]) {
-        remove(a[start + i]);
-        i++;
+      } else if (op === 'remove') {
+        remove(a[i++]);
       } else {
-        add(b[start + j]);
-        j++;
+        pendingAdds.push(b[j++]);
       }
     }
-    while (i < n) remove(a[start + i++]);
-    while (j < m) add(b[start + j++]);
+    flushAdds();
   }
 
   for (let k = endA; k < a.length; k++) equal(a[k]);
+
   return out;
 };
 
@@ -142,6 +187,7 @@ const buildItems = (lines: DiffLine[], context: number, expandedGaps: ReadonlySe
       items.push({ kind: 'gap', start, count });
     }
   }
+
   return items;
 };
 
@@ -186,6 +232,7 @@ const toSplitRows = (items: Item[]): SplitRow[] => {
     }
   }
   flush();
+
   return rows;
 };
 
@@ -208,6 +255,7 @@ const useDiffViewer = () => {
   if (!ctx) {
     throw new Error('DiffViewer compound parts must be used inside <DiffViewer>');
   }
+
   return ctx;
 };
 
@@ -256,6 +304,7 @@ const DiffViewer = ({
       if (l.type === 'add') a++;
       else if (l.type === 'remove') r++;
     }
+
     return { added: a, removed: r };
   }, [lines]);
 
@@ -271,6 +320,7 @@ const DiffViewer = ({
     setExpandedGaps((prev) => {
       const next = new Set(prev);
       next.add(start);
+
       return next;
     });
   }, []);
@@ -338,6 +388,7 @@ const DiffViewerHeader = ({ className, children, ...props }: React.ComponentProp
 const DiffViewerTitle = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   const { oldTitle, newTitle } = useDiffViewer();
   const same = !oldTitle || !newTitle || oldTitle === newTitle;
+
   return (
     <div
       data-slot="diff-viewer-title"
@@ -360,6 +411,7 @@ const DiffViewerTitle = ({ className, children, ...props }: React.ComponentProps
 
 const DiffViewerStats = ({ className, ...props }: Omit<React.ComponentProps<'div'>, 'children'>) => {
   const { added, removed } = useDiffViewer();
+
   return (
     <div data-slot="diff-viewer-stats" className={cn('flex items-center gap-2 tabular-nums', className)} {...props}>
       <span data-slot="diff-viewer-added" className="text-success">
@@ -376,17 +428,21 @@ export interface DiffViewerModeToggleProps extends Omit<
   React.ComponentProps<'div'>,
   'defaultValue' | 'dir' | 'children'
 > {
+  /** Accessible name of the toggle group. */
+  label?: string;
   unifiedLabel?: React.ReactNode;
   splitLabel?: React.ReactNode;
 }
 
 const DiffViewerModeToggle = ({
+  label = 'Diff layout',
   unifiedLabel = 'Unified',
   splitLabel = 'Split',
   className,
   ...props
 }: DiffViewerModeToggleProps) => {
   const { mode, setMode } = useDiffViewer();
+
   return (
     <ToggleGroup
       type="single"
@@ -397,17 +453,17 @@ const DiffViewerModeToggle = ({
         if (next === 'unified' || next === 'split') setMode(next);
       }}
       data-slot="diff-viewer-mode-toggle"
-      aria-label="Diff layout"
+      aria-label={label}
       className={cn('font-sans', className)}
       {...props}
     >
-      <ToggleGroupItem value="unified" aria-label="Unified">
+      <ToggleGroupItem value="unified">
         <Rows3 aria-hidden />
-        <span className="hidden sm:inline">{unifiedLabel}</span>
+        <span className="sr-only sm:not-sr-only">{unifiedLabel}</span>
       </ToggleGroupItem>
-      <ToggleGroupItem value="split" aria-label="Split">
+      <ToggleGroupItem value="split">
         <Columns2 aria-hidden />
-        <span className="hidden sm:inline">{splitLabel}</span>
+        <span className="sr-only sm:not-sr-only">{splitLabel}</span>
       </ToggleGroupItem>
     </ToggleGroup>
   );
@@ -417,9 +473,20 @@ export interface DiffViewerContentProps extends Omit<React.ComponentProps<'div'>
   showLineNumbers?: boolean;
   /** Label for a collapsed run of unchanged lines. */
   gapLabel?: (count: number) => React.ReactNode;
+  /** Screen reader text for the + marker. */
+  addedLabel?: string;
+  /** Screen reader text for the - marker. */
+  removedLabel?: string;
 }
 
-const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...props }: DiffViewerContentProps) => {
+const DiffViewerContent = ({
+  showLineNumbers = true,
+  gapLabel,
+  addedLabel,
+  removedLabel,
+  className,
+  ...props
+}: DiffViewerContentProps) => {
   const { items, mode, expandGap } = useDiffViewer();
   const label = gapLabel ?? ((count: number) => `Expand ${count} lines`);
   const rows = React.useMemo(() => (mode === 'split' ? toSplitRows(items) : []), [items, mode]);
@@ -431,7 +498,7 @@ const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...pro
       data-slot="diff-viewer-gap"
       onClick={() => expandGap(item.start)}
       className={cn(
-        'flex w-full items-center gap-2 bg-muted/50 px-3 py-1 text-start text-[11px] text-muted-foreground outline-none transition-colors',
+        'flex w-full items-center gap-2 bg-muted/50 px-3 py-1 text-start text-[11px] text-muted-foreground transition-colors outline-none',
         'hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
       )}
     >
@@ -454,8 +521,20 @@ const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...pro
             gap(row)
           ) : (
             <div key={row.key} data-slot="diff-viewer-split-row" className="grid grid-cols-2 divide-x divide-border">
-              <DiffViewerLine line={row.left} side="old" showLineNumbers={showLineNumbers} />
-              <DiffViewerLine line={row.right} side="new" showLineNumbers={showLineNumbers} />
+              <DiffViewerLine
+                line={row.left}
+                side="old"
+                showLineNumbers={showLineNumbers}
+                addedLabel={addedLabel}
+                removedLabel={removedLabel}
+              />
+              <DiffViewerLine
+                line={row.right}
+                side="new"
+                showLineNumbers={showLineNumbers}
+                addedLabel={addedLabel}
+                removedLabel={removedLabel}
+              />
             </div>
           ),
         )}
@@ -475,7 +554,13 @@ const DiffViewerContent = ({ showLineNumbers = true, gapLabel, className, ...pro
         item.kind === 'gap' ? (
           gap(item)
         ) : (
-          <DiffViewerLine key={item.index} line={item.line} showLineNumbers={showLineNumbers} />
+          <DiffViewerLine
+            key={item.index}
+            line={item.line}
+            showLineNumbers={showLineNumbers}
+            addedLabel={addedLabel}
+            removedLabel={removedLabel}
+          />
         ),
       )}
     </div>
@@ -488,12 +573,25 @@ export interface DiffViewerLineProps extends Omit<React.ComponentProps<'div'>, '
   /** Which pane this line sits in. Omit for unified. */
   side?: 'old' | 'new';
   showLineNumbers?: boolean;
+  /** Screen reader text for the + marker. */
+  addedLabel?: string;
+  /** Screen reader text for the - marker. */
+  removedLabel?: string;
 }
 
-const DiffViewerLine = ({ line, side, showLineNumbers = true, className, ...props }: DiffViewerLineProps) => {
+const DiffViewerLine = ({
+  line,
+  side,
+  showLineNumbers = true,
+  addedLabel = 'added',
+  removedLabel = 'removed',
+  className,
+  ...props
+}: DiffViewerLineProps) => {
   const type = line?.type ?? 'empty';
   const marker = type === 'add' ? '+' : type === 'remove' ? '-' : ' ';
   const numberClass = 'w-10 shrink-0 select-none pe-2 text-end tabular-nums text-muted-foreground';
+
   return (
     <div
       data-slot="diff-viewer-line"
@@ -528,16 +626,19 @@ const DiffViewerLine = ({ line, side, showLineNumbers = true, className, ...prop
         data-slot="diff-viewer-line-marker"
         aria-hidden
         className={cn(
-          'w-5 shrink-0 select-none text-center',
+          'w-5 shrink-0 text-center select-none',
           type === 'add' && 'text-success',
           type === 'remove' && 'text-destructive',
         )}
       >
         {marker}
       </span>
+      {type === 'add' || type === 'remove' ? (
+        <span className="sr-only">{type === 'add' ? addedLabel : removedLabel}</span>
+      ) : null}
       <span
         data-slot="diff-viewer-line-content"
-        className={cn('flex-1 pe-3', side ? 'whitespace-pre-wrap break-all' : 'whitespace-pre')}
+        className={cn('flex-1 pe-3', side ? 'break-all whitespace-pre-wrap' : 'whitespace-pre')}
       >
         {line?.content ?? ''}
       </span>

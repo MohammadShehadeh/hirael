@@ -1,9 +1,27 @@
 'use client';
 
 import * as React from 'react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Boxes } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/registry/hirael/bases/radix/ui/empty';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/registry/hirael/bases/radix/ui/table';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 export type PodPhase =
@@ -35,69 +53,56 @@ interface K8sPodTableProps extends React.ComponentProps<'table'> {
   caption?: React.ReactNode;
 }
 
-const K8sPodTable = ({ className, caption, children, ...props }: K8sPodTableProps) => {
+const K8sPodTable = ({ caption, children, ...props }: K8sPodTableProps) => {
   return (
-    <div data-slot="k8s-pod-table-container" className="w-full overflow-x-auto rounded-lg border border-border">
-      <table data-slot="k8s-pod-table" className={cn('w-full caption-bottom text-sm', className)} {...props}>
-        {caption ? <caption className="p-3 text-xs text-muted-foreground">{caption}</caption> : null}
+    <div
+      data-slot="k8s-pod-table-container"
+      className="max-h-96 w-full overflow-auto rounded-lg border border-border [&_[data-slot=table-caption]]:pb-3 [&_[data-slot=table-container]]:overflow-visible [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-muted"
+    >
+      <Table data-slot="k8s-pod-table" {...props}>
+        {caption ? <TableCaption>{caption}</TableCaption> : null}
         {children}
-      </table>
+      </Table>
     </div>
   );
 };
 
-const K8sPodTableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => {
+const K8sPodTableHeader = (props: React.ComponentProps<typeof TableHeader>) => {
+  return <TableHeader data-slot="k8s-pod-table-header" {...props} />;
+};
+
+const K8sPodTableHead = (props: React.ComponentProps<typeof TableHead>) => {
+  return <TableHead data-slot="k8s-pod-table-head" {...props} />;
+};
+
+const K8sPodTableBody = (props: React.ComponentProps<typeof TableBody>) => {
+  return <TableBody data-slot="k8s-pod-table-body" {...props} />;
+};
+
+const K8sPodTableRow = (props: React.ComponentProps<typeof TableRow>) => {
+  return <TableRow data-slot="k8s-pod-table-row" {...props} />;
+};
+
+const K8sPodTableCell = ({ children, ...props }: React.ComponentProps<typeof TableCell>) => {
   return (
-    <thead
-      data-slot="k8s-pod-table-header"
-      className={cn('border-b border-border bg-muted/40 text-muted-foreground', className)}
-      {...props}
-    />
+    <TableCell data-slot="k8s-pod-table-cell" {...props}>
+      <span className="text-xs text-muted-foreground tabular-nums">{children}</span>
+    </TableCell>
   );
 };
 
-const K8sPodTableHead = ({ className, ...props }: React.ComponentProps<'th'>) => {
-  return (
-    <th
-      data-slot="k8s-pod-table-head"
-      className={cn('h-9 px-3 text-start align-middle whitespace-nowrap text-xs font-medium uppercase', className)}
-      {...props}
-    />
-  );
-};
-
-const K8sPodTableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => {
-  return <tbody data-slot="k8s-pod-table-body" className={cn('divide-y divide-border', className)} {...props} />;
-};
-
-const K8sPodTableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => {
-  return (
-    <tr data-slot="k8s-pod-table-row" className={cn('transition-colors hover:bg-muted/40', className)} {...props} />
-  );
-};
-
-const K8sPodTableCell = ({ className, ...props }: React.ComponentProps<'td'>) => {
-  return (
-    <td
-      data-slot="k8s-pod-table-cell"
-      className={cn('px-3 py-2.5 align-middle whitespace-nowrap text-xs text-muted-foreground', className)}
-      {...props}
-    />
-  );
-};
-
-interface K8sPodNameProps extends React.ComponentProps<'td'> {
+interface K8sPodNameProps extends React.ComponentProps<typeof TableCell> {
   namespace?: React.ReactNode;
 }
 
-const K8sPodName = ({ namespace, className, children, ...props }: K8sPodNameProps) => {
+const K8sPodName = ({ namespace, children, ...props }: K8sPodNameProps) => {
   return (
-    <td data-slot="k8s-pod-name" className={cn('px-3 py-2.5 align-middle', className)} {...props}>
+    <TableCell data-slot="k8s-pod-name" {...props}>
       <div className="flex flex-col">
         <span className="text-xs font-medium text-foreground">{children}</span>
-        {namespace ? <span className="text-[11px] text-muted-foreground">{namespace}</span> : null}
+        {namespace ? <span className="text-xs text-muted-foreground">{namespace}</span> : null}
       </div>
-    </td>
+    </TableCell>
   );
 };
 
@@ -108,12 +113,13 @@ interface K8sPodPhaseProps extends Omit<React.ComponentProps<'span'>, 'children'
 
 const K8sPodPhase = ({ phase, className, children, ...props }: K8sPodPhaseProps) => {
   const meta = phaseMeta[phase];
+
   return (
     <span
       data-slot="k8s-pod-phase"
       data-phase={phase}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium',
+        'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium',
         meta.className,
         className,
       )}
@@ -127,25 +133,22 @@ const K8sPodPhase = ({ phase, className, children, ...props }: K8sPodPhaseProps)
   );
 };
 
-interface K8sPodRestartsProps extends React.ComponentProps<'td'> {
+interface K8sPodRestartsProps extends Omit<React.ComponentProps<typeof TableCell>, 'children'> {
   count: number;
   /** Count at or above which restarts read as unhealthy. */
   warnAt?: number;
 }
 
-const K8sPodRestarts = ({ count, warnAt = 3, className, ...props }: K8sPodRestartsProps) => {
+const K8sPodRestarts = ({ count, warnAt = 3, ...props }: K8sPodRestartsProps) => {
   return (
-    <td
-      data-slot="k8s-pod-restarts"
-      className={cn(
-        'px-3 py-2.5 align-middle text-xs',
-        count >= warnAt ? 'text-destructive' : 'text-muted-foreground',
-        className,
-      )}
-      {...props}
-    >
-      {count}
-    </td>
+    <TableCell data-slot="k8s-pod-restarts" {...props}>
+      <span
+        data-warn={count >= warnAt || undefined}
+        className="text-xs text-muted-foreground tabular-nums data-warn:text-destructive"
+      >
+        {count}
+      </span>
+    </TableCell>
   );
 };
 
@@ -236,27 +239,45 @@ const POD_FILTERS: { value: string; label: string; phases: PodPhase[] }[] = [
   { value: 'completed', label: 'Completed', phases: ['Succeeded'] },
 ];
 
+type SortDirection = 'asc' | 'desc' | null;
+
+const nextSort = (current: SortDirection): SortDirection =>
+  current === null ? 'desc' : current === 'desc' ? 'asc' : null;
+
+const ARIA_SORT = { asc: 'ascending', desc: 'descending' } as const;
+
 const isFailing = (phase: PodPhase) => phase === 'Failed' || phase === 'CrashLoopBackOff';
 
 const K8sPodTableBlock = () => {
   const [pods, setPods] = React.useState(POD_ROWS);
   const [filter, setFilter] = React.useState('all');
-  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const [sort, setSort] = React.useState<SortDirection>(null);
+  const timers = React.useRef(new Set<ReturnType<typeof setTimeout>>());
 
   React.useEffect(() => {
     const pending = timers.current;
+
     return () => pending.forEach(clearTimeout);
   }, []);
 
   const activeFilter = POD_FILTERS.find((option) => option.value === filter) ?? POD_FILTERS[0];
-  const visiblePods = pods.filter((pod) => activeFilter.phases.includes(pod.phase));
+  const filteredPods = pods.filter((pod) => activeFilter.phases.includes(pod.phase));
+  const visiblePods =
+    sort === null
+      ? filteredPods
+      : [...filteredPods].sort((a, b) => (sort === 'asc' ? 1 : -1) * (a.restarts - b.restarts));
+  const SortIcon = sort === 'asc' ? ArrowUp : sort === 'desc' ? ArrowDown : ArrowUpDown;
 
   const updatePod = (name: string, patch: Partial<PodRow>) =>
     setPods((current) => current.map((pod) => (pod.name === name ? { ...pod, ...patch } : pod)));
 
   const restartPod = (name: string) => {
     updatePod(name, { phase: 'ContainerCreating', restarts: 0, age: '0s' });
-    timers.current.push(setTimeout(() => updatePod(name, { phase: 'Running', ready: '1/1', age: '3s' }), 2400));
+    const timer = setTimeout(() => {
+      timers.current.delete(timer);
+      updatePod(name, { phase: 'Running', ready: '1/1', age: '3s' });
+    }, 2400);
+    timers.current.add(timer);
   };
 
   return (
@@ -273,38 +294,57 @@ const K8sPodTableBlock = () => {
         >
           {POD_FILTERS.map((option) => {
             const count = pods.filter((pod) => option.phases.includes(pod.phase)).length;
+
             return (
               <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
-                <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{count}</span>
               </ToggleGroupItem>
             );
           })}
         </ToggleGroup>
 
-        <K8sPodTable caption={<span className="font-mono">kubectl get pods -A</span>}>
+        <K8sPodTable caption={`${visiblePods.length} of ${pods.length} pods across all namespaces`}>
           <K8sPodTableHeader>
             <K8sPodTableRow>
               <K8sPodTableHead>Pod</K8sPodTableHead>
               <K8sPodTableHead>Status</K8sPodTableHead>
               <K8sPodTableHead>Ready</K8sPodTableHead>
-              <K8sPodTableHead>Restarts</K8sPodTableHead>
+              <K8sPodTableHead aria-sort={sort ? ARIA_SORT[sort] : 'none'}>
+                <Button type="button" variant="ghost" size="xs" onClick={() => setSort(nextSort)}>
+                  Restarts
+                  <SortIcon aria-hidden />
+                </Button>
+              </K8sPodTableHead>
               <K8sPodTableHead>Age</K8sPodTableHead>
               <K8sPodTableHead>Node</K8sPodTableHead>
             </K8sPodTableRow>
           </K8sPodTableHeader>
           <K8sPodTableBody key={filter} className={SWAP}>
             {visiblePods.length === 0 ? (
-              <K8sPodTableRow className="hover:bg-transparent">
-                <K8sPodTableCell colSpan={6} className="py-10 text-center text-sm">
-                  No {activeFilter.label.toLowerCase()} pods in any namespace.
-                </K8sPodTableCell>
+              <K8sPodTableRow>
+                <TableCell colSpan={6} className="whitespace-normal">
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <Boxes />
+                      </EmptyMedia>
+                      <EmptyTitle>No {activeFilter.label.toLowerCase()} pods</EmptyTitle>
+                      <EmptyDescription>Nothing in any namespace matches this phase.</EmptyDescription>
+                    </EmptyHeader>
+                    <EmptyContent>
+                      <Button type="button" variant="outline" size="sm" onClick={() => setFilter('all')}>
+                        Show all pods
+                      </Button>
+                    </EmptyContent>
+                  </Empty>
+                </TableCell>
               </K8sPodTableRow>
             ) : (
               visiblePods.map((pod) => (
                 <K8sPodTableRow key={pod.name}>
                   <K8sPodName namespace={pod.ns}>{pod.name}</K8sPodName>
-                  <K8sPodTableCell>
+                  <TableCell>
                     <span className="flex items-center gap-3">
                       <K8sPodPhase key={pod.phase} phase={pod.phase} className={SWAP} />
                       {isFailing(pod.phase) ? (
@@ -313,10 +353,10 @@ const K8sPodTableBlock = () => {
                         </Button>
                       ) : null}
                     </span>
-                  </K8sPodTableCell>
-                  <K8sPodTableCell className="tabular-nums">{pod.ready}</K8sPodTableCell>
-                  <K8sPodRestarts count={pod.restarts} className="tabular-nums" />
-                  <K8sPodTableCell className="tabular-nums">{pod.age}</K8sPodTableCell>
+                  </TableCell>
+                  <K8sPodTableCell>{pod.ready}</K8sPodTableCell>
+                  <K8sPodRestarts count={pod.restarts} />
+                  <K8sPodTableCell>{pod.age}</K8sPodTableCell>
                   <K8sPodTableCell>{pod.node}</K8sPodTableCell>
                 </K8sPodTableRow>
               ))

@@ -30,10 +30,18 @@ const useIsApple = () =>
 
 const NO_RECENTS: CommandPaletteRecent[] = [];
 
+const isEditableTarget = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) return false;
+  if (target.isContentEditable) return true;
+
+  return target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])') !== null;
+};
+
 const parseRecents = (raw: string | null): CommandPaletteRecent[] => {
   try {
     const parsed: unknown = raw ? JSON.parse(raw) : [];
     if (!Array.isArray(parsed)) return NO_RECENTS;
+
     return parsed.filter(
       (entry): entry is CommandPaletteRecent =>
         typeof entry === 'object' && entry !== null && typeof (entry as CommandPaletteRecent).id === 'string',
@@ -53,6 +61,7 @@ const recentsMemory = new Map<string, CommandPaletteRecent[]>();
 const subscribeRecents = (onStoreChange: () => void) => {
   recentsListeners.add(onStoreChange);
   window.addEventListener('storage', onStoreChange);
+
   return () => {
     recentsListeners.delete(onStoreChange);
     window.removeEventListener('storage', onStoreChange);
@@ -76,6 +85,7 @@ const recentsSnapshot = (key: string): CommandPaletteRecent[] => {
   if (cached && cached.raw === raw) return cached.value;
   const value = parseRecents(raw);
   recentsCache.set(key, { raw, value });
+
   return value;
 };
 
@@ -101,6 +111,7 @@ const usePalette = () => {
   if (!ctx) {
     throw new Error('CommandPalette compound parts must be used inside <CommandPalette>');
   }
+
   return ctx;
 };
 
@@ -136,7 +147,7 @@ const CommandPalette = ({
   const [query, setQuery] = React.useState('');
   const [pages, setPages] = React.useState<string[]>([]);
 
-  // A controlled close never goes through setOpen, so the reset also keys off the value itself.
+  // Keyed off the value itself, so a controlled close resets too.
   const [prevOpen, setPrevOpen] = React.useState(open);
   if (open !== prevOpen) {
     setPrevOpen(open);
@@ -158,10 +169,6 @@ const CommandPalette = ({
     (next: boolean) => {
       if (openProp === undefined) setInternalOpen(next);
       onOpenChange?.(next);
-      if (!next) {
-        setQuery('');
-        setPages([]);
-      }
     },
     [openProp, onOpenChange],
   );
@@ -169,12 +176,14 @@ const CommandPalette = ({
   React.useEffect(() => {
     if (!shortcut) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() !== shortcut.toLowerCase()) return;
-      if (!event.metaKey && !event.ctrlKey) return;
+      if (event.defaultPrevented || event.key.toLowerCase() !== shortcut.toLowerCase()) return;
+      if ((!event.metaKey && !event.ctrlKey) || event.shiftKey || event.altKey) return;
+      if (!open && isEditableTarget(event.target)) return;
       event.preventDefault();
       setOpen(!open);
     };
     document.addEventListener('keydown', onKeyDown);
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [shortcut, open, setOpen]);
 
@@ -234,6 +243,7 @@ const CommandPalette = ({
 
 const CommandPaletteTrigger = ({ className, children, onClick, ...props }: React.ComponentProps<'button'>) => {
   const ctx = usePalette();
+
   return (
     <button
       type="button"
@@ -266,6 +276,7 @@ export type CommandPaletteDialogProps = Omit<React.ComponentProps<typeof Command
 
 const CommandPaletteDialog = ({ children, ...props }: CommandPaletteDialogProps) => {
   const ctx = usePalette();
+
   return (
     <CommandDialog open={ctx.open} onOpenChange={ctx.setOpen} showCloseButton={false} {...props}>
       {children}
@@ -280,6 +291,7 @@ const CommandPaletteInput = ({
   ...props
 }: Omit<React.ComponentProps<typeof CommandInput>, 'value' | 'onValueChange'>) => {
   const ctx = usePalette();
+
   return (
     <div
       data-slot="command-palette-input"
@@ -308,20 +320,24 @@ const CommandPaletteInput = ({
   );
 };
 
-const CommandPaletteBack = ({ className, ...props }: React.ComponentProps<'button'>) => {
+const CommandPaletteBack = ({ className, onClick, ...props }: React.ComponentProps<'button'>) => {
   const ctx = usePalette();
   if (ctx.pages.length === 0) return null;
+
   return (
     <button
       type="button"
       data-slot="command-palette-back"
       aria-label="Back"
-      onClick={ctx.popPage}
       className={cn(
         'inline-flex shrink-0 items-center gap-1 rounded-[3px] bg-accent px-2 py-1 text-xs text-accent-foreground',
         className,
       )}
       {...props}
+      onClick={(e) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) ctx.popPage();
+      }}
     >
       {ctx.pages[ctx.pages.length - 1]}
       <ChevronRight className="size-3 rtl:rotate-180" />
@@ -337,6 +353,7 @@ export interface CommandPalettePageProps {
 const CommandPalettePage = ({ name, children }: CommandPalettePageProps) => {
   const ctx = usePalette();
   if (ctx.activePage !== name) return null;
+
   return <PageContext.Provider value={name}>{children}</PageContext.Provider>;
 };
 
@@ -344,11 +361,14 @@ const CommandPaletteGroup = ({ className, ...props }: React.ComponentProps<typeo
   const ctx = usePalette();
   const page = React.useContext(PageContext);
   if (ctx.activePage !== page) return null;
+
   return <CommandGroup data-slot="command-palette-group" className={className} {...props} />;
 };
 
 export interface CommandPaletteItemProps extends Omit<React.ComponentProps<typeof CommandItem>, 'onSelect'> {
   /** Stable id, used for recents. Omit for an item you never want remembered. */
+  recentId?: string;
+  /** @deprecated Use `recentId`. Still read as the recents id when `recentId` is absent; always forwarded to the DOM. */
   id?: string;
   label: string;
   /**
@@ -366,6 +386,7 @@ export interface CommandPaletteItemProps extends Omit<React.ComponentProps<typeo
 }
 
 const CommandPaletteItem = ({
+  recentId: recentIdProp,
   id,
   label,
   value,
@@ -381,15 +402,19 @@ const CommandPaletteItem = ({
   const scope = React.useContext(PageContext);
   const inRecents = React.useContext(RecentsContext);
   const itemValue = value ?? [inRecents ? 'recent' : scope, label].filter(Boolean).join(' ');
+  const recentId = recentIdProp ?? id;
+
   return (
     <CommandItem
+      id={id}
       data-slot="command-palette-item"
       value={itemValue}
       onSelect={() => {
-        if (id) ctx.recordRecent({ id, label });
+        if (recentId) ctx.recordRecent({ id: recentId, label });
         onSelect?.();
         if (page) {
           ctx.pushPage(page);
+
           return;
         }
         if (closeOnSelect) ctx.setOpen(false);
@@ -418,6 +443,7 @@ const CommandPaletteRecents = ({ heading = 'Recent', children }: CommandPaletteR
   const ctx = usePalette();
   const page = React.useContext(PageContext);
   if (ctx.activePage !== page || ctx.recents.length === 0) return null;
+
   return (
     <>
       <CommandGroup heading={heading} data-slot="command-palette-recents">

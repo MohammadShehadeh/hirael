@@ -47,6 +47,7 @@ const forConsumer = (code: string): string =>
   code.replace(BASE_IMPORT, (_match, file: string) => {
     const mapped = CONSUMER_IMPORTS.get(file);
     if (mapped) return mapped;
+
     return /^(?:ui|components)\//.test(file) ? `@/components/${file.replace(/^components\//, '')}` : `@/${file}`;
   });
 

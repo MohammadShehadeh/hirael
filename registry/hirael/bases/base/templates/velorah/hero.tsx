@@ -39,18 +39,17 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
       )}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 z-[1] h-[40%] bg-gradient-to-t from-black via-black/60 to-transparent"
+        className="absolute inset-x-0 bottom-0 z-[1] h-[40%] bg-linear-to-t from-background via-background/60 to-transparent"
       />
 
       <Navbar />
 
-      <div className="relative z-10 flex flex-col items-center justify-center px-6 pb-40 pt-[28px] text-center">
-        <h1 className="animate-fade-rise max-w-7xl text-5xl font-normal leading-[0.95] tracking-[-2.46px] text-foreground [font-family:var(--font-velorah-serif)] sm:text-7xl md:text-8xl">
-          Where <em className="not-italic text-white">dreams</em> rise{' '}
-          <em className="not-italic text-white">through the silence.</em>
+      <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-[28px] pb-40 text-center">
+        <h1 className="animate-fade-rise max-w-7xl [font-family:var(--font-velorah-serif)] text-5xl leading-[0.95] font-normal tracking-[-2.46px] text-foreground sm:text-7xl md:text-8xl">
+          Where <em className="not-italic">dreams</em> rise <em className="not-italic">through the silence.</em>
         </h1>
 
-        <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-white sm:text-lg">
+        <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg">
           We&apos;re designing tools for deep thinkers, bold creators, and quiet rebels. Amid the chaos, we build
           digital spaces for sharp focus and inspired work.
         </p>

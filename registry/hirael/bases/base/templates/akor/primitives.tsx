@@ -18,7 +18,7 @@ interface SectionLabelProps {
 export const SectionLabel = ({ children }: SectionLabelProps) => {
   return (
     <div>
-      <p className="mb-8 text-xs uppercase tracking-[0.25em] text-muted-foreground/60">{children}</p>
+      <p className="mb-8 text-xs tracking-[0.25em] text-muted-foreground/60 uppercase">{children}</p>
       <div aria-hidden className="mb-16 h-px w-full bg-muted-foreground/20" />
     </div>
   );
@@ -36,7 +36,7 @@ export const TextLink = ({ className, ...props }: TextLinkProps) => {
   return (
     <a
       className={cn(
-        'border-b border-primary pb-1 text-xs uppercase tracking-widest text-foreground transition-colors hover:text-primary active:scale-[0.97]',
+        'border-b border-primary pb-1 text-xs tracking-widest text-foreground uppercase transition-colors hover:text-primary active:scale-[0.97]',
         className,
       )}
       {...props}

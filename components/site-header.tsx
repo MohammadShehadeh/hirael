@@ -34,6 +34,7 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
+
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
@@ -59,6 +60,7 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
+
             return (
               <Link
                 key={link.href}
@@ -104,6 +106,7 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
               <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                 {NAV_LINKS.map((link) => {
                   const active = isActive(link.href);
+
                   return (
                     <Link
                       key={link.href}

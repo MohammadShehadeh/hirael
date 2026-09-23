@@ -80,6 +80,7 @@ const MentionInputDemo = () => {
   function searchPeopleAndChannels(query: string, trigger: string): Promise<MentionItem[]> {
     const source = trigger === '#' ? CHANNELS : TEAM;
     const q = query.toLowerCase();
+
     return Promise.resolve(
       source.filter((it) => it.label.toLowerCase().includes(q) || it.description?.toLowerCase().includes(q)),
     );
@@ -87,6 +88,7 @@ const MentionInputDemo = () => {
 
   function searchDirectory(query: string): Promise<MentionItem[]> {
     const q = query.toLowerCase();
+
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(TEAM.filter((it) => it.label.toLowerCase().includes(q) || it.description?.toLowerCase().includes(q)));
@@ -105,7 +107,7 @@ const MentionInputDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Team mentions · controlled',
             ar: 'إشارات الفريق · متحكَّم بها',
@@ -121,14 +123,14 @@ const MentionInputDemo = () => {
           })}
           maxRows={6}
         />
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'mentioned:', ar: 'أُشير إلى:' })}{' '}
           {mentions.length ? mentions.join(', ') : t({ en: 'nobody yet', ar: 'لا أحد بعد' })}
         </p>
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Multiple triggers · @ people + # channels',
             ar: 'محفّزات متعددة · @ للأشخاص + # للقنوات',
@@ -147,7 +149,7 @@ const MentionInputDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Async search · debounced with spinner',
             ar: 'بحث غير متزامن · مؤجَّل مع مؤشر تحميل',

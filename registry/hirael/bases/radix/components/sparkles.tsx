@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
-interface SparklesProps extends React.ComponentProps<'div'> {
+export interface SparklesProps extends React.ComponentProps<'div'> {
   /**
    * Particles per 10,000 px² (a 100×100 tile) of canvas. The default (2) puts
    * about 200 particles on a 1000×1000 area and scales with the container size.
@@ -34,6 +34,7 @@ interface Particle {
 const resolveColor = (el: HTMLElement, color: string) => {
   const match = color.match(/^var\((--[\w-]+)\)$/);
   if (!match) return color;
+
   return getComputedStyle(el).getPropertyValue(match[1]).trim() || color;
 };
 
@@ -72,6 +73,7 @@ const Sparkles = ({
       particles = Array.from({ length: count }, () => {
         const angle = Math.random() * Math.PI * 2;
         const v = speed * (0.3 + Math.random() * 0.7);
+
         return {
           x: Math.random() * width,
           y: Math.random() * height,

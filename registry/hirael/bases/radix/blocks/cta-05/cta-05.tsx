@@ -37,12 +37,13 @@ const Cta05 = () => {
   const gradientHeight = useTransform(scrollYProgress, [0, 1], [110, 160]);
   const scrollGlow = useTransform([gradientWidth, gradientHeight], (values) => {
     const [width = 120, height = 135] = values as number[];
+
     return glow(Math.round(width), Math.round(height));
   });
 
   return (
     <section data-slot="cta" className="bg-background py-12 md:py-16">
-      <div ref={containerRef} className="container w-full">
+      <div ref={containerRef} className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="cta-panel"
           className={cn(
@@ -62,7 +63,7 @@ const Cta05 = () => {
               style={stagger(1)}
               className={cn(
                 RISE,
-                'inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
+                'inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-1.5 text-xs text-muted-foreground uppercase backdrop-blur-sm',
               )}
             >
               Get in touch
@@ -101,7 +102,7 @@ const Cta05 = () => {
                     Call us
                   </a>
                 </Button>
-                <p dir="ltr" className="py-1.5 text-sm font-medium tabular-nums text-muted-foreground">
+                <p dir="ltr" className="py-1.5 text-sm font-medium text-muted-foreground tabular-nums">
                   {phone}
                 </p>
               </div>
@@ -119,7 +120,7 @@ const AnimatedTitle = ({ text, className, ...props }: React.ComponentProps<'h2'>
   return (
     <h2
       className={cn(
-        'mx-auto max-w-3xl font-serif text-3xl font-medium leading-tight tracking-tight text-foreground md:text-5xl',
+        'mx-auto max-w-3xl font-serif text-3xl leading-tight font-medium tracking-tight text-foreground md:text-5xl',
         className,
       )}
       {...props}

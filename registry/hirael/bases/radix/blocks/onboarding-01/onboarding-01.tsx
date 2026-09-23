@@ -60,6 +60,7 @@ const useOnboarding = () => {
   if (!ctx) {
     throw new Error('Onboarding parts must be used inside <Onboarding>');
   }
+
   return ctx;
 };
 
@@ -132,10 +133,11 @@ interface OnboardingHeaderProps extends React.ComponentProps<'div'> {
 
 const OnboardingHeader = ({ showTitles = true, className, children, ...props }: OnboardingHeaderProps) => {
   const { step, total, steps, goTo } = useOnboarding();
+
   return (
     <div data-slot="onboarding-header" className={cn('flex flex-col gap-4', className)} {...props}>
       <div className="flex items-center justify-between gap-3">
-        <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
+        <span aria-live="polite" className="text-xs text-muted-foreground uppercase">
           Step {step + 1} of {total}
         </span>
         {children}
@@ -160,10 +162,11 @@ type OnboardingProgressProps = React.ComponentProps<'div'>;
 const OnboardingProgress = ({ className, ...props }: OnboardingProgressProps) => {
   const { step, total } = useOnboarding();
   const value = total > 0 ? Math.round(((step + 1) / total) * 100) : 0;
+
   return (
     <div data-slot="onboarding-progress" className={cn('flex items-center gap-3', className)} {...props}>
       <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1" />
-      <span className="text-xs tabular-nums text-muted-foreground">
+      <span className="text-xs text-muted-foreground tabular-nums">
         {step + 1}/{total}
       </span>
     </div>
@@ -178,6 +181,7 @@ interface OnboardingStepProps extends React.ComponentProps<'div'> {
 const OnboardingStep = ({ index, className, children, ...props }: OnboardingStepProps) => {
   const { step } = useOnboarding();
   if (index !== step) return null;
+
   return (
     <div
       data-slot="onboarding-step"
@@ -382,7 +386,7 @@ const Onboarding01 = () => {
           {done ? (
             <div
               data-slot="onboarding-done"
-              className="flex flex-col items-center gap-5 py-6 text-center animate-in fade-in zoom-in-97 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+              className="flex animate-in flex-col items-center gap-5 py-6 text-center duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in zoom-in-97 motion-reduce:animate-none"
             >
               <div className="flex flex-col items-center gap-1.5">
                 <h2 className="flex items-center gap-2 text-xl font-semibold tracking-[-0.02em] text-foreground">
@@ -507,6 +511,7 @@ const Onboarding01 = () => {
                   <div className="flex flex-col gap-2">
                     {invites.map((email, i) => {
                       const invalid = email.trim() !== '' && !EMAIL_RE.test(email);
+
                       return (
                         <div key={i} className="flex items-center gap-2">
                           <Input
@@ -572,6 +577,7 @@ const Onboarding01 = () => {
                     <RadioGroup value={theme} onValueChange={setTheme} className="grid sm:grid-cols-3">
                       {THEMES.map((t) => {
                         const id = `onboarding-theme-${t.value}`;
+
                         return (
                           <FieldLabel key={t.value} htmlFor={id}>
                             <Field orientation="horizontal" className="gap-3">

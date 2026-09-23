@@ -57,17 +57,17 @@ const WRITTEN_FILES = [
   'components/combobox.tsx',
 ] as const;
 
-const SWATCHES = ['bg-foreground', 'bg-muted-foreground', 'bg-warm', 'bg-primary', 'bg-background'] as const;
+const SWATCHES = ['bg-foreground', 'bg-muted-foreground', 'bg-primary', 'bg-primary', 'bg-background'] as const;
 
 const Feature03 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div data-slot="feature-header" className="flex max-w-2xl flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>How install works</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>How install works</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             One command, a few plain files
           </h2>
@@ -90,8 +90,8 @@ const Feature03 = () => {
               className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_70%_at_100%_0%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent_60%)]"
             />
             <div className="relative z-10 flex flex-col gap-2">
-              <span className="text-xs uppercase text-muted-foreground">Source you own</span>
-              <h3 className="max-w-md text-2xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-3xl">
+              <span className="text-xs text-muted-foreground uppercase">Source you own</span>
+              <h3 className="max-w-md text-2xl leading-[1.1] font-semibold tracking-[-0.02em] sm:text-3xl">
                 The CLI writes TSX into your repo and steps away
               </h3>
               <p className="max-w-md text-sm text-muted-foreground">
@@ -102,20 +102,32 @@ const Feature03 = () => {
             <div
               data-slot="feature-terminal"
               dir="ltr"
-              className="relative z-10 -mx-6 -mb-6 border-t border-border bg-background px-6 py-5 text-start font-mono text-[12px] leading-relaxed"
+              className="relative z-10 -mx-6 -mb-6 border-t border-border bg-background px-6 py-5 text-start text-xs leading-relaxed tabular-nums"
             >
               <p className="text-foreground">
-                <span className="select-none text-muted-foreground">$ </span>
+                <span className="text-muted-foreground select-none">$ </span>
                 {COMMAND}
               </p>
               <ul className="mt-3 flex flex-col text-muted-foreground">
                 {OUTPUT.map((line) => (
-                  <li key={line.text}>
-                    <span className="text-foreground">✔</span> {line.text}
+                  <li key={line.text} className="flex items-center gap-2">
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="size-3.5 shrink-0 text-foreground"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    {line.text}
                   </li>
                 ))}
                 {WRITTEN_FILES.map((file) => (
-                  <li key={file} className="ps-4 text-foreground">
+                  <li key={file} className="ps-5.5 text-foreground">
                     - {file}
                   </li>
                 ))}
@@ -130,14 +142,14 @@ const Feature03 = () => {
               style={stagger(index + 1, 60, 180)}
               className={cn(ENTER, 'flex flex-col gap-3 rounded-xl border border-border bg-card p-6 lg:col-span-2')}
             >
-              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+              <span dir="ltr" className="self-start text-xs text-muted-foreground tabular-nums">
                 <span className="text-foreground">{formatIndex(index)}</span>
                 <span className="mx-1.5 text-border">|</span>
                 {formatIndex(TILES.length - 1)}
               </span>
               <div className="flex flex-col gap-1.5">
                 <h3 className="text-base font-semibold tracking-[-0.01em]">{tile.title}</h3>
-                <p className="text-sm text-muted-foreground text-pretty">{tile.body}</p>
+                <p className="text-sm text-pretty text-muted-foreground">{tile.body}</p>
               </div>
               {tile.swatches ? (
                 <div aria-hidden className="mt-auto flex items-center gap-1.5 pt-2">

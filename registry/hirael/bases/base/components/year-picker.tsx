@@ -46,43 +46,44 @@ const useYearPicker = () => {
   if (!ctx) {
     throw new Error('YearPicker compound components must be used inside <YearPicker>');
   }
+
   return ctx;
 };
 
 const YEARS_PER_VIEW = 12;
+// Each view is a decade plus one year either side, so paging steps a decade and views stay aligned.
+const YEARS_PER_PAGE = 10;
 
 const viewStartFor = (year: number) => {
   const base = year - (year % 10);
+
   return base - 1;
 };
 
+interface YearPickerSharedProps {
+  minYear?: number;
+  maxYear?: number;
+  disabled?: boolean;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  children?: React.ReactNode;
+}
+
+/** `null` and `undefined` both mean no selection; `value={null}` stays controlled. */
 export type YearPickerProps =
-  | {
+  | (YearPickerSharedProps & {
       mode?: 'single';
-      value?: number;
-      defaultValue?: number;
+      value?: number | null;
+      defaultValue?: number | null;
       onValueChange?: (year: number) => void;
-      minYear?: number;
-      maxYear?: number;
-      disabled?: boolean;
-      open?: boolean;
-      defaultOpen?: boolean;
-      onOpenChange?: (open: boolean) => void;
-      children?: React.ReactNode;
-    }
-  | {
+    })
+  | (YearPickerSharedProps & {
       mode: 'range';
-      value?: YearRange;
-      defaultValue?: YearRange;
+      value?: YearRange | null;
+      defaultValue?: YearRange | null;
       onValueChange?: (range: YearRange) => void;
-      minYear?: number;
-      maxYear?: number;
-      disabled?: boolean;
-      open?: boolean;
-      defaultOpen?: boolean;
-      onOpenChange?: (open: boolean) => void;
-      children?: React.ReactNode;
-    };
+    });
 
 const YearPicker = (props: YearPickerProps) => {
   const {
@@ -118,17 +119,18 @@ const YearPicker = (props: YearPickerProps) => {
     [openProp, onOpenChange],
   );
 
-  const [singleInternal, setSingleInternal] = React.useState<number | undefined>(singleDefaultValue);
-  const [rangeInternal, setRangeInternal] = React.useState<YearRange | undefined>(rangeDefaultValue);
+  const [singleInternal, setSingleInternal] = React.useState<number | undefined>(singleDefaultValue ?? undefined);
+  const [rangeInternal, setRangeInternal] = React.useState<YearRange | undefined>(rangeDefaultValue ?? undefined);
 
   const singleValue =
-    mode === 'single' ? (singleValueProp !== undefined ? singleValueProp : singleInternal) : undefined;
-  const rangeValue = mode === 'range' ? (rangeValueProp !== undefined ? rangeValueProp : rangeInternal) : undefined;
+    mode === 'single' ? (singleValueProp !== undefined ? (singleValueProp ?? undefined) : singleInternal) : undefined;
+  const rangeValue =
+    mode === 'range' ? (rangeValueProp !== undefined ? (rangeValueProp ?? undefined) : rangeInternal) : undefined;
 
   const anchorYear = (mode === 'single' ? singleValue : rangeValue?.from) ?? new Date().getFullYear();
   const [decadeStart, setDecadeStart] = React.useState<number>(viewStartFor(anchorYear));
 
-  const controlledAnchorYear = mode === 'single' ? singleValueProp : rangeValueProp?.from;
+  const controlledAnchorYear = (mode === 'single' ? singleValueProp : rangeValueProp?.from) ?? undefined;
   const [prevControlledAnchorYear, setPrevControlledAnchorYear] = React.useState(controlledAnchorYear);
   if (controlledAnchorYear !== prevControlledAnchorYear) {
     setPrevControlledAnchorYear(controlledAnchorYear);
@@ -154,7 +156,7 @@ const YearPicker = (props: YearPickerProps) => {
 
   const setValueRange = React.useCallback(
     (year: number) => {
-      const current = rangeValueProp ?? rangeInternal;
+      const current = rangeValueProp !== undefined ? (rangeValueProp ?? undefined) : rangeInternal;
       let next: YearRange;
       if (!current || (current.from && current.to)) {
         next = { from: year };
@@ -185,6 +187,7 @@ const YearPicker = (props: YearPickerProps) => {
         disabled,
       };
     }
+
     return {
       mode: 'range',
       value: rangeValue,
@@ -221,9 +224,10 @@ const YearPicker = (props: YearPickerProps) => {
 };
 
 const formatYearValue = (ctx: YearPickerContextValue, placeholder: string) => {
-  if (ctx.mode === 'single') return ctx.value ? String(ctx.value) : placeholder;
+  if (ctx.mode === 'single') return ctx.value !== undefined ? String(ctx.value) : placeholder;
   if (!ctx.value) return placeholder;
   if (ctx.value.to === undefined) return `${ctx.value.from} – …`;
+
   return `${ctx.value.from} – ${ctx.value.to}`;
 };
 
@@ -238,6 +242,7 @@ const YearPickerTrigger = ({
 }) => {
   const ctx = useYearPicker();
   const empty = ctx.value === undefined;
+
   return (
     <PopoverTrigger
       render={
@@ -246,9 +251,9 @@ const YearPickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="year-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
+            'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
-            empty && 'text-muted-foreground font-sans',
+            empty && 'font-sans text-muted-foreground',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
           )}
@@ -263,11 +268,13 @@ const YearPickerTrigger = ({
 
 const isInRange = (year: number, range: YearRange | undefined) => {
   if (!range || range.to === undefined) return false;
+
   return year > range.from && year < range.to;
 };
 
 const isEndpoint = (year: number, range: YearRange | undefined) => {
   if (!range) return false;
+
   return year === range.from || year === range.to;
 };
 
@@ -321,15 +328,21 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
       case 'PageDown': {
         e.preventDefault();
         const up = e.key === 'PageUp';
-        const start = up
-          ? Math.max(ctx.minYear - 1, ctx.decadeStart - YEARS_PER_VIEW)
-          : Math.min(ctx.maxYear + 1 - YEARS_PER_VIEW, ctx.decadeStart + YEARS_PER_VIEW);
+        // Same step as the header buttons; at the edge, stay on this view and move to its last selectable year.
+        const pageable = up ? canPrev : canNext;
+        const start = pageable ? ctx.decadeStart + (up ? -YEARS_PER_PAGE : YEARS_PER_PAGE) : ctx.decadeStart;
         const lo = Math.max(ctx.minYear, start);
         const hi = Math.min(ctx.maxYear, start + YEARS_PER_VIEW - 1);
-        const target = Math.max(lo, Math.min(hi, year + (up ? -YEARS_PER_VIEW : YEARS_PER_VIEW)));
+        const target = Math.max(lo, Math.min(hi, year + (up ? -YEARS_PER_PAGE : YEARS_PER_PAGE)));
+        if (start === ctx.decadeStart) {
+          focusYear(target);
+
+          return;
+        }
         ctx.setDecadeStart(start);
         // The focused cell unmounts with the old view; refocus once the new one renders.
         requestAnimationFrame(() => focusYear(target));
+
         return;
       }
       default:
@@ -354,12 +367,12 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
           size="icon"
           aria-label="Previous years"
           disabled={!canPrev}
-          onClick={() => ctx.setDecadeStart(ctx.decadeStart - YEARS_PER_VIEW)}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart - YEARS_PER_PAGE)}
           className="size-7"
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span data-slot="year-picker-caption" className="text-xs tabular-nums uppercase text-muted-foreground">
+        <span data-slot="year-picker-caption" className="text-xs text-muted-foreground uppercase tabular-nums">
           {years[0]} – {years[years.length - 1]}
         </span>
         <Button
@@ -368,7 +381,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
           size="icon"
           aria-label="Next years"
           disabled={!canNext}
-          onClick={() => ctx.setDecadeStart(ctx.decadeStart + YEARS_PER_VIEW)}
+          onClick={() => ctx.setDecadeStart(ctx.decadeStart + YEARS_PER_PAGE)}
           className="size-7"
         >
           <ChevronRight className="size-3.5 rtl:rotate-180" />
@@ -382,6 +395,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
               const selected = ctx.mode === 'single' ? ctx.value === year : isEndpoint(year, ctx.value);
               const inRange = ctx.mode === 'range' ? isInRange(year, ctx.value) : false;
               const isToday = year === today;
+
               return (
                 <button
                   key={year}
@@ -396,13 +410,13 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
                   onKeyDown={(e) => handleKey(e, year)}
                   tabIndex={year === tabbableYear ? 0 : -1}
                   className={cn(
-                    'relative h-9 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors',
+                    'relative h-9 rounded-sm font-mono text-xs tabular-nums transition-colors outline-none',
                     'hover:bg-accent hover:text-accent-foreground',
                     'focus-visible:ring-2 focus-visible:ring-ring',
                     'disabled:opacity-30 disabled:hover:bg-transparent',
                     inRange && 'bg-primary/15 text-foreground',
                     selected && 'bg-primary text-primary-foreground hover:bg-primary',
-                    !selected && isToday && 'ring-1 ring-inset ring-primary/60',
+                    !selected && isToday && 'ring-1 ring-primary/60 ring-inset',
                   )}
                 >
                   {year}

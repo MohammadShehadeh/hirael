@@ -39,7 +39,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
       <DropdownMenuTrigger
         data-slot="data-table-column-header"
         className={cn(
-          '-ms-1.5 flex h-8 items-center gap-1.5 rounded-md px-2 py-1.5 hover:bg-accent focus:outline-none focus:ring-1 focus:ring-ring data-popup-open:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground',
+          '-ms-1.5 flex h-8 items-center gap-1.5 rounded-md px-2 py-1.5 hover:bg-accent focus:ring-1 focus:ring-ring focus:outline-none data-popup-open:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground',
           className,
         )}
         {...props}
@@ -58,7 +58,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
         {column.getCanSort() && (
           <>
             <DropdownMenuCheckboxItem
-              className="relative pe-8 ps-2 [&>span:first-child]:end-2 [&>span:first-child]:start-auto [&_svg]:text-muted-foreground"
+              className="relative ps-2 pe-8 [&_svg]:text-muted-foreground [&>span:first-child]:start-auto [&>span:first-child]:end-2"
               checked={column.getIsSorted() === 'asc'}
               onClick={() => column.toggleSorting(false)}
             >
@@ -66,7 +66,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
               Asc
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              className="relative pe-8 ps-2 [&>span:first-child]:end-2 [&>span:first-child]:start-auto [&_svg]:text-muted-foreground"
+              className="relative ps-2 pe-8 [&_svg]:text-muted-foreground [&>span:first-child]:start-auto [&>span:first-child]:end-2"
               checked={column.getIsSorted() === 'desc'}
               onClick={() => column.toggleSorting(true)}
             >
@@ -83,7 +83,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
         )}
         {column.getCanHide() && (
           <DropdownMenuCheckboxItem
-            className="relative pe-8 ps-2 [&>span:first-child]:end-2 [&>span:first-child]:start-auto [&_svg]:text-muted-foreground"
+            className="relative ps-2 pe-8 [&_svg]:text-muted-foreground [&>span:first-child]:start-auto [&>span:first-child]:end-2"
             checked={!column.getIsVisible()}
             onClick={() => column.toggleVisibility(false)}
           >

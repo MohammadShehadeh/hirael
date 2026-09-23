@@ -33,14 +33,14 @@ export const Features = () => {
               key={feature.title}
               className={cn(
                 'rise flex flex-col items-center gap-10 lg:flex-row lg:gap-16',
-                feature.reverse && 'lg:flex-row-reverse [animation-delay:150ms]',
+                feature.reverse && '[animation-delay:150ms] lg:flex-row-reverse',
               )}
             >
               <div className="flex-1">
-                <h3 className="text-3xl italic leading-[0.95] tracking-tight text-foreground [font-family:var(--font-prism-serif)] md:text-4xl">
+                <h3 className="[font-family:var(--font-prism-serif)] text-3xl leading-[0.95] tracking-tight text-foreground italic md:text-4xl">
                   {feature.title}
                 </h3>
-                <p className="mt-5 max-w-md text-sm font-light leading-relaxed text-foreground/60">
+                <p className="mt-5 max-w-md text-sm leading-relaxed font-light text-foreground/60">
                   {feature.description}
                 </p>
                 <GlassButton className="mt-8">{feature.action}</GlassButton>

@@ -16,5 +16,6 @@ interface BlockEmbedRouteProps {
 
 export default async function BlockEmbedRoute({ params }: BlockEmbedRouteProps) {
   const { category, block } = await params;
+
   return <BlockEmbed base={DEFAULT_BASE} category={category} block={block} />;
 }

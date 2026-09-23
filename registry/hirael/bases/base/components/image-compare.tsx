@@ -26,6 +26,7 @@ const useImageCompare = () => {
   if (!context) {
     throw new Error('ImageCompare components must be used within <ImageCompare>');
   }
+
   return context;
 };
 
@@ -33,7 +34,7 @@ const clamp = (value: number) => {
   return Math.min(100, Math.max(0, value));
 };
 
-export interface ImageCompareProps extends Omit<React.ComponentProps<'div'>, 'onPointerMove'> {
+export interface ImageCompareProps extends React.ComponentProps<'div'> {
   /** Controlled position of the boundary, 0–100 from the reading start. */
   position?: number;
   defaultPosition?: number;
@@ -51,6 +52,7 @@ const ImageCompare = ({
   orientation = 'horizontal',
   followPointer = false,
   disabled = false,
+  onPointerMove,
   className,
   children,
   ref,
@@ -85,6 +87,7 @@ const ImageCompare = ({
       attributeFilter: ['dir'],
       subtree: true,
     });
+
     return () => observer.disconnect();
   }, []);
 
@@ -95,17 +98,20 @@ const ImageCompare = ({
       const rect = node.getBoundingClientRect();
       if (orientation === 'vertical') {
         if (rect.height === 0) return null;
+
         return clamp(((event.clientY - rect.top) / rect.height) * 100);
       }
       if (rect.width === 0) return null;
       const raw = ((event.clientX - rect.left) / rect.width) * 100;
+
       return clamp(rtl ? 100 - raw : raw);
     },
     [orientation, rtl],
   );
 
-  const handlePointerMove = (event: React.PointerEvent) => {
-    if (!followPointer || disabled || dragging) return;
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerMove?.(event);
+    if (event.defaultPrevented || !followPointer || disabled || dragging) return;
     const next = positionFromPointer(event);
     if (next !== null) setPosition(next);
   };
@@ -134,8 +140,8 @@ const ImageCompare = ({
         data-orientation={orientation}
         data-dragging={dragging || undefined}
         data-disabled={disabled || undefined}
-        onPointerMove={followPointer ? handlePointerMove : undefined}
-        className={cn('relative isolate w-full select-none overflow-hidden', className)}
+        onPointerMove={handlePointerMove}
+        className={cn('relative isolate w-full overflow-hidden select-none', className)}
         {...props}
       >
         {children}
@@ -183,17 +189,34 @@ const ImageCompareAfter = ({ className, style, children, ...props }: ImageCompar
 };
 
 export interface ImageCompareHandleProps extends React.ComponentProps<'div'> {
+  /** Accessible name of the slider. Defaults to "Comparison slider". */
   'aria-label'?: string;
+  /** Announced value for a position, 0–100. Defaults to "50%". */
+  getValueText?: (position: number) => string;
 }
 
-const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompareHandleProps) => {
+const defaultValueText = (position: number) => `${position}%`;
+
+const ImageCompareHandle = ({
+  getValueText = defaultValueText,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
+  className,
+  style,
+  children,
+  ...props
+}: ImageCompareHandleProps) => {
   const { position, setPosition, orientation, disabled, dragging, setDragging, rtl, positionFromPointer } =
     useImageCompare();
 
   const vertical = orientation === 'vertical';
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (disabled) return;
+    onPointerDown?.(event);
+    if (event.defaultPrevented || disabled) return;
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
     event.currentTarget.focus();
@@ -203,12 +226,15 @@ const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompa
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerMove?.(event);
     if (!dragging || disabled) return;
     const next = positionFromPointer(event);
     if (next !== null) setPosition(next);
   };
 
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.type === 'pointercancel') onPointerCancel?.(event);
+    else onPointerUp?.(event);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
@@ -216,7 +242,8 @@ const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompa
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (disabled) return;
+    onKeyDown?.(event);
+    if (event.defaultPrevented || disabled) return;
     const step = event.shiftKey ? 10 : 1;
     let next: number | null = null;
     switch (event.key) {
@@ -226,23 +253,26 @@ const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompa
       case 'ArrowLeft':
         next = position + (rtl ? step : -step);
         break;
-      case 'ArrowDown':
-        next = position + step;
-        break;
+      // Up raises the announced value; vertically that value is measured from the bottom.
       case 'ArrowUp':
-        next = position - step;
+        next = position + (vertical ? -step : step);
+        break;
+      case 'ArrowDown':
+        next = position + (vertical ? step : -step);
         break;
       case 'Home':
-        next = 0;
+        next = vertical ? 100 : 0;
         break;
       case 'End':
-        next = 100;
+        next = vertical ? 0 : 100;
         break;
     }
     if (next === null) return;
     event.preventDefault();
     setPosition(next);
   };
+
+  const value = Math.round(vertical ? 100 - position : position);
 
   return (
     <div
@@ -252,7 +282,8 @@ const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompa
       aria-orientation={orientation}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={Math.round(position)}
+      aria-valuenow={value}
+      aria-valuetext={getValueText(value)}
       aria-disabled={disabled || undefined}
       data-orientation={orientation}
       data-dragging={dragging || undefined}
@@ -277,6 +308,7 @@ const ImageCompareHandle = ({ className, style, children, ...props }: ImageCompa
       )}
       {...props}
     >
+      {/* White with a dark halo so the divider reads over any image, in either theme. */}
       <span
         aria-hidden
         data-slot="image-compare-handle-line"
@@ -313,11 +345,11 @@ const ImageCompareLabel = ({ side, className, children, ...props }: ImageCompare
       data-slot="image-compare-label"
       data-side={side}
       className={cn(
-        'pointer-events-none absolute z-30 rounded-md bg-black/60 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm transition-opacity duration-200',
+        'pointer-events-none absolute z-30 rounded-md bg-background/70 px-2 py-1 text-xs font-medium text-foreground backdrop-blur-sm transition-opacity duration-200',
         orientation === 'vertical'
           ? side === 'before'
             ? 'start-3 top-3'
-            : 'bottom-3 start-3'
+            : 'start-3 bottom-3'
           : side === 'before'
             ? 'start-3 top-3'
             : 'end-3 top-3',

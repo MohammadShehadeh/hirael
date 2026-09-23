@@ -16,5 +16,6 @@ interface ExampleEmbedRouteProps {
 
 export default async function ExampleEmbedRoute({ params }: ExampleEmbedRouteProps) {
   const { component, example } = await params;
+
   return <ExampleEmbed base={DEFAULT_BASE} component={component} example={example} />;
 }

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Sparkline, type SparklineProps } from '@/registry/hirael/bases/base/components/sparkline';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
 
 type KpiGridProps = React.ComponentProps<'div'>;
@@ -31,7 +32,7 @@ type KpiCardLabelProps = React.ComponentProps<'p'>;
 
 const KpiCardLabel = ({ className, ...props }: KpiCardLabelProps) => {
   return (
-    <p data-slot="kpi-card-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <p data-slot="kpi-card-label" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -68,6 +69,7 @@ interface KpiCardDeltaProps extends Omit<React.ComponentProps<'span'>, 'children
 
 const KpiCardDelta = ({ trend = 'flat', className, children, ...props }: KpiCardDeltaProps) => {
   const Icon = trendIcon[trend];
+
   return (
     <span
       data-slot="kpi-card-delta"
@@ -81,38 +83,22 @@ const KpiCardDelta = ({ trend = 'flat', className, children, ...props }: KpiCard
   );
 };
 
-interface KpiCardSparkProps extends Omit<React.ComponentProps<'svg'>, 'points'> {
+interface KpiCardSparkProps extends Omit<SparklineProps, 'data'> {
   points: number[];
 }
 
 const KpiCardSpark = ({ points, className, ...props }: KpiCardSparkProps) => {
   if (!points.length) return null;
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const range = max - min || 1;
-  const width = 100;
-  const height = 28;
-  const step = points.length > 1 ? width / (points.length - 1) : width;
-  const line = points.map((point, i) => `${i * step},${height - ((point - min) / range) * height}`).join(' ');
+
   return (
-    <svg
+    <Sparkline
       data-slot="kpi-card-spark"
-      viewBox={`0 0 ${width} ${height}`}
-      preserveAspectRatio="none"
+      data={points}
+      tone="muted"
       aria-hidden
-      className={cn('h-7 w-full text-muted-foreground', className)}
+      className={cn('h-7 w-full', className)}
       {...props}
-    >
-      <polyline
-        points={line}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
+    />
   );
 };
 
@@ -202,6 +188,7 @@ const KpiGridBlock = () => {
         <KpiGrid>
           {KPI_ROWS.map((kpi, index) => {
             const reading = kpi.periods[period];
+
             return (
               <KpiCard key={kpi.key}>
                 <KpiCardLabel>{kpi.label}</KpiCardLabel>

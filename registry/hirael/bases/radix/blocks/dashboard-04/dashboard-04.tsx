@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Sparkline } from '@/registry/hirael/bases/radix/components/sparkline';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
@@ -82,15 +83,15 @@ const REVENUE = {
   delta: { value: 17.6, unit: '%', goodWhen: 'up' } satisfies Delta,
 };
 
-const PEAK_HOURS: readonly { hour: string; orders: number; peak?: boolean }[] = [
+const PEAK_HOURS: readonly { hour: string; orders: number }[] = [
   { hour: '07', orders: 14 },
   { hour: '08', orders: 18 },
   { hour: '09', orders: 26 },
   { hour: '10', orders: 41 },
   { hour: '11', orders: 58 },
-  { hour: '12', orders: 92, peak: true },
-  { hour: '13', orders: 100, peak: true },
-  { hour: '14', orders: 86, peak: true },
+  { hour: '12', orders: 92 },
+  { hour: '13', orders: 100 },
+  { hour: '14', orders: 86 },
   { hour: '15', orders: 54 },
   { hour: '16', orders: 38 },
   { hour: '17', orders: 27 },
@@ -186,6 +187,32 @@ const WEEK: Record<WeekRange, WeekData> = {
   },
 };
 
+const PEAK_WINDOW = 3;
+
+const busiestWindow = (hours: readonly { hour: string; orders: number }[], size: number) => {
+  let start = 0;
+  let best = -1;
+  for (let i = 0; i + size <= hours.length; i++) {
+    const sum = hours.slice(i, i + size).reduce((total, h) => total + h.orders, 0);
+    if (sum > best) {
+      best = sum;
+      start = i;
+    }
+  }
+  const total = hours.reduce((sum, h) => sum + h.orders, 0);
+  const endHour = String(Number(hours[start + size - 1]?.hour ?? 0) + 1).padStart(2, '0');
+
+  return {
+    start,
+    end: start + size - 1,
+    from: hours[start]?.hour,
+    to: endHour,
+    share: total ? Math.round((best / total) * 100) : 0,
+  };
+};
+
+const PEAK = busiestWindow(PEAK_HOURS, PEAK_WINDOW);
+
 const BUDGET = { spent: 223.1, cap: 400 };
 
 const ENTER =
@@ -210,6 +237,7 @@ const UNIT_WORD: Record<Delta['unit'], string> = {
 
 const linePath = (values: readonly number[], max: number, h: number) => {
   const step = values.length > 1 ? 100 / (values.length - 1) : 100;
+
   return values
     .map((v, i) => `${i === 0 ? 'M' : 'L'}${(i * step).toFixed(2)} ${(h - 2 - (v / max) * (h - 6)).toFixed(2)}`)
     .join(' ');
@@ -262,7 +290,7 @@ const PanelCard = ({ icon: Icon, label, action, children, className }: PanelCard
     <Card data-slot="dashboard-panel" className={className}>
       <CardHeader>
         <CardTitle>
-          <span className="flex items-center gap-1.5 text-xs font-normal uppercase text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-xs font-normal text-muted-foreground uppercase">
             <Icon className="size-3.5" aria-hidden />
             {label}
           </span>
@@ -275,35 +303,6 @@ const PanelCard = ({ icon: Icon, label, action, children, className }: PanelCard
         </div>
       </CardContent>
     </Card>
-  );
-};
-
-interface SparklineProps {
-  points: readonly number[];
-}
-
-const Sparkline = ({ points }: SparklineProps) => {
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const span = max - min || 1;
-  const step = points.length > 1 ? 100 / (points.length - 1) : 100;
-  const pts = points.map((v, i) => `${(i * step).toFixed(1)},${(22 - ((v - min) / span) * 16).toFixed(1)}`).join(' ');
-
-  return (
-    <svg
-      viewBox="0 0 100 26"
-      preserveAspectRatio="none"
-      aria-hidden
-      className="mt-3 h-12 w-full animate-in fade-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
-    >
-      <polyline
-        points={pts}
-        fill="none"
-        vectorEffect="non-scaling-stroke"
-        strokeWidth="1.5"
-        className="stroke-foreground/45"
-      />
-    </svg>
   );
 };
 
@@ -326,7 +325,6 @@ const Dashboard04 = () => {
   const barMax = Math.max(...week.orders.days.map((d) => d.orders));
   const peakMax = Math.max(...PEAK_HOURS.map((h) => h.orders));
   const budgetPct = Math.round((BUDGET.spent / BUDGET.cap) * 100);
-  const peakWindow = PEAK_HOURS.filter((h) => h.peak);
 
   return (
     <section
@@ -334,13 +332,13 @@ const Dashboard04 = () => {
       data-density={compact ? 'compact' : 'comfortable'}
       className="group/dashboard bg-background py-20 sm:py-28"
     >
-      <div className="container flex w-full flex-col gap-8 group-data-[density=compact]/dashboard:gap-6">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-8 px-4 group-data-[density=compact]/dashboard:gap-6">
         <div
           data-slot="dashboard-header"
           className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
         >
           <div className="flex max-w-xl flex-col gap-3">
-            <span className="text-xs uppercase text-muted-foreground">Storefront</span>
+            <span className="text-xs text-muted-foreground uppercase">Storefront</span>
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Today at the counter.</h2>
           </div>
           <Button
@@ -365,7 +363,7 @@ const Dashboard04 = () => {
                 <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{s.value}</span>
                 <div className="flex items-center gap-1.5">
                   <DeltaChip delta={s.delta} label={s.label} />
-                  <span className="text-xs uppercase text-muted-foreground">vs yesterday</span>
+                  <span className="text-xs text-muted-foreground uppercase">vs yesterday</span>
                 </div>
               </div>
             </PanelCard>
@@ -375,7 +373,7 @@ const Dashboard04 = () => {
         <div data-slot="dashboard-today" style={stagger(2)} className={cn(ENTER, 'flex flex-col gap-4', DENSE_GAP)}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h3 className="text-lg font-semibold tracking-[-0.02em]">Today</h3>
-            <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+            <span className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
               <span>Store time</span>
               <span aria-hidden className="text-border">
                 |
@@ -389,7 +387,7 @@ const Dashboard04 = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex gap-8">
                   <div className="flex flex-col gap-1">
-                    <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                       <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                       Today
                     </span>
@@ -398,11 +396,11 @@ const Dashboard04 = () => {
                     </span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                       <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/45" />
                       Yesterday
                     </span>
-                    <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums text-muted-foreground">
+                    <span className="text-xl font-semibold tracking-[-0.02em] text-muted-foreground tabular-nums">
                       {usd.format(REVENUE.yesterday)}
                     </span>
                   </div>
@@ -414,7 +412,7 @@ const Dashboard04 = () => {
                   viewBox="0 0 100 46"
                   preserveAspectRatio="none"
                   aria-hidden
-                  className="h-44 w-full transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[density=compact]/dashboard:h-32 sm:h-56 sm:group-data-[density=compact]/dashboard:h-40 motion-reduce:transition-none"
+                  className="h-44 w-full transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[density=compact]/dashboard:h-32 motion-reduce:transition-none sm:h-56 sm:group-data-[density=compact]/dashboard:h-40"
                 >
                   {[11, 22, 33].map((y) => (
                     <line
@@ -447,7 +445,7 @@ const Dashboard04 = () => {
                 </svg>
                 <div aria-hidden className="mt-2 flex justify-between">
                   {HOURLY.filter((_, i) => i % 2 === 0).map((h) => (
-                    <span key={h.hour} className="text-xs uppercase tabular-nums text-muted-foreground">
+                    <span key={h.hour} className="text-xs text-muted-foreground uppercase tabular-nums">
                       {h.hour}
                     </span>
                   ))}
@@ -480,14 +478,14 @@ const Dashboard04 = () => {
                 <div className="flex flex-1 flex-col justify-between gap-4">
                   <div className="flex items-end justify-between gap-4">
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-xs uppercase text-muted-foreground">Spent today</span>
+                      <span className="text-xs text-muted-foreground uppercase">Spent today</span>
                       <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums">
                         {usd.format(BUDGET.spent)}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5 text-end">
-                      <span className="text-xs uppercase text-muted-foreground">Daily cap</span>
-                      <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums text-muted-foreground">
+                      <span className="text-xs text-muted-foreground uppercase">Daily cap</span>
+                      <span className="text-xl font-semibold tracking-[-0.02em] text-muted-foreground tabular-nums">
                         {usd.format(BUDGET.cap)}
                       </span>
                     </div>
@@ -504,7 +502,7 @@ const Dashboard04 = () => {
                     >
                       <div className="h-full rounded-full bg-foreground/80" style={{ width: `${budgetPct}%` }} />
                     </div>
-                    <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                    <span className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
                       <span className="tabular-nums">{budgetPct}% used</span>
                       <span aria-hidden className="text-border">
                         |
@@ -519,15 +517,20 @@ const Dashboard04 = () => {
                 <div className="flex flex-1 flex-col justify-between gap-3">
                   <div className="flex flex-col gap-0.5">
                     <span dir="ltr" className="text-xl font-semibold tracking-[-0.02em] tabular-nums rtl:text-end">
-                      {peakWindow[0]?.hour}:00 – {peakWindow.at(-1)?.hour}:00
+                      {PEAK.from}:00 – {PEAK.to}:00
                     </span>
-                    <span className="text-xs uppercase text-muted-foreground">31% of today&apos;s orders</span>
+                    <span className="text-xs text-muted-foreground uppercase tabular-nums">
+                      {PEAK.share}% of today&apos;s orders
+                    </span>
                   </div>
                   <div aria-hidden className="flex h-16 items-end gap-1">
-                    {PEAK_HOURS.map((h) => (
+                    {PEAK_HOURS.map((h, i) => (
                       <span
                         key={h.hour}
-                        className={cn('flex-1 rounded-t-xs', h.peak ? 'bg-foreground/85' : 'bg-muted-foreground/30')}
+                        className={cn(
+                          'flex-1 rounded-t-xs',
+                          i >= PEAK.start && i <= PEAK.end ? 'bg-foreground/85' : 'bg-muted-foreground/30',
+                        )}
                         style={{ height: `${(h.orders / peakMax) * 100}%` }}
                       />
                     ))}
@@ -574,7 +577,7 @@ const Dashboard04 = () => {
               <div key={range} className={cn(SWAP, 'flex items-start justify-between gap-4')}>
                 <div className="flex flex-col gap-0.5">
                   <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{week.orders.value}</span>
-                  <span className="text-xs uppercase text-muted-foreground">Orders completed</span>
+                  <span className="text-xs text-muted-foreground uppercase">Orders completed</span>
                 </div>
                 <DeltaChip delta={week.orders.delta} label="Orders" />
               </div>
@@ -593,7 +596,7 @@ const Dashboard04 = () => {
                       className="mx-auto w-full max-w-16 rounded-t-xs bg-foreground/80 transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
                       style={{ height: `${(d.orders / barMax) * 100}%` }}
                     />
-                    <span className="text-center text-xs uppercase text-muted-foreground">
+                    <span className="text-center text-xs text-muted-foreground uppercase">
                       {d.day}
                       <span className="sr-only">: {d.orders} orders</span>
                     </span>
@@ -609,7 +612,12 @@ const Dashboard04 = () => {
                     <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">{m.value}</span>
                     <DeltaChip delta={m.delta} label={m.label} />
                   </div>
-                  <Sparkline key={range} points={m.spark} />
+                  <div
+                    key={range}
+                    className="mt-3 flex animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fade-in motion-reduce:animate-none"
+                  >
+                    <Sparkline data={[...m.spark]} tone="muted" aria-hidden className="h-12 w-full" />
+                  </div>
                 </PanelCard>
               ))}
             </div>

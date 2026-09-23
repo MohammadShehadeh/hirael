@@ -29,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
-import { KbdDisplay, KbdGroup } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd, KbdGroup } from '@/registry/hirael/bases/radix/components/kbd';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import {
   Sidebar,
@@ -156,8 +156,8 @@ const BoardOverview = () => {
       >
         {STATS.map((stat) => (
           <div key={stat.label} className="flex flex-col gap-1 bg-background p-4">
-            <dt className="text-xs uppercase text-muted-foreground">{stat.label}</dt>
-            <dd className="text-2xl font-semibold tabular-nums tracking-tight">{stat.value}</dd>
+            <dt className="text-xs text-muted-foreground uppercase">{stat.label}</dt>
+            <dd className="text-2xl font-semibold tracking-tight tabular-nums">{stat.value}</dd>
             <dd className="text-xs text-muted-foreground">{stat.note}</dd>
           </div>
         ))}
@@ -179,14 +179,14 @@ const BoardOverview = () => {
               className={cn(ENTER, 'flex flex-col rounded-lg border border-border')}
             >
               <div className="flex items-center justify-between border-b border-border px-3 py-2">
-                <h3 className="text-xs uppercase text-muted-foreground">{column.stage}</h3>
-                <span className="text-xs tabular-nums text-muted-foreground">{column.cards.length}</span>
+                <h3 className="text-xs text-muted-foreground uppercase">{column.stage}</h3>
+                <span className="text-xs text-muted-foreground tabular-nums">{column.cards.length}</span>
               </div>
               <ul className="flex flex-col">
                 {column.cards.map((card) => (
                   <li
                     key={card.title}
-                    className="flex flex-col gap-2 border-b border-border px-3 py-3 last:border-b-0 transition-colors hover:bg-muted/40"
+                    className="flex flex-col gap-2 border-b border-border px-3 py-3 transition-colors last:border-b-0 hover:bg-muted/40"
                   >
                     <span className="text-sm font-medium text-pretty">{card.title}</span>
                     <span className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -211,6 +211,12 @@ const BoardOverview = () => {
   );
 };
 
+const isEditableElsewhere = (target: EventTarget | null, search: HTMLElement | null) => {
+  if (!(target instanceof HTMLElement) || target === search) return false;
+
+  return target.isContentEditable || target.matches('input, textarea, select');
+};
+
 const AppShell04 = () => {
   const [workspace, setWorkspace] = React.useState(WORKSPACES[0].name);
   const [active, setActive] = React.useState(NAV[0].label);
@@ -219,13 +225,15 @@ const AppShell04 = () => {
 
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.shiftKey || event.altKey) return;
       const isSearchShortcut = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);
-      if (!isSearchShortcut) return;
+      if (!isSearchShortcut || isEditableElsewhere(event.target, searchRef.current)) return;
       event.preventDefault();
       searchRef.current?.focus();
       searchRef.current?.select();
     };
     document.addEventListener('keydown', onKeyDown);
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
@@ -248,7 +256,7 @@ const AppShell04 = () => {
                     </span>
                     <div className="grid min-w-0 flex-1 text-start leading-tight">
                       <span className="truncate text-sm font-semibold tracking-[-0.01em]">{activeWorkspace.name}</span>
-                      <span className="truncate text-xs uppercase text-muted-foreground">{activeWorkspace.tier}</span>
+                      <span className="truncate text-xs text-muted-foreground uppercase">{activeWorkspace.tier}</span>
                     </div>
                     <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
                   </SidebarMenuButton>
@@ -280,6 +288,7 @@ const AppShell04 = () => {
                 if (query) {
                   e.preventDefault();
                   setQuery('');
+
                   return;
                 }
                 e.currentTarget.blur();
@@ -290,8 +299,8 @@ const AppShell04 = () => {
             />
             <InputGroupAddon dir="ltr" align="inline-end">
               <KbdGroup>
-                <KbdDisplay>⌘</KbdDisplay>
-                <KbdDisplay>K</KbdDisplay>
+                <Kbd>⌘</Kbd>
+                <Kbd>K</Kbd>
               </KbdGroup>
             </InputGroupAddon>
           </InputGroup>
@@ -336,7 +345,7 @@ const AppShell04 = () => {
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
-          <span className="px-2 pb-1 text-xs uppercase text-muted-foreground group-data-[collapsible=icon]:hidden">
+          <span className="px-2 pb-1 text-xs text-muted-foreground uppercase group-data-[collapsible=icon]:hidden">
             © {activeWorkspace.name}
           </span>
         </SidebarFooter>
@@ -356,7 +365,7 @@ const AppShell04 = () => {
               <Bell className="size-4" aria-hidden />
               <span
                 aria-hidden
-                className="absolute -end-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium tabular-nums text-primary-foreground"
+                className="absolute -end-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground tabular-nums"
               >
                 3
               </span>

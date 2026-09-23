@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { ConfirmProvider, useConfirm } from '@/registry/hirael/bases/radix/components/confirm';
+import { ConfirmProvider, useConfirm, useOptionalConfirm } from '@/registry/hirael/bases/radix/components/confirm';
 
 export interface UnsavedGuardOptions {
   /** Whether there are unsaved changes to guard. */
@@ -29,7 +29,10 @@ interface UnsavedGuardContextValue {
 
 const UnsavedGuardContext = React.createContext<UnsavedGuardContextValue | null>(null);
 
-/** While `when` is true, reload, tab close and in-app links ask before leaving. */
+/**
+ * While `when` is true, reload, tab close and in-app links ask before leaving.
+ * Back/forward and links rendered outside the provider's children aren't intercepted.
+ */
 const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
   const ctx = React.useContext(UnsavedGuardContext);
   if (!ctx) {
@@ -45,6 +48,7 @@ const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
 
   React.useEffect(() => {
     ctx.register(id, { when, title, description, confirmText, cancelText });
+
     return () => ctx.unregister(id);
   }, [ctx, id, when, title, description, confirmText, cancelText]);
 
@@ -54,8 +58,10 @@ const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
       if (!current.when) {
         return Promise.resolve(proceed?.()).then(() => true);
       }
+
       return ctx.confirmLeave(current).then((ok) => {
         if (!ok) return false;
+
         return ctx.proceedUnguarded(proceed).then(() => true);
       });
     },
@@ -83,13 +89,14 @@ const UnsavedGuardProvider = ({
   onProceed,
   defaultOptions,
 }: UnsavedGuardProviderProps) => {
-  return (
-    <ConfirmProvider>
-      <UnsavedGuardInner beforeUnload={beforeUnload} onProceed={onProceed} defaultOptions={defaultOptions}>
-        {children}
-      </UnsavedGuardInner>
-    </ConfirmProvider>
+  const outerConfirm = useOptionalConfirm();
+  const inner = (
+    <UnsavedGuardInner beforeUnload={beforeUnload} onProceed={onProceed} defaultOptions={defaultOptions}>
+      {children}
+    </UnsavedGuardInner>
   );
+
+  return outerConfirm ? inner : <ConfirmProvider>{inner}</ConfirmProvider>;
 };
 
 const UnsavedGuardInner = ({
@@ -170,6 +177,7 @@ const UnsavedGuardInner = ({
       event.returnValue = '';
     };
     window.addEventListener('beforeunload', handler);
+
     return () => window.removeEventListener('beforeunload', handler);
   }, [beforeUnload]);
 
@@ -199,16 +207,18 @@ const UnsavedGuardInner = ({
       event.stopPropagation();
       void confirmLeave(activeRef.current ?? undefined).then((ok) => {
         if (!ok) return;
-        void proceedUnguarded(() => {
-          if (onProceed) {
-            onProceed(url.href);
-          } else {
-            window.location.assign(url.href);
-          }
-        });
+        if (onProceed) {
+          void proceedUnguarded(() => onProceed(url.href));
+
+          return;
+        }
+        // beforeunload fires after assign() returns, so the bypass must outlive this call.
+        bypassRef.current = true;
+        window.location.assign(url.href);
       });
     };
     root.addEventListener('click', onClick, true);
+
     return () => root.removeEventListener('click', onClick, true);
   }, [confirmLeave, onProceed, proceedUnguarded]);
 

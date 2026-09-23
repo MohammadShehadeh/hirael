@@ -10,11 +10,12 @@ const resolveColor = (value: string) => {
   document.body.append(probe);
   const resolved = getComputedStyle(probe).color;
   probe.remove();
+
   return resolved;
 };
 
 const readPalette = () => ({
-  beam: resolveColor('var(--warm)'),
+  beam: resolveColor('var(--primary)'),
 });
 
 type Palette = ReturnType<typeof readPalette>;
@@ -27,6 +28,7 @@ const usePalette = () => {
   React.useEffect(() => {
     const observer = new MutationObserver(() => setPalette(readPalette()));
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     return () => observer.disconnect();
   }, []);
 
@@ -38,6 +40,7 @@ const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 const subscribeReducedMotion = (onChange: () => void) => {
   const media = window.matchMedia(REDUCED_MOTION);
   media.addEventListener('change', onChange);
+
   return () => media.removeEventListener('change', onChange);
 };
 

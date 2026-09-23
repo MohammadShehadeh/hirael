@@ -1,9 +1,20 @@
 'use client';
 
 import * as React from 'react';
-import { Laptop, MonitorSmartphone, ShieldCheck, Smartphone, type LucideIcon } from 'lucide-react';
+import { Check, Laptop, Loader2, MonitorSmartphone, ShieldCheck, Smartphone, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/registry/hirael/bases/base/ui/alert-dialog';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
@@ -86,6 +97,7 @@ interface SettingsPanelGroupProps extends React.ComponentProps<'div'> {
 
 const SettingsPanelGroup = ({ label, className, children, ...props }: SettingsPanelGroupProps) => {
   const labelId = React.useId();
+
   return (
     <div
       data-slot="settings-panel-group"
@@ -97,7 +109,7 @@ const SettingsPanelGroup = ({ label, className, children, ...props }: SettingsPa
       {label ? (
         <span
           id={labelId}
-          className="border-b border-border bg-muted/30 px-5 py-2 text-xs uppercase text-muted-foreground"
+          className="border-b border-border bg-muted/30 px-5 py-2 text-xs text-muted-foreground uppercase"
         >
           {label}
         </span>
@@ -186,13 +198,13 @@ const SettingsPanelSession = ({
         <span className="flex flex-wrap items-center gap-2">
           <span className="truncate text-sm font-medium text-foreground">{device}</span>
           {current ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-cool/40 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-accent-cool">
-              <span aria-hidden className="size-1.5 rounded-full bg-accent-cool" />
+            <Badge variant="outline">
+              <span aria-hidden className="size-1.5 rounded-full bg-primary" />
               This device
-            </span>
+            </Badge>
           ) : null}
         </span>
-        <span className="flex min-w-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+        <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground uppercase">
           {location ? <span className="truncate">{location}</span> : null}
           {location && lastActive ? (
             <span aria-hidden className="text-border">
@@ -203,9 +215,25 @@ const SettingsPanelSession = ({
         </span>
       </div>
       {current ? null : (
-        <Button type="button" variant="ghost" size="sm" onClick={onRevoke}>
-          {revokeLabel}
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger render={<Button type="button" variant="ghost" size="sm" />}>
+            {revokeLabel}
+          </AlertDialogTrigger>
+          <AlertDialogContent data-slot="settings-panel-session-dialog">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Sign out {device}?</AlertDialogTitle>
+              <AlertDialogDescription>
+                That device is signed out right away and needs your password to get back in.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep signed in</AlertDialogCancel>
+              <AlertDialogAction variant="destructive" onClick={onRevoke}>
+                {revokeLabel}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </li>
   );
@@ -320,16 +348,75 @@ const NOTIFICATION_DEFAULTS: Record<NotificationKey, boolean> = {
   product: false,
 };
 
+const PASSWORD_MIN = 8;
+
+const RECOVERY_CODES = [
+  '4F7K-29QD',
+  'M8XP-J3VC',
+  'T2RB-6HNW',
+  'Z9LE-K4GA',
+  'C5YU-81FS',
+  'Q3DM-7PXT',
+  'H6WN-2BRJ',
+  'V8GK-5ELZ',
+  'B1TC-9QMY',
+  'R7SA-4JUD',
+];
+
+interface PasswordErrors {
+  current?: string;
+  next?: string;
+  confirm?: string;
+}
+
+const validatePassword = (current: string, next: string, confirm: string, submitted: boolean): PasswordErrors => {
+  const errors: PasswordErrors = {};
+  if (submitted && !current) errors.current = 'Enter your current password.';
+  if ((submitted || next.length > 0) && next.length < PASSWORD_MIN) {
+    errors.next = `Use at least ${PASSWORD_MIN} characters.`;
+  }
+  if ((submitted || confirm.length > 0) && confirm !== next) errors.confirm = 'Passwords do not match.';
+
+  return errors;
+};
+
 const Settings02 = () => {
   const [current, setCurrent] = React.useState('');
   const [next, setNext] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
-  const confirmMismatch = confirm.length > 0 && confirm !== next;
-  const canUpdatePassword = current.length > 0 && next.length >= 8 && confirm === next;
+  const [passwordSubmitted, setPasswordSubmitted] = React.useState(false);
+  const [passwordStatus, setPasswordStatus] = React.useState<'idle' | 'pending' | 'updated'>('idle');
+  const passwordTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const passwordErrors = validatePassword(current, next, confirm, passwordSubmitted);
+  const passwordTouched = current.length > 0 || next.length > 0 || confirm.length > 0;
+
+  React.useEffect(() => () => clearTimeout(passwordTimer.current), []);
+
+  const editPassword = (setter: (value: string) => void) => (value: string) => {
+    setter(value);
+    if (passwordStatus === 'updated') setPasswordStatus('idle');
+  };
+
+  const updatePassword = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPasswordSubmitted(true);
+    if (Object.keys(validatePassword(current, next, confirm, true)).length > 0) return;
+    setPasswordStatus('pending');
+    passwordTimer.current = setTimeout(() => {
+      setCurrent('');
+      setNext('');
+      setConfirm('');
+      setPasswordSubmitted(false);
+      setPasswordStatus('updated');
+    }, 900);
+  };
+
+  const [showCodes, setShowCodes] = React.useState(false);
 
   const [twoFactor, setTwoFactor] = React.useState(false);
   const [sessions, setSessions] = React.useState<readonly Session[]>(SESSIONS);
   const others = sessions.filter((s) => !s.current);
+  const [signOutAllOpen, setSignOutAllOpen] = React.useState(false);
 
   const [paused, setPaused] = React.useState(false);
   const [prefs, setPrefs] = React.useState(NOTIFICATION_DEFAULTS);
@@ -344,7 +431,7 @@ const Settings02 = () => {
     <section data-slot="settings-02-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         <div className={cn(ENTER, 'mb-6 flex flex-col gap-1')}>
-          <span className="text-xs uppercase text-muted-foreground">Account</span>
+          <span className="text-xs text-muted-foreground uppercase">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Security and notifications</h1>
           <p className="text-sm text-muted-foreground">
             Keep your account locked down and decide what reaches your inbox.
@@ -372,43 +459,51 @@ const Settings02 = () => {
                     </SettingsPanelDescription>
                   </div>
                 </SettingsPanelHeader>
-                <form
-                  id="settings-password-form"
-                  className="px-5 py-5"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setCurrent('');
-                    setNext('');
-                    setConfirm('');
-                  }}
-                >
+                <form id="settings-password-form" noValidate className="px-5 py-5" onSubmit={updatePassword}>
                   <FieldGroup className="gap-5">
-                    <Field className="gap-2">
+                    <Field className="gap-2" data-invalid={passwordErrors.current ? true : undefined}>
                       <FieldLabel htmlFor="settings-current-password">Current password</FieldLabel>
-                      <PasswordInput id="settings-current-password" value={current} onValueChange={setCurrent}>
-                        <PasswordInputField autoComplete="current-password" />
+                      <PasswordInput
+                        id="settings-current-password"
+                        value={current}
+                        onValueChange={editPassword(setCurrent)}
+                      >
+                        <PasswordInputField
+                          autoComplete="current-password"
+                          aria-invalid={passwordErrors.current ? true : undefined}
+                          aria-describedby={passwordErrors.current ? 'settings-current-error' : undefined}
+                        />
                       </PasswordInput>
+                      <FieldError id="settings-current-error">{passwordErrors.current}</FieldError>
                     </Field>
                     <div className="grid gap-5 sm:grid-cols-2">
-                      <Field className="gap-2">
+                      <Field className="gap-2" data-invalid={passwordErrors.next ? true : undefined}>
                         <FieldLabel htmlFor="settings-new-password">New password</FieldLabel>
-                        <PasswordInput id="settings-new-password" value={next} onValueChange={setNext}>
-                          <PasswordInputField autoComplete="new-password" />
-                          <PasswordInputStrength showLabel={next.length > 0} />
-                        </PasswordInput>
-                      </Field>
-                      <Field className="gap-2" data-invalid={confirmMismatch || undefined}>
-                        <FieldLabel htmlFor="settings-confirm-password">Confirm new password</FieldLabel>
-                        <PasswordInput id="settings-confirm-password" value={confirm} onValueChange={setConfirm}>
+                        <PasswordInput id="settings-new-password" value={next} onValueChange={editPassword(setNext)}>
                           <PasswordInputField
                             autoComplete="new-password"
-                            aria-invalid={confirmMismatch || undefined}
-                            aria-describedby={confirmMismatch ? 'settings-confirm-error' : undefined}
+                            minLength={PASSWORD_MIN}
+                            aria-invalid={passwordErrors.next ? true : undefined}
+                            aria-describedby={passwordErrors.next ? 'settings-new-error' : undefined}
+                          />
+                          <PasswordInputStrength showLabel={next.length > 0} />
+                        </PasswordInput>
+                        <FieldError id="settings-new-error">{passwordErrors.next}</FieldError>
+                      </Field>
+                      <Field className="gap-2" data-invalid={passwordErrors.confirm ? true : undefined}>
+                        <FieldLabel htmlFor="settings-confirm-password">Confirm new password</FieldLabel>
+                        <PasswordInput
+                          id="settings-confirm-password"
+                          value={confirm}
+                          onValueChange={editPassword(setConfirm)}
+                        >
+                          <PasswordInputField
+                            autoComplete="new-password"
+                            aria-invalid={passwordErrors.confirm ? true : undefined}
+                            aria-describedby={passwordErrors.confirm ? 'settings-confirm-error' : undefined}
                           />
                         </PasswordInput>
-                        <FieldError id="settings-confirm-error">
-                          {confirmMismatch ? 'Passwords do not match.' : null}
-                        </FieldError>
+                        <FieldError id="settings-confirm-error">{passwordErrors.confirm}</FieldError>
                       </Field>
                     </div>
                   </FieldGroup>
@@ -417,8 +512,27 @@ const Settings02 = () => {
                   <Button type="button" variant="link" size="sm" className="me-auto h-auto">
                     Forgot your password?
                   </Button>
-                  <Button type="submit" form="settings-password-form" size="sm" disabled={!canUpdatePassword}>
-                    Update password
+                  {passwordStatus === 'updated' ? (
+                    <span role="status" className={cn(SWAP, 'flex items-center gap-1.5 text-xs text-success')}>
+                      <Check aria-hidden className="size-3.5" />
+                      Password updated
+                    </span>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    form="settings-password-form"
+                    size="sm"
+                    disabled={!passwordTouched || passwordStatus === 'pending'}
+                    aria-busy={passwordStatus === 'pending' || undefined}
+                  >
+                    {passwordStatus === 'pending' ? (
+                      <>
+                        <Loader2 aria-hidden className="animate-spin motion-reduce:animate-none" />
+                        Updating
+                      </>
+                    ) : (
+                      'Update password'
+                    )}
                   </Button>
                 </SettingsPanelFooter>
               </SettingsPanel>
@@ -452,7 +566,14 @@ const Settings02 = () => {
                       )
                     }
                   >
-                    <Switch id="settings-2fa" checked={twoFactor} onCheckedChange={setTwoFactor} />
+                    <Switch
+                      id="settings-2fa"
+                      checked={twoFactor}
+                      onCheckedChange={(checked) => {
+                        setTwoFactor(checked);
+                        if (!checked) setShowCodes(false);
+                      }}
+                    />
                   </SettingsPanelItem>
                   {twoFactor ? (
                     <div className={SWAP}>
@@ -460,10 +581,38 @@ const Settings02 = () => {
                         label="Recovery codes"
                         description="Ten one-time codes for when you lose your phone. 10 of 10 left."
                       >
-                        <Button type="button" variant="outline" size="sm">
-                          View codes
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          aria-expanded={showCodes}
+                          aria-controls="settings-recovery-codes"
+                          onClick={() => setShowCodes((open) => !open)}
+                        >
+                          {showCodes ? 'Hide codes' : 'View codes'}
                         </Button>
                       </SettingsPanelItem>
+                      {showCodes ? (
+                        <div id="settings-recovery-codes" className={cn(SWAP, 'flex flex-col gap-3 px-5 pb-4')}>
+                          <ul
+                            aria-label="Recovery codes"
+                            dir="ltr"
+                            className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-5"
+                          >
+                            {RECOVERY_CODES.map((code) => (
+                              <li
+                                key={code}
+                                className="bg-background px-3 py-2 text-center text-sm tracking-wide text-foreground tabular-nums select-all"
+                              >
+                                {code}
+                              </li>
+                            ))}
+                          </ul>
+                          <p className="text-xs text-muted-foreground">
+                            Each code works once. Store them somewhere safe, like a password manager.
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   ) : null}
                 </SettingsPanelGroup>
@@ -477,7 +626,7 @@ const Settings02 = () => {
                       Devices signed in to your account. Revoke anything you do not recognise.
                     </SettingsPanelDescription>
                   </div>
-                  <span className="shrink-0 text-xs uppercase text-muted-foreground">
+                  <span className="shrink-0 text-xs text-muted-foreground uppercase">
                     {sessions.length} {sessions.length === 1 ? 'device' : 'devices'}
                   </span>
                 </SettingsPanelHeader>
@@ -500,15 +649,34 @@ const Settings02 = () => {
                       ? 'Only this device is signed in.'
                       : `${others.length} other ${others.length === 1 ? 'device' : 'devices'} signed in.`}
                   </span>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={others.length === 0}
-                    onClick={() => setSessions((list) => list.filter((x) => x.current))}
-                  >
-                    Sign out all other devices
-                  </Button>
+                  <AlertDialog open={signOutAllOpen} onOpenChange={setSignOutAllOpen}>
+                    <AlertDialogTrigger
+                      render={<Button type="button" variant="outline" size="sm" disabled={others.length === 0} />}
+                    >
+                      Sign out all other devices
+                    </AlertDialogTrigger>
+                    <AlertDialogContent data-slot="settings-sign-out-all-dialog">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sign out all other devices?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Every session except this one ends right away. Those devices need your password to sign back
+                          in.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          variant="destructive"
+                          onClick={() => {
+                            setSignOutAllOpen(false);
+                            setSessions((list) => list.filter((x) => x.current));
+                          }}
+                        >
+                          Sign out all
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </SettingsPanelFooter>
               </SettingsPanel>
             </div>
@@ -533,6 +701,7 @@ const Settings02 = () => {
                   <SettingsPanelGroup key={group.label} label={group.label}>
                     {group.rows.map((row) => {
                       const id = `settings-notify-${row.key}`;
+
                       return (
                         <SettingsPanelItem
                           key={row.key}

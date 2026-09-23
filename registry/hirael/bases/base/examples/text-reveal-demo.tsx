@@ -9,7 +9,7 @@ const TextRevealDemo = () => {
   return (
     <div className="grid w-full max-w-xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'By word', ar: 'كلمة بكلمة' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'By word', ar: 'كلمة بكلمة' })}</p>
         <div className="text-2xl font-semibold tracking-tight text-foreground">
           <TextReveal as="h3">
             {t({
@@ -21,7 +21,7 @@ const TextRevealDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'By line', ar: 'سطرًا بسطر' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'By line', ar: 'سطرًا بسطر' })}</p>
         <div className="text-sm leading-relaxed text-muted-foreground">
           <TextReveal by="line" delay={100} stagger={120}>
             {t({

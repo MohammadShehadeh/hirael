@@ -32,7 +32,7 @@ type TeamProps = React.ComponentProps<'section'>;
 const Team = ({ className, children, ...props }: TeamProps) => {
   return (
     <section data-slot="team" className={cn('bg-background py-20 sm:py-28', className)} {...props}>
-      <div className="container flex w-full flex-col gap-12 sm:gap-16">{children}</div>
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-12 px-4 sm:gap-16">{children}</div>
     </section>
   );
 };
@@ -47,7 +47,7 @@ type TeamEyebrowProps = React.ComponentProps<'span'>;
 
 const TeamEyebrow = ({ className, ...props }: TeamEyebrowProps) => {
   return (
-    <span data-slot="team-eyebrow" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <span data-slot="team-eyebrow" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -58,7 +58,7 @@ const TeamTitle = ({ className, ...props }: TeamTitleProps) => {
     <h2
       data-slot="team-title"
       className={cn(
-        'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
+        'font-serif text-4xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-5xl',
         className,
       )}
       {...props}
@@ -147,7 +147,7 @@ type TeamMemberRoleProps = React.ComponentProps<'p'>;
 
 const TeamMemberRole = ({ className, ...props }: TeamMemberRoleProps) => {
   return (
-    <p data-slot="team-member-role" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <p data-slot="team-member-role" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -178,7 +178,7 @@ const TeamMemberLink = ({ className, ...props }: TeamMemberLinkProps) => {
     <a
       data-slot="team-member-link"
       className={cn(
-        '-ms-1.5 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4',
+        '-ms-1.5 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:size-4',
         className,
       )}
       {...props}
@@ -348,7 +348,7 @@ const Team01Block = () => {
             {DEPARTMENTS.map((dept) => (
               <ToggleGroupItem key={dept} value={dept}>
                 {dept}
-                <span className="text-xs tabular-nums text-muted-foreground">{countFor(dept)}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{countFor(dept)}</span>
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
@@ -379,7 +379,7 @@ const Team01Block = () => {
         <p className="text-sm text-muted-foreground">We&apos;re hiring across engineering and design.</p>
         <a
           href="#"
-          className="group inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="group inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
           See open roles
           <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />

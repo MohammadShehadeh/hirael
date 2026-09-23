@@ -38,7 +38,7 @@ export const Testimonials = () => {
               key={testimonial.name}
               className={cn('rise liquid-glass flex flex-col rounded-2xl p-8', testimonial.delay)}
             >
-              <blockquote className="flex-1 text-sm font-light italic leading-relaxed text-foreground/80">
+              <blockquote className="flex-1 text-sm leading-relaxed font-light text-foreground/80 italic">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-8">

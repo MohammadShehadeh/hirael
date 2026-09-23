@@ -30,6 +30,7 @@ const parseValuesAsNumbers = (value: unknown): RangeValue | undefined => {
   const parsed = value.map((v) => {
     if (typeof v === 'number') return v;
     if (typeof v === 'string' && v.trim() !== '') return Number(v);
+
     return Number.NaN;
   });
 
@@ -203,7 +204,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
                   className={cn('h-8 w-24', unit && 'pe-8')}
                 />
                 {unit && (
-                  <span className="absolute top-0 bottom-0 end-0 flex items-center rounded-e-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute end-0 top-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}
@@ -236,7 +237,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
                   className={cn('h-8 w-24', unit && 'pe-8')}
                 />
                 {unit && (
-                  <span className="absolute top-0 bottom-0 end-0 flex items-center rounded-e-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute end-0 top-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}

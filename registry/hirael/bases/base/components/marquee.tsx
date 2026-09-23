@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 export interface MarqueeProps extends React.ComponentProps<'div'> {
   /** Scroll the opposite direction. */
   reverse?: boolean;
-  /** Pause while the pointer is over the track. */
+  /** Pause while the pointer is over the track. Focus inside always pauses it. */
   pauseOnHover?: boolean;
   /** Scroll top-to-bottom instead of left-to-right. */
   vertical?: boolean;
@@ -28,7 +28,8 @@ const MARQUEE_KEYFRAMES = `
   from { transform: translateY(0); }
   to { transform: translateY(calc(-100% - var(--marquee-gap))); }
 }
-[data-slot="marquee"][data-pause="true"]:hover [data-slot="marquee-track"] {
+[data-slot="marquee"][data-pause="true"]:hover [data-slot="marquee-track"],
+[data-slot="marquee"]:focus-within [data-slot="marquee-track"] {
   animation-play-state: paused;
 }
 [dir="rtl"] [data-slot="marquee-track"] {
@@ -76,7 +77,10 @@ const Marquee = ({
       )}
       {...props}
     >
-      <style dangerouslySetInnerHTML={{ __html: MARQUEE_KEYFRAMES }} />
+      {/* href + precedence let React hoist one copy into <head>, however many marquees render. */}
+      <style href="hirael-marquee" precedence="default">
+        {MARQUEE_KEYFRAMES}
+      </style>
       {Array.from({ length: Math.max(2, repeat) }).map((_, i) => (
         <div
           key={i}

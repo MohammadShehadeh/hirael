@@ -41,19 +41,19 @@ const CommandPaletteDemo = () => {
 
             <CommandPaletteRecents heading={t({ en: 'Recent', ar: 'الأخيرة' })}>
               {(recent) => (
-                <CommandPaletteItem id={recent.id} label={recent.label} onSelect={() => setLast(recent.label)} />
+                <CommandPaletteItem recentId={recent.id} label={recent.label} onSelect={() => setLast(recent.label)} />
               )}
             </CommandPaletteRecents>
 
             <CommandPaletteGroup heading={t({ en: 'Actions', ar: 'إجراءات' })}>
               <CommandPaletteItem
-                id="new-issue"
+                recentId="new-issue"
                 label={t({ en: 'New issue', ar: 'مشكلة جديدة' })}
                 shortcut="N"
                 onSelect={() => setLast(t({ en: 'New issue', ar: 'مشكلة جديدة' }))}
               />
               <CommandPaletteItem
-                id="invite"
+                recentId="invite"
                 label={t({ en: 'Invite teammate', ar: 'دعوة زميل' })}
                 onSelect={() => setLast(t({ en: 'Invite teammate', ar: 'دعوة زميل' }))}
               />
@@ -68,7 +68,7 @@ const CommandPaletteDemo = () => {
                 {projects.map((project) => (
                   <CommandPaletteItem
                     key={project.id}
-                    id={project.id}
+                    recentId={project.id}
                     label={project.label}
                     onSelect={() => setLast(project.label)}
                   />

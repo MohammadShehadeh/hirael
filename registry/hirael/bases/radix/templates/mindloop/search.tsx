@@ -27,7 +27,7 @@ export const Search = () => {
   const fade = useFadeUp();
 
   return (
-    <section id="use-cases" className="px-8 pb-6 pt-52 md:px-28 md:pb-9 md:pt-64">
+    <section id="use-cases" className="px-8 pt-52 pb-6 md:px-28 md:pt-64 md:pb-9">
       <div className="mx-auto max-w-5xl text-center">
         <motion.h2 {...fade(0)} className="text-5xl tracking-[-2px] md:text-7xl lg:text-8xl">
           Search has <Serif>changed.</Serif> Have you?

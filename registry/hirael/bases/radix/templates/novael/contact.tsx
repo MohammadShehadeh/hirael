@@ -52,17 +52,17 @@ export const Contact = ({ lang }: ContactProps) => {
   const year = new Date().getFullYear();
 
   return (
-    <section id="contact" className="bg-card pb-10 pt-20 sm:pt-28">
+    <section id="contact" className="bg-card pt-20 pb-10 sm:pt-28">
       <div className="mx-auto max-w-[1440px] px-6">
         <SectionHeader lang={lang} pretitle={c.pretitle} title={c.title} />
 
         <Reveal className="mx-auto mt-10 max-w-2xl text-center">
-          <p className="text-lg font-light leading-relaxed text-muted-foreground">{c.lead}</p>
+          <p className="text-lg leading-relaxed font-light text-muted-foreground">{c.lead}</p>
           <div className="mt-10">
             <Button asChild size="lg" className="h-12">
               <a href={`mailto:${CONTACT.email}`}>
                 <Mail className="size-4" />
-                <span className={cn(lang === 'en' ? 'text-xs uppercase tracking-[0.2em]' : 'text-sm')}>{c.cta}</span>
+                <span className={cn(lang === 'en' ? 'text-xs tracking-[0.2em] uppercase' : 'text-sm')}>{c.cta}</span>
               </a>
             </Button>
           </div>
@@ -74,7 +74,7 @@ export const Contact = ({ lang }: ContactProps) => {
               <h3 data-slot="novael-display" className={FOOTER_HEADING}>
                 {c.findUs}
               </h3>
-              <address className="font-light not-italic leading-relaxed text-muted-foreground">
+              <address className="leading-relaxed font-light text-muted-foreground not-italic">
                 {c.address.map((line) => (
                   <span key={line} className="block">
                     {line}
@@ -118,7 +118,7 @@ export const Contact = ({ lang }: ContactProps) => {
               href="#intro"
               className={cn(
                 'group inline-flex items-center gap-3 font-light text-foreground',
-                lang === 'en' ? 'text-[10px] uppercase tracking-[0.3em]' : 'text-xs tracking-normal',
+                lang === 'en' ? 'text-[10px] tracking-[0.3em] uppercase' : 'text-xs tracking-normal',
               )}
             >
               <span className="flex size-9 items-center justify-center rounded-full border-2 border-primary">

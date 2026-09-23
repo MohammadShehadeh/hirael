@@ -9,7 +9,7 @@ const LUMINAR_VIDEO = '/media/templates/agency-landing/case-study-luminar.mp4';
 
 export const CaseStudies = () => {
   return (
-    <section className="bg-[#F5F5F5] pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+    <section className="bg-[#F5F5F5] pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-28 lg:pb-28">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
@@ -25,7 +25,7 @@ export const CaseStudies = () => {
           </span>
         </div>
 
-        <h2 className="mb-10 px-5 text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12">
+        <h2 className="mb-10 px-5 text-[clamp(1.75rem,7vw,4.2rem)] leading-[1.08] font-medium tracking-[-0.03em] text-gray-900 sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12">
           Our projects
         </h2>
 
@@ -33,12 +33,12 @@ export const CaseStudies = () => {
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]">
               <video src={NARRATIV_VIDEO} autoPlay muted loop playsInline className="h-full w-full object-cover" />
-              <div className="absolute bottom-4 start-4">
+              <div className="absolute start-4 bottom-4">
                 <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[148px]">
                   <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
                     <LinkIcon className="h-[14px] w-[14px] -rotate-45 text-gray-900 transition-transform duration-300 group-hover:rotate-0" />
                   </span>
-                  <span className="whitespace-nowrap text-[13px] font-medium text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
+                  <span className="text-[13px] font-medium whitespace-nowrap text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
                     Learn more
                   </span>
                 </div>
@@ -53,7 +53,7 @@ export const CaseStudies = () => {
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#6b6b6b]">
               <video src={LUMINAR_VIDEO} autoPlay muted loop playsInline className="h-full w-full object-cover" />
-              <div className="absolute bottom-4 start-4">
+              <div className="absolute start-4 bottom-4">
                 <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-gray-900 transition-all duration-300 ease-in-out group-hover:w-[168px]">
                   <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
                     <ArrowRight
@@ -61,7 +61,7 @@ export const CaseStudies = () => {
                       className="-rotate-45 text-white transition-transform duration-300 group-hover:rotate-0"
                     />
                   </span>
-                  <span className="whitespace-nowrap text-[13px] font-medium text-white opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
+                  <span className="text-[13px] font-medium whitespace-nowrap text-white opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
                     View case study
                   </span>
                 </div>

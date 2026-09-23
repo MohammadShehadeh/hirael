@@ -263,6 +263,7 @@ const usd = (amount: number) => `$${amount}`;
 
 const matches = (product: Product, filters: Filters, ignoreCategory = false) => {
   const minRating = RATINGS.find((option) => option.value === filters.rating)?.min ?? 0;
+
   return (
     (ignoreCategory || filters.categories.length === 0 || filters.categories.includes(product.category)) &&
     product.price >= filters.price[0] &&
@@ -277,6 +278,7 @@ const sortProducts = (products: Product[], sort: Sort) => {
   if (sort === 'price-asc') return products.sort((a, b) => a.price - b.price);
   if (sort === 'price-desc') return products.sort((a, b) => b.price - a.price);
   if (sort === 'newest') return products.sort((a, b) => b.added.localeCompare(a.added));
+
   return products;
 };
 
@@ -341,6 +343,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
             (product) => product.category === category.value && matches(product, filters, true),
           ).length;
           const checked = filters.categories.includes(category.value);
+
           return (
             <Field key={category.value} orientation="horizontal" data-disabled={count === 0 && !checked}>
               <Checkbox
@@ -350,7 +353,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
                 onCheckedChange={() => update({ categories: toggle(filters.categories, category.value) })}
               />
               <FieldLabel htmlFor={`${id}-${category.value}`}>{category.label}</FieldLabel>
-              <span className="ms-auto text-xs tabular-nums text-muted-foreground">{count}</span>
+              <span className="ms-auto text-xs text-muted-foreground tabular-nums">{count}</span>
             </Field>
           );
         })}
@@ -503,10 +506,10 @@ const Ecommerce04 = () => {
     <section data-slot="category-page" className="bg-background py-16 md:py-24">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:px-10">
         <div data-slot="category-header" className="flex max-w-xl flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Shop</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Shop</span>
           <h2
             style={stagger(1, 80)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             Everyday carry
           </h2>
@@ -567,7 +570,7 @@ const Ecommerce04 = () => {
                       </div>
                     </SheetContent>
                   </Sheet>
-                  <p aria-live="polite" className="text-sm tabular-nums text-muted-foreground">
+                  <p aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
                     {resultLabel}
                   </p>
                 </div>
@@ -594,7 +597,7 @@ const Ecommerce04 = () => {
                   {active.map((filter) => (
                     <li
                       key={filter.key}
-                      className="animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
+                      className="animate-in duration-200 zoom-in-95 fade-in motion-reduce:animate-none"
                     >
                       <Badge variant="outline" className="h-7">
                         {filter.label}
@@ -602,7 +605,7 @@ const Ecommerce04 = () => {
                           type="button"
                           aria-label={`Remove ${filter.label}`}
                           onClick={() => setFilters(filter.remove(filters))}
-                          className="grid size-5 place-items-center rounded-full text-muted-foreground outline-none transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                          className="grid size-5 place-items-center rounded-full text-muted-foreground transition-colors duration-150 outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
                         >
                           <X className="size-3" />
                         </button>

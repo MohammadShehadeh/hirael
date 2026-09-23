@@ -41,7 +41,7 @@ const InspectorPanelTitle = ({ className, ...props }: InspectorPanelTitleProps) 
   return (
     <p
       data-slot="inspector-panel-title"
-      className={cn('text-xs uppercase text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -64,7 +64,7 @@ const InspectorPanelSection = ({
       <CollapsibleTrigger asChild>
         <button
           type="button"
-          className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+          className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-start transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset"
         >
           <span className="text-xs font-medium text-foreground">{title}</span>
           <ChevronDown
@@ -74,7 +74,7 @@ const InspectorPanelSection = ({
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="flex flex-col gap-2 px-3 pb-3 pt-1">{children}</div>
+        <div className="flex flex-col gap-2 px-3 pt-1 pb-3">{children}</div>
       </CollapsibleContent>
     </Collapsible>
   );
@@ -128,6 +128,7 @@ const HEX_PATTERN = /^#[0-9a-f]{6}$/i;
 const clampNumber = (raw: string, min: number, max: number) => {
   const digits = raw.replace(/[^0-9]/g, '');
   if (digits === '') return '';
+
   return String(Math.min(max, Math.max(min, Number(digits))));
 };
 
@@ -160,7 +161,7 @@ const InspectorPanelBlock = () => {
       <InspectorPanel className={ENTER}>
         <InspectorPanelHeader>
           <InspectorPanelTitle>Inspector</InspectorPanelTitle>
-          <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+          <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
             {layout.width || 0} x {layout.height || 0}
           </span>
         </InspectorPanelHeader>

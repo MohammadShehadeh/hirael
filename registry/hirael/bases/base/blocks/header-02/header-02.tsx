@@ -32,13 +32,6 @@ const SPRING = { type: 'spring', stiffness: 220, damping: 40 } as const;
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const ENTER =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
-
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 interface BrandMarkProps {
@@ -65,6 +58,7 @@ const useHeader = () => {
   if (context === null) {
     throw new Error('Header parts must be used within <Header>');
   }
+
   return context;
 };
 
@@ -105,6 +99,7 @@ const Header = ({ scrollRef, shrinkAt = SHRINK_AT, className, children, ...props
 
 const HeaderBar = ({ className, ...props }: HTMLMotionProps<'div'>) => {
   const { isShrunk, reduce } = useHeader();
+
   return (
     <motion.div
       data-slot="header-bar"
@@ -114,10 +109,8 @@ const HeaderBar = ({ className, ...props }: HTMLMotionProps<'div'>) => {
       }}
       transition={reduce ? { duration: 0 } : SPRING}
       className={cn(
-        'relative mx-auto hidden min-w-[720px] max-w-none items-center justify-between rounded-full border px-3 py-2 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 lg:flex',
-        isShrunk
-          ? 'border-border bg-card/80 shadow-[0_8px_32px_-12px_color-mix(in_oklch,var(--foreground)_25%,transparent)]'
-          : 'border-transparent bg-transparent',
+        'relative mx-auto hidden max-w-none min-w-[720px] items-center justify-between rounded-full border px-3 py-2 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 lg:flex',
+        isShrunk ? 'border-border bg-card/80 shadow-lg' : 'border-transparent bg-transparent',
         className,
       )}
       {...props}
@@ -171,6 +164,7 @@ const HeaderNav = ({ items, onItemClick, className, ...props }: HeaderNavProps) 
 
 const HeaderMobile = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const { isShrunk } = useHeader();
+
   return (
     <div
       data-slot="header-mobile"
@@ -192,6 +186,7 @@ interface HeaderMobileMenuProps extends React.ComponentProps<'div'> {
 // opening it never reflows the page or repaints a backdrop blur.
 const HeaderMobileMenu = ({ open, className, children, ...props }: HeaderMobileMenuProps) => {
   const { reduce } = useHeader();
+
   return (
     <AnimatePresence initial={false}>
       {open ? (
@@ -227,99 +222,88 @@ const Brand = () => {
   );
 };
 
-const Header02 = () => {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+type Header02Props = Pick<HeaderProps, 'scrollRef' | 'shrinkAt'>;
+
+const Header02 = ({ scrollRef, shrinkAt }: Header02Props) => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div
-      ref={scrollRef}
-      data-slot="header-02-block"
-      className="relative h-[640px] w-full overflow-y-auto bg-background"
+    <Header
+      scrollRef={scrollRef}
+      shrinkAt={shrinkAt}
+      className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in motion-reduce:animate-none"
     >
-      <Header
-        scrollRef={scrollRef}
-        className="animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
-      >
-        <HeaderBar>
+      <HeaderBar>
+        <Brand />
+        <HeaderNav items={NAV} />
+        <div className="flex items-center gap-1.5">
+          <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm">
+            Sign in
+          </Button>
+          <Button render={<a href="#" />} nativeButton={false} size="sm">
+            Get started
+          </Button>
+        </div>
+      </HeaderBar>
+
+      <HeaderMobile>
+        <div className="flex items-center justify-between">
           <Brand />
-          <HeaderNav items={NAV} />
-          <div className="flex items-center gap-1.5">
-            <Button render={<a href="#" />} nativeButton={false} variant="ghost" size="sm">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? <X /> : <Menu />}
+          </Button>
+        </div>
+        <HeaderMobileMenu open={open}>
+          {NAV.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                'rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+                focusRing,
+              )}
+            >
+              {item.label}
+            </a>
+          ))}
+          <div className="mt-2 flex gap-2">
+            <Button render={<a href="#" />} nativeButton={false} variant="outline" className="flex-1">
               Sign in
             </Button>
-            <Button render={<a href="#" />} nativeButton={false} size="sm">
+            <Button render={<a href="#" />} nativeButton={false} className="flex-1">
               Get started
             </Button>
           </div>
-        </HeaderBar>
+        </HeaderMobileMenu>
+      </HeaderMobile>
+    </Header>
+  );
+};
 
-        <HeaderMobile>
-          <div className="flex items-center justify-between">
-            <Brand />
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-              aria-expanded={open}
-              onClick={() => setOpen((o) => !o)}
-            >
-              {open ? <X /> : <Menu />}
-            </Button>
-          </div>
-          <HeaderMobileMenu open={open}>
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
-                  focusRing,
-                )}
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="mt-2 flex gap-2">
-              <Button render={<a href="#" />} nativeButton={false} variant="outline" className="flex-1">
-                Sign in
-              </Button>
-              <Button render={<a href="#" />} nativeButton={false} className="flex-1">
-                Get started
-              </Button>
-            </div>
-          </HeaderMobileMenu>
-        </HeaderMobile>
-      </Header>
+// The preview frame grows to fit its content, so the window never scrolls. A
+// fixed-height scroll box gives the header something to shrink against.
+const Header02Preview = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
-      <div className="container flex flex-col gap-6 py-20 md:py-28">
-        <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
-          Scroll to see the bar shrink
-        </span>
-        <h2
-          style={stagger(2)}
-          className={cn(
-            ENTER,
-            'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
-          )}
-        >
-          A nav that gets out of the way once you start reading.
-        </h2>
-        <p style={stagger(3)} className={cn(ENTER, 'max-w-xl text-base text-muted-foreground sm:text-lg')}>
-          Full width at the top of the page, a floating pill after the first hundred pixels. The links keep a sliding
-          hover state either way.
-        </p>
-        <div style={stagger(4)} className={cn(ENTER, 'mt-8 grid gap-4 sm:grid-cols-2')}>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} aria-hidden className="h-40 rounded-lg border border-border bg-card" />
-          ))}
-        </div>
+  return (
+    <div ref={scrollRef} data-slot="header-02-preview" className="relative h-160 w-full overflow-y-auto bg-background">
+      <Header02 scrollRef={scrollRef} />
+      <div aria-hidden className="mx-auto grid max-w-[1480px] gap-4 px-4 py-20 sm:grid-cols-2">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={i} className="h-40 rounded-lg border border-border bg-card" />
+        ))}
       </div>
     </div>
   );
 };
 
-export { Header, HeaderBar, HeaderNav, HeaderMobile, HeaderMobileMenu };
+export { Header, HeaderBar, HeaderNav, HeaderMobile, HeaderMobileMenu, Header02 };
 
-export default Header02;
+export default Header02Preview;

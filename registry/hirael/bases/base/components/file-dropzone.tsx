@@ -15,35 +15,31 @@ const formatBytes = (bytes: number): string => {
     n /= 1024;
     i++;
   }
-  const fixed = i === 0 ? n.toFixed(0) : n.toFixed(1);
-  return `${fixed} ${units[i]}`;
+
+  return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
 };
 
 const matchesAccept = (file: File, accept?: string): boolean => {
-  if (!accept) return true;
-  const tokens = accept
+  const tokens = (accept ?? '')
     .split(',')
     .map((t) => t.trim().toLowerCase())
     .filter(Boolean);
   if (tokens.length === 0) return true;
   const name = file.name.toLowerCase();
   const type = file.type.toLowerCase();
-  for (const token of tokens) {
-    if (token.startsWith('.')) {
-      if (name.endsWith(token)) return true;
-    } else if (token.endsWith('/*')) {
-      const prefix = token.slice(0, -1);
-      if (type.startsWith(prefix)) return true;
-    } else if (token.includes('/')) {
-      if (type === token) return true;
-    }
-  }
-  return false;
+
+  return tokens.some((token) => {
+    if (token.startsWith('.')) return name.endsWith(token);
+    if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
+
+    return type === token;
+  });
 };
 
 export interface FileDropzoneError {
   file: File;
-  reason: 'size' | 'type';
+  /** `count`: a single-file dropzone got more than one file, so the extras were left out. */
+  reason: 'size' | 'type' | 'count';
   message: string;
 }
 
@@ -66,6 +62,7 @@ const useFileDropzone = () => {
   if (!ctx) {
     throw new Error('FileDropzone compound parts must be used inside <FileDropzone>');
   }
+
   return ctx;
 };
 
@@ -129,6 +126,15 @@ const FileDropzone = ({
         }
         accepted.push(file);
       }
+      if (!multiple) {
+        for (const file of accepted.slice(1)) {
+          nextErrors.push({
+            file,
+            reason: 'count',
+            message: `"${file.name}" not added. Only one file is allowed.`,
+          });
+        }
+      }
       if (accepted.length > 0) {
         const merged = multiple ? [...files, ...accepted] : [accepted[0]];
         setFiles(merged);
@@ -141,8 +147,11 @@ const FileDropzone = ({
   const removeAt = React.useCallback(
     (index: number) => {
       if (disabled) return;
+      const removed = files[index];
       const next = files.filter((_, i) => i !== index);
       setFiles(next);
+      // Errors about this file, or about the one-file limit, no longer apply once it's gone.
+      setErrors((prev) => prev.filter((err) => err.file !== removed && err.reason !== 'count'));
     },
     [disabled, files, setFiles],
   );
@@ -185,6 +194,8 @@ const FileDropzoneZone = ({
   headline = 'Drop files here, or click to browse',
   subline,
   children,
+  onClick,
+  onKeyDown,
   ...props
 }: FileDropzoneZoneProps) => {
   const ctx = useFileDropzone();
@@ -192,13 +203,15 @@ const FileDropzoneZone = ({
   const dragCounter = React.useRef(0);
   const { inputRef } = ctx;
 
-  const handleClick = () => {
-    if (ctx.disabled) return;
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    onClick?.(e);
+    if (e.defaultPrevented || ctx.disabled) return;
     inputRef.current?.click();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (ctx.disabled) return;
+    onKeyDown?.(e);
+    if (e.defaultPrevented || ctx.disabled) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       inputRef.current?.click();
@@ -210,6 +223,7 @@ const FileDropzoneZone = ({
     const parts: string[] = [];
     if (ctx.accept) parts.push(ctx.accept);
     if (ctx.maxSize !== undefined) parts.push(`up to ${formatBytes(ctx.maxSize)}`);
+
     return parts.length > 0 ? parts.join(' · ') : null;
   }, [subline, ctx.accept, ctx.maxSize]);
 
@@ -281,7 +295,7 @@ const FileDropzoneZone = ({
         <>
           <UploadCloud className="size-6 text-muted-foreground" aria-hidden />
           <p className="text-sm text-foreground">{headline}</p>
-          {resolvedSubline && <p className="text-xs uppercase text-muted-foreground">{resolvedSubline}</p>}
+          {resolvedSubline && <p className="text-xs text-muted-foreground uppercase">{resolvedSubline}</p>}
         </>
       )}
     </div>
@@ -292,6 +306,7 @@ const iconForFile = (file: File) => {
   if (file.type.startsWith('text/') || /\.(md|txt|csv|json)$/i.test(file.name)) {
     return FileText;
   }
+
   return FileIcon;
 };
 
@@ -300,10 +315,12 @@ type FileDropzoneListProps = React.ComponentProps<'ul'>;
 const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
   const ctx = useFileDropzone();
   if (ctx.files.length === 0) return null;
+
   return (
     <ul data-slot="file-dropzone-list" className={cn('mt-3 flex min-w-0 flex-col gap-1.5', className)} {...props}>
       {ctx.files.map((file, index) => {
         const Icon = iconForFile(file);
+
         return (
           <li
             key={`${file.name}-${file.lastModified}-${index}`}
@@ -314,7 +331,7 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
             <span className="min-w-0 flex-1 truncate" title={file.name}>
               {file.name}
             </span>
-            <span className="shrink-0 text-xs uppercase text-muted-foreground">{formatBytes(file.size)}</span>
+            <span className="shrink-0 text-xs text-muted-foreground uppercase">{formatBytes(file.size)}</span>
             {!ctx.disabled && (
               <Button
                 type="button"
@@ -339,6 +356,7 @@ type FileDropzoneErrorsProps = React.ComponentProps<'ul'>;
 const FileDropzoneErrors = ({ className, ...props }: FileDropzoneErrorsProps) => {
   const ctx = useFileDropzone();
   if (ctx.errors.length === 0) return null;
+
   return (
     <ul
       role="alert"
@@ -350,7 +368,7 @@ const FileDropzoneErrors = ({ className, ...props }: FileDropzoneErrorsProps) =>
         <li
           key={`${err.file.name}-${i}`}
           data-slot="file-dropzone-error"
-          className="break-words text-[11px] text-destructive"
+          className="text-[11px] break-words text-destructive"
         >
           {err.message}
         </li>

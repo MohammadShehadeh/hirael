@@ -29,11 +29,11 @@ const STATUS_LABEL: Record<DayStatus, string> = {
   outage: 'Outage',
 };
 
-const UPDATE_TONE: Record<UpdateStatus, string> = {
-  resolved: 'text-success',
-  monitoring: 'text-info',
-  identified: 'text-warning',
-  investigating: 'text-destructive',
+const UPDATE_DOT: Record<UpdateStatus, string> = {
+  resolved: 'bg-success',
+  monitoring: 'bg-info',
+  identified: 'bg-warning',
+  investigating: 'bg-destructive',
 };
 
 const UPDATE_LABEL: Record<UpdateStatus, string> = {
@@ -52,6 +52,7 @@ interface Day {
 const buildDays = (exceptions: Record<number, { status: DayStatus; note: string }>): Array<Day> => {
   return Array.from({ length: DAYS }, (_, i) => {
     const ex = exceptions[i];
+
     return {
       status: ex?.status ?? 'operational',
       note: ex?.note ?? 'No incidents recorded.',
@@ -134,15 +135,24 @@ const daysAgoLabel = (i: number) => {
   const ago = DAYS - 1 - i;
   if (ago === 0) return 'Today';
   if (ago === 1) return 'Yesterday';
+
   return `${ago} days ago`;
+};
+
+const serviceSummary = (days: Array<Day>) => {
+  const incidents = days.flatMap((day, i) =>
+    day.status === 'operational' ? [] : [`${daysAgoLabel(i)}, ${STATUS_LABEL[day.status]}: ${day.note}`],
+  );
+
+  return incidents.length === 0 ? 'No incidents in the last 90 days.' : incidents.join(' ');
 };
 
 const Status01 = () => {
   return (
-    <section data-slot="status" className="flex min-h-svh w-full justify-center bg-background px-6 py-16 md:py-24">
+    <section data-slot="status" className="flex min-h-svh w-full justify-center bg-background px-6 py-20 sm:py-28">
       <div className="grid w-full max-w-3xl gap-12 md:gap-16">
         <div data-slot="status-header" className="flex flex-col gap-3">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Status</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Status</span>
           <h1 style={stagger(1)} className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight sm:text-5xl')}>
             All systems, at a glance
           </h1>
@@ -160,7 +170,7 @@ const Status01 = () => {
             <CircleCheck aria-hidden className="size-5 shrink-0 text-success" />
             All systems operational
           </h2>
-          <p className="ps-7 text-sm tabular-nums text-muted-foreground">Checked a minute ago</p>
+          <p className="ps-7 text-sm text-muted-foreground tabular-nums">Checked a minute ago</p>
         </div>
 
         <div data-slot="status-uptime" style={stagger(4)} className={cn(ENTER, 'w-full')}>
@@ -184,17 +194,16 @@ const Status01 = () => {
               <div key={service.name} className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{service.name}</span>
-                  <span className="text-xs tabular-nums text-muted-foreground">{service.uptime}</span>
+                  <span className="text-xs text-muted-foreground tabular-nums">{service.uptime}</span>
                 </div>
-                <div className="flex h-8 items-stretch gap-px">
+                <p className="sr-only">{serviceSummary(service.days)}</p>
+                <div aria-hidden className="flex h-8 items-stretch gap-px">
                   {service.days.map((day, i) => (
                     <Tooltip key={i}>
                       <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          aria-label={`${daysAgoLabel(i)}: ${STATUS_LABEL[day.status]}`}
+                        <span
                           className={cn(
-                            'h-full flex-1 rounded-[1px] opacity-80 transition-opacity hover:opacity-100 focus-visible:opacity-100',
+                            'h-full flex-1 rounded-[1px] opacity-80 transition-opacity hover:opacity-100',
                             DOT_COLOR[day.status],
                           )}
                         />
@@ -237,7 +246,7 @@ const Status01 = () => {
               <div key={incident.title} data-slot="status-incident" className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <span className="h-px flex-1 bg-border" aria-hidden />
-                  <span className="text-xs tabular-nums text-muted-foreground">{incident.date}</span>
+                  <span className="text-xs text-muted-foreground tabular-nums">{incident.date}</span>
                   <span className="h-px flex-1 bg-border" aria-hidden />
                 </div>
                 <div className="border border-border bg-card p-5">
@@ -249,10 +258,14 @@ const Status01 = () => {
                   <ol className="mt-4 flex flex-col gap-4">
                     {incident.updates.map((update) => (
                       <li key={update.time} className="grid grid-cols-[5.5rem_1fr] gap-x-3 gap-y-1">
-                        <Badge variant="outline" className={UPDATE_TONE[update.status]}>
+                        <span className="flex items-center gap-1.5 text-xs font-medium">
+                          <span
+                            aria-hidden
+                            className={cn('size-1.5 shrink-0 rounded-full', UPDATE_DOT[update.status])}
+                          />
                           {UPDATE_LABEL[update.status]}
-                        </Badge>
-                        <span className="text-xs tabular-nums text-muted-foreground">{update.time}</span>
+                        </span>
+                        <span className="text-xs text-muted-foreground tabular-nums">{update.time}</span>
                         <p className="col-start-2 text-sm/relaxed text-muted-foreground">{update.message}</p>
                       </li>
                     ))}

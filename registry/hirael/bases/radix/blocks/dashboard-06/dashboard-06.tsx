@@ -40,7 +40,7 @@ const STATE_TOKEN: Record<RunState, string> = {
   success: 'var(--success)',
   failure: 'var(--destructive)',
   skipped: 'var(--muted-foreground)',
-  running: 'var(--accent-cool)',
+  running: 'var(--primary)',
 };
 
 const STATE_LABEL: Record<RunState, string> = {
@@ -219,7 +219,7 @@ const STATS: Stat[] = [
     value: '1',
     meta: 'Currently running or queued',
     icon: Activity,
-    accent: 'var(--accent-cool)',
+    accent: 'var(--primary)',
     live: true,
   },
 ];
@@ -246,6 +246,7 @@ const formatSeconds = (value: number) => {
   if (value < 60) return `${value}s`;
   const m = Math.floor(value / 60);
   const s = value % 60;
+
   return s ? `${m}m ${s}s` : `${m}m`;
 };
 
@@ -269,9 +270,10 @@ interface StatCardProps {
 
 const StatCard = ({ stat }: StatCardProps) => {
   const Icon = stat.icon;
+
   return (
     <div data-slot="dashboard-stat" className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4">
-      <div className="flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+      <div className="flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
         {stat.live ? (
           <span className="relative flex size-2">
             <span
@@ -285,7 +287,7 @@ const StatCard = ({ stat }: StatCardProps) => {
         )}
         {stat.label}
       </div>
-      <span className="text-3xl font-semibold tabular-nums tracking-tight sm:text-4xl">{stat.value}</span>
+      <span className="text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">{stat.value}</span>
       <span className="text-xs text-muted-foreground">{stat.meta}</span>
     </div>
   );
@@ -368,13 +370,13 @@ const RunBreakdown = ({ run }: RunBreakdownProps) => {
           </dl>
 
           <div className="flex flex-col gap-1 border-t border-border pt-2">
-            <p className="text-xs uppercase text-muted-foreground">Steps</p>
+            <p className="text-xs text-muted-foreground uppercase">Steps</p>
             <ul className="flex flex-col gap-1">
               {run.steps.map((step) => (
                 <li key={step.name} className="flex items-center gap-2 text-xs">
                   <StateDot state={step.state} />
                   <span className="min-w-0 flex-1 truncate">{step.name}</span>
-                  <span className="shrink-0 tabular-nums text-muted-foreground">{step.durationLabel}</span>
+                  <span className="shrink-0 text-muted-foreground tabular-nums">{step.durationLabel}</span>
                 </li>
               ))}
             </ul>
@@ -431,9 +433,9 @@ const Dashboard06 = () => {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="container flex w-full flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6 px-4">
         <div data-slot="dashboard-header" className={cn(ENTER, 'flex flex-col gap-1')}>
-          <span className="text-xs uppercase text-muted-foreground">Pipelines</span>
+          <span className="text-xs text-muted-foreground uppercase">Pipelines</span>
           <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Build health</h2>
           <p className="max-w-xl text-sm text-muted-foreground">
             Success rate, failures, and live activity across your pipelines, with the latest runs and what each one did.
@@ -489,6 +491,7 @@ const Dashboard06 = () => {
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
                       const { run, state } = payload[0].payload as (typeof CHART_DATA)[number];
+
                       return (
                         <div className="rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">
                           <p className="font-medium">{run.pipeline}</p>
@@ -572,7 +575,7 @@ const Dashboard06 = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs tabular-nums text-muted-foreground">
+                      <span className="text-xs text-muted-foreground tabular-nums">
                         {formatSeconds(run.durationSec)}
                         <span className="sr-only">, started {run.startedLabel}</span>
                       </span>

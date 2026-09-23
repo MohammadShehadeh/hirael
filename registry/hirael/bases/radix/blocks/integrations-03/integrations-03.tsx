@@ -97,6 +97,7 @@ const RequestIntegration = () => {
     const name = tool.trim();
     if (name.length < 2) {
       setError('Name the tool you want connected.');
+
       return;
     }
     setError(null);
@@ -118,7 +119,7 @@ const RequestIntegration = () => {
         {sent ? (
           <div key="sent" role="status" className={cn(SWAP, 'flex flex-col gap-1.5')}>
             <p className="flex items-center gap-2 text-sm font-medium">
-              <Check aria-hidden className="size-4 text-warm" />
+              <Check aria-hidden className="size-4 text-primary" />
               Request sent
             </p>
             <p className="text-sm text-muted-foreground">
@@ -163,10 +164,10 @@ const Integrations03 = () => {
       className="bg-background py-20 sm:py-28"
       aria-labelledby="integrations-03-heading"
     >
-      <div className="container w-full max-w-5xl">
+      <div className="mx-auto w-full max-w-5xl px-4">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
           <div data-slot="integrations-header" className="lg:sticky lg:top-16 lg:self-start">
-            <p className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>How it plugs in</p>
+            <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>How it plugs in</p>
             <h2
               id="integrations-03-heading"
               style={stagger(1)}
@@ -197,7 +198,7 @@ const Integrations03 = () => {
                 {index > 0 && <Separator />}
                 <a
                   href={row.href}
-                  className="group -mx-3 flex items-start gap-4 rounded-md px-3 py-5 transition-colors duration-150 hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="group -mx-3 flex items-start gap-4 rounded-md px-3 py-5 transition-colors duration-150 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
@@ -209,7 +210,7 @@ const Integrations03 = () => {
                   </div>
                   <ArrowRight
                     aria-hidden
-                    className="mt-1 size-4 shrink-0 text-muted-foreground/50 transition-[color,transform] duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180 rtl:group-hover:-translate-x-0.5 motion-reduce:transition-none"
+                    className="mt-1 size-4 shrink-0 text-muted-foreground/50 transition-[color,transform] duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground motion-reduce:transition-none rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
                   />
                 </a>
               </li>

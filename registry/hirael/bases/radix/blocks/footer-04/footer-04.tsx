@@ -56,7 +56,7 @@ const Reveal = ({ delay = 0, className, style, ...props }: RevealProps) => {
   return (
     <div
       className={cn(
-        'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+        'animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none',
         className,
       )}
       style={{ animationDelay: `${delay}ms`, ...style }}
@@ -75,7 +75,7 @@ interface FooterColumnProps extends Omit<React.ComponentProps<'div'>, 'children'
 const FooterColumn = ({ title, delay = 0, className, children, ...props }: FooterColumnProps) => {
   return (
     <Reveal data-slot="footer-column" delay={delay} className={cn('flex flex-col gap-4', className)} {...props}>
-      <h3 data-slot="footer-column-title" className="text-xs uppercase text-muted-foreground">
+      <h3 data-slot="footer-column-title" className="text-xs text-muted-foreground uppercase">
         {title}
       </h3>
       {children}
@@ -95,7 +95,7 @@ const FooterLinks = ({ links, delay = 0, className, ...props }: FooterLinksProps
       {links.map((link, i) => (
         <li
           key={link.label}
-          className="animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+          className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none"
           style={{ animationDelay: `${delay + i * 50}ms` }}
         >
           <a
@@ -159,6 +159,7 @@ const FooterSubscribe = ({
 
     start();
     document.addEventListener('visibilitychange', onVisibility);
+
     return () => {
       stop();
       document.removeEventListener('visibilitychange', onVisibility);
@@ -170,10 +171,12 @@ const FooterSubscribe = ({
     const value = email.trim();
     if (!value) {
       setError('Enter your email address.');
+
       return;
     }
     if (!EMAIL_PATTERN.test(value)) {
       setError("That doesn't look like an email address.");
+
       return;
     }
     setError(null);
@@ -272,7 +275,7 @@ const Footer04 = () => {
   return (
     <footer data-slot="footer" className="relative w-full text-foreground">
       <FooterBeams>
-        <div className="container py-12 md:py-16">
+        <div className="mx-auto max-w-[1480px] px-4 py-12 md:py-16">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
             <Reveal data-slot="footer-brand" className="col-span-2 flex flex-col gap-4 lg:col-span-1">
               <a

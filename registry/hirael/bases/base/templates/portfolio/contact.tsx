@@ -47,6 +47,7 @@ const Marquee = () => {
         repeat: -1,
       });
     });
+
     return () => ctx.revert();
   }, []);
 
@@ -58,9 +59,9 @@ const Marquee = () => {
             {Array.from({ length: 10 }).map((_, i) => (
               <span
                 key={i}
-                className="whitespace-nowrap px-6 font-display text-4xl uppercase italic tracking-tight text-[hsl(var(--text))]/90 md:text-6xl"
+                className="font-display px-6 text-4xl tracking-tight whitespace-nowrap text-[hsl(var(--text))]/90 uppercase italic md:text-6xl"
               >
-                Building the future <span className="text-[#89AACC]">&bull;</span>
+                Building the future
               </span>
             ))}
           </div>
@@ -72,11 +73,11 @@ const Marquee = () => {
 
 export const Contact = () => {
   return (
-    <footer id="contact" className="relative overflow-hidden bg-[hsl(var(--bg))] pb-8 pt-16 md:pb-12 md:pt-20">
+    <footer id="contact" className="relative overflow-hidden bg-[hsl(var(--bg))] pt-16 pb-8 md:pt-20 md:pb-12">
       <div className="absolute inset-0 -z-10">
         <BackgroundVideo
           src={BACKGROUND_VIDEO}
-          className="absolute left-1/2 top-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 -scale-y-100 object-cover"
+          className="absolute top-1/2 left-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 -scale-y-100 object-cover"
         />
         <div className="absolute inset-0 bg-black/60" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[hsl(var(--bg))] to-transparent" />
@@ -86,7 +87,7 @@ export const Contact = () => {
 
       <div className="mx-auto max-w-[1200px] px-6 md:px-10 lg:px-16">
         <div className="flex flex-col items-center py-16 text-center md:py-24">
-          <span className="mb-6 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted))]">
+          <span className="mb-6 text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase">
             Have a project in mind?
           </span>
           <RingLink
@@ -102,8 +103,8 @@ export const Contact = () => {
         <div className="flex flex-col gap-6 border-t border-[hsl(var(--stroke))] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
             <span className="relative flex size-2.5">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500/70" />
-              <span className="relative inline-flex size-2.5 rounded-full bg-green-500" />
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-success/70" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-success" />
             </span>
             <span className="text-sm text-[hsl(var(--muted))]">Available for projects</span>
           </div>

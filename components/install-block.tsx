@@ -59,7 +59,7 @@ export const InstallBlock = ({ name, className, variant }: InstallBlockProps) =>
   return (
     <div className={cn(installBlockVariants({ variant }), className)}>
       <div className={commandVariants({ variant })}>
-        <span aria-hidden className="select-none font-mono text-xs text-muted-foreground">
+        <span aria-hidden className="font-mono text-xs text-muted-foreground select-none">
           $
         </span>
         <CommandLine command={command} />
@@ -100,6 +100,7 @@ const classifyToken = (token: string, index: number): keyof typeof TOKEN_CLASS =
   if (token.startsWith('-')) return 'flag';
   if (token === 'dlx' || token === 'add') return 'verb';
   if (token.includes('shadcn')) return 'pkg';
+
   return 'plain';
 };
 
@@ -109,8 +110,9 @@ interface CommandLineProps {
 
 const CommandLine = ({ command }: CommandLineProps) => {
   const tokens = command.split(' ');
+
   return (
-    <code dir="ltr" className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs">
+    <code dir="ltr" className="min-w-0 flex-1 overflow-x-auto font-mono text-xs whitespace-nowrap">
       {tokens.map((token, index) => (
         <React.Fragment key={index}>
           {index > 0 && ' '}

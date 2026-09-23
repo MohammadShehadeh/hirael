@@ -163,6 +163,7 @@ const tokenize = (code: string, language?: string): Token[][] | null => {
       if (part) lines[lines.length - 1].push({ type: token.type, content: part });
     });
   }
+
   return lines;
 };
 
@@ -189,6 +190,7 @@ const useCodeBlock = () => {
   if (!context) {
     throw new Error('useCodeBlock must be used within a <CodeBlock />');
   }
+
   return context;
 };
 
@@ -206,6 +208,9 @@ export interface CodeBlockProps extends React.ComponentProps<'div'> {
   wrap?: boolean;
   maxHeight?: number;
   copyable?: boolean;
+  /** Label of the expand control when `maxHeight` clips the code. */
+  showMoreLabel?: React.ReactNode;
+  showLessLabel?: React.ReactNode;
 }
 
 const CodeBlock = ({
@@ -220,6 +225,8 @@ const CodeBlock = ({
   wrap = false,
   maxHeight,
   copyable = true,
+  showMoreLabel,
+  showLessLabel,
   className,
   children,
   ...props
@@ -269,7 +276,7 @@ const CodeBlock = ({
         ) : (
           <>
             {showHeader && <CodeBlockHeader />}
-            <CodeBlockContent />
+            <CodeBlockContent showMoreLabel={showMoreLabel} showLessLabel={showLessLabel} />
           </>
         )}
       </div>
@@ -309,7 +316,17 @@ const CodeBlockHeader = ({ className, children, ...props }: React.ComponentProps
   );
 };
 
-const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface CodeBlockContentProps extends React.ComponentProps<'div'> {
+  showMoreLabel?: React.ReactNode;
+  showLessLabel?: React.ReactNode;
+}
+
+const CodeBlockContent = ({
+  showMoreLabel = 'Show more',
+  showLessLabel = 'Show less',
+  className,
+  ...props
+}: CodeBlockContentProps) => {
   const { code, language, highlight, showLineNumbers, highlightLines, addedLines, removedLines, wrap, maxHeight } =
     useCodeBlock();
   const [expanded, setExpanded] = React.useState(false);
@@ -330,6 +347,7 @@ const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) 
     update();
     const observer = new ResizeObserver(update);
     observer.observe(pre);
+
     return () => observer.disconnect();
   }, [maxHeight, code, wrap]);
 
@@ -345,7 +363,7 @@ const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) 
           dir="ltr"
           className={cn(
             'overflow-x-auto py-3 font-mono text-[13px] leading-6',
-            wrap && 'whitespace-pre-wrap break-words',
+            wrap && 'break-words whitespace-pre-wrap',
           )}
         >
           <code data-slot="code-block-code" className="block w-fit min-w-full">
@@ -375,7 +393,7 @@ const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) 
                       aria-hidden
                       data-slot="code-block-line-number"
                       data-line-number={lineNumber}
-                      className="w-8 shrink-0 select-none pe-3 text-end text-muted-foreground before:content-[attr(data-line-number)]"
+                      className="w-8 shrink-0 pe-3 text-end text-muted-foreground select-none before:content-[attr(data-line-number)]"
                     />
                   )}
                   {hasDiff && (
@@ -425,7 +443,7 @@ const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) 
             onClick={() => setExpanded((value) => !value)}
             className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
           >
-            {expanded ? 'Show less' : 'Show more'}
+            {expanded ? showLessLabel : showMoreLabel}
             {expanded ? <ChevronUp aria-hidden /> : <ChevronDown aria-hidden />}
           </Button>
         </div>

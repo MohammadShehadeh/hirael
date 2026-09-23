@@ -22,27 +22,30 @@ import {
 
 const formatBytes = (bytes: number): string => {
   if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB'] as const;
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'] as const;
   let i = 0;
   let n = bytes;
   while (n >= 1024 && i < units.length - 1) {
     n /= 1024;
     i++;
   }
+
   return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
 };
 
-const matchesAccept = (file: File, accept: string): boolean => {
-  const tokens = accept
+const matchesAccept = (file: File, accept?: string): boolean => {
+  const tokens = (accept ?? '')
     .split(',')
     .map((t) => t.trim().toLowerCase())
     .filter(Boolean);
   if (tokens.length === 0) return true;
   const name = file.name.toLowerCase();
   const type = file.type.toLowerCase();
+
   return tokens.some((token) => {
     if (token.startsWith('.')) return name.endsWith(token);
     if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
+
     return type === token;
   });
 };
@@ -89,6 +92,7 @@ const useAvatarUpload = () => {
   if (!ctx) {
     throw new Error('AvatarUpload compound parts must be used inside <AvatarUpload>');
   }
+
   return ctx;
 };
 
@@ -143,6 +147,14 @@ const AvatarUpload = ({
   const [pending, setPending] = React.useState<string | null>(null);
   const [error, setError] = React.useState<AvatarUploadErrorInfo | null>(null);
   const [dragging, setDragging] = React.useState(false);
+  // Only the latest read may land, and never after unmount.
+  const readIdRef = React.useRef(0);
+  React.useEffect(
+    () => () => {
+      readIdRef.current += 1;
+    },
+    [],
+  );
 
   const setValue = React.useCallback(
     (next: string | null) => {
@@ -165,6 +177,7 @@ const AvatarUpload = ({
       if (disabled) return;
       if (!matchesAccept(file, accept)) {
         fail({ reason: 'type', message: 'That file type is not supported.' });
+
         return;
       }
       if (maxSize !== undefined && file.size > maxSize) {
@@ -172,15 +185,21 @@ const AvatarUpload = ({
           reason: 'size',
           message: `Image must be under ${formatBytes(maxSize)}.`,
         });
+
         return;
       }
       setError(null);
+      const readId = ++readIdRef.current;
       readAsDataUrl(file)
         .then((url) => {
+          if (readId !== readIdRef.current) return;
           if (crop) setPending(url);
           else setValue(url);
         })
-        .catch(() => fail({ reason: 'read', message: 'Could not read that file.' }));
+        .catch(() => {
+          if (readId !== readIdRef.current) return;
+          fail({ reason: 'read', message: 'Could not read that file.' });
+        });
     },
     [disabled, accept, maxSize, crop, fail, setValue],
   );
@@ -305,11 +324,12 @@ const AvatarUploadPreview = ({
   ...props
 }: AvatarUploadPreviewProps) => {
   const ctx = useAvatarUpload();
+
   return (
     <div
       data-slot="avatar-upload-preview"
       data-empty={ctx.value ? undefined : ''}
-      className="group/avatar relative shrink-0"
+      className={cn('group/avatar relative shrink-0', className)}
       style={{ width: ctx.size, height: ctx.size, ...style }}
       {...props}
     >
@@ -319,7 +339,6 @@ const AvatarUploadPreview = ({
           'flex size-full items-center justify-center overflow-hidden border border-border bg-muted text-muted-foreground transition-colors motion-reduce:transition-none',
           ctx.shape === 'circle' ? 'rounded-full' : 'rounded-md',
           ctx.dragging && 'border-foreground/40 bg-accent',
-          className,
         )}
       >
         {ctx.value ? (
@@ -329,13 +348,13 @@ const AvatarUploadPreview = ({
             alt={alt}
             draggable={false}
             data-slot="avatar-upload-image"
-            className="size-full select-none object-cover"
+            className="size-full object-cover select-none"
           />
         ) : (
           <span
             aria-hidden
             data-slot="avatar-upload-fallback"
-            className="font-medium uppercase tracking-[0.04em]"
+            className="font-medium tracking-[0.04em] uppercase"
             style={{ fontSize: Math.max(12, Math.round(ctx.size / 3)) }}
           >
             {fallback ?? <Camera className="size-[35%]" />}
@@ -400,14 +419,14 @@ const AvatarUploadTrigger = ({
       className={cn(
         'absolute inset-0 flex items-center justify-center bg-background/70 text-foreground opacity-0 backdrop-blur-[2px] transition-opacity outline-none',
         'hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
-        'group-data-[empty]/avatar:opacity-100 group-data-[empty]/avatar:bg-transparent group-data-[empty]/avatar:backdrop-blur-none',
+        'group-data-[empty]/avatar:bg-transparent group-data-[empty]/avatar:opacity-100 group-data-[empty]/avatar:backdrop-blur-none',
         'disabled:pointer-events-none motion-reduce:transition-none',
         ctx.shape === 'circle' ? 'rounded-full' : 'rounded-md',
         className,
       )}
       {...props}
     >
-      {ctx.value ? <Camera className="size-5" aria-hidden /> : <span className="sr-only">{label}</span>}
+      {children ?? (ctx.value ? <Camera className="size-5" aria-hidden /> : <span className="sr-only">{label}</span>)}
     </button>
   );
 };
@@ -417,6 +436,7 @@ type AvatarUploadInputProps = Omit<React.ComponentProps<'input'>, 'type' | 'acce
 const AvatarUploadInput = ({ className, ref, ...props }: AvatarUploadInputProps) => {
   const ctx = useAvatarUpload();
   const composedRef = React.useMemo(() => composeRefs(ctx.registerInput, ref), [ctx.registerInput, ref]);
+
   return (
     <input
       ref={composedRef}
@@ -441,6 +461,7 @@ type AvatarUploadRemoveProps = Omit<React.ComponentProps<'button'>, 'type'>;
 const AvatarUploadRemove = ({ className, children, onClick, ...props }: AvatarUploadRemoveProps) => {
   const ctx = useAvatarUpload();
   if (!ctx.value) return null;
+
   return (
     <Button
       type="button"
@@ -483,6 +504,7 @@ const AvatarUploadCropDialog = ({
   const ctx = useAvatarUpload();
   // Destructured: `ctx.registerCropper` at a ref site makes the compiler read every ctx.* as a ref.
   const { registerCropper } = ctx;
+
   return (
     <Dialog
       open={ctx.pending !== null}
@@ -506,7 +528,7 @@ const AvatarUploadCropDialog = ({
             data-slot="avatar-upload-cropper"
           >
             <div className="flex items-center gap-3">
-              <span className="text-xs uppercase text-muted-foreground">{zoomLabel}</span>
+              <span className="text-xs text-muted-foreground uppercase">{zoomLabel}</span>
               <ImageCropperZoom aria-label={zoomLabel} />
             </div>
           </ImageCropper>
@@ -532,6 +554,7 @@ interface AvatarUploadErrorProps extends Omit<React.ComponentProps<'p'>, 'childr
 const AvatarUploadErrorMessage = ({ messages, className, ...props }: AvatarUploadErrorProps) => {
   const ctx = useAvatarUpload();
   if (!ctx.error) return null;
+
   return (
     <p
       role="alert"

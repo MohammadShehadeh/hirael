@@ -30,7 +30,7 @@ const ComingSoonEyebrow = ({ className, ...props }: React.ComponentProps<'span'>
   return (
     <span
       data-slot="coming-soon-eyebrow"
-      className={cn('inline-flex items-center gap-2 text-xs uppercase text-muted-foreground', className)}
+      className={cn('inline-flex items-center gap-2 text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -40,7 +40,7 @@ const ComingSoonTitle = ({ className, ...props }: React.ComponentProps<'h1'>) =>
   return (
     <h1
       data-slot="coming-soon-title"
-      className={cn('font-serif text-5xl font-medium leading-none tracking-tight sm:text-6xl md:text-7xl', className)}
+      className={cn('font-serif text-5xl leading-none font-medium tracking-tight sm:text-6xl md:text-7xl', className)}
       {...props}
     />
   );
@@ -100,10 +100,12 @@ const ComingSoonForm = ({
       const value = email.trim();
       if (!value) {
         setError('Enter your email to get the launch note.');
+
         return;
       }
       if (!EMAIL_PATTERN.test(value)) {
         setError("That doesn't look like a valid email.");
+
         return;
       }
       setError(null);
@@ -122,7 +124,7 @@ const ComingSoonForm = ({
         aria-live="polite"
         className={cn(
           'flex min-h-10 w-full max-w-md flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground',
-          'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+          'animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none',
           className,
         )}
       >
@@ -146,7 +148,7 @@ const ComingSoonForm = ({
     >
       <Field className="gap-1.5" data-invalid={error ? true : undefined}>
         <FieldLabel htmlFor={id}>
-          <span className="text-xs uppercase text-muted-foreground">Get notified at launch</span>
+          <span className="text-xs text-muted-foreground uppercase">Get notified at launch</span>
         </FieldLabel>
         <div className="flex gap-2">
           <Input
@@ -207,7 +209,7 @@ const ComingSoon01 = () => {
     <ComingSoon data-slot="coming-soon-01-block">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
       />
 
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
@@ -225,13 +227,13 @@ const ComingSoon01 = () => {
           <ComingSoonForm style={stagger(4)} className={ENTER} />
 
           <ComingSoonFooter style={stagger(5)} className={ENTER}>
-            <span className="text-xs uppercase text-muted-foreground">People on the list get access first.</span>
+            <span className="text-xs text-muted-foreground uppercase">People on the list get access first.</span>
             <a
               href="https://github.com/MohammadShehadeh/hirael"
               target="_blank"
               rel="noreferrer"
               aria-label="Hirael on GitHub"
-              className="inline-flex size-8 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex size-8 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               <GithubIcon className="size-4" />
             </a>

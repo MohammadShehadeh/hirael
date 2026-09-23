@@ -130,6 +130,7 @@ const Contact02 = () => {
           <div className="flex flex-wrap items-center gap-2">
             {SOCIAL_LINKS.map((link) => {
               const Icon = link.icon;
+
               return (
                 <a
                   key={link.label}
@@ -158,7 +159,7 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
   return (
     <div
       data-slot="contact-box"
-      className={cn(ENTER, 'flex flex-col justify-between border-b border-border md:border-b-0 md:border-e', className)}
+      className={cn(ENTER, 'flex flex-col justify-between border-b border-border md:border-e md:border-b-0', className)}
       {...props}
     >
       <div
@@ -169,7 +170,7 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
         )}
       >
         {icon}
-        <h3 className="text-sm font-medium uppercase tracking-wider">{title}</h3>
+        <h3 className="text-sm font-medium tracking-wider uppercase">{title}</h3>
       </div>
       <div data-slot="contact-box-body" className="flex flex-wrap items-center gap-x-2 gap-y-1 p-4 py-12">
         {children}

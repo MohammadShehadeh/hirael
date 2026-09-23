@@ -31,6 +31,7 @@ const useNumberRange = () => {
   if (!ctx) {
     throw new Error('NumberRange compound components must be used inside <NumberRange>');
   }
+
   return ctx;
 };
 
@@ -41,12 +42,14 @@ const clamp = (n: number, lo: number, hi: number) => {
 const clampPair = ([lo, hi]: NumberRangeValue, min: number, max: number): NumberRangeValue => {
   const a = clamp(lo, min, max);
   const b = clamp(hi, min, max);
+
   return a <= b ? [a, b] : [b, a];
 };
 
 const defaultFormat: NumberFormatter = (n) => String(n);
 const defaultParse: NumberParser = (s) => {
   const cleaned = s.replace(/[^\d.-]/g, '');
+
   // NaN for empty/invalid so a cleared field keeps its old value instead of committing 0.
   return cleaned === '' ? Number.NaN : Number(cleaned);
 };
@@ -122,6 +125,7 @@ const NumberRangeSlider = ({
   ...props
 }: Omit<React.ComponentProps<typeof Slider>, 'value' | 'onValueChange' | 'min' | 'max' | 'step' | 'defaultValue'>) => {
   const ctx = useNumberRange();
+
   return (
     <Slider
       min={ctx.min}
@@ -141,7 +145,7 @@ interface NumberRangeInputProps extends Omit<React.ComponentProps<typeof Input>,
   bound: 'min' | 'max';
 }
 
-const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps) => {
+const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...props }: NumberRangeInputProps) => {
   const ctx = useNumberRange();
   const i = bound === 'min' ? 0 : 1;
   const current = ctx.value[i];
@@ -171,15 +175,21 @@ const NumberRangeInput = ({ bound, className, ...props }: NumberRangeInputProps)
         dir="ltr"
         value={shown}
         disabled={ctx.disabled}
-        onFocus={() => {
+        onFocus={(e) => {
+          onFocus?.(e);
+          if (e.defaultPrevented) return;
           setDraft(format(current));
         }}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={(e) => {
+          onBlur?.(e);
           setDraft(null);
+          if (e.defaultPrevented) return;
           commit(e.target.value);
         }}
         onKeyDown={(e) => {
+          onKeyDown?.(e);
+          if (e.defaultPrevented) return;
           if (e.key === 'Enter') {
             e.currentTarget.blur();
           } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {

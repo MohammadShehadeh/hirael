@@ -33,6 +33,7 @@ const useTwoFactorSetup = (part: string) => {
   if (!ctx) {
     throw new Error(`${part} must be rendered inside <TwoFactorSetup>`);
   }
+
   return ctx;
 };
 
@@ -90,6 +91,7 @@ export interface TwoFactorSetupStepsProps extends React.ComponentProps<'ol'> {
 
 const TwoFactorSetupSteps = ({ labels, className, ...props }: TwoFactorSetupStepsProps) => {
   const { step, count } = useTwoFactorSetup('TwoFactorSetupSteps');
+
   return (
     <ol
       data-slot="two-factor-setup-steps"
@@ -99,6 +101,7 @@ const TwoFactorSetupSteps = ({ labels, className, ...props }: TwoFactorSetupStep
     >
       {Array.from({ length: count }, (_, i) => {
         const state = i < step ? 'done' : i === step ? 'active' : 'todo';
+
         return (
           <li
             key={i}
@@ -134,6 +137,7 @@ export interface TwoFactorSetupStepProps extends React.ComponentProps<'div'> {
 const TwoFactorSetupStep = ({ index, className, ...props }: TwoFactorSetupStepProps) => {
   const { step } = useTwoFactorSetup('TwoFactorSetupStep');
   if (step !== index) return null;
+
   return (
     <div
       data-slot="two-factor-setup-step"
@@ -203,13 +207,14 @@ const TwoFactorSetupSecret = ({
         ?.join(' ') ?? value,
     [value],
   );
+
   return (
     <div data-slot="two-factor-setup-secret" className={cn('flex flex-col gap-1.5', className)} {...props}>
-      <span className="text-xs uppercase text-muted-foreground">{label}</span>
+      <span className="text-xs text-muted-foreground uppercase">{label}</span>
       <div className="flex items-center justify-between gap-2 rounded-sm border border-border bg-background ps-3 pe-1">
-        <code dir="ltr" className="select-all font-mono text-sm tracking-[0.08em] text-foreground">
+        <span dir="ltr" className="text-sm tracking-wide text-foreground tabular-nums select-all">
           {grouped}
-        </code>
+        </span>
         <CopyButton value={value.replace(/\s+/g, '')} size="sm" aria-label="Copy setup key" />
       </div>
     </div>
@@ -237,6 +242,7 @@ const TwoFactorSetupCode = ({
 }: TwoFactorSetupCodeProps) => {
   const id = React.useId();
   const errorId = `${id}-error`;
+
   return (
     <Field
       data-slot="two-factor-setup-code"
@@ -315,7 +321,7 @@ const TwoFactorSetupRecoveryCodes = ({
           <li
             key={code}
             data-slot="two-factor-setup-recovery-code"
-            className="bg-background px-3 py-2 text-center font-mono text-sm tabular-nums tracking-[0.06em] text-foreground"
+            className="bg-background px-3 py-2 text-center text-sm tracking-wide text-foreground tabular-nums"
           >
             {code}
           </li>
@@ -405,6 +411,7 @@ const TwoFactorSetup01 = () => {
     e.preventDefault();
     if (code.length < 6) {
       setCodeError('Enter the six digits from your authenticator app.');
+
       return;
     }
     setCodeError(null);
@@ -421,7 +428,7 @@ const TwoFactorSetup01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
       />
 
       <div className="mx-auto w-full max-w-md px-6">
@@ -441,14 +448,14 @@ const TwoFactorSetup01 = () => {
               </div>
               <a
                 href="#"
-                className="mt-2 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+                className="mt-2 text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
               >
                 Back to security settings
               </a>
             </div>
           ) : (
             <>
-              <div className="flex flex-col items-center gap-4 border-b border-border px-6 pb-6 pt-8 sm:px-8">
+              <div className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8">
                 <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
                 <TwoFactorSetupSteps labels={STEP_LABELS} style={stagger(1)} className={ENTER} />
                 <div key={step} className={cn(SWAP, 'flex flex-col items-center gap-1 text-center')}>
@@ -519,7 +526,7 @@ const TwoFactorSetup01 = () => {
                       href="#"
                       className={cn(
                         SWAP,
-                        'text-xs uppercase text-muted-foreground transition-colors hover:text-foreground',
+                        'text-xs text-muted-foreground uppercase transition-colors hover:text-foreground',
                       )}
                     >
                       Cancel
@@ -558,7 +565,7 @@ const TwoFactorSetup01 = () => {
                 ) : (
                   <React.Fragment key="recovery">
                     <span
-                      className={cn(SWAP, 'inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground')}
+                      className={cn(SWAP, 'inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase')}
                     >
                       <ShieldCheck aria-hidden className="size-3.5" />
                       Code verified
@@ -573,7 +580,7 @@ const TwoFactorSetup01 = () => {
           )}
         </TwoFactorSetup>
 
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs uppercase text-muted-foreground')}>
+        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
           Recovery codes are shown once, so keep them safe
         </p>
       </div>

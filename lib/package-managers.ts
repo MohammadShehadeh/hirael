@@ -31,6 +31,7 @@ let current: PackageManager | null = null;
 const fromStorage = (): PackageManager => {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
+
     return isPackageManager(stored) ? stored : 'npm';
   } catch {
     return 'npm';
@@ -48,6 +49,7 @@ const subscribe = (onStoreChange: () => void) => {
   };
   window.addEventListener('storage', handleStorage);
   window.addEventListener(CHANGE_EVENT, onStoreChange);
+
   return () => {
     window.removeEventListener('storage', handleStorage);
     window.removeEventListener(CHANGE_EVENT, onStoreChange);
@@ -64,5 +66,6 @@ export const setPackageManager = (next: PackageManager) => {
 
 export const usePackageManager = () => {
   const packageManager = React.useSyncExternalStore(subscribe, snapshot, () => 'npm' as PackageManager);
+
   return { packageManager, setPackageManager };
 };

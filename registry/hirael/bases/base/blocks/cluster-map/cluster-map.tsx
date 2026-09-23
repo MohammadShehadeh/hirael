@@ -50,6 +50,7 @@ interface ClusterNodeProps extends Omit<React.ComponentProps<'button'>, 'childre
 
 const ClusterNode = ({ health, label, load = 1, active, className, title, ...props }: ClusterNodeProps) => {
   const opacity = 0.25 + Math.max(0, Math.min(1, load)) * 0.75;
+
   return (
     <button
       type="button"
@@ -60,7 +61,7 @@ const ClusterNode = ({ health, label, load = 1, active, className, title, ...pro
       aria-pressed={active === undefined ? undefined : active}
       data-active={active ? '' : undefined}
       className={cn(
-        'group relative aspect-square rounded-sm outline-none transition-transform',
+        'group relative aspect-square rounded-sm transition-transform outline-none',
         'hover:z-10 hover:scale-110 focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring',
         active && 'z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background',
         className,
@@ -111,11 +112,13 @@ const clusterHealthFor = (i: number): NodeHealth => {
   if (i % 37 === 0) return 'critical';
   if (i % 11 === 0) return 'warning';
   if (i % 9 === 0) return 'idle';
+
   return 'healthy';
 };
 
 const CLUSTER_NODES = Array.from({ length: CLUSTER_COLUMNS * CLUSTER_ROWS }, (_, i) => {
   const health = clusterHealthFor(i);
+
   return {
     id: i,
     name: `node-${String(i + 1).padStart(3, '0')}`,
@@ -145,7 +148,7 @@ const ClusterMapBlock = () => {
     <section data-slot="cluster-map-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className={cn(ENTER, 'flex w-full max-w-2xl flex-col gap-4')}>
         <div className="flex flex-col gap-2">
-          <p className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+          <p className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
             <span>prod-cluster</span>
             <span aria-hidden className="text-border">
               |
@@ -207,7 +210,7 @@ const ClusterMapBlock = () => {
           {(Object.keys(healthLabel) as NodeHealth[]).map((health) => (
             <ClusterMapLegendItem key={health} health={health}>
               {healthLabel[health]}
-              <span className="tabular-nums text-foreground">{counts[health]}</span>
+              <span className="text-foreground tabular-nums">{counts[health]}</span>
             </ClusterMapLegendItem>
           ))}
         </ClusterMapLegend>

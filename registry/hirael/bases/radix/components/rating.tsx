@@ -24,6 +24,7 @@ const useRating = () => {
   if (!ctx) {
     throw new Error('Rating compound parts must be used inside <Rating>');
   }
+
   return ctx;
 };
 
@@ -58,6 +59,7 @@ const Rating = ({
   name,
   className,
   onKeyDown,
+  onMouseLeave,
   children,
   ...props
 }: RatingProps) => {
@@ -140,7 +142,10 @@ const Rating = ({
         role={interactive ? 'radiogroup' : 'img'}
         aria-label={props['aria-label'] ?? `Rating: ${value} of ${max}`}
         className={cn('inline-flex items-center gap-0.5', disabled && 'pointer-events-none opacity-50', className)}
-        onMouseLeave={() => setHover(null)}
+        onMouseLeave={(e) => {
+          onMouseLeave?.(e);
+          setHover(null);
+        }}
         onKeyDown={handleKeyDown}
         {...props}
       >
@@ -159,6 +164,7 @@ interface RatingRadioProps {
 
 const RatingRadio = ({ value: radioValue, className }: RatingRadioProps) => {
   const ctx = useRating();
+
   return (
     <button
       type="button"

@@ -40,7 +40,7 @@ const Feature07 = () => {
       <div data-slot="feature-header" className="mx-auto flex max-w-3xl flex-col gap-4 text-center">
         <Badge
           variant="outline"
-          className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+          className="mx-auto animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none"
         >
           The problem
         </Badge>
@@ -67,18 +67,18 @@ const Feature07 = () => {
             style={stagger(i, 60, 180)}
             className={cn(
               ENTER,
-              'group relative flex flex-col items-center gap-6 overflow-hidden rounded-xs border border-border bg-background px-8 pb-8 pt-10 text-center',
+              'group relative flex flex-col items-center gap-6 overflow-hidden rounded-xs border border-border bg-background px-8 pt-10 pb-8 text-center',
             )}
           >
             <div
               data-slot="feature-card-orb"
-              className="relative mx-auto flex size-32 items-center justify-center rounded-full border border-border bg-background shadow-xs outline outline-border outline-offset-4"
+              className="relative mx-auto flex size-32 items-center justify-center rounded-full border border-border bg-background shadow-xs outline outline-offset-4 outline-border"
             >
               <div
                 aria-hidden
                 className="absolute inset-0 z-10 scale-120 bg-radial from-foreground/20 via-foreground/5 to-transparent blur-xl"
               />
-              <challenge.icon aria-hidden className="relative z-20 size-12 text-warm" />
+              <challenge.icon aria-hidden className="relative z-20 size-12 text-primary" />
             </div>
             <div className="flex flex-col gap-1.5">
               <h3 className="text-lg font-medium text-foreground">{challenge.title}</h3>

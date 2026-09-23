@@ -5,6 +5,7 @@ import { Check, CreditCard, GitPullRequest, Inbox, UserPlus, X } from 'lucide-re
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/registry/hirael/bases/radix/ui/empty';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 type NotificationsProps = React.ComponentProps<'div'>;
@@ -58,12 +59,12 @@ const NotificationItem = ({ unread, className, children, ...props }: Notificatio
       data-slot="notification-item"
       data-unread={unread ? '' : undefined}
       className={cn(
-        'relative flex gap-3 py-3 pe-4 ps-7 transition-colors hover:bg-accent/60 data-[unread]:bg-accent/30',
+        'relative flex gap-3 py-3 ps-7 pe-4 transition-colors hover:bg-accent/60 data-[unread]:bg-accent/30',
         className,
       )}
       {...props}
     >
-      {unread ? <span aria-hidden className="absolute start-3 top-4 size-1.5 rounded-full bg-accent-cool" /> : null}
+      {unread ? <span aria-hidden className="absolute start-3 top-4 size-1.5 rounded-full bg-primary" /> : null}
       {children}
     </li>
   );
@@ -120,7 +121,7 @@ const NotificationTime = ({ className, ...props }: NotificationTimeProps) => {
   return (
     <time
       data-slot="notification-time"
-      className={cn('shrink-0 text-xs uppercase text-muted-foreground', className)}
+      className={cn('shrink-0 text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -238,33 +239,34 @@ const NotificationsBlock = () => {
           >
             <ToggleGroupItem value="all" className="h-7">
               All
-              <span className="tabular-nums text-muted-foreground">{items.length}</span>
+              <span className="text-muted-foreground tabular-nums">{items.length}</span>
             </ToggleGroupItem>
             <ToggleGroupItem value="unread" className="h-7">
               Unread
-              <span className="tabular-nums text-muted-foreground">{unreadCount}</span>
+              <span className="text-muted-foreground tabular-nums">{unreadCount}</span>
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
 
         {visible.length === 0 ? (
-          <div
-            key={`empty-${filter}`}
-            data-slot="notifications-empty"
-            className={cn(SWAP, 'flex flex-col items-center gap-1.5 px-4 py-10 text-center')}
-          >
-            <Inbox aria-hidden className="size-5 text-muted-foreground" />
-            <p className="text-sm font-medium">You&apos;re all caught up</p>
-            <p className="text-xs text-muted-foreground">
-              {filter === 'unread' && items.length > 0
-                ? 'Nothing unread. Switch to All to see earlier updates.'
-                : 'New reviews, payments and invites will show up here.'}
-            </p>
-          </div>
+          <Empty key={`empty-${filter}`} className={SWAP}>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Inbox />
+              </EmptyMedia>
+              <EmptyTitle>You&apos;re all caught up</EmptyTitle>
+              <EmptyDescription>
+                {filter === 'unread' && items.length > 0
+                  ? 'Nothing unread. Switch to All to see earlier updates.'
+                  : 'New reviews, payments and invites will show up here.'}
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <NotificationsList key={filter} className={SWAP}>
             {visible.map((item) => {
               const Icon = item.icon;
+
               return (
                 <NotificationItem key={item.id} unread={item.unread} className="group/notification">
                   <NotificationMedia>

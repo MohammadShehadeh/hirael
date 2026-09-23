@@ -26,7 +26,7 @@ export const Hero = () => {
       <div className="relative z-10 flex max-w-2xl flex-col items-center gap-6 text-center">
         <GradientText className="text-lg font-medium">Infrastructure Built to Last</GradientText>
 
-        <h1 className="text-[length:clamp(32px,4vw,56px)] font-medium leading-tight text-white md:whitespace-nowrap">
+        <h1 className="text-[length:clamp(32px,4vw,56px)] leading-tight font-medium text-white md:whitespace-nowrap">
           Engineer and scale with clarity.
         </h1>
 

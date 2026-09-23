@@ -19,7 +19,7 @@ const Headline = () => {
   return (
     <h1
       data-slot="maintenance-title"
-      className="max-w-3xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl"
+      className="max-w-3xl font-serif text-5xl leading-[1.04] font-medium tracking-tight sm:text-6xl md:text-7xl"
     >
       {words.map((word, i) => (
         <span
@@ -62,7 +62,7 @@ const Maintenance02 = () => {
         <p
           data-slot="maintenance-description"
           style={delay(300)}
-          className={cn('mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', RISE)}
+          className={cn('mt-2 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE)}
         >
           We are upgrading the registry and the console. Installed components keep working, and nothing you shipped is
           affected.

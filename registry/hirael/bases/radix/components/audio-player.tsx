@@ -30,6 +30,7 @@ const useAudioPlayer = () => {
   if (!ctx) {
     throw new Error('AudioPlayer compound parts must be used inside <AudioPlayer>');
   }
+
   return ctx;
 };
 
@@ -40,6 +41,7 @@ const formatTime = (seconds: number) => {
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
   const pad = (n: number) => String(n).padStart(2, '0');
+
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
 };
 
@@ -212,7 +214,18 @@ const AudioPlayer = ({
   );
 };
 
-const AudioPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Button>) => {
+export interface AudioPlayerPlayProps extends React.ComponentProps<typeof Button> {
+  playLabel?: string;
+  pauseLabel?: string;
+}
+
+const AudioPlayerPlay = ({
+  playLabel = 'Play',
+  pauseLabel = 'Pause',
+  onClick,
+  className,
+  ...props
+}: AudioPlayerPlayProps) => {
   const { playing, toggle } = useAudioPlayer();
 
   return (
@@ -221,8 +234,11 @@ const AudioPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Bu
       variant="ghost"
       size="icon"
       data-slot="audio-player-play"
-      aria-label={playing ? 'Pause' : 'Play'}
-      onClick={toggle}
+      aria-label={playing ? pauseLabel : playLabel}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) toggle();
+      }}
       className={cn('size-8', className)}
       {...props}
     >
@@ -231,7 +247,11 @@ const AudioPlayerPlay = ({ className, ...props }: React.ComponentProps<typeof Bu
   );
 };
 
-const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface AudioPlayerSeekProps extends React.ComponentProps<'div'> {
+  seekLabel?: string;
+}
+
+const AudioPlayerSeek = ({ seekLabel = 'Seek', className, ...props }: AudioPlayerSeekProps) => {
   const { duration, currentTime, buffered, seek } = useAudioPlayer();
   const [scrub, setScrub] = React.useState<number | null>(null);
 
@@ -249,8 +269,8 @@ const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) =
       <div
         aria-hidden
         data-slot="audio-player-buffered"
-        className="pointer-events-none absolute start-0 top-1/2 h-1 -translate-y-1/2 rounded-sm bg-primary/20"
-        style={{ width: `${bufferedPct}%` }}
+        className="pointer-events-none absolute inset-s-0 top-1/2 h-1 w-full origin-left -translate-y-1/2 rounded-sm bg-primary/20 rtl:origin-right"
+        style={{ scale: `${bufferedPct / 100} 1` }}
       />
       <Slider
         value={[value]}
@@ -258,7 +278,7 @@ const AudioPlayerSeek = ({ className, ...props }: React.ComponentProps<'div'>) =
         max={max}
         step={0.1}
         disabled={!hasDuration}
-        aria-label="Seek"
+        aria-label={seekLabel}
         onValueChange={(values) => setScrub(values[0] ?? 0)}
         onValueCommit={(values) => {
           seek(values[0] ?? 0);
@@ -283,7 +303,7 @@ const AudioPlayerTime = ({ mode = 'elapsed', className, ...props }: AudioPlayerT
     <span
       data-slot="audio-player-time"
       data-mode={mode}
-      className={cn('shrink-0 font-mono text-xs tabular-nums text-muted-foreground', className)}
+      className={cn('shrink-0 text-xs text-muted-foreground tabular-nums', className)}
       {...props}
     >
       {mode === 'remaining' && label !== '--:--' ? `-${label}` : label}
@@ -291,7 +311,19 @@ const AudioPlayerTime = ({ mode = 'elapsed', className, ...props }: AudioPlayerT
   );
 };
 
-const AudioPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface AudioPlayerVolumeProps extends React.ComponentProps<'div'> {
+  muteLabel?: string;
+  unmuteLabel?: string;
+  volumeLabel?: string;
+}
+
+const AudioPlayerVolume = ({
+  muteLabel = 'Mute',
+  unmuteLabel = 'Unmute',
+  volumeLabel = 'Volume',
+  className,
+  ...props
+}: AudioPlayerVolumeProps) => {
   const { volume, muted, setVolume, toggleMute } = useAudioPlayer();
   const silent = muted || volume === 0;
 
@@ -302,7 +334,7 @@ const AudioPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
         variant="ghost"
         size="icon"
         data-slot="audio-player-mute"
-        aria-label={silent ? 'Unmute' : 'Mute'}
+        aria-label={silent ? unmuteLabel : muteLabel}
         onClick={toggleMute}
         className="size-8"
       >
@@ -313,7 +345,7 @@ const AudioPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
         min={0}
         max={1}
         step={0.01}
-        aria-label="Volume"
+        aria-label={volumeLabel}
         onValueChange={(values) => setVolume(values[0] ?? 0)}
         className="w-16"
       />
@@ -323,9 +355,19 @@ const AudioPlayerVolume = ({ className, ...props }: React.ComponentProps<'div'>)
 
 export interface AudioPlayerRateProps extends React.ComponentProps<typeof Button> {
   rates?: number[];
+  /** Accessible name for the current rate. */
+  getLabel?: (rate: number) => string;
 }
 
-const AudioPlayerRate = ({ rates = [1, 1.25, 1.5, 2], className, ...props }: AudioPlayerRateProps) => {
+const defaultRateLabel = (rate: number) => `Playback speed ${rate}×`;
+
+const AudioPlayerRate = ({
+  rates = [1, 1.25, 1.5, 2],
+  getLabel = defaultRateLabel,
+  onClick,
+  className,
+  ...props
+}: AudioPlayerRateProps) => {
   const { rate, setRate } = useAudioPlayer();
 
   return (
@@ -334,12 +376,14 @@ const AudioPlayerRate = ({ rates = [1, 1.25, 1.5, 2], className, ...props }: Aud
       variant="ghost"
       size="sm"
       data-slot="audio-player-rate"
-      aria-label={`Playback speed ${rate}×`}
-      onClick={() => {
+      aria-label={getLabel(rate)}
+      onClick={(event) => {
+        onClick?.(event);
+        if (event.defaultPrevented) return;
         const index = rates.indexOf(rate);
         setRate(rates[(index + 1) % rates.length] ?? 1);
       }}
-      className={cn('h-8 px-2 font-mono text-xs tabular-nums', className)}
+      className={cn('h-8 px-2 text-xs tabular-nums', className)}
       {...props}
     >
       {rate}×
@@ -349,9 +393,20 @@ const AudioPlayerRate = ({ rates = [1, 1.25, 1.5, 2], className, ...props }: Aud
 
 export interface AudioPlayerSkipProps extends React.ComponentProps<typeof Button> {
   seconds: number;
+  /** Accessible name for a skip of `seconds` (negative is backwards). */
+  getLabel?: (seconds: number) => string;
 }
 
-const AudioPlayerSkip = ({ seconds, className, ...props }: AudioPlayerSkipProps) => {
+const defaultSkipLabel = (seconds: number) =>
+  seconds < 0 ? `Back ${Math.abs(seconds)} seconds` : `Forward ${seconds} seconds`;
+
+const AudioPlayerSkip = ({
+  seconds,
+  getLabel = defaultSkipLabel,
+  onClick,
+  className,
+  ...props
+}: AudioPlayerSkipProps) => {
   const { skip } = useAudioPlayer();
   const back = seconds < 0;
 
@@ -361,8 +416,11 @@ const AudioPlayerSkip = ({ seconds, className, ...props }: AudioPlayerSkipProps)
       variant="ghost"
       size="icon"
       data-slot="audio-player-skip"
-      aria-label={back ? `Back ${Math.abs(seconds)} seconds` : `Forward ${seconds} seconds`}
-      onClick={() => skip(seconds)}
+      aria-label={getLabel(seconds)}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) skip(seconds);
+      }}
       className={cn('size-8', className)}
       {...props}
     >

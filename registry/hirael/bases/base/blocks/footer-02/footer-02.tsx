@@ -70,7 +70,7 @@ const BrandMark = ({ className }: BrandMarkProps) => {
 const Footer02 = () => {
   return (
     <footer data-slot="footer" className="relative mx-2 rounded-t-3xl border-t border-border bg-background xl:mx-4">
-      <div data-slot="footer-inner" className="relative container w-full py-12 lg:py-16">
+      <div data-slot="footer-inner" className="relative mx-auto w-full max-w-[1480px] px-4 py-12 lg:py-16">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(35%_128px_at_50%_0%,color-mix(in_oklch,var(--primary)_14%,transparent),transparent)]"

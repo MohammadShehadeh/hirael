@@ -44,6 +44,7 @@ const CellValue = ({ value }: CellValueProps) => {
   if (typeof value === 'string') {
     return <span className="text-sm text-muted-foreground">{value}</span>;
   }
+
   return value ? (
     <>
       <Check aria-hidden className="size-4 text-foreground" />
@@ -60,7 +61,7 @@ const CellValue = ({ value }: CellValueProps) => {
 const Comparison02 = () => {
   return (
     <section data-slot="comparison" className="bg-background py-20 sm:py-28" aria-labelledby="comparison-02-heading">
-      <div className="container w-full max-w-5xl">
+      <div className="mx-auto w-full max-w-5xl px-4">
         <div data-slot="comparison-header" className="mx-auto max-w-2xl text-center">
           <h2
             id="comparison-02-heading"
@@ -79,7 +80,7 @@ const Comparison02 = () => {
             <thead>
               <tr>
                 <th scope="col" className="w-1/3 p-4 text-start align-bottom">
-                  <span className="text-xs uppercase text-muted-foreground">Approach</span>
+                  <span className="text-xs text-muted-foreground uppercase">Approach</span>
                 </th>
                 {COLUMNS.map((column) => (
                   <th

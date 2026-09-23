@@ -29,6 +29,7 @@ const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
 /** Newest first. Same-day releases sort by version, so 6.10 stays after 6.9. */
 const byNewest = (a: ChangelogEntry, b: ChangelogEntry): number => {
   if (a.isoDate !== b.isoDate) return a.isoDate < b.isoDate ? 1 : -1;
+
   return (b.version ?? '').localeCompare(a.version ?? '', 'en', { numeric: true });
 };
 
@@ -55,6 +56,7 @@ export const getChangelog = async (): Promise<Changelog> => {
       const parsed = data.date ? new Date(data.date) : null;
       if (!parsed || Number.isNaN(parsed.getTime())) return [];
       const isoDate = parsed.toISOString();
+
       return [
         {
           slug: file.replace(/\.mdx$/, ''),

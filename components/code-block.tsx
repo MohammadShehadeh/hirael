@@ -109,6 +109,7 @@ interface CodePaneProps {
 
 const CodePane = ({ html, maxHeight, isCollapsible, isExpanded, onExpandedChange, className }: CodePaneProps) => {
   const isClipped = isCollapsible && !isExpanded;
+
   return (
     <div className={cn('relative', className)}>
       <div
@@ -116,7 +117,7 @@ const CodePane = ({ html, maxHeight, isCollapsible, isExpanded, onExpandedChange
         dangerouslySetInnerHTML={{ __html: html }}
       />
       {isClipped && (
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-linear-to-t from-card via-card/85 to-transparent pb-3 pt-20">
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-linear-to-t from-card via-card/85 to-transparent pt-20 pb-3">
           <Button type="button" variant="outline" size="sm" onClick={() => onExpandedChange(true)}>
             Expand source
           </Button>
@@ -162,11 +163,13 @@ const buildTree = (paths: string[]): TreeNode[] => {
       const isFolderA = a.children.length > 0;
       const isFolderB = b.children.length > 0;
       if (isFolderA !== isFolderB) return isFolderA ? -1 : 1;
+
       return a.name.localeCompare(b.name);
     });
     nodes.forEach((n) => sortFoldersFirst(n.children));
   };
   sortFoldersFirst(roots);
+
   return roots;
 };
 
@@ -179,6 +182,7 @@ interface FileTreeProps {
 
 const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => {
   const tree = buildTree(paths);
+
   return (
     <div role="tree" aria-label="Files" className={cn('w-56 shrink-0 overflow-auto px-1 py-2 text-[12px]', maxHeight)}>
       {tree.map((node) => (
@@ -228,6 +232,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
   }
 
   const isActive = activePath === node.filePath;
+
   return (
     <button
       type="button"
@@ -238,7 +243,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
       title={node.filePath}
       className={cn(
         'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left transition-colors',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         isActive ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
       )}
     >
@@ -259,7 +264,7 @@ export interface InlineCodeBlockProps {
 export const InlineCodeBlock = ({ html, code, className, maxHeight = 'max-h-[640px]' }: InlineCodeBlockProps) => {
   return (
     <div className={cn('group relative overflow-hidden rounded-md border border-border bg-card', className)}>
-      <span className="absolute right-2 top-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
         <CopyButton value={code} size="sm" aria-label="Copy code" />
       </span>
       <div className={cn('shiki-scroll overflow-auto', maxHeight)} dangerouslySetInnerHTML={{ __html: html }} />

@@ -97,6 +97,7 @@ const Faq03 = () => {
   const visible = FAQS.filter((f) => {
     if (category !== 'all' && f.category !== category) return false;
     if (!normalized) return true;
+
     return f.q.toLowerCase().includes(normalized) || f.a.toLowerCase().includes(normalized);
   });
 
@@ -106,15 +107,15 @@ const Faq03 = () => {
   };
 
   return (
-    <section data-slot="faq" className="bg-background py-20 md:py-28">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 md:px-10">
         <div data-slot="faq-header" className="flex flex-col items-center gap-4 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Help center</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Help center</span>
           <h2
             style={stagger(1, 70)}
             className={cn(
               ENTER,
-              'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              'max-w-2xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
             )}
           >
             Find the answer before you file the issue.
@@ -160,7 +161,7 @@ const Faq03 = () => {
                   <AccordionTrigger>
                     <span className="flex flex-1 items-baseline justify-between gap-4">
                       <span>{f.q}</span>
-                      <span className="shrink-0 text-xs uppercase text-muted-foreground">
+                      <span className="shrink-0 text-xs text-muted-foreground uppercase">
                         {CATEGORY_LABELS[f.category]}
                       </span>
                     </span>

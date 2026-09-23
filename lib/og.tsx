@@ -10,6 +10,7 @@ const spellGlyphs = (text: string) => text.replaceAll('⌘', 'Cmd');
 
 const clamp = (text: string, max: number) => {
   const clean = spellGlyphs(text);
+
   return clean.length > max ? `${clean.slice(0, max - 3)}...` : clean;
 };
 

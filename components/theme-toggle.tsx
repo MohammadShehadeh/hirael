@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -26,13 +25,13 @@ export const ThemeToggle = () => {
       <Sun
         className={cn(
           'size-3.5 transition-all duration-200',
-          isMounted && isLight ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
+          isMounted && isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0',
         )}
       />
       <Moon
         className={cn(
           'absolute size-3.5 transition-all duration-200',
-          isMounted && !isLight ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0',
+          isMounted && !isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-90 opacity-0',
         )}
       />
     </Button>

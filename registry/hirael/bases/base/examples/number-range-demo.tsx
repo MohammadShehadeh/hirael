@@ -24,7 +24,7 @@ const NumberRangeDemo = () => {
       <Field>
         <div className="flex items-baseline justify-between">
           <FieldLabel>{t({ en: 'Price (USD)', ar: 'السعر (دولار)' })}</FieldLabel>
-          <span className="text-xs tabular-nums uppercase text-muted-foreground">
+          <span className="text-xs text-muted-foreground uppercase tabular-nums">
             ${usd(price[0])} – ${usd(price[1])}
           </span>
         </div>
@@ -46,7 +46,7 @@ const NumberRangeDemo = () => {
       <Field>
         <div className="flex items-baseline justify-between">
           <FieldLabel>{t({ en: 'Age', ar: 'العمر' })}</FieldLabel>
-          <span className="text-xs tabular-nums uppercase text-muted-foreground">
+          <span className="text-xs text-muted-foreground uppercase tabular-nums">
             {age[0]}–{age[1]} {t({ en: 'yrs', ar: 'سنة' })}
           </span>
         </div>

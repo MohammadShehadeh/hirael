@@ -35,7 +35,7 @@ const SortableDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Tasks · drag handle', ar: 'المهام · مقبض السحب' })}
         </p>
         <Sortable value={taskOrder} onValueChange={setTaskOrder}>
@@ -51,7 +51,7 @@ const SortableDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Tags · horizontal, whole item drags',
             ar: 'الوسوم · أفقي، يُسحب العنصر بالكامل',
@@ -68,7 +68,7 @@ const SortableDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Disabled item · skipped while sorting',
             ar: 'عنصر معطّل · يُتخطّى أثناء الترتيب',

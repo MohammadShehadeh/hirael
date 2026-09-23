@@ -5,6 +5,7 @@ import { ArrowDownRight, ArrowUpRight, Check, Minus, Share2 } from 'lucide-react
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Sparkline } from '@/registry/hirael/bases/radix/components/sparkline';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
@@ -194,6 +195,7 @@ const CHANNELS = [
 const deltaTone = ({ delta, goodWhen }: Kpi) => {
   if (delta === 0) return 'bg-accent text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
+
   return improving ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
 };
 
@@ -230,34 +232,10 @@ const DeltaChip = ({ kpi }: DeltaChipProps) => {
   );
 };
 
-interface SparklineProps {
-  points: readonly number[];
-}
-
-const Sparkline = ({ points }: SparklineProps) => {
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const span = max - min || 1;
-  const step = 100 / (points.length - 1);
-  const coords = points
-    .map((p, i) => `${(i * step).toFixed(1)},${(26 - ((p - min) / span) * 20).toFixed(1)}`)
-    .join(' ');
-  return (
-    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden className="h-7 w-full">
-      <polyline
-        points={coords}
-        fill="none"
-        vectorEffect="non-scaling-stroke"
-        strokeWidth="1.5"
-        className="stroke-foreground/40"
-      />
-    </svg>
-  );
-};
-
 const linePath = (values: number[], max: number) => {
   // A single bucket would divide by zero.
   const step = values.length > 1 ? 100 / (values.length - 1) : 100;
+
   return values
     .map((v, i) => `${i === 0 ? 'M' : 'L'}${(i * step).toFixed(2)} ${(44 - (v / max) * 38).toFixed(2)}`)
     .join(' ');
@@ -270,6 +248,7 @@ const Dashboard02 = () => {
   React.useEffect(() => {
     if (!copied) return;
     const timeout = setTimeout(() => setCopied(false), 2000);
+
     return () => clearTimeout(timeout);
   }, [copied]);
 
@@ -299,13 +278,13 @@ const Dashboard02 = () => {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="dashboard-header"
           className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
         >
           <div className="flex max-w-xl flex-col gap-3">
-            <span className="text-xs uppercase text-muted-foreground">Analytics</span>
+            <span className="text-xs text-muted-foreground uppercase">Analytics</span>
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Traffic, end to end.</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -328,7 +307,7 @@ const Dashboard02 = () => {
               aria-label={copied ? 'Link copied' : 'Copy link to report'}
             >
               {copied ? (
-                <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+                <Check className="size-3.5 animate-in duration-250 zoom-in-50 motion-reduce:animate-none" aria-hidden />
               ) : (
                 <Share2 className="size-3.5" aria-hidden />
               )}
@@ -344,26 +323,26 @@ const Dashboard02 = () => {
           data-slot="dashboard-metrics"
           className={cn(
             ENTER,
-            'delay-60 mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border delay-60 lg:grid-cols-4',
           )}
         >
           {kpis.map((k) => (
             <div key={k.label} className="flex flex-col gap-2 bg-card p-5">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs uppercase text-muted-foreground">{k.label}</span>
+                <span className="text-xs text-muted-foreground uppercase">{k.label}</span>
                 <span key={range} className={SWAP}>
                   <DeltaChip kpi={k} />
                 </span>
               </div>
               <div key={range} className={cn(SWAP, 'flex flex-col gap-2')}>
                 <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{k.value}</span>
-                <Sparkline points={k.spark} />
+                <Sparkline data={[...k.spark]} tone="muted" aria-hidden className="h-7 w-full" />
               </div>
             </div>
           ))}
         </div>
 
-        <div className={cn(ENTER, 'delay-120 mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
+        <div className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 delay-120 lg:grid-cols-3 lg:items-start')}>
           <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
@@ -372,11 +351,11 @@ const Dashboard02 = () => {
                   <CardTitle>{RANGES.find((r) => r.value === range)?.label}</CardTitle>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                     <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                     Views
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                     <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/45" />
                     Visitors
                   </span>
@@ -418,7 +397,7 @@ const Dashboard02 = () => {
                 </svg>
                 <div aria-hidden className="mt-2 flex justify-between">
                   {chart.map((b) => (
-                    <span key={b.label} className="text-xs uppercase text-muted-foreground">
+                    <span key={b.label} className="text-xs text-muted-foreground uppercase">
                       {b.label}
                     </span>
                   ))}
@@ -449,7 +428,7 @@ const Dashboard02 = () => {
 
               <Separator className="my-4" />
 
-              <p className="flex flex-wrap gap-x-3 text-xs uppercase text-muted-foreground">
+              <p className="flex flex-wrap gap-x-3 text-xs text-muted-foreground uppercase">
                 <span>Peak</span>
                 <span className="text-foreground">{peak.label}</span>
                 <span className="tabular-nums">{max.toLocaleString('en-US')} views</span>
@@ -474,7 +453,7 @@ const Dashboard02 = () => {
                     <div key={p.path} className="flex flex-col gap-1.5">
                       <div className="flex items-baseline justify-between gap-3">
                         <span className="truncate text-xs text-foreground">{p.path}</span>
-                        <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                        <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                           {compact.format(p.views)}
                         </span>
                       </div>
@@ -505,7 +484,7 @@ const Dashboard02 = () => {
                       <div aria-hidden className="h-1 flex-1 overflow-hidden rounded-full bg-accent">
                         <div className="h-full rounded-full bg-foreground/70" style={{ width: `${c.share}%` }} />
                       </div>
-                      <span className="w-9 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
+                      <span className="w-9 shrink-0 text-end text-xs text-muted-foreground tabular-nums">
                         {c.share}%
                       </span>
                     </div>

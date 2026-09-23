@@ -9,6 +9,7 @@ const FADE_EASE: Transition['ease'] = 'easeOut';
 
 export const useFadeUp = () => {
   const reduce = useReducedMotion();
+
   return (delay = 0): MotionProps => ({
     initial: reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -24,7 +25,7 @@ interface SerifProps {
 
 export const Serif = ({ children, className }: SerifProps) => {
   return (
-    <span className={cn('font-normal italic [font-family:var(--font-mindloop-serif)]', className)}>{children}</span>
+    <span className={cn('[font-family:var(--font-mindloop-serif)] font-normal italic', className)}>{children}</span>
   );
 };
 
@@ -137,6 +138,7 @@ interface AvatarProps {
 export const Avatar = ({ tone = 0, className }: AvatarProps) => {
   const t = AVATAR_TONES[tone % AVATAR_TONES.length];
   const id = `mindloop-avatar-${tone}`;
+
   return (
     <span className={cn('inline-flex h-8 w-8 overflow-hidden rounded-full border-2 border-background', className)}>
       <svg viewBox="0 0 32 32" className="h-full w-full" aria-hidden>

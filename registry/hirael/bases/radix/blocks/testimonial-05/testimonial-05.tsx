@@ -116,6 +116,7 @@ const Testimonial05 = () => {
     const onSelect = () => setSelected(api.selectedScrollSnap());
     api.on('select', onSelect);
     api.on('reInit', onSelect);
+
     return () => {
       api.off('select', onSelect);
       api.off('reInit', onSelect);
@@ -123,17 +124,17 @@ const Testimonial05 = () => {
   }, [api]);
 
   return (
-    <section data-slot="testimonial" className="overflow-hidden bg-background py-20 md:py-28">
+    <section data-slot="testimonial" className="overflow-hidden bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:gap-16 md:px-10">
         <div
           data-slot="testimonial-header"
           className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16"
         >
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Customer stories</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Customer stories</span>
             <h2
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Measured by the teams who switched
             </h2>
@@ -151,7 +152,7 @@ const Testimonial05 = () => {
                 )}
               >
                 <dt className="order-last text-xs text-muted-foreground sm:text-sm">{item.label}</dt>
-                <dd dir="ltr" className="self-start text-2xl font-semibold tabular-nums tracking-tight sm:text-3xl">
+                <dd dir="ltr" className="self-start text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
                   {item.value}
                 </dd>
               </div>
@@ -185,19 +186,19 @@ const Testimonial05 = () => {
                   >
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-base font-semibold tracking-tight">{story.company}</span>
-                      <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+                      <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
                         {formatIndex(index)}
                       </span>
                     </div>
 
                     <p className="flex flex-col gap-1">
-                      <span dir="ltr" className="self-start text-5xl font-semibold tabular-nums tracking-tight">
+                      <span dir="ltr" className="self-start text-5xl font-semibold tracking-tight tabular-nums">
                         {story.metric}
                       </span>
-                      <span className="text-sm text-warm">{story.outcome}</span>
+                      <span className="text-sm text-primary">{story.outcome}</span>
                     </p>
 
-                    <blockquote className="text-pretty text-base leading-relaxed text-muted-foreground">
+                    <blockquote className="text-base leading-relaxed text-pretty text-muted-foreground">
                       {story.quote}
                     </blockquote>
 
@@ -232,7 +233,7 @@ const Testimonial05 = () => {
           </div>
 
           <div data-slot="testimonial-controls" className="mt-8 flex items-center gap-4 sm:gap-6">
-            <span dir="ltr" aria-live="polite" className="shrink-0 text-sm tabular-nums text-muted-foreground">
+            <span dir="ltr" aria-live="polite" className="shrink-0 text-sm text-muted-foreground tabular-nums">
               <span className="text-foreground">{formatIndex(selected)}</span>
               <span className="mx-1.5 text-border">|</span>
               {formatIndex(STORIES.length - 1)}

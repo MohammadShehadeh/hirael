@@ -10,7 +10,7 @@ type Point = [x: number, y: number];
 export type EdgeStatus = 'active' | 'idle' | 'down';
 
 const edgeStroke: Record<EdgeStatus, string> = {
-  active: 'text-accent-cool',
+  active: 'text-primary',
   idle: 'text-border',
   down: 'text-destructive',
 };
@@ -71,6 +71,7 @@ interface NetworkEdgeProps extends Omit<React.ComponentProps<'line'>, 'x1' | 'y1
 
 const NetworkEdge = ({ from, to, status = 'idle', animated, className, style, ...props }: NetworkEdgeProps) => {
   const isAnimated = animated && status !== 'down';
+
   return (
     <line
       data-slot="network-edge"
@@ -156,7 +157,7 @@ const NetworkTopologyBlock = () => {
   return (
     <section data-slot="network-topology-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="w-full max-w-2xl">
-        <NetworkTopology className="h-80 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+        <NetworkTopology className="h-80 animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
           <NetworkTopologyEdges>
             <NetworkEdge from={[50, 12]} to={[50, 38]} status="active" animated />
             <NetworkEdge from={[50, 38]} to={[22, 66]} status="active" animated />

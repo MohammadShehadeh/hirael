@@ -9,6 +9,7 @@ import { BLOCK_KIND_LABELS, CATEGORY_LABELS, entryHref, type RegistryEntryMeta }
 const collectionLabel = (entry: RegistryEntryMeta) => {
   if (entry.blockKind) return BLOCK_KIND_LABELS[entry.blockKind];
   if (entry.category === 'templates') return 'Template';
+
   return CATEGORY_LABELS[entry.category];
 };
 
@@ -39,7 +40,7 @@ export const ItemCards = ({ items, className }: ItemCardsProps) => {
             />
           </span>
 
-          <span className="text-xs uppercase text-muted-foreground">{collectionLabel(entry)}</span>
+          <span className="text-xs text-muted-foreground uppercase">{collectionLabel(entry)}</span>
 
           <span className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">{entry.description}</span>
         </Link>

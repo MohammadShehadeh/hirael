@@ -17,6 +17,16 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/registry/hirael/bases/base/ui/alert-dialog';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
@@ -52,6 +62,7 @@ const useAiChat = () => {
   if (!context) {
     throw new Error('AiChat parts must be rendered inside <AiChat>.');
   }
+
   return context;
 };
 
@@ -121,6 +132,7 @@ type AiChatSidebarTriggerProps = Omit<React.ComponentProps<typeof Button>, 'onCl
 
 const AiChatSidebarTrigger = ({ className, children, ...props }: AiChatSidebarTriggerProps) => {
   const { openMobile } = useAiChat();
+
   return (
     <Button
       type="button"
@@ -289,6 +301,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
       if (pinnedRef.current) viewport.scrollTop = viewport.scrollHeight;
     });
     observer.observe(content);
+
     return () => observer.disconnect();
   }, []);
 
@@ -337,6 +350,7 @@ const AiChatMessage = ({
   ...props
 }: AiChatMessageProps) => {
   const isUser = role === 'user';
+
   return (
     <div
       data-slot="ai-chat-message"
@@ -359,7 +373,7 @@ const AiChatMessage = ({
             <span
               key={delay}
               aria-hidden
-              className="size-1.5 rounded-full bg-muted-foreground animate-bounce motion-reduce:animate-none"
+              className="size-1.5 animate-bounce rounded-full bg-muted-foreground motion-reduce:animate-none"
               style={{ animationDelay: `${delay}ms` }}
             />
           ))}
@@ -376,7 +390,7 @@ const AiChatMessage = ({
           {streaming ? (
             <span
               aria-hidden
-              className="ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] rounded-[1px] bg-foreground align-baseline animate-pulse motion-reduce:animate-none"
+              className="ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] animate-pulse rounded-[1px] bg-foreground align-baseline motion-reduce:animate-none"
               style={{ animationDuration: '1s' }}
             />
           ) : null}
@@ -636,6 +650,7 @@ const AiChat01 = () => {
   const [renaming, setRenaming] = React.useState(false);
   const [titleDraft, setTitleDraft] = React.useState('');
   const [copied, setCopied] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
   const timers = React.useRef<{ timeout?: number; interval?: number; copied?: number }>({});
   const sequence = React.useRef(0);
   const renameInputRef = React.useRef<HTMLInputElement>(null);
@@ -644,6 +659,7 @@ const AiChat01 = () => {
 
   React.useEffect(() => {
     const pending = timers.current;
+
     return () => {
       window.clearTimeout(pending.timeout);
       window.clearInterval(pending.interval);
@@ -700,6 +716,7 @@ const AiChat01 = () => {
     setTitles((prev) => {
       const next = { ...prev };
       delete next.draft;
+
       return next;
     });
   };
@@ -746,6 +763,7 @@ const AiChat01 = () => {
   const commitRename = () => {
     if (renameCancelled.current) {
       renameCancelled.current = false;
+
       return;
     }
     const next = titleDraft.trim();
@@ -842,6 +860,7 @@ const AiChat01 = () => {
                 finalFocus={() => {
                   if (!renameRequested.current) return true;
                   renameRequested.current = false;
+
                   return renameInputRef.current ?? false;
                 }}
               >
@@ -850,12 +869,34 @@ const AiChat01 = () => {
                   Rename
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive" onClick={deleteChat}>
+                <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}>
                   <Trash2 />
                   Delete chat
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+              <AlertDialogContent data-slot="ai-chat-delete-dialog">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete this chat?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    &ldquo;{title}&rdquo; and its messages are removed for good.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Keep chat</AlertDialogCancel>
+                  <AlertDialogAction
+                    variant="destructive"
+                    onClick={() => {
+                      setDeleteOpen(false);
+                      deleteChat();
+                    }}
+                  >
+                    Delete chat
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </AiChatHeader>
 
           {messages.length === 0 ? (

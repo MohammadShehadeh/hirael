@@ -41,6 +41,7 @@ const PLANS: Account['plan'][] = ['free', 'pro', 'enterprise'];
 
 const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
   const [customer, email] = CUSTOMERS[i % CUSTOMERS.length] ?? ['Acme', 'a@b.c'];
+
   return {
     id: `ACC-${(3072 + i).toString()}`,
     customer: customer ?? 'Acme',
@@ -96,7 +97,7 @@ const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
         cell: ({ row }) => (
           <div className="flex flex-col">
             <span className="font-medium">{row.original.customer}</span>
-            <span className="text-muted-foreground text-xs">{row.original.email}</span>
+            <span className="text-xs text-muted-foreground">{row.original.email}</span>
           </div>
         ),
         enableColumnFilter: true,
@@ -112,6 +113,7 @@ const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
         cell: ({ row }) => {
           const status = row.original.status;
           const tone = status === 'active' ? 'default' : status === 'past_due' ? 'destructive' : 'secondary';
+
           return <Badge variant={tone}>{statusLabel[status]}</Badge>;
         },
         enableColumnFilter: true,

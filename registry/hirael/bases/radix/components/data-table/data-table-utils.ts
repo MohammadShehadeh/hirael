@@ -2,10 +2,11 @@ import type { DataTableFeatures } from './data-table-features';
 import type { Column, Row, RowData } from '@tanstack/react-table';
 import type * as React from 'react';
 
-export type FilterVariant = 'text' | 'number' | 'range' | 'date' | 'dateRange' | 'boolean' | 'select' | 'multiSelect';
+export type FilterVariant = 'text' | 'number' | 'range' | 'date' | 'dateRange' | 'select' | 'multiSelect';
 
 export interface ExtendedColumnSort<TData> {
-  id: Extract<keyof TData, string>;
+  /** A key of `TData`, or any custom column id (dotted accessor keys become `a_b`). */
+  id: Extract<keyof TData, string> | (string & Record<never, never>);
   desc: boolean;
 }
 
@@ -61,11 +62,15 @@ export const getColumnPinningStyle = <TData extends RowData>({
   };
 };
 
-export const formatDate = (date: Date | string | number | undefined, opts: Intl.DateTimeFormatOptions = {}) => {
+export const formatDate = (
+  date: Date | string | number | undefined,
+  opts: Intl.DateTimeFormatOptions = {},
+  locale = 'en-US',
+) => {
   if (!date) return '';
 
   try {
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(locale, {
       month: opts.month ?? 'long',
       day: opts.day ?? 'numeric',
       year: opts.year ?? 'numeric',

@@ -5,13 +5,34 @@ import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-export type MetricTone = 'neutral' | 'positive' | 'warning' | 'critical';
+export type MetricTone =
+  | 'neutral'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'destructive'
+  /** @deprecated Use `success`. */
+  | 'positive'
+  /** @deprecated Use `destructive`. */
+  | 'critical';
 
-const toneText: Record<MetricTone, string> = {
+type ResolvedMetricTone = Exclude<MetricTone, 'positive' | 'critical'>;
+
+const toneAliases: Partial<Record<MetricTone, ResolvedMetricTone>> = {
+  positive: 'success',
+  critical: 'destructive',
+};
+
+const resolveMetricTone = (tone: MetricTone): ResolvedMetricTone => {
+  return toneAliases[tone] ?? (tone as ResolvedMetricTone);
+};
+
+const toneText: Record<ResolvedMetricTone, string> = {
   neutral: 'text-muted-foreground',
-  positive: 'text-success',
+  info: 'text-info',
+  success: 'text-success',
   warning: 'text-warning',
-  critical: 'text-destructive',
+  destructive: 'text-destructive',
 };
 
 type MetricCardProps = React.ComponentProps<'div'>;
@@ -33,7 +54,7 @@ interface MetricCardHeaderProps extends React.ComponentProps<'div'> {
 const MetricCardHeader = ({ icon, className, children, ...props }: MetricCardHeaderProps) => {
   return (
     <div data-slot="metric-card-header" className={cn('flex items-center justify-between gap-2', className)} {...props}>
-      <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+      <span data-slot="metric-card-label" className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
         {icon}
         {children}
       </span>
@@ -49,11 +70,18 @@ const MetricCardValue = ({ unit, className, children, ...props }: MetricCardValu
   return (
     <div
       data-slot="metric-card-value"
-      className={cn('flex items-baseline gap-1 text-3xl font-semibold tracking-[-0.035em] text-foreground', className)}
+      className={cn(
+        'flex items-baseline gap-1 text-3xl font-semibold tracking-[-0.035em] text-foreground tabular-nums',
+        className,
+      )}
       {...props}
     >
       {children}
-      {unit ? <span className="text-sm font-normal text-muted-foreground">{unit}</span> : null}
+      {unit ? (
+        <span data-slot="metric-card-unit" className="text-sm font-normal text-muted-foreground">
+          {unit}
+        </span>
+      ) : null}
     </div>
   );
 };
@@ -66,11 +94,14 @@ interface MetricCardTrendProps extends Omit<React.ComponentProps<'span'>, 'child
 
 const MetricCardTrend = ({ direction, tone = 'neutral', className, children, ...props }: MetricCardTrendProps) => {
   const Icon = direction === 'up' ? TrendingUp : direction === 'down' ? TrendingDown : Minus;
+  const resolvedTone = resolveMetricTone(tone);
+
   return (
     <span
       data-slot="metric-card-trend"
       data-direction={direction}
-      className={cn('inline-flex items-center gap-1 font-mono text-xs', toneText[tone], className)}
+      data-tone={resolvedTone}
+      className={cn('inline-flex items-center gap-1 font-mono text-xs', toneText[resolvedTone], className)}
       {...props}
     >
       <Icon className="size-3.5 rtl:-scale-x-100" aria-hidden />
@@ -87,23 +118,29 @@ interface MetricCardSparkProps extends Omit<React.ComponentProps<'svg'>, 'points
 }
 
 const MetricCardSpark = ({ points, tone = 'neutral', area = true, className, ...props }: MetricCardSparkProps) => {
-  if (!points.length) return null;
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const range = max - min || 1;
+  const values = points.filter(Number.isFinite);
+  if (!values.length) return null;
+  const series = values.length === 1 ? [values[0], values[0]] : values;
+  const max = Math.max(...series);
+  const min = Math.min(...series);
+  const range = max - min;
   const width = 100;
   const height = 32;
-  const step = points.length > 1 ? width / (points.length - 1) : width;
-  const coords = points.map((point, i) => [i * step, height - ((point - min) / range) * height] as const);
+  const step = width / (series.length - 1);
+  const coords = series.map(
+    (point, i) => [i * step, range === 0 ? height / 2 : height - ((point - min) / range) * height] as const,
+  );
   const line = coords.map(([x, y]) => `${x},${y}`).join(' ');
   const fill = `0,${height} ${line} ${width},${height}`;
+
   return (
     <svg
       data-slot="metric-card-spark"
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="none"
       aria-hidden
-      className={cn('h-8 w-full', toneText[tone], className)}
+      data-tone={resolveMetricTone(tone)}
+      className={cn('h-8 w-full', toneText[resolveMetricTone(tone)], className)}
       {...props}
     >
       {area ? <polygon points={fill} fill="currentColor" className="opacity-10" /> : null}

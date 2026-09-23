@@ -50,7 +50,7 @@ const ImageCompareDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Drag to compare · labels', ar: 'اسحب للمقارنة · تسميات' })}
         </p>
         <ImageCompare className="aspect-video">
@@ -85,7 +85,7 @@ const ImageCompareDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Vertical orientation', ar: 'اتجاه عمودي' })}
         </p>
         <ImageCompare orientation="vertical" defaultPosition={40} className="aspect-video">
@@ -114,7 +114,7 @@ const ImageCompareDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Follow pointer · wireframe vs styled',
             ar: 'تتبّع المؤشر · مخطط مقابل مُنسّق',

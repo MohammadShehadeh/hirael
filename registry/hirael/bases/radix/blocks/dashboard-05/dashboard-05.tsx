@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
+import { Sparkline, SparklineArea, SparklineLine } from '@/registry/hirael/bases/radix/components/sparkline';
 
 type Range = '4h' | '24h' | '7d';
 
@@ -171,7 +172,7 @@ const DEPLOYS: readonly Deploy[] = [
 ];
 
 const STATUS_META: Record<Deploy['status'], { label: string; dot: string; pulse: boolean }> = {
-  live: { label: 'Live', dot: 'bg-accent-cool', pulse: true },
+  live: { label: 'Live', dot: 'bg-primary', pulse: true },
   stable: { label: 'Stable', dot: 'bg-muted-foreground/50', pulse: false },
   canary: { label: 'Canary', dot: 'bg-warning', pulse: true },
 };
@@ -221,6 +222,7 @@ interface StatusBadgeProps {
 
 const StatusBadge = ({ status }: StatusBadgeProps) => {
   const meta = STATUS_META[status];
+
   return (
     <Badge variant="outline" className="w-fit">
       <span aria-hidden className="relative flex size-2">
@@ -242,23 +244,13 @@ interface SparkProps {
 }
 
 const Spark = ({ points, className }: SparkProps) => {
-  const height = 32;
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const span = max - min || 1;
-  const step = points.length > 1 ? 100 / (points.length - 1) : 100;
-  const line = points
-    .map(
-      (v, i) =>
-        `${i === 0 ? 'M' : 'L'}${(i * step).toFixed(1)} ${(height - 3 - ((v - min) / span) * (height - 8)).toFixed(1)}`,
-    )
-    .join(' ');
-
   return (
-    <svg viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" aria-hidden className={cn('w-full', className)}>
-      <path d={`${line} L100 ${height} L0 ${height} Z`} className="fill-foreground/6" />
-      <path d={line} fill="none" vectorEffect="non-scaling-stroke" strokeWidth="1.5" className="stroke-foreground/60" />
-    </svg>
+    <div className={cn('flex w-full', className)}>
+      <Sparkline data={[...points]} aria-hidden className="h-full w-full">
+        <SparklineArea fillOpacity={0.06} />
+        <SparklineLine strokeOpacity={0.6} />
+      </Sparkline>
+    </div>
   );
 };
 
@@ -280,7 +272,7 @@ interface CellLabelProps {
 }
 
 const CellLabel = ({ children }: CellLabelProps) => {
-  return <span className="text-xs uppercase text-muted-foreground">{children}</span>;
+  return <span className="text-xs text-muted-foreground uppercase">{children}</span>;
 };
 
 const Dashboard05 = () => {
@@ -289,7 +281,7 @@ const Dashboard05 = () => {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="dashboard-grid"
           className={cn(
@@ -302,7 +294,7 @@ const Dashboard05 = () => {
             className="flex flex-col gap-4 bg-card p-5 sm:flex-row sm:items-center sm:justify-between md:col-span-4"
           >
             <div className="flex flex-col gap-1.5">
-              <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                 <MoonStar className="size-3.5" aria-hidden />
                 Evening check-in
               </span>
@@ -355,7 +347,7 @@ const Dashboard05 = () => {
 
           <div data-slot="dashboard-insight" className="flex flex-col justify-between gap-5 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                 <Sparkles className="size-3.5" aria-hidden />
                 Insight
               </span>
@@ -366,7 +358,7 @@ const Dashboard05 = () => {
             <p className="max-w-md text-lg leading-snug font-medium tracking-[-0.01em] sm:text-xl">
               Cold starts dropped 21% this window after the v4.2.1 cache changes rolled out.
             </p>
-            <span className="flex flex-wrap items-center gap-2 text-xs uppercase text-muted-foreground">
+            <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground uppercase">
               <span>Generated from 248K spans</span>
               <Divider />
               <span>Confidence high</span>
@@ -375,7 +367,7 @@ const Dashboard05 = () => {
 
           <div data-slot="dashboard-latency" className="flex flex-col gap-4 bg-card p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-2 text-xs uppercase text-muted-foreground">
+              <span className="inline-flex items-center gap-2 text-xs text-muted-foreground uppercase">
                 Latency distribution
                 <Divider />
                 <span className="tabular-nums">P95 target {P95_TARGET_MS} ms</span>
@@ -387,7 +379,7 @@ const Dashboard05 = () => {
             <ul className="flex flex-1 flex-col justify-center gap-3">
               {LATENCY.map((row) => (
                 <li key={row.label} className="flex items-center gap-3">
-                  <span className="w-8 shrink-0 text-xs uppercase text-muted-foreground">{row.label}</span>
+                  <span className="w-8 shrink-0 text-xs text-muted-foreground uppercase">{row.label}</span>
                   <div aria-hidden className="h-2 flex-1 overflow-hidden rounded-full bg-accent">
                     <div
                       className={cn('h-full rounded-full', row.overTarget ? 'bg-warning/70' : 'bg-foreground/70')}
@@ -401,7 +393,7 @@ const Dashboard05 = () => {
                 </li>
               ))}
             </ul>
-            <span className="text-xs uppercase text-muted-foreground">Sampled across all regions</span>
+            <span className="text-xs text-muted-foreground uppercase">Sampled across all regions</span>
           </div>
 
           <div data-slot="dashboard-deployments" className="flex flex-col bg-card md:col-span-4">
@@ -422,7 +414,7 @@ const Dashboard05 = () => {
                 >
                   <div className="flex min-w-0 flex-col">
                     <span className="truncate text-xs font-medium">{d.version}</span>
-                    <span className="text-xs uppercase text-muted-foreground">{d.env}</span>
+                    <span className="text-xs text-muted-foreground uppercase">{d.env}</span>
                   </div>
                   <div className="justify-self-end md:justify-self-start">
                     <StatusBadge status={d.status} />
@@ -434,8 +426,8 @@ const Dashboard05 = () => {
                     </span>
                     <span className="truncate text-xs text-foreground">{d.message}</span>
                   </div>
-                  <span className="hidden text-xs tabular-nums text-muted-foreground md:inline">{d.date}</span>
-                  <span className="hidden text-xs uppercase text-muted-foreground md:inline">{d.cache} cache</span>
+                  <span className="hidden text-xs text-muted-foreground tabular-nums md:inline">{d.date}</span>
+                  <span className="hidden text-xs text-muted-foreground uppercase md:inline">{d.cache} cache</span>
                 </li>
               ))}
             </ul>

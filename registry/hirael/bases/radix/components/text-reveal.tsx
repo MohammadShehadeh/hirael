@@ -5,10 +5,11 @@ import { animate, stagger as staggerDelay, useReducedMotion } from 'motion/react
 
 import { cn } from '@/lib/utils';
 
-type TextRevealBy = 'word' | 'char' | 'line';
+export type TextRevealBy = 'word' | 'char' | 'line';
 
-interface TextRevealProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+export interface TextRevealProps extends Omit<React.ComponentProps<'span'>, 'children' | 'ref'> {
   children: string;
+  ref?: React.Ref<HTMLElement>;
   /** Element to render the text as. */
   as?: React.ElementType;
   /** Split granularity for the staggered reveal. */
@@ -62,6 +63,7 @@ const observeReveal = (node: Element, amount: number, handler: RevealHandler) =>
   const { observer, handlers } = entry;
   handlers.set(node, handler);
   observer.observe(node);
+
   return () => {
     if (!handlers.delete(node)) return;
     observer.unobserve(node);
@@ -84,15 +86,15 @@ const TextReveal = ({
   duration = 600,
   stagger = 60,
   once = true,
-  amount = 0.5,
+  amount = 0.3,
   className,
   ref,
   ...props
 }: TextRevealProps) => {
   const nodeRef = React.useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  React.useImperativeHandle(ref, () => nodeRef.current as HTMLSpanElement);
-  const Tag = (as ?? 'p') as React.ElementType;
+  React.useImperativeHandle(ref, () => nodeRef.current as HTMLElement);
+  const Tag = as ?? 'p';
 
   // A callback ref, not an effect: observation starts when the node attaches and stops when it
   // detaches. It watches the container because each unit starts clipped by its mask.
@@ -107,6 +109,7 @@ const TextReveal = ({
           if (isHidden) return;
           isHidden = true;
           animate(units, { y: '120%', opacity: 0 }, { duration: 0 });
+
           return;
         }
         if (isHidden) {
@@ -123,6 +126,7 @@ const TextReveal = ({
         }
         if (once) stop();
       });
+
       return stop;
     },
     [reduced, amount, once, duration, delay, stagger],

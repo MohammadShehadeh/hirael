@@ -16,7 +16,7 @@ const Testimonial01 = () => {
     <section data-slot="testimonial" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div className="flex flex-col items-center gap-10 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Customer story</span>
+          <h2 className={cn(ENTER, 'text-xs font-normal text-muted-foreground uppercase')}>Customer story</h2>
 
           <figure className="flex flex-col items-center gap-10">
             <blockquote
@@ -49,7 +49,7 @@ const Testimonial01 = () => {
               </span>
               <span className="flex flex-col items-center gap-0.5">
                 <span className="text-sm font-semibold tracking-[-0.01em]">Maya Renner</span>
-                <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                <span className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
                   <span>Staff engineer</span>
                   <span aria-hidden className="text-border">
                     |

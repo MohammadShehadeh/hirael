@@ -44,6 +44,7 @@ const useChangelog = () => {
   if (!ctx) {
     throw new Error('Changelog parts must be used within <Changelog>');
   }
+
   return ctx;
 };
 
@@ -76,7 +77,7 @@ const Changelog = ({
 
   return (
     <ChangelogContext.Provider value={value}>
-      <section data-slot="changelog" className={cn('bg-background py-16 sm:py-24', className)} {...props}>
+      <section data-slot="changelog" className={cn('bg-background py-20 sm:py-28', className)} {...props}>
         <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 md:px-10">{children}</div>
       </section>
     </ChangelogContext.Provider>
@@ -105,7 +106,7 @@ const ChangelogTitle = ({ className, ...props }: ChangelogTitleProps) => {
     <h2
       data-slot="changelog-title"
       className={cn(
-        'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
+        'font-serif text-4xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-5xl',
         className,
       )}
       {...props}
@@ -139,10 +140,12 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
     const value = email.trim();
     if (!value) {
       setError('Enter your email address.');
+
       return;
     }
     if (!EMAIL_PATTERN.test(value)) {
       setError("That doesn't look like a valid email.");
+
       return;
     }
     setError(null);
@@ -221,6 +224,7 @@ type ChangelogFilterProps = Omit<
 
 const ChangelogFilter = ({ className, ...props }: ChangelogFilterProps) => {
   const { filter, setFilter } = useChangelog();
+
   return (
     <ToggleGroup
       type="single"
@@ -261,6 +265,7 @@ const ChangelogEmpty = ({
   ...props
 }: ChangelogEmptyProps) => {
   const { filter } = useChangelog();
+
   return (
     <p
       key={filter}
@@ -280,6 +285,7 @@ const ChangelogEmpty = ({
 const formatDate = (date: string) => {
   const parsed = new Date(date);
   if (Number.isNaN(parsed.getTime())) return date;
+
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
@@ -297,7 +303,7 @@ const ChangelogEntryDate = ({ date, className, ...props }: ChangelogEntryDatePro
     <time
       dateTime={date}
       data-slot="changelog-entry-date"
-      className={cn('text-xs uppercase text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground uppercase', className)}
       {...props}
     >
       {formatDate(date)}
@@ -376,7 +382,7 @@ const ChangelogEntryTitle = ({ className, ...props }: ChangelogEntryTitleProps) 
   return (
     <h3
       data-slot="changelog-entry-title"
-      className={cn('text-xl font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-2xl', className)}
+      className={cn('text-xl leading-tight font-semibold tracking-[-0.02em] text-foreground sm:text-2xl', className)}
       {...props}
     />
   );
@@ -482,7 +488,7 @@ const Changelog01Block = () => {
             What shipped in Relay, most recent first. Releases go out every other Tuesday.
           </ChangelogDescription>
         </div>
-        <div className={cn(ENTER, 'delay-140 flex flex-wrap items-center gap-2')}>
+        <div className={cn(ENTER, 'flex flex-wrap items-center gap-2 delay-140')}>
           <ChangelogFilter />
           <ChangelogSubscribe />
         </div>

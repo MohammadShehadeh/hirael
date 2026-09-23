@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: ComponentRouteProps): Promise
   const { category, component } = await params;
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || entry.category === 'blocks' || entry.category === 'templates' || entry.category !== category) return {};
+
   return detailMetadata(entry, { titleSuffix: 'component' });
 }
 
@@ -48,6 +49,7 @@ async function loadExampleSource(base: RegistryBase, slug: string): Promise<Sour
   try {
     const code = await fs.readFile(path.join(process.cwd(), relPath), 'utf8');
     const lang = langFromPath(relPath);
+
     return { code, html: await highlightCode(code, lang), lang };
   } catch {
     return null;
@@ -60,6 +62,7 @@ async function loadExamples(name: string): Promise<ExampleSources[]> {
       const entries = await Promise.all(
         REGISTRY_BASES.map(async (base) => [base, await loadExampleSource(base, slug)] as const),
       );
+
       return {
         slug,
         title,
@@ -107,6 +110,7 @@ export default async function ComponentRoute({ params }: ComponentRouteProps) {
     { label: CATEGORY_LABELS[entry.category], href: `/components/${entry.category}` },
     { label: entry.title },
   ];
+
   return (
     <>
       <EntryJsonLd entry={entry} breadcrumb={breadcrumb} addedAt={extras.addedAt} />

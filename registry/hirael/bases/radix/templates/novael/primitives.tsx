@@ -27,6 +27,7 @@ export const LOREM: Record<Lang, { short: string; medium: string; long: string }
 
 export const useDocumentRtl = () => {
   const subscribe = React.useCallback(() => () => {}, []);
+
   return React.useSyncExternalStore(
     subscribe,
     () => document.documentElement.getAttribute('dir') === 'rtl',
@@ -51,6 +52,7 @@ export const useActiveSection = (ids: readonly string[]) => {
     );
 
     sections.forEach((section) => observer.observe(section));
+
     return () => observer.disconnect();
   }, [ids]);
 
@@ -83,6 +85,7 @@ export const Reveal = ({ className, delay = 0, children, ...props }: RevealProps
     );
 
     observer.observe(node);
+
     return () => observer.disconnect();
   }, []);
 
@@ -143,6 +146,7 @@ export const CountUp = ({ to, suffix = '', durationMs = 2000, className }: Count
     );
 
     observer.observe(node);
+
     return () => {
       observer.disconnect();
       cancelAnimationFrame(raf);
@@ -176,7 +180,7 @@ export const SectionHeader = ({ pretitle, title, lang, tone = 'surface', classNa
         data-slot="novael-display"
         className={cn(
           'text-sm font-semibold',
-          lang === 'en' ? 'uppercase tracking-[0.3em]' : 'tracking-normal',
+          lang === 'en' ? 'tracking-[0.3em] uppercase' : 'tracking-normal',
           onPanel ? 'text-(--novael-panel-muted)' : 'text-primary',
         )}
       >
@@ -185,7 +189,7 @@ export const SectionHeader = ({ pretitle, title, lang, tone = 'surface', classNa
       <h2
         data-slot="novael-display"
         className={cn(
-          'mt-4 text-balance text-[2rem] font-semibold leading-tight sm:text-4xl md:text-5xl',
+          'mt-4 text-[2rem] leading-tight font-semibold text-balance sm:text-4xl md:text-5xl',
           onPanel ? 'text-(--novael-panel-foreground)' : 'text-foreground',
         )}
       >
@@ -194,7 +198,7 @@ export const SectionHeader = ({ pretitle, title, lang, tone = 'surface', classNa
       <span
         aria-hidden
         className={cn(
-          'absolute bottom-0 start-1/2 h-px w-80 max-w-[80%] -translate-x-1/2 rtl:translate-x-1/2',
+          'absolute start-1/2 bottom-0 h-px w-80 max-w-[80%] -translate-x-1/2 rtl:translate-x-1/2',
           onPanel ? 'bg-black/15' : 'bg-foreground/15',
         )}
       />

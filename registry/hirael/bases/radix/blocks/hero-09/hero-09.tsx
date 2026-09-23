@@ -62,6 +62,7 @@ const HeroZoom = ({ className, children }: React.ComponentProps<'div'>) => {
     const measure = () => setViewportHeight(window.innerHeight);
     measure();
     window.addEventListener('resize', measure);
+
     return () => window.removeEventListener('resize', measure);
   }, []);
 
@@ -88,7 +89,7 @@ const Hero09 = () => {
       <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
           {/* First frame, and the fallback wherever WebGL is unavailable. */}
-          <div className="absolute inset-0 bg-[radial-gradient(95%_65%_at_50%_-12%,color-mix(in_oklch,var(--primary)_34%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_104%,color-mix(in_oklch,var(--accent-cool)_30%,transparent),transparent_66%),radial-gradient(60%_55%_at_96%_26%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%),radial-gradient(80%_50%_at_50%_108%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_70%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(95%_65%_at_50%_-12%,color-mix(in_oklch,var(--primary)_34%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_104%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_66%),radial-gradient(60%_55%_at_96%_26%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%),radial-gradient(80%_50%_at_50%_108%,color-mix(in_oklch,var(--primary)_18%,transparent),transparent_70%)]" />
           <Hero09Backdrop className="absolute inset-0 size-full" />
 
           {/* Grain keeps the wide gradients from banding on large displays. */}
@@ -107,7 +108,7 @@ const Hero09 = () => {
               <BrandMark className="size-5 text-foreground" />
               <span className="text-base font-semibold tracking-tight">Hirael</span>
             </a>
-            <nav className="absolute start-1/2 hidden items-center gap-6 ltr:-translate-x-1/2 rtl:translate-x-1/2 md:flex">
+            <nav className="absolute start-1/2 hidden items-center gap-6 md:flex ltr:-translate-x-1/2 rtl:translate-x-1/2">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link}
@@ -134,7 +135,7 @@ const Hero09 = () => {
               style={stagger(1)}
               className={cn(
                 ENTER,
-                'font-serif text-balance text-5xl font-medium leading-[1.05] tracking-tight md:text-6xl lg:text-7xl',
+                'font-serif text-5xl leading-[1.05] font-medium tracking-tight text-balance md:text-6xl lg:text-7xl',
               )}
             >
               Pipelines you can see, <span className="text-primary">not just read</span>
@@ -143,7 +144,7 @@ const Hero09 = () => {
             <p
               data-slot="hero-description"
               style={stagger(2)}
-              className={cn(ENTER, 'max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg')}
+              className={cn(ENTER, 'max-w-2xl text-base leading-relaxed text-pretty text-muted-foreground md:text-lg')}
             >
               Design workflows on a canvas, keep them in sync with YAML, and watch every run move step by step through
               the same graph.
@@ -167,7 +168,7 @@ const Hero09 = () => {
               style={stagger(4)}
               className={cn(ENTER, 'mt-4 flex flex-col items-center gap-3.5')}
             >
-              <span className="text-xs uppercase text-muted-foreground">Every step in one graph</span>
+              <span className="text-xs text-muted-foreground uppercase">Every step in one graph</span>
               <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 sm:gap-x-6 sm:gap-y-3">
                 {STEP_TYPES.map((step) => (
                   <li
@@ -188,8 +189,8 @@ const Hero09 = () => {
             >
               {STATS.map((stat) => (
                 <div key={stat.label} className="flex flex-col items-center gap-0.5">
-                  <dt className="order-2 text-[11px] uppercase leading-tight text-muted-foreground">{stat.label}</dt>
-                  <dd dir="ltr" className="order-1 font-serif text-xl font-medium tabular-nums text-primary">
+                  <dt className="order-2 text-[11px] leading-tight text-muted-foreground uppercase">{stat.label}</dt>
+                  <dd dir="ltr" className="order-1 font-serif text-xl font-medium text-primary tabular-nums">
                     {stat.value}
                   </dd>
                 </div>
@@ -209,19 +210,19 @@ const Hero09 = () => {
           data-slot="hero-stats"
           style={stagger(5)}
           className={cn(
-            'absolute bottom-0 end-0 z-10 hidden items-end gap-8 rounded-ss-[18px] bg-background pb-2.5 pe-8 ps-7 pt-5 md:flex',
-            'animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+            'absolute end-0 bottom-0 z-10 hidden items-end gap-8 rounded-ss-[18px] bg-background ps-7 pe-8 pt-5 pb-2.5 md:flex',
+            'animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in motion-reduce:animate-none',
           )}
         >
           {STATS.map((stat) => (
             <div key={stat.label}>
               <div
                 dir="ltr"
-                className="font-serif text-2xl font-medium leading-tight tabular-nums text-primary md:text-3xl"
+                className="font-serif text-2xl leading-tight font-medium text-primary tabular-nums md:text-3xl"
               >
                 {stat.value}
               </div>
-              <div className="text-xs uppercase text-muted-foreground">{stat.label}</div>
+              <div className="text-xs text-muted-foreground uppercase">{stat.label}</div>
             </div>
           ))}
         </div>

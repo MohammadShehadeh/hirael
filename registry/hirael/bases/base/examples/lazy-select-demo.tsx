@@ -49,6 +49,7 @@ const LazySelectDemo = () => {
     const filtered = query ? ALL_USERS.filter((u) => u.name.toLowerCase().includes(query.toLowerCase())) : ALL_USERS;
     const start = page * PAGE_SIZE;
     const items = filtered.slice(start, start + PAGE_SIZE);
+
     return { items, hasMore: start + PAGE_SIZE < filtered.length };
   };
 
@@ -102,7 +103,7 @@ const LazySelectDemo = () => {
           endMessage={t({ en: 'End of list', ar: 'نهاية القائمة' })}
         />
       </LazySelect>
-      <p className="text-xs uppercase text-muted-foreground">
+      <p className="text-xs text-muted-foreground uppercase">
         value = {value ? `"${value}"` : '-'} · loaded = {options.length}
       </p>
     </Field>

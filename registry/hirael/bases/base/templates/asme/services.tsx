@@ -88,7 +88,7 @@ export const Services = ({ videoSrcs, posterSrcs }: ServicesProps) => {
 
               <div className="p-6 md:p-8">
                 <div className="mb-4 flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-widest text-foreground/40">{service.tag}</p>
+                  <p className="text-xs tracking-widest text-foreground/40 uppercase">{service.tag}</p>
                   <span aria-hidden className="liquid-glass rounded-full p-2 text-foreground">
                     <ArrowUpRight size={18} className="rtl:-scale-x-100" />
                   </span>

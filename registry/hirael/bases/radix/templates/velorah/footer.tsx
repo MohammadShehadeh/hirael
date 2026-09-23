@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <footer className="mx-auto max-w-7xl border-t border-border bg-[hsl(0,0%,0%)] px-6 py-16 md:px-12">
       <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-3">
-        <h2 className="text-2xl leading-tight text-foreground [font-family:var(--font-velorah-serif)] sm:text-3xl">
+        <h2 className="[font-family:var(--font-velorah-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
           Where home
           <br />
           meets the road.
@@ -17,7 +17,7 @@ export const Footer = () => {
             <a
               key={link}
               href="#"
-              className="text-sm capitalize text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm text-muted-foreground capitalize transition-colors hover:text-foreground"
             >
               {link}
             </a>

@@ -44,7 +44,7 @@ const AuditLogTrigger = ({ className, children, ...props }: AuditLogTriggerProps
         type="button"
         data-slot="audit-log-trigger"
         className={cn(
-          'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+          'group flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset',
           className,
         )}
         {...props}
@@ -85,14 +85,14 @@ const AuditLogTime = ({ className, ...props }: AuditLogTimeProps) => {
   return (
     <time
       data-slot="audit-log-time"
-      className={cn('ms-auto shrink-0 text-xs uppercase text-muted-foreground', className)}
+      className={cn('ms-auto shrink-0 text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
 };
 
 const auditLogStatusVariants = cva(
-  'inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 text-xs uppercase leading-none',
+  'inline-flex shrink-0 items-center rounded-sm border px-1.5 py-0.5 text-xs leading-none uppercase',
   {
     variants: {
       tone: {
@@ -154,8 +154,8 @@ interface AuditLogFieldProps extends React.ComponentProps<'div'> {
 const AuditLogField = ({ label, className, children, ...props }: AuditLogFieldProps) => {
   return (
     <div data-slot="audit-log-field" className={cn('contents', className)} {...props}>
-      <dt className="text-xs uppercase text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 break-words text-[12px] text-foreground">{children}</dd>
+      <dt className="text-xs text-muted-foreground uppercase">{label}</dt>
+      <dd className="min-w-0 text-[12px] break-words text-foreground">{children}</dd>
     </div>
   );
 };
@@ -175,8 +175,8 @@ export {
 const AuditLogBlock = () => {
   return (
     <section data-slot="audit-log-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="grid w-full max-w-2xl gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
-        <p className="text-xs uppercase text-muted-foreground">Recent events</p>
+      <div className="grid w-full max-w-2xl animate-in gap-3 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+        <p className="text-xs text-muted-foreground uppercase">Recent events</p>
         <AuditLog>
           <AuditLogItem defaultOpen>
             <AuditLogTrigger>

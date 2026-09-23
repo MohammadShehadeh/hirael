@@ -8,7 +8,7 @@ interface WordmarkProps {
 
 export const Wordmark = ({ className }: WordmarkProps) => {
   return (
-    <span className={cn('tracking-tight text-foreground [font-family:var(--font-velorah-serif)]', className)}>
+    <span className={cn('[font-family:var(--font-velorah-serif)] tracking-tight text-foreground', className)}>
       Velorah
       <sup className="text-[0.4em]">&reg;</sup>
     </span>

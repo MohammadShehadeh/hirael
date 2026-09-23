@@ -96,7 +96,7 @@ const ActivityFeedTime = ({ className, ...props }: ActivityFeedTimeProps) => {
   return (
     <time
       data-slot="activity-feed-time"
-      className={cn('text-xs uppercase text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -119,7 +119,7 @@ type ActivityFeedDividerProps = React.ComponentProps<'li'>;
 const ActivityFeedDivider = ({ className, children, ...props }: ActivityFeedDividerProps) => {
   return (
     <li data-slot="activity-feed-divider" className={cn('flex items-center gap-3 pb-5', className)} {...props}>
-      {children ? <span className="text-xs uppercase text-muted-foreground">{children}</span> : null}
+      {children ? <span className="text-xs text-muted-foreground uppercase">{children}</span> : null}
       <span aria-hidden className="h-px flex-1 bg-border" />
     </li>
   );
@@ -228,7 +228,7 @@ const ActivityFeedBlock = () => {
     <section data-slot="activity-feed-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className={cn(ENTER, 'grid w-full max-w-xl gap-4')}>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs uppercase text-muted-foreground">Team activity</p>
+          <p className="text-xs text-muted-foreground uppercase">Team activity</p>
           <ToggleGroup
             size="sm"
             variant="outline"
@@ -254,6 +254,7 @@ const ActivityFeedBlock = () => {
                   .filter((event) => event.day === day)
                   .map((event) => {
                     const Icon = EVENT_ICON[event.type];
+
                     return (
                       <ActivityFeedItem key={event.id}>
                         <ActivityFeedAvatar>

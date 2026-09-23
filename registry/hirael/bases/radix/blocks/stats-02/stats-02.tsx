@@ -126,10 +126,10 @@ const Stats02 = () => {
 
   return (
     <section data-slot="stats" className="bg-background py-20 sm:py-28" aria-labelledby={headingId}>
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="stats-header" className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p key={range} className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>
+            <p key={range} className={cn(SWAP, 'text-xs text-muted-foreground uppercase')}>
               {rangeLabel}
             </p>
             <h2
@@ -172,6 +172,7 @@ const Stats02 = () => {
           {STATS.map((stat, index) => {
             const reading = stat.readings[range];
             const Arrow = reading.direction === 'up' ? ArrowUpRight : ArrowDownRight;
+
             return (
               <div
                 key={stat.label}
@@ -181,7 +182,7 @@ const Stats02 = () => {
               >
                 <dt className="text-sm text-muted-foreground">{stat.label}</dt>
                 <div className="flex items-end justify-between gap-3">
-                  <dd key={range} className={cn(SWAP, 'text-3xl font-semibold tabular-nums tracking-tight')}>
+                  <dd key={range} className={cn(SWAP, 'text-3xl font-semibold tracking-tight tabular-nums')}>
                     {reading.value}
                   </dd>
                   <span

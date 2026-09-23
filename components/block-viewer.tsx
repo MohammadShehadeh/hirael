@@ -72,6 +72,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
           itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
           items={ORDER.map((v) => {
             const Icon = ICONS[v];
+
             return {
               value: v,
               ariaLabel: `${SIZES[v].label} viewport${v === 'desktop' ? '' : ` (${SIZES[v].width}px)`}`,
@@ -80,7 +81,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
                   <Icon className="size-3" />
                   <span className="hidden sm:inline">{SIZES[v].label}</span>
                   {v !== 'desktop' && active && (
-                    <span className="tabular-nums text-muted-foreground">{SIZES[v].width}</span>
+                    <span className="text-muted-foreground tabular-nums">{SIZES[v].width}</span>
                   )}
                 </>
               ),

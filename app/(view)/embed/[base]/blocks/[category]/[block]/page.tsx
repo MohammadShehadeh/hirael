@@ -19,5 +19,6 @@ interface BaseBlockEmbedRouteProps {
 export default async function BaseBlockEmbedRoute({ params }: BaseBlockEmbedRouteProps) {
   const { base, category, block } = await params;
   if (!isRegistryBase(base) || base === DEFAULT_BASE) notFound();
+
   return <BlockEmbed base={base} category={category} block={block} />;
 }

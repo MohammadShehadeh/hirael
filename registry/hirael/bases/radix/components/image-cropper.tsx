@@ -46,6 +46,7 @@ const useImageCropper = () => {
   if (!ctx) {
     throw new Error('ImageCropper compound parts must be used inside <ImageCropper>');
   }
+
   return ctx;
 };
 
@@ -67,6 +68,7 @@ const clampCrop = (
   const scale = coverScale(frame, natural) * zoom;
   const maxX = Math.max(0, (natural.w * scale - frame.w) / 2);
   const maxY = Math.max(0, (natural.h * scale - frame.h) / 2);
+
   return { x: clamp(crop.x, -maxX, maxX), y: clamp(crop.y, -maxY, maxY) };
 };
 
@@ -84,6 +86,7 @@ export interface ImageCropperProps extends Omit<React.ComponentProps<'div'>, 're
   onCropChange?: (crop: ImageCropperCrop) => void;
   grid?: boolean;
   disabled?: boolean;
+  /** Set for cross-origin images you export with `getCroppedDataUrl`; the host must send CORS headers. */
   crossOrigin?: '' | 'anonymous' | 'use-credentials';
   ref?: React.Ref<ImageCropperRef>;
 }
@@ -102,7 +105,7 @@ const ImageCropper = ({
   onCropChange,
   grid = false,
   disabled,
-  crossOrigin = 'anonymous',
+  crossOrigin,
   ref,
   className,
   children,
@@ -119,7 +122,17 @@ const ImageCropper = ({
   const zoom = zoomProp ?? internalZoom;
 
   const [internalCrop, setInternalCrop] = React.useState<ImageCropperCrop>(() => defaultCrop ?? { x: 0, y: 0 });
-  const crop = cropProp ?? internalCrop;
+  // Clamped at render so an out-of-bounds crop never shows, without writing back to the consumer on mount.
+  const crop = clampCrop(cropProp ?? internalCrop, zoom, frameSize, naturalSize);
+
+  // A new image starts from the defaults; its size is unknown until it loads.
+  const [prevSrc, setPrevSrc] = React.useState(src);
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    setNaturalSize(null);
+    setInternalZoom(clamp(defaultZoom, 1, maxZoom));
+    setInternalCrop(defaultCrop ?? { x: 0, y: 0 });
+  }
 
   const setZoom = React.useCallback(
     (next: number) => {
@@ -191,6 +204,15 @@ const ImageCropper = ({
     }
   }, [src]);
 
+  // Controlled zoom/crop can't be reset from render, so report the defaults once the new image is in.
+  const notifiedSrcRef = React.useRef(src);
+  React.useEffect(() => {
+    if (notifiedSrcRef.current === src) return;
+    notifiedSrcRef.current = src;
+    onZoomChange?.(clamp(defaultZoom, 1, maxZoom));
+    onCropChange?.(defaultCrop ?? { x: 0, y: 0 });
+  }, [src, defaultZoom, defaultCrop, maxZoom, onZoomChange, onCropChange]);
+
   React.useEffect(() => {
     const el = frameRef.current;
     if (!el) return;
@@ -199,14 +221,9 @@ const ImageCropper = ({
       if (rect) setFrameSize({ w: rect.width, h: rect.height });
     });
     ro.observe(el);
+
     return () => ro.disconnect();
   }, []);
-
-  React.useEffect(() => {
-    const clamped = clampCrop(crop, zoom, frameSize, naturalSize);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (clamped.x !== crop.x || clamped.y !== crop.y) setCrop(clamped);
-  }, [crop, zoom, frameSize, naturalSize, setCrop]);
 
   const wheelHandlerRef = React.useRef<(e: WheelEvent) => void>(() => {});
   React.useLayoutEffect(() => {
@@ -230,6 +247,7 @@ const ImageCropper = ({
     if (!el) return;
     const onWheel = (e: WheelEvent) => wheelHandlerRef.current(e);
     el.addEventListener('wheel', onWheel, { passive: false });
+
     return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
@@ -239,6 +257,7 @@ const ImageCropper = ({
   const pinchDistance = () => {
     const pts = Array.from(pointersRef.current.values());
     if (pts.length < 2) return 0;
+
     return Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
   };
 
@@ -259,6 +278,7 @@ const ImageCropper = ({
     pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pointersRef.current.size === 1) {
       panBy(e.clientX - prev.x, e.clientY - prev.y);
+
       return;
     }
     const pinch = pinchRef.current;
@@ -378,7 +398,7 @@ const ImageCropper = ({
           onKeyDown={handleKeyDown}
           style={{ aspectRatio: aspect }}
           className={cn(
-            'relative w-full select-none touch-none overflow-hidden rounded-sm border border-border bg-muted outline-none',
+            'relative w-full touch-none overflow-hidden rounded-sm border border-border bg-muted outline-none select-none',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             disabled ? 'cursor-not-allowed opacity-60' : dragging ? 'cursor-grabbing' : 'cursor-grab',
           )}
@@ -399,7 +419,7 @@ const ImageCropper = ({
             }
             className={cn(
               'pointer-events-none max-w-none',
-              ready ? 'absolute left-1/2 top-1/2' : 'size-full object-cover',
+              ready ? 'absolute top-1/2 left-1/2' : 'size-full object-cover',
             )}
             style={
               ready
@@ -440,6 +460,7 @@ type ImageCropperZoomProps = Omit<
 
 const ImageCropperZoom = ({ className, ...props }: ImageCropperZoomProps) => {
   const ctx = useImageCropper();
+
   return (
     <Slider
       aria-label="Zoom"

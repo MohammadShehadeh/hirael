@@ -8,7 +8,7 @@ const FEATURED_VIDEO_URL = '/media/templates/asme/featured.mp4';
 
 export const FeaturedVideo = () => {
   return (
-    <section className="overflow-hidden bg-background px-6 pb-20 pt-6 md:pb-32 md:pt-10">
+    <section className="overflow-hidden bg-background px-6 pt-6 pb-20 md:pt-10 md:pb-32">
       <div className="mx-auto max-w-6xl">
         <motion.div {...reveal({ y: 60, duration: 0.9 })} className="relative aspect-video overflow-hidden rounded-3xl">
           <video
@@ -29,7 +29,7 @@ export const FeaturedVideo = () => {
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-6 md:flex-row md:items-end md:justify-between md:p-10">
             <div className="liquid-glass max-w-md rounded-2xl p-6 md:p-8">
-              <p className="mb-3 text-xs uppercase tracking-widest text-foreground/50">Our Approach</p>
+              <p className="mb-3 text-xs tracking-widest text-foreground/50 uppercase">Our Approach</p>
               <p className="text-sm leading-relaxed text-foreground md:text-base">
                 We believe in the power of curiosity-driven exploration. Every project starts with a question, and every
                 answer opens a new door to innovation.

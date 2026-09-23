@@ -65,14 +65,14 @@ const QUOTES: readonly Quote[] = [
 const Testimonial02 = () => {
   return (
     <section data-slot="testimonial" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="testimonial-header" className="flex max-w-2xl flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>What teams say</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>What teams say</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
-            What people are <span className="italic text-foreground">actually</span> saying.
+            What people are <span className="text-foreground italic">actually</span> saying.
           </h2>
           <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
             Notes from engineers and designers building with the catalog in production.
@@ -99,7 +99,7 @@ const Testimonial02 = () => {
                 </span>
                 <span className="flex flex-col">
                   <span className="text-sm font-semibold tracking-[-0.01em]">{quote.name}</span>
-                  <span className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
+                  <span className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
                     <span>{quote.role}</span>
                     <span aria-hidden className="text-border">
                       |

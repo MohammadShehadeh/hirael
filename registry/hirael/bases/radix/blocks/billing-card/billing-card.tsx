@@ -5,6 +5,7 @@ import { Check, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Progress } from '@/registry/hirael/bases/radix/ui/progress';
 
 type BillingCardProps = React.ComponentProps<'div'>;
 
@@ -36,7 +37,7 @@ const BillingCardEyebrow = ({ className, ...props }: BillingCardEyebrowProps) =>
   return (
     <p
       data-slot="billing-card-eyebrow"
-      className={cn('text-xs uppercase text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -75,28 +76,18 @@ interface BillingCardMeterProps extends React.ComponentProps<'div'> {
 
 const BillingCardMeter = ({ value, max, label, className, ...props }: BillingCardMeterProps) => {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
+
   return (
     <div data-slot="billing-card-meter" className={cn('flex flex-col gap-1.5', className)} {...props}>
       {label ? (
         <div className="flex items-center justify-between text-xs">
           <span className="text-muted-foreground">{label}</span>
-          <span className="tabular-nums text-foreground">
+          <span className="text-foreground tabular-nums">
             {value} / {max}
           </span>
         </div>
       ) : null}
-      <div
-        role="progressbar"
-        aria-valuenow={value}
-        aria-valuemin={0}
-        aria-valuemax={max}
-        className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
-      >
-        <div
-          className="h-full rounded-full bg-foreground transition-[width] duration-300"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+      <Progress value={pct} aria-label={typeof label === 'string' ? label : undefined} />
     </div>
   );
 };

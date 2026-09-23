@@ -61,13 +61,13 @@ const Faq07 = () => {
   const [open, setOpen] = React.useState<string>(QUESTIONS[0].value);
 
   return (
-    <section data-slot="faq" className="bg-background py-16 md:py-24">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 px-6 md:grid-cols-[minmax(0,18rem)_1fr] md:gap-16 md:px-10">
         <div data-slot="faq-intro" className="flex flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Migrating</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Migrating</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'text-balance font-serif text-3xl font-medium tracking-tight md:text-4xl')}
+            className={cn(ENTER, 'font-serif text-3xl font-medium tracking-tight text-balance md:text-4xl')}
           >
             Before you move your pipelines
           </h2>
@@ -83,6 +83,7 @@ const Faq07 = () => {
           >
             {QUESTIONS.map((q, i) => {
               const active = open === q.value;
+
               return (
                 <button
                   key={q.value}
@@ -90,13 +91,13 @@ const Faq07 = () => {
                   aria-current={active ? 'true' : undefined}
                   data-active={active || undefined}
                   onClick={() => setOpen(q.value)}
-                  className="group relative flex items-baseline gap-3 py-2 ps-4 text-start text-sm text-muted-foreground outline-none transition-colors duration-150 hover:text-foreground focus-visible:text-foreground data-active:text-foreground"
+                  className="group relative flex items-baseline gap-3 py-2 ps-4 text-start text-sm text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:text-foreground data-active:text-foreground"
                 >
                   <span
                     aria-hidden
                     className="absolute inset-y-1 -start-px w-px origin-top scale-y-0 bg-foreground transition-transform duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-active:scale-y-100 motion-reduce:transition-none"
                   />
-                  <span className="text-xs tabular-nums transition-colors group-data-active:text-warm">
+                  <span className="text-xs tabular-nums transition-colors group-data-active:text-primary">
                     {formatIndex(i)}
                   </span>
                   {q.topic}
@@ -112,7 +113,7 @@ const Faq07 = () => {
               <AccordionItem key={q.value} value={q.value}>
                 <AccordionTrigger>
                   <span className="flex items-baseline gap-4 text-base">
-                    <span className="text-xs tabular-nums text-muted-foreground">{formatIndex(i)}</span>
+                    <span className="text-xs text-muted-foreground tabular-nums">{formatIndex(i)}</span>
                     <span>{q.question}</span>
                   </span>
                 </AccordionTrigger>

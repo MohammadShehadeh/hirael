@@ -148,17 +148,17 @@ const ImageGallery01 = () => {
       className="bg-background py-20 sm:py-28"
       aria-labelledby="image-gallery-01-heading"
     >
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="image-gallery-header"
           className="flex flex-col gap-5 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-10"
         >
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Selected work 2025-2026</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Selected work 2025-2026</span>
             <h2
               id="image-gallery-01-heading"
               style={stagger(1, 70)}
-              className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+              className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
             >
               A studio archive, gridded.
             </h2>
@@ -179,7 +179,7 @@ const ImageGallery01 = () => {
               {FILTERS.map((f) => (
                 <TabsTrigger key={f} value={f}>
                   <span className="uppercase">{f}</span>
-                  <span className="text-[10px] tabular-nums text-muted-foreground">{countFor(f)}</span>
+                  <span className="text-[10px] text-muted-foreground tabular-nums">{countFor(f)}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -223,7 +223,7 @@ const ImageGallery01 = () => {
                         ref={(node: HTMLButtonElement | null) => {
                           tileRefs.current[tileIndex] = node;
                         }}
-                        className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="group block w-full cursor-zoom-in rounded-md border border-border bg-card text-start transition-colors duration-150 hover:border-foreground/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                       />
                     }
                   >
@@ -254,7 +254,7 @@ const ImageGallery01 = () => {
                         <span className="font-medium text-foreground">{t.client}</span>
                         <span className="text-muted-foreground">{t.project}</span>
                       </span>
-                      <span className="flex shrink-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+                      <span className="flex shrink-0 items-center gap-2 text-xs text-muted-foreground uppercase">
                         <span className="tabular-nums">{t.year}</span>
                         <span aria-hidden className="text-border">
                           |

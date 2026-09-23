@@ -25,10 +25,11 @@ By participating you agree to abide by the project's
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) **22+** (CI runs Node 22; `.nvmrc` pins
-  the local version — run `nvm use`)
-- [pnpm](https://pnpm.io) **10+** (the repo ships `pnpm-lock.yaml`; do
-  not switch package managers in a PR)
+- [Node.js](https://nodejs.org) **24** (`.nvmrc` pins it for local and CI —
+  run `nvm use`)
+- [pnpm](https://pnpm.io) **12** (pinned by `packageManager` in
+  `package.json`; `corepack enable` picks it up. The repo ships
+  `pnpm-lock.yaml`; do not switch package managers in a PR)
 
 ### First-time setup
 
@@ -174,9 +175,13 @@ pnpm typecheck   # tsc --noEmit
 ```
 
 Formatting is Prettier (`.prettierrc`): 120-column lines, 2-space indent,
-single quotes, semicolons, trailing commas. It runs automatically on
-staged files via the husky pre-commit hook (`lint-staged`), so you rarely need
-to think about it — just don't fight it with a different editor formatter.
+single quotes, semicolons, trailing commas, with Tailwind classes sorted by
+`prettier-plugin-tailwindcss` (including inside `cn()` and `cva()`).
+`registry/hirael/bases/*/ui/` is Prettier-ignored so it stays identical to
+shadcn upstream. CI runs `pnpm format:check`. The husky pre-commit hook
+(`lint-staged`) runs `eslint --fix` and then Prettier on staged files, so a
+`no-restyle` error blocks the commit instead of failing CI. You rarely need to
+think about formatting — just don't fight it with a different editor formatter.
 Generated files (`registry.json`, `registry-props.json`, `llms.txt`,
 `public/r/`) are git-ignored and rebuilt by `pnpm install` and `pnpm build`;
 run `pnpm registry:gen && pnpm registry:props && pnpm registry:md` to refresh
@@ -211,11 +216,13 @@ them by hand.
   `data-[state=…]` selectors → Base UI attributes, anchored content as
   Positioner + Popup, menu `onSelect` → `onClick`. `pnpm check:registry`
   verifies both trees; the Customizer's Base picker previews either.
-- **Tokens.** Use `--background`, `--foreground`, `--border`, `--primary`,
-  `--accent` and the rest of the design tokens in `app/globals.css`. Never
-  hard-code a color. Light is a faithful inverse of dark; both must work.
-  `--warm` is the brand tone; `--accent-cool` is reserved for live or active
-  state.
+- **Tokens.** Items must adopt the consumer's own theme, so shipped source uses
+  only shadcn's tokens (`--background`, `--foreground`, `--primary`,
+  `--muted`, `--accent`, `--border`, `--ring`, `--chart-*`, …) plus the
+  status tokens `--success` / `--warning` / `--info`, which the build ships
+  as `cssVars`. Never hard-code a color. `--warm` and `--accent-cool` are
+  showcase-site chrome only, and `pnpm check:registry` fails if an item uses
+  them or a site-only utility like `container`. Light and dark both must work.
 - **`cn` helper.** Compose class names with `cn(...)` from
   `@/lib/utils`. Don't ad-hoc-concatenate `className` strings.
 - **RTL.** Use logical utilities instead of physical ones — `ms-*`/`me-*`
@@ -277,7 +284,7 @@ For each new component:
 - [ ] Checked in light, dark and RTL.
 - [ ] Item name listed under `added:` in the release's
       `content/changelog/*.mdx` entry (see [Changelog](#changelog)).
-- [ ] `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`
+- [ ] `pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm registry:build && pnpm build`
       clean.
 
 Blocks follow the same shape but live at
@@ -311,18 +318,39 @@ added:
 
 ## Testing requirements
 
-Hirael does not ship a unit-test suite today — the gating signal is
-the build pipeline:
+Unit and component tests run on [Vitest](https://vitest.dev) with React
+Testing Library (`vitest.config.mts`). Two projects split by extension:
+
+- `*.test.ts` runs in Node: pure logic in `lib/` (search, freshness,
+  commands), colocated beside the file it covers.
+- `*.test.tsx` runs in jsdom with `@testing-library/jest-dom` matchers:
+  registry components, in `registry/hirael/tests/<name>.test.tsx`. Import
+  the item from **both** bases and run the suite with `describe.each`, so
+  one test proves the Radix and Base UI trees behave the same. Tests never
+  live inside `bases/`, which holds only what ships.
 
 ```bash
+pnpm test         # run once (CI)
+pnpm test:watch   # watch mode
+```
+
+Titles start with "should" (`it('should commit a tag on Enter')`), enforced
+by `vitest/valid-title`. Test behavior through the compound API a consumer
+would write (roles, labels, `userEvent`), not internal state. `async` Server Components can't
+render under Vitest; cover their logic through the plain functions they call.
+
+The full gate, which must pass before requesting review:
+
+```bash
+pnpm format:check
 pnpm lint
 pnpm typecheck
+pnpm test
 pnpm registry:build
 pnpm build
 ```
 
-All four must pass before requesting review. For component PRs you are
-also expected to:
+For component PRs you are also expected to:
 
 1. Visit the showcase page at
    `http://localhost:3000/components/<category>/<name>` and exercise the demo
@@ -333,10 +361,8 @@ also expected to:
    the RTL toggle.
 4. Spot-check keyboard navigation for any interactive component.
 
-> **Note** — automated unit and visual-regression tests are not yet set
-> up. A future PR is expected to introduce a test runner (vitest, mirroring
-> shadcn/ui); until then, the build pipeline plus the manual checks above are
-> the contract.
+Visual-regression tests are not set up yet; the manual checks above cover
+appearance.
 
 ## Pull request process
 
@@ -352,7 +378,7 @@ also expected to:
    [component contribution checklist](#component-contribution-checklist)**
    when adding a component.
 5. **Run the full build pipeline locally:**
-   `pnpm lint && pnpm typecheck && pnpm registry:build && pnpm build`.
+   `pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm registry:build && pnpm build`.
 6. **Open the PR** with:
    - a clear title in Conventional Commit format,
    - a short summary of the change and the motivation,

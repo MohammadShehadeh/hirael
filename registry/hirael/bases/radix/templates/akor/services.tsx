@@ -38,7 +38,7 @@ export const Services = () => {
 
       <div className="flex flex-col gap-16 lg:flex-row lg:gap-24">
         <div className="flex flex-col justify-center lg:w-[38%]">
-          <h2 className="text-3xl font-normal leading-[1.15] tracking-tight text-background sm:text-4xl">
+          <h2 className="text-3xl leading-[1.15] font-normal tracking-tight text-background sm:text-4xl">
             Security, automation, and AI, helping businesses enhance efficiency
           </h2>
           <div className="mt-10">
@@ -53,6 +53,7 @@ export const Services = () => {
               <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
                 {row.map((service, index) => {
                   const number = rowIndex * 2 + index + 1;
+
                   return (
                     <article key={service.title} className="border-s border-border/20 ps-8">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -63,10 +64,10 @@ export const Services = () => {
                         height={64}
                         className="size-16 object-contain mix-blend-multiply"
                       />
-                      <p className="mt-6 text-xs tabular-nums text-muted-foreground/40">
+                      <p className="mt-6 text-xs text-muted-foreground/40 tabular-nums">
                         {String(number).padStart(2, '0')}
                       </p>
-                      <h3 className="mt-2 whitespace-pre-line text-xl font-medium leading-tight text-background">
+                      <h3 className="mt-2 text-xl leading-tight font-medium whitespace-pre-line text-background">
                         {service.title}
                       </h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground/50">{service.description}</p>

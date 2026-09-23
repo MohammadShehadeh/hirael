@@ -27,7 +27,7 @@ const Logo = () => {
       <span className="accent-gradient absolute inset-0 rounded-full" />
       <span className="absolute inset-0 rounded-full bg-[linear-gradient(270deg,#89AACC_0%,#4E85BF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
-      <span className="relative font-display text-[13px] italic leading-none">JD</span>
+      <span className="font-display relative text-[13px] leading-none italic">JD</span>
     </a>
   );
 };
@@ -40,6 +40,7 @@ const Navbar = () => {
     const onScroll = () => setScrolled(window.scrollY > 100);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -56,6 +57,7 @@ const Navbar = () => {
       const el = document.getElementById(link.id);
       if (el) observer.observe(el);
     }
+
     return () => observer.disconnect();
   }, []);
 
@@ -72,6 +74,7 @@ const Navbar = () => {
         <div className="flex items-center gap-0.5">
           {NAV_LINKS.map((link) => {
             const isActive = active === link.id;
+
             return (
               <a
                 key={link.label}
@@ -113,6 +116,7 @@ export const Hero = ({ start = true }: HeroProps) => {
 
   React.useEffect(() => {
     const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), ROLE_INTERVAL);
+
     return () => clearInterval(id);
   }, []);
 
@@ -126,6 +130,7 @@ export const Hero = ({ start = true }: HeroProps) => {
           y: 0,
           filter: 'blur(0px)',
         });
+
         return;
       }
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -142,6 +147,7 @@ export const Hero = ({ start = true }: HeroProps) => {
         0.3,
       );
     }, rootRef);
+
     return () => ctx.revert();
   }, [start]);
 
@@ -156,33 +162,33 @@ export const Hero = ({ start = true }: HeroProps) => {
       <div className="absolute inset-0 -z-10">
         <BackgroundVideo
           src={BACKGROUND_VIDEO}
-          className="absolute left-1/2 top-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
+          className="absolute top-1/2 left-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
         />
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[hsl(var(--bg))] to-transparent" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        <span className="blur-in mb-8 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted))] opacity-0">
+        <span className="mb-8 text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase opacity-0 blur-in">
           Collection &rsquo;26
         </span>
-        <h1 className="name-reveal mb-6 font-display text-6xl italic leading-[0.9] tracking-tight opacity-0 md:text-8xl lg:text-9xl">
+        <h1 className="name-reveal font-display mb-6 text-6xl leading-[0.9] tracking-tight italic opacity-0 md:text-8xl lg:text-9xl">
           John Doe
         </h1>
-        <p className="blur-in mb-3 text-lg text-[hsl(var(--text))] opacity-0 sm:text-xl">
+        <p className="mb-3 text-lg text-[hsl(var(--text))] opacity-0 blur-in sm:text-xl">
           A{' '}
           <span
             key={roleIndex}
-            className="animate-role-fade-in inline-block font-display italic text-[hsl(var(--text))]"
+            className="animate-role-fade-in font-display inline-block text-[hsl(var(--text))] italic"
           >
             {ROLES[roleIndex]}
           </span>{' '}
           lives in Chicago.
         </p>
-        <p className="blur-in mb-12 max-w-md text-sm text-[hsl(var(--muted))] opacity-0 md:text-base">
+        <p className="mb-12 max-w-md text-sm text-[hsl(var(--muted))] opacity-0 blur-in md:text-base">
           Designing seamless digital interactions by focusing on the unique nuances which bring systems to life.
         </p>
-        <div className="blur-in inline-flex flex-wrap items-center justify-center gap-4 opacity-0">
+        <div className="inline-flex flex-wrap items-center justify-center gap-4 opacity-0 blur-in">
           <RingLink
             href="#work"
             outerClassName="transition-transform duration-300 hover:scale-105"
@@ -201,7 +207,7 @@ export const Hero = ({ start = true }: HeroProps) => {
       </div>
 
       <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3">
-        <span className="text-xs uppercase tracking-[0.2em] text-[hsl(var(--muted))]">Scroll</span>
+        <span className="text-xs tracking-[0.2em] text-[hsl(var(--muted))] uppercase">Scroll</span>
         <span className="relative block h-10 w-px overflow-hidden bg-[hsl(var(--stroke))]">
           <span className="accent-gradient animate-scroll-down absolute inset-x-0 top-0 block h-1/2 w-full" />
         </span>

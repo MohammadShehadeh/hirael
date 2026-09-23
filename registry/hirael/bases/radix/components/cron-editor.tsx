@@ -65,6 +65,7 @@ const FIELD_ALIASES: Partial<Record<CronField, string[]>> = {
 const rangeList = (min: number, max: number, step = 1): number[] => {
   const out: number[] = [];
   for (let i = min; i <= max; i += step) out.push(i);
+
   return out;
 };
 
@@ -80,11 +81,13 @@ const parseNumber = (token: string, field: CronField): number | null => {
   let n = Number(token);
   if (field === 'dayOfWeek' && n === 7) n = 0;
   if (n < min || n > max) return null;
+
   return n;
 };
 
 const everyField = (field: CronField): CronFieldValue => {
   const { min, max } = FIELD_RANGE[field];
+
   return {
     mode: 'every',
     values: [],
@@ -103,6 +106,7 @@ const parseField = (raw: string, field: CronField): CronFieldValue => {
   if (stepMatch) {
     const step = Number(stepMatch[1]);
     if (step < 1 || step > max) throw new Error(`Step out of range: ${token}`);
+
     return {
       mode: 'step',
       values: [],
@@ -148,6 +152,7 @@ const parseField = (raw: string, field: CronField): CronFieldValue => {
   }
 
   const values = Array.from(allowed).sort((a, b) => a - b);
+
   return { mode: 'specific', values, step: 1, allowed: values, raw: token };
 };
 
@@ -196,6 +201,7 @@ export const formatCronField = (field: Pick<CronFieldValue, 'mode' | 'values' | 
   if (field.mode === 'every') return '*';
   if (field.mode === 'step') return `*/${Math.max(1, field.step)}`;
   if (field.values.length === 0) return '*';
+
   return Array.from(new Set(field.values))
     .sort((a, b) => a - b)
     .join(',');
@@ -208,12 +214,14 @@ export const formatCron = (fields: Record<CronField, Pick<CronFieldValue, 'mode'
 const joinList = (items: string[]): string => {
   if (items.length <= 1) return items.join('');
   if (items.length === 2) return `${items[0]} and ${items[1]}`;
+
   return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 };
 
 const ordinal = (n: number): string => {
   const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
+
   return `${n}${s[(v - 20) % 10] ?? s[v] ?? s[0]}`;
 };
 
@@ -279,8 +287,8 @@ export const describeCron = (expression: string): string => {
 
 /**
  * Compute the next `count` times the expression fires after `from`, in local
- * time. Standard cron rules: when both day-of-month and day-of-week are
- * restricted, either one matching is enough.
+ * time. Vixie cron rules: when neither day field starts with `*`, either one
+ * matching is enough; otherwise both must match, so a stepped `*` (every 2nd day) still counts as unrestricted.
  */
 export const nextCronRuns = (expression: string, count = 3, from: Date = new Date()): Date[] => {
   const parsed = parseCron(expression);
@@ -291,16 +299,13 @@ export const nextCronRuns = (expression: string, count = 3, from: Date = new Dat
   const months = new Set(month.allowed);
   const doms = new Set(dayOfMonth.allowed);
   const dows = new Set(dayOfWeek.allowed);
-  const domRestricted = dayOfMonth.mode !== 'every';
-  const dowRestricted = dayOfWeek.mode !== 'every';
+  const eitherDay = !dayOfMonth.raw.startsWith('*') && !dayOfWeek.raw.startsWith('*');
 
   const dayMatches = (d: Date) => {
     const domOk = doms.has(d.getDate());
     const dowOk = dows.has(d.getDay());
-    if (domRestricted && dowRestricted) return domOk || dowOk;
-    if (domRestricted) return domOk;
-    if (dowRestricted) return dowOk;
-    return true;
+
+    return eitherDay ? domOk || dowOk : domOk && dowOk;
   };
 
   const out: Date[] = [];
@@ -331,6 +336,7 @@ export const nextCronRuns = (expression: string, count = 3, from: Date = new Dat
     out.push(new Date(d.getTime()));
     d.setMinutes(d.getMinutes() + 1);
   }
+
   return out;
 };
 
@@ -350,6 +356,7 @@ const useCronEditor = () => {
   if (!ctx) {
     throw new Error('CronEditor compound parts must be used inside <CronEditor>');
   }
+
   return ctx;
 };
 
@@ -392,6 +399,7 @@ const CronEditor = ({
       const tokens = value.trim().split(/\s+/);
       const next = CRON_FIELDS.map((f, i) => {
         if (f === field) return formatCronField({ ...parsed.fields[f], ...patch });
+
         return tokens.length === CRON_FIELDS.length ? tokens[i] : parsed.fields[f].raw;
       });
       setValue(next.join(' '));
@@ -439,6 +447,7 @@ interface CronEditorPresetsProps extends Omit<React.ComponentProps<'div'>, 'chil
 const CronEditorPresets = ({ presets = CRON_PRESETS, className, ...props }: CronEditorPresetsProps) => {
   const ctx = useCronEditor();
   const current = ctx.value.trim().replace(/\s+/g, ' ');
+
   return (
     <div
       role="group"
@@ -449,6 +458,7 @@ const CronEditorPresets = ({ presets = CRON_PRESETS, className, ...props }: Cron
     >
       {presets.map((p) => {
         const active = current === p.value;
+
         return (
           <Button
             key={p.value}
@@ -487,6 +497,7 @@ const DEFAULT_MODE_LABELS: Record<CronFieldMode, string> = {
 const optionLabel = (field: CronField, n: number): string => {
   if (field === 'month') return MONTH_NAMES[n - 1].slice(0, 3);
   if (field === 'dayOfWeek') return DAY_NAMES[n].slice(0, 3);
+
   return String(n);
 };
 
@@ -549,7 +560,7 @@ const CronEditorField = ({
       {...props}
     >
       <div className="flex items-center justify-between gap-2">
-        <FieldLabel htmlFor={selectId} className="text-xs font-normal uppercase text-muted-foreground">
+        <FieldLabel htmlFor={selectId} className="text-xs font-normal text-muted-foreground uppercase">
           {label}
         </FieldLabel>
         <span className="font-mono text-[11px] text-foreground">{state.raw}</span>
@@ -620,6 +631,7 @@ const CronEditorField = ({
         >
           {options.map((n) => {
             const on = selected.has(n);
+
             return (
               <button
                 key={n}
@@ -669,7 +681,7 @@ const CronEditorExpression = ({
 
   return (
     <Field data-slot="cron-editor-expression" data-invalid={invalid || undefined} className={cn('gap-1.5', className)}>
-      <FieldLabel htmlFor={inputId} className="text-xs font-normal uppercase text-muted-foreground">
+      <FieldLabel htmlFor={inputId} className="text-xs font-normal text-muted-foreground uppercase">
         {label}
       </FieldLabel>
       <Input
@@ -705,6 +717,7 @@ interface CronEditorPreviewProps extends Omit<React.ComponentProps<'p'>, 'childr
 const CronEditorPreview = ({ describe, className, ...props }: CronEditorPreviewProps) => {
   const ctx = useCronEditor();
   const text = describe ? describe(ctx.parsed, ctx.value) : describeCron(ctx.value);
+
   return (
     <p
       data-slot="cron-editor-preview"
@@ -719,6 +732,7 @@ const CronEditorPreview = ({ describe, className, ...props }: CronEditorPreviewP
 
 const subscribeMinute = (onChange: () => void) => {
   const id = window.setInterval(onChange, 30_000);
+
   return () => window.clearInterval(id);
 };
 
@@ -750,6 +764,7 @@ const CronEditorNextRuns = ({
 
   const runs = React.useMemo(() => {
     if (stamp === 0 || !ctx.parsed.valid) return [];
+
     return nextCronRuns(ctx.value, count, new Date(stamp * 60_000));
   }, [stamp, ctx.parsed.valid, ctx.value, count]);
 

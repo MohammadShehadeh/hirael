@@ -27,7 +27,7 @@ const ErrorPageEyebrow = ({ className, ...props }: React.ComponentProps<'span'>)
   return (
     <span
       data-slot="error-page-eyebrow"
-      className={cn('text-xs uppercase text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );
@@ -37,7 +37,7 @@ const ErrorPageTitle = ({ className, ...props }: React.ComponentProps<'h1'>) => 
   return (
     <h1
       data-slot="error-page-title"
-      className={cn('font-serif text-5xl font-medium leading-none tracking-tight sm:text-6xl md:text-7xl', className)}
+      className={cn('font-serif text-5xl leading-none font-medium tracking-tight sm:text-6xl md:text-7xl', className)}
       {...props}
     />
   );
@@ -80,6 +80,7 @@ const ErrorPageActions = ({
       } finally {
         setRetrying(false);
       }
+
       return;
     }
     if (typeof window !== 'undefined') window.location.reload();
@@ -132,13 +133,13 @@ const ErrorPageDetails = ({
         <CollapsibleTrigger asChild>
           <button
             type="button"
-            className="group inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="group inline-flex items-center gap-2 rounded-sm text-xs text-muted-foreground uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           >
-            <ChevronDown className="size-3.5 transition-transform duration-150 motion-reduce:transition-none group-data-[state=open]:rotate-180" />
+            <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none" />
             Technical details
           </button>
         </CollapsibleTrigger>
-        <CollapsibleContent className="data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-250 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none">
+        <CollapsibleContent className="data-[state=open]:animate-in data-[state=open]:duration-250 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=open]:fade-in data-[state=open]:slide-in-from-top-1 motion-reduce:animate-none">
           <div className="mt-3 flex flex-col gap-3 rounded-sm border border-border bg-card p-4">
             <dl className="flex flex-col gap-2">
               {allRows.map((row) => (
@@ -147,8 +148,8 @@ const ErrorPageDetails = ({
                   data-slot="error-page-details-row"
                   className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs"
                 >
-                  <dt className="uppercase text-muted-foreground">{row.label}</dt>
-                  <dd dir="ltr" className="select-all tabular-nums text-foreground">
+                  <dt className="text-muted-foreground uppercase">{row.label}</dt>
+                  <dd dir="ltr" className="text-foreground tabular-nums select-all">
                     {row.value}
                   </dd>
                 </div>
@@ -172,12 +173,13 @@ export interface ErrorPageStatusProps extends React.ComponentProps<'a'> {
 
 const ErrorPageStatus = ({ tone = 'success', className, children, ...props }: ErrorPageStatusProps) => {
   const dot = tone === 'warning' ? 'bg-warning' : tone === 'destructive' ? 'bg-destructive' : 'bg-success';
+
   return (
     <a
       data-slot="error-page-status"
       data-tone={tone}
       className={cn(
-        'inline-flex items-center gap-2 rounded-sm text-xs uppercase text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'inline-flex items-center gap-2 rounded-sm text-xs text-muted-foreground uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,
       )}
       {...props}

@@ -21,6 +21,7 @@ const useStepper = () => {
   if (!ctx) {
     throw new Error('Stepper compound parts must be used inside <Stepper>');
   }
+
   return ctx;
 };
 
@@ -37,6 +38,7 @@ const useStepperItem = () => {
   if (!ctx) {
     throw new Error('Stepper item parts must be used inside <StepperItem>');
   }
+
   return ctx;
 };
 
@@ -118,7 +120,7 @@ const StepperItem = ({ step, completed, disabled = false, className, ...props }:
   );
 };
 
-const StepperTrigger = ({ className, ...props }: React.ComponentProps<'button'>) => {
+const StepperTrigger = ({ className, onClick, ...props }: React.ComponentProps<'button'>) => {
   const { setValue } = useStepper();
   const { step, state, disabled } = useStepperItem();
 
@@ -128,14 +130,17 @@ const StepperTrigger = ({ className, ...props }: React.ComponentProps<'button'>)
       data-slot="stepper-trigger"
       aria-current={state === 'active' ? 'step' : undefined}
       disabled={disabled}
-      onClick={() => setValue(step)}
       className={cn(
-        'flex items-center gap-3 rounded-md text-start outline-none transition-opacity',
+        'flex items-center gap-3 rounded-md text-start transition-opacity outline-none',
         'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) setValue(step);
+      }}
     />
   );
 };
@@ -170,7 +175,7 @@ const StepperSeparator = ({ className, ...props }: React.ComponentProps<'div'>) 
       className={cn(
         'bg-border transition-colors group-data-[state=completed]/step:bg-primary',
         'group-data-[orientation=horizontal]/stepper:mx-2 group-data-[orientation=horizontal]/stepper:h-0.5 group-data-[orientation=horizontal]/stepper:flex-1',
-        'group-data-[orientation=vertical]/stepper:absolute group-data-[orientation=vertical]/stepper:bottom-1 group-data-[orientation=vertical]/stepper:start-4 group-data-[orientation=vertical]/stepper:top-9 group-data-[orientation=vertical]/stepper:w-0.5 group-data-[orientation=vertical]/stepper:-translate-x-1/2 rtl:group-data-[orientation=vertical]/stepper:translate-x-1/2',
+        'group-data-[orientation=vertical]/stepper:absolute group-data-[orientation=vertical]/stepper:start-4 group-data-[orientation=vertical]/stepper:top-9 group-data-[orientation=vertical]/stepper:bottom-1 group-data-[orientation=vertical]/stepper:w-0.5 group-data-[orientation=vertical]/stepper:-translate-x-1/2 rtl:group-data-[orientation=vertical]/stepper:translate-x-1/2',
         className,
       )}
       {...props}
@@ -180,11 +185,12 @@ const StepperSeparator = ({ className, ...props }: React.ComponentProps<'div'>) 
 
 const StepperTitle = ({ className, ...props }: React.ComponentProps<'span'>) => {
   const { state } = useStepperItem();
+
   return (
     <span
       data-slot="stepper-title"
       className={cn(
-        'block text-sm font-medium leading-tight transition-colors',
+        'block text-sm leading-tight font-medium transition-colors',
         state === 'inactive' ? 'text-muted-foreground' : 'text-foreground',
         className,
       )}

@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { motion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/radix/ui/button';

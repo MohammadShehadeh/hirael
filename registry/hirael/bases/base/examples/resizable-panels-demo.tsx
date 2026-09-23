@@ -15,7 +15,7 @@ interface PaneProps {
 const Pane = ({ label, children }: PaneProps) => {
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-border px-3 py-2 text-xs uppercase text-muted-foreground">{label}</div>
+      <div className="border-b border-border px-3 py-2 text-xs text-muted-foreground uppercase">{label}</div>
       <div className="flex-1 p-3 text-sm text-muted-foreground">{children}</div>
     </div>
   );
@@ -26,7 +26,7 @@ const ResizablePanelsDemo = () => {
 
   return (
     <div className="h-72 w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card">
-      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+      <ResizablePanelGroup orientation="horizontal" className="h-full w-full">
         <ResizablePanel defaultSize={28} minSize={15}>
           <Pane label={t({ en: 'Explorer', ar: 'المستكشف' })}>
             {t({
@@ -37,7 +37,7 @@ const ResizablePanelsDemo = () => {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={72}>
-          <ResizablePanelGroup direction="vertical" className="h-full">
+          <ResizablePanelGroup orientation="vertical" className="h-full">
             <ResizablePanel defaultSize={64} minSize={20}>
               <Pane label={t({ en: 'Editor', ar: 'المحرر' })}>
                 {t({

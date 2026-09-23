@@ -35,6 +35,7 @@ const useInlineEdit = () => {
   if (!ctx) {
     throw new Error('InlineEdit compound parts must be used inside <InlineEdit>');
   }
+
   return ctx;
 };
 
@@ -53,6 +54,10 @@ export interface InlineEditProps extends Omit<React.ComponentProps<'div'>, 'defa
   /** Return an error message to block the submit, or null to allow it. */
   validate?: (value: string) => string | null;
   required?: boolean;
+  /** Shown when `required` blocks an empty submit. */
+  requiredMessage?: string;
+  /** Shown when `onSubmit` rejects without an error message of its own. */
+  submitErrorMessage?: string;
   disabled?: boolean;
   placeholder?: string;
 }
@@ -70,6 +75,8 @@ const InlineEdit = ({
   selectOnFocus = true,
   validate,
   required = false,
+  requiredMessage = 'This field is required',
+  submitErrorMessage = 'Could not save',
   disabled = false,
   placeholder,
   className,
@@ -121,9 +128,10 @@ const InlineEdit = ({
   const submit = React.useCallback(() => {
     if (pending) return;
     const next = draft;
-    const message = required && next.trim() === '' ? 'This field is required' : (validate?.(next) ?? null);
+    const message = required && next.trim() === '' ? requiredMessage : (validate?.(next) ?? null);
     if (message) {
       setError(message);
+
       return;
     }
     setError(null);
@@ -136,14 +144,14 @@ const InlineEdit = ({
           setEditing(false);
         })
         .catch((reason: unknown) => {
-          setError(reason instanceof Error && reason.message ? reason.message : 'Could not save');
+          setError(reason instanceof Error && reason.message ? reason.message : submitErrorMessage);
         })
         .finally(() => setPending(false));
     } else {
       setValue(next);
       setEditing(false);
     }
-  }, [pending, draft, required, validate, onSubmit, setValue, setEditing]);
+  }, [pending, draft, required, requiredMessage, submitErrorMessage, validate, onSubmit, setValue, setEditing]);
 
   const cancel = React.useCallback(() => {
     if (pending) return;
@@ -226,7 +234,17 @@ export interface InlineEditPreviewProps extends React.ComponentProps<'span'> {
   asChild?: boolean;
 }
 
-const InlineEditPreview = ({ asChild = false, className, children, ref, ...props }: InlineEditPreviewProps) => {
+type PreviewChildProps = React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> };
+
+const InlineEditPreview = ({
+  asChild = false,
+  className,
+  children,
+  ref,
+  onClick,
+  onKeyDown,
+  ...props
+}: InlineEditPreviewProps) => {
   const { value, editing, disabled, placeholder, startEditing, previewRef } = useInlineEdit();
 
   // Composed in the callback, not during render: previewRef arrives through context,
@@ -248,41 +266,54 @@ const InlineEditPreview = ({ asChild = false, className, children, ref, ...props
     </>
   );
 
+  const child = asChild && React.isValidElement<PreviewChildProps>(children) ? children : null;
+
+  const handleClick = (event: React.MouseEvent<HTMLSpanElement>) => {
+    child?.props.onClick?.(event);
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    startEditing();
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    child?.props.onKeyDown?.(event);
+    onKeyDown?.(event);
+    if (event.defaultPrevented) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      startEditing();
+    }
+  };
+
   const sharedProps = {
     'data-slot': 'inline-edit-preview',
     role: 'button',
     tabIndex: disabled ? -1 : 0,
     'aria-disabled': disabled || undefined,
-    onClick: () => startEditing(),
-    onKeyDown: (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        startEditing();
-      }
-    },
-    ref: composedRef,
     ...props,
+    onClick: handleClick,
+    onKeyDown: handleKeyDown,
   };
 
   const sharedClassName = cn(
-    'group/preview inline-flex max-w-full cursor-pointer items-center gap-1.5 rounded-sm px-1.5 py-0.5 outline-none transition-colors',
+    'group/preview inline-flex max-w-full cursor-pointer items-center gap-1.5 rounded-sm px-1.5 py-0.5 transition-colors outline-none',
     'hover:bg-accent hover:text-accent-foreground',
     'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     disabled && 'pointer-events-none opacity-50',
     className,
   );
 
-  if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<{ className?: string }>;
+  if (child) {
     return React.cloneElement(child, {
       ...sharedProps,
       className: cn(sharedClassName, child.props.className),
       children: content,
-    } as React.HTMLAttributes<HTMLElement>);
+      ref: composeRefs<HTMLElement>(composedRef, child.props.ref),
+    } as PreviewChildProps);
   }
 
   return (
-    <span {...sharedProps} className={sharedClassName}>
+    <span {...sharedProps} ref={composedRef} className={sharedClassName}>
       {content}
     </span>
   );
@@ -343,6 +374,7 @@ const InlineEditInput = ({
       }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
+        if (event.defaultPrevented || event.nativeEvent.isComposing || event.keyCode === 229) return;
         if (event.key === 'Enter') {
           event.preventDefault();
           submit();
@@ -417,6 +449,7 @@ const InlineEditTextarea = ({
       }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
+        if (event.defaultPrevented || event.nativeEvent.isComposing || event.keyCode === 229) return;
         if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
           event.preventDefault();
           submit();

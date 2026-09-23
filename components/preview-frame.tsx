@@ -32,6 +32,7 @@ export const previewSrc = (embedHref: string, options: PreviewSrcOptions) => {
   const params = new URLSearchParams({ fit: '1' });
   if (options.theme) params.set('theme', options.theme);
   if (options.isRtl) params.set('dir', 'rtl');
+
   return `${embedHref}?${params.toString()}`;
 };
 
@@ -48,6 +49,7 @@ export const usePreviewTheme = (): PreviewTheme => {
   const isMounted = useMounted();
   const [previewMode, setPreviewMode] = React.useState<ThemeMode | null>(null);
   const frameMode = previewMode ?? (isMounted ? mode : 'dark');
+
   return {
     frameMode,
     previewMode,
@@ -96,6 +98,7 @@ export interface PreviewThemeButtonProps {
 
 export const PreviewThemeButton = ({ theme }: PreviewThemeButtonProps) => {
   const isLight = theme.frameMode === 'light';
+
   return (
     <PreviewToolbarButton label={isLight ? 'Switch preview to dark' : 'Switch preview to light'} onClick={theme.toggle}>
       {isLight ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
@@ -134,6 +137,7 @@ const issueHref = (entry: RegistryEntryMeta) => {
     'items-affected': entry.name,
     area: 'Showcase site (hirael.com)',
   });
+
   return `${SITE.githubRepoUrl}/issues/new?${params.toString()}`;
 };
 
@@ -224,6 +228,7 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
             ))}
             {registryDeps.map((name) => {
               const dep = REGISTRY_BY_NAME[name];
+
               return dep ? (
                 <DropdownMenuItem key={name} asChild>
                   <Link href={entryHref(dep)}>{dep.title}</Link>
@@ -252,6 +257,7 @@ const observeShellHeight = (frame: HTMLIFrameElement, onHeight: (shellHeight: nu
   measure();
   const observer = new ResizeObserver(measure);
   observer.observe(shell);
+
   return observer;
 };
 
@@ -296,6 +302,7 @@ export const PreviewFrame = ({
     const frame = frameRef.current;
     if (!frame) return;
     followMounted(frame);
+
     return () => observerRef.current?.disconnect();
   }, [refreshKey, src, minHeight, maxHeight]);
 

@@ -35,6 +35,7 @@ const getCountdownState = (targetMs: number): CountdownState => {
     };
   }
   const totalSeconds = Math.floor(totalMs / 1000);
+
   return {
     days: Math.floor(totalSeconds / 86400),
     hours: Math.floor((totalSeconds % 86400) / 3600),
@@ -45,9 +46,10 @@ const getCountdownState = (targetMs: number): CountdownState => {
   };
 };
 
-const useCountdown = (target: Date | string | number, options: UseCountdownOptions = {}): CountdownState => {
+/** Returns `null` until mounted, so server and hydration renders never read the clock. */
+const useCountdown = (target: Date | string | number, options: UseCountdownOptions = {}): CountdownState | null => {
   const targetMs = toTimestamp(target);
-  const [state, setState] = React.useState<CountdownState>(() => getCountdownState(targetMs));
+  const [state, setState] = React.useState<CountdownState | null>(null);
   const onCompleteRef = React.useRef(options.onComplete);
 
   React.useEffect(() => {
@@ -66,12 +68,14 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
           fired = true;
           onCompleteRef.current?.();
         }
+
         return;
       }
       timeout = setTimeout(tick, next.totalMs % 1000 || 1000);
     };
 
     tick();
+
     return () => {
       if (timeout !== undefined) clearTimeout(timeout);
     };
@@ -80,15 +84,6 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
   return state;
 };
 
-const NEVER_CHANGES = () => () => {};
-
-const useMounted = () =>
-  React.useSyncExternalStore(
-    NEVER_CHANGES,
-    () => true,
-    () => false,
-  );
-
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
 const useReducedMotion = () =>
@@ -96,6 +91,7 @@ const useReducedMotion = () =>
     (onStoreChange) => {
       const query = window.matchMedia(REDUCED_MOTION);
       query.addEventListener('change', onStoreChange);
+
       return () => query.removeEventListener('change', onStoreChange);
     },
     () => window.matchMedia(REDUCED_MOTION).matches,
@@ -104,6 +100,7 @@ const useReducedMotion = () =>
 
 const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProps<'span'> & { value: string }) => {
   const reduceMotion = useReducedMotion();
+
   return (
     <span
       data-slot="countdown-timer-value"
@@ -112,7 +109,7 @@ const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProp
     >
       <span
         key={reduceMotion ? 'static' : value}
-        className={cn(!reduceMotion && 'animate-in fade-in slide-in-from-top-2 duration-300')}
+        className={cn(!reduceMotion && 'animate-in duration-300 fade-in slide-in-from-top-2')}
       >
         {value}
       </span>
@@ -134,7 +131,7 @@ const CountdownTimerUnit = ({ value, label, className, ...props }: CountdownTime
       {label ? (
         <span
           data-slot="countdown-timer-label"
-          className="text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground"
+          className="text-[10px] font-medium tracking-[0.1em] text-muted-foreground uppercase"
         >
           {label}
         </span>
@@ -156,6 +153,7 @@ export interface CountdownTimerProps extends Omit<React.ComponentProps<'div'>, '
   target: Date | string | number;
   variant?: 'boxed' | 'inline' | 'minimal';
   hideZeroDays?: boolean;
+  /** Override any unit label; unset units fall back to the English defaults. */
   labels?: Partial<Record<CountdownUnit, string>>;
   onComplete?: () => void;
   completeContent?: React.ReactNode;
@@ -174,18 +172,16 @@ const CountdownTimer = ({
   ...props
 }: CountdownTimerProps) => {
   const state = useCountdown(target, { onComplete });
-  const mounted = useMounted();
 
   const resolvedLabels = { ...defaultLabels, ...labels };
-  // Initial state reads Date.now(), so anything derived from it waits for mount to match the static HTML.
-  const units = hideZeroDays && mounted && state.days === 0 ? unitOrder.slice(1) : unitOrder;
-  const valueOf = (unit: CountdownUnit) => (mounted ? state[unit] : null);
+  const units = hideZeroDays && state?.days === 0 ? unitOrder.slice(1) : unitOrder;
+  const valueOf = (unit: CountdownUnit) => (state ? state[unit] : null);
 
   let content: React.ReactNode;
 
   if (children) {
-    content = mounted ? children(state) : null;
-  } else if (mounted && state.isComplete && completeContent !== undefined) {
+    content = state ? children(state) : null;
+  } else if (state?.isComplete && completeContent !== undefined) {
     content = completeContent;
   } else if (variant === 'boxed') {
     content = units.map((unit) => (

@@ -30,7 +30,7 @@ const SOCIAL_LINKS: {
 
 export const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t border-foreground/10 bg-background px-6 pb-12 pt-20 md:pt-28">
+    <footer className="relative overflow-hidden border-t border-foreground/10 bg-background px-6 pt-20 pb-12 md:pt-28">
       <div aria-hidden className="glow-top absolute inset-0" />
 
       <div className="relative mx-auto max-w-6xl">
@@ -61,7 +61,7 @@ export const Footer = () => {
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:gap-16">
             {FOOTER_COLUMNS.map((column) => (
               <div key={column.heading}>
-                <p className="mb-4 text-xs uppercase tracking-widest text-foreground/40">{column.heading}</p>
+                <p className="mb-4 text-xs tracking-widest text-foreground/40 uppercase">{column.heading}</p>
                 <ul className="space-y-3">
                   {column.links.map((link) => (
                     <li key={link}>
@@ -78,7 +78,7 @@ export const Footer = () => {
 
         <p
           aria-hidden
-          className="mt-16 select-none text-center leading-none tracking-tight text-foreground/5 [font-family:var(--font-asme-serif)] text-[20vw] md:mt-20 md:text-[15vw]"
+          className="mt-16 text-center [font-family:var(--font-asme-serif)] text-[20vw] leading-none tracking-tight text-foreground/5 select-none md:mt-20 md:text-[15vw]"
         >
           Asme
         </p>

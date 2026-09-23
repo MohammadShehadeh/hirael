@@ -61,7 +61,7 @@ const CatalogColumn = ({ title, href, items, preview }: CatalogColumnProps) => {
         <h2 className="text-sm font-medium tracking-tight">{title}</h2>
         <Link
           href={href}
-          className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-1 text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
         >
           View all
           <ArrowRight className="size-3 rtl:rotate-180" />
@@ -89,7 +89,7 @@ const FramedPreviewCard = ({ item: { entry, addedAt } }: FramedPreviewCardProps)
   return (
     <Link
       href={entryHref(entry)}
-      className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background outline-none transition-colors hover:border-foreground/40 focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors outline-none hover:border-foreground/40 focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
     >
       <div className="aspect-video overflow-hidden border-b border-border">
         <BlockPreview entry={entry} fill />

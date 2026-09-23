@@ -45,16 +45,16 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
 
 const Faq05 = () => {
   return (
-    <section data-slot="faq" className="bg-background py-16 md:py-24">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 border-y border-border md:grid-cols-2 md:border-x">
         <div
           data-slot="faq-intro"
-          className="flex flex-col gap-4 border-b border-border px-6 pt-12 pb-6 md:border-b-0 md:border-e md:px-10 md:py-16"
+          className="flex flex-col gap-4 border-b border-border px-6 pt-12 pb-6 md:border-e md:border-b-0 md:px-10 md:py-16"
         >
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Plans and billing</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Plans and billing</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight md:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight md:text-5xl')}
           >
             Questions, answered.
           </h2>

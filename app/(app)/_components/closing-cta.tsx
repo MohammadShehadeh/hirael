@@ -17,7 +17,7 @@ export const ClosingCta = () => {
 
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 px-4 text-center sm:px-6">
         <Pill data-live>Get started</Pill>
-        <h2 className="text-display text-4xl italic leading-[0.88] tracking-[-0.02em] sm:text-6xl lg:text-7xl">
+        <h2 className="text-display text-4xl leading-[0.88] tracking-[-0.02em] italic sm:text-6xl lg:text-7xl">
           Install one. Keep all of it.
         </h2>
         <p className="max-w-md text-sm text-muted-foreground sm:text-base">

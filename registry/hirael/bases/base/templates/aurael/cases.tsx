@@ -12,13 +12,13 @@ const COPY = {
       {
         image: SCENE_IMAGE.morning,
         title: 'Lorem ipsum, dolor sit',
-        meta: 'Lorem ipsum · 8.5 · 22',
+        meta: 'Lorem ipsum, 8.5, 22',
         alt: 'The valley at dawn, mist over the lake below the ridge',
       },
       {
         image: SCENE_IMAGE.night,
         title: 'Lorem ipsum, amet consectetur',
-        meta: 'Dolor sit · amet consectetur · 0',
+        meta: 'Dolor sit, amet consectetur, 0',
         alt: 'The same valley at night under a crescent moon',
       },
     ],
@@ -33,13 +33,13 @@ const COPY = {
       {
         image: SCENE_IMAGE.morning,
         title: 'لوريم إيبسوم، دولور سيت',
-        meta: 'لوريم إيبسوم · ٨٫٥ · ٢٢',
+        meta: 'لوريم إيبسوم, ٨٫٥, ٢٢',
         alt: 'الوادي عند الفجر والضباب فوق البحيرة تحت الحافة',
       },
       {
         image: SCENE_IMAGE.night,
         title: 'لوريم إيبسوم، أميت كونسيكتيتور',
-        meta: 'دولور سيت · أميت كونسيكتيتور · ٠',
+        meta: 'دولور سيت, أميت كونسيكتيتور, ٠',
         alt: 'الوادي نفسه ليلاً تحت هلال',
       },
     ],
@@ -53,6 +53,7 @@ interface CasesProps {
 
 export const Cases = ({ lang }: CasesProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="cases" index="02" label={c.label} note={c.note} lang={lang}>
       <Reveal>
@@ -84,7 +85,7 @@ export const Cases = ({ lang }: CasesProps) => {
       </div>
 
       <Reveal delay={0.1}>
-        <p className="mt-14 border-t border-border pt-10 text-2xl font-medium leading-snug text-foreground sm:text-3xl">
+        <p className="mt-14 border-t border-border pt-10 text-2xl leading-snug font-medium text-foreground sm:text-3xl">
           {c.statement}
         </p>
       </Reveal>

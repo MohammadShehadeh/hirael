@@ -32,10 +32,10 @@ const Comparison01 = () => {
     <section data-slot="comparison" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div data-slot="comparison-header" className="flex flex-col items-center gap-5 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Comparison</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Comparison</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'max-w-2xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             The difference is ownership.
           </h2>
@@ -54,14 +54,14 @@ const Comparison01 = () => {
         >
           <span
             aria-hidden
-            className="absolute start-1/2 top-1/2 z-20 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-xs uppercase text-muted-foreground shadow-sm md:grid rtl:translate-x-1/2"
+            className="absolute start-1/2 top-1/2 z-20 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-xs text-muted-foreground uppercase shadow-sm md:grid rtl:translate-x-1/2"
           >
             vs
           </span>
 
           <div
             data-slot="comparison-ours"
-            className="relative border-b border-border bg-card p-7 sm:p-8 md:border-b-0 md:border-e"
+            className="relative border-b border-border bg-card p-7 sm:p-8 md:border-e md:border-b-0"
           >
             <div
               aria-hidden
@@ -69,14 +69,14 @@ const Comparison01 = () => {
             />
             <div className="relative z-10 flex flex-col gap-6">
               <div className="flex flex-col gap-1">
-                <span className="text-xs uppercase text-muted-foreground">With Hirael</span>
+                <span className="text-xs text-muted-foreground uppercase">With Hirael</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em]">Code you keep</h3>
               </div>
               <ul className="flex flex-col gap-3.5">
                 {HIRAEL.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm">
                     <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-transparent">
-                      <Check className="size-3 text-foreground dark:text-primary" />
+                      <Check className="size-3 text-primary" />
                     </span>
                     <span className="text-foreground">{item}</span>
                   </li>
@@ -91,7 +91,7 @@ const Comparison01 = () => {
           <div data-slot="comparison-theirs" className="bg-muted/20 p-7 sm:p-8">
             <div className="flex flex-col gap-6 opacity-80">
               <div className="flex flex-col gap-1">
-                <span className="text-xs uppercase text-muted-foreground">The usual way</span>
+                <span className="text-xs text-muted-foreground uppercase">The usual way</span>
                 <h3 className="text-xl font-semibold tracking-[-0.01em] text-muted-foreground">Code you rent</h3>
               </div>
               <ul className="flex flex-col gap-3.5">

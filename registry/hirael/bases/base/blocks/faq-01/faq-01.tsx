@@ -46,19 +46,19 @@ const FAQS = [
 
 const Faq01 = () => {
   return (
-    <section data-slot="faq" className="bg-background py-20 md:py-28">
-      <div className="container grid w-full grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
+      <div className="mx-auto grid w-full max-w-[1480px] grid-cols-1 gap-12 px-4 lg:grid-cols-12 lg:gap-16">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <div data-slot="faq-intro" className="sticky top-12 flex flex-col gap-6">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Before you install</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Before you install</span>
             <h2
               style={stagger(1, 70)}
               className={cn(
                 ENTER,
-                'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+                'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
               )}
             >
-              Frequently <span className="italic text-foreground">unobvious</span> questions.
+              Frequently <span className="text-foreground italic">unobvious</span> questions.
             </h2>
             <p style={stagger(2, 70)} className={cn(ENTER, 'text-sm text-muted-foreground')}>
               The questions teams ask in their first ten minutes with Hirael, answered the way we&apos;d want them
@@ -91,7 +91,7 @@ const Faq01 = () => {
               <AccordionItem key={f.q} value={`item-${i}`} style={stagger(i, 50, 200)} className={ENTER}>
                 <AccordionTrigger>
                   <span className="flex items-baseline gap-4">
-                    <span className="text-xs tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-xs text-muted-foreground tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                     <span>{f.q}</span>
                   </span>
                 </AccordionTrigger>

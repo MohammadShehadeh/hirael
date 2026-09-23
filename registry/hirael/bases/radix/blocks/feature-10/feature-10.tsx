@@ -48,10 +48,10 @@ const Feature10 = () => {
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
         <div data-slot="feature-header" className="flex max-w-2xl flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Overview</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Overview</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             What the catalog is doing.
           </h2>
@@ -83,7 +83,7 @@ const Feature10 = () => {
               </Avatar>
               <div className="flex min-w-0 flex-col">
                 <cite className="text-sm font-medium not-italic">Priya Banerjee</cite>
-                <span className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
+                <span className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
                   <span>Design systems</span>
                   <span aria-hidden className="text-border">
                     |

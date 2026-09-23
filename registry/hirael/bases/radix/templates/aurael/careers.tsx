@@ -9,10 +9,10 @@ const COPY = {
     title: 'Lorem ipsum dolor sit',
     accent: 'amet consectetur.',
     roles: [
-      { title: 'Lorem ipsum', meta: 'Dolor sit · amet' },
-      { title: 'Dolor sit amet', meta: 'Consectetur · amet' },
-      { title: 'Consectetur adipiscing', meta: 'Elit · amet' },
-      { title: 'Sed eiusmod tempor', meta: 'Incididunt · amet' },
+      { title: 'Lorem ipsum', meta: 'Dolor sit, amet' },
+      { title: 'Dolor sit amet', meta: 'Consectetur, amet' },
+      { title: 'Consectetur adipiscing', meta: 'Elit, amet' },
+      { title: 'Sed eiusmod tempor', meta: 'Incididunt, amet' },
     ],
   },
   ar: {
@@ -21,10 +21,10 @@ const COPY = {
     title: 'لوريم إيبسوم دولور سيت',
     accent: 'أميت كونسيكتيتور.',
     roles: [
-      { title: 'لوريم إيبسوم', meta: 'دولور سيت · أميت' },
-      { title: 'دولور سيت أميت', meta: 'كونسيكتيتور · أميت' },
-      { title: 'كونسيكتيتور أديبيسكينج', meta: 'إليت · أميت' },
-      { title: 'سيد إيوسمود تيمبور', meta: 'إنسيديدنت · أميت' },
+      { title: 'لوريم إيبسوم', meta: 'دولور سيت, أميت' },
+      { title: 'دولور سيت أميت', meta: 'كونسيكتيتور, أميت' },
+      { title: 'كونسيكتيتور أديبيسكينج', meta: 'إليت, أميت' },
+      { title: 'سيد إيوسمود تيمبور', meta: 'إنسيديدنت, أميت' },
     ],
   },
 } satisfies Record<Lang, unknown>;
@@ -35,6 +35,7 @@ interface CareersProps {
 
 export const Careers = ({ lang }: CareersProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="careers" index="04" label={c.label} note={c.note} lang={lang}>
       <Reveal>

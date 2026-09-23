@@ -11,7 +11,7 @@ import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { cn } from '@/lib/utils';
 import type { Column, ReactTable, RowData } from '@tanstack/react-table';
 import { X } from 'lucide-react';
-import * as React from 'react';
+import type * as React from 'react';
 
 interface DataTableToolbarProps<TData extends RowData> extends React.ComponentProps<'div'> {
   table: ReactTable<DataTableFeatures, TData>;
@@ -25,11 +25,11 @@ export const DataTableToolbar = <TData extends RowData>({
 }: DataTableToolbarProps<TData>) => {
   const isFiltered = table.state.columnFilters.length > 0;
 
-  const columns = React.useMemo(() => table.getAllColumns().filter((column) => column.getCanFilter()), [table]);
+  const columns = table.getAllColumns().filter((column) => column.getCanFilter());
 
-  const onReset = React.useCallback(() => {
+  const onReset = () => {
     table.resetColumnFilters();
-  }, [table]);
+  };
 
   return (
     <div
@@ -92,7 +92,7 @@ const DataTableToolbarFilter = <TData extends RowData>({ column }: DataTableTool
             className={cn('h-8 w-[120px]', columnMeta.unit && 'pe-8')}
           />
           {columnMeta.unit && (
-            <span className="absolute top-0 end-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-muted-foreground text-sm">
+            <span className="absolute end-0 top-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-sm text-muted-foreground">
               {columnMeta.unit}
             </span>
           )}

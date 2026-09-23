@@ -7,6 +7,16 @@ import { cn } from '@/lib/utils';
 
 export type StatCardTrend = 'up' | 'down' | 'flat';
 
+export type StatCardTone = 'neutral' | 'info' | 'success' | 'warning' | 'destructive';
+
+const toneText: Record<StatCardTone, string> = {
+  neutral: 'text-muted-foreground',
+  info: 'text-info',
+  success: 'text-success',
+  warning: 'text-warning',
+  destructive: 'text-destructive',
+};
+
 type StatCardProps = React.ComponentProps<'div'>;
 
 const StatCard = ({ className, ...props }: StatCardProps) => {
@@ -23,7 +33,7 @@ type StatCardLabelProps = React.ComponentProps<'p'>;
 
 const StatCardLabel = ({ className, ...props }: StatCardLabelProps) => {
   return (
-    <p data-slot="stat-card-label" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <p data-slot="stat-card-label" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -33,7 +43,7 @@ const StatCardValue = ({ className, ...props }: StatCardValueProps) => {
   return (
     <p
       data-slot="stat-card-value"
-      className={cn('text-3xl font-semibold tracking-[-0.035em] text-foreground', className)}
+      className={cn('text-3xl font-semibold tracking-[-0.035em] text-foreground tabular-nums', className)}
       {...props}
     />
   );
@@ -41,24 +51,26 @@ const StatCardValue = ({ className, ...props }: StatCardValueProps) => {
 
 interface StatCardDeltaProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   trend: StatCardTrend;
+  tone?: StatCardTone;
   children?: React.ReactNode;
 }
 
-const StatCardDelta = ({ trend, className, children, ...props }: StatCardDeltaProps) => {
+const StatCardDelta = ({ trend, tone = 'neutral', className, children, ...props }: StatCardDeltaProps) => {
   const Icon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
-  const tone = trend === 'flat' ? 'text-muted-foreground' : 'text-foreground';
+
   return (
     <span
       data-slot="stat-card-delta"
       data-trend={trend}
+      data-tone={tone}
       className={cn(
         'inline-flex w-fit items-center gap-1 rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[11px] leading-none',
-        tone,
+        toneText[tone],
         className,
       )}
       {...props}
     >
-      <Icon className="size-3" aria-hidden />
+      <Icon className="size-3 rtl:-scale-x-100" aria-hidden />
       {children}
     </span>
   );

@@ -74,8 +74,10 @@ const SelectionHighlight = Extension.create({
               const deco = Decoration.inline(meta.from, meta.to, {
                 class: 'fake-selection',
               });
+
               return DecorationSet.create(tr.doc, [deco]);
             }
+
             return old.map(tr.mapping, tr.doc);
           },
         },
@@ -106,6 +108,7 @@ const useRichTextEditor = (): Editor => {
   if (!editor) {
     throw new Error('Rich text editor parts must be rendered inside <RichTextEditor>.');
   }
+
   return editor;
 };
 
@@ -121,15 +124,17 @@ const contentClassName = cn(
   '[&_.ProseMirror_code]:rounded [&_.ProseMirror_code]:bg-muted [&_.ProseMirror_code]:px-1.5 [&_.ProseMirror_code]:py-0.5 [&_.ProseMirror_code]:font-mono [&_.ProseMirror_code]:text-sm',
   '[&_.ProseMirror_pre]:my-3 [&_.ProseMirror_pre]:overflow-x-auto [&_.ProseMirror_pre]:rounded-lg [&_.ProseMirror_pre]:border [&_.ProseMirror_pre]:border-border [&_.ProseMirror_pre]:bg-muted [&_.ProseMirror_pre]:p-4 max-sm:[&_.ProseMirror_pre]:text-xs',
   '[&_.ProseMirror_pre_code]:bg-transparent [&_.ProseMirror_pre_code]:p-0 [&_.ProseMirror_pre_code]:text-sm [&_.ProseMirror_pre_code]:leading-relaxed',
-  '[&_.ProseMirror_blockquote]:my-3 [&_.ProseMirror_blockquote]:border-s-4 [&_.ProseMirror_blockquote]:border-primary [&_.ProseMirror_blockquote]:ps-4 [&_.ProseMirror_blockquote]:italic [&_.ProseMirror_blockquote]:text-muted-foreground',
+  '[&_.ProseMirror_blockquote]:my-3 [&_.ProseMirror_blockquote]:border-s-4 [&_.ProseMirror_blockquote]:border-primary [&_.ProseMirror_blockquote]:ps-4 [&_.ProseMirror_blockquote]:text-muted-foreground [&_.ProseMirror_blockquote]:italic',
   '[&_.ProseMirror_hr]:my-6 [&_.ProseMirror_hr]:border-t [&_.ProseMirror_hr]:border-border',
-  '[&_.ProseMirror_mark]:rounded-sm [&_.ProseMirror_mark]:bg-warm/40 [&_.ProseMirror_mark]:px-0.5 [&_.ProseMirror_mark]:text-warm-foreground',
+  '[&_.ProseMirror_mark]:rounded-sm [&_.ProseMirror_mark]:bg-primary [&_.ProseMirror_mark]:px-0.5 [&_.ProseMirror_mark]:text-primary-foreground',
   '[&_.ProseMirror_.fake-selection]:rounded-sm [&_.ProseMirror_.fake-selection]:bg-primary/20',
   '[&_.ProseMirror_p.is-editor-empty:first-child]:before:pointer-events-none [&_.ProseMirror_p.is-editor-empty:first-child]:before:float-start [&_.ProseMirror_p.is-editor-empty:first-child]:before:h-0 [&_.ProseMirror_p.is-editor-empty:first-child]:before:text-muted-foreground [&_.ProseMirror_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]',
 );
 
 export interface RichTextEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   value?: string;
+  onValueChange?: (value: string) => void;
+  /** @deprecated Use `onValueChange`. */
   onChange?: (value: string) => void;
   defaultValue?: string;
   placeholder?: string;
@@ -143,6 +148,7 @@ export interface RichTextEditorProps extends Omit<React.ComponentProps<'div'>, '
 
 const RichTextEditor = ({
   value,
+  onValueChange,
   onChange,
   defaultValue = '',
   placeholder = 'Write something…',
@@ -156,12 +162,12 @@ const RichTextEditor = ({
 }: RichTextEditorProps) => {
   const isEditable = editable && !disabled;
 
-  const onChangeRef = React.useRef(onChange);
+  const onChangeRef = React.useRef(onValueChange ?? onChange);
   const onFocusRef = React.useRef(onFocus);
   const onBlurRef = React.useRef(onBlur);
   const placeholderRef = React.useRef(placeholder);
   React.useLayoutEffect(() => {
-    onChangeRef.current = onChange;
+    onChangeRef.current = onValueChange ?? onChange;
     onFocusRef.current = onFocus;
     onBlurRef.current = onBlur;
   });
@@ -206,7 +212,11 @@ const RichTextEditor = ({
   React.useEffect(() => {
     if (!editor) return;
     if (value !== undefined && value !== editor.getHTML()) {
-      editor.commands.setContent(value);
+      // A parent-driven value is not a user edit: don't echo it through onValueChange.
+      const { from, to } = editor.state.selection;
+      editor.commands.setContent(value, { emitUpdate: false });
+      const end = editor.state.doc.content.size;
+      editor.commands.setTextSelection({ from: Math.min(from, end), to: Math.min(to, end) });
     }
   }, [value, editor]);
 
@@ -268,6 +278,7 @@ const RichTextEditor = ({
 
 const RichTextEditorContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const editor = useRichTextEditor();
+
   return (
     <div data-slot="rich-text-editor-content" className={cn(contentClassName, className)} {...props}>
       <EditorContent editor={editor} />
@@ -289,12 +300,13 @@ const RichTextEditorToolbar = ({ className, children, ...props }: React.Componen
   );
 };
 
-export interface RichTextEditorButtonProps {
+export interface RichTextEditorButtonProps extends Omit<
+  React.ComponentProps<typeof Toggle>,
+  'children' | 'pressed' | 'onPressedChange'
+> {
   tooltip: string;
   pressed?: boolean;
   onPressedChange?: () => void;
-  disabled?: boolean;
-  className?: string;
   children: React.ReactNode;
 }
 
@@ -305,6 +317,7 @@ const RichTextEditorButton = ({
   disabled,
   className,
   children,
+  ...props
 }: RichTextEditorButtonProps) => {
   return (
     <Tooltip>
@@ -318,6 +331,7 @@ const RichTextEditorButton = ({
             disabled={disabled}
             aria-label={tooltip}
             className={className}
+            {...props}
           />
         }
       >
@@ -413,11 +427,11 @@ const RichTextEditorLinkPopover = () => {
             onChange={(e) => setUrl(e.target.value)}
             className="h-8 text-sm"
           />
-          <Button type="submit" variant="ghost" size="icon-sm">
+          <Button type="submit" variant="ghost" size="icon-sm" aria-label="Apply link">
             <Check className="size-4" />
           </Button>
           {isLink && (
-            <Button type="button" variant="ghost" size="icon-sm" onClick={removeLink}>
+            <Button type="button" variant="ghost" size="icon-sm" aria-label="Remove link" onClick={removeLink}>
               <Trash2 className="size-4 text-destructive" />
             </Button>
           )}
@@ -464,11 +478,13 @@ const RichTextEditorLinkBubble = () => {
 
   const linkFromNode = React.useCallback((node: Node | null | undefined): HTMLAnchorElement | null => {
     const el = node instanceof HTMLElement ? node : node?.parentElement;
+
     return el?.closest('a') ?? null;
   }, []);
 
   const linkAtSelection = React.useCallback((): HTMLAnchorElement | null => {
     if (!editor.isEditable || !editor.isActive('link')) return null;
+
     return linkFromNode(editor.view.domAtPos(editor.state.selection.from).node);
   }, [editor, linkFromNode]);
 
@@ -499,6 +515,7 @@ const RichTextEditorLinkBubble = () => {
       }
     };
     editor.on('selectionUpdate', onSelect);
+
     return () => {
       editor.off('selectionUpdate', onSelect);
     };
@@ -517,6 +534,7 @@ const RichTextEditorLinkBubble = () => {
     const onOut = () => scheduleHide();
     dom.addEventListener('mouseover', onOver);
     dom.addEventListener('mouseout', onOut);
+
     return () => {
       dom.removeEventListener('mouseover', onOver);
       dom.removeEventListener('mouseout', onOut);
@@ -532,6 +550,7 @@ const RichTextEditorLinkBubble = () => {
     };
     window.addEventListener('scroll', scheduleReposition, true);
     window.addEventListener('resize', scheduleReposition);
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', scheduleReposition, true);
@@ -554,6 +573,7 @@ const RichTextEditorLinkBubble = () => {
   const selectLink = () => {
     const from = editor.view.posAtDOM(target.el, 0);
     const to = from + (target.el.textContent?.length ?? 0);
+
     return editor.chain().focus().setTextSelection({ from, to }).extendMarkRange('link');
   };
 
@@ -563,6 +583,7 @@ const RichTextEditorLinkBubble = () => {
     if (href === '') {
       selectLink().unsetLink().run();
       setTarget(null);
+
       return;
     }
     selectLink().setLink({ href }).run();

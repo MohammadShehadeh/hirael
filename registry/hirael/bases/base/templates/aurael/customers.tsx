@@ -39,6 +39,7 @@ interface CustomersProps {
 
 export const Customers = ({ lang }: CustomersProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="customers" index="06" label={c.label} note={c.note} lang={lang}>
       <Reveal>
@@ -50,13 +51,13 @@ export const Customers = ({ lang }: CustomersProps) => {
       <Reveal delay={0.06}>
         <figure className="mt-12 border-t border-border pt-10">
           <blockquote>
-            <p className="max-w-xl text-balance text-2xl font-medium leading-snug text-foreground sm:text-3xl">
+            <p className="max-w-xl text-2xl leading-snug font-medium text-balance text-foreground sm:text-3xl">
               {c.quote}
             </p>
           </blockquote>
           <figcaption className="mt-6 text-sm text-muted-foreground">
             <span className="text-foreground">{c.author}</span>
-            {' · '}
+            {', '}
             {c.location}
           </figcaption>
         </figure>

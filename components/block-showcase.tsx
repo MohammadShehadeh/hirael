@@ -267,7 +267,7 @@ const ART: Record<string, React.ReactNode> = {
 
   'not-found': (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <span className="text-display text-4xl italic leading-none text-foreground/15">404</span>
+      <span className="text-display text-4xl leading-none text-foreground/15 italic">404</span>
       <div className="flex gap-1.5">
         <div className="h-4 w-11 rounded-sm bg-warm" />
         <div className="h-4 w-11 rounded-sm border border-border" />
@@ -281,7 +281,7 @@ const ART: Record<string, React.ReactNode> = {
       {['v6.7', 'v6.6', 'v6.5'].map((version, i) => (
         <div key={version} className="relative flex items-center gap-2.5 ps-4 pe-5">
           <span className={cn('size-2 shrink-0 rounded-full', i === 0 ? 'bg-warm' : 'bg-foreground/25')} />
-          <span className="text-[9px] tabular-nums text-foreground/40">{version}</span>
+          <span className="text-[9px] text-foreground/40 tabular-nums">{version}</span>
           <Bar className={cn('h-1 flex-1', i > 0 && 'bg-foreground/6')} />
         </div>
       ))}
@@ -384,7 +384,7 @@ const ART: Record<string, React.ReactNode> = {
   ),
 
   'logo-cloud': (
-    <div className="mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] flex size-full flex-col justify-center gap-2">
+    <div className="flex size-full flex-col justify-center gap-2 mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]">
       {[
         ['w-11', 'w-14', 'w-10', 'w-12'],
         ['w-12', 'w-9', 'w-14', 'w-11'],
@@ -472,17 +472,17 @@ const ART: Record<string, React.ReactNode> = {
           <span className="size-1 rounded-full bg-warm" />
         </span>
         <Bar className="h-1 w-12 bg-warm/70" />
-        <span className="ms-auto text-[10px] tabular-nums text-warm">$29</span>
+        <span className="ms-auto text-[10px] text-warm tabular-nums">$29</span>
       </div>
       <div className="-mx-2 flex min-h-0 flex-1 items-center gap-2 px-2">
         <span className="size-3 shrink-0 rounded-full border border-border" />
         <Bar className="h-1 w-10 bg-foreground/10" />
-        <span className="ms-auto text-[10px] tabular-nums text-foreground/35">$99</span>
+        <span className="ms-auto text-[10px] text-foreground/35 tabular-nums">$99</span>
       </div>
       <div className="flex min-h-0 flex-1 flex-col justify-center gap-1 border-t border-border">
         <div className="flex items-baseline justify-between gap-3">
           <Bar className="h-0.5 w-10 bg-foreground/10" />
-          <span className="text-[9px] tabular-nums text-foreground/40">6.8k / 10k</span>
+          <span className="text-[9px] text-foreground/40 tabular-nums">6.8k / 10k</span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
           <div className="h-full w-[68%] rounded-full bg-foreground/30" />
@@ -551,15 +551,17 @@ export const BlockShowcase = () => {
           (sum, category) => sum + (category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0),
           0,
         );
+
         return (
           <section key={group} className="flex flex-col gap-4">
             <div className="flex items-baseline justify-between">
               <SectionLabel>{label}</SectionLabel>
-              <span className="text-xs tabular-nums uppercase text-muted-foreground">{blockCount} blocks</span>
+              <span className="text-xs text-muted-foreground uppercase tabular-nums">{blockCount} blocks</span>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
               {categories.map((category) => {
                 const count = category.blockKind ? BLOCKS_BY_KIND[category.blockKind].length : 0;
+
                 return (
                   <Link
                     key={category.slug}
@@ -570,7 +572,7 @@ export const BlockShowcase = () => {
                     <div aria-hidden className="blueprint-corners pointer-events-none absolute inset-0 opacity-20" />
                     <div className="relative z-10 flex items-baseline gap-2 px-3 pt-2.5 pb-2">
                       <h3 className="truncate text-sm font-medium tracking-tight">{category.title}</h3>
-                      <span className="ms-auto text-[11px] tabular-nums text-muted-foreground">{count}</span>
+                      <span className="ms-auto text-[11px] text-muted-foreground tabular-nums">{count}</span>
                     </div>
                     <div className="relative z-10 flex-1 overflow-hidden border-t border-border/70">
                       {ART[category.slug] ?? FALLBACK_ART}

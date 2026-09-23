@@ -5,6 +5,17 @@ import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/registry/hirael/bases/base/ui/dialog';
+import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
+import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import {
   Command,
@@ -38,6 +49,7 @@ const useControllableState = <T,>(controlled: T | undefined, defaultValue: T, on
     },
     [controlled, onChange],
   );
+
   return [value, setValue] as const;
 };
 
@@ -58,6 +70,7 @@ const useTenantSwitcher = () => {
   if (!context) {
     throw new Error('TenantSwitcher parts must be used within <TenantSwitcher>');
   }
+
   return context;
 };
 
@@ -170,9 +183,9 @@ const TenantSwitcherTrigger = ({
           <TenantLogo tenant={active} />
           <span
             key={active?.value ?? 'placeholder'}
-            className="flex min-w-0 flex-1 flex-col animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+            className="flex min-w-0 flex-1 animate-in flex-col duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none"
           >
-            <span className={cn('truncate font-medium leading-tight', !active && 'text-muted-foreground')}>
+            <span className={cn('truncate leading-tight font-medium', !active && 'text-muted-foreground')}>
               {active ? active.label : placeholder}
             </span>
             {active?.caption && (
@@ -304,6 +317,7 @@ const useGroupedTenants = (tenants: Tenant[]) => {
       bucket.push(tenant);
       groups.set(tenant.group, bucket);
     }
+
     return [...groups];
   }, [tenants]);
 };
@@ -318,21 +332,97 @@ const TENANT_WORKSPACES: Tenant[] = [
 ];
 
 const TenantSwitcherBlock = () => {
+  const [tenants, setTenants] = React.useState(TENANT_WORKSPACES);
   const [workspace, setWorkspace] = React.useState<string | undefined>('fieldnote');
+  const [open, setOpen] = React.useState(false);
+  const [creating, setCreating] = React.useState(false);
+  const [name, setName] = React.useState('');
+  const [error, setError] = React.useState<string | undefined>();
+
+  const onCreatingChange = (next: boolean) => {
+    setCreating(next);
+    if (!next) {
+      setName('');
+      setError(undefined);
+    }
+  };
+
+  const createWorkspace = (event: React.FormEvent) => {
+    event.preventDefault();
+    const label = name.trim();
+    if (!label) {
+      setError('Give the workspace a name.');
+
+      return;
+    }
+    if (tenants.some((tenant) => tenant.label.toLowerCase() === label.toLowerCase())) {
+      setError('You already have a workspace with that name.');
+
+      return;
+    }
+    const value = `${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${tenants.length}`;
+    setTenants((prev) => [...prev, { value, label, caption: 'Free', group: 'Teams' }]);
+    setWorkspace(value);
+    onCreatingChange(false);
+  };
 
   return (
     <section data-slot="tenant-switcher-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <div className="grid w-full max-w-sm gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+      <div className="grid w-full max-w-sm animate-in gap-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
         <span className="text-sm font-medium text-foreground">Workspace</span>
-        <TenantSwitcher tenants={TENANT_WORKSPACES} value={workspace} onValueChange={setWorkspace}>
+        <TenantSwitcher
+          tenants={tenants}
+          value={workspace}
+          onValueChange={setWorkspace}
+          open={open}
+          onOpenChange={setOpen}
+        >
           <TenantSwitcherTrigger />
           <TenantSwitcherContent
             footer={
-              <TenantSwitcherCreate onClick={() => setWorkspace('personal')}>Create workspace</TenantSwitcherCreate>
+              <TenantSwitcherCreate
+                onClick={() => {
+                  setOpen(false);
+                  setCreating(true);
+                }}
+              >
+                Create workspace
+              </TenantSwitcherCreate>
             }
           />
         </TenantSwitcher>
       </div>
+
+      <Dialog open={creating} onOpenChange={onCreatingChange}>
+        <DialogContent className="sm:max-w-sm">
+          <form noValidate onSubmit={createWorkspace} className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle>Create workspace</DialogTitle>
+              <DialogDescription>Name it after your team or project. You can rename it later.</DialogDescription>
+            </DialogHeader>
+            <Field data-invalid={Boolean(error) || undefined}>
+              <FieldLabel htmlFor="tenant-switcher-name">Workspace name</FieldLabel>
+              <Input
+                id="tenant-switcher-name"
+                value={name}
+                placeholder="Acme Studio"
+                autoComplete="off"
+                onChange={(event) => {
+                  setName(event.target.value);
+                  setError(undefined);
+                }}
+                aria-invalid={Boolean(error) || undefined}
+                aria-describedby={error ? 'tenant-switcher-name-error' : undefined}
+              />
+              <FieldError id="tenant-switcher-name-error">{error}</FieldError>
+            </Field>
+            <DialogFooter>
+              <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>
+              <Button type="submit">Create</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

@@ -18,6 +18,7 @@ const resolveCurrencySymbol = (currency: string, locale: string): string => {
       currencyDisplay: 'narrowSymbol',
     }).formatToParts(0);
     const symbol = parts.find((p) => p.type === 'currency')?.value;
+
     return symbol ?? currency;
   } catch {
     return currency;
@@ -38,6 +39,7 @@ const formatNumber = (value: number, locale: string, decimals: number): string =
 const resolveDecimalSeparator = (locale: string): string => {
   try {
     const parts = new Intl.NumberFormat(locale).formatToParts(12345.6);
+
     return parts.find((p) => p.type === 'decimal')?.value ?? '.';
   } catch {
     return '.';
@@ -70,6 +72,7 @@ const sanitizeInput = (raw: string, decimals: number, decimalSeparator: string):
     const frac = str.slice(firstSep + 1);
     str = `${whole}${decimalSeparator}${frac.slice(0, decimals)}`;
   }
+
   return negative ? `-${str}` : str;
 };
 
@@ -80,6 +83,7 @@ const parseToNumber = (view: string, decimalSeparator: string): number | null =>
     return null;
   }
   const n = Number(normalized);
+
   return Number.isFinite(n) ? n : null;
 };
 
@@ -103,6 +107,7 @@ const useCurrencyInput = () => {
   if (!ctx) {
     throw new Error('CurrencyInput compound parts must be used inside <CurrencyInput>');
   }
+
   return ctx;
 };
 
@@ -118,6 +123,8 @@ export interface CurrencyInputProps extends Omit<
   locale?: string;
   decimals?: number;
   disabled?: boolean;
+  /** Submits the plain number (no symbol or grouping) under this name. */
+  name?: string;
   children?: React.ReactNode;
 }
 
@@ -130,6 +137,7 @@ const CurrencyInput = ({
   locale = 'en-US',
   decimals = 2,
   disabled,
+  name,
   className,
   children,
   ...props
@@ -140,34 +148,30 @@ const CurrencyInput = ({
   const [internalValue, setInternalValue] = React.useState<number | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internalValue;
 
-  // Lets the sync effect tell an external change from the field's own typing;
-  // without it every keystroke is reformatted ("1" becomes "1.00").
-  const lastSeenValue = React.useRef<number | null>(value);
-  // A locale or precision change must reformat the view even when the value is unchanged.
-  const formatKey = `${locale}|${decimals}`;
-  const lastFormatKey = React.useRef(formatKey);
-
   const setValue = React.useCallback(
     (next: number | null) => {
-      lastSeenValue.current = next;
       if (valueProp === undefined) setInternalValue(next);
       onValueChange?.(next);
     },
     [valueProp, onValueChange],
   );
 
-  const [view, setView] = React.useState<string>(() => (value === null ? '' : formatNumber(value, locale, decimals)));
-
-  React.useEffect(() => {
-    if (lastSeenValue.current === value && lastFormatKey.current === formatKey) return;
-    lastSeenValue.current = value;
-    lastFormatKey.current = formatKey;
-    setView(value === null ? '' : formatNumber(value, locale, decimals));
-  }, [value, locale, decimals, formatKey]);
-
   const symbol = React.useMemo(() => resolveCurrencySymbol(currency, locale), [currency, locale]);
 
   const decimalSeparator = React.useMemo(() => resolveDecimalSeparator(locale), [locale]);
+
+  const [view, setView] = React.useState<string>(() => (value === null ? '' : formatNumber(value, locale, decimals)));
+
+  // Reformat on an outside value change or a new locale/precision, but not for the
+  // field's own typing, or every keystroke would snap "1" to "1.00".
+  const formatKey = `${locale}|${decimals}`;
+  const [synced, setSynced] = React.useState({ value, formatKey });
+  if (synced.value !== value || synced.formatKey !== formatKey) {
+    setSynced({ value, formatKey });
+    if (synced.formatKey !== formatKey || value !== parseToNumber(view, decimalSeparator)) {
+      setView(value === null ? '' : formatNumber(value, locale, decimals));
+    }
+  }
 
   const ctx = React.useMemo<Ctx>(
     () => ({
@@ -194,6 +198,7 @@ const CurrencyInput = ({
         {...props}
       >
         {children}
+        {name && <input type="hidden" name={name} value={value ?? ''} />}
       </InputGroup>
     </CurrencyInputContext.Provider>
   );
@@ -205,6 +210,7 @@ interface CurrencyInputPrefixProps extends Omit<React.ComponentProps<typeof Inpu
 
 const CurrencyInputPrefix = ({ className, children, ...props }: CurrencyInputPrefixProps) => {
   const ctx = useCurrencyInput();
+
   return (
     <InputGroupAddon data-slot="currency-input-prefix" align="inline-start" className={className} {...props}>
       <InputGroupText className="font-mono">{children ?? ctx.symbol}</InputGroupText>
@@ -218,6 +224,7 @@ interface CurrencyInputSuffixProps extends Omit<React.ComponentProps<typeof Inpu
 
 const CurrencyInputSuffix = ({ className, children, ...props }: CurrencyInputSuffixProps) => {
   const ctx = useCurrencyInput();
+
   return (
     <InputGroupAddon data-slot="currency-input-suffix" align="inline-end" className={className} {...props}>
       <InputGroupText className="font-mono">{children ?? ctx.symbol}</InputGroupText>
@@ -253,7 +260,7 @@ const CurrencyInputField = ({
         const sanitized = sanitizeInput(e.target.value, ctx.decimals, ctx.decimalSeparator);
         ctx.setView(sanitized);
         const parsed = parseToNumber(sanitized, ctx.decimalSeparator);
-        ctx.setValue(parsed);
+        if (parsed !== ctx.value) ctx.setValue(parsed);
       }}
       onFocus={(e) => {
         onFocus?.(e);

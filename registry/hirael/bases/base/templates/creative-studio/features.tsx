@@ -133,6 +133,7 @@ const FeatureCard = ({ index, className, children }: FeatureCardProps) => {
   const inView = useInView(ref, { once: true, margin: '-100px' });
   const reduce = useReducedMotion();
   const show = reduce || inView;
+
   return (
     <motion.div
       ref={ref}
@@ -155,7 +156,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
     <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-28 md:py-32">
       <NoiseOverlay variant="bg" className="opacity-[0.15]" />
 
-      <div className="relative container flex flex-col gap-12 md:gap-16">
+      <div className="relative mx-auto flex max-w-[1480px] flex-col gap-12 px-4 md:gap-16">
         <div className="flex flex-col items-center gap-1 text-center">
           <WordsPullUp
             text="Studio-grade craft for visionary creators."
@@ -167,7 +168,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:gap-2 md:grid-cols-2 md:gap-1 lg:grid-cols-4 lg:h-[480px]">
+        <div className="grid grid-cols-1 gap-3 sm:gap-2 md:grid-cols-2 md:gap-1 lg:h-[480px] lg:grid-cols-4">
           <FeatureCard index={0} className="min-h-[320px] lg:h-full lg:min-h-0">
             {videoSrc ? (
               <video
@@ -198,7 +199,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/40 sm:h-12 sm:w-12">
                     <card.Icon className="h-5 w-5 text-(--cs-ink) sm:h-6 sm:w-6" />
                   </div>
-                  <span className="font-mono text-[10px] tabular-nums text-(--cs-muted)">{card.number}</span>
+                  <span className="text-[10px] text-(--cs-muted) tabular-nums">{card.number}</span>
                 </div>
 
                 <h3 className="text-base font-medium text-(--cs-cream)">{card.title}</h3>

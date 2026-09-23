@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, TriangleAlert } from 'lucide-react';
+import { Check, CircleCheck, TriangleAlert } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -22,6 +22,7 @@ import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldTitle,
@@ -148,14 +149,27 @@ interface SettingsRowProps extends Omit<React.ComponentProps<'div'>, 'children'>
   description?: React.ReactNode;
   /** Connects the label to the control so clicking it focuses the field. */
   htmlFor?: string;
+  /** Shown under the control; also marks the row invalid. Pair it with `errorId` for the control's aria-describedby. */
+  error?: React.ReactNode;
+  errorId?: string;
   children?: React.ReactNode;
 }
 
-const SettingsRow = ({ label, description, htmlFor, className, children, ...props }: SettingsRowProps) => {
+const SettingsRow = ({
+  label,
+  description,
+  htmlFor,
+  error,
+  errorId,
+  className,
+  children,
+  ...props
+}: SettingsRowProps) => {
   return (
     <Field
       orientation="responsive"
       data-slot="settings-row"
+      data-invalid={error ? true : undefined}
       className={cn('gap-3 px-5 py-4 @md/field-group:justify-between @md/field-group:gap-8', className)}
       {...props}
     >
@@ -163,7 +177,10 @@ const SettingsRow = ({ label, description, htmlFor, className, children, ...prop
         {htmlFor ? <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel> : <FieldTitle>{label}</FieldTitle>}
         {description ? <FieldDescription>{description}</FieldDescription> : null}
       </FieldContent>
-      <div className="flex w-full flex-col gap-2 @md/field-group:shrink-0 @md/field-group:basis-80">{children}</div>
+      <div className="flex w-full flex-col gap-2 @md/field-group:shrink-0 @md/field-group:basis-80">
+        {children}
+        {error ? <FieldError id={errorId}>{error}</FieldError> : null}
+      </div>
     </Field>
   );
 };
@@ -238,6 +255,27 @@ const PREFERENCES = {
 
 const BIO_MAX = 160;
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+interface ProfileErrors {
+  name?: string;
+  username?: string;
+}
+
+const validateProfile = (profile: typeof PROFILE): ProfileErrors => {
+  const errors: ProfileErrors = {};
+  if (!profile.name.trim()) errors.name = 'Enter your name.';
+  if (!profile.username) errors.username = 'Pick a username.';
+
+  return errors;
+};
+
+const validateRecovery = (email: string) => {
+  if (email && !EMAIL_PATTERN.test(email)) return "That doesn't look like a valid email.";
+
+  return undefined;
+};
+
 const initialsOf = (name: string) => {
   return name
     .split(' ')
@@ -256,6 +294,8 @@ const Settings01 = () => {
     profile.name !== savedProfile.name ||
     profile.username !== savedProfile.username ||
     profile.bio !== savedProfile.bio;
+  const [profileAttempted, setProfileAttempted] = React.useState(false);
+  const profileErrors = profileAttempted ? validateProfile(profile) : {};
 
   const [prefs, setPrefs] = React.useState(PREFERENCES);
   const [savedPrefs, setSavedPrefs] = React.useState(PREFERENCES);
@@ -267,6 +307,25 @@ const Settings01 = () => {
   const [recovery, setRecovery] = React.useState('');
   const [savedRecovery, setSavedRecovery] = React.useState('');
   const recoveryDirty = recovery !== savedRecovery;
+  const [recoveryAttempted, setRecoveryAttempted] = React.useState(false);
+  const recoveryError = recoveryAttempted ? validateRecovery(recovery) : undefined;
+
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [deletionScheduled, setDeletionScheduled] = React.useState(false);
+
+  const saveProfile = () => {
+    setProfileAttempted(true);
+    if (Object.keys(validateProfile(profile)).length > 0) return;
+    setSavedProfile(profile);
+    setProfileAttempted(false);
+  };
+
+  const saveRecovery = () => {
+    setRecoveryAttempted(true);
+    if (validateRecovery(recovery)) return;
+    setSavedRecovery(recovery);
+    setRecoveryAttempted(false);
+  };
 
   const avatarInputRef = React.useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null);
@@ -287,7 +346,7 @@ const Settings01 = () => {
     <section data-slot="settings-01-block" className="min-h-svh w-full bg-background">
       <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         <div className={cn(ENTER, 'mb-8 flex flex-col gap-1')}>
-          <span className="text-xs uppercase text-muted-foreground">Account</span>
+          <span className="text-xs text-muted-foreground uppercase">Account</span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Account settings</h1>
           <p className="text-sm text-muted-foreground">Your profile, contact email, and how the app behaves for you.</p>
         </div>
@@ -349,18 +408,27 @@ const Settings01 = () => {
                     </Button>
                   </div>
                 </SettingsRow>
-                <SettingsRow label="Full name" htmlFor="settings-name">
+                <SettingsRow
+                  label="Full name"
+                  htmlFor="settings-name"
+                  error={profileErrors.name}
+                  errorId="settings-name-error"
+                >
                   <Input
                     id="settings-name"
                     value={profile.name}
                     onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
                     autoComplete="name"
+                    aria-invalid={profileErrors.name ? true : undefined}
+                    aria-describedby={profileErrors.name ? 'settings-name-error' : undefined}
                   />
                 </SettingsRow>
                 <SettingsRow
                   label="Username"
                   description="Letters, numbers, and dashes only."
                   htmlFor="settings-username"
+                  error={profileErrors.username}
+                  errorId="settings-username-error"
                 >
                   <InputGroup>
                     <InputGroupAddon align="inline-start">
@@ -377,6 +445,8 @@ const Settings01 = () => {
                       }
                       autoComplete="username"
                       spellCheck={false}
+                      aria-invalid={profileErrors.username ? true : undefined}
+                      aria-describedby={profileErrors.username ? 'settings-username-error' : undefined}
                     />
                   </InputGroup>
                 </SettingsRow>
@@ -392,7 +462,7 @@ const Settings01 = () => {
                     rows={3}
                     onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))}
                   />
-                  <span className="self-end text-xs tabular-nums text-muted-foreground">
+                  <span className="self-end text-xs text-muted-foreground tabular-nums">
                     {profile.bio.length} / {BIO_MAX}
                   </span>
                 </SettingsRow>
@@ -403,16 +473,14 @@ const Settings01 = () => {
                   variant="ghost"
                   size="sm"
                   disabled={!profileDirty}
-                  onClick={() => setProfile(savedProfile)}
+                  onClick={() => {
+                    setProfile(savedProfile);
+                    setProfileAttempted(false);
+                  }}
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="button"
-                  variant={profileDirty ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSavedProfile(profile)}
-                >
+                <Button type="button" size="sm" disabled={!profileDirty} onClick={saveProfile}>
                   Save changes
                 </Button>
               </SettingsFooter>
@@ -451,6 +519,8 @@ const Settings01 = () => {
                   label="Recovery email"
                   description="Used only if you lose access to your main address."
                   htmlFor="settings-recovery"
+                  error={recoveryError}
+                  errorId="settings-recovery-error"
                 >
                   <Input
                     id="settings-recovery"
@@ -459,6 +529,8 @@ const Settings01 = () => {
                     value={recovery}
                     onChange={(e) => setRecovery(e.target.value)}
                     autoComplete="off"
+                    aria-invalid={recoveryError ? true : undefined}
+                    aria-describedby={recoveryError ? 'settings-recovery-error' : undefined}
                   />
                 </SettingsRow>
               </FieldGroup>
@@ -468,16 +540,14 @@ const Settings01 = () => {
                   variant="ghost"
                   size="sm"
                   disabled={!recoveryDirty}
-                  onClick={() => setRecovery(savedRecovery)}
+                  onClick={() => {
+                    setRecovery(savedRecovery);
+                    setRecoveryAttempted(false);
+                  }}
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="button"
-                  variant={recoveryDirty ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSavedRecovery(recovery)}
-                >
+                <Button type="button" size="sm" disabled={!recoveryDirty} onClick={saveRecovery}>
                   Save changes
                 </Button>
               </SettingsFooter>
@@ -550,12 +620,7 @@ const Settings01 = () => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="button"
-                  variant={prefsDirty ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSavedPrefs(prefs)}
-                >
+                <Button type="button" size="sm" disabled={!prefsDirty} onClick={() => setSavedPrefs(prefs)}>
                   Save changes
                 </Button>
               </SettingsFooter>
@@ -574,12 +639,25 @@ const Settings01 = () => {
                 description="Removes your profile, workspaces you own, and all data within 30 days."
                 className="sm:items-center"
               >
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button type="button" variant="destructive" size="sm" className="sm:self-end">
-                      Delete account
+                {deletionScheduled ? (
+                  <div className="flex flex-col gap-2 sm:items-end">
+                    <p role="status" className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CircleCheck className="size-4 shrink-0 text-destructive" aria-hidden />
+                      Deletion scheduled. Your account closes in 30 days.
+                    </p>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setDeletionScheduled(false)}>
+                      Cancel deletion
                     </Button>
-                  </AlertDialogTrigger>
+                  </div>
+                ) : null}
+                <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                  {deletionScheduled ? null : (
+                    <AlertDialogTrigger asChild>
+                      <Button type="button" variant="destructive" size="sm" className="sm:self-end">
+                        Delete account
+                      </Button>
+                    </AlertDialogTrigger>
+                  )}
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete your account?</AlertDialogTitle>
@@ -591,7 +669,15 @@ const Settings01 = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Keep account</AlertDialogCancel>
-                      <AlertDialogAction variant="destructive">Delete account</AlertDialogAction>
+                      <AlertDialogAction
+                        variant="destructive"
+                        onClick={() => {
+                          setDeleteOpen(false);
+                          setDeletionScheduled(true);
+                        }}
+                      >
+                        Delete account
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

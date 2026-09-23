@@ -91,7 +91,8 @@ const CellContent = ({ value }: CellContentProps) => {
       </>
     );
   }
-  return <span className="text-sm tabular-nums text-foreground">{value}</span>;
+
+  return <span className="text-sm text-foreground tabular-nums">{value}</span>;
 };
 
 const Pricing02 = () => {
@@ -105,10 +106,10 @@ const Pricing02 = () => {
     <section data-slot="pricing" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div data-slot="pricing-header" className="flex flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Compare plans</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Compare plans</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'max-w-2xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Know when your site is down before your customers do.
           </h2>
@@ -142,16 +143,16 @@ const Pricing02 = () => {
           <Table className="table-fixed border-collapse text-start">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/2 align-top text-start whitespace-normal md:w-2/5">
-                  <span className="text-xs font-normal uppercase text-muted-foreground">Features</span>
+                <TableHead className="w-1/2 text-start align-top whitespace-normal md:w-2/5">
+                  <span className="text-xs font-normal text-muted-foreground uppercase">Features</span>
                 </TableHead>
                 {PLANS.map((plan) => (
-                  <TableHead key={plan.key} className={cn('h-auto align-bottom text-start', columnClass(plan))}>
+                  <TableHead key={plan.key} className={cn('h-auto text-start align-bottom', columnClass(plan))}>
                     <div className={cn(SWAP, 'flex flex-col gap-3 py-4')}>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
                         <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{plan.name}</span>
                         <span className="text-xs text-muted-foreground">
-                          <span dir="ltr" className="tabular-nums text-foreground">
+                          <span dir="ltr" className="text-foreground tabular-nums">
                             {plan.price}
                           </span>{' '}
                           / month
@@ -176,7 +177,7 @@ const Pricing02 = () => {
                 <React.Fragment key={group.label}>
                   <TableRow>
                     <TableCell colSpan={PLANS.length + 1}>
-                      <span className="text-xs uppercase text-muted-foreground">{group.label}</span>
+                      <span className="text-xs text-muted-foreground uppercase">{group.label}</span>
                     </TableCell>
                   </TableRow>
                   {group.rows.map((row) => (

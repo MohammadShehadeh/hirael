@@ -43,7 +43,7 @@ const SparklineDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Stat tiles', ar: 'بطاقات الإحصاءات' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Stat tiles', ar: 'بطاقات الإحصاءات' })}</p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {tiles.map((tile) => (
             <div
@@ -51,7 +51,7 @@ const SparklineDemo = () => {
               className="flex items-end justify-between gap-3 rounded-md border border-border bg-card p-4 text-card-foreground"
             >
               <div className="grid gap-1">
-                <p className="text-xs uppercase text-muted-foreground">{tile.label}</p>
+                <p className="text-xs text-muted-foreground uppercase">{tile.label}</p>
                 <p className="text-2xl font-semibold tracking-[-0.03em]">{tile.value}</p>
                 <p className="font-mono text-[11px] text-muted-foreground">{tile.delta}</p>
               </div>
@@ -62,7 +62,7 @@ const SparklineDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Hover for values', ar: 'مرّر للاطلاع على القيم' })}
         </p>
         <div className="flex flex-wrap items-center gap-6 rounded-md border border-border bg-card p-4">
@@ -99,7 +99,7 @@ const SparklineDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Custom compose', ar: 'تركيب مخصّص' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Custom compose', ar: 'تركيب مخصّص' })}</p>
         <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4 text-card-foreground">
           <div className="grid gap-1">
             <p className="text-sm font-medium">{t({ en: 'Daily revenue', ar: 'الإيراد اليومي' })}</p>

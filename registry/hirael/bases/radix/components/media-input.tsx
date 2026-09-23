@@ -24,17 +24,42 @@ const MediaInputContext = React.createContext<MediaInputContextValue | null>(nul
 const useMediaInput = () => {
   const ctx = React.useContext(MediaInputContext);
   if (!ctx) throw new Error('useMediaInput must be used within <MediaInput>');
+
   return ctx;
 };
 
-const formatSize = (bytes: number) => {
-  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  if (bytes >= 1024) return `${Math.round(bytes / 1024)} KB`;
-  return `${bytes} B`;
+const formatBytes = (bytes: number): string => {
+  if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'] as const;
+  let i = 0;
+  let n = bytes;
+  while (n >= 1024 && i < units.length - 1) {
+    n /= 1024;
+    i++;
+  }
+
+  return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
+};
+
+const matchesAccept = (file: File, accept?: string): boolean => {
+  const tokens = (accept ?? '')
+    .split(',')
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
+  if (tokens.length === 0) return true;
+  const name = file.name.toLowerCase();
+  const type = file.type.toLowerCase();
+
+  return tokens.some((token) => {
+    if (token.startsWith('.')) return name.endsWith(token);
+    if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
+
+    return type === token;
+  });
 };
 
 export interface MediaInputProps extends Omit<React.ComponentProps<'div'>, 'onError' | 'defaultValue'> {
-  /** Native accept filter, e.g. "audio/*" or "image/png,image/webp". */
+  /** Accept filter, e.g. "audio/*" or "image/png,.webp". Also checked on pick, since the native filter can be bypassed. */
   accept?: string;
   /** Maximum file size in bytes. Larger picks are rejected with an error. */
   maxSize?: number;
@@ -64,14 +89,28 @@ const MediaInput = ({
   const [internalValue, setInternalValue] = React.useState<MediaInputValue | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internalValue;
   const [error, setError] = React.useState<string | null>(null);
-  const createdUrlRef = React.useRef<string | null>(null);
+  const createdUrlsRef = React.useRef(new Set<string>());
 
-  React.useEffect(
-    () => () => {
-      if (createdUrlRef.current) URL.revokeObjectURL(createdUrlRef.current);
-    },
-    [],
-  );
+  // Revoke object URLs this input created once they are no longer the value, so a controlled parent that
+  // rejects a change keeps its current preview.
+  const currentUrl = value?.url;
+  React.useEffect(() => {
+    const created = createdUrlsRef.current;
+    for (const url of created) {
+      if (url === currentUrl) continue;
+      URL.revokeObjectURL(url);
+      created.delete(url);
+    }
+  }, [currentUrl]);
+
+  React.useEffect(() => {
+    const created = createdUrlsRef.current;
+
+    return () => {
+      for (const url of created) URL.revokeObjectURL(url);
+      created.clear();
+    };
+  }, []);
 
   const open = React.useCallback(() => {
     if (!disabled) inputRef.current?.click();
@@ -86,27 +125,42 @@ const MediaInput = ({
   );
 
   const clear = React.useCallback(() => {
-    if (createdUrlRef.current) {
-      URL.revokeObjectURL(createdUrlRef.current);
-      createdUrlRef.current = null;
-    }
     // Emptied here, not on change, so a named input still submits its file and re-picking the same file fires change.
     if (inputRef.current) inputRef.current.value = '';
     setError(null);
     setValue(null);
   }, [setValue]);
 
+  const reject = (message: string) => {
+    // Put the accepted file back in the native input, so a named input doesn't submit the rejected one.
+    const input = inputRef.current;
+    if (input) {
+      if (value && typeof DataTransfer !== 'undefined') {
+        const transfer = new DataTransfer();
+        transfer.items.add(value.file);
+        input.files = transfer.files;
+      } else {
+        input.value = '';
+      }
+    }
+    setError(message);
+    onError?.(message);
+  };
+
   const handleFile = (file: File | undefined) => {
     if (!file) return;
-    if (maxSize != null && file.size > maxSize) {
-      const message = `File is larger than ${formatSize(maxSize)}`;
-      setError(message);
-      onError?.(message);
+    if (!matchesAccept(file, accept)) {
+      reject('That file type is not supported.');
+
       return;
     }
-    if (createdUrlRef.current) URL.revokeObjectURL(createdUrlRef.current);
+    if (maxSize != null && file.size > maxSize) {
+      reject(`File is larger than ${formatBytes(maxSize)}.`);
+
+      return;
+    }
     const url = URL.createObjectURL(file);
-    createdUrlRef.current = url;
+    createdUrlsRef.current.add(url);
     setError(null);
     setValue({ file, url });
   };
@@ -180,7 +234,12 @@ const MediaInputContent = ({ className, children, ...props }: React.ComponentPro
   );
 };
 
-const MediaInputTrigger = ({ variant = 'outline', onClick, ...props }: React.ComponentProps<typeof Button>) => {
+const MediaInputTrigger = ({
+  variant = 'outline',
+  onClick,
+  disabled: disabledProp,
+  ...props
+}: React.ComponentProps<typeof Button>) => {
   const { open, disabled } = useMediaInput();
 
   return (
@@ -188,12 +247,12 @@ const MediaInputTrigger = ({ variant = 'outline', onClick, ...props }: React.Com
       type="button"
       data-slot="media-input-trigger"
       variant={variant}
-      disabled={disabled || props.disabled}
+      {...props}
+      disabled={disabled || disabledProp}
       onClick={(event) => {
         onClick?.(event);
         if (!event.defaultPrevented) open();
       }}
-      {...props}
     />
   );
 };
@@ -211,13 +270,19 @@ const MediaInputFile = ({ className, ...props }: React.ComponentProps<'p'>) => {
       {value.file.name}
       <span className="text-muted-foreground/70">
         {' · '}
-        {formatSize(value.file.size)}
+        {formatBytes(value.file.size)}
       </span>
     </p>
   );
 };
 
-const MediaInputClear = ({ onClick, className, children, ...props }: React.ComponentProps<typeof Button>) => {
+const MediaInputClear = ({
+  onClick,
+  className,
+  children,
+  disabled: disabledProp,
+  ...props
+}: React.ComponentProps<typeof Button>) => {
   const { clear, disabled } = useMediaInput();
 
   return (
@@ -227,13 +292,13 @@ const MediaInputClear = ({ onClick, className, children, ...props }: React.Compo
       variant="ghost"
       size="icon"
       aria-label="Remove file"
-      disabled={disabled || props.disabled}
+      {...props}
+      disabled={disabled || disabledProp}
       className={cn('size-7', className)}
       onClick={(event) => {
         onClick?.(event);
         if (!event.defaultPrevented) clear();
       }}
-      {...props}
     >
       {children ?? <X aria-hidden className="size-3.5" />}
     </Button>

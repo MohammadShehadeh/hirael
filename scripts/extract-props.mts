@@ -26,6 +26,7 @@ interface ComponentDoc {
 const createProgram = (rootNames: string[]) => {
   const { config } = ts.readConfigFile(path.join(ROOT, 'tsconfig.json'), (p) => readFileSync(p, 'utf8'));
   const parsed = ts.parseJsonConfigFileContent(config, ts.sys, ROOT);
+
   return ts.createProgram({ rootNames, options: parsed.options });
 };
 
@@ -36,6 +37,7 @@ const declarationOf = (symbol: ts.Symbol) => symbol.valueDeclaration ?? symbol.d
 
 const functionOf = (declaration: ts.Declaration | undefined): ts.SignatureDeclaration | undefined => {
   const node = declaration && ts.isVariableDeclaration(declaration) ? declaration.initializer : declaration;
+
   return node && ts.isFunctionLike(node) ? node : undefined;
 };
 
@@ -48,6 +50,7 @@ const collectDefaults = (declaration: ts.Declaration | undefined) => {
     const key = (element.propertyName ?? element.name).getText();
     defaults[key] = element.initializer.getText();
   }
+
   return defaults;
 };
 
@@ -91,6 +94,7 @@ const extractComponent = (checker: ts.TypeChecker, symbol: ts.Symbol): Omit<Comp
       description: ts.displayPartsToString(prop.getDocumentationComment(checker)) || null,
     });
   }
+
   return { props, extendsNative };
 };
 

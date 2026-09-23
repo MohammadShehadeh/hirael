@@ -21,11 +21,12 @@ export const FullTemplates = () => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {FEATURED_TEMPLATES.map((name) => {
             const entry = REGISTRY_BY_NAME[name];
+
             return (
               <Link
                 key={name}
                 href={entryHref(entry)}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-background outline-none transition-colors hover:border-foreground/40 focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-colors outline-none hover:border-foreground/40 focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
               >
                 <BlockPreview entry={entry} />
                 <div className="flex flex-col gap-1.5 p-5">

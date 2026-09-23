@@ -35,14 +35,14 @@ export const Team = ({ lang }: TeamProps) => {
         <SectionHeader lang={lang} pretitle={c.pretitle} title={c.title} />
 
         <Reveal className="mx-auto mt-10 max-w-2xl text-center">
-          <p className="text-lg font-light leading-relaxed text-muted-foreground">{c.lead}</p>
+          <p className="text-lg leading-relaxed font-light text-muted-foreground">{c.lead}</p>
         </Reveal>
 
         <Reveal className="mt-16 border-t border-border/60 pt-12">
           <p
             className={cn(
               'text-center text-xs font-medium text-muted-foreground',
-              lang === 'en' ? 'uppercase tracking-[0.3em]' : 'text-sm tracking-normal',
+              lang === 'en' ? 'tracking-[0.3em] uppercase' : 'text-sm tracking-normal',
             )}
           >
             {c.companiesLabel}
@@ -53,7 +53,7 @@ export const Team = ({ lang }: TeamProps) => {
                 <span
                   key={company}
                   data-slot="novael-display"
-                  className="whitespace-nowrap text-xl font-semibold tracking-wide text-foreground/70 transition-colors hover:text-foreground sm:text-2xl"
+                  className="text-xl font-semibold tracking-wide whitespace-nowrap text-foreground/70 transition-colors hover:text-foreground sm:text-2xl"
                 >
                   {company}
                 </span>

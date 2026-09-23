@@ -28,5 +28,6 @@ export const sponsorHref = (href: string) => {
   const url = new URL(href);
   url.searchParams.set('utm_source', SITE.registry.name);
   url.searchParams.set('utm_medium', 'sponsor');
+
   return url.toString();
 };

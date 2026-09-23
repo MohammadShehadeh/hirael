@@ -16,7 +16,7 @@ const COMMAND = 'npx shadcn add https://hirael.com/r/multi-select.json';
 
 const Cta01 = () => {
   return (
-    <section data-slot="cta" className="bg-background py-20 md:py-28">
+    <section data-slot="cta" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div
           data-slot="cta-panel"
@@ -32,14 +32,14 @@ const Cta01 = () => {
 
           <div className="relative grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:items-center lg:gap-16 lg:p-14">
             <div data-slot="cta-header" className="flex flex-col gap-5 lg:col-span-7">
-              <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+              <span style={stagger(1)} className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>
                 Get started
               </span>
               <h2
                 style={stagger(2)}
                 className={cn(
                   ENTER,
-                  'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+                  'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
                 )}
               >
                 Stop rebuilding the components every project needs.
@@ -60,10 +60,10 @@ const Cta01 = () => {
                 dir="ltr"
                 className="flex min-w-0 items-center gap-3 rounded-full border border-border bg-background/60 py-1.5 ps-5 pe-1.5"
               >
-                <span aria-hidden className="select-none font-mono text-sm text-muted-foreground">
+                <span aria-hidden className="text-sm text-muted-foreground select-none">
                   $
                 </span>
-                <code className="min-w-0 flex-1 truncate font-mono text-sm">{COMMAND}</code>
+                <span className="min-w-0 flex-1 truncate text-sm tabular-nums">{COMMAND}</span>
                 <CopyButton value={COMMAND} size="md" className="shrink-0" />
               </div>
               <Button asChild variant="outline" size="lg" className="group w-full">
@@ -72,7 +72,7 @@ const Cta01 = () => {
                   <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </Button>
-              <p className="text-center text-xs uppercase text-muted-foreground lg:text-end">No runtime dependency</p>
+              <p className="text-center text-xs text-muted-foreground uppercase lg:text-end">No runtime dependency</p>
             </div>
           </div>
         </div>

@@ -23,11 +23,11 @@ export const Statement = () => {
       />
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center text-center">
-        <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">
+        <p className="mb-6 text-xs tracking-[0.3em] text-muted-foreground uppercase sm:text-sm">
           Intelligent Companion
         </p>
 
-        <h2 className="text-4xl leading-[1.05] tracking-[-1.5px] text-foreground [font-family:var(--font-velorah-serif)] sm:text-6xl md:text-7xl">
+        <h2 className="[font-family:var(--font-velorah-serif)] text-4xl leading-[1.05] tracking-[-1.5px] text-foreground sm:text-6xl md:text-7xl">
           Adventure inspired.
           <br />
           App driven.
@@ -41,7 +41,7 @@ export const Statement = () => {
         <div className="mt-14 grid grid-cols-2 gap-8 sm:grid-cols-4 sm:gap-12">
           {STATS.map((stat) => (
             <div key={stat.label}>
-              <div className="text-3xl font-light text-foreground [font-family:var(--font-velorah-serif)] sm:text-4xl">
+              <div className="[font-family:var(--font-velorah-serif)] text-3xl font-light text-foreground sm:text-4xl">
                 {stat.value}
               </div>
               <div className="text-xs text-muted-foreground sm:text-sm">{stat.label}</div>

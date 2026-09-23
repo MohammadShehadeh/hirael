@@ -45,10 +45,12 @@ const ForgotPassword01 = () => {
     e.preventDefault();
     if (!email.trim()) {
       setError('Enter the email you signed up with.');
+
       return;
     }
     if (!EMAIL_PATTERN.test(email)) {
       setError("That doesn't look like a valid email.");
+
       return;
     }
     setError(null);
@@ -70,7 +72,7 @@ const ForgotPassword01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
       />
 
       <div className="mx-auto w-full max-w-md px-6">
@@ -114,7 +116,7 @@ const ForgotPassword01 = () => {
                     </>
                   )}
                 </p>
-                <a href="#" className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground">
+                <a href="#" className="text-xs text-muted-foreground uppercase transition-colors hover:text-foreground">
                   Back to sign in
                 </a>
               </div>
@@ -123,7 +125,7 @@ const ForgotPassword01 = () => {
             <>
               <div
                 data-slot="forgot-password-header"
-                className="flex flex-col items-center gap-4 border-b border-border px-6 pb-6 pt-8 sm:px-8"
+                className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8"
               >
                 <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
                 <div style={stagger(1)} className={cn(ENTER, 'flex flex-col items-center gap-1 text-center')}>
@@ -188,7 +190,7 @@ const ForgotPassword01 = () => {
           )}
         </div>
 
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs uppercase text-muted-foreground')}>
+        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
           Reset links expire after 15 minutes
         </p>
       </div>

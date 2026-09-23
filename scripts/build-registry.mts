@@ -5,11 +5,13 @@ import { registrySchema, type RegistryItem } from 'shadcn/schema';
 import {
   BASE_UI_PACKAGE,
   REGISTRY_BASES,
+  STATUS_CSS_VARS,
   basePackages,
   entryHref,
   registryFilePath,
   registryItemPath,
   type RegistryBase,
+  type RegistryCssVars,
 } from '@/registry/hirael/registry-meta';
 
 import { ALL_ENTRIES, BRAND, REGISTRY_BASE_URL, ROOT, isShowcased, jsonText, type RegistryEntry } from './shared.mts';
@@ -30,6 +32,7 @@ const deriveType = (entry: RegistryEntry): ItemType => {
   if (isComposite(entry)) return 'registry:block';
   const files = entry.files ?? [];
   const isOwnComponent = files.length > 0 && files.every((f) => f.path.startsWith(COMPONENTS_DIR));
+
   return isOwnComponent ? 'registry:component' : 'registry:ui';
 };
 
@@ -37,8 +40,10 @@ const deriveCategories = (entry: RegistryEntry): string[] => {
   if (!isShowcased(entry)) return entry.categories;
   if (entry.category === 'blocks') {
     if (!entry.blockKind) throw new Error(`"${entry.name}": missing blockKind`);
+
     return ['blocks', entry.blockKind];
   }
+
   return [entry.category];
 };
 
@@ -52,17 +57,42 @@ const resolveDependency = (base: RegistryBase, dep: string) =>
     ? `${REGISTRY_BASE_URL}${registryItemPath(base, dep)}`
     : dep;
 
+const readSources = (base: RegistryBase, entry: RegistryEntry) =>
+  (entry.files ?? [])
+    .map((file) => {
+      try {
+        return readFileSync(path.join(ROOT, registryFilePath(base, file.path)), 'utf8');
+      } catch {
+        return '';
+      }
+    })
+    .join('\n');
+
 // A Base UI file may import @base-ui/react (useRender) where the Radix version needed no Radix package.
-const importsBaseUi = (base: RegistryBase, entry: RegistryEntry) =>
-  base !== 'radix' &&
-  (entry.files ?? []).some((file) => {
-    try {
-      const source = readFileSync(path.join(ROOT, registryFilePath(base, file.path)), 'utf8');
-      return source.includes(`from "${BASE_UI_PACKAGE}`) || source.includes(`from '${BASE_UI_PACKAGE}`);
-    } catch {
-      return false;
+const importsBaseUi = (base: RegistryBase, entry: RegistryEntry) => {
+  if (base === 'radix') return false;
+  const source = readSources(base, entry);
+
+  return source.includes(`from "${BASE_UI_PACKAGE}`) || source.includes(`from '${BASE_UI_PACKAGE}`);
+};
+
+// Functional status tokens aren't in shadcn's default theme; ship them with any item that uses them.
+const TOKEN_CSS_VARS: [RegExp, RegistryCssVars][] = [
+  [/(?:\b[a-z]+-|var\(--)(?:success|warning|info)\b/, STATUS_CSS_VARS],
+];
+
+const deriveCssVars = (base: RegistryBase, entry: RegistryEntry): RegistryCssVars | undefined => {
+  const source = readSources(base, entry);
+  const sets = [entry.cssVars, ...TOKEN_CSS_VARS.filter(([pattern]) => pattern.test(source)).map(([, vars]) => vars)];
+  const merged: RegistryCssVars = {};
+  for (const set of sets) {
+    for (const key of ['theme', 'light', 'dark'] as const) {
+      if (set?.[key]) merged[key] = { ...merged[key], ...set[key] };
     }
-  });
+  }
+
+  return Object.keys(merged).length ? merged : undefined;
+};
 
 const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
   const type = deriveType(entry);
@@ -70,6 +100,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
   const files = (entry.files ?? []).map((file) => {
     const target = file.target ?? (isComposite(entry) ? undefined : deriveTarget(file.path));
     if (!target) throw new Error(`"${entry.name}": missing install target`);
+
     return {
       path: registryFilePath(base, file.path),
       type: file.type ?? type,
@@ -81,6 +112,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
   }
 
   const docsHref = isShowcased(entry) ? entryHref(entry) : undefined;
+  const cssVars = deriveCssVars(base, entry);
 
   return {
     name: entry.name,
@@ -90,7 +122,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
     categories: deriveCategories(entry),
     dependencies: basePackages(base, entry.dependencies ?? [], importsBaseUi(base, entry)).sort(),
     registryDependencies: [...(entry.registryDependencies ?? [])].sort().map((dep) => resolveDependency(base, dep)),
-    ...(entry.cssVars ? { cssVars: entry.cssVars } : {}),
+    ...(cssVars ? { cssVars } : {}),
     ...(isShowcased(entry) && entry.docs ? { docs: entry.docs } : {}),
     ...(files.length ? { files } : {}),
     ...(docsHref ? { meta: { links: { docs: `${REGISTRY_BASE_URL}${docsHref}` } } } : {}),

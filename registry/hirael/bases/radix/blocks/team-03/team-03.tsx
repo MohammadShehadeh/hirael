@@ -141,6 +141,7 @@ const subscribeToMinutes = (onTick: () => void) => {
     },
     MINUTE - (Date.now() % MINUTE),
   );
+
   return () => {
     clearTimeout(timeout);
     clearInterval(interval);
@@ -166,6 +167,7 @@ const readLocalTime = (timeZone: string, time: number) => {
   const offsetMinutes = match ? (match[1] === '-' ? -1 : 1) * (Number(match[2]) * 60 + Number(match[3] ?? 0)) : 0;
   const hour = Number(part('hour'));
   const weekday = part('weekday');
+
   return {
     clock: `${part('hour')}:${part('minute')}`,
     offsetLabel,
@@ -181,6 +183,7 @@ const statusFor = (local: ReturnType<typeof readLocalTime>) => {
   if (local.weekend) return { online: false, label: 'Offline, back Mon 09:00' };
   if (local.working) return { online: true, label: 'Online now' };
   if (!local.beforeStart && local.weekday === 'Fri') return { online: false, label: 'Offline, back Mon 09:00' };
+
   return { online: false, label: 'Offline, back 09:00' };
 };
 
@@ -227,14 +230,14 @@ const Team03 = () => {
   ];
 
   return (
-    <section data-slot="team-directory" className="bg-background py-16 md:py-24">
+    <section data-slot="team-directory" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:gap-14 md:px-10">
         <div data-slot="team-directory-header" className="flex flex-col gap-8">
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Team directory</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Team directory</span>
             <h2
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Ten people, six cities
             </h2>
@@ -262,13 +265,13 @@ const Team03 = () => {
               {filters.map((option) => (
                 <ToggleGroupItem key={option.value} value={option.value} className="h-10">
                   {option.label}
-                  <span className="text-xs font-normal tabular-nums text-muted-foreground">{option.count}</span>
+                  <span className="text-xs font-normal text-muted-foreground tabular-nums">{option.count}</span>
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
 
             <div className="flex items-center gap-3 pb-3">
-              <span id="team-03-sort" className="text-xs uppercase text-muted-foreground">
+              <span id="team-03-sort" className="text-xs text-muted-foreground uppercase">
                 Sort
               </span>
               <ToggleGroup
@@ -295,13 +298,13 @@ const Team03 = () => {
                   style={stagger(group.firstSlot, 50, 300)}
                   className={cn(ENTER, 'flex items-baseline gap-3 border-b border-border pb-3')}
                 >
-                  <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+                  <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
                     {formatIndex(group.index)}
                     <span className="mx-1.5 text-border">|</span>
                     {formatIndex(DEPARTMENTS.length - 1)}
                   </span>
                   <h3 className="text-sm font-medium">{group.label}</h3>
-                  <span className="ms-auto text-xs tabular-nums text-muted-foreground">
+                  <span className="ms-auto text-xs text-muted-foreground tabular-nums">
                     {group.members.length} people
                   </span>
                 </div>
@@ -310,6 +313,7 @@ const Team03 = () => {
                   {group.members.map((member, memberIndex) => {
                     const local = now === null ? null : readLocalTime(member.timeZone, now);
                     const status = local ? statusFor(local) : null;
+
                     return (
                       <li
                         key={`${filter}-${sort}-${member.email}`}
@@ -335,7 +339,7 @@ const Team03 = () => {
                         <div className="order-3 flex basis-full items-start justify-between gap-4 ps-13 md:contents">
                           <div className="flex flex-col md:order-none">
                             <span className="text-sm">{member.city}</span>
-                            <span dir="ltr" className="min-h-4 text-start text-xs tabular-nums text-muted-foreground">
+                            <span dir="ltr" className="min-h-4 text-start text-xs text-muted-foreground tabular-nums">
                               {local?.offsetLabel}
                             </span>
                           </div>
@@ -346,10 +350,7 @@ const Team03 = () => {
                                   {local.clock}
                                 </time>
                                 <span
-                                  className={cn(
-                                    'text-xs',
-                                    status.online ? 'text-accent-cool' : 'text-muted-foreground',
-                                  )}
+                                  className={cn('text-xs', status.online ? 'text-primary' : 'text-muted-foreground')}
                                 >
                                   {status.label}
                                 </span>

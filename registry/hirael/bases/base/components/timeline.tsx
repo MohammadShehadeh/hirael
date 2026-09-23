@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
@@ -26,52 +26,85 @@ const TimelineItem = ({ className, ...props }: TimelineItemProps) => {
   );
 };
 
+export type TimelineTone =
+  | 'neutral'
+  | 'muted'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'destructive'
+  /** @deprecated Use `neutral`. */
+  | 'default'
+  /** @deprecated Use `destructive`. */
+  | 'danger';
+
+type ResolvedTimelineTone = Exclude<TimelineTone, 'default' | 'danger'>;
+
+const toneAliases: Partial<Record<TimelineTone, ResolvedTimelineTone>> = {
+  default: 'neutral',
+  danger: 'destructive',
+};
+
+const resolveTimelineTone = (tone: TimelineTone): ResolvedTimelineTone => {
+  return toneAliases[tone] ?? (tone as ResolvedTimelineTone);
+};
+
 const timelineDotVariants = cva(
   'relative z-10 mt-1.5 inline-flex size-[15px] shrink-0 items-center justify-center rounded-full ring-2 ring-background',
   {
     variants: {
       tone: {
-        default: 'bg-foreground',
+        neutral: 'bg-foreground',
         muted: 'bg-muted-foreground',
+        info: 'bg-info',
         success: 'bg-success',
         warning: 'bg-warning',
-        danger: 'bg-destructive',
+        destructive: 'bg-destructive',
       },
     },
     defaultVariants: {
-      tone: 'default',
+      tone: 'neutral',
     },
   },
 );
 
-interface TimelineDotProps
-  extends Omit<React.ComponentProps<'span'>, 'children'>, VariantProps<typeof timelineDotVariants> {
+const timelineIconDotVariants = cva(
+  'relative z-10 mt-0.5 inline-flex size-6 -translate-x-[5px] items-center justify-center rounded-full bg-background ring-1 rtl:translate-x-[5px] [&_svg]:size-3',
+  {
+    variants: {
+      tone: {
+        neutral: 'ring-border',
+        muted: 'text-muted-foreground ring-border',
+        info: 'text-info ring-info/50',
+        success: 'text-success ring-success/50',
+        warning: 'text-warning ring-warning/50',
+        destructive: 'text-destructive ring-destructive/50',
+      },
+    },
+    defaultVariants: {
+      tone: 'neutral',
+    },
+  },
+);
+
+interface TimelineDotProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+  tone?: TimelineTone;
   children?: React.ReactNode;
 }
 
-const TimelineDot = ({ className, tone = 'default', children, ...props }: TimelineDotProps) => {
-  if (children) {
-    return (
-      <span
-        data-slot="timeline-dot"
-        data-tone={tone}
-        className={cn(
-          'relative z-10 mt-0.5 inline-flex size-6 -translate-x-[5px] rtl:translate-x-[5px] items-center justify-center rounded-full bg-background ring-1 ring-border [&_svg]:size-3',
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  }
+const TimelineDot = ({ className, tone = 'neutral', children, ...props }: TimelineDotProps) => {
+  const resolvedTone = resolveTimelineTone(tone);
+  const variants = children ? timelineIconDotVariants : timelineDotVariants;
+
   return (
     <span
       data-slot="timeline-dot"
-      data-tone={tone}
-      className={cn(timelineDotVariants({ tone }), className)}
+      data-tone={resolvedTone}
+      className={cn(variants({ tone: resolvedTone }), className)}
       {...props}
-    />
+    >
+      {children}
+    </span>
   );
 };
 
@@ -97,7 +130,7 @@ type TimelineTimeProps = React.ComponentProps<'time'>;
 
 const TimelineTime = ({ className, ...props }: TimelineTimeProps) => {
   return (
-    <time data-slot="timeline-time" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <time data-slot="timeline-time" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 

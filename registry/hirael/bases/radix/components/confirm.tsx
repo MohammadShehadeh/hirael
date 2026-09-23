@@ -18,7 +18,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 export type ConfirmTone = 'default' | 'destructive';
 
 export interface ConfirmOptions {
-  /** Dialog heading. */
+  /** Dialog heading, and the dialog's accessible name. Defaults to "Are you sure?". */
   title?: React.ReactNode;
   /** Supporting line under the title. */
   description?: React.ReactNode;
@@ -45,12 +45,16 @@ export type ConfirmFn = (options?: ConfirmOptions) => Promise<boolean>;
 
 const ConfirmContext = React.createContext<ConfirmFn | null>(null);
 
+/** The nearest provider's `confirm`, or null outside any `<ConfirmProvider>`. */
+const useOptionalConfirm = (): ConfirmFn | null => React.useContext(ConfirmContext);
+
 /** Must be called under a `<ConfirmProvider>`. */
 const useConfirm = (): ConfirmFn => {
   const ctx = React.useContext(ConfirmContext);
   if (!ctx) {
     throw new Error('useConfirm must be used inside <ConfirmProvider>');
   }
+
   return ctx;
 };
 
@@ -62,10 +66,11 @@ interface ConfirmRequest {
 export interface ConfirmProviderProps {
   children: React.ReactNode;
   /** Defaults merged under every `confirm()` call. */
-  defaultOptions?: Pick<ConfirmOptions, 'confirmText' | 'cancelText' | 'tone' | 'dismissible'>;
+  defaultOptions?: Pick<ConfirmOptions, 'title' | 'confirmText' | 'cancelText' | 'tone' | 'dismissible'>;
 }
 
 const CLOSE_DURATION = 200;
+const DEFAULT_TITLE = 'Are you sure?';
 
 /** Mount once near the root. Re-entrant `confirm()` calls queue behind the open one. */
 const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => {
@@ -82,6 +87,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       const request: ConfirmRequest = { options, resolve };
       if (activeRef.current) {
         queueRef.current.push(request);
+
         return;
       }
       activeRef.current = request;
@@ -121,6 +127,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
     const onConfirm = activeRef.current?.options.onConfirm;
     if (!onConfirm) {
       settle(true);
+
       return;
     }
     setPending(true);
@@ -142,6 +149,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
   );
 
   const options: ConfirmOptions = {
+    title: DEFAULT_TITLE,
     confirmText: 'Confirm',
     cancelText: 'Cancel',
     tone: 'default',
@@ -170,7 +178,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
                 {options.icon}
               </AlertDialogMedia>
             ) : null}
-            <AlertDialogTitle>{options.title}</AlertDialogTitle>
+            <AlertDialogTitle>{options.title ?? DEFAULT_TITLE}</AlertDialogTitle>
             {hasDescription ? <AlertDialogDescription>{options.description}</AlertDialogDescription> : null}
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -203,4 +211,4 @@ const ConfirmSpinner = () => {
   );
 };
 
-export { ConfirmProvider, useConfirm };
+export { ConfirmProvider, useConfirm, useOptionalConfirm };

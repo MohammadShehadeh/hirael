@@ -47,7 +47,7 @@ export const Footer = ({ lang }: FooterProps) => {
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
             {c.columns.map((column) => (
               <div key={column.heading}>
-                <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                <h3 className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
                   {column.heading}
                 </h3>
                 <ul className="mt-4 flex flex-col gap-3">

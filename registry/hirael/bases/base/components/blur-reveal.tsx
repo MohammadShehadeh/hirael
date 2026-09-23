@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { animate, type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
 
-interface BlurRevealProps extends HTMLMotionProps<'div'> {
+export interface BlurRevealProps extends HTMLMotionProps<'div'> {
   /** Delay before the reveal starts, in ms. */
   delay?: number;
   /** Reveal duration, in ms. */
@@ -53,6 +53,7 @@ const observeReveal = (node: Element, amount: number, handler: RevealHandler) =>
   const { observer, handlers } = entry;
   handlers.set(node, handler);
   observer.observe(node);
+
   return () => {
     if (!handlers.delete(node)) return;
     observer.unobserve(node);
@@ -92,6 +93,7 @@ const BlurReveal = ({
           if (isHidden) return;
           isHidden = true;
           animate(node, { opacity: 0, filter: `blur(${blur}px)`, y }, { duration: 0 });
+
           return;
         }
         if (isHidden) {
@@ -104,6 +106,7 @@ const BlurReveal = ({
         }
         if (once) stop();
       });
+
       return stop;
     },
     [reduced, amount, once, duration, delay, blur, y],

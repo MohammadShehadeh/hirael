@@ -40,6 +40,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
       frame = 0;
       if (reduce.matches) {
         glow.style.transform = 'scale(1.3, 1.4)';
+
         return;
       }
       const rect = panel.getBoundingClientRect();
@@ -56,6 +57,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     reduce.addEventListener('change', schedule);
+
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', schedule);
@@ -90,7 +92,7 @@ const ContactPanel = ({ className, children, ...props }: React.ComponentProps<'d
 
 const ContactBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+    <div className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both zoom-in-95 fade-in motion-reduce:animate-none">
       <Badge data-slot="contact-badge" variant="outline" className={className} {...props} />
     </div>
   );
@@ -108,7 +110,7 @@ const ContactTitle = ({ children, className, ...props }: ContactTitleProps) => {
     <h2
       data-slot="contact-title"
       className={cn(
-        'mx-auto max-w-3xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl',
+        'mx-auto max-w-3xl font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl',
         className,
       )}
       {...props}
@@ -135,7 +137,7 @@ const ContactDescription = ({ className, ...props }: React.ComponentProps<'p'>) 
   return (
     <p
       data-slot="contact-description"
-      className={cn('mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg', className)}
+      className={cn('mx-auto max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', className)}
       {...props}
     />
   );
@@ -201,8 +203,8 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
 
 const Contact03 = () => {
   return (
-    <section data-slot="contact" className="bg-background py-16 md:py-24">
-      <div className="container">
+    <section data-slot="contact" className="bg-background py-20 sm:py-28">
+      <div className="mx-auto max-w-[1480px] px-4">
         <ContactPanel>
           <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 text-center">
             <ContactBadge>Contact</ContactBadge>

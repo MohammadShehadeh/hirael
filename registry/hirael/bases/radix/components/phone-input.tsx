@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { COUNTRIES, type Country } from '@/registry/hirael/bases/radix/components/country-select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import {
   Command,
@@ -20,39 +21,8 @@ import {
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
 
-export interface Country {
-  iso2: string;
-  name: string;
-  dialCode: string;
-}
-
-export const COUNTRIES: readonly Country[] = [
-  { iso2: 'US', name: 'United States', dialCode: '+1' },
-  { iso2: 'CA', name: 'Canada', dialCode: '+1' },
-  { iso2: 'MX', name: 'Mexico', dialCode: '+52' },
-  { iso2: 'BR', name: 'Brazil', dialCode: '+55' },
-  { iso2: 'AR', name: 'Argentina', dialCode: '+54' },
-  { iso2: 'GB', name: 'United Kingdom', dialCode: '+44' },
-  { iso2: 'IE', name: 'Ireland', dialCode: '+353' },
-  { iso2: 'FR', name: 'France', dialCode: '+33' },
-  { iso2: 'DE', name: 'Germany', dialCode: '+49' },
-  { iso2: 'ES', name: 'Spain', dialCode: '+34' },
-  { iso2: 'IT', name: 'Italy', dialCode: '+39' },
-  { iso2: 'NL', name: 'Netherlands', dialCode: '+31' },
-  { iso2: 'SE', name: 'Sweden', dialCode: '+46' },
-  { iso2: 'NO', name: 'Norway', dialCode: '+47' },
-  { iso2: 'DK', name: 'Denmark', dialCode: '+45' },
-  { iso2: 'PL', name: 'Poland', dialCode: '+48' },
-  { iso2: 'CH', name: 'Switzerland', dialCode: '+41' },
-  { iso2: 'AT', name: 'Austria', dialCode: '+43' },
-  { iso2: 'PT', name: 'Portugal', dialCode: '+351' },
-  { iso2: 'IN', name: 'India', dialCode: '+91' },
-  { iso2: 'CN', name: 'China', dialCode: '+86' },
-  { iso2: 'JP', name: 'Japan', dialCode: '+81' },
-  { iso2: 'KR', name: 'South Korea', dialCode: '+82' },
-  { iso2: 'AU', name: 'Australia', dialCode: '+61' },
-  { iso2: 'NZ', name: 'New Zealand', dialCode: '+64' },
-] as const;
+export { COUNTRIES };
+export type { Country };
 
 const findCountry = (iso2: string): Country | undefined => {
   return COUNTRIES.find((c) => c.iso2 === iso2.toUpperCase());
@@ -62,9 +32,14 @@ const digitsOnly = (input: string): string => {
   return input.replace(/\D/g, '');
 };
 
+// Italy keeps its leading 0 internationally; elsewhere it's a national trunk prefix.
+const KEEPS_TRUNK_ZERO = new Set(['IT']);
+
 const toE164 = (country: Country, national: string): string => {
   const digits = digitsOnly(national);
-  return digits ? `${country.dialCode}${digits}` : '';
+  const subscriber = KEEPS_TRUNK_ZERO.has(country.iso2) ? digits : digits.replace(/^0/, '');
+
+  return subscriber ? `${country.dialCode}${subscriber}` : '';
 };
 
 interface ParsedE164 {
@@ -90,6 +65,7 @@ const parseE164 = (value: string | undefined, fallback: Country): ParsedE164 => 
       };
     }
   }
+
   return { country: fallback, national: digitsOnly(trimmed) };
 };
 
@@ -109,6 +85,7 @@ const usePhoneInput = () => {
   if (!ctx) {
     throw new Error('PhoneInput compound parts must be used inside <PhoneInput>');
   }
+
   return ctx;
 };
 
@@ -148,21 +125,21 @@ const PhoneInput = ({
   );
   const isControlled = valueProp !== undefined;
 
-  const lastSeen = React.useRef<string | undefined>(valueProp);
-  React.useEffect(() => {
-    if (!isControlled) return;
-    if (lastSeen.current === valueProp) return;
-    lastSeen.current = valueProp;
-    const parsed = parseE164(valueProp, fallback);
-    setCountryState(parsed.country);
-    setNationalState(parsed.national);
-  }, [isControlled, valueProp, fallback]);
+  // Re-parse only when the parent's value differs from what the typed digits
+  // already produce, so an echo of our own change keeps the user's spacing.
+  const [prevValue, setPrevValue] = React.useState(valueProp);
+  if (isControlled && valueProp !== prevValue) {
+    setPrevValue(valueProp);
+    if (valueProp !== toE164(country, national)) {
+      const parsed = parseE164(valueProp, fallback);
+      setCountryState(parsed.country);
+      setNationalState(parsed.national);
+    }
+  }
 
   const emit = React.useCallback(
     (c: Country, n: string) => {
-      const e164 = toE164(c, n);
-      lastSeen.current = e164;
-      onValueChange?.(e164);
+      onValueChange?.(toE164(c, n));
     },
     [onValueChange],
   );
@@ -195,7 +172,7 @@ const PhoneInput = ({
     [fieldId, country, setCountry, national, setNational, disabled],
   );
 
-  const e164 = toE164(country, national);
+  const e164 = isControlled ? valueProp : toE164(country, national);
 
   return (
     <PhoneInputContext.Provider value={ctx}>
@@ -237,7 +214,10 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
             <span className="font-medium text-foreground">{ctx.country.iso2}</span>
             <span className="text-muted-foreground">{ctx.country.dialCode}</span>
             <ChevronDown
-              className={cn('size-3 text-muted-foreground transition-transform duration-150', open && 'rotate-180')}
+              className={cn(
+                'size-3 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
+                open && 'rotate-180',
+              )}
             />
           </InputGroupButton>
         </PopoverTrigger>
@@ -294,6 +274,7 @@ const PhoneInputField = ({
   ...props
 }: PhoneInputFieldProps) => {
   const ctx = usePhoneInput();
+
   return (
     <InputGroupInput
       id={ctx.id}

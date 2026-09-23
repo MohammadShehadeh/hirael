@@ -16,6 +16,7 @@ const daysAgo = (days: number) => {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   d.setDate(d.getDate() - days);
+
   return d;
 };
 
@@ -48,27 +49,26 @@ const DateRangePickerDemo = () => {
     <FieldGroup className="max-w-md gap-8">
       <Field className="gap-2">
         <FieldLabel htmlFor="drp-basic">{t({ en: 'Basic', ar: 'أساسي' })}</FieldLabel>
-        <DateRangePicker value={basic} onValueChange={setBasic}>
-          <DateRangePickerTrigger id="drp-basic" locale={locale} />
-          <DateRangePickerContent locale={locale} />
+        <DateRangePicker value={basic} onValueChange={setBasic} locale={locale}>
+          <DateRangePickerTrigger id="drp-basic" />
+          <DateRangePickerContent />
         </DateRangePicker>
-        <p className="text-xs uppercase text-muted-foreground">{print(basic)}</p>
+        <p className="text-xs text-muted-foreground uppercase">{print(basic)}</p>
       </Field>
 
       <Field className="gap-2">
         <FieldLabel htmlFor="drp-composed">{t({ en: 'Composed', ar: 'مركّب' })}</FieldLabel>
-        <DateRangePicker value={composed} onValueChange={setComposed} max={new Date()}>
+        <DateRangePicker value={composed} onValueChange={setComposed} max={new Date()} locale={locale}>
           <DateRangePickerTrigger
             id="drp-composed"
-            locale={locale}
             placeholder={t({
               en: 'Pick a reporting period',
               ar: 'اختر فترة التقرير',
             })}
           />
-          <DateRangePickerContent locale={locale} presets={presets} numberOfMonths={1} />
+          <DateRangePickerContent presets={presets} numberOfMonths={1} />
         </DateRangePicker>
-        <p className="text-xs uppercase text-muted-foreground">{print(composed)}</p>
+        <p className="text-xs text-muted-foreground uppercase">{print(composed)}</p>
       </Field>
     </FieldGroup>
   );

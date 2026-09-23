@@ -17,8 +17,9 @@ export default async function ShowcaseLayout({ children }: ShowcaseLayoutProps) 
     label: entry.version ? `v${entry.version}` : entry.title,
     date: entry.displayDate,
   }));
+
   return (
-    <div className="flex min-h-svh flex-col [--docs-layout-width:97rem] [--docs-sidebar-width:17rem] [--docs-rail-width:15rem]">
+    <div className="flex min-h-svh flex-col [--docs-layout-width:97rem] [--docs-rail-width:15rem] [--docs-sidebar-width:17rem]">
       <DocsHeader stars={stars} releases={releases} />
       <DocsTabsBar />
       <div className="mx-auto flex w-full max-w-(--docs-layout-width) flex-1">

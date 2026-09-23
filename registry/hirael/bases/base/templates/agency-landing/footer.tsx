@@ -38,7 +38,7 @@ export const Footer = () => {
                 Work with us
               </span>
             </div>
-            <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] sm:text-[clamp(2.5rem,5vw,4.2rem)]">
+            <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] leading-[1.08] font-medium tracking-[-0.03em] sm:text-[clamp(2.5rem,5vw,4.2rem)]">
               Ready to dominate
               <br className="hidden sm:block" />
               your category?
@@ -75,7 +75,7 @@ export const Footer = () => {
 
           {LINK_COLUMNS.map((col) => (
             <nav key={col.heading} className="flex flex-col gap-3.5">
-              <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">{col.heading}</h3>
+              <h3 className="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">{col.heading}</h3>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link}>
@@ -101,9 +101,9 @@ export const Footer = () => {
 
         <div
           aria-hidden
-          className="pointer-events-none select-none overflow-hidden border-t border-white/10 pt-10 sm:pt-12"
+          className="pointer-events-none overflow-hidden border-t border-white/10 pt-10 select-none sm:pt-12"
         >
-          <span className="block text-[18vw] font-medium leading-[0.8] tracking-[-0.05em] text-white/[0.06]">
+          <span className="block text-[18vw] leading-[0.8] font-medium tracking-[-0.05em] text-white/[0.06]">
             Hirael
           </span>
         </div>

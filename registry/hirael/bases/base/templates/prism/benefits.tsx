@@ -43,8 +43,8 @@ export const Benefits = () => {
               <span className="liquid-glass-strong flex size-10 items-center justify-center rounded-full text-foreground">
                 <Icon className="size-4" aria-hidden />
               </span>
-              <h3 className="mt-6 text-lg italic text-foreground [font-family:var(--font-prism-serif)]">{title}</h3>
-              <p className="mt-2 text-sm font-light leading-relaxed text-foreground/60">{description}</p>
+              <h3 className="mt-6 [font-family:var(--font-prism-serif)] text-lg text-foreground italic">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed font-light text-foreground/60">{description}</p>
             </article>
           ))}
         </div>

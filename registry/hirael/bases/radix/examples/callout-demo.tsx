@@ -1,7 +1,7 @@
 'use client';
 
 import { useT } from '@/lib/demo-locale';
-import { Callout } from '@/registry/hirael/bases/radix/components/callout';
+import { Callout, CalloutDescription, CalloutTitle } from '@/registry/hirael/bases/radix/components/callout';
 
 const CalloutDemo = () => {
   const t = useT();
@@ -37,7 +37,7 @@ const CalloutDemo = () => {
         })}
       </Callout>
 
-      <Callout variant="error" title={t({ en: 'Migration failed', ar: 'فشل الترحيل' })}>
+      <Callout variant="destructive" title={t({ en: 'Migration failed', ar: 'فشل الترحيل' })}>
         {t({
           en: (
             <>
@@ -52,11 +52,14 @@ const CalloutDemo = () => {
         })}
       </Callout>
 
-      <Callout variant="neutral" title={t({ en: 'Note', ar: 'ملاحظة' })}>
-        {t({
-          en: 'This component is server-renderable. No hooks, no client boundary.',
-          ar: 'هذا المكوّن قابل للعرض على الخادم. بلا خطافات، بلا حدود عميل.',
-        })}
+      <Callout variant="neutral">
+        <CalloutTitle>{t({ en: 'Note', ar: 'ملاحظة' })}</CalloutTitle>
+        <CalloutDescription>
+          {t({
+            en: 'This component is server-renderable. No hooks, no client boundary.',
+            ar: 'هذا المكوّن قابل للعرض على الخادم. بلا خطافات، بلا حدود عميل.',
+          })}
+        </CalloutDescription>
       </Callout>
 
       <Callout variant="info" icon={false}>

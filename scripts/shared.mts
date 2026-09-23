@@ -46,6 +46,7 @@ export const readBuiltItems = (base: RegistryBase = 'radix') =>
     .filter((name) => name.endsWith('.json') && name !== 'registry.json')
     .map((name) => {
       const file = path.join(rDir(base), name);
+
       return {
         base,
         file,
@@ -62,6 +63,7 @@ const hrefByName = new Map(REGISTRY.map((entry) => [entry.name, entryHref(entry)
 export const sourceHeader = (item: Pick<RegistryItem, 'name' | 'title'>) => {
   const href = hrefByName.get(item.name);
   const pageUrl = href ? `${REGISTRY_BASE_URL}${href}` : REGISTRY_BASE_URL;
+
   return [
     `// ${item.title ?? item.name} from Hirael <${pageUrl}>`,
     `// ${BRAND.license} · ${BRAND.author} · ${BRAND.repoUrl}`,
@@ -71,6 +73,7 @@ export const sourceHeader = (item: Pick<RegistryItem, 'name' | 'title'>) => {
 
 export const createReporter = (label: string) => {
   let problems = 0;
+
   return {
     fail(message: string) {
       console.error(`  ✗ ${message}`);

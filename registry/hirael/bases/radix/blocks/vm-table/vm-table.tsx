@@ -1,9 +1,27 @@
 'use client';
 
 import * as React from 'react';
+import { ArrowDown, ArrowUp, ArrowUpDown, ServerOff } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/registry/hirael/bases/radix/ui/empty';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/registry/hirael/bases/radix/ui/table';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
 export type VmState = 'running' | 'stopped' | 'starting' | 'stopping' | 'error' | 'suspended';
@@ -39,63 +57,52 @@ interface VmTableProps extends React.ComponentProps<'table'> {
   caption?: React.ReactNode;
 }
 
-const VmTable = ({ className, caption, children, ...props }: VmTableProps) => {
+const VmTable = ({ caption, children, ...props }: VmTableProps) => {
   return (
-    <div data-slot="vm-table-container" className="w-full overflow-x-auto rounded-lg border border-border">
-      <table data-slot="vm-table" className={cn('w-full caption-bottom text-sm', className)} {...props}>
-        {caption ? <caption className="p-3 text-xs text-muted-foreground">{caption}</caption> : null}
+    <div
+      data-slot="vm-table-container"
+      className="max-h-96 w-full overflow-auto rounded-lg border border-border [&_[data-slot=table-caption]]:pb-3 [&_[data-slot=table-container]]:overflow-visible [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-10 [&_thead]:bg-muted"
+    >
+      <Table data-slot="vm-table" {...props}>
+        {caption ? <TableCaption>{caption}</TableCaption> : null}
         {children}
-      </table>
+      </Table>
     </div>
   );
 };
 
-const VmTableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => {
-  return (
-    <thead
-      data-slot="vm-table-header"
-      className={cn('border-b border-border bg-muted/40 text-muted-foreground', className)}
-      {...props}
-    />
-  );
+const VmTableHeader = (props: React.ComponentProps<typeof TableHeader>) => {
+  return <TableHeader data-slot="vm-table-header" {...props} />;
 };
 
-const VmTableHead = ({ className, ...props }: React.ComponentProps<'th'>) => {
-  return (
-    <th
-      data-slot="vm-table-head"
-      className={cn('h-9 px-3 text-start align-middle font-medium whitespace-nowrap', 'text-xs uppercase', className)}
-      {...props}
-    />
-  );
+const VmTableHead = (props: React.ComponentProps<typeof TableHead>) => {
+  return <TableHead data-slot="vm-table-head" {...props} />;
 };
 
-const VmTableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => {
-  return <tbody data-slot="vm-table-body" className={cn('divide-y divide-border', className)} {...props} />;
+const VmTableBody = (props: React.ComponentProps<typeof TableBody>) => {
+  return <TableBody data-slot="vm-table-body" {...props} />;
 };
 
-const VmTableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => {
-  return <tr data-slot="vm-table-row" className={cn('transition-colors hover:bg-muted/40', className)} {...props} />;
+const VmTableRow = (props: React.ComponentProps<typeof TableRow>) => {
+  return <TableRow data-slot="vm-table-row" {...props} />;
 };
 
-const VmTableCell = ({ className, ...props }: React.ComponentProps<'td'>) => {
-  return (
-    <td data-slot="vm-table-cell" className={cn('px-3 py-2.5 align-middle whitespace-nowrap', className)} {...props} />
-  );
+const VmTableCell = (props: React.ComponentProps<typeof TableCell>) => {
+  return <TableCell data-slot="vm-table-cell" {...props} />;
 };
 
-interface VmTableNameProps extends Omit<React.ComponentProps<'td'>, 'id'> {
+interface VmTableNameProps extends Omit<React.ComponentProps<typeof TableCell>, 'id'> {
   id?: React.ReactNode;
 }
 
-const VmTableName = ({ id, className, children, ...props }: VmTableNameProps) => {
+const VmTableName = ({ id, children, ...props }: VmTableNameProps) => {
   return (
-    <td data-slot="vm-table-name" className={cn('px-3 py-2.5 align-middle', className)} {...props}>
+    <TableCell data-slot="vm-table-name" {...props}>
       <div className="flex flex-col">
         <span className="font-medium text-foreground">{children}</span>
         {id ? <span className="text-xs text-muted-foreground">{id}</span> : null}
       </div>
-    </td>
+    </TableCell>
   );
 };
 
@@ -106,6 +113,7 @@ interface VmStatusProps extends Omit<React.ComponentProps<'span'>, 'children'> {
 
 const VmStatus = ({ state, className, children, ...props }: VmStatusProps) => {
   const meta = vmStateMeta[state];
+
   return (
     <span
       data-slot="vm-status"
@@ -212,6 +220,13 @@ const VM_FILTERS: { value: string; label: string; states: VmState[] }[] = [
   { value: 'error', label: 'Error', states: ['error'] },
 ];
 
+type SortDirection = 'asc' | 'desc' | null;
+
+const nextSort = (current: SortDirection): SortDirection =>
+  current === null ? 'asc' : current === 'asc' ? 'desc' : null;
+
+const ARIA_SORT = { asc: 'ascending', desc: 'descending' } as const;
+
 interface MutedValueProps {
   value: string | null;
 }
@@ -221,23 +236,34 @@ const MutedValue = ({ value }: MutedValueProps) => value ?? <span className="tex
 const VmTableBlock = () => {
   const [rows, setRows] = React.useState(VM_ROWS);
   const [filter, setFilter] = React.useState('all');
-  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const [sort, setSort] = React.useState<SortDirection>(null);
+  const timers = React.useRef(new Set<ReturnType<typeof setTimeout>>());
 
   React.useEffect(() => {
     const pending = timers.current;
+
     return () => pending.forEach(clearTimeout);
   }, []);
 
   const activeFilter = VM_FILTERS.find((option) => option.value === filter) ?? VM_FILTERS[0];
-  const visibleRows = rows.filter((row) => activeFilter.states.includes(row.state));
+  const filteredRows = rows.filter((row) => activeFilter.states.includes(row.state));
+  const visibleRows =
+    sort === null
+      ? filteredRows
+      : [...filteredRows].sort((a, b) => (sort === 'asc' ? 1 : -1) * a.name.localeCompare(b.name));
   const regionCount = new Set(rows.map((row) => row.region)).size;
+  const SortIcon = sort === 'asc' ? ArrowUp : sort === 'desc' ? ArrowDown : ArrowUpDown;
 
   const setRowState = (id: string, patch: Partial<VmRow>) =>
     setRows((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
 
   const restart = (id: string) => {
     setRowState(id, { state: 'starting' });
-    timers.current.push(setTimeout(() => setRowState(id, { state: 'running', uptime: '1m' }), 2400));
+    const timer = setTimeout(() => {
+      timers.current.delete(timer);
+      setRowState(id, { state: 'running', uptime: '1m' });
+    }, 2400);
+    timers.current.add(timer);
   };
 
   return (
@@ -254,10 +280,11 @@ const VmTableBlock = () => {
         >
           {VM_FILTERS.map((option) => {
             const count = rows.filter((row) => option.states.includes(row.state)).length;
+
             return (
               <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
-                <span className="text-xs tabular-nums text-muted-foreground">{count}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{count}</span>
               </ToggleGroupItem>
             );
           })}
@@ -272,7 +299,12 @@ const VmTableBlock = () => {
         >
           <VmTableHeader>
             <VmTableRow>
-              <VmTableHead>Instance</VmTableHead>
+              <VmTableHead aria-sort={sort ? ARIA_SORT[sort] : 'none'}>
+                <Button type="button" variant="ghost" size="xs" onClick={() => setSort(nextSort)}>
+                  Instance
+                  <SortIcon aria-hidden />
+                </Button>
+              </VmTableHead>
               <VmTableHead>Status</VmTableHead>
               <VmTableHead>Size</VmTableHead>
               <VmTableHead>Region</VmTableHead>
@@ -282,9 +314,22 @@ const VmTableBlock = () => {
           </VmTableHeader>
           <VmTableBody key={filter} className={SWAP}>
             {visibleRows.length === 0 ? (
-              <VmTableRow className="hover:bg-transparent">
-                <VmTableCell colSpan={6} className="py-10 text-center text-sm text-muted-foreground">
-                  No instances are {activeFilter.label.toLowerCase()} right now.
+              <VmTableRow>
+                <VmTableCell colSpan={6} className="whitespace-normal">
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <ServerOff />
+                      </EmptyMedia>
+                      <EmptyTitle>No {activeFilter.label.toLowerCase()} instances</EmptyTitle>
+                      <EmptyDescription>Nothing matches this status right now.</EmptyDescription>
+                    </EmptyHeader>
+                    <EmptyContent>
+                      <Button type="button" variant="outline" size="sm" onClick={() => setFilter('all')}>
+                        Show all instances
+                      </Button>
+                    </EmptyContent>
+                  </Empty>
                 </VmTableCell>
               </VmTableRow>
             ) : (
@@ -301,15 +346,21 @@ const VmTableBlock = () => {
                       ) : null}
                     </span>
                   </VmTableCell>
-                  <VmTableCell className="text-xs text-muted-foreground">{row.size}</VmTableCell>
-                  <VmTableCell className="text-muted-foreground">{row.region}</VmTableCell>
-                  <VmTableCell className="text-xs text-muted-foreground">
-                    <span dir="ltr">
+                  <VmTableCell>
+                    <span className="text-xs text-muted-foreground">{row.size}</span>
+                  </VmTableCell>
+                  <VmTableCell>
+                    <span className="text-muted-foreground">{row.region}</span>
+                  </VmTableCell>
+                  <VmTableCell>
+                    <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
                       <MutedValue value={row.ip} />
                     </span>
                   </VmTableCell>
-                  <VmTableCell className="text-end text-xs tabular-nums text-muted-foreground">
-                    <MutedValue value={row.uptime} />
+                  <VmTableCell className="text-end">
+                    <span className="text-xs text-muted-foreground tabular-nums">
+                      <MutedValue value={row.uptime} />
+                    </span>
                   </VmTableCell>
                 </VmTableRow>
               ))

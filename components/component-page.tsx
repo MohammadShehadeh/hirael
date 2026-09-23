@@ -94,6 +94,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
       const file = source[f.path];
       if (!file) return null;
       const label = treeView ? (f.target ?? f.path) : f.path;
+
       return { label, code: file.code, html: file.html };
     })
     .filter((t): t is CodeBlockTab => t !== null);
@@ -210,11 +211,11 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
               <Breadcrumbs items={breadcrumb} />
             ) : (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs uppercase text-muted-foreground">{entry.category}</span>
+                <span className="text-xs text-muted-foreground uppercase">{entry.category}</span>
                 {entry.blockKind && (
                   <>
                     <span className="text-xs text-muted-foreground">/</span>
-                    <span className="text-xs uppercase text-foreground">{entry.blockKind}</span>
+                    <span className="text-xs text-foreground uppercase">{entry.blockKind}</span>
                   </>
                 )}
               </div>
@@ -222,7 +223,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight text-balance md:text-4xl">
+                <h1 className="text-3xl leading-[1.05] font-semibold tracking-tight text-balance md:text-4xl">
                   {entry.title}
                 </h1>
                 <NewBadge addedAt={extras?.addedAt} />
@@ -254,7 +255,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
           <Pager prev={prev} next={next} />
 
           {extras?.addedAt && (
-            <p className="text-xs uppercase text-muted-foreground">
+            <p className="text-xs text-muted-foreground uppercase">
               Shipped <time dateTime={extras.addedAt}>{formatDay(extras.addedAt)}</time>
             </p>
           )}
@@ -284,6 +285,7 @@ const githubSourceUrl = (entry: RegistryEntryMeta, base: RegistryBase) => {
   const repoPath = registryFilePath(base, primary);
   if (files.length === 1) return `${SITE.githubRepoUrl}/blob/main/${repoPath}`;
   const dir = repoPath.slice(0, repoPath.lastIndexOf('/'));
+
   return `${SITE.githubRepoUrl}/tree/main/${dir}`;
 };
 
@@ -419,7 +421,7 @@ interface DepGroupProps {
 const DepGroup = ({ title, deps }: DepGroupProps) => {
   return (
     <div className="rounded-sm border border-border bg-card p-4">
-      <h3 className="mb-2 text-xs uppercase text-muted-foreground">{title}</h3>
+      <h3 className="mb-2 text-xs text-muted-foreground uppercase">{title}</h3>
       <div className="flex flex-wrap gap-1.5">
         {deps.map((d) => (
           <span key={d} className="rounded-sm border border-border px-1.5 py-0 text-xs uppercase">
@@ -446,7 +448,7 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
             <h3 className="font-mono text-xs text-foreground">{`<${part.name} />`}</h3>
             {part.extendsNative && (
-              <span className="text-xs uppercase text-muted-foreground">+ native element props</span>
+              <span className="text-xs text-muted-foreground uppercase">+ native element props</span>
             )}
           </div>
           {part.props.length ? (

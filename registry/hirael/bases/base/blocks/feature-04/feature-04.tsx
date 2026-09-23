@@ -70,7 +70,7 @@ const Title = () => {
     <h2
       data-slot="feature-title"
       style={stagger(1)}
-      className={cn(RISE, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl')}
+      className={cn(RISE, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl')}
     >
       Services that ship with your product
     </h2>
@@ -80,7 +80,7 @@ const Title = () => {
 const Feature04 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
             <Badge variant="outline">Services</Badge>
@@ -98,6 +98,7 @@ const Feature04 = () => {
         <div data-slot="feature-grid" className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service, i) => {
             const Icon = service.icon;
+
             return (
               <article
                 key={service.title}
@@ -107,7 +108,7 @@ const Feature04 = () => {
               >
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_220px_at_20%_0%,var(--warm-glow),transparent_60%)]"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_220px_at_20%_0%,color-mix(in_oklch,var(--primary)_20%,transparent),transparent_60%)]"
                 />
                 <div data-slot="feature-card-icon" className="relative mb-4 grid place-items-center">
                   <Icon strokeWidth={1} className="size-14 text-foreground/90" />

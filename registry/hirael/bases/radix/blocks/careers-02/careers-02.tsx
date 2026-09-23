@@ -95,6 +95,7 @@ const INITIAL: FormState = { name: '', email: '', portfolio: '', note: '', cv: [
 const isUrl = (value: string) => {
   try {
     const url = new URL(value.includes('://') ? value : `https://${value}`);
+
     return (url.protocol === 'http:' || url.protocol === 'https:') && url.hostname.includes('.');
   } catch {
     return false;
@@ -110,6 +111,7 @@ const validate = (state: FormState): FormErrors => {
   else if (!isUrl(state.portfolio.trim())) errors.portfolio = 'That link does not look right. Try nadia.design.';
   if (state.cv.length === 0) errors.cv = 'Attach your CV as a PDF.';
   if (state.note.length > NOTE_MAX) errors.note = `Keep the note under ${NOTE_MAX} characters.`;
+
   return errors;
 };
 
@@ -151,7 +153,7 @@ const RoleList = ({ items }: RoleListProps) => {
     <ul className="flex flex-col gap-3">
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-base leading-relaxed text-muted-foreground">
-          <span aria-hidden className="mt-3 h-px w-3 shrink-0 bg-warm" />
+          <span aria-hidden className="mt-3 h-px w-3 shrink-0 bg-primary" />
           <span className="text-pretty">{item}</span>
         </li>
       ))}
@@ -181,6 +183,7 @@ const ApplyForm = () => {
     if (Object.keys(next).length > 0) {
       const firstInvalid = Object.keys(next)[0];
       event.currentTarget.querySelector<HTMLElement>(`[data-field="${firstInvalid}"]`)?.focus();
+
       return;
     }
     setStatus('submitting');
@@ -356,7 +359,7 @@ const ApplyForm = () => {
 
 const Careers02 = () => {
   return (
-    <section data-slot="careers" className="bg-background py-16 md:py-24">
+    <section data-slot="careers" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 md:px-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16">
         <div data-slot="careers-role" className="flex min-w-0 flex-col">
           <a
@@ -374,12 +377,12 @@ const Careers02 = () => {
           </a>
 
           <div data-slot="careers-role-header" className="mt-8 flex flex-col gap-4">
-            <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+            <span style={stagger(1)} className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>
               {ROLE.posted}
             </span>
             <h2
               style={stagger(2)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               {ROLE.title}
             </h2>
@@ -392,7 +395,7 @@ const Careers02 = () => {
           >
             {ROLE.meta.map((item) => (
               <div key={item.label} className="flex flex-col gap-1">
-                <dt className="text-xs uppercase text-muted-foreground">{item.label}</dt>
+                <dt className="text-xs text-muted-foreground uppercase">{item.label}</dt>
                 <dd className="text-sm font-medium text-pretty tabular-nums">{item.value}</dd>
               </div>
             ))}
@@ -430,14 +433,14 @@ const Careers02 = () => {
                     key={stage.title}
                     className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 gap-y-1 border-t border-border py-5 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)_auto]"
                   >
-                    <span dir="ltr" className="pt-0.5 text-xs tabular-nums text-warm">
+                    <span dir="ltr" className="pt-0.5 text-xs text-primary tabular-nums">
                       {formatIndex(index)}
                     </span>
                     <div className="flex flex-col gap-1">
                       <h4 className="text-sm font-medium">{stage.title}</h4>
                       <p className="text-sm leading-relaxed text-pretty text-muted-foreground">{stage.detail}</p>
                     </div>
-                    <span className="col-start-2 text-xs tabular-nums text-muted-foreground sm:col-start-3 sm:pt-0.5 sm:text-end">
+                    <span className="col-start-2 text-xs text-muted-foreground tabular-nums sm:col-start-3 sm:pt-0.5 sm:text-end">
                       {stage.duration}
                     </span>
                   </li>
@@ -462,18 +465,18 @@ const Careers02 = () => {
           style={stagger(0, 0, 320)}
           className={cn(
             ENTER,
-            'scroll-mt-6 lg:sticky lg:top-6 lg:max-h-[calc(100svh-3rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-width:thin] lg:[scrollbar-color:var(--border)_transparent]',
+            'scroll-mt-6 lg:sticky lg:top-6 lg:max-h-[calc(100svh-3rem)] lg:[scrollbar-width:thin] lg:[scrollbar-color:var(--border)_transparent] lg:self-start lg:overflow-y-auto lg:overscroll-contain',
           )}
         >
           <div className="rounded-xl border border-border bg-card/40 p-6">
             <div data-slot="careers-apply-summary" className="hidden flex-col gap-3 lg:flex">
-              <span className="text-xs uppercase text-muted-foreground">Apply</span>
+              <span className="text-xs text-muted-foreground uppercase">Apply</span>
               <p className="text-base font-semibold tracking-tight">{ROLE.title}</p>
               <p className="text-sm text-muted-foreground">{ROLE.summary}</p>
               <p className="text-sm tabular-nums">{ROLE.salary}</p>
             </div>
             <div className="flex flex-col gap-1.5 lg:hidden">
-              <span className="text-xs uppercase text-muted-foreground">Apply</span>
+              <span className="text-xs text-muted-foreground uppercase">Apply</span>
               <h3 className="text-lg font-semibold tracking-tight">Send your application</h3>
             </div>
             <Separator className="my-6" />

@@ -17,7 +17,7 @@ const SplitViewDemo = () => {
     <SplitView defaultSize={38} minSize={20} className="h-72 w-full max-w-2xl">
       <SplitViewPanel>
         <div className="flex items-center justify-between border-b border-border px-3 py-2">
-          <span className="text-xs uppercase text-muted-foreground">{t({ en: 'Files', ar: 'الملفات' })}</span>
+          <span className="text-xs text-muted-foreground uppercase">{t({ en: 'Files', ar: 'الملفات' })}</span>
         </div>
         <ul className="p-1.5">
           {FILES.map((file, i) => (

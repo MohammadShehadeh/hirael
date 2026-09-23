@@ -88,11 +88,13 @@ const Integrations02 = () => {
         const next = new Set(prev);
         if (next.has(name)) next.delete(name);
         else next.add(name);
+
         return next;
       });
       setPending((prev) => {
         const next = new Set(prev);
         next.delete(name);
+
         return next;
       });
     }, 900);
@@ -104,13 +106,13 @@ const Integrations02 = () => {
       className="bg-background py-20 sm:py-28"
       aria-labelledby="integrations-02-heading"
     >
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="integrations-header"
           className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-xl">
-            <p className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Integrations</p>
+            <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Integrations</p>
             <h2
               id="integrations-02-heading"
               style={stagger(1)}
@@ -149,6 +151,7 @@ const Integrations02 = () => {
           {shown.map((item, index) => {
             const isConnected = connected.has(item.name);
             const isPending = pending.has(item.name);
+
             return (
               <li
                 key={item.name}
@@ -179,7 +182,7 @@ const Integrations02 = () => {
                   {isPending ? (
                     <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />
                   ) : isConnected ? (
-                    <Check aria-hidden className="size-3.5 text-accent-cool" />
+                    <Check aria-hidden className="size-3.5 text-primary" />
                   ) : (
                     <Plus aria-hidden className="size-3.5" />
                   )}
@@ -192,7 +195,7 @@ const Integrations02 = () => {
 
         <p
           aria-live="polite"
-          className="mt-6 flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground"
+          className="mt-6 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase"
         >
           <span>
             Showing {shown.length} of {INTEGRATIONS.length}

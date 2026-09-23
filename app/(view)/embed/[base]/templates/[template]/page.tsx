@@ -19,5 +19,6 @@ interface BaseTemplateEmbedRouteProps {
 export default async function BaseTemplateEmbedRoute({ params }: BaseTemplateEmbedRouteProps) {
   const { base, template } = await params;
   if (!isRegistryBase(base) || base === DEFAULT_BASE) notFound();
+
   return <TemplateEmbed base={base} template={template} />;
 }

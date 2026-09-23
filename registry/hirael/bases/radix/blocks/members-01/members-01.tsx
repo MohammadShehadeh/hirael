@@ -4,6 +4,17 @@ import * as React from 'react';
 import { Check, MailPlus, MoreHorizontal, Search, UserPlus, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/registry/hirael/bases/radix/ui/alert-dialog';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -28,6 +39,14 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/registry/hirael/bases/radix/ui/empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/radix/ui/select';
@@ -158,6 +177,7 @@ const MembersRoleSelect = ({
   'aria-label': ariaLabel,
 }: MembersRoleSelectProps) => {
   const options = roles.includes(value) ? roles : [value, ...roles];
+
   return (
     <Select value={value} onValueChange={(next) => onValueChange?.(next as MemberRole)} disabled={disabled}>
       <SelectTrigger
@@ -186,6 +206,7 @@ interface MembersStatusProps extends React.ComponentProps<'span'> {
 
 const MembersStatus = ({ status, className, ...props }: MembersStatusProps) => {
   const tone = STATUS_TONE[status];
+
   return (
     <span
       data-slot="members-status"
@@ -212,16 +233,16 @@ const MembersTable = ({ className, children, ...props }: MembersTableProps) => {
         <TableHeader>
           <TableRow>
             <TableHead>
-              <span className="text-xs font-normal uppercase text-muted-foreground">Member</span>
+              <span className="text-xs font-normal text-muted-foreground uppercase">Member</span>
             </TableHead>
             <TableHead>
-              <span className="text-xs font-normal uppercase text-muted-foreground">Role</span>
+              <span className="text-xs font-normal text-muted-foreground uppercase">Role</span>
             </TableHead>
             <TableHead className="hidden sm:table-cell">
-              <span className="text-xs font-normal uppercase text-muted-foreground">Status</span>
+              <span className="text-xs font-normal text-muted-foreground uppercase">Status</span>
             </TableHead>
             <TableHead className="hidden md:table-cell">
-              <span className="text-xs font-normal uppercase text-muted-foreground">Joined</span>
+              <span className="text-xs font-normal text-muted-foreground uppercase">Joined</span>
             </TableHead>
             <TableHead>
               <span className="sr-only">Actions</span>
@@ -247,6 +268,7 @@ interface MembersRowProps {
 const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, className }: MembersRowProps) => {
   const isOwner = member.role === 'Owner';
   const roleLocked = isOwner || isYou;
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
 
   return (
     <TableRow data-slot="members-row" data-status={member.status.toLowerCase()} className={className}>
@@ -260,7 +282,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
           <span className="flex min-w-0 flex-col">
             <span className="flex items-center gap-1.5 truncate font-medium text-foreground">
               {member.name}
-              {isYou ? <span className="text-xs uppercase text-muted-foreground">you</span> : null}
+              {isYou ? <span className="text-xs text-muted-foreground uppercase">you</span> : null}
             </span>
             <span className="truncate text-xs text-muted-foreground">{member.email}</span>
           </span>
@@ -279,7 +301,7 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
         <MembersStatus status={member.status} />
       </TableCell>
       <TableCell className="hidden md:table-cell">
-        <span className="text-xs tabular-nums text-muted-foreground">{member.joined}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{member.joined}</span>
       </TableCell>
       <TableCell className="text-end">
         <DropdownMenu>
@@ -308,11 +330,33 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
               Resend invite
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" disabled={roleLocked} onSelect={onRemove}>
+            <DropdownMenuItem variant="destructive" disabled={roleLocked} onSelect={() => setConfirmOpen(true)}>
               Remove from team
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+          <AlertDialogContent data-slot="members-remove-dialog">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remove {member.name}?</AlertDialogTitle>
+              <AlertDialogDescription>
+                They lose access to the workspace right away. You can invite them again later.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep member</AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                onClick={() => {
+                  setConfirmOpen(false);
+                  onRemove?.();
+                }}
+              >
+                Remove
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </TableCell>
     </TableRow>
   );
@@ -347,6 +391,7 @@ const MembersInviteDialog = ({
       if (taken.has(candidate.toLowerCase())) {
         return `${candidate} is already on the team.`;
       }
+
       return true as const;
     },
     [taken],
@@ -443,7 +488,7 @@ const MembersPending = ({ count, className, children, ...props }: MembersPending
       {...props}
     >
       <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
-        <span className="text-xs uppercase text-muted-foreground">
+        <span className="text-xs text-muted-foreground uppercase">
           Pending invites
           {typeof count === 'number' ? <span className="ms-2 text-foreground">({count})</span> : null}
         </span>
@@ -482,7 +527,7 @@ const MembersPendingItem = ({
       </Avatar>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium text-foreground">{invite.email}</span>
-        <span className="flex min-w-0 items-center gap-2 text-xs uppercase text-muted-foreground">
+        <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground uppercase">
           <span>{invite.role}</span>
           <span aria-hidden className="text-border">
             |
@@ -502,15 +547,31 @@ const MembersPendingItem = ({
             'Resend'
           )}
         </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={onRevoke}>
-          Revoke
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button type="button" variant="ghost" size="sm">
+              Revoke
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent data-slot="members-revoke-dialog">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Revoke the invite for {invite.email}?</AlertDialogTitle>
+              <AlertDialogDescription>The link in their email stops working.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep invite</AlertDialogCancel>
+              <AlertDialogAction variant="destructive" onClick={onRevoke}>
+                Revoke
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </span>
     </li>
   );
 };
 
-interface MembersEmptyProps extends Omit<React.ComponentProps<'div'>, 'title'> {
+interface MembersEmptyProps extends Omit<React.ComponentProps<typeof Empty>, 'title'> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: React.ReactNode;
@@ -524,23 +585,16 @@ const MembersEmpty = ({
   ...props
 }: MembersEmptyProps) => {
   return (
-    <div
-      data-slot="members-empty"
-      className={cn(
-        'flex flex-col items-center gap-3 rounded-lg border border-dashed border-border px-6 py-12 text-center',
-        className,
-      )}
-      {...props}
-    >
-      <div className="flex flex-col items-center gap-1">
-        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
-          <Users aria-hidden className="size-4 text-muted-foreground" />
-          {title}
-        </span>
-        <span className="text-sm text-muted-foreground">{description}</span>
-      </div>
-      {action}
-    </div>
+    <Empty data-slot="members-empty" className={className} {...props}>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Users aria-hidden />
+        </EmptyMedia>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
+      </EmptyHeader>
+      {action ? <EmptyContent>{action}</EmptyContent> : null}
+    </Empty>
   );
 };
 
@@ -650,6 +704,7 @@ const Members01 = () => {
     setResent((set) => {
       const next = new Set(set);
       next.add(id);
+
       return next;
     });
 

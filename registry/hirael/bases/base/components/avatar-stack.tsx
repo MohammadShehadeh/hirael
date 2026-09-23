@@ -8,14 +8,14 @@ import { cn } from '@/lib/utils';
 const avatarStackVariants = cva('flex items-center', {
   variants: {
     size: {
-      sm: "[&>[data-slot='avatar-stack-item']]:size-6 [&>[data-slot='avatar-stack-item']]:text-[10px]",
-      md: "[&>[data-slot='avatar-stack-item']]:size-8 [&>[data-slot='avatar-stack-item']]:text-xs",
-      lg: "[&>[data-slot='avatar-stack-item']]:size-10 [&>[data-slot='avatar-stack-item']]:text-sm",
+      sm: '*:data-[slot=avatar-stack-item]:size-6 *:data-[slot=avatar-stack-item]:text-[10px] *:data-[slot=avatar-stack-overflow]:size-6 *:data-[slot=avatar-stack-overflow]:text-[10px]',
+      md: '*:data-[slot=avatar-stack-item]:size-8 *:data-[slot=avatar-stack-item]:text-xs *:data-[slot=avatar-stack-overflow]:size-8 *:data-[slot=avatar-stack-overflow]:text-xs',
+      lg: '*:data-[slot=avatar-stack-item]:size-10 *:data-[slot=avatar-stack-item]:text-sm *:data-[slot=avatar-stack-overflow]:size-10 *:data-[slot=avatar-stack-overflow]:text-sm',
     },
     spacing: {
-      tight: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-3",
-      normal: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-2",
-      loose: "[&>[data-slot='avatar-stack-item']:not(:first-child)]:-ms-1",
+      tight: '*:data-[slot=avatar-stack-item]:not-first:-ms-3 *:data-[slot=avatar-stack-overflow]:not-first:-ms-3',
+      normal: '*:data-[slot=avatar-stack-item]:not-first:-ms-2 *:data-[slot=avatar-stack-overflow]:not-first:-ms-2',
+      loose: '*:data-[slot=avatar-stack-item]:not-first:-ms-1 *:data-[slot=avatar-stack-overflow]:not-first:-ms-1',
     },
   },
   defaultVariants: {
@@ -61,7 +61,7 @@ const AvatarStackItem = ({ className, src, alt, fallback, render, children, ...p
         className: cn(
           'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted font-mono font-medium text-foreground ring-2 ring-background',
           render &&
-            'transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-ring',
+            'transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:ring-ring focus-visible:outline-none',
           className,
         ),
         children: content,
@@ -93,9 +93,9 @@ const AvatarStackOverflow = ({
     props: mergeProps<'span'>(
       {
         className: cn(
-          'relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-mono font-medium tabular-nums text-muted-foreground ring-2 ring-background',
+          'relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-mono font-medium text-muted-foreground tabular-nums ring-2 ring-background',
           render &&
-            'transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+            'transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
           className,
         ),
         children: children ?? (
@@ -107,7 +107,7 @@ const AvatarStackOverflow = ({
       },
       props,
     ),
-    state: { slot: 'avatar-stack-item', overflow: true },
+    state: { slot: 'avatar-stack-overflow', overflow: true },
   });
 };
 

@@ -26,14 +26,14 @@ export const Cta = () => {
         />
 
         <motion.div {...fadeUp()} className="relative z-10 flex max-w-2xl flex-col items-center gap-8 text-center">
-          <h2 className="font-display text-4xl font-semibold leading-[1.05] text-white sm:text-5xl md:text-6xl">
+          <h2 className="font-display text-4xl leading-[1.05] font-semibold text-white sm:text-5xl md:text-6xl">
             Melt rigid assets into fluid yield.
           </h2>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
               href="#"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-white py-1.5 pe-1.5 ps-5 text-sm font-medium text-foreground transition-colors hover:bg-white/90"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-white py-1.5 ps-5 pe-1.5 text-sm font-medium text-foreground transition-colors hover:bg-white/90"
             >
               <span>Launch App</span>
               <span className="flex size-7 items-center justify-center rounded-full bg-foreground/10">

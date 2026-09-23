@@ -8,37 +8,22 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import {
-  addDays,
+  DEFAULT_LOCALE,
   clampDate,
+  findFocusableDay,
   gridKeyToDate,
+  isDayDisabled,
   monthCells,
   monthIndex,
   sameDay,
   startOfDay,
+  startOfMonth,
+  useToday,
+  type WeekStartsOn,
 } from '@/registry/hirael/bases/base/components/calendar-utils';
 
-// Today differs between the static-export build and the visitor, so read it on the client only.
-const subscribeToday = () => () => {};
-const getTodaySnapshot = () => startOfDay(new Date()).getTime();
-const getServerTodaySnapshot = () => null;
-
-// Disabled days can't take focus, so walk past them in the direction of travel, stopping at min/max.
-const findFocusableDay = (
-  from: Date,
-  dir: 1 | -1,
-  isDisabled: (d: Date) => boolean,
-  min?: Date,
-  max?: Date,
-): Date | null => {
-  let d = from;
-  for (let i = 0; i < 366; i++) {
-    if (min && d.getTime() < startOfDay(min).getTime()) return null;
-    if (max && d.getTime() > startOfDay(max).getTime()) return null;
-    if (!isDisabled(d)) return d;
-    d = addDays(d, dir);
-  }
-  return null;
-};
+// Laid out while today is unknown (server render, hydration); it has six week rows, so the height never jumps.
+const PLACEHOLDER_MONTH = new Date(2000, 0, 1);
 
 export interface DateCalendarProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: Date | null;
@@ -50,8 +35,9 @@ export interface DateCalendarProps extends Omit<React.ComponentProps<'div'>, 'de
   min?: Date;
   max?: Date;
   disabledDate?: (d: Date) => boolean;
+  /** BCP 47 tag for labels. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
-  weekStartsOn?: 0 | 1;
+  weekStartsOn?: WeekStartsOn;
 }
 
 const DateCalendar = ({
@@ -64,7 +50,7 @@ const DateCalendar = ({
   min,
   max,
   disabledDate,
-  locale,
+  locale = DEFAULT_LOCALE,
   weekStartsOn = 1,
   className,
   ref: refProp,
@@ -72,15 +58,17 @@ const DateCalendar = ({
 }: DateCalendarProps) => {
   const [internal, setInternal] = React.useState<Date | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : internal;
-  const todayTime = React.useSyncExternalStore(subscribeToday, getTodaySnapshot, getServerTodaySnapshot);
-  const today = todayTime === null ? null : new Date(todayTime);
+  const today = useToday();
 
-  const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
-    const anchor = monthProp ?? defaultMonth ?? value ?? new Date();
-    return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+  // With no anchor, the first month is today's, which is only known after hydration.
+  const [internalMonth, setInternalMonth] = React.useState<Date | null>(() => {
+    const anchor = monthProp ?? defaultMonth ?? value;
+
+    return anchor ? startOfMonth(anchor) : null;
   });
-  const viewMonth =
-    monthProp !== undefined ? new Date(monthProp.getFullYear(), monthProp.getMonth(), 1) : internalMonth;
+  const resolvedMonth =
+    monthProp !== undefined ? startOfMonth(monthProp) : (internalMonth ?? (today && startOfMonth(today)));
+  const viewMonth = resolvedMonth ?? PLACEHOLDER_MONTH;
   const setViewMonth = (next: Date) => {
     if (monthProp === undefined) setInternalMonth(next);
     onMonthChange?.(next);
@@ -103,12 +91,8 @@ const DateCalendar = ({
     [valueProp, onValueChange],
   );
 
-  const isDayDisabled = React.useCallback(
-    (d: Date) => {
-      if (min && d.getTime() < startOfDay(min).getTime()) return true;
-      if (max && d.getTime() > startOfDay(max).getTime()) return true;
-      return disabledDate ? disabledDate(d) : false;
-    },
+  const isDisabled = React.useCallback(
+    (d: Date) => isDayDisabled(d, { min, max, disabledDate }),
     [min, max, disabledDate],
   );
 
@@ -147,7 +131,7 @@ const DateCalendar = ({
     if (!next) return;
     e.preventDefault();
     const target = clampDate(next, min, max);
-    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDayDisabled, min, max);
+    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDisabled, min, max);
     if (focusable) focusDay(focusable);
   };
 
@@ -164,7 +148,7 @@ const DateCalendar = ({
     weeks.push(cells.slice(i, i + 7));
   }
 
-  const isTabbable = (d: Date | null): d is Date => !!d && isMonthVisible(d) && !isDayDisabled(d);
+  const isTabbable = (d: Date | null): d is Date => !!d && isMonthVisible(d) && !isDisabled(d);
   const tabbable = isTabbable(selected)
     ? selected
     : isTabbable(today)
@@ -172,7 +156,13 @@ const DateCalendar = ({
       : (cells.find((c): c is Date => isTabbable(c)) ?? viewMonth);
 
   return (
-    <div ref={composedRef} data-slot="date-picker-calendar" className={cn('w-60', className)} {...props}>
+    <div
+      ref={composedRef}
+      data-slot="date-picker-calendar"
+      data-pending={resolvedMonth ? undefined : ''}
+      className={cn('w-60', !resolvedMonth && 'invisible', className)}
+      {...props}
+    >
       <div data-slot="date-picker-calendar-header" className="mb-2 flex items-center justify-between">
         <Button
           type="button"
@@ -185,7 +175,7 @@ const DateCalendar = ({
         >
           <ChevronLeft className="size-3.5 rtl:rotate-180" />
         </Button>
-        <span data-slot="date-picker-calendar-caption" className="text-xs tabular-nums uppercase text-muted-foreground">
+        <span data-slot="date-picker-calendar-caption" className="text-xs text-muted-foreground uppercase tabular-nums">
           {monthFmt.format(viewMonth)}
         </span>
         <Button
@@ -212,7 +202,7 @@ const DateCalendar = ({
               key={i}
               role="columnheader"
               data-slot="date-picker-calendar-weekday"
-              className="flex h-7 items-center justify-center text-xs uppercase text-muted-foreground"
+              className="flex h-7 items-center justify-center text-xs text-muted-foreground uppercase"
             >
               {label}
             </span>
@@ -226,7 +216,8 @@ const DateCalendar = ({
               }
               const isSelected = sameDay(d, selected);
               const isToday = sameDay(d, today);
-              const out = isDayDisabled(d);
+              const out = isDisabled(d);
+
               return (
                 <button
                   key={i}
@@ -242,12 +233,12 @@ const DateCalendar = ({
                   onKeyDown={(e) => handleKey(e, d)}
                   tabIndex={sameDay(d, tabbable) ? 0 : -1}
                   className={cn(
-                    'relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors',
+                    'relative size-8 rounded-sm font-mono text-xs tabular-nums transition-colors outline-none',
                     'hover:bg-accent hover:text-accent-foreground',
                     'focus-visible:ring-2 focus-visible:ring-ring',
                     'disabled:opacity-30 disabled:hover:bg-transparent',
                     isSelected && 'bg-primary text-primary-foreground hover:bg-primary',
-                    !isSelected && isToday && 'ring-1 ring-inset ring-primary/60',
+                    !isSelected && isToday && 'ring-1 ring-primary/60 ring-inset',
                   )}
                 >
                   {d.getDate()}
@@ -268,6 +259,9 @@ interface DatePickerContextValue {
   setOpen: (open: boolean) => void;
   min?: Date;
   max?: Date;
+  disabledDate?: (d: Date) => boolean;
+  locale: string;
+  weekStartsOn?: WeekStartsOn;
   disabled?: boolean;
 }
 
@@ -278,6 +272,7 @@ const useDatePicker = () => {
   if (!ctx) {
     throw new Error('DatePicker compound components must be used inside <DatePicker>');
   }
+
   return ctx;
 };
 
@@ -290,6 +285,10 @@ export interface DatePickerProps {
   onOpenChange?: (open: boolean) => void;
   min?: Date;
   max?: Date;
+  disabledDate?: (d: Date) => boolean;
+  /** BCP 47 tag for the trigger label and calendar. Defaults to `en-US` so server and client render the same text. */
+  locale?: string;
+  weekStartsOn?: WeekStartsOn;
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -303,6 +302,9 @@ const DatePicker = ({
   onOpenChange,
   min,
   max,
+  disabledDate,
+  locale = DEFAULT_LOCALE,
+  weekStartsOn,
   disabled,
   children,
 }: DatePickerProps) => {
@@ -327,8 +329,8 @@ const DatePicker = ({
   );
 
   const ctx = React.useMemo<DatePickerContextValue>(
-    () => ({ value, setValue, open, setOpen, min, max, disabled }),
-    [value, setValue, open, setOpen, min, max, disabled],
+    () => ({ value, setValue, open, setOpen, min, max, disabledDate, locale, weekStartsOn, disabled }),
+    [value, setValue, open, setOpen, min, max, disabledDate, locale, weekStartsOn, disabled],
   );
 
   return (
@@ -342,6 +344,7 @@ const DatePicker = ({
 
 interface DatePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
+  /** Overrides the root `locale`. */
   locale?: string;
   children?: React.ReactNode;
 }
@@ -354,7 +357,9 @@ const DatePickerTrigger = ({
   ...props
 }: DatePickerTriggerProps) => {
   const ctx = useDatePicker();
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+  const resolvedLocale = locale ?? ctx.locale;
+  const fmt = React.useMemo(() => new Intl.DateTimeFormat(resolvedLocale, { dateStyle: 'medium' }), [resolvedLocale]);
+
   return (
     <PopoverTrigger
       render={
@@ -363,9 +368,9 @@ const DatePickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="date-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
+            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
-            !ctx.value && 'text-muted-foreground font-sans',
+            !ctx.value && 'font-sans text-muted-foreground',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
           )}
@@ -382,8 +387,11 @@ const DatePickerTrigger = ({
 };
 
 interface DatePickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  /** Overrides the root `locale`. */
   locale?: string;
-  weekStartsOn?: 0 | 1;
+  /** Overrides the root `weekStartsOn`. */
+  weekStartsOn?: WeekStartsOn;
+  /** Overrides the root `disabledDate`. */
   disabledDate?: (d: Date) => boolean;
   month?: Date;
   defaultMonth?: Date;
@@ -401,6 +409,7 @@ const DatePickerContent = ({
   ...props
 }: DatePickerContentProps) => {
   const ctx = useDatePicker();
+
   return (
     <PopoverContent align="start" data-slot="date-picker-content" className={cn('w-auto p-3', className)} {...props}>
       <div data-slot="date-picker-content-body" className="flex flex-col gap-2">
@@ -415,9 +424,9 @@ const DatePickerContent = ({
           onMonthChange={onMonthChange}
           min={ctx.min}
           max={ctx.max}
-          disabledDate={disabledDate}
-          locale={locale}
-          weekStartsOn={weekStartsOn}
+          disabledDate={disabledDate ?? ctx.disabledDate}
+          locale={locale ?? ctx.locale}
+          weekStartsOn={weekStartsOn ?? ctx.weekStartsOn}
         />
         {ctx.value && (
           <div data-slot="date-picker-content-footer" className="flex justify-end">
@@ -427,7 +436,7 @@ const DatePickerContent = ({
               size="sm"
               data-slot="date-picker-clear"
               onClick={() => ctx.setValue(null)}
-              className="h-7 gap-1 px-2 text-xs uppercase text-muted-foreground"
+              className="h-7 gap-1 px-2 text-xs text-muted-foreground uppercase"
             >
               <X className="size-3" />
               Clear

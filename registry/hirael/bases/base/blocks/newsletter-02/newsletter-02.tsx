@@ -45,10 +45,12 @@ const progressFor = (invites: number) => {
   for (const [index, tier] of TIERS.entries()) {
     if (invites <= tier.invites) {
       const slice = (invites - previous) / (tier.invites - previous);
+
       return ((index + slice) / TIERS.length) * 100;
     }
     previous = tier.invites;
   }
+
   return 100;
 };
 
@@ -69,6 +71,7 @@ const Newsletter02 = () => {
     if (!EMAIL_PATTERN.test(email.trim())) {
       setError('Enter an email address like you@company.com.');
       inputRef.current?.focus();
+
       return;
     }
     setError(null);
@@ -85,18 +88,18 @@ const Newsletter02 = () => {
   const loading = status === 'loading';
 
   return (
-    <section data-slot="waitlist" aria-labelledby="newsletter-02-heading" className="bg-background py-20 md:py-28">
+    <section data-slot="waitlist" aria-labelledby="newsletter-02-heading" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-xl px-6">
         {status === 'joined' ? (
           <div key="joined" data-slot="waitlist-success" className={cn(SWAP, 'flex flex-col gap-8')}>
             <div className="flex flex-col gap-4">
-              <span className="inline-flex items-center gap-1.5 text-xs uppercase text-success">
+              <span className="inline-flex items-center gap-1.5 text-xs text-success uppercase">
                 <Check aria-hidden className="size-3.5" />
                 You are on the list
               </span>
-              <h2 id="newsletter-02-heading" className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+              <h2 id="newsletter-02-heading" className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
                 You&apos;re number{' '}
-                <span className="text-warm">
+                <span className="text-primary">
                   <AnimatedNumber value={WAITLIST.position} duration={900} locale="en-US" />
                 </span>
               </h2>
@@ -107,7 +110,7 @@ const Newsletter02 = () => {
             </div>
 
             <div data-slot="waitlist-referral" className="flex flex-col gap-2">
-              <span id="newsletter-02-link-label" className="text-xs uppercase text-muted-foreground">
+              <span id="newsletter-02-link-label" className="text-xs text-muted-foreground uppercase">
                 Your invite link
               </span>
               <InputGroup>
@@ -126,9 +129,9 @@ const Newsletter02 = () => {
 
             <div data-slot="waitlist-tiers" className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between gap-4 text-xs">
-                <span className="uppercase text-muted-foreground">Rewards</span>
+                <span className="text-muted-foreground uppercase">Rewards</span>
                 <span className="text-muted-foreground">
-                  <span className="tabular-nums text-foreground">{WAITLIST.invites}</span> of{' '}
+                  <span className="text-foreground tabular-nums">{WAITLIST.invites}</span> of{' '}
                   <span className="tabular-nums">{TIERS[TIERS.length - 1].invites}</span> invites
                 </span>
               </div>
@@ -144,7 +147,7 @@ const Newsletter02 = () => {
                       <span
                         className={cn(
                           'absolute end-0 top-1/2 size-2.5 translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-background rtl:-translate-x-1/2',
-                          WAITLIST.invites >= tier.invites ? 'bg-warm' : 'bg-border',
+                          WAITLIST.invites >= tier.invites ? 'bg-primary' : 'bg-border',
                         )}
                       />
                     </span>
@@ -174,11 +177,11 @@ const Newsletter02 = () => {
         ) : (
           <div key="idle" data-slot="waitlist-form" className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Early access</span>
+              <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Early access</span>
               <h2
                 id="newsletter-02-heading"
                 style={stagger(1, 80)}
-                className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+                className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
               >
                 Get in before the public launch
               </h2>
@@ -219,7 +222,10 @@ const Newsletter02 = () => {
                     aria-describedby={error ? 'newsletter-02-error' : undefined}
                   />
                 </InputGroup>
-                <FieldError id="newsletter-02-error" className="animate-in fade-in slide-in-from-top-1 duration-150">
+                <FieldError
+                  id="newsletter-02-error"
+                  className="animate-in duration-150 fill-mode-both fade-in slide-in-from-top-1 motion-reduce:animate-none"
+                >
                   {error}
                 </FieldError>
               </Field>
@@ -235,7 +241,7 @@ const Newsletter02 = () => {
                 ))}
               </AvatarStack>
               <span className="text-sm text-muted-foreground">
-                <span dir="ltr" className="tabular-nums text-foreground">
+                <span dir="ltr" className="text-foreground tabular-nums">
                   {WAITLIST.joined.toLocaleString('en-US')}
                 </span>{' '}
                 people already joined

@@ -48,6 +48,7 @@ const importSpecifiers = (source: string, fileName: string) => {
     ts.forEachChild(node, visit);
   };
   visit(parseSource(source, fileName));
+
   return specifiers;
 };
 
@@ -68,6 +69,7 @@ const collectImports = (base: RegistryBase, entry: RegistryEntry) => {
       if (!IMPLICIT_PACKAGES.has(pkg)) packages.add(pkg);
     }
   }
+
   return { hiraelItems, packages };
 };
 
@@ -87,6 +89,7 @@ const checkPreview = (base: RegistryBase, entry: RegistryEntry) => {
     if (!existsSync(path.join(ROOT, preview))) {
       report.fail(`"${entry.name}" → preview ${preview} missing`);
     }
+
     return;
   }
   for (const example of getExamples(entry.name)) {
@@ -123,6 +126,57 @@ const checkDependencies = (base: RegistryBase, entry: RegistryEntry) => {
   }
 };
 
+// Classes defined only in the site's globals.css render here but vanish in a consumer's project.
+const SITE_ONLY_CLASSES = new Set(
+  [...readFileSync(path.join(ROOT, 'app/globals.css'), 'utf8').matchAll(/^\s*(?:@utility\s+|\.)([a-z][\w-]*)\s*\{/gm)]
+    .map(([, name]) => name)
+    .filter((name) => !['dark', 'light', 'shiki'].includes(name)),
+);
+
+const classTokens = (source: string, fileName: string) => {
+  const tokens = new Set<string>();
+  const visit = (node: ts.Node) => {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateHead(node)) {
+      for (const token of node.text.split(/\s+/)) tokens.add(token.slice(token.lastIndexOf(':') + 1));
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(parseSource(source, fileName));
+
+  return tokens;
+};
+
+// Items adopt the consumer's theme, so they may only use shadcn's tokens plus the status tokens they ship.
+const THEME_TOKENS = new Set([
+  ...['background', 'foreground', 'radius', 'border', 'input', 'ring', 'success', 'warning', 'info'],
+  ...['card', 'popover', 'primary', 'secondary', 'muted', 'accent', 'destructive'].flatMap((t) => [
+    t,
+    `${t}-foreground`,
+  ]),
+]);
+const SITE_ONLY_TOKENS = [
+  ...(readFileSync(path.join(ROOT, 'app/globals.css'), 'utf8').match(/^:root \{[\s\S]*?^\}/m)?.[0] ?? '').matchAll(
+    /^\s*--([a-z][\w-]*):/gm,
+  ),
+]
+  .map(([, name]) => name)
+  .filter((name) => !THEME_TOKENS.has(name) && !/^(chart-\d|sidebar)/.test(name));
+const SITE_TOKEN_PATTERN = new RegExp(`(?:-|--)(${SITE_ONLY_TOKENS.join('|')})(?![\\w-])`);
+
+const checkSiteOnlyClasses = (base: RegistryBase, entry: RegistryEntry) => {
+  for (const { path: sourcePath } of entry.files ?? []) {
+    const file = path.join(ROOT, registryFilePath(base, sourcePath));
+    if (!existsSync(file)) continue;
+    for (const token of classTokens(readFileSync(file, 'utf8'), sourcePath)) {
+      if (SITE_ONLY_CLASSES.has(token)) {
+        report.fail(`"${entry.name}" [${base}] uses site-only class "${token}" (defined in app/globals.css)`);
+      }
+      const siteToken = SITE_ONLY_TOKENS.length ? token.match(SITE_TOKEN_PATTERN)?.[1] : undefined;
+      if (siteToken) report.fail(`"${entry.name}" [${base}] uses site-only token "--${siteToken}" in "${token}"`);
+    }
+  }
+};
+
 const checkOrder = (arrayName: string, kindLabel: string, order: readonly string[], expected: Set<string>) => {
   const seen = new Set<string>();
   for (const key of order) {
@@ -140,6 +194,7 @@ for (const base of REGISTRY_BASES) {
     checkFiles(base, entry);
     checkPreview(base, entry);
     checkDependencies(base, entry);
+    checkSiteOnlyClasses(base, entry);
   }
 }
 

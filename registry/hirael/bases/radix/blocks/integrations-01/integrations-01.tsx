@@ -36,6 +36,7 @@ const ORBIT = 42;
 
 const spokePosition = (angle: number) => {
   const rad = ((angle - 90) * Math.PI) / 180;
+
   return { x: 50 + ORBIT * Math.cos(rad), y: 50 + ORBIT * Math.sin(rad) };
 };
 
@@ -50,10 +51,10 @@ const Integrations01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] bg-size-[20px_20px] opacity-[0.18] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[20px_20px] opacity-[0.18]"
       />
 
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
             <Badge variant="outline" className={cn(ENTER, 'w-fit')}>
@@ -64,7 +65,7 @@ const Integrations01 = () => {
               style={stagger(1)}
               className={cn(
                 ENTER,
-                'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+                'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
               )}
             >
               Plays well with the rest of your stack.
@@ -88,7 +89,7 @@ const Integrations01 = () => {
                     onMouseEnter={() => setActive(spoke.name)}
                     onFocus={() => setActive(spoke.name)}
                     onBlur={() => setActive(null)}
-                    className="flex items-center gap-2 rounded-sm px-1.5 py-1.5 text-sm text-foreground transition-colors duration-150 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-active:bg-accent"
+                    className="flex items-center gap-2 rounded-sm px-1.5 py-1.5 text-sm text-foreground transition-colors duration-150 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none data-active:bg-accent"
                   >
                     <spoke.icon aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
                     <span className="font-medium">{spoke.name}</span>
@@ -142,6 +143,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
         {SPOKES.map((spoke) => {
           const { x, y } = spokePosition(spoke.angle);
           const isActive = active === spoke.name;
+
           return (
             <line
               key={spoke.name}
@@ -154,7 +156,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
               strokeDasharray={isActive ? undefined : '0.8 1.2'}
               className={cn(
                 'transition-[color,opacity] duration-150',
-                isActive ? 'text-warm opacity-100' : 'opacity-70',
+                isActive ? 'text-primary opacity-100' : 'opacity-70',
               )}
             />
           );
@@ -192,7 +194,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
       >
         <div className="flex flex-col items-center gap-1.5">
           <Boxes className="size-7 text-foreground" aria-hidden />
-          <span className="text-[10px] font-semibold uppercase text-foreground">Hirael</span>
+          <span className="text-[10px] font-semibold text-foreground uppercase">Hirael</span>
         </div>
         <span
           aria-hidden
@@ -203,6 +205,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
       {SPOKES.map((spoke) => {
         const { x, y } = spokePosition(spoke.angle);
         const isActive = active === spoke.name;
+
         return (
           <a
             key={spoke.name}
@@ -213,7 +216,7 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
             onMouseLeave={() => onActiveChange(null)}
             onFocus={() => onActiveChange(spoke.name)}
             onBlur={() => onActiveChange(null)}
-            className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             style={{ left: `${x}%`, top: `${y}%` }}
           >
             <span

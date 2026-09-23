@@ -34,19 +34,19 @@ const GeometricAccent = () => {
     <div data-slot="hero-accent" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* A glow behind each nest of squares, so the corners carry color and not
           just a hairline that all but disappears on a light canvas. */}
-      <div className="absolute -top-40 start-[-10rem] size-120 rounded-full bg-primary opacity-20 blur-3xl" />
-      <div className="absolute -bottom-40 end-[-10rem] size-120 rounded-full bg-accent-cool opacity-15 blur-3xl" />
+      <div className="absolute start-[-10rem] -top-40 size-120 rounded-full bg-primary opacity-20 blur-3xl" />
+      <div className="absolute end-[-10rem] -bottom-40 size-120 rounded-full bg-primary opacity-15 blur-3xl" />
 
-      <div style={stagger(0, 0, 150)} className={cn(REVEAL, 'absolute -top-20 start-[-5rem] size-80')}>
+      <div style={stagger(0, 0, 150)} className={cn(REVEAL, 'absolute start-[-5rem] -top-20 size-80')}>
         <div className="absolute inset-0 rotate-45 border border-primary/40" />
         <div className="absolute inset-4 rotate-45 border border-primary/25" />
         <div className="absolute inset-8 rotate-45 border border-primary/15" />
       </div>
 
-      <div style={stagger(0, 0, 250)} className={cn(REVEAL, 'absolute -bottom-20 end-[-5rem] size-80')}>
-        <div className="absolute inset-0 rotate-12 border border-accent-cool/40" />
-        <div className="absolute inset-4 rotate-12 border border-accent-cool/25" />
-        <div className="absolute inset-8 rotate-12 border border-accent-cool/15" />
+      <div style={stagger(0, 0, 250)} className={cn(REVEAL, 'absolute end-[-5rem] -bottom-20 size-80')}>
+        <div className="absolute inset-0 rotate-12 border border-primary/40" />
+        <div className="absolute inset-4 rotate-12 border border-primary/25" />
+        <div className="absolute inset-8 rotate-12 border border-primary/15" />
       </div>
     </div>
   );
@@ -64,17 +64,17 @@ const Hero06 = () => {
         <Badge variant="secondary" className={ENTER} asChild>
           <a href="#">
             <span aria-hidden className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-cool opacity-75 motion-reduce:animate-none" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent-cool" />
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75 motion-reduce:animate-none" />
+              <span className="relative inline-flex size-2 rounded-full bg-primary" />
             </span>
             Available for work
           </a>
         </Badge>
 
         <div style={stagger(1)} className={cn(ENTER, 'space-y-4')}>
-          <h1 className="mx-auto max-w-3xl font-serif text-4xl font-medium leading-[1.06] tracking-tight sm:text-5xl md:text-6xl">
+          <h1 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.06] font-medium tracking-tight sm:text-5xl md:text-6xl">
             Frontend engineer building{' '}
-            <span className="italic text-foreground underline decoration-primary decoration-2 underline-offset-8 dark:text-primary dark:no-underline">
+            <span className="text-foreground italic underline decoration-primary decoration-2 underline-offset-8">
               fast, accessible
             </span>{' '}
             web apps.
@@ -101,11 +101,11 @@ const Hero06 = () => {
               <div data-slot="hero-stat" className="text-center">
                 <span
                   dir="ltr"
-                  className="block font-serif text-2xl font-semibold tabular-nums text-foreground dark:text-primary md:text-4xl"
+                  className="block font-serif text-2xl font-semibold text-foreground tabular-nums md:text-4xl"
                 >
                   {stat.value}
                 </span>
-                <span className="mt-1 block text-xs uppercase text-muted-foreground sm:whitespace-nowrap">
+                <span className="mt-1 block text-xs text-muted-foreground uppercase sm:whitespace-nowrap">
                   {stat.label}
                 </span>
               </div>
@@ -133,7 +133,7 @@ const Hero06 = () => {
         </div>
 
         <div data-slot="hero-stack" style={stagger(4)} className={cn(ENTER, 'mt-6 w-full max-w-2xl space-y-3')}>
-          <p className="text-xs uppercase text-muted-foreground">Core stack</p>
+          <p className="text-xs text-muted-foreground uppercase">Core stack</p>
           <div className="flex items-center gap-4">
             <div
               aria-hidden
@@ -146,7 +146,7 @@ const Hero06 = () => {
                     <button
                       type="button"
                       aria-label={item.name}
-                      className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="rounded text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                     >
                       <item.icon className="size-6" aria-hidden />
                     </button>

@@ -95,7 +95,7 @@ const ResourceStatusItem = ({
       </div>
       <div className="flex shrink-0 items-center gap-3">
         {uptime ? (
-          <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+          <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
             {uptime}
           </span>
         ) : null}
@@ -159,7 +159,7 @@ export {
 const ResourceStatusBlock = () => {
   return (
     <section data-slot="resource-status-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
-      <ResourceStatus className="w-full max-w-lg animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+      <ResourceStatus className="w-full max-w-lg animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
         <ResourceStatusBanner state="degraded">Some systems degraded</ResourceStatusBanner>
         <ResourceStatusList>
           <ResourceStatusItem name="API" description="REST and GraphQL" state="operational" uptime="99.98%" />

@@ -123,7 +123,7 @@ const IconStackContent = ({ className, ...props }: React.ComponentProps<'div'>) 
     <div
       data-slot="icon-stack-content"
       className={cn(
-        'pointer-events-none absolute left-(--icon-stack-face-x) top-(--icon-stack-face-y) flex -translate-x-1/2 -translate-y-1/2 -skew-y-26 scale-x-90 items-center justify-center text-muted-foreground',
+        'pointer-events-none absolute top-(--icon-stack-face-y) left-(--icon-stack-face-x) flex -translate-x-1/2 -translate-y-1/2 scale-x-90 -skew-y-26 items-center justify-center text-muted-foreground',
         className,
       )}
       {...props}

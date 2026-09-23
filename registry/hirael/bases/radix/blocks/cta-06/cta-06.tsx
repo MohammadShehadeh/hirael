@@ -33,14 +33,14 @@ const Cta06 = () => {
 
         <div className="relative z-10 grid h-full content-center gap-6 px-5 py-8 md:min-h-80 md:grid-cols-[1fr_auto] md:items-center md:gap-10 md:px-10">
           <div data-slot="cta-header" className="flex flex-col items-start">
-            <span style={stagger(1)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+            <span style={stagger(1)} className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>
               Get started
             </span>
             <h2
               style={stagger(2)}
               className={cn(
                 ENTER,
-                'mt-3 max-w-lg text-start font-serif text-3xl font-medium leading-[1.05] tracking-tight text-foreground sm:text-4xl md:text-5xl',
+                'mt-3 max-w-lg text-start font-serif text-3xl leading-[1.05] font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl',
               )}
             >
               Connect a repo and <span className="italic">watch it run.</span>
@@ -68,7 +68,7 @@ const Cta06 = () => {
                 Connect a repository
               </a>
             </Button>
-            <p className="text-xs uppercase text-muted-foreground">Free for public repos</p>
+            <p className="text-xs text-muted-foreground uppercase">Free for public repos</p>
           </div>
         </div>
       </div>

@@ -63,6 +63,7 @@ const useKanban = () => {
   if (!ctx) {
     throw new Error('Kanban compound parts must be used inside <Kanban>');
   }
+
   return ctx;
 };
 
@@ -77,6 +78,7 @@ const useKanbanColumn = () => {
   if (!ctx) {
     throw new Error('Kanban column parts must be used inside <KanbanColumn>');
   }
+
   return ctx;
 };
 
@@ -97,19 +99,30 @@ const useKanbanCard = () => {
   if (!ctx) {
     throw new Error('Kanban card parts must be used inside <KanbanCard>');
   }
+
   return ctx;
 };
 
 const DRAG_THRESHOLD = 5;
+const AUTO_SCROLL_EDGE = 48;
+const AUTO_SCROLL_MAX_SPEED = 16;
 
 // Presses that start on these keep their own behavior instead of starting a card drag.
-const INTERACTIVE_SELECTOR = 'button, a, input, textarea, select, [role="button"]';
+const INTERACTIVE_SELECTOR = 'button, a, input, textarea, select, [role="button"], [contenteditable]';
+
+const composeHandlers =
+  <E extends React.SyntheticEvent>(theirs: ((event: E) => void) | undefined, ours: ((event: E) => void) | undefined) =>
+  (event: E) => {
+    theirs?.(event);
+    if (!event.defaultPrevented) ours?.(event);
+  };
 
 const findCard = (value: KanbanValue, cardId: string) => {
   for (const columnId of Object.keys(value)) {
     const index = value[columnId].indexOf(cardId);
     if (index !== -1) return { columnId, index };
   }
+
   return null;
 };
 
@@ -123,15 +136,18 @@ const moveCard = (value: KanbanValue, cardId: string, to: DropTarget): KanbanVal
   const index = Math.max(0, Math.min(to.index, target.length));
   target.splice(index, 0, cardId);
   next[to.columnId] = target;
+
   return next;
 };
 
 const sameValue = (a: KanbanValue, b: KanbanValue) => {
   const keys = Object.keys(a);
   if (keys.length !== Object.keys(b).length) return false;
+
   return keys.every((k) => {
     const x = a[k];
     const y = b[k];
+
     return !!y && x.length === y.length && x.every((v, i) => v === y[i]);
   });
 };
@@ -141,7 +157,7 @@ export interface KanbanProps extends Omit<React.ComponentProps<'div'>, 'defaultV
   value?: KanbanValue;
   defaultValue?: KanbanValue;
   onValueChange?: (value: KanbanValue) => void;
-  /** Fires once per completed move with the source and destination. */
+  /** Fires once per completed move (pointer drop or keyboard drop) with the source and destination. */
   onCardMove?: (move: KanbanMove) => void;
   disabled?: boolean;
 }
@@ -157,17 +173,21 @@ const Kanban = ({
   ...props
 }: KanbanProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
+  const [preview, setPreview] = React.useState<KanbanValue | null>(null);
   const [drag, setDrag] = React.useState<DragState | null>(null);
   const [offset, setOffset] = React.useState({ x: 0, y: 0 });
   const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
   const [grabbedId, setGrabbedId] = React.useState<string | null>(null);
   const [liveText, setLiveText] = React.useState('');
 
-  const value = valueProp ?? internal;
+  const committed = valueProp ?? internal;
+  const value = preview ?? committed;
   const valueRef = React.useRef(value);
+  const committedRef = React.useRef(committed);
   React.useLayoutEffect(() => {
     valueRef.current = value;
-  }, [value]);
+    committedRef.current = committed;
+  }, [value, committed]);
 
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const columnsRef = React.useRef(new Map<string, ColumnEntry>());
@@ -175,11 +195,12 @@ const Kanban = ({
   const pressRef = React.useRef<PressState | null>(null);
   const dropRef = React.useRef<DropTarget | null>(null);
   const dragRef = React.useRef<DragState | null>(null);
-  const snapshotRef = React.useRef<KanbanValue | null>(null);
+  const pointerRef = React.useRef<{ x: number; y: number } | null>(null);
   const pendingFocusRef = React.useRef<string | null>(null);
 
   const registerColumn = React.useCallback((id: string, entry: ColumnEntry) => {
     columnsRef.current.set(id, entry);
+
     return () => {
       columnsRef.current.delete(id);
     };
@@ -187,6 +208,7 @@ const Kanban = ({
 
   const registerCard = React.useCallback((id: string, entry: CardEntry) => {
     cardsRef.current.set(id, entry);
+
     return () => {
       cardsRef.current.delete(id);
     };
@@ -201,6 +223,7 @@ const Kanban = ({
   const columnLabel = React.useCallback((id: string) => {
     const node = columnsRef.current.get(id)?.node;
     const title = node?.querySelector<HTMLElement>('[data-slot="kanban-column-title"]');
+
     return title?.textContent?.trim() || id;
   }, []);
 
@@ -213,7 +236,7 @@ const Kanban = ({
 
   const commit = React.useCallback(
     (next: KanbanValue, move?: KanbanMove) => {
-      if (sameValue(next, valueRef.current)) return;
+      if (sameValue(next, committedRef.current)) return;
       if (valueProp === undefined) setInternal(next);
       onValueChange?.(next);
       if (move) onCardMove?.(move);
@@ -226,6 +249,7 @@ const Kanban = ({
       const pos = findCard(next, id);
       if (!pos) return `${verb} ${cardLabel(id)}`;
       const total = next[pos.columnId].length;
+
       return `${verb} ${cardLabel(id)} to ${columnLabel(pos.columnId)}, position ${pos.index + 1} of ${total}`;
     },
     [cardLabel, columnLabel],
@@ -234,6 +258,7 @@ const Kanban = ({
   const resetDrag = React.useCallback(() => {
     pressRef.current = null;
     dropRef.current = null;
+    pointerRef.current = null;
     setDrag(null);
     setDropTarget(null);
     setOffset({ x: 0, y: 0 });
@@ -257,7 +282,7 @@ const Kanban = ({
         break;
       }
     }
-    if (!columnId) return dropRef.current;
+    if (!columnId) return null;
     const ids = (valueRef.current[columnId] ?? []).filter((id) => id !== dragging);
     let index = 0;
     for (const id of ids) {
@@ -266,6 +291,7 @@ const Kanban = ({
       const r = entry.node.getBoundingClientRect();
       if (y > (r.top + r.bottom) / 2) index += 1;
     }
+
     return { columnId, index };
   }, []);
 
@@ -274,10 +300,13 @@ const Kanban = ({
       const press = pressRef.current;
       const active = dragRef.current;
       if (!press || !active) return;
+      pointerRef.current = { x, y };
       setOffset({ x: x - press.x, y: y - press.y });
       const next = locate(x, y, active.id);
       const prev = dropRef.current;
-      if (next && (!prev || prev.columnId !== next.columnId || prev.index !== next.index)) {
+      const changed =
+        next === null || prev === null ? next !== prev : prev.columnId !== next.columnId || prev.index !== next.index;
+      if (changed) {
         dropRef.current = next;
         setDropTarget(next);
       }
@@ -347,12 +376,39 @@ const Kanban = ({
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup', onUp);
     document.addEventListener('pointercancel', onCancel);
+
     return () => {
       document.removeEventListener('pointermove', onMove);
       document.removeEventListener('pointerup', onUp);
       document.removeEventListener('pointercancel', onCancel);
     };
   }, [drag, updateDrag, finishDrag]);
+
+  React.useEffect(() => {
+    if (!drag) return;
+    let frame = requestAnimationFrame(function step() {
+      const root = rootRef.current;
+      const pointer = pointerRef.current;
+      if (root && pointer && root.scrollWidth > root.clientWidth) {
+        const rect = root.getBoundingClientRect();
+        const fromStart = pointer.x - rect.left;
+        const fromEnd = rect.right - pointer.x;
+        let delta = 0;
+        if (fromStart < AUTO_SCROLL_EDGE)
+          delta = -AUTO_SCROLL_MAX_SPEED * (1 - Math.max(fromStart, 0) / AUTO_SCROLL_EDGE);
+        else if (fromEnd < AUTO_SCROLL_EDGE)
+          delta = AUTO_SCROLL_MAX_SPEED * (1 - Math.max(fromEnd, 0) / AUTO_SCROLL_EDGE);
+        if (delta !== 0) {
+          const before = root.scrollLeft;
+          root.scrollLeft += delta;
+          if (root.scrollLeft !== before) updateDrag(pointer.x, pointer.y);
+        }
+      }
+      frame = requestAnimationFrame(step);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [drag, updateDrag]);
 
   const moveGrabbed = React.useCallback(
     (id: string, key: string, rtl: boolean) => {
@@ -381,11 +437,11 @@ const Kanban = ({
       const next = moveCard(current, id, target);
       if (!next) return;
       pendingFocusRef.current = id;
-      const to = findCard(next, id);
-      commit(next, to ? { cardId: id, from, to } : undefined);
+      valueRef.current = next;
+      setPreview(next);
       announce(describe('Moved', id, next));
     },
-    [orderedColumns, commit, announce, describe],
+    [orderedColumns, announce, describe],
   );
 
   const handleKeyDown = React.useCallback(
@@ -396,12 +452,15 @@ const Kanban = ({
       if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
         if (isGrabbed) {
+          const next = valueRef.current;
+          const from = findCard(committedRef.current, id);
+          const to = findCard(next, id);
           setGrabbedId(null);
-          snapshotRef.current = null;
-          announce(describe('Dropped', id, valueRef.current));
+          setPreview(null);
+          commit(next, from && to ? { cardId: id, from, to } : undefined);
+          announce(describe('Dropped', id, next));
         } else if (grabbedId === null) {
           setGrabbedId(id);
-          snapshotRef.current = valueRef.current;
           const pos = findCard(valueRef.current, id);
           announce(
             `Grabbed ${cardLabel(id)}${
@@ -411,23 +470,21 @@ const Kanban = ({
             }. Use arrow keys to move between cards and columns, Space to drop, Escape to cancel.`,
           );
         }
+
         return;
       }
 
       if (e.key === 'Escape') {
         if (!isGrabbed) return;
         e.preventDefault();
-        const snapshot = snapshotRef.current;
         setGrabbedId(null);
-        snapshotRef.current = null;
-        if (snapshot) {
+        if (preview) {
           pendingFocusRef.current = id;
-          // Arrow steps already reported their moves; report the revert too so consumers stay in sync.
-          const from = findCard(valueRef.current, id);
-          const to = findCard(snapshot, id);
-          commit(snapshot, from && to ? { cardId: id, from, to } : undefined);
+          valueRef.current = committedRef.current;
+          setPreview(null);
         }
         announce(`Move cancelled. ${cardLabel(id)} returned to its original position.`);
+
         return;
       }
 
@@ -438,14 +495,14 @@ const Kanban = ({
         moveGrabbed(id, e.key, rtl);
       }
     },
-    [disabled, drag, grabbedId, announce, describe, cardLabel, columnLabel, commit, moveGrabbed],
+    [disabled, drag, grabbedId, preview, announce, describe, cardLabel, columnLabel, commit, moveGrabbed],
   );
 
   const handleBlur = React.useCallback(
     (id: string) => {
       if (grabbedId !== id || pendingFocusRef.current === id) return;
       setGrabbedId(null);
-      snapshotRef.current = null;
+      setPreview(null);
     },
     [grabbedId],
   );
@@ -469,6 +526,7 @@ const Kanban = ({
       }
     };
     window.addEventListener('keydown', onKeyDown);
+
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [drag, finishDrag]);
 
@@ -537,6 +595,7 @@ const KanbanDragOverlay = ({ drag, offset }: KanbanDragOverlayProps) => {
     const host = ref.current;
     if (!host) return;
     host.replaceChildren(ghost);
+
     return () => {
       host.replaceChildren();
     };
@@ -574,6 +633,7 @@ const KanbanColumn = ({ id, className, ...props }: KanbanColumnProps) => {
   React.useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
+
     return registerColumn(id, { node });
   }, [id, registerColumn]);
 
@@ -622,6 +682,7 @@ const KanbanColumnCount = ({ className, children, ...props }: React.ComponentPro
   const { value } = useKanban();
   const { id } = useKanbanColumn();
   const count = value[id]?.length ?? 0;
+
   return (
     <span
       data-slot="kanban-column-count"
@@ -673,7 +734,19 @@ export interface KanbanCardProps extends React.ComponentProps<'div'> {
   disabled?: boolean;
 }
 
-const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...props }: KanbanCardProps) => {
+const KanbanCard = ({
+  id,
+  disabled: disabledProp = false,
+  className,
+  style,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
+  onBlur,
+  ...props
+}: KanbanCardProps) => {
   const {
     value,
     disabled: rootDisabled,
@@ -695,6 +768,7 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...p
   React.useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
+
     return registerCard(id, { node });
   }, [id, registerCard]);
 
@@ -722,30 +796,32 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...p
         aria-roledescription="draggable card"
         tabIndex={interactive ? 0 : undefined}
         style={{ ...style, order: index === -1 ? undefined : index * 2 + 2 }}
-        onPointerDown={
+        onPointerDown={composeHandlers(
+          onPointerDown,
           interactive
             ? (e) => {
                 const hit = (e.target as HTMLElement).closest(INTERACTIVE_SELECTOR);
                 if (hit && hit !== e.currentTarget && e.currentTarget.contains(hit)) return;
                 startPress(e, id);
               }
-            : undefined
-        }
-        onPointerMove={disabled ? undefined : (e) => handlePointerMove(e, id)}
-        onPointerUp={disabled ? undefined : (e) => handlePointerEnd(e, id)}
-        onPointerCancel={disabled ? undefined : (e) => handlePointerEnd(e, id)}
-        onKeyDown={
+            : undefined,
+        )}
+        onPointerMove={composeHandlers(onPointerMove, disabled ? undefined : (e) => handlePointerMove(e, id))}
+        onPointerUp={composeHandlers(onPointerUp, disabled ? undefined : (e) => handlePointerEnd(e, id))}
+        onPointerCancel={composeHandlers(onPointerCancel, disabled ? undefined : (e) => handlePointerEnd(e, id))}
+        onKeyDown={composeHandlers(
+          onKeyDown,
           interactive
             ? (e) => {
                 // Keys typed into inner controls bubble here; only the focused card itself moves.
                 if (e.target !== e.currentTarget) return;
                 handleKeyDown(e, id);
               }
-            : undefined
-        }
-        onBlur={interactive ? () => handleBlur(id) : undefined}
+            : undefined,
+        )}
+        onBlur={composeHandlers(onBlur, interactive ? () => handleBlur(id) : undefined)}
         className={cn(
-          'group/kanban-card relative flex shrink-0 select-none flex-col gap-2 rounded-md border border-border bg-card p-3 text-sm text-card-foreground shadow-xs outline-none transition-[box-shadow,border-color,transform] motion-reduce:transition-none',
+          'group/kanban-card relative flex shrink-0 flex-col gap-2 rounded-md border border-border bg-card p-3 text-sm text-card-foreground shadow-xs transition-[box-shadow,border-color,transform] outline-none select-none motion-reduce:transition-none',
           interactive && 'cursor-grab touch-none',
           interactive &&
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
@@ -760,12 +836,23 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...p
   );
 };
 
-const KanbanCardHandle = ({ className, children, ...props }: React.ComponentProps<'button'>) => {
+const KanbanCardHandle = ({
+  className,
+  children,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
+  onBlur,
+  ...props
+}: React.ComponentProps<'button'>) => {
   const { startPress, handlePointerMove, handlePointerEnd, handleKeyDown, handleBlur } = useKanban();
   const { id, disabled, setHasHandle, state } = useKanbanCard();
 
   React.useLayoutEffect(() => {
     setHasHandle(true);
+
     return () => setHasHandle(false);
   }, [setHasHandle]);
 
@@ -777,14 +864,14 @@ const KanbanCardHandle = ({ className, children, ...props }: React.ComponentProp
       disabled={disabled}
       aria-label="Drag to move"
       aria-pressed={state === 'grabbed'}
-      onPointerDown={(e) => startPress(e, id)}
-      onPointerMove={(e) => handlePointerMove(e, id)}
-      onPointerUp={(e) => handlePointerEnd(e, id)}
-      onPointerCancel={(e) => handlePointerEnd(e, id)}
-      onKeyDown={(e) => handleKeyDown(e, id)}
-      onBlur={() => handleBlur(id)}
+      onPointerDown={composeHandlers(onPointerDown, (e) => startPress(e, id))}
+      onPointerMove={composeHandlers(onPointerMove, (e) => handlePointerMove(e, id))}
+      onPointerUp={composeHandlers(onPointerUp, (e) => handlePointerEnd(e, id))}
+      onPointerCancel={composeHandlers(onPointerCancel, (e) => handlePointerEnd(e, id))}
+      onKeyDown={composeHandlers(onKeyDown, (e) => handleKeyDown(e, id))}
+      onBlur={composeHandlers(onBlur, () => handleBlur(id))}
       className={cn(
-        'inline-flex size-6 shrink-0 cursor-grab touch-none select-none items-center justify-center rounded text-muted-foreground outline-none transition-colors',
+        'inline-flex size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded text-muted-foreground transition-colors outline-none select-none',
         'hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'disabled:cursor-not-allowed',
         state === 'grabbed' && 'cursor-grabbing text-foreground',
@@ -803,6 +890,7 @@ const KanbanEmpty = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const visible = (value[id] ?? []).filter((v) => v !== dragId);
   const hasPlaceholder = !!drag && dropTarget?.columnId === id;
   if (visible.length > 0 || hasPlaceholder) return null;
+
   return (
     <div
       data-slot="kanban-empty"

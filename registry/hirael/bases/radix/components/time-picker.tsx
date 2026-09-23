@@ -16,12 +16,20 @@ export interface TimeValue {
 
 export type TimeFormat = '12h' | '24h';
 
+export interface MeridiemLabels {
+  am: string;
+  pm: string;
+}
+
+const DEFAULT_MERIDIEM_LABELS: MeridiemLabels = { am: 'AM', pm: 'PM' };
+
 interface TimePickerContextValue {
   value: TimeValue | null;
   setValue: (v: TimeValue) => void;
   clearValue: () => void;
   clearable: boolean;
   format: TimeFormat;
+  meridiemLabels: MeridiemLabels;
   showSeconds: boolean;
   minuteStep: number;
   secondStep: number;
@@ -37,6 +45,7 @@ const useTimePicker = () => {
   if (!ctx) {
     throw new Error('TimePicker compound components must be used inside <TimePicker>');
   }
+
   return ctx;
 };
 
@@ -53,6 +62,8 @@ export interface TimePickerProps {
   onClear?: () => void;
   clearable?: boolean;
   format?: TimeFormat;
+  /** Labels for the 12-hour clock halves, in the trigger and the AM/PM switch. */
+  meridiemLabels?: MeridiemLabels;
   showSeconds?: boolean;
   minuteStep?: number;
   secondStep?: number;
@@ -70,6 +81,7 @@ const TimePicker = ({
   onClear,
   clearable = false,
   format = '24h',
+  meridiemLabels = DEFAULT_MERIDIEM_LABELS,
   showSeconds = false,
   minuteStep = 1,
   secondStep = 1,
@@ -113,6 +125,7 @@ const TimePicker = ({
       clearValue,
       clearable,
       format,
+      meridiemLabels,
       showSeconds,
       minuteStep,
       secondStep,
@@ -120,7 +133,20 @@ const TimePicker = ({
       setOpen,
       disabled,
     }),
-    [value, setValue, clearValue, clearable, format, showSeconds, minuteStep, secondStep, open, setOpen, disabled],
+    [
+      value,
+      setValue,
+      clearValue,
+      clearable,
+      format,
+      meridiemLabels,
+      showSeconds,
+      minuteStep,
+      secondStep,
+      open,
+      setOpen,
+      disabled,
+    ],
   );
 
   return (
@@ -132,13 +158,14 @@ const TimePicker = ({
   );
 };
 
-const formatTimeValue = (v: TimeValue, format: TimeFormat, showSeconds: boolean) => {
+const formatTimeValue = (v: TimeValue, format: TimeFormat, showSeconds: boolean, labels: MeridiemLabels) => {
   const tail = showSeconds ? `:${pad2(v.second ?? 0)}` : '';
   if (format === '24h') {
     return `${pad2(v.hour)}:${pad2(v.minute)}${tail}`;
   }
-  const meridiem = v.hour >= 12 ? 'PM' : 'AM';
+  const meridiem = v.hour >= 12 ? labels.pm : labels.am;
   const h12 = ((v.hour + 11) % 12) + 1;
+
   return `${pad2(h12)}:${pad2(v.minute)}${tail} ${meridiem}`;
 };
 
@@ -152,7 +179,8 @@ const TimePickerTrigger = ({
   children?: React.ReactNode;
 }) => {
   const ctx = useTimePicker();
-  const label = ctx.value ? formatTimeValue(ctx.value, ctx.format, ctx.showSeconds) : null;
+  const label = ctx.value ? formatTimeValue(ctx.value, ctx.format, ctx.showSeconds, ctx.meridiemLabels) : null;
+
   return (
     <PopoverTrigger asChild>
       <button
@@ -160,9 +188,9 @@ const TimePickerTrigger = ({
         disabled={ctx.disabled}
         data-slot="time-picker-trigger"
         className={cn(
-          'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
+          'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          !ctx.value && 'text-muted-foreground font-sans',
+          !ctx.value && 'font-sans text-muted-foreground',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
@@ -189,15 +217,19 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
 
   const displayValues = React.useMemo(() => {
     if (selected === undefined || values.includes(selected)) return values;
+
     return [...values, selected].sort((a, b) => a - b);
   }, [values, selected]);
 
   const tabbableValue = selected ?? displayValues[0];
 
+  // Scroll only this column; scrollIntoView would also scroll the page and any scrollable ancestor.
   React.useEffect(() => {
-    if (selected === undefined) return;
-    const el = listRef.current?.querySelector<HTMLButtonElement>(`[data-val="${selected}"]`);
-    el?.scrollIntoView({ block: 'center', behavior: 'instant' });
+    const list = listRef.current;
+    if (selected === undefined || !list) return;
+    const el = list.querySelector<HTMLButtonElement>(`[data-val="${selected}"]`);
+    if (!el) return;
+    list.scrollTo({ top: el.offsetTop - (list.clientHeight - el.offsetHeight) / 2, behavior: 'instant' });
   }, [selected]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
@@ -230,11 +262,12 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
       role="listbox"
       aria-label={ariaLabel}
       data-slot="time-picker-column"
-      className="relative h-40 w-14 overflow-y-auto scroll-smooth rounded-sm border border-input bg-card snap-y snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="relative h-40 w-14 snap-y snap-mandatory [scrollbar-width:none] overflow-y-auto scroll-smooth rounded-sm border border-input bg-card [&::-webkit-scrollbar]:hidden"
     >
       <div className="flex flex-col items-stretch py-16">
         {displayValues.map((n, index) => {
           const active = n === selected;
+
           return (
             <button
               key={n}
@@ -247,10 +280,10 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
               onClick={() => onSelect(n)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               className={cn(
-                'h-8 snap-center text-center font-mono text-sm tabular-nums outline-none transition-colors',
+                'h-8 snap-center text-center font-mono text-sm tabular-nums transition-colors outline-none',
                 'hover:bg-accent',
                 'focus-visible:bg-accent',
-                active ? 'text-foreground font-semibold' : 'text-muted-foreground',
+                active ? 'font-semibold text-foreground' : 'text-muted-foreground',
               )}
             >
               {pad2(n)}
@@ -280,18 +313,21 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
     if (ctx.format === '24h') {
       return Array.from({ length: 24 }, (_, i) => i);
     }
+
     return Array.from({ length: 12 }, (_, i) => i + 1);
   }, [ctx.format]);
 
   const minuteValues = React.useMemo(() => {
     const step = Math.max(1, ctx.minuteStep);
     const count = Math.ceil(60 / step);
+
     return Array.from({ length: count }, (_, i) => i * step);
   }, [ctx.minuteStep]);
 
   const secondValues = React.useMemo(() => {
     const step = Math.max(1, ctx.secondStep);
     const count = Math.ceil(60 / step);
+
     return Array.from({ length: count }, (_, i) => i * step);
   }, [ctx.secondStep]);
 
@@ -352,10 +388,10 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         <Tabs value={isAM ? 'AM' : 'PM'} onValueChange={(v) => setMeridiem(v as 'AM' | 'PM')} className="mt-3">
           <TabsList className="w-full">
             <TabsTrigger value="AM" className="text-xs uppercase">
-              AM
+              {ctx.meridiemLabels.am}
             </TabsTrigger>
             <TabsTrigger value="PM" className="text-xs uppercase">
-              PM
+              {ctx.meridiemLabels.pm}
             </TabsTrigger>
           </TabsList>
         </Tabs>

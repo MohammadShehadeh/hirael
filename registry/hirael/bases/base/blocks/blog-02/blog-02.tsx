@@ -150,7 +150,7 @@ const PostRow = ({ post, index }: PostRowProps) => {
     <li data-slot="blog-post" style={stagger(index, 50)} className={cn(SWAP, 'border-b border-border')}>
       <a
         href={post.href}
-        className="group grid grid-cols-1 gap-x-8 gap-y-2 py-6 outline-none transition-colors duration-150 hover:bg-muted/30 focus-visible:bg-muted/30 focus-visible:ring-2 focus-visible:ring-ring/50 sm:grid-cols-[7rem_minmax(0,1fr)_auto] sm:items-center sm:px-3"
+        className="group grid grid-cols-1 gap-x-8 gap-y-2 py-6 transition-colors duration-150 outline-none hover:bg-muted/30 focus-visible:bg-muted/30 focus-visible:ring-2 focus-visible:ring-ring/50 sm:grid-cols-[7rem_minmax(0,1fr)_auto] sm:items-center sm:px-3"
       >
         <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
           <time dateTime={post.date} className="tabular-nums">
@@ -162,7 +162,7 @@ const PostRow = ({ post, index }: PostRowProps) => {
         </div>
 
         <div className="flex min-w-0 flex-col gap-1.5">
-          <h3 className="text-base font-medium leading-snug tracking-[-0.01em] text-foreground sm:text-lg">
+          <h3 className="text-base leading-snug font-medium tracking-[-0.01em] text-foreground sm:text-lg">
             {post.title}
           </h3>
           <p className="truncate text-sm text-muted-foreground">{post.excerpt}</p>
@@ -199,18 +199,18 @@ const Blog02 = () => {
   const visible = filter === 'All' ? POSTS : POSTS.filter((post) => post.category === filter);
 
   return (
-    <section data-slot="blog" aria-labelledby="blog-02-heading" className="bg-background py-20 md:py-28">
+    <section data-slot="blog" aria-labelledby="blog-02-heading" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 md:px-10">
         <header
           data-slot="blog-header"
           className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-10"
         >
           <div className="flex max-w-md flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Journal</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Journal</span>
             <h2
               id="blog-02-heading"
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Writing
             </h2>
@@ -225,7 +225,7 @@ const Blog02 = () => {
                 {FILTERS.map((item) => (
                   <TabsTrigger key={item} value={item}>
                     {item}
-                    <span className="text-xs tabular-nums text-muted-foreground">{countFor(item)}</span>
+                    <span className="text-xs text-muted-foreground tabular-nums">{countFor(item)}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>

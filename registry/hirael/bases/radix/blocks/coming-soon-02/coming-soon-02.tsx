@@ -27,7 +27,7 @@ const Headline = () => {
   return (
     <h1
       data-slot="coming-soon-title"
-      className="max-w-xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl"
+      className="max-w-xl font-serif text-5xl leading-[1.04] font-medium tracking-tight sm:text-6xl md:text-7xl"
     >
       {words.map((word, i) => (
         <span
@@ -53,6 +53,7 @@ const NotifyForm = () => {
     event.preventDefault();
     if (!EMAIL_PATTERN.test(email.trim())) {
       setError('Enter a valid email address.');
+
       return;
     }
     setError(null);
@@ -140,7 +141,7 @@ const ComingSoon02 = () => {
         <p
           data-slot="coming-soon-description"
           style={delay(360)}
-          className={cn(ENTER, 'mt-2 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg')}
+          className={cn(ENTER, 'mt-2 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg')}
         >
           Hirael Cloud brings managed Postgres and object storage to the same terminal-first console you use for the
           registry. We are finishing the last pieces now.

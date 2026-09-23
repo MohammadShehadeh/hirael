@@ -4,7 +4,7 @@ const ABOUT_VIDEO = '/media/templates/akor/about.mp4';
 
 export const About = () => {
   return (
-    <section id="about" data-slot="about" className="bg-[var(--akor-ink)] px-8 pb-24 pt-12 lg:px-16 lg:pb-32 lg:pt-16">
+    <section id="about" data-slot="about" className="bg-[var(--akor-ink)] px-8 pt-12 pb-24 lg:px-16 lg:pt-16 lg:pb-32">
       <SectionLabel>About Us</SectionLabel>
 
       <div className="flex flex-col items-stretch gap-12 lg:flex-row lg:gap-0">
@@ -24,7 +24,7 @@ export const About = () => {
         <div aria-hidden className="mx-10 mt-8 hidden w-px bg-muted-foreground/20 lg:block" />
 
         <div className="flex min-h-[500px] flex-1 flex-col justify-between lg:min-h-[600px]">
-          <h2 className="text-3xl font-normal leading-[1.15] tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-3xl leading-[1.15] font-normal tracking-tight text-foreground sm:text-4xl">
             AI-powered security, automation for businesses and smart infrastructures
           </h2>
 

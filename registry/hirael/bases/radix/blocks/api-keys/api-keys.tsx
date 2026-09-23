@@ -1,10 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, KeyRound, Plus, Trash2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/registry/hirael/bases/radix/ui/empty';
 
 type ApiKeysProps = React.ComponentProps<'div'>;
 
@@ -65,7 +67,7 @@ const ApiKeyName = ({ label, className, children, ...props }: ApiKeyNameProps) =
   return (
     <div data-slot="api-key-name" className={cn('flex min-w-0 flex-col', className)} {...props}>
       <span className="truncate text-sm font-medium text-foreground">{label}</span>
-      {children ? <span className="truncate text-xs uppercase text-muted-foreground">{children}</span> : null}
+      {children ? <span className="truncate text-xs text-muted-foreground uppercase">{children}</span> : null}
     </div>
   );
 };
@@ -89,36 +91,20 @@ const ApiKeyValue = ({
   ...props
 }: ApiKeyValueProps) => {
   const [revealed, setRevealed] = React.useState(defaultRevealed);
-  const [copied, setCopied] = React.useState(false);
-  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
-  React.useEffect(() => () => clearTimeout(timer.current), []);
-
   const masked = `${value.slice(0, 3)}${'•'.repeat(8)}${value.slice(-4)}`;
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(true);
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setCopied(false);
-    }
-  };
 
   return (
     <div
       data-slot="api-key-value"
       className={cn(
-        'inline-flex items-center gap-0.5 rounded-md border border-border bg-background py-0.5 pe-0.5 ps-2',
+        'inline-flex items-center gap-0.5 rounded-md border border-border bg-background py-0.5 ps-2 pe-0.5',
         className,
       )}
       {...props}
     >
-      <code dir="ltr" className="truncate font-mono text-xs text-foreground">
+      <span dir="ltr" className="truncate text-xs tracking-wide text-foreground tabular-nums">
         {revealed ? value : masked}
-      </code>
+      </span>
       {revealable ? (
         <Button
           type="button"
@@ -131,11 +117,7 @@ const ApiKeyValue = ({
           {revealed ? <EyeOff /> : <Eye />}
         </Button>
       ) : null}
-      {copyable ? (
-        <Button type="button" variant="ghost" size="icon-xs" aria-label={copied ? 'Copied' : 'Copy key'} onClick={copy}>
-          {copied ? <Check className="text-foreground" /> : <Copy />}
-        </Button>
-      ) : null}
+      {copyable ? <CopyButton value={value} size="sm" label="Copy key" /> : null}
     </div>
   );
 };
@@ -144,7 +126,7 @@ type ApiKeyMetaProps = React.ComponentProps<'span'>;
 
 const ApiKeyMeta = ({ className, ...props }: ApiKeyMetaProps) => {
   return (
-    <span data-slot="api-key-meta" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <span data-slot="api-key-meta" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -185,6 +167,7 @@ const API_KEY_ROWS: ApiKeyRow[] = [
 const generateSecret = () => {
   const bytes = new Uint8Array(10);
   crypto.getRandomValues(bytes);
+
   return `sk_live_${Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')}`;
 };
 
@@ -253,14 +236,15 @@ const ApiKeysBlock = () => {
         ) : null}
 
         {rows.length === 0 ? (
-          <div
-            key="empty"
-            data-slot="api-keys-empty"
-            className={cn(SWAP, 'flex flex-col items-center gap-1 px-4 py-10 text-center')}
-          >
-            <p className="text-sm font-medium">No API keys</p>
-            <p className="text-xs text-muted-foreground">Create a key to call the API from your servers.</p>
-          </div>
+          <Empty key="empty" className={SWAP}>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <KeyRound />
+              </EmptyMedia>
+              <EmptyTitle>No API keys</EmptyTitle>
+              <EmptyDescription>Create a key to call the API from your servers.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <ApiKeysList>
             {rows.map((row) =>

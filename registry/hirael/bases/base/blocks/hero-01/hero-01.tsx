@@ -101,14 +101,14 @@ const Hero01 = () => {
               style={stagger(3)}
               className={cn(
                 ENTER,
-                'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
+                'mt-10 flex flex-col items-center gap-3 sm:flex-row',
               )}
             >
-              <Button render={<a href="#" />} nativeButton={false} size="lg" className="group h-12">
+              <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
                 Start building
                 <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
               </Button>
-              <Button render={<a href="#" />} nativeButton={false} size="lg" variant="ghost" className="h-12">
+              <Button render={<a href="#" />} nativeButton={false} size="lg" variant="outline">
                 Read the docs
               </Button>
             </div>

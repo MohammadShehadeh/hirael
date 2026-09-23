@@ -253,7 +253,7 @@ const Feature01 = () => {
               'mt-12 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center',
             )}
           >
-            <Button size="lg" className="group h-12 sm:w-[180px]" render={<a href="#" />} nativeButton={false}>
+            <Button size="lg" className="group sm:w-45" render={<a href="#" />} nativeButton={false}>
               Get started
               <ArrowRight
                 aria-hidden
@@ -261,9 +261,9 @@ const Feature01 = () => {
               />
             </Button>
             <Button
-              variant="ghost"
+              variant="outline"
               size="lg"
-              className="h-12 sm:w-[200px]"
+              className="sm:w-50"
               render={<a href="#" />}
               nativeButton={false}
             >

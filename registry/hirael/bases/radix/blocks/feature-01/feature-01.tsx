@@ -253,7 +253,7 @@ const Feature01 = () => {
               'mt-12 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center',
             )}
           >
-            <Button size="lg" className="group h-12 sm:w-[180px]" asChild>
+            <Button size="lg" className="group sm:w-45" asChild>
               <a href="#">
                 Get started
                 <ArrowRight
@@ -262,7 +262,7 @@ const Feature01 = () => {
                 />
               </a>
             </Button>
-            <Button variant="ghost" size="lg" className="h-12 sm:w-[200px]" asChild>
+            <Button variant="outline" size="lg" className="sm:w-50" asChild>
               <a href="#">Read the docs</a>
             </Button>
           </div>

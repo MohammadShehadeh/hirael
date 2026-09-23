@@ -99,18 +99,15 @@ const Hero01 = () => {
             <div
               data-slot="hero-actions"
               style={stagger(3)}
-              className={cn(
-                ENTER,
-                'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
-              )}
+              className={cn(ENTER, 'mt-10 flex flex-col items-center gap-3 sm:flex-row')}
             >
-              <Button asChild size="lg" className="group h-12">
+              <Button asChild size="lg" className="group">
                 <a href="#">
                   Start building
                   <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="ghost" className="h-12">
+              <Button asChild size="lg" variant="outline">
                 <a href="#">Read the docs</a>
               </Button>
             </div>
